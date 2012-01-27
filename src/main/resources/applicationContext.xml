@@ -20,7 +20,7 @@
 
 
    <context:annotation-config/>
-   <context:component-scan base-package="org.ei.Schedular"/>
+   <context:component-scan base-package="org.ei.scheduler"/>
    <context:component-scan base-package="org.motechproject.sms.api"/>
 
    <!--<bean id="dbConnector" class="org.ektorp.impl.StdCouchDbConnector">
