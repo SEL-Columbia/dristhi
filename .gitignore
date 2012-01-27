@@ -3,4 +3,7 @@ target/
 .classpath
 .settings/
 .DS_Store
-
+.idea/
+*.iml
+*.ipr
+*.iws
