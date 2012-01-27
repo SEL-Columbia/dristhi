@@ -83,6 +83,17 @@
                <version>0.8-SNAPSHOT</version>
 	</dependency>
 	<dependency>
+			   <artifactId>motech-sms-api</artifactId>
+               <groupId>org.motechproject</groupId>
+               <version>0.8-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+			  <artifactId>motech-sms-http</artifactId>
+               <groupId>org.motechproject</groupId>
+               <version>0.8-SNAPSHOT</version>
+	</dependency>
+	
+	<dependency>
            <groupId>mysql</groupId>
            <artifactId>mysql-connector-java</artifactId>
            <version>5.1.12</version>

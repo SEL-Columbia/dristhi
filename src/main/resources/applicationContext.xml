@@ -15,11 +15,13 @@
        <property name="ignoreUnresolvablePlaceholders" value="true"/>
    </bean>
 
-   <import resource="classpath:applicationPlatformServerAPI.xml"/>
+   <import resource="classpath:applicationSmsHttp.xml"/>
    <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
+
 
    <context:annotation-config/>
    <context:component-scan base-package="org.ei.Schedular"/>
+   <context:component-scan base-package="org.motechproject.sms.api"/>
 
    <!--<bean id="dbConnector" class="org.ektorp.impl.StdCouchDbConnector">
        <constructor-arg value="ghana-telco"/>
