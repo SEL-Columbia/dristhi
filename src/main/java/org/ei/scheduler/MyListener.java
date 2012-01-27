@@ -15,7 +15,7 @@ public class MyListener {
         BeanFactory context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml"});
         SmsService smsservice = context.getBean(SmsService.class);
 
-        smsservice.sendSMS("9590377135", "Hello World2");
+        smsservice.sendSMS("9590377135", "Hello World 3");
         System.out.println(event);
     }
 }

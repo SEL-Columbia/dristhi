@@ -13,7 +13,7 @@ public class Scheduler {
         new String[] {"applicationContext.xml"});
         ScheduleTrackingService objTracking = appContext.getBean(ScheduleTrackingService.class);
 
-        int x = 718;
+        int x = 1234;
         objTracking.enroll(new EnrollmentRequest(String.valueOf(x), "IPTI Schedule", new Time(x / 100, x % 100), DateUtil.newDate(2012, 1, 2)));
 	}
 }

@@ -10,10 +10,10 @@
        <property name="ignoreUnresolvablePlaceholders" value="true"/>
    </bean>
 
+   <import resource="classpath:applicationSmsAPI.xml"/>
    <import resource="classpath:applicationSmsHttp.xml"/>
    <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
 
    <context:annotation-config/>
    <context:component-scan base-package="org.ei.scheduler"/>
-   <context:component-scan base-package="org.motechproject.sms.api"/>
 </beans>
