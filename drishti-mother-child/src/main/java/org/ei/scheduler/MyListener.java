@@ -1,4 +1,4 @@
-package org.ei.scheduler;
+package main.java.org.ei.scheduler;
 
 import org.motechproject.model.MotechEvent;
 import org.motechproject.scheduletracking.api.events.constants.EventSubject;
