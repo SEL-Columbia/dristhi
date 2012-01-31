@@ -1,4 +1,4 @@
-package main.java.org.ei.scheduler;
+package org.ei.scheduler;
 
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
