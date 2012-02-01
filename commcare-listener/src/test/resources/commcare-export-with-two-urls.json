@@ -1,0 +1,24 @@
+{
+    "userName": "someUser@gmail.com",
+    "password": "somePassword",
+    "forms" : [
+        {
+            "url": {
+                "base": "https://www.commcarehq.org/a/abhilasha/reports/export/",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/UUID-OF-FIRST-FORM"
+                }
+            },
+            "xmlsWeCareAbout": ["Patient_Name", "Age"]
+        },
+        {
+            "url": {
+                "base": "https://www.commcarehq.org/a/abhilasha/reports/export/",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/UUID-OF-SECOND-FORM"
+                }
+            },
+            "xmlsWeCareAbout": ["BP_H", "Age"]
+        }
+    ]
+}
