@@ -1,5 +1,6 @@
 package org.ei.commcare;
 
+import org.ei.commcare.contract.CommcareExportUrl;
 import org.ei.commcare.contract.CommcareFormDefinition;
 import org.ei.commcare.domain.CommcareForm;
 
@@ -19,8 +20,8 @@ public class CommcareFormBuilder {
         return this;
     }
 
-    public CommcareFormBuilder withMappings(String fieldName, String parameterToBeMappedTo) {
-        mappings.put(fieldName, parameterToBeMappedTo);
+    public CommcareFormBuilder withMapping(String parameterToBeMappedTo, String pathToField) {
+        mappings.put(parameterToBeMappedTo, pathToField);
         return this;
     }
 
@@ -30,6 +31,9 @@ public class CommcareFormBuilder {
     }
 
     public CommcareForm build() {
-        return new CommcareForm(new CommcareFormDefinition(formName, null, mappings), content);
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("nameSpace", "http://some.name/space");
+        CommcareExportUrl url = new CommcareExportUrl("http://some.url", params);
+        return new CommcareForm(new CommcareFormDefinition(formName, url, mappings), content);
     }
 }

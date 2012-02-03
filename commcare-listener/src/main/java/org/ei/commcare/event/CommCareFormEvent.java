@@ -3,6 +3,7 @@ package org.ei.commcare.event;
 import org.ei.commcare.domain.CommcareForm;
 import org.motechproject.model.MotechEvent;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CommCareFormEvent {
@@ -15,6 +16,7 @@ public class CommCareFormEvent {
     }
 
     public MotechEvent toMotechEvent() {
-        return new MotechEvent(form.definition().name());
+        HashMap<String, Object> parameters = new HashMap<String, Object>(fieldsInXMLWeCareAbout);
+        return new MotechEvent(form.definition().name(), parameters);
     }
 }

@@ -24,4 +24,5 @@ public class CommcareFormDefinition {
     public HashMap<String, String> mappings() {
         return mappings;
     }
+
 }

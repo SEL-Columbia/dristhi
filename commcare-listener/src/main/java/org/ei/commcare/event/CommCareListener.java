@@ -5,7 +5,6 @@ import org.ei.commcare.service.CommCareFormExportService;
 import org.ei.commcare.util.Xml;
 import org.motechproject.gateway.OutboundEventGateway;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,12 +17,13 @@ public class CommCareListener {
         this.outboundEventGateway = outboundEventGateway;
     }
 
-    public void fetchFromServer() throws IOException {
+    public void fetchFromServer() throws Exception {
         List<CommcareForm> commcareForms = this.formExportService.fetchForms();
-        CommcareForm form = commcareForms.get(0);
 
-        Map<String, String> fieldsInXMLWeCareAbout = new Xml(form.content()).getValuesOfFieldsSpecifiedByPath(form.definition().mappings());
-        outboundEventGateway.sendEventMessage(new CommCareFormEvent(form, fieldsInXMLWeCareAbout).toMotechEvent());
+        for (CommcareForm form : commcareForms) {
+            Map<String, String> fieldsInXMLWeCareAbout = new Xml(form.content()).getValuesOfFieldsSpecifiedByPath(form.definition().mappings());
+            outboundEventGateway.sendEventMessage(new CommCareFormEvent(form, fieldsInXMLWeCareAbout).toMotechEvent());
+        }
     }
 
 }
