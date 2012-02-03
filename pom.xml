@@ -11,6 +11,8 @@
     <modules>
       <module>commcare-listener</module>
       <module>drishti-mother-child</module>
+      <module>motech-entity-store</module>
+      <module>drishti-web</module>
     </modules>
 
     <repositories>

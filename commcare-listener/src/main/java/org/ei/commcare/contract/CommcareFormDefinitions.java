@@ -1,4 +1,4 @@
-package org.ei.commcare.domain;
+package org.ei.commcare.contract;
 
 import java.util.List;
 

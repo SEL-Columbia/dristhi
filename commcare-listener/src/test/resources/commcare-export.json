@@ -3,6 +3,7 @@
     "password": "somePassword",
     "forms" : [
         {
+            "name": "Registration",
             "url": {
                 "base": "https://www.commcarehq.org/a/abhilasha/reports/export/",
                 "queryParams": {

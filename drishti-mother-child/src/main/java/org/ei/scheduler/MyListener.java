@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MyListener {
-    @MotechListener(subjects = {EventSubject.ENROLLED_ENTITY_MILESTONE_ALERT})
+    @MotechListener(subjects = {EventSubject.MILESTONE_ALERT})
     public void handleX(MotechEvent event) {
-        BeanFactory context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml"});
+        BeanFactory context = new ClassPathXmlApplicationContext(new String[]{"applicationContext-drishti.xml"});
         SmsService smsservice = context.getBean(SmsService.class);
 
         smsservice.sendSMS("9590377135", "Hello World 3");

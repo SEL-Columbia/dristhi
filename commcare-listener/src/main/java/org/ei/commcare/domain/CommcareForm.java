@@ -1,22 +1,21 @@
 package org.ei.commcare.domain;
 
-import java.util.List;
+import org.ei.commcare.contract.CommcareFormDefinition;
 
 public class CommcareForm {
     private CommcareFormDefinition formDefinition;
-    private byte[] formContent;
-    private List<String> formInstances;
+    private String content;
 
-    public CommcareForm(CommcareFormDefinition formDefinition, List<String> formInstances) {
+    public CommcareForm(CommcareFormDefinition formDefinition, String content) {
         this.formDefinition = formDefinition;
-        this.formInstances = formInstances;
-    }
-
-    public List<String> instances() {
-        return formInstances;
+        this.content = content;
     }
 
     public CommcareFormDefinition definition() {
         return formDefinition;
+    }
+
+    public String content() {
+        return content;
     }
 }

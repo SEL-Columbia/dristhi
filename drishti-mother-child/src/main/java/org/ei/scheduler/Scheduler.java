@@ -10,7 +10,7 @@ public class Scheduler {
 
 	public static void main(String[] args) throws Throwable {
         ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
-        new String[] {"applicationContext.xml"});
+        new String[] {"applicationContext-drishti.xml"});
         ScheduleTrackingService objTracking = appContext.getBean(ScheduleTrackingService.class);
 
         int x = 1234;
