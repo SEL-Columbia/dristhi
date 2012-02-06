@@ -1,9 +1,9 @@
 {
     "userName": "chandni.ucla@gmail.com",
     "password": "2",
-    "forms" : [
+    "forms": [
         {
-            "name": "Registration",
+            "name": "Mother Registration",
             "url": {
                 "base": "https://www.commcarehq.org/a/abhilasha/reports/export/",
                 "queryParams": {
@@ -12,6 +12,19 @@
             },
             "mappings": {
                 "Age": "/data/Patient_Age"
+            }
+        },
+        {
+            "name": "Child Registration",
+            "url": {
+                "base": "https://www.commcarehq.org/a/abhilasha/reports/export/",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/5DC25F71-2979-4A95-9CF4-E01255159085"
+                }
+            },
+            "mappings": {
+                "Name": "/data/Child_Name",
+                "User": "/data/meta/username"
             }
         }
     ]
