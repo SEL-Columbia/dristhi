@@ -59,13 +59,11 @@ public class XmlTest {
 
     @Test
     public void shouldFindFieldsEvenIfThereAreNamespaces() throws Exception {
-        String nameSpace = "http://some.com/name/space";
-
         HashMap<String, String> fieldWeNeed = new HashMap<String, String>();
         fieldWeNeed.put("Name", "/data/ChildName");
         fieldWeNeed.put("UserName", "/data/meta/username");
 
-        String content = "<?xml version='1.0' ?><data version=\"9\" xmlns=\"http://some.com/name/space\"><ChildName>Aditi</ChildName><meta><username>chandni</username></meta></data>";
+        String content = "<?xml version='1.0'?><data version=\"9\" xmlns=\"http://some.com/name/space\"><ChildName>Aditi</ChildName><meta><username>chandni</username></meta></data>";
         Xml xml = new Xml(content);
         Map<String, String> fieldsInXmlWeCareAbout = xml.getValuesOfFieldsSpecifiedByPath(fieldWeNeed);
 
