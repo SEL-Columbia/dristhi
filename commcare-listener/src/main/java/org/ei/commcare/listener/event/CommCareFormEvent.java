@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommCareFormEvent {
+    public static final String EVENT_SUBJECT = "FORM_SUBMITTED_EVENT";
+    public static final String FORM_NAME_PARAMETER = "FormName";
+
     private final CommcareForm form;
     private final Map<String, String> fieldsInXMLWeCareAbout;
 
@@ -17,6 +20,7 @@ public class CommCareFormEvent {
 
     public MotechEvent toMotechEvent() {
         HashMap<String, Object> parameters = new HashMap<String, Object>(fieldsInXMLWeCareAbout);
-        return new MotechEvent(form.definition().name(), parameters);
+        parameters.put(FORM_NAME_PARAMETER, form.definition().name());
+        return new MotechEvent(EVENT_SUBJECT, parameters);
     }
 }

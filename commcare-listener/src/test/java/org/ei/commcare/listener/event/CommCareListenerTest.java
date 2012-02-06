@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.ei.commcare.event.CommCareFormEvent.FORM_NAME_PARAMETER;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -33,13 +34,13 @@ public class CommCareListenerTest {
     }
 
     @Test
-    public void shouldSendAnEventWithSubjectAsTheNameOfTheFormDefinitionAndNoParametersWhenTheFieldsWeCareAboutAreEmpty() throws Exception {
+    public void shouldSendAnEventWithTheFormNameAsTheOnlyParameterWhenTheFieldsWeCareAboutAreEmpty() throws Exception {
         CommcareForm form = form().withName("FormName").withContent("<some_xml/>").build();
         when(formExportService.fetchForms()).thenReturn(Arrays.asList(form));
 
         listener.fetchFromServer();
 
-        verify(outboundEventGateway).sendEventMessage(new MotechEvent("FormName", new HashMap<String, Object>()));
+        verify(outboundEventGateway).sendEventMessage(event("FormName", new HashMap<String, Object>()));
     }
 
     @Test
@@ -50,7 +51,7 @@ public class CommCareListenerTest {
 
         listener.fetchFromServer();
 
-        verify(outboundEventGateway).sendEventMessage(new MotechEvent("FormName", params("Patient", "Abu")));
+        verify(outboundEventGateway).sendEventMessage(event("FormName", params("Patient", "Abu")));
     }
 
     @Test
@@ -66,7 +67,7 @@ public class CommCareListenerTest {
 
         Map<String, Object> parameters = params("Patient", "Abu");
         parameters.put("Age", "23");
-        verify(outboundEventGateway).sendEventMessage(new MotechEvent("FormName", parameters));
+        verify(outboundEventGateway).sendEventMessage(event("FormName", parameters));
     }
 
     @Test
@@ -80,8 +81,13 @@ public class CommCareListenerTest {
 
         listener.fetchFromServer();
 
-        verify(outboundEventGateway).sendEventMessage(new MotechEvent("PatientForm", params("Patient", "Abu")));
-        verify(outboundEventGateway).sendEventMessage(new MotechEvent("MermaidForm", params("Mermaid", "Ariel")));
+        verify(outboundEventGateway).sendEventMessage(event("PatientForm", params("Patient", "Abu")));
+        verify(outboundEventGateway).sendEventMessage(event("MermaidForm", params("Mermaid", "Ariel")));
+    }
+
+    private MotechEvent event(String formName, Map<String, Object> otherParams) {
+        otherParams.put(FORM_NAME_PARAMETER, formName);
+        return new MotechEvent(CommCareFormEvent.EVENT_SUBJECT, otherParams);
     }
 
     private Map<String, Object> params(String key, String value) {
