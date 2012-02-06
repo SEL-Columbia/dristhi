@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ei.commcare.event.CommCareFormEvent.FORM_NAME_PARAMETER;
+import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_NAME_PARAMETER;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.powermock.api.mockito.PowerMockito.when;

@@ -32,7 +32,7 @@ public class CommCareFormExportServiceTest {
 
     @Test
     public void shouldFetchOneXMLFromCommCare() throws Exception {
-        String urlOfExport = "https://www.commcarehq.org/a/abhilasha/reports/export/&export_tag=%22http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F%22&format=raw";
+        String urlOfExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F%22&format=raw";
         Properties properties = new Properties();
         properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(getFileAsBytes("/zipOne.zip"));
@@ -48,8 +48,8 @@ public class CommCareFormExportServiceTest {
 
     @Test
     public void shouldFetchMultipleXMLsFromCommCare() throws Exception {
-        String urlOfFirstExport = "https://www.commcarehq.org/a/abhilasha/reports/export/&export_tag=%22http://openrosa.org/formdesigner/UUID-OF-FIRST-FORM%22&format=raw";
-        String urlOfSecondExport = "https://www.commcarehq.org/a/abhilasha/reports/export/&export_tag=%22http://openrosa.org/formdesigner/UUID-OF-SECOND-FORM%22&format=raw";
+        String urlOfFirstExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22http://openrosa.org/formdesigner/UUID-OF-FIRST-FORM%22&format=raw";
+        String urlOfSecondExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22http://openrosa.org/formdesigner/UUID-OF-SECOND-FORM%22&format=raw";
 
         Properties properties = new Properties();
         properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export-with-two-urls.json");

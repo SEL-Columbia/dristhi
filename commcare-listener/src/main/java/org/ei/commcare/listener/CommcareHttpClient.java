@@ -7,7 +7,6 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,7 +15,6 @@ import java.io.IOException;
 public class CommcareHttpClient {
     private DefaultHttpClient httpClient;
 
-    @Autowired
     public CommcareHttpClient() {
         this.httpClient = new DefaultHttpClient();
     }
@@ -25,14 +23,10 @@ public class CommcareHttpClient {
         httpClient.getCredentialsProvider().setCredentials(
                 new AuthScope("www.commcarehq.org", 443, "DJANGO", "digest"),
                 new UsernamePasswordCredentials(userName, password));
-        try {
-            HttpResponse response = httpClient.execute(new HttpGet(url));
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                return IOUtils.toByteArray(entity.getContent());
-            }
-        } finally {
-            httpClient.getConnectionManager().shutdown();
+        HttpResponse response = httpClient.execute(new HttpGet(url));
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            return IOUtils.toByteArray(entity.getContent());
         }
 
         return new byte[0];

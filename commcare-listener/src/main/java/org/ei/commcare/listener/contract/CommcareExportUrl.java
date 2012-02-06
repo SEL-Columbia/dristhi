@@ -12,6 +12,6 @@ public class CommcareExportUrl {
     }
 
     public String url() {
-        return base + "&export_tag=%22" + queryParams.get("nameSpace") + "%22&format=raw";
+        return base + "?export_tag=%22" + queryParams.get("nameSpace") + "%22&format=raw";
     }
 }
