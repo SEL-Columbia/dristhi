@@ -16,13 +16,13 @@
                },
                alerts : [
                    {
-                       window : "Late",
+                       window : "late",
                        startOffset : "0 Days",
                        interval : "1 Day",
                        count : "7"
                    },
                    {
-                       window : "Late",
+                       window : "late",
                        startOffset : "1 Week",
                        interval : "1 Week",
                        count : "51"

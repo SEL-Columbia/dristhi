@@ -10,7 +10,7 @@
 
     <groupId>org.ei.drishti</groupId>
     <artifactId>drishti-mother-child</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>drishti-mother-child</name>
@@ -54,7 +54,7 @@
                         </goals>
                         <configuration>
                             <files>
-                                <file>../build/maven.properties</file>
+                                <file>${project.basedir}/../build/maven.properties</file>
                             </files>
                         </configuration>
                     </execution>
@@ -71,7 +71,7 @@
                             <target>
                                 <echo message="Quartz schema loading: START"/>
                                 <path id="dependencies">
-                                    <fileset file="../build/lib/mysql-connector-java-5.1.13.jar"/>
+                                    <fileset file="${project.basedir}/../build/lib/mysql-connector-java-5.1.13.jar"/>
                                 </path>
                                 <sql driver="${mysql.driver}"
                                      url="jdbc:mysql://${mysql.server}:${mysql.port}/${mysql.db}?autoReconnect=true"
@@ -86,7 +86,7 @@
                                      userid="${mysql.user}"
                                      classpathref="dependencies"
                                      password="${mysql.password}"
-                                     src="../build/sql/tables_mysql_innodb.sql"/>
+                                     src="${project.basedir}/../build/sql/tables_mysql_innodb.sql"/>
                                 <echo message="Quartz schema loading: END"/>
                             </target>
                         </configuration>
@@ -131,11 +131,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

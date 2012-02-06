@@ -14,7 +14,7 @@
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath*:META-INF/spring/applicationContext*.xml</param-value>
+    <param-value>classpath*:spring/applicationContext-drishti-web.xml</param-value>
   </context-param>
 
   <filter>
@@ -52,7 +52,7 @@
 
   <!-- Handles Spring requests -->
   <servlet>
-    <servlet-name>bbcwt</servlet-name>
+    <servlet-name>drishti</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
       <param-name>contextConfigLocation</param-name>
