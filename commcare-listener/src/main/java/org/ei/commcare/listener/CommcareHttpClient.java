@@ -1,4 +1,4 @@
-package org.ei.commcare;
+package org.ei.commcare.listener;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -7,12 +7,16 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class CommcareHttpClient {
     private DefaultHttpClient httpClient;
 
+    @Autowired
     public CommcareHttpClient() {
         this.httpClient = new DefaultHttpClient();
     }

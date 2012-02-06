@@ -1,5 +1,6 @@
-package org.ei.commcare.util;
+package org.ei.commcare.listener.util;
 
+import org.ei.commcare.listener.util.Xml;
 import org.junit.Test;
 
 import java.util.HashMap;

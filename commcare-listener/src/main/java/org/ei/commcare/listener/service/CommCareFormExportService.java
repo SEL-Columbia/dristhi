@@ -1,23 +1,28 @@
-package org.ei.commcare.service;
+package org.ei.commcare.listener.service;
 
-import org.ei.commcare.CommcareHttpClient;
-import org.ei.commcare.contract.CommcareFormDefinition;
-import org.ei.commcare.contract.CommcareFormDefinitions;
-import org.ei.commcare.domain.CommcareForm;
-import org.ei.commcare.util.Zip;
+import org.ei.commcare.listener.CommcareHttpClient;
+import org.ei.commcare.listener.contract.CommcareFormDefinition;
+import org.ei.commcare.listener.contract.CommcareFormDefinitions;
+import org.ei.commcare.listener.domain.CommcareForm;
+import org.ei.commcare.listener.util.Zip;
 import org.motechproject.dao.MotechJsonReader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+@Service
 public class CommCareFormExportService {
     public static final String COMMCARE_EXPORT_DEFINITION_FILE = "commcare-export.definition.file";
     private final CommcareHttpClient httpClient;
     private CommcareFormDefinitions formDefinitions;
 
-    public CommCareFormExportService(CommcareHttpClient httpClient, Properties listenerProperties) {
+    @Autowired
+    public CommCareFormExportService(CommcareHttpClient httpClient, @Qualifier("commCareListenerProperties") Properties listenerProperties) {
         this.httpClient = httpClient;
 
         String exportDefinitionJsonPath = listenerProperties.getProperty(COMMCARE_EXPORT_DEFINITION_FILE);

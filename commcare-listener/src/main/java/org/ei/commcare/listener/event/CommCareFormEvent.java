@@ -1,6 +1,6 @@
-package org.ei.commcare.event;
+package org.ei.commcare.listener.event;
 
-import org.ei.commcare.domain.CommcareForm;
+import org.ei.commcare.listener.domain.CommcareForm;
 import org.motechproject.model.MotechEvent;
 
 import java.util.HashMap;

@@ -1,17 +1,21 @@
-package org.ei.commcare.event;
+package org.ei.commcare.listener.event;
 
-import org.ei.commcare.domain.CommcareForm;
-import org.ei.commcare.service.CommCareFormExportService;
-import org.ei.commcare.util.Xml;
+import org.ei.commcare.listener.domain.CommcareForm;
+import org.ei.commcare.listener.service.CommCareFormExportService;
+import org.ei.commcare.listener.util.Xml;
 import org.motechproject.gateway.OutboundEventGateway;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class CommCareListener {
     private final CommCareFormExportService formExportService;
     private final OutboundEventGateway outboundEventGateway;
 
+    @Autowired
     public CommCareListener(CommCareFormExportService formExportService, OutboundEventGateway outboundEventGateway) {
         this.formExportService = formExportService;
         this.outboundEventGateway = outboundEventGateway;

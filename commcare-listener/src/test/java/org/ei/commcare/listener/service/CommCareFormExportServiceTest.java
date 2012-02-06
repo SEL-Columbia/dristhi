@@ -1,10 +1,10 @@
-package org.ei.commcare.service;
+package org.ei.commcare.listener.service;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CredentialsProvider;
-import org.ei.commcare.CommcareHttpClient;
-import org.ei.commcare.domain.CommcareForm;
+import org.ei.commcare.listener.CommcareHttpClient;
+import org.ei.commcare.listener.domain.CommcareForm;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

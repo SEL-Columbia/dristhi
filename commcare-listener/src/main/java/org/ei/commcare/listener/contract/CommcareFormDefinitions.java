@@ -1,4 +1,4 @@
-package org.ei.commcare.contract;
+package org.ei.commcare.listener.contract;
 
 import java.util.List;
 

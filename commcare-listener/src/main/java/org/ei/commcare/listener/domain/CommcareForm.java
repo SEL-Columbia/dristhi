@@ -1,6 +1,6 @@
-package org.ei.commcare.domain;
+package org.ei.commcare.listener.domain;
 
-import org.ei.commcare.contract.CommcareFormDefinition;
+import org.ei.commcare.listener.contract.CommcareFormDefinition;
 
 public class CommcareForm {
     private CommcareFormDefinition formDefinition;

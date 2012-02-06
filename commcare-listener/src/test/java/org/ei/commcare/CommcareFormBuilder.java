@@ -1,8 +1,8 @@
 package org.ei.commcare;
 
-import org.ei.commcare.contract.CommcareExportUrl;
-import org.ei.commcare.contract.CommcareFormDefinition;
-import org.ei.commcare.domain.CommcareForm;
+import org.ei.commcare.listener.contract.CommcareExportUrl;
+import org.ei.commcare.listener.contract.CommcareFormDefinition;
+import org.ei.commcare.listener.domain.CommcareForm;
 
 import java.util.HashMap;
 
