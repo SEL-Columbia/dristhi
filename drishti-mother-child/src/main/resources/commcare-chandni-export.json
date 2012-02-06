@@ -1,0 +1,18 @@
+{
+    "userName": "chandni.ucla@gmail.com",
+    "password": "2",
+    "forms" : [
+        {
+            "name": "Registration",
+            "url": {
+                "base": "https://www.commcarehq.org/a/abhilasha/reports/export/",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F"
+                },
+            "mappings": {
+                    "abc": "def"
+                }
+            }
+        }
+    ]
+}
