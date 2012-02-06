@@ -35,7 +35,7 @@
             </systemProperty>
           </systemProperties>
           <webAppConfig>
-            <contextPath>/ananya</contextPath>
+            <contextPath>/drishti</contextPath>
           </webAppConfig>
           <stopKey>secret</stopKey>
           <stopPort>6669</stopPort>
