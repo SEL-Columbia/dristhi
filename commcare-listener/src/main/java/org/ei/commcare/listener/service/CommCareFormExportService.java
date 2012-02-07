@@ -41,6 +41,6 @@ public class CommCareFormExportService {
     }
 
     private List<String> unzipForms(byte[] zipContent) throws IOException {
-        return new Zip().getFiles(zipContent);
+        return new Zip(zipContent).getFiles();
     }
 }
