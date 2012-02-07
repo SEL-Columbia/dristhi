@@ -16,7 +16,7 @@
                },
                alerts : [
                    {
-                       window : "late",
+                       window : "earliest",
                        startOffset : "0 Days",
                        interval : "1 Day",
                        count : "7"

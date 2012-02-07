@@ -4,18 +4,21 @@ import org.motechproject.model.MotechEvent;
 import org.motechproject.scheduletracking.api.events.constants.EventSubject;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.motechproject.sms.api.service.SmsService;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyListener {
+public class ScheduledAlertListener {
+    private final SmsService smsService;
+
+    @Autowired
+    public ScheduledAlertListener(SmsService smsService) {
+        this.smsService = smsService;
+    }
+
     @MotechListener(subjects = {EventSubject.MILESTONE_ALERT})
     public void handleX(MotechEvent event) {
-        BeanFactory context = new ClassPathXmlApplicationContext(new String[]{"applicationContext-drishti.xml"});
-        SmsService smsservice = context.getBean(SmsService.class);
-
-        smsservice.sendSMS("9590377135", "Hello World 3");
-        System.out.println(event);
+        System.out.println("Sending to 9590377135: " + event.getParameters().toString());
+//        smsService.sendSMS("9590377135", event.getParameters().toString());
     }
 }
