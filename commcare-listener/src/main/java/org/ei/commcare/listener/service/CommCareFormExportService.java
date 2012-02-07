@@ -1,6 +1,6 @@
 package org.ei.commcare.listener.service;
 
-import org.ei.commcare.listener.CommcareHttpClient;
+import org.ei.commcare.listener.util.CommcareHttpClient;
 import org.ei.commcare.listener.contract.CommcareFormDefinition;
 import org.ei.commcare.listener.contract.CommcareFormDefinitions;
 import org.ei.commcare.listener.domain.CommcareForm;

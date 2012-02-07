@@ -9,6 +9,10 @@
                 "queryParams": {
                     "nameSpace": "http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F"
                 }
+            },
+            "mappings": {
+                "FieldInOutput": "/path/in/xml/to/it",
+                "AnotherFieldInOutput": "/path/in/xml/to/that"
             }
         }
     ]

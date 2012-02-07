@@ -3,7 +3,7 @@ package org.ei.commcare.listener.service;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CredentialsProvider;
-import org.ei.commcare.listener.CommcareHttpClient;
+import org.ei.commcare.listener.util.CommcareHttpClient;
 import org.ei.commcare.listener.domain.CommcareForm;
 import org.junit.Before;
 import org.junit.Test;

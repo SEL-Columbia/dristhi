@@ -9,6 +9,10 @@
                 "queryParams": {
                     "nameSpace": "http://openrosa.org/formdesigner/UUID-OF-FIRST-FORM"
                 }
+            },
+            "mappings": {
+                "FieldInOutput": "/path/in/xml/to/it",
+                "AnotherFieldInOutput": "/path/in/xml/to/that"
             }
         },
         {
@@ -18,6 +22,10 @@
                 "queryParams": {
                     "nameSpace": "http://openrosa.org/formdesigner/UUID-OF-SECOND-FORM"
                 }
+            },
+            "mappings": {
+                "FieldInOutput": "/path/in/xml/to/it",
+                "AnotherFieldInOutput": "/path/in/xml/to/that"
             }
         }
     ]
