@@ -6,7 +6,6 @@ import org.motechproject.model.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_DATA_PARAMETER;
@@ -26,17 +25,18 @@ public class CommCareFormSubmissionDispatcher {
             return;
         }
 
-        dispatch(event);
+        String methodName = event.getParameters().get(FORM_NAME_PARAMETER).toString();
+        String parameterJson = event.getParameters().get(FORM_DATA_PARAMETER).toString();
+        dispatch(methodName, parameterJson);
     }
 
-    private void dispatch(MotechEvent event) throws IllegalAccessException, InvocationTargetException {
-        Method method = findMethodWhichAcceptsOneParameter(event.getParameters().get(FORM_NAME_PARAMETER).toString());
+    private void dispatch(String methodName, String parameterJson) throws Exception {
+        Method method = findMethodWhichAcceptsOneParameter(methodName);
         if (method == null) {
             return;
         }
 
-        String jsonData = event.getParameters().get(FORM_DATA_PARAMETER).toString();
-        Object parameter = getParameterFromData(method, jsonData);
+        Object parameter = getParameterFromData(method, parameterJson);
         if (parameter == null) {
             return;
         }

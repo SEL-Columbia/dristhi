@@ -14,11 +14,18 @@ import java.util.zip.ZipFile;
 
 public class Zip
 {
-    public List<String> getFiles(byte[] zipFileContent) throws IOException {
+
+    private byte[] zipFileContent;
+
+    public Zip(byte[] zipFileContent) {
+        this.zipFileContent = zipFileContent;
+    }
+
+    public List<String> getFiles() throws IOException {
         File temporaryFile = File.createTempFile("commcare-data", "zip");
         ZipFile zipFile = null;
         try {
-            FileUtils.writeByteArrayToFile(temporaryFile, zipFileContent);
+            FileUtils.writeByteArrayToFile(temporaryFile, this.zipFileContent);
             zipFile = new ZipFile(temporaryFile);
 
             Enumeration<? extends ZipEntry> entries = zipFile.entries();

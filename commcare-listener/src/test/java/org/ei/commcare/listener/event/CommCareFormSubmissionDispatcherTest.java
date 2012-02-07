@@ -83,6 +83,7 @@ public class CommCareFormSubmissionDispatcherTest {
     @Test
     public void shouldNotFailIfNoObjectToRouteToHasBeenSetup() throws Exception {
         CommCareFormSubmissionDispatcher dispatcher = new CommCareFormSubmissionDispatcher();
+
         dispatcher.registerForDispatch(null);
 
         dispatcher.handle(eventFor("registerMother", "{}"));
