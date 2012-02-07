@@ -3,7 +3,7 @@
     "password": "2",
     "forms": [
         {
-            "name": "Mother Registration",
+            "name": "registerMother",
             "url": {
                 "base": "https://www.commcarehq.org/a/abhilasha/reports/export/",
                 "queryParams": {
@@ -11,11 +11,11 @@
                 }
             },
             "mappings": {
-                "Age": "/data/Patient_Age"
+                "age": "/data/Patient_Age"
             }
         },
         {
-            "name": "Child Registration",
+            "name": "registerChild",
             "url": {
                 "base": "https://www.commcarehq.org/a/abhilasha/reports/export/",
                 "queryParams": {
@@ -23,8 +23,8 @@
                 }
             },
             "mappings": {
-                "Name": "/data/Child_Name",
-                "User": "/data/meta/username"
+                "name": "/data/Child_Name",
+                "userName": "/data/meta/username"
             }
         }
     ]
