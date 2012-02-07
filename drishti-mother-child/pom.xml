@@ -19,6 +19,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.0.5.RELEASE</spring.version>
+        <motech.version>0.8-SNAPSHOT</motech.version>
     </properties>
 
     <build>
@@ -109,22 +110,22 @@
         <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>motech-scheduletracking-api</artifactId>
-            <version>0.8-SNAPSHOT</version>
+            <version>${motech.version}</version>
         </dependency>
         <dependency>
             <artifactId>motech-platform-server-api</artifactId>
             <groupId>org.motechproject</groupId>
-            <version>0.8-SNAPSHOT</version>
+            <version>${motech.version}</version>
         </dependency>
         <dependency>
             <artifactId>motech-sms-api</artifactId>
             <groupId>org.motechproject</groupId>
-            <version>0.8-SNAPSHOT</version>
+            <version>${motech.version}</version>
         </dependency>
         <dependency>
             <artifactId>motech-sms-http</artifactId>
             <groupId>org.motechproject</groupId>
-            <version>0.8-SNAPSHOT</version>
+            <version>${motech.version}</version>
         </dependency>
 
         <dependency>

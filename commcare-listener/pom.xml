@@ -17,6 +17,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.0.5.RELEASE</spring.version>
+        <motech.version>0.8-SNAPSHOT</motech.version>
     </properties>
 
     <build>
@@ -57,7 +58,12 @@
         <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>motech-platform-common</artifactId>
-            <version>0.8-SNAPSHOT</version>
+            <version>${motech.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.motechproject</groupId>
+            <artifactId>motech-platform-server-api</artifactId>
+            <version>${motech.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>

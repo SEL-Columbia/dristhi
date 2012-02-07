@@ -1,4 +1,4 @@
-package org.ei.scheduler;
+package org.ei.commcare.listener.event;
 
 class FakeMotherRegistrationRequest {
     private String name;

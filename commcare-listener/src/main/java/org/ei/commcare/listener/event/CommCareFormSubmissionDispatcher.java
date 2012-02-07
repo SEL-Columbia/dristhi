@@ -1,8 +1,7 @@
-package org.ei.scheduler;
+package org.ei.commcare.listener.event;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import org.ei.commcare.listener.event.CommCareFormEvent;
 import org.motechproject.model.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.springframework.stereotype.Component;

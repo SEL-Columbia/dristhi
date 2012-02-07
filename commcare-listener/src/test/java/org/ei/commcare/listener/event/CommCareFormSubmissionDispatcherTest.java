@@ -1,6 +1,5 @@
-package org.ei.scheduler;
+package org.ei.commcare.listener.event;
 
-import org.ei.commcare.listener.event.CommCareFormEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -108,7 +107,7 @@ public class CommCareFormSubmissionDispatcherTest {
 
         public void methodWithTwoArguments(int a, int b) {
         }
-        
+
         public void methodWhichThrowsAnException(FakeMotherRegistrationRequest request) {
             throw new RuntimeException("Boo");
         }
