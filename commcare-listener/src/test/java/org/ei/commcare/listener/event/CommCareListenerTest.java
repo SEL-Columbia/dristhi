@@ -1,19 +1,23 @@
 package org.ei.commcare.listener.event;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.ei.commcare.CommcareFormBuilder;
 import org.ei.commcare.listener.domain.CommcareForm;
 import org.ei.commcare.listener.service.CommCareFormExportService;
+import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.motechproject.gateway.OutboundEventGateway;
 import org.motechproject.model.MotechEvent;
 
+import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
-import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_NAME_PARAMETER;
+import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -40,22 +44,22 @@ public class CommCareListenerTest {
 
         listener.fetchFromServer();
 
-        verify(outboundEventGateway).sendEventMessage(event("FormName", new HashMap<String, Object>()));
+        verify(outboundEventGateway).sendEventMessage(eventWhichMatches("FormName", "{}"));
     }
 
     @Test
-    public void shouldSendAnEventWithParametersWhichAreTheFieldsSpecifiedInTheFormDefinition() throws Exception {
+    public void shouldSendAnEventWithFormNameAndFormDataAsParametersWhichAreTheFieldsSpecifiedInTheFormDefinition() throws Exception {
         String content = "<data><Patient_Name>Abu</Patient_Name></data>";
         CommcareForm form = form().withName("FormName").withMapping("Patient", "/data/Patient_Name").withContent(content).build();
         when(formExportService.fetchForms()).thenReturn(Arrays.asList(form));
 
         listener.fetchFromServer();
 
-        verify(outboundEventGateway).sendEventMessage(event("FormName", params("Patient", "Abu")));
+        verify(outboundEventGateway).sendEventMessage(eventWhichMatches("FormName", "{\"Patient\" : \"Abu\"}"));
     }
 
     @Test
-    public void shouldSendAnEventWithMultipleParametersWhenThereAreMultipleFieldsSpecified() throws Exception {
+    public void shouldSendAnEventWithMultipleFieldsInFormDataWhenThereAreMultipleFieldsSpecified() throws Exception {
         String content = "<data><Patient><Name>Abu</Name><Details><Age>23</Age></Details></Patient></data>";
 
         CommcareForm form = form().withName("FormName").withContent(content)
@@ -65,9 +69,7 @@ public class CommCareListenerTest {
 
         listener.fetchFromServer();
 
-        Map<String, Object> parameters = params("Patient", "Abu");
-        parameters.put("Age", "23");
-        verify(outboundEventGateway).sendEventMessage(event("FormName", parameters));
+        verify(outboundEventGateway).sendEventMessage(eventWhichMatches("FormName", "{\"Patient\" : \"Abu\", \"Age\" : \"23\"}"));
     }
 
     @Test
@@ -81,22 +83,32 @@ public class CommCareListenerTest {
 
         listener.fetchFromServer();
 
-        verify(outboundEventGateway).sendEventMessage(event("PatientForm", params("Patient", "Abu")));
-        verify(outboundEventGateway).sendEventMessage(event("MermaidForm", params("Mermaid", "Ariel")));
-    }
-
-    private MotechEvent event(String formName, Map<String, Object> otherParams) {
-        otherParams.put(FORM_NAME_PARAMETER, formName);
-        return new MotechEvent(CommCareFormEvent.EVENT_SUBJECT, otherParams);
-    }
-
-    private Map<String, Object> params(String key, String value) {
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put(key, value);
-        return map;
+        verify(outboundEventGateway).sendEventMessage(eventWhichMatches("PatientForm", "{\"Patient\" : \"Abu\"}"));
+        verify(outboundEventGateway).sendEventMessage(eventWhichMatches("MermaidForm", "{\"Mermaid\" : \"Ariel\"}"));
     }
 
     private CommcareFormBuilder form() {
         return new CommcareFormBuilder();
+    }
+
+    private MotechEvent eventWhichMatches(final String expectedFormName, final String expectedFormDataJson) {
+        return argThat(new ArgumentMatcher<MotechEvent>() {
+            @Override
+            public boolean matches(Object actualEvent) {
+                MotechEvent event = (MotechEvent) actualEvent;
+
+                Type mapType = new TypeToken<Map<String, String>>() { }.getType();
+                Map actualFormData = new Gson().fromJson(event.getParameters().get(CommCareFormEvent.FORM_DATA_PARAMETER).toString(), mapType);
+                Map expectedFormData = new Gson().fromJson(expectedFormDataJson, mapType);
+
+                return expectedFormName.equals(event.getParameters().get(CommCareFormEvent.FORM_NAME_PARAMETER)) &&
+                        expectedFormData.equals(actualFormData);
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("FormName=" + expectedFormName + ", FormData=" + expectedFormDataJson);
+            }
+        });
     }
 }
