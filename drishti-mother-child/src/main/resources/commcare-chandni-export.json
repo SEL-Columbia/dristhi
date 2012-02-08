@@ -11,7 +11,7 @@
                 }
             },
             "mappings": {
-                "age": "/data/Patient_Age"
+                "form.Patient_Age" : "age"
             }
         },
         {
@@ -23,8 +23,8 @@
                 }
             },
             "mappings": {
-                "name": "/data/Child_Name",
-                "userName": "/data/meta/username"
+                "form.Child_Name" : "name",
+                "form.meta.username" : "userName"
             }
         }
     ]
