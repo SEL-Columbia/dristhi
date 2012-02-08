@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import org.ei.commcare.CommcareFormBuilder;
 import org.ei.commcare.listener.domain.CommcareForm;
 import org.ei.commcare.listener.service.CommCareFormExportService;
+import org.ei.commcare.listener.util.CommCareJsonFormContent;
 import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +15,9 @@ import org.motechproject.gateway.OutboundEventGateway;
 import org.motechproject.model.MotechEvent;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -39,8 +40,8 @@ public class CommCareListenerTest {
 
     @Test
     public void shouldSendAnEventWithTheFormNameAsTheOnlyParameterWhenTheFieldsWeCareAboutAreEmpty() throws Exception {
-        CommcareForm form = form().withName("FormName").withContent("<some_xml/>").build();
-        when(formExportService.fetchForms()).thenReturn(Arrays.asList(form));
+        CommcareForm form = form().withName("FormName").withContent(new CommCareJsonFormContent(asList("something"), asList("something-else"))).build();
+        when(formExportService.fetchForms()).thenReturn(asList(form));
 
         listener.fetchFromServer();
 
@@ -49,9 +50,9 @@ public class CommCareListenerTest {
 
     @Test
     public void shouldSendAnEventWithFormNameAndFormDataAsParametersWhichAreTheFieldsSpecifiedInTheFormDefinition() throws Exception {
-        String content = "<data><Patient_Name>Abu</Patient_Name></data>";
-        CommcareForm form = form().withName("FormName").withMapping("Patient", "/data/Patient_Name").withContent(content).build();
-        when(formExportService.fetchForms()).thenReturn(Arrays.asList(form));
+        CommCareJsonFormContent content = new CommCareJsonFormContent(asList("form.Patient_Name"), asList("Abu"));
+        CommcareForm form = form().withName("FormName").withMapping("form.Patient_Name", "Patient").withContent(content).build();
+        when(formExportService.fetchForms()).thenReturn(asList(form));
 
         listener.fetchFromServer();
 
@@ -60,12 +61,12 @@ public class CommCareListenerTest {
 
     @Test
     public void shouldSendAnEventWithMultipleFieldsInFormDataWhenThereAreMultipleFieldsSpecified() throws Exception {
-        String content = "<data><Patient><Name>Abu</Name><Details><Age>23</Age></Details></Patient></data>";
+        CommCareJsonFormContent content = new CommCareJsonFormContent(asList("form.Patient_Name", "form.Patient_Age"), asList("Abu", "23"));
 
         CommcareForm form = form().withName("FormName").withContent(content)
-                .withMapping("Patient", "/data/Patient/Name")
-                .withMapping("Age", "/data/Patient/Details/Age").build();
-        when(formExportService.fetchForms()).thenReturn(Arrays.asList(form));
+                .withMapping("form.Patient_Name", "Patient")
+                .withMapping("form.Patient_Age", "Age").build();
+        when(formExportService.fetchForms()).thenReturn(asList(form));
 
         listener.fetchFromServer();
 
@@ -74,12 +75,13 @@ public class CommCareListenerTest {
 
     @Test
     public void shouldSendOneEventForEachFormFound() throws Exception {
-        String content1 = "<data><Patient_Name>Abu</Patient_Name></data>";
-        CommcareForm form1 = form().withName("PatientForm").withMapping("Patient", "/data/Patient_Name").withContent(content1).build();
+        CommCareJsonFormContent content1 = new CommCareJsonFormContent(asList("form.Patient_Name"), asList("Abu"));
+        CommcareForm form1 = form().withName("PatientForm").withMapping("form.Patient_Name", "Patient").withContent(content1).build();
 
-        String content2 = "<data><MermaidName>Ariel</MermaidName></data>";
-        CommcareForm form2 = form().withName("MermaidForm").withMapping("Mermaid", "/data/MermaidName").withContent(content2).build();
-        when(formExportService.fetchForms()).thenReturn(Arrays.asList(form1, form2));
+        CommCareJsonFormContent content2 = new CommCareJsonFormContent(asList("form.MermaidName"), asList("Ariel"));
+
+        CommcareForm form2 = form().withName("MermaidForm").withMapping("form.MermaidName", "Mermaid").withContent(content2).build();
+        when(formExportService.fetchForms()).thenReturn(asList(form1, form2));
 
         listener.fetchFromServer();
 

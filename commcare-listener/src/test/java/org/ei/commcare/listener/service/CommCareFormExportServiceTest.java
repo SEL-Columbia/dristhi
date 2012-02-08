@@ -1,7 +1,5 @@
 package org.ei.commcare.listener.service;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -15,10 +13,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import static junit.framework.Assert.assertEquals;
@@ -40,7 +36,7 @@ public class CommCareFormExportServiceTest {
     }
 
     @Test
-    public void shouldFetchOneXMLFromCommCare() throws Exception {
+    public void shouldFetchOneFormWithTwoInstancesFromCommCare() throws Exception {
         String urlOfExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F%22&format=json";
         Properties properties = new Properties();
         properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
@@ -57,7 +53,7 @@ public class CommCareFormExportServiceTest {
     }
 
     @Test
-    public void shouldFetchMultipleXMLsFromCommCare() throws Exception {
+    public void shouldFetchMultipleFormsWithMultipleInstancesFromCommCare() throws Exception {
         String urlOfFirstExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22http://openrosa.org/formdesigner/UUID-OF-FIRST-FORM%22&format=json";
         String urlOfSecondExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22http://openrosa.org/formdesigner/UUID-OF-SECOND-FORM%22&format=json";
 
@@ -84,14 +80,9 @@ public class CommCareFormExportServiceTest {
     }
 
     private void assertForm(CommcareForm actualForm, String[] expectedValuesOfForm, String urlOfExport) {
-        Type typeOfMapForJson = new TypeToken<Map<String, List<String>>>() { }.getType();
-
-        String expectedJson = "{ \"headers\" : [\"header.col.1\", \"header.col.2\"], \"values\" : " + Arrays.toString(expectedValuesOfForm) + " }";
-
-        Map<String, String[]> actualContent = new Gson().fromJson(actualForm.content(), typeOfMapForJson);
-        Map<String, String[]> expectedContent = new Gson().fromJson(expectedJson, typeOfMapForJson);
-
         assertEquals(urlOfExport, actualForm.definition().url());
-        assertEquals(expectedContent, actualContent);
+
+        assertEquals(Arrays.asList("header.col.1", "header.col.2"), actualForm.content().headers());
+        assertEquals(Arrays.asList(expectedValuesOfForm), actualForm.content().values());
     }
 }

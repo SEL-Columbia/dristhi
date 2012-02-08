@@ -11,8 +11,8 @@
                 }
             },
             "mappings": {
-                "FieldInOutput": "/path/in/xml/to/it",
-                "AnotherFieldInOutput": "/path/in/xml/to/that"
+                "form.path.to.field" : "FieldInOutput",
+                "form.path.to.another.field" : "AnotherFieldInOutput"
             }
         }
     ]

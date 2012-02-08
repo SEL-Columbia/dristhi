@@ -2,7 +2,6 @@ package org.ei.commcare.listener.event;
 
 import org.ei.commcare.listener.domain.CommcareForm;
 import org.ei.commcare.listener.service.CommCareFormExportService;
-import org.ei.commcare.listener.util.Xml;
 import org.motechproject.gateway.OutboundEventGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +24,7 @@ public class CommCareListener {
         List<CommcareForm> commcareForms = this.formExportService.fetchForms();
 
         for (CommcareForm form : commcareForms) {
-            Map<String, String> fieldsInXMLWeCareAbout = new Xml(form.content()).getValuesOfFieldsSpecifiedByPath(form.definition().mappings());
+            Map<String, String> fieldsInXMLWeCareAbout = form.content().getValuesOfFieldsSpecifiedByPath(form.definition().mappings());
             outboundEventGateway.sendEventMessage(new CommCareFormEvent(form, fieldsInXMLWeCareAbout).toMotechEvent());
         }
     }

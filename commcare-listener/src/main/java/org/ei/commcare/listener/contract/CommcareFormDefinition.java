@@ -1,13 +1,13 @@
 package org.ei.commcare.listener.contract;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class CommcareFormDefinition {
     private CommCareExportUrl url;
     private String name;
-    private final HashMap<String, String> mappings;
+    private final Map<String, String> mappings;
 
-    public CommcareFormDefinition(String name, CommCareExportUrl url, HashMap<String, String> mappings) {
+    public CommcareFormDefinition(String name, CommCareExportUrl url, Map<String, String> mappings) {
         this.url = url;
         this.name = name;
         this.mappings = mappings;
@@ -21,7 +21,7 @@ public class CommcareFormDefinition {
         return name;
     }
 
-    public HashMap<String, String> mappings() {
+    public Map<String, String> mappings() {
         return mappings;
     }
 

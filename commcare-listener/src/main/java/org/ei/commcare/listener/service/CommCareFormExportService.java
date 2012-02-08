@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import org.ei.commcare.listener.contract.CommcareFormDefinition;
 import org.ei.commcare.listener.contract.CommcareFormDefinitions;
 import org.ei.commcare.listener.domain.CommcareForm;
+import org.ei.commcare.listener.util.CommCareJsonFormContent;
 import org.ei.commcare.listener.util.CommcareHttpClient;
 import org.ei.commcare.listener.util.CommcareHttpResponse;
 import org.motechproject.dao.MotechJsonReader;
@@ -38,8 +39,7 @@ public class CommCareFormExportService {
 
             CommCareExportedForms exportedFormData = new Gson().fromJson(responseFromCommCareHQ.content(), CommCareExportedForms.class);
             for (List<String> formData : exportedFormData.formContents()) {
-                String contentSerialized = new Gson().toJson(new CommCareFormContent(exportedFormData.headers(), formData));
-                formZips.add(new CommcareForm(formDefinition, contentSerialized));
+                formZips.add(new CommcareForm(formDefinition, new CommCareJsonFormContent(exportedFormData.headers(), formData)));
             }
         }
         return formZips;
@@ -59,16 +59,6 @@ public class CommCareFormExportService {
 
         public List<List<String>> formContents() {
             return content.rows;
-        }
-    }
-
-    private class CommCareFormContent {
-        private final List<String> headers;
-        private final List<String> values;
-
-        public CommCareFormContent(List<String> headers, List<String> values) {
-            this.headers = headers;
-            this.values = values;
         }
     }
 }

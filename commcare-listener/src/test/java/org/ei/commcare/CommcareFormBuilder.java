@@ -3,13 +3,14 @@ package org.ei.commcare;
 import org.ei.commcare.listener.contract.CommCareExportUrl;
 import org.ei.commcare.listener.contract.CommcareFormDefinition;
 import org.ei.commcare.listener.domain.CommcareForm;
+import org.ei.commcare.listener.util.CommCareJsonFormContent;
 
 import java.util.HashMap;
 
 public class CommcareFormBuilder {
     private String formName;
     private HashMap<String, String> mappings;
-    private String content;
+    private CommCareJsonFormContent content;
 
     public CommcareFormBuilder() {
         this.mappings = new HashMap<String, String>();
@@ -20,12 +21,12 @@ public class CommcareFormBuilder {
         return this;
     }
 
-    public CommcareFormBuilder withMapping(String parameterToBeMappedTo, String pathToField) {
-        mappings.put(parameterToBeMappedTo, pathToField);
+    public CommcareFormBuilder withMapping(String pathToField, String parameterToBeMappedTo) {
+        mappings.put(pathToField, parameterToBeMappedTo);
         return this;
     }
 
-    public CommcareFormBuilder withContent(String content) {
+    public CommcareFormBuilder withContent(CommCareJsonFormContent content) {
         this.content = content;
         return this;
     }
