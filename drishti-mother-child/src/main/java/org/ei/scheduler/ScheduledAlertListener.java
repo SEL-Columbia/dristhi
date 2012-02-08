@@ -19,6 +19,6 @@ public class ScheduledAlertListener {
     @MotechListener(subjects = {EventSubject.MILESTONE_ALERT})
     public void handleX(MotechEvent event) {
         System.out.println("Sending to 9590377135: " + event.getParameters().toString());
-//        smsService.sendSMS("9590377135", event.getParameters().toString());
+        smsService.sendSMS("9590377135", event.getParameters().toString());
     }
 }

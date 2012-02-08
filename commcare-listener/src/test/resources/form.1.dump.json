@@ -1,0 +1,34 @@
+{
+    "#.#.#export_tag.#": {
+        "headers": [
+            "id",
+            ""
+        ],
+        "rows": [
+            [
+                "0.0.0",
+                "domain"
+            ],
+            [
+                "0.0.1",
+                "xmlns"
+            ]
+        ]
+    },
+    "#.#": {
+        "headers": [
+            "header.col.1",
+            "header.col.2"
+        ],
+        "rows": [
+            [
+                "form-1-instance-1-value-1",
+                "form-1-instance-1-value-2"
+            ],
+            [
+                "form-1-instance-2-value-1",
+                "form-1-instance-2-value-2"
+            ]
+       ]
+    }
+}

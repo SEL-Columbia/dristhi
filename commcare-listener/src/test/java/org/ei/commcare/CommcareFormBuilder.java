@@ -1,6 +1,6 @@
 package org.ei.commcare;
 
-import org.ei.commcare.listener.contract.CommcareExportUrl;
+import org.ei.commcare.listener.contract.CommCareExportUrl;
 import org.ei.commcare.listener.contract.CommcareFormDefinition;
 import org.ei.commcare.listener.domain.CommcareForm;
 
@@ -33,7 +33,7 @@ public class CommcareFormBuilder {
     public CommcareForm build() {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("nameSpace", "http://some.name/space");
-        CommcareExportUrl url = new CommcareExportUrl("http://some.url", params);
+        CommCareExportUrl url = new CommCareExportUrl("http://some.url", params);
         return new CommcareForm(new CommcareFormDefinition(formName, url, mappings), content);
     }
 }

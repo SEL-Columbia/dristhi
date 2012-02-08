@@ -1,10 +1,12 @@
 package org.ei.commcare.listener.service;
 
-import org.ei.commcare.listener.util.CommcareHttpClient;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import org.ei.commcare.listener.contract.CommcareFormDefinition;
 import org.ei.commcare.listener.contract.CommcareFormDefinitions;
 import org.ei.commcare.listener.domain.CommcareForm;
-import org.ei.commcare.listener.util.Zip;
+import org.ei.commcare.listener.util.CommcareHttpClient;
+import org.ei.commcare.listener.util.CommcareHttpResponse;
 import org.motechproject.dao.MotechJsonReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,15 +34,41 @@ public class CommCareFormExportService {
     public List<CommcareForm> fetchForms() throws IOException {
         List<CommcareForm> formZips = new ArrayList<CommcareForm>();
         for (CommcareFormDefinition formDefinition : formDefinitions.definitions()) {
-            byte[] zipContent = httpClient.get(formDefinition.url(), formDefinitions.userName(), formDefinitions.password());
-            for (String formContent : unzipForms(zipContent)) {
-                formZips.add(new CommcareForm(formDefinition, formContent));
+            CommcareHttpResponse responseFromCommCareHQ = httpClient.get(formDefinition.url(), formDefinitions.userName(), formDefinitions.password());
+
+            CommCareExportedForms exportedFormData = new Gson().fromJson(responseFromCommCareHQ.content(), CommCareExportedForms.class);
+            for (List<String> formData : exportedFormData.formContents()) {
+                String contentSerialized = new Gson().toJson(new CommCareFormContent(exportedFormData.headers(), formData));
+                formZips.add(new CommcareForm(formDefinition, contentSerialized));
             }
         }
         return formZips;
     }
 
-    private List<String> unzipForms(byte[] zipContent) throws IOException {
-        return new Zip(zipContent).getFiles();
+    private static class CommCareExportedForms {
+        @SerializedName("#.#") private CommCareExportedHeadersAndContent content;
+
+        private static class CommCareExportedHeadersAndContent {
+            private List<String> headers;
+            private List<List<String>> rows;
+        }
+
+        public List<String> headers() {
+            return content.headers;
+        }
+
+        public List<List<String>> formContents() {
+            return content.rows;
+        }
+    }
+
+    private class CommCareFormContent {
+        private final List<String> headers;
+        private final List<String> values;
+
+        public CommCareFormContent(List<String> headers, List<String> values) {
+            this.headers = headers;
+            this.values = values;
+        }
     }
 }
