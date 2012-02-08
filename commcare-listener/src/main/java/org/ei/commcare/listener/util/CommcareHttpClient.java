@@ -20,7 +20,7 @@ public class CommcareHttpClient {
         this.httpClient = new DefaultHttpClient();
     }
 
-    public CommcareHttpResponse get(String url, String userName, String password) throws IOException {
+    public CommCareHttpResponse get(String url, String userName, String password) throws IOException {
         httpClient.getCredentialsProvider().setCredentials(
                 new AuthScope("www.commcarehq.org", 443, "DJANGO", "digest"),
                 new UsernamePasswordCredentials(userName, password));
@@ -29,9 +29,9 @@ public class CommcareHttpClient {
 
         HttpEntity entity = response.getEntity();
         if (entity != null) {
-            return new CommcareHttpResponse(headers, IOUtils.toString(entity.getContent()));
+            return new CommCareHttpResponse(response.getStatusLine().getStatusCode(), headers, IOUtils.toString(entity.getContent()));
         }
 
-        return new CommcareHttpResponse(headers, "");
+        return new CommCareHttpResponse(response.getStatusLine().getStatusCode(), headers, "");
     }
 }

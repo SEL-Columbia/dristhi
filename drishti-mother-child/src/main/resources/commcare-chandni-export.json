@@ -7,11 +7,13 @@
             "url": {
                 "base": "https://www.commcarehq.org/a/abhilasha/reports/export/",
                 "queryParams": {
-                    "nameSpace": "http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F"
+                    "nameSpace": "http://openrosa.org/formdesigner/BD1B3DC2-BD71-4EAD-A8FD-31C68317A7F7"
                 }
             },
             "mappings": {
-                "form.Patient_Age" : "age"
+                "form.ThayiCardNo" : "thaayiCardNumber",
+                "form.PrgnantName" : "name",
+                "form.PregnantAg" : "age"
             }
         },
         {

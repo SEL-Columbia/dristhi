@@ -11,7 +11,11 @@ public class CommCareExportUrl {
         this.queryParams = queryParams;
     }
 
-    public String url() {
-        return base + "?export_tag=%22" + queryParams.get("nameSpace") + "%22&format=json";
+    public String url(String previousToken) {
+        return base + "?export_tag=%22" + nameSpace() + "%22&format=json&previous_export=" + previousToken;
+    }
+
+    public String nameSpace() {
+        return queryParams.get("nameSpace");
     }
 }

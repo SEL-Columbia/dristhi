@@ -28,6 +28,6 @@ public class CommcareFormDefinitionsTest {
         assertThat(mappings.get("form.path.to.another.field"), is("AnotherFieldInOutput"));
 
         assertThat(definition.name(), is("Registration"));
-        assertThat(definition.url(), is("https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F%22&format=json"));
+        assertThat(definition.url(""), is("https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F%22&format=json&previous_export="));
     }
 }

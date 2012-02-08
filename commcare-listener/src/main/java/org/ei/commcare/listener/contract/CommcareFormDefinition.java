@@ -13,8 +13,8 @@ public class CommcareFormDefinition {
         this.mappings = mappings;
     }
 
-    public String url() {
-        return url.url();
+    public String url(String previousToken) {
+        return url.url(previousToken);
     }
 
     public String name() {
@@ -25,4 +25,7 @@ public class CommcareFormDefinition {
         return mappings;
     }
 
+    public String nameSpace() {
+        return url.nameSpace();
+    }
 }
