@@ -81,6 +81,13 @@ public class CommCareFormSubmissionDispatcherTest {
     }
 
     @Test
+    public void shouldDispatchEvenIfParameterClassDoesNotHaveADefaultConstructor() throws Exception {
+        commCareFormSubmissionDispatcher.handle(eventFor("ancVisit", "{\"something\" : 3}"));
+
+        verify(drishtiController).ancVisit(new FakeANCVisitRequestWithoutADefaultConstructor(3));
+    }
+
+    @Test
     public void shouldNotFailIfNoObjectToRouteToHasBeenSetup() throws Exception {
         CommCareFormSubmissionDispatcher dispatcher = new CommCareFormSubmissionDispatcher();
 
@@ -100,7 +107,7 @@ public class CommCareFormSubmissionDispatcherTest {
         public void registerMother(FakeMotherRegistrationRequest request) {
         }
 
-        public void ancVisit(FakeANCVisitRequest request) {
+        public void ancVisit(FakeANCVisitRequestWithoutADefaultConstructor request) {
         }
 
         public void methodWithoutArguments() {
@@ -113,4 +120,5 @@ public class CommCareFormSubmissionDispatcherTest {
             throw new RuntimeException("Boo");
         }
     }
+
 }

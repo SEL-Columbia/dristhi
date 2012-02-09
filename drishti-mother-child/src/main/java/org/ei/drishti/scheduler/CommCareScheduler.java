@@ -8,7 +8,7 @@ public class CommCareScheduler {
         ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext-drishti.xml");
         CommCareListener careListener = appContext.getBean(CommCareListener.class);
         while (true) {
-            Thread.sleep(3000);
+            Thread.sleep(10000);
             System.out.println("Hello! Fetching from CommCare HQ!");
             careListener.fetchFromServer();
         }

@@ -16,6 +16,10 @@
   <import resource="classpath:applicationContext-commcare-listener.xml"/>
 
   <context:annotation-config/>
-  <context:component-scan base-package="org.ei.scheduler"/>
-  <context:component-scan base-package="org.ei.controller"/>
+  <context:component-scan base-package="org.ei.drishti"/>
+
+  <bean id="drishtiDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+    <constructor-arg value="drishti" />
+    <constructor-arg ref="couchDbInstance" />
+  </bean>
 </beans>
