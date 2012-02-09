@@ -5,7 +5,8 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.message.BasicHeader;
-import org.ei.commcare.listener.dao.AllExportTokens;
+import org.ei.commcare.listener.domain.ExportToken;
+import org.ei.commcare.listener.repository.AllExportTokens;
 import org.ei.commcare.listener.domain.CommcareForm;
 import org.ei.commcare.listener.util.CommCareHttpClient;
 import org.ei.commcare.listener.util.CommCareHttpResponse;
@@ -46,7 +47,7 @@ public class CommCareFormExportServiceTest {
         Properties properties = new Properties();
         properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
 
-        when(allExportTokens.findByNamespace(nameSpace)).thenReturn("");
+        when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, ""));
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.1.dump.json", "NEW-TOKEN"));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
@@ -68,10 +69,10 @@ public class CommCareFormExportServiceTest {
 
         Properties properties = new Properties();
         properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export-with-two-urls.json");
-        when(allExportTokens.findByNamespace(nameSpaceOfFirstExport)).thenReturn("");
+        when(allExportTokens.findByNameSpace(nameSpaceOfFirstExport)).thenReturn(new ExportToken(nameSpaceOfFirstExport, ""));
         when(httpClient.get(urlOfFirstExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.1.dump.json", "NEW-TOKEN"));
 
-        when(allExportTokens.findByNamespace(nameSpaceOfSecondExport)).thenReturn("");
+        when(allExportTokens.findByNameSpace(nameSpaceOfSecondExport)).thenReturn(new ExportToken(nameSpaceOfSecondExport, ""));
         when(httpClient.get(urlOfSecondExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.2.dump.json", "NEW-TOKEN"));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
@@ -96,7 +97,7 @@ public class CommCareFormExportServiceTest {
         Properties properties = new Properties();
         properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
 
-        when(allExportTokens.findByNamespace(nameSpace)).thenReturn("");
+        when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, ""));
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.1.dump.json", "NEW-TOKEN"));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
@@ -112,7 +113,7 @@ public class CommCareFormExportServiceTest {
         Properties properties = new Properties();
         properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
 
-        when(allExportTokens.findByNamespace(nameSpace)).thenReturn("OLD-TOKEN");
+        when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, "OLD-TOKEN"));
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.1.dump.json", "NEW-TOKEN"));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
@@ -128,7 +129,7 @@ public class CommCareFormExportServiceTest {
         Properties properties = new Properties();
         properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
 
-        when(allExportTokens.findByNamespace(nameSpace)).thenReturn("OLD-TOKEN");
+        when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, "OLD-TOKEN"));
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.1.dump.json", "NEW-TOKEN"));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
@@ -144,14 +145,14 @@ public class CommCareFormExportServiceTest {
         Properties properties = new Properties();
         properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
 
-        when(allExportTokens.findByNamespace(nameSpace)).thenReturn("OLD-TOKEN");
+        when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, "OLD-TOKEN"));
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(302, "/form.with.empty.data.json", null));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
         List<CommcareForm> forms = formExportService.fetchForms();
 
         assertThat(forms.size(), is(0));
-        verify(allExportTokens).findByNamespace(nameSpace);
+        verify(allExportTokens).findByNameSpace(nameSpace);
         verifyNoMoreInteractions(allExportTokens);
     }
 

@@ -5,7 +5,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 import org.ei.commcare.listener.contract.CommCareFormDefinition;
 import org.ei.commcare.listener.contract.CommCareFormDefinitions;
-import org.ei.commcare.listener.dao.AllExportTokens;
+import org.ei.commcare.listener.repository.AllExportTokens;
 import org.ei.commcare.listener.domain.CommCareFormContent;
 import org.ei.commcare.listener.domain.CommcareForm;
 import org.ei.commcare.listener.util.CommCareHttpResponse;
@@ -44,7 +44,7 @@ public class CommCareFormExportService {
         List<CommCareFormWithResponse> formWithResponses = new ArrayList<CommCareFormWithResponse>();
 
         for (CommCareFormDefinition formDefinition : formDefinitions.definitions()) {
-            String previousToken = allExportTokens.findByNamespace(formDefinition.nameSpace());
+            String previousToken = allExportTokens.findByNameSpace(formDefinition.nameSpace()).value();
             CommCareHttpResponse responseFromCommCareHQ = httpClient.get(formDefinition.url(previousToken), formDefinitions.userName(), formDefinitions.password());
 
             if (responseFromCommCareHQ.isValid()) {
