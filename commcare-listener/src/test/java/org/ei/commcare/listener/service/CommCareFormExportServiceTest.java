@@ -14,10 +14,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -172,7 +169,13 @@ public class CommCareFormExportServiceTest {
     private void assertForm(CommcareForm actualForm, String[] expectedValuesOfForm, String formName) {
         assertEquals(actualForm.definition().name(), formName);
 
-        assertEquals(Arrays.asList("header.col.1", "header.col.2"), actualForm.content().headers());
-        assertEquals(Arrays.asList(expectedValuesOfForm), actualForm.content().values());
+        HashMap<String, String> mapping = new HashMap<String, String>();
+        mapping.put("header.col.1", "FirstValue");
+        mapping.put("header.col.2", "SecondValue");
+        Map<String,String> data = actualForm.content().getValuesOfFieldsSpecifiedByPath(mapping);
+
+        assertEquals(2, data.size());
+        assertEquals(expectedValuesOfForm[0], data.get("FirstValue"));
+        assertEquals(expectedValuesOfForm[1], data.get("SecondValue"));
     }
 }

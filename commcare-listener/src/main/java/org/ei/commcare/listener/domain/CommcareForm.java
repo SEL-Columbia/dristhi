@@ -1,13 +1,13 @@
 package org.ei.commcare.listener.domain;
 
 import org.ei.commcare.listener.contract.CommcareFormDefinition;
-import org.ei.commcare.listener.util.CommCareJsonFormContent;
+import org.ei.commcare.listener.util.CommCareFormContent;
 
 public class CommcareForm {
     private CommcareFormDefinition formDefinition;
-    private CommCareJsonFormContent content;
+    private CommCareFormContent content;
 
-    public CommcareForm(CommcareFormDefinition formDefinition, CommCareJsonFormContent content) {
+    public CommcareForm(CommcareFormDefinition formDefinition, CommCareFormContent content) {
         this.formDefinition = formDefinition;
         this.content = content;
     }
@@ -16,7 +16,7 @@ public class CommcareForm {
         return formDefinition;
     }
 
-    public CommCareJsonFormContent content() {
+    public CommCareFormContent content() {
         return content;
     }
 }

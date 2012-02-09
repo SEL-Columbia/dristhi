@@ -8,7 +8,7 @@ import org.ei.commcare.listener.contract.CommcareFormDefinitions;
 import org.ei.commcare.listener.dao.AllExportTokens;
 import org.ei.commcare.listener.domain.CommcareForm;
 import org.ei.commcare.listener.util.CommCareHttpResponse;
-import org.ei.commcare.listener.util.CommCareJsonFormContent;
+import org.ei.commcare.listener.util.CommCareFormContent;
 import org.ei.commcare.listener.util.CommcareHttpClient;
 import org.motechproject.dao.MotechJsonReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +69,7 @@ public class CommCareFormExportService {
                 throw new RuntimeException(response.content() + e);
             }
             for (List<String> formData : exportedFormData.formContents()) {
-                formZips.add(new CommcareForm(definition, new CommCareJsonFormContent(exportedFormData.headers(), formData)));
+                formZips.add(new CommcareForm(definition, new CommCareFormContent(exportedFormData.headers(), formData)));
             }
         }
 
