@@ -12,7 +12,7 @@ public class CommCareFormDefinitionsTest {
     @Test
     public void shouldBeAbleToReadFormDefinitionsFromJSON() {
         CommCareFormDefinitions definitions = (CommCareFormDefinitions) new MotechJsonReader().readFromFile(
-                "/commcare-export.json", CommCareFormDefinitions.class);
+                "/test-data/commcare-export.json", CommCareFormDefinitions.class);
 
         assertThat(definitions.userName(), is("someUser@gmail.com"));
         assertThat(definitions.password(), is("somePassword"));

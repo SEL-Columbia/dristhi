@@ -45,10 +45,10 @@ public class CommCareFormExportServiceTest {
         String nameSpace = "http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F";
         String urlOfExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22" + nameSpace + "%22&format=json&previous_export=";
         Properties properties = new Properties();
-        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
+        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/test-data/commcare-export.json");
 
         when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, ""));
-        when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.1.dump.json", "NEW-TOKEN"));
+        when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.1.dump.json", "NEW-TOKEN"));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
         List<CommcareForm> forms = formExportService.fetchForms();
@@ -68,12 +68,12 @@ public class CommCareFormExportServiceTest {
         String urlOfSecondExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22" + nameSpaceOfSecondExport + "%22&format=json&previous_export=";
 
         Properties properties = new Properties();
-        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export-with-two-urls.json");
+        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/test-data/commcare-export-with-two-urls.json");
         when(allExportTokens.findByNameSpace(nameSpaceOfFirstExport)).thenReturn(new ExportToken(nameSpaceOfFirstExport, ""));
-        when(httpClient.get(urlOfFirstExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.1.dump.json", "NEW-TOKEN"));
+        when(httpClient.get(urlOfFirstExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.1.dump.json", "NEW-TOKEN"));
 
         when(allExportTokens.findByNameSpace(nameSpaceOfSecondExport)).thenReturn(new ExportToken(nameSpaceOfSecondExport, ""));
-        when(httpClient.get(urlOfSecondExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.2.dump.json", "NEW-TOKEN"));
+        when(httpClient.get(urlOfSecondExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.2.dump.json", "NEW-TOKEN"));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
         List<CommcareForm> forms = formExportService.fetchForms();
@@ -95,10 +95,10 @@ public class CommCareFormExportServiceTest {
         String nameSpace = "http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F";
         String urlOfExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22" + nameSpace + "%22&format=json&previous_export=";
         Properties properties = new Properties();
-        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
+        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/test-data/commcare-export.json");
 
         when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, ""));
-        when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.1.dump.json", "NEW-TOKEN"));
+        when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.1.dump.json", "NEW-TOKEN"));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
         formExportService.fetchForms();
@@ -111,10 +111,10 @@ public class CommCareFormExportServiceTest {
         String nameSpace = "http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F";
         String urlOfExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22" + nameSpace + "%22&format=json&previous_export=OLD-TOKEN";
         Properties properties = new Properties();
-        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
+        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/test-data/commcare-export.json");
 
         when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, "OLD-TOKEN"));
-        when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.1.dump.json", "NEW-TOKEN"));
+        when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.1.dump.json", "NEW-TOKEN"));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
         formExportService.fetchForms();
@@ -127,10 +127,10 @@ public class CommCareFormExportServiceTest {
         String nameSpace = "http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F";
         String urlOfExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22" + nameSpace + "%22&format=json&previous_export=OLD-TOKEN";
         Properties properties = new Properties();
-        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
+        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/test-data/commcare-export.json");
 
         when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, "OLD-TOKEN"));
-        when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/form.1.dump.json", "NEW-TOKEN"));
+        when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.1.dump.json", "NEW-TOKEN"));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
         formExportService.fetchForms();
@@ -143,10 +143,10 @@ public class CommCareFormExportServiceTest {
         String nameSpace = "http://openrosa.org/formdesigner/4FBE07FF-2434-40B3-B151-D2EBE2F4FB4F";
         String urlOfExport = "https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22" + nameSpace + "%22&format=json&previous_export=OLD-TOKEN";
         Properties properties = new Properties();
-        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/commcare-export.json");
+        properties.setProperty(CommCareFormExportService.COMMCARE_EXPORT_DEFINITION_FILE, "/test-data/commcare-export.json");
 
         when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, "OLD-TOKEN"));
-        when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(302, "/form.with.empty.data.json", null));
+        when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(302, "/test-data/form.with.empty.data.json", null));
 
         CommCareFormExportService formExportService = new CommCareFormExportService(httpClient, properties, allExportTokens);
         List<CommcareForm> forms = formExportService.fetchForms();
