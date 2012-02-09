@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class CommcareHttpClient {
+public class CommCareHttpClient {
     private DefaultHttpClient httpClient;
 
-    public CommcareHttpClient() {
+    public CommCareHttpClient() {
         this.httpClient = new DefaultHttpClient();
     }
 

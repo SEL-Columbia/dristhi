@@ -1,32 +1,32 @@
 package org.ei.commcare;
 
 import org.ei.commcare.listener.contract.CommCareExportUrl;
-import org.ei.commcare.listener.contract.CommcareFormDefinition;
+import org.ei.commcare.listener.contract.CommCareFormDefinition;
+import org.ei.commcare.listener.domain.CommCareFormContent;
 import org.ei.commcare.listener.domain.CommcareForm;
-import org.ei.commcare.listener.util.CommCareFormContent;
 
 import java.util.HashMap;
 
-public class CommcareFormBuilder {
+public class CommCareFormBuilder {
     private String formName;
     private HashMap<String, String> mappings;
     private CommCareFormContent content;
 
-    public CommcareFormBuilder() {
+    public CommCareFormBuilder() {
         this.mappings = new HashMap<String, String>();
     }
 
-    public CommcareFormBuilder withName(String formName) {
+    public CommCareFormBuilder withName(String formName) {
         this.formName = formName;
         return this;
     }
 
-    public CommcareFormBuilder withMapping(String pathToField, String parameterToBeMappedTo) {
+    public CommCareFormBuilder withMapping(String pathToField, String parameterToBeMappedTo) {
         mappings.put(pathToField, parameterToBeMappedTo);
         return this;
     }
 
-    public CommcareFormBuilder withContent(CommCareFormContent content) {
+    public CommCareFormBuilder withContent(CommCareFormContent content) {
         this.content = content;
         return this;
     }
@@ -35,6 +35,6 @@ public class CommcareFormBuilder {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("nameSpace", "http://some.name/space");
         CommCareExportUrl url = new CommCareExportUrl("http://some.url", params);
-        return new CommcareForm(new CommcareFormDefinition(formName, url, mappings), content);
+        return new CommcareForm(new CommCareFormDefinition(formName, url, mappings), content);
     }
 }

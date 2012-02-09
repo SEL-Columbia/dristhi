@@ -8,18 +8,18 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-public class CommcareFormDefinitionsTest {
+public class CommCareFormDefinitionsTest {
     @Test
     public void shouldBeAbleToReadFormDefinitionsFromJSON() {
-        CommcareFormDefinitions definitions = (CommcareFormDefinitions) new MotechJsonReader().readFromFile(
-                "/commcare-export.json", CommcareFormDefinitions.class);
+        CommCareFormDefinitions definitions = (CommCareFormDefinitions) new MotechJsonReader().readFromFile(
+                "/commcare-export.json", CommCareFormDefinitions.class);
 
         assertThat(definitions.userName(), is("someUser@gmail.com"));
         assertThat(definitions.password(), is("somePassword"));
 
         assertThat(definitions.definitions().size(), is(1));
 
-        CommcareFormDefinition definition = definitions.definitions().get(0);
+        CommCareFormDefinition definition = definitions.definitions().get(0);
 
         Map<String,String> mappings = definition.mappings();
         assertThat(mappings.size(), is(2));

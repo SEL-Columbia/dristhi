@@ -3,13 +3,13 @@ package org.ei.commcare.listener.service;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
-import org.ei.commcare.listener.contract.CommcareFormDefinition;
-import org.ei.commcare.listener.contract.CommcareFormDefinitions;
+import org.ei.commcare.listener.contract.CommCareFormDefinition;
+import org.ei.commcare.listener.contract.CommCareFormDefinitions;
 import org.ei.commcare.listener.dao.AllExportTokens;
+import org.ei.commcare.listener.domain.CommCareFormContent;
 import org.ei.commcare.listener.domain.CommcareForm;
 import org.ei.commcare.listener.util.CommCareHttpResponse;
-import org.ei.commcare.listener.util.CommCareFormContent;
-import org.ei.commcare.listener.util.CommcareHttpClient;
+import org.ei.commcare.listener.util.CommCareHttpClient;
 import org.motechproject.dao.MotechJsonReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,17 +23,17 @@ import java.util.Properties;
 @Service
 public class CommCareFormExportService {
     public static final String COMMCARE_EXPORT_DEFINITION_FILE = "commcare-export.definition.file";
-    private final CommcareHttpClient httpClient;
-    private CommcareFormDefinitions formDefinitions;
+    private final CommCareHttpClient httpClient;
+    private CommCareFormDefinitions formDefinitions;
     private AllExportTokens allExportTokens;
 
     @Autowired
-    public CommCareFormExportService(CommcareHttpClient httpClient, @Qualifier("commCareListenerProperties") Properties listenerProperties, AllExportTokens allExportTokens) {
+    public CommCareFormExportService(CommCareHttpClient httpClient, @Qualifier("commCareListenerProperties") Properties listenerProperties, AllExportTokens allExportTokens) {
         this.httpClient = httpClient;
         this.allExportTokens = allExportTokens;
 
         String exportDefinitionJsonPath = listenerProperties.getProperty(COMMCARE_EXPORT_DEFINITION_FILE);
-        this.formDefinitions = (CommcareFormDefinitions) new MotechJsonReader().readFromFile(exportDefinitionJsonPath, CommcareFormDefinitions.class);
+        this.formDefinitions = (CommCareFormDefinitions) new MotechJsonReader().readFromFile(exportDefinitionJsonPath, CommCareFormDefinitions.class);
     }
 
     public List<CommcareForm> fetchForms() throws IOException {
@@ -43,7 +43,7 @@ public class CommCareFormExportService {
     private List<CommCareFormWithResponse> fetchAllForms() throws IOException {
         List<CommCareFormWithResponse> formWithResponses = new ArrayList<CommCareFormWithResponse>();
 
-        for (CommcareFormDefinition formDefinition : formDefinitions.definitions()) {
+        for (CommCareFormDefinition formDefinition : formDefinitions.definitions()) {
             String previousToken = allExportTokens.findByNamespace(formDefinition.nameSpace());
             CommCareHttpResponse responseFromCommCareHQ = httpClient.get(formDefinition.url(previousToken), formDefinitions.userName(), formDefinitions.password());
 
@@ -59,7 +59,7 @@ public class CommCareFormExportService {
     private List<CommcareForm> processAllForms(List<CommCareFormWithResponse> careFormWithResponses) {
         List<CommcareForm> formZips = new ArrayList<CommcareForm>();
         for (CommCareFormWithResponse formWithResponse : careFormWithResponses) {
-            CommcareFormDefinition definition = formWithResponse.formDefinition;
+            CommCareFormDefinition definition = formWithResponse.formDefinition;
             CommCareHttpResponse response = formWithResponse.response;
 
             CommCareExportedForms exportedFormData = null;
@@ -77,10 +77,10 @@ public class CommCareFormExportService {
     }
 
     private class CommCareFormWithResponse {
-        private final CommcareFormDefinition formDefinition;
+        private final CommCareFormDefinition formDefinition;
         private final CommCareHttpResponse response;
 
-        public CommCareFormWithResponse(CommcareFormDefinition formDefinition, CommCareHttpResponse response) {
+        public CommCareFormWithResponse(CommCareFormDefinition formDefinition, CommCareHttpResponse response) {
             this.formDefinition = formDefinition;
             this.response = response;
         }

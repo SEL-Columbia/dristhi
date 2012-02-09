@@ -1,4 +1,4 @@
-package org.ei.commcare.listener.util;
+package org.ei.commcare.listener.domain;
 
 import java.util.ArrayList;
 import java.util.HashMap;

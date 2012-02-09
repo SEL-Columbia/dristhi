@@ -2,10 +2,10 @@ package org.ei.commcare.listener.event;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.ei.commcare.CommcareFormBuilder;
+import org.ei.commcare.CommCareFormBuilder;
+import org.ei.commcare.listener.domain.CommCareFormContent;
 import org.ei.commcare.listener.domain.CommcareForm;
 import org.ei.commcare.listener.service.CommCareFormExportService;
-import org.ei.commcare.listener.util.CommCareFormContent;
 import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,8 +89,8 @@ public class CommCareListenerTest {
         verify(outboundEventGateway).sendEventMessage(eventWhichMatches("MermaidForm", "{\"Mermaid\" : \"Ariel\"}"));
     }
 
-    private CommcareFormBuilder form() {
-        return new CommcareFormBuilder();
+    private CommCareFormBuilder form() {
+        return new CommCareFormBuilder();
     }
 
     private MotechEvent eventWhichMatches(final String expectedFormName, final String expectedFormDataJson) {

@@ -7,7 +7,7 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.message.BasicHeader;
 import org.ei.commcare.listener.dao.AllExportTokens;
 import org.ei.commcare.listener.domain.CommcareForm;
-import org.ei.commcare.listener.util.CommcareHttpClient;
+import org.ei.commcare.listener.util.CommCareHttpClient;
 import org.ei.commcare.listener.util.CommCareHttpResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +26,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 public class CommCareFormExportServiceTest {
     @Mock
-    private CommcareHttpClient httpClient;
+    private CommCareHttpClient httpClient;
     @Mock
     private CredentialsProvider provider;
     @Mock

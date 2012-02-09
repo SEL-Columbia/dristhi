@@ -2,12 +2,12 @@ package org.ei.commcare.listener.contract;
 
 import java.util.List;
 
-public class CommcareFormDefinitions {
+public class CommCareFormDefinitions {
     private String userName;
     private String password;
-    private List<CommcareFormDefinition> forms;
+    private List<CommCareFormDefinition> forms;
 
-    public List<CommcareFormDefinition> definitions() {
+    public List<CommCareFormDefinition> definitions() {
         return forms;
     }
 
