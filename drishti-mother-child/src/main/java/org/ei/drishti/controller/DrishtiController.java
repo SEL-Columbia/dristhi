@@ -1,8 +1,8 @@
-package org.ei.controller;
+package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.event.CommCareFormSubmissionDispatcher;
-import org.ei.contract.ChildRegistrationRequest;
-import org.ei.contract.MotherRegistrationRequest;
+import org.ei.drishti.contract.ChildRegistrationRequest;
+import org.ei.drishti.contract.MotherRegistrationRequest;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;

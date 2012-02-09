@@ -1,4 +1,4 @@
-package org.ei.contract;
+package org.ei.drishti.contract;
 
 public class MotherRegistrationRequest {
     private int age;
