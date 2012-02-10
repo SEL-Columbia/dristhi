@@ -5,35 +5,31 @@ import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 import org.ei.commcare.listener.contract.CommCareFormDefinition;
 import org.ei.commcare.listener.contract.CommCareFormDefinitions;
-import org.ei.commcare.listener.repository.AllExportTokens;
 import org.ei.commcare.listener.domain.CommCareFormContent;
 import org.ei.commcare.listener.domain.CommcareForm;
-import org.ei.commcare.listener.util.CommCareHttpResponse;
+import org.ei.commcare.listener.repository.AllExportTokens;
 import org.ei.commcare.listener.util.CommCareHttpClient;
-import org.motechproject.dao.MotechJsonReader;
+import org.ei.commcare.listener.util.CommCareHttpResponse;
+import org.ei.commcare.listener.util.CommCareListenerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 @Service
 public class CommCareFormExportService {
-    public static final String COMMCARE_EXPORT_DEFINITION_FILE = "commcare-export.definition.file";
     private final CommCareHttpClient httpClient;
     private CommCareFormDefinitions formDefinitions;
     private AllExportTokens allExportTokens;
 
     @Autowired
-    public CommCareFormExportService(CommCareHttpClient httpClient, @Qualifier("commCareListenerProperties") Properties listenerProperties, AllExportTokens allExportTokens) {
+    public CommCareFormExportService(AllExportTokens allExportTokens, CommCareHttpClient httpClient, CommCareListenerProperties properties) {
         this.httpClient = httpClient;
         this.allExportTokens = allExportTokens;
 
-        String exportDefinitionJsonPath = listenerProperties.getProperty(COMMCARE_EXPORT_DEFINITION_FILE);
-        this.formDefinitions = (CommCareFormDefinitions) new MotechJsonReader().readFromFile(exportDefinitionJsonPath, CommCareFormDefinitions.class);
+        this.formDefinitions = properties.definitions();
     }
 
     public List<CommcareForm> fetchForms() throws IOException {
