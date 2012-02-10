@@ -11,10 +11,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @Component
 public class CommCareHttpClient {
     private DefaultHttpClient httpClient;
+    private static Logger logger = Logger.getLogger(CommCareHttpClient.class.toString());
 
     public CommCareHttpClient() {
         this.httpClient = new DefaultHttpClient();

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import static org.joda.time.DateTimeConstants.MILLIS_PER_SECOND;
 
@@ -19,6 +20,7 @@ public class CommCareScheduler {
     private static final String SUBJECT = "DRISHTI-TIMED-SCHEDULE";
     private final MotechSchedulerService service;
     private final CommCareListener careListener;
+    private static Logger logger = Logger.getLogger(CommCareScheduler.class.toString());
 
     @Autowired
     public CommCareScheduler(MotechSchedulerService service, CommCareListener careListener) {
@@ -27,7 +29,7 @@ public class CommCareScheduler {
     }
 
     public void startTimedScheduler() {
-        System.out.println("Scheduling ...");
+        logger.info("Scheduling timer ...");
 
         Date startTime = DateTime.now().plusSeconds(10).toDate();
         MotechEvent event = new MotechEvent(SUBJECT, new HashMap<String, Object>());
@@ -38,7 +40,7 @@ public class CommCareScheduler {
 
     @MotechListener(subjects = SUBJECT)
     public void fetchFromCommCareHQ(MotechEvent event) throws Exception {
-        System.out.println("Hello! Fetching from CommCare HQ!");
+        logger.info("Fetching from CommCareHQ.");
         careListener.fetchFromServer();
     }
 }

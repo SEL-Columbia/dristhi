@@ -17,12 +17,14 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class CommCareFormExportService {
     private final CommCareHttpClient httpClient;
     private CommCareFormDefinitions formDefinitions;
     private AllExportTokens allExportTokens;
+    private static Logger logger = Logger.getLogger(CommCareFormExportService.class.toString());
 
     @Autowired
     public CommCareFormExportService(AllExportTokens allExportTokens, CommCareHttpClient httpClient, CommCareListenerProperties properties) {
@@ -53,7 +55,7 @@ public class CommCareFormExportService {
     }
 
     private List<CommcareForm> processAllForms(List<CommCareFormWithResponse> careFormWithResponses) {
-        List<CommcareForm> formZips = new ArrayList<CommcareForm>();
+        List<CommcareForm> forms = new ArrayList<CommcareForm>();
         for (CommCareFormWithResponse formWithResponse : careFormWithResponses) {
             CommCareFormDefinition definition = formWithResponse.formDefinition;
             CommCareHttpResponse response = formWithResponse.response;
@@ -65,11 +67,11 @@ public class CommCareFormExportService {
                 throw new RuntimeException(response.content() + e);
             }
             for (List<String> formData : exportedFormData.formContents()) {
-                formZips.add(new CommcareForm(definition, new CommCareFormContent(exportedFormData.headers(), formData)));
+                forms.add(new CommcareForm(definition, new CommCareFormContent(exportedFormData.headers(), formData)));
             }
         }
 
-        return formZips;
+        return forms;
     }
 
     private class CommCareFormWithResponse {
@@ -87,7 +89,6 @@ public class CommCareFormExportService {
         private static class CommCareExportedHeadersAndContent {
             private List<String> headers;
             private List<List<String>> rows;
-
         }
 
         public List<String> headers() {

@@ -33,4 +33,9 @@ public class CommCareHttpResponse {
     public boolean isValid() {
         return statusCode == 200 && !tokenForNextExport().isEmpty();
     }
+
+    @Override
+    public String toString() {
+        return "Status code: " + statusCode + ", Token for next export: " + tokenForNextExport() + ", Content: " + content();
+    }
 }
