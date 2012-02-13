@@ -19,11 +19,6 @@ public class ExportToken extends MotechBaseDataObject {
         this.value = value;
     }
 
-    public ExportToken updateValue(String tokenData) {
-        this.value = tokenData;
-        return this;
-    }
-
     public String value() {
         return value;
     }

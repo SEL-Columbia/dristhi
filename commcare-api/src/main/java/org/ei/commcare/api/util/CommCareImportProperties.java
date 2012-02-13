@@ -9,17 +9,17 @@ import org.springframework.stereotype.Component;
 import java.util.Properties;
 
 @Component
-public class CommCareListenerProperties {
+public class CommCareImportProperties {
     public static final String COMMCARE_EXPORT_DEFINITION_FILE = "commcare-export.definition.file";
-    private final Properties listenerProperties;
+    private final Properties properties;
 
     @Autowired
-    public CommCareListenerProperties(@Qualifier("propertiesForCommCareListener") Properties listenerProperties) {
-        this.listenerProperties = listenerProperties;
+    public CommCareImportProperties(@Qualifier("propertiesForCommCareImport") Properties properties) {
+        this.properties = properties;
     }
 
     public CommCareFormDefinitions definitions() {
-        String jsonPath = listenerProperties.getProperty(COMMCARE_EXPORT_DEFINITION_FILE);
+        String jsonPath = properties.getProperty(COMMCARE_EXPORT_DEFINITION_FILE);
         return (CommCareFormDefinitions) new MotechJsonReader().readFromFile(jsonPath, CommCareFormDefinitions.class);
     }
 }

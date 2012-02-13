@@ -1,6 +1,7 @@
-package org.ei.commcare.api.event;
+package org.ei.commcare.listener;
 
 import org.ei.commcare.api.domain.CommcareForm;
+import org.ei.commcare.listener.event.CommCareFormEvent;
 import org.ei.commcare.api.service.CommCareFormImportService;
 import org.motechproject.gateway.OutboundEventGateway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,4 @@ public class CommCareListener {
             outboundEventGateway.sendEventMessage(new CommCareFormEvent(form, fieldsInXMLWeCareAbout).toMotechEvent());
         }
     }
-
 }

@@ -13,7 +13,7 @@
   <import resource="classpath:applicationSmsHttp.xml"/>
   <import resource="classpath:applicationSmsAPI.xml"/>
   <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
-  <import resource="classpath:applicationContext-commcare-api.xml"/>
+  <import resource="classpath:applicationContext-commcare-listener.xml"/>
 
   <context:annotation-config/>
   <context:component-scan base-package="org.ei.drishti"/>

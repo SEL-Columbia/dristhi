@@ -1,8 +1,7 @@
-package org.ei.commcare.listener.util;
+package org.ei.commcare.api.util;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
-import org.ei.commcare.api.util.CommCareHttpResponse;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

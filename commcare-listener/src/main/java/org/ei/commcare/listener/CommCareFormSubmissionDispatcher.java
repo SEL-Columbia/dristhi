@@ -1,15 +1,16 @@
-package org.ei.commcare.api.event;
+package org.ei.commcare.listener;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import org.ei.commcare.listener.event.CommCareFormEvent;
 import org.motechproject.model.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-import static org.ei.commcare.api.event.CommCareFormEvent.FORM_DATA_PARAMETER;
-import static org.ei.commcare.api.event.CommCareFormEvent.FORM_NAME_PARAMETER;
+import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_DATA_PARAMETER;
+import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_NAME_PARAMETER;
 
 @Component
 public class CommCareFormSubmissionDispatcher {

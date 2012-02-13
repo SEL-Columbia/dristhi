@@ -10,7 +10,7 @@ import org.ei.commcare.api.domain.CommcareForm;
 import org.ei.commcare.api.repository.AllExportTokens;
 import org.ei.commcare.api.util.CommCareHttpClient;
 import org.ei.commcare.api.util.CommCareHttpResponse;
-import org.ei.commcare.api.util.CommCareListenerProperties;
+import org.ei.commcare.api.util.CommCareImportProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class CommCareFormImportService {
     private static Logger logger = Logger.getLogger(CommCareFormImportService.class.toString());
 
     @Autowired
-    public CommCareFormImportService(AllExportTokens allExportTokens, CommCareHttpClient httpClient, CommCareListenerProperties properties) {
+    public CommCareFormImportService(AllExportTokens allExportTokens, CommCareHttpClient httpClient, CommCareImportProperties properties) {
         this.httpClient = httpClient;
         this.allExportTokens = allExportTokens;
 

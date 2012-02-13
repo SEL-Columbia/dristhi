@@ -1,4 +1,4 @@
-package org.ei.commcare.listener.repository.it;
+package org.ei.commcare.api.repository.it;
 
 import org.ei.commcare.api.domain.ExportToken;
 import org.ei.commcare.api.repository.AllExportTokens;

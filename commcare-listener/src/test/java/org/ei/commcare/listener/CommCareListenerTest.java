@@ -1,12 +1,10 @@
-package org.ei.commcare.listener.event;
+package org.ei.commcare.listener;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.ei.commcare.CommCareFormBuilder;
 import org.ei.commcare.api.domain.CommCareFormContent;
 import org.ei.commcare.api.domain.CommcareForm;
-import org.ei.commcare.api.event.CommCareFormEvent;
-import org.ei.commcare.api.event.CommCareListener;
+import org.ei.commcare.listener.event.CommCareFormEvent;
 import org.ei.commcare.api.service.CommCareFormImportService;
 import org.hamcrest.Description;
 import org.junit.Before;
@@ -15,6 +13,7 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.motechproject.gateway.OutboundEventGateway;
 import org.motechproject.model.MotechEvent;
+import org.powermock.api.mockito.PowerMockito;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -23,7 +22,6 @@ import static java.util.Arrays.asList;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.powermock.api.mockito.PowerMockito.when;
 
 public class CommCareListenerTest {
     @Mock
@@ -43,7 +41,7 @@ public class CommCareListenerTest {
     @Test
     public void shouldSendAnEventWithTheFormNameAsTheOnlyParameterWhenTheFieldsWeCareAboutAreEmpty() throws Exception {
         CommcareForm form = form().withName("FormName").withContent(new CommCareFormContent(asList("something"), asList("something-else"))).build();
-        when(formImportService.fetchForms()).thenReturn(asList(form));
+        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(form));
 
         listener.fetchFromServer();
 
@@ -54,7 +52,7 @@ public class CommCareListenerTest {
     public void shouldSendAnEventWithFormNameAndFormDataAsParametersWhichAreTheFieldsSpecifiedInTheFormDefinition() throws Exception {
         CommCareFormContent content = new CommCareFormContent(asList("form.Patient_Name"), asList("Abu"));
         CommcareForm form = form().withName("FormName").withMapping("form.Patient_Name", "Patient").withContent(content).build();
-        when(formImportService.fetchForms()).thenReturn(asList(form));
+        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(form));
 
         listener.fetchFromServer();
 
@@ -68,7 +66,7 @@ public class CommCareListenerTest {
         CommcareForm form = form().withName("FormName").withContent(content)
                 .withMapping("form.Patient_Name", "Patient")
                 .withMapping("form.Patient_Age", "Age").build();
-        when(formImportService.fetchForms()).thenReturn(asList(form));
+        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(form));
 
         listener.fetchFromServer();
 
@@ -83,7 +81,7 @@ public class CommCareListenerTest {
         CommCareFormContent content2 = new CommCareFormContent(asList("form.MermaidName"), asList("Ariel"));
 
         CommcareForm form2 = form().withName("MermaidForm").withMapping("form.MermaidName", "Mermaid").withContent(content2).build();
-        when(formImportService.fetchForms()).thenReturn(asList(form1, form2));
+        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(form1, form2));
 
         listener.fetchFromServer();
 

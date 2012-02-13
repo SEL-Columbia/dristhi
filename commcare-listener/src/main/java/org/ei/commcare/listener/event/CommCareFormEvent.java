@@ -1,4 +1,4 @@
-package org.ei.commcare.api.event;
+package org.ei.commcare.listener.event;
 
 import com.google.gson.Gson;
 import org.ei.commcare.api.domain.CommcareForm;

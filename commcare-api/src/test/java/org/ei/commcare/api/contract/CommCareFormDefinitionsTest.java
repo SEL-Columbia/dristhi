@@ -1,4 +1,4 @@
-package org.ei.commcare.listener.contract;
+package org.ei.commcare.api.contract;
 
 import org.ei.commcare.api.contract.CommCareFormDefinition;
 import org.ei.commcare.api.contract.CommCareFormDefinitions;

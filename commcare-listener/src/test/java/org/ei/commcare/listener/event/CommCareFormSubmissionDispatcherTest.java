@@ -1,7 +1,6 @@
 package org.ei.commcare.listener.event;
 
-import org.ei.commcare.api.event.CommCareFormEvent;
-import org.ei.commcare.api.event.CommCareFormSubmissionDispatcher;
+import org.ei.commcare.listener.CommCareFormSubmissionDispatcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

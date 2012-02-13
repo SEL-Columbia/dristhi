@@ -1,6 +1,6 @@
 package org.ei.drishti.scheduler;
 
-import org.ei.commcare.api.event.CommCareListener;
+import org.ei.commcare.listener.CommCareListener;
 import org.joda.time.DateTime;
 import org.motechproject.model.MotechEvent;
 import org.motechproject.model.RepeatingSchedulableJob;

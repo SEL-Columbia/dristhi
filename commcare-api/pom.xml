@@ -10,8 +10,8 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.ei.drishti</groupId>
     <artifactId>commcare-api</artifactId>
+    <groupId>org.ei.drishti</groupId>
     <version>0.1-SNAPSHOT</version>
 
     <properties>

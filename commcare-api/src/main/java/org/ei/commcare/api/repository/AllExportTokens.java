@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public class AllExportTokens extends MotechBaseRepository<ExportToken> {
     @Autowired
-    public AllExportTokens(@Qualifier("commCareListenerDatabaseConnector") CouchDbConnector db) {
+    public AllExportTokens(@Qualifier("commCareDatabaseConnector") CouchDbConnector db) {
         super(ExportToken.class, db);
         initStandardDesignDocument();
     }

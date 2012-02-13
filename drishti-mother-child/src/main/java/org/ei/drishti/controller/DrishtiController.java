@@ -1,6 +1,6 @@
 package org.ei.drishti.controller;
 
-import org.ei.commcare.api.event.CommCareFormSubmissionDispatcher;
+import org.ei.commcare.listener.CommCareFormSubmissionDispatcher;
 import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.ei.drishti.contract.MotherRegistrationInformation;
 import org.ei.drishti.service.MotherService;
