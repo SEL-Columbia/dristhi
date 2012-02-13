@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-public class CommCareFormExportServiceTest {
+public class CommCareFormImportServiceTest {
     @Mock
     private CommCareHttpClient httpClient;
     @Mock
@@ -52,8 +52,8 @@ public class CommCareFormExportServiceTest {
         when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, ""));
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.1.dump.json", "NEW-TOKEN"));
 
-        CommCareFormExportService formExportService = new CommCareFormExportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
-        List<CommcareForm> forms = formExportService.fetchForms();
+        CommCareFormImportService formImportService = new CommCareFormImportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
+        List<CommcareForm> forms = formImportService.fetchForms();
 
         verify(httpClient).get(urlOfExport, "someUser@gmail.com", "somePassword");
         assertEquals(2, forms.size());
@@ -77,8 +77,8 @@ public class CommCareFormExportServiceTest {
         when(allExportTokens.findByNameSpace(nameSpaceOfSecondExport)).thenReturn(new ExportToken(nameSpaceOfSecondExport, ""));
         when(httpClient.get(urlOfSecondExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.2.dump.json", "NEW-TOKEN"));
 
-        CommCareFormExportService formExportService = new CommCareFormExportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
-        List<CommcareForm> forms = formExportService.fetchForms();
+        CommCareFormImportService formImportService = new CommCareFormImportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
+        List<CommcareForm> forms = formImportService.fetchForms();
 
         verify(httpClient).get(urlOfFirstExport, "someUser@gmail.com", "somePassword");
         verify(httpClient).get(urlOfSecondExport, "someUser@gmail.com", "somePassword");
@@ -102,8 +102,8 @@ public class CommCareFormExportServiceTest {
         when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, ""));
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.1.dump.json", "NEW-TOKEN"));
 
-        CommCareFormExportService formExportService = new CommCareFormExportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
-        formExportService.fetchForms();
+        CommCareFormImportService formImportService = new CommCareFormImportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
+        formImportService.fetchForms();
 
         verify(httpClient).get(urlOfExport, "someUser@gmail.com", "somePassword");
     }
@@ -118,8 +118,8 @@ public class CommCareFormExportServiceTest {
         when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, "OLD-TOKEN"));
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.1.dump.json", "NEW-TOKEN"));
 
-        CommCareFormExportService formExportService = new CommCareFormExportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
-        formExportService.fetchForms();
+        CommCareFormImportService formImportService = new CommCareFormImportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
+        formImportService.fetchForms();
 
         verify(httpClient).get(urlOfExport, "someUser@gmail.com", "somePassword");
     }
@@ -134,8 +134,8 @@ public class CommCareFormExportServiceTest {
         when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, "OLD-TOKEN"));
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.1.dump.json", "NEW-TOKEN"));
 
-        CommCareFormExportService formExportService = new CommCareFormExportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
-        formExportService.fetchForms();
+        CommCareFormImportService formImportService = new CommCareFormImportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
+        formImportService.fetchForms();
 
         verify(allExportTokens).updateToken(nameSpace, "NEW-TOKEN");
     }
@@ -150,8 +150,8 @@ public class CommCareFormExportServiceTest {
         when(allExportTokens.findByNameSpace(nameSpace)).thenReturn(new ExportToken(nameSpace, "OLD-TOKEN"));
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(302, "/test-data/form.with.empty.data.json", null));
 
-        CommCareFormExportService formExportService = new CommCareFormExportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
-        List<CommcareForm> forms = formExportService.fetchForms();
+        CommCareFormImportService formImportService = new CommCareFormImportService(allExportTokens, httpClient, new CommCareListenerProperties(properties));
+        List<CommcareForm> forms = formImportService.fetchForms();
 
         assertThat(forms.size(), is(0));
         verify(allExportTokens).findByNameSpace(nameSpace);

@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Service
-public class CommCareFormExportService {
+public class CommCareFormImportService {
     private final CommCareHttpClient httpClient;
     private CommCareFormDefinitions formDefinitions;
     private AllExportTokens allExportTokens;
-    private static Logger logger = Logger.getLogger(CommCareFormExportService.class.toString());
+    private static Logger logger = Logger.getLogger(CommCareFormImportService.class.toString());
 
     @Autowired
-    public CommCareFormExportService(AllExportTokens allExportTokens, CommCareHttpClient httpClient, CommCareListenerProperties properties) {
+    public CommCareFormImportService(AllExportTokens allExportTokens, CommCareHttpClient httpClient, CommCareListenerProperties properties) {
         this.httpClient = httpClient;
         this.allExportTokens = allExportTokens;
 

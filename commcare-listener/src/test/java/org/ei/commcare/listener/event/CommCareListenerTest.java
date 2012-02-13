@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import org.ei.commcare.CommCareFormBuilder;
 import org.ei.commcare.listener.domain.CommCareFormContent;
 import org.ei.commcare.listener.domain.CommcareForm;
-import org.ei.commcare.listener.service.CommCareFormExportService;
+import org.ei.commcare.listener.service.CommCareFormImportService;
 import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 public class CommCareListenerTest {
     @Mock
-    CommCareFormExportService formExportService;
+    CommCareFormImportService formImportService;
 
     @Mock
     OutboundEventGateway outboundEventGateway;
@@ -35,13 +35,13 @@ public class CommCareListenerTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        listener = new CommCareListener(formExportService, outboundEventGateway);
+        listener = new CommCareListener(formImportService, outboundEventGateway);
     }
 
     @Test
     public void shouldSendAnEventWithTheFormNameAsTheOnlyParameterWhenTheFieldsWeCareAboutAreEmpty() throws Exception {
         CommcareForm form = form().withName("FormName").withContent(new CommCareFormContent(asList("something"), asList("something-else"))).build();
-        when(formExportService.fetchForms()).thenReturn(asList(form));
+        when(formImportService.fetchForms()).thenReturn(asList(form));
 
         listener.fetchFromServer();
 
@@ -52,7 +52,7 @@ public class CommCareListenerTest {
     public void shouldSendAnEventWithFormNameAndFormDataAsParametersWhichAreTheFieldsSpecifiedInTheFormDefinition() throws Exception {
         CommCareFormContent content = new CommCareFormContent(asList("form.Patient_Name"), asList("Abu"));
         CommcareForm form = form().withName("FormName").withMapping("form.Patient_Name", "Patient").withContent(content).build();
-        when(formExportService.fetchForms()).thenReturn(asList(form));
+        when(formImportService.fetchForms()).thenReturn(asList(form));
 
         listener.fetchFromServer();
 
@@ -66,7 +66,7 @@ public class CommCareListenerTest {
         CommcareForm form = form().withName("FormName").withContent(content)
                 .withMapping("form.Patient_Name", "Patient")
                 .withMapping("form.Patient_Age", "Age").build();
-        when(formExportService.fetchForms()).thenReturn(asList(form));
+        when(formImportService.fetchForms()).thenReturn(asList(form));
 
         listener.fetchFromServer();
 
@@ -81,7 +81,7 @@ public class CommCareListenerTest {
         CommCareFormContent content2 = new CommCareFormContent(asList("form.MermaidName"), asList("Ariel"));
 
         CommcareForm form2 = form().withName("MermaidForm").withMapping("form.MermaidName", "Mermaid").withContent(content2).build();
-        when(formExportService.fetchForms()).thenReturn(asList(form1, form2));
+        when(formImportService.fetchForms()).thenReturn(asList(form1, form2));
 
         listener.fetchFromServer();
 
