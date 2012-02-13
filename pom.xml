@@ -9,7 +9,7 @@
     <name>Drishti</name>
 
     <modules>
-      <module>commcare-listener</module>
+      <module>commcare-api</module>
       <module>drishti-mother-child</module>
       <module>drishti-web</module>
     </modules>

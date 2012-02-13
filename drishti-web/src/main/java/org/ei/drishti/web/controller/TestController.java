@@ -1,7 +1,7 @@
 package org.ei.drishti.web.controller;
 
-import org.ei.commcare.listener.contract.CommCareFormDefinitions;
-import org.ei.commcare.listener.util.CommCareListenerProperties;
+import org.ei.commcare.api.contract.CommCareFormDefinitions;
+import org.ei.commcare.api.util.CommCareListenerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
