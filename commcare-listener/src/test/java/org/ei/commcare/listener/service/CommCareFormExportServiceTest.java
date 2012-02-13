@@ -166,7 +166,7 @@ public class CommCareFormExportServiceTest {
             headers.add(new BasicHeader("X-CommCareHQ-Export-Token", newTokenValue));
         }
 
-        return new CommCareHttpResponse(statusCode, headers.toArray(new Header[0]), IOUtils.toString(getClass().getResourceAsStream(jsonDump)));
+        return new CommCareHttpResponse(statusCode, headers.toArray(new Header[0]), IOUtils.toByteArray(getClass().getResourceAsStream(jsonDump)));
     }
 
     private void assertForm(CommcareForm actualForm, String[] expectedValuesOfForm, String formName) {

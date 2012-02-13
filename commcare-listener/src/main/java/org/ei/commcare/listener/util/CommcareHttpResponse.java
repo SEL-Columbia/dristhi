@@ -5,20 +5,16 @@ import org.apache.http.Header;
 public class CommCareHttpResponse {
     private final int statusCode;
     private final Header[] headers;
-    private final String responseContent;
+    private final byte[] responseContent;
 
-    public CommCareHttpResponse(int statusCode, Header[] headers, String content) {
+    public CommCareHttpResponse(int statusCode, Header[] headers, byte[] content) {
         this.statusCode = statusCode;
         this.headers = headers;
         this.responseContent = content;
     }
 
-    public String content() {
-        return responseContent;
-    }
-
-    public String tokenForNextExport() {
-        return header("X-CommCareHQ-Export-Token");
+    public String contentAsString() {
+        return new String(responseContent);
     }
 
     private String header(String key) {
@@ -30,12 +26,16 @@ public class CommCareHttpResponse {
         return "";
     }
 
-    public boolean isValid() {
+    public String tokenForNextExport() {
+        return header("X-CommCareHQ-Export-Token");
+    }
+
+    public boolean hasValidExportToken() {
         return statusCode == 200 && !tokenForNextExport().isEmpty();
     }
 
     @Override
     public String toString() {
-        return "Status code: " + statusCode + ", Token for next export: " + tokenForNextExport() + ", Content: " + content();
+        return "Status code: " + statusCode + ", Token for next export: " + tokenForNextExport() + ", Content: " + contentAsString();
     }
 }

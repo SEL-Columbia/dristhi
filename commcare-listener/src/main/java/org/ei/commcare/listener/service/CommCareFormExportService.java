@@ -45,7 +45,7 @@ public class CommCareFormExportService {
             String previousToken = allExportTokens.findByNameSpace(formDefinition.nameSpace()).value();
             CommCareHttpResponse responseFromCommCareHQ = httpClient.get(formDefinition.url(previousToken), formDefinitions.userName(), formDefinitions.password());
 
-            if (responseFromCommCareHQ.isValid()) {
+            if (responseFromCommCareHQ.hasValidExportToken()) {
                 allExportTokens.updateToken(formDefinition.nameSpace(), responseFromCommCareHQ.tokenForNextExport());
                 formWithResponses.add(new CommCareFormWithResponse(formDefinition, responseFromCommCareHQ));
             }
@@ -60,11 +60,11 @@ public class CommCareFormExportService {
             CommCareFormDefinition definition = formWithResponse.formDefinition;
             CommCareHttpResponse response = formWithResponse.response;
 
-            CommCareExportedForms exportedFormData = null;
+            CommCareExportedForms exportedFormData;
             try {
-                exportedFormData = new Gson().fromJson(response.content(), CommCareExportedForms.class);
+                exportedFormData = new Gson().fromJson(response.contentAsString(), CommCareExportedForms.class);
             } catch (JsonParseException e) {
-                throw new RuntimeException(response.content() + e);
+                throw new RuntimeException(response.contentAsString() + e);
             }
             for (List<String> formData : exportedFormData.formContents()) {
                 forms.add(new CommcareForm(definition, new CommCareFormContent(exportedFormData.headers(), formData)));

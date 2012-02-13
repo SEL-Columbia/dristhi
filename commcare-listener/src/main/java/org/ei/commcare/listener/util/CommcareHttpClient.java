@@ -31,9 +31,9 @@ public class CommCareHttpClient {
 
         HttpEntity entity = response.getEntity();
         if (entity != null) {
-            return new CommCareHttpResponse(response.getStatusLine().getStatusCode(), headers, IOUtils.toString(entity.getContent()));
+            return new CommCareHttpResponse(response.getStatusLine().getStatusCode(), headers, IOUtils.toByteArray(entity.getContent()));
         }
 
-        return new CommCareHttpResponse(response.getStatusLine().getStatusCode(), headers, "");
+        return new CommCareHttpResponse(response.getStatusLine().getStatusCode(), headers, new byte[0]);
     }
 }
