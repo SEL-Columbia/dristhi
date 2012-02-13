@@ -1,24 +1,24 @@
 {
-    "#.#.#export_tag.#": {
+    "#|#export_tag|#": {
         "headers": [
             "id",
             ""
         ],
         "rows": [
             [
-                "0.0.0",
+                "0|0|0",
                 "domain"
             ],
             [
-                "0.0.1",
+                "0|0|1",
                 "xmlns"
             ]
         ]
     },
-    "#.#": {
+    "#": {
         "headers": [
-            "header.col.1",
-            "header.col.2"
+            "header|col|1",
+            "header|col|2"
         ],
         "rows": [
             [

@@ -15,7 +15,7 @@
   <import resource="classpath:applicationPlatformCommon.xml"/>
 
   <bean id="commCareDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
-    <constructor-arg value="commcare-data" />
+    <constructor-arg value="commcare" />
     <constructor-arg ref="couchDbInstance" />
   </bean>
 </beans>

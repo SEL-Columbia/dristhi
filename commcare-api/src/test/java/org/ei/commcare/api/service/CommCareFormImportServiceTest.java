@@ -173,8 +173,8 @@ public class CommCareFormImportServiceTest {
         assertEquals(actualForm.definition().name(), formName);
 
         HashMap<String, String> mapping = new HashMap<String, String>();
-        mapping.put("header.col.1", "FirstValue");
-        mapping.put("header.col.2", "SecondValue");
+        mapping.put("header|col|1", "FirstValue");
+        mapping.put("header|col|2", "SecondValue");
         Map<String,String> data = actualForm.content().getValuesOfFieldsSpecifiedByPath(mapping);
 
         assertEquals(2, data.size());

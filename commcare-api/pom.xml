@@ -20,7 +20,7 @@
         <motech.version>0.8-SNAPSHOT</motech.version>
         <db.server>localhost</db.server>
         <db.port>5984</db.port>
-        <db.name>commcare-listener</db.name>
+        <db.name>commcare</db.name>
     </properties>
 
     <build>

@@ -11,9 +11,9 @@
                 }
             },
             "mappings": {
-                "form.ThayiCardNo" : "thaayiCardNumber",
-                "form.PrgnantName" : "name",
-                "form.PregnantAg" : "age"
+                "form|ThayiCardNo" : "thaayiCardNumber",
+                "form|PrgnantName" : "name",
+                "form|PregnantAg" : "age"
             }
         },
         {
@@ -25,8 +25,8 @@
                 }
             },
             "mappings": {
-                "form.Child_Name" : "name",
-                "form.meta.username" : "userName"
+                "form|Child_Name" : "name",
+                "form|meta.username" : "userName"
             }
         }
     ]

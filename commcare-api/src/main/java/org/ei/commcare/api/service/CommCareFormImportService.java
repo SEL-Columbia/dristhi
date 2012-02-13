@@ -85,7 +85,7 @@ public class CommCareFormImportService {
     }
 
     private static class CommCareExportedForms {
-        @SerializedName("#.#") private CommCareExportedHeadersAndContent content;
+        @SerializedName("#") private CommCareExportedHeadersAndContent content;
         private static class CommCareExportedHeadersAndContent {
             private List<String> headers;
             private List<List<String>> rows;

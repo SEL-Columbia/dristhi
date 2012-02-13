@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ApplicationStartupListener implements ApplicationListener<ContextRefreshedEvent> {
+    public static final String APPLICATION_ID = "org.springframework.web.context.WebApplicationContext:/drishti/drishti";
     private final CommCareScheduler scheduler;
 
     @Autowired
@@ -17,6 +18,8 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        scheduler.startTimedScheduler();
+        if (APPLICATION_ID.equals(contextRefreshedEvent.getApplicationContext().getId())) {
+            scheduler.startTimedScheduler();
+        }
     }
 }
