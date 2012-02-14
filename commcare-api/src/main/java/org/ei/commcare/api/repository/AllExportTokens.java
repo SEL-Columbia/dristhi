@@ -15,7 +15,6 @@ public class AllExportTokens extends MotechBaseRepository<ExportToken> {
     @Autowired
     public AllExportTokens(@Qualifier("commCareDatabaseConnector") CouchDbConnector db) {
         super(ExportToken.class, db);
-        initStandardDesignDocument();
     }
 
     @GenerateView

@@ -15,7 +15,6 @@ public class AllMothers extends MotechBaseRepository<Mother> {
     @Autowired
     public AllMothers(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
         super(Mother.class, db);
-        initStandardDesignDocument();
     }
 
     public void register(Mother mother) {
