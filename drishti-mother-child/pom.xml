@@ -66,8 +66,38 @@
                 <version>1.6</version>
                 <executions>
                     <execution>
-                        <id>setup-quartz-schema</id>
-                        <phase>pre-integration-test</phase>
+                        <id>setup-quartz-schema-before-test</id>
+                        <phase>process-test-classes</phase>
+                        <configuration>
+                            <target>
+                                <echo message="Quartz schema loading: START"/>
+                                <path id="dependencies">
+                                    <fileset file="${project.basedir}/../build/lib/mysql-connector-java-5.1.13.jar"/>
+                                </path>
+                                <sql driver="${mysql.driver}"
+                                     url="jdbc:mysql://${mysql.server}:${mysql.port}/${mysql.db}?autoReconnect=true"
+                                     userid="${mysql.user}"
+                                     classpathref="dependencies"
+                                     password="${mysql.password}">
+                                    drop database ${mysql.db};
+                                    create database ${mysql.db};
+                                </sql>
+                                <sql driver="${mysql.driver}"
+                                     url="jdbc:mysql://${mysql.server}:${mysql.port}/${mysql.db}?autoReconnect=true"
+                                     userid="${mysql.user}"
+                                     classpathref="dependencies"
+                                     password="${mysql.password}"
+                                     src="${project.basedir}/../build/sql/tables_mysql_innodb.sql"/>
+                                <echo message="Quartz schema loading: END"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>setup-quartz-schema-after-test</id>
+                        <phase>prepare-package</phase>
                         <configuration>
                             <target>
                                 <echo message="Quartz schema loading: START"/>

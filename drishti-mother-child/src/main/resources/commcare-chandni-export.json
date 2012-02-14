@@ -26,7 +26,7 @@
             },
             "mappings": {
                 "form|Child_Name" : "name",
-                "form|meta.username" : "userName"
+                "form|meta|username" : "userName"
             }
         }
     ]

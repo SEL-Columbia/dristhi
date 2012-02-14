@@ -31,9 +31,9 @@ public class CommCareScheduler {
     public void startTimedScheduler() {
         logger.info("Scheduling timer ...");
 
-        Date startTime = DateTime.now().plusSeconds(10).toDate();
+        Date startTime = DateTime.now().plusSeconds(60).toDate();
         MotechEvent event = new MotechEvent(SUBJECT, new HashMap<String, Object>());
-        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, 10 * MILLIS_PER_SECOND);
+        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, 60 * MILLIS_PER_SECOND);
 
         service.safeScheduleRepeatingJob(job);
     }
