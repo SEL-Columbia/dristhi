@@ -35,7 +35,9 @@ public class CommCareFormImportService {
     }
 
     public List<CommcareForm> fetchForms() throws IOException {
-        return processAllForms(fetchAllForms());
+        List<CommcareForm> forms = processAllForms(fetchAllForms());
+        logger.fine("Fetched " + forms.size() + " forms.");
+        return forms;
     }
 
     private List<CommCareFormWithResponse> fetchAllForms() throws IOException {

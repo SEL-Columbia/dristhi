@@ -11,6 +11,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Component
@@ -23,17 +24,24 @@ public class CommCareHttpClient {
     }
 
     public CommCareHttpResponse get(String url, String userName, String password) throws IOException {
+        logger.finer("URL: " + url + " with user: " + userName);
+
         httpClient.getCredentialsProvider().setCredentials(
                 new AuthScope("www.commcarehq.org", 443, "DJANGO", "digest"),
                 new UsernamePasswordCredentials(userName, password));
         HttpResponse response = httpClient.execute(new HttpGet(url));
         Header[] headers = response.getAllHeaders();
 
+        CommCareHttpResponse commCareHttpResponse = new CommCareHttpResponse(response.getStatusLine().getStatusCode(), headers, new byte[0]);
         HttpEntity entity = response.getEntity();
         if (entity != null) {
-            return new CommCareHttpResponse(response.getStatusLine().getStatusCode(), headers, IOUtils.toByteArray(entity.getContent()));
+            commCareHttpResponse = new CommCareHttpResponse(response.getStatusLine().getStatusCode(), headers, IOUtils.toByteArray(entity.getContent()));
         }
 
-        return new CommCareHttpResponse(response.getStatusLine().getStatusCode(), headers, new byte[0]);
+        if (logger.isLoggable(Level.FINER)) {
+            logger.finer("Got response for URL: " + url + ": " + commCareHttpResponse);
+        }
+
+        return commCareHttpResponse;
     }
 }
