@@ -24,7 +24,7 @@ public class CommCareHttpClient {
     }
 
     public CommCareHttpResponse get(String url, String userName, String password) throws IOException {
-        logger.finer("URL: " + url + " with user: " + userName);
+        logger.finer("Fetching URL: " + url + " with username: " + userName);
 
         httpClient.getCredentialsProvider().setCredentials(
                 new AuthScope("www.commcarehq.org", 443, "DJANGO", "digest"),

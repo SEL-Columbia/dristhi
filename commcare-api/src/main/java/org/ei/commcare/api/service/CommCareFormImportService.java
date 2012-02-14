@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import org.ei.commcare.api.contract.CommCareFormDefinition;
 import org.ei.commcare.api.contract.CommCareFormDefinitions;
 import org.ei.commcare.api.domain.CommCareFormContent;
-import org.ei.commcare.api.domain.CommcareForm;
+import org.ei.commcare.api.domain.CommcareFormInstance;
 import org.ei.commcare.api.repository.AllExportTokens;
 import org.ei.commcare.api.util.CommCareHttpClient;
 import org.ei.commcare.api.util.CommCareHttpResponse;
@@ -34,10 +34,10 @@ public class CommCareFormImportService {
         this.formDefinitions = properties.definitions();
     }
 
-    public List<CommcareForm> fetchForms() throws IOException {
-        List<CommcareForm> forms = processAllForms(fetchAllForms());
-        logger.fine("Fetched " + forms.size() + " forms.");
-        return forms;
+    public List<CommcareFormInstance> fetchForms() throws IOException {
+        List<CommcareFormInstance> formInstances = processAllForms(fetchAllForms());
+        logger.fine("Fetched " + formInstances.size() + " formInstances.");
+        return formInstances;
     }
 
     private List<CommCareFormWithResponse> fetchAllForms() throws IOException {
@@ -56,8 +56,8 @@ public class CommCareFormImportService {
         return formWithResponses;
     }
 
-    private List<CommcareForm> processAllForms(List<CommCareFormWithResponse> careFormWithResponses) {
-        List<CommcareForm> forms = new ArrayList<CommcareForm>();
+    private List<CommcareFormInstance> processAllForms(List<CommCareFormWithResponse> careFormWithResponses) {
+        List<CommcareFormInstance> formInstances = new ArrayList<CommcareFormInstance>();
         for (CommCareFormWithResponse formWithResponse : careFormWithResponses) {
             CommCareFormDefinition definition = formWithResponse.formDefinition;
             CommCareHttpResponse response = formWithResponse.response;
@@ -69,11 +69,11 @@ public class CommCareFormImportService {
                 throw new RuntimeException(response.contentAsString() + e);
             }
             for (List<String> formData : exportedFormData.formContents()) {
-                forms.add(new CommcareForm(definition, new CommCareFormContent(exportedFormData.headers(), formData)));
+                formInstances.add(new CommcareFormInstance(definition, new CommCareFormContent(exportedFormData.headers(), formData)));
             }
         }
 
-        return forms;
+        return formInstances;
     }
 
     private class CommCareFormWithResponse {

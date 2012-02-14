@@ -3,7 +3,7 @@ package org.ei.commcare.listener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.ei.commcare.api.domain.CommCareFormContent;
-import org.ei.commcare.api.domain.CommcareForm;
+import org.ei.commcare.api.domain.CommcareFormInstance;
 import org.ei.commcare.listener.event.CommCareFormEvent;
 import org.ei.commcare.api.service.CommCareFormImportService;
 import org.hamcrest.Description;
@@ -40,8 +40,8 @@ public class CommCareListenerTest {
 
     @Test
     public void shouldSendAnEventWithTheFormNameAsTheOnlyParameterWhenTheFieldsWeCareAboutAreEmpty() throws Exception {
-        CommcareForm form = form().withName("FormName").withContent(new CommCareFormContent(asList("something"), asList("something-else"))).build();
-        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(form));
+        CommcareFormInstance formInstance = form().withName("FormName").withContent(new CommCareFormContent(asList("something"), asList("something-else"))).build();
+        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(formInstance));
 
         listener.fetchFromServer();
 
@@ -50,9 +50,9 @@ public class CommCareListenerTest {
 
     @Test
     public void shouldSendAnEventWithFormNameAndFormDataAsParametersWhichAreTheFieldsSpecifiedInTheFormDefinition() throws Exception {
-        CommCareFormContent content = new CommCareFormContent(asList("form.Patient_Name"), asList("Abu"));
-        CommcareForm form = form().withName("FormName").withMapping("form.Patient_Name", "Patient").withContent(content).build();
-        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(form));
+        CommCareFormContent content = new CommCareFormContent(asList("formInstance.Patient_Name"), asList("Abu"));
+        CommcareFormInstance formInstance = form().withName("FormName").withMapping("formInstance.Patient_Name", "Patient").withContent(content).build();
+        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(formInstance));
 
         listener.fetchFromServer();
 
@@ -61,12 +61,12 @@ public class CommCareListenerTest {
 
     @Test
     public void shouldSendAnEventWithMultipleFieldsInFormDataWhenThereAreMultipleFieldsSpecified() throws Exception {
-        CommCareFormContent content = new CommCareFormContent(asList("form.Patient_Name", "form.Patient_Age"), asList("Abu", "23"));
+        CommCareFormContent content = new CommCareFormContent(asList("formInstance.Patient_Name", "formInstance.Patient_Age"), asList("Abu", "23"));
 
-        CommcareForm form = form().withName("FormName").withContent(content)
-                .withMapping("form.Patient_Name", "Patient")
-                .withMapping("form.Patient_Age", "Age").build();
-        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(form));
+        CommcareFormInstance formInstance = form().withName("FormName").withContent(content)
+                .withMapping("formInstance.Patient_Name", "Patient")
+                .withMapping("formInstance.Patient_Age", "Age").build();
+        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(formInstance));
 
         listener.fetchFromServer();
 
@@ -76,12 +76,12 @@ public class CommCareListenerTest {
     @Test
     public void shouldSendOneEventForEachFormFound() throws Exception {
         CommCareFormContent content1 = new CommCareFormContent(asList("form.Patient_Name"), asList("Abu"));
-        CommcareForm form1 = form().withName("PatientForm").withMapping("form.Patient_Name", "Patient").withContent(content1).build();
+        CommcareFormInstance formInstance1 = form().withName("PatientForm").withMapping("form.Patient_Name", "Patient").withContent(content1).build();
 
         CommCareFormContent content2 = new CommCareFormContent(asList("form.MermaidName"), asList("Ariel"));
 
-        CommcareForm form2 = form().withName("MermaidForm").withMapping("form.MermaidName", "Mermaid").withContent(content2).build();
-        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(form1, form2));
+        CommcareFormInstance formInstance2 = form().withName("MermaidForm").withMapping("form.MermaidName", "Mermaid").withContent(content2).build();
+        PowerMockito.when(formImportService.fetchForms()).thenReturn(asList(formInstance1, formInstance2));
 
         listener.fetchFromServer();
 
