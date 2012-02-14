@@ -87,16 +87,19 @@ Description of the process
           "#" : {
             "headers" : [
               "form|path|to|field",
-              "form|path|to|another|field"
+              "form|path|to|another|field",
+              "form|path|to|field|which|is|not|mapped"
             ],
             "rows" : [
               [
                 "Value of Field 1 in form 1",
-                "Value of Field 2 in form 1"
+                "Value of Field 2 in form 1",
+                "Value of Field 3 in form 1, not mapped"
               ],
               [
                 "Value of Field 1 in form 2",
-                "Value of Field 2 in form 2"
+                "Value of Field 2 in form 2",
+                "Value of Field 3 in form 2, not mapped"
               ]
             ]
         }
@@ -111,4 +114,6 @@ Description of the process
 
           "FieldInOutput" => "Value of Field 1 in form 1",
           "AnotherFieldInOutput" => "Value of Field 2 in form 1"
+
+   Notice that it does not have the third (unmapped) field.
 

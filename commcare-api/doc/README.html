@@ -90,16 +90,19 @@
    &quot;#&quot; : {
      &quot;headers&quot; : [
        &quot;form|path|to|field&quot;,
-       &quot;form|path|to|another|field&quot;
+       &quot;form|path|to|another|field&quot;,
+       &quot;form|path|to|field|which|is|not|mapped&quot;
      ],
      &quot;rows&quot; : [
        [
          &quot;Value of Field 1 in form 1&quot;,
-         &quot;Value of Field 2 in form 1&quot;
+         &quot;Value of Field 2 in form 1&quot;,
+         &quot;Value of Field 3 in form 1, not mapped&quot;
        ],
        [
          &quot;Value of Field 1 in form 2&quot;,
-         &quot;Value of Field 2 in form 2&quot;
+         &quot;Value of Field 2 in form 2&quot;,
+         &quot;Value of Field 3 in form 2, not mapped&quot;
        ]
      ]
  }</code></pre>
@@ -114,6 +117,8 @@
 
 <pre><code>   &quot;FieldInOutput&quot; =&gt; &quot;Value of Field 1 in form 1&quot;,
    &quot;AnotherFieldInOutput&quot; =&gt; &quot;Value of Field 2 in form 1&quot;</code></pre>
+
+<p>Notice that it does not have the third (unmapped) field.</p>
 </li>
 </ol>
 </body></html>
