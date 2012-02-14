@@ -11,8 +11,8 @@
                 }
             },
             "mappings": {
-                "form.path.to.field" : "FieldInOutput",
-                "form.path.to.another.field" : "AnotherFieldInOutput"
+                "form|path|to|field" : "FieldInOutput",
+                "form|path|to|another|field" : "AnotherFieldInOutput"
             }
         },
         {
@@ -24,8 +24,8 @@
                 }
             },
             "mappings": {
-                "form.path.to.field" : "FieldInOutput",
-                "form.path.to.another.field" : "AnotherFieldInOutput"
+                "form|path|to|field" : "FieldInOutput",
+                "form|path|to|another|field" : "AnotherFieldInOutput"
             }
         }
     ]

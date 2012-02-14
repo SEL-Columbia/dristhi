@@ -172,13 +172,10 @@ public class CommCareFormImportServiceTest {
     private void assertForm(CommcareFormInstance actualFormInstance, String[] expectedValuesOfForm, String formName) {
         assertEquals(actualFormInstance.definition().name(), formName);
 
-        HashMap<String, String> mapping = new HashMap<String, String>();
-        mapping.put("header|col|1", "FirstValue");
-        mapping.put("header|col|2", "SecondValue");
-        Map<String,String> data = actualFormInstance.content().getValuesOfFieldsSpecifiedByPath(mapping);
+        Map<String,String> data = actualFormInstance.content();
 
         assertEquals(2, data.size());
-        assertEquals(expectedValuesOfForm[0], data.get("FirstValue"));
-        assertEquals(expectedValuesOfForm[1], data.get("SecondValue"));
+        assertThat(data.get("FieldInOutput"), is(expectedValuesOfForm[0]));
+        assertThat(data.get("AnotherFieldInOutput"), is(expectedValuesOfForm[1]));
     }
 }

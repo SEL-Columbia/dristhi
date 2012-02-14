@@ -25,7 +25,7 @@ public class CommCareListener {
         List<CommcareFormInstance> commcareFormInstances = this.formImportService.fetchForms();
 
         for (CommcareFormInstance formInstance : commcareFormInstances) {
-            Map<String, String> fieldsWeCareAbout = formInstance.content().getValuesOfFieldsSpecifiedByPath(formInstance.definition().mappings());
+            Map<String, String> fieldsWeCareAbout = formInstance.content();
             outboundEventGateway.sendEventMessage(new CommCareFormEvent(formInstance, fieldsWeCareAbout).toMotechEvent());
         }
     }

@@ -2,6 +2,8 @@ package org.ei.commcare.api.domain;
 
 import org.ei.commcare.api.contract.CommCareFormDefinition;
 
+import java.util.Map;
+
 public class CommcareFormInstance {
     private CommCareFormDefinition formDefinition;
     private CommCareFormContent content;
@@ -15,7 +17,7 @@ public class CommcareFormInstance {
         return formDefinition;
     }
 
-    public CommCareFormContent content() {
-        return content;
+    public Map<String, String> content() {
+        return content.getValuesOfFieldsSpecifiedByPath(formDefinition.mappings());
     }
 }
