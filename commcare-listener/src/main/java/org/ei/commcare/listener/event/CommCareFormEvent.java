@@ -13,17 +13,17 @@ public class CommCareFormEvent {
     public static final String FORM_DATA_PARAMETER = "FormData";
 
     private final CommcareFormInstance formInstance;
-    private final Map<String, String> fieldsInXMLWeCareAbout;
+    private final Map<String, String> fieldsWeCareAbout;
 
-    public CommCareFormEvent(CommcareFormInstance formInstance, Map<String, String> fieldsInXMLWeCareAbout) {
+    public CommCareFormEvent(CommcareFormInstance formInstance, Map<String, String> fieldsWeCareAbout) {
         this.formInstance = formInstance;
-        this.fieldsInXMLWeCareAbout = fieldsInXMLWeCareAbout;
+        this.fieldsWeCareAbout = fieldsWeCareAbout;
     }
 
     public MotechEvent toMotechEvent() {
         HashMap<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(FORM_NAME_PARAMETER, formInstance.definition().name());
-        parameters.put(FORM_DATA_PARAMETER, new Gson().toJson(fieldsInXMLWeCareAbout));
+        parameters.put(FORM_DATA_PARAMETER, new Gson().toJson(fieldsWeCareAbout));
         return new MotechEvent(EVENT_SUBJECT, parameters);
     }
 }
