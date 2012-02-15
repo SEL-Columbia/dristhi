@@ -23,10 +23,10 @@ public class ScheduledAlertListener {
 
     @MotechListener(subjects = {EventSubject.MILESTONE_ALERT})
     public void handleAlert(MotechEvent event) {
-        String thaayiCardNumber = event.getParameters().get(EventDataKey.EXTERNAL_ID).toString();
-        Mother mother = mothers.findByThaayiCardNumber(thaayiCardNumber);
+        String caseId = event.getParameters().get(EventDataKey.EXTERNAL_ID).toString();
+        Mother mother = mothers.findByCaseId(caseId);
 
         System.out.println("SMS: Go visit " + mother);
-//        smsService.sendSMS("9590377135", event.getParameters().toString());
+        // smsService.sendSMS("9590377135", event.getParameters().toString());
     }
 }

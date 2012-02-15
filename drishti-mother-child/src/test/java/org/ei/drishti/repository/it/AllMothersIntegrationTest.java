@@ -27,7 +27,7 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldRegisterAMother() {
-        Mother mother = new Mother("THAAYI-CARD-1", "Theresa");
+        Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa");
 
         mothers.register(mother);
 
@@ -35,19 +35,19 @@ public class AllMothersIntegrationTest {
         assertThat(allTheMothers.size(), is(1));
 
         Mother motherFromDB = allTheMothers.get(0);
-        assertThat(motherFromDB, is(new Mother("THAAYI-CARD-1", "Theresa")));
+        assertThat(motherFromDB, is(new Mother("CASE-1", "THAAYI-CARD-1", "Theresa")));
         assertThat(motherFromDB.name(), is("Theresa"));
     }
 
     @Test
     public void shouldFindARegisteredMotherByThaayiCardNumber() {
-        String cardNumber = "THAAYI-CARD-1";
-        Mother motherToRegister = new Mother(cardNumber, "Theresa");
+        String caseId = "CASE-1";
+        Mother motherToRegister = new Mother(caseId, "THAAYI-CARD-1", "Theresa");
         mothers.register(motherToRegister);
 
-        Mother mother = mothers.findByThaayiCardNumber(cardNumber);
+        Mother mother = mothers.findByCaseId(caseId);
 
-        assertThat(mother, is(new Mother(cardNumber, "Theresa")));
+        assertThat(mother, is(new Mother(caseId, "THAAYI-CARD-1", "Theresa")));
         assertThat(mother.name(), is("Theresa"));
     }
 }

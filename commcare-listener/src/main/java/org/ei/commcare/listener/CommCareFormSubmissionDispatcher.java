@@ -8,6 +8,7 @@ import org.motechproject.server.event.annotations.MotechListener;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.logging.Logger;
 
 import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_DATA_PARAMETER;
 import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_NAME_PARAMETER;
@@ -15,6 +16,7 @@ import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_NAME_PARAMET
 @Component
 public class CommCareFormSubmissionDispatcher {
     private Object routeEventsHere;
+    private static Logger logger = Logger.getLogger(CommCareFormSubmissionDispatcher.class.toString());
 
     public void registerForDispatch(Object dispatchToMethodsInThisObject) {
         this.routeEventsHere = dispatchToMethodsInThisObject;
@@ -34,14 +36,17 @@ public class CommCareFormSubmissionDispatcher {
     private void dispatch(String methodName, String parameterJson) throws Exception {
         Method method = findMethodWhichAcceptsOneParameter(methodName);
         if (method == null) {
+            logger.warning("Cannot dispatch: Unable to find method: " + methodName + " in " + routeEventsHere.getClass());
             return;
         }
 
         Object parameter = getParameterFromData(method, parameterJson);
         if (parameter == null) {
+            logger.warning("Cannot dispatch: Unable to convert JSON: " + parameterJson + " to object, to call method " + method);
             return;
         }
 
+        logger.fine("Dispatching " + parameter + " to method: " + method + " in object: " + routeEventsHere);
         method.invoke(routeEventsHere, parameter);
     }
 

@@ -3,14 +3,20 @@ package org.ei.drishti.contract;
 import java.text.MessageFormat;
 
 public class MotherRegistrationInformation {
+    private String caseId;
     private int age;
     private String name;
     private String thaayiCardNumber;
 
-    public MotherRegistrationInformation(String thaayiCardNumber, String name) {
+    public MotherRegistrationInformation(String caseId, String thaayiCardNumber, String name) {
+        this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
         this.age = 20;
+    }
+
+    public String caseId() {
+        return caseId;
     }
 
     public String thaayiCardNumber() {

@@ -3,6 +3,21 @@
     "password": "eb8hec6vin5bogs9",
     "forms": [
         {
+            "name": "registerMother",
+            "url": {
+                "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/5EDBB181-77CF-4012-9A75-D44E15B748F5"
+                }
+            },
+            "mappings": {
+                "form|case|case_id" : "caseId",
+                "form|ancm_name" : "name",
+                "form|anm_phone" : "ancPhoneNumber",
+                "form|card_no" : "thaayiCardNumber"
+            }
+        },
+        {
             "name": "ancCare",
             "url": {
                 "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
@@ -11,15 +26,14 @@
                 }
             },
             "mappings": {
-                "form|case|case_id" : "caseid",
-                "form|anc|tt_1" : "tetanus1",
-                "form|anc|tt_2" : "tetanus2",
-                "form|anc|ifa1" : "iron1",
-                "form|anc|ifa2" : "iron2",
-                "form|anc|ifa3" : "iron3"
+                "form|case|case_id" : "caseId",
+                "form|anc|tt_1" : "tetanus1Date",
+                "form|anc|tt_2" : "tetanus2Date",
+                "form|anc|ifa1" : "ironFolicAcidTablet1Date",
+                "form|anc|ifa2" : "ironFolicAcidTablet2Date",
+                "form|anc|ifa3" : "ironFolicAcidTablet3Date"
             }
         },
-
         {
             "name": "registerChild",
             "url": {

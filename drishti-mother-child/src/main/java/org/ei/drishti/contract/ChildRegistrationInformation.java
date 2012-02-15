@@ -1,6 +1,6 @@
 package org.ei.drishti.contract;
 
-public class ChildRegistrationRequest {
+public class ChildRegistrationInformation {
     private String name;
     private String userName;
 

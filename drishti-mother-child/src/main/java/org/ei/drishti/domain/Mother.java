@@ -9,6 +9,8 @@ import java.text.MessageFormat;
 @TypeDiscriminator("doc.type === 'Mother'")
 public class Mother extends MotechBaseDataObject {
     @JsonProperty
+    private String caseId;
+    @JsonProperty
     private String thaayiCardNumber;
     @JsonProperty
     private String name;
@@ -16,13 +18,10 @@ public class Mother extends MotechBaseDataObject {
     private Mother() {
     }
 
-    public Mother(String thaayiCardNumber, String name) {
+    public Mother(String caseId, String thaayiCardNumber, String name) {
+        this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
-    }
-
-    public String thaayiCardNumber() {
-        throw new RuntimeException("Unsupported.");
     }
 
     public String name() {
@@ -41,17 +40,17 @@ public class Mother extends MotechBaseDataObject {
 
         Mother mother = (Mother) o;
 
-        if (!thaayiCardNumber.equals(mother.thaayiCardNumber)) return false;
+        if (!caseId.equals(mother.caseId)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return thaayiCardNumber.hashCode();
+        return caseId.hashCode();
     }
 
-    private String getThaayiCardNumber() {
-        return thaayiCardNumber;
+    private String getCaseId() {
+        return caseId;
     }
 }

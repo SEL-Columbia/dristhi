@@ -1,11 +1,10 @@
 package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.CommCareFormSubmissionDispatcher;
-import org.ei.drishti.contract.ANCRequest;
-import org.ei.drishti.contract.ChildRegistrationRequest;
+import org.ei.drishti.contract.AnteNatalCareInformation;
+import org.ei.drishti.contract.ChildRegistrationInformation;
 import org.ei.drishti.contract.MotherRegistrationInformation;
 import org.ei.drishti.service.MotherService;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,15 +19,16 @@ public class DrishtiController {
     }
 
     public void registerMother(MotherRegistrationInformation motherInformation) {
+        System.out.println("Mother registration: " + motherInformation);
         motherService.enroll(motherInformation);
-        System.out.println("Mother registered: " + motherInformation + ". Time now is: " + DateTime.now());
     }
 
-    public void registerChild(ChildRegistrationRequest request) {
-        System.out.println("Child registration: " + request);
+    public void ancCare(AnteNatalCareInformation ancInformation) {
+        System.out.println("ANC care: " + ancInformation);
+        motherService.provideANCCare(ancInformation);
     }
 
-    public void ancCare(ANCRequest request) {
-        System.out.println("ANC register: " + request);
+    public void registerChild(ChildRegistrationInformation childInformation) {
+        System.out.println("Child registration: " + childInformation);
     }
 }

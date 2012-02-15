@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.contract.MotherRegistrationInformation;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
@@ -22,12 +23,15 @@ public class MotherService {
         this.trackingService = trackingService;
     }
 
-    public void enroll(MotherRegistrationInformation motherRegistrationInformation) {
-        Mother mother = new Mother(motherRegistrationInformation.thaayiCardNumber(), motherRegistrationInformation.name());
+    public void enroll(MotherRegistrationInformation info) {
+        Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name());
         allMothers.register(mother);
 
         DateTime now = DateUtil.now();
         Time preferredAlertTime = new Time(now.hourOfDay().get(), now.minuteOfHour().get() + 2);
-        trackingService.enroll(new EnrollmentRequest(motherRegistrationInformation.thaayiCardNumber(), "IPTI Schedule", preferredAlertTime, DateUtil.today()));
+        trackingService.enroll(new EnrollmentRequest(info.caseId(), "IPTI Schedule", preferredAlertTime, DateUtil.today()));
+    }
+
+    public void provideANCCare(AnteNatalCareInformation ancInformation) {
     }
 }

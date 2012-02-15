@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.contract.MotherRegistrationInformation;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
@@ -32,29 +33,29 @@ public class MotherServiceTest {
     public void shouldSaveAMothersInformationDuringEnrollment() {
         String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        MotherRegistrationInformation motherInfo = new MotherRegistrationInformation(thaayiCardNumber, motherName);
+        MotherRegistrationInformation motherInfo = new MotherRegistrationInformation("CASE-1", thaayiCardNumber, motherName);
 
         service.enroll(motherInfo);
 
-        verify(mothers).register(new Mother(thaayiCardNumber, motherName));
+        verify(mothers).register(new Mother("CASE-1", thaayiCardNumber, motherName));
     }
 
     @Test
     public void shouldEnrollAMotherIntoDefaultScheduleDuringEnrollment() {
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        MotherRegistrationInformation motherInfo = new MotherRegistrationInformation(thaayiCardNumber, motherName);
+        MotherRegistrationInformation motherInfo = new MotherRegistrationInformation("CASE-1", thaayiCardNumber, motherName);
 
         service.enroll(motherInfo);
 
-        verify(scheduleTrackingService).enroll(enrollmentFor(thaayiCardNumber));
+        verify(scheduleTrackingService).enroll(enrollmentFor("CASE-1"));
     }
 
-    private EnrollmentRequest enrollmentFor(final String thaayiCardNumber) {
+    private EnrollmentRequest enrollmentFor(final String caseId) {
         return argThat(new ArgumentMatcher<EnrollmentRequest>() {
             @Override
             public boolean matches(Object o) {
-                return ((EnrollmentRequest) o).getExternalId().equals(thaayiCardNumber);
+                return ((EnrollmentRequest) o).getExternalId().equals(caseId);
             }
         });
     }
