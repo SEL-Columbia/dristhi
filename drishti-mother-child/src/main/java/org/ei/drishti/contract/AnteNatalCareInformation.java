@@ -19,5 +19,9 @@ public class AnteNatalCareInformation {
                 ", ironFolicAcidTablet3Date='" + ironFolicAcidTablet3Date + '\'' +
                 '}';
     }
+
+    public String caseId() {
+        return caseId;
+    }
 }
 

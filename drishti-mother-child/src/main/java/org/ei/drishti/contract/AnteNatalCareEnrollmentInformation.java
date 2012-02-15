@@ -2,13 +2,13 @@ package org.ei.drishti.contract;
 
 import java.text.MessageFormat;
 
-public class MotherRegistrationInformation {
+public class AnteNatalCareEnrollmentInformation {
     private String caseId;
     private int age;
     private String name;
     private String thaayiCardNumber;
 
-    public MotherRegistrationInformation(String caseId, String thaayiCardNumber, String name) {
+    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
@@ -29,6 +29,6 @@ public class MotherRegistrationInformation {
 
     @Override
     public String toString() {
-        return MessageFormat.format("Mother: ThaayiCardNumber: {0}, Name: {1}, Age: {2}", thaayiCardNumber, name, age);
+        return MessageFormat.format("Mother: ThaayiCardNumber: {0}, Name: {1}, Age: {2}, Case: {3}", thaayiCardNumber, name, age, caseId);
     }
 }

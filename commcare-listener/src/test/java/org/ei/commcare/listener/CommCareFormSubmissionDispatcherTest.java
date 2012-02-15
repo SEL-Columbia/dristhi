@@ -1,9 +1,7 @@
 package org.ei.commcare.listener;
 
-import org.ei.commcare.listener.event.CommCareFormEvent;
-import org.ei.commcare.listener.event.FakeANCVisitRequestWithoutADefaultConstructor;
-import org.ei.commcare.listener.event.FakeDrishtiController;
-import org.ei.commcare.listener.event.FakeMotherRegistrationRequest;
+import org.ei.commcare.listener.event.*;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -36,6 +34,15 @@ public class CommCareFormSubmissionDispatcherTest {
         commCareFormSubmissionDispatcher.handle(event);
 
         verify(drishtiController).registerMother(new FakeMotherRegistrationRequest("Mom", 23));
+    }
+
+    @Test
+    public void shouldBeAbleToCreateArgumentsWithDateInThemWhenDateIsInYYYYMMDDFormat() throws Exception {
+        MotechEvent event = eventFor("methodWithArgumentHavingADate", "{\"date\" : \"2000-03-23\"}");
+
+        commCareFormSubmissionDispatcher.handle(event);
+
+        verify(drishtiController).methodWithArgumentHavingADate(new FakeRequestWithDate(new DateTime(2000, 3, 23, 0, 0).toDate()));
     }
 
     @Test

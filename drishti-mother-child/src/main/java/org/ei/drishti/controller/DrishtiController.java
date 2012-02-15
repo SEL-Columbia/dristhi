@@ -1,31 +1,39 @@
 package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.CommCareFormSubmissionDispatcher;
-import org.ei.drishti.contract.AnteNatalCareInformation;
-import org.ei.drishti.contract.ChildRegistrationInformation;
-import org.ei.drishti.contract.MotherRegistrationInformation;
-import org.ei.drishti.service.MotherService;
+import org.ei.drishti.contract.*;
+import org.ei.drishti.service.ANCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DrishtiController {
-    private final MotherService motherService;
+    private final ANCService ancService;
 
     @Autowired
-    public DrishtiController(CommCareFormSubmissionDispatcher dispatcher, MotherService motherService) {
-        this.motherService = motherService;
+    public DrishtiController(CommCareFormSubmissionDispatcher dispatcher, ANCService ancService) {
         dispatcher.registerForDispatch(this);
+        this.ancService = ancService;
     }
 
-    public void registerMother(MotherRegistrationInformation motherInformation) {
-        System.out.println("Mother registration: " + motherInformation);
-        motherService.enroll(motherInformation);
+    public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation) {
+        System.out.println("Mother registration: " + enrollmentInformation);
+        ancService.registerANCCase(enrollmentInformation);
     }
 
-    public void ancCare(AnteNatalCareInformation ancInformation) {
+    public void updateANCCareInformation(AnteNatalCareInformation ancInformation) {
         System.out.println("ANC care: " + ancInformation);
-        motherService.provideANCCare(ancInformation);
+        ancService.updateANCCareInformation(ancInformation);
+    }
+
+    public void updateOutcomeOfANC(AnteNatalCareOutcomeInformation outcomeInformation) {
+        System.out.println("ANC outcome: " + outcomeInformation);
+        ancService.updateANCOutcome(outcomeInformation);
+    }
+
+    public void closeANCCase(AnteNatalCareCloseInformation closeInformation) {
+        System.out.println("ANC close: " + closeInformation);
+        ancService.closeANCCase(closeInformation);
     }
 
     public void registerChild(ChildRegistrationInformation childInformation) {

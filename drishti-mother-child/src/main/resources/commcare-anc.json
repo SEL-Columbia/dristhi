@@ -18,7 +18,7 @@
             }
         },
         {
-            "name": "ancCare",
+            "name": "updateANCCareInformation",
             "url": {
                 "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                 "queryParams": {
@@ -32,6 +32,32 @@
                 "form|anc|ifa1" : "ironFolicAcidTablet1Date",
                 "form|anc|ifa2" : "ironFolicAcidTablet2Date",
                 "form|anc|ifa3" : "ironFolicAcidTablet3Date"
+            }
+        },
+        {
+            "name": "updateOutcomeOfANC",
+            "url": {
+                "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/BC5BFB10-35DD-46A9-991D-9395AAC004C4"
+                }
+            },
+            "mappings": {
+                "form|case|case_id" : "caseId",
+                "form|dateofdelivery" : "dateOfDelivery"
+            }
+        },
+        {
+            "name": "closeANCCase",
+            "url": {
+                "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/E718DE2C-C336-43A5-8F3C-AD14CF0E5702"
+                }
+            },
+            "mappings": {
+                "form|case|case_id" : "caseId",
+                "form|dateofdelivery" : "dateOfDelivery"
             }
         },
         {

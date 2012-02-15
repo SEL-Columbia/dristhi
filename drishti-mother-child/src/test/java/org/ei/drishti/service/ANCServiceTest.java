@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareInformation;
-import org.ei.drishti.contract.MotherRegistrationInformation;
+import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.junit.Before;
@@ -15,27 +14,27 @@ import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class MotherServiceTest {
+public class ANCServiceTest {
     @Mock
     private AllMothers mothers;
     @Mock
     private ScheduleTrackingService scheduleTrackingService;
 
-    private MotherService service;
+    private ANCService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new MotherService(mothers, scheduleTrackingService);
+        service = new ANCService(mothers, scheduleTrackingService);
     }
 
     @Test
     public void shouldSaveAMothersInformationDuringEnrollment() {
         String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        MotherRegistrationInformation motherInfo = new MotherRegistrationInformation("CASE-1", thaayiCardNumber, motherName);
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName);
 
-        service.enroll(motherInfo);
+        service.registerANCCase(enrollmentInfo);
 
         verify(mothers).register(new Mother("CASE-1", thaayiCardNumber, motherName));
     }
@@ -44,9 +43,9 @@ public class MotherServiceTest {
     public void shouldEnrollAMotherIntoDefaultScheduleDuringEnrollment() {
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        MotherRegistrationInformation motherInfo = new MotherRegistrationInformation("CASE-1", thaayiCardNumber, motherName);
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName);
 
-        service.enroll(motherInfo);
+        service.registerANCCase(enrollmentInfo);
 
         verify(scheduleTrackingService).enroll(enrollmentFor("CASE-1"));
     }

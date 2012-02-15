@@ -16,4 +16,7 @@ public class FakeDrishtiController {
     public void methodWhichThrowsAnException(FakeMotherRegistrationRequest request) {
         throw new RuntimeException("Boo");
     }
+
+    public void methodWithArgumentHavingADate(FakeRequestWithDate fakeRequestWithDate) {
+    }
 }

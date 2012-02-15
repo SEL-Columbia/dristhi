@@ -30,7 +30,7 @@ public class Mother extends MotechBaseDataObject {
 
     @Override
     public String toString() {
-        return MessageFormat.format("Mother: {0} ({1})", name, thaayiCardNumber);
+        return MessageFormat.format("Mother: {0} ({1}) [Case ID: {2}]", name, thaayiCardNumber, caseId);
     }
 
     @Override
