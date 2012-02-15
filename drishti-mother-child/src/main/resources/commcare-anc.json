@@ -1,0 +1,37 @@
+{
+    "userName": "avenkata@thoughtworks.com",
+    "password": "eb8hec6vin5bogs9",
+    "forms": [
+        {
+            "name": "ancCare",
+            "url": {
+                "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/WA9OY7CM49R001H7ZTO0V70XO"
+                }
+            },
+            "mappings": {
+                "form|case|case_id" : "caseid",
+                "form|anc|tt_1" : "tetanus",
+                "form|anc|tt_2" : "tetanus",
+                "form|anc|ifa1" : "iron1",
+                "form|anc|ifa2" : "iron2",
+                "form|anc|ifa3" : "iron3",
+            }
+        },
+
+        {
+            "name": "registerChild",
+            "url": {
+                "base": "https://www.commcarehq.org/a/abhilasha/reports/export/",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/5DC25F71-2979-4A95-9CF4-E01255159085"
+                }
+            },
+            "mappings": {
+                "form|Child_Name" : "name",
+                "form|meta|username" : "userName"
+            }
+        }
+    ]
+}
