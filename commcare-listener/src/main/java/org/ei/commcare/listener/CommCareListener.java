@@ -1,6 +1,6 @@
 package org.ei.commcare.listener;
 
-import org.ei.commcare.api.domain.CommcareForm;
+import org.ei.commcare.api.domain.CommcareFormInstance;
 import org.ei.commcare.listener.event.CommCareFormEvent;
 import org.ei.commcare.api.service.CommCareFormImportService;
 import org.motechproject.gateway.OutboundEventGateway;
@@ -22,11 +22,11 @@ public class CommCareListener {
     }
 
     public void fetchFromServer() throws Exception {
-        List<CommcareForm> commcareForms = this.formImportService.fetchForms();
+        List<CommcareFormInstance> commcareFormInstances = this.formImportService.fetchForms();
 
-        for (CommcareForm form : commcareForms) {
-            Map<String, String> fieldsInXMLWeCareAbout = form.content().getValuesOfFieldsSpecifiedByPath(form.definition().mappings());
-            outboundEventGateway.sendEventMessage(new CommCareFormEvent(form, fieldsInXMLWeCareAbout).toMotechEvent());
+        for (CommcareFormInstance formInstance : commcareFormInstances) {
+            Map<String, String> fieldsWeCareAbout = formInstance.content();
+            outboundEventGateway.sendEventMessage(new CommCareFormEvent(formInstance, fieldsWeCareAbout).toMotechEvent());
         }
     }
 }

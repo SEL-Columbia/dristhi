@@ -14,12 +14,12 @@ public class CommCareFormContent {
         this.values = values;
     }
 
-    public Map<String, String> getValuesOfFieldsSpecifiedByPath(Map<String, String> mappingFromFieldNameIfFormToKeyInResult) {
+    public Map<String, String> getValuesOfFieldsSpecifiedByPath(Map<String, String> mappingFromFieldNameInFormToKeyInResult) {
         HashMap<String, String> map = new HashMap<String, String>();
 
         for (int i = 0; i < headers().size(); i++) {
-            if (mappingFromFieldNameIfFormToKeyInResult.containsKey(headers().get(i))) {
-                map.put(mappingFromFieldNameIfFormToKeyInResult.get(headers().get(i)), values().get(i));
+            if (mappingFromFieldNameInFormToKeyInResult.containsKey(headers().get(i))) {
+                map.put(mappingFromFieldNameInFormToKeyInResult.get(headers().get(i)), values().get(i));
             }
         }
 

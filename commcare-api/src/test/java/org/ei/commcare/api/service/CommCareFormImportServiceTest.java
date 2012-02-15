@@ -5,7 +5,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.message.BasicHeader;
-import org.ei.commcare.api.domain.CommcareForm;
+import org.ei.commcare.api.domain.CommcareFormInstance;
 import org.ei.commcare.api.domain.ExportToken;
 import org.ei.commcare.api.repository.AllExportTokens;
 import org.ei.commcare.api.util.CommCareHttpClient;
@@ -53,12 +53,12 @@ public class CommCareFormImportServiceTest {
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.1.dump.json", "NEW-TOKEN"));
 
         CommCareFormImportService formImportService = new CommCareFormImportService(allExportTokens, httpClient, new CommCareImportProperties(properties));
-        List<CommcareForm> forms = formImportService.fetchForms();
+        List<CommcareFormInstance> formInstances = formImportService.fetchForms();
 
         verify(httpClient).get(urlOfExport, "someUser@gmail.com", "somePassword");
-        assertEquals(2, forms.size());
-        assertForm(forms.get(0), new String[]{"form-1-instance-1-value-1", "form-1-instance-1-value-2"}, "Registration");
-        assertForm(forms.get(1), new String[]{"form-1-instance-2-value-1", "form-1-instance-2-value-2"}, "Registration");
+        assertEquals(2, formInstances.size());
+        assertForm(formInstances.get(0), new String[]{"form-1-instance-1-value-1", "form-1-instance-1-value-2"}, "Registration");
+        assertForm(formInstances.get(1), new String[]{"form-1-instance-2-value-1", "form-1-instance-2-value-2"}, "Registration");
     }
 
     @Test
@@ -78,18 +78,18 @@ public class CommCareFormImportServiceTest {
         when(httpClient.get(urlOfSecondExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(200, "/test-data/form.2.dump.json", "NEW-TOKEN"));
 
         CommCareFormImportService formImportService = new CommCareFormImportService(allExportTokens, httpClient, new CommCareImportProperties(properties));
-        List<CommcareForm> forms = formImportService.fetchForms();
+        List<CommcareFormInstance> formInstances = formImportService.fetchForms();
 
         verify(httpClient).get(urlOfFirstExport, "someUser@gmail.com", "somePassword");
         verify(httpClient).get(urlOfSecondExport, "someUser@gmail.com", "somePassword");
         verify(allExportTokens).updateToken(nameSpaceOfFirstExport, "NEW-TOKEN");
         verify(allExportTokens).updateToken(nameSpaceOfSecondExport, "NEW-TOKEN");
 
-        assertEquals(4, forms.size());
-        assertForm(forms.get(0), new String[]{"form-1-instance-1-value-1", "form-1-instance-1-value-2"}, "Registration");
-        assertForm(forms.get(1), new String[]{"form-1-instance-2-value-1", "form-1-instance-2-value-2"}, "Registration");
-        assertForm(forms.get(2), new String[]{"form-2-instance-1-value-1", "form-2-instance-1-value-2"}, "SomeOtherForm");
-        assertForm(forms.get(3), new String[]{"form-2-instance-2-value-1", "form-2-instance-2-value-2"}, "SomeOtherForm");
+        assertEquals(4, formInstances.size());
+        assertForm(formInstances.get(0), new String[]{"form-1-instance-1-value-1", "form-1-instance-1-value-2"}, "Registration");
+        assertForm(formInstances.get(1), new String[]{"form-1-instance-2-value-1", "form-1-instance-2-value-2"}, "Registration");
+        assertForm(formInstances.get(2), new String[]{"form-2-instance-1-value-1", "form-2-instance-1-value-2"}, "SomeOtherForm");
+        assertForm(formInstances.get(3), new String[]{"form-2-instance-2-value-1", "form-2-instance-2-value-2"}, "SomeOtherForm");
     }
 
     @Test
@@ -151,9 +151,9 @@ public class CommCareFormImportServiceTest {
         when(httpClient.get(urlOfExport, "someUser@gmail.com", "somePassword")).thenReturn(formResponse(302, "/test-data/form.with.empty.data.json", null));
 
         CommCareFormImportService formImportService = new CommCareFormImportService(allExportTokens, httpClient, new CommCareImportProperties(properties));
-        List<CommcareForm> forms = formImportService.fetchForms();
+        List<CommcareFormInstance> formInstances = formImportService.fetchForms();
 
-        assertThat(forms.size(), is(0));
+        assertThat(formInstances.size(), is(0));
         verify(allExportTokens).findByNameSpace(nameSpace);
         verifyNoMoreInteractions(allExportTokens);
     }
@@ -169,16 +169,13 @@ public class CommCareFormImportServiceTest {
         return new CommCareHttpResponse(statusCode, headers.toArray(new Header[0]), IOUtils.toByteArray(getClass().getResourceAsStream(jsonDump)));
     }
 
-    private void assertForm(CommcareForm actualForm, String[] expectedValuesOfForm, String formName) {
-        assertEquals(actualForm.definition().name(), formName);
+    private void assertForm(CommcareFormInstance actualFormInstance, String[] expectedValuesOfForm, String formName) {
+        assertEquals(actualFormInstance.definition().name(), formName);
 
-        HashMap<String, String> mapping = new HashMap<String, String>();
-        mapping.put("header|col|1", "FirstValue");
-        mapping.put("header|col|2", "SecondValue");
-        Map<String,String> data = actualForm.content().getValuesOfFieldsSpecifiedByPath(mapping);
+        Map<String,String> data = actualFormInstance.content();
 
         assertEquals(2, data.size());
-        assertEquals(expectedValuesOfForm[0], data.get("FirstValue"));
-        assertEquals(expectedValuesOfForm[1], data.get("SecondValue"));
+        assertThat(data.get("FieldInOutput"), is(expectedValuesOfForm[0]));
+        assertThat(data.get("AnotherFieldInOutput"), is(expectedValuesOfForm[1]));
     }
 }

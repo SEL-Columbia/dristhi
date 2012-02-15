@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC
+    "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN"
+    "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns:svg='http://www.w3.org/2000/svg' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head><meta content='application/xhtml+xml;charset=utf-8' http-equiv='Content-type' /><title>commcare-api module</title></head>
+<body>
+<h1 id='commcareapi_module'>commcare-api module</h1>
+
+<h2 id='about'>About</h2>
+
+<p>commcare-api is used to access data from CommCare, using the export APIs of CommCareHQ described <a href='https://confluence.dimagi.com/display/commcarepublic/Export+API'>here</a>.</p>
+
+<h2 id='what_does_it_provide'>What does it provide?</h2>
+
+<p>It provides a way to fetch form instances from CommCareHQ, for a specified set of form types (or form definitions). Also, it keeps track of previously fetched forms so that it does not fetch it again. The entry point to this service is: <strong>CommCareFormImportService#fetchForms()</strong></p>
+
+<h2 id='what_do_i_need_to_do_to_make_this_work'>What do I need to do to make this work?</h2>
+
+<ul>
+<li>
+<p>couchdb.properties: This module uses the motech-platform-common module, to access CouchDB, so that it can store the previous export tokens. So, it expects a file called &#8220;couchdb.properties&#8221; to be present in the classpath. It needs to provide information about the CouchDB instance. Here&#8217;s an <a href='../src/test/resources/couchdb.properties'>example file</a>.</p>
+</li>
+
+<li>
+<p>commcare-import.properties: This file is also expected to be in the classpath. At this point, it has only one property, which is the path to the JSON form definition file (described below). Here&#8217;s how it might look (contents of the file):</p>
+
+<pre><code>  commcare-export.definition.file=/path/in/classpath/to/commcare-export.json</code></pre>
+</li>
+
+<li>
+<p>commcare-export.json: The JSON form definition file. This is expected to be somewhere in the classpath. It describes the forms to be downloaded from CommCareHQ. This JSON is converted into an object of the CommCareFormDefinitions class. So, the fields in that class need to correspond to the JSON. Here&#8217;s a sample JSON file:</p>
+
+<pre><code>  {
+      &quot;userName&quot;: &quot;someUser@gmail.com&quot;,
+      &quot;password&quot;: &quot;somePassword&quot;,
+      &quot;forms&quot; : [
+          {
+              &quot;name&quot;: &quot;Registration&quot;,
+              &quot;url&quot;: {
+                  &quot;base&quot;: &quot;https://www.commcarehq.org/a/abhilasha/reports/export/&quot;,
+                  &quot;queryParams&quot;: {
+                      &quot;nameSpace&quot;: &quot;http://openrosa.org/formdesigner/UUID-OF-FIRST-FORM&quot;
+                  }
+              },
+              &quot;mappings&quot;: {
+                  &quot;form|path|to|field&quot; : &quot;FieldInOutput&quot;,
+                  &quot;form|path|to|another|field&quot; : &quot;AnotherFieldInOutput&quot;
+              }
+          },
+          {
+              &quot;name&quot;: &quot;SomeOtherForm&quot;,
+              &quot;url&quot;: {
+                  &quot;base&quot;: &quot;https://www.commcarehq.org/a/abhilasha/reports/export/&quot;,
+                  &quot;queryParams&quot;: {
+                      &quot;nameSpace&quot;: &quot;http://openrosa.org/formdesigner/UUID-OF-SECOND-FORM&quot;
+                  }
+              },
+              &quot;mappings&quot;: {
+                  &quot;form|path|to|field&quot; : &quot;FieldInOutput&quot;,
+                  &quot;form|path|to|another|field&quot; : &quot;AnotherFieldInOutput&quot;
+              }
+          }
+      ]
+  }</code></pre>
+
+<p>The <em>userName</em> and <em>password</em> fields apply to all the forms. This has to be a valid &#8220;Web user&#8221; in CommCareHQ. The forms have <em>name</em> and <em>url</em> fields. The <em>queryParams -&gt; nameSpace</em> field has the namespace of the form, which can be seen in CommCareHQ.</p>
+
+<p>The <em>mappings</em> specify which fields of the form we care about. The left-hand-side of the mappings can be got by looking at the CSV/JSON exports from CommCareHQ. Normally, they&#8217;ll look like &#8220;form|Mother|Name&#8221; or &#8220;form|Mother_Name&#8221;. The right-hand-side of the mappings specify the key of the resulting fields.</p>
+</li>
+</ul>
+
+<h2 id='description_of_the_process'>Description of the process</h2>
+
+<ol>
+<li>
+<p>Assume that the form definition sample provided above is the real form definition.</p>
+</li>
+
+<li>
+<p>When <strong>CommCareFormImportService#fetchForms()</strong> is called, it hits CommCareHQ with a URL similar to the one provided below, with the specified username and password:</p>
+
+<pre><code> https://www.commcarehq.org/a/abhilasha/reports/export/?export_tag=%22http://openrosa.org/formdesigner/UUID-OF-FIRST-FORM%22&amp;format=json</code></pre>
+</li>
+
+<li>
+<p>Assume that the JSON which is returned looks like this:</p>
+
+<pre><code> {
+   &quot;#&quot; : {
+     &quot;headers&quot; : [
+       &quot;form|path|to|field&quot;,
+       &quot;form|path|to|another|field&quot;,
+       &quot;form|path|to|field|which|is|not|mapped&quot;
+     ],
+     &quot;rows&quot; : [
+       [
+         &quot;Value of Field 1 in form 1&quot;,
+         &quot;Value of Field 2 in form 1&quot;,
+         &quot;Value of Field 3 in form 1, not mapped&quot;
+       ],
+       [
+         &quot;Value of Field 1 in form 2&quot;,
+         &quot;Value of Field 2 in form 2&quot;,
+         &quot;Value of Field 3 in form 2, not mapped&quot;
+       ]
+     ]
+ }</code></pre>
+</li>
+
+<li>
+<p>So, the JSON has two forms in it (in the <em>rows</em> list). The <strong>CommCareFormImportService#fetchForms()</strong> call converts the JSON into two instances of the CommcareFormInstance class. Using the instance (say it is called formInstance), and doing this:</p>
+
+<pre><code>   formInstance.contents()</code></pre>
+
+<p>you&#8217;ll get a map which has this data:</p>
+
+<pre><code>   &quot;FieldInOutput&quot; =&gt; &quot;Value of Field 1 in form 1&quot;,
+   &quot;AnotherFieldInOutput&quot; =&gt; &quot;Value of Field 2 in form 1&quot;</code></pre>
+
+<p>Notice that it does not have the third (unmapped) field.</p>
+</li>
+</ol>
+</body></html>

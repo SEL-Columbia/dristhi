@@ -17,8 +17,8 @@
     },
     "#": {
         "headers": [
-            "header|col|1",
-            "header|col|2"
+            "form|path|to|field",
+            "form|path|to|another|field"
         ],
         "rows": [
             [
