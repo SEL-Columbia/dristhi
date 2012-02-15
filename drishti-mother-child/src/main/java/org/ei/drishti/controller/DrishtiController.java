@@ -1,6 +1,7 @@
 package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.CommCareFormSubmissionDispatcher;
+import org.ei.drishti.contract.ANCRequest;
 import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.ei.drishti.contract.MotherRegistrationInformation;
 import org.ei.drishti.service.MotherService;
@@ -25,5 +26,9 @@ public class DrishtiController {
 
     public void registerChild(ChildRegistrationRequest request) {
         System.out.println("Child registration: " + request);
+    }
+
+    public void ancCare(ANCRequest request) {
+        System.out.println("ANC register: " + request);
     }
 }

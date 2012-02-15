@@ -1,10 +1,10 @@
 package org.ei.commcare.listener.event;
 
-class FakeMotherRegistrationRequest {
+public class FakeMotherRegistrationRequest {
     private String name;
     private int age;
 
-    FakeMotherRegistrationRequest(String name, int age) {
+    public FakeMotherRegistrationRequest(String name, int age) {
         this.name = name;
         this.age = age;
     }
