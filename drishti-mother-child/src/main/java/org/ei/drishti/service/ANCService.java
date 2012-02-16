@@ -7,6 +7,7 @@ import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
@@ -27,12 +28,14 @@ public class ANCService {
     }
 
     public void registerANCCase(AnteNatalCareEnrollmentInformation info) {
-        Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name()).withAnmPhoneNumber(info.anmPhoneNumber());
+        Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name()).withAnmPhoneNumber(info.anmPhoneNumber()).withLMP(info.lmpDate());
         allMothers.register(mother);
 
         DateTime now = DateUtil.now();
         Time preferredAlertTime = new Time(now.hourOfDay().get(), now.minuteOfHour().get() + 2);
-        trackingService.enroll(new EnrollmentRequest(info.caseId(), SCHEDULE_NAME, preferredAlertTime, DateUtil.today()));
+        LocalDate referenceDate = info.lmpDate() != null ? info.lmpDate() : DateUtil.today();
+
+        trackingService.enroll(new EnrollmentRequest(info.caseId(), SCHEDULE_NAME, preferredAlertTime, referenceDate));
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {

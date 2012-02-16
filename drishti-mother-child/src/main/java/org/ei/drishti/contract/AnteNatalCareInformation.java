@@ -1,12 +1,14 @@
 package org.ei.drishti.contract;
 
+import java.util.Date;
+
 public class AnteNatalCareInformation {
     private String caseId;
-    private String tetanus1Date;
-    private String tetanus2Date;
-    private String ironFolicAcidTablet1Date;
-    private String ironFolicAcidTablet2Date;
-    private String ironFolicAcidTablet3Date;
+    private Date tetanus1Date;
+    private Date tetanus2Date;
+    private Date ironFolicAcidTablet1Date;
+    private Date ironFolicAcidTablet2Date;
+    private Date ironFolicAcidTablet3Date;
 
     public AnteNatalCareInformation(String caseId) {
         this.caseId = caseId;
