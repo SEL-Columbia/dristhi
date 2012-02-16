@@ -15,6 +15,7 @@
                 "form|card_no" : "thaayiCardNumber",
                 "form|ancm_name" : "name",
                 "form|age" : "age",
+                "form|lmp" : "lmp",
                 "form|anm_phone" : "anmPhoneNumber"
             }
         },
