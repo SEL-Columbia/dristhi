@@ -1,6 +1,8 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.AnteNatalCareCloseInformation;
 import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
+import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.junit.Before;
@@ -48,6 +50,20 @@ public class ANCServiceTest {
         service.registerANCCase(enrollmentInfo);
 
         verify(scheduleTrackingService).enroll(enrollmentFor("CASE-1"));
+    }
+
+    @Test
+    public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X"));
+
+        verify(scheduleTrackingService).unenroll("CASE-X", "IPTI Schedule");
+    }
+
+    @Test
+    public void shouldFulfillMilestoneWhenANCCareHasBeenProvided() {
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X"));
+
+        verify(scheduleTrackingService).fulfillCurrentMilestone("CASE-X", "IPTI Schedule");
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId) {

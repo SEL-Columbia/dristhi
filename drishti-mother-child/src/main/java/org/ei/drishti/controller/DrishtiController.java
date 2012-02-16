@@ -23,7 +23,7 @@ public class DrishtiController {
 
     public void updateANCCareInformation(AnteNatalCareInformation ancInformation) {
         System.out.println("ANC care: " + ancInformation);
-        ancService.updateANCCareInformation(ancInformation);
+        ancService.ancCareHasBeenProvided(ancInformation);
     }
 
     public void updateOutcomeOfANC(AnteNatalCareOutcomeInformation outcomeInformation) {

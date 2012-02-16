@@ -8,6 +8,14 @@ public class AnteNatalCareInformation {
     private String ironFolicAcidTablet2Date;
     private String ironFolicAcidTablet3Date;
 
+    public AnteNatalCareInformation(String caseId) {
+        this.caseId = caseId;
+    }
+
+    public String caseId() {
+        return caseId;
+    }
+
     @Override
     public String toString() {
         return "AnteNatalCareInformation{" +
@@ -18,10 +26,6 @@ public class AnteNatalCareInformation {
                 ", ironFolicAcidTablet2Date='" + ironFolicAcidTablet2Date + '\'' +
                 ", ironFolicAcidTablet3Date='" + ironFolicAcidTablet3Date + '\'' +
                 '}';
-    }
-
-    public String caseId() {
-        return caseId;
     }
 }
 

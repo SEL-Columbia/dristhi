@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ANCService {
+    public static final String SCHEDULE_NAME = "IPTI Schedule";
     private final AllMothers allMothers;
     private ScheduleTrackingService trackingService;
 
@@ -31,15 +32,17 @@ public class ANCService {
 
         DateTime now = DateUtil.now();
         Time preferredAlertTime = new Time(now.hourOfDay().get(), now.minuteOfHour().get() + 2);
-        trackingService.enroll(new EnrollmentRequest(info.caseId(), "IPTI Schedule", preferredAlertTime, DateUtil.today()));
+        trackingService.enroll(new EnrollmentRequest(info.caseId(), SCHEDULE_NAME, preferredAlertTime, DateUtil.today()));
     }
 
-    public void updateANCCareInformation(AnteNatalCareInformation ancInformation) {
+    public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {
+        trackingService.fulfillCurrentMilestone(ancInformation.caseId(), SCHEDULE_NAME);
     }
 
     public void updateANCOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {
     }
 
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation) {
+        trackingService.unenroll(closeInformation.caseId(), SCHEDULE_NAME);
     }
 }
