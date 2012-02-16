@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ANCService {
-    public static final String SCHEDULE_NAME = "IPTI Schedule";
+    public static final String SCHEDULE_NAME = "Ante Natal Care - Normal";
     private final AllMothers allMothers;
     private ScheduleTrackingService trackingService;
 

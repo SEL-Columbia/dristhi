@@ -56,14 +56,14 @@ public class ANCServiceTest {
     public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X"));
 
-        verify(scheduleTrackingService).unenroll("CASE-X", "IPTI Schedule");
+        verify(scheduleTrackingService).unenroll("CASE-X", "Ante Natal Care - Normal");
     }
 
     @Test
     public void shouldFulfillMilestoneWhenANCCareHasBeenProvided() {
         service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X"));
 
-        verify(scheduleTrackingService).fulfillCurrentMilestone("CASE-X", "IPTI Schedule");
+        verify(scheduleTrackingService).fulfillCurrentMilestone("CASE-X", "Ante Natal Care - Normal");
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId) {

@@ -15,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:applicationContext-drishti.xml")
+@ContextConfiguration("classpath:test-applicationContext-drishti.xml")
 public class AllMothersIntegrationTest {
     @Autowired
     private AllMothers mothers;
