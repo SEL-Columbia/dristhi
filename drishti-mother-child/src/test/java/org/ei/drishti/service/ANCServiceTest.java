@@ -34,18 +34,18 @@ public class ANCServiceTest {
     public void shouldSaveAMothersInformationDuringEnrollment() {
         String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName);
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "12345");
 
         service.registerANCCase(enrollmentInfo);
 
-        verify(mothers).register(new Mother("CASE-1", thaayiCardNumber, motherName));
+        verify(mothers).register(new Mother("CASE-1", thaayiCardNumber, motherName).withAnmPhoneNumber("12345"));
     }
 
     @Test
     public void shouldEnrollAMotherIntoDefaultScheduleDuringEnrollment() {
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName);
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "12345");
 
         service.registerANCCase(enrollmentInfo);
 

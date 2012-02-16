@@ -27,7 +27,7 @@ public class ANCService {
     }
 
     public void registerANCCase(AnteNatalCareEnrollmentInformation info) {
-        Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name());
+        Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name()).withAnmPhoneNumber(info.anmPhoneNumber());
         allMothers.register(mother);
 
         DateTime now = DateUtil.now();

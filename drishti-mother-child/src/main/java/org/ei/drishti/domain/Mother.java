@@ -14,6 +14,8 @@ public class Mother extends MotechBaseDataObject {
     private String thaayiCardNumber;
     @JsonProperty
     private String name;
+    @JsonProperty
+    private String anmPhoneNumber;
 
     private Mother() {
     }
@@ -28,9 +30,14 @@ public class Mother extends MotechBaseDataObject {
         return name;
     }
 
+    public Mother withAnmPhoneNumber(String anmPhoneNumber) {
+        this.anmPhoneNumber = anmPhoneNumber;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return MessageFormat.format("Mother: {0} ({1}) [Case ID: {2}]", name, thaayiCardNumber, caseId);
+        return MessageFormat.format("Mother: {0} ({1}) [Case ID: {2}, ANM: {3}]", name, thaayiCardNumber, caseId, anmPhoneNumber);
     }
 
     @Override

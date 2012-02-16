@@ -12,9 +12,10 @@
             },
             "mappings": {
                 "form|case|case_id" : "caseId",
+                "form|card_no" : "thaayiCardNumber",
                 "form|ancm_name" : "name",
-                "form|anm_phone" : "ancPhoneNumber",
-                "form|card_no" : "thaayiCardNumber"
+                "form|age" : "age",
+                "form|anm_phone" : "anmPhoneNumber"
             }
         },
         {
