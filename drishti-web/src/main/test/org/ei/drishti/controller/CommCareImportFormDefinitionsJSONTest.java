@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static org.junit.Assert.fail;
 
-public class DrishtiControllerDispatchTest {
+public class CommCareImportFormDefinitionsJSONTest {
     private final String definitionsJSONPath = "commcare-import-form-definitions.json";
     private CommCareFormDefinitions forms;
 
