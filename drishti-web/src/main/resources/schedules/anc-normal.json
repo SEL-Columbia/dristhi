@@ -1,82 +1,82 @@
 {
-   name : "Ante Natal Care - Normal",
-   milestones : [
-       {
-           name : "ANC 2",
-           scheduleWindows : {
-               earliest : "13 Weeks",
-               due : "14 Weeks",
-               late : "26 Weeks",
-               max : "27 weeks"
-           },
-           alerts : [
-               {
-                   "COMMENT": "This is just for tests. Take this out later. ======================",
-                   window : "earliest",
-                   offset : "0 Days",
-                   interval : "1 Day",
-                   count : "7",
-                   "COMMENT END": "This is just for tests. Take this out later. ======================"
-               },
-               {
-                   window : "due",
-                   offset : "0 Days",
-                   interval : "1 Day",
-                   count : "7"
-               },
-               {
-                   window : "max",
-                   offset : "6 Days",
-                   interval : "1 Day",
-                   count : "1"
-               }
-           ]
-       },
-       {
-           name : "ANC 3",
-           scheduleWindows : {
-               earliest : "27 Weeks",
-               due : "28 Weeks",
-               late : "34 Weeks",
-               max : "35 Weeks"
-           },
-           alerts : [
-               {
-                   window : "earliest",
-                   offset : "0 Days",
-                   interval : "1 Day",
-                   count : "7"
-               },
-               {
-                   window : "max",
-                   offset : "6 Days",
-                   interval : "1 Day",
-                   count : "1"
-               }
-           ]
-       },
-       {
-           name : "ANC 4",
-           scheduleWindows : {
-               earliest : "35 Weeks",
-               due : "36 Weeks",
-               late : "37 Weeks",
-               max : "38 Weeks"
-           },
-           alerts : [
-               {
-                   window : "earliest",
-                   offset : "0 Days",
-                   interval : "1 Day",
-                   count : "7"
-               },
-               {
-                   window : "max",
-                   offset : "6 Days",
-                   interval : "1 Day",
-                   count : "1"
-               }
-           ]
-       }
-   ]
+    "name": "Ante Natal Care - Normal",
+    "milestones": [
+        {
+            "name": "ANC 2",
+            "scheduleWindows": {
+                "earliest": "13 Weeks",
+                "due": "14 Weeks",
+                "late": "26 Weeks",
+                "max": "27 weeks"
+            },
+            "alerts": [
+                {
+                    "COMMENT": "This is just for tests. Take this out later. ======================",
+                    "window": "earliest",
+                    "offset": "0 Days",
+                    "interval": "1 Day",
+                    "count": "7",
+                    "COMMENT END": "This is just for tests. Take this out later. ======================"
+                },
+                {
+                    "window": "due",
+                    "offset": "0 Days",
+                    "interval": "1 Day",
+                    "count": "7"
+                },
+                {
+                    "window": "max",
+                    "offset": "6 Days",
+                    "interval": "1 Day",
+                    "count": "1"
+                }
+            ]
+        },
+        {
+            "name": "ANC 3",
+            "scheduleWindows": {
+                "earliest": "27 Weeks",
+                "due": "28 Weeks",
+                "late": "34 Weeks",
+                "max": "35 Weeks"
+            },
+            "alerts": [
+                {
+                    "window": "earliest",
+                    "offset": "0 Days",
+                    "interval": "1 Day",
+                    "count": "7"
+                },
+                {
+                    "window": "max",
+                    "offset": "6 Days",
+                    "interval": "1 Day",
+                    "count": "1"
+                }
+            ]
+        },
+        {
+            "name": "ANC 4",
+            "scheduleWindows": {
+                "earliest": "35 Weeks",
+                "due": "36 Weeks",
+                "late": "37 Weeks",
+                "max": "38 Weeks"
+            },
+            "alerts": [
+                {
+                    "window": "earliest",
+                    "offset": "0 Days",
+                    "interval": "1 Day",
+                    "count": "7"
+                },
+                {
+                    "window": "max",
+                    "offset": "6 Days",
+                    "interval": "1 Day",
+                    "count": "1"
+                }
+            ]
+        }
+    ]
 }

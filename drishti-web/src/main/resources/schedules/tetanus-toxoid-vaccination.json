@@ -1,39 +1,39 @@
 {
-   name : "Tetatnus Toxoid Vaccination",
-   milestones : [
-       {
-           name : "TT 1",
-           scheduleWindows : {
-               earliest : "0 Weeks",
-               due : "14 Weeks",
-               late : "16 Weeks",
-               max : "18 weeks"
-           },
-           alerts : [
-               {
-                   window : "due",
-                   offset : "0 Days",
-                   interval : "4 Weeks",
-                   count : "4"
-               }
-           ]
-       },
-       {
-           name : "TT 2",
-           scheduleWindows : {
-               earliest : "3 Weeks",
-               due : "38 Weeks",
-               late : "34 Weeks",
-               max : "35 Weeks"
-           },
-           alerts : [
-               {
-                   window : "due",
-                   offset : "0 Days",
-                   interval : "4 Weeks",
-                   count : "9"
-               }
-           ]
-       }
-   ]
+    "name": "Tetatnus Toxoid Vaccination",
+    "milestones": [
+        {
+            "name": "TT 1",
+            "scheduleWindows": {
+                "earliest": "0 Weeks",
+                "due": "14 Weeks",
+                "late": "16 Weeks",
+                "max": "18 weeks"
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": "0 Days",
+                    "interval": "4 Weeks",
+                    "count": "4"
+                }
+            ]
+        },
+        {
+            "name": "TT 2",
+            "scheduleWindows": {
+                "earliest": "3 Weeks",
+                "due": "38 Weeks",
+                "late": "34 Weeks",
+                "max": "35 Weeks"
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": "0 Days",
+                    "interval": "4 Weeks",
+                    "count": "9"
+                }
+            ]
+        }
+    ]
 }
