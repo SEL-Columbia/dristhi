@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import static org.joda.time.DateTimeConstants.MILLIS_PER_SECOND;
+import static org.quartz.SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT;
 
 @Component
 public class CommCareScheduler {
@@ -33,7 +34,7 @@ public class CommCareScheduler {
 
         Date startTime = DateTime.now().plusSeconds(60).toDate();
         MotechEvent event = new MotechEvent(SUBJECT, new HashMap<String, Object>());
-        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, 60 * MILLIS_PER_SECOND);
+        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, 60 * MILLIS_PER_SECOND, MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT);
 
         service.safeScheduleRepeatingJob(job);
     }
