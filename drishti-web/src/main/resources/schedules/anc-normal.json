@@ -11,12 +11,10 @@
             },
             "alerts": [
                 {
-                    "COMMENT": "This is just for tests. Take this out later. ======================",
                     "window": "earliest",
                     "offset": "0 Days",
                     "interval": "1 Day",
-                    "count": "7",
-                    "COMMENT END": "This is just for tests. Take this out later. ======================"
+                    "count": "7"
                 },
                 {
                     "window": "due",
