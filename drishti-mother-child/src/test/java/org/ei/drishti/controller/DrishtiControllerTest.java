@@ -6,7 +6,7 @@ import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
 import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.service.ANCService;
-import org.ei.drishti.service.TrackingService;
+import org.ei.drishti.service.MCTSService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -21,14 +21,14 @@ public class DrishtiControllerTest {
     @Mock
     private ANCService ancService;
     @Mock
-    private TrackingService trackingService;
+    private MCTSService mctsService;
 
     private DrishtiController controller;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new DrishtiController(dispatcher, ancService, trackingService);
+        controller = new DrishtiController(dispatcher, ancService, mctsService);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class DrishtiControllerTest {
         controller.registerMother(ancEnrollInfo);
 
         verify(ancService).registerANCCase(ancEnrollInfo);
-        verify(trackingService).registerANCCase(ancEnrollInfo);
+        verify(mctsService).registerANCCase(ancEnrollInfo);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class DrishtiControllerTest {
         controller.updateANCCareInformation(ancInformation);
 
         verify(ancService).ancCareHasBeenProvided(ancInformation);
-        verify(trackingService).ancCareHasBeenProvided(ancInformation);
+        verify(mctsService).ancCareHasBeenProvided(ancInformation);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class DrishtiControllerTest {
         controller.updateOutcomeOfANC(careOutcomeInformation);
 
         verify(ancService).updateANCOutcome(careOutcomeInformation);
-        verify(trackingService).updateANCOutcome(careOutcomeInformation);
+        verify(mctsService).updateANCOutcome(careOutcomeInformation);
     }
 
     @Test
@@ -68,6 +68,6 @@ public class DrishtiControllerTest {
         controller.closeANCCase(closeInformation);
 
         verify(ancService).closeANCCase(closeInformation);
-        verify(trackingService).closeANCCase(closeInformation);
+        verify(mctsService).closeANCCase(closeInformation);
     }
 }

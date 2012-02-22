@@ -1,21 +1,33 @@
 package org.ei.drishti.service;
 
-import org.joda.time.LocalDate;
-import org.motechproject.sms.api.service.SmsService;
+import org.ei.drishti.contract.AnteNatalCareCloseInformation;
+import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
+import org.ei.drishti.contract.AnteNatalCareInformation;
+import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
+import org.ei.drishti.repository.AllMothers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MCTSService {
-    private final SmsService smsService;
-    private static final String MCTS_PHONE_NUMBER = "9243355223";
+    private final MCTSSMSService mctsSMSService;
+    private final AllMothers mothers;
 
     @Autowired
-    public MCTSService(SmsService smsService) {
-        this.smsService = smsService;
+    public MCTSService(MCTSSMSService mctsSMSService, AllMothers mothers) {
+        this.mctsSMSService = mctsSMSService;
+        this.mothers = mothers;
     }
 
-    public void send(MCTSServiceCode typeOfService, String thaayiCardNumber, LocalDate date) {
-        smsService.sendSMS(MCTS_PHONE_NUMBER, typeOfService.messageFor(thaayiCardNumber, date));
+    public void registerANCCase(AnteNatalCareEnrollmentInformation enrollmentInformation) {
+    }
+
+    public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {
+    }
+
+    public void updateANCOutcome(AnteNatalCareOutcomeInformation careOutcomeInformation) {
+    }
+
+    public void closeANCCase(AnteNatalCareCloseInformation closeInformation) {
     }
 }
