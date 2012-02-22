@@ -30,12 +30,12 @@ CSV.foreach("eligible Couples.csv", { :headers => true }) do |csv_row|
   row.default_value "FP Method", "iud"
   row.default_value "FP Start Date", Date.today.to_s
   row.default_value "Thayi Card Number", random.next(4, :digits)
-  row.default_value "Case ID", random.next(25, :alphanumeric)
+  row.add_field "Case ID", random.next(25, :alphanumeric)
 
-  row.default_value "Instance ID", random.next(25, :alphanumeric)
+  row.add_field "Instance ID", random.next(25, :alphanumeric)
   registration_xml = ec_registration_erb.result(binding)
 
-  row.default_value "Instance ID", random.next(25, :alphanumeric)
+  row.add_field "Instance ID", random.next(25, :alphanumeric)
   family_planning_xml = ec_family_planning_erb.result(binding)
 
   puts "Uploading #{row.field('Wife Name')} and #{row.field('Husband Name')}"
