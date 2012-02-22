@@ -20,18 +20,14 @@ public class TrackingService {
     }
 
     public void registerANCCase(AnteNatalCareEnrollmentInformation enrollmentInformation) {
-        throw new RuntimeException("Unsupported.");
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {
-        throw new RuntimeException("Unsupported.");
     }
 
     public void updateANCOutcome(AnteNatalCareOutcomeInformation careOutcomeInformation) {
-        throw new RuntimeException("Unsupported.");
     }
 
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation) {
-        throw new RuntimeException("Unsupported.");
     }
 }

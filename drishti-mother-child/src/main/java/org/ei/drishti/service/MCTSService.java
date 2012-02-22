@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MCTSService {
     private final SmsService smsService;
+    private static final String MCTS_PHONE_NUMBER = "9243355223";
 
     @Autowired
     public MCTSService(SmsService smsService) {
@@ -15,6 +16,6 @@ public class MCTSService {
     }
 
     public void send(MCTSServiceCode typeOfService, String thaayiCardNumber, LocalDate date) {
-        throw new RuntimeException("Unsupported.");
+        smsService.sendSMS(MCTS_PHONE_NUMBER, typeOfService.messageFor(thaayiCardNumber, date));
     }
 }

@@ -1,5 +1,9 @@
 package org.ei.drishti.service;
 
+import org.joda.time.LocalDate;
+
+import static java.text.MessageFormat.format;
+
 public enum MCTSServiceCode {
     ANC_1("ANC1"),
     ANC_2("ANC2"),
@@ -37,5 +41,9 @@ public enum MCTSServiceCode {
 
     MCTSServiceCode(String codeForMCTS) {
         this.codeForMCTS = codeForMCTS;
+    }
+
+    public String messageFor(String thaayiCardNumber, LocalDate date) {
+        return format("ANMPW {0} {1} {2}", thaayiCardNumber, codeForMCTS, date.toString("ddMMyy"));
     }
 }
