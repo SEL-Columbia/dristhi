@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.dao.MotechJsonReader;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,10 +32,11 @@ public class CommCareImportFormDefinitionsJSONTest {
         classEveryFormMappingConvertsTo.put("closeANCCase", AnteNatalCareCloseInformation.class);
         classEveryFormMappingConvertsTo.put("registerChild", ChildRegistrationInformation.class);
 
-        assertEveryFormIsSetupProperly(classEveryFormMappingConvertsTo);
+        assertEveryFormDefintionInTheJSONHasBeenRepresentedInThisTest(classEveryFormMappingConvertsTo);
+        assertThatTheControllerHasTheMethodsCorrespondingToTheseFormNames(DrishtiController.class, classEveryFormMappingConvertsTo);
     }
 
-    private void assertEveryFormIsSetupProperly(Map<String, Class<?>> classEveryFormMappingConvertsTo) {
+    private void assertEveryFormDefintionInTheJSONHasBeenRepresentedInThisTest(Map<String, Class<?>> classEveryFormMappingConvertsTo) {
         for (CommCareFormDefinition formDefinition : forms.definitions()) {
             String formName = formDefinition.name();
             Class<?> typeUsedForMappingsInForm = classEveryFormMappingConvertsTo.get(formName);
@@ -54,6 +56,20 @@ public class CommCareImportFormDefinitionsJSONTest {
             } catch (NoSuchFieldException e) {
                 fail("Could not find field: " + fieldInObject + " in class: " + typeUsedForObjectsInForm +
                         ". Check the form: " + formName + " in " + definitionsJSONPath + ".");
+            }
+        }
+    }
+
+    private void assertThatTheControllerHasTheMethodsCorrespondingToTheseFormNames(Class<?> controllerClass, Map<String, Class<?>> classEveryFormMappingConvertsTo) {
+        for (Map.Entry<String, Class<?>> formNameToClassEntry : classEveryFormMappingConvertsTo.entrySet()) {
+            String formName = formNameToClassEntry.getKey();
+            Class<?> parameterTypeOfTheMethod = formNameToClassEntry.getValue();
+            try {
+                controllerClass.getDeclaredMethod(formName, parameterTypeOfTheMethod);
+            } catch (NoSuchMethodException e) {
+                fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2}). If it is " +
+                        "not present, the dispatcher will not be able to do anything for form submissions of this form: {3}.",
+                        controllerClass.getSimpleName(), formName, parameterTypeOfTheMethod.getSimpleName(), formName));
             }
         }
     }
