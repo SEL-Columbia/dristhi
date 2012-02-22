@@ -1,0 +1,23 @@
+<?xml version='1.0' ?>
+<fp_planning uiVersion="1" version="1" name="fp_planning" xmlns:jrm="http://dev.commcarehq.org/jr/xforms" xmlns="http://openrosa.org/formdesigner/80140888-4951-4B0B-B7B6-4EA5B3DE4B7F">
+  <show_client_name>OK</show_client_name>
+  <client_name><%= row['Wife Name'] %></client_name>
+  <fpmethod><%= row['FP Method'] %></fpmethod>
+  <fpstartdate><%= row['FP Start Date'] %></fpstartdate>
+  <case>
+    <case_id><%= row['Case ID'] %></case_id>
+    <date_modified><%= Time.now.strftime('%FT%T.333%z') %></date_modified>
+    <update>
+      <fpmethod><%= row['FP Method'] %></fpmethod>
+      <fpstartdate><%= row['FP Start Date'] %></fpstartdate>
+    </update>
+  </case>
+  <meta>
+    <deviceID>WDFTPN0L935SUFB0853AOE8WU</deviceID>
+    <timeStart><%= Time.now.strftime('%FT%T.444%z') %></timeStart>
+    <timeEnd><%= Time.now.strftime('%FT%T.555%z') %></timeEnd>
+    <username>duck</username>
+    <userID>cba9c3db652c9f6b03dbe5559266b386</userID>
+    <instanceID><%= row['Instance ID'] %></instanceID>
+  </meta>
+</fp_planning>
