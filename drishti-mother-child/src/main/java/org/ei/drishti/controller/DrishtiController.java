@@ -3,20 +3,20 @@ package org.ei.drishti.controller;
 import org.ei.commcare.listener.CommCareFormSubmissionDispatcher;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.service.ANCService;
-import org.ei.drishti.service.MCTSService;
+import org.ei.drishti.service.DrishtiMCTSService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DrishtiController {
     private final ANCService ancService;
-    private MCTSService mctsService;
+    private DrishtiMCTSService mctsService;
 
     @Autowired
-    public DrishtiController(CommCareFormSubmissionDispatcher dispatcher, ANCService ancService, MCTSService mctsService) {
+    public DrishtiController(CommCareFormSubmissionDispatcher dispatcher, ANCService ancService, DrishtiMCTSService drishtiMctsService) {
         dispatcher.registerForDispatch(this);
         this.ancService = ancService;
-        this.mctsService = mctsService;
+        this.mctsService = drishtiMctsService;
     }
 
     public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation) {

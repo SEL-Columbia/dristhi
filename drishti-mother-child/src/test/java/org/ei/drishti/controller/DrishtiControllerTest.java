@@ -6,7 +6,7 @@ import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
 import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.service.ANCService;
-import org.ei.drishti.service.MCTSService;
+import org.ei.drishti.service.DrishtiMCTSService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -21,7 +21,7 @@ public class DrishtiControllerTest {
     @Mock
     private ANCService ancService;
     @Mock
-    private MCTSService mctsService;
+    private DrishtiMCTSService mctsService;
 
     private DrishtiController controller;
 

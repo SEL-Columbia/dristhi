@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MCTSService {
+public class DrishtiMCTSService {
     private final MCTSSMSService mctsSMSService;
     private final AllMothers mothers;
 
     @Autowired
-    public MCTSService(MCTSSMSService mctsSMSService, AllMothers mothers) {
+    public DrishtiMCTSService(MCTSSMSService mctsSMSService, AllMothers mothers) {
         this.mctsSMSService = mctsSMSService;
         this.mothers = mothers;
     }
