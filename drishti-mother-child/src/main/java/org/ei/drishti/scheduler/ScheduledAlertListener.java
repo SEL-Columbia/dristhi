@@ -3,8 +3,8 @@ package org.ei.drishti.scheduler;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.motechproject.model.MotechEvent;
-import org.motechproject.scheduletracking.api.events.constants.EventDataKey;
-import org.motechproject.scheduletracking.api.events.constants.EventSubject;
+import org.motechproject.scheduletracking.api.events.constants.EventDataKeys;
+import org.motechproject.scheduletracking.api.events.constants.EventSubjects;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.motechproject.sms.api.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ public class ScheduledAlertListener {
         this.smsService = smsService;
     }
 
-    @MotechListener(subjects = {EventSubject.MILESTONE_ALERT})
+    @MotechListener(subjects = {EventSubjects.MILESTONE_ALERT})
     public void handleAlert(MotechEvent event) {
-        String caseId = event.getParameters().get(EventDataKey.EXTERNAL_ID).toString();
+        String caseId = event.getParameters().get(EventDataKeys.EXTERNAL_ID).toString();
         Mother mother = mothers.findByCaseId(caseId);
 
         System.out.println("SMS: Go visit " + mother);

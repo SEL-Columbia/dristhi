@@ -29,4 +29,8 @@ public class AllMothers extends MotechBaseRepository<Mother> {
         }
         return mothers.get(0);
     }
+
+    public boolean motherExists(String caseId) {
+        return findByCaseId(caseId) != null;
+    }
 }

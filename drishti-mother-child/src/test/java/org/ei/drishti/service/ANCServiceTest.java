@@ -18,7 +18,7 @@ import org.motechproject.util.DateUtil;
 import java.util.Date;
 
 import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ANCServiceTest {
@@ -73,17 +73,39 @@ public class ANCServiceTest {
     }
 
     @Test
+    public void shouldFulfillMilestoneWhenANCCareHasBeenProvided() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X"));
+
+        verify(scheduleTrackingService).fulfillCurrentMilestone("CASE-X", "Ante Natal Care - Normal");
+    }
+
+    @Test
+    public void shouldNotTryAndFulfillMilestoneWhenANCCareIsProvidedToAMotherWhoIsNotRegisteredInTheSystem() {
+        when(mothers.motherExists("CASE-UNKNOWN-MOM")).thenReturn(false);
+
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-UNKNOWN-MOM"));
+
+        verifyZeroInteractions(scheduleTrackingService);
+    }
+
+    @Test
     public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X"));
 
         verify(scheduleTrackingService).unenroll("CASE-X", "Ante Natal Care - Normal");
     }
 
     @Test
-    public void shouldFulfillMilestoneWhenANCCareHasBeenProvided() {
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X"));
+    public void shouldNotUnEnrollAMotherFromScheduleWhenSheIsNotRegistered() {
+        when(mothers.motherExists("CASE-UNKNOWN-MOM")).thenReturn(false);
 
-        verify(scheduleTrackingService).fulfillCurrentMilestone("CASE-X", "Ante Natal Care - Normal");
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM"));
+
+        verifyZeroInteractions(scheduleTrackingService);
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId, final Date lmp) {

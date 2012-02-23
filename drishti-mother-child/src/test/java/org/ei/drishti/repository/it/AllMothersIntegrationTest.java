@@ -13,6 +13,8 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
@@ -49,5 +51,15 @@ public class AllMothersIntegrationTest {
 
         assertThat(mother, is(new Mother(caseId, "THAAYI-CARD-1", "Theresa")));
         assertThat(mother.name(), is("Theresa"));
+    }
+
+    @Test
+    public void shouldSayThatAMotherDoesNotExistWhenTheMotherIsNotInTheDB() {
+        String caseId = "CASE-1";
+        Mother motherToRegister = new Mother(caseId, "THAAYI-CARD-1", "Theresa");
+        mothers.register(motherToRegister);
+
+        assertTrue(mothers.motherExists("CASE-1"));
+        assertFalse(mothers.motherExists("CASE-NOT-KNOWN"));
     }
 }
