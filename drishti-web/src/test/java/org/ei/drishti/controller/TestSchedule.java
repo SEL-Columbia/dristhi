@@ -4,6 +4,7 @@ import org.joda.time.LocalDate;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.domain.MilestoneAlert;
 import org.motechproject.scheduletracking.api.domain.WindowName;
+import org.motechproject.scheduletracking.api.domain.exception.InvalidEnrollmentException;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentResponse;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
@@ -33,6 +34,22 @@ public class TestSchedule {
         this.alertTimes = new HashMap<Pair, List<Date>>();
     }
 
+    public void enrollFor(String scheduleName, LocalDate referenceDateForEnrollment, Time preferredAlertTime) throws Exception {
+        String externalId = String.valueOf(new Random().nextFloat());
+
+        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(externalId, scheduleName, preferredAlertTime, referenceDateForEnrollment);
+        trackingService.enroll(enrollmentRequest);
+
+        while (true) {
+            captureAlertsFor(externalId, scheduleName);
+            try {
+                trackingService.fulfillCurrentMilestone(externalId, scheduleName);
+            } catch (InvalidEnrollmentException e) {
+                break;
+            }
+        }
+    }
+
     public void assertAlerts(String milestoneName, WindowName window, Date... expectedTimes) {
         ArrayList<Comparable> sortableActualAlertTimes = new ArrayList<Comparable>(getTriggerTimesFor(milestoneName, window.name()));
         ArrayList<Comparable> sortableExpectedAlertTimes = new ArrayList<Comparable>(Arrays.asList(expectedTimes));
@@ -45,22 +62,6 @@ public class TestSchedule {
 
     public void assertNoAlerts(String milestoneName, WindowName window) {
         assertThat(getTriggerTimesFor(milestoneName, window.name()), is(Collections.<Date>emptyList()));
-    }
-
-    public void enrollFor(String scheduleName, LocalDate referenceDateForEnrollment, Time preferredAlertTime) throws Exception {
-        String externalId = String.valueOf(new Random().nextFloat());
-
-        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(externalId, scheduleName, preferredAlertTime, referenceDateForEnrollment);
-        trackingService.enroll(enrollmentRequest);
-
-        while (true) {
-            captureAlertsFor(externalId, scheduleName);
-            try {
-                trackingService.fulfillCurrentMilestone(externalId, scheduleName);
-            } catch (NullPointerException e) {
-                break;
-            }
-        }
     }
 
     private void captureAlertsFor(String externalId, String scheduleName) throws SchedulerException {
