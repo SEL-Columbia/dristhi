@@ -1,5 +1,6 @@
 {
     "name": "Ante Natal Care - Normal",
+    "absoluteWindows": true,
     "milestones": [
         {
             "name": "ANC 1",
@@ -39,46 +40,99 @@
         {
             "name": "ANC 2",
             "scheduleWindows": {
-                "earliest": "27 Weeks",
-                "due": "28 Weeks",
-                "late": "34 Weeks",
-                "max": "35 Weeks"
+                "earliest": "21 Weeks",
+                "due": "25 Weeks",
+                "late": "27 Weeks",
+                "max": "28 Weeks"
             },
             "alerts": [
                 {
-                    "window": "earliest",
+                    "window": "due",
                     "offset": "0 Days",
-                    "interval": "1 Day",
-                    "count": "7"
+                    "interval": "1 Week",
+                    "count": "4"
+                },
+                {
+                    "window": "late",
+                    "offset": "0 Days",
+                    "interval": "1 Week",
+                    "count": "3"
+                },
+                {
+                    "window": "late",
+                    "offset": "3 Days",
+                    "interval": "1 Week",
+                    "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": "6 Days",
+                    "offset": "2 Days",
                     "interval": "1 Day",
-                    "count": "1"
+                    "count": "3"
                 }
             ]
         },
         {
             "name": "ANC 3",
             "scheduleWindows": {
-                "earliest": "35 Weeks",
-                "due": "36 Weeks",
-                "late": "37 Weeks",
-                "max": "38 Weeks"
+                "earliest": "29 Weeks",
+                "due": "33 Weeks",
+                "late": "33 Weeks",
+                "max": "34 Weeks"
             },
             "alerts": [
                 {
-                    "window": "earliest",
+                    "window": "due",
                     "offset": "0 Days",
-                    "interval": "1 Day",
-                    "count": "7"
+                    "interval": "1 Week",
+                    "count": "4"
+                },
+                {
+                    "window": "late",
+                    "offset": "0 Days",
+                    "interval": "3 Days",
+                    "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": "6 Days",
+                    "offset": "4 Days",
                     "interval": "1 Day",
-                    "count": "1"
+                    "count": "3"
+                }
+            ]
+        },
+        {
+            "name": "ANC 4",
+            "scheduleWindows": {
+                "earliest": "34 Weeks",
+                "due": "37 Weeks",
+                "late": "39 Weeks",
+                "max": "41 Weeks"
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": "0 Days",
+                    "interval": "1 Week",
+                    "count": "3"
+                },
+                {
+                    "window": "late",
+                    "offset": "0 Days",
+                    "interval": "1 Week",
+                    "count": "3"
+                },
+                {
+                    "window": "late",
+                    "offset": "3 Days",
+                    "interval": "1 Week",
+                    "count": "2"
+                },
+                {
+                    "window": "max",
+                    "offset": "2 Days",
+                    "interval": "1 Day",
+                    "count": "3"
                 }
             ]
         }

@@ -19,6 +19,7 @@
     <jetty.port>9979</jetty.port>
     <spring.version>3.0.5.RELEASE</spring.version>
     <release.version>0.1-SNAPSHOT</release.version>
+    <motech.version>0.8-SNAPSHOT</motech.version>
   </properties>
 
   <build>
@@ -175,6 +176,12 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.motechproject</groupId>
+      <artifactId>motech-testing-utils</artifactId>
+      <version>${motech.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

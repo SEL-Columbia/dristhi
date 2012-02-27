@@ -78,7 +78,7 @@ public class ANCServiceTest {
 
         service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X"));
 
-        verify(scheduleTrackingService).fulfillCurrentMilestone("CASE-X", "Ante Natal Care - Normal");
+        verify(scheduleTrackingService).fulfillCurrentMilestone("CASE-X", "Ante Natal Care - Normal", null);
     }
 
     @Test

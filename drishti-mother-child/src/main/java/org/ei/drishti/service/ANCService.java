@@ -38,7 +38,7 @@ public class ANCService {
         Time preferredAlertTime = new Time(now.hourOfDay().get(), now.minuteOfHour().get() + 2);
         LocalDate referenceDate = info.lmpDate() != null ? info.lmpDate() : DateUtil.today();
 
-        trackingService.enroll(new EnrollmentRequest(info.caseId(), SCHEDULE_NAME, preferredAlertTime, referenceDate));
+        trackingService.enroll(new EnrollmentRequest(info.caseId(), SCHEDULE_NAME, preferredAlertTime, referenceDate, null, null));
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {
@@ -46,7 +46,7 @@ public class ANCService {
             logger.warning("Found care provided without registered mother for case ID: " + ancInformation.caseId());
             return;
         }
-        trackingService.fulfillCurrentMilestone(ancInformation.caseId(), SCHEDULE_NAME);
+        trackingService.fulfillCurrentMilestone(ancInformation.caseId(), SCHEDULE_NAME, null);
     }
 
     public void updateANCOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {

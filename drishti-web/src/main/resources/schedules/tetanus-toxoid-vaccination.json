@@ -1,20 +1,27 @@
 {
     "name": "Tetatnus Toxoid Vaccination",
+    "absoluteWindows": false,
     "milestones": [
         {
             "name": "TT 1",
             "scheduleWindows": {
-                "earliest": "0 Weeks",
-                "due": "14 Weeks",
-                "late": "16 Weeks",
-                "max": "18 weeks"
+                "earliest": "10 Weeks",
+                "due": "15 Weeks",
+                "late": "40 Weeks",
+                "max": ""
             },
             "alerts": [
                 {
-                    "window": "due",
+                    "window": "late",
                     "offset": "0 Days",
-                    "interval": "4 Weeks",
-                    "count": "4"
+                    "interval": "1 Weeks",
+                    "count": "40"
+                },
+                {
+                    "window": "late",
+                    "offset": "3 Days",
+                    "interval": "1 Weeks",
+                    "count": "40"
                 }
             ]
         },
@@ -22,16 +29,34 @@
             "name": "TT 2",
             "scheduleWindows": {
                 "earliest": "3 Weeks",
-                "due": "38 Weeks",
-                "late": "34 Weeks",
-                "max": "35 Weeks"
+                "due": "4 Weeks",
+                "late": "8 Weeks",
+                "max": "9 Weeks"
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": "0 Days",
-                    "interval": "4 Weeks",
-                    "count": "9"
+                    "interval": "1 Weeks",
+                    "count": "2"
+                },
+                {
+                    "window": "late",
+                    "offset": "3 Days",
+                    "interval": "1 Weeks",
+                    "count": "4"
+                },
+                {
+                    "window": "late",
+                    "offset": "7 Days",
+                    "interval": "1 Weeks",
+                    "count": "4"
+                },
+                {
+                    "window": "max",
+                    "offset": "2 Days",
+                    "interval": "1 Days",
+                    "count": "3"
                 }
             ]
         }

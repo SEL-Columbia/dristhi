@@ -1,11 +1,13 @@
 package org.ei.drishti.controller;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.motechproject.testing.utils.BaseUnitTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,10 +20,20 @@ import static org.motechproject.util.DateUtil.newDate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/applicationContext-drishti-web.xml")
-public class ScheduleTrackingIntegrationTest {
+public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
+    private static final int JANUARY = 1;
+    private static final int FEBRUARY = 2;
+    private static final int MARCH = 3;
+    private static final int APRIL = 4;
+    private static final int MAY = 5;
+    private static final int JUNE = 6;
+    private static final int JULY = 7;
+    private static final int AUGUST = 8;
+    private static final int SEPTEMBER = 9;
+    private static final int OCTOBER = 10;
+
     @Autowired
     private ScheduleTrackingService trackingService;
-
     @Autowired
     private SchedulerFactoryBean schedulerFactoryBean;
 
@@ -34,15 +46,48 @@ public class ScheduleTrackingIntegrationTest {
 
     @Test
     public void shouldProvideAlertsForANCAtTheRightTimes() throws Exception {
-        testSchedule.enrollFor("Ante Natal Care - Normal", newDate(2012, 1, 1), new Time(14, 0));
+        testSchedule.withStartingMilestone("ANC 1").enrollFor("Ante Natal Care - Normal", newDate(2012, 1, 1), new Time(14, 0));
 
         testSchedule.assertNoAlerts("ANC 1", earliest);
-        testSchedule.assertAlerts("ANC 1", due, date(2012, 3, 4), date(2012, 3, 11), date(2012, 3, 18), date(2012, 3, 25));
-        testSchedule.assertAlerts("ANC 1", late, date(2012, 4, 1), date(2012, 4, 4), date(2012, 4, 8), date(2012, 4, 11), date(2012, 4, 15));
-        testSchedule.assertAlerts("ANC 1", max, date(2012, 4, 17), date(2012, 4, 18), date(2012, 4, 19));
+        testSchedule.assertAlerts("ANC 1", due, date(4, MARCH), date(11, MARCH), date(18, MARCH), date(25, MARCH));
+        testSchedule.assertAlerts("ANC 1", late, date(1, APRIL), date(4, APRIL), date(8, APRIL), date(11, APRIL), date(15, APRIL));
+        testSchedule.assertAlerts("ANC 1", max, date(17, APRIL), date(18, APRIL), date(19, APRIL));
+
+        testSchedule.assertNoAlerts("ANC 2", earliest);
+        testSchedule.assertAlerts("ANC 2", due, date(27, MAY), date(3, JUNE), date(10, JUNE), date(17, JUNE));
+        testSchedule.assertAlerts("ANC 2", late, date(24, JUNE), date(27, JUNE), date(1, JULY), date(4, JULY), date(8, JULY));
+        testSchedule.assertAlerts("ANC 2", max, date(10, JULY), date(11, JULY), date(12, JULY));
+
+        testSchedule.assertNoAlerts("ANC 3", earliest);
+        testSchedule.assertAlerts("ANC 3", due, date(22, JULY), date(29, JULY), date(5, AUGUST), date(12, AUGUST));
+        testSchedule.assertAlerts("ANC 3", late, date(19, AUGUST), date(22, AUGUST));
+        testSchedule.assertAlerts("ANC 3", max, date(23, AUGUST), date(24, AUGUST), date(25, AUGUST));
+
+        testSchedule.assertNoAlerts("ANC 4", earliest);
+        testSchedule.assertAlerts("ANC 4", due, date(26, AUGUST), date(2, SEPTEMBER), date(9, SEPTEMBER));
+        testSchedule.assertAlerts("ANC 4", late, date(16, SEPTEMBER), date(19, SEPTEMBER), date(23, SEPTEMBER), date(26, SEPTEMBER), date(30, SEPTEMBER));
+        testSchedule.assertAlerts("ANC 4", max, date(2, OCTOBER), date(3, OCTOBER), date(4, OCTOBER));
     }
 
-    private Date date(int year, int month, int day) {
-        return new DateTime(year, month, day, 14, 0).toDate();
+    @Test
+    public void shouldProvideAlertsForTetanusToxoidVaccinationAtTheRightTimes() throws Exception {
+        mockCurrentDate(new LocalDate(date(15, JANUARY)));
+
+        testSchedule.withFulfillmentDates(date(15, JANUARY)).withStartingMilestone("TT 1")
+                .enrollFor("Tetatnus Toxoid Vaccination", newDate(2012, 1, 1), new Time(14, 0));
+
+        testSchedule.assertNoAlerts("TT 1", earliest);
+        testSchedule.assertNoAlerts("TT 1", due);
+        testSchedule.assertAlertsStartWith("TT 1", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
+        testSchedule.assertNoAlerts("TT 1", max);
+
+        testSchedule.assertNoAlerts("TT 2", earliest);
+        testSchedule.assertAlerts("TT 2", due, date(5, FEBRUARY), date(12, FEBRUARY));
+        testSchedule.assertAlerts("TT 2", late, date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY), date(4, MARCH), date(7, MARCH), date(11, MARCH));
+        testSchedule.assertAlerts("TT 2", max, date(13, MARCH), date(14, MARCH), date(15, MARCH));
+    }
+
+    private Date date(int day, int month) {
+        return new DateTime(2012, month, day, 14, 0).toDate();
     }
 }
