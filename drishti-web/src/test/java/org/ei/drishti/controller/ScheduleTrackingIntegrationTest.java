@@ -146,6 +146,36 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         testSchedule.assertNoAlerts("OPV 3", max);
     }
 
+    @Test
+    public void shouldProvideAlertsForDPT() throws Exception {
+        testSchedule.enrollFor("DPT", newDate(2012, 1, 1), new Time(14, 0));
+
+        testSchedule.assertNoAlerts("DPT 0", earliest);
+        testSchedule.assertAlertsStartWith("DPT 0", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
+                date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
+                date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
+        testSchedule.assertNoAlerts("DPT 0", late);
+        testSchedule.assertNoAlerts("DPT 0", max);
+
+        testSchedule.assertNoAlerts("DPT 1", earliest);
+        testSchedule.assertAlerts("DPT 1", due, date(5, FEBRUARY), date(12, FEBRUARY));
+        testSchedule.assertAlertsStartWith("DPT 1", late, date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY),
+                date(4, MARCH), date(7, MARCH));
+        testSchedule.assertNoAlerts("DPT 1", max);
+
+        testSchedule.assertNoAlerts("DPT 2", earliest);
+        testSchedule.assertAlerts("DPT 2", due, date(4, MARCH), date(11, MARCH));
+        testSchedule.assertAlertsStartWith("DPT 2", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
+                date(1, APRIL), date(4, APRIL));
+        testSchedule.assertNoAlerts("DPT 2", max);
+
+        testSchedule.assertNoAlerts("DPT 3", earliest);
+        testSchedule.assertAlerts("DPT 3", due, date(1, APRIL), date(8, APRIL));
+        testSchedule.assertAlertsStartWith("DPT 3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL),
+                date(29, APRIL), date(2, MAY));
+        testSchedule.assertNoAlerts("DPT 3", max);
+    }
+
     @Before
     public void setUp() throws Exception {
         testSchedule = new TestSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {
