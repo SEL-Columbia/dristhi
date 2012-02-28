@@ -34,6 +34,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
     private static final int AUGUST = 8;
     private static final int SEPTEMBER = 9;
     private static final int OCTOBER = 10;
+    private static final int NOVEMBER = 11;
 
     @Autowired
     private ScheduleTrackingService trackingService;
@@ -91,6 +92,16 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         testSchedule.assertAlerts("REMINDER", late, date(29, JULY), date(5, AUGUST), date(12, AUGUST), date(19, AUGUST),
                 date(26, AUGUST), date(2, SEPTEMBER), date(9, SEPTEMBER), date(16, SEPTEMBER), date(23, SEPTEMBER), date(30, SEPTEMBER));
         testSchedule.assertAlerts("REMINDER", max, date(2, OCTOBER), date(3, OCTOBER), date(4, OCTOBER));
+    }
+
+    @Test
+    public void shouldProvideAlertsForExpectedDateOfDeliveryAtTheRightTimes() throws Exception {
+        testSchedule.enrollFor("Expected Date Of Delivery", newDate(2012, 1, 1), new Time(14, 0));
+
+        testSchedule.assertNoAlerts("EDD", earliest);
+        testSchedule.assertAlerts("EDD", due, date(23, SEPTEMBER), date(30, SEPTEMBER), date(7, OCTOBER));
+        testSchedule.assertAlertsStartWith("EDD", late, date(10, OCTOBER), date(14, OCTOBER), date(17, OCTOBER), date(21, OCTOBER), date(24, OCTOBER), date(28, OCTOBER), date(31, OCTOBER), date(4, NOVEMBER));
+        testSchedule.assertNoAlerts("EDD", max);
     }
 
     @Before
