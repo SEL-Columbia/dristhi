@@ -15,6 +15,7 @@ import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 @Service
@@ -57,6 +58,6 @@ public class ANCService {
             logger.warning("Tried to close case without registered mother for case ID: " + closeInformation.caseId());
             return;
         }
-        trackingService.unenroll(closeInformation.caseId(), SCHEDULE_NAME);
+        trackingService.unenroll(closeInformation.caseId(), Arrays.asList(SCHEDULE_NAME));
     }
 }

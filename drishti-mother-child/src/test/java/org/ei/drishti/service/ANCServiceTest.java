@@ -15,6 +15,7 @@ import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.util.DateUtil;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import static org.mockito.Matchers.argThat;
@@ -96,7 +97,7 @@ public class ANCServiceTest {
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X"));
 
-        verify(scheduleTrackingService).unenroll("CASE-X", "Ante Natal Care - Normal");
+        verify(scheduleTrackingService).unenroll("CASE-X", Arrays.asList("Ante Natal Care - Normal"));
     }
 
     @Test
