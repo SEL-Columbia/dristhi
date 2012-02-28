@@ -41,187 +41,187 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
     @Autowired
     private SchedulerFactoryBean schedulerFactoryBean;
 
-    private TestSchedule testSchedule;
+    private TestSchedule schedule;
 
     @Test
     public void shouldProvideAlertsForANCAtTheRightTimes() throws Exception {
-        testSchedule.enrollFor("Ante Natal Care - Normal", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor("Ante Natal Care - Normal", newDate(2012, 1, 1), new Time(14, 0));
 
-        testSchedule.assertNoAlerts("ANC 1", earliest);
-        testSchedule.assertAlerts("ANC 1", due, date(4, MARCH), date(11, MARCH), date(18, MARCH), date(25, MARCH));
-        testSchedule.assertAlerts("ANC 1", late, date(1, APRIL), date(4, APRIL), date(8, APRIL), date(11, APRIL), date(15, APRIL));
-        testSchedule.assertAlerts("ANC 1", max, date(17, APRIL), date(18, APRIL), date(19, APRIL));
+        schedule.assertNoAlerts("ANC 1", earliest);
+        schedule.assertAlerts("ANC 1", due, date(4, MARCH), date(11, MARCH), date(18, MARCH), date(25, MARCH));
+        schedule.assertAlerts("ANC 1", late, date(1, APRIL), date(4, APRIL), date(8, APRIL), date(11, APRIL), date(15, APRIL));
+        schedule.assertAlerts("ANC 1", max, date(17, APRIL), date(18, APRIL), date(19, APRIL));
 
-        testSchedule.assertNoAlerts("ANC 2", earliest);
-        testSchedule.assertAlerts("ANC 2", due, date(27, MAY), date(3, JUNE), date(10, JUNE), date(17, JUNE));
-        testSchedule.assertAlerts("ANC 2", late, date(24, JUNE), date(27, JUNE), date(1, JULY), date(4, JULY), date(8, JULY));
-        testSchedule.assertAlerts("ANC 2", max, date(10, JULY), date(11, JULY), date(12, JULY));
+        schedule.assertNoAlerts("ANC 2", earliest);
+        schedule.assertAlerts("ANC 2", due, date(27, MAY), date(3, JUNE), date(10, JUNE), date(17, JUNE));
+        schedule.assertAlerts("ANC 2", late, date(24, JUNE), date(27, JUNE), date(1, JULY), date(4, JULY), date(8, JULY));
+        schedule.assertAlerts("ANC 2", max, date(10, JULY), date(11, JULY), date(12, JULY));
 
-        testSchedule.assertNoAlerts("ANC 3", earliest);
-        testSchedule.assertAlerts("ANC 3", due, date(22, JULY), date(29, JULY), date(5, AUGUST), date(12, AUGUST));
-        testSchedule.assertAlerts("ANC 3", late, date(19, AUGUST), date(22, AUGUST));
-        testSchedule.assertAlerts("ANC 3", max, date(23, AUGUST), date(24, AUGUST), date(25, AUGUST));
+        schedule.assertNoAlerts("ANC 3", earliest);
+        schedule.assertAlerts("ANC 3", due, date(22, JULY), date(29, JULY), date(5, AUGUST), date(12, AUGUST));
+        schedule.assertAlerts("ANC 3", late, date(19, AUGUST), date(22, AUGUST));
+        schedule.assertAlerts("ANC 3", max, date(23, AUGUST), date(24, AUGUST), date(25, AUGUST));
 
-        testSchedule.assertNoAlerts("ANC 4", earliest);
-        testSchedule.assertAlerts("ANC 4", due, date(26, AUGUST), date(2, SEPTEMBER), date(9, SEPTEMBER));
-        testSchedule.assertAlerts("ANC 4", late, date(16, SEPTEMBER), date(19, SEPTEMBER), date(23, SEPTEMBER), date(26, SEPTEMBER), date(30, SEPTEMBER));
-        testSchedule.assertAlerts("ANC 4", max, date(2, OCTOBER), date(3, OCTOBER), date(4, OCTOBER));
+        schedule.assertNoAlerts("ANC 4", earliest);
+        schedule.assertAlerts("ANC 4", due, date(26, AUGUST), date(2, SEPTEMBER), date(9, SEPTEMBER));
+        schedule.assertAlerts("ANC 4", late, date(16, SEPTEMBER), date(19, SEPTEMBER), date(23, SEPTEMBER), date(26, SEPTEMBER), date(30, SEPTEMBER));
+        schedule.assertAlerts("ANC 4", max, date(2, OCTOBER), date(3, OCTOBER), date(4, OCTOBER));
     }
 
     @Test
     public void shouldProvideAlertsForTetanusToxoidVaccinationAtTheRightTimes() throws Exception {
-        testSchedule.withFulfillmentDates(date(15, JANUARY)).enrollFor("Tetatnus Toxoid Vaccination", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.withFulfillmentDates(date(15, JANUARY)).enrollFor("Tetatnus Toxoid Vaccination", newDate(2012, 1, 1), new Time(14, 0));
 
-        testSchedule.assertNoAlerts("TT 1", earliest);
-        testSchedule.assertNoAlerts("TT 1", due);
-        testSchedule.assertAlertsStartWith("TT 1", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
-        testSchedule.assertNoAlerts("TT 1", max);
+        schedule.assertNoAlerts("TT 1", earliest);
+        schedule.assertNoAlerts("TT 1", due);
+        schedule.assertAlertsStartWith("TT 1", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
+        schedule.assertNoAlerts("TT 1", max);
 
-        testSchedule.assertNoAlerts("TT 2", earliest);
-        testSchedule.assertAlerts("TT 2", due, date(5, FEBRUARY), date(12, FEBRUARY));
-        testSchedule.assertAlerts("TT 2", late, date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY), date(4, MARCH), date(7, MARCH), date(11, MARCH));
-        testSchedule.assertAlerts("TT 2", max, date(13, MARCH), date(14, MARCH), date(15, MARCH));
+        schedule.assertNoAlerts("TT 2", earliest);
+        schedule.assertAlerts("TT 2", due, date(5, FEBRUARY), date(12, FEBRUARY));
+        schedule.assertAlerts("TT 2", late, date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY), date(4, MARCH), date(7, MARCH), date(11, MARCH));
+        schedule.assertAlerts("TT 2", max, date(13, MARCH), date(14, MARCH), date(15, MARCH));
     }
 
     @Test
     public void shouldProvideAlertsForLabRemindersATheRightTimes() throws Exception {
-        testSchedule.enrollFor("Lab Reminders", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor("Lab Reminders", newDate(2012, 1, 1), new Time(14, 0));
 
-        testSchedule.assertNoAlerts("REMINDER", earliest);
-        testSchedule.assertNoAlerts("REMINDER", due);
-        testSchedule.assertAlerts("REMINDER", late, date(29, JULY), date(5, AUGUST), date(12, AUGUST), date(19, AUGUST),
+        schedule.assertNoAlerts("REMINDER", earliest);
+        schedule.assertNoAlerts("REMINDER", due);
+        schedule.assertAlerts("REMINDER", late, date(29, JULY), date(5, AUGUST), date(12, AUGUST), date(19, AUGUST),
                 date(26, AUGUST), date(2, SEPTEMBER), date(9, SEPTEMBER), date(16, SEPTEMBER), date(23, SEPTEMBER), date(30, SEPTEMBER), date(7, OCTOBER));
-        testSchedule.assertAlerts("REMINDER", max, date(9, OCTOBER), date(10, OCTOBER), date(11, OCTOBER));
+        schedule.assertAlerts("REMINDER", max, date(9, OCTOBER), date(10, OCTOBER), date(11, OCTOBER));
     }
 
     @Test
     public void shouldProvideAlertsForExpectedDateOfDeliveryAtTheRightTimes() throws Exception {
-        testSchedule.enrollFor("Expected Date Of Delivery", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor("Expected Date Of Delivery", newDate(2012, 1, 1), new Time(14, 0));
 
-        testSchedule.assertNoAlerts("EDD", earliest);
-        testSchedule.assertAlerts("EDD", due, date(23, SEPTEMBER), date(30, SEPTEMBER), date(7, OCTOBER));
-        testSchedule.assertAlertsStartWith("EDD", late, date(10, OCTOBER), date(14, OCTOBER), date(17, OCTOBER), date(21, OCTOBER), date(24, OCTOBER), date(28, OCTOBER), date(31, OCTOBER), date(4, NOVEMBER));
-        testSchedule.assertNoAlerts("EDD", max);
+        schedule.assertNoAlerts("EDD", earliest);
+        schedule.assertAlerts("EDD", due, date(23, SEPTEMBER), date(30, SEPTEMBER), date(7, OCTOBER));
+        schedule.assertAlertsStartWith("EDD", late, date(10, OCTOBER), date(14, OCTOBER), date(17, OCTOBER), date(21, OCTOBER), date(24, OCTOBER), date(28, OCTOBER), date(31, OCTOBER), date(4, NOVEMBER));
+        schedule.assertNoAlerts("EDD", max);
     }
 
     @Test
     public void shouldProvideAlertsForBCG() throws Exception {
-        testSchedule.enrollFor("BCG", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor("BCG", newDate(2012, 1, 1), new Time(14, 0));
 
-        testSchedule.assertNoAlerts("REMINDER", earliest);
-        testSchedule.assertAlertsStartWith("REMINDER", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
+        schedule.assertNoAlerts("REMINDER", earliest);
+        schedule.assertAlertsStartWith("REMINDER", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
                 date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
                 date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
-        testSchedule.assertNoAlerts("REMINDER", late);
-        testSchedule.assertNoAlerts("REMINDER", max);
+        schedule.assertNoAlerts("REMINDER", late);
+        schedule.assertNoAlerts("REMINDER", max);
     }
 
     @Test
     public void shouldProvideAlertsForOPV() throws Exception {
-        testSchedule.enrollFor("OPV", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor("OPV", newDate(2012, 1, 1), new Time(14, 0));
 
-        testSchedule.assertNoAlerts("OPV 0", earliest);
-        testSchedule.assertAlertsStartWith("OPV 0", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
+        schedule.assertNoAlerts("OPV 0", earliest);
+        schedule.assertAlertsStartWith("OPV 0", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
                 date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
                 date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
-        testSchedule.assertNoAlerts("OPV 0", late);
-        testSchedule.assertNoAlerts("OPV 0", max);
+        schedule.assertNoAlerts("OPV 0", late);
+        schedule.assertNoAlerts("OPV 0", max);
 
-        testSchedule.assertNoAlerts("OPV 1", earliest);
-        testSchedule.assertAlerts("OPV 1", due, date(5, FEBRUARY), date(12, FEBRUARY));
-        testSchedule.assertAlertsStartWith("OPV 1", late, date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY),
+        schedule.assertNoAlerts("OPV 1", earliest);
+        schedule.assertAlerts("OPV 1", due, date(5, FEBRUARY), date(12, FEBRUARY));
+        schedule.assertAlertsStartWith("OPV 1", late, date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY),
                 date(4, MARCH), date(7, MARCH));
-        testSchedule.assertNoAlerts("OPV 1", max);
+        schedule.assertNoAlerts("OPV 1", max);
 
-        testSchedule.assertNoAlerts("OPV 2", earliest);
-        testSchedule.assertAlerts("OPV 2", due, date(4, MARCH), date(11, MARCH));
-        testSchedule.assertAlertsStartWith("OPV 2", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
+        schedule.assertNoAlerts("OPV 2", earliest);
+        schedule.assertAlerts("OPV 2", due, date(4, MARCH), date(11, MARCH));
+        schedule.assertAlertsStartWith("OPV 2", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
                 date(1, APRIL), date(4, APRIL));
-        testSchedule.assertNoAlerts("OPV 2", max);
+        schedule.assertNoAlerts("OPV 2", max);
 
-        testSchedule.assertNoAlerts("OPV 3", earliest);
-        testSchedule.assertAlerts("OPV 3", due, date(1, APRIL), date(8, APRIL));
-        testSchedule.assertAlertsStartWith("OPV 3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL),
+        schedule.assertNoAlerts("OPV 3", earliest);
+        schedule.assertAlerts("OPV 3", due, date(1, APRIL), date(8, APRIL));
+        schedule.assertAlertsStartWith("OPV 3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL),
                 date(29, APRIL), date(2, MAY));
-        testSchedule.assertNoAlerts("OPV 3", max);
+        schedule.assertNoAlerts("OPV 3", max);
     }
 
     @Test
     public void shouldProvideAlertsForDPT() throws Exception {
-        testSchedule.enrollFor("DPT", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor("DPT", newDate(2012, 1, 1), new Time(14, 0));
 
-        testSchedule.assertNoAlerts("DPT 0", earliest);
-        testSchedule.assertAlertsStartWith("DPT 0", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
+        schedule.assertNoAlerts("DPT 0", earliest);
+        schedule.assertAlertsStartWith("DPT 0", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
                 date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
                 date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
-        testSchedule.assertNoAlerts("DPT 0", late);
-        testSchedule.assertNoAlerts("DPT 0", max);
+        schedule.assertNoAlerts("DPT 0", late);
+        schedule.assertNoAlerts("DPT 0", max);
 
-        testSchedule.assertNoAlerts("DPT 1", earliest);
-        testSchedule.assertAlerts("DPT 1", due, date(5, FEBRUARY), date(12, FEBRUARY));
-        testSchedule.assertAlertsStartWith("DPT 1", late, date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY),
+        schedule.assertNoAlerts("DPT 1", earliest);
+        schedule.assertAlerts("DPT 1", due, date(5, FEBRUARY), date(12, FEBRUARY));
+        schedule.assertAlertsStartWith("DPT 1", late, date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY),
                 date(4, MARCH), date(7, MARCH));
-        testSchedule.assertNoAlerts("DPT 1", max);
+        schedule.assertNoAlerts("DPT 1", max);
 
-        testSchedule.assertNoAlerts("DPT 2", earliest);
-        testSchedule.assertAlerts("DPT 2", due, date(4, MARCH), date(11, MARCH));
-        testSchedule.assertAlertsStartWith("DPT 2", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
+        schedule.assertNoAlerts("DPT 2", earliest);
+        schedule.assertAlerts("DPT 2", due, date(4, MARCH), date(11, MARCH));
+        schedule.assertAlertsStartWith("DPT 2", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
                 date(1, APRIL), date(4, APRIL));
-        testSchedule.assertNoAlerts("DPT 2", max);
+        schedule.assertNoAlerts("DPT 2", max);
 
-        testSchedule.assertNoAlerts("DPT 3", earliest);
-        testSchedule.assertAlerts("DPT 3", due, date(1, APRIL), date(8, APRIL));
-        testSchedule.assertAlertsStartWith("DPT 3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL),
+        schedule.assertNoAlerts("DPT 3", earliest);
+        schedule.assertAlerts("DPT 3", due, date(1, APRIL), date(8, APRIL));
+        schedule.assertAlertsStartWith("DPT 3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL),
                 date(29, APRIL), date(2, MAY));
-        testSchedule.assertNoAlerts("DPT 3", max);
+        schedule.assertNoAlerts("DPT 3", max);
     }
 
     @Test
     public void shouldProvideAlertsForHepatitisVaccination() throws Exception {
-        testSchedule.enrollFor("Hepatitis", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor("Hepatitis", newDate(2012, 1, 1), new Time(14, 0));
 
-        testSchedule.assertNoAlerts("Hepatitis B1", earliest);
-        testSchedule.assertAlertsStartWith("Hepatitis B1", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
+        schedule.assertNoAlerts("Hepatitis B1", earliest);
+        schedule.assertAlertsStartWith("Hepatitis B1", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
                 date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
                 date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
-        testSchedule.assertNoAlerts("Hepatitis B1", late);
-        testSchedule.assertNoAlerts("Hepatitis B1", max);
+        schedule.assertNoAlerts("Hepatitis B1", late);
+        schedule.assertNoAlerts("Hepatitis B1", max);
 
-        testSchedule.assertNoAlerts("Hepatitis B2", earliest);
-        testSchedule.assertAlerts("Hepatitis B2", due, date(4, MARCH), date(11, MARCH));
-        testSchedule.assertAlertsStartWith("Hepatitis B2", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
+        schedule.assertNoAlerts("Hepatitis B2", earliest);
+        schedule.assertAlerts("Hepatitis B2", due, date(4, MARCH), date(11, MARCH));
+        schedule.assertAlertsStartWith("Hepatitis B2", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
                 date(1, APRIL), date(4, APRIL));
-        testSchedule.assertNoAlerts("Hepatitis B2", max);
+        schedule.assertNoAlerts("Hepatitis B2", max);
 
-        testSchedule.assertNoAlerts("Hepatitis B3", earliest);
-        testSchedule.assertAlerts("Hepatitis B3", due, date(1, APRIL), date(8, APRIL));
-        testSchedule.assertAlertsStartWith("Hepatitis B3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
-        testSchedule.assertNoAlerts("Hepatitis B3", max);
+        schedule.assertNoAlerts("Hepatitis B3", earliest);
+        schedule.assertAlerts("Hepatitis B3", due, date(1, APRIL), date(8, APRIL));
+        schedule.assertAlertsStartWith("Hepatitis B3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
+        schedule.assertNoAlerts("Hepatitis B3", max);
     }
 
     @Test
     public void shouldProvideAlertForMeaslesVaccinationAndVitaminSupplements() throws Exception {
-        testSchedule.enrollFor("Measles Vaccination and Vitamin Supplements", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor("Measles Vaccination and Vitamin Supplements", newDate(2012, 1, 1), new Time(14, 0));
 
-        testSchedule.assertNoAlerts("REMINDER", earliest);
-        testSchedule.assertAlerts("REMINDER", due, date(9, SEPTEMBER));
-        testSchedule.assertNoAlerts("REMINDER", late);
-        testSchedule.assertNoAlerts("REMINDER", max);
+        schedule.assertNoAlerts("REMINDER", earliest);
+        schedule.assertAlerts("REMINDER", due, date(9, SEPTEMBER));
+        schedule.assertNoAlerts("REMINDER", late);
+        schedule.assertNoAlerts("REMINDER", max);
     }
 
     @Test
     public void shouldProvideAlertForBoosterDoses() throws Exception {
-        testSchedule.enrollFor("Boosters", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor("Boosters", newDate(2012, 1, 1), new Time(14, 0));
 
-        testSchedule.assertNoAlerts("REMINDER", earliest);
-        testSchedule.assertAlerts("REMINDER", due, dateWithYear(19, MAY, 2013));
-        testSchedule.assertNoAlerts("REMINDER", late);
-        testSchedule.assertNoAlerts("REMINDER", max);
+        schedule.assertNoAlerts("REMINDER", earliest);
+        schedule.assertAlerts("REMINDER", due, dateWithYear(19, MAY, 2013));
+        schedule.assertNoAlerts("REMINDER", late);
+        schedule.assertNoAlerts("REMINDER", max);
     }
 
     @Before
     public void setUp() throws Exception {
-        testSchedule = new TestSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {
+        schedule = new TestSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {
             @Override
             public void setTheDateTo(LocalDate date) {
                 mockCurrentDate(date);
