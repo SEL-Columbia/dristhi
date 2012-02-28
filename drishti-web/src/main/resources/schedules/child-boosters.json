@@ -1,0 +1,23 @@
+{
+    "name": "Boosters",
+    "absoluteWindows": true,
+    "milestones": [
+        {
+            "name": "REMINDER",
+            "scheduleWindows": {
+                "earliest": "72 Weeks",
+                "due": "",
+                "late": "",
+                "max": ""
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": "0 Days",
+                    "interval": "1 Week",
+                    "count": "1"
+                }
+            ]
+        }
+   ]
+}

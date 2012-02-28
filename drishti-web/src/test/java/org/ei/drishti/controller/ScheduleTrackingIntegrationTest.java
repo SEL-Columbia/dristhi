@@ -176,6 +176,49 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         testSchedule.assertNoAlerts("DPT 3", max);
     }
 
+    @Test
+    public void shouldProvideAlertsForHepatitisVaccination() throws Exception {
+        testSchedule.enrollFor("Hepatitis", newDate(2012, 1, 1), new Time(14, 0));
+
+        testSchedule.assertNoAlerts("Hepatitis B1", earliest);
+        testSchedule.assertAlertsStartWith("Hepatitis B1", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
+                date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
+                date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
+        testSchedule.assertNoAlerts("Hepatitis B1", late);
+        testSchedule.assertNoAlerts("Hepatitis B1", max);
+
+        testSchedule.assertNoAlerts("Hepatitis B2", earliest);
+        testSchedule.assertAlerts("Hepatitis B2", due, date(4, MARCH), date(11, MARCH));
+        testSchedule.assertAlertsStartWith("Hepatitis B2", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
+                date(1, APRIL), date(4, APRIL));
+        testSchedule.assertNoAlerts("Hepatitis B2", max);
+
+        testSchedule.assertNoAlerts("Hepatitis B3", earliest);
+        testSchedule.assertAlerts("Hepatitis B3", due, date(1, APRIL), date(8, APRIL));
+        testSchedule.assertAlertsStartWith("Hepatitis B3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
+        testSchedule.assertNoAlerts("Hepatitis B3", max);
+    }
+
+    @Test
+    public void shouldProvideAlertForMeaslesVaccinationAndVitaminSupplements() throws Exception {
+        testSchedule.enrollFor("Measles Vaccination and Vitamin Supplements", newDate(2012, 1, 1), new Time(14, 0));
+
+        testSchedule.assertNoAlerts("REMINDER", earliest);
+        testSchedule.assertAlerts("REMINDER", due, date(9, SEPTEMBER));
+        testSchedule.assertNoAlerts("REMINDER", late);
+        testSchedule.assertNoAlerts("REMINDER", max);
+    }
+
+    @Test
+    public void shouldProvideAlertForBoosterDoses() throws Exception {
+        testSchedule.enrollFor("Boosters", newDate(2012, 1, 1), new Time(14, 0));
+
+        testSchedule.assertNoAlerts("REMINDER", earliest);
+        testSchedule.assertAlerts("REMINDER", due, dateWithYear(19, MAY, 2013));
+        testSchedule.assertNoAlerts("REMINDER", late);
+        testSchedule.assertNoAlerts("REMINDER", max);
+    }
+
     @Before
     public void setUp() throws Exception {
         testSchedule = new TestSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {
@@ -193,6 +236,10 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
     }
 
     private Date date(int day, int month) {
-        return new DateTime(2012, month, day, 14, 0).toDate();
+        return dateWithYear(day, month, 2012);
+    }
+
+    private Date dateWithYear(int day, int month, int year) {
+        return new DateTime(year, month, day, 14, 0).toDate();
     }
 }
