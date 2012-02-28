@@ -90,8 +90,8 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         testSchedule.assertNoAlerts("REMINDER", earliest);
         testSchedule.assertNoAlerts("REMINDER", due);
         testSchedule.assertAlerts("REMINDER", late, date(29, JULY), date(5, AUGUST), date(12, AUGUST), date(19, AUGUST),
-                date(26, AUGUST), date(2, SEPTEMBER), date(9, SEPTEMBER), date(16, SEPTEMBER), date(23, SEPTEMBER), date(30, SEPTEMBER));
-        testSchedule.assertAlerts("REMINDER", max, date(2, OCTOBER), date(3, OCTOBER), date(4, OCTOBER));
+                date(26, AUGUST), date(2, SEPTEMBER), date(9, SEPTEMBER), date(16, SEPTEMBER), date(23, SEPTEMBER), date(30, SEPTEMBER), date(7, OCTOBER));
+        testSchedule.assertAlerts("REMINDER", max, date(9, OCTOBER), date(10, OCTOBER), date(11, OCTOBER));
     }
 
     @Test
