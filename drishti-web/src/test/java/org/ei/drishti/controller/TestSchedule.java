@@ -11,9 +11,7 @@ import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.util.DateUtil;
 import org.quartz.*;
 import org.quartz.impl.calendar.BaseCalendar;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
-import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -41,6 +39,7 @@ public class TestSchedule {
     public void enrollFor(String scheduleName, LocalDate referenceDateForEnrollment, Time preferredAlertTime) throws Exception {
         String externalId = String.valueOf(new Random().nextFloat());
 
+        setDateAction.setTheDateTo(referenceDateForEnrollment);
         EnrollmentRequest enrollmentRequest = new EnrollmentRequest(externalId, scheduleName, preferredAlertTime, referenceDateForEnrollment, null, null);
         trackingService.enroll(enrollmentRequest);
 

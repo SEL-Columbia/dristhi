@@ -104,6 +104,18 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         testSchedule.assertNoAlerts("EDD", max);
     }
 
+    @Test
+    public void shouldProvideAlertsForBCG() throws Exception {
+        testSchedule.enrollFor("BCG", newDate(2012, 1, 1), new Time(14, 0));
+
+        testSchedule.assertNoAlerts("REMINDER", earliest);
+        testSchedule.assertAlertsStartWith("REMINDER", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
+                date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
+                date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
+        testSchedule.assertNoAlerts("REMINDER", late);
+        testSchedule.assertNoAlerts("REMINDER", max);
+    }
+
     @Before
     public void setUp() throws Exception {
         testSchedule = new TestSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {

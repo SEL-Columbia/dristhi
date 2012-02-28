@@ -1,0 +1,29 @@
+{
+    "name": "BCG",
+    "absoluteWindows": false,
+    "milestones": [
+        {
+            "name": "REMINDER",
+            "scheduleWindows": {
+                "earliest": "2 Weeks",
+                "due": "",
+                "late": "",
+                "max": ""
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": "0 Days",
+                    "interval": "1 Week",
+                    "count": "100"
+                },
+                {
+                    "window": "due",
+                    "offset": "3 Days",
+                    "interval": "1 Week",
+                    "count": "100"
+                }
+            ]
+        }
+   ]
+}
