@@ -46,7 +46,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
 
     @Test
     public void shouldProvideAlertsForANCAtTheRightTimes() throws Exception {
-        testSchedule.withStartingMilestone("ANC 1").enrollFor("Ante Natal Care - Normal", newDate(2012, 1, 1), new Time(14, 0));
+        testSchedule.enrollFor("Ante Natal Care - Normal", newDate(2012, 1, 1), new Time(14, 0));
 
         testSchedule.assertNoAlerts("ANC 1", earliest);
         testSchedule.assertAlerts("ANC 1", due, date(4, MARCH), date(11, MARCH), date(18, MARCH), date(25, MARCH));
@@ -73,8 +73,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertsForTetanusToxoidVaccinationAtTheRightTimes() throws Exception {
         mockCurrentDate(new LocalDate(date(15, JANUARY)));
 
-        testSchedule.withFulfillmentDates(date(15, JANUARY)).withStartingMilestone("TT 1")
-                .enrollFor("Tetatnus Toxoid Vaccination", newDate(2012, 1, 1), new Time(14, 0));
+        testSchedule.withFulfillmentDates(date(15, JANUARY)).enrollFor("Tetatnus Toxoid Vaccination", newDate(2012, 1, 1), new Time(14, 0));
 
         testSchedule.assertNoAlerts("TT 1", earliest);
         testSchedule.assertNoAlerts("TT 1", due);

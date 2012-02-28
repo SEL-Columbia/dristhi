@@ -28,7 +28,6 @@ public class TestSchedule {
     private final Scheduler scheduler;
     private Map<Pair, List<Date>> alertTimes;
     private final LinkedList<Date> fulfillmentDates;
-    private String startingMilestone;
 
     @Autowired
     public TestSchedule(ScheduleTrackingService trackingService, SchedulerFactoryBean schedulerFactoryBean) {
@@ -42,8 +41,7 @@ public class TestSchedule {
     public void enrollFor(String scheduleName, LocalDate referenceDateForEnrollment, Time preferredAlertTime) throws Exception {
         String externalId = String.valueOf(new Random().nextFloat());
 
-        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(externalId, scheduleName, preferredAlertTime,
-                referenceDateForEnrollment, referenceDateForEnrollment, startingMilestone);
+        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(externalId, scheduleName, preferredAlertTime, referenceDateForEnrollment, null, null);
         trackingService.enroll(enrollmentRequest);
 
         while (true) {
@@ -58,11 +56,6 @@ public class TestSchedule {
 
     public TestSchedule withFulfillmentDates(Date... fulfillmentDates) {
         this.fulfillmentDates.addAll(Arrays.asList(fulfillmentDates));
-        return this;
-    }
-
-    public TestSchedule withStartingMilestone(String startingMilestone) {
-        this.startingMilestone = startingMilestone;
         return this;
     }
 
