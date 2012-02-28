@@ -5,10 +5,10 @@
         {
             "name": "TT 1",
             "scheduleWindows": {
-                "earliest": "10 Weeks",
-                "due": "15 Weeks",
-                "late": "40 Weeks",
-                "max": ""
+                "earliest": ["10 Weeks"],
+                "due": ["15 Weeks"],
+                "late": ["40 Weeks"],
+                "max": [""]
             },
             "alerts": [
                 {
@@ -28,10 +28,10 @@
         {
             "name": "TT 2",
             "scheduleWindows": {
-                "earliest": "3 Weeks",
-                "due": "4 Weeks",
-                "late": "8 Weeks",
-                "max": "9 Weeks"
+                "earliest": ["3 Weeks"],
+                "due": ["4 Weeks"],
+                "late": ["8 Weeks"],
+                "max": ["9 Weeks"]
             },
             "alerts": [
                 {

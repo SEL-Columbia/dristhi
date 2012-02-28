@@ -1,14 +1,14 @@
 {
     "name": "Boosters",
-    "absoluteWindows": true,
+    "absoluteWindows": false,
     "milestones": [
         {
             "name": "REMINDER",
             "scheduleWindows": {
-                "earliest": "72 Weeks",
-                "due": "",
-                "late": "",
-                "max": ""
+                "earliest": ["72 Weeks"],
+                "due": ["73 Weeks"],
+                "late": [""],
+                "max": [""]
             },
             "alerts": [
                 {

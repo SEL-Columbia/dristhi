@@ -5,10 +5,10 @@
         {
             "name": "REMINDER",
             "scheduleWindows": {
-                "earliest": "36 Weeks",
-                "due": "",
-                "late": "",
-                "max": ""
+                "earliest": ["36 Weeks"],
+                "due": ["37 Weeks"],
+                "late": [""],
+                "max": [""]
             },
             "alerts": [
                 {

@@ -5,10 +5,10 @@
         {
             "name": "EDD",
             "scheduleWindows": {
-                "earliest": "38 Weeks",
-                "due": "40 Weeks",
-                "late": "",
-                "max": ""
+                "earliest": ["38 Weeks"],
+                "due": ["40 Weeks"],
+                "late": ["100 Weeks"],
+                "max": [""]
             },
             "alerts": [
                 {

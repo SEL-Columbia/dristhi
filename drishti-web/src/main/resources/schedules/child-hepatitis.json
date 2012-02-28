@@ -5,10 +5,10 @@
         {
             "name": "Hepatitis B1",
             "scheduleWindows": {
-                "earliest": "2 Weeks",
-                "due": "",
-                "late": "",
-                "max": ""
+                "earliest": ["2 Weeks"],
+                "due": ["100 Weeks"],
+                "late": [""],
+                "max": [""]
             },
             "alerts": [
                 {
@@ -28,10 +28,10 @@
         {
             "name": "Hepatitis B2",
             "scheduleWindows": {
-                "earliest": "9 Weeks",
-                "due": "11 Weeks",
-                "late": "",
-                "max": ""
+                "earliest": ["9 Weeks"],
+                "due": ["11 Weeks"],
+                "late": ["100 Weeks"],
+                "max": [""]
             },
             "alerts": [
                 {
@@ -57,10 +57,10 @@
         {
             "name": "Hepatitis B3",
             "scheduleWindows": {
-                "earliest": "13 Weeks",
-                "due": "15 Weeks",
-                "late": "",
-                "max": ""
+                "earliest": ["13 Weeks"],
+                "due": ["15 Weeks"],
+                "late": ["100 Weeks"],
+                "max": [""]
             },
             "alerts": [
                 {
@@ -86,10 +86,10 @@
         {
             "name": "Hepatitis B4",
             "scheduleWindows": {
-                "earliest": "13 Weeks",
-                "due": "15 Weeks",
-                "late": "",
-                "max": ""
+                "earliest": ["13 Weeks"],
+                "due": ["15 Weeks"],
+                "late": ["100 Weeks"],
+                "max": [""]
             },
             "alerts": [
                 {

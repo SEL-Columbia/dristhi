@@ -5,10 +5,10 @@
         {
             "name": "ANC 1",
             "scheduleWindows": {
-                "earliest": "9 Weeks",
-                "due": "13 Weeks",
-                "late": "15 Weeks",
-                "max": "16 weeks"
+                "earliest": ["9 Weeks"],
+                "due": ["13 Weeks"],
+                "late": ["15 Weeks"],
+                "max": ["16 weeks"]
             },
             "alerts": [
                 {
@@ -40,10 +40,10 @@
         {
             "name": "ANC 2",
             "scheduleWindows": {
-                "earliest": "21 Weeks",
-                "due": "25 Weeks",
-                "late": "27 Weeks",
-                "max": "28 Weeks"
+                "earliest": ["21 Weeks"],
+                "due": ["25 Weeks"],
+                "late": ["27 Weeks"],
+                "max": ["28 Weeks"]
             },
             "alerts": [
                 {
@@ -75,10 +75,10 @@
         {
             "name": "ANC 3",
             "scheduleWindows": {
-                "earliest": "29 Weeks",
-                "due": "33 Weeks",
-                "late": "33 Weeks",
-                "max": "34 Weeks"
+                "earliest": ["29 Weeks"],
+                "due": ["33 Weeks"],
+                "late": ["33 Weeks"],
+                "max": ["34 Weeks"]
             },
             "alerts": [
                 {
@@ -104,10 +104,10 @@
         {
             "name": "ANC 4",
             "scheduleWindows": {
-                "earliest": "34 Weeks",
-                "due": "37 Weeks",
-                "late": "39 Weeks",
-                "max": "41 Weeks"
+                "earliest": ["34 Weeks"],
+                "due": ["37 Weeks"],
+                "late": ["39 Weeks"],
+                "max": ["41 Weeks"]
             },
             "alerts": [
                 {
