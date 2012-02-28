@@ -22,17 +22,17 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.*;
 
-@Component
 public class TestSchedule {
     private ScheduleTrackingService trackingService;
+    private final SetDateAction setDateAction;
     private final Scheduler scheduler;
     private Map<Pair, List<Date>> alertTimes;
     private final LinkedList<Date> fulfillmentDates;
 
-    @Autowired
-    public TestSchedule(ScheduleTrackingService trackingService, SchedulerFactoryBean schedulerFactoryBean) {
+    public TestSchedule(ScheduleTrackingService trackingService, SchedulerFactoryBean schedulerFactoryBean, SetDateAction setDateAction) {
         this.trackingService = trackingService;
         this.scheduler = schedulerFactoryBean.getScheduler();
+        this.setDateAction = setDateAction;
 
         this.alertTimes = new HashMap<Pair, List<Date>>();
         fulfillmentDates = new LinkedList<Date>();
@@ -47,7 +47,9 @@ public class TestSchedule {
         while (true) {
             captureAlertsFor(externalId, scheduleName);
             try {
-                trackingService.fulfillCurrentMilestone(externalId, scheduleName, nextFulfillmentDate());
+                LocalDate fulfillmentDate = nextFulfillmentDate();
+                setDateAction.setTheDateTo(fulfillmentDate);
+                trackingService.fulfillCurrentMilestone(externalId, scheduleName, fulfillmentDate);
             } catch (InvalidEnrollmentException e) {
                 break;
             }

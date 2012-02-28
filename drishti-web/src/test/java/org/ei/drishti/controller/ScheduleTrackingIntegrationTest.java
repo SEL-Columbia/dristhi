@@ -1,8 +1,11 @@
 package org.ei.drishti.controller;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.model.Time;
@@ -39,11 +42,6 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
 
     private TestSchedule testSchedule;
 
-    @Before
-    public void setUp() throws Exception {
-        testSchedule = new TestSchedule(trackingService, schedulerFactoryBean);
-    }
-
     @Test
     public void shouldProvideAlertsForANCAtTheRightTimes() throws Exception {
         testSchedule.enrollFor("Ante Natal Care - Normal", newDate(2012, 1, 1), new Time(14, 0));
@@ -71,8 +69,6 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
 
     @Test
     public void shouldProvideAlertsForTetanusToxoidVaccinationAtTheRightTimes() throws Exception {
-        mockCurrentDate(new LocalDate(date(15, JANUARY)));
-
         testSchedule.withFulfillmentDates(date(15, JANUARY)).enrollFor("Tetatnus Toxoid Vaccination", newDate(2012, 1, 1), new Time(14, 0));
 
         testSchedule.assertNoAlerts("TT 1", earliest);
@@ -84,6 +80,33 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         testSchedule.assertAlerts("TT 2", due, date(5, FEBRUARY), date(12, FEBRUARY));
         testSchedule.assertAlerts("TT 2", late, date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY), date(4, MARCH), date(7, MARCH), date(11, MARCH));
         testSchedule.assertAlerts("TT 2", max, date(13, MARCH), date(14, MARCH), date(15, MARCH));
+    }
+
+    @Test
+    public void shouldProvideAlertsForLabRemindersATheRightTimes() throws Exception {
+        testSchedule.enrollFor("Lab Reminders", newDate(2012, 1, 1), new Time(14, 0));
+
+        testSchedule.assertNoAlerts("REMINDER", earliest);
+        testSchedule.assertNoAlerts("REMINDER", due);
+        testSchedule.assertAlerts("REMINDER", late, date(29, JULY), date(5, AUGUST), date(12, AUGUST), date(19, AUGUST),
+                date(26, AUGUST), date(2, SEPTEMBER), date(9, SEPTEMBER), date(16, SEPTEMBER), date(23, SEPTEMBER), date(30, SEPTEMBER));
+        testSchedule.assertAlerts("REMINDER", max, date(2, OCTOBER), date(3, OCTOBER), date(4, OCTOBER));
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        testSchedule = new TestSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {
+            @Override
+            public void setTheDateTo(LocalDate date) {
+                mockCurrentDate(date);
+            }
+        });
+    }
+
+    @BeforeClass
+    public static void turnOffSpringLogging() {
+        Logger logger = Logger.getLogger("org.springframework");
+        logger.setLevel(Level.FATAL);
     }
 
     private Date date(int day, int month) {
