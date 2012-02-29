@@ -28,8 +28,8 @@
         {
             "name": "Hepatitis B2",
             "scheduleWindows": {
-                "earliest": ["9 Weeks"],
-                "due": ["11 Weeks"],
+                "earliest": ["5 Weeks"],
+                "due": ["7 Weeks"],
                 "late": ["100 Weeks"],
                 "max": [""]
             },
@@ -57,8 +57,8 @@
         {
             "name": "Hepatitis B3",
             "scheduleWindows": {
-                "earliest": ["13 Weeks"],
-                "due": ["15 Weeks"],
+                "earliest": ["9 Weeks"],
+                "due": ["11 Weeks"],
                 "late": ["100 Weeks"],
                 "max": [""]
             },

@@ -204,15 +204,21 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts("Hepatitis B1", max);
 
         schedule.assertNoAlerts("Hepatitis B2", earliest);
-        schedule.assertAlerts("Hepatitis B2", due, date(4, MARCH), date(11, MARCH));
-        schedule.assertAlertsStartWith("Hepatitis B2", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
-                date(1, APRIL), date(4, APRIL));
+        schedule.assertAlerts("Hepatitis B2", due, date(5, FEBRUARY), date(12, FEBRUARY));
+        schedule.assertAlertsStartWith("Hepatitis B2", late, date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY),
+                date(4, MARCH), date(7, MARCH));
         schedule.assertNoAlerts("Hepatitis B2", max);
 
         schedule.assertNoAlerts("Hepatitis B3", earliest);
-        schedule.assertAlerts("Hepatitis B3", due, date(1, APRIL), date(8, APRIL));
-        schedule.assertAlertsStartWith("Hepatitis B3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
+        schedule.assertAlerts("Hepatitis B3", due, date(4, MARCH), date(11, MARCH));
+        schedule.assertAlertsStartWith("Hepatitis B3", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
+                date(1, APRIL), date(4, APRIL));
         schedule.assertNoAlerts("Hepatitis B3", max);
+
+        schedule.assertNoAlerts("Hepatitis B4", earliest);
+        schedule.assertAlerts("Hepatitis B4", due, date(1, APRIL), date(8, APRIL));
+        schedule.assertAlertsStartWith("Hepatitis B4", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
+        schedule.assertNoAlerts("Hepatitis B4", max);
 
         visualization.outputTo("child-hepatitis.html");
     }
