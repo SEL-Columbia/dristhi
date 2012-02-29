@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(3).draw();
+schedule.addAlertsStartingWith("Hepatitis B1", "Hepatitis B1 - due", [new Date("Jan 15, 2012"), new Date("Jan 18, 2012"), new Date("Jan 22, 2012"), new Date("Jan 25, 2012"), new Date("Jan 29, 2012"), new Date("Feb 01, 2012"), new Date("Feb 05, 2012"), new Date("Feb 08, 2012"), new Date("Feb 12, 2012"), new Date("Feb 15, 2012"), new Date("Feb 19, 2012"), new Date("Feb 22, 2012"), ]);
+schedule.addAlerts("Hepatitis B2", "Hepatitis B2 - due", [new Date("Mar 04, 2012"), new Date("Mar 11, 2012"), ]);
+schedule.addAlertsStartingWith("Hepatitis B2", "Hepatitis B2 - late", [new Date("Mar 18, 2012"), new Date("Mar 21, 2012"), new Date("Mar 25, 2012"), new Date("Mar 28, 2012"), new Date("Apr 01, 2012"), new Date("Apr 04, 2012"), ]);
+schedule.addAlerts("Hepatitis B3", "Hepatitis B3 - due", [new Date("Apr 01, 2012"), new Date("Apr 08, 2012"), ]);
+schedule.addAlertsStartingWith("Hepatitis B3", "Hepatitis B3 - late", [new Date("Apr 15, 2012"), new Date("Apr 18, 2012"), new Date("Apr 22, 2012"), new Date("Apr 25, 2012"), new Date("Apr 29, 2012"), new Date("May 02, 2012"), new Date("May 06, 2012"), new Date("May 09, 2012"), new Date("May 13, 2012"), new Date("May 16, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>Hepatitis</center></body></html>

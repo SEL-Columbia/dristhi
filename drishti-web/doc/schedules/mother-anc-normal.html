@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(3).draw();
+schedule.addAlerts("ANC 1", "ANC 1 - due", [new Date("Mar 04, 2012"), new Date("Mar 11, 2012"), new Date("Mar 18, 2012"), new Date("Mar 25, 2012"), ]);
+schedule.addAlerts("ANC 1", "ANC 1 - late", [new Date("Apr 01, 2012"), new Date("Apr 04, 2012"), new Date("Apr 08, 2012"), new Date("Apr 11, 2012"), new Date("Apr 15, 2012"), ]);
+schedule.addAlerts("ANC 1", "ANC 1 - max", [new Date("Apr 17, 2012"), new Date("Apr 18, 2012"), new Date("Apr 19, 2012"), ]);
+schedule.addAlerts("ANC 2", "ANC 2 - due", [new Date("May 27, 2012"), new Date("Jun 03, 2012"), new Date("Jun 10, 2012"), new Date("Jun 17, 2012"), ]);
+schedule.addAlerts("ANC 2", "ANC 2 - late", [new Date("Jun 24, 2012"), new Date("Jun 27, 2012"), new Date("Jul 01, 2012"), new Date("Jul 04, 2012"), new Date("Jul 08, 2012"), ]);
+schedule.addAlerts("ANC 2", "ANC 2 - max", [new Date("Jul 10, 2012"), new Date("Jul 11, 2012"), new Date("Jul 12, 2012"), ]);
+schedule.addAlerts("ANC 3", "ANC 3 - due", [new Date("Jul 22, 2012"), new Date("Jul 29, 2012"), new Date("Aug 05, 2012"), new Date("Aug 12, 2012"), ]);
+schedule.addAlerts("ANC 3", "ANC 3 - late", [new Date("Aug 19, 2012"), new Date("Aug 22, 2012"), ]);
+schedule.addAlerts("ANC 3", "ANC 3 - max", [new Date("Aug 23, 2012"), new Date("Aug 24, 2012"), new Date("Aug 25, 2012"), ]);
+schedule.addAlerts("ANC 4", "ANC 4 - due", [new Date("Aug 26, 2012"), new Date("Sep 02, 2012"), new Date("Sep 09, 2012"), ]);
+schedule.addAlerts("ANC 4", "ANC 4 - late", [new Date("Sep 16, 2012"), new Date("Sep 19, 2012"), new Date("Sep 23, 2012"), new Date("Sep 26, 2012"), new Date("Sep 30, 2012"), ]);
+schedule.addAlerts("ANC 4", "ANC 4 - max", [new Date("Oct 02, 2012"), new Date("Oct 03, 2012"), new Date("Oct 04, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>Ante Natal Care - Normal</center></body></html>

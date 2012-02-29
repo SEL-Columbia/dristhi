@@ -16,6 +16,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
 import java.util.Date;
 
 import static org.motechproject.scheduletracking.api.domain.WindowName.*;
@@ -42,6 +43,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
     private SchedulerFactoryBean schedulerFactoryBean;
 
     private TestSchedule schedule;
+    private ScheduleVisualizer visualizer;
 
     @Test
     public void shouldProvideAlertsForANCAtTheRightTimes() throws Exception {
@@ -66,6 +68,8 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlerts("ANC 4", due, date(26, AUGUST), date(2, SEPTEMBER), date(9, SEPTEMBER));
         schedule.assertAlerts("ANC 4", late, date(16, SEPTEMBER), date(19, SEPTEMBER), date(23, SEPTEMBER), date(26, SEPTEMBER), date(30, SEPTEMBER));
         schedule.assertAlerts("ANC 4", max, date(2, OCTOBER), date(3, OCTOBER), date(4, OCTOBER));
+
+        visualizer.outputTo("mother-anc-normal.html");
     }
 
     @Test
@@ -81,6 +85,8 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlerts("TT 2", due, date(5, FEBRUARY), date(12, FEBRUARY));
         schedule.assertAlerts("TT 2", late, date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY), date(4, MARCH), date(7, MARCH), date(11, MARCH));
         schedule.assertAlerts("TT 2", max, date(13, MARCH), date(14, MARCH), date(15, MARCH));
+
+        visualizer.outputTo("mother-tetanus-toxoid-vaccination.html");
     }
 
     @Test
@@ -92,6 +98,8 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlerts("REMINDER", late, date(29, JULY), date(5, AUGUST), date(12, AUGUST), date(19, AUGUST),
                 date(26, AUGUST), date(2, SEPTEMBER), date(9, SEPTEMBER), date(16, SEPTEMBER), date(23, SEPTEMBER), date(30, SEPTEMBER), date(7, OCTOBER));
         schedule.assertAlerts("REMINDER", max, date(9, OCTOBER), date(10, OCTOBER), date(11, OCTOBER));
+
+        visualizer.outputTo("mother-lab-reminder.html");
     }
 
     @Test
@@ -102,6 +110,8 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlerts("EDD", due, date(23, SEPTEMBER), date(30, SEPTEMBER), date(7, OCTOBER));
         schedule.assertAlertsStartWith("EDD", late, date(10, OCTOBER), date(14, OCTOBER), date(17, OCTOBER), date(21, OCTOBER), date(24, OCTOBER), date(28, OCTOBER), date(31, OCTOBER), date(4, NOVEMBER));
         schedule.assertNoAlerts("EDD", max);
+
+        visualizer.outputTo("mother-expected-date-of-delivery.html");
     }
 
     @Test
@@ -114,6 +124,8 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
                 date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
         schedule.assertNoAlerts("REMINDER", late);
         schedule.assertNoAlerts("REMINDER", max);
+
+        visualizer.outputTo("child-bcg.html");
     }
 
     @Test
@@ -144,6 +156,8 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlertsStartWith("OPV 3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL),
                 date(29, APRIL), date(2, MAY));
         schedule.assertNoAlerts("OPV 3", max);
+
+        visualizer.outputTo("child-opv.html");
     }
 
     @Test
@@ -174,6 +188,8 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlertsStartWith("DPT 3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL),
                 date(29, APRIL), date(2, MAY));
         schedule.assertNoAlerts("DPT 3", max);
+
+        visualizer.outputTo("child-dpt.html");
     }
 
     @Test
@@ -197,6 +213,8 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlerts("Hepatitis B3", due, date(1, APRIL), date(8, APRIL));
         schedule.assertAlertsStartWith("Hepatitis B3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
         schedule.assertNoAlerts("Hepatitis B3", max);
+
+        visualizer.outputTo("child-hepatitis.html");
     }
 
     @Test
@@ -207,6 +225,8 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlerts("REMINDER", due, date(9, SEPTEMBER));
         schedule.assertNoAlerts("REMINDER", late);
         schedule.assertNoAlerts("REMINDER", max);
+
+        visualizer.outputTo("child-measles-and-vitamins.html");
     }
 
     @Test
@@ -217,6 +237,8 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlerts("REMINDER", due, dateWithYear(19, MAY, 2013));
         schedule.assertNoAlerts("REMINDER", late);
         schedule.assertNoAlerts("REMINDER", max);
+
+        visualizer.outputTo("child-boosters.html");
     }
 
     @Before
@@ -227,6 +249,15 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
                 mockCurrentDate(date);
             }
         });
+
+        String outputDir = null;
+        if (new File("drishti-web").exists()) {
+            outputDir = "drishti-web/doc/schedules/";
+        }
+        else if (new File("doc").exists()) {
+            outputDir = "doc/schedules/";
+        }
+        visualizer = new ScheduleVisualizer(schedule, outputDir);
     }
 
     @BeforeClass
