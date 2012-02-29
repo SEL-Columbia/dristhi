@@ -52,11 +52,7 @@ function Schedule(numberOfTimelinesToDraw) {
       var textBox = text.getBBox(1);
       text.rotate(-30, textBox.x, textBox.y);
 
-      var textForWeekNumber = "0\nLMP";
-      if (i + weekOffset > 0) {
-        textForWeekNumber = i + weekOffset;
-      }
-      var weeksAfterLMP = paper.text(xPosition, yPosition + 30, textForWeekNumber);
+      var weeksAfterLMP = paper.text(xPosition, yPosition + 30, i + weekOffset);
     };
   };
 
