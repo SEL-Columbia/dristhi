@@ -73,13 +73,13 @@ function Schedule(numberOfTimelinesToDraw) {
 
   var addAlert = function(date, color) {
     var position = alertPosition(date);
-    paper.circle(position.x, position.y + (stepNumber * 14), 7).attr("fill", color).attr("stroke", "#fff");
+    paper.circle(position.x, position.y + ((stepNumber - 1) * 14), 7).attr("fill", color).attr("stroke", "#fff");
   };
 
   var addEllipsis = function(date, color) {
     var position = alertPosition(date);
     for (var i = 0; i < 3; i++) {
-      paper.circle(position.x + (7 * (i + 2)), position.y + (stepNumber * 14), 2).attr("fill", color).attr("stroke", "#fff");
+      paper.circle(position.x + (7 * (i + 2)), position.y + ((stepNumber - 1) * 14), 2).attr("fill", color).attr("stroke", "#fff");
     }
   };
 
@@ -91,7 +91,7 @@ function Schedule(numberOfTimelinesToDraw) {
     textStartingAt(leftMargin + circle.getBBox(1).width, legendStartPosition, legendText);
   };
 
-  var finishedAddingAlerts = function(identifier) {
+  var updateStepNumber = function(identifier) {
     if (identifier != previouslySeenIdentifier) {
       stepNumber++;
       previouslySeenIdentifier = identifier;
@@ -117,14 +117,14 @@ function Schedule(numberOfTimelinesToDraw) {
     },
 
     addAlerts: function(identifier, legendText, dates) {
+      updateStepNumber(identifier);
       addAlerts(legendText, dates);
-      finishedAddingAlerts(identifier);
     },
 
     addAlertsStartingWith: function(identifier, legendText, dates) {
+      updateStepNumber(identifier);
       var alerts = addAlerts(legendText, dates);
       addEllipsis(dates[dates.length - 1], alerts.color);
-      finishedAddingAlerts(identifier);
     }
   };
 };
