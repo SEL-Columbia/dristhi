@@ -12,12 +12,12 @@ import java.util.List;
 
 import static java.text.MessageFormat.format;
 
-public class ScheduleVisualizer {
+public class ScheduleVisualization {
     private final TestSchedule schedule;
     private final String outputDir;
     private DateTimeFormatter formatter = DateTimeFormat.forPattern("MMM dd, yyyy");
 
-    public ScheduleVisualizer(TestSchedule schedule, String outputDir) {
+    public ScheduleVisualization(TestSchedule schedule, String outputDir) {
         this.schedule = schedule;
         this.outputDir = outputDir;
     }
