@@ -47,7 +47,7 @@ public class ANCService {
             logger.warning("Found care provided without registered mother for case ID: " + ancInformation.caseId());
             return;
         }
-        trackingService.fulfillCurrentMilestone(ancInformation.caseId(), SCHEDULE_NAME, null);
+        trackingService.fulfillCurrentMilestone(ancInformation.caseId(), SCHEDULE_NAME, DateUtil.today());
     }
 
     public void updateANCOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {
