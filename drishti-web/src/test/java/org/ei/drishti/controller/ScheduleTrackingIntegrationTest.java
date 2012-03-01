@@ -74,7 +74,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
 
     @Test
     public void shouldProvideAlertsForTetanusToxoidVaccinationAtTheRightTimes() throws Exception {
-        schedule.withFulfillmentDates(date(15, JANUARY)).enrollFor("Tetatnus Toxoid Vaccination", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.withFulfillmentDates(date(27, MAY)).enrollFor("Tetatnus Toxoid Vaccination", newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("TT 1", earliest);
         schedule.assertNoAlerts("TT 1", due);
@@ -82,9 +82,9 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts("TT 1", max);
 
         schedule.assertNoAlerts("TT 2", earliest);
-        schedule.assertAlerts("TT 2", due, date(5, FEBRUARY), date(12, FEBRUARY));
-        schedule.assertAlerts("TT 2", late, date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY), date(4, MARCH), date(7, MARCH), date(11, MARCH));
-        schedule.assertAlerts("TT 2", max, date(13, MARCH), date(14, MARCH), date(15, MARCH));
+        schedule.assertAlerts("TT 2", due, date(17, JUNE), date(24, JUNE));
+        schedule.assertAlerts("TT 2", late, date(27, JUNE), date(1, JULY), date(4, JULY), date(8, JULY), date(11, JULY), date(15, JULY), date(18, JULY), date(22, JULY));
+        schedule.assertAlerts("TT 2", max, date(24, JULY), date(25, JULY), date(26, JULY));
 
         visualization.outputTo("mother-tetanus-toxoid-vaccination.html");
     }
