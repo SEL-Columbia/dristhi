@@ -1,7 +1,7 @@
 #!/bin/sh
 
-for file in schedules/*
+git show master:drishti-web/doc/schedules/ | grep '\.html$' | while read file do
 do
-  git show master:drishti-web/doc/$file >$file
+  git show master:drishti-web/doc/schedules/$file >schedules/$file
 done
 
