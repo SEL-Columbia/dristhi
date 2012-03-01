@@ -2,9 +2,10 @@ package org.ei.drishti.controller;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.ei.drishti.controller.util.ScheduleWithCapture;
 import org.ei.drishti.controller.util.ScheduleVisualization;
 import org.ei.drishti.controller.util.SetDateAction;
-import org.ei.drishti.controller.util.TestSchedule;
+import org.ei.drishti.controller.util.FakeSchedule;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
     @Autowired
     private SchedulerFactoryBean schedulerFactoryBean;
 
-    private TestSchedule schedule;
+    private ScheduleWithCapture schedule;
     private ScheduleVisualization visualization;
 
     @Test
@@ -252,7 +253,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
 
     @Before
     public void setUp() throws Exception {
-        schedule = new TestSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {
+        FakeSchedule fakeSchedule = new FakeSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {
             @Override
             public void setTheDateTo(LocalDate date) {
                 mockCurrentDate(date);
@@ -266,7 +267,9 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         else if (new File("doc").exists()) {
             outputDir = "doc/schedules/";
         }
-        visualization = new ScheduleVisualization(schedule, outputDir);
+        visualization = new ScheduleVisualization(fakeSchedule, outputDir);
+
+        schedule = new ScheduleWithCapture(fakeSchedule, visualization);
     }
 
     @BeforeClass

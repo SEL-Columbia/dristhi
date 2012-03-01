@@ -20,22 +20,20 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.*;
 
-public class TestSchedule {
+public class FakeSchedule {
     private ScheduleTrackingService trackingService;
     private final SetDateAction setDateAction;
     private final Scheduler scheduler;
     private Map<Pair, List<Date>> alertTimes;
     private final LinkedList<Date> fulfillmentDates;
-    private List<AlertInformation> alertInformation;
     private String name;
 
-    public TestSchedule(ScheduleTrackingService trackingService, SchedulerFactoryBean schedulerFactoryBean, SetDateAction setDateAction) {
+    public FakeSchedule(ScheduleTrackingService trackingService, SchedulerFactoryBean schedulerFactoryBean, SetDateAction setDateAction) {
         this.trackingService = trackingService;
         this.scheduler = schedulerFactoryBean.getScheduler();
         this.setDateAction = setDateAction;
 
         this.alertTimes = new HashMap<Pair, List<Date>>();
-        this.alertInformation = new ArrayList<AlertInformation>();
         fulfillmentDates = new LinkedList<Date>();
     }
 
@@ -59,7 +57,7 @@ public class TestSchedule {
         }
     }
 
-    public TestSchedule withFulfillmentDates(Date... fulfillmentDates) {
+    public FakeSchedule withFulfillmentDates(Date... fulfillmentDates) {
         this.fulfillmentDates.addAll(Arrays.asList(fulfillmentDates));
         return this;
     }
@@ -85,7 +83,6 @@ public class TestSchedule {
 
         assertThat(format("{0} alerts for {1} window did not match.", milestoneName, window),
                 sortableActualAlertTimes, is(sortableExpectedAlertTimes));
-        alertInformation.add(new AlertInformation(milestoneName, window, Arrays.asList(expectedTimes), shouldDoPartialCheck));
     }
 
     public void assertNoAlerts(String milestoneName, WindowName window) {
@@ -135,10 +132,6 @@ public class TestSchedule {
             return DateUtil.today();
         }
         return new LocalDate(fulfillmentDates.pop());
-    }
-
-    public List<AlertInformation> alertInformation() {
-        return alertInformation;
     }
 
     public String name() {

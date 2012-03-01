@@ -1,26 +1,31 @@
 package org.ei.drishti.controller.util;
 
 import org.apache.commons.io.FileUtils;
-import org.ei.drishti.controller.util.AlertInformation;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.motechproject.scheduletracking.api.domain.WindowName;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import static java.text.MessageFormat.format;
 
 public class ScheduleVisualization {
-    private final TestSchedule schedule;
+    private final FakeSchedule schedule;
     private final String outputDir;
     private DateTimeFormatter formatter = DateTimeFormat.forPattern("MMM dd, yyyy");
+    private List<AlertInformation> alertInformation;
 
-    public ScheduleVisualization(TestSchedule schedule, String outputDir) {
+    public ScheduleVisualization(FakeSchedule schedule, String outputDir) {
         this.schedule = schedule;
         this.outputDir = outputDir;
+
+        this.alertInformation = new ArrayList<AlertInformation>();
     }
 
     public void outputTo(String fileName, int numberOfTimelines) throws IOException {
@@ -39,8 +44,7 @@ public class ScheduleVisualization {
                 .append("      window.onload = function () {\n")
                 .append("        var schedule = new Schedule(" + numberOfTimelines + ").draw();\n");
 
-        List<AlertInformation> alerts = schedule.alertInformation();
-        for (AlertInformation alert : alerts) {
+        for (AlertInformation alert : alertInformation) {
             String methodName = "addAlerts";
             if (alert.hasPartialTimes()) {
                 methodName = "addAlertsStartingWith";
@@ -60,5 +64,13 @@ public class ScheduleVisualization {
                 .append("</html>");
 
         FileUtils.writeStringToFile(new File(outputDir, fileName), outputHtml.toString());
+    }
+
+    public void addAlerts(String milestoneName, WindowName window, Date[] dates) {
+        alertInformation.add(new AlertInformation(milestoneName, window, Arrays.asList(dates), false));
+    }
+
+    public void addPartialAlerts(String milestoneName, WindowName window, Date[] dates) {
+        alertInformation.add(new AlertInformation(milestoneName, window, Arrays.asList(dates), true));
     }
 }
