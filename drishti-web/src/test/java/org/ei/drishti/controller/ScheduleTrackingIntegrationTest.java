@@ -119,6 +119,23 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldProvideAlertsForIFA() throws Exception {
+        schedule.enrollFor("Iron Folic Acid Supplements", newDate(2012, 1, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("IFA 1", earliest);
+        schedule.assertNoAlerts("IFA 1", due);
+        schedule.assertAlertsStartWith("IFA 1", late, date(1, APRIL), date(4, APRIL), date(8, APRIL), date(11, APRIL), date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL));
+        schedule.assertNoAlerts("IFA 1", max);
+
+        schedule.assertNoAlerts("IFA 2", earliest);
+        schedule.assertNoAlerts("IFA 2", due);
+        schedule.assertAlerts("IFA 2", late, date(17, JUNE), date(15, JULY), date(12, AUGUST), date(9, SEPTEMBER), date(7, OCTOBER));
+        schedule.assertNoAlerts("IFA 2", max);
+
+        visualization.outputTo("mother-ifa-supplements.html", 3);
+    }
+
+    @Test
     public void shouldProvideAlertsForBCG() throws Exception {
         schedule.enrollFor("BCG", newDate(2012, 1, 1), new Time(14, 0));
 

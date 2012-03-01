@@ -1,0 +1,46 @@
+{
+    "name": "Iron Folic Acid Supplements",
+    "absoluteWindows": true,
+    "milestones": [
+        {
+            "name": "IFA 1",
+            "scheduleWindows": {
+                "earliest": ["10 Weeks"],
+                "due": ["13 Weeks"],
+                "late": ["40 Weeks"],
+                "max": ["42 Weeks"]
+            },
+            "alerts": [
+                {
+                    "window": "late",
+                    "offset": "0 Days",
+                    "interval": "1 Week",
+                    "count": "100"
+                },
+                {
+                    "window": "late",
+                    "offset": "3 Days",
+                    "interval": "1 Week",
+                    "count": "100"
+                }
+            ]
+        },
+        {
+            "name": "IFA 2",
+            "scheduleWindows": {
+                "earliest": ["20 Weeks"],
+                "due": ["24 Weeks"],
+                "late": ["40 Weeks"],
+                "max": ["42 Weeks"]
+            },
+            "alerts": [
+                {
+                    "window": "late",
+                    "offset": "0 Days",
+                    "interval": "4 Week",
+                    "count": "5"
+                }
+            ]
+        }
+    ]
+}
