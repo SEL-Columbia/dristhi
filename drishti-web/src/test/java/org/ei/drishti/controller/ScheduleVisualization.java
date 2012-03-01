@@ -22,7 +22,7 @@ public class ScheduleVisualization {
         this.outputDir = outputDir;
     }
 
-    public void outputTo(String fileName) throws IOException {
+    public void outputTo(String fileName, int numberOfTimelines) throws IOException {
         if (outputDir == null) {
             System.err.println("Not outputting schedule HTML as the path is invalid.");
             return;
@@ -36,7 +36,7 @@ public class ScheduleVisualization {
                 .append("    <script src=\"schedule.js\"></script>\n")
                 .append("    <script type=\"text/javascript\">\n")
                 .append("      window.onload = function () {\n")
-                .append("        var schedule = new Schedule(3).draw();\n");
+                .append("        var schedule = new Schedule(" + numberOfTimelines + ").draw();\n");
 
         List<AlertInformation> alerts = schedule.alertInformation();
         for (AlertInformation alert : alerts) {

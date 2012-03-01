@@ -5,7 +5,7 @@
     <script src="schedule.js"></script>
     <script type="text/javascript">
       window.onload = function () {
-        var schedule = new Schedule(3).draw();
+        var schedule = new Schedule(1).draw();
 schedule.addAlertsStartingWith("DPT 0", "DPT 0 - due", [new Date("Jan 15, 2012"), new Date("Jan 18, 2012"), new Date("Jan 22, 2012"), new Date("Jan 25, 2012"), new Date("Jan 29, 2012"), new Date("Feb 01, 2012"), new Date("Feb 05, 2012"), new Date("Feb 08, 2012"), new Date("Feb 12, 2012"), new Date("Feb 15, 2012"), new Date("Feb 19, 2012"), new Date("Feb 22, 2012"), ]);
 schedule.addAlerts("DPT 1", "DPT 1 - due", [new Date("Feb 05, 2012"), new Date("Feb 12, 2012"), ]);
 schedule.addAlertsStartingWith("DPT 1", "DPT 1 - late", [new Date("Feb 19, 2012"), new Date("Feb 22, 2012"), new Date("Feb 26, 2012"), new Date("Feb 29, 2012"), new Date("Mar 04, 2012"), new Date("Mar 07, 2012"), ]);

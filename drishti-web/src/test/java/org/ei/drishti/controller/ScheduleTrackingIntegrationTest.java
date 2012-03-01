@@ -69,7 +69,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlerts("ANC 4", late, date(23, SEPTEMBER), date(26, SEPTEMBER), date(30, SEPTEMBER), date(3, OCTOBER), date(7, OCTOBER));
         schedule.assertAlerts("ANC 4", max, date(9, OCTOBER), date(10, OCTOBER), date(11, OCTOBER));
 
-        visualization.outputTo("mother-anc-normal.html");
+        visualization.outputTo("mother-anc-normal.html", 3);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlerts("TT 2", late, date(27, JUNE), date(1, JULY), date(4, JULY), date(8, JULY), date(11, JULY), date(15, JULY), date(18, JULY), date(22, JULY));
         schedule.assertAlerts("TT 2", max, date(24, JULY), date(25, JULY), date(26, JULY));
 
-        visualization.outputTo("mother-tetanus-toxoid-vaccination.html");
+        visualization.outputTo("mother-tetanus-toxoid-vaccination.html", 2);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
                 date(26, AUGUST), date(2, SEPTEMBER), date(9, SEPTEMBER), date(16, SEPTEMBER), date(23, SEPTEMBER), date(30, SEPTEMBER), date(7, OCTOBER));
         schedule.assertAlerts("REMINDER", max, date(9, OCTOBER), date(10, OCTOBER), date(11, OCTOBER));
 
-        visualization.outputTo("mother-lab-reminder.html");
+        visualization.outputTo("mother-lab-reminder.html", 3);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlertsStartWith("EDD", late, date(10, OCTOBER), date(14, OCTOBER), date(17, OCTOBER), date(21, OCTOBER), date(24, OCTOBER), date(28, OCTOBER), date(31, OCTOBER), date(4, NOVEMBER));
         schedule.assertNoAlerts("EDD", max);
 
-        visualization.outputTo("mother-expected-date-of-delivery.html");
+        visualization.outputTo("mother-expected-date-of-delivery.html", 3);
     }
 
     @Test
@@ -125,7 +125,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts("REMINDER", late);
         schedule.assertNoAlerts("REMINDER", max);
 
-        visualization.outputTo("child-bcg.html");
+        visualization.outputTo("child-bcg.html", 1);
     }
 
     @Test
@@ -157,7 +157,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
                 date(29, APRIL), date(2, MAY));
         schedule.assertNoAlerts("OPV 3", max);
 
-        visualization.outputTo("child-opv.html");
+        visualization.outputTo("child-opv.html", 1);
     }
 
     @Test
@@ -189,7 +189,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
                 date(29, APRIL), date(2, MAY));
         schedule.assertNoAlerts("DPT 3", max);
 
-        visualization.outputTo("child-dpt.html");
+        visualization.outputTo("child-dpt.html", 1);
     }
 
     @Test
@@ -220,7 +220,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertAlertsStartWith("Hepatitis B4", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
         schedule.assertNoAlerts("Hepatitis B4", max);
 
-        visualization.outputTo("child-hepatitis.html");
+        visualization.outputTo("child-hepatitis.html", 1);
     }
 
     @Test
@@ -232,7 +232,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts("REMINDER", late);
         schedule.assertNoAlerts("REMINDER", max);
 
-        visualization.outputTo("child-measles-and-vitamins.html");
+        visualization.outputTo("child-measles-and-vitamins.html", 2);
     }
 
     @Test
@@ -244,7 +244,7 @@ public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts("REMINDER", late);
         schedule.assertNoAlerts("REMINDER", max);
 
-        visualization.outputTo("child-boosters.html");
+        visualization.outputTo("child-boosters.html", 4);
     }
 
     @Before
