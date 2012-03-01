@@ -1,4 +1,4 @@
-package org.ei.drishti.controller;
+package org.ei.drishti.controller.util;
 
 import org.motechproject.scheduletracking.api.domain.WindowName;
 
@@ -23,6 +23,9 @@ public class AlertInformation {
     }
 
     public String description() {
+        if (hasPartialTimes) {
+            return milestoneName + " - " + window + " (Will continue till service is delivered)";
+        }
         return milestoneName + " - " + window;
     }
 

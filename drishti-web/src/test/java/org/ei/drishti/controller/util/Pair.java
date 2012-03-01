@@ -1,4 +1,4 @@
-package org.ei.drishti.controller;
+package org.ei.drishti.controller.util;
 
 public class Pair {
     private final String milestoneName;

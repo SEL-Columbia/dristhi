@@ -1,6 +1,7 @@
-package org.ei.drishti.controller;
+package org.ei.drishti.controller.util;
 
 import org.apache.commons.io.FileUtils;
+import org.ei.drishti.controller.util.AlertInformation;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
