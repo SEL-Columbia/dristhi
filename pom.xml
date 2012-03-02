@@ -9,11 +9,26 @@
     <name>Drishti</name>
 
     <modules>
-      <module>commcare-api</module>
-      <module>drishti-mother-child</module>
-      <module>drishti-web</module>
-    <module>commcare-listener</module>
-  </modules>
+        <module>commcare-api</module>
+        <module>drishti-mother-child</module>
+        <module>drishti-web</module>
+        <module>commcare-listener</module>
+    </modules>
+
+    <distributionManagement>
+        <repository>
+            <id>motech.nexus</id>
+            <name>Motech Releases Repository</name>
+            <url>http://nexus.motechproject.org/content/repositories/releases</url>
+            <uniqueVersion>false</uniqueVersion>
+        </repository>
+        <snapshotRepository>
+            <id>motech.nexus</id>
+            <name>Motech Snapshots Repository</name>
+            <url>http://nexus.motechproject.org/content/repositories/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
 
     <repositories>
         <repository>
@@ -61,6 +76,11 @@
                     <encoding>UTF-8</encoding>
                     <outputDirectory/>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.5</version>
             </plugin>
         </plugins>
     </build>

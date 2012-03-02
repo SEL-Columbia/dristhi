@@ -13,6 +13,8 @@
     <artifactId>commcare-api</artifactId>
     <groupId>org.ei.drishti</groupId>
     <version>0.1-SNAPSHOT</version>
+    <name>commcare-api</name>
+    <url>http://github.com/modilabs/dristhi</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
