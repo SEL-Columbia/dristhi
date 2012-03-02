@@ -13,20 +13,20 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": "0 Days",
-                    "interval": "1 Weeks",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "3"
                 },
                 {
                     "window": "late",
-                    "offset": "3 Days",
-                    "interval": "1 Weeks",
+                    "offset": ["3 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "100"
                 },
                 {
                     "window": "late",
-                    "offset": "7 Days",
-                    "interval": "1 Weeks",
+                    "offset": ["7 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "100"
                 }
             ]

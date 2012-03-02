@@ -8,7 +8,6 @@ import org.motechproject.scheduletracking.api.domain.exception.InvalidEnrollment
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentResponse;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
-import org.motechproject.util.DateUtil;
 import org.quartz.*;
 import org.quartz.impl.calendar.BaseCalendar;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -27,6 +26,7 @@ public class FakeSchedule {
     private Map<Pair, List<Date>> alertTimes;
     private final LinkedList<Date> fulfillmentDates;
     private String name;
+    private LocalDate nextFulfillmentDateToUse;
 
     public FakeSchedule(ScheduleTrackingService trackingService, SchedulerFactoryBean schedulerFactoryBean, SetDateAction setDateAction) {
         this.trackingService = trackingService;
@@ -41,8 +41,9 @@ public class FakeSchedule {
         String externalId = String.valueOf(new Random().nextFloat());
         this.name = scheduleName;
 
+        nextFulfillmentDateToUse = referenceDateForEnrollment;
         setDateAction.setTheDateTo(referenceDateForEnrollment);
-        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(externalId, scheduleName, preferredAlertTime, referenceDateForEnrollment, null, null);
+        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(externalId, scheduleName, preferredAlertTime, referenceDateForEnrollment, null, null, null, null);
         trackingService.enroll(enrollmentRequest);
 
         while (true) {
@@ -99,7 +100,7 @@ public class FakeSchedule {
             if (scheduleName.equals(dataMap.get(SCHEDULE_NAME)) && externalId.equals(dataMap.get(EXTERNAL_ID))) {
                 EnrollmentResponse enrollment = trackingService.getEnrollment(externalId, scheduleName);
                 if (enrollment != null) {
-                    storeAlertTimes(trigger, detail, enrollment.getReferenceDate());
+                    storeAlertTimes(trigger, detail, new LocalDate(enrollment.getReferenceDateTime()));
                 }
             }
         }
@@ -129,7 +130,8 @@ public class FakeSchedule {
 
     private LocalDate nextFulfillmentDate() {
         if (fulfillmentDates.isEmpty()) {
-            return DateUtil.today();
+            nextFulfillmentDateToUse = nextFulfillmentDateToUse.plusDays(1);
+            return nextFulfillmentDateToUse;
         }
         return new LocalDate(fulfillmentDates.pop());
     }

@@ -13,14 +13,14 @@
             "alerts": [
                 {
                     "window": "late",
-                    "offset": "0 Days",
-                    "interval": "1 Weeks",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "11"
                 },
                 {
                     "window": "max",
-                    "offset": "2 Days",
-                    "interval": "1 Days",
+                    "offset": ["2 Days"],
+                    "interval": ["1 Days"],
                     "count": "3"
                 }
             ]

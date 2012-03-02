@@ -39,7 +39,7 @@ public class ANCService {
         Time preferredAlertTime = new Time(now.hourOfDay().get(), now.minuteOfHour().get() + 2);
         LocalDate referenceDate = info.lmpDate() != null ? info.lmpDate() : DateUtil.today();
 
-        trackingService.enroll(new EnrollmentRequest(info.caseId(), SCHEDULE_NAME, preferredAlertTime, referenceDate, null, null));
+        trackingService.enroll(new EnrollmentRequest(info.caseId(), SCHEDULE_NAME, preferredAlertTime, referenceDate, null, null, null, null));
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {

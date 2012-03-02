@@ -13,26 +13,26 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": "0 Days",
-                    "interval": "1 Week",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
                     "count": "4"
                 },
                 {
                     "window": "late",
-                    "offset": "0 Days",
-                    "interval": "1 Week",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
                     "count": "3"
                 },
                 {
                     "window": "late",
-                    "offset": "3 Days",
-                    "interval": "1 Week",
+                    "offset": ["3 Days"],
+                    "interval": ["1 Week"],
                     "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": "2 Days",
-                    "interval": "1 Day",
+                    "offset": ["2 Days"],
+                    "interval": ["1 Day"],
                     "count": "3"
                 }
             ]
@@ -48,26 +48,26 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": "0 Days",
-                    "interval": "1 Week",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
                     "count": "4"
                 },
                 {
                     "window": "late",
-                    "offset": "0 Days",
-                    "interval": "1 Week",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
                     "count": "3"
                 },
                 {
                     "window": "late",
-                    "offset": "3 Days",
-                    "interval": "1 Week",
+                    "offset": ["3 Days"],
+                    "interval": ["1 Week"],
                     "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": "2 Days",
-                    "interval": "1 Day",
+                    "offset": ["2 Days"],
+                    "interval": ["1 Day"],
                     "count": "3"
                 }
             ]
@@ -83,20 +83,20 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": "0 Days",
-                    "interval": "1 Week",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
                     "count": "4"
                 },
                 {
                     "window": "late",
-                    "offset": "0 Days",
-                    "interval": "3 Days",
+                    "offset": ["0 Days"],
+                    "interval": ["3 Days"],
                     "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": "4 Days",
-                    "interval": "1 Day",
+                    "offset": ["4 Days"],
+                    "interval": ["1 Day"],
                     "count": "3"
                 }
             ]
@@ -112,26 +112,26 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": "0 Days",
-                    "interval": "1 Week",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
                     "count": "3"
                 },
                 {
                     "window": "late",
-                    "offset": "0 Days",
-                    "interval": "1 Week",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
                     "count": "3"
                 },
                 {
                     "window": "late",
-                    "offset": "3 Days",
-                    "interval": "1 Week",
+                    "offset": ["3 Days"],
+                    "interval": ["1 Week"],
                     "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": "2 Days",
-                    "interval": "1 Day",
+                    "offset": ["2 Days"],
+                    "interval": ["1 Day"],
                     "count": "3"
                 }
             ]

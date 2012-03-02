@@ -13,14 +13,14 @@
             "alerts": [
                 {
                     "window": "late",
-                    "offset": "0 Days",
-                    "interval": "1 Weeks",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "40"
                 },
                 {
                     "window": "late",
-                    "offset": "3 Days",
-                    "interval": "1 Weeks",
+                    "offset": ["3 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "40"
                 }
             ]
@@ -36,26 +36,26 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": "0 Days",
-                    "interval": "1 Weeks",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "2"
                 },
                 {
                     "window": "late",
-                    "offset": "3 Days",
-                    "interval": "1 Weeks",
+                    "offset": ["3 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "4"
                 },
                 {
                     "window": "late",
-                    "offset": "7 Days",
-                    "interval": "1 Weeks",
+                    "offset": ["7 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "4"
                 },
                 {
                     "window": "max",
-                    "offset": "2 Days",
-                    "interval": "1 Days",
+                    "offset": ["2 Days"],
+                    "interval": ["1 Days"],
                     "count": "3"
                 }
             ]
