@@ -21,6 +21,7 @@ public class CommCareScheduler {
     private final MotechSchedulerService service;
     private final CommCareListener careListener;
     private static Logger logger = Logger.getLogger(CommCareScheduler.class.toString());
+    private boolean shouldFetchFromCommCare = false;
 
     @Autowired
     public CommCareScheduler(MotechSchedulerService service, CommCareListener careListener) {
@@ -36,10 +37,18 @@ public class CommCareScheduler {
         RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, 60 * MILLIS_PER_SECOND);
 
         service.safeScheduleRepeatingJob(job);
+
+        startListening();
+    }
+
+    private void startListening() {
+        this.shouldFetchFromCommCare = true;
     }
 
     @MotechListener(subjects = SUBJECT)
     public void fetchFromCommCareHQ(MotechEvent event) throws Exception {
+        if (!shouldFetchFromCommCare) return;
+
         logger.info("Fetching from CommCareHQ.");
         careListener.fetchFromServer();
         logger.info("Done fetching from CommCareHQ.");
