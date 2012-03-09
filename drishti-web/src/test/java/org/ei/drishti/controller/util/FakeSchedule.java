@@ -5,8 +5,8 @@ import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.domain.MilestoneAlert;
 import org.motechproject.scheduletracking.api.domain.WindowName;
 import org.motechproject.scheduletracking.api.domain.exception.InvalidEnrollmentException;
+import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
-import org.motechproject.scheduletracking.api.service.EnrollmentResponse;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.quartz.*;
 import org.quartz.impl.calendar.BaseCalendar;
@@ -98,7 +98,7 @@ public class FakeSchedule {
 
             JobDataMap dataMap = detail.getJobDataMap();
             if (scheduleName.equals(dataMap.get(SCHEDULE_NAME)) && externalId.equals(dataMap.get(EXTERNAL_ID))) {
-                EnrollmentResponse enrollment = trackingService.getEnrollment(externalId, scheduleName);
+                EnrollmentRecord enrollment = trackingService.getEnrollment(externalId, scheduleName);
                 if (enrollment != null) {
                     storeAlertTimes(trigger, detail, new LocalDate(enrollment.getReferenceDateTime()));
                 }
