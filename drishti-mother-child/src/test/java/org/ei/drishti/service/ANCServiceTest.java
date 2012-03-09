@@ -77,7 +77,7 @@ public class ANCServiceTest {
 
         service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X"));
 
-        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", DateUtil.today());
+        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 1, DateUtil.today());
     }
 
     @Test

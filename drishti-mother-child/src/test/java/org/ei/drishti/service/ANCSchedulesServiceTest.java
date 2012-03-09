@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.ei.drishti.service.ANCSchedulesService.*;
 import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -50,18 +51,50 @@ public class ANCSchedulesServiceTest {
     }
 
     @Test
-    public void shouldFulfillANCScheduleWhenANCVisitHasHappened() {
-        LocalDate visitDate = DateUtil.today().minusDays(3);
+    public void shouldFulfillANCScheduleWhenTheExpectedANCVisitHappens() {
+        EnrollmentRecord nextExpectedMilestone = ancEnrollmentRecord("ANC 1");
+        int visitNumberToTryAndFulfill = 1;
 
-        schedulesService.ancVisitHasHappened("Case X", visitDate);
+        LocalDate visitDate = DateUtil.today().minusDays(3);
+        when(scheduleTrackingService.getEnrollment("Case X", SCHEDULE_ANC)).thenReturn(nextExpectedMilestone);
+
+        schedulesService.ancVisitHasHappened("Case X", visitNumberToTryAndFulfill, visitDate);
 
         verify(scheduleTrackingService).fulfillCurrentMilestone("Case X", SCHEDULE_ANC, visitDate);
     }
 
     @Test
+    public void shouldNotFulfillANCMilestoneWhichHasAlreadyBeenFulfilled() {
+        EnrollmentRecord nextExpectedMilestone = ancEnrollmentRecord("ANC 3");
+        int visitNumberToTryAndFulfill = 1;
+
+        when(scheduleTrackingService.getEnrollment("Case X", SCHEDULE_ANC)).thenReturn(nextExpectedMilestone);
+
+        schedulesService.ancVisitHasHappened("Case X", visitNumberToTryAndFulfill, DateUtil.today().minusDays(3));
+
+        verify(scheduleTrackingService).getEnrollment("Case X", SCHEDULE_ANC);
+        verifyNoMoreInteractions(scheduleTrackingService);
+    }
+
+    @Test
+    public void shouldFulfillAllMilestonesBetweenTheCurrentOneAndTheOneCorrespondingToTheVisitNumber() {
+        EnrollmentRecord nextExpectedMilestone = ancEnrollmentRecord("ANC 1");
+        int visitNumberToTryAndFulfill = 3;
+
+        when(scheduleTrackingService.getEnrollment("Case X", SCHEDULE_ANC)).thenReturn(nextExpectedMilestone);
+
+        LocalDate visitDate = DateUtil.today().minusDays(3);
+        schedulesService.ancVisitHasHappened("Case X", visitNumberToTryAndFulfill, visitDate);
+
+        verify(scheduleTrackingService).getEnrollment("Case X", SCHEDULE_ANC);
+        verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("Case X", SCHEDULE_ANC, visitDate);
+        verifyNoMoreInteractions(scheduleTrackingService);
+    }
+
+    @Test
     public void shouldUnEnrollAMotherFromAllOpenSchedulesDuringClose() {
-        EnrollmentRecord record1 = new EnrollmentRecord("Case X", "Schedule 1", null, null, null, null, null, null, null);
-        EnrollmentRecord record2 = new EnrollmentRecord("Case X", "Schedule 2", null, null, null, null, null, null, null);
+        EnrollmentRecord record1 = new EnrollmentRecord("Case X", "Schedule 1", null, null, null, null, null, null, null, null);
+        EnrollmentRecord record2 = new EnrollmentRecord("Case X", "Schedule 2", null, null, null, null, null, null, null, null);
         List<EnrollmentRecord> records = Arrays.asList(record1, record2);
 
         when(scheduleTrackingService.search(queryFor("Case X"))).thenReturn(records);
@@ -91,6 +124,10 @@ public class ANCSchedulesServiceTest {
                 return EqualsBuilder.reflectionEquals(expectedQuery.getCriteria(), ((EnrollmentsQuery) o).getCriteria());
             }
         });
+    }
+
+    private EnrollmentRecord ancEnrollmentRecord(String currentMilestone) {
+        return new EnrollmentRecord("Case X", SCHEDULE_ANC, currentMilestone, null, null, null, null, null, null, null);
     }
 
 }

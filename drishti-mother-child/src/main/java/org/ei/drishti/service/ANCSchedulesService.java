@@ -34,8 +34,12 @@ public class ANCSchedulesService {
         }
     }
 
-    public void ancVisitHasHappened(String caseId, LocalDate visitDate) {
-        trackingService.fulfillCurrentMilestone(caseId, SCHEDULE_ANC, visitDate);
+    public void ancVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
+        Integer currentMilestoneNumber = Integer.valueOf(trackingService.getEnrollment(caseId, SCHEDULE_ANC).getCurrentMilestoneName().replace("ANC ", ""));
+
+        for (int i = currentMilestoneNumber; i <= visitNumber; i++) {
+            trackingService.fulfillCurrentMilestone(caseId, SCHEDULE_ANC, visitDate);
+        }
     }
 
     public void closeCase(String caseId) {

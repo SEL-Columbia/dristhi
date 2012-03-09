@@ -44,7 +44,7 @@ public class ANCService {
             return;
         }
 
-        ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), DateUtil.today());
+        ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), 1, DateUtil.today());
     }
 
     public void updateANCOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {
