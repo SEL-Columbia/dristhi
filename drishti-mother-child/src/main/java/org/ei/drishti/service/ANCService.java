@@ -6,40 +6,36 @@ import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.motechproject.model.Time;
-import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 @Service
 public class ANCService {
-    public static final String SCHEDULE_NAME = "Ante Natal Care - Normal";
-    private final AllMothers allMothers;
-    private ScheduleTrackingService trackingService;
     private static Logger logger = Logger.getLogger(ANCService.class.toString());
 
+    private final AllMothers allMothers;
+    private ANCSchedulesService ancSchedulesService;
+
     @Autowired
-    public ANCService(AllMothers allMothers, ScheduleTrackingService trackingService) {
+    public ANCService(AllMothers allMothers, ANCSchedulesService ancSchedulesService) {
         this.allMothers = allMothers;
-        this.trackingService = trackingService;
+        this.ancSchedulesService = ancSchedulesService;
     }
 
     public void registerANCCase(AnteNatalCareEnrollmentInformation info) {
         Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name()).withAnmPhoneNumber(info.anmPhoneNumber()).withLMP(info.lmpDate());
         allMothers.register(mother);
 
-        DateTime now = DateUtil.now();
-        Time preferredAlertTime = new Time(now.hourOfDay().get(), now.minuteOfHour().get() + 2);
+        Time preferredAlertTime = new Time(LocalTime.now().plusMinutes(2).withSecondOfMinute(0));
         LocalDate referenceDate = info.lmpDate() != null ? info.lmpDate() : DateUtil.today();
 
-        trackingService.enroll(new EnrollmentRequest(info.caseId(), SCHEDULE_NAME, preferredAlertTime, referenceDate, null, null, null, null));
+        ancSchedulesService.enrollMother(info.caseId(), referenceDate, preferredAlertTime);
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {
@@ -47,7 +43,8 @@ public class ANCService {
             logger.warning("Found care provided without registered mother for case ID: " + ancInformation.caseId());
             return;
         }
-        trackingService.fulfillCurrentMilestone(ancInformation.caseId(), SCHEDULE_NAME, DateUtil.today());
+
+        ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), DateUtil.today());
     }
 
     public void updateANCOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {
@@ -58,6 +55,7 @@ public class ANCService {
             logger.warning("Tried to close case without registered mother for case ID: " + closeInformation.caseId());
             return;
         }
-        trackingService.unenroll(closeInformation.caseId(), Arrays.asList(SCHEDULE_NAME));
+
+        ancSchedulesService.closeCase(closeInformation.caseId());
     }
 }

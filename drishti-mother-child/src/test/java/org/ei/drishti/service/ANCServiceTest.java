@@ -11,14 +11,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
-import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.motechproject.model.Time;
 import org.motechproject.util.DateUtil;
 
-import java.util.Arrays;
-import java.util.Date;
-
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -26,14 +24,14 @@ public class ANCServiceTest {
     @Mock
     private AllMothers mothers;
     @Mock
-    private ScheduleTrackingService scheduleTrackingService;
+    private ANCSchedulesService ancSchedulesService;
 
     private ANCService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ANCService(mothers, scheduleTrackingService);
+        service = new ANCService(mothers, ancSchedulesService);
     }
 
     @Test
@@ -51,15 +49,15 @@ public class ANCServiceTest {
 
     @Test
     public void shouldEnrollAMotherIntoDefaultScheduleDuringEnrollmentBasedOnLMP() {
-        Date lmp = DateUtil.today().minusDays(2).toDate();
+        LocalDate lmp = DateUtil.today().minusDays(2);
 
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "12345", lmp);
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "12345", lmp.toDate());
 
         service.registerANCCase(enrollmentInfo);
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("CASE-1", lmp));
+        verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(lmp), any(Time.class));
     }
 
     @Test
@@ -70,7 +68,7 @@ public class ANCServiceTest {
 
         service.registerANCCase(enrollmentInfo);
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("CASE-1", DateUtil.today().toDate()));
+        verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(DateUtil.today()), any(Time.class));
     }
 
     @Test
@@ -79,7 +77,7 @@ public class ANCServiceTest {
 
         service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X"));
 
-        verify(scheduleTrackingService).fulfillCurrentMilestone("CASE-X", "Ante Natal Care - Normal", DateUtil.today());
+        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", DateUtil.today());
     }
 
     @Test
@@ -88,7 +86,7 @@ public class ANCServiceTest {
 
         service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-UNKNOWN-MOM"));
 
-        verifyZeroInteractions(scheduleTrackingService);
+        verifyZeroInteractions(ancSchedulesService);
     }
 
     @Test
@@ -97,7 +95,7 @@ public class ANCServiceTest {
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X"));
 
-        verify(scheduleTrackingService).unenroll("CASE-X", Arrays.asList("Ante Natal Care - Normal"));
+        verify(ancSchedulesService).closeCase("CASE-X");
     }
 
     @Test
@@ -106,17 +104,7 @@ public class ANCServiceTest {
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM"));
 
-        verifyZeroInteractions(scheduleTrackingService);
-    }
-
-    private EnrollmentRequest enrollmentFor(final String caseId, final Date lmp) {
-        return argThat(new ArgumentMatcher<EnrollmentRequest>() {
-            @Override
-            public boolean matches(Object o) {
-                EnrollmentRequest request = (EnrollmentRequest) o;
-                return request.getExternalId().equals(caseId) && request.getReferenceDate().toDate().equals(lmp);
-            }
-        });
+        verifyZeroInteractions(ancSchedulesService);
     }
 
     private Mother sameFieldsAs(final Mother mother) {
