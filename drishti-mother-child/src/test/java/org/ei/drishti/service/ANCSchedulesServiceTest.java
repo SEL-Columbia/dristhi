@@ -86,43 +86,47 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldFulfillANCScheduleWhenTheExpectedANCVisitHappens() {
-        EnrollmentRecord nextExpectedMilestone = ancEnrollmentRecord("ANC 1");
-        int visitNumberToTryAndFulfill = 1;
-
-        LocalDate visitDate = DateUtil.today().minusDays(3);
-        when(scheduleTrackingService.getEnrollment("Case X", SCHEDULE_ANC)).thenReturn(nextExpectedMilestone);
-
-        schedulesService.ancVisitHasHappened("Case X", visitNumberToTryAndFulfill, visitDate);
-
-        verify(scheduleTrackingService).fulfillCurrentMilestone("Case X", SCHEDULE_ANC, visitDate);
+        new FastForwardScheduleTestBase(scheduleTrackingService).forANCSchedule().whenExpecting("ANC 1").providedWithVisitNumber(1).willFulFillTimes(1);
     }
 
     @Test
     public void shouldNotFulfillANCMilestoneWhichHasAlreadyBeenFulfilled() {
-        EnrollmentRecord nextExpectedMilestone = ancEnrollmentRecord("ANC 3");
-        int visitNumberToTryAndFulfill = 1;
-
-        when(scheduleTrackingService.getEnrollment("Case X", SCHEDULE_ANC)).thenReturn(nextExpectedMilestone);
-
-        schedulesService.ancVisitHasHappened("Case X", visitNumberToTryAndFulfill, DateUtil.today().minusDays(3));
-
-        verify(scheduleTrackingService).getEnrollment("Case X", SCHEDULE_ANC);
-        verifyNoMoreInteractions(scheduleTrackingService);
+        new FastForwardScheduleTestBase(scheduleTrackingService).forANCSchedule().whenExpecting("ANC 3").providedWithVisitNumber(1).willFulFillTimes(0);
     }
 
     @Test
     public void shouldFulfillAllMilestonesBetweenTheCurrentOneAndTheOneCorrespondingToTheVisitNumber() {
-        EnrollmentRecord nextExpectedMilestone = ancEnrollmentRecord("ANC 1");
-        int visitNumberToTryAndFulfill = 3;
+        new FastForwardScheduleTestBase(scheduleTrackingService).forANCSchedule().whenExpecting("ANC 1").providedWithVisitNumber(3).willFulFillTimes(3);
+    }
 
-        when(scheduleTrackingService.getEnrollment("Case X", SCHEDULE_ANC)).thenReturn(nextExpectedMilestone);
+    @Test
+    public void shouldFulfillTT1MilestoneWhenTT1IsExpectedDuringANCCare() {
+        new FastForwardScheduleTestBase(scheduleTrackingService).forTTSchedule().whenExpecting("TT 1").providedWithVisitNumber(1).willFulFillTimes(1);
+    }
 
-        LocalDate visitDate = DateUtil.today().minusDays(3);
-        schedulesService.ancVisitHasHappened("Case X", visitNumberToTryAndFulfill, visitDate);
+    @Test
+    public void shouldFulfillTT2MilestoneWhenTT2IsExpectedDuringANCCare() {
+        new FastForwardScheduleTestBase(scheduleTrackingService).forTTSchedule().whenExpecting("TT 2").providedWithVisitNumber(2).willFulFillTimes(1);
+    }
 
-        verify(scheduleTrackingService).getEnrollment("Case X", SCHEDULE_ANC);
-        verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("Case X", SCHEDULE_ANC, visitDate);
-        verifyNoMoreInteractions(scheduleTrackingService);
+    @Test
+    public void shouldFulfillBothTT1AndTT2MilestoneWhenTT1IsExpectedDuringANCCareAndTT2IsProvided() {
+        new FastForwardScheduleTestBase(scheduleTrackingService).forTTSchedule().whenExpecting("TT 1").providedWithVisitNumber(2).willFulFillTimes(2);
+    }
+
+    @Test
+    public void shouldFulfillIFA1MilestoneWhenIFA1IsExpectedDuringANCCare() {
+        new FastForwardScheduleTestBase(scheduleTrackingService).forIFASchedule().whenExpecting("IFA 1").providedWithVisitNumber(1).willFulFillTimes(1);
+    }
+
+    @Test
+    public void shouldFulfillIFA2MilestoneWhenIFA2IsExpectedDuringANCCare() {
+        new FastForwardScheduleTestBase(scheduleTrackingService).forIFASchedule().whenExpecting("IFA 2").providedWithVisitNumber(2).willFulFillTimes(1);
+    }
+
+    @Test
+    public void shouldFulfillBothIFA1AndIFA2MilestoneWhenIFA1IsExpectedDuringANCCareAndIFA2IsProvided() {
+        new FastForwardScheduleTestBase(scheduleTrackingService).forIFASchedule().whenExpecting("IFA 1").providedWithVisitNumber(2).willFulFillTimes(2);
     }
 
     @Test
@@ -192,4 +196,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         return new EnrollmentRecord("Case X", SCHEDULE_ANC, currentMilestone, null, null, null, null, null, null, null);
     }
 
+    private EnrollmentRecord ttEnrollmentRecord(String currentMilestone) {
+        return new EnrollmentRecord("Case X", SCHEDULE_TT, currentMilestone, null, null, null, null, null, null, null);
+    }
 }

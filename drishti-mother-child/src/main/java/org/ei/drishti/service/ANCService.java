@@ -44,7 +44,34 @@ public class ANCService {
             return;
         }
 
-        ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), 1, DateUtil.today());
+        if (ancInformation.anc1Date() != null) {
+            ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), 1, ancInformation.anc1Date());
+        }
+        if (ancInformation.anc2Date() != null) {
+            ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), 2, ancInformation.anc2Date());
+        }
+        if (ancInformation.anc3Date() != null) {
+            ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), 3, ancInformation.anc3Date());
+        }
+        if (ancInformation.anc4Date() != null) {
+            ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), 4, ancInformation.anc4Date());
+        }
+
+        if (ancInformation.tt1Date() != null) {
+            ancSchedulesService.ttVisitHasHappened(ancInformation.caseId(), 1, ancInformation.tt1Date());
+        }
+
+        if (ancInformation.tt2Date() != null) {
+            ancSchedulesService.ttVisitHasHappened(ancInformation.caseId(), 2, ancInformation.tt2Date());
+        }
+
+        if (ancInformation.ifa1Date() != null) {
+            ancSchedulesService.ifaVisitHasHappened(ancInformation.caseId(), 1, ancInformation.ifa1Date());
+        }
+
+        if (ancInformation.ifa2Date() != null) {
+            ancSchedulesService.ifaVisitHasHappened(ancInformation.caseId(), 2, ancInformation.ifa2Date());
+        }
     }
 
     public void updateANCOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {

@@ -33,7 +33,10 @@
                 "form|anc|tt_2" : "tetanus2Date",
                 "form|anc|ifa1" : "ironFolicAcidTablet1Date",
                 "form|anc|ifa2" : "ironFolicAcidTablet2Date",
-                "form|anc|ifa3" : "ironFolicAcidTablet3Date"
+                "form|anc|anc_checkup1" : "anc1Date",
+                "form|anc|anc_checkup2" : "anc2Date",
+                "form|anc|anc_checkup3" : "anc3Date",
+                "form|anc|anc_checkup4" : "anc4Date"
             }
         },
         {

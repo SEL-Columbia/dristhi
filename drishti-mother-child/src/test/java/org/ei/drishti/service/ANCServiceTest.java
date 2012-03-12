@@ -12,13 +12,14 @@ import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.motechproject.model.Time;
-import org.motechproject.util.DateUtil;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.motechproject.util.DateUtil.today;
+import static org.motechproject.util.DateUtil.tomorrow;
 
 public class ANCServiceTest {
     @Mock
@@ -36,7 +37,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldSaveAMothersInformationDuringEnrollment() {
-        LocalDate lmp = DateUtil.today();
+        LocalDate lmp = today();
 
         String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
@@ -49,7 +50,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldEnrollAMotherIntoDefaultScheduleDuringEnrollmentBasedOnLMP() {
-        LocalDate lmp = DateUtil.today().minusDays(2);
+        LocalDate lmp = today().minusDays(2);
 
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
@@ -68,16 +69,92 @@ public class ANCServiceTest {
 
         service.registerANCCase(enrollmentInfo);
 
-        verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(DateUtil.today()), any(Time.class));
+        verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(today()), any(Time.class));
     }
 
     @Test
-    public void shouldFulfillMilestoneWhenANCCareHasBeenProvided() {
+    public void shouldTellANCSchedulesServiceWhenANC1CareHasBeenProvided() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
 
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X"));
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withAnc1Date(yesterday()));
 
-        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 1, DateUtil.today());
+        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 1, yesterday());
+    }
+
+    @Test
+    public void shouldTellANCSchedulesServiceWhenANC3CareHasBeenProvidedWhenItIsTheOnlyDateFilled() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withAnc3Date(yesterday()));
+
+        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 3, yesterday());
+    }
+
+    @Test
+    public void shouldTellANCSchedulesServiceWhenMultipleANCVisitDatesHaveBeenProvided() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withAnc1Date(yesterday()).withAnc3Date(today()).withAnc4Date(tomorrow()));
+
+        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 1, yesterday());
+        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 3, today());
+        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 4, tomorrow());
+    }
+
+    @Test
+    public void shouldTellANCSchedulesServiceThatTT1IsProvidedWhenOnlyTT1DateHasBeenProvided() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withTT1Date(yesterday()));
+
+        verify(ancSchedulesService).ttVisitHasHappened("CASE-X", 1, yesterday());
+    }
+
+    @Test
+    public void shouldTellANCSchedulesServiceThatTT2IsProvidedWhenOnlyTT2DateHasBeenProvided() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withTT2Date(yesterday()));
+
+        verify(ancSchedulesService).ttVisitHasHappened("CASE-X", 2, yesterday());
+    }
+
+    @Test
+    public void shouldTellANCSchedulesServiceThatTT1AndTT2AreProvidedWhenBothTTDatesHaveBeenProvided() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withTT1Date(yesterday()).withTT2Date(yesterday()));
+
+        verify(ancSchedulesService).ttVisitHasHappened("CASE-X", 1, yesterday());
+        verify(ancSchedulesService).ttVisitHasHappened("CASE-X", 2, yesterday());
+    }
+
+    @Test
+    public void shouldTellANCSchedulesServiceThatIFA1IsProvidedWhenOnlyIFA1DateHasBeenProvided() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withIFA1Date(yesterday()));
+
+        verify(ancSchedulesService).ifaVisitHasHappened("CASE-X", 1, yesterday());
+    }
+
+    @Test
+    public void shouldTellANCSchedulesServiceThatIFA2IsProvidedWhenOnlyIFA2DateHasBeenProvided() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withIFA2Date(yesterday()));
+
+        verify(ancSchedulesService).ifaVisitHasHappened("CASE-X", 2, yesterday());
+    }
+
+    @Test
+    public void shouldTellANCSchedulesServiceThatIFA1AndIFA2AreProvidedWhenBothIFADatesHaveBeenProvided() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withIFA1Date(yesterday()).withIFA2Date(yesterday()));
+
+        verify(ancSchedulesService).ifaVisitHasHappened("CASE-X", 1, yesterday());
+        verify(ancSchedulesService).ifaVisitHasHappened("CASE-X", 2, yesterday());
     }
 
     @Test
@@ -114,5 +191,9 @@ public class ANCServiceTest {
                 return EqualsBuilder.reflectionEquals(mother, o);
             }
         });
+    }
+
+    private LocalDate yesterday() {
+        return today().minusDays(1);
     }
 }

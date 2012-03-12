@@ -7,6 +7,7 @@ import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -26,6 +27,7 @@ public class ANCSchedulesService {
 
     private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_IFA, SCHEDULE_LAB, SCHEDULE_TT};
 
+    @Autowired
     public ANCSchedulesService(ScheduleTrackingService trackingService) {
         this.trackingService = trackingService;
     }
@@ -38,11 +40,15 @@ public class ANCSchedulesService {
     }
 
     public void ancVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
-        Integer currentMilestoneNumber = Integer.valueOf(trackingService.getEnrollment(caseId, SCHEDULE_ANC).getCurrentMilestoneName().replace("ANC ", ""));
+        fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_ANC, "ANC");
+    }
 
-        for (int i = currentMilestoneNumber; i <= visitNumber; i++) {
-            trackingService.fulfillCurrentMilestone(caseId, SCHEDULE_ANC, visitDate);
-        }
+    public void ttVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
+        fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_TT, "TT");
+    }
+
+    public void ifaVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
+        fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_IFA, "IFA");
     }
 
     public void closeCase(String caseId) {
@@ -67,5 +73,23 @@ public class ANCSchedulesService {
         }
 
         trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, null, null, null, milestone));
+    }
+
+    private void fastForwardSchedule(String caseId, int visitNumber, LocalDate visitDate, String scheduleName, String milestonePrefix) {
+        int numberOfTimes = numberOfTimesToFulfill(caseId, visitNumber, scheduleName, milestonePrefix);
+
+        for (int i = 0; i < numberOfTimes; i++) {
+            trackingService.fulfillCurrentMilestone(caseId, scheduleName, visitDate);
+        }
+    }
+
+    private int numberOfTimesToFulfill(String caseId, int visitNumber, String scheduleName, String milestonePrefix) {
+        EnrollmentRecord record = trackingService.getEnrollment(caseId, scheduleName);
+        if (record == null) {
+            return 0;
+        }
+
+        Integer currentMilestoneNumber = Integer.valueOf(record.getCurrentMilestoneName().replace(milestonePrefix + " ", ""));
+        return visitNumber - currentMilestoneNumber + 1;
     }
 }
