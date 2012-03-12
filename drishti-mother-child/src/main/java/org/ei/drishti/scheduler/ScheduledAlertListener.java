@@ -26,7 +26,7 @@ public class ScheduledAlertListener {
         String caseId = event.getParameters().get(EventDataKeys.EXTERNAL_ID).toString();
         Mother mother = mothers.findByCaseId(caseId);
 
-        System.out.println("SMS: Go visit " + mother);
-        // smsService.sendSMS("9590377135", event.getParameters().toString());
+        System.out.println("======= Event for " + mother + ": " + event);
+//        smsService.sendSMS("9590377135", event.getParameters().toString());
     }
 }
