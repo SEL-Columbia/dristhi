@@ -3,6 +3,8 @@ package org.ei.drishti.contract;
 import org.joda.time.LocalDate;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AnteNatalCareInformation {
     private String caseId;
@@ -104,6 +106,35 @@ public class AnteNatalCareInformation {
     public AnteNatalCareInformation withAnc4Date(LocalDate anc4Date) {
         this.anc4Date = anc4Date.toDate();
         return this;
+    }
+
+    public Map<Integer, LocalDate> ancVisits() {
+        HashMap<Integer, LocalDate> visitNumberToDate = new HashMap<Integer, LocalDate>();
+        addVisit(visitNumberToDate, 1, this.anc1Date());
+        addVisit(visitNumberToDate, 2, this.anc2Date());
+        addVisit(visitNumberToDate, 3, this.anc3Date());
+        addVisit(visitNumberToDate, 4, this.anc4Date());
+        return visitNumberToDate;
+    }
+
+    public Map<Integer, LocalDate> ttVisits() {
+        HashMap<Integer, LocalDate> visitNumberToDate = new HashMap<Integer, LocalDate>();
+        addVisit(visitNumberToDate, 1, this.tt1Date());
+        addVisit(visitNumberToDate, 2, this.tt2Date());
+        return visitNumberToDate;
+    }
+
+    public Map<Integer, LocalDate> ifaVisits() {
+        HashMap<Integer, LocalDate> visitNumberToDate = new HashMap<Integer, LocalDate>();
+        addVisit(visitNumberToDate, 1, this.ifa1Date());
+        addVisit(visitNumberToDate, 2, this.ifa2Date());
+        return visitNumberToDate;
+    }
+
+    private void addVisit(Map<Integer, LocalDate> visitNumberToDate, int visitNumber, LocalDate date) {
+        if (date != null) {
+            visitNumberToDate.put(visitNumber, date);
+        }
     }
 }
 

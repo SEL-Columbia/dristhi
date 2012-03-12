@@ -13,6 +13,7 @@ import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 @Service
@@ -44,33 +45,16 @@ public class ANCService {
             return;
         }
 
-        if (ancInformation.anc1Date() != null) {
-            ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), 1, ancInformation.anc1Date());
-        }
-        if (ancInformation.anc2Date() != null) {
-            ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), 2, ancInformation.anc2Date());
-        }
-        if (ancInformation.anc3Date() != null) {
-            ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), 3, ancInformation.anc3Date());
-        }
-        if (ancInformation.anc4Date() != null) {
-            ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), 4, ancInformation.anc4Date());
+        for (Map.Entry<Integer, LocalDate> entry : ancInformation.ancVisits().entrySet()) {
+            ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), entry.getKey(), entry.getValue());
         }
 
-        if (ancInformation.tt1Date() != null) {
-            ancSchedulesService.ttVisitHasHappened(ancInformation.caseId(), 1, ancInformation.tt1Date());
+        for (Map.Entry<Integer, LocalDate> entry : ancInformation.ttVisits().entrySet()) {
+            ancSchedulesService.ttVisitHasHappened(ancInformation.caseId(), entry.getKey(), entry.getValue());
         }
 
-        if (ancInformation.tt2Date() != null) {
-            ancSchedulesService.ttVisitHasHappened(ancInformation.caseId(), 2, ancInformation.tt2Date());
-        }
-
-        if (ancInformation.ifa1Date() != null) {
-            ancSchedulesService.ifaVisitHasHappened(ancInformation.caseId(), 1, ancInformation.ifa1Date());
-        }
-
-        if (ancInformation.ifa2Date() != null) {
-            ancSchedulesService.ifaVisitHasHappened(ancInformation.caseId(), 2, ancInformation.ifa2Date());
+        for (Map.Entry<Integer, LocalDate> entry : ancInformation.ifaVisits().entrySet()) {
+            ancSchedulesService.ifaVisitHasHappened(ancInformation.caseId(), entry.getKey(), entry.getValue());
         }
     }
 
