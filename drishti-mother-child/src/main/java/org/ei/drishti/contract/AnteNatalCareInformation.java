@@ -27,13 +27,11 @@ public class AnteNatalCareInformation {
 
     @Override
     public String toString() {
-        return "AnteNatalCareInformation{" +
-                "caseId='" + caseId + '\'' +
-                ", tetanus1Date='" + tetanus1Date + '\'' +
-                ", tetanus2Date='" + tetanus2Date + '\'' +
-                ", ironFolicAcidTablet1Date='" + ironFolicAcidTablet1Date + '\'' +
-                ", ironFolicAcidTablet2Date='" + ironFolicAcidTablet2Date + '\'' +
-                '}';
+        return "AnteNatalCareInformation { " +
+                "caseId= '" + caseId + "'" +
+                ", TT1 = " + tetanus1Date + ", TT2 = " + tetanus2Date + ", IFA 1 = " + ironFolicAcidTablet1Date +
+                ", IFA 2 = " + ironFolicAcidTablet2Date + ", ANC 1 = " + anc1Date + ", ANC 2 = " + anc2Date +
+                ", ANC 3 = " + anc3Date + ", ANC 4 = " + anc4Date + " }";
     }
 
     public AnteNatalCareInformation withTT1Date(LocalDate date) {

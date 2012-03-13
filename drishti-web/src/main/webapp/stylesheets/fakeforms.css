@@ -1,0 +1,31 @@
+span.title {
+    font-size: 24pt;
+    font-style: italic;
+}
+
+span.formStatus {
+    color: #0000ff;
+}
+
+form {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+div.formDiv {
+    margin-bottom: 40px;
+    margin-left: 20px;
+}
+
+label {
+    width: 200px;
+    float: left;
+}
+
+input[type="text"] {
+    width: 200px;
+}
+
+input[type="submit"] {
+    font-size: 24pt;
+}

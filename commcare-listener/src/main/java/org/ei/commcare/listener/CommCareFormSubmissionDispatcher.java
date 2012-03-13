@@ -33,7 +33,7 @@ public class CommCareFormSubmissionDispatcher {
         dispatch(methodName, parameterJson);
     }
 
-    private void dispatch(String methodName, String parameterJson) throws Exception {
+    public void dispatch(String methodName, String parameterJson) throws Exception {
         Method method = findMethodWhichAcceptsOneParameter(methodName);
         if (method == null) {
             logger.warning("Cannot dispatch: Unable to find method: " + methodName + " in " + routeEventsHere.getClass());
