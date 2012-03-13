@@ -7,7 +7,7 @@ $(document).ready(function() {
         $('#' + formName + 'status').text(status).css('opacity', '100');
     };
 
-    var clearDisplay = function(formName) {
+    var clearStatusDisplay = function(formName) {
         $('#' + formName + 'status').text('.').css('opacity', '0');
     };
 
@@ -33,7 +33,7 @@ $(document).ready(function() {
             $.each(formDefinition.mappings, function(i, mapping) {
                 form.append($(document.createElement('label')).attr('for', name + mapping.value).text(mapping.value));
                 form.append($(document.createElement('input')).attr('type', 'text').attr('id', name + "-" + mapping.value)
-                    .attr('class', 'mapping').change(function() { clearDisplay(name); }));
+                    .attr('class', 'mapping').change(function() { clearStatusDisplay(name); }));
                 form.append($(document.createElement('p')));
             });
 
