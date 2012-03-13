@@ -29,3 +29,9 @@ input[type="text"] {
 input[type="submit"] {
     font-size: 24pt;
 }
+
+div#information {
+    float: right;
+    margin-right: 100px;
+    margin-top: 10px;
+}
