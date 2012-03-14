@@ -101,7 +101,7 @@ public class AlertRouterTest {
 
     @Test(expected = NoRoutesMatchException.class)
     public void shouldFailIfNoRoutesMatch() {
-        router.handle(event("scheduleName", "milstoneName", "windowName"));
+        router.handle(event("scheduleName", "milestoneName", "windowName"));
     }
 
     private void assertRouteMatches(String schedule, String milestone, String window, Action action) {
