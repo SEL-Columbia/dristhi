@@ -1,6 +1,6 @@
 package org.ei.drishti.controller;
 
-import org.ei.commcare.listener.CommCareFormSubmissionDispatcher;
+import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.AnteNatalCareCloseInformation;
 import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
 import org.ei.drishti.contract.AnteNatalCareInformation;
@@ -17,7 +17,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DrishtiControllerTest {
     @Mock
-    private CommCareFormSubmissionDispatcher dispatcher;
+    private CommCareFormSubmissionRouter dispatcher;
     @Mock
     private ANCService ancService;
     @Mock

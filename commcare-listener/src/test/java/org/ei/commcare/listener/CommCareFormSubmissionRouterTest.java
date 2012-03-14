@@ -14,24 +14,24 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class CommCareFormSubmissionDispatcherTest {
+public class CommCareFormSubmissionRouterTest {
     @Mock
     FakeDrishtiController drishtiController;
 
-    private CommCareFormSubmissionDispatcher commCareFormSubmissionDispatcher;
+    private CommCareFormSubmissionRouter commCareFormSubmissionRouter;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        commCareFormSubmissionDispatcher = new CommCareFormSubmissionDispatcher();
-        commCareFormSubmissionDispatcher.registerForDispatch(drishtiController);
+        commCareFormSubmissionRouter = new CommCareFormSubmissionRouter();
+        commCareFormSubmissionRouter.registerForDispatch(drishtiController);
     }
 
     @Test
     public void shouldDispatchToMethodSpecifiedByFormNameWithAnArgumentFromFormData() throws Exception {
         MotechEvent event = eventFor("registerMother", "{\"name\" : \"Mom\", \"age\" : \"23\"}");
 
-        commCareFormSubmissionDispatcher.handle(event);
+        commCareFormSubmissionRouter.handle(event);
 
         verify(drishtiController).registerMother(new FakeMotherRegistrationRequest("Mom", 23));
     }
@@ -40,7 +40,7 @@ public class CommCareFormSubmissionDispatcherTest {
     public void shouldBeAbleToCreateArgumentsWithDateInThemWhenDateIsInYYYYMMDDFormat() throws Exception {
         MotechEvent event = eventFor("methodWithArgumentHavingADate", "{\"date\" : \"2000-03-23\"}");
 
-        commCareFormSubmissionDispatcher.handle(event);
+        commCareFormSubmissionRouter.handle(event);
 
         verify(drishtiController).methodWithArgumentHavingADate(new FakeRequestWithDate(new DateTime(2000, 3, 23, 0, 0).toDate()));
     }
@@ -49,7 +49,7 @@ public class CommCareFormSubmissionDispatcherTest {
     public void shouldNotFailIfMethodForDispatchIsNotFound() throws Exception {
         MotechEvent event = eventFor("someMethodWhichDoesNotExist", "{\"name\" : \"Mom\", \"age\" : \"23\"}");
 
-        commCareFormSubmissionDispatcher.handle(event);
+        commCareFormSubmissionRouter.handle(event);
 
         verifyZeroInteractions(drishtiController);
     }
@@ -58,14 +58,14 @@ public class CommCareFormSubmissionDispatcherTest {
     public void shouldNotFailIfDataCannotBeConvertedToMethodParameterObject() throws Exception {
         MotechEvent event = eventFor("registerMother", "someWrongData");
 
-        commCareFormSubmissionDispatcher.handle(event);
+        commCareFormSubmissionRouter.handle(event);
 
         verifyZeroInteractions(drishtiController);
     }
 
     @Test(expected = InvocationTargetException.class)
     public void shouldFailIfTheInvokedMethodThrowsAnException() throws Exception {
-        CommCareFormSubmissionDispatcher dispatcher = new CommCareFormSubmissionDispatcher();
+        CommCareFormSubmissionRouter dispatcher = new CommCareFormSubmissionRouter();
         dispatcher.registerForDispatch(new FakeDrishtiController());
 
         MotechEvent event = eventFor("methodWhichThrowsAnException", "{\"name\" : \"Mom\", \"age\" : \"23\"}");
@@ -77,7 +77,7 @@ public class CommCareFormSubmissionDispatcherTest {
     public void shouldNotCallAMethodWithValidNameWithZeroArguments() throws Exception {
         MotechEvent event = eventFor("methodWithoutArguments", "{}");
 
-        commCareFormSubmissionDispatcher.handle(event);
+        commCareFormSubmissionRouter.handle(event);
 
         verifyZeroInteractions(drishtiController);
     }
@@ -86,21 +86,21 @@ public class CommCareFormSubmissionDispatcherTest {
     public void shouldNotCallAMethodWithValidNameWithTwoArguments() throws Exception {
         MotechEvent event = eventFor("methodWithTwoArguments", "{}");
 
-        commCareFormSubmissionDispatcher.handle(event);
+        commCareFormSubmissionRouter.handle(event);
 
         verifyZeroInteractions(drishtiController);
     }
 
     @Test
     public void shouldDispatchEvenIfParameterClassDoesNotHaveADefaultConstructor() throws Exception {
-        commCareFormSubmissionDispatcher.handle(eventFor("ancVisit", "{\"something\" : 3}"));
+        commCareFormSubmissionRouter.handle(eventFor("ancVisit", "{\"something\" : 3}"));
 
         verify(drishtiController).ancVisit(new FakeANCVisitRequestWithoutADefaultConstructor(3));
     }
 
     @Test
     public void shouldNotFailIfNoObjectToRouteToHasBeenSetup() throws Exception {
-        CommCareFormSubmissionDispatcher dispatcher = new CommCareFormSubmissionDispatcher();
+        CommCareFormSubmissionRouter dispatcher = new CommCareFormSubmissionRouter();
 
         dispatcher.registerForDispatch(null);
 

@@ -1,32 +1,19 @@
 package org.ei.drishti.controller;
 
-import org.ei.drishti.domain.Mother;
-import org.ei.drishti.repository.AllMothers;
-import org.motechproject.model.MotechEvent;
-import org.motechproject.scheduletracking.api.events.constants.EventDataKeys;
-import org.motechproject.scheduletracking.api.events.constants.EventSubjects;
-import org.motechproject.server.event.annotations.MotechListener;
-import org.motechproject.sms.api.service.SmsService;
+import org.ei.drishti.scheduler.router.Action;
+import org.ei.drishti.scheduler.router.AlertRouter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
+import static org.ei.drishti.scheduler.router.Matcher.any;
+import static org.ei.drishti.scheduler.router.Matcher.eq;
 
 @Component
 public class AlertController {
-    private final AllMothers mothers;
-    private final SmsService smsService;
-
     @Autowired
-    public AlertController(AllMothers mothers, SmsService smsService) {
-        this.mothers = mothers;
-        this.smsService = smsService;
-    }
-
-    @MotechListener(subjects = {EventSubjects.MILESTONE_ALERT})
-    public void handleAlert(MotechEvent event) {
-        String caseId = event.getParameters().get(EventDataKeys.EXTERNAL_ID).toString();
-        Mother mother = mothers.findByCaseId(caseId);
-
-        System.out.println("======= Event for " + mother + ": " + event);
-//        smsService.sendSMS("9590377135", event.getParameters().toString());
+    public AlertController(AlertRouter router, @Qualifier("groupSMSAction") Action groupSMS, @Qualifier("failAction") Action fail) {
+        router.addRoute(eq("Ante Natal Care - Normal"), eq("ANC 1"), any(), groupSMS);
+        router.addRoute(any(), any(), any(), fail);
     }
 }

@@ -14,9 +14,9 @@ import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_DATA_PARAMET
 import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_NAME_PARAMETER;
 
 @Component
-public class CommCareFormSubmissionDispatcher {
+public class CommCareFormSubmissionRouter {
     private Object routeEventsHere;
-    private static Logger logger = Logger.getLogger(CommCareFormSubmissionDispatcher.class.toString());
+    private static Logger logger = Logger.getLogger(CommCareFormSubmissionRouter.class.toString());
 
     public void registerForDispatch(Object dispatchToMethodsInThisObject) {
         this.routeEventsHere = dispatchToMethodsInThisObject;

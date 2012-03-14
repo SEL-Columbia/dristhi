@@ -1,6 +1,6 @@
 package org.ei.drishti.controller;
 
-import org.ei.commcare.listener.CommCareFormSubmissionDispatcher;
+import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
@@ -13,8 +13,8 @@ public class DrishtiController {
     private DrishtiMCTSService mctsService;
 
     @Autowired
-    public DrishtiController(CommCareFormSubmissionDispatcher dispatcher, ANCService ancService, DrishtiMCTSService drishtiMctsService) {
-        dispatcher.registerForDispatch(this);
+    public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, DrishtiMCTSService drishtiMctsService) {
+        router.registerForDispatch(this);
         this.ancService = ancService;
         this.mctsService = drishtiMctsService;
     }

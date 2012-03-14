@@ -3,7 +3,7 @@ package org.ei.drishti.web.controller;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ei.commcare.api.contract.CommCareFormDefinition;
 import org.ei.commcare.api.util.CommCareImportProperties;
-import org.ei.commcare.listener.CommCareFormSubmissionDispatcher;
+import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +20,10 @@ import java.util.Set;
 @Controller
 public class FakeFormController {
     private final CommCareImportProperties properties;
-    private final CommCareFormSubmissionDispatcher dispatcher;
+    private final CommCareFormSubmissionRouter dispatcher;
 
     @Autowired
-    public FakeFormController(CommCareImportProperties properties, CommCareFormSubmissionDispatcher dispatcher) {
+    public FakeFormController(CommCareImportProperties properties, CommCareFormSubmissionRouter dispatcher) {
         this.properties = properties;
         this.dispatcher = dispatcher;
     }

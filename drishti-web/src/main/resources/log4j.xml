@@ -13,7 +13,7 @@
     <level value="INFO"/>
   </logger>
 
-  <logger name="org.ei.commcare.listener.CommCareFormSubmissionDispatcher">
+  <logger name="org.ei.commcare.listener.CommCareFormSubmissionRouter">
     <level value="DEBUG"/>
   </logger>
 
