@@ -1,11 +1,33 @@
 package org.ei.drishti.scheduler.router;
 
-public class Matcher {
+public abstract class Matcher {
+    public abstract boolean matches(String scheduleName);
+
     public static Matcher eq(String value) {
-        throw new RuntimeException("Unsupported.");
+        return new EqMatcher(value);
     }
 
     public static Matcher any() {
-        throw new RuntimeException("Unsupported.");
+        return new AnyMatcher();
+    }
+
+    private static class AnyMatcher extends Matcher {
+        @Override
+        public boolean matches(String scheduleName) {
+            return true;
+        }
+    }
+
+    private static class EqMatcher extends Matcher {
+        private final String expectedValue;
+
+        public EqMatcher(String expectedValue) {
+            this.expectedValue = expectedValue;
+        }
+
+        @Override
+        public boolean matches(String actualValue) {
+            return expectedValue.equals(actualValue);
+        }
     }
 }

@@ -7,13 +7,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import static org.ei.drishti.scheduler.router.Matcher.any;
-import static org.ei.drishti.scheduler.router.Matcher.eq;
 
 @Component
 public class AlertController {
     @Autowired
-    public AlertController(AlertRouter router, @Qualifier("groupSMSAction") Action groupSMS, @Qualifier("failAction") Action fail) {
-        router.addRoute(eq("Ante Natal Care - Normal"), eq("ANC 1"), any(), groupSMS);
-        router.addRoute(any(), any(), any(), fail);
+    public AlertController(AlertRouter router, @Qualifier("anmGroupSMSAction") Action anmGroupSMS, @Qualifier("failAction") Action fail) {
+        router.addRoute(any(), any(), any(), anmGroupSMS);
     }
 }

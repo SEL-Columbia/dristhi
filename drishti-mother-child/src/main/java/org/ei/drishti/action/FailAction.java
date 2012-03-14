@@ -3,7 +3,9 @@ package org.ei.drishti.action;
 import org.ei.drishti.scheduler.router.Action;
 import org.motechproject.model.MotechEvent;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
+@Component
 @Qualifier("failAction")
 public class FailAction implements Action {
     @Override
