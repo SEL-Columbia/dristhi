@@ -1,4 +1,4 @@
-package org.ei.drishti.scheduler;
+package org.ei.drishti.controller;
 
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ScheduledAlertListener {
+public class AlertController {
     private final AllMothers mothers;
     private final SmsService smsService;
 
     @Autowired
-    public ScheduledAlertListener(AllMothers mothers, SmsService smsService) {
+    public AlertController(AllMothers mothers, SmsService smsService) {
         this.mothers = mothers;
         this.smsService = smsService;
     }

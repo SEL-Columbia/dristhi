@@ -1,6 +1,7 @@
-package org.ei.drishti.service;
+package org.ei.drishti.scheduler.service;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.ei.drishti.scheduler.util.FastForwardScheduleTestBase;
 import org.hamcrest.Description;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -18,9 +19,10 @@ import org.motechproject.util.DateUtil;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.ei.drishti.service.ANCSchedulesService.*;
+import static org.ei.drishti.scheduler.service.ANCSchedulesService.*;
 import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
 import static org.powermock.api.mockito.PowerMockito.when;

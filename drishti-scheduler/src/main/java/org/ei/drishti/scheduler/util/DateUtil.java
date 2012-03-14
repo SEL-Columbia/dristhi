@@ -1,4 +1,4 @@
-package org.ei.drishti.util;
+package org.ei.drishti.scheduler.util;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;

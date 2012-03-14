@@ -5,22 +5,22 @@
         {
             "name": "IFA 1",
             "scheduleWindows": {
-                "earliest": ["10 Weeks"],
-                "due": ["13 Weeks"],
-                "late": ["40 Weeks"],
-                "max": ["42 Weeks"]
+                "earliest": ["10 Minutes"],
+                "due": ["13 Minutes"],
+                "late": ["40 Minutes"],
+                "max": ["42 Minutes"]
             },
             "alerts": [
                 {
                     "window": "late",
-                    "offset": ["0 Days"],
-                    "interval": ["1 Week"],
+                    "offset": ["0 Seconds"],
+                    "interval": ["1 Minute"],
                     "count": "100"
                 },
                 {
                     "window": "late",
-                    "offset": ["3 Days"],
-                    "interval": ["1 Week"],
+                    "offset": ["25 Seconds"],
+                    "interval": ["1 Minute"],
                     "count": "100"
                 }
             ]
@@ -28,16 +28,16 @@
         {
             "name": "IFA 2",
             "scheduleWindows": {
-                "earliest": ["20 Weeks"],
-                "due": ["24 Weeks"],
-                "late": ["40 Weeks"],
-                "max": ["42 Weeks"]
+                "earliest": ["20 Minutes"],
+                "due": ["24 Minutes"],
+                "late": ["40 Minutes"],
+                "max": ["42 Minutes"]
             },
             "alerts": [
                 {
                     "window": "late",
-                    "offset": ["0 Days"],
-                    "interval": ["4 Week"],
+                    "offset": ["0 Seconds"],
+                    "interval": ["4 Minute"],
                     "count": "5"
                 }
             ]

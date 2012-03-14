@@ -13,6 +13,7 @@
         <module>drishti-mother-child</module>
         <module>drishti-web</module>
         <module>commcare-listener</module>
+      <module>drishti-scheduler</module>
     </modules>
 
     <distributionManagement>

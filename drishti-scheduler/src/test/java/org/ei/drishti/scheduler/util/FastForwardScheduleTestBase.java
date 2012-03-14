@@ -1,5 +1,6 @@
-package org.ei.drishti.service;
+package org.ei.drishti.scheduler.util;
 
+import org.ei.drishti.scheduler.service.ANCSchedulesService;
 import org.joda.time.LocalDate;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;

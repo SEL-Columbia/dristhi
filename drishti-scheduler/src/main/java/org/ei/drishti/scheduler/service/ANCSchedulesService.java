@@ -1,5 +1,6 @@
-package org.ei.drishti.service;
+package org.ei.drishti.scheduler.service;
 
+import org.ei.drishti.scheduler.util.DateUtil;
 import org.joda.time.LocalDate;
 import org.joda.time.Weeks;
 import org.motechproject.model.Time;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.ei.drishti.util.DateUtil.isDateWithinGivenPeriodBeforeToday;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
 
 @Service
@@ -62,13 +62,13 @@ public class ANCSchedulesService {
     private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule, Time preferredAlertTime, Time referenceTime) {
         String milestone = "ANC 1";
 
-        if (isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(16).toPeriod().minusDays(1))) {
+        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(16).toPeriod().minusDays(1))) {
             milestone = "ANC 1";
-        } else if (isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(28).toPeriod().minusDays(1))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(28).toPeriod().minusDays(1))) {
             milestone = "ANC 2";
-        } else if (isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(34).toPeriod().minusDays(1))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(34).toPeriod().minusDays(1))) {
             milestone = "ANC 3";
-        } else if (isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(40).toPeriod())) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(40).toPeriod())) {
             milestone = "ANC 4";
         }
 
