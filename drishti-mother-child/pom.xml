@@ -132,11 +132,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.motechproject</groupId>
-            <artifactId>motech-scheduletracking-api</artifactId>
-            <version>${motech.version}</version>
-        </dependency>
-        <dependency>
             <artifactId>motech-platform-server-api</artifactId>
             <groupId>org.motechproject</groupId>
             <version>${motech.version}</version>
@@ -227,12 +222,6 @@
         <groupId>org.powermock</groupId>
         <artifactId>powermock-api-mockito</artifactId>
         <version>1.4.9</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.motechproject</groupId>
-        <artifactId>motech-testing-utils</artifactId>
-        <version>${motech.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
