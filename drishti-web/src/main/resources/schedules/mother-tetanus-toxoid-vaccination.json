@@ -5,22 +5,22 @@
         {
             "name": "TT 1",
             "scheduleWindows": {
-                "earliest": ["10 Minutes"],
-                "due": ["15 Minutes"],
-                "late": ["40 Minutes"],
+                "earliest": ["10 Weeks"],
+                "due": ["15 Weeks"],
+                "late": ["40 Weeks"],
                 "max": [""]
             },
             "alerts": [
                 {
                     "window": "late",
-                    "offset": ["0 Seconds"],
-                    "interval": ["1 Minutes"],
+                    "offset": ["0 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "40"
                 },
                 {
                     "window": "late",
-                    "offset": ["25 Seconds"],
-                    "interval": ["1 Minutes"],
+                    "offset": ["3 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "40"
                 }
             ]
@@ -28,34 +28,34 @@
         {
             "name": "TT 2",
             "scheduleWindows": {
-                "earliest": ["3 Minutes"],
-                "due": ["4 Minutes"],
-                "late": ["8 Minutes"],
-                "max": ["9 Minutes"]
+                "earliest": ["3 Weeks"],
+                "due": ["4 Weeks"],
+                "late": ["8 Weeks"],
+                "max": ["9 Weeks"]
             },
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["0 Seconds"],
-                    "interval": ["1 Minutes"],
+                    "offset": ["0 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "2"
                 },
                 {
                     "window": "late",
-                    "offset": ["25 Seconds"],
-                    "interval": ["1 Minutes"],
+                    "offset": ["3 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "4"
                 },
                 {
                     "window": "late",
-                    "offset": ["60 Seconds"],
-                    "interval": ["1 Minutes"],
+                    "offset": ["7 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "4"
                 },
                 {
                     "window": "max",
-                    "offset": ["17 Seconds"],
-                    "interval": ["8 Seconds"],
+                    "offset": ["2 Days"],
+                    "interval": ["1 Days"],
                     "count": "3"
                 }
             ]

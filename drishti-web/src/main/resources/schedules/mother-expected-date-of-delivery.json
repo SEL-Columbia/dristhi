@@ -5,28 +5,28 @@
         {
             "name": "EDD",
             "scheduleWindows": {
-                "earliest": ["38 Minutes"],
-                "due": ["40 Minutes"],
-                "late": ["100 Minutes"],
+                "earliest": ["38 Weeks"],
+                "due": ["40 Weeks"],
+                "late": ["100 Weeks"],
                 "max": [""]
             },
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["0 Seconds"],
-                    "interval": ["1 Minutes"],
+                    "offset": ["0 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "3"
                 },
                 {
                     "window": "late",
-                    "offset": ["25 Seconds"],
-                    "interval": ["1 Minutes"],
+                    "offset": ["3 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "100"
                 },
                 {
                     "window": "late",
-                    "offset": ["60 Seconds"],
-                    "interval": ["1 Minutes"],
+                    "offset": ["7 Days"],
+                    "interval": ["1 Weeks"],
                     "count": "100"
                 }
             ]
