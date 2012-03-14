@@ -1,7 +1,6 @@
 package org.ei.drishti.scheduler.service;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.ei.drishti.scheduler.util.FastForwardScheduleTestBase;
 import org.hamcrest.Description;
 import org.joda.time.LocalDate;
 import org.junit.Before;
