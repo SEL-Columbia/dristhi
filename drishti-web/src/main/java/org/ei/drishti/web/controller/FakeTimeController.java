@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 
 @Controller
-public class TimeController {
+public class FakeTimeController {
     @RequestMapping("/time/set")
     @ResponseBody
     public String setTime(@RequestParam("offset") Integer offsetInSeconds) throws IOException {
