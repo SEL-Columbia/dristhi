@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import static org.joda.time.LocalTime.now;
+
 @Service
 public class ANCService {
     private static Logger logger = Logger.getLogger(ANCService.class.toString());
@@ -37,7 +39,7 @@ public class ANCService {
         Time preferredAlertTime = new Time(new LocalTime(14, 0));
         LocalDate referenceDate = info.lmpDate() != null ? info.lmpDate() : DateUtil.today();
 
-        ancSchedulesService.enrollMother(info.caseId(), referenceDate, preferredAlertTime);
+        ancSchedulesService.enrollMother(info.caseId(), referenceDate, new Time(now()), preferredAlertTime);
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {

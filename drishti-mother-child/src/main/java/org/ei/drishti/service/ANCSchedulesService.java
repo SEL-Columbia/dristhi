@@ -32,11 +32,11 @@ public class ANCSchedulesService {
         this.trackingService = trackingService;
     }
 
-    public void enrollMother(String caseId, LocalDate referenceDateForSchedule, Time preferredAlertTime) {
+    public void enrollMother(String caseId, LocalDate referenceDateForSchedule, Time referenceTime, Time preferredAlertTime) {
         for (String schedule : NON_ANC_SCHEDULES) {
-            trackingService.enroll(new EnrollmentRequest(caseId, schedule, preferredAlertTime, referenceDateForSchedule, null, null, null, null));
+            trackingService.enroll(new EnrollmentRequest(caseId, schedule, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, null));
         }
-        enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule, preferredAlertTime);
+        enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule, preferredAlertTime, referenceTime);
     }
 
     public void ancVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
@@ -59,7 +59,7 @@ public class ANCSchedulesService {
         }
     }
 
-    private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule, Time preferredAlertTime) {
+    private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule, Time preferredAlertTime, Time referenceTime) {
         String milestone = "ANC 1";
 
         if (isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(16).toPeriod().minusDays(1))) {
@@ -72,7 +72,7 @@ public class ANCSchedulesService {
             milestone = "ANC 4";
         }
 
-        trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, null, null, null, milestone));
+        trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, milestone));
     }
 
     private void fastForwardSchedule(String caseId, int visitNumber, LocalDate visitDate, String scheduleName, String milestonePrefix) {

@@ -40,7 +40,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     public void shouldEnrollMotherIntoSchedules() {
         LocalDate lmp = DateUtil.today().minusDays(3);
 
-        schedulesService.enrollMother("Case X", lmp, new Time(14, 0));
+        schedulesService.enrollMother("Case X", lmp, new Time(15, 0), new Time(14, 0));
 
         verify(scheduleTrackingService).enroll(ancEnrollmentFor("Case X", SCHEDULE_ANC, lmp, "ANC 1"));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_EDD, lmp));
@@ -148,7 +148,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         LocalDate lmp = new LocalDate(2012, 1, 1);
         mockCurrentDate(enrollmentDate);
 
-        schedulesService.enrollMother("Case X", lmp, new Time(14, 0));
+        schedulesService.enrollMother("Case X", lmp, new Time(15, 0), new Time(14, 0));
 
         verify(scheduleTrackingService).enroll(ancEnrollmentFor("Case X", SCHEDULE_ANC, lmp, expectedMilestone));
     }
@@ -172,7 +172,9 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
                 return caseId.equals(request.getExternalId())
                         && lmp.equals(request.getReferenceDate())
                         && scheduleName.equals(request.getScheduleName())
-                        && expectedMilestoneThePersonWillBeEnrolledInto.equals(request.getStartingMilestoneName());
+                        && expectedMilestoneThePersonWillBeEnrolledInto.equals(request.getStartingMilestoneName())
+                        && new Time(14, 0).equals(request.getPreferredAlertTime())
+                        && new Time(15, 0).equals(request.getReferenceTime());
             }
 
             @Override

@@ -58,7 +58,7 @@ public class ANCServiceTest {
 
         service.registerANCCase(enrollmentInfo);
 
-        verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(lmp), any(Time.class));
+        verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(lmp), any(Time.class), any(Time.class));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ANCServiceTest {
 
         service.registerANCCase(enrollmentInfo);
 
-        verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(today()), any(Time.class));
+        verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(today()), any(Time.class), any(Time.class));
     }
 
     @Test
