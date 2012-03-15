@@ -14,17 +14,12 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.ei.drishti.scheduler.DrishtiSchedules.*;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
 
 @Service
 public class ANCSchedulesService {
     private final ScheduleTrackingService trackingService;
-    public static final String SCHEDULE_ANC = "Ante Natal Care - Normal";
-    public static final String SCHEDULE_EDD = "Expected Date Of Delivery";
-    public static final String SCHEDULE_IFA = "Iron Folic Acid Supplements";
-    public static final String SCHEDULE_LAB = "Lab Reminders";
-    public static final String SCHEDULE_TT = "Tetatnus Toxoid Vaccination";
-
     private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_IFA, SCHEDULE_LAB, SCHEDULE_TT};
 
     @Autowired
@@ -41,6 +36,10 @@ public class ANCSchedulesService {
 
     public void ancVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
         fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_ANC, "ANC");
+    }
+
+    public void ancVisitHasBeenMissed(String externalId, String scheduleName) {
+        trackingService.fulfillCurrentMilestone(externalId, scheduleName);
     }
 
     public void ttVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {

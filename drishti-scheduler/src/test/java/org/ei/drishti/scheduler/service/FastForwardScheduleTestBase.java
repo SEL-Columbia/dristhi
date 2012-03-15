@@ -1,10 +1,12 @@
 package org.ei.drishti.scheduler.service;
 
+import org.ei.drishti.scheduler.DrishtiSchedules;
 import org.joda.time.LocalDate;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.util.DateUtil;
 
+import static org.ei.drishti.scheduler.DrishtiSchedules.SCHEDULE_ANC;
 import static org.mockito.Mockito.*;
 
 public class FastForwardScheduleTestBase {
@@ -26,7 +28,7 @@ public class FastForwardScheduleTestBase {
     }
 
     public FastForwardScheduleTestBase forANCSchedule() {
-        this.scheduleName = ANCSchedulesService.SCHEDULE_ANC;
+        this.scheduleName = SCHEDULE_ANC;
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
@@ -37,7 +39,7 @@ public class FastForwardScheduleTestBase {
     }
 
     public FastForwardScheduleTestBase forTTSchedule() {
-        this.scheduleName = ANCSchedulesService.SCHEDULE_TT;
+        this.scheduleName = DrishtiSchedules.SCHEDULE_TT;
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
@@ -48,7 +50,7 @@ public class FastForwardScheduleTestBase {
     }
 
     public FastForwardScheduleTestBase forIFASchedule() {
-        this.scheduleName = ANCSchedulesService.SCHEDULE_IFA;
+        this.scheduleName = DrishtiSchedules.SCHEDULE_IFA;
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {

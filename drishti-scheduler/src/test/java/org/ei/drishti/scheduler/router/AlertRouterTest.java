@@ -14,9 +14,7 @@ import static org.ei.drishti.scheduler.router.Matcher.eq;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.MILESTONE_NAME;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.SCHEDULE_NAME;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.WINDOW_NAME;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.*;
 
 public class AlertRouterTest {
     @Mock
@@ -106,7 +104,7 @@ public class AlertRouterTest {
 
     private void assertRouteMatches(String schedule, String milestone, String window, Action action) {
         MotechEvent event = handleEvent(schedule, milestone, window);
-        verify(action, times(1)).invoke(event);
+        verify(action, times(1)).invoke(new MilestoneEvent(event));
     }
 
     private void assertNoRoutesMatch(String schedule, String milestone, String window) {

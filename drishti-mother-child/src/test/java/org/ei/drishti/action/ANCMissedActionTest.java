@@ -1,0 +1,44 @@
+package org.ei.drishti.action;
+
+import org.ei.drishti.scheduler.router.MilestoneEvent;
+import org.ei.drishti.scheduler.service.ANCSchedulesService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.motechproject.model.MotechEvent;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.EXTERNAL_ID;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.SCHEDULE_NAME;
+
+public class ANCMissedActionTest {
+    @Mock
+    ANCSchedulesService schedulesService;
+
+    @Before
+    public void setUp() throws Exception {
+        initMocks(this);
+    }
+
+    @Test
+    public void shouldMentionThatANCVisitHasBeenMissedForScheduleAndExternalIdSpecifiedByEvent() {
+        ANCMissedAction action = new ANCMissedAction(schedulesService);
+
+        action.invoke(event("Schedule X", "Case Y"));
+
+        verify(schedulesService).ancVisitHasBeenMissed("Case Y", "Schedule X");
+    }
+
+    private MilestoneEvent event(String scheduleName, String externalId) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put(SCHEDULE_NAME, scheduleName);
+        parameters.put(EXTERNAL_ID, externalId);
+
+        return new MilestoneEvent(new MotechEvent("Subject", parameters));
+    }
+
+}

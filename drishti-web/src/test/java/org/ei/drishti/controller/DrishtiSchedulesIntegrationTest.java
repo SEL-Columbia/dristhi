@@ -30,7 +30,7 @@ import static org.motechproject.util.DateUtil.newDate;
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/applicationContext-drishti-web.xml")
-public class ScheduleTrackingIntegrationTest extends BaseUnitTest {
+public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     private static final int JANUARY = 1;
     private static final int FEBRUARY = 2;
     private static final int MARCH = 3;

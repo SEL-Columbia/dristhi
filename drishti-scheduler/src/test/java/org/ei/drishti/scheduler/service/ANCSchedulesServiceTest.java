@@ -18,7 +18,7 @@ import org.motechproject.util.DateUtil;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.ei.drishti.scheduler.service.ANCSchedulesService.*;
+import static org.ei.drishti.scheduler.DrishtiSchedules.*;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -128,6 +128,13 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     @Test
     public void shouldFulfillBothIFA1AndIFA2MilestoneWhenIFA1IsExpectedDuringANCCareAndIFA2IsProvided() {
         new FastForwardScheduleTestBase(scheduleTrackingService).forIFASchedule().whenExpecting("IFA 1").providedWithVisitNumber(2).willFulFillTimes(2);
+    }
+
+    @Test
+    public void shouldFulfillCurrentScheduleForGivenExternalIdWhenANCVisitHasBeenMissed() {
+        schedulesService.ancVisitHasBeenMissed("Case X", "Schedule 1");
+
+        verify(scheduleTrackingService).fulfillCurrentMilestone("Case X", "Schedule 1");
     }
 
     @Test
