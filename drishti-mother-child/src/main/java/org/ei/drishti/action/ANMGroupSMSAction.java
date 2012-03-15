@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.logging.Logger;
+
 import static java.text.MessageFormat.format;
 
 @Component
 @Qualifier("ANMGroupSMSAction")
 public class ANMGroupSMSAction implements Action {
     private final AllMothers allMothers;
+    private static Logger logger = Logger.getLogger(ANMGroupSMSAction.class.toString());
 
     @Autowired
     public ANMGroupSMSAction(AllMothers allMothers) {
@@ -29,7 +32,7 @@ public class ANMGroupSMSAction implements Action {
         String message = format("======= {4}: Event for {0}: Schedule => {1}, Milestone => {2}, Window => {3}", mother,
                 event.scheduleName(), event.milestoneName(), event.windowName(), DateUtil.now());
 
-        System.out.println(message);
+        logger.info(message);
         // smsService.sendSMS("9590377135", message);
     }
 }

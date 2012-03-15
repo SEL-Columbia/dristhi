@@ -7,10 +7,13 @@ import org.ei.drishti.service.DrishtiMCTSService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.logging.Logger;
+
 @Component
 public class DrishtiController {
     private final ANCService ancService;
     private DrishtiMCTSService mctsService;
+    private static Logger logger = Logger.getLogger(DrishtiController.class.toString());
 
     @Autowired
     public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, DrishtiMCTSService drishtiMctsService) {
@@ -20,30 +23,34 @@ public class DrishtiController {
     }
 
     public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation) {
-        System.out.println("Mother registration: " + enrollmentInformation);
+        logger.info("Mother registration: " + enrollmentInformation);
+
         ancService.registerANCCase(enrollmentInformation);
         mctsService.registerANCCase(enrollmentInformation);
     }
 
     public void updateANCCareInformation(AnteNatalCareInformation ancInformation) {
-        System.out.println("ANC care: " + ancInformation);
+        logger.info("ANC care: " + ancInformation);
+
         ancService.ancCareHasBeenProvided(ancInformation);
         mctsService.ancCareHasBeenProvided(ancInformation);
     }
 
     public void updateOutcomeOfANC(AnteNatalCareOutcomeInformation outcomeInformation) {
-        System.out.println("ANC outcome: " + outcomeInformation);
+        logger.info("ANC outcome: " + outcomeInformation);
+
         ancService.updateANCOutcome(outcomeInformation);
         mctsService.updateANCOutcome(outcomeInformation);
     }
 
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation) {
-        System.out.println("ANC close: " + closeInformation);
+        logger.info("ANC close: " + closeInformation);
+
         ancService.closeANCCase(closeInformation);
         mctsService.closeANCCase(closeInformation);
     }
 
     public void registerChild(ChildRegistrationInformation childInformation) {
-        System.out.println("Child registration: " + childInformation);
+        logger.info("Child registration: " + childInformation);
     }
 }
