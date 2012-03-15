@@ -26,11 +26,11 @@ public class ANCMissedActionTest {
 
     @Test
     public void shouldMentionThatANCVisitHasBeenMissedForScheduleAndExternalIdSpecifiedByEvent() {
-        ANCMissedAction action = new ANCMissedAction(schedulesService);
+        ForceFulfillAction action = new ForceFulfillAction(schedulesService);
 
         action.invoke(event("Schedule X", "Case Y"));
 
-        verify(schedulesService).ancVisitHasBeenMissed("Case Y", "Schedule X");
+        verify(schedulesService).forceFulfillMilestone("Case Y", "Schedule X");
     }
 
     private MilestoneEvent event(String scheduleName, String externalId) {

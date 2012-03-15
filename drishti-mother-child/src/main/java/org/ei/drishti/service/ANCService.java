@@ -40,7 +40,7 @@ public class ANCService {
         Time preferredAlertTime = new Time(new LocalTime(14, 0));
         LocalDate referenceDate = info.lmpDate() != null ? info.lmpDate() : DateUtil.today();
 
-        ancSchedulesService.enrollMother(info.caseId(), referenceDate, new Time(now()), preferredAlertTime);
+        ancSchedulesService.enrollMother(info.caseId(), referenceDate, new Time(now()), null);
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {

@@ -12,15 +12,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.ei.drishti.scheduler.DrishtiSchedules.SCHEDULE_ANC;
+import static org.ei.drishti.scheduler.DrishtiSchedules.SCHEDULE_LAB;
 import static org.mockito.Mockito.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.max;
 import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.*;
 
 public class AlertControllerRoutesTest {
     @Test
-    public void shouldSendMaxEventsOfANCNormalToANCMissedAction() {
-        Event.of(SCHEDULE_ANC, "ANC 1", max).shouldRouteToANCMissedAction();
-        Event.of(SCHEDULE_ANC, "ANC 3", max).shouldRouteToANCMissedAction();
+    public void shouldSendMaxEventsOfANCNormalScheduleToForceFulfillAction() {
+        Event.of(SCHEDULE_ANC, "ANC 1", max).shouldRouteToForceFulfillAction();
+        Event.of(SCHEDULE_ANC, "ANC 3", max).shouldRouteToForceFulfillAction();
+        Event.of("Some Other Schedule", "Some milestone", max).shouldRouteToGroupSMSAction();
+    }
+
+    @Test
+    public void shouldSendMaxEventsOfLabRemindersScheduleToForceFulfillAction() {
+        Event.of(SCHEDULE_LAB, "EDD", max).shouldRouteToForceFulfillAction();
         Event.of("Some Other Schedule", "Some milestone", max).shouldRouteToGroupSMSAction();
     }
 
@@ -39,7 +46,7 @@ public class AlertControllerRoutesTest {
             return new Event(schedule, milestone, window);
         }
 
-        public void shouldRouteToANCMissedAction() {
+        public void shouldRouteToForceFulfillAction() {
             expectCalls(1, 0);
         }
 

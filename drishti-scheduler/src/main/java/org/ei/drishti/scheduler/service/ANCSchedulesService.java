@@ -38,7 +38,7 @@ public class ANCSchedulesService {
         fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_ANC, "ANC");
     }
 
-    public void ancVisitHasBeenMissed(String externalId, String scheduleName) {
+    public void forceFulfillMilestone(String externalId, String scheduleName) {
         trackingService.fulfillCurrentMilestone(externalId, scheduleName);
     }
 

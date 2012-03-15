@@ -131,8 +131,8 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldFulfillCurrentScheduleForGivenExternalIdWhenANCVisitHasBeenMissed() {
-        schedulesService.ancVisitHasBeenMissed("Case X", "Schedule 1");
+    public void shouldFulfillCurrentMilestoneForGivenExternalIdWhenVisitHasBeenMissed() {
+        schedulesService.forceFulfillMilestone("Case X", "Schedule 1");
 
         verify(scheduleTrackingService).fulfillCurrentMilestone("Case X", "Schedule 1");
     }

@@ -8,17 +8,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier("ANCMissedAction")
-public class ANCMissedAction implements Action {
+@Qualifier("ForceFulfillAction")
+public class ForceFulfillAction implements Action {
     private final ANCSchedulesService schedulesService;
 
     @Autowired
-    public ANCMissedAction(ANCSchedulesService schedulesService) {
+    public ForceFulfillAction(ANCSchedulesService schedulesService) {
         this.schedulesService = schedulesService;
     }
 
     @Override
     public void invoke(MilestoneEvent event) {
-        schedulesService.ancVisitHasBeenMissed(event.externalId(), event.scheduleName());
+        schedulesService.forceFulfillMilestone(event.externalId(), event.scheduleName());
     }
 }
