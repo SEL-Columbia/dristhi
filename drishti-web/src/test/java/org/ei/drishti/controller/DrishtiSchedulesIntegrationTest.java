@@ -89,8 +89,8 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
         schedule.assertNoAlerts("TT 2", earliest);
         schedule.assertAlerts("TT 2", due, date(17, JUNE), date(24, JUNE));
-        schedule.assertAlerts("TT 2", late, date(27, JUNE), date(1, JULY), date(4, JULY), date(8, JULY), date(11, JULY), date(15, JULY), date(18, JULY), date(22, JULY));
-        schedule.assertAlerts("TT 2", max, date(24, JULY), date(25, JULY), date(26, JULY));
+        schedule.assertAlertsStartWith("TT 2", late, date(27, JUNE), date(1, JULY), date(4, JULY), date(8, JULY), date(11, JULY), date(15, JULY), date(18, JULY), date(22, JULY), date(25, JULY), date(29, JULY));
+        schedule.assertNoAlerts("TT 2", max);
 
         visualization.outputTo("mother-tetanus-toxoid-vaccination.html", 2);
     }
