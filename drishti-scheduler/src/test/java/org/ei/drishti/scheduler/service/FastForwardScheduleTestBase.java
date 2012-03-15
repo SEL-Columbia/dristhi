@@ -1,6 +1,7 @@
 package org.ei.drishti.scheduler.service;
 
 import org.joda.time.LocalDate;
+import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.util.DateUtil;
@@ -78,7 +79,7 @@ public class FastForwardScheduleTestBase {
 
         serviceCall.make("Case X", visitNumberToTryAndFulfill, visitDate);
 
-        verify(scheduleTrackingService, times(numberOfTimesFulfillmentIsExpected)).fulfillCurrentMilestone("Case X", scheduleName, visitDate);
+        verify(scheduleTrackingService, times(numberOfTimesFulfillmentIsExpected)).fulfillCurrentMilestone(eq("Case X"), eq(scheduleName), eq(visitDate), any(Time.class));
     }
 
     private EnrollmentRecord enrollmentRecord(String scheduleName, String currentMilestone) {

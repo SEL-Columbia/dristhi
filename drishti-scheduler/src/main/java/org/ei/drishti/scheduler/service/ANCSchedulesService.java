@@ -15,7 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.ei.drishti.scheduler.DrishtiSchedules.*;
+import static org.joda.time.LocalTime.now;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
+import static org.motechproject.util.DateUtil.today;
 
 @Service
 public class ANCSchedulesService {
@@ -39,7 +41,7 @@ public class ANCSchedulesService {
     }
 
     public void forceFulfillMilestone(String externalId, String scheduleName) {
-        trackingService.fulfillCurrentMilestone(externalId, scheduleName);
+        trackingService.fulfillCurrentMilestone(externalId, scheduleName, today(), new Time(now()));
     }
 
     public void ttVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
@@ -78,7 +80,7 @@ public class ANCSchedulesService {
         int numberOfTimes = numberOfTimesToFulfill(caseId, visitNumber, scheduleName, milestonePrefix);
 
         for (int i = 0; i < numberOfTimes; i++) {
-            trackingService.fulfillCurrentMilestone(caseId, scheduleName, visitDate);
+            trackingService.fulfillCurrentMilestone(caseId, scheduleName, visitDate, new Time(now()));
         }
     }
 

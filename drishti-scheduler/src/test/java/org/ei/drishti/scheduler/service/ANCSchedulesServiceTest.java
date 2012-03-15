@@ -19,11 +19,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.ei.drishti.scheduler.DrishtiSchedules.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
+import static org.motechproject.util.DateUtil.today;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 public class ANCSchedulesServiceTest extends BaseUnitTest {
@@ -134,7 +137,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     public void shouldFulfillCurrentMilestoneForGivenExternalIdWhenVisitHasBeenMissed() {
         schedulesService.forceFulfillMilestone("Case X", "Schedule 1");
 
-        verify(scheduleTrackingService).fulfillCurrentMilestone("Case X", "Schedule 1");
+        verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("Schedule 1"), eq(today()), any(Time.class));
     }
 
     @Test
