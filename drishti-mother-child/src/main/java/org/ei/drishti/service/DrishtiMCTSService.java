@@ -1,9 +1,6 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareCloseInformation;
-import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
-import org.ei.drishti.contract.AnteNatalCareInformation;
-import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
+import org.ei.drishti.contract.*;
 import org.ei.drishti.repository.AllMothers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +26,8 @@ public class DrishtiMCTSService {
     }
 
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation) {
+    }
+
+    public void registerChild(ChildRegistrationInformation childInformation) {
     }
 }

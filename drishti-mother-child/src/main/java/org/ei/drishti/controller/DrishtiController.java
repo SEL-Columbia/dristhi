@@ -4,6 +4,7 @@ import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
+import org.ei.drishti.service.PNCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +15,13 @@ public class DrishtiController {
     private final ANCService ancService;
     private DrishtiMCTSService mctsService;
     private static Logger logger = Logger.getLogger(DrishtiController.class.toString());
+    private final PNCService pncService;
 
     @Autowired
-    public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, DrishtiMCTSService drishtiMctsService) {
+    public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, PNCService pncService, DrishtiMCTSService drishtiMctsService) {
         router.registerForDispatch(this);
         this.ancService = ancService;
+        this.pncService = pncService;
         this.mctsService = drishtiMctsService;
     }
 
@@ -52,5 +55,8 @@ public class DrishtiController {
 
     public void registerChild(ChildRegistrationInformation childInformation) {
         logger.info("Child registration: " + childInformation);
+
+        pncService.registerChild(childInformation);
+        mctsService.registerChild(childInformation);
     }
 }
