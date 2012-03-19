@@ -12,10 +12,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DrishtiController {
-    private final ANCService ancService;
-    private DrishtiMCTSService mctsService;
     private static Logger logger = LoggerFactory.getLogger(DrishtiController.class.toString());
+
+    private final ANCService ancService;
     private final PNCService pncService;
+    private DrishtiMCTSService mctsService;
 
     @Autowired
     public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, PNCService pncService, DrishtiMCTSService drishtiMctsService) {

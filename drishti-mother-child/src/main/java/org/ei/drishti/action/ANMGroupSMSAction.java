@@ -4,6 +4,7 @@ import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.scheduler.router.Action;
 import org.ei.drishti.scheduler.router.MilestoneEvent;
+import org.ei.drishti.service.DrishtiSMSService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,12 @@ import static java.text.MessageFormat.format;
 public class ANMGroupSMSAction implements Action {
     private final AllMothers allMothers;
     private static Logger logger = LoggerFactory.getLogger(ANMGroupSMSAction.class);
+    private DrishtiSMSService smsService;
 
     @Autowired
-    public ANMGroupSMSAction(AllMothers allMothers) {
+    public ANMGroupSMSAction(AllMothers allMothers, DrishtiSMSService smsService) {
         this.allMothers = allMothers;
+        this.smsService = smsService;
     }
 
     @Override
@@ -32,6 +35,6 @@ public class ANMGroupSMSAction implements Action {
                 event.scheduleName(), event.milestoneName(), event.windowName());
 
         logger.info(message);
-        // smsService.sendSMS("9590377135", message);
+        smsService.sendSMS("9590377135", message);
     }
 }
