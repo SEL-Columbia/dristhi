@@ -5,8 +5,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.sms.api.service.SmsService;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DrishtiSMSServiceTest {
@@ -20,23 +20,41 @@ public class DrishtiSMSServiceTest {
 
     @Test
     public void shouldNotSendAnSMSIfTheFlagIsTurnedOff() {
-        DrishtiSMSService drishtiSMSService = new DrishtiSMSService(smsService);
-
+        DrishtiSMSService drishtiSMSService = new DrishtiSMSService(smsService, true);
         drishtiSMSService.canSendSMSes(false);
 
-        drishtiSMSService.sendSMS("9845700000", "Some message");
-
-        verifyZeroInteractions(smsService);
+        assertMessageWillNotBeSent(drishtiSMSService);
     }
 
     @Test
     public void shouldNotSendAnSMSIfTheFlagIsTurnedOn() {
-        DrishtiSMSService drishtiSMSService = new DrishtiSMSService(smsService);
-
+        DrishtiSMSService drishtiSMSService = new DrishtiSMSService(smsService, true);
         drishtiSMSService.canSendSMSes(true);
 
-        drishtiSMSService.sendSMS("9845700000", "Some message");
+        assertMessageWillBeSent(drishtiSMSService);
+    }
 
-        verify(smsService).sendSMS("9845700000", "Some message");
+    @Test
+    public void shouldSendSMSIfDefaultValueIsTrueAndHasNotBeenChanged() {
+        DrishtiSMSService drishtiSMSService = new DrishtiSMSService(smsService, true);
+
+        assertMessageWillBeSent(drishtiSMSService);
+    }
+
+    @Test
+    public void shouldNotSendSMSIfDefaultValueIsFalseAndHasNotBeenChanged() {
+        DrishtiSMSService drishtiSMSService = new DrishtiSMSService(smsService, false);
+
+        assertMessageWillNotBeSent(drishtiSMSService);
+    }
+
+    private void assertMessageWillBeSent(DrishtiSMSService drishtiSMSService) {
+        drishtiSMSService.sendSMS("9845700000", "Some message");
+        verify(smsService, times(1)).sendSMS("9845700000", "Some message");
+    }
+
+    private void assertMessageWillNotBeSent(DrishtiSMSService drishtiSMSService) {
+        drishtiSMSService.sendSMS("9845700000", "Some message");
+        verify(smsService, times(0)).sendSMS("9845700000", "Some message");
     }
 }
