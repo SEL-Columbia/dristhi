@@ -11,20 +11,21 @@ import org.ei.commcare.api.repository.AllExportTokens;
 import org.ei.commcare.api.util.CommCareHttpClient;
 import org.ei.commcare.api.util.CommCareHttpResponse;
 import org.ei.commcare.api.util.CommCareImportProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 public class CommCareFormImportService {
     private final CommCareHttpClient httpClient;
     private CommCareFormDefinitions formDefinitions;
     private AllExportTokens allExportTokens;
-    private static Logger logger = Logger.getLogger(CommCareFormImportService.class.toString());
+    private static Logger logger = LoggerFactory.getLogger(CommCareFormImportService.class.toString());
 
     @Autowired
     public CommCareFormImportService(AllExportTokens allExportTokens, CommCareHttpClient httpClient, CommCareImportProperties properties) {
@@ -36,7 +37,7 @@ public class CommCareFormImportService {
 
     public List<CommcareFormInstance> fetchForms() throws IOException {
         List<CommcareFormInstance> formInstances = processAllForms(fetchAllForms());
-        logger.fine("Fetched " + formInstances.size() + " formInstances.");
+        logger.debug("Fetched " + formInstances.size() + " formInstances.");
         return formInstances;
     }
 

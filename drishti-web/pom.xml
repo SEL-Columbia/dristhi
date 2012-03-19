@@ -120,6 +120,14 @@
               <name>jetty.port</name>
               <value>${jetty.port}</value>
             </systemProperty>
+            <systemProperty>
+              <name>slf4j</name>
+              <value>false</value>
+            </systemProperty>
+            <systemProperty>
+              <name>log4j.configuration</name>
+              <value>file:${project.basedir}/src/main/resources/log4j.xml</value>
+            </systemProperty>
           </systemProperties>
           <webAppConfig>
             <contextPath>/drishti</contextPath>
@@ -200,6 +208,11 @@
       <artifactId>motech-testing-utils</artifactId>
       <version>${motech.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.6.0</version>
     </dependency>
   </dependencies>
 </project>

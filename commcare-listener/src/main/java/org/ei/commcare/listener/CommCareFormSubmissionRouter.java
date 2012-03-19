@@ -5,10 +5,11 @@ import org.ei.commcare.listener.event.CommCareFormEvent;
 import org.motechproject.dao.MotechJsonReader;
 import org.motechproject.model.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.logging.Logger;
 
 import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_DATA_PARAMETER;
 import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_NAME_PARAMETER;
@@ -16,7 +17,7 @@ import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_NAME_PARAMET
 @Component
 public class CommCareFormSubmissionRouter {
     private Object routeEventsHere;
-    private static Logger logger = Logger.getLogger(CommCareFormSubmissionRouter.class.toString());
+    private static Logger logger = LoggerFactory.getLogger(CommCareFormSubmissionRouter.class.toString());
 
     public void registerForDispatch(Object dispatchToMethodsInThisObject) {
         this.routeEventsHere = dispatchToMethodsInThisObject;
@@ -36,17 +37,17 @@ public class CommCareFormSubmissionRouter {
     public void dispatch(String methodName, String parameterJson) throws Exception {
         Method method = findMethodWhichAcceptsOneParameter(methodName);
         if (method == null) {
-            logger.warning("Cannot dispatch: Unable to find method: " + methodName + " in " + routeEventsHere.getClass());
+            logger.warn("Cannot dispatch: Unable to find method: " + methodName + " in " + routeEventsHere.getClass());
             return;
         }
 
         Object parameter = getParameterFromData(method, parameterJson);
         if (parameter == null) {
-            logger.warning("Cannot dispatch: Unable to convert JSON: " + parameterJson + " to object, to call method " + method);
+            logger.warn("Cannot dispatch: Unable to convert JSON: " + parameterJson + " to object, to call method " + method);
             return;
         }
 
-        logger.fine("Dispatching " + parameter + " to method: " + method + " in object: " + routeEventsHere);
+        logger.debug("Dispatching " + parameter + " to method: " + method + " in object: " + routeEventsHere);
         method.invoke(routeEventsHere, parameter);
     }
 

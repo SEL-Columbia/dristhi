@@ -4,17 +4,17 @@ import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ei.drishti.service.PNCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.logging.Logger;
 
 @Component
 public class DrishtiController {
     private final ANCService ancService;
     private DrishtiMCTSService mctsService;
-    private static Logger logger = Logger.getLogger(DrishtiController.class.toString());
+    private static Logger logger = LoggerFactory.getLogger(DrishtiController.class.toString());
     private final PNCService pncService;
 
     @Autowired

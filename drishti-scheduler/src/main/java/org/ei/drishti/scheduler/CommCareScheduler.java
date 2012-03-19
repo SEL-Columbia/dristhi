@@ -6,12 +6,13 @@ import org.motechproject.model.MotechEvent;
 import org.motechproject.model.RepeatingSchedulableJob;
 import org.motechproject.scheduler.MotechSchedulerService;
 import org.motechproject.server.event.annotations.MotechListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 import static org.joda.time.DateTimeConstants.MILLIS_PER_SECOND;
 
@@ -20,7 +21,7 @@ public class CommCareScheduler {
     private static final String SUBJECT = "DRISHTI-TIMED-SCHEDULE";
     private final MotechSchedulerService service;
     private final CommCareListener careListener;
-    private static Logger logger = Logger.getLogger(CommCareScheduler.class.toString());
+    private static Logger logger = LoggerFactory.getLogger(CommCareScheduler.class.toString());
     private boolean shouldFetchFromCommCare = false;
 
     @Autowired

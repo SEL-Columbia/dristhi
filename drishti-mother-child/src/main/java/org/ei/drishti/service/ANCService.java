@@ -11,17 +11,18 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.motechproject.model.Time;
 import org.motechproject.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 import static org.joda.time.LocalTime.now;
 
 @Service
 public class ANCService {
-    private static Logger logger = Logger.getLogger(ANCService.class.toString());
+    private static Logger logger = LoggerFactory.getLogger(ANCService.class.toString());
 
     private final AllMothers allMothers;
     private ANCSchedulesService ancSchedulesService;
@@ -45,7 +46,7 @@ public class ANCService {
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {
         if (!allMothers.motherExists(ancInformation.caseId())) {
-            logger.warning("Found care provided without registered mother for case ID: " + ancInformation.caseId());
+            logger.warn("Found care provided without registered mother for case ID: " + ancInformation.caseId());
             return;
         }
 
@@ -67,7 +68,7 @@ public class ANCService {
 
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation) {
         if (!allMothers.motherExists(closeInformation.caseId())) {
-            logger.warning("Tried to close case without registered mother for case ID: " + closeInformation.caseId());
+            logger.warn("Tried to close case without registered mother for case ID: " + closeInformation.caseId());
             return;
         }
 
