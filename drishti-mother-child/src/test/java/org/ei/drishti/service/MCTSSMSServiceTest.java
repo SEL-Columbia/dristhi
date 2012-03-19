@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.util.DateUtil;
 
+import static org.ei.drishti.service.MCTSSMSService.MCTSServiceCode;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
