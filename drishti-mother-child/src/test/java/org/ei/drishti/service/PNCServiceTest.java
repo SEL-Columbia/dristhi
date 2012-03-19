@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.sms.api.service.SmsService;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -18,7 +19,6 @@ public class PNCServiceTest {
         initMocks(this);
     }
 
-/*
     @Test
     public void shouldSendAnSMSWithMissingVaccinationDataDuringChildRegistration() {
         PNCService pncService = new PNCService(service);
@@ -27,7 +27,6 @@ public class PNCServiceTest {
 
         verify(service).sendSMS("9845700000", "Dear ANM, please provide BCG, Hepatitis B for child of mother, Theresa.");
     }
-*/
 
     @Test
     public void shouldSendNoSMSIfThereAreNoMissingVaccinations() {
