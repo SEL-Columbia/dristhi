@@ -16,9 +16,9 @@ public class DrishtiSMSService {
     private static Logger logger = LoggerFactory.getLogger(DrishtiSMSService.class.toString());
 
     @Autowired
-    public DrishtiSMSService(SmsService smsService, @Value("#{drishti['sms.can.be.sent']}") boolean defaultValueForSMSSending) {
+    public DrishtiSMSService(SmsService smsService, @Value("#{drishti['sms.can.be.sent']}") boolean defaultValueForWhetherSMSCanBeSent) {
         this.smsService = smsService;
-        this.canSendSMSes = defaultValueForSMSSending;
+        this.canSendSMSes = defaultValueForWhetherSMSCanBeSent;
     }
 
     public void sendSMS(String recipient, String message) {
