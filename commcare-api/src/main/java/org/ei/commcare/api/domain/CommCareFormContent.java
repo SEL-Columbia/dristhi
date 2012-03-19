@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CommCareFormContent {
+    public static final String FORM_ID_FIELD = "form|meta|instanceID";
     private List<String> headers;
     private List<String> values;
 
@@ -32,5 +33,15 @@ public class CommCareFormContent {
 
     private List<String> values() {
         return values == null ? new ArrayList<String>() : values;
+    }
+
+    public String formId() {
+        for (int i = 0; i < headers().size(); i++) {
+            String header = headers().get(i);
+            if (header.equals(FORM_ID_FIELD)) {
+                return values().get(i);
+            }
+        }
+        return "";
     }
 }

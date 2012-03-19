@@ -20,4 +20,8 @@ public class CommcareFormInstance {
     public Map<String, String> content() {
         return content.getValuesOfFieldsSpecifiedByPath(formDefinition.mappings());
     }
+
+    public String formId() {
+        return content.formId();
+    }
 }
