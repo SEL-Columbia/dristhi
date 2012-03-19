@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.ChildRegistrationInformation;
-import org.motechproject.sms.api.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +11,10 @@ import static java.text.MessageFormat.format;
 
 @Service
 public class PNCService {
-    private final SmsService smsService;
+    private final DrishtiSMSService smsService;
 
     @Autowired
-    public PNCService(SmsService smsService) {
+    public PNCService(DrishtiSMSService smsService) {
         this.smsService = smsService;
     }
 

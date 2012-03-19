@@ -3,7 +3,6 @@ package org.ei.drishti.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.sms.api.service.SmsService;
 import org.motechproject.util.DateUtil;
 
 import static org.mockito.Mockito.verify;
@@ -11,7 +10,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class MCTSSMSServiceTest {
     @Mock
-    SmsService smsService;
+    DrishtiSMSService smsService;
     private MCTSSMSService mctsSMSService;
 
     @Before

@@ -5,7 +5,7 @@
 
   <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
     <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%d{ddMMyyyy HH:mm:ss} %-5p %c{1} %m%n"/>
+      <param name="ConversionPattern" value="%d{ddMMyyyy HH:mm:ss} %-5p [%c{1}] %m%n"/>
     </layout>
   </appender>
 
@@ -14,6 +14,10 @@
   </logger>
 
   <logger name="org.quartz">
+    <level value="WARN"/>
+  </logger>
+
+  <logger name="metrics">
     <level value="WARN"/>
   </logger>
 

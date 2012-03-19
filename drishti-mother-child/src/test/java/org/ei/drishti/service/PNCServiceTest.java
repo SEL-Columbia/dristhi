@@ -4,7 +4,6 @@ import org.ei.drishti.contract.ChildRegistrationInformation;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.sms.api.service.SmsService;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -12,7 +11,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PNCServiceTest {
     @Mock
-    SmsService service;
+    DrishtiSMSService service;
 
     @Before
     public void setUp() throws Exception {
