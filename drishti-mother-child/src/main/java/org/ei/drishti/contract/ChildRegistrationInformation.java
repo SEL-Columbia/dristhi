@@ -3,6 +3,8 @@ package org.ei.drishti.contract;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.text.MessageFormat.format;
+
 public class ChildRegistrationInformation {
     private String motherName;
     private String anmPhoneNumber;
@@ -40,5 +42,12 @@ public class ChildRegistrationInformation {
         if (!expectedValueIfProvided.equals(vaccinationProvidedData)) {
             missingVaccinations.add(vaccinationName);
         }
+    }
+
+    @Override
+    public String toString() {
+        return format("ChildRegistrationInformation {Mother = ''{0}'', anmPhoneNumber=''{1}'', " +
+                "bcgHasBeenProvided=''{2}'', opv0HasBeenProvided=''{3}'', hepatitisBHasBeenProvided=''{4}'''}",
+                motherName, anmPhoneNumber, bcgHasBeenProvided, opv0HasBeenProvided, hepatitisBHasBeenProvided);
     }
 }
