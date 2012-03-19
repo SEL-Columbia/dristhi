@@ -1,7 +1,7 @@
 package org.ei.drishti.scheduler.router;
 
 public abstract class Matcher {
-    public abstract boolean matches(String scheduleName);
+    public abstract boolean matches(String actualValue);
 
     public static Matcher eq(String value) {
         return new EqMatcher(value);
@@ -13,7 +13,7 @@ public abstract class Matcher {
 
     private static class AnyMatcher extends Matcher {
         @Override
-        public boolean matches(String scheduleName) {
+        public boolean matches(String actualValue) {
             return true;
         }
     }
