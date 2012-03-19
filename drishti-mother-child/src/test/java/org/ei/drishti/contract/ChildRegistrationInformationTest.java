@@ -1,10 +1,8 @@
 package org.ei.drishti.contract;
 
 import org.junit.Test;
-import org.motechproject.util.DateUtil;
 
 import java.util.Collections;
-import java.util.Date;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
@@ -42,9 +40,5 @@ public class ChildRegistrationInformationTest {
         ChildRegistrationInformation information = new ChildRegistrationInformation("Theresa", "9845700000", BCG_NO, OPV0_YES, HEPB1_YES);
         assertThat(information.mother(), is("Theresa"));
         assertThat(information.anmPhoneNumber(), is("9845700000"));
-    }
-
-    private Date today() {
-        return DateUtil.today().toDate();
     }
 }
