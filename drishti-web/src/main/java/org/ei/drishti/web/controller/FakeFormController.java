@@ -44,7 +44,7 @@ public class FakeFormController {
     @ResponseBody
     public String submitFakeCommCareForm(@RequestParam("formName") String formName, @RequestParam("formData") String formData) throws Exception {
         try {
-            dispatcher.dispatch(formName, formData);
+            dispatcher.dispatch("FAKE-FORM", formName, formData);
         } catch (Exception e) {
             return "Failed: " + e.getMessage();
         }

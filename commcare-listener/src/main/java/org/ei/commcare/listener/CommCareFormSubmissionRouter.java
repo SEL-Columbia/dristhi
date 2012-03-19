@@ -2,22 +2,31 @@ package org.ei.commcare.listener;
 
 import com.google.gson.JsonParseException;
 import org.ei.commcare.listener.event.CommCareFormEvent;
+import org.ei.drishti.common.audit.Auditor;
 import org.motechproject.dao.MotechJsonReader;
 import org.motechproject.model.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_DATA_PARAMETER;
-import static org.ei.commcare.listener.event.CommCareFormEvent.FORM_NAME_PARAMETER;
+import static java.text.MessageFormat.format;
+import static org.ei.commcare.listener.event.CommCareFormEvent.*;
+import static org.ei.drishti.common.audit.AuditMessageType.FORM_SUBMISSION;
 
 @Component
 public class CommCareFormSubmissionRouter {
     private Object routeEventsHere;
     private static Logger logger = LoggerFactory.getLogger(CommCareFormSubmissionRouter.class.toString());
+    private final Auditor auditor;
+
+    @Autowired
+    public CommCareFormSubmissionRouter(Auditor auditor) {
+        this.auditor = auditor;
+    }
 
     public void registerForDispatch(Object dispatchToMethodsInThisObject) {
         this.routeEventsHere = dispatchToMethodsInThisObject;
@@ -31,10 +40,11 @@ public class CommCareFormSubmissionRouter {
 
         String methodName = event.getParameters().get(FORM_NAME_PARAMETER).toString();
         String parameterJson = event.getParameters().get(FORM_DATA_PARAMETER).toString();
-        dispatch(methodName, parameterJson);
+        String formId = event.getParameters().get(FORM_ID_PARAMETER).toString();
+        dispatch(formId, methodName, parameterJson);
     }
 
-    public void dispatch(String methodName, String parameterJson) throws Exception {
+    public void dispatch(String formId, String methodName, String parameterJson) throws Exception {
         Method method = findMethodWhichAcceptsOneParameter(methodName);
         if (method == null) {
             logger.warn("Cannot dispatch: Unable to find method: " + methodName + " in " + routeEventsHere.getClass());
@@ -47,7 +57,9 @@ public class CommCareFormSubmissionRouter {
             return;
         }
 
+        auditor.audit(FORM_SUBMISSION, format("Form for ''{0}'' submitted with data: {1}.", methodName, parameterJson), formId);
         logger.debug("Dispatching " + parameter + " to method: " + method + " in object: " + routeEventsHere);
+
         method.invoke(routeEventsHere, parameter);
     }
 

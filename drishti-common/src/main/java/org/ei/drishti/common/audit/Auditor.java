@@ -1,5 +1,6 @@
 package org.ei.drishti.common.audit;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -18,14 +19,15 @@ public class Auditor {
     private final int numberOfAuditMessagesToHoldOnTo;
     private long messageIndex;
 
+    @Autowired
     public Auditor(@Value("#{drishti['number.of.audit.messages']}") int numberOfAuditMessagesToHoldOnTo) {
         this.messages = new ArrayList<AuditMessage>();
         this.numberOfAuditMessagesToHoldOnTo = numberOfAuditMessagesToHoldOnTo;
         this.messageIndex = 0;
     }
 
-    public void audit(AuditMessageType type, String message) {
-        messages.add(new AuditMessage(messageIndex, type, message));
+    public void audit(AuditMessageType type, String message, String... extraData) {
+        messages.add(new AuditMessage(messageIndex, type, message, extraData));
         messageIndex++;
         prune();
     }
