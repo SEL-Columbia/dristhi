@@ -1,6 +1,6 @@
 {
     "name": "Lab Reminders",
-    "absoluteWindows": false,
+    "absolute": false,
     "milestones": [
         {
             "name": "REMINDER",

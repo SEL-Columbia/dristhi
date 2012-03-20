@@ -1,6 +1,6 @@
 {
     "name": "BCG",
-    "absoluteWindows": false,
+    "absolute": false,
     "milestones": [
         {
             "name": "REMINDER",

@@ -1,6 +1,6 @@
 {
     "name": "Boosters",
-    "absoluteWindows": false,
+    "absolute": false,
     "milestones": [
         {
             "name": "REMINDER",

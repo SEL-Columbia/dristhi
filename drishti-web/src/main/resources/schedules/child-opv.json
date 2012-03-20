@@ -1,6 +1,6 @@
 {
     "name": "OPV",
-    "absoluteWindows": true,
+    "absolute": true,
     "milestones": [
         {
             "name": "OPV 0",
@@ -13,13 +13,13 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["0 Days"],
+                    "offset": ["2 Weeks"],
                     "interval": ["1 Week"],
                     "count": "100"
                 },
                 {
                     "window": "due",
-                    "offset": ["3 Days"],
+                    "offset": ["2 Weeks", "3 Days"],
                     "interval": ["1 Week"],
                     "count": "100"
                 }
@@ -36,19 +36,19 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["0 Days"],
+                    "offset": ["5 Weeks"],
                     "interval": ["1 Week"],
                     "count": "2"
                 },
                 {
                     "window": "late",
-                    "offset": ["0 Days"],
+                    "offset": ["7 Weeks"],
                     "interval": ["1 Week"],
                     "count": "100"
                 },
                 {
                     "window": "late",
-                    "offset": ["3 Days"],
+                    "offset": ["7 Weeks", "3 Days"],
                     "interval": ["1 Week"],
                     "count": "100"
                 }
@@ -65,19 +65,19 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["0 Days"],
+                    "offset": ["9 Weeks"],
                     "interval": ["1 Week"],
                     "count": "2"
                 },
                 {
                     "window": "late",
-                    "offset": ["0 Days"],
+                    "offset": ["11 Weeks", "0 Days"],
                     "interval": ["1 Week"],
                     "count": "100"
                 },
                 {
                     "window": "late",
-                    "offset": ["3 Days"],
+                    "offset": ["11 Weeks", "3 Days"],
                     "interval": ["1 Week"],
                     "count": "100"
                 }
@@ -94,19 +94,19 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["0 Days"],
+                    "offset": ["13 Weeks"],
                     "interval": ["1 Week"],
                     "count": "2"
                 },
                 {
                     "window": "late",
-                    "offset": ["0 Days"],
+                    "offset": ["15 Weeks"],
                     "interval": ["1 Week"],
                     "count": "100"
                 },
                 {
                     "window": "late",
-                    "offset": ["3 Days"],
+                    "offset": ["15 Weeks", "3 Days"],
                     "interval": ["1 Week"],
                     "count": "100"
                 }

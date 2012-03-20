@@ -1,6 +1,6 @@
 {
     "name": "Expected Date Of Delivery",
-    "absoluteWindows": false,
+    "absolute": false,
     "milestones": [
         {
             "name": "EDD",

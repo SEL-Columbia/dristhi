@@ -1,6 +1,6 @@
 {
     "name": "Tetatnus Toxoid Vaccination",
-    "absoluteWindows": false,
+    "absolute": false,
     "milestones": [
         {
             "name": "TT 1",

@@ -1,6 +1,6 @@
 {
     "name": "Ante Natal Care - Normal",
-    "absoluteWindows": true,
+    "absolute": true,
     "milestones": [
         {
             "name": "ANC 1",
@@ -13,25 +13,25 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["0 Days"],
+                    "offset": ["10 Weeks"],
                     "interval": ["1 Week"],
                     "count": "4"
                 },
                 {
                     "window": "late",
-                    "offset": ["0 Days"],
+                    "offset": ["14 Weeks"],
                     "interval": ["1 Week"],
                     "count": "3"
                 },
                 {
                     "window": "late",
-                    "offset": ["3 Days"],
+                    "offset": ["14 Weeks", "3 Days"],
                     "interval": ["1 Week"],
                     "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": ["2 Days"],
+                    "offset": ["16 Weeks", "2 Days"],
                     "interval": ["1 Day"],
                     "count": "3"
                 }
@@ -48,25 +48,25 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["0 Days"],
+                    "offset": ["22 Weeks"],
                     "interval": ["1 Week"],
                     "count": "4"
                 },
                 {
                     "window": "late",
-                    "offset": ["0 Days"],
+                    "offset": ["26 Weeks"],
                     "interval": ["1 Week"],
                     "count": "3"
                 },
                 {
                     "window": "late",
-                    "offset": ["3 Days"],
+                    "offset": ["26 Weeks", "3 Days"],
                     "interval": ["1 Week"],
                     "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": ["2 Days"],
+                    "offset": ["28 Weeks", "2 Days"],
                     "interval": ["1 Day"],
                     "count": "3"
                 }
@@ -83,19 +83,19 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["0 Days"],
+                    "offset": ["30 Weeks"],
                     "interval": ["1 Week"],
                     "count": "4"
                 },
                 {
                     "window": "late",
-                    "offset": ["0 Days"],
+                    "offset": ["34 Weeks"],
                     "interval": ["3 Days"],
                     "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": ["4 Days"],
+                    "offset": ["34 Weeks", "4 Days"],
                     "interval": ["1 Day"],
                     "count": "3"
                 }
@@ -112,25 +112,25 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["0 Days"],
+                    "offset": ["35 Weeks"],
                     "interval": ["1 Week"],
                     "count": "3"
                 },
                 {
                     "window": "late",
-                    "offset": ["0 Days"],
+                    "offset": ["38 Weeks"],
                     "interval": ["1 Week"],
                     "count": "3"
                 },
                 {
                     "window": "late",
-                    "offset": ["3 Days"],
+                    "offset": ["38 Weeks", "3 Days"],
                     "interval": ["1 Week"],
                     "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": ["2 Days"],
+                    "offset": ["40 Weeks", "2 Days"],
                     "interval": ["1 Day"],
                     "count": "3"
                 }
