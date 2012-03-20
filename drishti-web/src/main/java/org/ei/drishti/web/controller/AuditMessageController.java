@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
 
@@ -49,20 +49,17 @@ public class AuditMessageController {
         @JsonProperty
         private final AuditMessageType type;
         @JsonProperty
-        private final String message;
-        @JsonProperty
-        private final List<String> data;
+        private final Map<String, String> data;
 
-        public AuditMessageItem(DateTime time, long index, AuditMessageType type, String message, String... data) {
+        public AuditMessageItem(DateTime time, long index, AuditMessageType type, Map<String, String> data) {
             this.time = time;
             this.index = index;
             this.type = type;
-            this.message = message;
-            this.data = Arrays.asList(data);
+            this.data = data;
         }
 
         public static AuditMessageItem from(AuditMessage auditMessage) {
-            return new AuditMessageItem(auditMessage.time(), auditMessage.index(), auditMessage.type(), auditMessage.message(), auditMessage.data());
+            return new AuditMessageItem(auditMessage.time(), auditMessage.index(), auditMessage.type(), auditMessage.data());
         }
     }
 }

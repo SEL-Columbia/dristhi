@@ -26,9 +26,8 @@ public class DrishtiSMSService {
     }
 
     public void sendSMS(String recipient, String message) {
-        String auditMessage = format("SMS {2}sent to {0}: {1}", recipient, message, canSendSMSes ? "" : "NOT ");
-        auditor.audit(SMS, auditMessage, recipient, message);
-        logger.info(auditMessage);
+        auditor.audit(SMS).with("recipient", recipient).with("message", message).with("smsIsSent", String.valueOf(canSendSMSes)).done();
+        logger.info(format("SMS {2}sent to {0}: {1}", recipient, message, canSendSMSes ? "" : "NOT "));
 
         if (canSendSMSes) {
             smsService.sendSMS(recipient, message);

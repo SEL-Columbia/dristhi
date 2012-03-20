@@ -10,7 +10,9 @@ import org.motechproject.util.DateUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.ei.drishti.common.audit.AuditMessageType.FORM_SUBMISSION;
 import static org.ei.drishti.common.audit.AuditMessageType.SMS;
@@ -45,16 +47,34 @@ public class AuditMessageControllerTest {
 
     private List<AuditMessageItem> expectedMessageItems() {
         final List<AuditMessageItem> expectedItems = new ArrayList<AuditMessageItem>();
-        expectedItems.add(new AuditMessageItem(now, 11, SMS, "SMS 1", "Abc"));
-        expectedItems.add(new AuditMessageItem(yesterday, 12, FORM_SUBMISSION, "Form 1", "Def"));
+
+        expectedItems.add(new AuditMessageItem(now, 11, SMS, smsData()));
+        expectedItems.add(new AuditMessageItem(yesterday, 12, FORM_SUBMISSION, formData()));
+
         return expectedItems;
     }
 
     private List<AuditMessage> messages() {
         ArrayList<AuditMessage> messages = new ArrayList<AuditMessage>();
-        messages.add(new AuditMessage(now, 11, SMS, "SMS 1", "Abc"));
-        messages.add(new AuditMessage(yesterday, 12, FORM_SUBMISSION, "Form 1", "Def"));
+
+        messages.add(new AuditMessage(now, 11, SMS, smsData()));
+        messages.add(new AuditMessage(yesterday, 12, FORM_SUBMISSION, formData()));
+
         return messages;
+    }
+
+    private HashMap<String, String> formData() {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("data", "Form 1");
+        map.put("someOtherData", "Def");
+        return map;
+    }
+
+    private Map<String, String> smsData() {
+        Map<String,String> map = new HashMap<String, String>();
+        map.put("recipient", "Abc");
+        map.put("message", "SMS 1");
+        return map;
     }
 
 }

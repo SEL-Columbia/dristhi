@@ -6,10 +6,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.sms.api.service.SmsService;
 
-import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.audit.AuditMessageType.SMS;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DrishtiSMSServiceTest {
@@ -17,10 +15,14 @@ public class DrishtiSMSServiceTest {
     private SmsService smsService;
     @Mock
     private Auditor auditor;
+    @Mock
+    Auditor.AuditMessageBuilder messageBuilder;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
+        when(auditor.audit(SMS)).thenReturn(messageBuilder);
+        when(messageBuilder.with(any(String.class), any(String.class))).thenReturn(messageBuilder);
     }
 
     @Test
@@ -58,7 +60,9 @@ public class DrishtiSMSServiceTest {
         DrishtiSMSService drishtiSMSService = new DrishtiSMSService(smsService, auditor, true);
         drishtiSMSService.sendSMS("9845700000", "Some message");
 
-        verify(auditor).audit(SMS, format("SMS sent to {0}: {1}", "9845700000", "Some message"), "9845700000", "Some message");
+        verify(messageBuilder).with("recipient", "9845700000");
+        verify(messageBuilder).with("message", "Some message");
+        verify(messageBuilder).with("smsIsSent", "true");
     }
 
     @Test
@@ -66,7 +70,9 @@ public class DrishtiSMSServiceTest {
         DrishtiSMSService drishtiSMSService = new DrishtiSMSService(smsService, auditor, false);
         drishtiSMSService.sendSMS("9845700000", "Some message");
 
-        verify(auditor).audit(SMS, format("SMS NOT sent to {0}: {1}", "9845700000", "Some message"), "9845700000", "Some message");
+        verify(messageBuilder).with("recipient", "9845700000");
+        verify(messageBuilder).with("message", "Some message");
+        verify(messageBuilder).with("smsIsSent", "false");
     }
 
     private void assertMessageWillBeSent(DrishtiSMSService drishtiSMSService) {

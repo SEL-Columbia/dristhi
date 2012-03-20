@@ -12,10 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import static org.ei.drishti.common.audit.AuditMessageType.FORM_SUBMISSION;
-import static org.mockito.Matchers.contains;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class CommCareFormSubmissionRouterTest {
@@ -23,12 +20,17 @@ public class CommCareFormSubmissionRouterTest {
     FakeDrishtiController drishtiController;
     @Mock
     Auditor auditor;
+    @Mock
+    private Auditor.AuditMessageBuilder messageBuilder;
 
     private CommCareFormSubmissionRouter commCareFormSubmissionRouter;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
+        when(auditor.audit(FORM_SUBMISSION)).thenReturn(messageBuilder);
+        when(messageBuilder.with(any(String.class), any(String.class))).thenReturn(messageBuilder);
+
         commCareFormSubmissionRouter = new CommCareFormSubmissionRouter(auditor);
         commCareFormSubmissionRouter.registerForDispatch(drishtiController);
     }
@@ -115,9 +117,13 @@ public class CommCareFormSubmissionRouterTest {
 
     @Test
     public void shouldAuditWhenAFormSubmissionSuccessfullyGoesThroughToTheController() throws Exception {
+        when(auditor.audit(FORM_SUBMISSION)).thenReturn(messageBuilder);
+
         commCareFormSubmissionRouter.handle(eventFor("ancVisit", "{\"something\" : 3}"));
 
-        verify(auditor).audit(eq(FORM_SUBMISSION), contains("Form for 'ancVisit' submitted with data:"), eq("FORM-ID-1"));
+        verify(messageBuilder).with("formId", "FORM-ID-1");
+        verify(messageBuilder).with("formType", "ancVisit");
+        verify(messageBuilder).with("formData", "{\"something\" : 3}");
     }
 
     private MotechEvent eventFor(String name, String data) {

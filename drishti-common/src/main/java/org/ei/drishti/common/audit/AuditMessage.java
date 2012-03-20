@@ -2,23 +2,19 @@ package org.ei.drishti.common.audit;
 
 import org.joda.time.DateTime;
 
+import java.util.Map;
+
 public class AuditMessage implements Comparable<AuditMessage> {
     private final DateTime time;
     private final long messageIndex;
     private final AuditMessageType type;
-    private final String message;
-    private final String[] extraData;
+    private final Map<String, String> extraData;
 
-    public AuditMessage(DateTime time, long messageIndex, AuditMessageType type, String message, String... extraData) {
+    public AuditMessage(DateTime time, long messageIndex, AuditMessageType type, Map<String, String> data) {
         this.time = time;
         this.messageIndex = messageIndex;
         this.type = type;
-        this.message = message;
-        this.extraData = extraData;
-    }
-
-    public String message() {
-        return message;
+        this.extraData = data;
     }
 
     public AuditMessageType type() {
@@ -29,7 +25,7 @@ public class AuditMessage implements Comparable<AuditMessage> {
         return messageIndex;
     }
 
-    public String[] data() {
+    public Map<String, String> data() {
         return extraData;
     }
 

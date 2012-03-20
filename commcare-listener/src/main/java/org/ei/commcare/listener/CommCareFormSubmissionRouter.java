@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-import static java.text.MessageFormat.format;
 import static org.ei.commcare.listener.event.CommCareFormEvent.*;
 import static org.ei.drishti.common.audit.AuditMessageType.FORM_SUBMISSION;
 
@@ -57,7 +56,7 @@ public class CommCareFormSubmissionRouter {
             return;
         }
 
-        auditor.audit(FORM_SUBMISSION, format("Form for ''{0}'' submitted with data: {1}.", methodName, parameterJson), formId);
+        auditor.audit(FORM_SUBMISSION).with("formId", formId).with("formType", methodName).with("formData", parameterJson).done();
         logger.debug("Dispatching " + parameter + " to method: " + method + " in object: " + routeEventsHere);
 
         method.invoke(routeEventsHere, parameter);

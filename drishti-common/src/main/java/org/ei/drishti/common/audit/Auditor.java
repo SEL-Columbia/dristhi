@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Collections.binarySearch;
 import static org.ei.drishti.common.audit.AuditMessageType.NORMAL;
@@ -27,10 +25,8 @@ public class Auditor {
         this.messageIndex = 0;
     }
 
-    public void audit(AuditMessageType type, String message, String... extraData) {
-        messages.add(new AuditMessage(DateTime.now(), messageIndex, type, message, extraData));
-        messageIndex++;
-        prune();
+    public AuditMessageBuilder audit(AuditMessageType type) {
+        return new AuditMessageBuilder(this, type);
     }
 
     public List<AuditMessage> messagesSince(long messageIndex) {
@@ -53,4 +49,30 @@ public class Auditor {
         }
     }
 
+    private void createAuditMessage(AuditMessageType messageType, Map<String, String> data) {
+        messages.add(new AuditMessage(DateTime.now(), messageIndex, messageType, data));
+        messageIndex++;
+        prune();
+    }
+
+    public class AuditMessageBuilder {
+        private final Auditor auditor;
+        private final AuditMessageType type;
+        private Map<String, String> extraData;
+
+        public AuditMessageBuilder(Auditor auditor, AuditMessageType type) {
+            this.auditor = auditor;
+            this.type = type;
+            this.extraData = new HashMap<String, String>();
+        }
+
+        public AuditMessageBuilder with(String key, String value) {
+            extraData.put(key, value);
+            return this;
+        }
+
+        public void done() {
+            auditor.createAuditMessage(type, extraData);
+        }
+    }
 }
