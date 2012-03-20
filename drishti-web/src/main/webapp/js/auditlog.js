@@ -10,10 +10,11 @@ $(document).ready(function() {
 
     var showNewMessages = function(newMessages) {
         $(newMessages).each(function(index, elem) { $("#messages").prepend(
-        "<div class=\"audit_item\">" +
+        $("<div class=\"audit_item\">" +
             "<span class=\"time\">" + new Date(elem.time) + "</span>" +
             "<span class=\"message\">" + elem.message.replace(/","/g, "\", \"").replace(/":"/g, "\": \"") + "</span>" +
-        "</div>"); });
+          "</div>").fadeIn(2000).delay(1000).animate({backgroundColor: "rgba(0, 200, 0, 0.2)"}, 5500)
+        )});;
     };
 
     var updateMessageIndex = function(newMessages) {
