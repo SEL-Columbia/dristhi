@@ -25,6 +25,10 @@ public class AuditMessage implements Comparable<AuditMessage> {
         return messageIndex;
     }
 
+    public String[] data() {
+        return extraData;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
