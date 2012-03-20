@@ -1,0 +1,17 @@
+.audit_item {
+    background-color: rgba(0, 200, 0, 0.2);
+    padding: 5px;
+    margin-bottom: 10px;
+    height: 3em;
+    overflow: hidden;
+}
+
+.audit_item .time {
+    display: block;
+    float: right;
+    opacity: .5;
+    font-size: 10pt;
+}
+
+.audit_item .message {
+}
