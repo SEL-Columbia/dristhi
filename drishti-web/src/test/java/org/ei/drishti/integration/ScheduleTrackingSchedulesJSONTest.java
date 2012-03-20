@@ -1,4 +1,4 @@
-package org.ei.drishti.controller;
+package org.ei.drishti.integration;
 
 import org.junit.Test;
 import org.motechproject.scheduletracking.api.repository.TrackedSchedulesJsonReaderImpl;

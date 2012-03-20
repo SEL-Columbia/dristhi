@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.ei.drishti.common.audit.AuditMessageType.FORM_SUBMISSION;
 import static org.ei.drishti.common.audit.AuditMessageType.SMS;
-import static org.ei.drishti.controller.util.SameItems.hasSameItemsAs;
+import static org.ei.drishti.integration.util.SameItems.hasSameItemsAs;
 import static org.ei.drishti.web.controller.AuditMessageController.AuditMessageItem;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;

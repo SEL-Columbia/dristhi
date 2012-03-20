@@ -1,4 +1,4 @@
-package org.ei.drishti.controller.util;
+package org.ei.drishti.integration.util;
 
 import org.motechproject.scheduletracking.api.domain.WindowName;
 

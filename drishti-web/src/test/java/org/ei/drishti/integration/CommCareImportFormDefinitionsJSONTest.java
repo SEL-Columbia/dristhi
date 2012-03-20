@@ -1,8 +1,9 @@
-package org.ei.drishti.controller;
+package org.ei.drishti.integration;
 
 import org.ei.commcare.api.contract.CommCareFormDefinition;
 import org.ei.commcare.api.contract.CommCareFormDefinitions;
 import org.ei.drishti.contract.*;
+import org.ei.drishti.controller.DrishtiController;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.dao.MotechJsonReader;

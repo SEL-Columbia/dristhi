@@ -1,11 +1,11 @@
-package org.ei.drishti.controller;
+package org.ei.drishti.integration;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.ei.drishti.controller.util.FakeSchedule;
-import org.ei.drishti.controller.util.ScheduleVisualization;
-import org.ei.drishti.controller.util.ScheduleWithCapture;
-import org.ei.drishti.controller.util.SetDateAction;
+import org.ei.drishti.integration.util.FakeSchedule;
+import org.ei.drishti.integration.util.ScheduleVisualization;
+import org.ei.drishti.integration.util.ScheduleWithCapture;
+import org.ei.drishti.integration.util.SetDateAction;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;

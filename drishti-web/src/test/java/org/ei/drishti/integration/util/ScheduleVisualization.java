@@ -1,4 +1,4 @@
-package org.ei.drishti.controller.util;
+package org.ei.drishti.integration.util;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.LocalDate;
