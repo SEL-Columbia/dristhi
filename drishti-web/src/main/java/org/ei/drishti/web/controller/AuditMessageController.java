@@ -29,7 +29,7 @@ public class AuditMessageController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/audit/messages")
     @ResponseBody
-    public List<AuditMessageItem> getAuditMessages(@RequestParam("previousAuditMessageIndex") long previousIndex) throws IOException {
+    public List<AuditMessageItem> getAuditMessages(@RequestParam(value = "previousAuditMessageIndex", defaultValue = "0") long previousIndex) throws IOException {
         List<AuditMessage> messages = auditor.messagesSince(previousIndex);
 
         return with(messages).convert(new Converter<AuditMessage, AuditMessageItem>() {

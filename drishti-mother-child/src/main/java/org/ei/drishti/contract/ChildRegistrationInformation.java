@@ -46,8 +46,8 @@ public class ChildRegistrationInformation {
 
     @Override
     public String toString() {
-        return format("ChildRegistrationInformation {Mother = ''{0}'', anmPhoneNumber=''{1}'', " +
-                "bcgHasBeenProvided=''{2}'', opv0HasBeenProvided=''{3}'', hepatitisBHasBeenProvided=''{4}'''}",
+        return format("ChildRegistrationInformation: '{'Mother = ''{0}'', anmPhoneNumber=''{1}'', " +
+                "bcgHasBeenProvided=''{2}'', opv0HasBeenProvided=''{3}'', hepatitisBHasBeenProvided=''{4}'''}'",
                 motherName, anmPhoneNumber, bcgHasBeenProvided, opv0HasBeenProvided, hepatitisBHasBeenProvided);
     }
 }
