@@ -1,5 +1,6 @@
 package org.ei.drishti.common.audit;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -27,7 +28,7 @@ public class Auditor {
     }
 
     public void audit(AuditMessageType type, String message, String... extraData) {
-        messages.add(new AuditMessage(messageIndex, type, message, extraData));
+        messages.add(new AuditMessage(DateTime.now(), messageIndex, type, message, extraData));
         messageIndex++;
         prune();
     }
@@ -37,7 +38,7 @@ public class Auditor {
             return messages;
         }
 
-        int position = Math.abs(binarySearch(messages, new AuditMessage(messageIndex, NORMAL, null)));
+        int position = Math.abs(binarySearch(messages, new AuditMessage(DateTime.now(), messageIndex, NORMAL, null)));
 
         if (position >= messages.size()) {
             return Collections.emptyList();

@@ -1,12 +1,16 @@
 package org.ei.drishti.common.audit;
 
+import org.joda.time.DateTime;
+
 public class AuditMessage implements Comparable<AuditMessage> {
+    private final DateTime time;
     private final long messageIndex;
     private final AuditMessageType type;
     private final String message;
     private final String[] extraData;
 
-    public AuditMessage(long messageIndex, AuditMessageType type, String message, String... extraData) {
+    public AuditMessage(DateTime time, long messageIndex, AuditMessageType type, String message, String... extraData) {
+        this.time = time;
         this.messageIndex = messageIndex;
         this.type = type;
         this.message = message;
@@ -27,6 +31,10 @@ public class AuditMessage implements Comparable<AuditMessage> {
 
     public String[] data() {
         return extraData;
+    }
+
+    public DateTime time() {
+        return time;
     }
 
     @Override

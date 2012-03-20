@@ -5,6 +5,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ei.drishti.common.audit.AuditMessage;
 import org.ei.drishti.common.audit.AuditMessageType;
 import org.ei.drishti.common.audit.Auditor;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,8 @@ public class AuditMessageController {
 
     protected static class AuditMessageItem {
         @JsonProperty
+        private final DateTime time;
+        @JsonProperty
         private final long index;
         @JsonProperty
         private final AuditMessageType type;
@@ -50,7 +53,8 @@ public class AuditMessageController {
         @JsonProperty
         private final List<String> data;
 
-        public AuditMessageItem(long index, AuditMessageType type, String message, String... data) {
+        public AuditMessageItem(DateTime time, long index, AuditMessageType type, String message, String... data) {
+            this.time = time;
             this.index = index;
             this.type = type;
             this.message = message;
@@ -58,7 +62,7 @@ public class AuditMessageController {
         }
 
         public static AuditMessageItem from(AuditMessage auditMessage) {
-            return new AuditMessageItem(auditMessage.index(), auditMessage.type(), auditMessage.message(), auditMessage.data());
+            return new AuditMessageItem(auditMessage.time(), auditMessage.index(), auditMessage.type(), auditMessage.message(), auditMessage.data());
         }
     }
 }
