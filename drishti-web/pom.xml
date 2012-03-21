@@ -156,6 +156,26 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.github.searls</groupId>
+        <artifactId>jasmine-maven-plugin</artifactId>
+        <version>1.0.2-beta-5</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jsSrcDir>
+            ${project.basedir}/src/main/webapp/js/domain
+          </jsSrcDir>
+          <jsTestSrcDir>
+            ${project.basedir}/src/test/js
+          </jsTestSrcDir>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 

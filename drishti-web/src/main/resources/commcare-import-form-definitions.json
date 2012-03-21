@@ -74,6 +74,7 @@
                 }
             },
             "mappings": {
+                "form|case|case_id" : "caseId",
                 "form|ancm_name" : "motherName",
                 "form|anm_phone" : "anmPhoneNumber",
                 "form|BCG" : "bcgHasBeenProvided",

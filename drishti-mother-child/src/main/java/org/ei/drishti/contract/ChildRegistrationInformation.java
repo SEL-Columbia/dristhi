@@ -6,6 +6,7 @@ import java.util.List;
 import static java.text.MessageFormat.format;
 
 public class ChildRegistrationInformation {
+    private String caseId;
     private String motherName;
     private String anmPhoneNumber;
     private String bcgHasBeenProvided;
@@ -46,8 +47,8 @@ public class ChildRegistrationInformation {
 
     @Override
     public String toString() {
-        return format("ChildRegistrationInformation: '{'Mother = ''{0}'', anmPhoneNumber=''{1}'', " +
+        return format("ChildRegistrationInformation: '{'Mother = ''{0}'', caseId=''{5}'', anmPhoneNumber=''{1}'', " +
                 "bcgHasBeenProvided=''{2}'', opv0HasBeenProvided=''{3}'', hepatitisBHasBeenProvided=''{4}'''}'",
-                motherName, anmPhoneNumber, bcgHasBeenProvided, opv0HasBeenProvided, hepatitisBHasBeenProvided);
+                motherName, anmPhoneNumber, bcgHasBeenProvided, opv0HasBeenProvided, hepatitisBHasBeenProvided, caseId);
     }
 }
