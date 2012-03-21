@@ -67,6 +67,9 @@ public class Auditor {
         }
 
         public AuditMessageBuilder with(String key, String value) {
+            if (!type.supports(key)) {
+                throw new ForbiddenFieldInAuditMessage(type, key, value);
+            }
             extraData.put(key, value);
             return this;
         }

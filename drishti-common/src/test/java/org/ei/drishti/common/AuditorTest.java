@@ -2,6 +2,7 @@ package org.ei.drishti.common;
 
 import org.ei.drishti.common.audit.AuditMessage;
 import org.ei.drishti.common.audit.Auditor;
+import org.ei.drishti.common.audit.ForbiddenFieldInAuditMessage;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
@@ -119,6 +120,12 @@ public class AuditorTest {
 
         List<AuditMessage> newMessages = auditor.messagesSince(messageIndexOfLastMessage + 10);
         assertThat(newMessages.size(), is(0));
+    }
+
+    @Test(expected = ForbiddenFieldInAuditMessage.class)
+    public void shouldNotAllowAddingOfFieldsWhichAreNotSupportedByTheAuditMessageTypeUsed() {
+        Auditor auditor = new Auditor(3);
+        auditor.audit(NORMAL).with("SOMETHING_OTHER_THAN_data", "Message 1").done();
     }
 
     private void assertData(AuditMessage message, Matcher<String> expectedDataMatcher) {
