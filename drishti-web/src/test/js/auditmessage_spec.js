@@ -20,7 +20,7 @@ describe("AuditMessage", function() {
         info    : {},
         actions : [
             {
-                "text" : "Resend SMS.",
+                "text" : "Resend SMS",
                 "link" : "javascript:alert('Not implemented yet.');"
             }
         ]
@@ -50,7 +50,7 @@ describe("AuditMessage", function() {
         info    : {},
         actions : [
             {
-                "text" : "Resend SMS.",
+                "text" : "Resend SMS",
                 "link" : "javascript:alert('Not implemented yet.');"
             }
         ]
@@ -84,7 +84,7 @@ describe("AuditMessage", function() {
         },
         actions : [
             {
-                "text" : "Go to CommCareHQ form.",
+                "text" : "Go to CommCareHQ form",
                 "link" : "https://www.commcarehq.org/a/frhs-who-columbia/reports/form_data/FORM-ID-HERE/"
             }
         ]

@@ -22,7 +22,9 @@ $(document).ready(function() {
                               "<span class=\"message\">" + message.content + "</span>" +
                             "</div>").fadeIn(2000).delay(1000).animate({backgroundColor: "rgba(0, 200, 0, 0.2)"}, 5500);
 
-          addActions(auditItem, message.info, message.actions);
+          var actionsDiv = $("<div class=\"actions\"></div>");
+          addActions(actionsDiv, message.info, message.actions);
+          auditItem.append(actionsDiv);
 
           $("#messages").prepend(auditItem)});;
     };

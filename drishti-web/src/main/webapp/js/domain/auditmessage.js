@@ -5,7 +5,7 @@ function AuditMessage(auditItem) {
     var smsNotSentMessage = item.data.smsIsSent == "true" ? " " : " NOT ";
     messageToPutStuffInto.content = "SMS" + smsNotSentMessage + "sent to " + item.data.recipient + ": " + item.data.message;
     messageToPutStuffInto.actions = [{
-      text : "Resend SMS.",
+      text : "Resend SMS",
       link : "javascript:alert('Not implemented yet.');"
     }]
   };
@@ -21,7 +21,7 @@ function AuditMessage(auditItem) {
     messageToPutStuffInto.content = "Form for '" + item.data.formType + "' submitted for case: " + messageToPutStuffInto.info.caseId + ".";
 
     messageToPutStuffInto.actions = [{
-      text : "Go to CommCareHQ form.",
+      text : "Go to CommCareHQ form",
       link : "https://www.commcarehq.org/a/frhs-who-columbia/reports/form_data/" + item.data.formId + "/"
     }]
   };
