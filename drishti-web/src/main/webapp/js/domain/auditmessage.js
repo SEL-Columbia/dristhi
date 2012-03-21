@@ -21,7 +21,7 @@ function AuditMessage(auditItem) {
     messageToPutStuffInto.content = "Form for '" + item.data.formType + "' submitted for case: " + messageToPutStuffInto.info.caseId + ".";
 
     messageToPutStuffInto.actions = [{
-      text : "Go to CommCareHQ form",
+      text : "Open form in CommCare",
       link : "https://www.commcarehq.org/a/frhs-who-columbia/reports/form_data/" + item.data.formId + "/"
     }]
   };

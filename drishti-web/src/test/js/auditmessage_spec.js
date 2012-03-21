@@ -84,7 +84,7 @@ describe("AuditMessage", function() {
         },
         actions : [
             {
-                "text" : "Go to CommCareHQ form",
+                "text" : "Open form in CommCare",
                 "link" : "https://www.commcarehq.org/a/frhs-who-columbia/reports/form_data/FORM-ID-HERE/"
             }
         ]
