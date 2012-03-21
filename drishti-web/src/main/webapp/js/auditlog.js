@@ -56,8 +56,8 @@ $(document).ready(function() {
 
       var createExtraInfoNode = function(info) {
         var extraInfo = "";
-        $.each(info, function(index, elem) {
-          extraInfo += "<span class=\"item\">" + index + " : " + elem + "</span>";
+        $($.map(info, function(value, key) { return key; }).sort()).each(function(index, elem) {
+          extraInfo += "<span class=\"item\">" + elem + " : " + info[elem] + "</span>";
         });
         return $(extraInfo);
       };
