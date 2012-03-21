@@ -8,9 +8,23 @@ $(document).ready(function() {
         $('#status').text("");
     };
 
+    var hideMessage = function() {
+        $("#extraInformation").hide();
+        $("#background").remove();
+    };
+
     var displayMessage = function(node) {
-       $("#extraInformation").empty();
-       $("#extraInformation").append(node);
+        $("#extraInformation").empty().append(node).show();
+
+        $("#background").remove();
+        $("body").append($("<div id=\"background\"></div>"));
+        $("#background").css('width', $("html").width()).css('height', $("html").height());
+
+        var top = ($(window).height() - $("#extraInformation").height()) / 2;
+        var left = ($(window).width() - $("#extraInformation").width()) / 2;
+        $("#extraInformation").css('top', $("body").scrollTop() + top).css('left', left);
+
+        $("#background").click(function() { hideMessage(); });
     };
 
     var showNewMessages = function(newMessages) {
@@ -41,21 +55,20 @@ $(document).ready(function() {
       };
 
       var createExtraInfoNode = function(info) {
-        var extraInfo = "<span class=\"info\">";
+        var extraInfo = "";
         $.each(info, function(index, elem) {
           extraInfo += "<span class=\"item\">" + index + " : " + elem + "</span>";
         });
-        extraInfo += "</span>";
         return $(extraInfo);
       };
-
-      if (!$.isEmptyObject(extraInfo)) {
-        addAction(auditItem, "Show more information", function() { displayMessage(createExtraInfoNode(extraInfo)); });
-      }
 
       $(actions).each(function(index, action) {
         addLink(auditItem, action.text, (function(){return action.link})());
       });
+
+      if (!$.isEmptyObject(extraInfo)) {
+        addAction(auditItem, "Show more information", function() { displayMessage(createExtraInfoNode(extraInfo)); });
+      }
     };
 
     var updateMessageIndex = function(newMessages) {
