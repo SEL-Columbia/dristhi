@@ -16,9 +16,9 @@ public class AuditorTest {
     @Test
     public void shouldHaveOnlyAsManyMessagesAsTheSizeOfTheAuditorLog() {
         Auditor auditor = new Auditor(2);
-        auditor.audit(NORMAL).with("data", "Message 1").done();
-        auditor.audit(NORMAL).with("data", "Message 2").done();
-        auditor.audit(NORMAL).with("data", "Message 3").done();
+        audit(auditor, "Message 1");
+        audit(auditor, "Message 2");
+        audit(auditor, "Message 3");
 
         assertThat(auditor.messagesSince(0).size(), is(2));
     }
@@ -26,9 +26,9 @@ public class AuditorTest {
     @Test
     public void shouldKeepOnlyTheNewestMessagesWhenRemovingMessagesWhichOverflow() {
         Auditor auditor = new Auditor(2);
-        auditor.audit(NORMAL).with("data", "Message 1").done();
-        auditor.audit(NORMAL).with("data", "Message 2").done();
-        auditor.audit(NORMAL).with("data", "Message 3").done();
+        audit(auditor, "Message 1");
+        audit(auditor, "Message 2");
+        audit(auditor, "Message 3");
 
         List<AuditMessage> messages = auditor.messagesSince(0);
         assertData(messages.get(0), is("Message 2"));
@@ -38,11 +38,11 @@ public class AuditorTest {
     @Test
     public void shouldGiveAllMessageWhenMessageIndexBeingSearchedForIsZeroOrNegative() {
         Auditor auditor = new Auditor(3);
-        auditor.audit(NORMAL).with("data", "Message 1").done();
-        auditor.audit(NORMAL).with("data", "Message 2").done();
-        auditor.audit(NORMAL).with("data", "Message 3").done();
-        auditor.audit(NORMAL).with("data", "Message 4").done();
-        auditor.audit(NORMAL).with("data", "Message 5").done();
+        audit(auditor, "Message 1");
+        audit(auditor, "Message 2");
+        audit(auditor, "Message 3");
+        audit(auditor, "Message 4");
+        audit(auditor, "Message 5");
 
         List<AuditMessage> messages = auditor.messagesSince(0);
         assertThat(messages.size(), is(3));
@@ -60,14 +60,14 @@ public class AuditorTest {
     @Test
     public void shouldBeAbleToFindMessagesSubmittedSinceAGivenIndex() throws Exception {
         Auditor auditor = new Auditor(3);
-        auditor.audit(NORMAL).with("data", "Message 1").done();
-        auditor.audit(NORMAL).with("data", "Message 2").done();
-        auditor.audit(NORMAL).with("data", "Message 3").done();
+        audit(auditor, "Message 1");
+        audit(auditor, "Message 2");
+        audit(auditor, "Message 3");
 
         long messageIndexOfLastMessage = auditor.messagesSince(0).get(2).index();
 
-        auditor.audit(NORMAL).with("data", "Message 4").done();
-        auditor.audit(NORMAL).with("data", "Message 5").done();
+        audit(auditor, "Message 4");
+        audit(auditor, "Message 5");
 
         List<AuditMessage> newMessages = auditor.messagesSince(messageIndexOfLastMessage);
         assertThat(newMessages.size(), is(2));
@@ -78,16 +78,16 @@ public class AuditorTest {
     @Test
     public void shouldBeAbleToSearchForMessagesByIndexEvenIfThereHaveBeenManyMessagesInBetween() {
         Auditor auditor = new Auditor(3);
-        auditor.audit(NORMAL).with("data", "Message 1").done();
+        audit(auditor, "Message 1");
 
         long messageIndexOfLastMessage = auditor.messagesSince(0).get(0).index();
 
-        auditor.audit(NORMAL).with("data", "Message 2").done();
-        auditor.audit(NORMAL).with("data", "Message 3").done();
-        auditor.audit(NORMAL).with("data", "Message 4").done();
-        auditor.audit(NORMAL).with("data", "Message 5").done();
-        auditor.audit(NORMAL).with("data", "Message 6").done();
-        auditor.audit(NORMAL).with("data", "Message 7").done();
+        audit(auditor, "Message 2");
+        audit(auditor, "Message 3");
+        audit(auditor, "Message 4");
+        audit(auditor, "Message 5");
+        audit(auditor, "Message 6");
+        audit(auditor, "Message 7");
 
         List<AuditMessage> messages = auditor.messagesSince(messageIndexOfLastMessage);
         assertThat(messages.size(), is(3));
@@ -99,9 +99,9 @@ public class AuditorTest {
     @Test
     public void shouldNotFindAnyMessagesIfAllMessagesHaveAlreadyBeenSeen() {
         Auditor auditor = new Auditor(3);
-        auditor.audit(NORMAL).with("data", "Message 1").done();
-        auditor.audit(NORMAL).with("data", "Message 2").done();
-        auditor.audit(NORMAL).with("data", "Message 3").done();
+        audit(auditor, "Message 1");
+        audit(auditor, "Message 2");
+        audit(auditor, "Message 3");
 
         long messageIndexOfLastMessage = auditor.messagesSince(0).get(2).index();
 
@@ -112,9 +112,9 @@ public class AuditorTest {
     @Test
     public void shouldNotFindAnyMessagesWhenAWrongMessageIndexIfProvided() {
         Auditor auditor = new Auditor(3);
-        auditor.audit(NORMAL).with("data", "Message 1").done();
-        auditor.audit(NORMAL).with("data", "Message 2").done();
-        auditor.audit(NORMAL).with("data", "Message 3").done();
+        audit(auditor, "Message 1");
+        audit(auditor, "Message 2");
+        audit(auditor, "Message 3");
 
         long messageIndexOfLastMessage = auditor.messagesSince(0).get(2).index();
 
@@ -132,4 +132,13 @@ public class AuditorTest {
         assertThat(message.data().get("data"), expectedDataMatcher);
     }
 
+    private void audit(Auditor auditor, String value) {
+        auditor.audit(NORMAL).with("data", value).done();
+
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

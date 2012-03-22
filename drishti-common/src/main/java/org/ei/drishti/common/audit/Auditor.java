@@ -16,13 +16,11 @@ import static org.ei.drishti.common.audit.AuditMessageType.NORMAL;
 public class Auditor {
     private List<AuditMessage> messages;
     private final int numberOfAuditMessagesToHoldOnTo;
-    private long messageIndex;
 
     @Autowired
     public Auditor(@Value("#{drishti['number.of.audit.messages']}") int numberOfAuditMessagesToHoldOnTo) {
         this.messages = new ArrayList<AuditMessage>();
         this.numberOfAuditMessagesToHoldOnTo = numberOfAuditMessagesToHoldOnTo;
-        this.messageIndex = 0;
     }
 
     public AuditMessageBuilder audit(AuditMessageType type) {
@@ -34,13 +32,14 @@ public class Auditor {
             return messages;
         }
 
-        int position = Math.abs(binarySearch(messages, new AuditMessage(DateTime.now(), messageIndex, NORMAL, null)));
+        int index = binarySearch(messages, new AuditMessage(DateTime.now(), messageIndex, NORMAL, null));
+        int position = Math.abs(index + 1);
 
         if (position >= messages.size()) {
             return Collections.emptyList();
         }
 
-        return messages.subList(position + 1, messages.size());
+        return messages.subList(position, messages.size());
     }
 
     private void prune() {
@@ -50,8 +49,7 @@ public class Auditor {
     }
 
     private void createAuditMessage(AuditMessageType messageType, Map<String, String> data) {
-        messages.add(new AuditMessage(DateTime.now(), messageIndex, messageType, data));
-        messageIndex++;
+        messages.add(new AuditMessage(DateTime.now(), DateTime.now().getMillis(), messageType, data));
         prune();
     }
 
