@@ -12,6 +12,8 @@
 
   <import resource="classpath:applicationContext-drishti.xml"/>
 
+  <mvc:default-servlet-handler/>
+
   <context:annotation-config/>
   <context:component-scan base-package="org.ei.drishti.web"/>
 

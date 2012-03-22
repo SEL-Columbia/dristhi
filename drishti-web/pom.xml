@@ -130,7 +130,7 @@
             </systemProperty>
           </systemProperties>
           <webAppConfig>
-            <contextPath>/drishti</contextPath>
+            <contextPath>/</contextPath>
           </webAppConfig>
           <stopKey>secret</stopKey>
           <stopPort>6669</stopPort>
