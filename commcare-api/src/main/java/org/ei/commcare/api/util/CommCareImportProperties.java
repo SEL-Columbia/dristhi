@@ -10,7 +10,7 @@ import java.util.Properties;
 
 @Component
 public class CommCareImportProperties {
-    public static final String COMMCARE_EXPORT_DEFINITION_FILE = "commcare-export.definition.file";
+    public static final String COMMCARE_IMPORT_DEFINITION_FILE = "commcare-import.definition.file";
     private final Properties properties;
 
     @Autowired
@@ -19,7 +19,7 @@ public class CommCareImportProperties {
     }
 
     public CommCareFormDefinitions definitions() {
-        String jsonPath = properties.getProperty(COMMCARE_EXPORT_DEFINITION_FILE);
+        String jsonPath = properties.getProperty(COMMCARE_IMPORT_DEFINITION_FILE);
         return (CommCareFormDefinitions) new MotechJsonReader().readFromFile(jsonPath, CommCareFormDefinitions.class);
     }
 }
