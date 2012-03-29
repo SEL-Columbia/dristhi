@@ -75,11 +75,11 @@
                                     <fileset file="${project.basedir}/../build/lib/mysql-connector-java-5.1.13.jar"/>
                                 </path>
                                 <sql driver="${mysql.driver}"
-                                     url="jdbc:mysql://${mysql.server}:${mysql.port}/${mysql.db}?autoReconnect=true"
+                                     url="jdbc:mysql://${mysql.server}:${mysql.port}?autoReconnect=true"
                                      userid="${mysql.user}"
                                      classpathref="dependencies"
                                      password="${mysql.password}">
-                                    drop database ${mysql.db};
+                                    drop database if exists ${mysql.db};
                                     create database ${mysql.db};
                                 </sql>
                                 <sql driver="${mysql.driver}"
@@ -105,11 +105,11 @@
                                     <fileset file="${project.basedir}/../build/lib/mysql-connector-java-5.1.13.jar"/>
                                 </path>
                                 <sql driver="${mysql.driver}"
-                                     url="jdbc:mysql://${mysql.server}:${mysql.port}/${mysql.db}?autoReconnect=true"
+                                     url="jdbc:mysql://${mysql.server}:${mysql.port}?autoReconnect=true"
                                      userid="${mysql.user}"
                                      classpathref="dependencies"
                                      password="${mysql.password}">
-                                    drop database ${mysql.db};
+                                    drop database if exists ${mysql.db};
                                     create database ${mysql.db};
                                 </sql>
                                 <sql driver="${mysql.driver}"
