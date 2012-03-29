@@ -43,7 +43,7 @@ public class FakeSchedule {
 
         nextFulfillmentDateToUse = referenceDateForEnrollment;
         setDateAction.setTheDateTo(referenceDateForEnrollment);
-        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(externalId, scheduleName, preferredAlertTime, referenceDateForEnrollment, null, null, null, null);
+        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(externalId, scheduleName, preferredAlertTime, referenceDateForEnrollment, null, null, null, null, null);
         trackingService.enroll(enrollmentRequest);
 
         while (true) {

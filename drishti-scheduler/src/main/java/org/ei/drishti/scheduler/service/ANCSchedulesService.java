@@ -31,7 +31,7 @@ public class ANCSchedulesService {
 
     public void enrollMother(String caseId, LocalDate referenceDateForSchedule, Time referenceTime, Time preferredAlertTime) {
         for (String schedule : NON_ANC_SCHEDULES) {
-            trackingService.enroll(new EnrollmentRequest(caseId, schedule, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, null));
+            trackingService.enroll(new EnrollmentRequest(caseId, schedule, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, null, null));
         }
         enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule, preferredAlertTime, referenceTime);
     }
@@ -73,7 +73,7 @@ public class ANCSchedulesService {
             milestone = "ANC 4";
         }
 
-        trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, milestone));
+        trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, milestone, null));
     }
 
     private void fastForwardSchedule(String caseId, int visitNumber, LocalDate visitDate, String scheduleName, String milestonePrefix) {
