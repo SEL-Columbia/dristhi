@@ -19,7 +19,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring.version>3.0.5.RELEASE</spring.version>
-    <motech.version>0.9-SNAPSHOT</motech.version>
+    <main.basedir>${project.basedir}/..</main.basedir>
   </properties>
 
   <dependencies>
