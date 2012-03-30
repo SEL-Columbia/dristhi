@@ -19,7 +19,6 @@
 
   <properties>
     <jetty.port>9979</jetty.port>
-    <spring.version>3.0.5.RELEASE</spring.version>
     <release.version>0.1-SNAPSHOT</release.version>
     <main.basedir>${project.basedir}/..</main.basedir>
   </properties>
