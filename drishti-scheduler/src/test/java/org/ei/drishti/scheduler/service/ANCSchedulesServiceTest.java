@@ -19,9 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.ei.drishti.scheduler.DrishtiSchedules.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -199,7 +197,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         return argThat(new ArgumentMatcher<EnrollmentsQuery>() {
             @Override
             public boolean matches(Object o) {
-                EnrollmentsQuery expectedQuery = new EnrollmentsQuery().havingExternalId(externalId).havingState(ACTIVE.toString());
+                EnrollmentsQuery expectedQuery = new EnrollmentsQuery().havingExternalId(externalId).havingState(ACTIVE);
                 return EqualsBuilder.reflectionEquals(expectedQuery.getCriteria(), ((EnrollmentsQuery) o).getCriteria());
             }
         });

@@ -53,7 +53,7 @@ public class ANCSchedulesService {
     }
 
     public void closeCase(String caseId) {
-        List<EnrollmentRecord> openEnrollments = trackingService.search(new EnrollmentsQuery().havingExternalId(caseId).havingState(ACTIVE.toString()));
+        List<EnrollmentRecord> openEnrollments = trackingService.search(new EnrollmentsQuery().havingExternalId(caseId).havingState(ACTIVE));
 
         for (EnrollmentRecord enrollment : openEnrollments) {
             trackingService.unenroll(caseId, Arrays.asList(enrollment.getScheduleName()));
