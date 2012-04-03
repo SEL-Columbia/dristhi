@@ -1,5 +1,8 @@
 package org.ei.drishti.scheduler.router;
 
+import java.util.Arrays;
+import java.util.List;
+
 public abstract class Matcher {
     public abstract boolean matches(String actualValue);
 
@@ -9,6 +12,10 @@ public abstract class Matcher {
 
     public static Matcher any() {
         return new AnyMatcher();
+    }
+
+    public static Matcher anyOf(String... values) {
+        return new AnyOfMatcher(values);
     }
 
     private static class AnyMatcher extends Matcher {
@@ -28,6 +35,19 @@ public abstract class Matcher {
         @Override
         public boolean matches(String actualValue) {
             return expectedValue.equals(actualValue);
+        }
+    }
+
+    private static class AnyOfMatcher extends Matcher {
+        private final List<String> expectedValues;
+
+        public AnyOfMatcher(String... expectedValues) {
+            this.expectedValues = Arrays.asList(expectedValues);
+        }
+
+        @Override
+        public boolean matches(String actualValue) {
+            return expectedValues.contains(actualValue);
         }
     }
 }
