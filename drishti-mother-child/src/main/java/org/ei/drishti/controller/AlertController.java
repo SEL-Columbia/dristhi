@@ -2,6 +2,7 @@ package org.ei.drishti.controller;
 
 import org.ei.drishti.scheduler.router.Action;
 import org.ei.drishti.scheduler.router.AlertRouter;
+import org.ei.drishti.scheduler.router.Matcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,11 @@ public class AlertController {
     public AlertController(AlertRouter router, @Qualifier("ANMGroupSMSAction") Action anmGroupSMS, @Qualifier("ForceFulfillAction") Action forceFulfill, @Qualifier("CaptureANMReminderAction") Action captureANMReminder) {
         router.addRoute(eq(SCHEDULE_ANC), any(), eq(max.toString()), forceFulfill);
         router.addRoute(eq(SCHEDULE_LAB), any(), eq(max.toString()), forceFulfill);
-        router.addRoute(anyOf(SCHEDULE_ANC, SCHEDULE_TT, SCHEDULE_IFA), any(), anyOf(due.toString(), late.toString()), captureANMReminder);
+        router.addRoute(motherSchedules(), any(), anyOf(due.toString(), late.toString()), captureANMReminder);
         router.addRoute(any(), any(), any(), anmGroupSMS);
+    }
+
+    private Matcher motherSchedules() {
+        return anyOf(SCHEDULE_ANC, SCHEDULE_TT, SCHEDULE_IFA, SCHEDULE_LAB, SCHEDULE_EDD);
     }
 }

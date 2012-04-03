@@ -68,4 +68,12 @@ public class Mother extends MotechBaseDataObject {
     private String getCaseId() {
         return caseId;
     }
+
+    public String thaayiCardNo() {
+        return thaayiCardNumber;
+    }
+
+    public String anmPhoneNo() {
+        return anmPhoneNumber;
+    }
 }
