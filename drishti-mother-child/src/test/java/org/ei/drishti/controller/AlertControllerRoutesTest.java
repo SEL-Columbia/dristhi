@@ -3,19 +3,15 @@ package org.ei.drishti.controller;
 import org.ei.drishti.scheduler.router.Action;
 import org.ei.drishti.scheduler.router.AlertRouter;
 import org.ei.drishti.scheduler.router.MilestoneEvent;
+import org.ei.drishti.util.EventBuilder;
 import org.junit.Test;
 import org.motechproject.model.MotechEvent;
-import org.motechproject.scheduletracking.api.domain.MilestoneAlert;
 import org.motechproject.scheduletracking.api.domain.WindowName;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.ei.drishti.scheduler.DrishtiSchedules.SCHEDULE_ANC;
 import static org.ei.drishti.scheduler.DrishtiSchedules.SCHEDULE_LAB;
 import static org.mockito.Mockito.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.max;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.*;
 
 public class AlertControllerRoutesTest {
     @Test
@@ -66,26 +62,12 @@ public class AlertControllerRoutesTest {
 
         private MotechEvent routeEvent(Action groupSMSAction, Action ancMissedAction) {
             AlertRouter router = new AlertRouter();
-            new AlertController(router, groupSMSAction, ancMissedAction);
-            MotechEvent event = eventFor(schedule, milestone, window);
+            new AlertController(router, groupSMSAction, ancMissedAction, null);
+            MotechEvent event = org.ei.drishti.util.Event.create().withMilestone(milestone).withSchedule(schedule).withWindow(window).build();
 
             router.handle(event);
 
             return event;
-        }
-
-        private MotechEvent eventFor(String schedule, String milestone, WindowName window) {
-            MilestoneAlert alert = mock(MilestoneAlert.class);
-            when(alert.getMilestoneName()).thenReturn(milestone);
-
-            Map<String, Object> parameters = new HashMap<String, Object>();
-
-            parameters.put(SCHEDULE_NAME, schedule);
-            parameters.put(MILESTONE_NAME, alert);
-            parameters.put(WINDOW_NAME, window.toString());
-            parameters.put(EXTERNAL_ID, "Case X");
-
-            return new MotechEvent("Subject", parameters);
         }
     }
 }
