@@ -11,10 +11,8 @@
   <url>http://github.com/modilabs/dristhi</url>
 
   <modules>
-    <module>commcare-api</module>
     <module>drishti-mother-child</module>
     <module>drishti-web</module>
-    <module>commcare-listener</module>
     <module>drishti-scheduler</module>
     <module>drishti-common</module>
   </modules>

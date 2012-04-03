@@ -38,9 +38,7 @@ public class MilestoneEvent {
 
         MilestoneEvent that = (MilestoneEvent) o;
 
-        if (event != null ? !event.equals(that.event) : that.event != null) return false;
-
-        return true;
+        return !(event != null ? !event.equals(that.event) : that.event != null);
     }
 
     @Override

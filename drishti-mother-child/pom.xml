@@ -76,7 +76,7 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.ei.drishti</groupId>
+            <groupId>org.motechproject</groupId>
             <artifactId>commcare-listener</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
