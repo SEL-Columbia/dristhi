@@ -20,9 +20,9 @@
   <properties>
     <db.server>localhost</db.server>
     <db.port>5984</db.port>
-    <db.name.drishti>commcare</db.name.drishti>
+    <db.name.drishti>drishti</db.name.drishti>
     <db.name.commcare-api>commcare</db.name.commcare-api>
-    <db.name.motech-scheduletracking>commcare</db.name.motech-scheduletracking>
+    <db.name.motech-scheduletracking>motech-scheduletracking</db.name.motech-scheduletracking>
     <main.basedir>${project.basedir}</main.basedir>
     <motech.version>0.9-SNAPSHOT</motech.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

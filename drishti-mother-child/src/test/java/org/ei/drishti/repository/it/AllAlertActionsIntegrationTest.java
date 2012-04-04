@@ -1,7 +1,8 @@
 package org.ei.drishti.repository.it;
 
-import org.ei.drishti.domain.Reminder;
-import org.ei.drishti.repository.AllReminders;
+import org.ei.drishti.domain.AlertData;
+import org.ei.drishti.domain.AlertAction;
+import org.ei.drishti.repository.AllAlertActions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,23 +16,23 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
-public class AllRemindersIntegrationTest {
+public class AllAlertActionsIntegrationTest {
     @Autowired
-    AllReminders reminders;
+    AllAlertActions alertActions;
 
     @Before
     public void setUp() throws Exception {
-        reminders.removeAll();
+        alertActions.removeAll();
     }
 
     @Test
     public void shouldSaveAReminder() throws Exception {
-        Reminder reminder = new Reminder("Theresa", "Thaayi 1", "ANM phone no", "Case X", "ANC 1", "due");
+        AlertAction alertAction = new AlertAction("Case X", "ANM phone no", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due"));
 
-        reminders.add(reminder);
+        alertActions.add(alertAction);
 
-        List<Reminder> allTheRemindersInDB = reminders.getAll();
-        assertEquals(1, allTheRemindersInDB.size());
-        assertEquals(reminder, allTheRemindersInDB.get(0));
+        List<AlertAction> allTheAlertActionsInDB = alertActions.getAll();
+        assertEquals(1, allTheAlertActionsInDB.size());
+        assertEquals(alertAction, allTheAlertActionsInDB.get(0));
     }
 }

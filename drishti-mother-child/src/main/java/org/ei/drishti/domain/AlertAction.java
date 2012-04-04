@@ -7,31 +7,27 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
-@TypeDiscriminator("doc.type === 'Reminder'")
-public class Reminder extends MotechBaseDataObject {
+import java.util.Map;
+
+@TypeDiscriminator("doc.type === 'AlertAction'")
+public class AlertAction extends MotechBaseDataObject {
     @JsonProperty
-    private String motherName;
-    @JsonProperty
-    private String thaayiCardNo;
-    @JsonProperty
-    private String anmPhoneNo;
+    private String anmIdentifier;
     @JsonProperty
     private String caseID;
     @JsonProperty
-    private String visitCode;
+    private Map<String,String> data;
     @JsonProperty
-    private String latenessStatus;
+    private String alertType;
 
-    private Reminder() {
+    private AlertAction() {
     }
 
-    public Reminder(String motherName, String thaayiCardNo, String anmPhoneNo, String caseID, String visitCode, String latenessStatus) {
-        this.motherName = motherName;
-        this.thaayiCardNo = thaayiCardNo;
-        this.anmPhoneNo = anmPhoneNo;
-        this.caseID = caseID;
-        this.visitCode = visitCode;
-        this.latenessStatus = latenessStatus;
+    public AlertAction(String caseId, String anmIdentifier, AlertData alertData) {
+        this.anmIdentifier = anmIdentifier;
+        this.caseID = caseId;
+        this.data = alertData.data();
+        this.alertType = alertData.type();
     }
 
     @Override
