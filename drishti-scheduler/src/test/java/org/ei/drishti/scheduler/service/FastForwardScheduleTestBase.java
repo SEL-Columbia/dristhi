@@ -22,11 +22,6 @@ public class FastForwardScheduleTestBase {
         this.schedulesService = new ANCSchedulesService(scheduleTrackingService);
     }
 
-    public FastForwardScheduleTestBase forSchedule(String scheduleName) {
-        this.scheduleName = scheduleName;
-        return this;
-    }
-
     public FastForwardScheduleTestBase forANCSchedule() {
         this.scheduleName = SCHEDULE_ANC;
         this.serviceCall = new Action() {
