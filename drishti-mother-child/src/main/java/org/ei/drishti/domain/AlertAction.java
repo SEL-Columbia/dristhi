@@ -6,7 +6,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
+import org.motechproject.util.DateUtil;
 
+import java.util.Arrays;
 import java.util.Map;
 
 @TypeDiscriminator("doc.type === 'AlertAction'")
@@ -19,6 +21,8 @@ public class AlertAction extends MotechBaseDataObject {
     private Map<String,String> data;
     @JsonProperty
     private String alertType;
+    @JsonProperty
+    private long timeStamp;
 
     private AlertAction() {
     }
@@ -28,11 +32,16 @@ public class AlertAction extends MotechBaseDataObject {
         this.caseID = caseId;
         this.data = alertData.data();
         this.alertType = alertData.type();
+        this.timeStamp = DateUtil.now().getMillis();
+    }
+
+    public long timestamp() {
+        return timeStamp;
     }
 
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o);
+        return EqualsBuilder.reflectionEquals(this, o, false, null, new String[] { "timeStamp" });
     }
 
     @Override
