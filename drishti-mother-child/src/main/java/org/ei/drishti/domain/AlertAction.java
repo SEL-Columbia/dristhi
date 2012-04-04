@@ -35,6 +35,22 @@ public class AlertAction extends MotechBaseDataObject {
         this.timeStamp = DateUtil.now().getMillis();
     }
 
+    public String anmIdentifier(){
+        return anmIdentifier;
+    }
+
+    public String caseID(){
+        return caseID;
+    }
+
+    public Map<String, String> data(){
+        return data;
+    }
+
+    public String alertType(){
+        return alertType;
+    }
+
     public long timestamp() {
         return timeStamp;
     }
