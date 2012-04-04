@@ -44,7 +44,7 @@ public class AlertServiceTest {
         List<AlertAction> alertActions = Arrays.asList(new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due")));
         when(allAlertActions.findByANMIDAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
 
-        List<AlertAction> alerts = service.getAlerts("ANM 1", 1010101);
+        List<AlertAction> alerts = service.getNewAlertsForANM("ANM 1", 1010101);
 
         assertEquals(1, alerts.size());
         assertEquals(alertActions, alerts);

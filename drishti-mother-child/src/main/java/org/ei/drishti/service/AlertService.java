@@ -1,9 +1,8 @@
 package org.ei.drishti.service;
 
-import org.drools.rule.builder.dialect.mvel.MVELReturnValueBuilder;
+import org.ei.drishti.domain.AlertAction;
 import org.ei.drishti.domain.AlertData;
 import org.ei.drishti.domain.Mother;
-import org.ei.drishti.domain.AlertAction;
 import org.ei.drishti.repository.AllAlertActions;
 import org.ei.drishti.repository.AllMothers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class AlertService {
         allAlertActions.add(new AlertAction(caseID, mother.anmPhoneNo(), AlertData.create(mother.name(), mother.thaayiCardNo(), visitCode, latenessStatus)));
     }
 
-    public List<AlertAction> getAlerts(String anmIdentifier, long timeStamp) {
+    public List<AlertAction> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
         return allAlertActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
     }
 }
