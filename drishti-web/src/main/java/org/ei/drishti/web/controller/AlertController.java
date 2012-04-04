@@ -37,7 +37,7 @@ public class AlertController {
         });
     }
 
-    private static class AlertActionItem {
+    protected static class AlertActionItem {
         @JsonProperty
         private String anmIdentifier;
         @JsonProperty
