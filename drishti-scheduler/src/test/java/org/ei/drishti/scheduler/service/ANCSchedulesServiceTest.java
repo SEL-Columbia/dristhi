@@ -188,7 +188,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
             @Override
             public void describeTo(Description description) {
-                description.appendValue("Case: " + caseId + ", Schedule: " + scheduleName + ", Milstone: " + expectedMilestoneThePersonWillBeEnrolledInto);
+                description.appendValue("Case: " + caseId + ", Schedule: " + scheduleName + ", Milestone: " + expectedMilestoneThePersonWillBeEnrolledInto);
             }
         });
     }
@@ -203,11 +203,4 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         });
     }
 
-    private EnrollmentRecord ancEnrollmentRecord(String currentMilestone) {
-        return new EnrollmentRecord("Case X", SCHEDULE_ANC, currentMilestone, null, null, null, null, null, null, null);
-    }
-
-    private EnrollmentRecord ttEnrollmentRecord(String currentMilestone) {
-        return new EnrollmentRecord("Case X", SCHEDULE_TT, currentMilestone, null, null, null, null, null, null, null);
-    }
 }

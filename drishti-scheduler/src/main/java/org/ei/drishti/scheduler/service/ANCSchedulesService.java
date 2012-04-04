@@ -40,16 +40,16 @@ public class ANCSchedulesService {
         fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_ANC, "ANC");
     }
 
-    public void forceFulfillMilestone(String externalId, String scheduleName) {
-        trackingService.fulfillCurrentMilestone(externalId, scheduleName, today(), new Time(now()));
-    }
-
     public void ttVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
         fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_TT, "TT");
     }
 
     public void ifaVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
         fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_IFA, "IFA");
+    }
+
+    public void forceFulfillMilestone(String externalId, String scheduleName) {
+        trackingService.fulfillCurrentMilestone(externalId, scheduleName, today(), new Time(now()));
     }
 
     public void closeCase(String caseId) {
