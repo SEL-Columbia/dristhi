@@ -27,11 +27,11 @@ public class AlertControllerTest {
 
     @Test
     public void shouldGiveAlertActionForANMSinceTimeStamp() throws Exception {
-        AlertController alertController = new AlertController(alertService);
         AlertAction alertAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due"));
-        when(alertService.getNewAlertsForANM("ANM 1",0L)).thenReturn(Arrays.asList(alertAction));
+        when(alertService.getNewAlertsForANM("ANM 1", 0L)).thenReturn(Arrays.asList(alertAction));
 
         AlertActionItem expectedAlertActionItem = AlertActionItem.from(alertAction);
+        AlertController alertController = new AlertController(alertService);
 
         assertThat(Arrays.asList(expectedAlertActionItem), hasSameItemsAs(alertController.getNewAlertsForANM("ANM 1", 0L)));
     }
