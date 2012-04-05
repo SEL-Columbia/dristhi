@@ -4,7 +4,9 @@ import org.ei.drishti.common.audit.AuditMessage;
 import org.ei.drishti.common.audit.Auditor;
 import org.ei.drishti.common.audit.ForbiddenFieldInAuditMessage;
 import org.hamcrest.Matcher;
+import org.joda.time.DateTime;
 import org.junit.Test;
+import org.motechproject.testing.utils.BaseUnitTest;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ import static org.ei.drishti.common.audit.AuditMessageType.NORMAL;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class AuditorTest {
+public class AuditorTest extends BaseUnitTest {
     @Test
     public void shouldHaveOnlyAsManyMessagesAsTheSizeOfTheAuditorLog() {
         Auditor auditor = new Auditor(2);
@@ -122,6 +124,25 @@ public class AuditorTest {
         assertThat(newMessages.size(), is(0));
     }
 
+    @Test
+    public void shouldNotAllowTwoMessagesToHaveTheSameIndexEvenIfTheyAreAddedInTheSameMillisecond() {
+        DateTime timeNow = DateTime.now();
+
+        Auditor auditor = new Auditor(3);
+
+        mockCurrentDate(timeNow);
+        audit(auditor, "Message 1 - Same timestamp as Messages 2 and 3");
+        audit(auditor, "Message 2 - Same timestamp as Messages 1 and 3");
+        audit(auditor, "Message 3 - Same timestamp as Messages 1 and 2");
+
+        resetDateTimeSource();
+
+        long messageIndexOfLastMessage = auditor.messagesSince(0).get(2).index();
+
+        List<AuditMessage> newMessages = auditor.messagesSince(messageIndexOfLastMessage);
+        assertThat(newMessages.size(), is(0));
+    }
+
     @Test(expected = ForbiddenFieldInAuditMessage.class)
     public void shouldNotAllowAddingOfFieldsWhichAreNotSupportedByTheAuditMessageTypeUsed() {
         Auditor auditor = new Auditor(3);
@@ -134,11 +155,5 @@ public class AuditorTest {
 
     private void audit(Auditor auditor, String value) {
         auditor.audit(NORMAL).with("data", value).done();
-
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

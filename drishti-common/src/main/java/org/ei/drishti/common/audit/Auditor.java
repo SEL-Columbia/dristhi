@@ -2,6 +2,7 @@
 package org.ei.drishti.common.audit;
 
 import org.joda.time.DateTime;
+import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -17,6 +18,7 @@ import static org.ei.drishti.common.audit.AuditMessageType.NORMAL;
 public class Auditor {
     private List<AuditMessage> messages;
     private final int numberOfAuditMessagesToHoldOnTo;
+    private static long messageIndex = DateTime.now().getMillis();
 
     @Autowired
     public Auditor(@Value("#{drishti['number.of.audit.messages']}") int numberOfAuditMessagesToHoldOnTo) {
@@ -33,7 +35,7 @@ public class Auditor {
             return messages;
         }
 
-        int index = binarySearch(messages, new AuditMessage(DateTime.now(), messageIndex, NORMAL, null));
+        int index = binarySearch(messages, new AuditMessage(DateUtil.now(), messageIndex, NORMAL, null));
         int position = Math.abs(index + 1);
 
         if (position >= messages.size()) {
@@ -50,7 +52,8 @@ public class Auditor {
     }
 
     private void createAuditMessage(AuditMessageType messageType, Map<String, String> data) {
-        messages.add(new AuditMessage(DateTime.now(), DateTime.now().getMillis(), messageType, data));
+        messages.add(new AuditMessage(DateUtil.now(), messageIndex, messageType, data));
+        messageIndex++;
         prune();
     }
 
