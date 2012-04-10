@@ -43,7 +43,7 @@ public class AlertController {
         @JsonProperty
         private String caseID;
         @JsonProperty
-        private Map<String,String> data;
+        private Map<String, String> data;
         @JsonProperty
         private String alertType;
         @JsonProperty

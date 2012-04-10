@@ -1,8 +1,9 @@
 package org.ei.drishti.repository.it;
 
-import org.ei.drishti.domain.AlertData;
 import org.ei.drishti.domain.AlertAction;
+import org.ei.drishti.domain.AlertData;
 import org.ei.drishti.repository.AllAlertActions;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ public class AllAlertActionsIntegrationTest {
 
     @Test
     public void shouldSaveAReminder() throws Exception {
-        AlertAction alertAction = new AlertAction("Case X", "ANM phone no", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due"));
+        AlertAction alertAction = new AlertAction("Case X", "ANM phone no", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
 
         alertActions.add(alertAction);
 
@@ -44,13 +45,13 @@ public class AllAlertActionsIntegrationTest {
 
     @Test
     public void shouldReturnAlertActionsBasedOnANMIDAndTimeStamp() throws Exception {
-        AlertAction firstAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due"));
+        AlertAction firstAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
         alertActions.add(firstAction);
 
-        AlertAction secondAction = new AlertAction("Case Y", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due"));
+        AlertAction secondAction = new AlertAction("Case Y", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
         alertActions.add(secondAction);
 
-        AlertAction thirdAction = new AlertAction("Case Z", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due"));
+        AlertAction thirdAction = new AlertAction("Case Z", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
         alertActions.add(thirdAction);
 
         assertEquals(Arrays.asList(firstAction, secondAction,thirdAction), alertActions.findByANMIDAndTimeStamp("ANM 1", 0));
@@ -62,10 +63,10 @@ public class AllAlertActionsIntegrationTest {
 
     @Test
     public void shouldFindAlertsOnlyForTheANMSpecified() throws Exception {
-        AlertAction firstAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due"));
+        AlertAction firstAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
         alertActions.add(firstAction);
 
-        AlertAction secondAction = new AlertAction("Case Y", "ANM 2", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due"));
+        AlertAction secondAction = new AlertAction("Case Y", "ANM 2", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
         alertActions.add(secondAction);
 
         assertEquals(Arrays.asList(firstAction), alertActions.findByANMIDAndTimeStamp("ANM 1", 0));

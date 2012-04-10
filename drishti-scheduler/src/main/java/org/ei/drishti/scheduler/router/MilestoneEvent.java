@@ -1,5 +1,6 @@
 package org.ei.drishti.scheduler.router;
 
+import org.joda.time.DateTime;
 import org.motechproject.model.MotechEvent;
 import org.motechproject.scheduletracking.api.domain.MilestoneAlert;
 import org.motechproject.scheduletracking.api.events.constants.EventDataKeys;
@@ -24,11 +25,15 @@ public class MilestoneEvent {
     }
 
     public String milestoneName() {
-        return ((MilestoneAlert) event.getParameters().get(MILESTONE_NAME)).getMilestoneName();
+        return alert().getMilestoneName();
     }
 
     public String externalId() {
         return event.getParameters().get(EventDataKeys.EXTERNAL_ID).toString();
+    }
+
+    public DateTime due() {
+        return alert().getDueDateTime();
     }
 
     @Override
@@ -44,5 +49,9 @@ public class MilestoneEvent {
     @Override
     public int hashCode() {
         return event != null ? event.hashCode() : 0;
+    }
+
+    private MilestoneAlert alert() {
+        return (MilestoneAlert) event.getParameters().get(MILESTONE_NAME);
     }
 }

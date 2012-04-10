@@ -1,10 +1,11 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.domain.AlertAction;
 import org.ei.drishti.domain.AlertData;
 import org.ei.drishti.domain.Mother;
-import org.ei.drishti.domain.AlertAction;
 import org.ei.drishti.repository.AllAlertActions;
 import org.ei.drishti.repository.AllMothers;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -34,14 +35,15 @@ public class AlertServiceTest {
     public void shouldSaveAlertAction() throws Exception {
         when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnmPhoneNumber("ANM phone no"));
 
-        service.alertForMother("Case X", "ANC 1", "due");
+        DateTime dueDate = DateTime.now();
+        service.alertForMother("Case X", "ANC 1", "due", dueDate);
 
-        verify(allAlertActions).add(new AlertAction("Case X", "ANM phone no", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due")));
+        verify(allAlertActions).add(new AlertAction("Case X", "ANM phone no", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", dueDate)));
     }
 
     @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
-        List<AlertAction> alertActions = Arrays.asList(new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due")));
+        List<AlertAction> alertActions = Arrays.asList(new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now())));
         when(allAlertActions.findByANMIDAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
 
         List<AlertAction> alerts = service.getNewAlertsForANM("ANM 1", 1010101);

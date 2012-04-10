@@ -3,6 +3,7 @@ package org.ei.drishti.domain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.joda.time.DateTime;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +12,9 @@ public class AlertData {
     private final HashMap<String, String> data;
     private String type;
 
-    public static AlertData create(String motherName, String thaayiCardNumber, String visitCode, String latenessStatus) {
-        return new AlertData("create").with("motherName", motherName).with("thaayiCardNumber", thaayiCardNumber).with("visitCode", visitCode).with("latenessStatus", latenessStatus);
+    public static AlertData create(String motherName, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
+        return new AlertData("create").with("motherName", motherName).with("thaayiCardNumber", thaayiCardNumber)
+                .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("dueDate", dueDate.toLocalDate().toString());
     }
 
     private AlertData(String type) {

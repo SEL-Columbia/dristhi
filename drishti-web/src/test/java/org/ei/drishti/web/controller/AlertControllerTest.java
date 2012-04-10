@@ -3,6 +3,7 @@ package org.ei.drishti.web.controller;
 import org.ei.drishti.domain.AlertAction;
 import org.ei.drishti.domain.AlertData;
 import org.ei.drishti.service.AlertService;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -27,7 +28,7 @@ public class AlertControllerTest {
 
     @Test
     public void shouldGiveAlertActionForANMSinceTimeStamp() throws Exception {
-        AlertAction alertAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due"));
+        AlertAction alertAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
         when(alertService.getNewAlertsForANM("ANM 1", 0L)).thenReturn(Arrays.asList(alertAction));
 
         AlertActionItem expectedAlertActionItem = AlertActionItem.from(alertAction);

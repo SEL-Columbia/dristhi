@@ -19,6 +19,6 @@ public class CaptureANMReminderAction implements Action {
 
     @Override
     public void invoke(MilestoneEvent event) {
-        alertService.alertForMother(event.externalId(), event.milestoneName(), event.windowName());
+        alertService.alertForMother(event.externalId(), event.milestoneName(), event.windowName(), event.due());
     }
 }
