@@ -25,10 +25,22 @@ public class AlertService {
     public void alertForMother(String caseID, String visitCode, String latenessStatus, DateTime dueDate) {
         Mother mother = allMothers.findByCaseId(caseID);
 
-        allAlertActions.add(new AlertAction(caseID, mother.anmPhoneNo(), AlertData.create(mother.name(), mother.thaayiCardNo(), visitCode, latenessStatus, DateTime.now())));
+        allAlertActions.add(new AlertAction(caseID, mother.anmPhoneNo(), AlertData.create(mother.name(), mother.thaayiCardNo(), visitCode, latenessStatus, dueDate)));
     }
 
     public List<AlertAction> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
         return allAlertActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
+    }
+
+    public void deleteAlertForVisit(String caseID, String visitCode) {
+        Mother mother = allMothers.findByCaseId(caseID);
+
+        allAlertActions.add(new AlertAction(caseID, mother.anmPhoneNo(), AlertData.delete(visitCode)));
+    }
+
+    public void deleteAllAlertsForMother(String caseID) {
+        Mother mother = allMothers.findByCaseId(caseID);
+
+        allAlertActions.add(new AlertAction(caseID, mother.anmPhoneNo(), AlertData.deleteAll()));
     }
 }

@@ -1,4 +1,4 @@
-package org.ei.drishti.scheduler.service;
+package org.ei.drishti.service;
 
 import org.ei.drishti.scheduler.util.DateUtil;
 import org.joda.time.LocalDate;
@@ -23,10 +23,12 @@ import static org.motechproject.util.DateUtil.today;
 public class ANCSchedulesService {
     private final ScheduleTrackingService trackingService;
     private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_IFA, SCHEDULE_LAB, SCHEDULE_TT};
+    private AlertService alertService;
 
     @Autowired
-    public ANCSchedulesService(ScheduleTrackingService trackingService) {
+    public ANCSchedulesService(ScheduleTrackingService trackingService, AlertService alertService) {
         this.trackingService = trackingService;
+        this.alertService = alertService;
     }
 
     public void enrollMother(String caseId, LocalDate referenceDateForSchedule, Time referenceTime, Time preferredAlertTime) {
@@ -58,6 +60,7 @@ public class ANCSchedulesService {
         for (EnrollmentRecord enrollment : openEnrollments) {
             trackingService.unenroll(caseId, Arrays.asList(enrollment.getScheduleName()));
         }
+        alertService.deleteAllAlertsForMother(caseId);
     }
 
     private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule, Time preferredAlertTime, Time referenceTime) {
@@ -77,20 +80,20 @@ public class ANCSchedulesService {
     }
 
     private void fastForwardSchedule(String caseId, int visitNumber, LocalDate visitDate, String scheduleName, String milestonePrefix) {
-        int numberOfTimes = numberOfTimesToFulfill(caseId, visitNumber, scheduleName, milestonePrefix);
+        int currentMilestoneNumber = currentMilestoneNumber(caseId, scheduleName, milestonePrefix);
 
-        for (int i = 0; i < numberOfTimes; i++) {
+        for (int i = currentMilestoneNumber; i <= visitNumber ; i++) {
             trackingService.fulfillCurrentMilestone(caseId, scheduleName, visitDate, new Time(now()));
+            alertService.deleteAlertForVisit(caseId, milestonePrefix + " " + i);
         }
     }
 
-    private int numberOfTimesToFulfill(String caseId, int visitNumber, String scheduleName, String milestonePrefix) {
+    private int currentMilestoneNumber(String caseId, String scheduleName, String milestonePrefix) {
         EnrollmentRecord record = trackingService.getEnrollment(caseId, scheduleName);
         if (record == null) {
             return 0;
         }
 
-        Integer currentMilestoneNumber = Integer.valueOf(record.getCurrentMilestoneName().replace(milestonePrefix + " ", ""));
-        return visitNumber - currentMilestoneNumber + 1;
+        return Integer.valueOf(record.getCurrentMilestoneName().replace(milestonePrefix + " ", ""));
     }
 }

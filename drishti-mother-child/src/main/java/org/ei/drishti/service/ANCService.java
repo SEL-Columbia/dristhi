@@ -6,7 +6,6 @@ import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
-import org.ei.drishti.scheduler.service.ANCSchedulesService;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.motechproject.model.Time;
@@ -24,11 +23,13 @@ import static org.joda.time.LocalTime.now;
 public class ANCService {
     private static Logger logger = LoggerFactory.getLogger(ANCService.class.toString());
 
+    private AlertService alertService;
     private final AllMothers allMothers;
     private ANCSchedulesService ancSchedulesService;
 
     @Autowired
-    public ANCService(AllMothers allMothers, ANCSchedulesService ancSchedulesService) {
+    public ANCService(AllMothers allMothers, AlertService alertService, ANCSchedulesService ancSchedulesService) {
+        this.alertService = alertService;
         this.allMothers = allMothers;
         this.ancSchedulesService = ancSchedulesService;
     }

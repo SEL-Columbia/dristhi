@@ -1,7 +1,7 @@
 package org.ei.drishti.action;
 
 import org.ei.drishti.scheduler.router.MilestoneEvent;
-import org.ei.drishti.scheduler.service.ANCSchedulesService;
+import org.ei.drishti.service.ANCSchedulesService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

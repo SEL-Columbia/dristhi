@@ -17,6 +17,14 @@ public class AlertData {
                 .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("dueDate", dueDate.toLocalDate().toString());
     }
 
+    public static AlertData delete(String visitCode) {
+        return new AlertData("delete").with("visitCode", visitCode);
+    }
+
+    public static AlertData deleteAll() {
+        return new AlertData("deleteAll");
+    }
+
     private AlertData(String type) {
         this.type = type;
         data = new HashMap<String, String>();

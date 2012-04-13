@@ -6,7 +6,6 @@ import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
 import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
-import org.ei.drishti.scheduler.service.ANCSchedulesService;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +23,8 @@ import static org.motechproject.util.DateUtil.tomorrow;
 
 public class ANCServiceTest {
     @Mock
+    private AlertService alertService;
+    @Mock
     private AllMothers mothers;
     @Mock
     private ANCSchedulesService ancSchedulesService;
@@ -33,7 +34,7 @@ public class ANCServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ANCService(mothers, ancSchedulesService);
+        service = new ANCService(mothers, alertService, ancSchedulesService);
     }
 
     @Test
