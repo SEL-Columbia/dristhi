@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fill your fake forms here!</title>
+    <link rel="stylesheet" href="../stylesheets/fakeforms.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="../js/fakealerts.js"></script>
+</head>
+<body>
+<div id="information">
+    Information:<br>
+    Format of date fields: yyyy-mm-dd
+</div>
+
+<div id="forms">
+    <div id="createAlert" class="formDiv">
+        <span class="title">Create Alert</span>
+
+        <form id="create" class="form">
+            <label for="create-caseID">Case ID</label>
+            <input type="text" id="create-caseID" class="field mapping">
+
+            <p></p>
+
+            <label for="create-anmIdentifier">ANM ID</label>
+            <input type="text" id="create-anmIdentifier" class="field mapping">
+
+            <p></p>
+
+            <label for="create-motherName">Mother Name</label>
+            <input type="text" id="create-motherName" class="data mapping">
+
+            <p></p>
+
+            <label for="create-thaayiCardNumber">Thaayi Card</label>
+            <input type="text" id="create-thaayiCardNumber" class="data mapping">
+
+            <p></p>
+
+            <label for="create-visitCode">Visit Code</label>
+            <input type="text" id="create-visitCode" class="data mapping">
+
+            <p></p>
+
+            <label for="create-dueDate">Due Date</label>
+            <input type="text" id="create-dueDate" class="data mapping">
+
+            <p></p>
+
+            <input type="hidden" id="create-latenessStatus" class="data mapping" value="due">
+
+            <p></p>
+
+            <input type="submit" id="create-submit" value="Submit form!">
+        </form>
+
+        <span class="formStatus" id="create-status" style="opacity: 0; ">.</span>
+    </div>
+
+    <div id="deleteAlert" class="formDiv">
+        <span class="title">Delete Alerts for a visit code</span>
+
+        <form id="delete" class="form">
+            <label for="delete-caseID">Case ID</label>
+            <input type="text" id="delete-caseID" class="field mapping">
+
+            <p></p>
+
+            <label for="delete-anmIdentifier">ANM ID</label>
+            <input type="text" id="delete-anmIdentifier" class="field mapping">
+
+            <p></p>
+
+            <label for="delete-visitCode">Visit Code</label>
+            <input type="text" id="delete-visitCode" class="data mapping">
+
+            <p></p>
+
+            <input type="submit" id="delete-submit" value="Submit form!">
+        </form>
+
+        <span class="formStatus" id="delete-status" style="opacity: 0; ">.</span>
+    </div>
+
+    <div id="deleteAllAlert" class="formDiv">
+        <span class="title">Delete All Alerts for a case (mother)</span>
+
+        <form id="deleteAll" class="form">
+            <label for="deleteAll-caseID">Case ID</label>
+            <input type="text" id="deleteAll-caseID" class="field mapping">
+
+            <p></p>
+
+            <label for="deleteAll-anmIdentifier">ANM ID</label>
+            <input type="text" id="deleteAll-anmIdentifier" class="field mapping">
+
+            <p></p>
+
+            <input type="submit" id="deleteAll-submit" value="Submit form!">
+        </form>
+
+        <span class="formStatus" id="deleteAll-status" style="opacity: 0; ">.</span>
+    </div>
+
+</div>
+
+<div id="status"></div>
+
+</body>
+</html>

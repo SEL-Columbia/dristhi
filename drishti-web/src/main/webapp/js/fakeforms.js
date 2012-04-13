@@ -11,16 +11,18 @@ $(document).ready(function() {
         $('#' + formName + 'status').text('.').css('opacity', '0');
     };
 
+    var createObjectFrom = function(formFields) {
+        var data = {};
+        $.each(formFields, function(i, field) {
+            data[field.id.slice(field.id.indexOf('-') + 1)] = field.value;
+        });
+        return data;
+    };
+
     var handleSubmit = function(formName, form) {
         var mappings = $(form).children(".mapping");
 
-        var postData = "{";
-        $.each(mappings, function(i, mapping) {
-            postData += '"' + mapping.id.slice(mapping.id.indexOf('-') + 1) + '" : "' + mappings[i].value + '", ';
-        });
-
-        var mappingsWithValues = postData.substring(0, postData.length - 2) + " }";
-        $.post('../form/submit', { formName: formName, formData: mappingsWithValues })
+        $.post('../form/submit', { formName: formName, formData: JSON.stringify(createObjectFrom(mappings)) })
             .success(function(responseFromServer) { formStatusDisplay(formName, "Success!"); })
             .error(function(jqXHR, textStatus) { formStatusDisplay(formName, "Failed!"); });
     };

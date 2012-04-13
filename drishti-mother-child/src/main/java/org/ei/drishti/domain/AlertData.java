@@ -13,7 +13,7 @@ public class AlertData {
     private String type;
 
     public static AlertData create(String motherName, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
-        return new AlertData("create").with("motherName", motherName).with("thaayiCardNumber", thaayiCardNumber)
+            return new AlertData("create").with("motherName", motherName).with("thaayiCardNumber", thaayiCardNumber)
                 .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("dueDate", dueDate.toLocalDate().toString());
     }
 
@@ -23,6 +23,12 @@ public class AlertData {
 
     public static AlertData deleteAll() {
         return new AlertData("deleteAll");
+    }
+
+    public static AlertData from(String alertType, Map<String, String> data) {
+        AlertData alertData = new AlertData(alertType);
+        alertData.data.putAll(data);
+        return alertData;
     }
 
     private AlertData(String type) {

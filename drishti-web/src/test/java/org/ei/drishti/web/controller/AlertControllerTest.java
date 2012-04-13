@@ -10,7 +10,6 @@ import org.mockito.Mock;
 
 import java.util.Arrays;
 
-import static org.ei.drishti.web.controller.AlertController.AlertActionItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
