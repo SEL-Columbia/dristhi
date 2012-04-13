@@ -29,9 +29,9 @@
             "name": "TT 2",
             "scheduleWindows": {
                 "earliest": ["3 Weeks"],
-                "due": ["4 Weeks"],
-                "late": ["8 Weeks"],
-                "max": ["9 Weeks"]
+                "due": ["4 Weeks", "1 Day"],
+                "late": ["100 Weeks"],
+                "max": ["100 Weeks"]
             },
             "alerts": [
                 {
@@ -42,13 +42,13 @@
                 },
                 {
                     "window": "late",
-                    "offset": ["3 Days"],
+                    "offset": ["2 Days"],
                     "interval": ["1 Week"],
                     "count": "100"
                 },
                 {
                     "window": "late",
-                    "offset": ["7 Days"],
+                    "offset": ["6 Days"],
                     "interval": ["1 Week"],
                     "count": "100"
                 }

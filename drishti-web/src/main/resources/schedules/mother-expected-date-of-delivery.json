@@ -6,7 +6,7 @@
             "name": "EDD",
             "scheduleWindows": {
                 "earliest": ["38 Weeks"],
-                "due": ["40 Weeks"],
+                "due": ["40 Weeks", "1 Day"],
                 "late": ["100 Weeks"],
                 "max": [""]
             },
@@ -19,13 +19,13 @@
                 },
                 {
                     "window": "late",
-                    "offset": ["3 Days"],
+                    "offset": ["2 Days"],
                     "interval": ["1 Weeks"],
                     "count": "100"
                 },
                 {
                     "window": "late",
-                    "offset": ["7 Days"],
+                    "offset": ["6 Days"],
                     "interval": ["1 Weeks"],
                     "count": "100"
                 }

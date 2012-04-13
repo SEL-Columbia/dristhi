@@ -30,7 +30,7 @@
             "scheduleWindows": {
                 "earliest": ["20 Weeks"],
                 "due": ["24 Weeks"],
-                "late": ["40 Weeks"],
+                "late": ["40 Weeks", "1 Day"],
                 "max": ["42 Weeks"]
             },
             "alerts": [

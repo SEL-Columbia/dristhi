@@ -7,7 +7,7 @@
             "scheduleWindows": {
                 "earliest": ["10 Weeks"],
                 "due": ["14 Weeks"],
-                "late": ["16 Weeks"],
+                "late": ["16 Weeks", "1 Day"],
                 "max": ["17 weeks"]
             },
             "alerts": [
@@ -42,7 +42,7 @@
             "scheduleWindows": {
                 "earliest": ["22 Weeks"],
                 "due": ["26 Weeks"],
-                "late": ["28 Weeks"],
+                "late": ["28 Weeks", "1 Day"],
                 "max": ["29 Weeks"]
             },
             "alerts": [
@@ -76,8 +76,8 @@
             "name": "ANC 3",
             "scheduleWindows": {
                 "earliest": ["30 Weeks"],
-                "due": ["34 Weeks"],
-                "late": ["34 Weeks"],
+                "due": ["33 Weeks", "1 Day"],
+                "late": ["34 Weeks", "4 Days"],
                 "max": ["35 Weeks"]
             },
             "alerts": [
@@ -106,7 +106,7 @@
             "scheduleWindows": {
                 "earliest": ["35 Weeks"],
                 "due": ["38 Weeks"],
-                "late": ["40 Weeks"],
+                "late": ["40 Weeks", "1 Day"],
                 "max": ["42 Weeks"]
             },
             "alerts": [
