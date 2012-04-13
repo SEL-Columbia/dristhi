@@ -33,7 +33,7 @@ $(document).ready(function() {
 
             var form = $(document.createElement('form')).attr('id', name + "Form").attr('class', 'form');
             $.each(formDefinition.mappings, function(i, mapping) {
-                form.append($(document.createElement('label')).attr('for', name + mapping.value).text(mapping.value));
+                form.append($(document.createElement('label')).attr('for', name + "-" + mapping.value).text(mapping.value));
                 form.append($(document.createElement('input')).attr('type', 'text').attr('id', name + "-" + mapping.value)
                     .attr('class', 'mapping').change(function() { clearStatusDisplay(name); }));
                 form.append($(document.createElement('p')));
