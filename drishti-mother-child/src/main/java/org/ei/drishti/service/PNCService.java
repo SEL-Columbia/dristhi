@@ -1,6 +1,10 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.ChildRegistrationInformation;
+import org.ei.drishti.contract.ChildRegistrationRequest;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +16,12 @@ import static java.text.MessageFormat.format;
 @Service
 public class PNCService {
     private final DrishtiSMSService smsService;
+    private final AlertService alertService;
 
     @Autowired
-    public PNCService(DrishtiSMSService smsService) {
+    public PNCService(DrishtiSMSService smsService, AlertService alertService) {
         this.smsService = smsService;
+        this.alertService = alertService;
     }
 
     public void registerChild(ChildRegistrationInformation childInformation) {
@@ -28,5 +34,13 @@ public class PNCService {
         String missingVaccinations = join(vaccinationsMissed, ", ");
         String format = format("Dear ANM, please provide {0} for child of mother, {1}.", missingVaccinations, childInformation.mother());
         smsService.sendSMS(childInformation.anmPhoneNumber(), format);
+    }
+
+    public void registerNewChild(ChildRegistrationRequest childRegistrationRequest) {
+        DateTime dueDate = new LocalDate(childRegistrationRequest.dateOfBirth()).plusDays(2).toDateTime(DateUtil.now().toLocalTime());
+
+        alertService.alertForChild(childRegistrationRequest.name(), childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), "OPV 1", "due", dueDate);
+        alertService.alertForChild(childRegistrationRequest.name(), childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), "DPT 1", "due", dueDate);
+        alertService.alertForChild(childRegistrationRequest.name(), childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), "BCG 1", "due", dueDate);
     }
 }

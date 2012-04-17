@@ -30,4 +30,7 @@ public class DrishtiMCTSService {
 
     public void registerChild(ChildRegistrationInformation childInformation) {
     }
+
+    public void registerNewChild(ChildRegistrationRequest childRegistrationRequest) {
+    }
 }

@@ -81,6 +81,21 @@
                 "form|opv0" : "opv0HasBeenProvided",
                 "form|HepB1" : "hepatitisBHasBeenProvided"
             }
+        },
+        {
+            "name": "registerNewChild",
+            "url": {
+                "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/0034E746-0BE5-4A80-BCDE-C4D3FFCFFEB4"
+                }
+            },
+            "mappings": {
+                "form|child_dob" : "dateOfBirth",
+                "form|child_name" : "childName",
+                "form|mother_thayino" : "thaayiCardNumber",
+                "form|meta|username" : "anmIdentifier"
+            }
         }
     ]
 }

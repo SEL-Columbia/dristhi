@@ -80,4 +80,14 @@ public class DrishtiControllerTest {
         verify(pncService).registerChild(childInformation);
         verify(mctsService).registerChild(childInformation);
     }
+
+    @Test
+    public void shouldDelegateToBothPNCServiceAndMCTSDuringNewChildRegistration() {
+        ChildRegistrationRequest childRegistrationRequest = mock(ChildRegistrationRequest.class);
+
+        controller.registerNewChild(childRegistrationRequest);
+
+        verify(pncService).registerNewChild(childRegistrationRequest);
+        verify(mctsService).registerNewChild(childRegistrationRequest);
+    }
 }

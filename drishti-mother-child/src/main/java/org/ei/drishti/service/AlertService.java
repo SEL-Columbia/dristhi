@@ -28,6 +28,10 @@ public class AlertService {
         allAlertActions.add(new AlertAction(caseID, mother.anmPhoneNo(), AlertData.create(mother.name(), mother.thaayiCardNo(), visitCode, latenessStatus, dueDate)));
     }
 
+    public void alertForChild(String childName, String anmIdentifier, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
+        allAlertActions.add(new AlertAction(childName, anmIdentifier, AlertData.create(childName, thaayiCardNumber, visitCode, latenessStatus, dueDate)));
+    }
+
     public List<AlertAction> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
         return allAlertActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
     }

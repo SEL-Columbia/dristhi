@@ -60,4 +60,11 @@ public class DrishtiController {
         pncService.registerChild(childInformation);
         mctsService.registerChild(childInformation);
     }
+
+    public void registerNewChild(ChildRegistrationRequest childInformation) {
+        logger.info("New Child registration: " + childInformation);
+
+        pncService.registerNewChild(childInformation);
+        mctsService.registerNewChild(childInformation);
+    }
 }
