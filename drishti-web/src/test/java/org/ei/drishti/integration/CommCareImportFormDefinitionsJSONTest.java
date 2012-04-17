@@ -34,11 +34,11 @@ public class CommCareImportFormDefinitionsJSONTest {
         classEveryFormMappingConvertsTo.put("registerChild", ChildRegistrationInformation.class);
         classEveryFormMappingConvertsTo.put("registerNewChild", ChildRegistrationRequest.class);
 
-        assertEveryFormDefintionInTheJSONHasBeenRepresentedInThisTest(classEveryFormMappingConvertsTo);
+        assertEveryFormDefinitionInTheJSONHasBeenRepresentedInThisTest(classEveryFormMappingConvertsTo);
         assertThatTheControllerHasTheMethodsCorrespondingToTheseFormNames(DrishtiController.class, classEveryFormMappingConvertsTo);
     }
 
-    private void assertEveryFormDefintionInTheJSONHasBeenRepresentedInThisTest(Map<String, Class<?>> classEveryFormMappingConvertsTo) {
+    private void assertEveryFormDefinitionInTheJSONHasBeenRepresentedInThisTest(Map<String, Class<?>> classEveryFormMappingConvertsTo) {
         for (CommCareFormDefinition formDefinition : forms.definitions()) {
             String formName = formDefinition.name();
             Class<?> typeUsedForMappingsInForm = classEveryFormMappingConvertsTo.get(formName);

@@ -37,10 +37,15 @@ public class PNCService {
     }
 
     public void registerNewChild(ChildRegistrationRequest childRegistrationRequest) {
-        DateTime dueDate = new LocalDate(childRegistrationRequest.dateOfBirth()).plusDays(2).toDateTime(DateUtil.now().toLocalTime());
+        alertForMissingImmunization(childRegistrationRequest, "opv0", "OPV 0");
+        alertForMissingImmunization(childRegistrationRequest, "bcg", "BCG");
+        alertForMissingImmunization(childRegistrationRequest, "hepB0", "HEP B0");
+    }
 
-        alertService.alertForChild(childRegistrationRequest.name(), childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), "OPV 1", "due", dueDate);
-        alertService.alertForChild(childRegistrationRequest.name(), childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), "DPT 1", "due", dueDate);
-        alertService.alertForChild(childRegistrationRequest.name(), childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), "BCG 1", "due", dueDate);
+    private void alertForMissingImmunization(ChildRegistrationRequest childRegistrationRequest, String checkForThisImmunization, String visitCodeIfNotProvided) {
+        DateTime dueDate = new LocalDate(childRegistrationRequest.dateOfBirth()).plusDays(2).toDateTime(DateUtil.now().toLocalTime());
+        if (!(" " + childRegistrationRequest.immunizationsProvided() + " ").contains(" " + checkForThisImmunization + " ")) {
+            alertService.alertForChild(childRegistrationRequest.name(), childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), visitCodeIfNotProvided, "due", dueDate);
+        }
     }
 }

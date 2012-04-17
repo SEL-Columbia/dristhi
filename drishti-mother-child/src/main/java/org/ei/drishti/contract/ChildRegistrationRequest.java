@@ -9,13 +9,15 @@ public class ChildRegistrationRequest {
     private String childName;
     private String anmIdentifier;
     private String thaayiCardNumber = "1234567";
+    private String immunizationsProvided;
     private Date dateOfBirth = DateUtil.today().toDate();
 
-    public ChildRegistrationRequest(String childName, String thaayiCardNumber, Date dateOfBirth, String anmIdentifier) {
+    public ChildRegistrationRequest(String childName, String thaayiCardNumber, Date dateOfBirth, String anmIdentifier, String immunizationsProvided) {
         this.childName = childName;
         this.thaayiCardNumber = thaayiCardNumber;
         this.dateOfBirth = dateOfBirth;
         this.anmIdentifier = anmIdentifier;
+        this.immunizationsProvided = immunizationsProvided;
     }
 
     public String name() {
@@ -37,5 +39,9 @@ public class ChildRegistrationRequest {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public String immunizationsProvided() {
+        return immunizationsProvided;
     }
 }

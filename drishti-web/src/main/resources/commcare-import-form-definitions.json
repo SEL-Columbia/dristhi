@@ -94,7 +94,8 @@
                 "form|child_dob" : "dateOfBirth",
                 "form|child_name" : "childName",
                 "form|mother_thayino" : "thaayiCardNumber",
-                "form|meta|username" : "anmIdentifier"
+                "form|meta|username" : "anmIdentifier",
+                "form|immunization_multiselect" : "immunizationsProvided"
             }
         }
     ]

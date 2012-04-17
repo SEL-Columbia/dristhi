@@ -9,8 +9,7 @@ import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
 import org.motechproject.util.DateUtil;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PNCServiceTest extends BaseUnitTest {
@@ -45,10 +44,37 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
-        pncService.registerNewChild(new ChildRegistrationRequest("Child 1", "TC 1", currentTime.toDate(), "DEMO ANM"));
+        pncService.registerNewChild(new ChildRegistrationRequest("Child 1", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
 
-        verify(alertService).alertForChild("Child 1", "DEMO ANM", "TC 1", "OPV 1", "due", currentTime.plusDays(2));
-        verify(alertService).alertForChild("Child 1", "DEMO ANM", "TC 1", "DPT 1", "due", currentTime.plusDays(2));
-        verify(alertService).alertForChild("Child 1", "DEMO ANM", "TC 1", "BCG 1", "due", currentTime.plusDays(2));
+        verify(alertService).alertForChild("Child 1", "DEMO ANM", "TC 1", "OPV 0", "due", currentTime.plusDays(2));
+        verify(alertService).alertForChild("Child 1", "DEMO ANM", "TC 1", "BCG", "due", currentTime.plusDays(2));
+        verify(alertService).alertForChild("Child 1", "DEMO ANM", "TC 1", "HEP B0", "due", currentTime.plusDays(2));
+    }
+
+    @Test
+    public void shouldAddAlertsOnlyForMissingVaccinations() {
+        assertAlerts("", "BCG", "OPV 0", "HEP B0");
+        assertAlerts("bcg", "OPV 0", "HEP B0");
+        assertAlerts("bcg opv0", "HEP B0");
+        assertAlerts("bcg opv0 hepB0");
+
+        assertAlerts("opv0 bcg hepB0");
+        assertAlerts("opv0 bcg", "HEP B0");
+        assertAlerts("opv0 bcg1", "BCG", "HEP B0");
+    }
+
+    private void assertAlerts(String providedImmunizations, String... expectedAlertsRaised) {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        AlertService alertServiceMock = mock(AlertService.class);
+        PNCService pncService = new PNCService(service, alertServiceMock);
+
+        pncService.registerNewChild(new ChildRegistrationRequest("Child 1", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
+
+        for (String expectedAlert : expectedAlertsRaised) {
+            verify(alertServiceMock).alertForChild("Child 1", "DEMO ANM", "TC 1", expectedAlert, "due", currentTime.plusDays(2));
+        }
+
+        verifyNoMoreInteractions(alertServiceMock);
     }
 }
