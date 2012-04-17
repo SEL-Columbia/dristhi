@@ -67,4 +67,11 @@ public class DrishtiController {
         pncService.registerNewChild(childInformation);
         mctsService.registerNewChild(childInformation);
     }
+
+    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest) {
+        logger.info("Child immunization updation: " + updationRequest);
+
+        pncService.updateChildImmunization(updationRequest);
+        mctsService.updateChildImmunization(updationRequest);
+    }
 }

@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildRegistrationInformation;
 import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.joda.time.DateTime;
@@ -44,37 +45,56 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
-        pncService.registerNewChild(new ChildRegistrationRequest("Child 1", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
+        pncService.registerNewChild(new ChildRegistrationRequest("Case X", "Child 1", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
 
-        verify(alertService).alertForChild("Child 1", "DEMO ANM", "TC 1", "OPV 0", "due", currentTime.plusDays(2));
-        verify(alertService).alertForChild("Child 1", "DEMO ANM", "TC 1", "BCG", "due", currentTime.plusDays(2));
-        verify(alertService).alertForChild("Child 1", "DEMO ANM", "TC 1", "HEP B0", "due", currentTime.plusDays(2));
+        verify(alertService).alertForChild("Case X", "Child 1", "DEMO ANM", "TC 1", "OPV 0", "due", currentTime.plusDays(2));
+        verify(alertService).alertForChild("Case X", "Child 1", "DEMO ANM", "TC 1", "BCG", "due", currentTime.plusDays(2));
+        verify(alertService).alertForChild("Case X", "Child 1", "DEMO ANM", "TC 1", "HEP B0", "due", currentTime.plusDays(2));
     }
 
     @Test
     public void shouldAddAlertsOnlyForMissingVaccinations() {
-        assertAlerts("", "BCG", "OPV 0", "HEP B0");
-        assertAlerts("bcg", "OPV 0", "HEP B0");
-        assertAlerts("bcg opv0", "HEP B0");
-        assertAlerts("bcg opv0 hepB0");
+        assertMissingAlertsAdded("", "BCG", "OPV 0", "HEP B0");
+        assertMissingAlertsAdded("bcg", "OPV 0", "HEP B0");
+        assertMissingAlertsAdded("bcg opv0", "HEP B0");
+        assertMissingAlertsAdded("bcg opv0 hepB0");
 
-        assertAlerts("opv0 bcg hepB0");
-        assertAlerts("opv0 bcg", "HEP B0");
-        assertAlerts("opv0 bcg1", "BCG", "HEP B0");
+        assertMissingAlertsAdded("opv0 bcg hepB0");
+        assertMissingAlertsAdded("opv0 bcg", "HEP B0");
+        assertMissingAlertsAdded("opv0 bcg1", "BCG", "HEP B0");
     }
 
-    private void assertAlerts(String providedImmunizations, String... expectedAlertsRaised) {
+    @Test
+    public void shouldRemoveAlertsForUpdatedImmunizations() throws Exception {
+        assertDeletionOfAlertsForProvidedImmunizations("bcg opv0", "BCG", "OPV 0");
+    }
+
+    private void assertDeletionOfAlertsForProvidedImmunizations(String providedImmunizations, String... expectedDeletedAlertsRaised) {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+
+        AlertService alertServiceMock = mock(AlertService.class);
+        PNCService pncService = new PNCService(service, alertServiceMock);
+
+        pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations));
+
+        for (String expectedAlert : expectedDeletedAlertsRaised) {
+            verify(alertServiceMock).deleteAlertForVisitForChild("Case X", "DEMO ANM", expectedAlert);
+        }
+        verifyNoMoreInteractions(alertServiceMock);
+    }
+
+    private void assertMissingAlertsAdded(String providedImmunizations, String... expectedAlertsRaised) {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         AlertService alertServiceMock = mock(AlertService.class);
         PNCService pncService = new PNCService(service, alertServiceMock);
 
-        pncService.registerNewChild(new ChildRegistrationRequest("Child 1", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
+        pncService.registerNewChild(new ChildRegistrationRequest("Case X", "Child 1", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
 
         for (String expectedAlert : expectedAlertsRaised) {
-            verify(alertServiceMock).alertForChild("Child 1", "DEMO ANM", "TC 1", expectedAlert, "due", currentTime.plusDays(2));
+            verify(alertServiceMock).alertForChild("Case X", "Child 1", "DEMO ANM", "TC 1", expectedAlert, "due", currentTime.plusDays(2));
         }
-
         verifyNoMoreInteractions(alertServiceMock);
     }
 }

@@ -7,15 +7,17 @@ import java.util.Date;
 
 public class ChildRegistrationRequest {
     private String childName;
+    private String caseId;
     private String anmIdentifier;
     private String thaayiCardNumber = "1234567";
     private String immunizationsProvided;
     private Date dateOfBirth = DateUtil.today().toDate();
 
-    public ChildRegistrationRequest(String childName, String thaayiCardNumber, Date dateOfBirth, String anmIdentifier, String immunizationsProvided) {
+    public ChildRegistrationRequest(String caseId, String childName, String thaayiCardNumber, Date dateOfBirth, String anmIdentifier, String immunizationsProvided) {
         this.childName = childName;
         this.thaayiCardNumber = thaayiCardNumber;
         this.dateOfBirth = dateOfBirth;
+        this.caseId = caseId;
         this.anmIdentifier = anmIdentifier;
         this.immunizationsProvided = immunizationsProvided;
     }
@@ -43,5 +45,13 @@ public class ChildRegistrationRequest {
 
     public String immunizationsProvided() {
         return immunizationsProvided;
+    }
+
+    public String caseId() {
+        return caseId;
+    }
+
+    public boolean isImmunizationProvided(String checkForThisImmunization) {
+        return (" " + immunizationsProvided + " ").contains(" " + checkForThisImmunization + " ");
     }
 }

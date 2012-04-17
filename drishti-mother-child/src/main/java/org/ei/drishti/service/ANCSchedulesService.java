@@ -84,7 +84,7 @@ public class ANCSchedulesService {
 
         for (int i = currentMilestoneNumber; i <= visitNumber ; i++) {
             trackingService.fulfillCurrentMilestone(caseId, scheduleName, visitDate, new Time(now()));
-            alertService.deleteAlertForVisit(caseId, milestonePrefix + " " + i);
+            alertService.deleteAlertForVisitForMother(caseId, milestonePrefix + " " + i);
         }
     }
 

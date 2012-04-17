@@ -95,6 +95,21 @@
                 "form|child_name" : "childName",
                 "form|mother_thayino" : "thaayiCardNumber",
                 "form|meta|username" : "anmIdentifier",
+                "form|case|@case_id" : "caseId",
+                "form|immunization_multiselect" : "immunizationsProvided"
+            }
+        },
+        {
+            "name": "updateChildImmunization",
+            "url": {
+                "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/dd16712aa348d461a28ae7fdb7132a8e546f81c4"
+                }
+            },
+            "mappings": {
+                "form|meta|username" : "anmIdentifier",
+                "form|case|@case_id" : "caseId",
                 "form|immunization_multiselect" : "immunizationsProvided"
             }
         }

@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildRegistrationInformation;
 import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.joda.time.DateTime;
@@ -42,10 +43,25 @@ public class PNCService {
         alertForMissingImmunization(childRegistrationRequest, "hepB0", "HEP B0");
     }
 
-    private void alertForMissingImmunization(ChildRegistrationRequest childRegistrationRequest, String checkForThisImmunization, String visitCodeIfNotProvided) {
-        DateTime dueDate = new LocalDate(childRegistrationRequest.dateOfBirth()).plusDays(2).toDateTime(DateUtil.now().toLocalTime());
-        if (!(" " + childRegistrationRequest.immunizationsProvided() + " ").contains(" " + checkForThisImmunization + " ")) {
-            alertService.alertForChild(childRegistrationRequest.name(), childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), visitCodeIfNotProvided, "due", dueDate);
+    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest) {
+        alertForImmunizationProvided(updationRequest, "opv0", "OPV 0");
+        alertForImmunizationProvided(updationRequest, "bcg", "BCG");
+        alertForImmunizationProvided(updationRequest, "hepB0", "HEP B0");
+    }
+
+    private void alertForImmunizationProvided(ChildImmunizationUpdationRequest updationRequest, String checkForThisImmunization, String visitCodeIfNotProvided) {
+        if (updationRequest.isImmunizationProvided(checkForThisImmunization)) {
+            alertService.deleteAlertForVisitForChild(updationRequest.caseId(), updationRequest.anmIdentifier(), visitCodeIfNotProvided);
         }
+    }
+
+    private void alertForMissingImmunization(ChildRegistrationRequest childRegistrationRequest, String checkForThisImmunization, String visitCodeIfNotProvided) {
+        if (childRegistrationRequest.isImmunizationProvided(checkForThisImmunization)) {
+            return;
+        }
+
+        DateTime dueDate = new LocalDate(childRegistrationRequest.dateOfBirth()).plusDays(2).toDateTime(DateUtil.now().toLocalTime());
+        alertService.alertForChild(childRegistrationRequest.caseId(), childRegistrationRequest.name(),
+                childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), visitCodeIfNotProvided, "due", dueDate);
     }
 }

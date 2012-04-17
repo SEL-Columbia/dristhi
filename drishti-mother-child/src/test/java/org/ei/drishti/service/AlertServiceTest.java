@@ -45,16 +45,23 @@ public class AlertServiceTest {
     public void shouldSaveAlertActionForChild() throws Exception {
         DateTime dueDate = DateTime.now().minusDays(1);
 
-        service.alertForChild("Child 1", "DEMO ANM", "TC 1", "OPV 1", "due", dueDate);
+        service.alertForChild("Case X", "Child 1", "DEMO ANM", "TC 1", "OPV 1", "due", dueDate);
 
-        verify(allAlertActions).add(new AlertAction("Child 1", "DEMO ANM", AlertData.create("Child 1", "TC 1", "OPV 1", "due", dueDate)));
+        verify(allAlertActions).add(new AlertAction("Case X", "DEMO ANM", AlertData.create("Child 1", "TC 1", "OPV 1", "due", dueDate)));
+    }
+
+    @Test
+    public void shouldCreateADeleteActionForAVisitOfAChild() throws Exception {
+        service.deleteAlertForVisitForChild("Case X", "ANM 1", "OPV 1");
+
+        verify(allAlertActions).add(new AlertAction("Case X", "ANM 1", AlertData.delete("OPV 1")));
     }
 
     @Test
     public void shouldCreateADeleteActionForAVisitOfAMother() throws Exception {
         when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnmPhoneNumber("ANM phone no"));
 
-        service.deleteAlertForVisit("Case X", "ANC 1");
+        service.deleteAlertForVisitForMother("Case X", "ANC 1");
 
         verify(allAlertActions).add(new AlertAction("Case X", "ANM phone no", AlertData.delete("ANC 1")));
     }
