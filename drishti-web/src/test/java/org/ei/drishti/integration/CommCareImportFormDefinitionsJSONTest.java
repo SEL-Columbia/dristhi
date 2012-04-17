@@ -32,6 +32,7 @@ public class CommCareImportFormDefinitionsJSONTest {
         classEveryFormMappingConvertsTo.put("updateOutcomeOfANC", AnteNatalCareOutcomeInformation.class);
         classEveryFormMappingConvertsTo.put("closeANCCase", AnteNatalCareCloseInformation.class);
         classEveryFormMappingConvertsTo.put("registerChild", ChildRegistrationInformation.class);
+        classEveryFormMappingConvertsTo.put("registerNewChild", ChildRegistrationRequest.class);
 
         assertEveryFormDefintionInTheJSONHasBeenRepresentedInThisTest(classEveryFormMappingConvertsTo);
         assertThatTheControllerHasTheMethodsCorrespondingToTheseFormNames(DrishtiController.class, classEveryFormMappingConvertsTo);
