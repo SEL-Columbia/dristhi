@@ -66,23 +66,6 @@
             }
         },
         {
-            "name": "registerChild",
-            "url": {
-                "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
-                "queryParams": {
-                    "nameSpace": "http://openrosa.org/formdesigner/FDAC3365-7B1B-48C2-AC31-C88990239B03"
-                }
-            },
-            "mappings": {
-                "form|case|case_id" : "caseId",
-                "form|ancm_name" : "motherName",
-                "form|anm_phone" : "anmPhoneNumber",
-                "form|BCG" : "bcgHasBeenProvided",
-                "form|opv0" : "opv0HasBeenProvided",
-                "form|HepB1" : "hepatitisBHasBeenProvided"
-            }
-        },
-        {
             "name": "registerNewChild",
             "url": {
                 "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
