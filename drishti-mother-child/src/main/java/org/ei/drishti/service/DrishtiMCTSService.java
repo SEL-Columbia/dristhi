@@ -36,4 +36,7 @@ public class DrishtiMCTSService {
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest) {
     }
+
+    public void closeChildCase(ChildCloseRequest childCloseRequest) {
+    }
 }

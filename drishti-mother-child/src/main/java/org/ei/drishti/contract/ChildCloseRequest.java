@@ -2,19 +2,13 @@ package org.ei.drishti.contract;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class ChildImmunizationUpdationRequest {
+public class ChildCloseRequest {
     String caseId;
     String anmIdentifier;
-    String immunizationsProvided;
 
-    public ChildImmunizationUpdationRequest(String caseId, String anmIdentifier, String immunizationsProvided) {
+    public ChildCloseRequest(String caseId, String anmIdentifier) {
         this.caseId = caseId;
         this.anmIdentifier = anmIdentifier;
-        this.immunizationsProvided = immunizationsProvided;
-    }
-
-    public boolean isImmunizationProvided(String checkForThisImmunization) {
-        return (" " + immunizationsProvided + " ").contains(" " + checkForThisImmunization + " ");
     }
 
     public String anmIdentifier() {

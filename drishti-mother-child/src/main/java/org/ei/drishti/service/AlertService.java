@@ -22,6 +22,10 @@ public class AlertService {
         this.allMothers = allMothers;
     }
 
+    public List<AlertAction> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
+        return allAlertActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
+    }
+
     public void alertForMother(String caseID, String visitCode, String latenessStatus, DateTime dueDate) {
         Mother mother = allMothers.findByCaseId(caseID);
 
@@ -32,14 +36,14 @@ public class AlertService {
         allAlertActions.add(new AlertAction(caseId, anmIdentifier, AlertData.create(childName, thaayiCardNumber, visitCode, latenessStatus, dueDate)));
     }
 
-    public List<AlertAction> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
-        return allAlertActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
-    }
-
     public void deleteAlertForVisitForMother(String caseID, String visitCode) {
         Mother mother = allMothers.findByCaseId(caseID);
 
         allAlertActions.add(new AlertAction(caseID, mother.anmPhoneNo(), AlertData.delete(visitCode)));
+    }
+
+    public void deleteAlertForVisitForChild(String caseID, String anmIdentifier, String visitCode) {
+        allAlertActions.add(new AlertAction(caseID, anmIdentifier, AlertData.delete(visitCode)));
     }
 
     public void deleteAllAlertsForMother(String caseID) {
@@ -48,7 +52,7 @@ public class AlertService {
         allAlertActions.add(new AlertAction(caseID, mother.anmPhoneNo(), AlertData.deleteAll()));
     }
 
-    public void deleteAlertForVisitForChild(String caseID, String anmIdentifier, String visitCode) {
-        allAlertActions.add(new AlertAction(caseID, anmIdentifier, AlertData.delete(visitCode)));
+    public void deleteAllAlertsForChild(String caseID, String anmIdentifier) {
+        allAlertActions.add(new AlertAction(caseID, anmIdentifier, AlertData.deleteAll()));
     }
 }

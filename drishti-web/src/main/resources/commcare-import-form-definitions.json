@@ -87,11 +87,11 @@
             "url": {
                 "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                 "queryParams": {
-                    "nameSpace": "http://openrosa.org/formdesigner/0034E746-0BE5-4A80-BCDE-C4D3FFCFFEB4"
+                    "nameSpace": "http://openrosa.org/formdesigner/FDAC3365-7B1B-48C2-AC31-C88990239B03"
                 }
             },
             "mappings": {
-                "form|child_dob" : "dateOfBirth",
+                "form|child_DOB" : "dateOfBirth",
                 "form|child_name" : "childName",
                 "form|mother_thayino" : "thaayiCardNumber",
                 "form|meta|username" : "anmIdentifier",
@@ -110,7 +110,20 @@
             "mappings": {
                 "form|meta|username" : "anmIdentifier",
                 "form|case|@case_id" : "caseId",
-                "form|immunization_multiselect" : "immunizationsProvided"
+                "form|immunization_multiselect1" : "immunizationsProvided"
+            }
+        },
+        {
+            "name": "closeChildCase",
+            "url": {
+                "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                "queryParams": {
+                    "nameSpace": "http://openrosa.org/formdesigner/A8245DC9-EFD9-4DFE-B4C4-C4470A223B19"
+                }
+            },
+            "mappings": {
+                "form|meta|username" : "anmIdentifier",
+                "form|case|@case_id" : "caseId"
             }
         }
     ]

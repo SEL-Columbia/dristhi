@@ -2,6 +2,7 @@ package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
+import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
 import org.slf4j.Logger;
@@ -73,5 +74,12 @@ public class DrishtiController {
 
         pncService.updateChildImmunization(updationRequest);
         mctsService.updateChildImmunization(updationRequest);
+    }
+
+    public void closeChildCase(ChildCloseRequest childCloseRequest) {
+        logger.info("Child close: " + childCloseRequest);
+
+        pncService.closeChildCase(childCloseRequest);
+        mctsService.closeChildCase(childCloseRequest);
     }
 }

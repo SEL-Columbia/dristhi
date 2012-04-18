@@ -100,4 +100,14 @@ public class DrishtiControllerTest {
         verify(pncService).updateChildImmunization(updationRequest);
         verify(mctsService).updateChildImmunization(updationRequest);
     }
+
+    @Test
+    public void shouldDelegateToBothPNCServiceAndMCTSDuringChildCaseClose() {
+        ChildCloseRequest childCloseRequest = mock(ChildCloseRequest.class);
+
+        controller.closeChildCase(childCloseRequest);
+
+        verify(pncService).closeChildCase(childCloseRequest);
+        verify(mctsService).closeChildCase(childCloseRequest);
+    }
 }

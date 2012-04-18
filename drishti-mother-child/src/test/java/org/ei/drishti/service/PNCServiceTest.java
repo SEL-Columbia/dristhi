@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildRegistrationInformation;
 import org.ei.drishti.contract.ChildRegistrationRequest;
@@ -67,6 +68,19 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldRemoveAlertsForUpdatedImmunizations() throws Exception {
         assertDeletionOfAlertsForProvidedImmunizations("bcg opv0", "BCG", "OPV 0");
+    }
+
+    @Test
+    public void shouldDeleteAllAlertsForChildCaseClose() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+
+        AlertService alertServiceMock = mock(AlertService.class);
+        PNCService pncService = new PNCService(service, alertServiceMock);
+
+        pncService.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"));
+
+        verify(alertServiceMock).deleteAllAlertsForChild("Case X", "DEMO ANM");
     }
 
     private void assertDeletionOfAlertsForProvidedImmunizations(String providedImmunizations, String... expectedDeletedAlertsRaised) {

@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildRegistrationInformation;
 import org.ei.drishti.contract.ChildRegistrationRequest;
@@ -63,5 +64,9 @@ public class PNCService {
         DateTime dueDate = new LocalDate(childRegistrationRequest.dateOfBirth()).plusDays(2).toDateTime(DateUtil.now().toLocalTime());
         alertService.alertForChild(childRegistrationRequest.caseId(), childRegistrationRequest.name(),
                 childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), visitCodeIfNotProvided, "due", dueDate);
+    }
+
+    public void closeChildCase(ChildCloseRequest childCloseRequest) {
+        alertService.deleteAllAlertsForChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
     }
 }

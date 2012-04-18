@@ -76,6 +76,13 @@ public class AlertServiceTest {
     }
 
     @Test
+    public void shouldCreateADeleteAllActionForAChild() throws Exception {
+        service.deleteAllAlertsForChild("Case X", "DEMO ANM");
+
+        verify(allAlertActions).add(new AlertAction("Case X", "DEMO ANM", AlertData.deleteAll()));
+    }
+
+    @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
         List<AlertAction> alertActions = Arrays.asList(new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now())));
         when(allAlertActions.findByANMIDAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
