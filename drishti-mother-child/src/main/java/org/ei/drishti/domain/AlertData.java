@@ -13,7 +13,7 @@ public class AlertData {
     private String type;
 
     public static AlertData create(String beneficiaryName, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
-            return new AlertData("create").with("motherName", beneficiaryName).with("thaayiCardNumber", thaayiCardNumber)
+            return new AlertData("create").with("beneficiaryName", beneficiaryName).with("thaayiCardNumber", thaayiCardNumber)
                 .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("dueDate", dueDate.toLocalDate().toString());
     }
 
