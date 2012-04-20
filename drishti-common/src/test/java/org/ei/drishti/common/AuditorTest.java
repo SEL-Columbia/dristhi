@@ -8,10 +8,12 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.motechproject.testing.utils.BaseUnitTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.ei.drishti.common.audit.AuditMessageType.NORMAL;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class AuditorTest extends BaseUnitTest {
@@ -147,6 +149,34 @@ public class AuditorTest extends BaseUnitTest {
     public void shouldNotAllowAddingOfFieldsWhichAreNotSupportedByTheAuditMessageTypeUsed() {
         Auditor auditor = new Auditor(3);
         auditor.audit(NORMAL).with("SOMETHING_OTHER_THAN_data", "Message 1").done();
+    }
+
+    @Test
+    public void shouldCaptureAllAuditMessagesEvenIfCalledFromMultipleThreads() throws Exception {
+        final Auditor auditor = new Auditor(10000);
+        List<Thread> threads = new ArrayList<Thread>();
+
+        for (int i = 0; i < 10; i++) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < 1000; i++) {
+                        auditor.audit(NORMAL).with("data", "abc + " + i + " " + Thread.currentThread().getId()).done();
+                    }
+                }
+            });
+            threads.add(thread);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            threads.get(i).start();
+        }
+
+        for (int i = 0; i < 10; i++) {
+            threads.get(i).join();
+        }
+
+        assertEquals(10000, auditor.messagesSince(0).size());
     }
 
     private void assertData(AuditMessage message, Matcher<String> expectedDataMatcher) {

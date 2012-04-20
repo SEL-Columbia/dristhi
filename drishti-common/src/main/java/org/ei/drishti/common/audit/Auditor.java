@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static java.util.Collections.binarySearch;
 import static org.ei.drishti.common.audit.AuditMessageType.NORMAL;
@@ -19,6 +20,7 @@ public class Auditor {
     private List<AuditMessage> messages;
     private final int numberOfAuditMessagesToHoldOnTo;
     private static long messageIndex = DateTime.now().getMillis();
+    private static ReentrantLock lock = new ReentrantLock();
 
     @Autowired
     public Auditor(@Value("#{drishti['number.of.audit.messages']}") int numberOfAuditMessagesToHoldOnTo) {
@@ -52,9 +54,14 @@ public class Auditor {
     }
 
     private void createAuditMessage(AuditMessageType messageType, Map<String, String> data) {
-        messages.add(new AuditMessage(DateUtil.now(), messageIndex, messageType, data));
-        messageIndex++;
-        prune();
+        lock.lock();
+        try {
+            messages.add(new AuditMessage(DateUtil.now(), messageIndex, messageType, data));
+            messageIndex++;
+            prune();
+        } finally {
+            lock.unlock();
+        }
     }
 
     public class AuditMessageBuilder {
