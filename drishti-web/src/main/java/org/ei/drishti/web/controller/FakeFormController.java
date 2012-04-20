@@ -2,6 +2,7 @@ package org.ei.drishti.web.controller;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ei.commcare.api.contract.CommCareFormDefinition;
+import org.ei.commcare.api.contract.CommCareModuleDefinition;
 import org.ei.commcare.api.util.CommCareImportProperties;
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,10 @@ public class FakeFormController {
     public List<FormDefinition> getFormDefinitions() throws IOException {
         List<FormDefinition> newDefinitions = new ArrayList<FormDefinition>();
 
-        for (CommCareFormDefinition definition : properties.definitions().definitions()) {
-            newDefinitions.add(FormDefinition.from(definition));
+        for (CommCareModuleDefinition commCareModuleDefinition : properties.moduleDefinitions().modules()) {
+            for (CommCareFormDefinition definition : commCareModuleDefinition.definitions()) {
+                newDefinitions.add(FormDefinition.from(definition));
+            }
         }
 
         return newDefinitions;
