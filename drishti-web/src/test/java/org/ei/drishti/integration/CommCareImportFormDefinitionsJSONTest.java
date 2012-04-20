@@ -1,26 +1,31 @@
 package org.ei.drishti.integration;
 
 import org.ei.commcare.api.contract.CommCareFormDefinition;
-import org.ei.commcare.api.contract.CommCareFormDefinitions;
+import org.ei.commcare.api.contract.CommCareModuleDefinition;
+import org.ei.commcare.api.util.CommCareImportProperties;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.controller.DrishtiController;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.dao.MotechJsonReader;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.fail;
 
 public class CommCareImportFormDefinitionsJSONTest {
     private final String definitionsJSONPath = "commcare-import-form-definitions.json";
-    private CommCareFormDefinitions forms;
+    private List<CommCareFormDefinition> forms = new ArrayList<CommCareFormDefinition>();
 
     @Before
     public void setUp() {
-        forms = (CommCareFormDefinitions) new MotechJsonReader().readFromFile("/" + definitionsJSONPath, CommCareFormDefinitions.class);
+        Properties properties = new Properties();
+        properties.put(CommCareImportProperties.COMMCARE_IMPORT_DEFINITION_FILE, "/" + definitionsJSONPath);
+        CommCareImportProperties importProperties = new CommCareImportProperties(properties);
+
+        for (CommCareModuleDefinition moduleDefinition : importProperties.moduleDefinitions().modules()) {
+            forms.addAll(moduleDefinition.definitions());
+        }
     }
 
     @Test
@@ -40,7 +45,7 @@ public class CommCareImportFormDefinitionsJSONTest {
     }
 
     private void assertEveryFormDefinitionInTheJSONHasBeenRepresentedInThisTest(Map<String, Class<?>> classEveryFormMappingConvertsTo) {
-        for (CommCareFormDefinition formDefinition : forms.definitions()) {
+        for (CommCareFormDefinition formDefinition : forms) {
             String formName = formDefinition.name();
             Class<?> typeUsedForMappingsInForm = classEveryFormMappingConvertsTo.get(formName);
 
@@ -78,7 +83,7 @@ public class CommCareImportFormDefinitionsJSONTest {
     }
 
     private CommCareFormDefinition findForm(String formName) {
-        for (CommCareFormDefinition definition : forms.definitions()) {
+        for (CommCareFormDefinition definition : forms) {
             if (definition.name().equals(formName)) {
                 return definition;
             }
