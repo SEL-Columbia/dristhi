@@ -72,6 +72,73 @@
         {
             "forms": [
                 {
+                    "name": "registerMother",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/5EDBB181-77CF-4012-9A75-D44E15B748F5"
+                        }
+                    },
+                    "mappings": {
+                        "form|case|case_id": "caseId",
+                        "form|card_no": "thaayiCardNumber",
+                        "form|ancm_name": "name",
+                        "form|age": "age",
+                        "form|lmp": "lmp",
+                        "form|anm_phone": "anmPhoneNumber"
+                    }
+                },
+                {
+                    "name": "updateANCCareInformation",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/7A43185F-CEAF-427A-AAA8-3454F7DBF65A"
+                        }
+                    },
+                    "mappings": {
+                        "form|case|case_id": "caseId",
+                        "form|anc|tt_1": "tetanus1Date",
+                        "form|anc|tt_2": "tetanus2Date",
+                        "form|anc|ifa1": "ironFolicAcidTablet1Date",
+                        "form|anc|ifa2": "ironFolicAcidTablet2Date",
+                        "form|anc|anc_checkup1": "anc1Date",
+                        "form|anc|anc_checkup2": "anc2Date",
+                        "form|anc|anc_checkup3": "anc3Date",
+                        "form|anc|anc_checkup4": "anc4Date"
+                    }
+                },
+                {
+                    "name": "updateOutcomeOfANC",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/BC5BFB10-35DD-46A9-991D-9395AAC004C4"
+                        }
+                    },
+                    "mappings": {
+                        "form|case|case_id": "caseId",
+                        "form|dateofdelivery": "dateOfDelivery"
+                    }
+                },
+                {
+                    "name": "closeANCCase",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/E718DE2C-C336-43A5-8F3C-AD14CF0E5702"
+                        }
+                    },
+                    "mappings": {
+                        "form|case|case_id": "caseId",
+                        "form|dateofdelivery": "dateOfDelivery"
+                    }
+                }
+            ]
+        },
+        {
+            "forms": [
+                {
                     "name": "registerNewChild",
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
@@ -106,6 +173,54 @@
                     "name": "closeChildCase",
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/A8245DC9-EFD9-4DFE-B4C4-C4470A223B19"
+                        }
+                    },
+                    "mappings": {
+                        "form|meta|username": "anmIdentifier",
+                        "form|case|@case_id": "caseId"
+                    }
+                }
+            ]
+        },
+        {
+            "forms": [
+                {
+                    "name": "registerNewChild",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/FDAC3365-7B1B-48C2-AC31-C88990239B03"
+                        }
+                    },
+                    "mappings": {
+                        "form|child_DOB": "dateOfBirth",
+                        "form|child_name": "childName",
+                        "form|mother_thayino": "thaayiCardNumber",
+                        "form|meta|username": "anmIdentifier",
+                        "form|case|@case_id": "caseId",
+                        "form|immunization_multiselect": "immunizationsProvided"
+                    }
+                },
+                {
+                    "name": "updateChildImmunization",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/dd16712aa348d461a28ae7fdb7132a8e546f81c4"
+                        }
+                    },
+                    "mappings": {
+                        "form|meta|username": "anmIdentifier",
+                        "form|case|@case_id": "caseId",
+                        "form|immunization_multiselect1": "immunizationsProvided"
+                    }
+                },
+                {
+                    "name": "closeChildCase",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
                         "queryParams": {
                             "nameSpace": "http://openrosa.org/formdesigner/A8245DC9-EFD9-4DFE-B4C4-C4470A223B19"
                         }
