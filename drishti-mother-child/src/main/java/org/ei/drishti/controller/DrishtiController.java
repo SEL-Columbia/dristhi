@@ -5,6 +5,7 @@ import org.ei.drishti.contract.*;
 import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
+import org.ei.drishti.service.ECService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ei.drishti.service.PNCService;
@@ -18,12 +19,14 @@ public class DrishtiController {
     private final ANCService ancService;
     private final PNCService pncService;
     private DrishtiMCTSService mctsService;
+    private ECService ecService;
 
     @Autowired
-    public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, PNCService pncService, DrishtiMCTSService drishtiMctsService) {
+    public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, PNCService pncService, ECService ecService, DrishtiMCTSService drishtiMctsService) {
         router.registerForDispatch(this);
         this.ancService = ancService;
         this.pncService = pncService;
+        this.ecService = ecService;
         this.mctsService = drishtiMctsService;
     }
 
@@ -63,7 +66,7 @@ public class DrishtiController {
     }
 
     public void registerNewChild(ChildRegistrationRequest childInformation) {
-        logger.info("New Child registration: " + childInformation);
+        logger.info("New child registration: " + childInformation);
 
         pncService.registerNewChild(childInformation);
         mctsService.registerNewChild(childInformation);
@@ -81,5 +84,17 @@ public class DrishtiController {
 
         pncService.closeChildCase(childCloseRequest);
         mctsService.closeChildCase(childCloseRequest);
+    }
+
+    public void registerEligibleCouple(EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest) {
+        logger.info("Eligible couple registration: " + eligibleCoupleRegistrationRequest);
+
+        ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest);
+    }
+
+    public void closeEligibleCouple(EligibleCoupleCloseRequest eligibleCoupleCloseRequest) {
+        logger.info("Eligible couple close: " + eligibleCoupleCloseRequest);
+
+        ecService.closeEligibleCouple(eligibleCoupleCloseRequest);
     }
 }

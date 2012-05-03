@@ -4,6 +4,7 @@ import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
+import org.ei.drishti.service.ECService;
 import org.ei.drishti.service.PNCService;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +20,8 @@ public class DrishtiControllerTest {
     @Mock
     private ANCService ancService;
     @Mock
+    private ECService ecService;
+    @Mock
     private DrishtiMCTSService mctsService;
     @Mock
     private PNCService pncService;
@@ -28,7 +31,7 @@ public class DrishtiControllerTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new DrishtiController(dispatcher, ancService, pncService, mctsService);
+        controller = new DrishtiController(dispatcher, ancService, pncService, ecService, mctsService);
     }
 
     @Test
@@ -109,5 +112,23 @@ public class DrishtiControllerTest {
 
         verify(pncService).closeChildCase(childCloseRequest);
         verify(mctsService).closeChildCase(childCloseRequest);
+    }
+
+    @Test
+    public void shouldDelegateToECServiceDuringEligibleCoupleRegistration() {
+        EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest = mock(EligibleCoupleRegistrationRequest.class);
+
+        controller.registerEligibleCouple(eligibleCoupleRegistrationRequest);
+
+        verify(ecService).registerEligibleCouple(eligibleCoupleRegistrationRequest);
+    }
+
+    @Test
+    public void shouldDelegateToECServiceDuringEligibleCoupleClose() {
+        EligibleCoupleCloseRequest eligibleCoupleCloseRequest = mock(EligibleCoupleCloseRequest.class);
+
+        controller.closeEligibleCouple(eligibleCoupleCloseRequest);
+
+        verify(ecService).closeEligibleCouple(eligibleCoupleCloseRequest);
     }
 }

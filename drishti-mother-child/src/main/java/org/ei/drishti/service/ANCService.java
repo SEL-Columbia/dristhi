@@ -23,13 +23,11 @@ import static org.joda.time.LocalTime.now;
 public class ANCService {
     private static Logger logger = LoggerFactory.getLogger(ANCService.class.toString());
 
-    private AlertService alertService;
     private final AllMothers allMothers;
     private ANCSchedulesService ancSchedulesService;
 
     @Autowired
-    public ANCService(AllMothers allMothers, AlertService alertService, ANCSchedulesService ancSchedulesService) {
-        this.alertService = alertService;
+    public ANCService(AllMothers allMothers, ANCSchedulesService ancSchedulesService) {
         this.allMothers = allMothers;
         this.ancSchedulesService = ancSchedulesService;
     }

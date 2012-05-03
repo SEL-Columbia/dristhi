@@ -34,7 +34,7 @@ public class ANCServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ANCService(mothers, alertService, ancSchedulesService);
+        service = new ANCService(mothers, ancSchedulesService);
     }
 
     @Test
