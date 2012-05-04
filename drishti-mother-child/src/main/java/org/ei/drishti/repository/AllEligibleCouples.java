@@ -4,6 +4,8 @@ import org.ei.drishti.domain.EligibleCouple;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.motechproject.dao.MotechBaseRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Repository
 public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
+    private static Logger logger = LoggerFactory.getLogger(AllEligibleCouples.class);
+
     @Autowired
     public AllEligibleCouples(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
         super(EligibleCouple.class, db);
@@ -31,6 +35,11 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
     }
 
     public void close(String caseId) {
-        remove(findByCaseId(caseId));
+        EligibleCouple couple = findByCaseId(caseId);
+        if (couple == null) {
+            logger.warn("Unable to close eligible couple with caseId: " + caseId + ". Case not found.");
+            return;
+        }
+        remove(couple);
     }
 }
