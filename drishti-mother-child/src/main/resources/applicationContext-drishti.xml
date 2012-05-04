@@ -12,7 +12,7 @@
     <property name="ignoreUnresolvablePlaceholders" value="true"/>
   </bean>
 
-  <!--<import resource="classpath:applicationSmsHttp.xml"/>-->
+  <import resource="classpath:applicationSmsHttp.xml"/>
   <import resource="classpath:applicationSmsAPI.xml"/>
   <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
   <import resource="classpath:applicationContext-commcare-listener.xml"/>
