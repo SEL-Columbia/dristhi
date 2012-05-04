@@ -14,7 +14,7 @@ class ActionItem {
     @JsonProperty
     private Map<String, String> data;
     @JsonProperty
-    private String actionType;
+    private String alertType;
     @JsonProperty
     private long timeStamp;
 
@@ -23,7 +23,7 @@ class ActionItem {
         this.caseID = caseID;
         this.data = data;
         this.timeStamp = timeStamp;
-        this.actionType = actionType;
+        this.alertType = actionType;
     }
 
     public static ActionItem from(Action action){
@@ -31,6 +31,6 @@ class ActionItem {
     }
 
     public Action toAction() {
-        return new Action(caseID, anmIdentifier, ActionData.from(actionType, data));
+        return new Action(caseID, anmIdentifier, ActionData.from(alertType, data));
     }
 }

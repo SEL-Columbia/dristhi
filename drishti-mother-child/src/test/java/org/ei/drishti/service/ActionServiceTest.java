@@ -23,6 +23,7 @@ public class ActionServiceTest {
     private AllActions allActions;
     @Mock
     private AllMothers allMothers;
+
     private ActionService service;
 
     @Before
@@ -72,14 +73,14 @@ public class ActionServiceTest {
 
         service.deleteAllAlertsForMother("Case X");
 
-        verify(allActions).add(new Action("Case X", "ANM phone no", ActionData.deleteAllAlerts()));
+        verify(allActions).addWithDelete(new Action("Case X", "ANM phone no", ActionData.deleteAllAlerts()));
     }
 
     @Test
     public void shouldCreateADeleteAllActionForAChild() throws Exception {
         service.deleteAllAlertsForChild("Case X", "DEMO ANM");
 
-        verify(allActions).add(new Action("Case X", "DEMO ANM", ActionData.deleteAllAlerts()));
+        verify(allActions).addWithDelete(new Action("Case X", "DEMO ANM", ActionData.deleteAllAlerts()));
     }
 
     @Test
@@ -91,5 +92,19 @@ public class ActionServiceTest {
 
         assertEquals(1, alerts.size());
         assertEquals(alertActions, alerts);
+    }
+
+    @Test
+    public void shouldAddCreateActionForEligibleCoupleRegistration() throws Exception {
+        service.registerEligibleCouple("Case X", "EC Number 1", "Wife 1", "Husband 1", "ANM X");
+
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createEligibleCouple("Wife 1", "Husband 1", "EC Number 1")));
+    }
+
+    @Test
+    public void shouldAddDeleteActionForEligibleCoupleClose() throws Exception {
+        service.closeEligibleCouple("Case X", "ANM X");
+
+        verify(allActions).addWithDelete(new Action("Case X", "ANM X", ActionData.deleteEligibleCouple()));
     }
 }

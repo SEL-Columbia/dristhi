@@ -49,10 +49,18 @@ public class ActionService {
     public void deleteAllAlertsForMother(String caseID) {
         Mother mother = allMothers.findByCaseId(caseID);
 
-        allActions.add(new Action(caseID, mother.anmPhoneNo(), ActionData.deleteAllAlerts()));
+        allActions.addWithDelete(new Action(caseID, mother.anmPhoneNo(), ActionData.deleteAllAlerts()));
     }
 
     public void deleteAllAlertsForChild(String caseID, String anmIdentifier) {
-        allActions.add(new Action(caseID, anmIdentifier, ActionData.deleteAllAlerts()));
+        allActions.addWithDelete(new Action(caseID, anmIdentifier, ActionData.deleteAllAlerts()));
+    }
+
+    public void registerEligibleCouple(String caseId, String ecNumber, String wife, String husband, String anmIdentifier) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.createEligibleCouple(wife, husband, ecNumber)));
+    }
+
+    public void closeEligibleCouple(String caseId, String anmIdentifier) {
+        allActions.addWithDelete(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()));
     }
 }

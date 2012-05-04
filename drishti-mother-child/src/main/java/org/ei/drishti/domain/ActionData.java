@@ -13,7 +13,7 @@ public class ActionData {
     private String type;
 
     public static ActionData createAlert(String beneficiaryName, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
-            return new ActionData("create").with("beneficiaryName", beneficiaryName).with("thaayiCardNumber", thaayiCardNumber)
+        return new ActionData("create").with("beneficiaryName", beneficiaryName).with("thaayiCardNumber", thaayiCardNumber)
                 .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("dueDate", dueDate.toLocalDate().toString());
     }
 
@@ -23,6 +23,14 @@ public class ActionData {
 
     public static ActionData deleteAllAlerts() {
         return new ActionData("deleteAll");
+    }
+
+    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber) {
+        return new ActionData("createEC").with("wife", wife).with("husband", husband).with("ecNumber", ecNumber);
+    }
+
+    public static ActionData deleteEligibleCouple() {
+        return new ActionData("deleteEC");
     }
 
     public static ActionData from(String actionType, Map<String, String> data) {

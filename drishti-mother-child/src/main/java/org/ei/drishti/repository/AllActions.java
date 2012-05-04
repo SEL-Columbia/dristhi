@@ -18,11 +18,13 @@ public class AllActions extends MotechBaseRepository<Action> {
         super(Action.class, db);
     }
 
-    @View(name = "by_caseID", map = "function(doc) { if(doc.type === 'Action' && doc.caseID) {emit(doc.caseID, null)} }")
     public void add(Action action) {
-        if (action.actionType().equals("deleteAll")) {
-            removeAll("caseID", action.caseID());
-        }
+        super.add(action);
+    }
+
+    @View(name = "by_caseID", map = "function(doc) { if(doc.type === 'Action' && doc.caseID) {emit(doc.caseID, null)} }")
+    public void addWithDelete(Action action) {
+        removeAll("caseID", action.caseID());
         super.add(action);
     }
 

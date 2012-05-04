@@ -4,9 +4,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class EligibleCoupleCloseRequest {
     private String caseId;
+    private String anmIdentifier;
 
-    public EligibleCoupleCloseRequest(String caseId) {
+    public EligibleCoupleCloseRequest(String caseId, String anmIdentifier) {
         this.caseId = caseId;
+        this.anmIdentifier = anmIdentifier;
     }
 
     @Override
@@ -16,5 +18,9 @@ public class EligibleCoupleCloseRequest {
 
     public String caseId() {
         return caseId;
+    }
+
+    public String anmIdentifier() {
+        return anmIdentifier;
     }
 }

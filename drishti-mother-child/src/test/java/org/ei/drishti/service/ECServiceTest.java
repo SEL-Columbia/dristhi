@@ -14,12 +14,15 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class ECServiceTest {
     @Mock
     private AllEligibleCouples allEligibleCouples;
+    @Mock
+    private ActionService actionService;
+
     private ECService ecService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        ecService = new ECService(allEligibleCouples);
+        ecService = new ECService(allEligibleCouples, actionService);
     }
 
     @Test
@@ -27,12 +30,14 @@ public class ECServiceTest {
         ecService.registerEligibleCouple(new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X"));
 
         verify(allEligibleCouples).register(new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1").withANMIdentifier("ANM X"));
+        verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X");
     }
 
     @Test
     public void shouldCloseEligibleCouple() throws Exception {
-        ecService.closeEligibleCouple(new EligibleCoupleCloseRequest("CASE X"));
+        ecService.closeEligibleCouple(new EligibleCoupleCloseRequest("CASE X", "ANM X"));
 
         verify(allEligibleCouples).close("CASE X");
+        verify(actionService).closeEligibleCouple("CASE X", "ANM X");
     }
 }

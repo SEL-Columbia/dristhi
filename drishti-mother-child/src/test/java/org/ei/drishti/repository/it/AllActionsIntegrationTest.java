@@ -18,7 +18,7 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
-public class AllAlertActionsIntegrationTest {
+public class AllActionsIntegrationTest {
     @Autowired
     AllActions allActions;
 
@@ -102,7 +102,7 @@ public class AllAlertActionsIntegrationTest {
         allActions.add(actionOfSameANMForAnotherMother);
 
         Action deleteAllAction = new Action("Case X", "ANM 1", ActionData.deleteAllAlerts());
-        allActions.add(deleteAllAction);
+        allActions.addWithDelete(deleteAllAction);
 
         assertEquals(asList(actionOfSameANMForAnotherMother, deleteAllAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
         assertEquals(asList(actionOfAnotherANM), allActions.findByANMIDAndTimeStamp("ANM 2", 0));
