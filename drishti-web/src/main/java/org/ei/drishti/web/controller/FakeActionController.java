@@ -18,7 +18,7 @@ public class FakeActionController {
         this.allActions = allActions;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/alert/submit")
+    @RequestMapping(method = RequestMethod.POST, value = "/action/submit")
     @ResponseBody
     public String submitFakeAction(@RequestParam("formData") String formData) throws Exception {
         try {

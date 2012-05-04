@@ -13,16 +13,16 @@ public class ActionData {
     private String type;
 
     public static ActionData createAlert(String beneficiaryName, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
-        return new ActionData("create").with("beneficiaryName", beneficiaryName).with("thaayiCardNumber", thaayiCardNumber)
+        return new ActionData("createAlert").with("beneficiaryName", beneficiaryName).with("thaayiCardNumber", thaayiCardNumber)
                 .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("dueDate", dueDate.toLocalDate().toString());
     }
 
     public static ActionData deleteAlert(String visitCode) {
-        return new ActionData("delete").with("visitCode", visitCode);
+        return new ActionData("deleteAlert").with("visitCode", visitCode);
     }
 
     public static ActionData deleteAllAlerts() {
-        return new ActionData("deleteAll");
+        return new ActionData("deleteAllAlerts");
     }
 
     public static ActionData createEligibleCouple(String wife, String husband, String ecNumber) {

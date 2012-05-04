@@ -25,7 +25,7 @@ $(document).ready(function() {
         payload['data'] = data;
         payload['actionType'] = form.id;
 
-        $.post('../alert/submit', { formData: JSON.stringify(payload) })
+        $.post('../action/submit', { formData: JSON.stringify(payload) })
             .success(function(responseFromServer) { formStatusDisplay(form.id, "Success!"); })
             .error(function(responseFromServer, textStatus) {
                 formStatusDisplay(form.id, "Failed!");

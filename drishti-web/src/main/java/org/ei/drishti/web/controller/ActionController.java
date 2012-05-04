@@ -14,16 +14,16 @@ import java.util.List;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
 
-@Controller("alertControllerForWeb")
-public class AlertController {
+@Controller
+public class ActionController {
     private ActionService actionService;
 
     @Autowired
-    public AlertController(ActionService actionService) {
+    public ActionController(ActionService actionService) {
         this.actionService = actionService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/alerts")
+    @RequestMapping(method = RequestMethod.GET, value = "/actions")
     @ResponseBody
     public List<ActionItem> getNewActionForANM(@RequestParam("anmIdentifier") String anmIdentifier, @RequestParam("timeStamp") Long timeStamp){
         List<Action> alertActions = actionService.getNewAlertsForANM(anmIdentifier, timeStamp);
