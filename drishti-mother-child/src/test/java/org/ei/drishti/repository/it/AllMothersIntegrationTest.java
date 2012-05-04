@@ -32,7 +32,7 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldRegisterAMother() {
-        Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa").withAnmPhoneNumber("12345").withLMP(DateUtil.tomorrow()).withECNumber("EC Number 1");
+        Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa").withAnm("ANM ID 1", "12345").withLMP(DateUtil.tomorrow()).withECNumber("EC Number 1");
 
         mothers.register(mother);
 

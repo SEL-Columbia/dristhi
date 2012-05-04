@@ -34,12 +34,12 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnmPhoneNumber("ANM phone no"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
         service.alertForMother("Case X", "ANC 1", "due", dueDate);
 
-        verify(allActions).add(new Action("Case X", "ANM phone no", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", dueDate)));
+        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", dueDate)));
     }
 
     @Test
@@ -60,20 +60,20 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateADeleteActionForAVisitOfAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnmPhoneNumber("ANM phone no"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no"));
 
         service.deleteAlertForVisitForMother("Case X", "ANC 1");
 
-        verify(allActions).add(new Action("Case X", "ANM phone no", ActionData.deleteAlert("ANC 1")));
+        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.deleteAlert("ANC 1")));
     }
 
     @Test
     public void shouldCreateADeleteAllActionForAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnmPhoneNumber("ANM phone no"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no"));
 
         service.deleteAllAlertsForMother("Case X");
 
-        verify(allActions).addWithDelete(new Action("Case X", "ANM phone no", ActionData.deleteAllAlerts()));
+        verify(allActions).addWithDelete(new Action("Case X", "ANM ID 1", ActionData.deleteAllAlerts()));
     }
 
     @Test

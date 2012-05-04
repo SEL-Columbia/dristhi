@@ -16,6 +16,8 @@ public class Mother extends MotechBaseDataObject {
     @JsonProperty
     private String name;
     @JsonProperty
+    private String anmIdentifier;
+    @JsonProperty
     private String anmPhoneNumber;
     @JsonProperty
     private LocalDate lmp;
@@ -35,8 +37,9 @@ public class Mother extends MotechBaseDataObject {
         return name;
     }
 
-    public Mother withAnmPhoneNumber(String anmPhoneNumber) {
-        this.anmPhoneNumber = anmPhoneNumber;
+    public Mother withAnm(String identifier, String phoneNumber) {
+        anmIdentifier = identifier;
+        this.anmPhoneNumber = phoneNumber;
         return this;
     }
 
@@ -78,6 +81,10 @@ public class Mother extends MotechBaseDataObject {
 
     public String thaayiCardNo() {
         return thaayiCardNumber;
+    }
+
+    public String anmIdentifier() {
+        return anmIdentifier;
     }
 
     public String anmPhoneNo() {

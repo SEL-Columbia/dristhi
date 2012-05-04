@@ -11,14 +11,16 @@ public class AnteNatalCareEnrollmentInformation {
     private String name;
     private int age;
     private String anmPhoneNumber;
+    private String anmIdentifier;
     private Date lmp;
     private String ecNumber;
 
-    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String anmPhoneNumber, Date lmp, String ecNumber) {
+    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String anmPhoneNumber, String anmIdentifier, Date lmp, String ecNumber) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
         this.anmPhoneNumber = anmPhoneNumber;
+        this.anmIdentifier = anmIdentifier;
         this.lmp = lmp;
         this.ecNumber = ecNumber;
         this.age = 20;
@@ -34,6 +36,10 @@ public class AnteNatalCareEnrollmentInformation {
 
     public String name() {
         return name;
+    }
+
+    public String anmIdentifier() {
+        return anmIdentifier;
     }
 
     public String anmPhoneNumber() {
