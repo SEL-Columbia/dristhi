@@ -18,7 +18,8 @@
                         "form|ancm_name": "name",
                         "form|age": "age",
                         "form|lmp": "lmp",
-                        "form|anm_phone": "anmPhoneNumber"
+                        "form|anm_phone": "anmPhoneNumber",
+                        "form|ECnumber": "ecNumber"
                     }
                 },
                 {
@@ -85,7 +86,8 @@
                         "form|ancm_name": "name",
                         "form|age": "age",
                         "form|lmp": "lmp",
-                        "form|anm_phone": "anmPhoneNumber"
+                        "form|anm_phone": "anmPhoneNumber",
+                        "form|ECnumber": "ecNumber"
                     }
                 },
                 {

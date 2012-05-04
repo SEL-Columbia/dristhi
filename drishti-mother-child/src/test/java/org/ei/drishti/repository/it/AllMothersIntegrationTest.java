@@ -1,10 +1,13 @@
 package org.ei.drishti.repository.it;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatcher;
+import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -29,7 +32,7 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldRegisterAMother() {
-        Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa");
+        Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa").withAnmPhoneNumber("12345").withLMP(DateUtil.tomorrow()).withECNumber("EC Number 1");
 
         mothers.register(mother);
 
@@ -37,8 +40,7 @@ public class AllMothersIntegrationTest {
         assertThat(allTheMothers.size(), is(1));
 
         Mother motherFromDB = allTheMothers.get(0);
-        assertThat(motherFromDB, is(new Mother("CASE-1", "THAAYI-CARD-1", "Theresa")));
-        assertThat(motherFromDB.name(), is("Theresa"));
+        assertThat(motherFromDB, is(motherWithSameFieldsAs(mother)));
     }
 
     @Test
@@ -62,4 +64,14 @@ public class AllMothersIntegrationTest {
         assertTrue(mothers.motherExists("CASE-1"));
         assertFalse(mothers.motherExists("CASE-NOT-KNOWN"));
     }
+
+    private ArgumentMatcher<Mother> motherWithSameFieldsAs(final Mother mother) {
+        return new ArgumentMatcher<Mother>() {
+            @Override
+            public boolean matches(Object o) {
+                return EqualsBuilder.reflectionEquals(mother, o);
+            }
+        };
+    }
+
 }

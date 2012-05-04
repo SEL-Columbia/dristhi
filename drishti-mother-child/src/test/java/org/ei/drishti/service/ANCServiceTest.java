@@ -43,11 +43,11 @@ public class ANCServiceTest {
 
         String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "12345", lmp.toDate());
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "12345", lmp.toDate(), "EC Number 1");
 
         service.registerANCCase(enrollmentInfo);
 
-        verify(mothers).register(sameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName).withAnmPhoneNumber("12345").withLMP(lmp)));
+        verify(mothers).register(sameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName).withAnmPhoneNumber("12345").withLMP(lmp).withECNumber("EC Number 1")));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class ANCServiceTest {
 
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "12345", lmp.toDate());
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "12345", lmp.toDate(), "EC Number 1");
 
         service.registerANCCase(enrollmentInfo);
 
@@ -67,7 +67,7 @@ public class ANCServiceTest {
     public void shouldEnrollAMotherUsingCurrentDateIfLMPDateIsNotFound() {
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "12345", null);
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "12345", null, "EC Number 1");
 
         service.registerANCCase(enrollmentInfo);
 

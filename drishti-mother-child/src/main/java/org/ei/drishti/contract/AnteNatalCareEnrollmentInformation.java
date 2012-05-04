@@ -12,13 +12,15 @@ public class AnteNatalCareEnrollmentInformation {
     private int age;
     private String anmPhoneNumber;
     private Date lmp;
+    private String ecNumber;
 
-    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String anmPhoneNumber, Date lmp) {
+    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String anmPhoneNumber, Date lmp, String ecNumber) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
         this.anmPhoneNumber = anmPhoneNumber;
         this.lmp = lmp;
+        this.ecNumber = ecNumber;
         this.age = 20;
     }
 
@@ -40,6 +42,10 @@ public class AnteNatalCareEnrollmentInformation {
 
     public LocalDate lmpDate() {
         return lmp == null ? null : LocalDate.fromDateFields(lmp);
+    }
+
+    public String ecNumber() {
+        return ecNumber;
     }
 
     @Override
