@@ -1,9 +1,9 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.domain.AlertAction;
-import org.ei.drishti.domain.AlertData;
+import org.ei.drishti.domain.Action;
+import org.ei.drishti.domain.ActionData;
 import org.ei.drishti.domain.Mother;
-import org.ei.drishti.repository.AllAlertActions;
+import org.ei.drishti.repository.AllActions;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -18,17 +18,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class AlertServiceTest {
+public class ActionServiceTest {
     @Mock
-    private AllAlertActions allAlertActions;
+    private AllActions allActions;
     @Mock
     private AllMothers allMothers;
-    private AlertService service;
+    private ActionService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new AlertService(allAlertActions, allMothers);
+        service = new ActionService(allActions, allMothers);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class AlertServiceTest {
         DateTime dueDate = DateTime.now().minusDays(1);
         service.alertForMother("Case X", "ANC 1", "due", dueDate);
 
-        verify(allAlertActions).add(new AlertAction("Case X", "ANM phone no", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", dueDate)));
+        verify(allActions).add(new Action("Case X", "ANM phone no", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", dueDate)));
     }
 
     @Test
@@ -47,14 +47,14 @@ public class AlertServiceTest {
 
         service.alertForChild("Case X", "Child 1", "DEMO ANM", "TC 1", "OPV 1", "due", dueDate);
 
-        verify(allAlertActions).add(new AlertAction("Case X", "DEMO ANM", AlertData.create("Child 1", "TC 1", "OPV 1", "due", dueDate)));
+        verify(allActions).add(new Action("Case X", "DEMO ANM", ActionData.createAlert("Child 1", "TC 1", "OPV 1", "due", dueDate)));
     }
 
     @Test
     public void shouldCreateADeleteActionForAVisitOfAChild() throws Exception {
         service.deleteAlertForVisitForChild("Case X", "ANM 1", "OPV 1");
 
-        verify(allAlertActions).add(new AlertAction("Case X", "ANM 1", AlertData.delete("OPV 1")));
+        verify(allActions).add(new Action("Case X", "ANM 1", ActionData.deleteAlert("OPV 1")));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class AlertServiceTest {
 
         service.deleteAlertForVisitForMother("Case X", "ANC 1");
 
-        verify(allAlertActions).add(new AlertAction("Case X", "ANM phone no", AlertData.delete("ANC 1")));
+        verify(allActions).add(new Action("Case X", "ANM phone no", ActionData.deleteAlert("ANC 1")));
     }
 
     @Test
@@ -72,22 +72,22 @@ public class AlertServiceTest {
 
         service.deleteAllAlertsForMother("Case X");
 
-        verify(allAlertActions).add(new AlertAction("Case X", "ANM phone no", AlertData.deleteAll()));
+        verify(allActions).add(new Action("Case X", "ANM phone no", ActionData.deleteAllAlerts()));
     }
 
     @Test
     public void shouldCreateADeleteAllActionForAChild() throws Exception {
         service.deleteAllAlertsForChild("Case X", "DEMO ANM");
 
-        verify(allAlertActions).add(new AlertAction("Case X", "DEMO ANM", AlertData.deleteAll()));
+        verify(allActions).add(new Action("Case X", "DEMO ANM", ActionData.deleteAllAlerts()));
     }
 
     @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
-        List<AlertAction> alertActions = Arrays.asList(new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now())));
-        when(allAlertActions.findByANMIDAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
+        List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now())));
+        when(allActions.findByANMIDAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
 
-        List<AlertAction> alerts = service.getNewAlertsForANM("ANM 1", 1010101);
+        List<Action> alerts = service.getNewAlertsForANM("ANM 1", 1010101);
 
         assertEquals(1, alerts.size());
         assertEquals(alertActions, alerts);

@@ -1,8 +1,8 @@
 package org.ei.drishti.web.controller;
 
 import ch.lambdaj.function.convert.Converter;
-import org.ei.drishti.domain.AlertAction;
-import org.ei.drishti.service.AlertService;
+import org.ei.drishti.domain.Action;
+import org.ei.drishti.service.ActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,21 +16,21 @@ import static ch.lambdaj.collection.LambdaCollections.with;
 
 @Controller("alertControllerForWeb")
 public class AlertController {
-    private AlertService alertService;
+    private ActionService actionService;
 
     @Autowired
-    public AlertController(AlertService alertService) {
-        this.alertService = alertService;
+    public AlertController(ActionService actionService) {
+        this.actionService = actionService;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/alerts")
     @ResponseBody
-    public List<AlertActionItem> getNewAlertsForANM(@RequestParam("anmIdentifier") String anmIdentifier, @RequestParam("timeStamp") Long timeStamp){
-        List<AlertAction> alertActions = alertService.getNewAlertsForANM(anmIdentifier, timeStamp);
-        return with(alertActions).convert(new Converter<AlertAction, AlertActionItem>() {
+    public List<ActionItem> getNewActionForANM(@RequestParam("anmIdentifier") String anmIdentifier, @RequestParam("timeStamp") Long timeStamp){
+        List<Action> alertActions = actionService.getNewAlertsForANM(anmIdentifier, timeStamp);
+        return with(alertActions).convert(new Converter<Action, ActionItem>() {
             @Override
-            public AlertActionItem convert(AlertAction alertAction) {
-                return AlertActionItem.from(alertAction);
+            public ActionItem convert(Action action) {
+                return ActionItem.from(action);
             }
         });
     }

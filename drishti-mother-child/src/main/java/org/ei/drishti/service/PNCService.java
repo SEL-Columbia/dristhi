@@ -18,12 +18,12 @@ import static java.text.MessageFormat.format;
 @Service
 public class PNCService {
     private final DrishtiSMSService smsService;
-    private final AlertService alertService;
+    private final ActionService actionService;
 
     @Autowired
-    public PNCService(DrishtiSMSService smsService, AlertService alertService) {
+    public PNCService(DrishtiSMSService smsService, ActionService actionService) {
         this.smsService = smsService;
-        this.alertService = alertService;
+        this.actionService = actionService;
     }
 
     public void registerChild(ChildRegistrationInformation childInformation) {
@@ -52,7 +52,7 @@ public class PNCService {
 
     private void alertForImmunizationProvided(ChildImmunizationUpdationRequest updationRequest, String checkForThisImmunization, String visitCodeIfNotProvided) {
         if (updationRequest.isImmunizationProvided(checkForThisImmunization)) {
-            alertService.deleteAlertForVisitForChild(updationRequest.caseId(), updationRequest.anmIdentifier(), visitCodeIfNotProvided);
+            actionService.deleteAlertForVisitForChild(updationRequest.caseId(), updationRequest.anmIdentifier(), visitCodeIfNotProvided);
         }
     }
 
@@ -62,11 +62,11 @@ public class PNCService {
         }
 
         DateTime dueDate = new LocalDate(childRegistrationRequest.dateOfBirth()).plusDays(2).toDateTime(DateUtil.now().toLocalTime());
-        alertService.alertForChild(childRegistrationRequest.caseId(), childRegistrationRequest.name(),
+        actionService.alertForChild(childRegistrationRequest.caseId(), childRegistrationRequest.name(),
                 childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), visitCodeIfNotProvided, "due", dueDate);
     }
 
     public void closeChildCase(ChildCloseRequest childCloseRequest) {
-        alertService.deleteAllAlertsForChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
+        actionService.deleteAllAlertsForChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
     }
 }

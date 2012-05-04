@@ -1,7 +1,7 @@
 package org.ei.drishti.action;
 
 import org.ei.drishti.scheduler.router.MilestoneEvent;
-import org.ei.drishti.service.AlertService;
+import org.ei.drishti.service.ActionService;
 import org.ei.drishti.util.Event;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -14,7 +14,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class CaptureANMReminderActionTest {
     @Mock
-    private AlertService alertService;
+    private ActionService actionService;
 
     @Before
     public void setUp() throws Exception {
@@ -23,12 +23,12 @@ public class CaptureANMReminderActionTest {
 
     @Test
     public void shouldCaptureAlertData() throws Exception {
-        CaptureANMReminderAction reminderAction = new CaptureANMReminderAction(alertService);
+        CaptureANMReminderAction reminderAction = new CaptureANMReminderAction(actionService);
 
         DateTime dueDate = DateTime.now();
         reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.due, dueDate));
 
-        verify(alertService).alertForMother("Case 1", "Milestone 1", "due", dueDate);
+        verify(actionService).alertForMother("Case 1", "Milestone 1", "due", dueDate);
     }
 
     private MilestoneEvent event(String externalID, String scheduleName, String milestone, WindowName window, DateTime dueDate) {

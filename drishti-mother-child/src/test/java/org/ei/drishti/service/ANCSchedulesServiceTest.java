@@ -31,13 +31,13 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     @Mock
     private ScheduleTrackingService scheduleTrackingService;
     @Mock
-    private AlertService alertService;
+    private ActionService actionService;
     private ANCSchedulesService schedulesService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        schedulesService = new ANCSchedulesService(scheduleTrackingService, alertService);
+        schedulesService = new ANCSchedulesService(scheduleTrackingService, actionService);
     }
 
     @Test
@@ -152,7 +152,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
         verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 1"));
         verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 2"));
-        verify(alertService).deleteAllAlertsForMother("Case X");
+        verify(actionService).deleteAllAlertsForMother("Case X");
     }
 
     private void assertEnrollmentIntoMilestoneBasedOnDate(LocalDate enrollmentDate, String expectedMilestone) throws Exception {

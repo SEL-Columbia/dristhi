@@ -23,7 +23,7 @@ $(document).ready(function() {
         var payload = createObjectFrom($(form).children(".field"));
         var data = createObjectFrom($(form).children(".data"));
         payload['data'] = data;
-        payload['alertType'] = form.id;
+        payload['actionType'] = form.id;
 
         $.post('../alert/submit', { formData: JSON.stringify(payload) })
             .success(function(responseFromServer) { formStatusDisplay(form.id, "Success!"); })

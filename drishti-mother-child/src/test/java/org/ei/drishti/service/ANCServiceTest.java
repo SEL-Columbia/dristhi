@@ -23,7 +23,7 @@ import static org.motechproject.util.DateUtil.tomorrow;
 
 public class ANCServiceTest {
     @Mock
-    private AlertService alertService;
+    private ActionService actionService;
     @Mock
     private AllMothers mothers;
     @Mock

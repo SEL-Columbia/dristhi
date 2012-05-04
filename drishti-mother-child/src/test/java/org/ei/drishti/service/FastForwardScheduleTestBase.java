@@ -19,12 +19,12 @@ public class FastForwardScheduleTestBase {
     private int visitNumberToTryAndFulfill;
     private ANCSchedulesService schedulesService;
     private Action serviceCall;
-    private AlertService alertService;
+    private ActionService actionService;
 
     public FastForwardScheduleTestBase() {
         this.scheduleTrackingService = mock(ScheduleTrackingService.class);
-        this.alertService = mock(AlertService.class);
-        this.schedulesService = new ANCSchedulesService(scheduleTrackingService, alertService);
+        this.actionService = mock(ActionService.class);
+        this.schedulesService = new ANCSchedulesService(scheduleTrackingService, actionService);
     }
 
     public FastForwardScheduleTestBase forANCSchedule() {
@@ -81,17 +81,17 @@ public class FastForwardScheduleTestBase {
 
         verify(scheduleTrackingService, times(expectedVisitCodes.length)).fulfillCurrentMilestone(eq("Case X"), eq(scheduleName), eq(visitDate), any(Time.class));
 
-        verifyAllAlertActionInteractions(Arrays.asList(expectedVisitCodes));
+        verifyAllActionInteractions(Arrays.asList(expectedVisitCodes));
     }
 
-    private void verifyAllAlertActionInteractions(List<String> expectedVisitCodes) {
+    private void verifyAllActionInteractions(List<String> expectedVisitCodes) {
         if (expectedVisitCodes.isEmpty()) {
-            verifyZeroInteractions(alertService);
+            verifyZeroInteractions(actionService);
         }
         for (String visitCode : expectedVisitCodes) {
-            verify(alertService).deleteAlertForVisitForMother("Case X", visitCode);
+            verify(actionService).deleteAlertForVisitForMother("Case X", visitCode);
         }
-        verifyNoMoreInteractions(alertService);
+        verifyNoMoreInteractions(actionService);
     }
 
     private EnrollmentRecord enrollmentRecord(String scheduleName, String currentMilestone) {

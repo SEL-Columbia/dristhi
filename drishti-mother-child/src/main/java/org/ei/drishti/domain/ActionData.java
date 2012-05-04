@@ -8,35 +8,35 @@ import org.joda.time.DateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AlertData {
+public class ActionData {
     private final HashMap<String, String> data;
     private String type;
 
-    public static AlertData create(String beneficiaryName, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
-            return new AlertData("create").with("beneficiaryName", beneficiaryName).with("thaayiCardNumber", thaayiCardNumber)
+    public static ActionData createAlert(String beneficiaryName, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
+            return new ActionData("create").with("beneficiaryName", beneficiaryName).with("thaayiCardNumber", thaayiCardNumber)
                 .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("dueDate", dueDate.toLocalDate().toString());
     }
 
-    public static AlertData delete(String visitCode) {
-        return new AlertData("delete").with("visitCode", visitCode);
+    public static ActionData deleteAlert(String visitCode) {
+        return new ActionData("delete").with("visitCode", visitCode);
     }
 
-    public static AlertData deleteAll() {
-        return new AlertData("deleteAll");
+    public static ActionData deleteAllAlerts() {
+        return new ActionData("deleteAll");
     }
 
-    public static AlertData from(String alertType, Map<String, String> data) {
-        AlertData alertData = new AlertData(alertType);
-        alertData.data.putAll(data);
-        return alertData;
+    public static ActionData from(String actionType, Map<String, String> data) {
+        ActionData actionData = new ActionData(actionType);
+        actionData.data.putAll(data);
+        return actionData;
     }
 
-    private AlertData(String type) {
+    private ActionData(String type) {
         this.type = type;
         data = new HashMap<String, String>();
     }
 
-    public AlertData with(String key, String value) {
+    public ActionData with(String key, String value) {
         data.put(key, value);
         return this;
     }

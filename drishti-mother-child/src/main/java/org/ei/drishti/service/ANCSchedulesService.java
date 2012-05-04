@@ -23,12 +23,12 @@ import static org.motechproject.util.DateUtil.today;
 public class ANCSchedulesService {
     private final ScheduleTrackingService trackingService;
     private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_IFA, SCHEDULE_LAB, SCHEDULE_TT};
-    private AlertService alertService;
+    private ActionService actionService;
 
     @Autowired
-    public ANCSchedulesService(ScheduleTrackingService trackingService, AlertService alertService) {
+    public ANCSchedulesService(ScheduleTrackingService trackingService, ActionService actionService) {
         this.trackingService = trackingService;
-        this.alertService = alertService;
+        this.actionService = actionService;
     }
 
     public void enrollMother(String caseId, LocalDate referenceDateForSchedule, Time referenceTime, Time preferredAlertTime) {
@@ -60,7 +60,7 @@ public class ANCSchedulesService {
         for (EnrollmentRecord enrollment : openEnrollments) {
             trackingService.unenroll(caseId, Arrays.asList(enrollment.getScheduleName()));
         }
-        alertService.deleteAllAlertsForMother(caseId);
+        actionService.deleteAllAlertsForMother(caseId);
     }
 
     private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule, Time preferredAlertTime, Time referenceTime) {
@@ -84,7 +84,7 @@ public class ANCSchedulesService {
 
         for (int i = currentMilestoneNumber; i <= visitNumber ; i++) {
             trackingService.fulfillCurrentMilestone(caseId, scheduleName, visitDate, new Time(now()));
-            alertService.deleteAlertForVisitForMother(caseId, milestonePrefix + " " + i);
+            actionService.deleteAlertForVisitForMother(caseId, milestonePrefix + " " + i);
         }
     }
 

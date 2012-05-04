@@ -1,8 +1,8 @@
 package org.ei.drishti.repository.it;
 
-import org.ei.drishti.domain.AlertAction;
-import org.ei.drishti.domain.AlertData;
-import org.ei.drishti.repository.AllAlertActions;
+import org.ei.drishti.domain.Action;
+import org.ei.drishti.domain.ActionData;
+import org.ei.drishti.repository.AllActions;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,91 +20,91 @@ import static junit.framework.Assert.assertEquals;
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
 public class AllAlertActionsIntegrationTest {
     @Autowired
-    AllAlertActions alertActions;
+    AllActions allActions;
 
     @Before
     public void setUp() throws Exception {
-        alertActions.removeAll();
+        allActions.removeAll();
     }
 
     @Test
     public void shouldSaveAReminder() throws Exception {
-        AlertAction alertAction = new AlertAction("Case X", "ANM phone no", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action alertAction = new Action("Case X", "ANM phone no", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
 
-        alertActions.add(alertAction);
+        allActions.add(alertAction);
 
-        List<AlertAction> allTheAlertActionsInDB = alertActions.getAll();
+        List<Action> allTheAlertActionsInDB = allActions.getAll();
         assertEquals(1, allTheAlertActionsInDB.size());
         assertEquals(alertAction, allTheAlertActionsInDB.get(0));
     }
 
     @Test
     public void shouldNotFindAnyAlertsIfNoneExistForGivenANM() throws Exception {
-        assertEquals(0, alertActions.findByANMIDAndTimeStamp("ANM 1", 0).size());
+        assertEquals(0, allActions.findByANMIDAndTimeStamp("ANM 1", 0).size());
     }
 
     @Test
     public void shouldReturnAlertActionsBasedOnANMIDAndTimeStamp() throws Exception {
-        AlertAction firstAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
-        alertActions.add(firstAction);
+        Action firstAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        allActions.add(firstAction);
 
-        AlertAction secondAction = new AlertAction("Case Y", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
-        alertActions.add(secondAction);
+        Action secondAction = new Action("Case Y", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        allActions.add(secondAction);
 
-        AlertAction thirdAction = new AlertAction("Case Z", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
-        alertActions.add(thirdAction);
+        Action thirdAction = new Action("Case Z", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        allActions.add(thirdAction);
 
-        assertEquals(asList(firstAction, secondAction,thirdAction), alertActions.findByANMIDAndTimeStamp("ANM 1", 0));
-        assertEquals(asList(secondAction,thirdAction), alertActions.findByANMIDAndTimeStamp("ANM 1", firstAction.timestamp()));
-        assertEquals(asList(thirdAction), alertActions.findByANMIDAndTimeStamp("ANM 1", secondAction.timestamp()));
+        assertEquals(asList(firstAction, secondAction, thirdAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
+        assertEquals(asList(secondAction,thirdAction), allActions.findByANMIDAndTimeStamp("ANM 1", firstAction.timestamp()));
+        assertEquals(asList(thirdAction), allActions.findByANMIDAndTimeStamp("ANM 1", secondAction.timestamp()));
 
-        assertEquals(0, alertActions.findByANMIDAndTimeStamp("ANM 1", thirdAction.timestamp()).size());
+        assertEquals(0, allActions.findByANMIDAndTimeStamp("ANM 1", thirdAction.timestamp()).size());
     }
 
     @Test
     public void shouldFindAlertsOnlyForTheANMSpecified() throws Exception {
-        AlertAction firstAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
-        alertActions.add(firstAction);
+        Action firstAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        allActions.add(firstAction);
 
-        AlertAction secondAction = new AlertAction("Case Y", "ANM 2", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
-        alertActions.add(secondAction);
+        Action secondAction = new Action("Case Y", "ANM 2", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        allActions.add(secondAction);
 
-        assertEquals(asList(firstAction), alertActions.findByANMIDAndTimeStamp("ANM 1", 0));
-        assertEquals(asList(secondAction), alertActions.findByANMIDAndTimeStamp("ANM 2", 0));
+        assertEquals(asList(firstAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
+        assertEquals(asList(secondAction), allActions.findByANMIDAndTimeStamp("ANM 2", 0));
     }
 
     @Test
     public void shouldFetchAlertsSortedByTimestamp() throws Exception {
-        AlertAction earlierAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action earlierAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
         Thread.sleep(100);
-        AlertAction laterAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action laterAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
         Thread.sleep(100);
-        AlertAction latestAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action latestAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
 
-        alertActions.add(laterAction);
-        alertActions.add(latestAction);
-        alertActions.add(earlierAction);
+        allActions.add(laterAction);
+        allActions.add(latestAction);
+        allActions.add(earlierAction);
 
-        assertEquals(asList(earlierAction, laterAction, latestAction), alertActions.findByANMIDAndTimeStamp("ANM 1", 0));
+        assertEquals(asList(earlierAction, laterAction, latestAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
     }
 
     @Test
     public void shouldRemoveAllExistingAlertsForTheCaseFromRepositoryBeforeInsertingADeleteAllAlert() {
-        AlertAction firstAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
-        AlertAction secondAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 2", "late", DateTime.now()));
-        AlertAction thirdAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 3", "due", DateTime.now()));
-        AlertAction actionOfSameANMForAnotherMother = new AlertAction("Case ABC", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 3", "due", DateTime.now()));
-        AlertAction actionOfAnotherANM = new AlertAction("Case Y", "ANM 2", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
-        alertActions.add(firstAction);
-        alertActions.add(secondAction);
-        alertActions.add(thirdAction);
-        alertActions.add(actionOfAnotherANM);
-        alertActions.add(actionOfSameANMForAnotherMother);
+        Action firstAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action secondAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 2", "late", DateTime.now()));
+        Action thirdAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 3", "due", DateTime.now()));
+        Action actionOfSameANMForAnotherMother = new Action("Case ABC", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 3", "due", DateTime.now()));
+        Action actionOfAnotherANM = new Action("Case Y", "ANM 2", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        allActions.add(firstAction);
+        allActions.add(secondAction);
+        allActions.add(thirdAction);
+        allActions.add(actionOfAnotherANM);
+        allActions.add(actionOfSameANMForAnotherMother);
 
-        AlertAction deleteAllAction = new AlertAction("Case X", "ANM 1", AlertData.deleteAll());
-        alertActions.add(deleteAllAction);
+        Action deleteAllAction = new Action("Case X", "ANM 1", ActionData.deleteAllAlerts());
+        allActions.add(deleteAllAction);
 
-        assertEquals(asList(actionOfSameANMForAnotherMother, deleteAllAction), alertActions.findByANMIDAndTimeStamp("ANM 1", 0));
-        assertEquals(asList(actionOfAnotherANM), alertActions.findByANMIDAndTimeStamp("ANM 2", 0));
+        assertEquals(asList(actionOfSameANMForAnotherMother, deleteAllAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
+        assertEquals(asList(actionOfAnotherANM), allActions.findByANMIDAndTimeStamp("ANM 2", 0));
     }
 }

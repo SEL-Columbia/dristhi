@@ -10,8 +10,8 @@ import org.motechproject.util.DateUtil;
 
 import java.util.Map;
 
-@TypeDiscriminator("doc.type === 'AlertAction'")
-public class AlertAction extends MotechBaseDataObject {
+@TypeDiscriminator("doc.type === 'Action'")
+public class Action extends MotechBaseDataObject {
     @JsonProperty
     private String anmIdentifier;
     @JsonProperty
@@ -19,18 +19,18 @@ public class AlertAction extends MotechBaseDataObject {
     @JsonProperty
     private Map<String, String> data;
     @JsonProperty
-    private String alertType;
+    private String actionType;
     @JsonProperty
     private long timeStamp;
 
-    private AlertAction() {
+    private Action() {
     }
 
-    public AlertAction(String caseId, String anmIdentifier, AlertData alertData) {
+    public Action(String caseId, String anmIdentifier, ActionData actionData) {
         this.anmIdentifier = anmIdentifier;
         this.caseID = caseId;
-        this.data = alertData.data();
-        this.alertType = alertData.type();
+        this.data = actionData.data();
+        this.actionType = actionData.type();
         this.timeStamp = DateUtil.now().getMillis();
     }
 
@@ -46,8 +46,8 @@ public class AlertAction extends MotechBaseDataObject {
         return data;
     }
 
-    public String alertType() {
-        return alertType;
+    public String actionType() {
+        return actionType;
     }
 
     public long timestamp() {

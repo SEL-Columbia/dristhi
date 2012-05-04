@@ -1,8 +1,8 @@
 package org.ei.drishti.web.controller;
 
-import org.ei.drishti.domain.AlertAction;
-import org.ei.drishti.domain.AlertData;
-import org.ei.drishti.service.AlertService;
+import org.ei.drishti.domain.Action;
+import org.ei.drishti.domain.ActionData;
+import org.ei.drishti.service.ActionService;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ import static org.motechproject.delivery.schedule.util.SameItems.hasSameItemsAs;
 public class AlertControllerTest {
 
     @Mock
-    private AlertService alertService;
+    private ActionService actionService;
 
     @Before
     public void setUp() throws Exception {
@@ -27,12 +27,12 @@ public class AlertControllerTest {
 
     @Test
     public void shouldGiveAlertActionForANMSinceTimeStamp() throws Exception {
-        AlertAction alertAction = new AlertAction("Case X", "ANM 1", AlertData.create("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
-        when(alertService.getNewAlertsForANM("ANM 1", 0L)).thenReturn(Arrays.asList(alertAction));
+        Action alertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        when(actionService.getNewAlertsForANM("ANM 1", 0L)).thenReturn(Arrays.asList(alertAction));
 
-        AlertActionItem expectedAlertActionItem = AlertActionItem.from(alertAction);
-        AlertController alertController = new AlertController(alertService);
+        ActionItem expectedAlertActionItem = ActionItem.from(alertAction);
+        AlertController alertController = new AlertController(actionService);
 
-        assertThat(Arrays.asList(expectedAlertActionItem), hasSameItemsAs(alertController.getNewAlertsForANM("ANM 1", 0L)));
+        assertThat(Arrays.asList(expectedAlertActionItem), hasSameItemsAs(alertController.getNewActionForANM("ANM 1", 0L)));
     }
 }
