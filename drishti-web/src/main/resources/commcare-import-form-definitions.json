@@ -250,7 +250,7 @@
                          "form|ecnumber": "ecNumber",
                          "form|wifes_name": "wifeName",
                          "form|husbands_name": "husbandName",
-                         "form|case|case_id": "caseId",
+                         "form|case|@case_id": "caseId",
                          "form|meta|username": "anmIdentifier"
                     }
                 },
@@ -263,7 +263,7 @@
                         }
                     },
                     "mappings": {
-                        "form|case|case_id": "caseId",
+                        "form|case|@case_id": "caseId",
                         "form|meta|username": "anmIdentifier"
                     }
                 }
