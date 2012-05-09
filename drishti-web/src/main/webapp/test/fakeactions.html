@@ -4,7 +4,7 @@
     <title>Create your fake alerts here!</title>
     <link rel="stylesheet" href="../stylesheets/fakeforms.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="../js/fakealerts.js"></script>
+    <script src="../js/fakeactions.js"></script>
 </head>
 <body>
 <div id="information">
@@ -100,6 +100,65 @@
         </form>
 
         <span class="formStatus" id="deleteAll-status" style="opacity: 0; ">.</span>
+    </div>
+
+    <div id="ecCreate" class="formDiv">
+        <span class="title">Create EC</span>
+
+        <form id="createEC" class="form">
+            <label for="createEC-caseID">Case ID</label>
+            <input type="text" id="createEC-caseID" class="field mapping">
+
+            <p></p>
+
+            <label for="createEC-anmIdentifier">ANM ID</label>
+            <input type="text" id="createEC-anmIdentifier" class="field mapping">
+
+            <p></p>
+
+            <label for="createEC-wife">Wife Name</label>
+            <input type="text" id="createEC-wife" class="data mapping">
+
+            <p></p>
+
+            <label for="createEC-husband">Husband Name</label>
+            <input type="text" id="createEC-husband" class="data mapping">
+
+            <p></p>
+
+            <label for="createEC-ecNumber">EC Number</label>
+            <input type="text" id="createEC-ecNumber" class="data mapping">
+
+            <p></p>
+
+            <input type="hidden" id="createEC-latenessStatus" class="data mapping" value="due">
+
+            <p></p>
+
+            <input type="submit" id="createEC-submit" value="Submit form!">
+        </form>
+
+        <span class="formStatus" id="createEC-status" style="opacity: 0; ">.</span>
+    </div>
+
+    <div id="ecDelete" class="formDiv">
+        <span class="title">Delete EC</span>
+
+        <form id="deleteEC" class="form">
+            <label for="deleteEC-caseID">Case ID</label>
+            <input type="text" id="deleteEC-caseID" class="field mapping">
+
+            <p></p>
+
+            <label for="deleteEC-anmIdentifier">ANM ID</label>
+            <input type="text" id="deleteEC-anmIdentifier" class="field mapping">
+
+            <p></p>
+
+            <input type="submit" id="deleteEC-submit" value="Submit form!">
+        </form>
+
+        <span class="formStatus" id="deleteEC-status" style="opacity: 0; ">.</span>
     </div>
 
 </div>
