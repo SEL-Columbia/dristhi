@@ -29,7 +29,7 @@ public class ActionService {
     public void alertForMother(String caseID, String visitCode, String latenessStatus, DateTime dueDate) {
         Mother mother = allMothers.findByCaseId(caseID);
 
-        allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.createAlert(mother.name(), null, mother.thaayiCardNo(), visitCode, latenessStatus, dueDate)));
+        allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.createAlert(mother.name(), mother.village(), mother.thaayiCardNo(), visitCode, latenessStatus, dueDate)));
     }
 
     public void alertForChild(String caseId, String childName, String village, String anmIdentifier, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {

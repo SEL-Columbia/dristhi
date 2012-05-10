@@ -18,6 +18,7 @@
                         "form|ancm_name": "name",
                         "form|age": "age",
                         "form|lmp": "lmp",
+                        "form|anc_village": "village",
                         "form|anm_phone": "anmPhoneNumber",
                         "form|ECnumber": "ecNumber",
                         "form|meta|username": "anmIdentifier"
@@ -87,6 +88,7 @@
                         "form|ancm_name": "name",
                         "form|age": "age",
                         "form|lmp": "lmp",
+                        "form|anc_village": "village",
                         "form|anm_phone": "anmPhoneNumber",
                         "form|ECnumber": "ecNumber",
                         "form|meta|username": "anmIdentifier"
@@ -203,6 +205,7 @@
                         "form|child_DOB": "dateOfBirth",
                         "form|child_name": "childName",
                         "form|mother_thayino": "thaayiCardNumber",
+                        "form|child_village": "village",
                         "form|meta|username": "anmIdentifier",
                         "form|case|@case_id": "caseId",
                         "form|immunization_multiselect": "immunizationsProvided"

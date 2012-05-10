@@ -34,12 +34,12 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa", "bherya").withAnm("ANM ID 1", "ANM phone no"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
         service.alertForMother("Case X", "ANC 1", "due", dueDate);
 
-        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.createAlert("Theresa", null, "Thaayi 1", "ANC 1", "due", dueDate)));
+        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", dueDate)));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateADeleteActionForAVisitOfAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa", "bherya").withAnm("ANM ID 1", "ANM phone no"));
 
         service.deleteAlertForVisitForMother("Case X", "ANC 1");
 
@@ -69,7 +69,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateADeleteAllActionForAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa", "bherya").withAnm("ANM ID 1", "ANM phone no"));
 
         service.deleteAllAlertsForMother("Case X");
 

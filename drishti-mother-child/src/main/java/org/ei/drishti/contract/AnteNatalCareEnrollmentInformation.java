@@ -1,8 +1,8 @@
 package org.ei.drishti.contract;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
 
-import java.text.MessageFormat;
 import java.util.Date;
 
 public class AnteNatalCareEnrollmentInformation {
@@ -10,15 +10,17 @@ public class AnteNatalCareEnrollmentInformation {
     private String thaayiCardNumber;
     private String name;
     private int age;
+    private String village;
     private String anmPhoneNumber;
     private String anmIdentifier;
     private Date lmp;
     private String ecNumber;
 
-    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String anmPhoneNumber, String anmIdentifier, Date lmp, String ecNumber) {
+    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String village, String anmPhoneNumber, String anmIdentifier, Date lmp, String ecNumber) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
+        this.village = village;
         this.anmPhoneNumber = anmPhoneNumber;
         this.anmIdentifier = anmIdentifier;
         this.lmp = lmp;
@@ -54,8 +56,12 @@ public class AnteNatalCareEnrollmentInformation {
         return ecNumber;
     }
 
+    public String village() {
+        return village;
+    }
+
     @Override
     public String toString() {
-        return MessageFormat.format("Mother: ThaayiCardNumber: {0}, Name: {1}, Case: {2}. LMP: {3}.", thaayiCardNumber, name, caseId, lmp);
+        return ToStringBuilder.reflectionToString(this);
     }
 }
