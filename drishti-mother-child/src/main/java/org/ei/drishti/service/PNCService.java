@@ -63,7 +63,7 @@ public class PNCService {
 
         DateTime dueDate = new LocalDate(childRegistrationRequest.dateOfBirth()).plusDays(2).toDateTime(DateUtil.now().toLocalTime());
         actionService.alertForChild(childRegistrationRequest.caseId(), childRegistrationRequest.name(),
-                childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), visitCodeIfNotProvided, "due", dueDate);
+                childRegistrationRequest.village(), childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), visitCodeIfNotProvided, "due", dueDate);
     }
 
     public void closeChildCase(ChildCloseRequest childCloseRequest) {

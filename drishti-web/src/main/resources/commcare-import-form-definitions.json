@@ -154,6 +154,7 @@
                         "form|child_DOB": "dateOfBirth",
                         "form|child_name": "childName",
                         "form|mother_thayino": "thaayiCardNumber",
+                        "form|child_village": "village",
                         "form|meta|username": "anmIdentifier",
                         "form|case|@case_id": "caseId",
                         "form|immunization_multiselect": "immunizationsProvided"

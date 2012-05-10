@@ -27,7 +27,7 @@ public class ActionControllerTest {
 
     @Test
     public void shouldGiveAlertActionForANMSinceTimeStamp() throws Exception {
-        Action alertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action alertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
         when(actionService.getNewAlertsForANM("ANM 1", 0L)).thenReturn(Arrays.asList(alertAction));
 
         ActionItem expectedAlertActionItem = ActionItem.from(alertAction);

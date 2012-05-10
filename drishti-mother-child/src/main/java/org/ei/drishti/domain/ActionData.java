@@ -12,8 +12,8 @@ public class ActionData {
     private final HashMap<String, String> data;
     private String type;
 
-    public static ActionData createAlert(String beneficiaryName, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
-        return new ActionData("createAlert").with("beneficiaryName", beneficiaryName).with("thaayiCardNumber", thaayiCardNumber)
+    public static ActionData createAlert(String beneficiaryName, String village, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
+        return new ActionData("createAlert").with("beneficiaryName", beneficiaryName).with("village", village).with("thaayiCardNumber", thaayiCardNumber)
                 .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("dueDate", dueDate.toLocalDate().toString());
     }
 

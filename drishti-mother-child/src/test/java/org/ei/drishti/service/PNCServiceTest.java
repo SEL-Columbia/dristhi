@@ -46,11 +46,11 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
-        pncService.registerNewChild(new ChildRegistrationRequest("Case X", "Child 1", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
+        pncService.registerNewChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
 
-        verify(actionService).alertForChild("Case X", "Child 1", "DEMO ANM", "TC 1", "OPV 0", "due", currentTime.plusDays(2));
-        verify(actionService).alertForChild("Case X", "Child 1", "DEMO ANM", "TC 1", "BCG", "due", currentTime.plusDays(2));
-        verify(actionService).alertForChild("Case X", "Child 1", "DEMO ANM", "TC 1", "HEP B0", "due", currentTime.plusDays(2));
+        verify(actionService).alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", "OPV 0", "due", currentTime.plusDays(2));
+        verify(actionService).alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", "BCG", "due", currentTime.plusDays(2));
+        verify(actionService).alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", "HEP B0", "due", currentTime.plusDays(2));
     }
 
     @Test
@@ -104,10 +104,10 @@ public class PNCServiceTest extends BaseUnitTest {
         ActionService alertServiceMock = mock(ActionService.class);
         PNCService pncService = new PNCService(service, alertServiceMock);
 
-        pncService.registerNewChild(new ChildRegistrationRequest("Case X", "Child 1", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
+        pncService.registerNewChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
 
         for (String expectedAlert : expectedAlertsRaised) {
-            verify(alertServiceMock).alertForChild("Case X", "Child 1", "DEMO ANM", "TC 1", expectedAlert, "due", currentTime.plusDays(2));
+            verify(alertServiceMock).alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", expectedAlert, "due", currentTime.plusDays(2));
         }
         verifyNoMoreInteractions(alertServiceMock);
     }
