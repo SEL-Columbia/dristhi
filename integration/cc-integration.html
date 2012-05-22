@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+  <head>
+    <title>Dristhi - CommCare integration</title>
+    <meta charset="UTF-8">
+    <style>
+      body {
+        margin-left: 20px;
+      }
+
+      .message {
+        font-size: 16pt;
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+
+      .flow {
+        width: 3300px;
+        margin-bottom: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Current state</h2>
+
+    <div class="message">
+      This is what we have today. When a child has been immunized, for example,
+      starting from the Dristhi application, an ANM needs to go through these
+      10 screens below to submit immunization details for one child.
+    </div>
+
+    <div class="flow">
+      <img src="small/17_Reminders_View.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/32_CC_Main.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/33_CC_Forms.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/36_CC_Child_Forms.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/37_CC_Child_Search.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/38_CC_Child_Selection.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/39_CC_Help_Swipe.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/40_CC_Child_Service_Date.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/41_CC_Child_Weight_Measured.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/42_CC_Child_Immunization.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/43_CC_Child_Submit.jpg"/>
+    </div>
+
+    <h2>What we should aim for</h2>
+
+    <div class="message">
+      At the very least, we should get the interactions between the apps to something like this:
+    </div>
+
+    <div class="flow">
+      <img src="small/17_Reminders_View.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/40_CC_Child_Service_Date.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/41_CC_Child_Weight_Measured.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/42_CC_Child_Immunization.jpg"/>
+      <img src="small/arrow.jpg"/>
+
+      <img src="small/43_CC_Child_Submit.jpg"/>
+    </div>
+
+    <div class="message">
+      To be able to get to this stage, we will need to pass to the CommCare ODK application these pieces of information:
+      <ol>
+        <li>Form to be opened (the namespace of the form).</li>
+        <li>Case ID (so that the patient selection can be skipped).</li>
+        <li>Possibly, some extra information which can be used to fill in details. For instance, village details or ANM phone number.</li>
+      </ol>
+    </div>
+  </body>
+</html>
