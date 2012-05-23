@@ -24,7 +24,7 @@
     <db.name.commcare-api>commcare</db.name.commcare-api>
     <db.name.motech-scheduletracking>motech-scheduletracking</db.name.motech-scheduletracking>
     <main.basedir>${project.basedir}</main.basedir>
-    <motech.version>0.10-SNAPSHOT</motech.version>
+    <motech.version>0.11-SNAPSHOT</motech.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring.version>3.0.5.RELEASE</spring.version>
   </properties>
