@@ -50,8 +50,6 @@ public class CommCareScheduler {
     public void fetchFromCommCareHQ(MotechEvent event) throws Exception {
         if (!shouldFetchFromCommCare) return;
 
-        logger.info("Fetching from CommCareHQ.");
         careListener.fetchFromServer();
-        logger.info("Done fetching from CommCareHQ.");
     }
 }
