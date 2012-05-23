@@ -19,9 +19,14 @@ public class ECService {
     }
 
     public void registerEligibleCouple(EligibleCoupleRegistrationRequest request) {
-        EligibleCouple couple = new EligibleCouple(request.caseId(), request.ecNumber()).withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier());
+        EligibleCouple couple = new EligibleCouple(request.caseId(), request.ecNumber())
+                .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
+                .withLocation(request.village(), request.subCenter());
+
         allEligibleCouples.register(couple);
-        actionService.registerEligibleCouple(request.caseId(), request.ecNumber(), request.wife(), request.husband(), request.anmIdentifier());
+
+        actionService.registerEligibleCouple(request.caseId(), request.ecNumber(), request.wife(), request.husband(),
+                request.anmIdentifier(), request.village(), request.subCenter());
     }
 
     public void closeEligibleCouple(EligibleCoupleCloseRequest request) {

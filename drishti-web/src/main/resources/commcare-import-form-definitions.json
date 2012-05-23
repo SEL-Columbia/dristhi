@@ -255,7 +255,9 @@
                          "form|wifes_name": "wifeName",
                          "form|husbands_name": "husbandName",
                          "form|case|@case_id": "caseId",
-                         "form|meta|username": "anmIdentifier"
+                         "form|meta|username": "anmIdentifier",
+                         "form|ec_village": "village",
+                         "form|ec_village_subcenter": "subCenter"
                     }
                 },
                 {

@@ -17,6 +17,10 @@ public class EligibleCouple extends MotechBaseDataObject {
     private String husband;
     @JsonProperty
     private String anmIdentifier;
+    @JsonProperty
+    private String village;
+    @JsonProperty
+    private String subCenter;
 
     public EligibleCouple() {
     }
@@ -34,6 +38,12 @@ public class EligibleCouple extends MotechBaseDataObject {
 
     public EligibleCouple withANMIdentifier(String anmIdentifier) {
         this.anmIdentifier = anmIdentifier;
+        return this;
+    }
+
+    public EligibleCouple withLocation(String village, String subCenter) {
+        this.village = village;
+        this.subCenter = subCenter;
         return this;
     }
 
