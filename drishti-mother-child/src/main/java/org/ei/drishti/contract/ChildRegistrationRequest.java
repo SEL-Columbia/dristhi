@@ -1,6 +1,7 @@
 package org.ei.drishti.contract;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.joda.time.LocalDate;
 import org.motechproject.util.DateUtil;
 
 import java.util.Date;
@@ -32,8 +33,8 @@ public class ChildRegistrationRequest {
         return thaayiCardNumber;
     }
 
-    public Date dateOfBirth() {
-        return dateOfBirth;
+    public LocalDate dateOfBirth() {
+        return dateOfBirth == null ? new LocalDate(dateOfBirth) : LocalDate.fromDateFields(dateOfBirth);
     }
 
     public String anmIdentifier() {

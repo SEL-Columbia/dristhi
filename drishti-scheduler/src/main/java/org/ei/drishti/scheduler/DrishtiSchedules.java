@@ -7,4 +7,9 @@ public class DrishtiSchedules {
     public static final String SCHEDULE_LAB = "Lab Reminders";
     public static final String SCHEDULE_TT = "Tetatnus Toxoid Vaccination";
 
+    public static final String CHILD_SCHEDULE_BCG = "BCG";
+    public static final String CHILD_SCHEDULE_DPT = "DPT";
+    public static final String CHILD_SCHEDULE_HEPATITIS = "Hepatitis";
+    public static final String CHILD_SCHEDULE_MEASLES = "Measles Vaccination and Vitamin Supplements";
+    public static final String CHILD_SCHEDULE_OPV = "OPV";
 }
