@@ -2,7 +2,6 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.contract.ChildRegistrationInformation;
 import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -16,29 +15,13 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PNCServiceTest extends BaseUnitTest {
     @Mock
-    DrishtiSMSService service;
-    @Mock
     ActionService actionService;
     private PNCService pncService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        pncService = new PNCService(service, actionService);
-    }
-
-    @Test
-    public void shouldSendAnSMSWithMissingVaccinationDataDuringChildRegistration() {
-        pncService.registerChild(new ChildRegistrationInformation("Theresa", "9845700000", "bcg_no", "opv0_yes", "hepb1_no"));
-
-        verify(service).sendSMS("9845700000", "Dear ANM, please provide BCG, Hepatitis B for child of mother, Theresa.");
-    }
-
-    @Test
-    public void shouldSendNoSMSIfThereAreNoMissingVaccinations() {
-        pncService.registerChild(new ChildRegistrationInformation("Theresa", "9845700000", "BCG_yes", "opv0_yes", "hepb1_yes"));
-
-        verifyZeroInteractions(service);
+        pncService = new PNCService(actionService);
     }
 
     @Test
@@ -76,7 +59,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
 
         ActionService alertServiceMock = mock(ActionService.class);
-        PNCService pncService = new PNCService(service, alertServiceMock);
+        PNCService pncService = new PNCService(alertServiceMock);
 
         pncService.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"));
 
@@ -88,7 +71,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
 
         ActionService alertServiceMock = mock(ActionService.class);
-        PNCService pncService = new PNCService(service, alertServiceMock);
+        PNCService pncService = new PNCService(alertServiceMock);
 
         pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations));
 
@@ -102,7 +85,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         ActionService alertServiceMock = mock(ActionService.class);
-        PNCService pncService = new PNCService(service, alertServiceMock);
+        PNCService pncService = new PNCService(alertServiceMock);
 
         pncService.registerNewChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
 
