@@ -39,6 +39,20 @@ public class AlertControllerRoutesTest {
         Event.of(SCHEDULE_TT, "SomeOtherMilestone", WindowName.late).shouldRouteToCaptureRemindersAction();
     }
 
+    @Test
+    public void shouldSendAllRemindersOfAllChildSchedulesToCaptureRemindersAction() throws Exception {
+        Event.of(CHILD_SCHEDULE_BCG, "REMINDER", WindowName.due).shouldRouteToCapturePNCRemindersAction();
+        Event.of(CHILD_SCHEDULE_BCG, "REMINDER", WindowName.late).shouldRouteToCapturePNCRemindersAction();
+        Event.of(CHILD_SCHEDULE_DPT, "DPT 1", WindowName.due).shouldRouteToCapturePNCRemindersAction();
+        Event.of(CHILD_SCHEDULE_DPT, "DPT 1", WindowName.late).shouldRouteToCapturePNCRemindersAction();
+        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.due).shouldRouteToCapturePNCRemindersAction();
+        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.late).shouldRouteToCapturePNCRemindersAction();
+        Event.of(CHILD_SCHEDULE_MEASLES, "REMINDER", WindowName.due).shouldRouteToCapturePNCRemindersAction();
+        Event.of(CHILD_SCHEDULE_MEASLES, "REMINDER", WindowName.late).shouldRouteToCapturePNCRemindersAction();
+        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.due).shouldRouteToCapturePNCRemindersAction();
+        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.late).shouldRouteToCapturePNCRemindersAction();
+    }
+
     private static class Event {
         private final String schedule;
         private final String milestone;
@@ -55,32 +69,39 @@ public class AlertControllerRoutesTest {
         }
 
         public void shouldRouteToForceFulfillAction() {
-            expectCalls(1, 0, 0);
+            expectCalls(1, 0, 0, 0);
         }
 
         public void shouldRouteToGroupSMSAction() {
-            expectCalls(0, 1, 0);
+            expectCalls(0, 1, 0, 0);
         }
 
         public void shouldRouteToCaptureRemindersAction() {
-            expectCalls(0, 0, 1);
+            expectCalls(0, 0, 1, 0);
         }
 
-        private void expectCalls(int numberOfForceFulfillActionCallsExpected, int numberOfGroupSMSActionCallsExpected, int numberOfCaptureReminderActionCallsExpected) {
+        public void shouldRouteToCapturePNCRemindersAction() {
+            expectCalls(0, 0, 0, 1);
+        }
+
+        private void expectCalls(int numberOfForceFulfillActionCallsExpected, int numberOfGroupSMSActionCallsExpected,
+                                 int numberOfCaptureReminderActionCallsExpected, int numberOfCapturePNCReminderActionCallsExpected) {
             Action groupSMSAction = mock(Action.class);
             Action forceFulfillAction = mock(Action.class);
-            Action captureANMReminderAction = mock(Action.class);
+            Action captureANCReminderAction = mock(Action.class);
+            Action capturePNCReminderAction = mock(Action.class);
 
-            MotechEvent event = routeEvent(groupSMSAction, forceFulfillAction, captureANMReminderAction);
+            MotechEvent event = routeEvent(groupSMSAction, forceFulfillAction, captureANCReminderAction, capturePNCReminderAction);
 
             verify(forceFulfillAction, times(numberOfForceFulfillActionCallsExpected)).invoke(new MilestoneEvent(event));
             verify(groupSMSAction, times(numberOfGroupSMSActionCallsExpected)).invoke(new MilestoneEvent(event));
-            verify(captureANMReminderAction, times(numberOfCaptureReminderActionCallsExpected)).invoke(new MilestoneEvent(event));
+            verify(captureANCReminderAction, times(numberOfCaptureReminderActionCallsExpected)).invoke(new MilestoneEvent(event));
+            verify(capturePNCReminderAction, times(numberOfCapturePNCReminderActionCallsExpected)).invoke(new MilestoneEvent(event));
         }
 
-        private MotechEvent routeEvent(Action groupSMSAction, Action ancMissedAction, Action captureANMReminderAction) {
+        private MotechEvent routeEvent(Action groupSMSAction, Action ancMissedAction, Action captureANCReminderAction, Action capturePNCReminderAction) {
             AlertRouter router = new AlertRouter();
-            new AlertController(router, groupSMSAction, ancMissedAction, captureANMReminderAction);
+            new AlertController(router, groupSMSAction, ancMissedAction, captureANCReminderAction, capturePNCReminderAction);
             MotechEvent event = org.ei.drishti.util.Event.create().withMilestone(milestone).withSchedule(schedule).withWindow(window).build();
 
             router.handle(event);

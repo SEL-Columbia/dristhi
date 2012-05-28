@@ -18,11 +18,18 @@ import static org.motechproject.scheduletracking.api.domain.WindowName.max;
 @Component
 public class AlertController {
     @Autowired
-    public AlertController(AlertRouter router, @Qualifier("ANMGroupSMSAction") Action anmGroupSMS, @Qualifier("ForceFulfillAction") Action forceFulfill, @Qualifier("CaptureANMReminderAction") Action captureANMReminder) {
+    public AlertController(AlertRouter router, @Qualifier("ANMGroupSMSAction") Action anmGroupSMS,
+                           @Qualifier("ForceFulfillAction") Action forceFulfill, @Qualifier("CaptureANCReminderAction") Action captureANCReminder,
+                           @Qualifier("CapturePNCReminderAction") Action capturePNCReminder) {
         router.addRoute(eq(SCHEDULE_ANC), any(), eq(max.toString()), forceFulfill);
         router.addRoute(eq(SCHEDULE_LAB), any(), eq(max.toString()), forceFulfill);
-        router.addRoute(motherSchedules(), any(), anyOf(due.toString(), late.toString()), captureANMReminder);
+        router.addRoute(motherSchedules(), any(), anyOf(due.toString(), late.toString()), captureANCReminder);
+        router.addRoute(childSchedules(), any(), anyOf(due.toString(), late.toString()), capturePNCReminder);
         router.addRoute(any(), any(), any(), anmGroupSMS);
+    }
+
+    private Matcher childSchedules() {
+        return anyOf(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV);
     }
 
     private Matcher motherSchedules() {

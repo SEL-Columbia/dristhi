@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier("CaptureANMReminderAction")
-public class CaptureANMReminderAction implements Action {
+@Qualifier("CaptureANCReminderAction")
+public class CaptureANCReminderAction implements Action {
     ActionService actionService;
 
     @Autowired
-    public CaptureANMReminderAction(ActionService actionService) {
+    public CaptureANCReminderAction(ActionService actionService) {
         this.actionService = actionService;
     }
 

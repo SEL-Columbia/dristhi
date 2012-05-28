@@ -9,10 +9,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.scheduletracking.api.domain.WindowName;
 
+import static org.mockito.Matchers.intThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class CaptureANMReminderActionTest {
+public class CaptureANCReminderActionTest {
     @Mock
     private ActionService actionService;
 
@@ -23,7 +24,7 @@ public class CaptureANMReminderActionTest {
 
     @Test
     public void shouldCaptureAlertData() throws Exception {
-        CaptureANMReminderAction reminderAction = new CaptureANMReminderAction(actionService);
+        CaptureANCReminderAction reminderAction = new CaptureANCReminderAction(actionService);
 
         DateTime dueDate = DateTime.now();
         reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.due, dueDate));
