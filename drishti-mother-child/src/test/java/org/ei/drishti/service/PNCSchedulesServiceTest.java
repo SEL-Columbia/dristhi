@@ -75,7 +75,7 @@ public class PNCSchedulesServiceTest {
 
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_DPT, "DPT 0")
-                .whenProvidedWithImmunizations("SOME OTHER IMM")
+                .whenProvidedWithImmunizations("SOME OTHER IMMUNIZATION")
                 .shouldNotFulfillAnythingElse();
     }
 
@@ -88,7 +88,7 @@ public class PNCSchedulesServiceTest {
 
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B1")
-                .whenProvidedWithImmunizations("SOME OTHER IMM")
+                .whenProvidedWithImmunizations("SOME OTHER IMMUNIZATION")
                 .shouldNotFulfillAnythingElse();
     }
 
@@ -101,7 +101,7 @@ public class PNCSchedulesServiceTest {
 
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, "REMINDER")
-                .whenProvidedWithImmunizations("SOME OTHER IMM")
+                .whenProvidedWithImmunizations("SOME OTHER IMMUNIZATION")
                 .shouldNotFulfillAnythingElse();
     }
 
@@ -114,7 +114,7 @@ public class PNCSchedulesServiceTest {
 
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_OPV, "OPV 2")
-                .whenProvidedWithImmunizations("SOME OTHER IMM")
+                .whenProvidedWithImmunizations("SOME OTHER IMMUNIZATION")
                 .shouldNotFulfillAnythingElse();
     }
 
