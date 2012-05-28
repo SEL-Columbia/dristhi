@@ -44,9 +44,9 @@ public class PNCServiceTest extends BaseUnitTest {
 
         pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
 
-        verify(actionService).alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", "OPV 0", "due", currentTime.plusDays(2));
-        verify(actionService).alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", "BCG", "due", currentTime.plusDays(2));
-        verify(actionService).alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", "HEP B0", "due", currentTime.plusDays(2));
+        verify(actionService).alertForChild("Case X", "OPV 0", "due", currentTime.plusDays(2));
+        verify(actionService).alertForChild("Case X", "BCG", "due", currentTime.plusDays(2));
+        verify(actionService).alertForChild("Case X", "HEP B0", "due", currentTime.plusDays(2));
     }
 
     @Test
@@ -139,7 +139,7 @@ public class PNCServiceTest extends BaseUnitTest {
         pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
 
         for (String expectedAlert : expectedAlertsRaised) {
-            verify(alertServiceMock).alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", expectedAlert, "due", currentTime.plusDays(2));
+            verify(alertServiceMock).alertForChild("Case X", expectedAlert, "due", currentTime.plusDays(2));
         }
         verifyNoMoreInteractions(alertServiceMock);
     }
@@ -150,7 +150,7 @@ public class PNCServiceTest extends BaseUnitTest {
             public boolean matches(Object c) {
                 Child child = (Child) c;
                 return caseId.equals(child.caseId()) && thaayiCardNumber.equals(child.thaayiCardNumber()) &&
-                        childName.equals(child.name()) && village.equals(child.village()) && anmIdentifier.equals(child.anm());
+                        childName.equals(child.name()) && village.equals(child.village()) && anmIdentifier.equals(child.anmIdentifier());
             }
 
             @Override

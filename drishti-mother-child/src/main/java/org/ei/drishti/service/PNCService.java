@@ -59,7 +59,6 @@ public class PNCService {
         }
 
         DateTime dueDate = childRegistrationRequest.dateOfBirth().plusDays(2).toDateTime(DateUtil.now().toLocalTime());
-        actionService.alertForChild(childRegistrationRequest.caseId(), childRegistrationRequest.name(),
-                childRegistrationRequest.village(), childRegistrationRequest.anmIdentifier(), childRegistrationRequest.thaayiCardNumber(), visitCodeIfNotProvided, "due", dueDate);
+        actionService.alertForChild(childRegistrationRequest.caseId(), visitCodeIfNotProvided, "due", dueDate);
     }
 }

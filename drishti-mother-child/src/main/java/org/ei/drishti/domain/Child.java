@@ -53,7 +53,7 @@ public class Child extends MotechBaseDataObject {
         return village;
     }
 
-    public String anm() {
+    public String anmIdentifier() {
         return anmIdentifier;
     }
 

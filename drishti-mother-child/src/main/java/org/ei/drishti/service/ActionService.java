@@ -2,8 +2,10 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.domain.Action;
 import org.ei.drishti.domain.ActionData;
+import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllActions;
+import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,13 @@ import java.util.List;
 public class ActionService {
     private AllActions allActions;
     private AllMothers allMothers;
+    private AllChildren allChildren;
 
     @Autowired
-    public ActionService(AllActions allActions, AllMothers allMothers) {
+    public ActionService(AllActions allActions, AllMothers allMothers, AllChildren allChildren) {
         this.allActions = allActions;
         this.allMothers = allMothers;
+        this.allChildren = allChildren;
     }
 
     public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
@@ -32,8 +36,10 @@ public class ActionService {
         allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.createAlert(mother.name(), mother.village(), mother.thaayiCardNo(), visitCode, latenessStatus, dueDate)));
     }
 
-    public void alertForChild(String caseId, String childName, String village, String anmIdentifier, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.createAlert(childName, village, thaayiCardNumber, visitCode, latenessStatus, dueDate)));
+    public void alertForChild(String caseId, String visitCode, String latenessStatus, DateTime dueDate) {
+        Child child = allChildren.findByCaseId(caseId);
+
+        allActions.add(new Action(caseId, child.anmIdentifier(), ActionData.createAlert(child.name(), child.village(), child.thaayiCardNumber(), visitCode, latenessStatus, dueDate)));
     }
 
     public void deleteAlertForVisitForMother(String caseID, String visitCode) {

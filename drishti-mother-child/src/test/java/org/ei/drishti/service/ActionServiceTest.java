@@ -2,8 +2,10 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.domain.Action;
 import org.ei.drishti.domain.ActionData;
+import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllActions;
+import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -23,13 +25,15 @@ public class ActionServiceTest {
     private AllActions allActions;
     @Mock
     private AllMothers allMothers;
+    @Mock
+    private AllChildren allChildren;
 
     private ActionService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ActionService(allActions, allMothers);
+        service = new ActionService(allActions, allMothers, allChildren);
     }
 
     @Test
@@ -44,9 +48,10 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForChild() throws Exception {
-        DateTime dueDate = DateTime.now().minusDays(1);
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "TC 1", "Child 1", "bherya").withAnm("DEMO ANM"));
 
-        service.alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", "OPV 1", "due", dueDate);
+        DateTime dueDate = DateTime.now().minusDays(1);
+        service.alertForChild("Case X", "OPV 1", "due", dueDate);
 
         verify(allActions).add(new Action("Case X", "DEMO ANM", ActionData.createAlert("Child 1", "bherya", "TC 1", "OPV 1", "due", dueDate)));
     }
