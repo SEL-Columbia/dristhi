@@ -58,11 +58,11 @@ public class DrishtiController {
         mctsService.closeANCCase(closeInformation);
     }
 
-    public void registerNewChild(ChildRegistrationRequest childInformation) {
+    public void registerChild(ChildRegistrationRequest childInformation) {
         logger.info("New child registration: " + childInformation);
 
-        pncService.registerNewChild(childInformation);
-        mctsService.registerNewChild(childInformation);
+        pncService.registerChild(childInformation);
+        mctsService.registerChild(childInformation);
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest) {

@@ -145,7 +145,7 @@
         {
             "forms": [
                 {
-                    "name": "registerNewChild",
+                    "name": "registerChild",
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
@@ -194,7 +194,7 @@
         {
             "forms": [
                 {
-                    "name": "registerNewChild",
+                    "name": "registerChild",
                     "url": {
                         "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
                         "queryParams": {

@@ -19,7 +19,7 @@ public class PNCService {
         this.pncSchedulesService = pncSchedulesService;
     }
 
-    public void registerNewChild(ChildRegistrationRequest request) {
+    public void registerChild(ChildRegistrationRequest request) {
         alertForMissingImmunization(request, "opv0", "OPV 0");
         alertForMissingImmunization(request, "bcg", "BCG");
         alertForMissingImmunization(request, "hepB0", "HEP B0");

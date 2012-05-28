@@ -31,7 +31,7 @@ public class DrishtiMCTSService {
     public void registerChild(ChildRegistrationInformation childInformation) {
     }
 
-    public void registerNewChild(ChildRegistrationRequest childRegistrationRequest) {
+    public void registerChild(ChildRegistrationRequest childRegistrationRequest) {
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest) {

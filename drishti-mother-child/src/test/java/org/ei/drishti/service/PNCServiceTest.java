@@ -33,7 +33,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
-        pncService.registerNewChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
+        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
 
         verify(actionService).alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", "OPV 0", "due", currentTime.plusDays(2));
         verify(actionService).alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", "BCG", "due", currentTime.plusDays(2));
@@ -45,7 +45,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
-        pncService.registerNewChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
+        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
 
         verify(pncSchedulesService).enrollChild("Case X", new LocalDate(currentTime.toDate()));
     }
@@ -117,7 +117,7 @@ public class PNCServiceTest extends BaseUnitTest {
         ActionService alertServiceMock = mock(ActionService.class);
         PNCService pncService = new PNCService(alertServiceMock, mock(PNCSchedulesService.class));
 
-        pncService.registerNewChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
+        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
 
         for (String expectedAlert : expectedAlertsRaised) {
             verify(alertServiceMock).alertForChild("Case X", "Child 1", "bherya", "DEMO ANM", "TC 1", expectedAlert, "due", currentTime.plusDays(2));
