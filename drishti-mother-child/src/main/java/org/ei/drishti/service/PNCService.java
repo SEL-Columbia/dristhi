@@ -3,6 +3,8 @@ package org.ei.drishti.service;
 import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildRegistrationRequest;
+import org.ei.drishti.domain.Child;
+import org.ei.drishti.repository.AllChildren;
 import org.joda.time.DateTime;
 import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +14,18 @@ import org.springframework.stereotype.Service;
 public class PNCService {
     private final ActionService actionService;
     private final PNCSchedulesService pncSchedulesService;
+    private final AllChildren allChildren;
 
     @Autowired
-    public PNCService(ActionService actionService, PNCSchedulesService pncSchedulesService) {
+    public PNCService(ActionService actionService, PNCSchedulesService pncSchedulesService, AllChildren allChildren) {
         this.actionService = actionService;
         this.pncSchedulesService = pncSchedulesService;
+        this.allChildren = allChildren;
     }
 
     public void registerChild(ChildRegistrationRequest request) {
+        allChildren.register(new Child(request.caseId(), request.thaayiCardNumber(), request.name(), request.village()).withAnm(request.anmIdentifier()));
+
         alertForMissingImmunization(request, "opv0", "OPV 0");
         alertForMissingImmunization(request, "bcg", "BCG");
         alertForMissingImmunization(request, "hepB0", "HEP B0");

@@ -1,12 +1,10 @@
 package org.ei.drishti.repository.it;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatcher;
 import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
+import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
@@ -40,19 +39,18 @@ public class AllMothersIntegrationTest {
         assertThat(allTheMothers.size(), is(1));
 
         Mother motherFromDB = allTheMothers.get(0);
-        assertThat(motherFromDB, is(motherWithSameFieldsAs(mother)));
+        assertThat(motherFromDB, hasSameFieldsAs(mother));
     }
 
     @Test
-    public void shouldFindARegisteredMotherByThaayiCardNumber() {
+    public void shouldFindARegisteredMotherByCaseId() {
         String caseId = "CASE-1";
         Mother motherToRegister = new Mother(caseId, "THAAYI-CARD-1", "Theresa", "bherya");
         mothers.register(motherToRegister);
 
         Mother mother = mothers.findByCaseId(caseId);
 
-        assertThat(mother, is(new Mother(caseId, "THAAYI-CARD-1", "Theresa", "bherya")));
-        assertThat(mother.name(), is("Theresa"));
+        assertThat(mother, hasSameFieldsAs(motherToRegister));
     }
 
     @Test
@@ -64,14 +62,4 @@ public class AllMothersIntegrationTest {
         assertTrue(mothers.motherExists("CASE-1"));
         assertFalse(mothers.motherExists("CASE-NOT-KNOWN"));
     }
-
-    private ArgumentMatcher<Mother> motherWithSameFieldsAs(final Mother mother) {
-        return new ArgumentMatcher<Mother>() {
-            @Override
-            public boolean matches(Object o) {
-                return EqualsBuilder.reflectionEquals(mother, o);
-            }
-        };
-    }
-
 }

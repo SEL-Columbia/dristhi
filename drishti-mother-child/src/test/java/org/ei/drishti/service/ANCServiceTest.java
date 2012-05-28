@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.ei.drishti.contract.AnteNatalCareCloseInformation;
 import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
 import org.ei.drishti.contract.AnteNatalCareInformation;
@@ -9,12 +8,11 @@ import org.ei.drishti.repository.AllMothers;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.motechproject.model.Time;
 
+import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -47,7 +45,7 @@ public class ANCServiceTest {
 
         service.registerANCCase(enrollmentInfo);
 
-        verify(mothers).register(sameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName, "bherya").withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp).withECNumber("EC Number 1")));
+        verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName, "bherya").withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp).withECNumber("EC Number 1")));
     }
 
     @Test
@@ -184,15 +182,6 @@ public class ANCServiceTest {
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM"));
 
         verifyZeroInteractions(ancSchedulesService);
-    }
-
-    private Mother sameFieldsAs(final Mother mother) {
-        return argThat(new ArgumentMatcher<Mother>() {
-            @Override
-            public boolean matches(Object o) {
-                return EqualsBuilder.reflectionEquals(mother, o);
-            }
-        });
     }
 
     private LocalDate yesterday() {
