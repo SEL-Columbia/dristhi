@@ -55,7 +55,7 @@
                 </connector>
                 <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
                     <port>8443</port>
-                    <keystore>${main.basedir}/assets/drishti.keystore</keystore>
+                    <keystore>${main.basedir}/assets/security/drishti.keystore</keystore>
                     <keyPassword>mouse monitor cube</keyPassword>
                     <password>mouse monitor cube</password>
                 </connector>
