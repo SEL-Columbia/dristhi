@@ -49,6 +49,17 @@
           </webAppConfig>
           <stopKey>secret</stopKey>
           <stopPort>6669</stopPort>
+            <connectors>
+                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                    <port>8080</port>
+                </connector>
+                <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
+                    <port>8443</port>
+                    <keystore>${main.basedir}/assets/drishti.keystore</keystore>
+                    <keyPassword>mouse monitor cube</keyPassword>
+                    <password>mouse monitor cube</password>
+                </connector>
+            </connectors>
         </configuration>
         <executions>
           <execution>
