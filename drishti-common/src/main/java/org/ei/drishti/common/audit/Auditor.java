@@ -3,11 +3,14 @@ package org.ei.drishti.common.audit;
 
 import org.joda.time.DateTime;
 import org.motechproject.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,6 +24,7 @@ public class Auditor {
     private final int numberOfAuditMessagesToHoldOnTo;
     private static long messageIndex = DateTime.now().getMillis();
     private static ReentrantLock lock = new ReentrantLock();
+    private static Logger logger = LoggerFactory.getLogger(Auditor.class.toString());
 
     @Autowired
     public Auditor(@Value("#{drishti['number.of.audit.messages']}") int numberOfAuditMessagesToHoldOnTo) {
@@ -56,8 +60,10 @@ public class Auditor {
     private void createAuditMessage(AuditMessageType messageType, Map<String, String> data) {
         lock.lock();
         try {
-            messages.add(new AuditMessage(DateUtil.now(), messageIndex, messageType, data));
+            AuditMessage auditMessage = new AuditMessage(DateUtil.now(), messageIndex, messageType, data);
+            messages.add(auditMessage);
             messageIndex++;
+            logger.info(MessageFormat.format("Added message {0}: {1}", messageIndex, auditMessage));
             prune();
         } finally {
             lock.unlock();

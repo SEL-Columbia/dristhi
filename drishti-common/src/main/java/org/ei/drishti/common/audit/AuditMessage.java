@@ -1,5 +1,6 @@
 package org.ei.drishti.common.audit;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 
 import java.util.Map;
@@ -51,5 +52,10 @@ public class AuditMessage implements Comparable<AuditMessage> {
     @Override
     public int compareTo(AuditMessage other) {
         return Long.valueOf(messageIndex - other.messageIndex).intValue();
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
