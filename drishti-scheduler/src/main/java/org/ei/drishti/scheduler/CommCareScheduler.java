@@ -1,6 +1,8 @@
 package org.ei.drishti.scheduler;
 
+import org.ei.commcare.listener.AuditorRegistrar;
 import org.ei.commcare.listener.CommCareListener;
+import org.ei.drishti.common.audit.Auditor;
 import org.joda.time.DateTime;
 import org.motechproject.model.MotechEvent;
 import org.motechproject.model.RepeatingSchedulableJob;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.HashMap;
 
+import static org.ei.drishti.common.audit.AuditMessageType.FORM_SUBMISSION;
 import static org.joda.time.DateTimeConstants.MILLIS_PER_SECOND;
 
 @Component
@@ -25,9 +28,16 @@ public class CommCareScheduler {
     private boolean shouldFetchFromCommCare = false;
 
     @Autowired
-    public CommCareScheduler(MotechSchedulerService service, CommCareListener careListener) {
+    public CommCareScheduler(MotechSchedulerService service, CommCareListener careListener, AuditorRegistrar auditorRegistrar, final Auditor drishtiAuditor) {
         this.service = service;
         this.careListener = careListener;
+
+        auditorRegistrar.register(new org.ei.commcare.listener.Auditor() {
+            @Override
+            public void auditFormSubmission(String formId, String formType, String formData) {
+                drishtiAuditor.audit(FORM_SUBMISSION).with("formId", formId).with("formType", formType).with("formData", formData).done();
+            }
+        });
     }
 
     public void startTimedScheduler() {
