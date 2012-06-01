@@ -16,7 +16,7 @@
     <url>http://github.com/modilabs/dristhi</url>
 
     <properties>
-        <jetty.port>9979</jetty.port>
+        <jetty.port>9980</jetty.port>
         <release.version>0.1-SNAPSHOT</release.version>
         <main.basedir>${project.basedir}/..</main.basedir>
     </properties>
@@ -26,6 +26,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.motechproject</groupId>
+            <artifactId>commcare-listener</artifactId>
+            <version>0.10-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -71,10 +76,10 @@
                         <contextPath>/</contextPath>
                     </webAppConfig>
                     <stopKey>secret</stopKey>
-                    <stopPort>6669</stopPort>
+                    <stopPort>6680</stopPort>
                     <connectors>
                         <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>9979</port>
+                            <port>${jetty.port}</port>
                         </connector>
                     </connectors>
                 </configuration>
