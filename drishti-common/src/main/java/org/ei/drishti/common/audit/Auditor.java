@@ -62,7 +62,7 @@ public class Auditor {
             AuditMessage auditMessage = new AuditMessage(DateUtil.now(), messageIndex, messageType, data);
             messages.add(auditMessage);
             messageIndex++;
-            logger.info(MessageFormat.format("Added message {0}: {1}", messageIndex, auditMessage));
+            logger.info(MessageFormat.format("Added message {0} {1} {2} {3}: {4}", messageIndex, Thread.currentThread().getId(), hashCode(), lock.hashCode(), auditMessage));
             prune();
         } finally {
             lock.unlock();
