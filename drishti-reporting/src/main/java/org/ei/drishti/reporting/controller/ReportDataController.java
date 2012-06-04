@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ReportDataController {
-    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    @RequestMapping(value = "/report/submit", method = RequestMethod.POST)
     @ResponseBody
     public String submit(@RequestBody ReportingData reportingData) {
         return "Success.";
