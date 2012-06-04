@@ -14,7 +14,6 @@ import org.apache.http.impl.conn.SingleClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
@@ -39,9 +38,10 @@ public class HttpAgent {
         httpClient = new DefaultHttpClient(connectionManager, basicHttpParams);
     }
 
-    public HttpResponse post(String url, String data) {
+    public HttpResponse post(String url, String data, String contentType) {
         HttpPost request = new HttpPost(url);
         try {
+            request.setHeader("Content-Type", contentType);
             request.setEntity(new StringEntity(data));
             org.apache.http.HttpResponse response = httpClient.execute(request);
             return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));

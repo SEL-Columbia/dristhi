@@ -1,5 +1,6 @@
 package org.ei.drishti.listener;
 
+import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
 import org.junit.Before;
@@ -24,12 +25,11 @@ public class ReportingEventListenerTest {
     @Test
     public void shouldSubmitReportingData() throws Exception {
         HashMap<String, Object> data = new HashMap<String, Object>();
-        data.put("abc", "10");
-        data.put("def", "42");
-        when(agent.post(eq("http://drishti"), any(String.class))).thenReturn(new HttpResponse(true, null));
+        data.put("data", new ReportingData("Boo").with("abc", "def"));
+        when(agent.post(eq("http://drishti"), any(String.class), eq("application/json"))).thenReturn(new HttpResponse(true, null));
 
         listener.submitReportingData(new MotechEvent("SUBJECT", data));
 
-        verify(agent).post("http://drishti", "{\"abc\":\"10\",\"def\":\"42\"}");
+        verify(agent).post("http://drishti", "{\"type\":\"Boo\",\"data\":{\"abc\":\"def\"}}", "application/json");
     }
 }

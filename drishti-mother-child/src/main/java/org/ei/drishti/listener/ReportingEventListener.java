@@ -26,8 +26,8 @@ public class ReportingEventListener {
 
     @MotechListener(subjects = ReportEvent.SUBJECT)
     public void submitReportingData(MotechEvent event){
-        String data = new Gson().toJson(event.getParameters());
-        HttpResponse response = httpAgent.post(url, data);
+        String data = new Gson().toJson(event.getParameters().get("data"));
+        HttpResponse response = httpAgent.post(url, data, "application/json");
         if (!response.isSuccess()) {
             logger.error("Reporting data post failed. URL: " + url + ". Data: " + data + ". Response: " + response.body());
         }

@@ -12,6 +12,7 @@ public class ReportDataController {
     @RequestMapping(value = "/report/submit", method = RequestMethod.POST)
     @ResponseBody
     public String submit(@RequestBody ReportingData reportingData) {
+        System.out.println("Data: " + reportingData);
         return "Success.";
     }
 }

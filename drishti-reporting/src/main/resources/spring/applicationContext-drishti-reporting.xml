@@ -8,9 +8,6 @@
 
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <import resource="classpath:integrationCommon.xml"/>
-    <import resource="classpath:applicationPlatformServerAPI.xml"/>
-
     <mvc:default-servlet-handler/>
 
     <context:annotation-config/>
