@@ -154,68 +154,123 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>
+                <version>1.5</version>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>9.1-901.jdbc4</version>
+                    </dependency>
+                </dependencies>
+
+                <!-- common configuration shared by all executions -->
+                <configuration>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql://${postgres.server}:${postgres.port}:postgres</url>
+                    <username>${postgres.other.user}</username>
+                    <password>${postgres.other.password}</password>
+                    <!--all executions are ignored if -Dmaven.test.skip=true-->
+                    <skip>${maven.test.skip}</skip>
+                </configuration>
+
+                <executions>
                     <execution>
-                        <id>setup-quartz-schema-before-test</id>
-                        <phase>process-test-classes</phase>
-                        <configuration>
-                            <target>
-                                <echo message="Quartz schema loading: START"/>
-                                <path id="dependencies">
-                                    <fileset file="${main.basedir}/build/lib/mysql-connector-java-5.1.13.jar"/>
-                                </path>
-                                <sql driver="${mysql.driver}"
-                                     url="jdbc:mysql://${mysql.server}:${mysql.port}?autoReconnect=true"
-                                     userid="${mysql.user}" classpathref="dependencies" password="${mysql.password}">
-                                    drop database if exists ${mysql.db};
-                                    create database ${mysql.db};
-                                </sql>
-                                <sql driver="${mysql.driver}"
-                                     url="jdbc:mysql://${mysql.server}:${mysql.port}/${mysql.db}?autoReconnect=true"
-                                     userid="${mysql.user}" classpathref="dependencies" password="${mysql.password}"
-                                     src="${main.basedir}/build/sql/tables_mysql_innodb.sql"/>
-                                <echo message="Quartz schema loading: END"/>
-                            </target>
-                        </configuration>
+                        <id>drop-quartz-db</id>
+                        <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>execute</goal>
                         </goals>
+                        <configuration>
+                            <!-- need another database to drop the targeted one -->
+                            <url>jdbc:postgresql://${postgres.server}:${postgres.port}/postgres</url>
+                            <autocommit>true</autocommit>
+                            <sqlCommand>drop database ${postgres.db}</sqlCommand>
+                            <!-- ignore error when database is not available -->
+                            <onError>continue</onError>
+                        </configuration>
                     </execution>
                     <execution>
-                        <id>setup-quartz-schema-after-test</id>
-                        <phase>prepare-package</phase>
-                        <configuration>
-                            <target>
-                                <echo message="Quartz schema loading: START"/>
-                                <path id="dependencies">
-                                    <fileset file="${main.basedir}/build/lib/mysql-connector-java-5.1.13.jar"/>
-                                </path>
-                                <sql driver="${mysql.driver}"
-                                     url="jdbc:mysql://${mysql.server}:${mysql.port}?autoReconnect=true"
-                                     userid="${mysql.user}" classpathref="dependencies" password="${mysql.password}">
-                                    drop database if exists ${mysql.db};
-                                    create database ${mysql.db};
-                                </sql>
-                                <sql driver="${mysql.driver}"
-                                     url="jdbc:mysql://${mysql.server}:${mysql.port}/${mysql.db}?autoReconnect=true"
-                                     userid="${mysql.user}" classpathref="dependencies" password="${mysql.password}"
-                                     src="${main.basedir}/build/sql/tables_mysql_innodb.sql"/>
-                                <echo message="Quartz schema loading: END"/>
-                            </target>
-                        </configuration>
+                        <id>create-quartz-db</id>
+                        <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>execute</goal>
                         </goals>
+                        <configuration>
+                            <!-- need another database to drop the targeted one -->
+                            <url>jdbc:postgresql://${postgres.server}:${postgres.port}/postgres</url>
+                            <username>${postgres.other.user}</username>
+                            <password>${postgres.other.password}</password>
+                            <autocommit>true</autocommit>
+                            <sqlCommand>create database ${postgres.db}</sqlCommand>
+                            <!-- ignore error when database is not available -->
+                            <onError>abort</onError>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>create-schema</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <url>jdbc:postgresql://${postgres.server}:${postgres.port}/${postgres.db}</url>
+                            <username>${postgres.user}</username>
+                            <password>${postgres.password}</password>
+                            <autocommit>true</autocommit>
+                            <srcFiles>
+                                <srcFile>../build/sql/tables_quartz.sql</srcFile>
+                            </srcFiles>
+                        </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.9</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <argLine>-XX:MaxPermSize=1024M</argLine>
+                            <includes>
+                                <include>**/*IntegrationTest.java</include>
+                            </includes>
+                            <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.7.2</version>
+                <configuration>
+                    <printSummary>true</printSummary>
+                    <excludes>
+                        <exclude>**/*IntegrationTest.java</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
 
     <dependencies>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.12</version>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901.jdbc4</version>
         </dependency>
     </dependencies>
 </project>
