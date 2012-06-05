@@ -1,0 +1,1 @@
+CREATE TABLE report.mother_registration(ID SERIAL PRIMARY KEY, day VARCHAR);

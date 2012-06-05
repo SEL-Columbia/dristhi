@@ -32,4 +32,8 @@ public class ReportingData implements Serializable {
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
+
+    public String get(String key) {
+        return data.get(key);
+    }
 }

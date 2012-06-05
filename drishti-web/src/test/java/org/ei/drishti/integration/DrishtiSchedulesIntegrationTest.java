@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.delivery.schedule.util.FakeSchedule;
@@ -28,6 +29,7 @@ import static org.motechproject.util.DateUtil.newDate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/applicationContext-drishti-web.xml")
+@Ignore
 public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     private static final int JANUARY = 1;
     private static final int FEBRUARY = 2;

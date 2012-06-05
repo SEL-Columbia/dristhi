@@ -171,13 +171,11 @@
                     </dependency>
                 </dependencies>
 
-                <!-- common configuration shared by all executions -->
                 <configuration>
                     <driver>org.postgresql.Driver</driver>
                     <url>jdbc:postgresql://${postgres.server}:${postgres.port}:postgres</url>
                     <username>${postgres.other.user}</username>
                     <password>${postgres.other.password}</password>
-                    <!--all executions are ignored if -Dmaven.test.skip=true-->
                     <skip>${maven.test.skip}</skip>
                 </configuration>
 
@@ -189,12 +187,10 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <!-- need another database to drop the targeted one -->
                             <url>jdbc:postgresql://${postgres.server}:${postgres.port}/postgres</url>
                             <autocommit>true</autocommit>
-                            <sqlCommand>drop database ${postgres.db}</sqlCommand>
-                            <!-- ignore error when database is not available -->
-                            <onError>continue</onError>
+                            <sqlCommand> drop database if exists ${reporting.db}; drop database if exists ${quartz.db};</sqlCommand>
+                            <onError>abort</onError>
                         </configuration>
                     </execution>
                     <execution>
@@ -204,13 +200,33 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <!-- need another database to drop the targeted one -->
                             <url>jdbc:postgresql://${postgres.server}:${postgres.port}/postgres</url>
                             <username>${postgres.other.user}</username>
                             <password>${postgres.other.password}</password>
                             <autocommit>true</autocommit>
-                            <sqlCommand>create database ${postgres.db}</sqlCommand>
-                            <!-- ignore error when database is not available -->
+                            <sqlCommand>
+                                create database ${reporting.db};
+                                create database ${quartz.db};
+                            </sqlCommand>
+                            <onError>abort</onError>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>create-reporting-schema</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <url>jdbc:postgresql://${postgres.server}:${postgres.port}/${reporting.db}</url>
+                            <username>${postgres.other.user}</username>
+                            <password>${postgres.other.password}</password>
+                            <autocommit>true</autocommit>
+                            <sqlCommand>
+                                DROP SCHEMA IF EXISTS ${reporting.schema} CASCADE;
+                                CREATE SCHEMA ${reporting.schema} AUTHORIZATION ${postgres.user};
+                                GRANT ALL ON SCHEMA ${reporting.schema} TO ${postgres.user};
+                            </sqlCommand>
                             <onError>abort</onError>
                         </configuration>
                     </execution>
@@ -222,7 +238,7 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <url>jdbc:postgresql://${postgres.server}:${postgres.port}/${postgres.db}</url>
+                            <url>jdbc:postgresql://${postgres.server}:${postgres.port}/${quartz.db}</url>
                             <username>${postgres.user}</username>
                             <password>${postgres.password}</password>
                             <autocommit>true</autocommit>
