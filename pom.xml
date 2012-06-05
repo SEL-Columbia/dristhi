@@ -26,6 +26,7 @@
         <db.name.motech-scheduletracking>motech-scheduletracking</db.name.motech-scheduletracking>
         <main.basedir>${project.basedir}</main.basedir>
         <motech.version>0.11-SNAPSHOT</motech.version>
+        <motech.contrib.version>0.10.2-SNAPSHOT</motech.contrib.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.0.5.RELEASE</spring.version>
     </properties>
