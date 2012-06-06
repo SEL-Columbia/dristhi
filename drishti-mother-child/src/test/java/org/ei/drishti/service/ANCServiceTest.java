@@ -32,7 +32,7 @@ public class ANCServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ANCService(mothers, ancSchedulesService);
+        service = new ANCService(mothers, ancSchedulesService, actionService);
     }
 
     @Test
@@ -46,6 +46,7 @@ public class ANCServiceTest {
         service.registerANCCase(enrollmentInfo);
 
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName, "bherya").withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp).withECNumber("EC Number 1")));
+        verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, motherName, "ANM ID 1");
     }
 
     @Test

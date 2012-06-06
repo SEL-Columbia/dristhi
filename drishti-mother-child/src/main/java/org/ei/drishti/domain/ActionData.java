@@ -33,6 +33,10 @@ public class ActionData {
         return new ActionData("deleteEC");
     }
 
+    public static ActionData createPregnancy(String ecNumber, String thaayiCardNumber, String motherName) {
+        return new ActionData("createPregnancy").with("ecNumber", ecNumber).with("thaayiCardNumber", thaayiCardNumber).with("motherName", motherName);
+    }
+
     public static ActionData from(String actionType, Map<String, String> data) {
         ActionData actionData = new ActionData(actionType);
         actionData.data.putAll(data);

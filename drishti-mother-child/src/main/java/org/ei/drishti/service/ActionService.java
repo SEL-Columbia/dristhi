@@ -69,4 +69,8 @@ public class ActionService {
     public void closeEligibleCouple(String caseId, String anmIdentifier) {
         allActions.addWithDelete(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()));
     }
+
+    public void registerPregnancy(String caseId, String ecNumber, String thaayiCardNumber, String motherName, String anmIdentifier) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.createPregnancy(ecNumber, thaayiCardNumber, motherName)));
+    }
 }

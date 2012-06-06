@@ -112,4 +112,11 @@ public class ActionServiceTest {
 
         verify(allActions).addWithDelete(new Action("Case X", "ANM X", ActionData.deleteEligibleCouple()));
     }
+
+    @Test
+    public void shouldAddActionForPregnancyRegistration() throws Exception {
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "Mother 1", "ANM X");
+
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createPregnancy("EC Number 1", "Thaayi 1", "Mother 1")));
+    }
 }
