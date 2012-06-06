@@ -1,11 +1,9 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.domain.Action;
-import org.ei.drishti.domain.ActionData;
-import org.ei.drishti.domain.Child;
-import org.ei.drishti.domain.Mother;
+import org.ei.drishti.domain.*;
 import org.ei.drishti.repository.AllActions;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -17,6 +15,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -27,13 +26,15 @@ public class ActionServiceTest {
     private AllMothers allMothers;
     @Mock
     private AllChildren allChildren;
+    @Mock
+    private AllEligibleCouples allEligibleCouples;
 
     private ActionService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ActionService(allActions, allMothers, allChildren);
+        service = new ActionService(allActions, allMothers, allChildren, allEligibleCouples);
     }
 
     @Test
@@ -115,8 +116,19 @@ public class ActionServiceTest {
 
     @Test
     public void shouldAddActionForPregnancyRegistration() throws Exception {
-        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "Mother 1", "ANM X");
+        when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "Village X")).thenReturn(new EligibleCouple("Case EC 1", "EC Number 1"));
 
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createPregnancy("EC Number 1", "Thaayi 1", "Mother 1")));
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "Mother 1", "ANM X", "Village X");
+
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createPregnancy("Case EC 1", "Thaayi 1", "Mother 1")));
+    }
+
+    @Test
+    public void shouldNotAddActionForPregnancyRegistrationIfECNotFound() throws Exception {
+        when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "Village X")).thenReturn(null);
+
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "Mother 1", "ANM X", "Village X");
+
+        verifyNoMoreInteractions(allActions);
     }
 }

@@ -43,7 +43,7 @@ public class ANCService {
         LocalDate referenceDate = info.lmpDate() != null ? info.lmpDate() : DateUtil.today();
 
         ancSchedulesService.enrollMother(info.caseId(), referenceDate, new Time(now()), preferredAlertTime);
-        actionService.registerPregnancy(info.caseId(), info.ecNumber(), info.thaayiCardNumber(), info.name(), info.anmIdentifier());
+        actionService.registerPregnancy(info.caseId(), info.ecNumber(), info.thaayiCardNumber(), info.name(), info.anmIdentifier(), info.village());
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {

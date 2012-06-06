@@ -14,6 +14,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
@@ -59,5 +60,19 @@ public class AllEligibleCouplesIntegrationTest {
         eligibleCouples.close("THIS CASE DOES NOT EXIST");
 
         assertThat(eligibleCouples.getAll(), is(asList(couple)));
+    }
+
+    @Test
+    public void shouldFindEligibleCoupleByCaseIdAndVillage() throws Exception {
+        EligibleCouple couple1 = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1").withANMIdentifier("ANM X").withLocation("Village 1", "SubCenter 1");
+        EligibleCouple couple2 = new EligibleCouple("CASE Y", "EC Number 2").withCouple("Wife 2", "Husband 2").withANMIdentifier("ANM X").withLocation("Village 2", "SubCenter 2");
+        eligibleCouples.register(couple1);
+        eligibleCouples.register(couple2);
+        assertThat(eligibleCouples.getAll(), is(asList(couple1, couple2)));
+
+        assertThat(eligibleCouples.findByECNumberAndVillage("EC Number 1", "Village 1"), is(couple1));
+        assertThat(eligibleCouples.findByECNumberAndVillage("EC Number 2", "Village 2"), is(couple2));
+        assertThat(eligibleCouples.findByECNumberAndVillage("EC Number 1", "Village NOT RIGHT"), is(nullValue()));
+        assertThat(eligibleCouples.findByECNumberAndVillage("EC Number NOT RIGHT", "Village 1"), is(nullValue()));
     }
 }

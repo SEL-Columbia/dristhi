@@ -1,8 +1,10 @@
 package org.ei.drishti.repository;
 
 import org.ei.drishti.domain.EligibleCouple;
+import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
+import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,5 +43,16 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
             return;
         }
         remove(couple);
+    }
+
+    @View(name = "eligible_couple_by_ecnumber_and_village", map = "function(doc) { if (doc.type === 'EligibleCouple') { emit([doc.ecNumber, doc.village], null); } }")
+    public EligibleCouple findByECNumberAndVillage(String ecNumber, String village) {
+        ComplexKey key = ComplexKey.of(ecNumber, village);
+
+        List<EligibleCouple> couples = db.queryView(createQuery("eligible_couple_by_ecnumber_and_village").key(key).includeDocs(true), EligibleCouple.class);
+        if (couples.size() == 0) {
+            return null;
+        }
+        return couples.get(0);
     }
 }

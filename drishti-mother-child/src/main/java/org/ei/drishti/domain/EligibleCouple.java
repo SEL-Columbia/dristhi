@@ -51,6 +51,10 @@ public class EligibleCouple extends MotechBaseDataObject {
         return wife;
     }
 
+    public String caseId() {
+        return caseId;
+    }
+
     private String getCaseId() {
         return caseId;
     }

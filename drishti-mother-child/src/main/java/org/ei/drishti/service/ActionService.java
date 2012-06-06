@@ -1,11 +1,9 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.domain.Action;
-import org.ei.drishti.domain.ActionData;
-import org.ei.drishti.domain.Child;
-import org.ei.drishti.domain.Mother;
+import org.ei.drishti.domain.*;
 import org.ei.drishti.repository.AllActions;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +16,14 @@ public class ActionService {
     private AllActions allActions;
     private AllMothers allMothers;
     private AllChildren allChildren;
+    private AllEligibleCouples allEligibleCouples;
 
     @Autowired
-    public ActionService(AllActions allActions, AllMothers allMothers, AllChildren allChildren) {
+    public ActionService(AllActions allActions, AllMothers allMothers, AllChildren allChildren, AllEligibleCouples allEligibleCouples) {
         this.allActions = allActions;
         this.allMothers = allMothers;
         this.allChildren = allChildren;
+        this.allEligibleCouples = allEligibleCouples;
     }
 
     public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
@@ -70,7 +70,11 @@ public class ActionService {
         allActions.addWithDelete(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()));
     }
 
-    public void registerPregnancy(String caseId, String ecNumber, String thaayiCardNumber, String motherName, String anmIdentifier) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.createPregnancy(ecNumber, thaayiCardNumber, motherName)));
+    public void registerPregnancy(String caseId, String ecNumber, String thaayiCardNumber, String motherName, String anmIdentifier, String village) {
+        EligibleCouple eligibleCouple = allEligibleCouples.findByECNumberAndVillage(ecNumber, village);
+        if(eligibleCouple == null){
+            return;
+        }
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.createPregnancy(eligibleCouple.caseId(), thaayiCardNumber, motherName)));
     }
 }
