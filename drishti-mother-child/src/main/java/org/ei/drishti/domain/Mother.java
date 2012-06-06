@@ -78,7 +78,7 @@ public class Mother extends MotechBaseDataObject {
         return caseId.hashCode();
     }
 
-    private String getCaseId() {
+    public String caseId() {
         return caseId;
     }
 
@@ -96,5 +96,17 @@ public class Mother extends MotechBaseDataObject {
 
     public String village() {
         return village;
+    }
+
+    public String ecNumber() {
+        return ecNumber;
+    }
+
+    private String getCaseId() {
+        return caseId;
+    }
+
+    private String getThaayiCardNumber() {
+        return thaayiCardNumber;
     }
 }

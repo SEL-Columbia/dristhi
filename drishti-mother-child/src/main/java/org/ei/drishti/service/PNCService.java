@@ -31,6 +31,7 @@ public class PNCService {
         alertForMissingImmunization(request, "hepB0", "HEP B0");
 
         pncSchedulesService.enrollChild(request.caseId(), request.dateOfBirth());
+        actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), request.thaayiCardNumber());
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest) {

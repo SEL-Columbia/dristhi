@@ -46,7 +46,7 @@ public class ANCServiceTest {
         service.registerANCCase(enrollmentInfo);
 
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName, "bherya").withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp).withECNumber("EC Number 1")));
-        verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, motherName, "ANM ID 1", "bherya");
+        verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, "ANM ID 1", "bherya");
     }
 
     @Test
@@ -171,16 +171,17 @@ public class ANCServiceTest {
     public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X"));
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "Abort"));
 
         verify(ancSchedulesService).closeCase("CASE-X");
+        verify(actionService).updateDeliveryOutcome("CASE-X", "Abort");
     }
 
     @Test
     public void shouldNotUnEnrollAMotherFromScheduleWhenSheIsNotRegistered() {
         when(mothers.motherExists("CASE-UNKNOWN-MOM")).thenReturn(false);
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM"));
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM", null));
 
         verifyZeroInteractions(ancSchedulesService);
     }

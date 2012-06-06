@@ -33,8 +33,16 @@ public class ActionData {
         return new ActionData("deleteEC");
     }
 
-    public static ActionData createPregnancy(String ecCaseId, String thaayiCardNumber, String motherName) {
-        return new ActionData("createPregnancy").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber).with("motherName", motherName);
+    public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber) {
+        return new ActionData("createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber);
+    }
+
+    public static ActionData updateBeneficiary(String status) {
+        return new ActionData("updateBeneficiary").with("status", status);
+    }
+
+    public static ActionData registerChildBirth(String motherCaseId) {
+        return new ActionData("createChildBeneficiary").with("motherCaseId", motherCaseId);
     }
 
     public static ActionData from(String actionType, Map<String, String> data) {

@@ -14,9 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ActionServiceTest {
@@ -115,20 +113,58 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldAddActionForPregnancyRegistration() throws Exception {
+    public void shouldAddActionForBeneficiaryRegistration() throws Exception {
         when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "Village X")).thenReturn(new EligibleCouple("Case EC 1", "EC Number 1"));
 
-        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "Mother 1", "ANM X", "Village X");
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X");
 
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createPregnancy("Case EC 1", "Thaayi 1", "Mother 1")));
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createBeneficiary("Case EC 1", "Thaayi 1")));
     }
 
     @Test
-    public void shouldNotAddActionForPregnancyRegistrationIfECNotFound() throws Exception {
+    public void shouldNotAddActionForBeneficiaryRegistrationIfECNotFound() throws Exception {
         when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "Village X")).thenReturn(null);
 
-        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "Mother 1", "ANM X", "Village X");
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X");
 
-        verifyNoMoreInteractions(allActions);
+        verifyZeroInteractions(allActions);
+    }
+
+    @Test
+    public void shouldUpdateBeneficiaryWhenECIsRegistered() throws Exception {
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "TC 1", "Theresa", "bherya").withAnm("ANM X", "ANM phone number").withECNumber("EC Number 1"));
+        when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "bherya")).thenReturn(new EligibleCouple("Case EC 1", "EC Number 1"));
+
+        service.updateDeliveryOutcome("Case X", "delivery");
+
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.updateBeneficiary("delivery")));
+    }
+
+    @Test
+    public void shouldUpdateBeneficiaryWhenECIsNotRegistered() throws Exception {
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "TC 1", "Theresa", "bherya").withAnm("ANM X", "ANM phone number").withECNumber("EC Number 1"));
+        when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "bherya")).thenReturn(null);
+
+        service.updateDeliveryOutcome("Case X", "delivery");
+
+        verifyZeroInteractions(allActions);
+    }
+
+    @Test
+    public void shouldRegisterChildBirth() throws Exception {
+        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MotherCaseId", "MotherThaayiCard 1", "Theresa", "bherya"));
+
+        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1");
+
+        verify(allActions).add(new Action("ChildCase Y", "ANM X", ActionData.registerChildBirth("MotherCaseId")));
+    }
+
+    @Test
+    public void shouldNotRegisterChildBirthWhenMotherIsNotFound() throws Exception {
+        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(null);
+
+        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1");
+
+        verifyZeroInteractions(allActions);
     }
 }

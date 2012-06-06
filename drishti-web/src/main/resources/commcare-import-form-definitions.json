@@ -67,7 +67,7 @@
                     },
                     "mappings": {
                         "form|case|case_id": "caseId",
-                        "form|dateofdelivery": "dateOfDelivery"
+                        "form|close_reason": "closeReason"
                     }
                 }
             ]
@@ -137,7 +137,7 @@
                     },
                     "mappings": {
                         "form|case|case_id": "caseId",
-                        "form|dateofdelivery": "dateOfDelivery"
+                        "form|close_reason": "closeReason"
                     }
                 }
             ]

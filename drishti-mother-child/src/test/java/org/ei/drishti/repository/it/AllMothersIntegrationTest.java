@@ -15,6 +15,7 @@ import java.util.List;
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -48,9 +49,18 @@ public class AllMothersIntegrationTest {
         Mother motherToRegister = new Mother(caseId, "THAAYI-CARD-1", "Theresa", "bherya");
         mothers.register(motherToRegister);
 
-        Mother mother = mothers.findByCaseId(caseId);
+        assertThat(mothers.findByCaseId(caseId), hasSameFieldsAs(motherToRegister));
+        assertThat(mothers.findByCaseId("SOME OTHER ID"), is(nullValue()));
+    }
 
-        assertThat(mother, hasSameFieldsAs(motherToRegister));
+    @Test
+    public void shouldFindARegisteredMotherByThaayiCardNumber() {
+        String thaayiCardNumber = "THAAYI-CARD-1";
+        Mother motherToRegister = new Mother("CASE-1", thaayiCardNumber, "Theresa", "bherya");
+        mothers.register(motherToRegister);
+
+        assertThat(mothers.findByThaayiCardNumber(thaayiCardNumber), hasSameFieldsAs(motherToRegister));
+        assertThat(mothers.findByThaayiCardNumber("SOME OTHER ID"), is(nullValue()));
     }
 
     @Test

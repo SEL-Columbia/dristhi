@@ -1,17 +1,20 @@
 package org.ei.drishti.contract;
 
-import java.util.Date;
-
 public class AnteNatalCareCloseInformation {
     private String caseId;
-    private Date dateOfDelivery;
+    private String closeReason;
 
-    public AnteNatalCareCloseInformation(String caseId) {
+    public AnteNatalCareCloseInformation(String caseId, String closeReason) {
         this.caseId = caseId;
+        this.closeReason = closeReason;
     }
 
     public String caseId() {
         return caseId;
+    }
+
+    public String reason() {
+        return closeReason;
     }
 
     @Override
