@@ -5,8 +5,6 @@ import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.repository.AllChildren;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -14,8 +12,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
 import org.motechproject.util.DateUtil;
-
-import java.text.MessageFormat;
 
 import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
 import static org.mockito.Mockito.*;
@@ -119,45 +115,29 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
-        ActionService alertServiceMock = mock(ActionService.class);
-        PNCService pncService = new PNCService(alertServiceMock, mock(PNCSchedulesService.class), allChildren);
+        ActionService actionService = mock(ActionService.class);
+        PNCService pncService = new PNCService(actionService, mock(PNCSchedulesService.class), allChildren);
 
         pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations));
 
         for (String expectedAlert : expectedDeletedAlertsRaised) {
-            verify(alertServiceMock).deleteAlertForVisitForChild("Case X", "DEMO ANM", expectedAlert);
+            verify(actionService).deleteAlertForVisitForChild("Case X", "DEMO ANM", expectedAlert);
         }
-        verifyNoMoreInteractions(alertServiceMock);
+        verifyNoMoreInteractions(actionService);
     }
 
     private void assertMissingAlertsAdded(String providedImmunizations, String... expectedAlertsRaised) {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        ActionService alertServiceMock = mock(ActionService.class);
-        PNCService pncService = new PNCService(alertServiceMock, mock(PNCSchedulesService.class), allChildren);
+        ActionService actionService = mock(ActionService.class);
+        PNCService pncService = new PNCService(actionService, mock(PNCSchedulesService.class), allChildren);
 
         pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
 
         for (String expectedAlert : expectedAlertsRaised) {
-            verify(alertServiceMock).alertForChild("Case X", expectedAlert, "due", currentTime.plusDays(2));
+            verify(actionService).alertForChild("Case X", expectedAlert, "due", currentTime.plusDays(2));
         }
-        verifyNoMoreInteractions(alertServiceMock);
-    }
-
-    private Child childWith(final String caseId, final String thaayiCardNumber, final String childName, final String village, final String anmIdentifier) {
-        return argThat(new BaseMatcher<Child>() {
-            @Override
-            public boolean matches(Object c) {
-                Child child = (Child) c;
-                return caseId.equals(child.caseId()) && thaayiCardNumber.equals(child.thaayiCardNumber()) &&
-                        childName.equals(child.name()) && village.equals(child.village()) && anmIdentifier.equals(child.anmIdentifier());
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText(MessageFormat.format("Expected child: {0}, {1}, {2}, {3}, {4}.",
-                        caseId, thaayiCardNumber, childName, village, anmIdentifier));
-            }
-        });
+        verify(actionService, times(1)).registerChildBirth(any(String.class), any(String.class), any(String.class));
+        verifyNoMoreInteractions(actionService);
     }
 }
