@@ -35,7 +35,7 @@ public class ActionData {
     }
 
     public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber) {
-        return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber);
+        return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber).with("status", "pregnant");
     }
 
     public static ActionData updateBeneficiary(String status) {

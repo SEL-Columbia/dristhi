@@ -90,21 +90,23 @@ public class AllActionsIntegrationTest {
 
     @Test
     public void shouldRemoveAllExistingAlertsForTheCaseFromRepositoryBeforeInsertingADeleteAllAlert() {
-        Action firstAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
-        Action secondAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 2", "late", DateTime.now()));
-        Action thirdAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 3", "due", DateTime.now()));
+        Action firstAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action secondAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 2", "late", DateTime.now()));
+        Action thirdAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 3", "due", DateTime.now()));
+        Action fourthNonAlertActionForSameMother = new Action("Case X", "ANM 1", ActionData.createBeneficiary("EC Case 1", "Thaayi 1"));
         Action actionOfSameANMForAnotherMother = new Action("Case ABC", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 3", "due", DateTime.now()));
         Action actionOfAnotherANM = new Action("Case Y", "ANM 2", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
-        allActions.add(firstAction);
-        allActions.add(secondAction);
-        allActions.add(thirdAction);
+        allActions.add(firstAlertAction);
+        allActions.add(secondAlertAction);
+        allActions.add(thirdAlertAction);
+        allActions.add(fourthNonAlertActionForSameMother);
         allActions.add(actionOfAnotherANM);
         allActions.add(actionOfSameANMForAnotherMother);
 
         Action deleteAllAction = new Action("Case X", "ANM 1", ActionData.deleteAllAlerts());
-        allActions.addWithDelete(deleteAllAction);
+        allActions.addWithDelete(deleteAllAction, "alert");
 
-        assertEquals(asList(actionOfSameANMForAnotherMother, deleteAllAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
+        assertEquals(asList(fourthNonAlertActionForSameMother, actionOfSameANMForAnotherMother, deleteAllAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
         assertEquals(asList(actionOfAnotherANM), allActions.findByANMIDAndTimeStamp("ANM 2", 0));
     }
 }

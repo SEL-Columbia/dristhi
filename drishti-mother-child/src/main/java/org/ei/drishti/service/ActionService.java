@@ -60,11 +60,11 @@ public class ActionService {
     public void deleteAllAlertsForMother(String caseID) {
         Mother mother = allMothers.findByCaseId(caseID);
 
-        allActions.addWithDelete(new Action(caseID, mother.anmIdentifier(), ActionData.deleteAllAlerts()));
+        allActions.addWithDelete(new Action(caseID, mother.anmIdentifier(), ActionData.deleteAllAlerts()), "alert");
     }
 
     public void deleteAllAlertsForChild(String caseID, String anmIdentifier) {
-        allActions.addWithDelete(new Action(caseID, anmIdentifier, ActionData.deleteAllAlerts()));
+        allActions.addWithDelete(new Action(caseID, anmIdentifier, ActionData.deleteAllAlerts()), "alert");
     }
 
     public void registerEligibleCouple(String caseId, String ecNumber, String wife, String husband, String anmIdentifier, String village, String subCenter) {
@@ -72,7 +72,7 @@ public class ActionService {
     }
 
     public void closeEligibleCouple(String caseId, String anmIdentifier) {
-        allActions.addWithDelete(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()));
+        allActions.addWithDelete(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()), "alert");
     }
 
     public void registerPregnancy(String caseId, String ecNumber, String thaayiCardNumber, String anmIdentifier, String village) {

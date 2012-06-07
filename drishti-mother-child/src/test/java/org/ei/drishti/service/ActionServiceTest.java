@@ -77,14 +77,14 @@ public class ActionServiceTest {
 
         service.deleteAllAlertsForMother("Case X");
 
-        verify(allActions).addWithDelete(new Action("Case X", "ANM ID 1", ActionData.deleteAllAlerts()));
+        verify(allActions).addWithDelete(new Action("Case X", "ANM ID 1", ActionData.deleteAllAlerts()), "alert");
     }
 
     @Test
     public void shouldCreateADeleteAllActionForAChild() throws Exception {
         service.deleteAllAlertsForChild("Case X", "DEMO ANM");
 
-        verify(allActions).addWithDelete(new Action("Case X", "DEMO ANM", ActionData.deleteAllAlerts()));
+        verify(allActions).addWithDelete(new Action("Case X", "DEMO ANM", ActionData.deleteAllAlerts()), "alert");
     }
 
     @Test
@@ -109,7 +109,7 @@ public class ActionServiceTest {
     public void shouldAddDeleteActionForEligibleCoupleClose() throws Exception {
         service.closeEligibleCouple("Case X", "ANM X");
 
-        verify(allActions).addWithDelete(new Action("Case X", "ANM X", ActionData.deleteEligibleCouple()));
+        verify(allActions).addWithDelete(new Action("Case X", "ANM X", ActionData.deleteEligibleCouple()), "alert");
     }
 
     @Test
