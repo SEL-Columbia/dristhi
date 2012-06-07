@@ -19,6 +19,8 @@ public class Action extends MotechBaseDataObject {
     @JsonProperty
     private Map<String, String> data;
     @JsonProperty
+    private String actionTarget;
+    @JsonProperty
     private String actionType;
     @JsonProperty
     private long timeStamp;
@@ -30,6 +32,7 @@ public class Action extends MotechBaseDataObject {
         this.anmIdentifier = anmIdentifier;
         this.caseID = caseId;
         this.data = actionData.data();
+        this.actionTarget = actionData.target();
         this.actionType = actionData.type();
         this.timeStamp = DateUtil.now().getMillis();
     }
@@ -67,5 +70,9 @@ public class Action extends MotechBaseDataObject {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public String target() {
+        return actionTarget;
     }
 }

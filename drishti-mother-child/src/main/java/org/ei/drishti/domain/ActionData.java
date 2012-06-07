@@ -10,48 +10,50 @@ import java.util.Map;
 
 public class ActionData {
     private final HashMap<String, String> data;
+    private String target;
     private String type;
 
     public static ActionData createAlert(String beneficiaryName, String village, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
-        return new ActionData("createAlert").with("beneficiaryName", beneficiaryName).with("village", village).with("thaayiCardNumber", thaayiCardNumber)
+        return new ActionData("alert", "createAlert").with("beneficiaryName", beneficiaryName).with("village", village).with("thaayiCardNumber", thaayiCardNumber)
                 .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("dueDate", dueDate.toLocalDate().toString());
     }
 
     public static ActionData deleteAlert(String visitCode) {
-        return new ActionData("deleteAlert").with("visitCode", visitCode);
+        return new ActionData("alert", "deleteAlert").with("visitCode", visitCode);
     }
 
     public static ActionData deleteAllAlerts() {
-        return new ActionData("deleteAllAlerts");
+        return new ActionData("alert", "deleteAllAlerts");
     }
 
     public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String village, String subCenter) {
-        return new ActionData("createEC").with("wife", wife).with("husband", husband).with("ecNumber", ecNumber).with("village", village).with("subcenter", subCenter);
+        return new ActionData("eligibleCouple", "createEC").with("wife", wife).with("husband", husband).with("ecNumber", ecNumber).with("village", village).with("subcenter", subCenter);
     }
 
     public static ActionData deleteEligibleCouple() {
-        return new ActionData("deleteEC");
+        return new ActionData("eligibleCouple", "deleteEC");
     }
 
     public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber) {
-        return new ActionData("createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber);
+        return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber);
     }
 
     public static ActionData updateBeneficiary(String status) {
-        return new ActionData("updateBeneficiary").with("status", status);
+        return new ActionData("child", "updateBeneficiary").with("status", status);
     }
 
     public static ActionData registerChildBirth(String motherCaseId) {
-        return new ActionData("createChildBeneficiary").with("motherCaseId", motherCaseId);
+        return new ActionData("child", "createChildBeneficiary").with("motherCaseId", motherCaseId);
     }
 
-    public static ActionData from(String actionType, Map<String, String> data) {
-        ActionData actionData = new ActionData(actionType);
+    public static ActionData from(String actionType, String actionTarget, Map<String, String> data) {
+        ActionData actionData = new ActionData(actionTarget, actionType);
         actionData.data.putAll(data);
         return actionData;
     }
 
-    private ActionData(String type) {
+    private ActionData(String target, String type) {
+        this.target = target;
         this.type = type;
         data = new HashMap<String, String>();
     }
@@ -78,6 +80,10 @@ public class ActionData {
 
     public Map<String, String> data() {
         return data;
+    }
+
+    public String target() {
+        return target;
     }
 
     public String type() {
