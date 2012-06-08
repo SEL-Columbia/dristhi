@@ -36,7 +36,7 @@ public class ActionData {
     }
 
     public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate) {
-        return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber).with("status", "pregnant").with("lmpDate", lmpDate.toString());
+        return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber).with("status", "pregnant").with("referenceDate", lmpDate.toString());
     }
 
     public static ActionData updateBeneficiary(String status) {
@@ -44,7 +44,7 @@ public class ActionData {
     }
 
     public static ActionData registerChildBirth(String motherCaseId, LocalDate dateOfBirth) {
-        return new ActionData("child", "createChildBeneficiary").with("motherCaseId", motherCaseId).with("dateOfBirth", dateOfBirth.toString());
+        return new ActionData("child", "createChildBeneficiary").with("motherCaseId", motherCaseId).with("referenceDate", dateOfBirth.toString());
     }
 
     public static ActionData from(String actionType, String actionTarget, Map<String, String> data) {
