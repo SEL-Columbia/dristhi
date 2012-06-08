@@ -5,6 +5,24 @@
         {
             "forms": [
                 {
+                    "name": "registerEligibleCouple",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/58B0563E-868C-43DA-8816-C4F06D0DDA82"
+                        }
+                    },
+                    "mappings": {
+                        "form|ecnumber": "ecNumber",
+                        "form|wifes_name": "wifeName",
+                        "form|husbands_name": "husbandName",
+                        "form|case|@case_id": "caseId",
+                        "form|meta|username": "anmIdentifier",
+                        "form|ec_village": "village",
+                        "form|ec_village_subcenter": "subCenter"
+                    }
+                },
+                {
                     "name": "registerMother",
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
@@ -58,6 +76,51 @@
                     }
                 },
                 {
+                    "name": "registerChild",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/FDAC3365-7B1B-48C2-AC31-C88990239B03"
+                        }
+                    },
+                    "mappings": {
+                        "form|child_DOB": "dateOfBirth",
+                        "form|child_name": "childName",
+                        "form|mother_thayino": "thaayiCardNumber",
+                        "form|child_village": "village",
+                        "form|meta|username": "anmIdentifier",
+                        "form|case|@case_id": "caseId",
+                        "form|immunization_multiselect": "immunizationsProvided"
+                    }
+                },
+                {
+                    "name": "updateChildImmunization",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/dd16712aa348d461a28ae7fdb7132a8e546f81c4"
+                        }
+                    },
+                    "mappings": {
+                        "form|meta|username": "anmIdentifier",
+                        "form|case|@case_id": "caseId",
+                        "form|immunization_multiselect1": "immunizationsProvided"
+                    }
+                },
+                {
+                    "name": "closeChildCase",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/A8245DC9-EFD9-4DFE-B4C4-C4470A223B19"
+                        }
+                    },
+                    "mappings": {
+                        "form|meta|username": "anmIdentifier",
+                        "form|case|@case_id": "caseId"
+                    }
+                },
+                {
                     "name": "closeANCCase",
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
@@ -68,6 +131,19 @@
                     "mappings": {
                         "form|case|@case_id": "caseId",
                         "form|close_reason": "closeReason"
+                    }
+                },
+                {
+                    "name": "closeEligibleCouple",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/282B98E9-3C12-42C5-894A-B0C5C77604DF"
+                        }
+                    },
+                    "mappings": {
+                        "form|case|@case_id": "caseId",
+                        "form|meta|username": "anmIdentifier"
                     }
                 }
             ]
@@ -128,6 +204,51 @@
                     }
                 },
                 {
+                    "name": "registerChild",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/FDAC3365-7B1B-48C2-AC31-C88990239B03"
+                        }
+                    },
+                    "mappings": {
+                        "form|child_DOB": "dateOfBirth",
+                        "form|child_name": "childName",
+                        "form|mother_thayino": "thaayiCardNumber",
+                        "form|child_village": "village",
+                        "form|meta|username": "anmIdentifier",
+                        "form|case|@case_id": "caseId",
+                        "form|immunization_multiselect": "immunizationsProvided"
+                    }
+                },
+                {
+                    "name": "updateChildImmunization",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/dd16712aa348d461a28ae7fdb7132a8e546f81c4"
+                        }
+                    },
+                    "mappings": {
+                        "form|meta|username": "anmIdentifier",
+                        "form|case|@case_id": "caseId",
+                        "form|immunization_multiselect1": "immunizationsProvided"
+                    }
+                },
+                {
+                    "name": "closeChildCase",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/A8245DC9-EFD9-4DFE-B4C4-C4470A223B19"
+                        }
+                    },
+                    "mappings": {
+                        "form|meta|username": "anmIdentifier",
+                        "form|case|@case_id": "caseId"
+                    }
+                },
+                {
                     "name": "closeANCCase",
                     "url": {
                         "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
@@ -138,139 +259,6 @@
                     "mappings": {
                         "form|case|@case_id": "caseId",
                         "form|close_reason": "closeReason"
-                    }
-                }
-            ]
-        },
-        {
-            "forms": [
-                {
-                    "name": "registerChild",
-                    "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/FDAC3365-7B1B-48C2-AC31-C88990239B03"
-                        }
-                    },
-                    "mappings": {
-                        "form|child_DOB": "dateOfBirth",
-                        "form|child_name": "childName",
-                        "form|mother_thayino": "thaayiCardNumber",
-                        "form|child_village": "village",
-                        "form|meta|username": "anmIdentifier",
-                        "form|case|@case_id": "caseId",
-                        "form|immunization_multiselect": "immunizationsProvided"
-                    }
-                },
-                {
-                    "name": "updateChildImmunization",
-                    "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/dd16712aa348d461a28ae7fdb7132a8e546f81c4"
-                        }
-                    },
-                    "mappings": {
-                        "form|meta|username": "anmIdentifier",
-                        "form|case|@case_id": "caseId",
-                        "form|immunization_multiselect1": "immunizationsProvided"
-                    }
-                },
-                {
-                    "name": "closeChildCase",
-                    "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/A8245DC9-EFD9-4DFE-B4C4-C4470A223B19"
-                        }
-                    },
-                    "mappings": {
-                        "form|meta|username": "anmIdentifier",
-                        "form|case|@case_id": "caseId"
-                    }
-                }
-            ]
-        },
-        {
-            "forms": [
-                {
-                    "name": "registerChild",
-                    "url": {
-                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/FDAC3365-7B1B-48C2-AC31-C88990239B03"
-                        }
-                    },
-                    "mappings": {
-                        "form|child_DOB": "dateOfBirth",
-                        "form|child_name": "childName",
-                        "form|mother_thayino": "thaayiCardNumber",
-                        "form|child_village": "village",
-                        "form|meta|username": "anmIdentifier",
-                        "form|case|@case_id": "caseId",
-                        "form|immunization_multiselect": "immunizationsProvided"
-                    }
-                },
-                {
-                    "name": "updateChildImmunization",
-                    "url": {
-                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/dd16712aa348d461a28ae7fdb7132a8e546f81c4"
-                        }
-                    },
-                    "mappings": {
-                        "form|meta|username": "anmIdentifier",
-                        "form|case|@case_id": "caseId",
-                        "form|immunization_multiselect1": "immunizationsProvided"
-                    }
-                },
-                {
-                    "name": "closeChildCase",
-                    "url": {
-                        "base": "https://www.commcarehq.org/a/mysore-team-testing/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/A8245DC9-EFD9-4DFE-B4C4-C4470A223B19"
-                        }
-                    },
-                    "mappings": {
-                        "form|meta|username": "anmIdentifier",
-                        "form|case|@case_id": "caseId"
-                    }
-                }
-            ]
-        },
-        {
-            "forms": [
-                {
-                    "name": "registerEligibleCouple",
-                    "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/58B0563E-868C-43DA-8816-C4F06D0DDA82"
-                        }
-                    },
-                    "mappings": {
-                         "form|ecnumber": "ecNumber",
-                         "form|wifes_name": "wifeName",
-                         "form|husbands_name": "husbandName",
-                         "form|case|@case_id": "caseId",
-                         "form|meta|username": "anmIdentifier",
-                         "form|ec_village": "village",
-                         "form|ec_village_subcenter": "subCenter"
-                    }
-                },
-                {
-                    "name": "closeEligibleCouple",
-                    "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/282B98E9-3C12-42C5-894A-B0C5C77604DF"
-                        }
-                    },
-                    "mappings": {
-                        "form|case|@case_id": "caseId",
-                        "form|meta|username": "anmIdentifier"
                     }
                 }
             ]
