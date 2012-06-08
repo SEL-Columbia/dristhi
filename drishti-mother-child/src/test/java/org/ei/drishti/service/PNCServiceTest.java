@@ -137,7 +137,7 @@ public class PNCServiceTest extends BaseUnitTest {
         for (String expectedAlert : expectedAlertsRaised) {
             verify(actionService).alertForChild("Case X", expectedAlert, "due", currentTime.plusDays(2));
         }
-        verify(actionService, times(1)).registerChildBirth(any(String.class), any(String.class), any(String.class));
+        verify(actionService, times(1)).registerChildBirth(any(String.class), any(String.class), any(String.class), any(LocalDate.class));
         verifyNoMoreInteractions(actionService);
     }
 }

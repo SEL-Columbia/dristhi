@@ -6,6 +6,7 @@ import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,14 +76,14 @@ public class ActionService {
         allActions.addWithDelete(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()), "alert");
     }
 
-    public void registerPregnancy(String caseId, String ecNumber, String thaayiCardNumber, String anmIdentifier, String village) {
+    public void registerPregnancy(String caseId, String ecNumber, String thaayiCardNumber, String anmIdentifier, String village, LocalDate lmpDate) {
         EligibleCouple eligibleCouple = allEligibleCouples.findByECNumberAndVillage(ecNumber, village);
         if (eligibleCouple == null) {
             logger.warn(format("Found pregnancy without registered eligible couple. Ignoring case: {0} for ecNumber: {1} for ANM: {2}",
                     caseId, ecNumber, anmIdentifier));
             return;
         }
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.createBeneficiary(eligibleCouple.caseId(), thaayiCardNumber)));
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.createBeneficiary(eligibleCouple.caseId(), thaayiCardNumber, lmpDate)));
     }
 
     public void updateDeliveryOutcome(String caseId, String status) {
@@ -95,7 +96,7 @@ public class ActionService {
         allActions.add(new Action(caseId, mother.anmIdentifier(), ActionData.updateBeneficiary(status)));
     }
 
-    public void registerChildBirth(String caseId, String anmIdentifier, String thaayiCardNumber) {
+    public void registerChildBirth(String caseId, String anmIdentifier, String thaayiCardNumber, LocalDate dateOfBirth) {
         Mother mother = allMothers.findByThaayiCardNumber(thaayiCardNumber);
         if (mother == null) {
             logger.warn(format("Found child birth without registered mother. Ignoring case: {0} for thaayiCardNumber: {1} for ANM: {2}",
@@ -103,6 +104,6 @@ public class ActionService {
             return;
         }
 
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerChildBirth(mother.caseId())));
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerChildBirth(mother.caseId(), dateOfBirth)));
     }
 }

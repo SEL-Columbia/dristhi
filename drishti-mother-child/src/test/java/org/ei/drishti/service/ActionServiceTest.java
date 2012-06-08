@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.motechproject.util.DateUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -116,16 +117,16 @@ public class ActionServiceTest {
     public void shouldAddActionForBeneficiaryRegistration() throws Exception {
         when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "Village X")).thenReturn(new EligibleCouple("Case EC 1", "EC Number 1"));
 
-        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X");
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", DateUtil.today());
 
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createBeneficiary("Case EC 1", "Thaayi 1")));
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createBeneficiary("Case EC 1", "Thaayi 1", DateUtil.today())));
     }
 
     @Test
     public void shouldNotAddActionForBeneficiaryRegistrationIfECNotFound() throws Exception {
         when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "Village X")).thenReturn(null);
 
-        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X");
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", null);
 
         verifyZeroInteractions(allActions);
     }
@@ -154,16 +155,16 @@ public class ActionServiceTest {
     public void shouldRegisterChildBirth() throws Exception {
         when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MotherCaseId", "MotherThaayiCard 1", "Theresa", "bherya"));
 
-        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1");
+        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1", DateUtil.today());
 
-        verify(allActions).add(new Action("ChildCase Y", "ANM X", ActionData.registerChildBirth("MotherCaseId")));
+        verify(allActions).add(new Action("ChildCase Y", "ANM X", ActionData.registerChildBirth("MotherCaseId", DateUtil.today())));
     }
 
     @Test
     public void shouldNotRegisterChildBirthWhenMotherIsNotFound() throws Exception {
         when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(null);
 
-        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1");
+        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1", DateUtil.today());
 
         verifyZeroInteractions(allActions);
     }

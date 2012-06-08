@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,16 +35,16 @@ public class ActionData {
         return new ActionData("eligibleCouple", "deleteEC");
     }
 
-    public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber) {
-        return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber).with("status", "pregnant");
+    public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate) {
+        return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber).with("status", "pregnant").with("lmpDate", lmpDate.toString());
     }
 
     public static ActionData updateBeneficiary(String status) {
         return new ActionData("child", "updateBeneficiary").with("status", status);
     }
 
-    public static ActionData registerChildBirth(String motherCaseId) {
-        return new ActionData("child", "createChildBeneficiary").with("motherCaseId", motherCaseId);
+    public static ActionData registerChildBirth(String motherCaseId, LocalDate dateOfBirth) {
+        return new ActionData("child", "createChildBeneficiary").with("motherCaseId", motherCaseId).with("dateOfBirth", dateOfBirth.toString());
     }
 
     public static ActionData from(String actionType, String actionTarget, Map<String, String> data) {
