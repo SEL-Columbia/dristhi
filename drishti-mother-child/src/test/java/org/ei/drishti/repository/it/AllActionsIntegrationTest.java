@@ -1,7 +1,7 @@
 package org.ei.drishti.repository.it;
 
 import org.ei.drishti.domain.Action;
-import org.ei.drishti.domain.ActionData;
+import org.ei.drishti.dto.ActionData;
 import org.ei.drishti.repository.AllActions;
 import org.joda.time.DateTime;
 import org.junit.Before;

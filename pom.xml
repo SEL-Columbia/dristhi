@@ -16,6 +16,7 @@
         <module>drishti-scheduler</module>
         <module>drishti-common</module>
         <module>drishti-reporting</module>
+        <module>drishti-interface</module>
     </modules>
 
     <properties>

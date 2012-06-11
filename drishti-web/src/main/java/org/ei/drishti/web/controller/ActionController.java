@@ -2,6 +2,7 @@ package org.ei.drishti.web.controller;
 
 import ch.lambdaj.function.convert.Converter;
 import org.ei.drishti.domain.Action;
+import org.ei.drishti.dto.ActionItem;
 import org.ei.drishti.service.ActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class ActionController {
         return with(alertActions).convert(new Converter<Action, ActionItem>() {
             @Override
             public ActionItem convert(Action action) {
-                return ActionItem.from(action);
+                return ActionConvertor.from(action);
             }
         });
     }

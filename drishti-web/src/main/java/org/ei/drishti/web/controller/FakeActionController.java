@@ -1,6 +1,7 @@
 package org.ei.drishti.web.controller;
 
 import com.google.gson.Gson;
+import org.ei.drishti.dto.ActionItem;
 import org.ei.drishti.repository.AllActions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,7 @@ public class FakeActionController {
     @ResponseBody
     public String submitFakeAction(@RequestParam("formData") String formData) throws Exception {
         try {
-            allActions.add(new Gson().fromJson(formData, ActionItem.class).toAction());
+            allActions.add(ActionConvertor.toAction(new Gson().fromJson(formData, ActionItem.class)));
         } catch (Exception e) {
             return "Failed: " + e.getMessage();
         }

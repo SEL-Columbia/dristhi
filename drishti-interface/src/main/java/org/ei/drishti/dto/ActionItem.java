@@ -1,12 +1,10 @@
-package org.ei.drishti.web.controller;
+package org.ei.drishti.dto;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.ei.drishti.domain.Action;
-import org.ei.drishti.domain.ActionData;
 
 import java.util.Map;
 
-class ActionItem {
+public class ActionItem {
     @JsonProperty
     private String anmIdentifier;
     @JsonProperty
@@ -29,11 +27,23 @@ class ActionItem {
         this.actionType = actionType;
     }
 
-    public static ActionItem from(Action action){
-        return new ActionItem(action.anmIdentifier(), action.caseID(), action.data(), action.timestamp(), action.target(), action.actionType());
+    public String caseID() {
+        return caseID;
     }
 
-    public Action toAction() {
-        return new Action(caseID, anmIdentifier, ActionData.from(actionType, actionTarget, data));
+    public String anmIdentifier() {
+        return anmIdentifier;
+    }
+
+    public String actionType() {
+        return actionType;
+    }
+
+    public String actionTarget() {
+        return actionTarget;
+    }
+
+    public Map<String, String> data() {
+        return data;
     }
 }

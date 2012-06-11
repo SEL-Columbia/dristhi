@@ -1,4 +1,4 @@
-package org.ei.drishti.domain;
+package org.ei.drishti.dto;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
