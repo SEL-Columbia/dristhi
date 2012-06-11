@@ -1,15 +1,14 @@
 package org.ei.drishti.web.controller;
 
-import org.ei.drishti.domain.Action;
+import org.ei.drishti.dto.Action;
 import org.ei.drishti.dto.ActionData;
-import org.ei.drishti.dto.ActionItem;
 
 public class ActionConvertor {
-    public static ActionItem from(Action action){
-        return new ActionItem(action.anmIdentifier(), action.caseID(), action.data(), action.timestamp(), action.target(), action.actionType());
+    public static Action from(org.ei.drishti.domain.Action action){
+        return new Action(action.caseID(), action.target(), action.actionType(), action.data(), String.valueOf(action.timestamp()));
     }
 
-    public static Action toAction(ActionItem actionItem) {
-        return new Action(actionItem.caseID(), actionItem.anmIdentifier(), ActionData.from(actionItem.actionType(), actionItem.actionTarget(), actionItem.data()));
+    public static org.ei.drishti.domain.Action toAction(Action actionItem) {
+        return new org.ei.drishti.domain.Action(actionItem.caseID(), "c", ActionData.from(actionItem.type(), actionItem.target(), actionItem.data()));
     }
 }
