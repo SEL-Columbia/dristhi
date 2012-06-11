@@ -34,7 +34,6 @@
                         "form|case|@case_id": "caseId",
                         "form|card_no": "thaayiCardNumber",
                         "form|ancm_name": "name",
-                        "form|age": "age",
                         "form|lmp": "lmp",
                         "form|anc_village": "village",
                         "form|anm_phone": "anmPhoneNumber",

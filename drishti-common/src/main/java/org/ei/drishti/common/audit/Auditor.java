@@ -69,7 +69,7 @@ public class Auditor {
         }
     }
 
-    public class AuditMessageBuilder {
+    public static class AuditMessageBuilder {
         private final Auditor auditor;
         private final AuditMessageType type;
         private Map<String, String> extraData;

@@ -34,7 +34,7 @@ public class AlertRouter {
         throw new NoRoutesMatchException();
     }
 
-    private class Route {
+    private static class Route {
         private final Matcher scheduleMatcher;
         private final Matcher milestoneMatcher;
         private final Matcher windowMatcher;

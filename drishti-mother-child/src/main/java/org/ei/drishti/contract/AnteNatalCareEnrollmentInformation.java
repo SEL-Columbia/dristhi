@@ -9,7 +9,6 @@ public class AnteNatalCareEnrollmentInformation {
     private String caseId;
     private String thaayiCardNumber;
     private String name;
-    private int age;
     private String village;
     private String anmPhoneNumber;
     private String anmIdentifier;
@@ -25,7 +24,6 @@ public class AnteNatalCareEnrollmentInformation {
         this.anmIdentifier = anmIdentifier;
         this.lmp = lmp;
         this.ecNumber = ecNumber;
-        this.age = 20;
     }
 
     public String caseId() {
