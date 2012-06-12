@@ -10,9 +10,7 @@
     <version>0.1-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.ei.drishti</groupId>
   <artifactId>drishti-web</artifactId>
-  <version>0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>drishti-web</name>
   <url>http://github.com/modilabs/dristhi</url>
