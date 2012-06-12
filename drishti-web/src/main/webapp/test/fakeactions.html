@@ -17,134 +17,71 @@
         <span class="title">Create Alert</span>
 
         <form id="createAlert" class="form">
-            <label for="create-caseID">Case ID</label>
-            <input type="text" id="create-caseID" class="field mapping">
+            <label for="createAlert-caseID">Case ID</label><input type="text" id="createAlert-caseID" class="field mapping">
+            <input type="hidden" id="createAlert-actionTarget" class="field mapping" value="alert">
 
-            <p></p>
+            <label for="createAlert-anmIdentifier">ANM ID</label><input type="text" id="createAlert-anmIdentifier" class="anm mapping">
 
-            <label for="create-anmIdentifier">ANM ID</label>
-            <input type="text" id="create-anmIdentifier" class="field mapping">
+            <label for="createAlert-beneficiaryName">Beneficiary Name</label><input type="text" id="createAlert-beneficiaryName" class="data mapping">
+            <label for="createAlert-village">Village</label><input type="text" id="createAlert-village" class="data mapping">
+            <label for="createAlert-thaayiCardNumber">Thaayi Card</label><input type="text" id="createAlert-thaayiCardNumber" class="data mapping">
+            <label for="createAlert-visitCode">Visit Code</label><input type="text" id="createAlert-visitCode" class="data mapping">
+            <label for="createAlert-dueDate">Due Date</label><input type="text" id="createAlert-dueDate" class="data mapping">
+            <input type="hidden" id="createAlert-latenessStatus" class="data mapping" value="due">
 
-            <p></p>
-
-            <label for="create-beneficiaryName">Beneficiary Name</label>
-            <input type="text" id="create-beneficiaryName" class="data mapping">
-
-            <p></p>
-
-            <label for="create-village">Village</label>
-            <input type="text" id="create-village" class="data mapping">
-
-            <p></p>
-
-            <label for="create-thaayiCardNumber">Thaayi Card</label>
-            <input type="text" id="create-thaayiCardNumber" class="data mapping">
-
-            <p></p>
-
-            <label for="create-visitCode">Visit Code</label>
-            <input type="text" id="create-visitCode" class="data mapping">
-
-            <p></p>
-
-            <label for="create-dueDate">Due Date</label>
-            <input type="text" id="create-dueDate" class="data mapping">
-
-            <p></p>
-
-            <input type="hidden" id="create-latenessStatus" class="data mapping" value="due">
-
-            <p></p>
-
-            <input type="submit" id="create-submit" value="Submit form!">
+            <input type="submit" id="createAlert-submit" value="Submit form!">
         </form>
 
-        <span class="formStatus" id="create-status" style="opacity: 0; ">.</span>
+        <span class="formStatus" id="createAlert-status" style="opacity: 0; ">.</span>
     </div>
 
     <div id="alertDelete" class="formDiv">
         <span class="title">Delete Alerts for a visit code</span>
 
         <form id="deleteAlert" class="form">
-            <label for="delete-caseID">Case ID</label>
-            <input type="text" id="delete-caseID" class="field mapping">
+            <label for="deleteAlert-caseID">Case ID</label><input type="text" id="deleteAlert-caseID" class="field mapping">
+            <input type="hidden" id="deleteAlert-actionTarget" class="field mapping" value="alert">
+
+            <label for="deleteAlert-anmIdentifier">ANM ID</label><input type="text" id="deleteAlert-anmIdentifier" class="anm mapping">
+
+            <label for="deleteAlert-visitCode">Visit Code</label><input type="text" id="deleteAlert-visitCode" class="data mapping">
 
             <p></p>
-
-            <label for="delete-anmIdentifier">ANM ID</label>
-            <input type="text" id="delete-anmIdentifier" class="field mapping">
-
-            <p></p>
-
-            <label for="delete-visitCode">Visit Code</label>
-            <input type="text" id="delete-visitCode" class="data mapping">
-
-            <p></p>
-
-            <input type="submit" id="delete-submit" value="Submit form!">
+            <input type="submit" id="deleteAlert-submit" value="Submit form!">
         </form>
 
-        <span class="formStatus" id="delete-status" style="opacity: 0; ">.</span>
+        <span class="formStatus" id="deleteAlert-status" style="opacity: 0; ">.</span>
     </div>
 
     <div id="alertDeleteAll" class="formDiv">
         <span class="title">Delete All Alerts for a case (mother)</span>
 
         <form id="deleteAllAlerts" class="form">
-            <label for="deleteAll-caseID">Case ID</label>
-            <input type="text" id="deleteAll-caseID" class="field mapping">
+            <label for="deleteAllAlerts-caseID">Case ID</label><input type="text" id="deleteAllAlerts-caseID" class="field mapping">
+            <input type="hidden" id="deleteAllAlerts-actionTarget" class="field mapping" value="alert">
 
-            <p></p>
+            <label for="deleteAllAlerts-anmIdentifier">ANM ID</label><input type="text" id="deleteAllAlerts-anmIdentifier" class="anm mapping">
 
-            <label for="deleteAll-anmIdentifier">ANM ID</label>
-            <input type="text" id="deleteAll-anmIdentifier" class="field mapping">
-
-            <p></p>
-
-            <input type="submit" id="deleteAll-submit" value="Submit form!">
+            <input type="submit" id="deleteAllAlerts-submit" value="Submit form!">
         </form>
 
-        <span class="formStatus" id="deleteAll-status" style="opacity: 0; ">.</span>
+        <span class="formStatus" id="deleteAllAlerts-status" style="opacity: 0; ">.</span>
     </div>
 
     <div id="ecCreate" class="formDiv">
         <span class="title">Create EC</span>
 
         <form id="createEC" class="form">
-            <label for="createEC-caseID">Case ID</label>
-            <input type="text" id="createEC-caseID" class="field mapping">
+            <label for="createEC-caseID">Case ID</label><input type="text" id="createEC-caseID" class="field mapping">
+            <input type="hidden" id="createEC-actionTarget" class="field mapping" value="eligibleCouple">
 
-            <p></p>
+            <label for="createEC-anmIdentifier">ANM ID</label><input type="text" id="createEC-anmIdentifier" class="anm mapping">
 
-            <label for="createEC-anmIdentifier">ANM ID</label>
-            <input type="text" id="createEC-anmIdentifier" class="field mapping">
-
-            <p></p>
-
-            <label for="createEC-wife">Wife Name</label>
-            <input type="text" id="createEC-wife" class="data mapping">
-
-            <p></p>
-
-            <label for="createEC-husband">Husband Name</label>
-            <input type="text" id="createEC-husband" class="data mapping">
-
-            <p></p>
-
-            <label for="createEC-ecNumber">EC Number</label>
-            <input type="text" id="createEC-ecNumber" class="data mapping">
-
-            <p></p>
-
-            <label for="createEC-village">Village</label>
-            <input type="text" id="createEC-village" class="data mapping">
-
-            <p></p>
-
-            <label for="createEC-subCenter">SubCenter</label>
-            <input type="text" id="createEC-subCenter" class="data mapping">
-
-            <p></p>
+            <label for="createEC-wife">Wife Name</label><input type="text" id="createEC-wife" class="data mapping">
+            <label for="createEC-husband">Husband Name</label><input type="text" id="createEC-husband" class="data mapping">
+            <label for="createEC-ecNumber">EC Number</label><input type="text" id="createEC-ecNumber" class="data mapping">
+            <label for="createEC-village">Village</label><input type="text" id="createEC-village" class="data mapping">
+            <label for="createEC-subCenter">SubCenter</label><input type="text" id="createEC-subCenter" class="data mapping">
 
             <input type="submit" id="createEC-submit" value="Submit form!">
         </form>
@@ -156,15 +93,10 @@
         <span class="title">Delete EC</span>
 
         <form id="deleteEC" class="form">
-            <label for="deleteEC-caseID">Case ID</label>
-            <input type="text" id="deleteEC-caseID" class="field mapping">
+            <label for="deleteEC-caseID">Case ID</label><input type="text" id="deleteEC-caseID" class="field mapping">
+            <input type="hidden" id="deleteEC-actionTarget" class="field mapping" value="eligibleCouple">
 
-            <p></p>
-
-            <label for="deleteEC-anmIdentifier">ANM ID</label>
-            <input type="text" id="deleteEC-anmIdentifier" class="field mapping">
-
-            <p></p>
+            <label for="deleteEC-anmIdentifier">ANM ID</label><input type="text" id="deleteEC-anmIdentifier" class="anm mapping">
 
             <input type="submit" id="deleteEC-submit" value="Submit form!">
         </form>

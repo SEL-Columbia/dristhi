@@ -8,7 +8,7 @@ public class ActionConvertor {
         return new Action(action.caseID(), action.target(), action.actionType(), action.data(), String.valueOf(action.timestamp()));
     }
 
-    public static org.ei.drishti.domain.Action toAction(Action actionItem) {
-        return new org.ei.drishti.domain.Action(actionItem.caseID(), "c", ActionData.from(actionItem.type(), actionItem.target(), actionItem.data()));
+    public static org.ei.drishti.domain.Action toAction(Action actionItem, String anmIdentifier) {
+        return new org.ei.drishti.domain.Action(actionItem.caseID(), anmIdentifier, ActionData.from(actionItem.type(), actionItem.target(), actionItem.data()));
     }
 }

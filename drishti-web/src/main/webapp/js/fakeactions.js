@@ -22,10 +22,11 @@ $(document).ready(function() {
     var handleSubmit = function(form) {
         var payload = createObjectFrom($(form).children(".field"));
         var data = createObjectFrom($(form).children(".data"));
+        var anmId = $(form).children(".anm")[0].value;
         payload['data'] = data;
         payload['actionType'] = form.id;
 
-        $.post('../action/submit', { formData: JSON.stringify(payload) })
+        $.post('../action/submit', { formData: JSON.stringify(payload), anmIdentifier: anmId })
             .success(function(responseFromServer) { formStatusDisplay(form.id, "Success!"); })
             .error(function(responseFromServer, textStatus) {
                 formStatusDisplay(form.id, "Failed!");

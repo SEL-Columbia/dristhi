@@ -5,6 +5,9 @@ span.title {
 
 span.formStatus {
     color: #0000ff;
+    clear: left;
+    float: left;
+    margin-bottom: 20px;
 }
 
 form {
@@ -15,11 +18,19 @@ form {
 div.formDiv {
     margin-bottom: 40px;
     margin-left: 20px;
+    clear: left;
 }
 
 label {
     width: 200px;
+    clear: left;
     float: left;
+    margin-bottom: 15px;
+}
+
+input {
+    float: left;
+    margin-bottom: 15px;
 }
 
 input[type="text"] {
@@ -28,6 +39,8 @@ input[type="text"] {
 
 input[type="submit"] {
     font-size: 24pt;
+    clear: left;
+    margin-left: -2px;
 }
 
 div#information {

@@ -21,9 +21,9 @@ public class FakeActionController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/action/submit")
     @ResponseBody
-    public String submitFakeAction(@RequestParam("formData") String formData) throws Exception {
+    public String submitFakeAction(@RequestParam("formData") String formData, @RequestParam("anmIdentifier") String anmIdentifier) throws Exception {
         try {
-            allActions.add(ActionConvertor.toAction(new Gson().fromJson(formData, Action.class)));
+            allActions.add(ActionConvertor.toAction(new Gson().fromJson(formData, Action.class), anmIdentifier));
         } catch (Exception e) {
             return "Failed: " + e.getMessage();
         }

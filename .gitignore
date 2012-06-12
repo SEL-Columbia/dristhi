@@ -8,4 +8,4 @@ target/
 *.ipr
 *.iws
 logfile
-*.log
+*.log*

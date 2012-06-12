@@ -58,6 +58,10 @@ public class Action extends MotechBaseDataObject {
         return timeStamp;
     }
 
+    public String target() {
+        return actionTarget;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, false, null, new String[]{"timeStamp"});
@@ -71,9 +75,5 @@ public class Action extends MotechBaseDataObject {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
-    }
-
-    public String target() {
-        return actionTarget;
     }
 }

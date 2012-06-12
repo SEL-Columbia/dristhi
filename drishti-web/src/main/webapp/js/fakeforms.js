@@ -36,7 +36,6 @@ $(document).ready(function() {
                 form.append($(document.createElement('label')).attr('for', name + "-" + mapping.value).text(mapping.value));
                 form.append($(document.createElement('input')).attr('type', 'text').attr('id', name + "-" + mapping.value)
                     .attr('class', 'mapping').change(function() { clearStatusDisplay(name); }));
-                form.append($(document.createElement('p')));
             });
 
             form.append($(document.createElement('input')).attr('type', 'submit').attr('id', name + 'FormSubmit').attr('value', 'Submit form!'));
