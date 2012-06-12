@@ -11,6 +11,7 @@
 
     <properties>
         <main.basedir>${project.basedir}/..</main.basedir>
+        <name>drishti-interface</name>
     </properties>
 
     <artifactId>drishti-interface</artifactId>
