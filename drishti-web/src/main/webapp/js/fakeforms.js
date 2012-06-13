@@ -21,8 +21,10 @@ $(document).ready(function() {
 
     var handleSubmit = function(formName, form) {
         var mappings = $(form).children(".mapping");
+        var extraMappings = $(form).children(".extramapping");
 
-        $.post('../form/submit', { formName: formName, formData: JSON.stringify(createObjectFrom(mappings)) })
+        $.post('../form/submit', { formName: formName, formData: JSON.stringify(createObjectFrom(mappings)),
+                extraFormData: JSON.stringify(createObjectFrom(extraMappings)) })
             .success(function(responseFromServer) { formStatusDisplay(formName, "Success!"); })
             .error(function(jqXHR, textStatus) { formStatusDisplay(formName, "Failed!"); });
     };
@@ -37,6 +39,15 @@ $(document).ready(function() {
                 form.append($(document.createElement('input')).attr('type', 'text').attr('id', name + "-" + mapping.value)
                     .attr('class', 'mapping').change(function() { clearStatusDisplay(name); }));
             });
+
+            if (formDefinition.extraMappings.length > 0) {
+                form.append($(document.createElement('span')).attr('class', 'extraData').text('Extra data'));
+                $.each(formDefinition.extraMappings, function(i, mapping) {
+                    form.append($(document.createElement('label')).attr('for', name + ".extra" + "-" + mapping.value).text(mapping.value));
+                    form.append($(document.createElement('input')).attr('type', 'text').attr('id', name  + ".extra" + "-" + mapping.value)
+                        .attr('class', 'extramapping').change(function() { clearStatusDisplay(name); }));
+                });
+            }
 
             form.append($(document.createElement('input')).attr('type', 'submit').attr('id', name + 'FormSubmit').attr('value', 'Submit form!'));
             form.submit(function() {
