@@ -20,6 +20,12 @@
                         "form|meta|username": "anmIdentifier",
                         "form|ec_village": "village",
                         "form|ec_village_subcenter": "subCenter"
+                    },
+                    "extraMappings": {
+                        "form|husbands_name": "husbandName",
+                        "form|headofhousehold": "headOfHousehold",
+                        "form|thisDoesNotExist": "thisShouldNotExist",
+                        "form|show_regdate": "someDate"
                     }
                 },
                 {

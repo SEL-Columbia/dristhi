@@ -74,13 +74,33 @@ public class CommCareImportFormDefinitionsJSONTest {
         for (Map.Entry<String, Class<?>> formNameToClassEntry : classEveryFormMappingConvertsTo.entrySet()) {
             String formName = formNameToClassEntry.getKey();
             Class<?> parameterTypeOfTheMethod = formNameToClassEntry.getValue();
-            try {
-                controllerClass.getDeclaredMethod(formName, parameterTypeOfTheMethod);
-            } catch (NoSuchMethodException e) {
-                fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2}). If it is " +
-                        "not present, the dispatcher will not be able to do anything for form submissions of this form: {3}.",
-                        controllerClass.getSimpleName(), formName, parameterTypeOfTheMethod.getSimpleName(), formName));
+            CommCareFormDefinition definition = findForm(formName);
+            if (definition.extraMappings().isEmpty()) {
+                ensureMethodPresent(controllerClass, formName, parameterTypeOfTheMethod);
             }
+            else {
+                ensureMethodWithMapPresent(controllerClass, formName, parameterTypeOfTheMethod);
+            }
+        }
+    }
+
+    private void ensureMethodWithMapPresent(Class<?> controllerClass, String formName, Class<?> parameterTypeOfTheMethod) {
+        try {
+            controllerClass.getDeclaredMethod(formName, parameterTypeOfTheMethod, Map.class);
+        } catch (NoSuchMethodException e) {
+            fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2}, Map<String, String> extraData). If it is " +
+                    "not present, the dispatcher will not be able to do anything for form submissions of this form: {3}.",
+                    controllerClass.getSimpleName(), formName, parameterTypeOfTheMethod.getSimpleName(), formName));
+        }
+    }
+
+    private void ensureMethodPresent(Class<?> controllerClass, String formName, Class<?> parameterTypeOfTheMethod) {
+        try {
+            controllerClass.getDeclaredMethod(formName, parameterTypeOfTheMethod);
+        } catch (NoSuchMethodException e) {
+            fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2}). If it is " +
+                    "not present, the dispatcher will not be able to do anything for form submissions of this form: {3}.",
+                    controllerClass.getSimpleName(), formName, parameterTypeOfTheMethod.getSimpleName(), formName));
         }
     }
 

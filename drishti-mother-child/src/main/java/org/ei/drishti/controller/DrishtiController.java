@@ -2,15 +2,16 @@ package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
-import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
 import org.ei.drishti.service.ECService;
+import org.ei.drishti.service.PNCService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.ei.drishti.service.PNCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 public class DrishtiController {
@@ -79,8 +80,8 @@ public class DrishtiController {
         mctsService.closeChildCase(childCloseRequest);
     }
 
-    public void registerEligibleCouple(EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest) {
-        logger.info("Eligible couple registration: " + eligibleCoupleRegistrationRequest);
+    public void registerEligibleCouple(EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest, Map<String, String> extraData) {
+        logger.info("Eligible couple registration: " + eligibleCoupleRegistrationRequest + ". Extra data: " + extraData);
 
         ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest);
     }

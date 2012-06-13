@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class FakeFormController {
@@ -47,7 +44,7 @@ public class FakeFormController {
     @ResponseBody
     public String submitFakeCommCareForm(@RequestParam("formName") String formName, @RequestParam("formData") String formData) throws Exception {
         try {
-            dispatcher.dispatch("FAKE-FORM", formName, formData);
+            dispatcher.dispatch("FAKE-FORM", formName, formData, false, new HashMap<String, String>());
         } catch (Exception e) {
             return "Failed: " + e.getMessage();
         }

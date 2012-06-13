@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.HashMap;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -108,7 +110,7 @@ public class DrishtiControllerTest {
     public void shouldDelegateToECServiceDuringEligibleCoupleRegistration() {
         EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest = mock(EligibleCoupleRegistrationRequest.class);
 
-        controller.registerEligibleCouple(eligibleCoupleRegistrationRequest);
+        controller.registerEligibleCouple(eligibleCoupleRegistrationRequest, new HashMap<String, String>());
 
         verify(ecService).registerEligibleCouple(eligibleCoupleRegistrationRequest);
     }
