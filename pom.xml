@@ -30,6 +30,7 @@
         <motech.contrib.version>0.11-SNAPSHOT</motech.contrib.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.1.0.RELEASE</spring.version>
+        <drishti.updatePolicy>always</drishti.updatePolicy>
     </properties>
 
     <distributionManagement>
@@ -80,7 +81,7 @@
             <url>http://nexus.motechproject.org/content/repositories/snapshots</url>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
+                <updatePolicy>${drishti.updatePolicy}</updatePolicy>
             </snapshots>
         </repository>
     </repositories>
