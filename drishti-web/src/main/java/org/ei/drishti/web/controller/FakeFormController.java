@@ -1,5 +1,7 @@
 package org.ei.drishti.web.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ei.commcare.api.contract.CommCareFormDefinition;
 import org.ei.commcare.api.contract.CommCareModuleDefinition;
@@ -13,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class FakeFormController {
@@ -42,9 +47,11 @@ public class FakeFormController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/form/submit")
     @ResponseBody
-    public String submitFakeCommCareForm(@RequestParam("formName") String formName, @RequestParam("formData") String formData) throws Exception {
+    public String submitFakeCommCareForm(@RequestParam("formName") String formName, @RequestParam("formData") String formData,
+                                         @RequestParam("extraFormData") String extraFormData) throws Exception {
         try {
-            dispatcher.dispatch("FAKE-FORM", formName, formData, false, new HashMap<String, String>());
+            Map extraData = new Gson().fromJson(extraFormData, new TypeToken<Map<String, String>>() {}.getType());
+            dispatcher.dispatch("FAKE-FORM", formName, formData, !extraData.isEmpty(), extraData);
         } catch (Exception e) {
             return "Failed: " + e.getMessage();
         }
@@ -57,11 +64,14 @@ public class FakeFormController {
         private String name;
         @JsonProperty
         private Set<Map.Entry<String, String>> mappings;
+        @JsonProperty
+        private Set<Map.Entry<String, String>> extraMappings;
 
         public static FormDefinition from(CommCareFormDefinition formDefinition) {
             FormDefinition definition = new FormDefinition();
             definition.name = formDefinition.name();
             definition.mappings = formDefinition.mappings().entrySet();
+            definition.extraMappings = formDefinition.extraMappings().entrySet();
             return definition;
         }
     }
