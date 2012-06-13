@@ -50,9 +50,10 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
-        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
+        ChildRegistrationRequest request = new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", "");
+        pncService.registerChild(request);
 
-        verify(pncSchedulesService).enrollChild("Case X", new LocalDate(currentTime.toDate()));
+        verify(pncSchedulesService).enrollChild(request);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
+import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,14 +35,19 @@ public class PNCSchedulesServiceTest {
     }
 
     @Test
-    public void shouldEnrollChildIntoAllChildSchedules() {
-        schedulesService.enrollChild("Case X", today());
+    public void shouldEnrollChildIntoAllChildSchedulesAndUpdateEnrollments() {
+        schedulesService.enrollChild(new ChildRegistrationRequest("Case X", "child name", "bherya", "TC 1", today().toDate(), "DEMO ANM", "bcg"));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_BCG, today()));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_DPT, today()));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_HEPATITIS, today()));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_MEASLES, today()));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_OPV, today()));
+
+        new TestForChildEnrollment()
+                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, "REMINDER")
+                .whenProvidedWithImmunizations("bcg")
+                .shouldFulfill(CHILD_SCHEDULE_BCG, 1).shouldNotFulfillAnythingElse();
     }
 
     @Test

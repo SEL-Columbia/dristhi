@@ -1,7 +1,7 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.joda.time.LocalDate;
+import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
@@ -27,10 +27,11 @@ public class PNCSchedulesService {
         this.scheduleTrackingService = scheduleTrackingService;
     }
 
-    public void enrollChild(String caseId, LocalDate referenceDate) {
+    public void enrollChild(ChildRegistrationRequest request) {
         for (String schedule : ALL_PNC_SCHEDULES) {
-            scheduleTrackingService.enroll(new EnrollmentRequest(caseId, schedule, null, referenceDate, null, null, null, null, null));
+            scheduleTrackingService.enroll(new EnrollmentRequest(request.caseId(), schedule, null, request.dateOfBirth(), null, null, null, null, null));
         }
+        updateEnrollments(new ChildImmunizationUpdationRequest(request.caseId(), request.anmIdentifier(), request.immunizationsProvided()));
     }
 
     public void updateEnrollments(ChildImmunizationUpdationRequest request) {

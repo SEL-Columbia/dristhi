@@ -45,6 +45,10 @@ public class ChildRegistrationRequest {
         return caseId;
     }
 
+    public String immunizationsProvided() {
+        return immunizationsProvided;
+    }
+
     public boolean isImmunizationProvided(String checkForThisImmunization) {
         return (" " + immunizationsProvided + " ").contains(" " + checkForThisImmunization + " ");
     }

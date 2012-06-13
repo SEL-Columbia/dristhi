@@ -30,7 +30,7 @@ public class PNCService {
         alertForMissingImmunization(request, "bcg", "BCG");
         alertForMissingImmunization(request, "hepB0", "HEP B0");
 
-        pncSchedulesService.enrollChild(request.caseId(), request.dateOfBirth());
+        pncSchedulesService.enrollChild(request);
         actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), request.thaayiCardNumber(), request.dateOfBirth());
     }
 
