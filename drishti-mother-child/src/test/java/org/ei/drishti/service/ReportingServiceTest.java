@@ -5,7 +5,7 @@ import org.ei.drishti.listener.ReportEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.gateway.OutboundEventGateway;
+import org.motechproject.scheduler.gateway.OutboundEventGateway;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;

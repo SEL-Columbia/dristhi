@@ -4,7 +4,7 @@ import org.ei.drishti.scheduler.router.Action;
 import org.ei.drishti.scheduler.router.AlertRouter;
 import org.ei.drishti.scheduler.router.MilestoneEvent;
 import org.junit.Test;
-import org.motechproject.model.MotechEvent;
+import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduletracking.api.domain.WindowName;
 
 import static org.ei.drishti.scheduler.DrishtiSchedules.*;

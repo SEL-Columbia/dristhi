@@ -3,7 +3,7 @@ package org.ei.drishti.scheduler.router;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.model.MotechEvent;
+import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduletracking.api.domain.MilestoneAlert;
 
 import java.util.HashMap;

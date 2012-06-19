@@ -1,6 +1,6 @@
 package org.ei.drishti.scheduler.router;
 
-import org.motechproject.model.MotechEvent;
+import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduletracking.api.events.constants.EventSubjects;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.springframework.stereotype.Component;

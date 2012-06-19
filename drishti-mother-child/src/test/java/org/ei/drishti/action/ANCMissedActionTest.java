@@ -5,7 +5,7 @@ import org.ei.drishti.service.ANCSchedulesService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.model.MotechEvent;
+import org.motechproject.scheduler.domain.MotechEvent;
 
 import java.util.HashMap;
 import java.util.Map;

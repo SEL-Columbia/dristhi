@@ -2,7 +2,7 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.listener.ReportEvent;
-import org.motechproject.gateway.OutboundEventGateway;
+import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

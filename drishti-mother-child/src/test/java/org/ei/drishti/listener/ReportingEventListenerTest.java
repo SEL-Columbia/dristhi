@@ -5,7 +5,7 @@ import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.model.MotechEvent;
+import org.motechproject.scheduler.domain.MotechEvent;
 
 import java.util.HashMap;
 

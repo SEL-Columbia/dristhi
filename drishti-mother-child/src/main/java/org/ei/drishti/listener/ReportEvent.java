@@ -1,7 +1,7 @@
 package org.ei.drishti.listener;
 
 import org.ei.drishti.common.domain.ReportingData;
-import org.motechproject.model.MotechEvent;
+import org.motechproject.scheduler.domain.MotechEvent;
 
 import java.util.HashMap;
 
