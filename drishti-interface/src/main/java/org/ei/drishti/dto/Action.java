@@ -27,6 +27,9 @@ public class Action {
         this.actionType = actionType;
     }
 
+    public Action() {
+    }
+
     public String caseID() {
         return caseID;
     }

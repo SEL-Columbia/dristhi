@@ -7,22 +7,23 @@
                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
                http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="location" value="classpath:activemq.properties"/>
-    <property name="ignoreUnresolvablePlaceholders" value="true"/>
-  </bean>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:activemq.properties"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
 
-  <import resource="classpath:applicationSmsHttp.xml"/>
+    <import resource="classpath:applicationScheduler.xml"/>
+    <import resource="classpath:applicationSmsHttp.xml"/>
     <import resource="classpath:applicationSmsAPI.xml"/>
     <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
     <import resource="classpath:applicationContext-commcare-listener.xml"/>
-  <util:properties id="drishti" location="classpath:/drishti.properties"/>
+    <util:properties id="drishti" location="classpath:/drishti.properties"/>
 
-  <context:annotation-config/>
-  <context:component-scan base-package="org.ei.drishti"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="org.ei.drishti"/>
 
-  <bean id="drishtiDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
-    <constructor-arg value="drishti" />
-    <constructor-arg ref="couchDbInstance" />
-  </bean>
+    <bean id="drishtiDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="drishti"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
 </beans>
