@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.join;
 import static org.ei.drishti.scheduler.DrishtiSchedules.*;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
 
@@ -31,7 +32,7 @@ public class PNCSchedulesService {
         for (String schedule : ALL_PNC_SCHEDULES) {
             scheduleTrackingService.enroll(new EnrollmentRequest(request.caseId(), schedule, null, request.dateOfBirth(), null, null, null, null, null));
         }
-        updateEnrollments(new ChildImmunizationUpdationRequest(request.caseId(), request.anmIdentifier(), request.immunizationsProvided()));
+        updateEnrollments(new ChildImmunizationUpdationRequest(request.caseId(), request.anmIdentifier(), join(request.immunizationsProvided(), " ")));
     }
 
     public void updateEnrollments(ChildImmunizationUpdationRequest request) {

@@ -52,7 +52,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForChild() throws Exception {
-        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "TC 1", "Child 1", "bherya").withAnm("DEMO ANM"));
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "TC 1", "Child 1", "bherya", Arrays.asList("bcg", "hep")).withAnm("DEMO ANM"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
         service.alertForChild("Case X", "OPV 1", "due", dueDate);

@@ -2,10 +2,7 @@ package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
-import org.ei.drishti.service.ANCService;
-import org.ei.drishti.service.DrishtiMCTSService;
-import org.ei.drishti.service.ECService;
-import org.ei.drishti.service.PNCService;
+import org.ei.drishti.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,10 +63,10 @@ public class DrishtiController {
         mctsService.registerChild(childInformation);
     }
 
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest) {
+    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, String> extraData) {
         logger.info("Child immunization updation: " + updationRequest);
 
-        pncService.updateChildImmunization(updationRequest);
+        pncService.updateChildImmunization(updationRequest, extraData);
         mctsService.updateChildImmunization(updationRequest);
     }
 

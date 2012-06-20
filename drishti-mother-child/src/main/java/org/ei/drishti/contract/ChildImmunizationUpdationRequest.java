@@ -4,6 +4,10 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ChildImmunizationUpdationRequest {
     String caseId;
     String anmIdentifier;
@@ -25,6 +29,10 @@ public class ChildImmunizationUpdationRequest {
 
     public String caseId() {
         return caseId;
+    }
+
+    public List<String> immunizationsProvided() {
+        return new ArrayList<>(Arrays.asList(immunizationsProvided.split(" ")));
     }
 
     @Override

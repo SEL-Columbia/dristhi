@@ -21,7 +21,9 @@ public class ReportDataController {
     @RequestMapping(value = "/report/submit", method = RequestMethod.POST)
     @ResponseBody
     public String submit(@RequestBody ReportingData reportingData) {
-        allMotherRegistrations.save(reportingData.get("name"));
+        if (reportingData.type().equals("updateChildImmunization")){
+
+        }
         return "Success.";
     }
 }

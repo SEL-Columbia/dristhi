@@ -10,21 +10,26 @@ import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Map;
+
 @Service
 public class PNCService {
     private final ActionService actionService;
     private final PNCSchedulesService pncSchedulesService;
     private final AllChildren allChildren;
+    private final ChildReportingService childReportingService;
 
     @Autowired
-    public PNCService(ActionService actionService, PNCSchedulesService pncSchedulesService, AllChildren allChildren) {
+    public PNCService(ActionService actionService, PNCSchedulesService pncSchedulesService, ChildReportingService childReportingService, AllChildren allChildren) {
         this.actionService = actionService;
         this.pncSchedulesService = pncSchedulesService;
         this.allChildren = allChildren;
+        this.childReportingService = childReportingService;
     }
 
     public void registerChild(ChildRegistrationRequest request) {
-        allChildren.register(new Child(request.caseId(), request.thaayiCardNumber(), request.name(), request.village()).withAnm(request.anmIdentifier()));
+        allChildren.register(new Child(request.caseId(), request.thaayiCardNumber(), request.name(), request.village(), request.immunizationsProvided()).withAnm(request.anmIdentifier()));
 
         alertForMissingImmunization(request, "opv0", "OPV 0");
         alertForMissingImmunization(request, "bcg", "BCG");
@@ -34,7 +39,9 @@ public class PNCService {
         actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), request.thaayiCardNumber(), request.dateOfBirth());
     }
 
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest) {
+    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, String> reportingData) {
+        childReportingService.updateChildImmunization(updationRequest, reportingData);
+
         alertForImmunizationProvided(updationRequest, "opv0", "OPV 0");
         alertForImmunizationProvided(updationRequest, "bcg", "BCG");
         alertForImmunizationProvided(updationRequest, "hepB0", "HEP B0");

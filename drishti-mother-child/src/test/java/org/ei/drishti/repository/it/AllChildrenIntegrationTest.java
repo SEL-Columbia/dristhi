@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
@@ -28,7 +29,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldRegisterAChild() {
-        Child child = new Child("CASE-1", "THAAYI-CARD-1", "Child", "bherya").withAnm("ANM ID 1");
+        Child child = new Child("CASE-1", "THAAYI-CARD-1", "Child", "bherya", Arrays.asList("bcg", "hep")).withAnm("ANM ID 1");
 
         children.register(child);
 
@@ -41,7 +42,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldFindChildByCaseId() {
-        Child child = new Child("CASE-1", "THAAYI-CARD-1", "Child", "bherya").withAnm("ANM ID 1");
+        Child child = new Child("CASE-1", "THAAYI-CARD-1", "Child", "bherya", Arrays.asList("bcg", "hep")).withAnm("ANM ID 1");
         children.register(child);
 
         Child childFromDB = children.findByCaseId("CASE-1");

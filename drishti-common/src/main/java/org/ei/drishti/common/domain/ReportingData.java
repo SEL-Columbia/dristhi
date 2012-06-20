@@ -1,5 +1,6 @@
 package org.ei.drishti.common.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -20,7 +21,12 @@ public class ReportingData implements Serializable {
 
     public ReportingData(String type) {
         this.type = type;
-        data = new HashMap<String, String>();
+        data = new HashMap<>();
+    }
+
+    public ReportingData(String type, Map<String, String> data) {
+        this.type = type;
+        this.data = data;
     }
 
     public ReportingData with(String key, String value) {
@@ -28,12 +34,21 @@ public class ReportingData implements Serializable {
         return this;
     }
 
+    public String get(String key) {
+        return data.get(key);
+    }
+
+    public String type() {
+        return type;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
 
-    public String get(String key) {
-        return data.get(key);
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 }

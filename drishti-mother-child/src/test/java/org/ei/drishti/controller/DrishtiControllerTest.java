@@ -2,15 +2,13 @@ package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
-import org.ei.drishti.service.ANCService;
-import org.ei.drishti.service.DrishtiMCTSService;
-import org.ei.drishti.service.ECService;
-import org.ei.drishti.service.PNCService;
+import org.ei.drishti.service.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -27,6 +25,8 @@ public class DrishtiControllerTest {
     private DrishtiMCTSService mctsService;
     @Mock
     private PNCService pncService;
+    @Mock
+    private ReportingService reportingService;
 
     private DrishtiController controller;
 
@@ -90,9 +90,10 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothPNCServiceAndMCTSDuringChildImmunizationUpdation() {
         ChildImmunizationUpdationRequest updationRequest = mock(ChildImmunizationUpdationRequest.class);
 
-        controller.updateChildImmunization(updationRequest);
+        Map<String, String> data = new HashMap<>();
+        controller.updateChildImmunization(updationRequest, data);
 
-        verify(pncService).updateChildImmunization(updationRequest);
+        verify(pncService).updateChildImmunization(updationRequest, data);
         verify(mctsService).updateChildImmunization(updationRequest);
     }
 

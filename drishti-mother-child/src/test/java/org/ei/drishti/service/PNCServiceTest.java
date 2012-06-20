@@ -9,9 +9,14 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
 import org.motechproject.util.DateUtil;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
 import static org.mockito.Mockito.*;
@@ -24,13 +29,15 @@ public class PNCServiceTest extends BaseUnitTest {
     private PNCSchedulesService pncSchedulesService;
     @Mock
     private AllChildren allChildren;
+    @Mock
+    private ChildReportingService reportingService;
 
     private PNCService pncService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        pncService = new PNCService(actionService, pncSchedulesService, allChildren);
+        pncService = new PNCService(actionService, pncSchedulesService, reportingService, allChildren);
     }
 
     @Test
@@ -61,9 +68,9 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
-        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
+        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", "bcg hep"));
 
-        verify(allChildren).register(objectWithSameFieldsAs(new Child("Case X", "TC 1", "Child 1", "bherya").withAnm("DEMO ANM")));
+        verify(allChildren).register(objectWithSameFieldsAs(new Child("Case X", "TC 1", "Child 1", "bherya", Arrays.asList("bcg", "hep")).withAnm("DEMO ANM")));
     }
 
     @Test
@@ -87,9 +94,20 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldUpdateEnrollmentsForUpdatedImmunizations() {
         ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0");
 
-        pncService.updateChildImmunization(request);
+        pncService.updateChildImmunization(request, new HashMap<String, String>());
 
         verify(pncSchedulesService).updateEnrollments(request);
+    }
+
+    @Test
+    public void shouldSendDataForReportingBeforeUpdatingChildInDBSoThatUpdatedImmunizationsAreDecided() throws Exception {
+        ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0");
+
+        pncService.updateChildImmunization(request, new HashMap<String, String>());
+
+        InOrder inOrder = inOrder(reportingService, pncSchedulesService);
+        inOrder.verify(reportingService).updateChildImmunization(eq(request), any(Map.class));
+        inOrder.verify(pncSchedulesService).updateEnrollments(request);
     }
 
     @Test
@@ -98,7 +116,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
 
         ActionService alertServiceMock = mock(ActionService.class);
-        PNCService pncService = new PNCService(alertServiceMock, mock(PNCSchedulesService.class), allChildren);
+        PNCService pncService = new PNCService(alertServiceMock, mock(PNCSchedulesService.class), reportingService, allChildren);
 
         pncService.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"));
 
@@ -117,9 +135,9 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
 
         ActionService actionService = mock(ActionService.class);
-        PNCService pncService = new PNCService(actionService, mock(PNCSchedulesService.class), allChildren);
+        PNCService pncService = new PNCService(actionService, mock(PNCSchedulesService.class), reportingService, allChildren);
 
-        pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations));
+        pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations), new HashMap<String, String>());
 
         for (String expectedAlert : expectedDeletedAlertsRaised) {
             verify(actionService).deleteAlertForVisitForChild("Case X", "DEMO ANM", expectedAlert);
@@ -131,7 +149,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         ActionService actionService = mock(ActionService.class);
-        PNCService pncService = new PNCService(actionService, mock(PNCSchedulesService.class), allChildren);
+        PNCService pncService = new PNCService(actionService, mock(PNCSchedulesService.class), reportingService, allChildren);
 
         pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
 

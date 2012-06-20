@@ -110,6 +110,10 @@
                         "form|meta|username": "anmIdentifier",
                         "form|case|@case_id": "caseId",
                         "form|immunization_multiselect1": "immunizationsProvided"
+                    },
+                    "extraMappings": {
+                        "form|meta|username": "anmIdentifier",
+                        "form|case|update|immunization_servicedate": "immunizationsProvidedDate"
                     }
                 },
                 {

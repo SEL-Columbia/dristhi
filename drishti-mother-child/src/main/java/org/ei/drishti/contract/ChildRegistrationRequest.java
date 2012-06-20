@@ -4,7 +4,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
 import org.motechproject.util.DateUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class ChildRegistrationRequest {
     private String childName;
@@ -45,8 +48,8 @@ public class ChildRegistrationRequest {
         return caseId;
     }
 
-    public String immunizationsProvided() {
-        return immunizationsProvided;
+    public List<String> immunizationsProvided() {
+        return new ArrayList<>(Arrays.asList(immunizationsProvided.split(" ")));
     }
 
     public boolean isImmunizationProvided(String checkForThisImmunization) {

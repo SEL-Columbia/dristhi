@@ -5,6 +5,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
+import java.util.List;
+
 @TypeDiscriminator("doc.type === 'Child'")
 public class Child extends MotechBaseDataObject {
     @JsonProperty
@@ -17,15 +19,18 @@ public class Child extends MotechBaseDataObject {
     private String village;
     @JsonProperty
     private String anmIdentifier;
+    @JsonProperty
+    private List<String> immunizationsProvided;
 
     private Child() {
     }
 
-    public Child(String caseId, String thaayiCardNumber, String name, String village) {
+    public Child(String caseId, String thaayiCardNumber, String name, String village, List<String> immunizationsProvided) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
         this.village = village;
+        this.immunizationsProvided = immunizationsProvided;
     }
 
     public Child withAnm(String anmIdentifier) {
@@ -77,5 +82,9 @@ public class Child extends MotechBaseDataObject {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public List<String> immunizationsProvided() {
+        return immunizationsProvided;
     }
 }
