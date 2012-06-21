@@ -156,7 +156,7 @@
     <dependency>
       <groupId>org.motechproject</groupId>
       <artifactId>motech-schedule-testing</artifactId>
-      <version>0.3-SNAPSHOT</version>
+      <version>0.4-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>
