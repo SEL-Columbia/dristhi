@@ -25,15 +25,18 @@ public class Mother extends MotechBaseDataObject {
     private String ecNumber;
     @JsonProperty
     private String village;
+    @JsonProperty
+    private String subCenter;
+    @JsonProperty
+    private String phc;
 
     private Mother() {
     }
 
-    public Mother(String caseId, String thaayiCardNumber, String name, String village) {
+    public Mother(String caseId, String thaayiCardNumber, String name) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
-        this.village = village;
     }
 
     public String name() {
@@ -53,6 +56,13 @@ public class Mother extends MotechBaseDataObject {
 
     public Mother withECNumber(String ecNumber) {
         this.ecNumber = ecNumber;
+        return this;
+    }
+
+    public Mother withLocation(String village, String subCenter, String phc) {
+        this.village = village;
+        this.subCenter = subCenter;
+        this.phc = phc;
         return this;
     }
 

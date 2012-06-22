@@ -32,7 +32,7 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldRegisterAMother() {
-        Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa", "bherya").withAnm("ANM ID 1", "12345").withLMP(DateUtil.tomorrow()).withECNumber("EC Number 1");
+        Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa").withAnm("ANM ID 1", "12345").withLMP(DateUtil.tomorrow()).withECNumber("EC Number 1").withLocation("bherya", "Sub Center", "PHC X");
 
         mothers.register(mother);
 
@@ -46,7 +46,7 @@ public class AllMothersIntegrationTest {
     @Test
     public void shouldFindARegisteredMotherByCaseId() {
         String caseId = "CASE-1";
-        Mother motherToRegister = new Mother(caseId, "THAAYI-CARD-1", "Theresa", "bherya");
+        Mother motherToRegister = new Mother(caseId, "THAAYI-CARD-1", "Theresa");
         mothers.register(motherToRegister);
 
         assertThat(mothers.findByCaseId(caseId), hasSameFieldsAs(motherToRegister));
@@ -56,7 +56,7 @@ public class AllMothersIntegrationTest {
     @Test
     public void shouldFindARegisteredMotherByThaayiCardNumber() {
         String thaayiCardNumber = "THAAYI-CARD-1";
-        Mother motherToRegister = new Mother("CASE-1", thaayiCardNumber, "Theresa", "bherya");
+        Mother motherToRegister = new Mother("CASE-1", thaayiCardNumber, "Theresa");
         mothers.register(motherToRegister);
 
         assertThat(mothers.findByThaayiCardNumber(thaayiCardNumber), hasSameFieldsAs(motherToRegister));
@@ -66,7 +66,7 @@ public class AllMothersIntegrationTest {
     @Test
     public void shouldSayThatAMotherDoesNotExistWhenTheMotherIsNotInTheDB() {
         String caseId = "CASE-1";
-        Mother motherToRegister = new Mother(caseId, "THAAYI-CARD-1", "Theresa", "bherya");
+        Mother motherToRegister = new Mother(caseId, "THAAYI-CARD-1", "Theresa");
         mothers.register(motherToRegister);
 
         assertTrue(mothers.motherExists("CASE-1"));

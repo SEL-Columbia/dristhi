@@ -8,7 +8,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="annotatedClasses">
             <list>
-                <value>org.ei.drishti.reporting.domain.MotherRegistration</value>
+                <value>org.ei.drishti.reporting.domain.ServiceProvided</value>
             </list>
         </property>
 

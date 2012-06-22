@@ -10,16 +10,20 @@ public class AnteNatalCareEnrollmentInformation {
     private String thaayiCardNumber;
     private String name;
     private String village;
+    private String subCenter;
+    private String phc;
     private String anmPhoneNumber;
     private String anmIdentifier;
     private Date lmp;
     private String ecNumber;
 
-    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String village, String anmPhoneNumber, String anmIdentifier, Date lmp, String ecNumber) {
+    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String village, String subCenter, String phc, String anmPhoneNumber, String anmIdentifier, Date lmp, String ecNumber) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
         this.village = village;
+        this.subCenter = subCenter;
+        this.phc = phc;
         this.anmPhoneNumber = anmPhoneNumber;
         this.anmIdentifier = anmIdentifier;
         this.lmp = lmp;
@@ -56,6 +60,14 @@ public class AnteNatalCareEnrollmentInformation {
 
     public String village() {
         return village;
+    }
+
+    public String subCenter() {
+        return subCenter;
+    }
+
+    public String phc() {
+        return phc;
     }
 
     @Override

@@ -42,7 +42,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa", "bherya").withAnm("ANM ID 1", "ANM phone no"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
         service.alertForMother("Case X", "ANC 1", "due", dueDate);
@@ -69,7 +69,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateADeleteActionForAVisitOfAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa", "bherya").withAnm("ANM ID 1", "ANM phone no"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
 
         service.deleteAlertForVisitForMother("Case X", "ANC 1");
 
@@ -78,7 +78,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateADeleteAllActionForAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa", "bherya").withAnm("ANM ID 1", "ANM phone no"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
 
         service.deleteAllAlertsForMother("Case X");
 
@@ -137,7 +137,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldUpdateBeneficiaryWhenECIsRegistered() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "TC 1", "Theresa", "bherya").withAnm("ANM X", "ANM phone number").withECNumber("EC Number 1"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "TC 1", "Theresa").withAnm("ANM X", "ANM phone number").withECNumber("EC Number 1").withLocation("bherya", "Sub Center", "PHC X"));
         when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "bherya")).thenReturn(new EligibleCouple("Case EC 1", "EC Number 1"));
 
         service.updateDeliveryOutcome("Case X", "delivery");
@@ -147,7 +147,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldUpdateBeneficiaryWhenECIsNotRegistered() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "TC 1", "Theresa", "bherya").withAnm("ANM X", "ANM phone number").withECNumber("EC Number 1"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "TC 1", "Theresa").withAnm("ANM X", "ANM phone number").withECNumber("EC Number 1").withLocation("bherya", "Sub Center", "PHC X"));
         when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "bherya")).thenReturn(null);
 
         service.updateDeliveryOutcome("Case X", "delivery");
@@ -157,7 +157,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldRegisterChildBirth() throws Exception {
-        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MotherCaseId", "MotherThaayiCard 1", "Theresa", "bherya"));
+        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MotherCaseId", "MotherThaayiCard 1", "Theresa"));
 
         service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1", DateUtil.today());
 

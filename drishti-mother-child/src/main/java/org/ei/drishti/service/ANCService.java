@@ -35,7 +35,8 @@ public class ANCService {
     }
 
     public void registerANCCase(AnteNatalCareEnrollmentInformation info) {
-        Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name(), info.village()).withAnm(info.anmIdentifier(), info.anmPhoneNumber()).withLMP(info.lmpDate()).withECNumber(info.ecNumber());
+        Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
+                .withLMP(info.lmpDate()).withECNumber(info.ecNumber()).withLocation(info.village(), info.subCenter(), info.phc());
         allMothers.register(mother);
 
 //        Time preferredAlertTime = new Time(LocalTime.now().plusMinutes(2).withSecondOfMinute(0));

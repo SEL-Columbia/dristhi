@@ -1,1 +1,1 @@
-CREATE TABLE report.mother_registration(ID SERIAL PRIMARY KEY, day VARCHAR);
+CREATE TABLE report.services_provided(ID SERIAL PRIMARY KEY, thaayiCardNumber VARCHAR, serviceDate DATE, service VARCHAR, anmIdentifier VARCHAR);

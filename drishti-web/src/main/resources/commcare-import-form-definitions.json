@@ -43,6 +43,8 @@
                         "form|ancm_name": "name",
                         "form|lmp": "lmp",
                         "form|anc_village": "village",
+                        "form|anc_subcenter": "subCenter",
+                        "form|phc": "phc",
                         "form|anm_phone": "anmPhoneNumber",
                         "form|ECnumber": "ecNumber",
                         "form|meta|username": "anmIdentifier"
