@@ -14,8 +14,9 @@ public class ActionData {
     private String target;
     private String type;
 
-    public static ActionData createAlert(String beneficiaryName, String village, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
-        return new ActionData("alert", "createAlert").with("beneficiaryName", beneficiaryName).with("village", village).with("thaayiCardNumber", thaayiCardNumber)
+    public static ActionData createAlert(String beneficiaryName, String village, String subCenter, String phc, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
+        return new ActionData("alert", "createAlert").with("beneficiaryName", beneficiaryName).with("village", village)
+                .with("subCenter", subCenter).with("phc", phc).with("thaayiCardNumber", thaayiCardNumber)
                 .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("dueDate", dueDate.toLocalDate().toString());
     }
 

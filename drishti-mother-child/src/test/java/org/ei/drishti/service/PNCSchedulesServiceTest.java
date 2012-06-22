@@ -36,7 +36,7 @@ public class PNCSchedulesServiceTest {
 
     @Test
     public void shouldEnrollChildIntoAllChildSchedulesAndUpdateEnrollments() {
-        schedulesService.enrollChild(new ChildRegistrationRequest("Case X", "child name", "bherya", "TC 1", today().toDate(), "DEMO ANM", "bcg"));
+        schedulesService.enrollChild(new ChildRegistrationRequest("Case X", "child name", "bherya", "Sub Center", "PHC X", "TC 1", today().toDate(), "DEMO ANM", "bcg"));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_BCG, today()));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_DPT, today()));

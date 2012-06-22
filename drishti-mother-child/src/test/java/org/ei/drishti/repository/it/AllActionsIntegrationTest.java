@@ -30,7 +30,7 @@ public class AllActionsIntegrationTest {
 
     @Test
     public void shouldSaveAReminder() throws Exception {
-        Action alertAction = new Action("Case X", "ANM phone no", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action alertAction = new Action("Case X", "ANM phone no", alert());
 
         allActions.add(alertAction);
 
@@ -46,13 +46,13 @@ public class AllActionsIntegrationTest {
 
     @Test
     public void shouldReturnAlertActionsBasedOnANMIDAndTimeStamp() throws Exception {
-        Action firstAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action firstAction = new Action("Case X", "ANM 1", alert());
         allActions.add(firstAction);
 
-        Action secondAction = new Action("Case Y", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action secondAction = new Action("Case Y", "ANM 1", alert());
         allActions.add(secondAction);
 
-        Action thirdAction = new Action("Case Z", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action thirdAction = new Action("Case Z", "ANM 1", alert());
         allActions.add(thirdAction);
 
         assertEquals(asList(firstAction, secondAction, thirdAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
@@ -64,10 +64,10 @@ public class AllActionsIntegrationTest {
 
     @Test
     public void shouldFindAlertsOnlyForTheANMSpecified() throws Exception {
-        Action firstAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action firstAction = new Action("Case X", "ANM 1", alert());
         allActions.add(firstAction);
 
-        Action secondAction = new Action("Case Y", "ANM 2", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action secondAction = new Action("Case Y", "ANM 2", alert());
         allActions.add(secondAction);
 
         assertEquals(asList(firstAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
@@ -76,11 +76,11 @@ public class AllActionsIntegrationTest {
 
     @Test
     public void shouldFetchAlertsSortedByTimestamp() throws Exception {
-        Action earlierAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action earlierAction = new Action("Case X", "ANM 1", alert());
         Thread.sleep(100);
-        Action laterAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action laterAction = new Action("Case X", "ANM 1", alert());
         Thread.sleep(100);
-        Action latestAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action latestAction = new Action("Case X", "ANM 1", alert());
 
         allActions.add(laterAction);
         allActions.add(latestAction);
@@ -91,12 +91,12 @@ public class AllActionsIntegrationTest {
 
     @Test
     public void shouldRemoveAllExistingAlertsForTheCaseFromRepositoryBeforeInsertingADeleteAllAlert() {
-        Action firstAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
-        Action secondAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 2", "late", DateTime.now()));
-        Action thirdAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 3", "due", DateTime.now()));
+        Action firstAlertAction = new Action("Case X", "ANM 1", alert());
+        Action secondAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 2", "late", DateTime.now()));
+        Action thirdAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 3", "due", DateTime.now()));
         Action fourthNonAlertActionForSameMother = new Action("Case X", "ANM 1", ActionData.createBeneficiary("EC Case 1", "Thaayi 1", DateUtil.today()));
-        Action actionOfSameANMForAnotherMother = new Action("Case ABC", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 3", "due", DateTime.now()));
-        Action actionOfAnotherANM = new Action("Case Y", "ANM 2", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        Action actionOfSameANMForAnotherMother = new Action("Case ABC", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 3", "due", DateTime.now()));
+        Action actionOfAnotherANM = new Action("Case Y", "ANM 2", alert());
         allActions.add(firstAlertAction);
         allActions.add(secondAlertAction);
         allActions.add(thirdAlertAction);
@@ -109,5 +109,9 @@ public class AllActionsIntegrationTest {
 
         assertEquals(asList(fourthNonAlertActionForSameMother, actionOfSameANMForAnotherMother, deleteAllAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
         assertEquals(asList(actionOfAnotherANM), allActions.findByANMIDAndTimeStamp("ANM 2", 0));
+    }
+
+    private ActionData alert() {
+        return ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 1", "due", DateTime.now());
     }
 }

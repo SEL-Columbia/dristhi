@@ -112,6 +112,14 @@ public class Mother extends MotechBaseDataObject {
         return ecNumber;
     }
 
+    public String phc() {
+        return phc;
+    }
+
+    public String subCenter() {
+        return subCenter;
+    }
+
     private String getCaseId() {
         return caseId;
     }

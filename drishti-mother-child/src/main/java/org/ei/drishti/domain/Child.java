@@ -18,6 +18,10 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private String village;
     @JsonProperty
+    private String subCenter;
+    @JsonProperty
+    private String phc;
+    @JsonProperty
     private String anmIdentifier;
     @JsonProperty
     private List<String> immunizationsProvided;
@@ -25,11 +29,10 @@ public class Child extends MotechBaseDataObject {
     private Child() {
     }
 
-    public Child(String caseId, String thaayiCardNumber, String name, String village, List<String> immunizationsProvided) {
+    public Child(String caseId, String thaayiCardNumber, String name, List<String> immunizationsProvided) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
-        this.village = village;
         this.immunizationsProvided = immunizationsProvided;
     }
 
@@ -62,6 +65,14 @@ public class Child extends MotechBaseDataObject {
         return anmIdentifier;
     }
 
+    public String phc() {
+        return phc;
+    }
+
+    public String subCenter() {
+        return subCenter;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,5 +97,12 @@ public class Child extends MotechBaseDataObject {
 
     public List<String> immunizationsProvided() {
         return immunizationsProvided;
+    }
+
+    public Child withLocation(String village, String subCenter, String phc) {
+        this.village = village;
+        this.subCenter = subCenter;
+        this.phc = phc;
+        return this;
     }
 }

@@ -34,7 +34,7 @@ public class ChildReportingServiceTest {
 
         Map<String, String> reportingData = new HashMap<>();
         reportingData.put("anmIdentifier", "ANM X");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", "bheriya", Arrays.asList("bcg", "hep")));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("bcg", "hep")));
 
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv"), reportingData);
 

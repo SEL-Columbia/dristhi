@@ -10,20 +10,24 @@ import java.util.Date;
 import java.util.List;
 
 public class ChildRegistrationRequest {
-    private String childName;
     private String caseId;
+    private String childName;
     private String village;
+    private String subCenter;
+    private String phc;
     private String anmIdentifier;
     private String thaayiCardNumber = "1234567";
     private String immunizationsProvided;
     private Date dateOfBirth = DateUtil.today().toDate();
 
-    public ChildRegistrationRequest(String caseId, String childName, String village, String thaayiCardNumber, Date dateOfBirth, String anmIdentifier, String immunizationsProvided) {
+    public ChildRegistrationRequest(String caseId, String childName, String village, String subCenter, String phc, String thaayiCardNumber, Date dateOfBirth, String anmIdentifier, String immunizationsProvided) {
+        this.caseId = caseId;
         this.childName = childName;
+        this.village = village;
+        this.subCenter = subCenter;
+        this.phc = phc;
         this.thaayiCardNumber = thaayiCardNumber;
         this.dateOfBirth = dateOfBirth;
-        this.caseId = caseId;
-        this.village = village;
         this.anmIdentifier = anmIdentifier;
         this.immunizationsProvided = immunizationsProvided;
     }
@@ -58,6 +62,14 @@ public class ChildRegistrationRequest {
 
     public String village() {
         return village;
+    }
+
+    public String subCenter() {
+        return subCenter;
+    }
+
+    public String phc() {
+        return phc;
     }
 
     @Override

@@ -10,7 +10,6 @@ import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Map;
 
 @Service
@@ -29,7 +28,8 @@ public class PNCService {
     }
 
     public void registerChild(ChildRegistrationRequest request) {
-        allChildren.register(new Child(request.caseId(), request.thaayiCardNumber(), request.name(), request.village(), request.immunizationsProvided()).withAnm(request.anmIdentifier()));
+        allChildren.register(new Child(request.caseId(), request.thaayiCardNumber(), request.name(), request.immunizationsProvided())
+                .withAnm(request.anmIdentifier()).withLocation(request.village(), request.subCenter(), request.phc()));
 
         alertForMissingImmunization(request, "opv0", "OPV 0");
         alertForMissingImmunization(request, "bcg", "BCG");

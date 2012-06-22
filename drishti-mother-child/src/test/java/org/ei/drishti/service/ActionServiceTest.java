@@ -47,17 +47,17 @@ public class ActionServiceTest {
         DateTime dueDate = DateTime.now().minusDays(1);
         service.alertForMother("Case X", "ANC 1", "due", dueDate);
 
-        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", dueDate)));
+        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 1", "due", dueDate)));
     }
 
     @Test
     public void shouldSaveAlertActionForChild() throws Exception {
-        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "TC 1", "Child 1", "bherya", Arrays.asList("bcg", "hep")).withAnm("DEMO ANM"));
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "TC 1", "Child 1", Arrays.asList("bcg", "hep")).withAnm("DEMO ANM").withLocation("bherya", "Sub Center", "PHC X"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
         service.alertForChild("Case X", "OPV 1", "due", dueDate);
 
-        verify(allActions).add(new Action("Case X", "DEMO ANM", ActionData.createAlert("Child 1", "bherya", "TC 1", "OPV 1", "due", dueDate)));
+        verify(allActions).add(new Action("Case X", "DEMO ANM", ActionData.createAlert("Child 1", "bherya", "Sub Center", "PHC X", "TC 1", "OPV 1", "due", dueDate)));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
-        List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Thaayi 1", "ANC 1", "due", DateTime.now())));
+        List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 1", "due", DateTime.now())));
         when(allActions.findByANMIDAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
 
         List<Action> alerts = service.getNewAlertsForANM("ANM 1", 1010101);

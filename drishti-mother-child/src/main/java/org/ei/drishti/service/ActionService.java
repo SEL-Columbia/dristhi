@@ -43,13 +43,13 @@ public class ActionService {
     public void alertForMother(String caseID, String visitCode, String latenessStatus, DateTime dueDate) {
         Mother mother = allMothers.findByCaseId(caseID);
 
-        allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.createAlert(mother.name(), mother.village(), mother.thaayiCardNo(), visitCode, latenessStatus, dueDate)));
+        allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.createAlert(mother.name(), mother.village(), mother.subCenter(), mother.phc(), mother.thaayiCardNo(), visitCode, latenessStatus, dueDate)));
     }
 
     public void alertForChild(String caseId, String visitCode, String latenessStatus, DateTime dueDate) {
         Child child = allChildren.findByCaseId(caseId);
 
-        allActions.add(new Action(caseId, child.anmIdentifier(), ActionData.createAlert(child.name(), child.village(), child.thaayiCardNumber(), visitCode, latenessStatus, dueDate)));
+        allActions.add(new Action(caseId, child.anmIdentifier(), ActionData.createAlert(child.name(), child.village(), child.subCenter(), child.phc(), child.thaayiCardNumber(), visitCode, latenessStatus, dueDate)));
     }
 
     public void deleteAlertForVisitForMother(String caseID, String visitCode) {

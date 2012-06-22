@@ -96,6 +96,8 @@
                         "form|child_name": "childName",
                         "form|mother_thayino": "thaayiCardNumber",
                         "form|child_village": "village",
+                        "form|child_subcenter": "subCenter",
+                        "form|phc": "phc",
                         "form|meta|username": "anmIdentifier",
                         "form|case|@case_id": "caseId",
                         "form|immunization_multiselect": "immunizationsProvided"
