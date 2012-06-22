@@ -1,32 +1,35 @@
 package org.ei.drishti.reporting.domain;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
-@Table(name = "mother_registration")
+@Table(name = "service_provided")
 public class ServiceProvided {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "thaayiCardNumber")
-    private String thaayiCardNumber;
-
-    @Column(name = "serviceDate")
-    private Date serviceDate;
-
-    @Column(name = "service")
-    private String service;
-
     @Column(name = "anmIdentifier")
-    private String anmIdentifier;
+    private Integer anmIdentifier;
 
-    public ServiceProvided(String thaayiCardNumber, Date serviceDate, String service, String anmIdentifier) {
-        this.thaayiCardNumber = thaayiCardNumber;
-        this.serviceDate = serviceDate;
-        this.service = service;
+    @Column(name = "externalId")
+    private Integer externalId;
+
+    @Column(name = "indicator")
+    private Integer indicator;
+
+    @Column(name = "date_")
+    private Integer date;
+
+    @Column(name = "location")
+    private Integer location;
+
+    public ServiceProvided(Integer anmIdentifier, Integer externalId, Integer indicator, Integer date, Integer location) {
         this.anmIdentifier = anmIdentifier;
+        this.externalId = externalId;
+        this.indicator = indicator;
+        this.date = date;
+        this.location = location;
     }
 }

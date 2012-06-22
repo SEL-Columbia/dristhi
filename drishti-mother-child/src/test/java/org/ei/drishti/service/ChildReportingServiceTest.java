@@ -35,6 +35,7 @@ public class ChildReportingServiceTest {
 
         Map<String, String> reportingData = new HashMap<>();
         reportingData.put("anmIdentifier", "ANM X");
+        reportingData.put("immunizationsProvidedDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("bcg", "hep")).withLocation("bherya", "Sub Center", "PHC X"));
 
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv"), reportingData);
@@ -55,5 +56,4 @@ public class ChildReportingServiceTest {
 
         verifyZeroInteractions(reportingService);
     }
-
 }
