@@ -11,7 +11,7 @@
     <context:property-placeholder location="classpath*:drishti-report.properties"/>
     <context:annotation-config/>
 
-    <import resource="classpath:spring/applicationContext-reporting-repository.xml" />
+    <import resource="classpath:test-applicationContext-reporting-repository.xml" />
 
     <context:component-scan base-package="org.ei.drishti.reporting"/>
     <mvc:default-servlet-handler/>
