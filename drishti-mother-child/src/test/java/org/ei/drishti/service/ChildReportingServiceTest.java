@@ -3,6 +3,7 @@ package org.ei.drishti.service;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.domain.Child;
+import org.ei.drishti.domain.Location;
 import org.ei.drishti.repository.AllChildren;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,16 +35,12 @@ public class ChildReportingServiceTest {
 
         Map<String, String> reportingData = new HashMap<>();
         reportingData.put("anmIdentifier", "ANM X");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("bcg", "hep")));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("bcg", "hep")).withLocation("bherya", "Sub Center", "PHC X"));
 
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv"), reportingData);
 
-        Map<String, String> expectedReportingData = new HashMap<>();
-        expectedReportingData.put("anmIdentifier", "ANM X");
-        expectedReportingData.put("immunizationsProvided", "opv");
-        expectedReportingData.put("thaayiCardNumber", "TC 1");
-
-        verify(reportingService).sendReportData(new ReportingData("updateChildImmunization", expectedReportingData));
+        ReportingData expectedReportingData = ReportingData.updateChildImmunization("ANM X", "TC 1", "opv", "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        verify(reportingService).sendReportData(expectedReportingData);
     }
 
     @Test

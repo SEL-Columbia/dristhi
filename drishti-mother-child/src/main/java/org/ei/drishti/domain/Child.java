@@ -105,4 +105,8 @@ public class Child extends MotechBaseDataObject {
         this.phc = phc;
         return this;
     }
+
+    public Location location() {
+        return new Location(village, subCenter, phc);
+    }
 }

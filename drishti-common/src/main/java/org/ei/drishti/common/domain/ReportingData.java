@@ -3,6 +3,7 @@ package org.ei.drishti.common.domain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.ei.drishti.domain.Location;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -15,6 +16,11 @@ public class ReportingData implements Serializable {
     private String type;
     @JsonProperty
     private Map<String, String> data;
+
+    public static ReportingData updateChildImmunization(String anmIdentifier, String externalId, String indicator, String date, Location location) {
+        return new ReportingData("service").with("anmIdentifier", anmIdentifier).with("indicator", indicator)
+                .with("externalId", externalId).with("village", location.village()).with("subCenter", location.subCenter()).with("phc", location.phc());
+    }
 
     private ReportingData() {
     }

@@ -58,12 +58,24 @@ public class ActionData {
     private ActionData(String target, String type) {
         this.target = target;
         this.type = type;
-        data = new HashMap<String, String>();
+        data = new HashMap<>();
     }
 
-    public ActionData with(String key, String value) {
+    private ActionData with(String key, String value) {
         data.put(key, value);
         return this;
+    }
+
+    public Map<String, String> data() {
+        return data;
+    }
+
+    public String target() {
+        return target;
+    }
+
+    public String type() {
+        return type;
     }
 
     @Override
@@ -79,17 +91,5 @@ public class ActionData {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
-    }
-
-    public Map<String, String> data() {
-        return data;
-    }
-
-    public String target() {
-        return target;
-    }
-
-    public String type() {
-        return type;
     }
 }

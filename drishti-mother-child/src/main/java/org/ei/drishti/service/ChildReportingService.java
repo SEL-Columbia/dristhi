@@ -5,6 +5,7 @@ import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class ChildReportingService {
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, String> reportingData) {
+        SafeMap safeReportingData = new SafeMap(reportingData);
         List<String> provided = updationRequest.immunizationsProvided();
 
         Child child = allChildren.findByCaseId(updationRequest.caseId());
@@ -36,8 +38,10 @@ public class ChildReportingService {
         List<String> previouslyProvided = child.immunizationsProvided();
         provided.removeAll(previouslyProvided);
 
-        reportingData.put("immunizationsProvided", StringUtils.join(provided.toArray(new String[0])));
-        reportingData.put("thaayiCardNumber", child.thaayiCardNumber());
-        reportingService.sendReportData(new ReportingData("updateChildImmunization", reportingData));
+        String missingImmunizations = StringUtils.join(provided.toArray(new String[0]));
+        ReportingData data = ReportingData.updateChildImmunization(safeReportingData.get("anmIdentifier"), child.thaayiCardNumber(),
+                missingImmunizations, reportingData.get("immunizationsProvidedDate"), child.location());
+
+        reportingService.sendReportData(data);
     }
 }
