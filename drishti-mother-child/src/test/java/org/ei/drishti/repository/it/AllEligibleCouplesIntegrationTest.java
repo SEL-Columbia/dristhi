@@ -64,8 +64,8 @@ public class AllEligibleCouplesIntegrationTest {
 
     @Test
     public void shouldFindEligibleCoupleByCaseIdAndVillage() throws Exception {
-        EligibleCouple couple1 = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1").withANMIdentifier("ANM X").withLocation("Village 1", "SubCenter 1");
-        EligibleCouple couple2 = new EligibleCouple("CASE Y", "EC Number 2").withCouple("Wife 2", "Husband 2").withANMIdentifier("ANM X").withLocation("Village 2", "SubCenter 2");
+        EligibleCouple couple1 = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1").withANMIdentifier("ANM X").withLocation("Village 1", "SubCenter 1", "PHC 1");
+        EligibleCouple couple2 = new EligibleCouple("CASE Y", "EC Number 2").withCouple("Wife 2", "Husband 2").withANMIdentifier("ANM X").withLocation("Village 2", "SubCenter 2", "PHC 2");
         eligibleCouples.register(couple1);
         eligibleCouples.register(couple2);
         assertThat(eligibleCouples.getAll(), is(asList(couple1, couple2)));

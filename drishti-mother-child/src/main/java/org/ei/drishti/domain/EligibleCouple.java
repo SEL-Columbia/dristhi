@@ -21,6 +21,8 @@ public class EligibleCouple extends MotechBaseDataObject {
     private String village;
     @JsonProperty
     private String subCenter;
+    @JsonProperty
+    private String phc;
 
     public EligibleCouple() {
     }
@@ -41,9 +43,10 @@ public class EligibleCouple extends MotechBaseDataObject {
         return this;
     }
 
-    public EligibleCouple withLocation(String village, String subCenter) {
+    public EligibleCouple withLocation(String village, String subCenter, String phc) {
         this.village = village;
         this.subCenter = subCenter;
+        this.phc = phc;
         return this;
     }
 

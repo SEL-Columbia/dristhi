@@ -27,8 +27,9 @@ public class ActionData {
         return new ActionData("alert", "deleteAllAlerts");
     }
 
-    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String village, String subCenter) {
-        return new ActionData("eligibleCouple", "createEC").with("wife", wife).with("husband", husband).with("ecNumber", ecNumber).with("village", village).with("subcenter", subCenter);
+    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String village, String subCenter, String phc) {
+        return new ActionData("eligibleCouple", "createEC").with("wife", wife).with("husband", husband)
+                .with("ecNumber", ecNumber).with("village", village).with("subcenter", subCenter).with("phc", phc);
     }
 
     public static ActionData deleteEligibleCouple() {

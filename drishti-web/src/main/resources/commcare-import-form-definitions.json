@@ -19,7 +19,8 @@
                         "form|case|@case_id": "caseId",
                         "form|meta|username": "anmIdentifier",
                         "form|ec_village": "village",
-                        "form|ec_village_subcenter": "subCenter"
+                        "form|ec_village_subcenter": "subCenter",
+                        "form|phc": "phc"
                     },
                     "extraMappings": {
                         "form|husbands_name": "husbandName",

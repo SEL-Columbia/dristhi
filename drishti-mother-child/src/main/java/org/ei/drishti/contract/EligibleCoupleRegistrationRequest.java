@@ -10,8 +10,9 @@ public class EligibleCoupleRegistrationRequest {
     private String anmIdentifier;
     private String village;
     private String subCenter;
+    private String phc;
 
-    public EligibleCoupleRegistrationRequest(String caseId, String ecNumber, String wifeName, String husbandName, String anmIdentifier, String village, String subCenter) {
+    public EligibleCoupleRegistrationRequest(String caseId, String ecNumber, String wifeName, String husbandName, String anmIdentifier, String village, String subCenter, String phc) {
         this.caseId = caseId;
         this.ecNumber = ecNumber;
         this.wifeName = wifeName;
@@ -19,6 +20,7 @@ public class EligibleCoupleRegistrationRequest {
         this.anmIdentifier = anmIdentifier;
         this.village = village;
         this.subCenter = subCenter;
+        this.phc = phc;
     }
 
     public String caseId() {
@@ -47,6 +49,10 @@ public class EligibleCoupleRegistrationRequest {
 
     public String subCenter() {
         return subCenter;
+    }
+
+    public String phc() {
+        return phc;
     }
 
     @Override

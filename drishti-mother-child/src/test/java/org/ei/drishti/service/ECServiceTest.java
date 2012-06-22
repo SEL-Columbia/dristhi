@@ -27,11 +27,11 @@ public class ECServiceTest {
 
     @Test
     public void shouldRegisterEligibleCouple() throws Exception {
-        ecService.registerEligibleCouple(new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X"));
+        ecService.registerEligibleCouple(new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X"));
 
         verify(allEligibleCouples).register(new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1")
-                .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X"));
-        verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X");
+                .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X"));
+        verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X");
     }
 
     @Test
