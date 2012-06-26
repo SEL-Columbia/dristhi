@@ -1,8 +1,8 @@
 package org.ei.drishti.reporting.repository.it;
 
 import org.ei.drishti.reporting.domain.Dates;
-import org.ei.drishti.reporting.repository.AllDatesRepository;
 import org.ei.drishti.reporting.repository.TestDataAccessTemplate;
+import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class AllDatesRepositoryIntegrationTest {
     private TestDataAccessTemplate template;
 
     @Autowired
-    private AllDatesRepository repository;
+    private DatesCacheableRepository repository;
 
     @Before
     public void setUp() throws Exception {
@@ -35,9 +35,10 @@ public class AllDatesRepositoryIntegrationTest {
     @Test
     public void shouldSaveAndFetchDate() throws Exception {
         Date date = LocalDate.now().toDate();
-        repository.save(date);
+        Dates dates = new Dates(date);
+        repository.save(dates);
 
-        Dates fetchedDate = repository.fetch(date);
+        Dates fetchedDate = repository.fetch(dates);
         assertEquals(date, fetchedDate.date());
         assertTrue("ID should be non-zero.", fetchedDate.id() != 0);
     }

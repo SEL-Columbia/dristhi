@@ -1,8 +1,8 @@
 package org.ei.drishti.reporting.repository.it;
 
 import org.ei.drishti.reporting.domain.Indicator;
-import org.ei.drishti.reporting.repository.AllIndicatorsRepository;
 import org.ei.drishti.reporting.repository.TestDataAccessTemplate;
+import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ public class AllIndicatorsRepositoryIntegrationTest {
     private TestDataAccessTemplate template;
 
     @Autowired
-    private AllIndicatorsRepository repository;
+    private IndicatorCacheableRepository repository;
 
     @Before
     public void setUp() throws Exception {
@@ -31,10 +31,11 @@ public class AllIndicatorsRepositoryIntegrationTest {
 
     @Test
     public void shouldSaveAndFetchIndicator() throws Exception {
-        repository.save("ANC");
+        Indicator indicator = new Indicator("ANC");
+        repository.save(indicator);
 
-        Indicator indicator = repository.fetch("ANC");
-        assertEquals("ANC", indicator.indicator());
-        assertTrue("ID should be non-zero.", indicator.id() != 0);
+        Indicator fetchedIndicator = repository.fetch(indicator);
+        assertEquals("ANC", fetchedIndicator.indicator());
+        assertTrue("ID should be non-zero.", fetchedIndicator.id() != 0);
     }
 }

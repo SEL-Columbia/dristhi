@@ -1,5 +1,9 @@
 package org.ei.drishti.reporting.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,15 +24,35 @@ public class ANM {
     private ANM() {
     }
 
+    public ANM(String anmIdentifier) {
+        this(0, anmIdentifier);
+    }
+
+    public ANM(Integer id, String anmIdentifier) {
+        this.id = id;
+        this.anmIdentifier = anmIdentifier;
+    }
+
     public Integer id() {
         return id;
     }
 
-    public ANM(String anmIdentifier) {
-        this.anmIdentifier = anmIdentifier;
-    }
-
     public String anmIdentifier() {
         return anmIdentifier;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o, false, null, new String[]{"timeStamp"});
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

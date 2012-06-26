@@ -2,6 +2,10 @@ package org.ei.drishti.reporting.repository.it;
 
 import org.ei.drishti.reporting.domain.*;
 import org.ei.drishti.reporting.repository.*;
+import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
+import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
+import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
+import org.ei.drishti.reporting.repository.cache.LocationCacheableRepository;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,16 +28,16 @@ public class AllServicesProvidedIntegrationTest {
     private AllServicesProvidedRepository repository;
 
     @Autowired
-    private AllANMsRepository allANMsRepository;
+    private ANMCacheableRepository allANMsRepository;
 
     @Autowired
-    private AllDatesRepository allDatesRepository;
+    private DatesCacheableRepository allDatesRepository;
 
     @Autowired
-    private AllIndicatorsRepository allIndicatorsRepository;
+    private IndicatorCacheableRepository allIndicatorsRepository;
 
     @Autowired
-    private AllLocationsRepository allLocationsRepository;
+    private LocationCacheableRepository allLocationsRepository;
 
     @Before
     public void setUp() throws Exception {
@@ -46,15 +50,19 @@ public class AllServicesProvidedIntegrationTest {
 
     @Test
     public void shouldSaveAService() throws Exception {
-        allANMsRepository.save("ANM X");
-        allDatesRepository.save(LocalDate.now().toDate());
-        allIndicatorsRepository.save("ANC");
-        allLocationsRepository.save("Bherya", "Sub Center", "PHC X");
+        ANM anm = new ANM("ANM X");
+        Dates dates = new Dates(LocalDate.now().toDate());
+        Indicator indicator = new Indicator("ANC");
+        Location location = new Location("Bherya", "Sub Center", "PHC X");
+        allANMsRepository.save(anm);
+        allDatesRepository.save(dates);
+        allIndicatorsRepository.save(indicator);
+        allLocationsRepository.save(location);
 
-        Integer anmId = allANMsRepository.fetch("ANM X").id();
-        Integer dateId = allDatesRepository.fetch(LocalDate.now().toDate()).id();
-        Integer indicatorId = allIndicatorsRepository.fetch("ANC").id();
-        Integer locationId = allLocationsRepository.fetch("Bherya", "Sub Center", "PHC X").id();
+        Integer anmId = allANMsRepository.fetch(anm).id();
+        Integer dateId = allDatesRepository.fetch(dates).id();
+        Integer indicatorId = allIndicatorsRepository.fetch(indicator).id();
+        Integer locationId = allLocationsRepository.fetch(location).id();
 
         repository.save(anmId, 123, indicatorId, dateId, locationId);
 

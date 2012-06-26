@@ -1,5 +1,9 @@
 package org.ei.drishti.reporting.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,6 +24,11 @@ public class Indicator {
     }
 
     public Indicator(String indicator) {
+        this(0, indicator);
+    }
+
+    public Indicator(Integer id, String indicator) {
+        this.id = id;
         this.indicator = indicator;
     }
 
@@ -29,5 +38,20 @@ public class Indicator {
 
     public String indicator() {
         return indicator;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o, false, null, new String[]{"timeStamp"});
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

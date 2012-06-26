@@ -1,5 +1,9 @@
 package org.ei.drishti.reporting.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import javax.persistence.*;
 
 @Entity
@@ -25,10 +29,14 @@ public class Location {
     private Location() {
     }
 
-    public Location(String village, String subCenter, String phc) {
+    public Location(Integer id, String village, String subCenter, String phc) {
         this.village = village;
         this.subCenter = subCenter;
         this.phc = phc;
+    }
+
+    public Location(String village, String subCenter, String phc) {
+        this(0, village, subCenter, phc);
     }
 
     public Integer id() {
@@ -45,5 +53,20 @@ public class Location {
 
     public String phc() {
         return phc;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o, false, null, new String[]{"timeStamp"});
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

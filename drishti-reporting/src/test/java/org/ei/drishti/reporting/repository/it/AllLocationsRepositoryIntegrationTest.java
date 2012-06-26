@@ -1,8 +1,8 @@
 package org.ei.drishti.reporting.repository.it;
 
 import org.ei.drishti.reporting.domain.Location;
-import org.ei.drishti.reporting.repository.AllLocationsRepository;
 import org.ei.drishti.reporting.repository.TestDataAccessTemplate;
+import org.ei.drishti.reporting.repository.cache.LocationCacheableRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ public class AllLocationsRepositoryIntegrationTest {
     private TestDataAccessTemplate template;
 
     @Autowired
-    private AllLocationsRepository repository;
+    private LocationCacheableRepository repository;
 
     @Before
     public void setUp() throws Exception {
@@ -31,13 +31,14 @@ public class AllLocationsRepositoryIntegrationTest {
 
     @Test
     public void shouldSaveAndFetchLocation() throws Exception {
-        repository.save("Bherya", "Sub Center", "PHC X");
+        Location location = new Location("Bherya", "Sub Center", "PHC X");
+        repository.save(location);
 
-        Location location = repository.fetch("Bherya", "Sub Center", "PHC X");
+        Location fetchedLocation = repository.fetch(location);
 
-        assertEquals("Bherya", location.village());
-        assertEquals("Sub Center", location.subCenter());
-        assertEquals("PHC X", location.phc());
-        assertTrue("ID should be non-zero.", location.id() != 0);
+        assertEquals("Bherya", fetchedLocation.village());
+        assertEquals("Sub Center", fetchedLocation.subCenter());
+        assertEquals("PHC X", fetchedLocation.phc());
+        assertTrue("ID should be non-zero.", fetchedLocation.id() != 0);
     }
 }

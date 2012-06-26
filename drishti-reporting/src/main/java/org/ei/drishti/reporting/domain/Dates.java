@@ -1,5 +1,9 @@
 package org.ei.drishti.reporting.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -21,6 +25,11 @@ public class Dates {
     }
 
     public Dates(Date date) {
+        this(0, date);
+    }
+
+    public Dates(Integer id, Date date) {
+        this.id = id;
         this.date = date;
     }
 
@@ -30,5 +39,20 @@ public class Dates {
 
     public Date date() {
         return date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o, false, null, new String[]{"timeStamp"});
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

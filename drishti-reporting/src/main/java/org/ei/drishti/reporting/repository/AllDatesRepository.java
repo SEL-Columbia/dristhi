@@ -1,17 +1,16 @@
 package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.reporting.domain.Dates;
+import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 import static org.ei.drishti.reporting.domain.Dates.FIND_DATES_BY_DATE;
 
 @Repository
 @Transactional
-public class AllDatesRepository {
+public class AllDatesRepository implements DatesCacheableRepository {
     private DataAccessTemplate template;
 
     public AllDatesRepository() {
@@ -22,11 +21,13 @@ public class AllDatesRepository {
         this.template = template;
     }
 
-    public void save(Date date) {
-        template.save(new Dates(date));
+    @Override
+    public void save(Dates objectToBeSaved) {
+        template.save(objectToBeSaved);
     }
 
-    public Dates fetch(Date date) {
-        return (Dates) template.getUniqueResult(FIND_DATES_BY_DATE, new String[] {"date"}, new Object[] {date});
+    @Override
+    public Dates fetch(Dates objectWhichShouldBeFilledWithMoreInformation) {
+        return (Dates) template.getUniqueResult(FIND_DATES_BY_DATE, new String[] {"date"}, new Object[] {objectWhichShouldBeFilledWithMoreInformation.date()});
     }
 }

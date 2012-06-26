@@ -17,6 +17,6 @@ public class ReportsRepositoryTest {
 
     @Test
     public void shouldSaveReportData() throws Exception {
-        ReportsRepository repository = new ReportsRepository(allServicesProvided);
+//        ReportsRepository repository = new ReportsRepository(allServicesProvided);
     }
 }

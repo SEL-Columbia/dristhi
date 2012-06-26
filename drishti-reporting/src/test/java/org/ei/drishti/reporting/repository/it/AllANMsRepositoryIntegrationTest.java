@@ -1,9 +1,8 @@
 package org.ei.drishti.reporting.repository.it;
 
 import org.ei.drishti.reporting.domain.ANM;
-import org.ei.drishti.reporting.repository.AllANMsRepository;
+import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
 import org.ei.drishti.reporting.repository.TestDataAccessTemplate;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,23 +22,18 @@ public class AllANMsRepositoryIntegrationTest {
     private TestDataAccessTemplate template;
 
     @Autowired
-    private AllANMsRepository repository;
+    private ANMCacheableRepository repository;
 
     @Before
     public void setUp() throws Exception {
         template.deleteAll(template.loadAll(ANM.class));
     }
 
-    @After
-    public void tearDown() throws Exception {
-        template.deleteAll(template.loadAll(ANM.class));
-    }
-
     @Test
     public void shouldSaveANM() throws Exception {
-        repository.save("ANM X");
+        repository.save(new ANM("ANM X"));
 
-        ANM anm = repository.fetch("ANM X");
+        ANM anm = repository.fetch(new ANM("ANM X"));
         assertEquals("ANM X", anm.anmIdentifier());
         assertTrue("ID should be non-zero.", anm.id() != 0);
     }
