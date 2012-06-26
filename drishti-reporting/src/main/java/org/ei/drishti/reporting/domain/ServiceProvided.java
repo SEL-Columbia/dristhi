@@ -25,6 +25,9 @@ public class ServiceProvided {
     @Column(name = "location")
     private Integer location;
 
+    private ServiceProvided() {
+    }
+
     public ServiceProvided(Integer anmIdentifier, Integer externalId, Integer indicator, Integer date, Integer location) {
         this.anmIdentifier = anmIdentifier;
         this.externalId = externalId;

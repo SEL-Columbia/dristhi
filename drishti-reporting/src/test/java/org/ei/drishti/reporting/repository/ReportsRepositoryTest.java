@@ -8,7 +8,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ReportsRepositoryTest {
     @Mock
-    private AllServicesProvided allServicesProvided;
+    private AllServicesProvidedRepository allServicesProvided;
 
     @Before
     public void setUp() throws Exception {

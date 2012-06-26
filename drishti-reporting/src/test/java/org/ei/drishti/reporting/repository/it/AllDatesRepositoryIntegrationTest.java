@@ -1,8 +1,9 @@
 package org.ei.drishti.reporting.repository.it;
 
-import org.ei.drishti.reporting.domain.Indicator;
-import org.ei.drishti.reporting.repository.AllIndicatorsRepository;
+import org.ei.drishti.reporting.domain.Dates;
+import org.ei.drishti.reporting.repository.AllDatesRepository;
 import org.ei.drishti.reporting.repository.TestDataAccessTemplate;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,30 +12,33 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Date;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti-reporting.xml")
-public class AllIndicatorsRepositoryIntegrationTest {
+public class AllDatesRepositoryIntegrationTest {
     @Autowired
     @Qualifier("testDataAccessTemplate")
     private TestDataAccessTemplate template;
 
     @Autowired
-    private AllIndicatorsRepository repository;
+    private AllDatesRepository repository;
 
     @Before
     public void setUp() throws Exception {
-        template.deleteAll(template.loadAll(Indicator.class));
+        template.deleteAll(template.loadAll(Dates.class));
     }
 
     @Test
-    public void shouldSaveAndFetchIndicator() throws Exception {
-        repository.save("ANC");
+    public void shouldSaveAndFetchDate() throws Exception {
+        Date date = LocalDate.now().toDate();
+        repository.save(date);
 
-        Indicator indicator = repository.fetch("ANC");
-        assertEquals("ANC", indicator.indicator());
-        assertTrue("ID should be non-zero.", indicator.id() != 0);
+        Dates fetchedDate = repository.fetch(date);
+        assertEquals(date, fetchedDate.date());
+        assertTrue("ID should be non-zero.", fetchedDate.id() != 0);
     }
 }

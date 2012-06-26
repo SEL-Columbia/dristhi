@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ReportsRepository {
-    private AllServicesProvided allServicesProvided;
+    private AllServicesProvidedRepository allServicesProvided;
 
     @Autowired
-    public ReportsRepository(AllServicesProvided allServicesProvided) {
+    public ReportsRepository(AllServicesProvidedRepository allServicesProvided) {
         this.allServicesProvided = allServicesProvided;
     }
 

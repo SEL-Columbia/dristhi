@@ -7,14 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public class AllServicesProvided {
+public class AllServicesProvidedRepository {
     private DataAccessTemplate dataAccessTemplate;
 
-    protected AllServicesProvided() {
+    protected AllServicesProvidedRepository() {
     }
 
     @Autowired
-    public AllServicesProvided(DataAccessTemplate dataAccessTemplate) {
+    public AllServicesProvidedRepository(DataAccessTemplate dataAccessTemplate) {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 

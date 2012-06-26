@@ -19,7 +19,7 @@ import static junit.framework.Assert.assertTrue;
 public class AllLocationsRepositoryIntegrationTest {
     @Autowired
     @Qualifier("testDataAccessTemplate")
-    protected TestDataAccessTemplate template;
+    private TestDataAccessTemplate template;
 
     @Autowired
     private AllLocationsRepository repository;

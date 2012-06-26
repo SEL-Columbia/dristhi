@@ -23,6 +23,10 @@ public class Indicator {
         this.indicator = indicator;
     }
 
+    public Integer id() {
+        return id;
+    }
+
     public String indicator() {
         return indicator;
     }
