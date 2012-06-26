@@ -3,7 +3,7 @@ package org.ei.drishti.reporting.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "anm")
+@Table(name = "dim_anm")
 @NamedQuery(name = ANM.FIND_BY_ANM_ID, query = "select r from ANM r where r.anmIdentifier=:anmIdentifier")
 public class ANM {
 
@@ -17,7 +17,11 @@ public class ANM {
     @Column(name = "anmIdentifier")
     private String anmIdentifier;
 
-    public ANM() {
+    private ANM() {
+    }
+
+    public Integer id() {
+        return id;
     }
 
     public ANM(String anmIdentifier) {

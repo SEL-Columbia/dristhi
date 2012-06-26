@@ -10,6 +10,9 @@
             <list>
                 <value>org.ei.drishti.reporting.domain.ServiceProvided</value>
                 <value>org.ei.drishti.reporting.domain.ANM</value>
+                <value>org.ei.drishti.reporting.domain.Indicator</value>
+                <value>org.ei.drishti.reporting.domain.Location</value>
+                <value>org.ei.drishti.reporting.domain.Dates</value>
             </list>
         </property>
 

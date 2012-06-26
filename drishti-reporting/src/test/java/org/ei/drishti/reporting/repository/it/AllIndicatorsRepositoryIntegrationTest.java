@@ -1,9 +1,8 @@
 package org.ei.drishti.reporting.repository.it;
 
-import org.ei.drishti.reporting.domain.ANM;
-import org.ei.drishti.reporting.repository.AllANMsRepository;
+import org.ei.drishti.reporting.domain.Indicator;
+import org.ei.drishti.reporting.repository.AllIndicatorsRepository;
 import org.ei.drishti.reporting.repository.TestDataAccessTemplate;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,34 +12,26 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti-reporting.xml")
-public class AllANMsRepositoryIntegrationTest {
+public class AllIndicatorsRepositoryIntegrationTest {
     @Autowired
     @Qualifier("testDataAccessTemplate")
     protected TestDataAccessTemplate template;
 
     @Autowired
-    private AllANMsRepository repository;
+    private AllIndicatorsRepository repository;
 
     @Before
     public void setUp() throws Exception {
-        template.deleteAll(template.loadAll(ANM.class));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        template.deleteAll(template.loadAll(ANM.class));
+        template.deleteAll(template.loadAll(Indicator.class));
     }
 
     @Test
-    public void shouldSaveANM() throws Exception {
-        repository.save("ANM X");
+    public void shouldSaveAndFetchIndicator() throws Exception {
+        repository.save("ANC");
 
-        ANM anm = repository.fetch("ANM X");
-        assertEquals("ANM X", anm.anmIdentifier());
-        assertTrue("ID should be non-zero.", anm.id() != 0);
+        assertEquals("ANC", repository.fetch("ANC").indicator());
     }
 }

@@ -1,9 +1,8 @@
 package org.ei.drishti.reporting.repository.it;
 
-import org.ei.drishti.reporting.domain.ANM;
-import org.ei.drishti.reporting.repository.AllANMsRepository;
+import org.ei.drishti.reporting.domain.Location;
+import org.ei.drishti.reporting.repository.AllLocationsRepository;
 import org.ei.drishti.reporting.repository.TestDataAccessTemplate;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,30 +16,28 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti-reporting.xml")
-public class AllANMsRepositoryIntegrationTest {
+public class AllLocationsRepositoryIntegrationTest {
     @Autowired
     @Qualifier("testDataAccessTemplate")
     protected TestDataAccessTemplate template;
 
     @Autowired
-    private AllANMsRepository repository;
+    private AllLocationsRepository repository;
 
     @Before
     public void setUp() throws Exception {
-        template.deleteAll(template.loadAll(ANM.class));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        template.deleteAll(template.loadAll(ANM.class));
+        template.deleteAll(template.loadAll(Location.class));
     }
 
     @Test
-    public void shouldSaveANM() throws Exception {
-        repository.save("ANM X");
+    public void shouldSaveAndFetchLocation() throws Exception {
+        repository.save("Bherya", "Sub Center", "PHC X");
 
-        ANM anm = repository.fetch("ANM X");
-        assertEquals("ANM X", anm.anmIdentifier());
-        assertTrue("ID should be non-zero.", anm.id() != 0);
+        Location location = repository.fetch("Bherya", "Sub Center", "PHC X");
+
+        assertEquals("Bherya", location.village());
+        assertEquals("Sub Center", location.subCenter());
+        assertEquals("PHC X", location.phc());
+        assertTrue("ID should be non-zero.", location.id() != 0);
     }
 }
