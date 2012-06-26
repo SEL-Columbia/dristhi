@@ -39,7 +39,7 @@ public class MCTSSMSService {
         Complication_None("COM N"),
         RTI_Yes("RTI Y"),
         RTI_No("RTI N"),
-        PNC_7_Hours("PNC 7"),
+        PNC_7_Days("PNC 7"),
         PNC_48_Hours("PNC 48"),
         PNC_Complication_None("PNCC N"),
         PNC_Complication_PPH("PNCC P"),
