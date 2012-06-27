@@ -1,4 +1,4 @@
-package org.ei.drishti.reporting.repository;
+package org.ei.drishti.reporting.repository.cache;
 
 import java.util.HashMap;
 import java.util.Map;
