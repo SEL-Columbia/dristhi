@@ -14,7 +14,7 @@ CREATE TABLE report.dim_location(ID SERIAL, village VARCHAR, subCenter VARCHAR, 
     CONSTRAINT pk_dim_location PRIMARY KEY (ID),
     CONSTRAINT U_DL_VI_SU_PH UNIQUE (village, subCenter, phc));
 
-CREATE TABLE report.service_provided(ID SERIAL, anmIdentifier INTEGER ,externalId INTEGER, indicator INTEGER, date_ INTEGER, location INTEGER,
+CREATE TABLE report.service_provided(ID SERIAL, anmIdentifier INTEGER ,externalId VARCHAR, indicator INTEGER, date_ INTEGER, location INTEGER,
     CONSTRAINT pk_service_provided PRIMARY KEY (ID),
     CONSTRAINT FK_SP_DA_ID FOREIGN KEY (anmIdentifier) REFERENCES report.dim_anm(ID),
     CONSTRAINT FK_SP_DI_ID FOREIGN KEY (indicator) REFERENCES report.dim_indicator(ID),

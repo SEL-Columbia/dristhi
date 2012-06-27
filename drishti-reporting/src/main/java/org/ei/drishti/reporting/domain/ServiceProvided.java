@@ -14,7 +14,7 @@ public class ServiceProvided {
     private Integer anmIdentifier;
 
     @Column(name = "externalId")
-    private Integer externalId;
+    private String externalId;
 
     @Column(name = "indicator")
     private Integer indicator;
@@ -28,7 +28,7 @@ public class ServiceProvided {
     private ServiceProvided() {
     }
 
-    public ServiceProvided(Integer anmIdentifier, Integer externalId, Integer indicator, Integer date, Integer location) {
+    public ServiceProvided(Integer anmIdentifier, String externalId, Integer indicator, Integer date, Integer location) {
         this.anmIdentifier = anmIdentifier;
         this.externalId = externalId;
         this.indicator = indicator;

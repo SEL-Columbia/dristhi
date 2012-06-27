@@ -30,6 +30,7 @@ public class Location {
     }
 
     public Location(Integer id, String village, String subCenter, String phc) {
+        this.id = id;
         this.village = village;
         this.subCenter = subCenter;
         this.phc = phc;

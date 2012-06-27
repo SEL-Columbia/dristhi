@@ -45,7 +45,7 @@ public class AllServicesProvidedIntegrationTest extends RepositoryIntegrationTes
         Integer indicatorId = allIndicatorsRepository.fetch(indicator).id();
         Integer locationId = allLocationsRepository.fetch(location).id();
 
-        repository.save(anmId, 123, indicatorId, dateId, locationId);
+        repository.save(anmId, "123", indicatorId, dateId, locationId);
 
         assertEquals(1, template.loadAll(ServiceProvided.class).size());
     }

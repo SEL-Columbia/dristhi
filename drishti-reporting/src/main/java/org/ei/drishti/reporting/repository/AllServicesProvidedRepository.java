@@ -18,7 +18,7 @@ public class AllServicesProvidedRepository {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 
-    public void save(Integer anmIdentifier, Integer externalId, Integer indicator, Integer date, Integer location) {
+    public void save(Integer anmIdentifier, String externalId, Integer indicator, Integer date, Integer location) {
         dataAccessTemplate.save(new ServiceProvided(anmIdentifier, externalId, indicator, date, location));
     }
 }
