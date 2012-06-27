@@ -1,28 +1,18 @@
 package org.ei.drishti.reporting.repository.it;
 
 import org.ei.drishti.reporting.domain.*;
-import org.ei.drishti.reporting.repository.*;
+import org.ei.drishti.reporting.repository.AllServicesProvidedRepository;
 import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
 import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
 import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
 import org.ei.drishti.reporting.repository.cache.LocationCacheableRepository;
 import org.joda.time.LocalDate;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static junit.framework.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-drishti-reporting.xml")
-public class AllServicesProvidedIntegrationTest {
-    @Autowired
-    @Qualifier("testDataAccessTemplate")
-    private TestDataAccessTemplate template;
+public class AllServicesProvidedIntegrationTest extends RepositoryIntegrationTestBase {
 
     @Autowired
     private AllServicesProvidedRepository repository;
@@ -38,15 +28,6 @@ public class AllServicesProvidedIntegrationTest {
 
     @Autowired
     private LocationCacheableRepository allLocationsRepository;
-
-    @Before
-    public void setUp() throws Exception {
-        template.deleteAll(template.loadAll(ServiceProvided.class));
-        template.deleteAll(template.loadAll(ANM.class));
-        template.deleteAll(template.loadAll(Dates.class));
-        template.deleteAll(template.loadAll(Indicator.class));
-        template.deleteAll(template.loadAll(Location.class));
-    }
 
     @Test
     public void shouldSaveAService() throws Exception {
