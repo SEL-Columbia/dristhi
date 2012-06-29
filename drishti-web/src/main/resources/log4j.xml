@@ -35,14 +35,14 @@
 
     <logger name="org.ei">
         <level value="INFO"/>
-        <appender-ref ref="RollingLog"/>
-        <!-- <appender-ref ref="CONSOLE"/> -->
+        <!--<appender-ref ref="RollingLog"/>-->
+         <appender-ref ref="CONSOLE"/>
     </logger>
 
     <root>
         <priority value="INFO"/>
-        <appender-ref ref="RollingLog"/>
-        <!-- <appender-ref ref="CONSOLE"/> -->
+        <!--<appender-ref ref="RollingLog"/>-->
+        <appender-ref ref="CONSOLE"/>
     </root>
 
 </log4j:configuration>
