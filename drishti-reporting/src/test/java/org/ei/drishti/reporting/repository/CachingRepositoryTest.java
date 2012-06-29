@@ -9,6 +9,10 @@ import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
+import java.lang.reflect.Field;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -33,13 +37,13 @@ public class CachingRepositoryTest {
     public void shouldSaveNewANMsAndFetchOldOnesFromCache() throws Exception {
         assertCacheable(allANMsRepository, new Factory<ANM>() {
             @Override
-            public ANM makeObjectWithoutID() {
+            public ANM makeObjectWithIDOfZero() {
                 return new ANM("ANM X");
             }
 
             @Override
-            public ANM makeObjectWithID() {
-                return new ANM(5, "ANM X");
+            public ANM makeObjectWithIDOfFour() {
+                return new ANM(4, "ANM X");
             }
         });
     }
@@ -48,13 +52,13 @@ public class CachingRepositoryTest {
     public void shouldSaveNewIndicationsAndFetchOldOnesFromCache() throws Exception {
         assertCacheable(indicatorRepository, new Factory<Indicator>() {
             @Override
-            public Indicator makeObjectWithoutID() {
+            public Indicator makeObjectWithIDOfZero() {
                 return new Indicator("BCG");
             }
 
             @Override
-            public Indicator makeObjectWithID() {
-                return new Indicator(1, "BCG");
+            public Indicator makeObjectWithIDOfFour() {
+                return new Indicator(4, "BCG");
             }
         });
     }
@@ -63,13 +67,13 @@ public class CachingRepositoryTest {
     public void shouldSaveNewDatesAndFetchOldOnesFromCache() throws Exception {
         assertCacheable(datesRepository, new Factory<Dates>() {
             @Override
-            public Dates makeObjectWithoutID() {
+            public Dates makeObjectWithIDOfZero() {
                 return new Dates(LocalDate.now().toDate());
             }
 
             @Override
-            public Dates makeObjectWithID() {
-                return new Dates(1, LocalDate.now().toDate());
+            public Dates makeObjectWithIDOfFour() {
+                return new Dates(4, LocalDate.now().toDate());
             }
         });
     }
@@ -78,34 +82,91 @@ public class CachingRepositoryTest {
     public void shouldSaveNewLocationsAndFetchOldOnesFromCache() throws Exception {
         assertCacheable(locationRepository, new Factory<Location>() {
             @Override
-            public Location makeObjectWithoutID() {
-                return new Location(1, "Bherya", "Sub Center", "PHC X");
+            public Location makeObjectWithIDOfZero() {
+                return new Location("Bherya", "Sub Center", "PHC X");
             }
 
             @Override
-            public Location makeObjectWithID() {
-                return new Location(1, "Bherya", "Sub Center", "PHC X");
+            public Location makeObjectWithIDOfFour() {
+                return new Location(4, "Bherya", "Sub Center", "PHC X");
             }
         });
     }
 
-    private <T> void assertCacheable(CacheableRepository<T> cacheableRepository, Factory<T> factory) {
-        CachingRepository<T> repository = new CachingRepository<T>(cacheableRepository);
-        T objectWithoutID = factory.makeObjectWithoutID();
-        T objectWithID = factory.makeObjectWithID();
-        when(cacheableRepository.fetch(objectWithoutID)).thenReturn(objectWithID);
+    @Test
+    public void shouldNotTryAndSaveAnAlreadySavedItemWhenThereAreCallsFromMultipleThreadsUsingTheSameCachingRepository() throws Exception {
+        AllANMsRepository anMsRepository = mock(AllANMsRepository.class);
+        CachingRepository<ANM> anmCachingRepository = new CachingRepository<>(anMsRepository);
 
-        assertEquals(objectWithID, repository.fetch(factory.makeObjectWithoutID()));
-        assertEquals(objectWithID, repository.fetch(factory.makeObjectWithoutID()));
-        assertEquals(objectWithID, repository.fetch(factory.makeObjectWithoutID()));
+        fetchFromCacheAcrossThreads(anmCachingRepository, anmCachingRepository);
 
-        verify(cacheableRepository, times(1)).fetch(objectWithoutID);
-        verify(cacheableRepository, times(1)).save(objectWithoutID);
+        verify(anMsRepository, times(1)).save(new ANM(0, "ANM X"));
+    }
+
+    private void fetchFromCacheAcrossThreads(final CachingRepository<ANM> repository1, final CachingRepository<ANM> repository2) throws InterruptedException {
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                repository1.fetch(new ANM(0, "ANM X"));
+            }
+        });
+        Thread thread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                repository2.fetch(new ANM(0, "ANM X"));
+            }
+        });
+
+        thread1.start();
+        thread2.start();
+
+        thread1.join();
+        thread2.join();
+    }
+
+    private <T> void assertCacheable(CacheableRepository<T> cacheableRepository, final Factory<T> factory) {
+        CachingRepository<T> repository = new CachingRepository<>(cacheableRepository);
+
+        expectCallToSaveToRepoAndMimicHibernateSettingIDOnTheObjectToBeSavedItself(cacheableRepository, factory.makeObjectWithIDOfZero());
+        when(cacheableRepository.fetch(factory.makeObjectWithIDOfFour())).thenReturn(factory.makeObjectWithIDOfFour());
+
+        String message = "Please make sure that the ID is NOT part of the equals() and hashCode() of the object to be cached.\n" +
+                "This is because Hibernate changes the object which is sent to the repo. So, the key in the cache gets changed\n" +
+                "to be the one which has an ID (say, 4). Next time, when the fetch is called with ID = 0, then it will not\n" +
+                "be found in the cache, if ID is a part of hashCode() and equals().";
+        assertEquals(message, factory.makeObjectWithIDOfZero(), factory.makeObjectWithIDOfFour());
+        assertEquals(message, factory.makeObjectWithIDOfZero().hashCode(), factory.makeObjectWithIDOfFour().hashCode());
+
+        final T objectWithID = factory.makeObjectWithIDOfFour();
+        assertEquals(objectWithID, repository.fetch(factory.makeObjectWithIDOfZero()));
+        assertEquals(objectWithID, repository.fetch(factory.makeObjectWithIDOfZero()));
+        assertEquals(objectWithID, repository.fetch(factory.makeObjectWithIDOfZero()));
+
+        verify(cacheableRepository, times(1)).save(factory.makeObjectWithIDOfZero());
+        verify(cacheableRepository, times(1)).fetch(factory.makeObjectWithIDOfFour());
         verifyNoMoreInteractions(cacheableRepository);
     }
 
+    private <T> void expectCallToSaveToRepoAndMimicHibernateSettingIDOnTheObjectToBeSavedItself(CacheableRepository<T> cacheableRepository, T objectWithoutID) {
+        doAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object objectWhoseIDNeedsToBeSet = invocationOnMock.getArguments()[0];
+                setIdOn(objectWhoseIDNeedsToBeSet);
+                return objectWhoseIDNeedsToBeSet;
+            }
+
+            private void setIdOn(Object objectWhoseIDNeedsToBeSet) throws NoSuchFieldException, IllegalAccessException {
+                Field idField = objectWhoseIDNeedsToBeSet.getClass().getDeclaredField("id");
+                idField.setAccessible(true);
+                idField.set(objectWhoseIDNeedsToBeSet, 4);
+            }
+        }).when(cacheableRepository).save(objectWithoutID);
+    }
+
     private abstract class Factory<T> {
-        public abstract T makeObjectWithoutID();
-        public abstract T makeObjectWithID();
+        public abstract T makeObjectWithIDOfZero();
+
+        public abstract T makeObjectWithIDOfFour();
     }
 }

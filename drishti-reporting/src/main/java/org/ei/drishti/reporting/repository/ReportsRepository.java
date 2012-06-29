@@ -7,9 +7,13 @@ import org.ei.drishti.reporting.domain.Location;
 import org.ei.drishti.reporting.repository.cache.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 @Component
+@Repository
+@Scope()
 public class ReportsRepository {
     private AllServicesProvidedRepository servicesProvidedRepository;
 
