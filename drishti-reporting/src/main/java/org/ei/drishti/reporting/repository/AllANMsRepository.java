@@ -13,7 +13,7 @@ import static org.ei.drishti.reporting.domain.ANM.FIND_BY_ANM_ID;
 public class AllANMsRepository implements ANMCacheableRepository {
     private DataAccessTemplate dataAccessTemplate;
 
-    public AllANMsRepository() {
+    protected AllANMsRepository() {
     }
 
     @Autowired

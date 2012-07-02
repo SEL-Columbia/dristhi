@@ -13,7 +13,7 @@ import static org.ei.drishti.reporting.domain.Dates.FIND_DATES_BY_DATE;
 public class AllDatesRepository implements DatesCacheableRepository {
     private DataAccessTemplate template;
 
-    public AllDatesRepository() {
+    protected AllDatesRepository() {
     }
 
     @Autowired

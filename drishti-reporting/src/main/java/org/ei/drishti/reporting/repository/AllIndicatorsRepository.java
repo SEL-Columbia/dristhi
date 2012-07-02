@@ -13,7 +13,7 @@ import static org.ei.drishti.reporting.domain.Indicator.FIND_BY_INDICATOR;
 public class AllIndicatorsRepository implements IndicatorCacheableRepository {
     private DataAccessTemplate dataAccessTemplate;
 
-    public AllIndicatorsRepository() {
+    protected AllIndicatorsRepository() {
     }
 
     @Autowired
