@@ -103,6 +103,23 @@ public class CachingRepositoryTest {
         verify(anMsRepository, times(1)).save(new ANM(0, "ANM X"));
     }
 
+    @Test
+    public void shouldFetchFromDBToFillCacheIfAnObjectIsInTheDBButNotInTheCache() throws Exception {
+        when(allANMsRepository.fetch(new ANM(0, "ANM B"))).thenReturn(new ANM(10, "ANM B"));
+
+        CachingRepository<ANM> repoWhichCaches = new CachingRepository<>(allANMsRepository);
+        ANM anmFromCache = repoWhichCaches.fetch(new ANM(0, "ANM B"));
+        repoWhichCaches.fetch(new ANM(0, "ANM B"));
+        repoWhichCaches.fetch(new ANM(0, "ANM B"));
+        repoWhichCaches.fetch(new ANM(0, "ANM B"));
+
+        assertEquals(new Integer(10), anmFromCache.id());
+        assertEquals("ANM B", anmFromCache.anmIdentifier());
+
+        verify(allANMsRepository, times(1)).fetch(new ANM(0, "ANM B"));
+        verify(allANMsRepository, times(0)).save(any(ANM.class));
+    }
+
     private void fetchFromCacheAcrossThreads(final CachingRepository<ANM> repository1, final CachingRepository<ANM> repository2) throws InterruptedException {
         Thread thread1 = new Thread(new Runnable() {
             @Override
@@ -128,7 +145,7 @@ public class CachingRepositoryTest {
         CachingRepository<T> repository = new CachingRepository<>(cacheableRepository);
 
         expectCallToSaveToRepoAndMimicHibernateSettingIDOnTheObjectToBeSavedItself(cacheableRepository, factory.makeObjectWithIDOfZero());
-        when(cacheableRepository.fetch(factory.makeObjectWithIDOfFour())).thenReturn(factory.makeObjectWithIDOfFour());
+        when(cacheableRepository.fetch(factory.makeObjectWithIDOfFour())).thenReturn(null, factory.makeObjectWithIDOfFour());
 
         String message = "Please make sure that the ID is NOT part of the equals() and hashCode() of the object to be cached.\n" +
                 "This is because Hibernate changes the object which is sent to the repo. So, the key in the cache gets changed\n" +
@@ -141,9 +158,10 @@ public class CachingRepositoryTest {
         assertEquals(objectWithID, repository.fetch(factory.makeObjectWithIDOfZero()));
         assertEquals(objectWithID, repository.fetch(factory.makeObjectWithIDOfZero()));
         assertEquals(objectWithID, repository.fetch(factory.makeObjectWithIDOfZero()));
+        assertEquals(objectWithID, repository.fetch(factory.makeObjectWithIDOfZero()));
 
         verify(cacheableRepository, times(1)).save(factory.makeObjectWithIDOfZero());
-        verify(cacheableRepository, times(1)).fetch(factory.makeObjectWithIDOfFour());
+        verify(cacheableRepository, times(2)).fetch(factory.makeObjectWithIDOfZero());
         verifyNoMoreInteractions(cacheableRepository);
     }
 

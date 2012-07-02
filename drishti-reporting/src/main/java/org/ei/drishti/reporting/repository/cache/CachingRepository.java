@@ -27,8 +27,12 @@ public class CachingRepository<T> {
         lock.lock();
         try {
             if (!cache.containsKey(object)) {
-                cacheableRepository.save(object);
-                cache.put(object, cacheableRepository.fetch(object));
+                T objectInDB = cacheableRepository.fetch(object);
+                if (objectInDB == null) {
+                    cacheableRepository.save(object);
+                    objectInDB = cacheableRepository.fetch(object);
+                }
+                cache.put(object, objectInDB);
             }
         } finally {
             lock.unlock();
