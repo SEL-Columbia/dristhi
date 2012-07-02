@@ -23,16 +23,16 @@ public class ChildReportingServiceTest {
     private ReportingService reportingService;
     @Mock
     private AllChildren allChildren;
+    private ChildReportingService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
+        service = new ChildReportingService(reportingService, allChildren);
     }
 
     @Test
     public void shouldSendChildReportingData() throws Exception {
-        ChildReportingService service = new ChildReportingService(reportingService, allChildren);
-
         Map<String, String> reportingData = new HashMap<>();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
@@ -45,9 +45,20 @@ public class ChildReportingServiceTest {
     }
 
     @Test
-    public void shouldNotSendChildReportingDataWhenChildIsNotFound() throws Exception {
-        ChildReportingService service = new ChildReportingService(reportingService, allChildren);
+    public void shouldMakeAReportingCallForEachNewlyProvidedImmunization() throws Exception {
+        Map<String, String> reportingData = new HashMap<>();
+        reportingData.put("anmIdentifier", "ANM X");
+        reportingData.put("immunizationsProvidedDate", "2012-01-01");
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("ALREADY_GIVEN_IMM_1", "ALREADY_GIVEN_IMM_2")).withLocation("bherya", "Sub Center", "PHC X"));
 
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "ALREADY_GIVEN_IMM_1 ALREADY_GIVEN_IMM_1 NEW_IMM_1 NEW_IMM_2"), reportingData);
+
+        verify(reportingService).sendReportData(ReportingData.updateChildImmunization("ANM X", "TC 1", "NEW_IMM_1", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.updateChildImmunization("ANM X", "TC 1", "NEW_IMM_2", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+    }
+
+    @Test
+    public void shouldNotSendChildReportingDataWhenChildIsNotFound() throws Exception {
         Map<String, String> reportingData = new HashMap<>();
         reportingData.put("anmIdentifier", "ANM X");
         when(allChildren.findByCaseId("CASE X")).thenReturn(null);
