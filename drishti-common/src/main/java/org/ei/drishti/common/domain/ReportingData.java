@@ -27,7 +27,7 @@ public class ReportingData implements Serializable {
 
     public ReportingData(String type) {
         this.type = type;
-        data = new HashMap<>();
+        data = new HashMap<String, String>();
     }
 
     public ReportingData(String type, Map<String, String> data) {
