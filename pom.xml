@@ -26,8 +26,8 @@
         <db.name.commcare-api>commcare</db.name.commcare-api>
         <db.name.motech-scheduletracking>motech-scheduletracking</db.name.motech-scheduletracking>
         <main.basedir>${project.basedir}</main.basedir>
-        <motech.version>0.11-SNAPSHOT</motech.version>
-        <motech.contrib.version>0.11-SNAPSHOT</motech.contrib.version>
+        <motech.version>0.11</motech.version>
+        <motech.contrib.version>0.11</motech.contrib.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.1.0.RELEASE</spring.version>
         <jackson.version>1.9.7</jackson.version>
@@ -80,6 +80,15 @@
             <id>motech.nexus</id>
             <name>Motech Snapshots Repository</name>
             <url>http://nexus.motechproject.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>${drishti.updatePolicy}</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>motech.nexus.release</id>
+            <name>Motech Snapshots Repository</name>
+            <url>http://nexus.motechproject.org/content/repositories/releases</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>${drishti.updatePolicy}</updatePolicy>
