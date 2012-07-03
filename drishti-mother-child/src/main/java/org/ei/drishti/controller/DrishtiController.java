@@ -28,10 +28,10 @@ public class DrishtiController {
         this.mctsService = drishtiMctsService;
     }
 
-    public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation) {
+    public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, Map<String, String> extraData) {
         logger.info("Mother registration: " + enrollmentInformation);
 
-        ancService.registerANCCase(enrollmentInformation);
+        ancService.registerANCCase(enrollmentInformation, extraData);
         mctsService.registerANCCase(enrollmentInformation);
     }
 

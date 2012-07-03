@@ -48,6 +48,14 @@
                         "form|anm_phone": "anmPhoneNumber",
                         "form|ECnumber": "ecNumber",
                         "form|meta|username": "anmIdentifier"
+                    },
+                    "extraMappings": {
+                        "form|lmp": "lmp",
+                        "form|phc": "phc",
+                        "form|card_no": "thaayiCardNumber",
+                        "form|anc_subcenter": "subCenter",
+                        "form|anc_village": "village",
+                        "form|meta|username": "anmIdentifier"
                     }
                 },
                 {
@@ -181,6 +189,14 @@
                         "form|anc_village": "village",
                         "form|anm_phone": "anmPhoneNumber",
                         "form|ECnumber": "ecNumber",
+                        "form|meta|username": "anmIdentifier"
+                    },
+                    "extraMappings": {
+                        "form|lmp": "lmp",
+                        "form|phc": "phc",
+                        "form|card_no": "thaayiCardNumber",
+                        "form|anc_subcenter": "subCenter",
+                        "form|anc_village": "village",
                         "form|meta|username": "anmIdentifier"
                     }
                 },

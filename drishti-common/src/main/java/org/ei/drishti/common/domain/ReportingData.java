@@ -17,7 +17,7 @@ public class ReportingData implements Serializable {
     @JsonProperty
     private Map<String, String> data;
 
-    public static ReportingData updateChildImmunization(String anmIdentifier, String externalId, String indicator, String date, Location location) {
+    public static ReportingData serviceProvidedData(String anmIdentifier, String externalId, String indicator, String date, Location location) {
         return new ReportingData("serviceProvided").with("anmIdentifier", anmIdentifier).with("indicator", indicator)
                 .with("externalId", externalId).with("village", location.village()).with("subCenter", location.subCenter()).with("phc", location.phc()).with("date", date);
     }

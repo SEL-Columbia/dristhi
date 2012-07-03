@@ -39,7 +39,7 @@ public class ChildReportingService {
         immunizations.removeAll(previouslyProvided);
 
         for (String immunizationProvidedThisTime : immunizations) {
-            ReportingData data = ReportingData.updateChildImmunization(safeReportingData.get("anmIdentifier"), child.thaayiCardNumber(),
+            ReportingData data = ReportingData.serviceProvidedData(safeReportingData.get("anmIdentifier"), child.thaayiCardNumber(),
                     immunizationProvidedThisTime, reportingData.get("immunizationsProvidedDate"), child.location());
 
             reportingService.sendReportData(data);

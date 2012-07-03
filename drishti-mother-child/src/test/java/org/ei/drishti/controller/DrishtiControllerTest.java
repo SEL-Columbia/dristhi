@@ -25,8 +25,6 @@ public class DrishtiControllerTest {
     private DrishtiMCTSService mctsService;
     @Mock
     private PNCService pncService;
-    @Mock
-    private ReportingService reportingService;
 
     private DrishtiController controller;
 
@@ -37,12 +35,14 @@ public class DrishtiControllerTest {
     }
 
     @Test
-    public void shouldDelegateToBothANCServiceAndMCTSDuringMotherRegistration() {
+    public void shouldDelegateToBothANCServiceAndMCTSDuringMotherRegistrationAndReportItAsWell() {
         AnteNatalCareEnrollmentInformation ancEnrollInfo = mock(AnteNatalCareEnrollmentInformation.class);
 
-        controller.registerMother(ancEnrollInfo);
+        Map<String, String> data = new HashMap<>();
+        controller.registerMother(ancEnrollInfo, data);
 
-        verify(ancService).registerANCCase(ancEnrollInfo);
+
+        verify(ancService).registerANCCase(ancEnrollInfo, data);
         verify(mctsService).registerANCCase(ancEnrollInfo);
     }
 

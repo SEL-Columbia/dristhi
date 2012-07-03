@@ -11,6 +11,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.model.Time;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -26,13 +29,15 @@ public class ANCServiceTest {
     private AllMothers mothers;
     @Mock
     private ANCSchedulesService ancSchedulesService;
+    @Mock
+    protected MotherReportingService motherReportingService;
 
     private ANCService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ANCService(mothers, ancSchedulesService, actionService);
+        service = new ANCService(mothers, ancSchedulesService, actionService, motherReportingService);
     }
 
     @Test
@@ -43,8 +48,11 @@ public class ANCServiceTest {
         String motherName = "Theresa";
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", lmp.toDate(), "EC Number 1");
 
-        service.registerANCCase(enrollmentInfo);
+        Map<String, String> data = new HashMap<>();
 
+        service.registerANCCase(enrollmentInfo, data);
+
+        verify(motherReportingService).registerANC(data);
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName).withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp).withECNumber("EC Number 1").withLocation("bherya", "Sub Center", "PHC X")));
         verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, "ANM ID 1", "bherya", lmp);
     }
@@ -57,7 +65,9 @@ public class ANCServiceTest {
         String motherName = "Theresa";
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", lmp.toDate(), "EC Number 1");
 
-        service.registerANCCase(enrollmentInfo);
+        Map<String, String> data = new HashMap<>();
+
+        service.registerANCCase(enrollmentInfo, data);
 
         verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(lmp), any(Time.class), any(Time.class));
     }
@@ -68,7 +78,9 @@ public class ANCServiceTest {
         String motherName = "Theresa";
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", null, "EC Number 1");
 
-        service.registerANCCase(enrollmentInfo);
+        Map<String, String> data = new HashMap<>();
+
+        service.registerANCCase(enrollmentInfo, data);
 
         verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(today()), any(Time.class), any(Time.class));
     }

@@ -40,7 +40,7 @@ public class ChildReportingServiceTest {
 
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv"), reportingData);
 
-        ReportingData expectedReportingData = ReportingData.updateChildImmunization("ANM X", "TC 1", "opv", "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData expectedReportingData = ReportingData.serviceProvidedData("ANM X", "TC 1", "opv", "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
         verify(reportingService).sendReportData(expectedReportingData);
     }
 
@@ -53,8 +53,8 @@ public class ChildReportingServiceTest {
 
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "ALREADY_GIVEN_IMM_1 ALREADY_GIVEN_IMM_1 NEW_IMM_1 NEW_IMM_2"), reportingData);
 
-        verify(reportingService).sendReportData(ReportingData.updateChildImmunization("ANM X", "TC 1", "NEW_IMM_1", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.updateChildImmunization("ANM X", "TC 1", "NEW_IMM_2", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "NEW_IMM_1", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "NEW_IMM_2", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
     }
 
     @Test

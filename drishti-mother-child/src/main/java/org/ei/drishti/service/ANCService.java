@@ -26,15 +26,17 @@ public class ANCService {
     private final AllMothers allMothers;
     private ANCSchedulesService ancSchedulesService;
     private ActionService actionService;
+    private MotherReportingService reportingService;
 
     @Autowired
-    public ANCService(AllMothers allMothers, ANCSchedulesService ancSchedulesService, ActionService actionService) {
+    public ANCService(AllMothers allMothers, ANCSchedulesService ancSchedulesService, ActionService actionService, MotherReportingService reportingService) {
         this.allMothers = allMothers;
         this.ancSchedulesService = ancSchedulesService;
         this.actionService = actionService;
+        this.reportingService = reportingService;
     }
 
-    public void registerANCCase(AnteNatalCareEnrollmentInformation info) {
+    public void registerANCCase(AnteNatalCareEnrollmentInformation info, Map<String, String> data) {
         Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
                 .withLMP(info.lmpDate()).withECNumber(info.ecNumber()).withLocation(info.village(), info.subCenter(), info.phc());
         allMothers.register(mother);
@@ -43,6 +45,7 @@ public class ANCService {
         Time preferredAlertTime = new Time(new LocalTime(14, 0));
         LocalDate referenceDate = info.lmpDate() != null ? info.lmpDate() : DateUtil.today();
 
+        reportingService.registerANC(data);
         ancSchedulesService.enrollMother(info.caseId(), referenceDate, new Time(now()), preferredAlertTime);
         actionService.registerPregnancy(info.caseId(), info.ecNumber(), info.thaayiCardNumber(), info.anmIdentifier(), info.village(), info.lmpDate());
     }
