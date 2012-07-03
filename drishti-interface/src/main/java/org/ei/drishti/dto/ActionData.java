@@ -58,7 +58,7 @@ public class ActionData {
     private ActionData(String target, String type) {
         this.target = target;
         this.type = type;
-        data = new HashMap<>();
+        data = new HashMap<String, String>();
     }
 
     private ActionData with(String key, String value) {
