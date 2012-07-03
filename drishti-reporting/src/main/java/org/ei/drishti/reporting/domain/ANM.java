@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Table(name = "dim_anm")
 @NamedQuery(name = ANM.FIND_BY_ANM_ID, query = "select r from ANM r where r.anmIdentifier=:anmIdentifier")
 public class ANM {
-
     public static final String FIND_BY_ANM_ID = "find.by.anm.id";
 
     @Id
@@ -43,12 +42,12 @@ public class ANM {
 
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o, false, null, new String[]{"timeStamp"});
+        return EqualsBuilder.reflectionEquals(this, o, new String[]{"id"});
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return HashCodeBuilder.reflectionHashCode(this, new String[]{"id"});
     }
 
     @Override

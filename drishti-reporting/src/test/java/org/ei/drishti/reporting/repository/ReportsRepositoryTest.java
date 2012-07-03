@@ -66,7 +66,7 @@ public class ReportsRepositoryTest {
 
     private <T> void verifyCallsToCachedRepository(CacheableRepository<T> blah, T obj) {
         verify(blah, times(1)).fetch(obj);
-        verify(blah, times(1)).save(obj);
+        verify(blah, times(0)).save(obj);
         verifyNoMoreInteractions(blah);
     }
 }

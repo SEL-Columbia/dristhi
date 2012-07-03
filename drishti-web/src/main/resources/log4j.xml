@@ -5,7 +5,7 @@
 
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[DRISHTI] %d{ddMMyyyy HH:mm:ss} %-5p [%t{2}] [%c{1}] %m%n"/>
+            <param name="ConversionPattern" value="[DRISHTI] %d{ddMMyyyy HH:mm:ss,SSS} %-5p [%t] [%c{1}] %m%n"/>
         </layout>
     </appender>
 
@@ -13,7 +13,7 @@
         <param name="File" value="drishti.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{ddMMyyyy HH:mm:ss} %-5p [%t] [%c{1}] %m%n"/>
+            <param name="ConversionPattern" value="%d{ddMMyyyy HH:mm:ss,SSS} %-5p [%t] [%c{1}] %m%n"/>
         </layout>
     </appender>
 
@@ -35,8 +35,6 @@
 
     <logger name="org.ei">
         <level value="INFO"/>
-        <!--<appender-ref ref="RollingLog"/>-->
-         <appender-ref ref="CONSOLE"/>
     </logger>
 
     <root>

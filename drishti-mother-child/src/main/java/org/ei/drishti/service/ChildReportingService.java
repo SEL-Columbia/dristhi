@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.apache.commons.lang.StringUtils;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.domain.Child;
@@ -28,20 +27,22 @@ public class ChildReportingService {
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, String> reportingData) {
         SafeMap safeReportingData = new SafeMap(reportingData);
-        List<String> provided = updationRequest.immunizationsProvided();
 
         Child child = allChildren.findByCaseId(updationRequest.caseId());
         if (child == null) {
             logger.warn("Child Case not found for child with CaseID " + updationRequest.caseId());
             return;
         }
+
+        List<String> immunizations = updationRequest.immunizationsProvided();
         List<String> previouslyProvided = child.immunizationsProvided();
-        provided.removeAll(previouslyProvided);
+        immunizations.removeAll(previouslyProvided);
 
-        String missingImmunizations = StringUtils.join(provided.toArray(new String[0]));
-        ReportingData data = ReportingData.updateChildImmunization(safeReportingData.get("anmIdentifier"), child.thaayiCardNumber(),
-                missingImmunizations, reportingData.get("immunizationsProvidedDate"), child.location());
+        for (String immunizationProvidedThisTime : immunizations) {
+            ReportingData data = ReportingData.updateChildImmunization(safeReportingData.get("anmIdentifier"), child.thaayiCardNumber(),
+                    immunizationProvidedThisTime, reportingData.get("immunizationsProvidedDate"), child.location());
 
-        reportingService.sendReportData(data);
+            reportingService.sendReportData(data);
+        }
     }
 }

@@ -42,12 +42,12 @@ public class Indicator {
 
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o, false, null, new String[]{"timeStamp"});
+        return EqualsBuilder.reflectionEquals(this, o, new String[]{"id"});
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return HashCodeBuilder.reflectionHashCode(this, new String[]{"id"});
     }
 
     @Override

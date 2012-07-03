@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AllLocationsRepository implements LocationCacheableRepository {
     private DataAccessTemplate dataAccessTemplate;
 
-    public AllLocationsRepository() {
+    protected AllLocationsRepository() {
     }
 
     @Autowired

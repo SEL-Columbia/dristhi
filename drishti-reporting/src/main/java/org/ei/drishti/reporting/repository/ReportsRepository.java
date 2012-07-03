@@ -8,8 +8,12 @@ import org.ei.drishti.reporting.repository.cache.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Repository
+@Transactional
 public class ReportsRepository {
     private AllServicesProvidedRepository servicesProvidedRepository;
 
@@ -17,6 +21,9 @@ public class ReportsRepository {
     private CachingRepository<Dates> cachedDates;
     private CachingRepository<Indicator> cachedIndicators;
     private CachingRepository<Location> cachedLocations;
+
+    protected ReportsRepository() {
+    }
 
     @Autowired
     public ReportsRepository(ANMCacheableRepository anmRepository, DatesCacheableRepository datesRepository, IndicatorCacheableRepository indicatorRepository, LocationCacheableRepository locationRepository, AllServicesProvidedRepository servicesProvidedRepository) {
