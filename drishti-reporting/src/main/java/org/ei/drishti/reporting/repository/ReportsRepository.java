@@ -9,11 +9,9 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Repository
-@Transactional
 public class ReportsRepository {
     private AllServicesProvidedRepository servicesProvidedRepository;
 
