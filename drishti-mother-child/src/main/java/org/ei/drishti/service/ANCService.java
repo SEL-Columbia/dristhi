@@ -69,15 +69,16 @@ public class ANCService {
         }
     }
 
-    public void updateANCOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {
+    public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {
     }
 
-    public void closeANCCase(AnteNatalCareCloseInformation closeInformation) {
+    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, String> data) {
         if (!allMothers.motherExists(closeInformation.caseId())) {
             logger.warn("Tried to close case without registered mother for case ID: " + closeInformation.caseId());
             return;
         }
 
+        reportingService.closeANC(data);
         ancSchedulesService.closeCase(closeInformation.caseId());
         actionService.updateDeliveryOutcome(closeInformation.caseId(), closeInformation.reason());
     }

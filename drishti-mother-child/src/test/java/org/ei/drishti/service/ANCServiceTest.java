@@ -183,7 +183,7 @@ public class ANCServiceTest {
     public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "Abort"));
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "Abort"), new HashMap<String, String>());
 
         verify(ancSchedulesService).closeCase("CASE-X");
         verify(actionService).updateDeliveryOutcome("CASE-X", "Abort");
@@ -193,7 +193,7 @@ public class ANCServiceTest {
     public void shouldNotUnEnrollAMotherFromScheduleWhenSheIsNotRegistered() {
         when(mothers.motherExists("CASE-UNKNOWN-MOM")).thenReturn(false);
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM", null));
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM", null), new HashMap<String, String>());
 
         verifyZeroInteractions(ancSchedulesService);
     }

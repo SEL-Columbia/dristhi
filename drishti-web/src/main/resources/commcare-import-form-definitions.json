@@ -153,6 +153,10 @@
                     "mappings": {
                         "form|case|@case_id": "caseId",
                         "form|close_reason": "closeReason"
+                    },
+                    "extraMappings": {
+                        "form|case|@case_id": "caseId",
+                        "form|close_reason": "closeReason"
                     }
                 },
                 {

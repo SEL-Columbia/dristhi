@@ -2,24 +2,32 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.Location;
+import org.ei.drishti.domain.Mother;
+import org.ei.drishti.repository.AllMothers;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class MotherReportingServiceTest extends BaseUnitTest{
-    private MotherReportingService reportingService;
+    private MotherReportingService service;
+    @Mock
+    private ReportingService reportingService;
+    @Mock
+    private AllMothers allMothers;
+    private MotherReportingService motherReportingService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
+        motherReportingService = new MotherReportingService(reportingService, allMothers);
         mockCurrentDate(new LocalDate(2012, 1, 1));
     }
 
@@ -41,15 +49,52 @@ public class MotherReportingServiceTest extends BaseUnitTest{
         assertThatIndicatorIsSetBasedOnLMP("2011-10-01", "ANC>12");
     }
 
+    @Test
+    public void shouldReportCloseANCCaseIfReasonIsDeath() throws Exception {
+        Map<String, String> reportData = new HashMap<>();
+        reportData.put("caseId", "Case X");
+        reportData.put("closeReason", "death");
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("CASE-1", "TC 1", "Theresa").withAnm("ANM X", "12345").withLocation("bherya", "Sub Center", "PHC X"));
+
+        motherReportingService.closeANC(reportData);
+
+        ReportingData data = ReportingData.serviceProvidedData("ANM X", "TC 1", "MORT_M", "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        verify(reportingService).sendReportData(data);
+    }
+
+    @Test
+    public void shouldNotReportCloseANCCaseIfReasonIsNotDeath() throws Exception {
+        Map<String, String> reportData = new HashMap<>();
+        reportData.put("caseId", "Case X");
+        reportData.put("closeReason", "delivery");
+
+        motherReportingService.closeANC(reportData);
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldNotReportCloseANCCaseIfMotherIsNotFound() throws Exception {
+        Map<String, String> reportData = new HashMap<>();
+        reportData.put("caseId", "Case X");
+        reportData.put("closeReason", "death");
+
+        when(allMothers.findByCaseId("Case X")).thenReturn(null);
+        motherReportingService.closeANC(reportData);
+
+        verifyZeroInteractions(reportingService);
+    }
+
     private void assertThatIndicatorIsSetBasedOnLMP(String lmp, String indicator) {
         Map<String, String> reportData = setUpReportData(lmp);
 
-        ReportingService reportingService = mock(ReportingService.class);
-        MotherReportingService motherReportingService = new MotherReportingService(reportingService);
+        ReportingService fakeReportingService = mock(ReportingService.class);
+        MotherReportingService motherReportingService = new MotherReportingService(fakeReportingService, allMothers);
+
         motherReportingService.registerANC(reportData);
 
         ReportingData data = ReportingData.serviceProvidedData("ANM X", "TC 1", indicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
-        verify(reportingService).sendReportData(data);
+        verify(fakeReportingService).sendReportData(data);
     }
 
     private Map<String, String> setUpReportData(String lmp) {

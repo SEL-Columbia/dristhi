@@ -62,7 +62,7 @@ public class DrishtiControllerTest {
 
         controller.updateOutcomeOfANC(careOutcomeInformation);
 
-        verify(ancService).updateANCOutcome(careOutcomeInformation);
+        verify(ancService).updatePregnancyOutcome(careOutcomeInformation);
         verify(mctsService).updateANCOutcome(careOutcomeInformation);
     }
 
@@ -70,9 +70,10 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothANCServiceAndMCTSDuringANCClose() throws Exception {
         AnteNatalCareCloseInformation closeInformation = mock(AnteNatalCareCloseInformation.class);
 
-        controller.closeANCCase(closeInformation);
+        Map<String, String> data = new HashMap<>();
+        controller.closeANCCase(closeInformation, data);
 
-        verify(ancService).closeANCCase(closeInformation);
+        verify(ancService).closeANCCase(closeInformation, data);
         verify(mctsService).closeANCCase(closeInformation);
     }
 
@@ -80,7 +81,7 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothPNCServiceAndMCTSDuringNewChildRegistration() {
         ChildRegistrationRequest childRegistrationRequest = mock(ChildRegistrationRequest.class);
 
-        controller.registerChild(childRegistrationRequest);
+        Map<String, String> data = new HashMap<>();controller.registerChild(childRegistrationRequest);
 
         verify(pncService).registerChild(childRegistrationRequest);
         verify(mctsService).registerChild(childRegistrationRequest);

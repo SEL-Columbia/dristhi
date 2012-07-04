@@ -45,14 +45,14 @@ public class DrishtiController {
     public void updateOutcomeOfANC(AnteNatalCareOutcomeInformation outcomeInformation) {
         logger.info("ANC outcome: " + outcomeInformation);
 
-        ancService.updateANCOutcome(outcomeInformation);
+        ancService.updatePregnancyOutcome(outcomeInformation);
         mctsService.updateANCOutcome(outcomeInformation);
     }
 
-    public void closeANCCase(AnteNatalCareCloseInformation closeInformation) {
+    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, String> extraData) {
         logger.info("ANC close: " + closeInformation);
 
-        ancService.closeANCCase(closeInformation);
+        ancService.closeANCCase(closeInformation, extraData);
         mctsService.closeANCCase(closeInformation);
     }
 
