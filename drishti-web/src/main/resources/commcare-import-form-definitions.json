@@ -188,7 +188,6 @@
                         "form|case|@case_id": "caseId",
                         "form|card_no": "thaayiCardNumber",
                         "form|ancm_name": "name",
-                        "form|age": "age",
                         "form|lmp": "lmp",
                         "form|anc_village": "village",
                         "form|anm_phone": "anmPhoneNumber",
@@ -267,6 +266,10 @@
                         "form|meta|username": "anmIdentifier",
                         "form|case|@case_id": "caseId",
                         "form|immunization_multiselect1": "immunizationsProvided"
+                    },
+                    "extraMappings": {
+                        "form|meta|username": "anmIdentifier",
+                        "form|case|update|immunization_servicedate": "immunizationsProvidedDate"
                     }
                 },
                 {
@@ -291,6 +294,10 @@
                         }
                     },
                     "mappings": {
+                        "form|case|@case_id": "caseId",
+                        "form|close_reason": "closeReason"
+                    },
+                    "extraMappings": {
                         "form|case|@case_id": "caseId",
                         "form|close_reason": "closeReason"
                     }

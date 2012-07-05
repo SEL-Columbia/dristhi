@@ -60,12 +60,15 @@ public class CommCareImportFormDefinitionsJSONTest {
     }
 
     private void assertThatRightHandSideOfEveryFormMappingMapsToAFieldInTheObject(String formName, Class<?> typeUsedForObjectsInForm) {
-        for (String fieldInObject : findForm(formName).mappings().values()) {
-            try {
-                typeUsedForObjectsInForm.getDeclaredField(fieldInObject);
-            } catch (NoSuchFieldException e) {
-                fail("Could not find field: " + fieldInObject + " in class: " + typeUsedForObjectsInForm +
-                        ". Check the form: " + formName + " in " + definitionsJSONPath + ".");
+        ArrayList<CommCareFormDefinition> formDefinitions = findForms(formName);
+        for (CommCareFormDefinition formDefinition : formDefinitions) {
+            for (String fieldInObject : formDefinition.mappings().values()) {
+                try {
+                    typeUsedForObjectsInForm.getDeclaredField(fieldInObject);
+                } catch (NoSuchFieldException e) {
+                    fail("Could not find field: " + fieldInObject + " in class: " + typeUsedForObjectsInForm +
+                            ". Check the form: " + formName + " in " + definitionsJSONPath + ".");
+                }
             }
         }
     }
@@ -74,12 +77,14 @@ public class CommCareImportFormDefinitionsJSONTest {
         for (Map.Entry<String, Class<?>> formNameToClassEntry : classEveryFormMappingConvertsTo.entrySet()) {
             String formName = formNameToClassEntry.getKey();
             Class<?> parameterTypeOfTheMethod = formNameToClassEntry.getValue();
-            CommCareFormDefinition definition = findForm(formName);
-            if (definition.extraMappings().isEmpty()) {
-                ensureMethodPresent(controllerClass, formName, parameterTypeOfTheMethod);
-            }
-            else {
-                ensureMethodWithMapPresent(controllerClass, formName, parameterTypeOfTheMethod);
+            ArrayList<CommCareFormDefinition> definition = findForms(formName);
+            for (CommCareFormDefinition formDefinition : definition) {
+                if (formDefinition.extraMappings().isEmpty()) {
+                    ensureMethodPresent(controllerClass, formName, parameterTypeOfTheMethod);
+                }
+                else {
+                    ensureMethodWithMapPresent(controllerClass, formName, parameterTypeOfTheMethod);
+                }
             }
         }
     }
@@ -104,12 +109,13 @@ public class CommCareImportFormDefinitionsJSONTest {
         }
     }
 
-    private CommCareFormDefinition findForm(String formName) {
+    private ArrayList<CommCareFormDefinition> findForms(String formName) {
+        ArrayList<CommCareFormDefinition> definitions = new ArrayList<>();
         for (CommCareFormDefinition definition : forms) {
             if (definition.name().equals(formName)) {
-                return definition;
+                definitions.add(definition);
             }
         }
-        return null;
+        return definitions;
     }
 }
