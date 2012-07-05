@@ -10,6 +10,7 @@ import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.scheme.SocketFactory;
 import org.apache.http.conn.ssl.AbstractVerifier;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
@@ -63,7 +64,9 @@ public class HttpAgent {
             } finally {
                 inputStream.close();
             }
+
             SSLSocketFactory socketFactory = new SSLSocketFactory(trustedKeystore);
+            final X509HostnameVerifier oldVerifier = socketFactory.getHostnameVerifier();
             socketFactory.setHostnameVerifier(new AbstractVerifier() {
                 @Override
                 public void verify(String host, String[] commonNames, String[] subjectAlts) throws SSLException {
@@ -72,7 +75,7 @@ public class HttpAgent {
                             return;
                         }
                     }
-                    throw new SSLException("Invalid host: " + host);
+                    oldVerifier.verify(host, commonNames, subjectAlts);
                 }
             });
             return socketFactory;
