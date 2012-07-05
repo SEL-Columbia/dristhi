@@ -8,6 +8,7 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.scheme.SocketFactory;
+import org.apache.http.conn.ssl.AbstractVerifier;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -17,6 +18,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.stereotype.Component;
 
+import javax.net.ssl.SSLException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.Security;
@@ -61,7 +63,19 @@ public class HttpAgent {
             } finally {
                 inputStream.close();
             }
-            return new SSLSocketFactory(trustedKeystore);
+            SSLSocketFactory socketFactory = new SSLSocketFactory(trustedKeystore);
+            socketFactory.setHostnameVerifier(new AbstractVerifier() {
+                @Override
+                public void verify(String host, String[] commonNames, String[] subjectAlts) throws SSLException {
+                    for (String commonName : commonNames) {
+                        if (host.equals(commonName)) {
+                            return;
+                        }
+                    }
+                    throw new SSLException("Invalid host: " + host);
+                }
+            });
+            return socketFactory;
         } catch (Exception e) {
             throw new AssertionError(e);
         }
