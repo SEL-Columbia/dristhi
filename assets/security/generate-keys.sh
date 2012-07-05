@@ -7,11 +7,13 @@ fi
 
 prefix=$1
 
+/bin/rm -f ${prefix}* certificates/${prefix}*
+
 echo -e "Generating the keyfile. You will need to enter a password here."
 openssl genrsa -des3 -out ${prefix}.server.key 1024
 
 echo -e "\nGenerating a certificate request file. You'll be asked to enter the same password."
-openssl req -new -key ${prefix}.server.key -out ${prefix}.server.csr
+openssl req -new -key ${prefix}.server.key -out ${prefix}.server.csr -config openssl.conf
 
 echo -e "\nRemoving the password from the keyfile. Enter the password ... again."
 cp ${prefix}.server.key ${prefix}.server.key.original
@@ -35,6 +37,8 @@ keytool -import -v -trustcacerts -alias ThawteSSLCA -file <(openssl x509 -in cer
 keytool -import -v -trustcacerts -alias ThawteServerCA -file <(openssl x509 -in certificates/ThawteServerCA) -keystore ${prefix}_client.keystore -storetype BKS -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath ./bcprov-jdk15on-146.jar -storepass "${client_password}"
 keytool -import -v -trustcacerts -alias thawtePrimaryRootCA -file <(openssl x509 -in certificates/thawtePrimaryRootCA) -keystore ${prefix}_client.keystore -storetype BKS -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath ./bcprov-jdk15on-146.jar -storepass "${client_password}"
 
+/bin/cp -f ${prefix}_client.keystore ../../drishti-common/src/main/resources/
+
 cat <<EOF
 
 Take a look at: http://www.akadia.com/services/ssh_test_certificate.html if you need any more info.
@@ -44,5 +48,7 @@ Keystore for Jetty/Tomcat : ${prefix}_server.keystore
 Keystore for clients      : ${prefix}_client.keystore
 SSL Private Key           : ${prefix}.server.key
 SSL Certificate           : certificates/${prefix}.server.crt
+
+Client key has been copied to: ../../drishti-common/src/main/resources/.
 EOF
 
