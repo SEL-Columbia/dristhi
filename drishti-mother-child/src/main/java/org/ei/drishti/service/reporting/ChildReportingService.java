@@ -10,21 +10,44 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.Map;
 
 @Service
 public class ChildReportingService {
     private final ReportingService reportingService;
     private final AllChildren allChildren;
     private static Logger logger = LoggerFactory.getLogger(ChildReportingService.class.toString());
-    private Pattern pattern;
+    private Map<String, String> immunizationToIndicator;
 
     @Autowired
     public ChildReportingService(ReportingService reportingService, AllChildren allChildren) {
         this.reportingService = reportingService;
         this.allChildren = allChildren;
-        pattern = Pattern.compile("[0-9]+$");
+        immunizationToIndicator = new HashMap<>();
+
+        immunizationToIndicator.put("bcg", "BCG");
+
+        immunizationToIndicator.put("dpt1", "DPT");
+        immunizationToIndicator.put("dpt2", "DPT");
+        immunizationToIndicator.put("dpt3", "DPT");
+
+        immunizationToIndicator.put("hepB0", "HEP");
+        immunizationToIndicator.put("hepb1", "HEP");
+        immunizationToIndicator.put("hepb2", "HEP");
+        immunizationToIndicator.put("hepb3", "HEP");
+
+        immunizationToIndicator.put("opv0", "OPV");
+        immunizationToIndicator.put("opv1", "OPV");
+        immunizationToIndicator.put("opv2", "OPV");
+        immunizationToIndicator.put("opvbooster", "OPV");
+
+        immunizationToIndicator.put("measles", "MEASLES");
+        immunizationToIndicator.put("MeaslesBooster", "MEASLES");
+
+        immunizationToIndicator.put("dptbooster1", "DPT");
+        immunizationToIndicator.put("dptbooster2", "DPT");
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap reportingData) {
@@ -39,7 +62,13 @@ public class ChildReportingService {
         immunizations.removeAll(previouslyProvided);
 
         for (String immunizationProvidedThisTime : immunizations) {
-            String indicator = pattern.matcher(immunizationProvidedThisTime).replaceAll("");
+            String indicator = immunizationToIndicator.get(immunizationProvidedThisTime);
+            if (indicator == null){
+                logger.warn("Not reporting: Invalid immunization: " + immunizationProvidedThisTime + " in " +
+                        updationRequest + " with reporting data: " + reportingData);
+                continue;
+            }
+
             ReportingData data = ReportingData.serviceProvidedData(reportingData.get("anmIdentifier"), child.thaayiCardNumber(),
                     indicator, reportingData.get("immunizationsProvidedDate"), child.location());
 

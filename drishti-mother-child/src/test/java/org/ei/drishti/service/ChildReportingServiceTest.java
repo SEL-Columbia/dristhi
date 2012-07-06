@@ -36,11 +36,11 @@ public class ChildReportingServiceTest {
         SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("bcg", "hep")).withLocation("bherya", "Sub Center", "PHC X"));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("bcg", "hepb1")).withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hepb1 opv0"), reportingData);
 
-        ReportingData expectedReportingData = ReportingData.serviceProvidedData("ANM X", "TC 1", "opv", "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData expectedReportingData = ReportingData.serviceProvidedData("ANM X", "TC 1", "OPV", "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
         verify(reportingService).sendReportData(expectedReportingData);
     }
 
@@ -49,12 +49,12 @@ public class ChildReportingServiceTest {
         SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("ALREADY_GIVEN_IMM_1", "ALREADY_GIVEN_IMM_2")).withLocation("bherya", "Sub Center", "PHC X"));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("dpt1", "dpt2")).withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "ALREADY_GIVEN_IMM_1 ALREADY_GIVEN_IMM_1 FIRST_NEW_IMM SECOND_NEW_IMM"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "dpt1 bcg dpt2 measles"), reportingData);
 
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "FIRST_NEW_IMM", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "SECOND_NEW_IMM", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "BCG", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "MEASLES", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
     }
 
     @Test
@@ -70,27 +70,27 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldGetRidOfSequenceNumberFormImmunizationReportIndicator() throws Exception {
-        assertIndicatorBasedOnImmunization("bcg", "bcg");
+        assertIndicatorBasedOnImmunization("bcg", "BCG");
 
-        assertIndicatorBasedOnImmunization("dpt1", "dpt");
-        assertIndicatorBasedOnImmunization("dpt2", "dpt");
-        assertIndicatorBasedOnImmunization("dpt3", "dpt");
+        assertIndicatorBasedOnImmunization("dpt1", "DPT");
+        assertIndicatorBasedOnImmunization("dpt2", "DPT");
+        assertIndicatorBasedOnImmunization("dpt3", "DPT");
 
-        assertIndicatorBasedOnImmunization("hepB0", "hepB");
-        assertIndicatorBasedOnImmunization("hepb1", "hepb");
-        assertIndicatorBasedOnImmunization("hepb2", "hepb");
-        assertIndicatorBasedOnImmunization("hepb3", "hepb");
+        assertIndicatorBasedOnImmunization("hepB0", "HEP");
+        assertIndicatorBasedOnImmunization("hepb1", "HEP");
+        assertIndicatorBasedOnImmunization("hepb2", "HEP");
+        assertIndicatorBasedOnImmunization("hepb3", "HEP");
 
-        assertIndicatorBasedOnImmunization("opv0", "opv");
-        assertIndicatorBasedOnImmunization("opv1", "opv");
-        assertIndicatorBasedOnImmunization("opv2", "opv");
+        assertIndicatorBasedOnImmunization("opv0", "OPV");
+        assertIndicatorBasedOnImmunization("opv1", "OPV");
+        assertIndicatorBasedOnImmunization("opv2", "OPV");
+        assertIndicatorBasedOnImmunization("opvbooster", "OPV");
 
-        assertIndicatorBasedOnImmunization("measles", "measles");
-        assertIndicatorBasedOnImmunization("MeaslesBooster", "MeaslesBooster");
+        assertIndicatorBasedOnImmunization("measles", "MEASLES");
+        assertIndicatorBasedOnImmunization("MeaslesBooster", "MEASLES");
 
-        assertIndicatorBasedOnImmunization("dptbooster1", "dptbooster");
-        assertIndicatorBasedOnImmunization("dptbooster2", "dptbooster");
-        assertIndicatorBasedOnImmunization("opvbooster", "opvbooster");
+        assertIndicatorBasedOnImmunization("dptbooster1", "DPT");
+        assertIndicatorBasedOnImmunization("dptbooster2", "DPT");
     }
 
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, String expectedIndicator) {
@@ -108,4 +108,18 @@ public class ChildReportingServiceTest {
         verify(fakeReportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", expectedIndicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
         verifyNoMoreInteractions(fakeReportingService);
     }
+
+    @Test
+    public void shouldNotSendChildReportingDataWhenWrongImmunizationIsProvided() throws Exception {
+        SafeMap reportingData = new SafeMap();
+        reportingData.put("anmIdentifier", "ANM X");
+        reportingData.put("immunizationsProvidedDate", "2012-01-01");
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", new ArrayList<String>()).withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "NON_EXISTENT_IMMUNIZATION bcg"), reportingData);
+
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "BCG", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verifyZeroInteractions(reportingService);
+    }
+
 }
