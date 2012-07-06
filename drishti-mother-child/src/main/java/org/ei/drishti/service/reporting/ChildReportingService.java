@@ -11,17 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class ChildReportingService {
     private final ReportingService reportingService;
     private final AllChildren allChildren;
     private static Logger logger = LoggerFactory.getLogger(ChildReportingService.class.toString());
+    private Pattern pattern;
 
     @Autowired
     public ChildReportingService(ReportingService reportingService, AllChildren allChildren) {
         this.reportingService = reportingService;
         this.allChildren = allChildren;
+        pattern = Pattern.compile("[0-9]+$");
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap reportingData) {
@@ -36,8 +39,9 @@ public class ChildReportingService {
         immunizations.removeAll(previouslyProvided);
 
         for (String immunizationProvidedThisTime : immunizations) {
+            String indicator = pattern.matcher(immunizationProvidedThisTime).replaceAll("");
             ReportingData data = ReportingData.serviceProvidedData(reportingData.get("anmIdentifier"), child.thaayiCardNumber(),
-                    immunizationProvidedThisTime, reportingData.get("immunizationsProvidedDate"), child.location());
+                    indicator, reportingData.get("immunizationsProvidedDate"), child.location());
 
             reportingService.sendReportData(data);
         }

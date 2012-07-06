@@ -1,22 +1,14 @@
 package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.ReportingData;
-import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
-import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.motechproject.util.DateUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class MotherReportingService {

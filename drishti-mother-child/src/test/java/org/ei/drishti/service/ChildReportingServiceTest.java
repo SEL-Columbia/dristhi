@@ -50,10 +50,10 @@ public class ChildReportingServiceTest {
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("ALREADY_GIVEN_IMM_1", "ALREADY_GIVEN_IMM_2")).withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "ALREADY_GIVEN_IMM_1 ALREADY_GIVEN_IMM_1 NEW_IMM_1 NEW_IMM_2"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "ALREADY_GIVEN_IMM_1 ALREADY_GIVEN_IMM_1 FIRST_NEW_IMM SECOND_NEW_IMM"), reportingData);
 
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "NEW_IMM_1", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "NEW_IMM_2", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "FIRST_NEW_IMM", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "SECOND_NEW_IMM", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
     }
 
     @Test
@@ -65,5 +65,20 @@ public class ChildReportingServiceTest {
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv"), reportingData);
 
         verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldGetRidOfSequenceNumberFormImmunizationReportIndicator() throws Exception {
+        SafeMap reportingData = new SafeMap();
+        reportingData.put("anmIdentifier", "ANM X");
+        reportingData.put("immunizationsProvidedDate", "2012-01-01");
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("bcg1")).withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg1 hep opv0 he1pB0 xyz12"), reportingData);
+
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "hep", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "opv", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "he1pB", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "xyz", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
     }
 }
