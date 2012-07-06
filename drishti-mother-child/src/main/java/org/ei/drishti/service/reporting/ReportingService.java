@@ -1,4 +1,4 @@
-package org.ei.drishti.service;
+package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.listener.ReportEvent;

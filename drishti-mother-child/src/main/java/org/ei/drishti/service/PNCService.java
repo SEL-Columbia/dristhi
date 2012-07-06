@@ -6,6 +6,7 @@ import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.util.SafeMap;
+import org.ei.drishti.service.reporting.ChildReportingService;
 import org.joda.time.DateTime;
 import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,6 +6,8 @@ import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.util.SafeMap;
+import org.ei.drishti.service.reporting.ChildReportingService;
+import org.ei.drishti.service.reporting.ReportingService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
