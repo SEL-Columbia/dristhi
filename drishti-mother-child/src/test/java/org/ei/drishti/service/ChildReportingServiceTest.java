@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
@@ -69,16 +70,42 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldGetRidOfSequenceNumberFormImmunizationReportIndicator() throws Exception {
+        assertIndicatorBasedOnImmunization("bcg", "bcg");
+
+        assertIndicatorBasedOnImmunization("dpt1", "dpt");
+        assertIndicatorBasedOnImmunization("dpt2", "dpt");
+        assertIndicatorBasedOnImmunization("dpt3", "dpt");
+
+        assertIndicatorBasedOnImmunization("hepB0", "hepB");
+        assertIndicatorBasedOnImmunization("hepb1", "hepb");
+        assertIndicatorBasedOnImmunization("hepb2", "hepb");
+        assertIndicatorBasedOnImmunization("hepb3", "hepb");
+
+        assertIndicatorBasedOnImmunization("opv0", "opv");
+        assertIndicatorBasedOnImmunization("opv1", "opv");
+        assertIndicatorBasedOnImmunization("opv2", "opv");
+
+        assertIndicatorBasedOnImmunization("measles", "measles");
+        assertIndicatorBasedOnImmunization("MeaslesBooster", "MeaslesBooster");
+
+        assertIndicatorBasedOnImmunization("dptbooster1", "dptbooster");
+        assertIndicatorBasedOnImmunization("dptbooster2", "dptbooster");
+        assertIndicatorBasedOnImmunization("opvbooster", "opvbooster");
+    }
+
+    private void assertIndicatorBasedOnImmunization(String immunizationProvided, String expectedIndicator) {
+        AllChildren children = mock(AllChildren.class);
+        ReportingService fakeReportingService = mock(ReportingService.class);
+        ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, children);
+
         SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("bcg1")).withLocation("bherya", "Sub Center", "PHC X"));
+        when(children.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", new ArrayList<String>()).withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg1 hep opv0 he1pB0 xyz12"), reportingData);
+        childReportingService.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", immunizationProvided), reportingData);
 
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "hep", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "opv", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "he1pB", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", "xyz", "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(fakeReportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", expectedIndicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verifyNoMoreInteractions(fakeReportingService);
     }
 }
