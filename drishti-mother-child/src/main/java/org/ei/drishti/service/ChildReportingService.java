@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ChildReportingService {
@@ -25,9 +24,7 @@ public class ChildReportingService {
         this.allChildren = allChildren;
     }
 
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, String> reportingData) {
-        SafeMap safeReportingData = new SafeMap(reportingData);
-
+    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap reportingData) {
         Child child = allChildren.findByCaseId(updationRequest.caseId());
         if (child == null) {
             logger.warn("Child Case not found for child with CaseID " + updationRequest.caseId());
@@ -39,7 +36,7 @@ public class ChildReportingService {
         immunizations.removeAll(previouslyProvided);
 
         for (String immunizationProvidedThisTime : immunizations) {
-            ReportingData data = ReportingData.serviceProvidedData(safeReportingData.get("anmIdentifier"), child.thaayiCardNumber(),
+            ReportingData data = ReportingData.serviceProvidedData(reportingData.get("anmIdentifier"), child.thaayiCardNumber(),
                     immunizationProvidedThisTime, reportingData.get("immunizationsProvidedDate"), child.location());
 
             reportingService.sendReportData(data);

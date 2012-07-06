@@ -1,18 +1,13 @@
 package org.ei.drishti.util;
 
-import java.util.Map;
+import java.util.HashMap;
 
-public class SafeMap {
-    private final Map<String, String> data;
-
-    public SafeMap(Map<String, String> data) {
-        this.data = data;
-    }
-
-    public String get(String key) {
-        if (!data.containsKey(key)) {
-            throw new RuntimeException("Key: " + key + " does not exist in: " + data);
+public class SafeMap extends HashMap<String, String> {
+    @Override
+    public String get(Object key) {
+        if (!containsKey(key)) {
+            throw new RuntimeException("Key: " + key + " does not exist in: " + this);
         }
-        return data.get(key);
+        return super.get(key);
     }
 }

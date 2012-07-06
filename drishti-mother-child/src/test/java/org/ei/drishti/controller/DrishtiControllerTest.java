@@ -3,6 +3,7 @@ package org.ei.drishti.controller;
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.service.*;
+import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -38,9 +39,8 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothANCServiceAndMCTSDuringMotherRegistrationAndReportItAsWell() {
         AnteNatalCareEnrollmentInformation ancEnrollInfo = mock(AnteNatalCareEnrollmentInformation.class);
 
-        Map<String, String> data = new HashMap<>();
+        SafeMap data = new SafeMap();
         controller.registerMother(ancEnrollInfo, data);
-
 
         verify(ancService).registerANCCase(ancEnrollInfo, data);
         verify(mctsService).registerANCCase(ancEnrollInfo);
@@ -70,7 +70,7 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothANCServiceAndMCTSDuringANCClose() throws Exception {
         AnteNatalCareCloseInformation closeInformation = mock(AnteNatalCareCloseInformation.class);
 
-        Map<String, String> data = new HashMap<>();
+        SafeMap data = new SafeMap();
         controller.closeANCCase(closeInformation, data);
 
         verify(ancService).closeANCCase(closeInformation, data);
@@ -91,7 +91,7 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothPNCServiceAndMCTSDuringChildImmunizationUpdation() {
         ChildImmunizationUpdationRequest updationRequest = mock(ChildImmunizationUpdationRequest.class);
 
-        Map<String, String> data = new HashMap<>();
+        SafeMap data = new SafeMap();
         controller.updateChildImmunization(updationRequest, data);
 
         verify(pncService).updateChildImmunization(updationRequest, data);
@@ -112,7 +112,7 @@ public class DrishtiControllerTest {
     public void shouldDelegateToECServiceDuringEligibleCoupleRegistration() {
         EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest = mock(EligibleCoupleRegistrationRequest.class);
 
-        controller.registerEligibleCouple(eligibleCoupleRegistrationRequest, new HashMap<String, String>());
+        controller.registerEligibleCouple(eligibleCoupleRegistrationRequest, new SafeMap());
 
         verify(ecService).registerEligibleCouple(eligibleCoupleRegistrationRequest);
     }

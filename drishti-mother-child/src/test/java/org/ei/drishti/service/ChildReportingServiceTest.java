@@ -5,17 +5,14 @@ import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ChildReportingServiceTest {
@@ -33,7 +30,7 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldSendChildReportingData() throws Exception {
-        Map<String, String> reportingData = new HashMap<>();
+        SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("bcg", "hep")).withLocation("bherya", "Sub Center", "PHC X"));
@@ -46,7 +43,7 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldMakeAReportingCallForEachNewlyProvidedImmunization() throws Exception {
-        Map<String, String> reportingData = new HashMap<>();
+        SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("ALREADY_GIVEN_IMM_1", "ALREADY_GIVEN_IMM_2")).withLocation("bherya", "Sub Center", "PHC X"));
@@ -59,7 +56,7 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldNotSendChildReportingDataWhenChildIsNotFound() throws Exception {
-        Map<String, String> reportingData = new HashMap<>();
+        SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         when(allChildren.findByCaseId("CASE X")).thenReturn(null);
 

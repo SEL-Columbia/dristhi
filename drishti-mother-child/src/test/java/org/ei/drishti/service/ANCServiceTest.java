@@ -5,14 +5,12 @@ import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
 import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.model.Time;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
 import static org.mockito.Matchers.any;
@@ -48,8 +46,7 @@ public class ANCServiceTest {
         String motherName = "Theresa";
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", lmp.toDate(), "EC Number 1");
 
-        Map<String, String> data = new HashMap<>();
-
+        SafeMap data = new SafeMap();
         service.registerANCCase(enrollmentInfo, data);
 
         verify(motherReportingService).registerANC(data);
@@ -65,8 +62,7 @@ public class ANCServiceTest {
         String motherName = "Theresa";
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", lmp.toDate(), "EC Number 1");
 
-        Map<String, String> data = new HashMap<>();
-
+        SafeMap data = new SafeMap();
         service.registerANCCase(enrollmentInfo, data);
 
         verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(lmp), any(Time.class), any(Time.class));
@@ -78,8 +74,7 @@ public class ANCServiceTest {
         String motherName = "Theresa";
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", null, "EC Number 1");
 
-        Map<String, String> data = new HashMap<>();
-
+        SafeMap data = new SafeMap();
         service.registerANCCase(enrollmentInfo, data);
 
         verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(today()), any(Time.class), any(Time.class));
@@ -183,7 +178,7 @@ public class ANCServiceTest {
     public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "Abort"), new HashMap<String, String>());
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "Abort"), new SafeMap());
 
         verify(ancSchedulesService).closeCase("CASE-X");
         verify(actionService).updateDeliveryOutcome("CASE-X", "Abort");
@@ -193,7 +188,7 @@ public class ANCServiceTest {
     public void shouldNotUnEnrollAMotherFromScheduleWhenSheIsNotRegistered() {
         when(mothers.motherExists("CASE-UNKNOWN-MOM")).thenReturn(false);
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM", null), new HashMap<String, String>());
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM", null), new SafeMap());
 
         verifyZeroInteractions(ancSchedulesService);
     }

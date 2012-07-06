@@ -4,14 +4,12 @@ import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -51,7 +49,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
 
     @Test
     public void shouldReportCloseANCCaseIfReasonIsDeath() throws Exception {
-        Map<String, String> reportData = new HashMap<>();
+        SafeMap reportData = new SafeMap();
         reportData.put("caseId", "Case X");
         reportData.put("closeReason", "death");
         when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("CASE-1", "TC 1", "Theresa").withAnm("ANM X", "12345").withLocation("bherya", "Sub Center", "PHC X"));
@@ -64,7 +62,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
 
     @Test
     public void shouldNotReportCloseANCCaseIfReasonIsNotDeath() throws Exception {
-        Map<String, String> reportData = new HashMap<>();
+        SafeMap reportData = new SafeMap();
         reportData.put("caseId", "Case X");
         reportData.put("closeReason", "delivery");
 
@@ -75,7 +73,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
 
     @Test
     public void shouldNotReportCloseANCCaseIfMotherIsNotFound() throws Exception {
-        Map<String, String> reportData = new HashMap<>();
+        SafeMap reportData = new SafeMap();
         reportData.put("caseId", "Case X");
         reportData.put("closeReason", "death");
 
@@ -86,7 +84,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
     }
 
     private void assertThatIndicatorIsSetBasedOnLMP(String lmp, String indicator) {
-        Map<String, String> reportData = setUpReportData(lmp);
+        SafeMap reportData = setUpReportData(lmp);
 
         ReportingService fakeReportingService = mock(ReportingService.class);
         MotherReportingService motherReportingService = new MotherReportingService(fakeReportingService, allMothers);
@@ -97,8 +95,8 @@ public class MotherReportingServiceTest extends BaseUnitTest{
         verify(fakeReportingService).sendReportData(data);
     }
 
-    private Map<String, String> setUpReportData(String lmp) {
-        Map<String, String> reportData = new HashMap<>();
+    private SafeMap setUpReportData(String lmp) {
+        SafeMap reportData = new SafeMap();
         reportData.put("anmIdentifier", "ANM X");
         reportData.put("thaayiCardNumber", "TC 1");
         reportData.put("lmp", lmp);

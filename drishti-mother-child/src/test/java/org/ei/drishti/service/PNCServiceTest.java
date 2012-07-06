@@ -5,6 +5,7 @@ import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -15,8 +16,6 @@ import org.motechproject.testing.utils.BaseUnitTest;
 import org.motechproject.util.DateUtil;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
 import static org.mockito.Mockito.*;
@@ -94,7 +93,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldUpdateEnrollmentsForUpdatedImmunizations() {
         ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0");
 
-        pncService.updateChildImmunization(request, new HashMap<String, String>());
+        pncService.updateChildImmunization(request, new SafeMap());
 
         verify(pncSchedulesService).updateEnrollments(request);
     }
@@ -103,10 +102,10 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldSendDataForReportingBeforeUpdatingChildInDBSoThatUpdatedImmunizationsAreDecided() throws Exception {
         ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0");
 
-        pncService.updateChildImmunization(request, new HashMap<String, String>());
+        pncService.updateChildImmunization(request, new SafeMap());
 
         InOrder inOrder = inOrder(reportingService, pncSchedulesService);
-        inOrder.verify(reportingService).updateChildImmunization(eq(request), any(Map.class));
+        inOrder.verify(reportingService).updateChildImmunization(eq(request), any(SafeMap.class));
         inOrder.verify(pncSchedulesService).updateEnrollments(request);
     }
 
@@ -137,7 +136,7 @@ public class PNCServiceTest extends BaseUnitTest {
         ActionService actionService = mock(ActionService.class);
         PNCService pncService = new PNCService(actionService, mock(PNCSchedulesService.class), reportingService, allChildren);
 
-        pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations), new HashMap<String, String>());
+        pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations), new SafeMap());
 
         for (String expectedAlert : expectedDeletedAlertsRaised) {
             verify(actionService).deleteAlertForVisitForChild("Case X", "DEMO ANM", expectedAlert);

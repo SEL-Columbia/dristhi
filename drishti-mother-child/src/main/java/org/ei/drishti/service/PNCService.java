@@ -5,12 +5,11 @@ import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
 import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class PNCService {
@@ -39,7 +38,7 @@ public class PNCService {
         actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), request.thaayiCardNumber(), request.dateOfBirth());
     }
 
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, String> reportingData) {
+    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap reportingData) {
         childReportingService.updateChildImmunization(updationRequest, reportingData);
 
         alertForImmunizationProvided(updationRequest, "opv0", "OPV 0");

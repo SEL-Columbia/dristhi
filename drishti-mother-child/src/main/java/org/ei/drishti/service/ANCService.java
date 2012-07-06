@@ -6,6 +6,7 @@ import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.motechproject.model.Time;
@@ -36,7 +37,7 @@ public class ANCService {
         this.reportingService = reportingService;
     }
 
-    public void registerANCCase(AnteNatalCareEnrollmentInformation info, Map<String, String> data) {
+    public void registerANCCase(AnteNatalCareEnrollmentInformation info, SafeMap data) {
         Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
                 .withLMP(info.lmpDate()).withECNumber(info.ecNumber()).withLocation(info.village(), info.subCenter(), info.phc());
         allMothers.register(mother);
@@ -72,7 +73,7 @@ public class ANCService {
     public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {
     }
 
-    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, String> data) {
+    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, SafeMap data) {
         if (!allMothers.motherExists(closeInformation.caseId())) {
             logger.warn("Tried to close case without registered mother for case ID: " + closeInformation.caseId());
             return;
