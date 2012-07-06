@@ -5,7 +5,6 @@ import org.ei.commcare.api.contract.CommCareModuleDefinition;
 import org.ei.commcare.api.util.CommCareImportProperties;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.controller.DrishtiController;
-import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -92,9 +91,9 @@ public class CommCareImportFormDefinitionsJSONTest {
 
     private void ensureMethodWithMapPresent(Class<?> controllerClass, String formName, Class<?> parameterTypeOfTheMethod) {
         try {
-            controllerClass.getDeclaredMethod(formName, parameterTypeOfTheMethod, SafeMap.class);
+            controllerClass.getDeclaredMethod(formName, parameterTypeOfTheMethod, Map.class);
         } catch (NoSuchMethodException e) {
-            fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2}, SafeMap extraData). If it is " +
+            fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2}, Map<String, String> extraData). If it is " +
                     "not present, the dispatcher will not be able to do anything for form submissions of this form: {3}.",
                     controllerClass.getSimpleName(), formName, parameterTypeOfTheMethod.getSimpleName(), formName));
         }

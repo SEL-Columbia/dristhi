@@ -2,14 +2,16 @@ package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
-import org.ei.drishti.service.*;
+import org.ei.drishti.service.ANCService;
+import org.ei.drishti.service.DrishtiMCTSService;
+import org.ei.drishti.service.ECService;
+import org.ei.drishti.service.PNCService;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -39,10 +41,11 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothANCServiceAndMCTSDuringMotherRegistrationAndReportItAsWell() {
         AnteNatalCareEnrollmentInformation ancEnrollInfo = mock(AnteNatalCareEnrollmentInformation.class);
 
-        SafeMap data = new SafeMap();
-        controller.registerMother(ancEnrollInfo, data);
+        HashMap<String, String> extraData = new HashMap<>();
+        extraData.put("Some", "Data");
+        controller.registerMother(ancEnrollInfo, extraData);
 
-        verify(ancService).registerANCCase(ancEnrollInfo, data);
+        verify(ancService).registerANCCase(ancEnrollInfo, new SafeMap(extraData));
         verify(mctsService).registerANCCase(ancEnrollInfo);
     }
 
@@ -70,10 +73,11 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothANCServiceAndMCTSDuringANCClose() throws Exception {
         AnteNatalCareCloseInformation closeInformation = mock(AnteNatalCareCloseInformation.class);
 
-        SafeMap data = new SafeMap();
-        controller.closeANCCase(closeInformation, data);
+        HashMap<String, String> extraData = new HashMap<>();
+        extraData.put("Some", "Data");
+        controller.closeANCCase(closeInformation, extraData);
 
-        verify(ancService).closeANCCase(closeInformation, data);
+        verify(ancService).closeANCCase(closeInformation, new SafeMap(extraData));
         verify(mctsService).closeANCCase(closeInformation);
     }
 
@@ -81,7 +85,7 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothPNCServiceAndMCTSDuringNewChildRegistration() {
         ChildRegistrationRequest childRegistrationRequest = mock(ChildRegistrationRequest.class);
 
-        Map<String, String> data = new HashMap<>();controller.registerChild(childRegistrationRequest);
+        controller.registerChild(childRegistrationRequest);
 
         verify(pncService).registerChild(childRegistrationRequest);
         verify(mctsService).registerChild(childRegistrationRequest);
@@ -91,10 +95,11 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothPNCServiceAndMCTSDuringChildImmunizationUpdation() {
         ChildImmunizationUpdationRequest updationRequest = mock(ChildImmunizationUpdationRequest.class);
 
-        SafeMap data = new SafeMap();
-        controller.updateChildImmunization(updationRequest, data);
+        HashMap<String, String> extraData = new HashMap<>();
+        extraData.put("Some", "Data");
+        controller.updateChildImmunization(updationRequest, extraData);
 
-        verify(pncService).updateChildImmunization(updationRequest, data);
+        verify(pncService).updateChildImmunization(updationRequest, new SafeMap(extraData));
         verify(mctsService).updateChildImmunization(updationRequest);
     }
 
@@ -112,7 +117,7 @@ public class DrishtiControllerTest {
     public void shouldDelegateToECServiceDuringEligibleCoupleRegistration() {
         EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest = mock(EligibleCoupleRegistrationRequest.class);
 
-        controller.registerEligibleCouple(eligibleCoupleRegistrationRequest, new SafeMap());
+        controller.registerEligibleCouple(eligibleCoupleRegistrationRequest, new HashMap<String, String>());
 
         verify(ecService).registerEligibleCouple(eligibleCoupleRegistrationRequest);
     }

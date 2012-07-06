@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 public class DrishtiController {
     private static Logger logger = LoggerFactory.getLogger(DrishtiController.class.toString());
@@ -30,10 +32,10 @@ public class DrishtiController {
         this.mctsService = drishtiMctsService;
     }
 
-    public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, SafeMap extraData) {
+    public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, Map<String, String> extraData) {
         logger.info("Mother registration: " + enrollmentInformation);
 
-        ancService.registerANCCase(enrollmentInformation, extraData);
+        ancService.registerANCCase(enrollmentInformation, new SafeMap(extraData));
         mctsService.registerANCCase(enrollmentInformation);
     }
 
@@ -51,10 +53,10 @@ public class DrishtiController {
         mctsService.updateANCOutcome(outcomeInformation);
     }
 
-    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, SafeMap extraData) {
+    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, String> extraData) {
         logger.info("ANC close: " + closeInformation);
 
-        ancService.closeANCCase(closeInformation, extraData);
+        ancService.closeANCCase(closeInformation, new SafeMap(extraData));
         mctsService.closeANCCase(closeInformation);
     }
 
@@ -65,10 +67,10 @@ public class DrishtiController {
         mctsService.registerChild(childInformation);
     }
 
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap extraData) {
+    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, String> extraData) {
         logger.info("Child immunization updation: " + updationRequest);
 
-        pncService.updateChildImmunization(updationRequest, extraData);
+        pncService.updateChildImmunization(updationRequest, new SafeMap(extraData));
         mctsService.updateChildImmunization(updationRequest);
     }
 
@@ -79,7 +81,7 @@ public class DrishtiController {
         mctsService.closeChildCase(childCloseRequest);
     }
 
-    public void registerEligibleCouple(EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest, SafeMap extraData) {
+    public void registerEligibleCouple(EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest, Map<String, String> extraData) {
         logger.info("Eligible couple registration: " + eligibleCoupleRegistrationRequest + ". Extra data: " + extraData);
 
         ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest);
