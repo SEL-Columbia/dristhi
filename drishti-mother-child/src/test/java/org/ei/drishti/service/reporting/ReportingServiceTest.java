@@ -1,8 +1,7 @@
-package org.ei.drishti.service;
+package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.listener.ReportEvent;
-import org.ei.drishti.service.reporting.ReportingService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

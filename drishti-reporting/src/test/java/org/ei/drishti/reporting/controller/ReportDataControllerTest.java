@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import static org.ei.drishti.common.domain.Indicator.BCG;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -22,10 +23,10 @@ public class ReportDataControllerTest {
     @Test
     public void shouldSaveImmunizationsInDB() throws Exception {
         ReportDataController controller = new ReportDataController(reportsRepository);
-        ReportingData data = serviceProvidedData("ANM X", "TC 1", "bcg", "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData data = serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
 
         controller.submit(data);
 
-        verify(reportsRepository).save("ANM X", "TC 1", "bcg", "2012-01-01", "bherya", "Sub Center", "PHC X");
+        verify(reportsRepository).save("ANM X", "TC 1", "BCG", "2012-01-01", "bherya", "Sub Center", "PHC X");
     }
 }

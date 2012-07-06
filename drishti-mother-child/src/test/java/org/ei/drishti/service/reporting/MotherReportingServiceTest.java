@@ -1,18 +1,18 @@
-package org.ei.drishti.service;
+package org.ei.drishti.service.reporting;
 
+import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
-import org.ei.drishti.service.reporting.MotherReportingService;
-import org.ei.drishti.service.reporting.ReportingService;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
 
+import static org.ei.drishti.common.domain.Indicator.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -33,20 +33,20 @@ public class MotherReportingServiceTest extends BaseUnitTest{
 
     @Test
     public void shouldReportANCRegistrationWhichHasBeenDoneWithinTwelveWeeksOfLMP() throws Exception {
-        assertThatIndicatorIsSetBasedOnLMP("2011-10-11", "ANC<12");
-        assertThatIndicatorIsSetBasedOnLMP("2011-10-10", "ANC<12");
+        assertThatIndicatorIsSetBasedOnLMP("2011-10-11", ANC_BEFORE_12_WEEKS);
+        assertThatIndicatorIsSetBasedOnLMP("2011-10-10", ANC_BEFORE_12_WEEKS);
     }
 
     @Test
     public void shouldReportANCRegistrationWhichHasBeenDoneAfterExactlyTwelveWeeksAfterLMPAsLessThanTwelve() throws Exception {
-        assertThatIndicatorIsSetBasedOnLMP("2011-10-09", "ANC<12");
+        assertThatIndicatorIsSetBasedOnLMP("2011-10-09", ANC_BEFORE_12_WEEKS);
     }
 
     @Test
     public void shouldReportANCRegistrationWhichHasBeenDoneAfterTwelveWeeksAfterLMPAsGreaterThanTwelve() throws Exception {
-        assertThatIndicatorIsSetBasedOnLMP("2011-10-08", "ANC>12");
-        assertThatIndicatorIsSetBasedOnLMP("2011-10-07", "ANC>12");
-        assertThatIndicatorIsSetBasedOnLMP("2011-10-01", "ANC>12");
+        assertThatIndicatorIsSetBasedOnLMP("2011-10-08", ANC_AFTER_12_WEEKS);
+        assertThatIndicatorIsSetBasedOnLMP("2011-10-07", ANC_AFTER_12_WEEKS);
+        assertThatIndicatorIsSetBasedOnLMP("2011-10-01", ANC_AFTER_12_WEEKS);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
 
         motherReportingService.closeANC(reportData);
 
-        ReportingData data = ReportingData.serviceProvidedData("ANM X", "TC 1", "MORT_M", "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData data = ReportingData.serviceProvidedData("ANM X", "TC 1", MOTHER_MORTALITY, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
         verify(reportingService).sendReportData(data);
     }
 
@@ -85,7 +85,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
         verifyZeroInteractions(reportingService);
     }
 
-    private void assertThatIndicatorIsSetBasedOnLMP(String lmp, String indicator) {
+    private void assertThatIndicatorIsSetBasedOnLMP(String lmp, Indicator indicator) {
         SafeMap reportData = setUpReportData(lmp);
 
         ReportingService fakeReportingService = mock(ReportingService.class);

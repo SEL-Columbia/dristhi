@@ -1,5 +1,6 @@
 package org.ei.drishti.service.reporting;
 
+import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
@@ -9,6 +10,8 @@ import org.joda.time.LocalDate;
 import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static org.ei.drishti.common.domain.Indicator.*;
 
 @Service
 public class MotherReportingService {
@@ -23,7 +26,7 @@ public class MotherReportingService {
 
     public void registerANC(SafeMap reportData) {
         boolean isNotWithin12WeeksOfLMP = DateUtil.today().minusDays(84).isAfter(LocalDate.parse(reportData.get("lmp")));
-        String indicator = isNotWithin12WeeksOfLMP ? "ANC>12" : "ANC<12";
+        Indicator indicator = isNotWithin12WeeksOfLMP ? Indicator.ANC_AFTER_12_WEEKS : Indicator.ANC_BEFORE_12_WEEKS;
 
         ReportingData data = ReportingData.serviceProvidedData(reportData.get("anmIdentifier"), reportData.get("thaayiCardNumber"), indicator, DateUtil.today().toString(),
                 new Location(reportData.get("village"), reportData.get("subCenter"), reportData.get("phc")));
@@ -40,7 +43,7 @@ public class MotherReportingService {
             return;
         }
 
-        ReportingData data = ReportingData.serviceProvidedData(mother.anmIdentifier(), mother.thaayiCardNo(), "MORT_M", DateUtil.today().toString(),
+        ReportingData data = ReportingData.serviceProvidedData(mother.anmIdentifier(), mother.thaayiCardNo(), MOTHER_MORTALITY, DateUtil.today().toString(),
                 new Location(mother.village(), mother.subCenter(), mother.phc()));
 
         reportingService.sendReportData(data);
