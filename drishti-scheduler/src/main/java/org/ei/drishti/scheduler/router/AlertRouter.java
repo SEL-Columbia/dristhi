@@ -13,7 +13,7 @@ public class AlertRouter {
     private List<Route> routes;
 
     public AlertRouter() {
-        routes = new ArrayList<Route>();
+        routes = new ArrayList<>();
     }
 
     public void addRoute(Matcher scheduleMatcher, Matcher milestoneMatcher, Matcher windowMatcher, Action action) {

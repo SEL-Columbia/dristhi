@@ -1,5 +1,6 @@
 package org.ei.drishti.reporting.repository;
 
+import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.reporting.domain.ANM;
 import org.ei.drishti.reporting.domain.Dates;
 import org.ei.drishti.reporting.domain.Indicator;
@@ -30,12 +31,15 @@ public class ReportsRepositoryTest {
 
     @Mock
     private AllServicesProvidedRepository servicesProvidedRepository;
+
+    @Mock
+    private Monitor monitor;
     private ReportsRepository repository;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        repository = new ReportsRepository(anmRepository, datesRepository, indicatorRepository, locationRepository, servicesProvidedRepository);
+        repository = new ReportsRepository(anmRepository, datesRepository, indicatorRepository, locationRepository, servicesProvidedRepository, monitor);
     }
 
     @Test

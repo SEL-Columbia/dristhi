@@ -2,18 +2,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <context:property-placeholder location="classpath*:drishti-report.properties"/>
     <context:annotation-config/>
 
     <import resource="classpath:spring/applicationContext-reporting-repository.xml" />
+    <util:properties id="drishti" location="classpath:/drishti.properties"/>
 
-    <context:component-scan base-package="org.ei.drishti.reporting"/>
+    <context:component-scan base-package="org.ei.drishti.reporting, org.ei.drishti.common"/>
     <mvc:default-servlet-handler/>
 
     <mvc:annotation-driven/>
