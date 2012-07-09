@@ -27,7 +27,7 @@ public class Auditor {
 
     @Autowired
     public Auditor(@Value("#{drishti['number.of.audit.messages']}") int numberOfAuditMessagesToHoldOnTo) {
-        this.messages = new ArrayList<AuditMessage>();
+        this.messages = new ArrayList<>();
         this.numberOfAuditMessagesToHoldOnTo = numberOfAuditMessagesToHoldOnTo;
     }
 
@@ -62,7 +62,7 @@ public class Auditor {
             AuditMessage auditMessage = new AuditMessage(DateUtil.now(), messageIndex, messageType, data);
             messages.add(auditMessage);
             messageIndex++;
-            logger.info(MessageFormat.format("Added message {0} {1} {2} {3} {4}: {5}", messageIndex, Thread.currentThread().getId(), hashCode(), lock.hashCode(), this.getClass().getClassLoader(), auditMessage));
+            logger.info(MessageFormat.format("Added message: {0}", auditMessage));
             prune();
         } finally {
             lock.unlock();
@@ -77,7 +77,7 @@ public class Auditor {
         public AuditMessageBuilder(Auditor auditor, AuditMessageType type) {
             this.auditor = auditor;
             this.type = type;
-            this.extraData = new HashMap<String, String>();
+            this.extraData = new HashMap<>();
         }
 
         public AuditMessageBuilder with(String key, String value) {
