@@ -18,7 +18,6 @@
     <import resource="classpath:applicationSmsAPI.xml"/>
     <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
     <import resource="classpath:applicationContext-commcare-listener.xml"/>
-
     <util:properties id="drishti" location="classpath:/drishti.properties"/>
 
     <context:annotation-config/>
@@ -28,4 +27,5 @@
         <constructor-arg value="drishti"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
+    <bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl"/>
 </beans>

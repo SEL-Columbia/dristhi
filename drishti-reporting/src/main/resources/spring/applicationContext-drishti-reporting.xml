@@ -18,4 +18,6 @@
     <mvc:default-servlet-handler/>
 
     <mvc:annotation-driven/>
+
+    <bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl"/>
 </beans>
