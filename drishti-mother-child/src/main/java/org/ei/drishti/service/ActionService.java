@@ -73,7 +73,7 @@ public class ActionService {
     }
 
     public void registerEligibleCouple(String caseId, String ecNumber, String wife, String husband, String anmIdentifier, String currentMethod, String village, String subCenter, String phc) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.createEligibleCouple(wife, husband, ecNumber, phc, currentMethod, village, subCenter)));
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.createEligibleCouple(wife, husband, ecNumber, currentMethod, village, subCenter, phc)));
     }
 
     public void closeEligibleCouple(String caseId, String anmIdentifier) {

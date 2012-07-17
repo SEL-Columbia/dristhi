@@ -107,7 +107,7 @@ public class ActionServiceTest {
     public void shouldAddCreateActionForEligibleCoupleRegistration() throws Exception {
         service.registerEligibleCouple("Case X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "IUD", "Village X", "SubCenter X", "PHC X");
 
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createEligibleCouple("Wife 1", "Husband 1", "EC Number 1", "PHC X", "IUD","Village X", "SubCenter X")));
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createEligibleCouple("Wife 1", "Husband 1", "EC Number 1", "IUD", "Village X", "SubCenter X", "PHC X")));
     }
 
     @Test
