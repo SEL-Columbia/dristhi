@@ -28,7 +28,7 @@ public class PNCService {
     }
 
     public void registerChild(ChildRegistrationRequest request) {
-        allChildren.register(new Child(request.caseId(), request.thaayiCardNumber(), request.name(), request.immunizationsProvided())
+        allChildren.register(new Child(request.caseId(), request.thaayiCardNumber(), request.name(), request.immunizationsProvided(), request.gender())
                 .withAnm(request.anmIdentifier()).withLocation(request.village(), request.subCenter(), request.phc()));
 
         alertForMissingImmunization(request, "opv0", "OPV 0");
@@ -36,7 +36,7 @@ public class PNCService {
         alertForMissingImmunization(request, "hepB0", "HEP B0");
 
         pncSchedulesService.enrollChild(request);
-        actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), request.thaayiCardNumber(), request.dateOfBirth());
+        actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), request.thaayiCardNumber(), request.dateOfBirth(), request.gender());
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap reportingData) {

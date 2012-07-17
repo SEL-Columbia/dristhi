@@ -45,7 +45,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
-        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", ""));
+        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", "", "male"));
 
         verify(actionService).alertForChild("Case X", "OPV 0", "due", currentTime.plusDays(2));
         verify(actionService).alertForChild("Case X", "BCG", "due", currentTime.plusDays(2));
@@ -57,7 +57,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
-        ChildRegistrationRequest request = new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", "");
+        ChildRegistrationRequest request = new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", "", "male");
         pncService.registerChild(request);
 
         verify(pncSchedulesService).enrollChild(request);
@@ -68,9 +68,9 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
-        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", "bcg hep"));
+        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", "bcg hep", "female"));
 
-        verify(allChildren).register(objectWithSameFieldsAs(new Child("Case X", "TC 1", "Child 1", Arrays.asList("bcg", "hep")).withAnm("DEMO ANM").withLocation("bherya", "Sub Center", "PHC X")));
+        verify(allChildren).register(objectWithSameFieldsAs(new Child("Case X", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female").withAnm("DEMO ANM").withLocation("bherya", "Sub Center", "PHC X")));
     }
 
     @Test
@@ -151,12 +151,12 @@ public class PNCServiceTest extends BaseUnitTest {
         ActionService actionService = mock(ActionService.class);
         PNCService pncService = new PNCService(actionService, mock(PNCSchedulesService.class), reportingService, allChildren);
 
-        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations));
+        pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations, "female"));
 
         for (String expectedAlert : expectedAlertsRaised) {
             verify(actionService).alertForChild("Case X", expectedAlert, "due", currentTime.plusDays(2));
         }
-        verify(actionService, times(1)).registerChildBirth(any(String.class), any(String.class), any(String.class), any(LocalDate.class));
+        verify(actionService, times(1)).registerChildBirth(any(String.class), any(String.class), any(String.class), any(LocalDate.class), any(String.class));
         verifyNoMoreInteractions(actionService);
     }
 }

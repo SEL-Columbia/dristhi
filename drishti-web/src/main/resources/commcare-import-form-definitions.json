@@ -20,7 +20,8 @@
                         "form|meta|username": "anmIdentifier",
                         "form|ec_village": "village",
                         "form|ec_village_subcenter": "subCenter",
-                        "form|phc": "phc"
+                        "form|phc": "phc",
+                        "form|case|update|familyplanning_methods": "currentMethod"
                     },
                     "extraMappings": {
                         "form|husbands_name": "husbandName",
@@ -108,7 +109,8 @@
                         "form|phc": "phc",
                         "form|meta|username": "anmIdentifier",
                         "form|case|@case_id": "caseId",
-                        "form|immunization_multiselect": "immunizationsProvided"
+                        "form|immunization_multiselect": "immunizationsProvided",
+                        "form|child_sex": "gender"
                     }
                 },
                 {
@@ -251,7 +253,8 @@
                         "form|child_village": "village",
                         "form|meta|username": "anmIdentifier",
                         "form|case|@case_id": "caseId",
-                        "form|immunization_multiselect": "immunizationsProvided"
+                        "form|immunization_multiselect": "immunizationsProvided",
+                        "form|child_sex": "gender"
                     }
                 },
                 {

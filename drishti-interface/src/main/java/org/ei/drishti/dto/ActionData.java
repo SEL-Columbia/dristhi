@@ -28,9 +28,9 @@ public class ActionData {
         return new ActionData("alert", "deleteAllAlerts");
     }
 
-    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String village, String subCenter, String phc) {
+    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String currentMethod, String village, String subCenter, String phc) {
         return new ActionData("eligibleCouple", "createEC").with("wife", wife).with("husband", husband)
-                .with("ecNumber", ecNumber).with("village", village).with("subcenter", subCenter).with("phc", phc);
+                .with("ecNumber", ecNumber).with("currentMethod", currentMethod).with("village", village).with("subcenter", subCenter).with("phc", phc);
     }
 
     public static ActionData deleteEligibleCouple() {
@@ -45,8 +45,8 @@ public class ActionData {
         return new ActionData("child", "updateBeneficiary").with("status", status);
     }
 
-    public static ActionData registerChildBirth(String motherCaseId, LocalDate dateOfBirth) {
-        return new ActionData("child", "createChildBeneficiary").with("motherCaseId", motherCaseId).with("referenceDate", dateOfBirth.toString());
+    public static ActionData registerChildBirth(String motherCaseId, LocalDate dateOfBirth, String gender) {
+        return new ActionData("child", "createChildBeneficiary").with("motherCaseId", motherCaseId).with("referenceDate", dateOfBirth.toString()).with("gender", gender);
     }
 
     public static ActionData from(String actionType, String actionTarget, Map<String, String> data) {

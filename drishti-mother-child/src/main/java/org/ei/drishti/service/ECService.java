@@ -20,13 +20,13 @@ public class ECService {
 
     public void registerEligibleCouple(EligibleCoupleRegistrationRequest request) {
         EligibleCouple couple = new EligibleCouple(request.caseId(), request.ecNumber())
-                .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
+                .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier()).withFamilyPlanning(request.currentMethod())
                 .withLocation(request.village(), request.subCenter(), request.phc());
 
         allEligibleCouples.register(couple);
 
         actionService.registerEligibleCouple(request.caseId(), request.ecNumber(), request.wife(), request.husband(),
-                request.anmIdentifier(), request.village(), request.subCenter(), request.phc());
+                request.anmIdentifier(), request.currentMethod(), request.village(), request.subCenter(), request.phc());
     }
 
     public void closeEligibleCouple(EligibleCoupleCloseRequest request) {

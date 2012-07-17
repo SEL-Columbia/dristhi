@@ -72,8 +72,8 @@ public class ActionService {
         allActions.addWithDelete(new Action(caseID, anmIdentifier, ActionData.deleteAllAlerts()), "alert");
     }
 
-    public void registerEligibleCouple(String caseId, String ecNumber, String wife, String husband, String anmIdentifier, String village, String subCenter, String phc) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.createEligibleCouple(wife, husband, ecNumber, village, subCenter, phc)));
+    public void registerEligibleCouple(String caseId, String ecNumber, String wife, String husband, String anmIdentifier, String currentMethod, String village, String subCenter, String phc) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.createEligibleCouple(wife, husband, ecNumber, phc, currentMethod, village, subCenter)));
     }
 
     public void closeEligibleCouple(String caseId, String anmIdentifier) {
@@ -100,7 +100,7 @@ public class ActionService {
         allActions.add(new Action(caseId, mother.anmIdentifier(), ActionData.updateBeneficiary(status)));
     }
 
-    public void registerChildBirth(String caseId, String anmIdentifier, String thaayiCardNumber, LocalDate dateOfBirth) {
+    public void registerChildBirth(String caseId, String anmIdentifier, String thaayiCardNumber, LocalDate dateOfBirth, String gender) {
         Mother mother = allMothers.findByThaayiCardNumber(thaayiCardNumber);
         if (mother == null) {
             logger.warn(format("Found child birth without registered mother. Ignoring case: {0} for thaayiCardNumber: {1} for ANM: {2}",
@@ -108,6 +108,6 @@ public class ActionService {
             return;
         }
 
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerChildBirth(mother.caseId(), dateOfBirth)));
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerChildBirth(mother.caseId(), dateOfBirth, gender)));
     }
 }

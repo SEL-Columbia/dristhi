@@ -1,5 +1,7 @@
 package org.ei.drishti.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.LocalDate;
@@ -66,28 +68,6 @@ public class Mother extends MotechBaseDataObject {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return MessageFormat.format("Mother: {0} ({1}) [Case ID: {2}, ANM: {3}]", name, thaayiCardNumber, caseId, anmPhoneNumber);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Mother mother = (Mother) o;
-
-        if (!caseId.equals(mother.caseId)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return caseId.hashCode();
-    }
-
     public String caseId() {
         return caseId;
     }
@@ -126,5 +106,20 @@ public class Mother extends MotechBaseDataObject {
 
     private String getThaayiCardNumber() {
         return thaayiCardNumber;
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("Mother: {0} ({1}) [Case ID: {2}, ANM: {3}]", name, thaayiCardNumber, caseId, anmPhoneNumber);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(0, this);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

@@ -1,5 +1,7 @@
 package org.ei.drishti.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
@@ -23,6 +25,8 @@ public class EligibleCouple extends MotechBaseDataObject {
     private String subCenter;
     @JsonProperty
     private String phc;
+    @JsonProperty
+    private String currentMethod;
 
     public EligibleCouple() {
     }
@@ -40,6 +44,11 @@ public class EligibleCouple extends MotechBaseDataObject {
 
     public EligibleCouple withANMIdentifier(String anmIdentifier) {
         this.anmIdentifier = anmIdentifier;
+        return this;
+    }
+
+    public EligibleCouple withFamilyPlanning(String currentMethod) {
+        this.currentMethod = currentMethod;
         return this;
     }
 
@@ -64,22 +73,12 @@ public class EligibleCouple extends MotechBaseDataObject {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        EligibleCouple that = (EligibleCouple) o;
-
-        if (caseId != null ? !caseId.equals(that.caseId) : that.caseId != null) return false;
-        if (ecNumber != null ? !ecNumber.equals(that.ecNumber) : that.ecNumber != null) return false;
-
-        return true;
+        return EqualsBuilder.reflectionEquals(o, this);
     }
 
     @Override
     public int hashCode() {
-        int result = caseId != null ? caseId.hashCode() : 0;
-        result = 31 * result + (ecNumber != null ? ecNumber.hashCode() : 0);
-        return result;
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override

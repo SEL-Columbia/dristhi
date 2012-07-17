@@ -19,8 +19,9 @@ public class ChildRegistrationRequest {
     private String thaayiCardNumber = "1234567";
     private String immunizationsProvided;
     private Date dateOfBirth = DateUtil.today().toDate();
+    private String gender;
 
-    public ChildRegistrationRequest(String caseId, String childName, String village, String subCenter, String phc, String thaayiCardNumber, Date dateOfBirth, String anmIdentifier, String immunizationsProvided) {
+    public ChildRegistrationRequest(String caseId, String childName, String village, String subCenter, String phc, String thaayiCardNumber, Date dateOfBirth, String anmIdentifier, String immunizationsProvided, String gender) {
         this.caseId = caseId;
         this.childName = childName;
         this.village = village;
@@ -30,6 +31,7 @@ public class ChildRegistrationRequest {
         this.dateOfBirth = dateOfBirth;
         this.anmIdentifier = anmIdentifier;
         this.immunizationsProvided = immunizationsProvided;
+        this.gender = gender;
     }
 
     public String name() {
@@ -70,6 +72,10 @@ public class ChildRegistrationRequest {
 
     public String phc() {
         return phc;
+    }
+
+    public String gender() {
+        return gender;
     }
 
     @Override

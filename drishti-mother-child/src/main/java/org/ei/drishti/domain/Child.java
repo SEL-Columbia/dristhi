@@ -1,5 +1,7 @@
 package org.ei.drishti.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
@@ -25,15 +27,18 @@ public class Child extends MotechBaseDataObject {
     private String anmIdentifier;
     @JsonProperty
     private List<String> immunizationsProvided;
+    @JsonProperty
+    private String gender;
 
     private Child() {
     }
 
-    public Child(String caseId, String thaayiCardNumber, String name, List<String> immunizationsProvided) {
+    public Child(String caseId, String thaayiCardNumber, String name, List<String> immunizationsProvided, String gender) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
         this.immunizationsProvided = immunizationsProvided;
+        this.gender = gender;
     }
 
     public Child withAnm(String anmIdentifier) {
@@ -73,28 +78,6 @@ public class Child extends MotechBaseDataObject {
         return subCenter;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Child child = (Child) o;
-
-        if (!caseId.equals(child.caseId)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return caseId.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
     public List<String> immunizationsProvided() {
         return immunizationsProvided;
     }
@@ -108,5 +91,20 @@ public class Child extends MotechBaseDataObject {
 
     public Location location() {
         return new Location(village, subCenter, phc);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(0, this);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
