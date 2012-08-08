@@ -16,8 +16,9 @@ public class AnteNatalCareEnrollmentInformation {
     private String anmIdentifier;
     private Date lmp;
     private String ecNumber;
+    private String isHighRisk;
 
-    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String village, String subCenter, String phc, String anmPhoneNumber, String anmIdentifier, Date lmp, String ecNumber) {
+    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String village, String subCenter, String phc, String anmPhoneNumber, String anmIdentifier, Date lmp, String ecNumber, String highRisk) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
@@ -28,6 +29,7 @@ public class AnteNatalCareEnrollmentInformation {
         this.anmIdentifier = anmIdentifier;
         this.lmp = lmp;
         this.ecNumber = ecNumber;
+        isHighRisk = highRisk;
     }
 
     public String caseId() {
@@ -73,5 +75,9 @@ public class AnteNatalCareEnrollmentInformation {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public boolean isHighRisk() {
+        return "1".equals(isHighRisk);
     }
 }

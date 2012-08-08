@@ -121,16 +121,16 @@ public class ActionServiceTest {
     public void shouldAddActionForBeneficiaryRegistration() throws Exception {
         when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "Village X")).thenReturn(new EligibleCouple("Case EC 1", "EC Number 1"));
 
-        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", DateUtil.today());
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", DateUtil.today(), false);
 
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createBeneficiary("Case EC 1", "Thaayi 1", DateUtil.today())));
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createBeneficiary("Case EC 1", "Thaayi 1", DateUtil.today(), false)));
     }
 
     @Test
     public void shouldNotAddActionForBeneficiaryRegistrationIfECNotFound() throws Exception {
         when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "Village X")).thenReturn(null);
 
-        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", null);
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", null, true);
 
         verifyZeroInteractions(allActions);
     }

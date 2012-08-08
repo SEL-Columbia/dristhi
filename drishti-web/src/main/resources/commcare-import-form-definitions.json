@@ -48,7 +48,8 @@
                         "form|phc": "phc",
                         "form|anm_phone": "anmPhoneNumber",
                         "form|ECnumber": "ecNumber",
-                        "form|meta|username": "anmIdentifier"
+                        "form|meta|username": "anmIdentifier",
+                        "form|isHighRisk": "isHighRisk"
                     },
                     "extraMappings": {
                         "form|lmp": "lmp",

@@ -31,6 +31,8 @@ public class Mother extends MotechBaseDataObject {
     private String subCenter;
     @JsonProperty
     private String phc;
+    @JsonProperty
+    private boolean isHighRisk;
 
     private Mother() {
     }
@@ -65,6 +67,11 @@ public class Mother extends MotechBaseDataObject {
         this.village = village;
         this.subCenter = subCenter;
         this.phc = phc;
+        return this;
+    }
+
+    public Mother isHighRisk(boolean value) {
+        this.isHighRisk = value;
         return this;
     }
 
