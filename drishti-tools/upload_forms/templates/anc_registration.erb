@@ -1,5 +1,5 @@
 <?xml version='1.0' ?>
-<ancRegistration uiVersion="1" version="6" name="ANC Registration" xmlns:jrm="http://dev.commcarehq.org/jr/xforms" xmlns="http://openrosa.org/formdesigner/5EDBB181-77CF-4012-9A75-D44E15B748F8">
+<ancRegistration uiVersion="1" version="6" name="ANC Registration" xmlns:jrm="http://dev.commcarehq.org/jr/xforms" xmlns="http://openrosa.org/formdesigner/5EDBB181-77CF-4012-9A75-D44E15B748F9">
   <anc_ifa_ctr>0</anc_ifa_ctr>
   <anc_tt_ctr>0</anc_tt_ctr>
   <anc_hiv_ctr>0</anc_hiv_ctr>
@@ -27,7 +27,7 @@
   <anm_phone></anm_phone>
   <asha_name></asha_name>
   <asha_phone></asha_phone>
-  <lmp><%= row['LMP'] %></lmp>
+  <lmp><%= Date.parse(row['LMP']).to_s %></lmp>
   <Show_edd>OK</Show_edd>
   <previouspreg><%= row['Gravida'] %></previouspreg>
   <abortions><%= row['Number of abortion(A)'] %></abortions>
@@ -40,9 +40,9 @@
   <Medical_History></Medical_History>
   <had_TT_last_years>no</had_TT_last_years>
   <blood_group></blood_group>
-  <ancm_height></ancm_heigh>
+  <ancm_height></ancm_height>
   <ancm_weight></ancm_weight>
-  <edd><%= row['EDD'] %></edd>
+  <edd><%= Date.parse(row['EDD']).to_s %></edd>
   <ANC_visitnumber>1</ANC_visitnumber>
   <isHighRisk>0</isHighRisk>
   <n0:case case_id="<%= row['Case ID'] %>" user_id="c3d86928a9c501cd88f42d6031ad70c9" date_modified="2012-08-10T15:14:01.062+05:30" xmlns:n0="http://commcarehq.org/case/transaction/v2">
@@ -52,14 +52,14 @@
       <n0:case_type>mother</n0:case_type>
     </n0:create>
     <n0:update>
-        <n0:edd><%= row['EDD'] %></n0:edd>
+        <n0:edd><%= Date.parse(row['EDD']).to_s %></n0:edd>
       <n0:anc_ifa_ctr>0</n0:anc_ifa_ctr>
       <n0:anc_pulserate_ctr>0</n0:anc_pulserate_ctr>
       <n0:anc_urinealbumin_ctr>0</n0:anc_urinealbumin_ctr>
       <n0:general_visitnumber>0</n0:general_visitnumber>
       <n0:anc_abdominalheight_ctr>0</n0:anc_abdominalheight_ctr>
       <n0:card_no><%= row['Thayi Card Number'] %></n0:card_no>
-      <n0:lmp><%= row['LMP'] %></n0:lmp>
+      <n0:lmp><%= Date.parse(row['LMP']).to_s %></n0:lmp>
       <n0:ancm_name><%= row['Wife Name'] %></n0:ancm_name>
       <n0:ancm_husb_name><%= row['Husband Name'] %></n0:ancm_husb_name>
       <n0:anc_village>munjanahallivil</n0:anc_village>

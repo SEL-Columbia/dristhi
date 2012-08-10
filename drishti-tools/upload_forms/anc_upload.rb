@@ -1,4 +1,5 @@
 require 'csv'
+require 'date'
 require 'erb'
 require 'guid'
 require './lib/care_import_row.rb'
@@ -6,7 +7,7 @@ require './lib/commcare.rb'
 
 anc_registration_erb = ERB.new(File.read('templates/anc_registration.erb'))
 
-CSV.foreach("Munjanahalli_ANCs.csv", { :headers => true }) do |csv_row|
+CSV.foreach("examples/Munjanahalli_ANCs.csv", { :headers => true }) do |csv_row|
   row = Row.new csv_row
 
   row.default_value "House Number", "1"

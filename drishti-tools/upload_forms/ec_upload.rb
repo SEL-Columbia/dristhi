@@ -5,16 +5,15 @@ require './lib/care_import_row.rb'
 require './lib/commcare.rb'
 
 ec_registration_erb = ERB.new(File.read('templates/ec_registration.erb'))
-ec_family_planning_erb = ERB.new(File.read('templates/ec_family_planning.erb'))
 
-CSV.foreach("Munjanahalli_merges.csv", { :headers => true }) do |csv_row|
+CSV.foreach("examples/Munjanahalli_merges.csv", { :headers => true }) do |csv_row|
   row = Row.new csv_row
 
   row.default_value "Registration date", Date.today.to_s
   row.default_value "Village Code", "29230030060"
   row.default_value "Village Name", "MUNJANAHALLI"
   row.default_value "House Number", "0"
-  row.default_value "EC Number ", "0"
+  row.default_value "EC Number", "0"
   row.default_value "Wife Name", "Jyothi"
   row.default_value "Wife Age", "31"
   row.default_value "Husband Name", "Gopala"
