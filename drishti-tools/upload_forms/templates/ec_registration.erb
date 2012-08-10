@@ -1,50 +1,45 @@
 <?xml version='1.0' ?>
-<ecregistration uiVersion="1" version="1" name="ECRegistration" xmlns:jrm="http://dev.commcarehq.org/jr/xforms" xmlns="http://openrosa.org/formdesigner/79EA11C6-2094-47E1-A03B-36AC9F5E3811">
-  <villagecode><%= row['Village Code'] %></villagecode>
-  <hhnumber><%= row['HH Number'] %></hhnumber>
-  <headofhousehold><%= row['Head of House Hold'] %></headofhousehold>
-  <ecnumber><%= row['EC Number'] %></ecnumber>
+<ecRegistration uiVersion="1" version="6" name="EC Registration" xmlns:jrm="http://dev.commcarehq.org/jr/xforms" xmlns="http://openrosa.org/formdesigner/58B0563E-868C-43DA-8816-C4F06D0DDA84">
+  <phc>bheriya</phc>
+  <scb>munjanahalli</scb>
+  <vmj>munjanahallivil</vmj>
+  <hhnumber><%= row['House Number'] %></hhnumber>
+  <ecnumber><%= row['EC Number '] %></ecnumber>
+  <headofhousehold><%= row['Head of Family'] %></headofhousehold>
   <wifes_name><%= row['Wife Name'] %></wifes_name>
-  <wifes_age><%= row["Wife's Age"] %></wifes_age>
+  <wifes_age><%= row['Wife Age'] %></wifes_age>
   <husbands_name><%= row['Husband Name'] %></husbands_name>
-  <religion><%= row['Religion'] %></religion>
-  <cast><%= row['Caste'] %></cast>
-  <economic_status><%= row['EC status'] %></economic_status>
-  <numberofpregnancies><%= row['Gravida ( number of Pregnancies)'] %></numberofpregnancies>
-  <noofabortion><%= row['Number of Abortion'] %></noofabortion>
-  <noofstillbirth><%= row['Number of Still Birth'] %></noofstillbirth>
-  <nooflivingchildrenmale><%= row['Number of Living Children'] %></nooflivingchildrenmale>
-  <ageofyoungestchild>
-    <yearormonth>year</yearormonth>
-    <ageofyoungestchildinyears><%= row['Age of youngest Child'] %></ageofyoungestchildinyears>
-  </ageofyoungestchild>
-  <currentstatus><%= row['Status of EC Woman'] %></currentstatus>
-  <prg_thayicardnumber><%= row['Thayi Card Number'] %></prg_thayicardnumber>
-  <case>
-  <case_id><%= row['Case ID'] %></case_id>
-    <date_modified><%= Time.now.strftime('%FT%T.000%z') %></date_modified>
-    <create>
-      <case_type_id>eligible_couple</case_type_id>
-      <case_name><%= row['Wife Name'] %></case_name>
-      <user_id>cba9c3db652c9f6b03dbe5559266b386</user_id>
-      <external_id><%= row['Case ID'] %></external_id>
-    </create>
-    <update>
-      <numberofpregnancies><%= row['Gravida ( number of Pregnancies)'] %></numberofpregnancies>
-      <husbands_name><%= row['Husband Name'] %></husbands_name>
-      <hhnumber><%= row['HH Number'] %></hhnumber>
-      <currentstatus><%= row['Status of EC Woman'] %></currentstatus>
-      <villagecode><%= row['Village Code'] %></villagecode>
-      <mother_name><%= row['Wife Name'] %></mother_name>
-      <wifes_age><%= row["Wife's Age"] %></wifes_age>
-    </update>
-  </case>
-  <meta>
-    <deviceID>WDFTPN0L935SUFB0853AOE8WU</deviceID>
-    <timeStart><%= Time.now.strftime('%FT%T.111%z') %></timeStart>
-    <timeEnd><%= Time.now.strftime('%FT%T.222%z') %></timeEnd>
-    <username>duck</username>
-    <userID>cba9c3db652c9f6b03dbe5559266b386</userID>
-    <instanceID><%= row['Instance ID'] %></instanceID>
-  </meta>
-</ecregistration>
+  <economic_status><%= row['BPL (Yes/ No)'] == "Yes" ? "bpl" : "apl" %></economic_status>
+  <noofpregnancies><%= row['Number of Abortion'].to_i + row['Number of Still Birth'].to_i + row['Number of Living Children'].to_i %></noofpregnancies>
+  <familyplanning_methods><%= case row['FP Method'] when "Sterilization"; "female_sterilization" when "IUD"; "iud" when "None"; "none" else "other"; end %></familyplanning_methods>
+  <fp_start_date><%= row['Acceptance Date'] %></fp_start_date>
+  <ec_village_subcenter>munjanahalli</ec_village_subcenter>
+  <ec_village>munjanahallivil</ec_village>
+  <RegistrationDate />
+  <n0:case case_id="<%= row['Case ID'] %>" user_id="c3d86928a9c501cd88f42d6031ad70c9" date_modified="2012-08-10T11:29:20.929+05:30" xmlns:n0="http://commcarehq.org/case/transaction/v2">
+    <n0:create>
+      <n0:case_name><%= row['Wife Name'] %></n0:case_name>
+      <n0:owner_id>c3d86928a9c501cd88f42d6031ad70c9</n0:owner_id>
+      <n0:case_type>EC</n0:case_type>
+    </n0:create>
+    <n0:update>
+      <n0:familyplanning_methods><%= row['FP Method'] %></n0:familyplanning_methods>
+      <n0:wifes_age><%= row['Wife Age'] %></n0:wifes_age>
+      <n0:wifes_name><%= row['Wife Name'] %></n0:wifes_name>
+      <n0:husbands_name><%= row['Husband Name'] %></n0:husbands_name>
+      <n0:ec_village>munjanahallivil</n0:ec_village>
+      <n0:fp_start_date><%= row['Acceptance Date'] %></n0:fp_start_date>
+      <n0:RegistrationDate />
+      <n0:ecnumber><%= row['EC Number '] %></n0:ecnumber>
+    </n0:update>
+  </n0:case>
+  <n1:meta xmlns:n1="http://openrosa.org/jr/xforms">
+    <n1:deviceID>359918045600160</n1:deviceID>
+    <n1:timeStart>2012-08-10T11:28:14.055+05:30</n1:timeStart>
+    <n1:timeEnd>2012-08-10T11:29:20.929+05:30</n1:timeEnd>
+    <n1:username>c</n1:username>
+    <n1:userID>c3d86928a9c501cd88f42d6031ad70c9</n1:userID>
+    <n1:instanceID><%= row['Instance ID'] %></n1:instanceID>
+    <n2:appVersion xmlns:n2="http://commcarehq.org/xforms">CommCare ODK, version "2.1"(3027). CommCare Version 2.0. Build 3027, built on: August-07-2012</n2:appVersion>
+  </n1:meta>
+</ecRegistration>

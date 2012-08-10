@@ -1,0 +1,88 @@
+<?xml version='1.0' ?>
+<ancRegistration uiVersion="1" version="6" name="ANC Registration" xmlns:jrm="http://dev.commcarehq.org/jr/xforms" xmlns="http://openrosa.org/formdesigner/5EDBB181-77CF-4012-9A75-D44E15B748F8">
+  <anc_ifa_ctr>0</anc_ifa_ctr>
+  <anc_tt_ctr>0</anc_tt_ctr>
+  <anc_hiv_ctr>0</anc_hiv_ctr>
+  <anc_vdrl_ctr>0</anc_vdrl_ctr>
+  <anc_urinesugar_ctr>0</anc_urinesugar_ctr>
+  <anc_urinealbumin_ctr>0</anc_urinealbumin_ctr>
+  <anc_hb_ctr>0</anc_hb_ctr>
+  <anc_abdominalheight_ctr>0</anc_abdominalheight_ctr>
+  <anc_pulserate_ctr>0</anc_pulserate_ctr>
+  <anc_bp_ctr>0</anc_bp_ctr>
+  <anc_hbs_ag_ctr>0</anc_hbs_ag_ctr>
+  <phc>bheriya</phc>
+  <anc_weight_ctr>0</anc_weight_ctr>
+  <general_visitnumber>0</general_visitnumber>
+  <scb>munjanahalli</scb>
+  <vmj>munjanahallivil</vmj>
+  <address><%= row['House Number'] %></address>
+  <ECnumber><%= row['EC Number'] %></ECnumber>
+  <card_no><%= row['Thayi Card Number'] %></card_no>
+  <ancm_name><%= row['Wife Name'] %></ancm_name>
+  <age><%= row['Wife Age'] %></age>
+  <ancm_husb_name><%= row['Husband Name'] %></ancm_husb_name>
+  <ancm_phone></ancm_phone>
+  <anmBheriya>Ms.HemaLatha</anmBheriya>
+  <anm_phone></anm_phone>
+  <asha_name></asha_name>
+  <asha_phone></asha_phone>
+  <lmp><%= row['LMP'] %></lmp>
+  <Show_edd>OK</Show_edd>
+  <previouspreg><%= row['Gravida'] %></previouspreg>
+  <abortions><%= row['Number of abortion(A)'] %></abortions>
+  <livebirth><%= row['Number of livebirth(L)'] %></livebirth>
+  <any_complications></any_complications>
+  <delivery_place><%= row['Place of Delivery'] %></delivery_place>
+  <jsy_beneficiary>0</jsy_beneficiary>
+  <anc_subcenter>munjanahalli</anc_subcenter>
+  <anc_village>munjanahallivil</anc_village>
+  <Medical_History></Medical_History>
+  <had_TT_last_years>no</had_TT_last_years>
+  <blood_group></blood_group>
+  <ancm_height></ancm_heigh>
+  <ancm_weight></ancm_weight>
+  <edd><%= row['EDD'] %></edd>
+  <ANC_visitnumber>1</ANC_visitnumber>
+  <isHighRisk>0</isHighRisk>
+  <n0:case case_id="<%= row['Case ID'] %>" user_id="c3d86928a9c501cd88f42d6031ad70c9" date_modified="2012-08-10T15:14:01.062+05:30" xmlns:n0="http://commcarehq.org/case/transaction/v2">
+    <n0:create>
+      <n0:case_name><%= row['Thayi Card Number'] %></n0:case_name>
+      <n0:owner_id>c3d86928a9c501cd88f42d6031ad70c9</n0:owner_id>
+      <n0:case_type>mother</n0:case_type>
+    </n0:create>
+    <n0:update>
+        <n0:edd><%= row['EDD'] %></n0:edd>
+      <n0:anc_ifa_ctr>0</n0:anc_ifa_ctr>
+      <n0:anc_pulserate_ctr>0</n0:anc_pulserate_ctr>
+      <n0:anc_urinealbumin_ctr>0</n0:anc_urinealbumin_ctr>
+      <n0:general_visitnumber>0</n0:general_visitnumber>
+      <n0:anc_abdominalheight_ctr>0</n0:anc_abdominalheight_ctr>
+      <n0:card_no><%= row['Thayi Card Number'] %></n0:card_no>
+      <n0:lmp><%= row['LMP'] %></n0:lmp>
+      <n0:ancm_name><%= row['Wife Name'] %></n0:ancm_name>
+      <n0:ancm_husb_name><%= row['Husband Name'] %></n0:ancm_husb_name>
+      <n0:anc_village>munjanahallivil</n0:anc_village>
+      <n0:ancm_phone></n0:ancm_phone>
+      <n0:ANC_visitnumber>1</n0:ANC_visitnumber>
+      <n0:anc_urinesugar_ctr>0</n0:anc_urinesugar_ctr>
+      <n0:anc_vdrl_ctr>0</n0:anc_vdrl_ctr>
+      <n0:age><%= row['Wife Age'] %></n0:age>
+      <n0:anc_bp_ctr>0</n0:anc_bp_ctr>
+      <n0:anc_tt_ctr>0</n0:anc_tt_ctr>
+      <n0:anc_hbs_ag_ctr>0</n0:anc_hbs_ag_ctr>
+      <n0:anc_hb_ctr>0</n0:anc_hb_ctr>
+      <n0:anc_weight_ctr>0</n0:anc_weight_ctr>
+      <n0:ECnumber><%= row['EC Number'] %></n0:ECnumber>
+    </n0:update>
+  </n0:case>
+  <n1:meta xmlns:n1="http://openrosa.org/jr/xforms">
+    <n1:deviceID>359918045600160</n1:deviceID>
+    <n1:timeStart>2012-08-10T15:11:30.888+05:30</n1:timeStart>
+    <n1:timeEnd>2012-08-10T15:14:01.062+05:30</n1:timeEnd>
+    <n1:username>c</n1:username>
+    <n1:userID>c3d86928a9c501cd88f42d6031ad70c9</n1:userID>
+    <n1:instanceID><%= row['Instance ID'] %></n1:instanceID>
+    <n2:appVersion xmlns:n2="http://commcarehq.org/xforms">CommCare ODK, version "2.1"(3027). CommCare Version 2.0. Build 3027, built on: August-07-2012</n2:appVersion>
+  </n1:meta>
+</ancRegistration>
