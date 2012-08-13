@@ -17,8 +17,9 @@ public class AnteNatalCareEnrollmentInformation {
     private Date lmp;
     private String ecNumber;
     private String isHighRisk;
+    private String deliveryPlace;
 
-    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String village, String subCenter, String phc, String anmPhoneNumber, String anmIdentifier, Date lmp, String ecNumber, String highRisk) {
+    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String village, String subCenter, String phc, String anmPhoneNumber, String anmIdentifier, Date lmp, String ecNumber, String highRisk, String deliveryPlace) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
@@ -30,6 +31,7 @@ public class AnteNatalCareEnrollmentInformation {
         this.lmp = lmp;
         this.ecNumber = ecNumber;
         isHighRisk = highRisk;
+        this.deliveryPlace = deliveryPlace;
     }
 
     public String caseId() {
@@ -70,6 +72,10 @@ public class AnteNatalCareEnrollmentInformation {
 
     public String phc() {
         return phc;
+    }
+
+    public String deliveryPlace() {
+        return deliveryPlace;
     }
 
     @Override

@@ -40,7 +40,7 @@ public class ANCService {
 
     public void registerANCCase(AnteNatalCareEnrollmentInformation info, SafeMap data) {
         Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
-                .withLMP(info.lmpDate()).withECNumber(info.ecNumber()).withLocation(info.village(), info.subCenter(), info.phc()).isHighRisk(info.isHighRisk());
+                .withLMP(info.lmpDate()).withECNumber(info.ecNumber()).withLocation(info.village(), info.subCenter(), info.phc()).withFacility(info.deliveryPlace()).isHighRisk(info.isHighRisk());
         allMothers.register(mother);
 
         Time preferredAlertTime = new Time(new LocalTime(14, 0));
@@ -48,7 +48,7 @@ public class ANCService {
 
         reportingService.registerANC(data);
         ancSchedulesService.enrollMother(info.caseId(), referenceDate, new Time(now()), preferredAlertTime);
-        actionService.registerPregnancy(info.caseId(), info.ecNumber(), info.thaayiCardNumber(), info.anmIdentifier(), info.village(), info.lmpDate(), info.isHighRisk());
+        actionService.registerPregnancy(info.caseId(), info.ecNumber(), info.thaayiCardNumber(), info.anmIdentifier(), info.village(), info.lmpDate(), info.isHighRisk(), info.deliveryPlace());
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {

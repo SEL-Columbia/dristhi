@@ -45,7 +45,7 @@ public class ANCServiceTest {
 
         String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", lmp.toDate(), "EC Number 1", "1");
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", lmp.toDate(), "EC Number 1", "1", "PHC");
 
         SafeMap data = new SafeMap();
         service.registerANCCase(enrollmentInfo, data);
@@ -53,8 +53,8 @@ public class ANCServiceTest {
         verify(motherReportingService).registerANC(data);
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName)
                 .withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp).withECNumber("EC Number 1")
-                .withLocation("bherya", "Sub Center", "PHC X").isHighRisk(true)));
-        verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, "ANM ID 1", "bherya", lmp, true);
+                .withLocation("bherya", "Sub Center", "PHC X").withFacility("PHC").isHighRisk(true)));
+        verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, "ANM ID 1", "bherya", lmp, true, "PHC");
     }
 
     @Test
@@ -63,7 +63,7 @@ public class ANCServiceTest {
 
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", lmp.toDate(), "EC Number 1", "0");
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", lmp.toDate(), "EC Number 1", "0", "PHC");
 
         SafeMap data = new SafeMap();
         service.registerANCCase(enrollmentInfo, data);
@@ -75,7 +75,7 @@ public class ANCServiceTest {
     public void shouldEnrollAMotherUsingCurrentDateIfLMPDateIsNotFound() {
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", null, "EC Number 1", "0");
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", null, "EC Number 1", "0", "PHC");
 
         SafeMap data = new SafeMap();
         service.registerANCCase(enrollmentInfo, data);

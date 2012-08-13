@@ -37,9 +37,9 @@ public class ActionData {
         return new ActionData("eligibleCouple", "deleteEC");
     }
 
-    public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate, boolean isHighRisk) {
+    public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate, boolean isHighRisk, String deliveryPlace) {
         return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber).with("status", "pregnant")
-                .with("referenceDate", lmpDate.toString()).with("isHighRisk", String.valueOf(isHighRisk));
+                .with("referenceDate", lmpDate.toString()).with("isHighRisk", String.valueOf(isHighRisk)).with("deliveryPlace", deliveryPlace);
     }
 
     public static ActionData updateBeneficiary(String status) {

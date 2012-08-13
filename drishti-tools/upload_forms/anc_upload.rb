@@ -20,7 +20,7 @@ CSV.foreach("examples/Munjanahalli_ANCs.csv", { :headers => true }) do |csv_row|
   row.default_value "Gravida", "0"
   row.default_value "Number of abortion(A)", "0"
   row.default_value "Number of livebirth(L)", "0"
-  row.default_value "Place of Delivery", "0"
+  row.default_value "Place of Delivery", "Unknown"
   row.default_value "EDD", Date.today.to_s
 
   row.add_field "Case ID", Guid.new.to_s

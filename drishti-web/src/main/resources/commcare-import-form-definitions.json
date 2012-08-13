@@ -35,7 +35,7 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/5EDBB181-77CF-4012-9A75-D44E15B748FA"
+                            "nameSpace": "http://openrosa.org/formdesigner/5EDBB181-77CF-4012-9A75-D44E15B748FB"
                         }
                     },
                     "mappings": {
@@ -49,7 +49,8 @@
                         "form|anm_phone": "anmPhoneNumber",
                         "form|ECnumber": "ecNumber",
                         "form|meta|username": "anmIdentifier",
-                        "form|isHighRisk": "isHighRisk"
+                        "form|isHighRisk": "isHighRisk",
+                        "form|delivery_place": "deliveryPlace"
                     },
                     "extraMappings": {
                         "form|lmp": "lmp",
