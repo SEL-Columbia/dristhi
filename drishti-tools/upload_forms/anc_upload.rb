@@ -28,7 +28,7 @@ CSV.foreach("examples/Munjanahalli_ANCs.csv", { :headers => true }) do |csv_row|
 
   registration_xml = anc_registration_erb.result(binding)
 
-  puts "Uploading ANC: #{row.field('Thayi Card Number ')} - EC: #{row.field('EC Number')} - #{row.field('Wife Name')} and #{row.field('Husband Name')}"
+  puts "Uploading ANC: #{row.field('Thayi Card Number')} - EC: #{row.field('EC Number')} - #{row.field('Wife Name')} and #{row.field('Husband Name')}"
   CommCare.new.upload registration_xml
   sleep 3
 end
