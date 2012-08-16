@@ -21,44 +21,24 @@ $(document).ready(function() {
 
     var handleSubmit = function(formName, form) {
         var mappings = $(form).children(".mapping");
-        var extraMappings = $(form).children(".extramapping");
+        var extraDataPieces = {};
+        $(form).children(".extraData").each(function() { extraDataPieces[$(this).data('key')] = createObjectFrom($(this).children(".extramapping")); });
 
         $.post('../form/submit', { formName: formName, formData: JSON.stringify(createObjectFrom(mappings)),
-                extraFormData: JSON.stringify(createObjectFrom(extraMappings)) })
+                extraFormData: JSON.stringify(extraDataPieces) })
             .success(function(responseFromServer) { formStatusDisplay(formName, "Success!"); })
             .error(function(jqXHR, textStatus) { formStatusDisplay(formName, "Failed!"); });
     };
 
     var displayForms = function(formDefinitions) {
-        $.each(formDefinitions, function(i, formDefinition) {
-            var name = formDefinition.name;
+        $("#forms").html(Handlebars.compile($("#forms_template").html())(formDefinitions));
 
-            var form = $(document.createElement('form')).attr('id', name + "Form").attr('class', 'form');
-            $.each(formDefinition.mappings, function(i, mapping) {
-                form.append($(document.createElement('label')).attr('for', name + "-" + mapping.value).text(mapping.value));
-                form.append($(document.createElement('input')).attr('type', 'text').attr('id', name + "-" + mapping.value)
-                    .attr('class', 'mapping').change(function() { clearStatusDisplay(name); }));
-            });
+        $(".mapping").change(function() { clearStatusDisplay($(this).data('name')); });
+        $(".extramapping").change(function() { clearStatusDisplay($(this).data('name')); });
 
-            if (formDefinition.extraMappings.length > 0) {
-                form.append($(document.createElement('span')).attr('class', 'extraData').text('Extra data'));
-                $.each(formDefinition.extraMappings, function(i, mapping) {
-                    form.append($(document.createElement('label')).attr('for', name + ".extra" + "-" + mapping.value).text(mapping.value));
-                    form.append($(document.createElement('input')).attr('type', 'text').attr('id', name  + ".extra" + "-" + mapping.value)
-                        .attr('class', 'extramapping').change(function() { clearStatusDisplay(name); }));
-                });
-            }
-
-            form.append($(document.createElement('input')).attr('type', 'submit').attr('id', name + 'FormSubmit').attr('value', 'Submit form!'));
-            form.submit(function() {
-                handleSubmit(name, this);
-                return false;
-            });
-
-            var title = $(document.createElement('span')).attr('class', 'title').text(name);
-            var status = $(document.createElement('span')).attr('class', 'formStatus').attr('id', name + 'status').text('.').css('opacity', '0');
-            var div = $(document.createElement('div')).attr('id', name).attr('class', 'formDiv').append(title).append(form).append(status);
-            $('#forms').append(div);
+        $(".form").submit(function() {
+            handleSubmit($(this).data('name'), this);
+            return false;
         });
     };
 

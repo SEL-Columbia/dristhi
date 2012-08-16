@@ -4,16 +4,51 @@
     <title>Fill your fake forms here!</title>
     <link rel="stylesheet" href="../stylesheets/fakeforms.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="../js/handlebars-1.0.0.beta.6.js"></script>
+
+    <script id="forms_template" type="text/x-handlebars-template">
+        {{#each this}}
+        <div id="{{name}}" class="formDiv">
+            <span class="title">{{name}}</span>
+
+            <form id="{{name}}Form" class="form" data-name="{{name}}">
+                {{#each mappings}}
+                <label for="{{../name}}-{{value}}">{{value}}</label>
+                <input type="text" id="{{../name}}-{{value}}" class="mapping" data-name="{{../name}}">
+                {{/each}}
+
+                {{#if extraMappings}}
+                    <span class="extraDataTitle">Extra data</span>
+                    {{#each extraMappings}}
+                        <div class="extraData" data-key="{{key}}">
+                            <span class="extraDataKey">{{key}}</span>
+
+                            {{#each value}}
+                            <label for="{{../../../name}}.extra-{{value}}">{{value}}</label>
+                            <input type="text" id="{{../../../name}}.extra-{{value}}" class="extramapping" data-name="{{../../../name}}">
+                            {{/each}}
+                        </div>
+                    {{/each}}
+                {{/if}}
+
+                <input type="submit" class="submit-button" id="{{name}}FormSubmit" value="Submit form!">
+            </form>
+            <span class="formStatus" id="{{name}}status" style="opacity: 0; ">.</span>
+        </div>
+        {{/each}}
+    </script>
+
     <script src="../js/fakeforms.js"></script>
 </head>
 <body>
-    <div id="information">
-        Information:<br>
-        Format of date fields: yyyy-mm-dd
-    </div>
+<div id="information">
+    Information:<br>
+    Format of date fields: yyyy-mm-dd
+</div>
 
-    <div id="forms"></div>
+<div id="forms"></div>
 
-    <div id="status"></div>
+<div id="status"></div>
+
 </body>
 </html>

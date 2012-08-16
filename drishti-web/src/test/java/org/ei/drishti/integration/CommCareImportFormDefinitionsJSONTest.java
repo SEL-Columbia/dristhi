@@ -93,7 +93,7 @@ public class CommCareImportFormDefinitionsJSONTest {
         try {
             controllerClass.getDeclaredMethod(formName, parameterTypeOfTheMethod, Map.class);
         } catch (NoSuchMethodException e) {
-            fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2}, Map<String, String> extraData). If it is " +
+            fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2}, Map<String, Map<String, String>> extraData). If it is " +
                     "not present, the dispatcher will not be able to do anything for form submissions of this form: {3}.",
                     controllerClass.getSimpleName(), formName, parameterTypeOfTheMethod.getSimpleName(), formName));
         }

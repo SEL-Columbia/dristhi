@@ -24,10 +24,12 @@
                         "form|case|update|familyplanning_methods": "currentMethod"
                     },
                     "extraMappings": {
-                        "form|husbands_name": "husbandName",
-                        "form|headofhousehold": "headOfHousehold",
-                        "form|thisDoesNotExist": "thisShouldNotExist",
-                        "form|show_regdate": "someDate"
+                        "reporting": {
+                            "form|husbands_name": "husbandName",
+                            "form|headofhousehold": "headOfHousehold",
+                            "form|thisDoesNotExist": "thisShouldNotExist",
+                            "form|show_regdate": "someDate"
+                        }
                     }
                 },
                 {
@@ -53,12 +55,14 @@
                         "form|delivery_place": "deliveryPlace"
                     },
                     "extraMappings": {
-                        "form|lmp": "lmp",
-                        "form|phc": "phc",
-                        "form|card_no": "thaayiCardNumber",
-                        "form|anc_subcenter": "subCenter",
-                        "form|anc_village": "village",
-                        "form|meta|username": "anmIdentifier"
+                        "reporting": {
+                            "form|lmp": "lmp",
+                            "form|phc": "phc",
+                            "form|card_no": "thaayiCardNumber",
+                            "form|anc_subcenter": "subCenter",
+                            "form|anc_village": "village",
+                            "form|meta|username": "anmIdentifier"
+                        }
                     }
                 },
                 {
@@ -129,8 +133,10 @@
                         "form|immunization_multiselect1": "immunizationsProvided"
                     },
                     "extraMappings": {
-                        "form|meta|username": "anmIdentifier",
-                        "form|case|update|immunization_servicedate": "immunizationsProvidedDate"
+                        "reporting": {
+                            "form|meta|username": "anmIdentifier",
+                            "form|case|update|immunization_servicedate": "immunizationsProvidedDate"
+                        }
                     }
                 },
                 {
@@ -159,8 +165,10 @@
                         "form|close_reason": "closeReason"
                     },
                     "extraMappings": {
-                        "form|case|@case_id": "caseId",
-                        "form|close_reason": "closeReason"
+                        "reporting": {
+                            "form|case|@case_id": "caseId",
+                            "form|close_reason": "closeReason"
+                        }
                     }
                 },
                 {

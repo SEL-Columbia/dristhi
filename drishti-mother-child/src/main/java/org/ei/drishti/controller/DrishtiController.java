@@ -32,10 +32,10 @@ public class DrishtiController {
         this.mctsService = drishtiMctsService;
     }
 
-    public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, Map<String, String> extraData) {
+    public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, Map<String, Map<String, String>> extraData) {
         logger.info("Mother registration: " + enrollmentInformation);
 
-        ancService.registerANCCase(enrollmentInformation, new SafeMap(extraData));
+        ancService.registerANCCase(enrollmentInformation, new SafeMap(extraData.get("reporting")));
         mctsService.registerANCCase(enrollmentInformation);
     }
 
@@ -53,10 +53,10 @@ public class DrishtiController {
         mctsService.updateANCOutcome(outcomeInformation);
     }
 
-    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, String> extraData) {
+    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
         logger.info("ANC close: " + closeInformation);
 
-        ancService.closeANCCase(closeInformation, new SafeMap(extraData));
+        ancService.closeANCCase(closeInformation, new SafeMap(extraData.get("reporting")));
         mctsService.closeANCCase(closeInformation);
     }
 
@@ -67,10 +67,10 @@ public class DrishtiController {
         mctsService.registerChild(childInformation);
     }
 
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, String> extraData) {
+    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {
         logger.info("Child immunization updation: " + updationRequest);
 
-        pncService.updateChildImmunization(updationRequest, new SafeMap(extraData));
+        pncService.updateChildImmunization(updationRequest, new SafeMap(extraData.get("reporting")));
         mctsService.updateChildImmunization(updationRequest);
     }
 
@@ -81,7 +81,7 @@ public class DrishtiController {
         mctsService.closeChildCase(childCloseRequest);
     }
 
-    public void registerEligibleCouple(EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest, Map<String, String> extraData) {
+    public void registerEligibleCouple(EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest, Map<String, Map<String, String>> extraData) {
         logger.info("Eligible couple registration: " + eligibleCoupleRegistrationRequest + ". Extra data: " + extraData);
 
         ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest);

@@ -33,13 +33,27 @@ input {
     margin-bottom: 15px;
 }
 
-span.extraData {
+span.extraDataTitle {
     float: left;
     clear: left;
     font-size: 16pt;
     font-style: italic;
     margin-bottom: 15px;
     margin-top: 20px;
+}
+
+span.extraDataKey {
+    float: left;
+    clear: left;
+    font-size: 14pt;
+    font-style: italic;
+    color: #660000;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+div.extraData {
+    margin-left: 30px;
 }
 
 input[type="text"] {

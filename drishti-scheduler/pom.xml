@@ -24,7 +24,7 @@
             <version>${motech.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.motechproject</groupId>
+            <groupId>${motech.contrib.group}</groupId>
             <artifactId>commcare-listener</artifactId>
             <version>${motech.contrib.version}</version>
         </dependency>
