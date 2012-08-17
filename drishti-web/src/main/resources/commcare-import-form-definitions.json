@@ -166,7 +166,7 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/282B98E9-3C12-42C5-894A-B0C5C77604E0"
+                            "nameSpace": "http://openrosa.org/formdesigner/9a04dc61053bc113ff0f0614ae6cf96638f0709"
                         }
                     },
                     "mappings": {
