@@ -2,6 +2,7 @@ package org.ei.drishti.domain;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.LocalDate;
@@ -124,7 +125,7 @@ public class Mother extends MotechBaseDataObject {
 
     @Override
     public String toString() {
-        return MessageFormat.format("Mother: {0} ({1}) [Case ID: {2}, ANM: {3}]", name, thaayiCardNumber, caseId, anmPhoneNumber);
+        return ToStringBuilder.reflectionToString(this);
     }
 
     @Override

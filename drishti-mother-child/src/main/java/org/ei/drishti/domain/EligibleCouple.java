@@ -67,6 +67,22 @@ public class EligibleCouple extends MotechBaseDataObject {
         return caseId;
     }
 
+    public String ecNumber() {
+        return ecNumber;
+    }
+
+    public String village() {
+        return village;
+    }
+
+    public String subCenter() {
+        return subCenter;
+    }
+
+    public String phc() {
+        return phc;
+    }
+
     private String getCaseId() {
         return caseId;
     }

@@ -4,7 +4,9 @@ import org.ei.drishti.contract.AnteNatalCareCloseInformation;
 import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
 import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
 import org.ei.drishti.service.reporting.MotherReportingService;
@@ -26,21 +28,24 @@ public class ANCService {
     private static Logger logger = LoggerFactory.getLogger(ANCService.class.toString());
 
     private final AllMothers allMothers;
+    private AllEligibleCouples eligibleCouples;
     private ANCSchedulesService ancSchedulesService;
     private ActionService actionService;
     private MotherReportingService reportingService;
 
     @Autowired
-    public ANCService(AllMothers allMothers, ANCSchedulesService ancSchedulesService, ActionService actionService, MotherReportingService reportingService) {
+    public ANCService(AllMothers allMothers, AllEligibleCouples eligibleCouples, ANCSchedulesService ancSchedulesService, ActionService actionService, MotherReportingService reportingService) {
         this.allMothers = allMothers;
+        this.eligibleCouples = eligibleCouples;
         this.ancSchedulesService = ancSchedulesService;
         this.actionService = actionService;
         this.reportingService = reportingService;
     }
 
     public void registerANCCase(AnteNatalCareEnrollmentInformation info, SafeMap data) {
-        Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), info.name()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
-                .withLMP(info.lmpDate()).withECNumber(info.ecNumber()).withLocation(info.village(), info.subCenter(), info.phc()).withFacility(info.deliveryPlace()).isHighRisk(info.isHighRisk());
+        EligibleCouple couple = eligibleCouples.findByCaseId(info.ecCaseId());
+        Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), couple.wife()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
+                .withLMP(info.lmpDate()).withECNumber(couple.ecNumber()).withLocation(couple.village(), couple.subCenter(), couple.phc()).withFacility(info.deliveryPlace()).isHighRisk(info.isHighRisk());
         allMothers.register(mother);
 
         Time preferredAlertTime = new Time(new LocalTime(14, 0));
@@ -48,7 +53,7 @@ public class ANCService {
 
         reportingService.registerANC(data);
         ancSchedulesService.enrollMother(info.caseId(), referenceDate, new Time(now()), preferredAlertTime);
-        actionService.registerPregnancy(info.caseId(), info.ecNumber(), info.thaayiCardNumber(), info.anmIdentifier(), info.village(), info.lmpDate(), info.isHighRisk(), info.deliveryPlace());
+        actionService.registerPregnancy(info.caseId(), couple.ecNumber(), info.thaayiCardNumber(), info.anmIdentifier(), couple.village(), info.lmpDate(), info.isHighRisk(), info.deliveryPlace());
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {

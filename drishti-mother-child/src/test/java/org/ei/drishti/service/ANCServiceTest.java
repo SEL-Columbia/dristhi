@@ -3,7 +3,9 @@ package org.ei.drishti.service;
 import org.ei.drishti.contract.AnteNatalCareCloseInformation;
 import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
 import org.ei.drishti.contract.AnteNatalCareInformation;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
 import org.ei.drishti.service.reporting.MotherReportingService;
@@ -27,6 +29,8 @@ public class ANCServiceTest {
     @Mock
     private AllMothers mothers;
     @Mock
+    private AllEligibleCouples eligibleCouples;
+    @Mock
     private ANCSchedulesService ancSchedulesService;
     @Mock
     protected MotherReportingService motherReportingService;
@@ -36,7 +40,7 @@ public class ANCServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ANCService(mothers, ancSchedulesService, actionService, motherReportingService);
+        service = new ANCService(mothers, eligibleCouples, ancSchedulesService, actionService, motherReportingService);
     }
 
     @Test
@@ -45,7 +49,8 @@ public class ANCServiceTest {
 
         String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", lmp.toDate(), "EC Number 1", "1", "PHC");
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", lmp.toDate(), "1", "PHC");
+        when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap data = new SafeMap();
         service.registerANCCase(enrollmentInfo, data);
@@ -63,7 +68,8 @@ public class ANCServiceTest {
 
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", lmp.toDate(), "EC Number 1", "0", "PHC");
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", lmp.toDate(), "0", "PHC");
+        when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap data = new SafeMap();
         service.registerANCCase(enrollmentInfo, data);
@@ -75,7 +81,8 @@ public class ANCServiceTest {
     public void shouldEnrollAMotherUsingCurrentDateIfLMPDateIsNotFound() {
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", thaayiCardNumber, motherName, "bherya", "Sub Center", "PHC X", "12345", "ANM ID 1", null, "EC Number 1", "0", "PHC");
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", null, "0", "PHC");
+        when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap data = new SafeMap();
         service.registerANCCase(enrollmentInfo, data);

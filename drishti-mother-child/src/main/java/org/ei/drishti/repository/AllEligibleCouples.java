@@ -28,7 +28,7 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
     }
 
     @GenerateView
-    private EligibleCouple findByCaseId(String caseId) {
+    public EligibleCouple findByCaseId(String caseId) {
         List<EligibleCouple> couples = queryView("by_caseId", caseId);
         if (couples == null || couples.isEmpty()) {
             return null;

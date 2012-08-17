@@ -7,30 +7,22 @@ import java.util.Date;
 
 public class AnteNatalCareEnrollmentInformation {
     private String caseId;
+    private String ecCaseId;
     private String thaayiCardNumber;
-    private String name;
-    private String village;
-    private String subCenter;
-    private String phc;
     private String anmPhoneNumber;
     private String anmIdentifier;
     private Date lmp;
-    private String ecNumber;
     private String isHighRisk;
     private String deliveryPlace;
 
-    public AnteNatalCareEnrollmentInformation(String caseId, String thaayiCardNumber, String name, String village, String subCenter, String phc, String anmPhoneNumber, String anmIdentifier, Date lmp, String ecNumber, String highRisk, String deliveryPlace) {
+    public AnteNatalCareEnrollmentInformation(String caseId, String ecCaseId, String thaayiCardNumber, String anmPhoneNumber, String anmIdentifier, Date lmp, String isHighRisk, String deliveryPlace) {
         this.caseId = caseId;
+        this.ecCaseId = ecCaseId;
         this.thaayiCardNumber = thaayiCardNumber;
-        this.name = name;
-        this.village = village;
-        this.subCenter = subCenter;
-        this.phc = phc;
+        this.lmp = lmp;
         this.anmPhoneNumber = anmPhoneNumber;
         this.anmIdentifier = anmIdentifier;
-        this.lmp = lmp;
-        this.ecNumber = ecNumber;
-        isHighRisk = highRisk;
+        this.isHighRisk = isHighRisk;
         this.deliveryPlace = deliveryPlace;
     }
 
@@ -38,12 +30,12 @@ public class AnteNatalCareEnrollmentInformation {
         return caseId;
     }
 
-    public String thaayiCardNumber() {
-        return thaayiCardNumber;
+    public String ecCaseId() {
+        return ecCaseId;
     }
 
-    public String name() {
-        return name;
+    public String thaayiCardNumber() {
+        return thaayiCardNumber;
     }
 
     public String anmIdentifier() {
@@ -56,22 +48,6 @@ public class AnteNatalCareEnrollmentInformation {
 
     public LocalDate lmpDate() {
         return lmp == null ? null : LocalDate.fromDateFields(lmp);
-    }
-
-    public String ecNumber() {
-        return ecNumber;
-    }
-
-    public String village() {
-        return village;
-    }
-
-    public String subCenter() {
-        return subCenter;
-    }
-
-    public String phc() {
-        return phc;
     }
 
     public String deliveryPlace() {
