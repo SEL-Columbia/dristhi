@@ -9,7 +9,7 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/9f3c0ee4f16950464aabd1794a625329937e3913"
+                            "nameSpace": "http://openrosa.org/formdesigner/9f3c0ee4f16950464aabd1794a625329937e3914"
                         }
                     },
                     "mappings": {
@@ -35,7 +35,7 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/eabae7c1c11384a64a3cf39e26735b416736c6c6"
+                            "nameSpace": "http://openrosa.org/formdesigner/eabae7c1c11384a64a3cf39e26735b416736c6c7"
                         }
                     },
                     "mappings": {
@@ -80,12 +80,17 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/NOTDONE"
+                            "nameSpace": "http://openrosa.org/formdesigner/2369b9061b1bb85e7a35f14093b726e692f9850c"
                         }
                     },
                     "mappings": {
                         "form|case|@case_id": "caseId",
-                        "form|dateofdelivery": "dateOfDelivery"
+                        "form|delivery_registration_section|date_outcomes": "dateOfDelivery",
+                        "form|delivery_registration_section|pregnancy_outcomes": "pregnancyOutcome",
+                        "form|delivery_registration_section|live_birth_group|has_delivery_complications" : "hasDeliveryComplications",
+                        "form|delivery_registration_section|live_birth_group|delivery_complications": "deliveryComplications",
+                        "form|is_HighRisk":"isHighRisk",
+                        "form|highRiskReason": "highRiskReason"
                     }
                 },
                 {
@@ -166,7 +171,7 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/9a04dc61053bc113ff0f0614ae6cf96638f0709"
+                            "nameSpace": "http://openrosa.org/formdesigner/9a04dc61053bc113ff0f0614ae6cf96638f070a"
                         }
                     },
                     "mappings": {
