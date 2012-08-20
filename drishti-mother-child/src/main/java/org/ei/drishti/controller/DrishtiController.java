@@ -84,7 +84,7 @@ public class DrishtiController {
     public void registerEligibleCouple(EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest, Map<String, Map<String, String>> extraData) {
         logger.info("Eligible couple registration: " + eligibleCoupleRegistrationRequest + ". Extra data: " + extraData);
 
-        ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest);
+        ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest, extraData);
     }
 
     public void closeEligibleCouple(EligibleCoupleCloseRequest eligibleCoupleCloseRequest) {

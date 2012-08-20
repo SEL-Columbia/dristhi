@@ -27,6 +27,11 @@
                         "reporting": {
                             "form|husband_name": "husbandName",
                             "form|headofhousehold": "headOfHousehold"
+                        },
+                        "details": {
+                            "form|headofhousehold": "headOfHousehold",
+                            "form|religion": "religion",
+                            "form|num_pregnancies": "pregnancies"
                         }
                     }
                 },

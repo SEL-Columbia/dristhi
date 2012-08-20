@@ -25,6 +25,8 @@ public class Action extends MotechBaseDataObject {
     private String actionType;
     @JsonProperty
     private long timeStamp;
+    @JsonProperty
+    private Map<String, String> details;
 
     private Action() {
     }
@@ -36,6 +38,7 @@ public class Action extends MotechBaseDataObject {
         this.actionTarget = actionData.target();
         this.actionType = actionData.type();
         this.timeStamp = DateUtil.now().getMillis();
+        this.details = actionData.details();
     }
 
     public String anmIdentifier() {
@@ -60,6 +63,10 @@ public class Action extends MotechBaseDataObject {
 
     public String target() {
         return actionTarget;
+    }
+
+    public Map<String, String> details() {
+        return details;
     }
 
     @Override

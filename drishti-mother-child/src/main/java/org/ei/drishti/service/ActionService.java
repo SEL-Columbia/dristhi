@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.text.MessageFormat.format;
 
@@ -72,8 +73,8 @@ public class ActionService {
         allActions.addWithDelete(new Action(caseID, anmIdentifier, ActionData.deleteAllAlerts()), "alert");
     }
 
-    public void registerEligibleCouple(String caseId, String ecNumber, String wife, String husband, String anmIdentifier, String currentMethod, String village, String subCenter, String phc) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.createEligibleCouple(wife, husband, ecNumber, currentMethod, village, subCenter, phc)));
+    public void registerEligibleCouple(String caseId, String ecNumber, String wife, String husband, String anmIdentifier, String currentMethod, String village, String subCenter, String phc, Map<String, String> details) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.createEligibleCouple(wife, husband, ecNumber, currentMethod, village, subCenter, phc, details)));
     }
 
     public void closeEligibleCouple(String caseId, String anmIdentifier) {

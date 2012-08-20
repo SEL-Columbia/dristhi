@@ -10,9 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ActionData {
-    private final HashMap<String, String> data;
+    private Map<String, String> data;
     private String target;
     private String type;
+    private Map<String, String> details;
 
     public static ActionData createAlert(String beneficiaryName, String village, String subCenter, String phc, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
         return new ActionData("alert", "createAlert").with("beneficiaryName", beneficiaryName).with("village", village)
@@ -28,9 +29,9 @@ public class ActionData {
         return new ActionData("alert", "deleteAllAlerts");
     }
 
-    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String currentMethod, String village, String subCenter, String phc) {
+    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String currentMethod, String village, String subCenter, String phc, Map<String, String> details) {
         return new ActionData("eligibleCouple", "createEC").with("wife", wife).with("husband", husband)
-                .with("ecNumber", ecNumber).with("currentMethod", currentMethod).with("village", village).with("subcenter", subCenter).with("phc", phc);
+                .with("ecNumber", ecNumber).with("currentMethod", currentMethod).with("village", village).with("subcenter", subCenter).with("phc", phc).details(details);
     }
 
     public static ActionData deleteEligibleCouple() {
@@ -50,9 +51,10 @@ public class ActionData {
         return new ActionData("child", "createChildBeneficiary").with("motherCaseId", motherCaseId).with("referenceDate", dateOfBirth.toString()).with("gender", gender);
     }
 
-    public static ActionData from(String actionType, String actionTarget, Map<String, String> data) {
+    public static ActionData from(String actionType, String actionTarget, Map<String, String> data, Map<String, String> details) {
         ActionData actionData = new ActionData(actionTarget, actionType);
         actionData.data.putAll(data);
+        actionData.details.putAll(details);
         return actionData;
     }
 
@@ -60,10 +62,16 @@ public class ActionData {
         this.target = target;
         this.type = type;
         data = new HashMap<String, String>();
+        details = new HashMap<String, String>();
     }
 
     private ActionData with(String key, String value) {
         data.put(key, value);
+        return this;
+    }
+
+    private ActionData details(Map<String, String> details) {
+        this.details.putAll(details);
         return this;
     }
 
@@ -77,6 +85,10 @@ public class ActionData {
 
     public String type() {
         return type;
+    }
+
+    public Map<String, String> details() {
+        return details;
     }
 
     @Override

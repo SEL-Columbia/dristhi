@@ -126,7 +126,7 @@ public class DrishtiControllerTest {
 
         controller.registerEligibleCouple(eligibleCoupleRegistrationRequest, new HashMap<String, Map<String, String>>());
 
-        verify(ecService).registerEligibleCouple(eligibleCoupleRegistrationRequest);
+        verify(ecService).registerEligibleCouple(eligibleCoupleRegistrationRequest, new HashMap<String, Map<String, String>>());
     }
 
     @Test

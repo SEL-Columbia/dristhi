@@ -18,13 +18,16 @@ public class Action {
     private String actionType;
     @JsonProperty
     private String timeStamp;
+    @JsonProperty
+    private Map<String, String> details;
 
-    public Action(String caseID, String actionTarget, String actionType, Map<String, String> data, String timeStamp) {
+    public Action(String caseID, String actionTarget, String actionType, Map<String, String> data, String timeStamp, Map<String, String> details) {
         this.caseID = caseID;
         this.data = data;
         this.timeStamp = timeStamp;
         this.actionTarget = actionTarget;
         this.actionType = actionType;
+        this.details = details;
     }
 
     public Action() {
@@ -52,6 +55,10 @@ public class Action {
 
     public Map<String, String> data() {
         return data;
+    }
+
+    public Map<String, String> details() {
+        return details;
     }
 
     @Override

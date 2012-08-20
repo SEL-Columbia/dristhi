@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.motechproject.util.DateUtil;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -105,9 +106,9 @@ public class ActionServiceTest {
 
     @Test
     public void shouldAddCreateActionForEligibleCoupleRegistration() throws Exception {
-        service.registerEligibleCouple("Case X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "IUD", "Village X", "SubCenter X", "PHC X");
+        service.registerEligibleCouple("Case X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "IUD", "Village X", "SubCenter X", "PHC X", new HashMap<String, String>());
 
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createEligibleCouple("Wife 1", "Husband 1", "EC Number 1", "IUD", "Village X", "SubCenter X", "PHC X")));
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createEligibleCouple("Wife 1", "Husband 1", "EC Number 1", "IUD", "Village X", "SubCenter X", "PHC X", new HashMap<String, String>())));
     }
 
     @Test

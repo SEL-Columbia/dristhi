@@ -7,6 +7,9 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @TypeDiscriminator("doc.type === 'EligibleCouple'")
 public class EligibleCouple extends MotechBaseDataObject {
     @JsonProperty
@@ -27,6 +30,8 @@ public class EligibleCouple extends MotechBaseDataObject {
     private String phc;
     @JsonProperty
     private String currentMethod;
+    @JsonProperty
+    private Map<String, String> details;
 
     public EligibleCouple() {
     }
@@ -56,6 +61,11 @@ public class EligibleCouple extends MotechBaseDataObject {
         this.village = village;
         this.subCenter = subCenter;
         this.phc = phc;
+        return this;
+    }
+
+    public EligibleCouple withDetails(Map<String, String> details) {
+        this.details = new HashMap<>(details);
         return this;
     }
 

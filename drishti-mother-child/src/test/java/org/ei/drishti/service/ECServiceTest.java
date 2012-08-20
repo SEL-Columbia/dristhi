@@ -8,6 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -27,11 +30,15 @@ public class ECServiceTest {
 
     @Test
     public void shouldRegisterEligibleCouple() throws Exception {
-        ecService.registerEligibleCouple(new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "IUD"));
+        HashMap<String, Map<String, String>> extraData = new HashMap<>();
+        HashMap<String, String> details = new HashMap<>();
+        extraData.put("details", details);
+        ecService.registerEligibleCouple(new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "IUD"), extraData);
 
-        verify(allEligibleCouples).register(new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1")
-                .withANMIdentifier("ANM X").withFamilyPlanning("IUD").withLocation("Village X", "SubCenter X", "PHC X"));
-        verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "IUD", "Village X", "SubCenter X", "PHC X");
+        EligibleCouple couple = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1")
+                .withANMIdentifier("ANM X").withFamilyPlanning("IUD").withLocation("Village X", "SubCenter X", "PHC X").withDetails(details);
+        verify(allEligibleCouples).register(couple);
+        verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "IUD", "Village X", "SubCenter X", "PHC X", details);
     }
 
     @Test
