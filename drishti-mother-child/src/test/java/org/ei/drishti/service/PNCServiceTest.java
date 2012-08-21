@@ -47,9 +47,9 @@ public class PNCServiceTest extends BaseUnitTest {
 
         pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", "", "male"));
 
-        verify(actionService).alertForChild("Case X", "OPV 0", "due", currentTime.plusDays(2));
-        verify(actionService).alertForChild("Case X", "BCG", "due", currentTime.plusDays(2));
-        verify(actionService).alertForChild("Case X", "HEP B0", "due", currentTime.plusDays(2));
+        verify(actionService).alertForBeneficiary("Case X", "child", "OPV 0", "normal", currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
+        verify(actionService).alertForBeneficiary("Case X", "child", "BCG", "normal", currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
+        verify(actionService).alertForBeneficiary("Case X", "child", "HEP B0", "normal", currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
     }
 
     @Test
@@ -154,7 +154,7 @@ public class PNCServiceTest extends BaseUnitTest {
         pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations, "female"));
 
         for (String expectedAlert : expectedAlertsRaised) {
-            verify(actionService).alertForChild("Case X", expectedAlert, "due", currentTime.plusDays(2));
+            verify(actionService).alertForBeneficiary("Case X", "child", expectedAlert, "normal", currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
         }
         verify(actionService, times(1)).registerChildBirth(any(String.class), any(String.class), any(String.class), any(LocalDate.class), any(String.class));
         verifyNoMoreInteractions(actionService);

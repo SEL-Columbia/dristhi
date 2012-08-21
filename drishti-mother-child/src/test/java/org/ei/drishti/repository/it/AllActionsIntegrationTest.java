@@ -92,10 +92,10 @@ public class AllActionsIntegrationTest {
     @Test
     public void shouldRemoveAllExistingAlertsForTheCaseFromRepositoryBeforeInsertingADeleteAllAlert() {
         Action firstAlertAction = new Action("Case X", "ANM 1", alert());
-        Action secondAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 2", "late", DateTime.now()));
-        Action thirdAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 3", "due", DateTime.now()));
+        Action secondAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("mother", "ANC 2", "urgent", DateTime.now(), DateTime.now().plusDays(3)));
+        Action thirdAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert("mother", "ANC 3", "normal", DateTime.now(), DateTime.now().plusDays(3)));
         Action fourthNonAlertActionForSameMother = new Action("Case X", "ANM 1", ActionData.createBeneficiary("EC Case 1", "Thaayi 1", DateUtil.today(), true, "PHC"));
-        Action actionOfSameANMForAnotherMother = new Action("Case ABC", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 3", "due", DateTime.now()));
+        Action actionOfSameANMForAnotherMother = new Action("Case ABC", "ANM 1", ActionData.createAlert("mother", "ANC 3", "normal", DateTime.now(), DateTime.now().plusDays(3)));
         Action actionOfAnotherANM = new Action("Case Y", "ANM 2", alert());
         allActions.add(firstAlertAction);
         allActions.add(secondAlertAction);
@@ -112,6 +112,6 @@ public class AllActionsIntegrationTest {
     }
 
     private ActionData alert() {
-        return ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 1", "due", DateTime.now());
+        return ActionData.createAlert("mother", "ANC 1", "normal", DateTime.now(), DateTime.now().plusDays(3));
     }
 }

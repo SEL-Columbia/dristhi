@@ -8,6 +8,8 @@ import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.util.SafeMap;
 import org.ei.drishti.service.reporting.ChildReportingService;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +68,9 @@ public class PNCService {
             return;
         }
 
-        DateTime dueDate = childRegistrationRequest.dateOfBirth().plusDays(2).toDateTime(DateUtil.now().toLocalTime());
-        actionService.alertForChild(childRegistrationRequest.caseId(), visitCodeIfNotProvided, "due", dueDate);
+        LocalDate dueDateLocal = childRegistrationRequest.dateOfBirth().plusDays(2);
+        LocalTime currentTime = DateUtil.now().toLocalTime();
+        DateTime dueDate = dueDateLocal.toDateTime(currentTime);
+        actionService.alertForBeneficiary(childRegistrationRequest.caseId(), "child", visitCodeIfNotProvided, "normal", dueDate, dueDateLocal.plusWeeks(1).toDateTime(currentTime));
     }
 }

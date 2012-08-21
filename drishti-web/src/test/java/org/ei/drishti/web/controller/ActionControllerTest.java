@@ -27,7 +27,7 @@ public class ActionControllerTest {
 
     @Test
     public void shouldGiveAlertActionForANMSinceTimeStamp() throws Exception {
-        org.ei.drishti.domain.Action alertAction = new org.ei.drishti.domain.Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 1", "due", DateTime.now()));
+        org.ei.drishti.domain.Action alertAction = new org.ei.drishti.domain.Action("Case X", "ANM 1", ActionData.createAlert("mother", "ANC 1", "normal", DateTime.now(), DateTime.now().plusDays(3)));
         when(actionService.getNewAlertsForANM("ANM 1", 0L)).thenReturn(Arrays.asList(alertAction));
 
         Action expectedAlertActionItem = ActionConvertor.from(alertAction);

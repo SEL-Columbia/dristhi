@@ -15,10 +15,10 @@ public class ActionData {
     private String type;
     private Map<String, String> details;
 
-    public static ActionData createAlert(String beneficiaryName, String village, String subCenter, String phc, String thaayiCardNumber, String visitCode, String latenessStatus, DateTime dueDate) {
-        return new ActionData("alert", "createAlert").with("beneficiaryName", beneficiaryName).with("village", village)
-                .with("subCenter", subCenter).with("phc", phc).with("thaayiCardNumber", thaayiCardNumber)
-                .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("dueDate", dueDate.toLocalDate().toString());
+    public static ActionData createAlert(String beneficiaryType, String visitCode, String latenessStatus, DateTime startDate, DateTime expiryDate) {
+        return new ActionData("alert", "createAlert").with("beneficiaryType", beneficiaryType)
+                .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("startDate", startDate.toLocalDate().toString())
+                .with("expiryDate", expiryDate.toLocalDate().toString());
     }
 
     public static ActionData deleteAlert(String visitCode) {

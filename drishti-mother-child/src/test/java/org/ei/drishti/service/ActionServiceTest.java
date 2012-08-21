@@ -43,22 +43,24 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID M", "ANM phone no"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
-        service.alertForBeneficiary("Case X", "mother", "ANC 1", "due", dueDate, null);
+        DateTime expiryDate = dueDate.plusWeeks(2);
+        service.alertForBeneficiary("Case X", "mother", "ANC 1", "normal", dueDate, expiryDate);
 
-        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 1", "due", dueDate)));
+        verify(allActions).add(new Action("Case X", "ANM ID M", ActionData.createAlert("mother", "ANC 1", "normal", dueDate, expiryDate)));
     }
 
     @Test
     public void shouldSaveAlertActionForChild() throws Exception {
-        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female").withAnm("DEMO ANM").withLocation("bherya", "Sub Center", "PHC X"));
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "Thaayi 1", "Kid", Arrays.<String>asList(), "female").withAnm("ANM ID C"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
-        service.alertForChild("Case X", "OPV 1", "due", dueDate);
+        DateTime expiryDate = dueDate.plusWeeks(2);
+        service.alertForBeneficiary("Case X", "child", "OPV", "normal", dueDate, expiryDate);
 
-        verify(allActions).add(new Action("Case X", "DEMO ANM", ActionData.createAlert("Child 1", "bherya", "Sub Center", "PHC X", "TC 1", "OPV 1", "due", dueDate)));
+        verify(allActions).add(new Action("Case X", "ANM ID C", ActionData.createAlert("child", "OPV", "normal", dueDate, expiryDate)));
     }
 
     @Test
@@ -95,7 +97,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
-        List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 1", "due", DateTime.now())));
+        List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert("mother", "ANC 1", "normal", DateTime.now(), DateTime.now().plusDays(3))));
         when(allActions.findByANMIDAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
 
         List<Action> alerts = service.getNewAlertsForANM("ANM 1", 1010101);

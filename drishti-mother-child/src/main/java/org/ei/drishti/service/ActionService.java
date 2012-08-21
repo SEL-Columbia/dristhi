@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.domain.Action;
-import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.ActionData;
@@ -42,15 +41,16 @@ public class ActionService {
     }
 
     public void alertForBeneficiary(String caseID, String beneficiaryType, String visitCode, String latenessStatus, DateTime startDate, DateTime expiryDate) {
-        Mother mother = allMothers.findByCaseId(caseID);
+        // TODO: Get rid of this horrible if-else after Motech-Platform fixes the bug related to metadata in motech-schedule-tracking.
+        String anmIdentifier;
+        if (beneficiaryType.equals("mother")) {
+            anmIdentifier = allMothers.findByCaseId(caseID).anmIdentifier();
+        }
+        else {
+            anmIdentifier = allChildren.findByCaseId(caseID).anmIdentifier();
+        }
 
-        allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.createAlert(mother.name(), mother.village(), mother.subCenter(), mother.phc(), mother.thaayiCardNo(), visitCode, latenessStatus, startDate)));
-    }
-
-    public void alertForChild(String caseId, String visitCode, String latenessStatus, DateTime dueDate) {
-        Child child = allChildren.findByCaseId(caseId);
-
-        allActions.add(new Action(caseId, child.anmIdentifier(), ActionData.createAlert(child.name(), child.village(), child.subCenter(), child.phc(), child.thaayiCardNumber(), visitCode, latenessStatus, dueDate)));
+        allActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, visitCode, latenessStatus, startDate, expiryDate)));
     }
 
     public void deleteAlertForVisitForMother(String caseID, String visitCode) {
