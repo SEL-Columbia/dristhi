@@ -32,8 +32,16 @@ public class MilestoneEvent {
         return event.getParameters().get(EventDataKeys.EXTERNAL_ID).toString();
     }
 
-    public DateTime due() {
+    public DateTime startOfDueWindow() {
         return alert().getDueDateTime();
+    }
+
+    public DateTime startOfLateWindow() {
+        return alert().getLateDateTime();
+    }
+
+    public DateTime startOfMaxWindow() {
+        return alert().getDefaultmentDateTime();
     }
 
     @Override

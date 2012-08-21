@@ -19,6 +19,6 @@ public class CapturePNCReminderAction implements Action {
 
     @Override
     public void invoke(MilestoneEvent event) {
-        actionService.alertForChild(event.externalId(), event.milestoneName(), event.windowName(), event.due());
+        actionService.alertForChild(event.externalId(), event.milestoneName(), event.windowName(), event.startOfDueWindow());
     }
 }

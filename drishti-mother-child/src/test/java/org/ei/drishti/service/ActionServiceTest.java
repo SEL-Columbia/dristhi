@@ -46,7 +46,7 @@ public class ActionServiceTest {
         when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
-        service.alertForMother("Case X", "ANC 1", "due", dueDate);
+        service.alertForBeneficiary("Case X", "ANC 1", "due", dueDate, null);
 
         verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.createAlert("Theresa", "bherya", "Sub Center", "PHC X", "Thaayi 1", "ANC 1", "due", dueDate)));
     }

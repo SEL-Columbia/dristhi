@@ -32,7 +32,7 @@ public class CapturePNCReminderActionTest {
     }
 
     private MilestoneEvent event(String externalID, String scheduleName, String milestone, WindowName window, DateTime dueDate) {
-        return new MilestoneEvent(Event.create().withSchedule(scheduleName).withMilestone(milestone).withWindow(window).withExternalId(externalID).withDueDate(dueDate).build());
+        return new MilestoneEvent(Event.create().withSchedule(scheduleName).withMilestone(milestone).withWindow(window).withExternalId(externalID).withDueWindowStartDate(dueDate).build());
     }
 
 }

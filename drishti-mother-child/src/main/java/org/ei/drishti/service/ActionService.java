@@ -41,10 +41,10 @@ public class ActionService {
         return allActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
     }
 
-    public void alertForMother(String caseID, String visitCode, String latenessStatus, DateTime dueDate) {
+    public void alertForBeneficiary(String caseID, String visitCode, String latenessStatus, DateTime startDate, DateTime expiryDate) {
         Mother mother = allMothers.findByCaseId(caseID);
 
-        allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.createAlert(mother.name(), mother.village(), mother.subCenter(), mother.phc(), mother.thaayiCardNo(), visitCode, latenessStatus, dueDate)));
+        allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.createAlert(mother.name(), mother.village(), mother.subCenter(), mother.phc(), mother.thaayiCardNo(), visitCode, latenessStatus, startDate)));
     }
 
     public void alertForChild(String caseId, String visitCode, String latenessStatus, DateTime dueDate) {

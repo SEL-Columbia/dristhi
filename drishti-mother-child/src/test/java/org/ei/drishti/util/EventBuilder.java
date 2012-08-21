@@ -17,7 +17,9 @@ public class EventBuilder {
     private String milestone;
     private WindowName window;
     private String externalID;
-    private DateTime dueDate;
+    private DateTime maxWindowStartDate;
+    private DateTime lateWindowStartDate;
+    private DateTime dueWindowStartDate;
 
     public EventBuilder withSchedule(String scheduleName) {
         this.scheduleName = scheduleName;
@@ -39,17 +41,29 @@ public class EventBuilder {
         return this;
     }
 
-    public EventBuilder withDueDate(DateTime dueDate) {
-        this.dueDate = dueDate;
+    public EventBuilder withDueWindowStartDate(DateTime dueWindowStartDate) {
+        this.dueWindowStartDate = dueWindowStartDate;
+        return this;
+    }
+
+    public EventBuilder withLateWindowStartDate(DateTime lateWindowStartDate) {
+        this.lateWindowStartDate = lateWindowStartDate;
+        return this;
+    }
+
+    public EventBuilder withMaxWindowStartDate(DateTime maxWindowStartDate) {
+        this.maxWindowStartDate = maxWindowStartDate;
         return this;
     }
 
     public MotechEvent build() {
         MilestoneAlert alert = mock(MilestoneAlert.class);
         when(alert.getMilestoneName()).thenReturn(milestone);
-        when(alert.getDueDateTime()).thenReturn(dueDate);
+        when(alert.getDueDateTime()).thenReturn(dueWindowStartDate);
+        when(alert.getLateDateTime()).thenReturn(lateWindowStartDate);
+        when(alert.getDefaultmentDateTime()).thenReturn(maxWindowStartDate);
 
-        Map<String, Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<>();
 
         parameters.put(SCHEDULE_NAME, scheduleName);
         parameters.put(MILESTONE_NAME, alert);
