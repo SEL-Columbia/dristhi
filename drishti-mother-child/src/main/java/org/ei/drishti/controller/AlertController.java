@@ -19,12 +19,11 @@ import static org.motechproject.scheduletracking.api.domain.WindowName.max;
 public class AlertController {
     @Autowired
     public AlertController(AlertRouter router, @Qualifier("ANMGroupSMSAction") Action anmGroupSMS,
-                           @Qualifier("ForceFulfillAction") Action forceFulfill, @Qualifier("CaptureANCReminderAction") Action captureANCReminder,
-                           @Qualifier("CapturePNCReminderAction") Action capturePNCReminder) {
+                           @Qualifier("ForceFulfillAction") Action forceFulfill, @Qualifier("CaptureANCReminderAction") Action alertCreation) {
         router.addRoute(eq(SCHEDULE_ANC), any(), eq(max.toString()), forceFulfill);
         router.addRoute(eq(SCHEDULE_LAB), any(), eq(max.toString()), forceFulfill);
-        router.addRoute(motherSchedules(), any(), anyOf(due.toString(), late.toString()), captureANCReminder);
-        router.addRoute(childSchedules(), any(), anyOf(due.toString(), late.toString()), capturePNCReminder);
+        router.addRoute(motherSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "mother");
+        router.addRoute(childSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "child");
         router.addRoute(any(), any(), any(), anmGroupSMS);
     }
 

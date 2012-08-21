@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 @Qualifier("CaptureANCReminderAction")
 public class CaptureANCReminderAction implements Action {
@@ -19,11 +21,11 @@ public class CaptureANCReminderAction implements Action {
     }
 
     @Override
-    public void invoke(MilestoneEvent event) {
+    public void invoke(MilestoneEvent event, Map<String, String> extraData) {
         if (WindowName.late.toString().equals(event.windowName())) {
-            actionService.alertForBeneficiary(event.externalId(), event.milestoneName(), "urgent", event.startOfLateWindow(), event.startOfMaxWindow());
+            actionService.alertForBeneficiary(event.externalId(), extraData.get("beneficiaryType"), event.milestoneName(), "urgent", event.startOfLateWindow(), event.startOfMaxWindow());
         } else {
-            actionService.alertForBeneficiary(event.externalId(), event.milestoneName(), "normal", event.startOfDueWindow(), event.startOfLateWindow());
+            actionService.alertForBeneficiary(event.externalId(), extraData.get("beneficiaryType"), event.milestoneName(), "normal", event.startOfDueWindow(), event.startOfLateWindow());
         }
     }
 }

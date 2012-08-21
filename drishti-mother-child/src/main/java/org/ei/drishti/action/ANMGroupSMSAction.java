@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 import static java.text.MessageFormat.format;
 
 @Component
@@ -27,7 +29,7 @@ public class ANMGroupSMSAction implements Action {
     }
 
     @Override
-    public void invoke(MilestoneEvent event) {
+    public void invoke(MilestoneEvent event, Map<String, String> extraData) {
         String caseId = event.externalId();
         Mother mother = allMothers.findByCaseId(caseId);
 

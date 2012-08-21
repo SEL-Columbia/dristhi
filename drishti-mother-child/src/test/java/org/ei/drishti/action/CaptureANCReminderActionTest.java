@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.scheduletracking.api.domain.WindowName;
 
+import java.util.HashMap;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -32,16 +34,20 @@ public class CaptureANCReminderActionTest {
 
     @Test
     public void shouldRaiseNormalAlertActionsForDueWindowAlerts() throws Exception {
-        reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.due, dueWindowStart, lateWindowStart, maxWindowStart));
+        HashMap<String, String> extraData = new HashMap<>();
+        extraData.put("beneficiaryType", "mother");
+        reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.due, dueWindowStart, lateWindowStart, maxWindowStart), extraData);
 
-        verify(actionService).alertForBeneficiary("Case 1", "Milestone 1", "normal", dueWindowStart, lateWindowStart);
+        verify(actionService).alertForBeneficiary("Case 1", "mother", "Milestone 1", "normal", dueWindowStart, lateWindowStart);
     }
 
     @Test
     public void shouldRaiseUrgentAlertActionsForLateWindowAlerts() throws Exception {
-        reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.late, dueWindowStart, lateWindowStart, maxWindowStart));
+        HashMap<String, String> extraData = new HashMap<>();
+        extraData.put("beneficiaryType", "child");
+        reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.late, dueWindowStart, lateWindowStart, maxWindowStart), extraData);
 
-        verify(actionService).alertForBeneficiary("Case 1", "Milestone 1", "urgent", lateWindowStart, maxWindowStart);
+        verify(actionService).alertForBeneficiary("Case 1", "child", "Milestone 1", "urgent", lateWindowStart, maxWindowStart);
     }
 
     private MilestoneEvent event(String externalID, String scheduleName, String milestone, WindowName window, DateTime dueWindowStart, DateTime lateWindowStart, DateTime maxWindowStart) {

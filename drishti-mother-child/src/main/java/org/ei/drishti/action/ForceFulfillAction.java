@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 @Qualifier("ForceFulfillAction")
 public class ForceFulfillAction implements Action {
@@ -18,7 +20,7 @@ public class ForceFulfillAction implements Action {
     }
 
     @Override
-    public void invoke(MilestoneEvent event) {
+    public void invoke(MilestoneEvent event, Map<String, String> extraData) {
         schedulesService.forceFulfillMilestone(event.externalId(), event.scheduleName());
     }
 }

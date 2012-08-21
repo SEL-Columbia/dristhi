@@ -38,8 +38,8 @@ public class AlertRouterTest {
     public void shouldBeAbleToSetACatchAllRoute() {
         router.addRoute(any(), any(), any(), firstAction);
 
-        assertRouteMatches("someSchedule", "someMilestone", "someWindow", firstAction);
-        assertRouteMatches("someOtherSchedule", "someOtherMilestone", "someOtherWindow", firstAction);
+        assertRouteMatches("someSchedule", "someMilestone", "someWindow", firstAction, new HashMap<String, String>());
+        assertRouteMatches("someOtherSchedule", "someOtherMilestone", "someOtherWindow", firstAction, new HashMap<String, String>());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class AlertRouterTest {
         router.addRoute(eq("Schedule X"), any(), any(), firstAction);
 
         assertNoRoutesMatch("someSchedule", "someMilestone", "someWindow");
-        assertRouteMatches("Schedule X", "someMilestone", "someWindow", firstAction);
+        assertRouteMatches("Schedule X", "someMilestone", "someWindow", firstAction, new HashMap<String, String>());
     }
 
     @Test
@@ -55,7 +55,7 @@ public class AlertRouterTest {
         router.addRoute(any(), eq("Milestone X"), any(), firstAction);
 
         assertNoRoutesMatch("someSchedule", "someMilestone", "someWindow");
-        assertRouteMatches("someOtherSchedule", "Milestone X", "someWindow", firstAction);
+        assertRouteMatches("someOtherSchedule", "Milestone X", "someWindow", firstAction, new HashMap<String, String>());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class AlertRouterTest {
         router.addRoute(any(), any(), eq("Window X"), firstAction);
 
         assertNoRoutesMatch("someSchedule", "someMilestone", "someWindow");
-        assertRouteMatches("someOtherSchedule", "someOtherMilestone", "Window X", firstAction);
+        assertRouteMatches("someOtherSchedule", "someOtherMilestone", "Window X", firstAction, new HashMap<String, String>());
     }
 
     @Test
@@ -73,7 +73,20 @@ public class AlertRouterTest {
         assertNoRoutesMatch("someSchedule", "someMilestone", "someWindow");
         assertNoRoutesMatch("Milestone X", "someMilestone", "someWindow");
         assertNoRoutesMatch("someSchedule", "someMilestone", "Window X");
-        assertRouteMatches("Milestone X", "someOtherMilestone", "Window X", firstAction);
+        assertRouteMatches("Milestone X", "someOtherMilestone", "Window X", firstAction, new HashMap<String, String>());
+    }
+
+    @Test
+    public void shouldBeAbleToSetARouteWithExtraData() {
+        router.addRoute(eq("Milestone X"), any(), eq("Window X"), firstAction).addExtraData("Unicorns", "AreFun");
+
+        assertNoRoutesMatch("someSchedule", "someMilestone", "someWindow");
+        assertNoRoutesMatch("Milestone X", "someMilestone", "someWindow");
+        assertNoRoutesMatch("someSchedule", "someMilestone", "Window X");
+
+        HashMap<String, String> extraData = new HashMap<>();
+        extraData.put("Unicorns", "AreFun");
+        assertRouteMatches("Milestone X", "someOtherMilestone", "Window X", firstAction, extraData);
     }
 
     @Test
@@ -81,10 +94,10 @@ public class AlertRouterTest {
         router.addRoute(any(), any(), eq("Window X"), firstAction);
         router.addRoute(any(), any(), any(), secondAction);
 
-        assertRouteMatches("someSchedule", "someMilestone", "Window X", firstAction);
+        assertRouteMatches("someSchedule", "someMilestone", "Window X", firstAction, new HashMap<String, String>());
         verifyZeroInteractions(secondAction);
 
-        assertRouteMatches("someSchedule", "someMilestone", "someOtherWindow", secondAction);
+        assertRouteMatches("someSchedule", "someMilestone", "someOtherWindow", secondAction, new HashMap<String, String>());
         verifyZeroInteractions(firstAction);
     }
 
@@ -93,7 +106,7 @@ public class AlertRouterTest {
         router.addRoute(any(), any(), eq("Window X"), firstAction);
         router.addRoute(eq("Milestone X"), any(), eq("Window X"), secondAction);
 
-        assertRouteMatches("Milestone X", "someMilestone", "Window X", firstAction);
+        assertRouteMatches("Milestone X", "someMilestone", "Window X", firstAction, new HashMap<String, String>());
         verifyZeroInteractions(secondAction);
     }
 
@@ -102,9 +115,9 @@ public class AlertRouterTest {
         router.handle(event("scheduleName", "milestoneName", "windowName"));
     }
 
-    private void assertRouteMatches(String schedule, String milestone, String window, Action action) {
+    private void assertRouteMatches(String schedule, String milestone, String window, Action action, HashMap<String, String> extraData) {
         MotechEvent event = handleEvent(schedule, milestone, window);
-        verify(action, times(1)).invoke(new MilestoneEvent(event));
+        verify(action, times(1)).invoke(new MilestoneEvent(event), extraData);
     }
 
     private void assertNoRoutesMatch(String schedule, String milestone, String window) {

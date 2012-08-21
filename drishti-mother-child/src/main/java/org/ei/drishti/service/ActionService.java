@@ -41,7 +41,7 @@ public class ActionService {
         return allActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
     }
 
-    public void alertForBeneficiary(String caseID, String visitCode, String latenessStatus, DateTime startDate, DateTime expiryDate) {
+    public void alertForBeneficiary(String caseID, String beneficiaryType, String visitCode, String latenessStatus, DateTime startDate, DateTime expiryDate) {
         Mother mother = allMothers.findByCaseId(caseID);
 
         allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.createAlert(mother.name(), mother.village(), mother.subCenter(), mother.phc(), mother.thaayiCardNo(), visitCode, latenessStatus, startDate)));
