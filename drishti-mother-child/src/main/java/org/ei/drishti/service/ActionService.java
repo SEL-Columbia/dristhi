@@ -4,6 +4,7 @@ import org.ei.drishti.domain.Action;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.ActionData;
+import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.repository.AllActions;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.ei.drishti.dto.BeneficiaryType.mother;
 
 @Service
 public class ActionService {
@@ -40,10 +42,10 @@ public class ActionService {
         return allActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
     }
 
-    public void alertForBeneficiary(String caseID, String beneficiaryType, String visitCode, String latenessStatus, DateTime startDate, DateTime expiryDate) {
+    public void alertForBeneficiary(BeneficiaryType beneficiaryType, String caseID, String visitCode, String latenessStatus, DateTime startDate, DateTime expiryDate) {
         // TODO: Get rid of this horrible if-else after Motech-Platform fixes the bug related to metadata in motech-schedule-tracking.
         String anmIdentifier;
-        if (beneficiaryType.equals("mother")) {
+        if (mother.equals(beneficiaryType)) {
             anmIdentifier = allMothers.findByCaseId(caseID).anmIdentifier();
         }
         else {
@@ -54,6 +56,7 @@ public class ActionService {
     }
 
     public void deleteAlertForVisitForMother(String caseID, String visitCode) {
+        // TODO: Pass anmIdentifier in here. Don't get from DB.
         Mother mother = allMothers.findByCaseId(caseID);
 
         allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.deleteAlert(visitCode)));

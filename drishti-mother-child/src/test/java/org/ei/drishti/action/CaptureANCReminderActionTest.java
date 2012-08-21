@@ -1,5 +1,6 @@
 package org.ei.drishti.action;
 
+import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.scheduler.router.MilestoneEvent;
 import org.ei.drishti.service.ActionService;
 import org.ei.drishti.util.Event;
@@ -38,7 +39,7 @@ public class CaptureANCReminderActionTest {
         extraData.put("beneficiaryType", "mother");
         reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.due, dueWindowStart, lateWindowStart, maxWindowStart), extraData);
 
-        verify(actionService).alertForBeneficiary("Case 1", "mother", "Milestone 1", "normal", dueWindowStart, lateWindowStart);
+        verify(actionService).alertForBeneficiary(BeneficiaryType.mother, "Case 1", "Milestone 1", "normal", dueWindowStart, lateWindowStart);
     }
 
     @Test
@@ -47,7 +48,7 @@ public class CaptureANCReminderActionTest {
         extraData.put("beneficiaryType", "child");
         reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.late, dueWindowStart, lateWindowStart, maxWindowStart), extraData);
 
-        verify(actionService).alertForBeneficiary("Case 1", "child", "Milestone 1", "urgent", lateWindowStart, maxWindowStart);
+        verify(actionService).alertForBeneficiary(BeneficiaryType.child, "Case 1", "Milestone 1", "urgent", lateWindowStart, maxWindowStart);
     }
 
     private MilestoneEvent event(String externalID, String scheduleName, String milestone, WindowName window, DateTime dueWindowStart, DateTime lateWindowStart, DateTime maxWindowStart) {

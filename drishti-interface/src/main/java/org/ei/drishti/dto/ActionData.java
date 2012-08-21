@@ -15,8 +15,8 @@ public class ActionData {
     private String type;
     private Map<String, String> details;
 
-    public static ActionData createAlert(String beneficiaryType, String visitCode, String latenessStatus, DateTime startDate, DateTime expiryDate) {
-        return new ActionData("alert", "createAlert").with("beneficiaryType", beneficiaryType)
+    public static ActionData createAlert(BeneficiaryType beneficiaryType, String visitCode, String latenessStatus, DateTime startDate, DateTime expiryDate) {
+        return new ActionData("alert", "createAlert").with("beneficiaryType", beneficiaryType.value())
                 .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("startDate", startDate.toLocalDate().toString())
                 .with("expiryDate", expiryDate.toLocalDate().toString());
     }

@@ -1,5 +1,6 @@
 package org.ei.drishti.action;
 
+import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.scheduler.router.Action;
 import org.ei.drishti.scheduler.router.MilestoneEvent;
 import org.ei.drishti.service.ActionService;
@@ -22,10 +23,12 @@ public class CaptureANCReminderAction implements Action {
 
     @Override
     public void invoke(MilestoneEvent event, Map<String, String> extraData) {
+        BeneficiaryType beneficiaryType = BeneficiaryType.from(extraData.get("beneficiaryType"));
+
         if (WindowName.late.toString().equals(event.windowName())) {
-            actionService.alertForBeneficiary(event.externalId(), extraData.get("beneficiaryType"), event.milestoneName(), "urgent", event.startOfLateWindow(), event.startOfMaxWindow());
+            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), "urgent", event.startOfLateWindow(), event.startOfMaxWindow());
         } else {
-            actionService.alertForBeneficiary(event.externalId(), extraData.get("beneficiaryType"), event.milestoneName(), "normal", event.startOfDueWindow(), event.startOfLateWindow());
+            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), "normal", event.startOfDueWindow(), event.startOfLateWindow());
         }
     }
 }

@@ -2,6 +2,7 @@ package org.ei.drishti.web.controller;
 
 import org.ei.drishti.dto.Action;
 import org.ei.drishti.dto.ActionData;
+import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.service.ActionService;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -27,7 +28,7 @@ public class ActionControllerTest {
 
     @Test
     public void shouldGiveAlertActionForANMSinceTimeStamp() throws Exception {
-        org.ei.drishti.domain.Action alertAction = new org.ei.drishti.domain.Action("Case X", "ANM 1", ActionData.createAlert("mother", "ANC 1", "normal", DateTime.now(), DateTime.now().plusDays(3)));
+        org.ei.drishti.domain.Action alertAction = new org.ei.drishti.domain.Action("Case X", "ANM 1", ActionData.createAlert(BeneficiaryType.mother, "ANC 1", "normal", DateTime.now(), DateTime.now().plusDays(3)));
         when(actionService.getNewAlertsForANM("ANM 1", 0L)).thenReturn(Arrays.asList(alertAction));
 
         Action expectedAlertActionItem = ActionConvertor.from(alertAction);
