@@ -4,10 +4,9 @@ import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.ei.drishti.domain.Child;
-import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.repository.AllChildren;
-import org.ei.drishti.util.SafeMap;
 import org.ei.drishti.service.reporting.ChildReportingService;
+import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -19,6 +18,8 @@ import org.motechproject.util.DateUtil;
 
 import java.util.Arrays;
 
+import static org.ei.drishti.dto.BeneficiaryType.child;
+import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -48,9 +49,9 @@ public class PNCServiceTest extends BaseUnitTest {
 
         pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", "", "male"));
 
-        verify(actionService).alertForBeneficiary(BeneficiaryType.child, "Case X", "OPV 0", "normal", currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
-        verify(actionService).alertForBeneficiary(BeneficiaryType.child, "Case X", "BCG", "normal", currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
-        verify(actionService).alertForBeneficiary(BeneficiaryType.child, "Case X", "HEP B0", "normal", currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
+        verify(actionService).alertForBeneficiary(child, "Case X", "OPV 0", normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
+        verify(actionService).alertForBeneficiary(child, "Case X", "BCG", normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
+        verify(actionService).alertForBeneficiary(child, "Case X", "HEP B0", normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
     }
 
     @Test
@@ -155,7 +156,7 @@ public class PNCServiceTest extends BaseUnitTest {
         pncService.registerChild(new ChildRegistrationRequest("Case X", "Child 1", "bherya", "Sub Center", "PHC X", "TC 1", currentTime.toDate(), "DEMO ANM", providedImmunizations, "female"));
 
         for (String expectedAlert : expectedAlertsRaised) {
-            verify(actionService).alertForBeneficiary(BeneficiaryType.child, "Case X", expectedAlert, "normal", currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
+            verify(actionService).alertForBeneficiary(child, "Case X", expectedAlert, normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
         }
         verify(actionService, times(1)).registerChildBirth(any(String.class), any(String.class), any(String.class), any(LocalDate.class), any(String.class));
         verifyNoMoreInteractions(actionService);

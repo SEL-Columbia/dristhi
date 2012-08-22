@@ -15,14 +15,18 @@ public class ActionData {
     private String type;
     private Map<String, String> details;
 
-    public static ActionData createAlert(BeneficiaryType beneficiaryType, String visitCode, String latenessStatus, DateTime startDate, DateTime expiryDate) {
-        return new ActionData("alert", "createAlert").with("beneficiaryType", beneficiaryType.value())
-                .with("visitCode", visitCode).with("latenessStatus", latenessStatus).with("startDate", startDate.toLocalDate().toString())
+    public static ActionData createAlert(BeneficiaryType beneficiaryType, String visitCode, AlertPriority alertPriority, DateTime startDate, DateTime expiryDate) {
+        return new ActionData("alert", "createAlert")
+                .with("beneficiaryType", beneficiaryType.value())
+                .with("visitCode", visitCode)
+                .with("alertPriority", alertPriority.value())
+                .with("startDate", startDate.toLocalDate().toString())
                 .with("expiryDate", expiryDate.toLocalDate().toString());
     }
 
     public static ActionData deleteAlert(String visitCode) {
-        return new ActionData("alert", "deleteAlert").with("visitCode", visitCode);
+        return new ActionData("alert", "deleteAlert")
+                .with("visitCode", visitCode);
     }
 
     public static ActionData deleteAllAlerts() {
@@ -30,8 +34,14 @@ public class ActionData {
     }
 
     public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String currentMethod, String village, String subCenter, String phc, Map<String, String> details) {
-        return new ActionData("eligibleCouple", "createEC").with("wife", wife).with("husband", husband)
-                .with("ecNumber", ecNumber).with("currentMethod", currentMethod).with("village", village).with("subcenter", subCenter).with("phc", phc).details(details);
+        return new ActionData("eligibleCouple", "createEC")
+                .with("wife", wife)
+                .with("husband", husband)
+                .with("ecNumber", ecNumber)
+                .with("currentMethod", currentMethod)
+                .with("village", village)
+                .with("subcenter", subCenter)
+                .with("phc", phc).details(details);
     }
 
     public static ActionData deleteEligibleCouple() {
@@ -39,16 +49,23 @@ public class ActionData {
     }
 
     public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate, boolean isHighRisk, String deliveryPlace) {
-        return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber).with("status", "pregnant")
-                .with("referenceDate", lmpDate.toString()).with("isHighRisk", String.valueOf(isHighRisk)).with("deliveryPlace", deliveryPlace);
+        return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber)
+                .with("status", "pregnant")
+                .with("referenceDate", lmpDate.toString())
+                .with("isHighRisk", String.valueOf(isHighRisk))
+                .with("deliveryPlace", deliveryPlace);
     }
 
     public static ActionData updateBeneficiary(String status) {
-        return new ActionData("child", "updateBeneficiary").with("status", status);
+        return new ActionData("child", "updateBeneficiary")
+                .with("status", status);
     }
 
     public static ActionData registerChildBirth(String motherCaseId, LocalDate dateOfBirth, String gender) {
-        return new ActionData("child", "createChildBeneficiary").with("motherCaseId", motherCaseId).with("referenceDate", dateOfBirth.toString()).with("gender", gender);
+        return new ActionData("child", "createChildBeneficiary")
+                .with("motherCaseId", motherCaseId)
+                .with("referenceDate", dateOfBirth.toString())
+                .with("gender", gender);
     }
 
     public static ActionData from(String actionType, String actionTarget, Map<String, String> data, Map<String, String> details) {

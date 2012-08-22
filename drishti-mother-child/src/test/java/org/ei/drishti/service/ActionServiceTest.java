@@ -5,7 +5,6 @@ import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.ActionData;
-import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.repository.AllActions;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -21,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static org.ei.drishti.dto.BeneficiaryType.child;
+import static org.ei.drishti.dto.BeneficiaryType.mother;
+import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -48,9 +50,9 @@ public class ActionServiceTest {
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(BeneficiaryType.mother, "Case X", "ANC 1", "normal", dueDate, expiryDate);
+        service.alertForBeneficiary(mother, "Case X", "ANC 1", normal, dueDate, expiryDate);
 
-        verify(allActions).add(new Action("Case X", "ANM ID M", ActionData.createAlert(BeneficiaryType.mother, "ANC 1", "normal", dueDate, expiryDate)));
+        verify(allActions).add(new Action("Case X", "ANM ID M", ActionData.createAlert(mother, "ANC 1", normal, dueDate, expiryDate)));
     }
 
     @Test
@@ -59,9 +61,9 @@ public class ActionServiceTest {
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(BeneficiaryType.child, "Case X", "OPV", "normal", dueDate, expiryDate);
+        service.alertForBeneficiary(child, "Case X", "OPV", normal, dueDate, expiryDate);
 
-        verify(allActions).add(new Action("Case X", "ANM ID C", ActionData.createAlert(BeneficiaryType.child, "OPV", "normal", dueDate, expiryDate)));
+        verify(allActions).add(new Action("Case X", "ANM ID C", ActionData.createAlert(child, "OPV", normal, dueDate, expiryDate)));
     }
 
     @Test
@@ -98,7 +100,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
-        List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert(BeneficiaryType.mother, "ANC 1", "normal", DateTime.now(), DateTime.now().plusDays(3))));
+        List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert(mother, "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3))));
         when(allActions.findByANMIDAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
 
         List<Action> alerts = service.getNewAlertsForANM("ANM 1", 1010101);

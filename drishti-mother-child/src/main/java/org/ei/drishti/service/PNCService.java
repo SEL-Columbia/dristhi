@@ -4,16 +4,18 @@ import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.ei.drishti.domain.Child;
-import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.repository.AllChildren;
-import org.ei.drishti.util.SafeMap;
 import org.ei.drishti.service.reporting.ChildReportingService;
+import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static org.ei.drishti.dto.BeneficiaryType.child;
+import static org.ei.drishti.dto.AlertPriority.normal;
 
 @Service
 public class PNCService {
@@ -72,6 +74,6 @@ public class PNCService {
         LocalDate dueDateLocal = childRegistrationRequest.dateOfBirth().plusDays(2);
         LocalTime currentTime = DateUtil.now().toLocalTime();
         DateTime dueDate = dueDateLocal.toDateTime(currentTime);
-        actionService.alertForBeneficiary(BeneficiaryType.child, childRegistrationRequest.caseId(), visitCodeIfNotProvided, "normal", dueDate, dueDateLocal.plusWeeks(1).toDateTime(currentTime));
+        actionService.alertForBeneficiary(child, childRegistrationRequest.caseId(), visitCodeIfNotProvided, normal, dueDate, dueDateLocal.plusWeeks(1).toDateTime(currentTime));
     }
 }

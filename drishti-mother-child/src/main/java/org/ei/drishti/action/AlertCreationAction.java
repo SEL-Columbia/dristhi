@@ -11,13 +11,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static org.ei.drishti.dto.AlertPriority.normal;
+import static org.ei.drishti.dto.AlertPriority.urgent;
+
 @Component
-@Qualifier("CaptureANCReminderAction")
-public class CaptureANCReminderAction implements Action {
+@Qualifier("AlertCreationAction")
+public class AlertCreationAction implements Action {
     ActionService actionService;
 
     @Autowired
-    public CaptureANCReminderAction(ActionService actionService) {
+    public AlertCreationAction(ActionService actionService) {
         this.actionService = actionService;
     }
 
@@ -26,9 +29,9 @@ public class CaptureANCReminderAction implements Action {
         BeneficiaryType beneficiaryType = BeneficiaryType.from(extraData.get("beneficiaryType"));
 
         if (WindowName.late.toString().equals(event.windowName())) {
-            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), "urgent", event.startOfLateWindow(), event.startOfMaxWindow());
+            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), urgent, event.startOfLateWindow(), event.startOfMaxWindow());
         } else {
-            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), "normal", event.startOfDueWindow(), event.startOfLateWindow());
+            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), normal, event.startOfDueWindow(), event.startOfLateWindow());
         }
     }
 }
