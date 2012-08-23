@@ -91,7 +91,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
         ReportingService fakeReportingService = mock(ReportingService.class);
         MotherReportingService motherReportingService = new MotherReportingService(fakeReportingService, allMothers);
 
-        motherReportingService.registerANC(reportData);
+        motherReportingService.registerANC(reportData, "bherya", "Sub Center");
 
         ReportingData data = ReportingData.serviceProvidedData("ANM X", "TC 1", indicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
         verify(fakeReportingService).sendReportData(data);

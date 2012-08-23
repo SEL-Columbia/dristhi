@@ -55,7 +55,7 @@ public class ANCServiceTest {
         SafeMap data = new SafeMap();
         service.registerANCCase(enrollmentInfo, data);
 
-        verify(motherReportingService).registerANC(data);
+        verify(motherReportingService).registerANC(data, "bherya", "Sub Center");
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName)
                 .withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp).withECNumber("EC Number 1")
                 .withLocation("bherya", "Sub Center", "PHC X").withFacility("PHC").isHighRisk(true)));

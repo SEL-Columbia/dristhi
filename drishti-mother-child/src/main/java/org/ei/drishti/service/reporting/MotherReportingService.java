@@ -24,12 +24,12 @@ public class MotherReportingService {
         this.allMothers = allMothers;
     }
 
-    public void registerANC(SafeMap reportData) {
+    public void registerANC(SafeMap reportData, String village, String subCenter) {
         boolean isNotWithin12WeeksOfLMP = DateUtil.today().minusDays(84).isAfter(LocalDate.parse(reportData.get("lmp")));
         Indicator indicator = isNotWithin12WeeksOfLMP ? Indicator.ANC_AFTER_12_WEEKS : Indicator.ANC_BEFORE_12_WEEKS;
 
         ReportingData data = ReportingData.serviceProvidedData(reportData.get("anmIdentifier"), reportData.get("thaayiCardNumber"), indicator, DateUtil.today().toString(),
-                new Location(reportData.get("village"), reportData.get("subCenter"), reportData.get("phc")));
+                new Location(village, subCenter, reportData.get("phc")));
         reportingService.sendReportData(data);
     }
 

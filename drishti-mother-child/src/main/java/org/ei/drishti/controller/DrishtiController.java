@@ -33,7 +33,7 @@ public class DrishtiController {
     }
 
     public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, Map<String, Map<String, String>> extraData) {
-        logger.info("Mother registration: " + enrollmentInformation);
+        logger.info("Mother registration: " + enrollmentInformation + ". Extra data: " + extraData);
 
         ancService.registerANCCase(enrollmentInformation, new SafeMap(extraData.get("reporting")));
         mctsService.registerANCCase(enrollmentInformation);
@@ -54,7 +54,7 @@ public class DrishtiController {
     }
 
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
-        logger.info("ANC close: " + closeInformation);
+        logger.info("ANC close: " + closeInformation + ". Extra data: " + extraData);
 
         ancService.closeANCCase(closeInformation, new SafeMap(extraData.get("reporting")));
         mctsService.closeANCCase(closeInformation);
@@ -68,7 +68,7 @@ public class DrishtiController {
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {
-        logger.info("Child immunization updation: " + updationRequest);
+        logger.info("Child immunization updation: " + updationRequest + ". Extra data: " + extraData);
 
         pncService.updateChildImmunization(updationRequest, new SafeMap(extraData.get("reporting")));
         mctsService.updateChildImmunization(updationRequest);
