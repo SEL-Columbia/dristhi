@@ -24,6 +24,7 @@ $(document).ready(function() {
         var data = createObjectFrom($(form).children(".data"));
         var anmId = $(form).children(".anm")[0].value;
         payload['data'] = data;
+        payload['details'] = {};
         payload['actionType'] = form.id;
 
         $.post('../action/submit', { formData: JSON.stringify(payload), anmIdentifier: anmId })
