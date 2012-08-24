@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
@@ -32,7 +33,10 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldRegisterAMother() {
-        Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa").withAnm("ANM ID 1", "12345").withLMP(DateUtil.tomorrow()).withECNumber("EC Number 1").withLocation("bherya", "Sub Center", "PHC X").isHighRisk(true);
+        HashMap<String, String> details = new HashMap<String, String>();
+        details.put("some_field", "some_value");
+        Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa").withAnm("ANM ID 1", "12345").withLMP(DateUtil.tomorrow())
+                .withECNumber("EC Number 1").withLocation("bherya", "Sub Center", "PHC X").withDetails(details).isHighRisk(true);
 
         mothers.register(mother);
 

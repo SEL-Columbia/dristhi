@@ -35,7 +35,7 @@ public class DrishtiController {
     public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, Map<String, Map<String, String>> extraData) {
         logger.info("Mother registration: " + enrollmentInformation + ". Extra data: " + extraData);
 
-        ancService.registerANCCase(enrollmentInformation, new SafeMap(extraData.get("reporting")));
+        ancService.registerANCCase(enrollmentInformation, extraData);
         mctsService.registerANCCase(enrollmentInformation);
     }
 

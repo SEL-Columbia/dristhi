@@ -15,6 +15,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.model.Time;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -52,14 +55,18 @@ public class ANCServiceTest {
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", lmp.toDate(), "1", "PHC");
         when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        SafeMap data = new SafeMap();
-        service.registerANCCase(enrollmentInfo, data);
+        HashMap<String, String> details = new HashMap<>();
+        details.put("some_field", "some_value");
+        HashMap<String, Map<String, String>> extraData = new HashMap<>();
+        extraData.put("reporting", new HashMap<String, String>());
+        extraData.put("details", details);
+        service.registerANCCase(enrollmentInfo, extraData);
 
-        verify(motherReportingService).registerANC(data, "bherya", "Sub Center");
+        verify(motherReportingService).registerANC(new SafeMap(extraData.get("reporting")), "bherya", "Sub Center");
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName)
                 .withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp).withECNumber("EC Number 1")
-                .withLocation("bherya", "Sub Center", "PHC X").withFacility("PHC").isHighRisk(true)));
-        verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, "ANM ID 1", "bherya", lmp, true, "PHC");
+                .withLocation("bherya", "Sub Center", "PHC X").withFacility("PHC").withDetails(details).isHighRisk(true)));
+        verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, "ANM ID 1", "bherya", lmp, true, "PHC", details);
     }
 
     @Test
@@ -71,8 +78,9 @@ public class ANCServiceTest {
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", lmp.toDate(), "0", "PHC");
         when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        SafeMap data = new SafeMap();
-        service.registerANCCase(enrollmentInfo, data);
+        HashMap<String, Map<String, String>> extraData = new HashMap<>();
+        extraData.put("reporting", new HashMap<String, String>());
+        service.registerANCCase(enrollmentInfo, extraData);
 
         verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(lmp), any(Time.class), any(Time.class));
     }
@@ -84,8 +92,9 @@ public class ANCServiceTest {
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", null, "0", "PHC");
         when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        SafeMap data = new SafeMap();
-        service.registerANCCase(enrollmentInfo, data);
+        HashMap<String, Map<String, String>> extraData = new HashMap<>();
+        extraData.put("reporting", new HashMap<String, String>());
+        service.registerANCCase(enrollmentInfo, extraData);
 
         verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(today()), any(Time.class), any(Time.class));
     }

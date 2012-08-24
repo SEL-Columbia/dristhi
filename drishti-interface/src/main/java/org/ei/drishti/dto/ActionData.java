@@ -41,19 +41,21 @@ public class ActionData {
                 .with("currentMethod", currentMethod)
                 .with("village", village)
                 .with("subcenter", subCenter)
-                .with("phc", phc).details(details);
+                .with("phc", phc)
+                .withDetails(details);
     }
 
     public static ActionData deleteEligibleCouple() {
         return new ActionData("eligibleCouple", "deleteEC");
     }
 
-    public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate, boolean isHighRisk, String deliveryPlace) {
+    public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate, boolean isHighRisk, String deliveryPlace, Map<String, String> details) {
         return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber)
                 .with("status", "pregnant")
                 .with("referenceDate", lmpDate.toString())
                 .with("isHighRisk", String.valueOf(isHighRisk))
-                .with("deliveryPlace", deliveryPlace);
+                .with("deliveryPlace", deliveryPlace)
+                .withDetails(details);
     }
 
     public static ActionData updateBeneficiary(String status) {
@@ -87,7 +89,7 @@ public class ActionData {
         return this;
     }
 
-    private ActionData details(Map<String, String> details) {
+    private ActionData withDetails(Map<String, String> details) {
         this.details.putAll(details);
         return this;
     }

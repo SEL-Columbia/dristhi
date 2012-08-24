@@ -127,16 +127,19 @@ public class ActionServiceTest {
     public void shouldAddActionForBeneficiaryRegistration() throws Exception {
         when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "Village X")).thenReturn(new EligibleCouple("Case EC 1", "EC Number 1"));
 
-        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", DateUtil.today(), false, "PHC");
+        HashMap<String, String> details = new HashMap<>();
+        details.put("some_field", "some_value");
 
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createBeneficiary("Case EC 1", "Thaayi 1", DateUtil.today(), false, "PHC")));
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", DateUtil.today(), false, "PHC", details);
+
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createBeneficiary("Case EC 1", "Thaayi 1", DateUtil.today(), false, "PHC", details)));
     }
 
     @Test
     public void shouldNotAddActionForBeneficiaryRegistrationIfECNotFound() throws Exception {
         when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "Village X")).thenReturn(null);
 
-        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", null, true, "PHC");
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", null, true, "PHC", new HashMap<String, String>());
 
         verifyZeroInteractions(allActions);
     }

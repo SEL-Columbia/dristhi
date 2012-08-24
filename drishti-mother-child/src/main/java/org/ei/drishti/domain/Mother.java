@@ -8,7 +8,7 @@ import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.LocalDate;
 import org.motechproject.model.MotechBaseDataObject;
 
-import java.text.MessageFormat;
+import java.util.Map;
 
 @TypeDiscriminator("doc.type === 'Mother'")
 public class Mother extends MotechBaseDataObject {
@@ -36,6 +36,8 @@ public class Mother extends MotechBaseDataObject {
     private boolean isHighRisk;
     @JsonProperty
     private String deliveryPlace;
+    @JsonProperty
+    private Map<String, String> details;
 
     private Mother() {
     }
@@ -75,6 +77,11 @@ public class Mother extends MotechBaseDataObject {
 
     public Mother withFacility(String deliveryPlace) {
         this.deliveryPlace = deliveryPlace;
+        return this;
+    }
+
+    public Mother withDetails(Map<String, String> details) {
+        this.details = details;
         return this;
     }
 

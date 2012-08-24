@@ -48,7 +48,7 @@ public class DrishtiControllerTest {
         extraData.put("reporting", reportingData);
         controller.registerMother(ancEnrollInfo, extraData);
 
-        verify(ancService).registerANCCase(ancEnrollInfo, new SafeMap(reportingData));
+        verify(ancService).registerANCCase(ancEnrollInfo, extraData);
         verify(mctsService).registerANCCase(ancEnrollInfo);
     }
 

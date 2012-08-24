@@ -59,6 +59,9 @@
                             "form|lmp_date": "lmp",
                             "form|thayi_no": "thaayiCardNumber",
                             "form|meta|username": "anmIdentifier"
+                        },
+                        "details": {
+                            "form|asha_name": "ashaName"
                         }
                     }
                 },
@@ -94,9 +97,9 @@
                         "form|case|@case_id": "caseId",
                         "form|delivery_registration_section|date_outcomes": "dateOfDelivery",
                         "form|delivery_registration_section|pregnancy_outcomes": "pregnancyOutcome",
-                        "form|delivery_registration_section|live_birth_group|has_delivery_complications" : "hasDeliveryComplications",
+                        "form|delivery_registration_section|live_birth_group|has_delivery_complications": "hasDeliveryComplications",
                         "form|delivery_registration_section|live_birth_group|delivery_complications": "deliveryComplications",
-                        "form|is_HighRisk":"isHighRisk",
+                        "form|is_HighRisk": "isHighRisk",
                         "form|highRiskReason": "highRiskReason"
                     }
                 },

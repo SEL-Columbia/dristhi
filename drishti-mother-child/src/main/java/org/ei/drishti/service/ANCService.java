@@ -42,18 +42,21 @@ public class ANCService {
         this.reportingService = reportingService;
     }
 
-    public void registerANCCase(AnteNatalCareEnrollmentInformation info, SafeMap data) {
+    public void registerANCCase(AnteNatalCareEnrollmentInformation info, Map<String, Map<String, String>> extraData) {
+        Map<String, String> details = extraData.get("details");
+
         EligibleCouple couple = eligibleCouples.findByCaseId(info.ecCaseId());
         Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), couple.wife()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
-                .withLMP(info.lmpDate()).withECNumber(couple.ecNumber()).withLocation(couple.village(), couple.subCenter(), couple.phc()).withFacility(info.deliveryPlace()).isHighRisk(info.isHighRisk());
+                .withLMP(info.lmpDate()).withECNumber(couple.ecNumber()).withLocation(couple.village(), couple.subCenter(), couple.phc())
+                .withFacility(info.deliveryPlace()).withDetails(details).isHighRisk(info.isHighRisk());
         allMothers.register(mother);
 
         Time preferredAlertTime = new Time(new LocalTime(14, 0));
         LocalDate referenceDate = info.lmpDate() != null ? info.lmpDate() : DateUtil.today();
 
-        reportingService.registerANC(data, couple.village(), couple.subCenter());
+        reportingService.registerANC(new SafeMap(extraData.get("reporting")), couple.village(), couple.subCenter());
         ancSchedulesService.enrollMother(info.caseId(), referenceDate, new Time(now()), preferredAlertTime);
-        actionService.registerPregnancy(info.caseId(), couple.ecNumber(), info.thaayiCardNumber(), info.anmIdentifier(), couple.village(), info.lmpDate(), info.isHighRisk(), info.deliveryPlace());
+        actionService.registerPregnancy(info.caseId(), couple.ecNumber(), info.thaayiCardNumber(), info.anmIdentifier(), couple.village(), info.lmpDate(), info.isHighRisk(), info.deliveryPlace(), details);
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {
