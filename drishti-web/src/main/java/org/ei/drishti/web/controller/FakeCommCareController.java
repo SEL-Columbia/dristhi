@@ -19,7 +19,7 @@ public class FakeCommCareController {
         this.commCareScheduler = commCareScheduler;
     }
 
-    @RequestMapping("/scheduler/run")
+    @RequestMapping("/form/fetch")
     @ResponseBody
     public String runScheduler() throws Exception {
         commCareScheduler.fetchFromCommCareHQ(null);
