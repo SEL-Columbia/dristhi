@@ -24,8 +24,8 @@ public class ActionData {
                 .with("expiryDate", expiryDate.toLocalDate().toString());
     }
 
-    public static ActionData deleteAlert(String visitCode) {
-        return new ActionData("alert", "deleteAlert")
+    public static ActionData markAlertAsClosed(String visitCode) {
+        return new ActionData("alert", "closeAlert")
                 .with("visitCode", visitCode);
     }
 

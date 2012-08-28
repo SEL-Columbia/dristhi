@@ -89,7 +89,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldRemoveAlertsForUpdatedImmunizations() throws Exception {
-        assertDeletionOfAlertsForProvidedImmunizations("bcg opv0", "BCG", "OPV 0");
+        assertCloseOfAlertsForProvidedImmunizations("bcg opv0", "BCG", "OPV 0");
     }
 
     @Test
@@ -132,7 +132,7 @@ public class PNCServiceTest extends BaseUnitTest {
         verify(pncSchedulesService).unenrollChild("Case X");
     }
 
-    private void assertDeletionOfAlertsForProvidedImmunizations(String providedImmunizations, String... expectedDeletedAlertsRaised) {
+    private void assertCloseOfAlertsForProvidedImmunizations(String providedImmunizations, String... expectedDeletedAlertsRaised) {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
@@ -142,7 +142,7 @@ public class PNCServiceTest extends BaseUnitTest {
         pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations), new SafeMap());
 
         for (String expectedAlert : expectedDeletedAlertsRaised) {
-            verify(actionService).deleteAlertForVisitForChild("Case X", "DEMO ANM", expectedAlert);
+            verify(actionService).markAlertAsClosedForVisitForChild("Case X", "DEMO ANM", expectedAlert);
         }
         verifyNoMoreInteractions(actionService);
     }

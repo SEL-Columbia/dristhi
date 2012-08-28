@@ -56,15 +56,15 @@ public class ActionService {
         allActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, visitCode, alertPriority, startDate, expiryDate)));
     }
 
-    public void deleteAlertForVisitForMother(String caseID, String visitCode) {
+    public void markAlertAsClosedForVisitForMother(String caseID, String visitCode) {
         // TODO: Pass anmIdentifier in here. Don't get from DB.
         Mother mother = allMothers.findByCaseId(caseID);
 
-        allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.deleteAlert(visitCode)));
+        allActions.add(new Action(caseID, mother.anmIdentifier(), ActionData.markAlertAsClosed(visitCode)));
     }
 
-    public void deleteAlertForVisitForChild(String caseID, String anmIdentifier, String visitCode) {
-        allActions.add(new Action(caseID, anmIdentifier, ActionData.deleteAlert(visitCode)));
+    public void markAlertAsClosedForVisitForChild(String caseID, String anmIdentifier, String visitCode) {
+        allActions.add(new Action(caseID, anmIdentifier, ActionData.markAlertAsClosed(visitCode)));
     }
 
     public void deleteAllAlertsForMother(String caseID) {
