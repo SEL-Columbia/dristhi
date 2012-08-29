@@ -77,8 +77,8 @@ public class ActionService {
         allActions.addWithDelete(new Action(caseID, anmIdentifier, ActionData.deleteAllAlerts()), "alert");
     }
 
-    public void registerEligibleCouple(String caseId, String ecNumber, String wife, String husband, String anmIdentifier, String currentMethod, String village, String subCenter, String phc, Map<String, String> details) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.createEligibleCouple(wife, husband, ecNumber, currentMethod, village, subCenter, phc, details)));
+    public void registerEligibleCouple(String caseId, String ecNumber, String wife, String husband, String anmIdentifier, String village, String subCenter, String phc, Map<String, String> details) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.createEligibleCouple(wife, husband, ecNumber, village, subCenter, phc, details)));
     }
 
     public void closeEligibleCouple(String caseId, String anmIdentifier) {

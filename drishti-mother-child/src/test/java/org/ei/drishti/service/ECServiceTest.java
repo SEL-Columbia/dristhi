@@ -35,12 +35,12 @@ public class ECServiceTest {
     @Test
     public void shouldRegisterEligibleCouple() throws Exception {
         Map<String, Map<String, String>> extraData = mapOf("details", Collections.<String, String>emptyMap());
-        ecService.registerEligibleCouple(new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "IUD"), extraData);
+        ecService.registerEligibleCouple(new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X"), extraData);
 
         EligibleCouple couple = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1")
-                .withANMIdentifier("ANM X").withFamilyPlanning("IUD").withLocation("Village X", "SubCenter X", "PHC X").withDetails(extraData.get("details"));
+                .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(extraData.get("details"));
         verify(allEligibleCouples).register(couple);
-        verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "IUD", "Village X", "SubCenter X", "PHC X", extraData.get("details"));
+        verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", extraData.get("details"));
     }
 
     @Test

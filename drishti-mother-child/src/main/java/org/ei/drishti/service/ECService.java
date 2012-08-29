@@ -23,13 +23,13 @@ public class ECService {
 
     public void registerEligibleCouple(EligibleCoupleRegistrationRequest request, Map<String, Map<String, String>> extraData) {
         EligibleCouple couple = new EligibleCouple(request.caseId(), request.ecNumber())
-                .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier()).withFamilyPlanning(request.currentMethod())
+                .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
                 .withLocation(request.village(), request.subCenter(), request.phc()).withDetails(extraData.get("details"));
 
         allEligibleCouples.register(couple);
 
         actionService.registerEligibleCouple(request.caseId(), request.ecNumber(), request.wife(), request.husband(),
-                request.anmIdentifier(), request.currentMethod(), request.village(), request.subCenter(), request.phc(), extraData.get("details"));
+                request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), extraData.get("details"));
     }
 
     public void closeEligibleCouple(EligibleCoupleCloseRequest request) {

@@ -33,12 +33,11 @@ public class ActionData {
         return new ActionData("alert", "deleteAllAlerts");
     }
 
-    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String currentMethod, String village, String subCenter, String phc, Map<String, String> details) {
+    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String village, String subCenter, String phc, Map<String, String> details) {
         return new ActionData("eligibleCouple", "createEC")
                 .with("wife", wife)
                 .with("husband", husband)
                 .with("ecNumber", ecNumber)
-                .with("currentMethod", currentMethod)
                 .with("village", village)
                 .with("subcenter", subCenter)
                 .with("phc", phc)

@@ -29,8 +29,6 @@ public class EligibleCouple extends MotechBaseDataObject {
     @JsonProperty
     private String phc;
     @JsonProperty
-    private String currentMethod;
-    @JsonProperty
     private Map<String, String> details;
 
     public EligibleCouple() {
@@ -49,11 +47,6 @@ public class EligibleCouple extends MotechBaseDataObject {
 
     public EligibleCouple withANMIdentifier(String anmIdentifier) {
         this.anmIdentifier = anmIdentifier;
-        return this;
-    }
-
-    public EligibleCouple withFamilyPlanning(String currentMethod) {
-        this.currentMethod = currentMethod;
         return this;
     }
 
