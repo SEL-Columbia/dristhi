@@ -25,6 +25,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
 import static org.motechproject.util.DateUtil.today;
+import static org.powermock.api.mockito.PowerMockito.verifyZeroInteractions;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 public class ANCSchedulesServiceTest extends BaseUnitTest {
@@ -119,18 +120,24 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldFulfillIFA1MilestoneWhenIFA1IsExpectedDuringANCCare() {
-        new FastForwardScheduleTestBase().forIFASchedule().whenExpecting("IFA 1").providedWithVisitNumber(1).willFulfillFor("IFA 1");
+    public void shouldFulfillIFA1IfItIsTheCurrentMilestoneWhenIFAIsProvided() {
+        new FastForwardScheduleTestBase().forIFASchedule().whenExpecting("IFA 1").willFulfillFor("IFA 1");
     }
 
     @Test
-    public void shouldFulfillIFA2MilestoneWhenIFA2IsExpectedDuringANCCare() {
-        new FastForwardScheduleTestBase().forIFASchedule().whenExpecting("IFA 2").providedWithVisitNumber(2).willFulfillFor("IFA 2");
+    public void shouldFulfillIFA2IfItIsTheCurrentMilestoneWhenIFAIsProvided() {
+        new FastForwardScheduleTestBase().forIFASchedule().whenExpecting("IFA 2").willFulfillFor("IFA 2");
     }
 
     @Test
-    public void shouldFulfillBothIFA1AndIFA2MilestoneWhenIFA1IsExpectedDuringANCCareAndIFA2IsProvided() {
-        new FastForwardScheduleTestBase().forIFASchedule().whenExpecting("IFA 1").providedWithVisitNumber(2).willFulfillFor("IFA 1", "IFA 2");
+    public void shouldNotFulfillIFAIfIFAScheduleIsAlreadyOver() throws Exception {
+        when(scheduleTrackingService.getEnrollment("Case X", SCHEDULE_IFA)).thenReturn(null);
+
+        schedulesService.ifaVisitHasHappened("Case X", today());
+
+        verify(scheduleTrackingService).getEnrollment("Case X", SCHEDULE_IFA);
+        verifyNoMoreInteractions(scheduleTrackingService);
+        verifyZeroInteractions(actionService);
     }
 
     @Test

@@ -89,19 +89,28 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/NOTDONE"
+                            "nameSpace": "http://openrosa.org/formdesigner/733B50BA-35FA-43FD-BAEB-7439270ED626"
                         }
                     },
                     "mappings": {
-                        "form|case|case_id": "caseId",
-                        "form|anc|tt_1": "tetanus1Date",
-                        "form|anc|tt_2": "tetanus2Date",
-                        "form|anc|ifa1": "ironFolicAcidTablet1Date",
-                        "form|anc|ifa2": "ironFolicAcidTablet2Date",
-                        "form|anc|anc_checkup1": "anc1Date",
-                        "form|anc|anc_checkup2": "anc2Date",
-                        "form|anc|anc_checkup3": "anc3Date",
-                        "form|anc|anc_checkup4": "anc4Date"
+                        "form|case|@case_id": "caseId",
+                        "form|meta|username": "anmIdentifier",
+                        "form|this_anc_number": "ancVisitNumber",
+                        "form|ifa_tablets_given": "numberOfIFATabletsGiven"
+                    },
+                    "extraMappings": {
+                        "details": {
+                            "form|is_high_risk": "isHighRisk",
+                            "form|high_risk_reason": "highRiskReason",
+                            "form|ifa_tablets_given": "numberOfIFATabletsGiven",
+                            "form|risk_observed": "riskObserved",
+                            "form|vitals|bp_diastolic": "bpDiastolic",
+                            "form|vitals|bp_systolic": "bpSystolic",
+                            "form|vitals|pulse_rate": "pulseRate",
+                            "form|vitals|temperature": "temperature",
+                            "form|vitals|weight": "weight",
+                            "form|vitals_taken": "vitalsTaken"
+                        }
                     }
                 },
                 {

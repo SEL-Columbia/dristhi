@@ -1,5 +1,7 @@
 package org.ei.drishti.contract;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 public class UpdateDetailsRequest {
     private String caseId;
     private String anmIdentifier;
@@ -15,5 +17,10 @@ public class UpdateDetailsRequest {
 
     public String anmIdentifier() {
         return anmIdentifier;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

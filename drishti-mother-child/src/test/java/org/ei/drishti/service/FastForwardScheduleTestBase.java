@@ -54,7 +54,7 @@ public class FastForwardScheduleTestBase {
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
-                schedulesService.ifaVisitHasHappened(caseId, visitNumber, visitDate);
+                schedulesService.ifaVisitHasHappened(caseId, visitDate);
             }
         };
         return this;

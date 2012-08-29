@@ -7,8 +7,8 @@ import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
-import org.ei.drishti.util.SafeMap;
 import org.ei.drishti.service.reporting.MotherReportingService;
+import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.util.DateUtil.today;
-import static org.motechproject.util.DateUtil.tomorrow;
 
 public class ANCServiceTest {
     @Mock
@@ -39,6 +38,7 @@ public class ANCServiceTest {
     protected MotherReportingService motherReportingService;
 
     private ANCService service;
+    private Map<String, Map<String, String>> EXTRA_DATA_EMPTY = new HashMap<>();
 
     @Before
     public void setUp() throws Exception {
@@ -100,95 +100,37 @@ public class ANCServiceTest {
     }
 
     @Test
-    public void shouldTellANCSchedulesServiceWhenANC1CareHasBeenProvided() {
+    public void shouldTellANCSchedulesServiceWhenANCCareHasBeenProvided() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
 
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withAnc1Date(yesterday()));
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withAncVisit(2), EXTRA_DATA_EMPTY);
 
-        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 1, yesterday());
+        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 2, today());
     }
 
     @Test
-    public void shouldTellANCSchedulesServiceWhenANC3CareHasBeenProvidedWhenItIsTheOnlyDateFilled() {
+    public void shouldNotConsiderAVisitAsANCWhenVisitNumberIsZero() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
 
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withAnc3Date(yesterday()));
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withAncVisit(0), EXTRA_DATA_EMPTY);
 
-        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 3, yesterday());
+        verifyZeroInteractions(ancSchedulesService);
     }
 
     @Test
-    public void shouldTellANCSchedulesServiceWhenMultipleANCVisitDatesHaveBeenProvided() {
+    public void shouldTellANCSchedulesServiceThatIFAIsProvidedOnlyWhenNumberOfIFATabletsProvidedIsMoreThanZero() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
 
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withAnc1Date(yesterday()).withAnc3Date(today()).withAnc4Date(tomorrow()));
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withNumberOfIFATabletsProvided(10), EXTRA_DATA_EMPTY);
 
-        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 1, yesterday());
-        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 3, today());
-        verify(ancSchedulesService).ancVisitHasHappened("CASE-X", 4, tomorrow());
-    }
-
-    @Test
-    public void shouldTellANCSchedulesServiceThatTT1IsProvidedWhenOnlyTT1DateHasBeenProvided() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
-
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withTT1Date(yesterday()));
-
-        verify(ancSchedulesService).ttVisitHasHappened("CASE-X", 1, yesterday());
-    }
-
-    @Test
-    public void shouldTellANCSchedulesServiceThatTT2IsProvidedWhenOnlyTT2DateHasBeenProvided() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
-
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withTT2Date(yesterday()));
-
-        verify(ancSchedulesService).ttVisitHasHappened("CASE-X", 2, yesterday());
-    }
-
-    @Test
-    public void shouldTellANCSchedulesServiceThatTT1AndTT2AreProvidedWhenBothTTDatesHaveBeenProvided() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
-
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withTT1Date(yesterday()).withTT2Date(yesterday()));
-
-        verify(ancSchedulesService).ttVisitHasHappened("CASE-X", 1, yesterday());
-        verify(ancSchedulesService).ttVisitHasHappened("CASE-X", 2, yesterday());
-    }
-
-    @Test
-    public void shouldTellANCSchedulesServiceThatIFA1IsProvidedWhenOnlyIFA1DateHasBeenProvided() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
-
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withIFA1Date(yesterday()));
-
-        verify(ancSchedulesService).ifaVisitHasHappened("CASE-X", 1, yesterday());
-    }
-
-    @Test
-    public void shouldTellANCSchedulesServiceThatIFA2IsProvidedWhenOnlyIFA2DateHasBeenProvided() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
-
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withIFA2Date(yesterday()));
-
-        verify(ancSchedulesService).ifaVisitHasHappened("CASE-X", 2, yesterday());
-    }
-
-    @Test
-    public void shouldTellANCSchedulesServiceThatIFA1AndIFA2AreProvidedWhenBothIFADatesHaveBeenProvided() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
-
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withIFA1Date(yesterday()).withIFA2Date(yesterday()));
-
-        verify(ancSchedulesService).ifaVisitHasHappened("CASE-X", 1, yesterday());
-        verify(ancSchedulesService).ifaVisitHasHappened("CASE-X", 2, yesterday());
+        verify(ancSchedulesService).ifaVisitHasHappened("CASE-X", today());
     }
 
     @Test
     public void shouldNotTryAndFulfillMilestoneWhenANCCareIsProvidedToAMotherWhoIsNotRegisteredInTheSystem() {
         when(mothers.motherExists("CASE-UNKNOWN-MOM")).thenReturn(false);
 
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-UNKNOWN-MOM"));
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-UNKNOWN-MOM"), EXTRA_DATA_EMPTY);
 
         verifyZeroInteractions(ancSchedulesService);
     }

@@ -59,7 +59,7 @@ public class ANCService {
         actionService.registerPregnancy(info.caseId(), couple.ecNumber(), info.thaayiCardNumber(), info.anmIdentifier(), couple.village(), info.lmpDate(), info.isHighRisk(), info.deliveryPlace(), details);
     }
 
-    public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {
+    public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {
         if (!allMothers.motherExists(ancInformation.caseId())) {
             logger.warn("Found care provided without registered mother for case ID: " + ancInformation.caseId());
             return;
@@ -69,12 +69,8 @@ public class ANCService {
             ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), entry.getKey(), entry.getValue());
         }
 
-        for (Map.Entry<Integer, LocalDate> entry : ancInformation.ttVisits().entrySet()) {
-            ancSchedulesService.ttVisitHasHappened(ancInformation.caseId(), entry.getKey(), entry.getValue());
-        }
-
-        for (Map.Entry<Integer, LocalDate> entry : ancInformation.ifaVisits().entrySet()) {
-            ancSchedulesService.ifaVisitHasHappened(ancInformation.caseId(), entry.getKey(), entry.getValue());
+        if (ancInformation.areIFATabletsProvided()) {
+            ancSchedulesService.ifaVisitHasHappened(ancInformation.caseId(), DateUtil.today());
         }
     }
 

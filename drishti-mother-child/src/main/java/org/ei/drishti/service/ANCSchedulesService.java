@@ -46,8 +46,8 @@ public class ANCSchedulesService {
         fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_TT, "TT");
     }
 
-    public void ifaVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
-        fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_IFA, "IFA");
+    public void ifaVisitHasHappened(String caseId, LocalDate visitDate) {
+        fulfillCurrentMilestone(caseId, visitDate, SCHEDULE_IFA, "IFA");
     }
 
     public void forceFulfillMilestone(String externalId, String scheduleName) {
@@ -77,6 +77,14 @@ public class ANCSchedulesService {
         }
 
         trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, milestone, null));
+    }
+
+    private void fulfillCurrentMilestone(String caseId, LocalDate visitDate, String scheduleName, String milestonePrefix) {
+        int expectedMilestoneNumber = currentMilestoneNumber(caseId, SCHEDULE_IFA, "IFA");
+        if (expectedMilestoneNumber == 0) {
+            return;
+        }
+        fastForwardSchedule(caseId, expectedMilestoneNumber, visitDate, scheduleName, milestonePrefix);
     }
 
     private void fastForwardSchedule(String caseId, int visitNumber, LocalDate visitDate, String scheduleName, String milestonePrefix) {

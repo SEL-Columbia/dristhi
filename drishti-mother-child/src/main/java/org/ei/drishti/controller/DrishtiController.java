@@ -39,10 +39,10 @@ public class DrishtiController {
         mctsService.registerANCCase(enrollmentInformation);
     }
 
-    public void updateANCCareInformation(AnteNatalCareInformation ancInformation) {
-        logger.info("ANC care: " + ancInformation);
+    public void updateANCCareInformation(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {
+        logger.info("ANC care: " + ancInformation + ". Extra data: " + extraData);
 
-        ancService.ancCareHasBeenProvided(ancInformation);
+        ancService.ancCareHasBeenProvided(ancInformation, extraData);
         mctsService.ancCareHasBeenProvided(ancInformation);
     }
 
