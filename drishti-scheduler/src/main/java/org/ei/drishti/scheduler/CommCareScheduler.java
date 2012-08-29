@@ -45,7 +45,7 @@ public class CommCareScheduler {
 
         Date startTime = DateTime.now().plusSeconds(60).toDate();
         MotechEvent event = new MotechEvent(SUBJECT, new HashMap<String, Object>());
-        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, 300L * MILLIS_PER_SECOND);
+        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, 150L * MILLIS_PER_SECOND);
 
         service.safeScheduleRepeatingJob(job);
 
