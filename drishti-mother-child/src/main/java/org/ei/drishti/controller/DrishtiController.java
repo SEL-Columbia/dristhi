@@ -87,6 +87,12 @@ public class DrishtiController {
         ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest, extraData);
     }
 
+    public void changeFamilyPlanningMethod(UpdateDetailsRequest updateDetailsRequest, Map<String, Map<String, String>> extraData) {
+        logger.info("Eligible couple change FP: " + updateDetailsRequest + ". Extra data: " + extraData);
+
+        ecService.updateDetails(updateDetailsRequest, extraData);
+    }
+
     public void closeEligibleCouple(EligibleCoupleCloseRequest eligibleCoupleCloseRequest) {
         logger.info("Eligible couple close: " + eligibleCoupleCloseRequest);
 

@@ -33,6 +33,7 @@ public class CommCareImportFormDefinitionsJSONTest {
         Map<String, Class<?>> classEveryFormMappingConvertsTo = new HashMap<String, Class<?>>();
 
         classEveryFormMappingConvertsTo.put("registerMother", AnteNatalCareEnrollmentInformation.class);
+        classEveryFormMappingConvertsTo.put("changeFamilyPlanningMethod", UpdateDetailsRequest.class);
         classEveryFormMappingConvertsTo.put("updateANCCareInformation", AnteNatalCareInformation.class);
         classEveryFormMappingConvertsTo.put("updateOutcomeOfANC", AnteNatalCareOutcomeInformation.class);
         classEveryFormMappingConvertsTo.put("closeANCCase", AnteNatalCareCloseInformation.class);
@@ -93,7 +94,7 @@ public class CommCareImportFormDefinitionsJSONTest {
         try {
             controllerClass.getDeclaredMethod(formName, parameterTypeOfTheMethod, Map.class);
         } catch (NoSuchMethodException e) {
-            fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2}, Map<String, Map<String, String>> extraData). If it is " +
+            fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2} request, Map<String, Map<String, String>> extraData). If it is " +
                     "not present, the dispatcher will not be able to do anything for form submissions of this form: {3}.",
                     controllerClass.getSimpleName(), formName, parameterTypeOfTheMethod.getSimpleName(), formName));
         }
@@ -103,7 +104,7 @@ public class CommCareImportFormDefinitionsJSONTest {
         try {
             controllerClass.getDeclaredMethod(formName, parameterTypeOfTheMethod);
         } catch (NoSuchMethodException e) {
-            fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2}). If it is " +
+            fail(MessageFormat.format("There should be a method in {0} like this: public void {1}({2} request). If it is " +
                     "not present, the dispatcher will not be able to do anything for form submissions of this form: {3}.",
                     controllerClass.getSimpleName(), formName, parameterTypeOfTheMethod.getSimpleName(), formName));
         }

@@ -23,6 +23,7 @@ import static junit.framework.Assert.assertEquals;
 import static org.ei.drishti.dto.BeneficiaryType.child;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 import static org.ei.drishti.dto.AlertPriority.normal;
+import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -180,5 +181,12 @@ public class ActionServiceTest {
         service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1", DateUtil.today(), "female");
 
         verifyZeroInteractions(allActions);
+    }
+
+    @Test
+    public void shouldSendAnUpdateECDetailsAction() throws Exception {
+        service.updateEligibleCoupleDetails("CASE X", "ANM X", mapOf("someKey", "someValue"));
+
+        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateEligibleCoupleDetails(mapOf("someKey", "someValue"))));
     }
 }

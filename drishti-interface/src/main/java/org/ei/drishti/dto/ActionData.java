@@ -70,6 +70,11 @@ public class ActionData {
                 .with("gender", gender);
     }
 
+    public static ActionData updateEligibleCoupleDetails(Map<String, String> details) {
+        return new ActionData("eligibleCouple", "updateDetails").
+                withDetails(details);
+    }
+
     public static ActionData from(String actionType, String actionTarget, Map<String, String> data, Map<String, String> details) {
         ActionData actionData = new ActionData(actionTarget, actionType);
         actionData.data.putAll(data);

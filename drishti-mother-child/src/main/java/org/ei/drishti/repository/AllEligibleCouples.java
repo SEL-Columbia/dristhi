@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
@@ -54,5 +55,11 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
             return null;
         }
         return couples.get(0);
+    }
+
+    public void updateDetails(String caseId, Map<String, String> details) {
+        EligibleCouple couple = findByCaseId(caseId);
+        couple.details().putAll(details);
+        update(couple);
     }
 }

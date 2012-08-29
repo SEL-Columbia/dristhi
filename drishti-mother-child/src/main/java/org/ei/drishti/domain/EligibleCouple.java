@@ -97,14 +97,18 @@ public class EligibleCouple extends MotechBaseDataObject {
         return caseId;
     }
 
+    public Map<String, String> details() {
+        return details;
+    }
+
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(o, this);
+        return EqualsBuilder.reflectionEquals(o, this, false, getClass());
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return HashCodeBuilder.reflectionHashCode(17, 37, this, false, getClass());
     }
 
     @Override

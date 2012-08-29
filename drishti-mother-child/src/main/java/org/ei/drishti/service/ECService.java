@@ -1,6 +1,7 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.EligibleCoupleCloseRequest;
+import org.ei.drishti.contract.UpdateDetailsRequest;
 import org.ei.drishti.contract.EligibleCoupleRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -34,5 +35,12 @@ public class ECService {
     public void closeEligibleCouple(EligibleCoupleCloseRequest request) {
         allEligibleCouples.close(request.caseId());
         actionService.closeEligibleCouple(request.caseId(), request.anmIdentifier());
+    }
+
+    public void updateDetails(UpdateDetailsRequest request, Map<String, Map<String, String>> extraDetails) {
+        allEligibleCouples.updateDetails(request.caseId(), extraDetails.get("details"));
+
+        EligibleCouple couple = allEligibleCouples.findByCaseId(request.caseId());
+        actionService.updateEligibleCoupleDetails(request.caseId(), request.anmIdentifier(), couple.details());
     }
 }

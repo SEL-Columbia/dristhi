@@ -14,11 +14,14 @@ import org.mockito.Mock;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.ei.drishti.util.EasyMap.create;
+import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DrishtiControllerTest {
+    public static final Map<String,Map<String,String>> EXTRA_DATA = create("reporting", mapOf("Some", "Data")).put("details", mapOf("SomeOther", "PieceOfData")).map();
     @Mock
     private CommCareFormSubmissionRouter dispatcher;
     @Mock
@@ -42,13 +45,9 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothANCServiceAndMCTSDuringMotherRegistrationAndReportItAsWell() {
         AnteNatalCareEnrollmentInformation ancEnrollInfo = mock(AnteNatalCareEnrollmentInformation.class);
 
-        HashMap<String, Map<String, String>> extraData = new HashMap<>();
-        HashMap<String, String> reportingData = new HashMap<>();
-        reportingData.put("Some", "Data");
-        extraData.put("reporting", reportingData);
-        controller.registerMother(ancEnrollInfo, extraData);
+        controller.registerMother(ancEnrollInfo, EXTRA_DATA);
 
-        verify(ancService).registerANCCase(ancEnrollInfo, extraData);
+        verify(ancService).registerANCCase(ancEnrollInfo, EXTRA_DATA);
         verify(mctsService).registerANCCase(ancEnrollInfo);
     }
 
@@ -76,13 +75,9 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothANCServiceAndMCTSDuringANCClose() throws Exception {
         AnteNatalCareCloseInformation closeInformation = mock(AnteNatalCareCloseInformation.class);
 
-        HashMap<String, Map<String, String>> extraData = new HashMap<>();
-        HashMap<String, String> reportingData = new HashMap<>();
-        reportingData.put("Some", "Data");
-        extraData.put("reporting", reportingData);
-        controller.closeANCCase(closeInformation, extraData);
+        controller.closeANCCase(closeInformation, EXTRA_DATA);
 
-        verify(ancService).closeANCCase(closeInformation, new SafeMap(reportingData));
+        verify(ancService).closeANCCase(closeInformation, new SafeMap(EXTRA_DATA.get("reporting")));
         verify(mctsService).closeANCCase(closeInformation);
     }
 
@@ -100,13 +95,9 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothPNCServiceAndMCTSDuringChildImmunizationUpdation() {
         ChildImmunizationUpdationRequest updationRequest = mock(ChildImmunizationUpdationRequest.class);
 
-        HashMap<String, Map<String, String>> extraData = new HashMap<>();
-        HashMap<String, String> reportingData = new HashMap<>();
-        reportingData.put("Some", "Data");
-        extraData.put("reporting", reportingData);
-        controller.updateChildImmunization(updationRequest, extraData);
+        controller.updateChildImmunization(updationRequest, EXTRA_DATA);
 
-        verify(pncService).updateChildImmunization(updationRequest, new SafeMap(reportingData));
+        verify(pncService).updateChildImmunization(updationRequest, new SafeMap(EXTRA_DATA.get("reporting")));
         verify(mctsService).updateChildImmunization(updationRequest);
     }
 
@@ -127,6 +118,15 @@ public class DrishtiControllerTest {
         controller.registerEligibleCouple(eligibleCoupleRegistrationRequest, new HashMap<String, Map<String, String>>());
 
         verify(ecService).registerEligibleCouple(eligibleCoupleRegistrationRequest, new HashMap<String, Map<String, String>>());
+    }
+
+    @Test
+    public void shouldDelegateToECServiceDuringEligibleCoupleFamilyPlanningMethodChange() {
+        UpdateDetailsRequest request = mock(UpdateDetailsRequest.class);
+
+        controller.changeFamilyPlanningMethod(request, EXTRA_DATA);
+
+        verify(ecService).updateDetails(request, EXTRA_DATA);
     }
 
     @Test

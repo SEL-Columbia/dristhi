@@ -20,8 +20,7 @@
                         "form|meta|username": "anmIdentifier",
                         "form|ec_village": "village",
                         "form|ec_village_subcenter": "subCenter",
-                        "form|ec_village_phc": "phc",
-                        "form|familyplanning_method": "currentMethod"
+                        "form|ec_village_phc": "phc"
                     },
                     "extraMappings": {
                         "reporting": {
@@ -29,9 +28,29 @@
                             "form|headofhousehold": "headOfHousehold"
                         },
                         "details": {
+                            "form|familyplanning_method": "currentMethod",
                             "form|headofhousehold": "headOfHousehold",
                             "form|religion": "religion",
                             "form|num_pregnancies": "pregnancies"
+                        }
+                    }
+                },
+                {
+                    "name": "changeFamilyPlanningMethod",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/c5767cf804a62e88b9cd5d264114663cc181a93d"
+                        }
+                    },
+                    "mappings": {
+                        "form|case|@case_id": "caseId",
+                        "form|meta|username": "anmIdentifier"
+                    },
+                    "extraMappings": {
+                        "details": {
+                            "form|date_familyplanningstart": "familyPlanningMethodChangeDate",
+                            "form|familyplanning_method_1": "currentMethod"
                         }
                     }
                 },
