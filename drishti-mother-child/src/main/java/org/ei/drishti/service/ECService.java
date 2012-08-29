@@ -5,6 +5,8 @@ import org.ei.drishti.contract.UpdateDetailsRequest;
 import org.ei.drishti.contract.EligibleCoupleRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.Map;
 public class ECService {
     private AllEligibleCouples allEligibleCouples;
     private ActionService actionService;
+    private static Logger logger = LoggerFactory.getLogger(ActionService.class.toString());
 
     @Autowired
     public ECService(AllEligibleCouples allEligibleCouples, ActionService actionService) {
@@ -38,9 +41,13 @@ public class ECService {
     }
 
     public void updateDetails(UpdateDetailsRequest request, Map<String, Map<String, String>> extraDetails) {
-        allEligibleCouples.updateDetails(request.caseId(), extraDetails.get("details"));
-
         EligibleCouple couple = allEligibleCouples.findByCaseId(request.caseId());
-        actionService.updateEligibleCoupleDetails(request.caseId(), request.anmIdentifier(), couple.details());
+        if (couple == null) {
+            logger.warn("Tried to update details of a non-existing EC: " + request + ". Extra details: " + extraDetails);
+            return;
+        }
+
+        EligibleCouple updatedCouple = allEligibleCouples.updateDetails(request.caseId(), extraDetails.get("details"));
+        actionService.updateEligibleCoupleDetails(request.caseId(), request.anmIdentifier(), updatedCouple.details());
     }
 }

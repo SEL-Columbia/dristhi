@@ -14,8 +14,7 @@ import java.util.Map;
 
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ECServiceTest {
@@ -45,16 +44,31 @@ public class ECServiceTest {
 
     @Test
     public void shouldUpdateExistingDetailsBlobInECAndCreateAnActionForAnUpdateDetailsCall() throws Exception {
+        Map<String, String> existingDetails = mapOf("existingThing", "existingValue");
+        EligibleCouple existingCoupleBeforeUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(existingDetails);
+
         Map<String, String> updatedDetails = create("currentMethod", "CONDOM").put("existingThing", "existingValue").map();
         EligibleCouple existingCoupleAfterUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(updatedDetails);
 
-        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(existingCoupleAfterUpdate);
+        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(existingCoupleBeforeUpdate);
+        when(allEligibleCouples.updateDetails("CASE X", mapOf("currentMethod", "CONDOM"))).thenReturn(existingCoupleAfterUpdate);
 
         ecService.updateDetails(new UpdateDetailsRequest("CASE X", "ANM X"), mapOf("details", mapOf("currentMethod", "CONDOM")));
 
         verify(allEligibleCouples).updateDetails("CASE X", mapOf("currentMethod", "CONDOM"));
         verify(allEligibleCouples).findByCaseId("CASE X");
         verify(actionService).updateEligibleCoupleDetails("CASE X", "ANM X", updatedDetails);
+    }
+
+    @Test
+    public void shouldIgnoreUpdationIfAnECIsNotFound() throws Exception {
+        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(null);
+
+        ecService.updateDetails(new UpdateDetailsRequest("CASE X", "ANM X"), mapOf("details", mapOf("currentMethod", "CONDOM")));
+
+        verify(allEligibleCouples).findByCaseId("CASE X");
+        verifyNoMoreInteractions(allEligibleCouples);
+        verifyZeroInteractions(actionService);
     }
 
     @Test

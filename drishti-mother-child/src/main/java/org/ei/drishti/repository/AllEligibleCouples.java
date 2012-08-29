@@ -57,9 +57,11 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
         return couples.get(0);
     }
 
-    public void updateDetails(String caseId, Map<String, String> details) {
+    public EligibleCouple updateDetails(String caseId, Map<String, String> details) {
         EligibleCouple couple = findByCaseId(caseId);
         couple.details().putAll(details);
         update(couple);
+
+        return couple;
     }
 }

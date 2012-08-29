@@ -83,9 +83,10 @@ public class AllEligibleCouplesIntegrationTest {
         EligibleCouple coupleWithoutDetails = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1").withANMIdentifier("ANM X").withLocation("Village 1", "SubCenter 1", "PHC 1");
 
         eligibleCouples.register(coupleWithoutDetails.withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
-        eligibleCouples.updateDetails("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map());
+        EligibleCouple updatedCouple = eligibleCouples.updateDetails("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map());
 
         Map<String,String> expectedUpdatedDetails = create("Key 1", "Value 1").put("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map();
         assertThat(eligibleCouples.findByCaseId("CASE X"), is(coupleWithoutDetails.withDetails(expectedUpdatedDetails)));
+        assertThat(updatedCouple, is(coupleWithoutDetails.withDetails(expectedUpdatedDetails)));
     }
 }
