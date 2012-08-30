@@ -20,9 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
-import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -78,7 +78,7 @@ public class ActionServiceTest {
     public void shouldCreateACloseActionForAVisitOfAMother() throws Exception {
         when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.markAlertAsClosedForVisitForMother("Case X", "ANC 1");
+        service.markAlertAsClosedForVisitForMother("Case X", "ANM ID 1", "ANC 1");
 
         verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.markAlertAsClosed("ANC 1")));
     }

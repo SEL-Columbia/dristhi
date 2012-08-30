@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.scheduler.util.DateUtil;
 import org.joda.time.LocalDate;
 import org.joda.time.Weeks;
@@ -38,16 +39,17 @@ public class ANCSchedulesService {
         enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule, preferredAlertTime, referenceTime);
     }
 
-    public void ancVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
-        fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_ANC, "ANC");
+    public void ancVisitHasHappened(AnteNatalCareInformation ancInformation) {
+        fastForwardSchedule(ancInformation, ancInformation.visitNumber(), SCHEDULE_ANC, "ANC");
     }
 
     public void ttVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
-        fastForwardSchedule(caseId, visitNumber, visitDate, SCHEDULE_TT, "TT");
+        final AnteNatalCareInformation ancInformation = new AnteNatalCareInformation(caseId, "ANM 1", visitNumber);
+        fastForwardSchedule(ancInformation, ancInformation.visitNumber(), SCHEDULE_TT, "TT");
     }
 
-    public void ifaVisitHasHappened(String caseId, LocalDate visitDate) {
-        fulfillCurrentMilestone(caseId, visitDate, SCHEDULE_IFA, "IFA");
+    public void ifaVisitHasHappened(AnteNatalCareInformation ancInformation) {
+        fulfillCurrentMilestone(ancInformation, SCHEDULE_IFA, "IFA");
     }
 
     public void forceFulfillMilestone(String externalId, String scheduleName) {
@@ -79,20 +81,21 @@ public class ANCSchedulesService {
         trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, milestone, null));
     }
 
-    private void fulfillCurrentMilestone(String caseId, LocalDate visitDate, String scheduleName, String milestonePrefix) {
-        int expectedMilestoneNumber = currentMilestoneNumber(caseId, SCHEDULE_IFA, "IFA");
+    private void fulfillCurrentMilestone(AnteNatalCareInformation ancInformation, String scheduleName, String milestonePrefix) {
+        int expectedMilestoneNumber = currentMilestoneNumber(ancInformation.caseId(), SCHEDULE_IFA, "IFA");
         if (expectedMilestoneNumber == 0) {
             return;
         }
-        fastForwardSchedule(caseId, expectedMilestoneNumber, visitDate, scheduleName, milestonePrefix);
+        fastForwardSchedule(ancInformation, expectedMilestoneNumber, scheduleName, milestonePrefix);
     }
 
-    private void fastForwardSchedule(String caseId, int visitNumber, LocalDate visitDate, String scheduleName, String milestonePrefix) {
+    private void fastForwardSchedule(AnteNatalCareInformation ancInformation, int visitNumberToFulfill, String scheduleName, String milestonePrefix) {
+        String caseId = ancInformation.caseId();
         int currentMilestoneNumber = currentMilestoneNumber(caseId, scheduleName, milestonePrefix);
 
-        for (int i = currentMilestoneNumber; i <= visitNumber ; i++) {
-            trackingService.fulfillCurrentMilestone(caseId, scheduleName, visitDate, new Time(now()));
-            actionService.markAlertAsClosedForVisitForMother(caseId, milestonePrefix + " " + i);
+        for (int i = currentMilestoneNumber; i <= visitNumberToFulfill; i++) {
+            trackingService.fulfillCurrentMilestone(caseId, scheduleName, ancInformation.visitDate(), new Time(now()));
+            actionService.markAlertAsClosedForVisitForMother(caseId, ancInformation.anmIdentifier(), milestonePrefix + " " + i);
         }
     }
 

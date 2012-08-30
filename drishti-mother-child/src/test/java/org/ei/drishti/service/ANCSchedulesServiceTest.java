@@ -1,6 +1,7 @@
 package org.ei.drishti.service;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.hamcrest.Description;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -133,7 +134,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     public void shouldNotFulfillIFAIfIFAScheduleIsAlreadyOver() throws Exception {
         when(scheduleTrackingService.getEnrollment("Case X", SCHEDULE_IFA)).thenReturn(null);
 
-        schedulesService.ifaVisitHasHappened("Case X", today());
+        schedulesService.ifaVisitHasHappened(new AnteNatalCareInformation("Case X", "ANM 1", 0));
 
         verify(scheduleTrackingService).getEnrollment("Case X", SCHEDULE_IFA);
         verifyNoMoreInteractions(scheduleTrackingService);

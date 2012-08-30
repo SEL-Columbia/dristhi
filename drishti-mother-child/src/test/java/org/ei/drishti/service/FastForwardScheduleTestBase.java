@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.joda.time.LocalDate;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
@@ -32,7 +33,7 @@ public class FastForwardScheduleTestBase {
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
-                schedulesService.ancVisitHasHappened(caseId, visitNumber, visitDate);
+                schedulesService.ancVisitHasHappened(new AnteNatalCareInformation(caseId, "ANM 1", visitNumber));
             }
         };
         return this;
@@ -54,7 +55,7 @@ public class FastForwardScheduleTestBase {
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
-                schedulesService.ifaVisitHasHappened(caseId, visitDate);
+                schedulesService.ifaVisitHasHappened(new AnteNatalCareInformation(caseId, "ANM 1", 0));
             }
         };
         return this;
@@ -75,7 +76,7 @@ public class FastForwardScheduleTestBase {
 
         when(scheduleTrackingService.getEnrollment("Case X", scheduleName)).thenReturn(recordForNextMilestone);
 
-        LocalDate visitDate = DateUtil.today().minusDays(3);
+        LocalDate visitDate = DateUtil.today();
 
         serviceCall.make("Case X", visitNumberToTryAndFulfill, visitDate);
 
@@ -89,7 +90,7 @@ public class FastForwardScheduleTestBase {
             verifyZeroInteractions(actionService);
         }
         for (String visitCode : expectedVisitCodes) {
-            verify(actionService).markAlertAsClosedForVisitForMother("Case X", visitCode);
+            verify(actionService).markAlertAsClosedForVisitForMother("Case X", "ANM 1", visitCode);
         }
         verifyNoMoreInteractions(actionService);
     }

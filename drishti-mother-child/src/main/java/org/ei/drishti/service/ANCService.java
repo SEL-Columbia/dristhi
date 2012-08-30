@@ -65,12 +65,12 @@ public class ANCService {
             return;
         }
 
-        for (Map.Entry<Integer, LocalDate> entry : ancInformation.ancVisits().entrySet()) {
-            ancSchedulesService.ancVisitHasHappened(ancInformation.caseId(), entry.getKey(), entry.getValue());
+        if (ancInformation.visitNumber() > 0) {
+            ancSchedulesService.ancVisitHasHappened(ancInformation);
         }
 
         if (ancInformation.areIFATabletsProvided()) {
-            ancSchedulesService.ifaVisitHasHappened(ancInformation.caseId(), DateUtil.today());
+            ancSchedulesService.ifaVisitHasHappened(ancInformation);
         }
 
         Mother motherWithUpdatedDetails = allMothers.updateDetails(ancInformation.caseId(), extraData.get("details"));
