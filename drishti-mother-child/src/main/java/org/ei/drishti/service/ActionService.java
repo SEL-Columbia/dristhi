@@ -89,7 +89,7 @@ public class ActionService {
                     caseId, ecNumber, anmIdentifier));
             return;
         }
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.createBeneficiary(eligibleCouple.caseId(), thaayiCardNumber, lmpDate, isHighRisk, deliveryPlace, details)));
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerPregnancy(eligibleCouple.caseId(), thaayiCardNumber, lmpDate, isHighRisk, deliveryPlace, details)));
     }
 
     public void updateDeliveryOutcome(String caseId, String status) {
@@ -99,7 +99,7 @@ public class ActionService {
             logger.warn(format("Trying to update delivery outcome without registered eligible couple. Ignoring case: {0}.", caseId));
             return;
         }
-        allActions.add(new Action(caseId, mother.anmIdentifier(), ActionData.updateBeneficiary(status)));
+        allActions.add(new Action(caseId, mother.anmIdentifier(), ActionData.updatePregnancyStatus(status)));
     }
 
     public void registerChildBirth(String caseId, String anmIdentifier, String thaayiCardNumber, LocalDate dateOfBirth, String gender) {

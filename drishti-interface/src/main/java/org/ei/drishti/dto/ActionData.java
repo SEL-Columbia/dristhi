@@ -48,8 +48,10 @@ public class ActionData {
         return new ActionData("eligibleCouple", "deleteEC");
     }
 
-    public static ActionData createBeneficiary(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate, boolean isHighRisk, String deliveryPlace, Map<String, String> details) {
-        return new ActionData("child", "createBeneficiary").with("ecCaseId", ecCaseId).with("thaayiCardNumber", thaayiCardNumber)
+    public static ActionData registerPregnancy(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate, boolean isHighRisk, String deliveryPlace, Map<String, String> details) {
+        return new ActionData("mother", "registerPregnancy")
+                .with("ecCaseId", ecCaseId)
+                .with("thaayiCardNumber", thaayiCardNumber)
                 .with("status", "pregnant")
                 .with("referenceDate", lmpDate.toString())
                 .with("isHighRisk", String.valueOf(isHighRisk))
@@ -57,13 +59,13 @@ public class ActionData {
                 .withDetails(details);
     }
 
-    public static ActionData updateBeneficiary(String status) {
-        return new ActionData("child", "updateBeneficiary")
+    public static ActionData updatePregnancyStatus(String status) {
+        return new ActionData("mother", "updatePregnancyStatus")
                 .with("status", status);
     }
 
     public static ActionData registerChildBirth(String motherCaseId, LocalDate dateOfBirth, String gender) {
-        return new ActionData("child", "createChildBeneficiary")
+        return new ActionData("child", "register")
                 .with("motherCaseId", motherCaseId)
                 .with("referenceDate", dateOfBirth.toString())
                 .with("gender", gender);
@@ -80,7 +82,7 @@ public class ActionData {
     }
 
     public static ActionData ancCareProvided(int visitNumber, LocalDate visitDate, int numberOfIFATabletsProvided) {
-        return new ActionData("mother", "ancCareProvided")
+            return new ActionData("mother", "ancCareProvided")
                 .with("visitNumber", String.valueOf(visitNumber))
                 .with("visitDate", visitDate.toString())
                 .with("numberOfIFATabletsProvided", String.valueOf(numberOfIFATabletsProvided));
