@@ -69,12 +69,13 @@ public class ANCService {
             ancSchedulesService.ancVisitHasHappened(ancInformation);
         }
 
-        if (ancInformation.areIFATabletsProvided()) {
+        if (ancInformation.ifaTablesHaveBeenProvided()) {
             ancSchedulesService.ifaVisitHasHappened(ancInformation);
         }
 
         Mother motherWithUpdatedDetails = allMothers.updateDetails(ancInformation.caseId(), extraData.get("details"));
         actionService.updateMotherDetails(motherWithUpdatedDetails.caseId(), motherWithUpdatedDetails.anmIdentifier(), motherWithUpdatedDetails.details());
+        actionService.ancCareProvided(motherWithUpdatedDetails.caseId(), motherWithUpdatedDetails.anmIdentifier(), ancInformation.visitNumber(), ancInformation.visitDate(), ancInformation.numberOfIFATabletsProvided());
     }
 
     public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {

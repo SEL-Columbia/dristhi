@@ -120,4 +120,8 @@ public class ActionService {
     public void updateMotherDetails(String caseId, String anmIdentifier, Map<String, String> details) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.updateMotherDetails(details)));
     }
+
+    public void ancCareProvided(String caseId, String anmIdentifier, int visitNumber, LocalDate visitDate, int numberOfIFATabletsGiven) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.ancCareProvided(visitNumber, visitDate, numberOfIFATabletsGiven)));
+    }
 }

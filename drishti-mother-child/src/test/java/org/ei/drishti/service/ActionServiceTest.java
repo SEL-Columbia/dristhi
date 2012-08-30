@@ -10,6 +10,7 @@ import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -191,9 +192,16 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldSendAnANCCareProvidedAction() throws Exception {
+    public void shouldSendAnUpdateMotherDetailsAction() throws Exception {
         service.updateMotherDetails("CASE X", "ANM X", mapOf("someKey", "someValue"));
 
         verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateMotherDetails(mapOf("someKey", "someValue"))));
+    }
+
+    @Test
+    public void shouldSendAnANCCareProvidedAction() throws Exception {
+        service.ancCareProvided("CASE X", "ANM X", 1, LocalDate.parse("2012-01-01"), 20);
+
+        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.ancCareProvided(1, LocalDate.parse("2012-01-01"), 20)));
     }
 }

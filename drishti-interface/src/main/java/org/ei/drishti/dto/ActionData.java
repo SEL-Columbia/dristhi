@@ -79,6 +79,13 @@ public class ActionData {
                 withDetails(details);
     }
 
+    public static ActionData ancCareProvided(int visitNumber, LocalDate visitDate, int numberOfIFATabletsProvided) {
+        return new ActionData("mother", "ancCareProvided")
+                .with("visitNumber", String.valueOf(visitNumber))
+                .with("visitDate", visitDate.toString())
+                .with("numberOfIFATabletsProvided", String.valueOf(numberOfIFATabletsProvided));
+    }
+
     public static ActionData from(String actionType, String actionTarget, Map<String, String> data, Map<String, String> details) {
         ActionData actionData = new ActionData(actionTarget, actionType);
         actionData.data.putAll(data);

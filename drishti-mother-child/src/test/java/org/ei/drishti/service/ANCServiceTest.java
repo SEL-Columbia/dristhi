@@ -150,10 +150,11 @@ public class ANCServiceTest {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails("CASE-X", detailsBeforeUpdate)).thenReturn(new Mother("CASE-X", "TC 1", "SomeName").withAnm("ANM X", "1234").withDetails(updatedDetails));
 
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X", "ANM X", 1), EXTRA_DATA);
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X", "ANM X", 1).withNumberOfIFATabletsProvided(10), EXTRA_DATA);
 
         verify(mothers).updateDetails("CASE-X", detailsBeforeUpdate);
         verify(actionService).updateMotherDetails("CASE-X", "ANM X", updatedDetails);
+        verify(actionService).ancCareProvided("CASE-X", "ANM X", 1, today(), 10);
     }
 
     @Test

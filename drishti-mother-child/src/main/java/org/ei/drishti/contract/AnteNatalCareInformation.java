@@ -27,7 +27,7 @@ public class AnteNatalCareInformation {
         return this;
     }
 
-    public boolean areIFATabletsProvided() {
+    public boolean ifaTablesHaveBeenProvided() {
         return numberOfIFATabletsGiven > 0;
     }
 
@@ -56,6 +56,10 @@ public class AnteNatalCareInformation {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public int numberOfIFATabletsProvided() {
+        return numberOfIFATabletsGiven;
     }
 }
 
