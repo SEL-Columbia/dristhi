@@ -119,4 +119,8 @@ public class ActionService {
     public void updateEligibleCoupleDetails(String caseId, String anmIdentifier, Map<String, String> details) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.updateEligibleCoupleDetails(details)));
     }
+
+    public void updateMotherDetails(String caseId, String anmIdentifier, Map<String, String> details) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.updateMotherDetails(details)));
+    }
 }

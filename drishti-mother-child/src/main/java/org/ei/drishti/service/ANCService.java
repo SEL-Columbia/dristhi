@@ -72,6 +72,9 @@ public class ANCService {
         if (ancInformation.areIFATabletsProvided()) {
             ancSchedulesService.ifaVisitHasHappened(ancInformation.caseId(), DateUtil.today());
         }
+
+        Mother motherWithUpdatedDetails = allMothers.updateDetails(ancInformation.caseId(), extraData.get("details"));
+        actionService.updateMotherDetails(motherWithUpdatedDetails.caseId(), motherWithUpdatedDetails.anmIdentifier(), motherWithUpdatedDetails.details());
     }
 
     public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {

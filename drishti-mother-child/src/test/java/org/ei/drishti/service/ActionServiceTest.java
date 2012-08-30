@@ -189,4 +189,11 @@ public class ActionServiceTest {
 
         verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateEligibleCoupleDetails(mapOf("someKey", "someValue"))));
     }
+
+    @Test
+    public void shouldSendAnANCCareProvidedAction() throws Exception {
+        service.updateMotherDetails("CASE X", "ANM X", mapOf("someKey", "someValue"));
+
+        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateMotherDetails(mapOf("someKey", "someValue"))));
+    }
 }

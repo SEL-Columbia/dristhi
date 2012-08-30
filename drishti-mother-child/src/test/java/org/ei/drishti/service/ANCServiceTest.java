@@ -18,6 +18,7 @@ import org.motechproject.model.Time;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -38,7 +39,9 @@ public class ANCServiceTest {
     protected MotherReportingService motherReportingService;
 
     private ANCService service;
+
     private Map<String, Map<String, String>> EXTRA_DATA_EMPTY = new HashMap<>();
+    private Map<String, Map<String, String>> EXTRA_DATA = mapOf("details", mapOf("someKey", "someValue"));
 
     @Before
     public void setUp() throws Exception {
@@ -102,6 +105,7 @@ public class ANCServiceTest {
     @Test
     public void shouldTellANCSchedulesServiceWhenANCCareHasBeenProvided() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "TC 1", "SomeName"));
 
         service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withAncVisit(2), EXTRA_DATA_EMPTY);
 
@@ -111,6 +115,7 @@ public class ANCServiceTest {
     @Test
     public void shouldNotConsiderAVisitAsANCWhenVisitNumberIsZero() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "TC 1", "SomeName"));
 
         service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withAncVisit(0), EXTRA_DATA_EMPTY);
 
@@ -120,6 +125,7 @@ public class ANCServiceTest {
     @Test
     public void shouldTellANCSchedulesServiceThatIFAIsProvidedOnlyWhenNumberOfIFATabletsProvidedIsMoreThanZero() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "TC 1", "SomeName"));
 
         service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withNumberOfIFATabletsProvided(10), EXTRA_DATA_EMPTY);
 
@@ -133,6 +139,20 @@ public class ANCServiceTest {
         service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-UNKNOWN-MOM"), EXTRA_DATA_EMPTY);
 
         verifyZeroInteractions(ancSchedulesService);
+    }
+
+    @Test
+    public void shouldUpdateDetailsAndSendTheUpdatedDetailsAsAnAction() throws Exception {
+        Map<String, String> detailsBeforeUpdate = EXTRA_DATA.get("details");
+        Map<String, String> updatedDetails = mapOf("someNewKey", "someNewValue");
+
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.updateDetails("CASE-X", detailsBeforeUpdate)).thenReturn(new Mother("CASE-X", "TC 1", "SomeName").withAnm("ANM X", "1234").withDetails(updatedDetails));
+
+        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X").withAncVisit(1), EXTRA_DATA);
+
+        verify(mothers).updateDetails("CASE-X", detailsBeforeUpdate);
+        verify(actionService).updateMotherDetails("CASE-X", "ANM X", updatedDetails);
     }
 
     @Test

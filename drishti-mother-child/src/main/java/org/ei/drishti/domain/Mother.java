@@ -130,6 +130,10 @@ public class Mother extends MotechBaseDataObject {
         return thaayiCardNumber;
     }
 
+    public Map<String, String> details() {
+        return details;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -137,11 +141,11 @@ public class Mother extends MotechBaseDataObject {
 
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(0, this);
+        return EqualsBuilder.reflectionEquals(o, this, false, getClass());
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return HashCodeBuilder.reflectionHashCode(17, 37, this, false, getClass());
     }
 }

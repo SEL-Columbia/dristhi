@@ -1,5 +1,6 @@
 package org.ei.drishti.repository.it;
 
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.junit.Before;
@@ -12,7 +13,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static org.ei.drishti.util.EasyMap.create;
+import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -75,5 +79,19 @@ public class AllMothersIntegrationTest {
 
         assertTrue(mothers.motherExists("CASE-1"));
         assertFalse(mothers.motherExists("CASE-NOT-KNOWN"));
+    }
+
+    @Test
+    public void shouldUpdateDetailsOfAnExistingMother() throws Exception {
+        mothers.register(motherWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
+        Mother updatedMother = mothers.updateDetails("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map());
+
+        Map<String,String> expectedUpdatedDetails = create("Key 1", "Value 1").put("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map();
+        assertThat(mothers.findByCaseId("CASE X"), is(motherWithoutDetails().withDetails(expectedUpdatedDetails)));
+        assertThat(updatedMother, is(motherWithoutDetails().withDetails(expectedUpdatedDetails)));
+    }
+
+    private Mother motherWithoutDetails() {
+        return new Mother("CASE X", "TC 1", "Wife 1").withAnm("ANM X", "9888198881");
     }
 }
