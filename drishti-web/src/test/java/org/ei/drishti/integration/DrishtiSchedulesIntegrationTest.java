@@ -54,24 +54,26 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.enrollFor("Ante Natal Care - Normal", newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("ANC 1", earliest);
-        schedule.assertAlerts("ANC 1", due, date(11, MARCH), date(18, MARCH), date(25, MARCH), date(1, APRIL));
-        schedule.assertAlerts("ANC 1", late, date(8, APRIL), date(11, APRIL), date(15, APRIL), date(18, APRIL), date(22, APRIL));
-        schedule.assertAlerts("ANC 1", max, date(24, APRIL), date(25, APRIL), date(26, APRIL));
+        schedule.assertAlerts("ANC 1", due, date(8, JANUARY), date(15, JANUARY), date(22, JANUARY), date(29, JANUARY), date(5, FEBRUARY), date(12, FEBRUARY), date(19, FEBRUARY),
+                date(26, FEBRUARY), date(4, MARCH), date(11, MARCH), date(18, MARCH));
+        schedule.assertAlerts("ANC 1", late, date(25, MARCH), date(28, MARCH), date(1, APRIL), date(4, APRIL));
+        schedule.assertAlerts("ANC 1", max, date(6, APRIL), date(7, APRIL));
 
         schedule.assertNoAlerts("ANC 2", earliest);
-        schedule.assertAlerts("ANC 2", due, date(3, JUNE), date(10, JUNE), date(17, JUNE), date(24, JUNE));
-        schedule.assertAlerts("ANC 2", late, date(1, JULY), date(4, JULY), date(8, JULY), date(11, JULY), date(15, JULY));
-        schedule.assertAlerts("ANC 2", max, date(17, JULY), date(18, JULY), date(19, JULY));
+        schedule.assertAlerts("ANC 2", due, date(8, APRIL), date(15, APRIL), date(22, APRIL), date(29, APRIL), date(6, MAY), date(13, MAY), date(20, MAY), date(27, MAY),
+                date(3, JUNE), date(10, JUNE), date(17, JUNE));
+        schedule.assertAlerts("ANC 2", late, date(1, JULY), date(4, JULY), date(8, JULY), date(11, JULY));
+        schedule.assertAlerts("ANC 2", max, date(13, JULY), date(14, JULY));
 
         schedule.assertNoAlerts("ANC 3", earliest);
-        schedule.assertAlerts("ANC 3", due, date(29, JULY), date(5, AUGUST), date(12, AUGUST), date(19, AUGUST));
-        schedule.assertAlerts("ANC 3", late, date(26, AUGUST), date(29, AUGUST));
-        schedule.assertAlerts("ANC 3", max, date(30, AUGUST), date(31, AUGUST), date(1, SEPTEMBER));
+        schedule.assertAlerts("ANC 3", due, date(15, JULY), date(22, JULY), date(29, JULY), date(5, AUGUST), date(12, AUGUST), date(19, AUGUST));
+        schedule.assertAlerts("ANC 3", late, date(26, AUGUST), date(29, AUGUST), date(2, SEPTEMBER), date(5, SEPTEMBER));
+        schedule.assertAlerts("ANC 3", max, date(7, SEPTEMBER), date(8, SEPTEMBER));
 
         schedule.assertNoAlerts("ANC 4", earliest);
-        schedule.assertAlerts("ANC 4", due, date(2, SEPTEMBER), date(9, SEPTEMBER), date(16, SEPTEMBER));
-        schedule.assertAlerts("ANC 4", late, date(23, SEPTEMBER), date(26, SEPTEMBER), date(30, SEPTEMBER), date(3, OCTOBER), date(7, OCTOBER));
-        schedule.assertAlerts("ANC 4", max, date(9, OCTOBER), date(10, OCTOBER), date(11, OCTOBER));
+        schedule.assertAlerts("ANC 4", due, date(9, SEPTEMBER), date(16, SEPTEMBER), date(23, SEPTEMBER));
+        schedule.assertAlerts("ANC 4", late, date(30, SEPTEMBER), date(3, OCTOBER));
+        schedule.assertAlerts("ANC 4", max, date(8, OCTOBER), date(9, OCTOBER));
 
         visualization.outputTo("mother-anc-normal.html", 3);
     }

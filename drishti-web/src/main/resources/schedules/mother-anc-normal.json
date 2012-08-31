@@ -5,58 +5,58 @@
         {
             "name": "ANC 1",
             "scheduleWindows": {
-                "earliest": ["10 Weeks"],
-                "due": ["14 Weeks"],
-                "late": ["16 Weeks", "1 Day"],
-                "max": ["17 weeks"]
+                "earliest": ["0 Weeks"],
+                "due": ["12 Weeks"],
+                "late": ["13 Weeks", "5 Day"],
+                "max": ["14 weeks"]
             },
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["10 Weeks"],
+                    "offset": ["1 Weeks"],
                     "interval": ["1 Week"],
-                    "count": "4"
+                    "count": "11"
                 },
                 {
                     "window": "late",
-                    "offset": ["14 Weeks"],
+                    "offset": ["12 Weeks"],
                     "interval": ["1 Week"],
-                    "count": "3"
+                    "count": "2"
                 },
                 {
                     "window": "late",
-                    "offset": ["14 Weeks", "3 Days"],
+                    "offset": ["12 Weeks", "3 Days"],
                     "interval": ["1 Week"],
                     "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": ["16 Weeks", "2 Days"],
+                    "offset": ["13 Weeks", "5 Days"],
                     "interval": ["1 Day"],
-                    "count": "3"
+                    "count": "2"
                 }
             ]
         },
         {
             "name": "ANC 2",
             "scheduleWindows": {
-                "earliest": ["22 Weeks"],
+                "earliest": ["14 Weeks"],
                 "due": ["26 Weeks"],
-                "late": ["28 Weeks", "1 Day"],
-                "max": ["29 Weeks"]
+                "late": ["27 Weeks", "5 Day"],
+                "max": ["28 Weeks"]
             },
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["22 Weeks"],
+                    "offset": ["14 Weeks"],
                     "interval": ["1 Week"],
-                    "count": "4"
+                    "count": "11"
                 },
                 {
                     "window": "late",
                     "offset": ["26 Weeks"],
                     "interval": ["1 Week"],
-                    "count": "3"
+                    "count": "2"
                 },
                 {
                     "window": "late",
@@ -66,73 +66,79 @@
                 },
                 {
                     "window": "max",
-                    "offset": ["28 Weeks", "2 Days"],
+                    "offset": ["27 Weeks", "5 Days"],
                     "interval": ["1 Day"],
-                    "count": "3"
+                    "count": "2"
                 }
             ]
         },
         {
             "name": "ANC 3",
             "scheduleWindows": {
-                "earliest": ["30 Weeks"],
-                "due": ["33 Weeks", "1 Day"],
-                "late": ["34 Weeks", "4 Days"],
-                "max": ["35 Weeks"]
+                "earliest": ["28 Weeks"],
+                "due": ["34 Weeks"],
+                "late": ["35 Weeks", "5 Days"],
+                "max": ["36 Weeks"]
             },
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["30 Weeks"],
+                    "offset": ["28 Weeks"],
                     "interval": ["1 Week"],
-                    "count": "4"
+                    "count": "6"
                 },
                 {
                     "window": "late",
                     "offset": ["34 Weeks"],
-                    "interval": ["3 Days"],
+                    "interval": ["1 Week"],
+                    "count": "2"
+                },
+                {
+                    "window": "late",
+                    "offset": ["34 Weeks", "3 Days"],
+                    "interval": ["1 Week"],
                     "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": ["34 Weeks", "4 Days"],
+                    "offset": ["35 Weeks", "5 Days"],
                     "interval": ["1 Day"],
-                    "count": "3"
+                    "count": "2"
                 }
             ]
         },
         {
             "name": "ANC 4",
             "scheduleWindows": {
-                "earliest": ["35 Weeks"],
-                "due": ["38 Weeks"],
-                "late": ["40 Weeks", "1 Day"],
-                "max": ["42 Weeks"]
+                "earliest": ["36 Weeks"],
+                "due": ["39 Weeks"],
+                "late": ["40 Weeks"],
+                "max": ["40 Weeks", "3 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["35 Weeks"],
+                    "offset": ["36 Weeks"],
                     "interval": ["1 Week"],
                     "count": "3"
                 },
                 {
                     "window": "late",
-                    "offset": ["38 Weeks"],
+                    "offset": ["39 Weeks"],
                     "interval": ["1 Week"],
-                    "count": "3"
+                    "count": "1"
                 },
                 {
                     "window": "late",
-                    "offset": ["38 Weeks", "3 Days"],
+                    "offset": ["39 Weeks", "3 Days"],
                     "interval": ["1 Week"],
-                    "count": "2"
+                    "count": "1"
                 },
                 {
                     "window": "max",
-                    "offset": ["40 Weeks", "2 Days"],
+                    "offset": ["40 Weeks", "1 Days"],
                     "interval": ["1 Day"],
-                    "count": "3"
+                    "count": "2"
                 }
             ]
         }
