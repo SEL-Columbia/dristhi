@@ -5,21 +5,15 @@
         {
             "name": "TT 1",
             "scheduleWindows": {
-                "earliest": ["10 Weeks"],
-                "due": ["15 Weeks"],
+                "earliest": ["1 Weeks"],
+                "due": ["40 Weeks"],
                 "late": ["40 Weeks"],
                 "max": [""]
             },
             "alerts": [
                 {
-                    "window": "late",
+                    "window": "due",
                     "offset": ["0 Days"],
-                    "interval": ["1 Weeks"],
-                    "count": "40"
-                },
-                {
-                    "window": "late",
-                    "offset": ["3 Days"],
                     "interval": ["1 Weeks"],
                     "count": "40"
                 }
@@ -28,29 +22,23 @@
         {
             "name": "TT 2",
             "scheduleWindows": {
-                "earliest": ["3 Weeks"],
-                "due": ["4 Weeks", "1 Day"],
-                "late": ["100 Weeks"],
-                "max": ["100 Weeks"]
+                "earliest": ["4 Weeks"],
+                "due": ["5 Weeks"],
+                "late": ["40 Weeks"],
+                "max": [""]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Weeks"],
-                    "count": "2"
+                    "count": "1"
                 },
                 {
                     "window": "late",
-                    "offset": ["2 Days"],
+                    "offset": ["0 Days"],
                     "interval": ["1 Week"],
-                    "count": "100"
-                },
-                {
-                    "window": "late",
-                    "offset": ["6 Days"],
-                    "interval": ["1 Week"],
-                    "count": "100"
+                    "count": "40"
                 }
             ]
         }

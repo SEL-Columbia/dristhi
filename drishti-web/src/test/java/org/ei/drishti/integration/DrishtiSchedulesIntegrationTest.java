@@ -83,13 +83,14 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.withFulfillmentDates(date(27, MAY)).enrollFor("Tetatnus Toxoid Vaccination", newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("TT 1", earliest);
-        schedule.assertNoAlerts("TT 1", due);
-        schedule.assertAlertsStartWith("TT 1", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
+        schedule.assertAlertsStartWith("TT 1", due, date(8, JANUARY), date(15, JANUARY), date(22, JANUARY), date(29, JANUARY), date(5, FEBRUARY), date(12, FEBRUARY), date(19, FEBRUARY),
+                date(26, FEBRUARY), date(4, MARCH), date(11, MARCH), date(18, MARCH));
+        schedule.assertNoAlerts("TT 1",late);
         schedule.assertNoAlerts("TT 1", max);
 
         schedule.assertNoAlerts("TT 2", earliest);
-        schedule.assertAlerts("TT 2", due, date(17, JUNE), date(24, JUNE));
-        schedule.assertAlertsStartWith("TT 2", late, date(27, JUNE), date(1, JULY), date(4, JULY), date(8, JULY), date(11, JULY), date(15, JULY), date(18, JULY), date(22, JULY), date(25, JULY), date(29, JULY));
+        schedule.assertAlerts("TT 2", due, date(24, JUNE));
+        schedule.assertAlertsStartWith("TT 2", late, date(1, JULY), date(8, JULY), date(15, JULY), date(22, JULY), date(29, JULY));
         schedule.assertNoAlerts("TT 2", max);
 
         visualization.outputTo("mother-tetanus-toxoid-vaccination.html", 2);
