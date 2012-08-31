@@ -1,8 +1,10 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.AnteNatalCareInformation;
+import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.scheduler.util.DateUtil;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.joda.time.Weeks;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.scheduler.DrishtiSchedules.*;
 import static org.joda.time.LocalTime.now;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
@@ -43,7 +46,7 @@ public class ANCSchedulesService {
         fastForwardSchedule(ancInformation, ancInformation.visitNumber(), SCHEDULE_ANC, "ANC");
     }
 
-    public void ttVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
+    public void ttVisitHasHappened(String caseId, int visitNumber) {
         final AnteNatalCareInformation ancInformation = new AnteNatalCareInformation(caseId, "ANM 1", visitNumber);
         fastForwardSchedule(ancInformation, ancInformation.visitNumber(), SCHEDULE_TT, "TT");
     }
@@ -79,6 +82,7 @@ public class ANCSchedulesService {
         }
 
         trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, milestone, null));
+        actionService.alertForBeneficiary(BeneficiaryType.mother, caseId, milestone, normal, referenceDateForSchedule.toDateTime(new LocalTime(14, 0)), referenceDateForSchedule.plusWeeks(12).toDateTime(new LocalTime(14, 0)));
     }
 
     private void fulfillCurrentMilestone(AnteNatalCareInformation ancInformation, String scheduleName, String milestonePrefix) {
