@@ -8,6 +8,7 @@ import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.LocalDate;
 import org.motechproject.model.MotechBaseDataObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @TypeDiscriminator("doc.type === 'Mother'")
@@ -42,6 +43,7 @@ public class Mother extends MotechBaseDataObject {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
+        this.details = new HashMap<>();
     }
 
     public String name() {

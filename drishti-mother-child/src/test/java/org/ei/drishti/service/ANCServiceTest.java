@@ -12,6 +12,7 @@ import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.motechproject.model.Time;
 
@@ -80,11 +81,11 @@ public class ANCServiceTest {
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", lmp.toDate());
         when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        HashMap<String, Map<String, String>> extraData = new HashMap<>();
-        extraData.put("reporting", new HashMap<String, String>());
-        service.registerANCCase(enrollmentInfo, extraData);
+        service.registerANCCase(enrollmentInfo, create("reporting", Collections.<String, String>emptyMap()).put("details", Collections.<String, String>emptyMap()).map());
 
-        verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(lmp), any(Time.class), any(Time.class));
+        InOrder inOrder = inOrder(actionService, ancSchedulesService);
+        inOrder.verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, "ANM ID 1", "bherya", lmp, Collections.<String, String>emptyMap());
+        inOrder.verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(lmp), any(Time.class), any(Time.class));
     }
 
     @Test
