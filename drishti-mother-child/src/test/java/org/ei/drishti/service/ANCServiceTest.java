@@ -57,7 +57,7 @@ public class ANCServiceTest {
 
         String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", lmp.toDate(), "1", "PHC");
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", lmp.toDate());
         when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
         Map<String, Map<String, String>> extraData = create("details", mapOf("some_field", "some_value")).put("reporting", Collections.<String, String>emptyMap()).map();
 
@@ -67,8 +67,8 @@ public class ANCServiceTest {
         verify(motherReportingService).registerANC(new SafeMap(extraData.get("reporting")), "bherya", "Sub Center");
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName)
                 .withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp).withECNumber("EC Number 1")
-                .withLocation("bherya", "Sub Center", "PHC X").withFacility("PHC").withDetails(details).isHighRisk(true)));
-        verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, "ANM ID 1", "bherya", lmp, true, "PHC", details);
+                .withLocation("bherya", "Sub Center", "PHC X").withDetails(details)));
+        verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, "ANM ID 1", "bherya", lmp, details);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class ANCServiceTest {
 
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", lmp.toDate(), "0", "PHC");
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", lmp.toDate());
         when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
 
         HashMap<String, Map<String, String>> extraData = new HashMap<>();
@@ -91,7 +91,7 @@ public class ANCServiceTest {
     public void shouldEnrollAMotherUsingCurrentDateIfLMPDateIsNotFound() {
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
-        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", null, "0", "PHC");
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", null);
         when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
 
         HashMap<String, Map<String, String>> extraData = new HashMap<>();

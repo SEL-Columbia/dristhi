@@ -68,9 +68,7 @@
                         "form|thayi_no": "thaayiCardNumber",
                         "form|lmp_date": "lmp",
                         "form|anm_phone_number": "anmPhoneNumber",
-                        "form|meta|username": "anmIdentifier",
-                        "form|isHighRisk": "isHighRisk",
-                        "form|name_deliveryfacility": "deliveryPlace"
+                        "form|meta|username": "anmIdentifier"
                     },
                     "extraMappings": {
                         "reporting": {
@@ -80,7 +78,10 @@
                             "form|meta|username": "anmIdentifier"
                         },
                         "details": {
-                            "form|asha_name": "ashaName"
+                            "form|isHighRisk": "isHighRisk",
+                            "form|name_deliveryfacility": "deliveryPlace",
+                            "form|asha_name": "ashaName",
+                            "form|asha_phone_number": "ashaPhoneNumber"
                         }
                     }
                 },

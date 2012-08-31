@@ -48,14 +48,12 @@ public class ActionData {
         return new ActionData("eligibleCouple", "deleteEC");
     }
 
-    public static ActionData registerPregnancy(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate, boolean isHighRisk, String deliveryPlace, Map<String, String> details) {
+    public static ActionData registerPregnancy(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate, Map<String, String> details) {
         return new ActionData("mother", "registerPregnancy")
                 .with("ecCaseId", ecCaseId)
                 .with("thaayiCardNumber", thaayiCardNumber)
                 .with("status", "pregnant")
                 .with("referenceDate", lmpDate.toString())
-                .with("isHighRisk", String.valueOf(isHighRisk))
-                .with("deliveryPlace", deliveryPlace)
                 .withDetails(details);
     }
 

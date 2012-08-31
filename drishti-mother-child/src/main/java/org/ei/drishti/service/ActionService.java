@@ -82,14 +82,14 @@ public class ActionService {
         allActions.addWithDelete(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()), "alert");
     }
 
-    public void registerPregnancy(String caseId, String ecNumber, String thaayiCardNumber, String anmIdentifier, String village, LocalDate lmpDate, boolean isHighRisk, String deliveryPlace, Map<String, String> details) {
+    public void registerPregnancy(String caseId, String ecNumber, String thaayiCardNumber, String anmIdentifier, String village, LocalDate lmpDate, Map<String, String> details) {
         EligibleCouple eligibleCouple = allEligibleCouples.findByECNumberAndVillage(ecNumber, village);
         if (eligibleCouple == null) {
             logger.warn(format("Found pregnancy without registered eligible couple. Ignoring case: {0} for ecNumber: {1} for ANM: {2}",
                     caseId, ecNumber, anmIdentifier));
             return;
         }
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerPregnancy(eligibleCouple.caseId(), thaayiCardNumber, lmpDate, isHighRisk, deliveryPlace, details)));
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerPregnancy(eligibleCouple.caseId(), thaayiCardNumber, lmpDate, details)));
     }
 
     public void updateDeliveryOutcome(String caseId, String status) {

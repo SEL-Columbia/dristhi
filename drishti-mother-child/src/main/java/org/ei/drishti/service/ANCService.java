@@ -48,7 +48,7 @@ public class ANCService {
         EligibleCouple couple = eligibleCouples.findByCaseId(info.ecCaseId());
         Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), couple.wife()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
                 .withLMP(info.lmpDate()).withECNumber(couple.ecNumber()).withLocation(couple.village(), couple.subCenter(), couple.phc())
-                .withFacility(info.deliveryPlace()).withDetails(details).isHighRisk(info.isHighRisk());
+                .withDetails(details);
         allMothers.register(mother);
 
         Time preferredAlertTime = new Time(new LocalTime(14, 0));
@@ -56,7 +56,7 @@ public class ANCService {
 
         reportingService.registerANC(new SafeMap(extraData.get("reporting")), couple.village(), couple.subCenter());
         ancSchedulesService.enrollMother(info.caseId(), referenceDate, new Time(now()), preferredAlertTime);
-        actionService.registerPregnancy(info.caseId(), couple.ecNumber(), info.thaayiCardNumber(), info.anmIdentifier(), couple.village(), info.lmpDate(), info.isHighRisk(), info.deliveryPlace(), details);
+        actionService.registerPregnancy(info.caseId(), couple.ecNumber(), info.thaayiCardNumber(), info.anmIdentifier(), couple.village(), info.lmpDate(), details);
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {

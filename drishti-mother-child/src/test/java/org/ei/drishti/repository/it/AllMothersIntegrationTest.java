@@ -1,6 +1,5 @@
 package org.ei.drishti.repository.it;
 
-import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.junit.Before;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.ei.drishti.util.EasyMap.create;
-import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -40,7 +38,7 @@ public class AllMothersIntegrationTest {
         HashMap<String, String> details = new HashMap<String, String>();
         details.put("some_field", "some_value");
         Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa").withAnm("ANM ID 1", "12345").withLMP(DateUtil.tomorrow())
-                .withECNumber("EC Number 1").withLocation("bherya", "Sub Center", "PHC X").withDetails(details).isHighRisk(true);
+                .withECNumber("EC Number 1").withLocation("bherya", "Sub Center", "PHC X").withDetails(details);
 
         mothers.register(mother);
 

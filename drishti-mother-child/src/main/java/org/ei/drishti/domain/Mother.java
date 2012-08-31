@@ -33,10 +33,6 @@ public class Mother extends MotechBaseDataObject {
     @JsonProperty
     private String phc;
     @JsonProperty
-    private boolean isHighRisk;
-    @JsonProperty
-    private String deliveryPlace;
-    @JsonProperty
     private Map<String, String> details;
 
     private Mother() {
@@ -75,18 +71,8 @@ public class Mother extends MotechBaseDataObject {
         return this;
     }
 
-    public Mother withFacility(String deliveryPlace) {
-        this.deliveryPlace = deliveryPlace;
-        return this;
-    }
-
     public Mother withDetails(Map<String, String> details) {
         this.details = details;
-        return this;
-    }
-
-    public Mother isHighRisk(boolean value) {
-        this.isHighRisk = value;
         return this;
     }
 
@@ -100,10 +86,6 @@ public class Mother extends MotechBaseDataObject {
 
     public String anmIdentifier() {
         return anmIdentifier;
-    }
-
-    public String anmPhoneNo() {
-        return anmPhoneNumber;
     }
 
     public String village() {

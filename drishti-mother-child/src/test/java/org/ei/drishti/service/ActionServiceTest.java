@@ -132,16 +132,16 @@ public class ActionServiceTest {
         HashMap<String, String> details = new HashMap<>();
         details.put("some_field", "some_value");
 
-        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", DateUtil.today(), false, "PHC", details);
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", DateUtil.today(), details);
 
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.registerPregnancy("Case EC 1", "Thaayi 1", DateUtil.today(), false, "PHC", details)));
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.registerPregnancy("Case EC 1", "Thaayi 1", DateUtil.today(), details)));
     }
 
     @Test
     public void shouldNotAddActionForBeneficiaryRegistrationIfECNotFound() throws Exception {
         when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "Village X")).thenReturn(null);
 
-        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", null, true, "PHC", new HashMap<String, String>());
+        service.registerPregnancy("Case X", "EC Number 1", "Thaayi 1", "ANM X", "Village X", null, new HashMap<String, String>());
 
         verifyZeroInteractions(allActions);
     }
