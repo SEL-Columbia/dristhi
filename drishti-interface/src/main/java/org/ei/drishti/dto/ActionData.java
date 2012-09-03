@@ -57,9 +57,9 @@ public class ActionData {
                 .withDetails(details);
     }
 
-    public static ActionData updatePregnancyStatus(String status) {
-        return new ActionData("mother", "updatePregnancyStatus")
-                .with("status", status);
+    public static ActionData closeANC(String reasonForClose) {
+        return new ActionData("mother", "closeANC")
+                .with("reasonForClose", reasonForClose);
     }
 
     public static ActionData registerChildBirth(String motherCaseId, LocalDate dateOfBirth, String gender) {

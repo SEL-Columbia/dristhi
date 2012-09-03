@@ -147,23 +147,10 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldUpdateDeliveryOutcomeOfMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "TC 1", "Theresa").withAnm("ANM X", "ANM phone number").withECNumber("EC Number 1").withLocation("bherya", "Sub Center", "PHC X"));
-        when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "bherya")).thenReturn(new EligibleCouple("Case EC 1", "EC Number 1"));
+    public void shouldCloseANCCase() throws Exception {
+        service.closeANC("Case X", "ANM X", "delivery");
 
-        service.updateDeliveryOutcome("Case X", "delivery");
-
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.updatePregnancyStatus("delivery")));
-    }
-
-    @Test
-    public void shouldUpdateBeneficiaryWhenECIsNotRegistered() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "TC 1", "Theresa").withAnm("ANM X", "ANM phone number").withECNumber("EC Number 1").withLocation("bherya", "Sub Center", "PHC X"));
-        when(allEligibleCouples.findByECNumberAndVillage("EC Number 1", "bherya")).thenReturn(null);
-
-        service.updateDeliveryOutcome("Case X", "delivery");
-
-        verifyZeroInteractions(allActions);
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.closeANC("delivery")));
     }
 
     @Test

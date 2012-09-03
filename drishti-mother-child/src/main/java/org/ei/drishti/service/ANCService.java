@@ -89,6 +89,6 @@ public class ANCService {
 
         reportingService.closeANC(data);
         ancSchedulesService.closeCase(closeInformation.caseId());
-        actionService.updateDeliveryOutcome(closeInformation.caseId(), closeInformation.reason());
+        actionService.closeANC(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.reason());
     }
 }
