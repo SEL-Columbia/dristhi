@@ -2,12 +2,10 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.domain.Action;
 import org.ei.drishti.domain.Child;
-import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.ActionData;
 import org.ei.drishti.repository.AllActions;
 import org.ei.drishti.repository.AllChildren;
-import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -19,6 +17,7 @@ import org.motechproject.util.DateUtil;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
 import static org.ei.drishti.dto.AlertPriority.normal;
@@ -177,5 +176,16 @@ public class ActionServiceTest {
         service.ancCareProvided("CASE X", "ANM X", 1, LocalDate.parse("2012-01-01"), 20);
 
         verify(allActions).add(new Action("CASE X", "ANM X", ActionData.ancCareProvided(1, LocalDate.parse("2012-01-01"), 20)));
+    }
+
+    @Test
+    public void shouldAddCreateActionForOutOfAreaANCRegistration() throws Exception {
+        Map<String, String> extraData = mapOf("someKey", "someValue");
+        LocalDate lmp = LocalDate.parse("2012-05-05");
+
+        service.registerOutOfAreaANC("CASE X", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "TC 1", lmp, extraData);
+
+        verify(allActions).add(new Action("CASE X", "ANM X",
+                ActionData.registerOutOfAreaANC("Wife 1", "Husband 1", "Village X", "SubCenter X", "PHC X", "TC 1", lmp, extraData)));
     }
 }

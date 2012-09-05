@@ -1,14 +1,12 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.domain.Action;
-import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.ActionData;
 import org.ei.drishti.dto.AlertPriority;
 import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.repository.AllActions;
 import org.ei.drishti.repository.AllChildren;
-import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -109,5 +107,11 @@ public class ActionService {
 
     public void ancCareProvided(String caseId, String anmIdentifier, int visitNumber, LocalDate visitDate, int numberOfIFATabletsGiven) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.ancCareProvided(visitNumber, visitDate, numberOfIFATabletsGiven)));
+    }
+
+    public void registerOutOfAreaANC(String caseId, String wifeName, String husbandName, String anmIdentifier, String village, String subCenter, String phc, String thaayiCardNumber,
+                                     LocalDate lmp, Map<String, String> details) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerOutOfAreaANC(wifeName, husbandName, village, subCenter, phc,
+                thaayiCardNumber, lmp, details)));
     }
 }

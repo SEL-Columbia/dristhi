@@ -86,6 +86,20 @@ public class ActionData {
                 .with("numberOfIFATabletsProvided", String.valueOf(numberOfIFATabletsProvided));
     }
 
+    public static ActionData registerOutOfAreaANC(String wife, String husband, String village, String subCenter, String phc,
+                                                  String thaayiCardNumber, LocalDate lmp, Map<String, String> details) {
+        return new ActionData("mother", "registerOutOfAreaANC")
+                .with("wife", wife)
+                .with("husband", husband)
+                .with("village", village)
+                .with("subcenter", subCenter)
+                .with("phc", phc)
+                .with("thaayiCardNumber", thaayiCardNumber)
+                .with("status", "pregnant")
+                .with("referenceDate", lmp.toString())
+                .withDetails(details);
+    }
+
     public static ActionData from(String actionType, String actionTarget, Map<String, String> data, Map<String, String> details) {
         ActionData actionData = new ActionData(actionTarget, actionType);
         actionData.data.putAll(data);

@@ -101,6 +101,8 @@ public class ANCServiceTest {
                 .withAnm(request.anmIdentifier(), "9876543210").withLMP(lmp)
                 .withLocation("Village X", "SubCenter X", "PHC X").withDetails(details)));
         verify(ancSchedulesService).enrollMother(eq("CASE X"), eq(lmp), any(Time.class), any(Time.class));
+        verify(actionService).registerOutOfAreaANC(request.caseId(), request.wife(), request.husband(), request.anmIdentifier(), request.village(), request.subCenter(),
+                request.phc(), request.thaayiCardNumber(), request.lmpDate(), details);
     }
 
     @Test

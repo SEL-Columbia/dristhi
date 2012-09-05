@@ -73,7 +73,10 @@ public class ANCService {
         Mother mother = new Mother(request.caseId(), request.thaayiCardNumber(), request.wife()).withAnm(request.anmIdentifier(), request.anmPhoneNumber())
                 .withLMP(request.lmpDate()).withLocation(request.village(), request.subCenter(), request.phc())
                 .withDetails(details);
+
         allMothers.register(mother);
+        actionService.registerOutOfAreaANC(request.caseId(), request.wife(), request.husband(), request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), request.thaayiCardNumber(),
+                request.lmpDate(), details);
         enrollMotherIntoSchedules(request.caseId(), request.lmpDate());
     }
 
