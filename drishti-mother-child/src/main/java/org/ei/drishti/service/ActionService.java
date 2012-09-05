@@ -28,15 +28,13 @@ public class ActionService {
     private AllActions allActions;
     private AllMothers allMothers;
     private AllChildren allChildren;
-    private AllEligibleCouples allEligibleCouples;
     private static Logger logger = LoggerFactory.getLogger(ActionService.class.toString());
 
     @Autowired
-    public ActionService(AllActions allActions, AllMothers allMothers, AllChildren allChildren, AllEligibleCouples allEligibleCouples) {
+    public ActionService(AllActions allActions, AllMothers allMothers, AllChildren allChildren) {
         this.allActions = allActions;
         this.allMothers = allMothers;
         this.allChildren = allChildren;
-        this.allEligibleCouples = allEligibleCouples;
     }
 
     public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
@@ -82,14 +80,8 @@ public class ActionService {
         allActions.addWithDelete(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()), "alert");
     }
 
-    public void registerPregnancy(String caseId, String ecNumber, String thaayiCardNumber, String anmIdentifier, String village, LocalDate lmpDate, Map<String, String> details) {
-        EligibleCouple eligibleCouple = allEligibleCouples.findByECNumberAndVillage(ecNumber, village);
-        if (eligibleCouple == null) {
-            logger.warn(format("Found pregnancy without registered eligible couple. Ignoring case: {0} for ecNumber: {1} for ANM: {2}",
-                    caseId, ecNumber, anmIdentifier));
-            return;
-        }
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerPregnancy(eligibleCouple.caseId(), thaayiCardNumber, lmpDate, details)));
+    public void registerPregnancy(String caseId, String ecCaseId, String thaayiCardNumber, String anmIdentifier, LocalDate lmpDate, Map<String, String> details) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerPregnancy(ecCaseId, thaayiCardNumber, lmpDate, details)));
     }
 
     public void closeANC(String caseId, String anmIdentifier, String reasonForClose) {

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+import static java.text.MessageFormat.format;
 import static org.joda.time.LocalTime.now;
 
 @Service
@@ -46,11 +47,17 @@ public class ANCService {
         Map<String, String> details = extraData.get("details");
 
         EligibleCouple couple = eligibleCouples.findByCaseId(info.ecCaseId());
+        if (couple == null) {
+            logger.warn(format("Found pregnancy without registered eligible couple. Ignoring case: {0} for mother with case: {1} for ANM: {2}",
+                    info.ecCaseId(), info.caseId(), info.anmIdentifier()));
+            return;
+        }
+
         Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), couple.wife()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
                 .withLMP(info.lmpDate()).withECNumber(couple.ecNumber()).withLocation(couple.village(), couple.subCenter(), couple.phc())
                 .withDetails(details);
         allMothers.register(mother);
-        actionService.registerPregnancy(info.caseId(), couple.ecNumber(), info.thaayiCardNumber(), info.anmIdentifier(), couple.village(), info.lmpDate(), details);
+        actionService.registerPregnancy(info.caseId(), couple.caseId(), info.thaayiCardNumber(), info.anmIdentifier(), info.lmpDate(), details);
 
         Time preferredAlertTime = new Time(new LocalTime(14, 0));
         LocalDate referenceDate = info.lmpDate() != null ? info.lmpDate() : DateUtil.today();

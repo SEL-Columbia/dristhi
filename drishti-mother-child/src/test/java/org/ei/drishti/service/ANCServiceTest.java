@@ -69,7 +69,19 @@ public class ANCServiceTest {
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName)
                 .withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp).withECNumber("EC Number 1")
                 .withLocation("bherya", "Sub Center", "PHC X").withDetails(details)));
-        verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, "ANM ID 1", "bherya", lmp, details);
+        verify(actionService).registerPregnancy("CASE-1", "EC-CASE-1", thaayiCardNumber, "ANM ID 1", lmp, details);
+    }
+
+    @Test
+    public void shouldNotRegisterAMotherIfTheECIsNotFound() {
+        AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", "THAAYI-CARD-NUMBER-1", "12345", "ANM ID 1", null);
+        when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(null);
+
+        service.registerANCCase(enrollmentInfo, mapOf("reporting", Collections.<String, String>emptyMap()));
+
+        verifyZeroInteractions(mothers);
+        verifyZeroInteractions(ancSchedulesService);
+        verifyZeroInteractions(actionService);
     }
 
     @Test
@@ -84,7 +96,7 @@ public class ANCServiceTest {
         service.registerANCCase(enrollmentInfo, create("reporting", Collections.<String, String>emptyMap()).put("details", Collections.<String, String>emptyMap()).map());
 
         InOrder inOrder = inOrder(actionService, ancSchedulesService);
-        inOrder.verify(actionService).registerPregnancy("CASE-1", "EC Number 1", thaayiCardNumber, "ANM ID 1", "bherya", lmp, Collections.<String, String>emptyMap());
+        inOrder.verify(actionService).registerPregnancy("CASE-1", "EC-CASE-1", thaayiCardNumber, "ANM ID 1", lmp, Collections.<String, String>emptyMap());
         inOrder.verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(lmp), any(Time.class), any(Time.class));
     }
 

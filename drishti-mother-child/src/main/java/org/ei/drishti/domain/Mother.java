@@ -94,10 +94,6 @@ public class Mother extends MotechBaseDataObject {
         return village;
     }
 
-    public String ecNumber() {
-        return ecNumber;
-    }
-
     public String phc() {
         return phc;
     }

@@ -46,17 +46,6 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
         remove(couple);
     }
 
-    @View(name = "eligible_couple_by_ecnumber_and_village", map = "function(doc) { if (doc.type === 'EligibleCouple') { emit([doc.ecNumber, doc.village], null); } }")
-    public EligibleCouple findByECNumberAndVillage(String ecNumber, String village) {
-        ComplexKey key = ComplexKey.of(ecNumber, village);
-
-        List<EligibleCouple> couples = db.queryView(createQuery("eligible_couple_by_ecnumber_and_village").key(key).includeDocs(true), EligibleCouple.class);
-        if (couples.size() == 0) {
-            return null;
-        }
-        return couples.get(0);
-    }
-
     public EligibleCouple updateDetails(String caseId, Map<String, String> details) {
         EligibleCouple couple = findByCaseId(caseId);
         couple.details().putAll(details);
