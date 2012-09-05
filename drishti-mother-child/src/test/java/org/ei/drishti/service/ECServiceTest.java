@@ -2,6 +2,7 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.contract.EligibleCoupleCloseRequest;
 import org.ei.drishti.contract.EligibleCoupleRegistrationRequest;
+import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.contract.UpdateDetailsRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -40,6 +41,17 @@ public class ECServiceTest {
                 .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(extraData.get("details"));
         verify(allEligibleCouples).register(couple);
         verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", extraData.get("details"));
+    }
+
+    @Test
+    public void shouldRegisterEligibleCoupleForOutOfAreaANC() throws Exception {
+        Map<String, Map<String, String>> extraData = mapOf("details", Collections.<String, String>emptyMap());
+
+        ecService.registerEligibleCoupleForOutOfAreaANC(new OutOfAreaANCRegistrationRequest("CASE X", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "TC 1", "2012-05-05", "9876543210"), extraData);
+
+        EligibleCouple couple = new EligibleCouple("CASE X", "0").withCouple("Wife 1", "Husband 1")
+                .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(extraData.get("details")).asOutOfArea();
+        verify(allEligibleCouples).register(couple);
     }
 
     @Test

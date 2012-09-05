@@ -3,6 +3,7 @@ package org.ei.drishti.service;
 import org.ei.drishti.contract.AnteNatalCareCloseInformation;
 import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
 import org.ei.drishti.contract.AnteNatalCareInformation;
+import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -82,6 +83,24 @@ public class ANCServiceTest {
         verifyZeroInteractions(mothers);
         verifyZeroInteractions(ancSchedulesService);
         verifyZeroInteractions(actionService);
+    }
+
+    @Test
+    public void shouldRegisterAOutOfAreaMother() {
+        LocalDate lmp = today();
+
+        String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
+        String motherName = "Theresa";
+        OutOfAreaANCRegistrationRequest request = new OutOfAreaANCRegistrationRequest("CASE X", motherName, "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", thaayiCardNumber, lmp.toString(), "9876543210");
+        Map<String, Map<String, String>> extraData = create("details", mapOf("some_field", "some_value")).put("reporting", Collections.<String, String>emptyMap()).map();
+
+        service.registerOutOfAreaANC(request, extraData);
+        Map<String, String> details = extraData.get("details");
+
+        verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE X", thaayiCardNumber, motherName)
+                .withAnm(request.anmIdentifier(), "9876543210").withLMP(lmp)
+                .withLocation("Village X", "SubCenter X", "PHC X").withDetails(details)));
+        verify(ancSchedulesService).enrollMother(eq("CASE X"), eq(lmp), any(Time.class), any(Time.class));
     }
 
     @Test

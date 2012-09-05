@@ -1,9 +1,6 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareCloseInformation;
-import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
-import org.ei.drishti.contract.AnteNatalCareInformation;
-import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
+import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -58,12 +55,26 @@ public class ANCService {
                 .withDetails(details);
         allMothers.register(mother);
         actionService.registerPregnancy(info.caseId(), couple.caseId(), info.thaayiCardNumber(), info.anmIdentifier(), info.lmpDate(), details);
-
-        Time preferredAlertTime = new Time(new LocalTime(14, 0));
-        LocalDate referenceDate = info.lmpDate() != null ? info.lmpDate() : DateUtil.today();
-
         reportingService.registerANC(new SafeMap(extraData.get("reporting")), couple.village(), couple.subCenter());
-        ancSchedulesService.enrollMother(info.caseId(), referenceDate, new Time(now()), preferredAlertTime);
+
+        enrollMotherIntoSchedules(info.caseId(), info.lmpDate());
+    }
+
+    private void enrollMotherIntoSchedules(String caseId, LocalDate lmpDate) {
+        Time preferredAlertTime = new Time(new LocalTime(14, 0));
+        LocalDate referenceDate = lmpDate != null ? lmpDate : DateUtil.today();
+
+        ancSchedulesService.enrollMother(caseId, referenceDate, new Time(now()), preferredAlertTime);
+    }
+
+    public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
+        Map<String, String> details = extraData.get("details");
+
+        Mother mother = new Mother(request.caseId(), request.thaayiCardNumber(), request.wife()).withAnm(request.anmIdentifier(), request.anmPhoneNumber())
+                .withLMP(request.lmpDate()).withLocation(request.village(), request.subCenter(), request.phc())
+                .withDetails(details);
+        allMothers.register(mother);
+        enrollMotherIntoSchedules(request.caseId(), request.lmpDate());
     }
 
     public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {

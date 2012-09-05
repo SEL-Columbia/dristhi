@@ -137,4 +137,14 @@ public class DrishtiControllerTest {
 
         verify(ecService).closeEligibleCouple(eligibleCoupleCloseRequest);
     }
+
+    @Test
+    public void shouldDelegateToECServiceAndANCServiceDuringOutOfAreaRegistration() {
+        OutOfAreaANCRegistrationRequest request = mock(OutOfAreaANCRegistrationRequest.class);
+
+        controller.registerOutOfAreaANC(request, EXTRA_DATA);
+
+        verify(ecService).registerEligibleCoupleForOutOfAreaANC(request, EXTRA_DATA);
+        verify(ancService).registerOutOfAreaANC(request, EXTRA_DATA);
+    }
 }

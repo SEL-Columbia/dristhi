@@ -1,6 +1,7 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.EligibleCoupleCloseRequest;
+import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.contract.UpdateDetailsRequest;
 import org.ei.drishti.contract.EligibleCoupleRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
@@ -33,6 +34,15 @@ public class ECService {
 
         actionService.registerEligibleCouple(request.caseId(), request.ecNumber(), request.wife(), request.husband(),
                 request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), extraData.get("details"));
+    }
+
+    public void registerEligibleCoupleForOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
+        EligibleCouple couple = new EligibleCouple(request.caseId(), "0")
+                .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
+                .withLocation(request.village(), request.subCenter(), request.phc()).withDetails(extraData.get("details"))
+                .asOutOfArea();
+
+        allEligibleCouples.register(couple);
     }
 
     public void closeEligibleCouple(EligibleCoupleCloseRequest request) {

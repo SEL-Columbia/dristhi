@@ -219,6 +219,36 @@
                         "form|case|@case_id": "caseId",
                         "form|meta|username": "anmIdentifier"
                     }
+                },
+                {
+                    "name": "registerOutOfAreaANC",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/67da255016caedc4384ad5afc88a710eb8f58af6"
+                        }
+                    },
+                    "mappings": {
+                        "form|woman_name": "wifeName",
+                        "form|husband_name": "husbandName",
+                        "form|case|@case_id": "caseId",
+                        "form|meta|username": "anmIdentifier",
+                        "form|ec_village": "village",
+                        "form|ec_village_subcenter": "subCenter",
+                        "form|ec_village_phc": "phc",
+                        "form|thayi_no": "thaayiCardNumber",
+                        "form|lmp_date": "lmp",
+                        "form|anm_phone_number": "anmPhoneNumber"
+                    },
+                    "extraMappings": {
+                        "details": {
+                            "form|headofhousehold": "headOfHousehold",
+                            "form|is_high_risk": "isHighRisk",
+                            "form|name_deliveryfacility": "deliveryPlace",
+                            "form|asha_name": "ashaName",
+                            "form|asha_phone_number": "ashaPhoneNumber"
+                        }
+                    }
                 }
             ]
         }

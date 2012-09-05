@@ -29,6 +29,8 @@ public class EligibleCouple extends MotechBaseDataObject {
     @JsonProperty
     private String phc;
     @JsonProperty
+    private boolean isOutOfArea;
+    @JsonProperty
     private Map<String, String> details;
 
     public EligibleCouple() {
@@ -59,6 +61,11 @@ public class EligibleCouple extends MotechBaseDataObject {
 
     public EligibleCouple withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
+        return this;
+    }
+
+    public EligibleCouple asOutOfArea() {
+        this.isOutOfArea = true;
         return this;
     }
 

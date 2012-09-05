@@ -98,4 +98,11 @@ public class DrishtiController {
 
         ecService.closeEligibleCouple(eligibleCoupleCloseRequest);
     }
+
+    public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
+        logger.info("Register Out of Area ANC: " + request);
+
+        ecService.registerEligibleCoupleForOutOfAreaANC(request, extraData);
+        ancService.registerOutOfAreaANC(request, extraData);
+    }
 }
