@@ -38,7 +38,7 @@ public class AllMothersIntegrationTest {
         HashMap<String, String> details = new HashMap<String, String>();
         details.put("some_field", "some_value");
         Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa").withAnm("ANM ID 1", "12345").withLMP(DateUtil.tomorrow())
-                .withECNumber("EC Number 1").withLocation("bherya", "Sub Center", "PHC X").withDetails(details);
+                .withLocation("bherya", "Sub Center", "PHC X").withDetails(details);
 
         mothers.register(mother);
 

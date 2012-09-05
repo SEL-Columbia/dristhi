@@ -26,8 +26,6 @@ public class Mother extends MotechBaseDataObject {
     @JsonProperty
     private LocalDate lmp;
     @JsonProperty
-    private String ecNumber;
-    @JsonProperty
     private String village;
     @JsonProperty
     private String subCenter;
@@ -58,11 +56,6 @@ public class Mother extends MotechBaseDataObject {
 
     public Mother withLMP(LocalDate lmp) {
         this.lmp = lmp;
-        return this;
-    }
-
-    public Mother withECNumber(String ecNumber) {
-        this.ecNumber = ecNumber;
         return this;
     }
 

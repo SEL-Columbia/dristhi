@@ -54,7 +54,7 @@ public class ANCService {
         }
 
         Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), couple.wife()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
-                .withLMP(info.lmpDate()).withECNumber(couple.ecNumber()).withLocation(couple.village(), couple.subCenter(), couple.phc())
+                .withLMP(info.lmpDate()).withLocation(couple.village(), couple.subCenter(), couple.phc())
                 .withDetails(details);
         allMothers.register(mother);
         actionService.registerPregnancy(info.caseId(), couple.caseId(), info.thaayiCardNumber(), info.anmIdentifier(), info.lmpDate(), details);

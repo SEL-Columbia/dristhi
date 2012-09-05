@@ -67,7 +67,7 @@ public class ANCServiceTest {
 
         verify(motherReportingService).registerANC(new SafeMap(extraData.get("reporting")), "bherya", "Sub Center");
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", thaayiCardNumber, motherName)
-                .withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp).withECNumber("EC Number 1")
+                .withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp)
                 .withLocation("bherya", "Sub Center", "PHC X").withDetails(details)));
         verify(actionService).registerPregnancy("CASE-1", "EC-CASE-1", thaayiCardNumber, "ANM ID 1", lmp, details);
     }
