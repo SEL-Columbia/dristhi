@@ -31,7 +31,8 @@
                             "form|familyplanning_method": "currentMethod",
                             "form|headofhousehold": "headOfHousehold",
                             "form|religion": "religion",
-                            "form|num_pregnancies": "pregnancies"
+                            "form|num_pregnancies": "pregnancies",
+                            "form|is_high_priority": "isHighPriority"
                         }
                     }
                 },
