@@ -109,9 +109,9 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.ancCareProvided(visitNumber, visitDate, numberOfIFATabletsGiven)));
     }
 
-    public void registerOutOfAreaANC(String caseId, String wifeName, String husbandName, String anmIdentifier, String village, String subCenter, String phc, String thaayiCardNumber,
+    public void registerOutOfAreaANC(String caseId, String ecCaseId, String wifeName, String husbandName, String anmIdentifier, String village, String subCenter, String phc, String thaayiCardNumber,
                                      LocalDate lmp, Map<String, String> details) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerOutOfAreaANC(wifeName, husbandName, village, subCenter, phc,
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerOutOfAreaANC(ecCaseId, wifeName, husbandName, village, subCenter, phc,
                 thaayiCardNumber, lmp, details)));
     }
 }

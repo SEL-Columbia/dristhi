@@ -86,7 +86,7 @@ public class ActionData {
                 .with("numberOfIFATabletsProvided", String.valueOf(numberOfIFATabletsProvided));
     }
 
-    public static ActionData registerOutOfAreaANC(String wife, String husband, String village, String subCenter, String phc,
+    public static ActionData registerOutOfAreaANC(String ecCaseId, String wife, String husband, String village, String subCenter, String phc,
                                                   String thaayiCardNumber, LocalDate lmp, Map<String, String> details) {
         return new ActionData("mother", "registerOutOfAreaANC")
                 .with("wife", wife)
@@ -97,6 +97,7 @@ public class ActionData {
                 .with("thaayiCardNumber", thaayiCardNumber)
                 .with("status", "pregnant")
                 .with("referenceDate", lmp.toString())
+                .with("ecCaseId", ecCaseId)
                 .withDetails(details);
     }
 

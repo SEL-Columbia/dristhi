@@ -93,15 +93,16 @@ public class ANCServiceTest {
         String motherName = "Theresa";
         OutOfAreaANCRegistrationRequest request = new OutOfAreaANCRegistrationRequest("CASE X", motherName, "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", thaayiCardNumber, lmp.toString(), "9876543210");
         Map<String, Map<String, String>> extraData = create("details", mapOf("some_field", "some_value")).put("reporting", Collections.<String, String>emptyMap()).map();
+        EligibleCouple couple = new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X").asOutOfArea();
 
-        service.registerOutOfAreaANC(request, extraData);
+        service.registerOutOfAreaANC(request, couple, extraData);
         Map<String, String> details = extraData.get("details");
 
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE X", thaayiCardNumber, motherName)
                 .withAnm(request.anmIdentifier(), "9876543210").withLMP(lmp)
                 .withLocation("Village X", "SubCenter X", "PHC X").withDetails(details)));
         verify(ancSchedulesService).enrollMother(eq("CASE X"), eq(lmp), any(Time.class), any(Time.class));
-        verify(actionService).registerOutOfAreaANC(request.caseId(), request.wife(), request.husband(), request.anmIdentifier(), request.village(), request.subCenter(),
+        verify(actionService).registerOutOfAreaANC(request.caseId(), couple.caseId(), request.wife(), request.husband(), request.anmIdentifier(), request.village(), request.subCenter(),
                 request.phc(), request.thaayiCardNumber(), request.lmpDate(), details);
     }
 

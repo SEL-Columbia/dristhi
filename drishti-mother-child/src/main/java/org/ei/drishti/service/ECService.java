@@ -1,11 +1,12 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.EligibleCoupleCloseRequest;
+import org.ei.drishti.contract.EligibleCoupleRegistrationRequest;
 import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.contract.UpdateDetailsRequest;
-import org.ei.drishti.contract.EligibleCoupleRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
+import org.ei.drishti.util.IdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,14 @@ import java.util.Map;
 public class ECService {
     private AllEligibleCouples allEligibleCouples;
     private ActionService actionService;
+    private IdGenerator idGenerator;
     private static Logger logger = LoggerFactory.getLogger(ActionService.class.toString());
 
     @Autowired
-    public ECService(AllEligibleCouples allEligibleCouples, ActionService actionService) {
+    public ECService(AllEligibleCouples allEligibleCouples, ActionService actionService, IdGenerator idGenerator) {
         this.allEligibleCouples = allEligibleCouples;
         this.actionService = actionService;
+        this.idGenerator = idGenerator;
     }
 
     public void registerEligibleCouple(EligibleCoupleRegistrationRequest request, Map<String, Map<String, String>> extraData) {
@@ -36,13 +39,14 @@ public class ECService {
                 request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), extraData.get("details"));
     }
 
-    public void registerEligibleCoupleForOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
-        EligibleCouple couple = new EligibleCouple(request.caseId(), "0")
+    public EligibleCouple registerEligibleCoupleForOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
+        EligibleCouple couple = new EligibleCouple(idGenerator.generateUUID().toString(), "0")
                 .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
                 .withLocation(request.village(), request.subCenter(), request.phc()).withDetails(extraData.get("details"))
                 .asOutOfArea();
 
         allEligibleCouples.register(couple);
+        return couple;
     }
 
     public void closeEligibleCouple(EligibleCoupleCloseRequest request) {

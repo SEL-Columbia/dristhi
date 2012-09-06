@@ -67,7 +67,7 @@ public class ANCService {
         ancSchedulesService.enrollMother(caseId, referenceDate, new Time(now()), preferredAlertTime);
     }
 
-    public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
+    public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, EligibleCouple couple, Map<String, Map<String, String>> extraData) {
         Map<String, String> details = extraData.get("details");
 
         Mother mother = new Mother(request.caseId(), request.thaayiCardNumber(), request.wife()).withAnm(request.anmIdentifier(), request.anmPhoneNumber())
@@ -75,7 +75,7 @@ public class ANCService {
                 .withDetails(details);
 
         allMothers.register(mother);
-        actionService.registerOutOfAreaANC(request.caseId(), request.wife(), request.husband(), request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), request.thaayiCardNumber(),
+        actionService.registerOutOfAreaANC(request.caseId(), couple.caseId(), request.wife(), request.husband(), request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), request.thaayiCardNumber(),
                 request.lmpDate(), details);
         enrollMotherIntoSchedules(request.caseId(), request.lmpDate());
     }

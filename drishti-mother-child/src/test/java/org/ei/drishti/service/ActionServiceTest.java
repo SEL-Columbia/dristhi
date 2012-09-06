@@ -183,9 +183,9 @@ public class ActionServiceTest {
         Map<String, String> extraData = mapOf("someKey", "someValue");
         LocalDate lmp = LocalDate.parse("2012-05-05");
 
-        service.registerOutOfAreaANC("CASE X", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "TC 1", lmp, extraData);
+        service.registerOutOfAreaANC("CASE X", "ecCaseId", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "TC 1", lmp, extraData);
 
         verify(allActions).add(new Action("CASE X", "ANM X",
-                ActionData.registerOutOfAreaANC("Wife 1", "Husband 1", "Village X", "SubCenter X", "PHC X", "TC 1", lmp, extraData)));
+                ActionData.registerOutOfAreaANC("ecCaseId", "Wife 1", "Husband 1", "Village X", "SubCenter X", "PHC X", "TC 1", lmp, extraData)));
     }
 }
