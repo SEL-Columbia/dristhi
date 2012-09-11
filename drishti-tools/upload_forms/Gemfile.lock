@@ -1,0 +1,12 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    guid (0.1.1)
+    multipart-post (1.1.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  guid
+  multipart-post

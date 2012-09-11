@@ -6,7 +6,7 @@ require './lib/commcare.rb'
 
 ec_registration_erb = ERB.new(File.read('templates/ec_registration.erb'))
 
-CSV.foreach("examples/Munjanahalli_merges.csv", { :headers => true }) do |csv_row|
+CSV.foreach("examples/U_Munjanhalli_ECs_Without_ANC.csv", { :headers => true }) do |csv_row|
   row = Row.new csv_row
 
   row.default_value "Registration date", Date.today.to_s
