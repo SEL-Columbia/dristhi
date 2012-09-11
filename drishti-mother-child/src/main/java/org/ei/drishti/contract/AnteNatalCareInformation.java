@@ -3,19 +3,21 @@ package org.ei.drishti.contract;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.motechproject.util.DateUtil;
 
 public class AnteNatalCareInformation {
     private String caseId;
     private String anmIdentifier;
     private int ancVisitNumber;
     private int numberOfIFATabletsGiven;
+    private String submissionDate;
 
-    public AnteNatalCareInformation(String caseId, String anmIdentifier, int visitNumber) {
+    public AnteNatalCareInformation(String caseId, String anmIdentifier, int visitNumber, String submissionDate) {
         this.caseId = caseId;
         this.anmIdentifier = anmIdentifier;
         this.ancVisitNumber = visitNumber;
+        this.submissionDate = submissionDate;
     }
 
     public String caseId() {
@@ -36,11 +38,15 @@ public class AnteNatalCareInformation {
     }
 
     public LocalDate visitDate() {
-        return DateUtil.today();
+        return DateTime.parse(submissionDate).toLocalDate();
     }
 
     public String anmIdentifier() {
         return anmIdentifier;
+    }
+
+    public int numberOfIFATabletsProvided() {
+        return numberOfIFATabletsGiven;
     }
 
     @Override
@@ -56,10 +62,6 @@ public class AnteNatalCareInformation {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
-    }
-
-    public int numberOfIFATabletsProvided() {
-        return numberOfIFATabletsGiven;
     }
 }
 

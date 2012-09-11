@@ -23,6 +23,7 @@ public class ChildReportingServiceTest {
     private ReportingService reportingService;
     @Mock
     private AllChildren allChildren;
+
     private ChildReportingService service;
 
     @Before
@@ -38,7 +39,7 @@ public class ChildReportingServiceTest {
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("bcg", "hepb1"), "female").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hepb1 opv0"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hepb1 opv0", "2012-01-01"), reportingData);
 
         ReportingData expectedReportingData = ReportingData.serviceProvidedData("ANM X", "TC 1", OPV, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
         verify(reportingService).sendReportData(expectedReportingData);
@@ -51,7 +52,7 @@ public class ChildReportingServiceTest {
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("dpt1", "dpt2"), "female").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "dpt1 bcg dpt2 measles"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "dpt1 bcg dpt2 measles", "2012-01-01"), reportingData);
 
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", MEASLES, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
@@ -63,7 +64,7 @@ public class ChildReportingServiceTest {
         reportingData.put("anmIdentifier", "ANM X");
         when(allChildren.findByCaseId("CASE X")).thenReturn(null);
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv", "2012-01-01"), reportingData);
 
         verifyZeroInteractions(reportingService);
     }
@@ -102,7 +103,7 @@ public class ChildReportingServiceTest {
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
         when(children.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", new ArrayList<String>(), "female").withLocation("bherya", "Sub Center", "PHC X"));
 
-        childReportingService.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", immunizationProvided), reportingData);
+        childReportingService.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", immunizationProvided, "2012-01-01"), reportingData);
 
         verify(fakeReportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", expectedIndicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
         verifyNoMoreInteractions(fakeReportingService);
@@ -115,7 +116,7 @@ public class ChildReportingServiceTest {
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", new ArrayList<String>(), "female").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "NON_EXISTENT_IMMUNIZATION bcg"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "NON_EXISTENT_IMMUNIZATION bcg", "2012-01-01"), reportingData);
 
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
         verifyZeroInteractions(reportingService);

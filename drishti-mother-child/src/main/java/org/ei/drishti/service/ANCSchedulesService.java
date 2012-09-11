@@ -46,8 +46,8 @@ public class ANCSchedulesService {
         fastForwardSchedule(ancInformation, ancInformation.visitNumber(), SCHEDULE_ANC, "ANC");
     }
 
-    public void ttVisitHasHappened(String caseId, int visitNumber) {
-        final AnteNatalCareInformation ancInformation = new AnteNatalCareInformation(caseId, "ANM 1", visitNumber);
+    public void ttVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
+        final AnteNatalCareInformation ancInformation = new AnteNatalCareInformation(caseId, "ANM 1", visitNumber, visitDate.toString());
         fastForwardSchedule(ancInformation, ancInformation.visitNumber(), SCHEDULE_TT, "TT");
     }
 
@@ -99,7 +99,7 @@ public class ANCSchedulesService {
 
         for (int i = currentMilestoneNumber; i <= visitNumberToFulfill; i++) {
             trackingService.fulfillCurrentMilestone(caseId, scheduleName, ancInformation.visitDate(), new Time(now()));
-            actionService.markAlertAsClosedForVisitForMother(caseId, ancInformation.anmIdentifier(), milestonePrefix + " " + i);
+            actionService.markAlertAsClosedForVisitForMother(caseId, ancInformation.anmIdentifier(), milestonePrefix + " " + i, ancInformation.visitDate().toString());
         }
     }
 

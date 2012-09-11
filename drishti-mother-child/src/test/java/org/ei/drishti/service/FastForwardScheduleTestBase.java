@@ -33,7 +33,7 @@ public class FastForwardScheduleTestBase {
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
-                schedulesService.ancVisitHasHappened(new AnteNatalCareInformation(caseId, "ANM 1", visitNumber));
+                schedulesService.ancVisitHasHappened(new AnteNatalCareInformation(caseId, "ANM 1", visitNumber, visitDate.toString()));
             }
         };
         return this;
@@ -44,7 +44,7 @@ public class FastForwardScheduleTestBase {
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
-                schedulesService.ttVisitHasHappened(caseId, visitNumber);
+                schedulesService.ttVisitHasHappened(caseId, visitNumber, visitDate);
             }
         };
         return this;
@@ -55,7 +55,7 @@ public class FastForwardScheduleTestBase {
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
-                schedulesService.ifaVisitHasHappened(new AnteNatalCareInformation(caseId, "ANM 1", 0));
+                schedulesService.ifaVisitHasHappened(new AnteNatalCareInformation(caseId, "ANM 1", 0, visitDate.toString()));
             }
         };
         return this;
@@ -90,7 +90,7 @@ public class FastForwardScheduleTestBase {
             verifyZeroInteractions(actionService);
         }
         for (String visitCode : expectedVisitCodes) {
-            verify(actionService).markAlertAsClosedForVisitForMother("Case X", "ANM 1", visitCode);
+            verify(actionService).markAlertAsClosedForVisitForMother("Case X", "ANM 1", visitCode, LocalDate.now().toString());
         }
         verifyNoMoreInteractions(actionService);
     }

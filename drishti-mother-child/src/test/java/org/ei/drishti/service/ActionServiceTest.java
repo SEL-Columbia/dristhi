@@ -67,18 +67,18 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateACloseActionForAVisitOfAChild() throws Exception {
-        service.markAlertAsClosedForVisitForChild("Case X", "ANM 1", "OPV 1");
+        service.markAlertAsClosedForVisitForChild("Case X", "ANM 1", "OPV 1", "2012-01-01");
 
-        verify(allActions).add(new Action("Case X", "ANM 1", ActionData.markAlertAsClosed("OPV 1")));
+        verify(allActions).add(new Action("Case X", "ANM 1", ActionData.markAlertAsClosed("OPV 1", "2012-01-01")));
     }
 
     @Test
     public void shouldCreateACloseActionForAVisitOfAMother() throws Exception {
         when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.markAlertAsClosedForVisitForMother("Case X", "ANM ID 1", "ANC 1");
+        service.markAlertAsClosedForVisitForMother("Case X", "ANM ID 1", "ANC 1", "2012-12-12");
 
-        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.markAlertAsClosed("ANC 1")));
+        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.markAlertAsClosed("ANC 1", "2012-12-12")));
     }
 
     @Test

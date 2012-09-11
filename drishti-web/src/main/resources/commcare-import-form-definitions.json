@@ -98,7 +98,8 @@
                         "form|case|@case_id": "caseId",
                         "form|meta|username": "anmIdentifier",
                         "form|this_anc_number": "ancVisitNumber",
-                        "form|ifa_tablets_given": "numberOfIFATabletsGiven"
+                        "form|ifa_tablets_given": "numberOfIFATabletsGiven",
+                        "form|meta|timeEnd": "submissionDate"
                     },
                     "extraMappings": {
                         "details": {
@@ -165,7 +166,8 @@
                     "mappings": {
                         "form|meta|username": "anmIdentifier",
                         "form|case|@case_id": "caseId",
-                        "form|immunization_multiselect1": "immunizationsProvided"
+                        "form|immunization_multiselect1": "immunizationsProvided",
+                        "form|meta|timeEnd": "submissionDate"
                     },
                     "extraMappings": {
                         "reporting": {

@@ -94,7 +94,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldUpdateEnrollmentsForUpdatedImmunizations() {
-        ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0");
+        ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01");
 
         pncService.updateChildImmunization(request, new SafeMap());
 
@@ -103,7 +103,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldSendDataForReportingBeforeUpdatingChildInDBSoThatUpdatedImmunizationsAreDecided() throws Exception {
-        ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0");
+        ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01");
 
         pncService.updateChildImmunization(request, new SafeMap());
 
@@ -139,10 +139,10 @@ public class PNCServiceTest extends BaseUnitTest {
         ActionService actionService = mock(ActionService.class);
         PNCService pncService = new PNCService(actionService, mock(PNCSchedulesService.class), reportingService, allChildren);
 
-        pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations), new SafeMap());
+        pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations, "2012-01-01"), new SafeMap());
 
         for (String expectedAlert : expectedDeletedAlertsRaised) {
-            verify(actionService).markAlertAsClosedForVisitForChild("Case X", "DEMO ANM", expectedAlert);
+            verify(actionService).markAlertAsClosedForVisitForChild("Case X", "DEMO ANM", expectedAlert, "2012-01-01");
         }
         verifyNoMoreInteractions(actionService);
     }

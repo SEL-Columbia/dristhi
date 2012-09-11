@@ -24,9 +24,10 @@ public class ActionData {
                 .with("expiryDate", expiryDate.toLocalDate().toString());
     }
 
-    public static ActionData markAlertAsClosed(String visitCode) {
+    public static ActionData markAlertAsClosed(String visitCode, String completionDate) {
         return new ActionData("alert", "closeAlert")
-                .with("visitCode", visitCode);
+                .with("visitCode", visitCode)
+                .with("completionDate", completionDate);
     }
 
     public static ActionData deleteAllAlerts() {

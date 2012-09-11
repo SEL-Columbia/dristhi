@@ -137,7 +137,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     public void shouldNotFulfillIFAIfIFAScheduleIsAlreadyOver() throws Exception {
         when(scheduleTrackingService.getEnrollment("Case X", SCHEDULE_IFA)).thenReturn(null);
 
-        schedulesService.ifaVisitHasHappened(new AnteNatalCareInformation("Case X", "ANM 1", 0));
+        schedulesService.ifaVisitHasHappened(new AnteNatalCareInformation("Case X", "ANM 1", 0, "2012-01-23"));
 
         verify(scheduleTrackingService).getEnrollment("Case X", SCHEDULE_IFA);
         verifyNoMoreInteractions(scheduleTrackingService);

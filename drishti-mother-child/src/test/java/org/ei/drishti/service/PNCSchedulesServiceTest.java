@@ -190,7 +190,7 @@ public class PNCSchedulesServiceTest {
         }
 
         public TestForChildEnrollment whenProvidedWithImmunizations(String providedImmunizations) {
-            service.updateEnrollments(new ChildImmunizationUpdationRequest(caseId, "ANM X", providedImmunizations));
+            service.updateEnrollments(new ChildImmunizationUpdationRequest(caseId, "ANM X", providedImmunizations, "2012-01-01"));
 
             return this;
         }
