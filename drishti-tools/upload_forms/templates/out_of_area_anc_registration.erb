@@ -1,0 +1,93 @@
+<?xml version='1.0' ?>
+<OutofArea_Registration uiVersion="1" version="321" name="Out of Area ANC Registration" xmlns:jrm="http://dev.commcarehq.org/jr/xforms" xmlns="http://openrosa.org/formdesigner/67da255016caedc4384ad5afc88a710eb8f58af8">
+  <today><%= Date.today.to_s %></today>
+  <out_of_area_reg_date><%= row['a.Registration date'] %></out_of_area_reg_date>
+  <ec_village_phc>bherya</ec_village_phc>
+  <ec_village_subcenter_in_bherya>munjanahalli</ec_village_subcenter_in_bherya>
+  <ec_village_subcenter>munjanahalli</ec_village_subcenter>
+  <ec_village_village_in_munjanahalli><%= case row['a.Village Code'] when "29230030060"; "munjanahalli" when "29230030061"; "chikkabheriya" when 29230030058; "kaval_hosur" else "munjanahalli"; end %></ec_village_village_in_munjanahalli>
+  <ec_village><%= case row['a.Village Code'] when "29230030060"; "munjanahalli" when "29230030061"; "chikkabheriya" when 29230030058; "kaval_hosur" else "munjanahalli"; end %></ec_village>
+  <woman_name><%= row['a.Wife Name'] %></woman_name>
+  <woman_age><%= row['a.Wife Age'] %></woman_age>
+  <husband_name><%= row['a.Husband Name'] %></husband_name>
+  <phone_no>9876543210</phone_no>
+  <economic_status><%= case row['BPL'] when "Yes"; "bpl" when "No"; "apl" else "apl"; end %></economic_status>
+  <bpl_card_number />
+  <caste><%= case row['Caste'] when "SC"; "sc" when "ST"; "st" when "Others"; "c_others" else "c_others"; end %></caste>
+  <thayi_no><%= row['a.Thayi Card Number'] %></thayi_no>
+  <anc_number><%= row['Sno'] %></anc_number>
+  <anm_name_b>latha</anm_name_b>
+  <anm_name>latha</anm_name>
+  <anm_phone_number>9876556789</anm_phone_number>
+  <asha_name>Unknown</asha_name>
+  <asha_phone_number>987651234</asha_phone_number>
+  <lmp_date><%= Date.parse(row['LMP']).to_s %></lmp_date>
+  <edd><%= Date.parse(row['EDD']).to_s %></edd>
+  <edd_note />
+  <threeormore_livebirths><%= row['Number of livebirth(L)'].to_i >= 3 %></threeormore_livebirths>
+  <threeormore_abortions><%= row['Number of abortion(A)'].to_i >= 3 %></threeormore_abortions>
+  <youngestchild_under2>no</youngestchild_under2>
+  <complication></complication>
+  <medical_histories></medical_histories>
+  <blood_group></blood_group>
+  <height><%= row['Height'] %></height>
+  <weight_startofpregnancy>45.0</weight_startofpregnancy>
+  <tt_shot_given>no</tt_shot_given>
+  <tobacco_use />
+  <type_deliveryfacility>private_facility</type_deliveryfacility>
+  <name_deliveryfacility><%= row['Place of Delivery'] %></name_deliveryfacility>
+  <economic_vulnerability>economic_vulnerability</economic_vulnerability>
+  <social_vulnerability />
+  <parity_risk />
+  <age_risk />
+  <youngchild_risk></youngchild_risk>
+  <abortion_risk />
+  <weight_risk />
+  <height_risk />
+  <tobacco_risk />
+  <is_high_risk>no</is_high_risk>
+  <high_risk_reason></high_risk_reason>
+  <HighRiskNote />
+  <registration_message />
+  <n0:case case_id="<%= row['Case ID'] %>" user_id="c3d86928a9c501cd88f42d6031ad70c9" date_modified="2012-09-11T11:52:23.019+05:30" xmlns:n0="http://commcarehq.org/case/transaction/v2">
+    <n0:create>
+      <n0:case_name>Woman</n0:case_name>
+      <n0:owner_id>c3d86928a9c501cd88f42d6031ad70c9</n0:owner_id>
+      <n0:case_type>pregnant_woman</n0:case_type>
+    </n0:create>
+    <n0:update>
+      <n0:edd><%= Date.parse(row['EDD']).to_s %></n0:edd>
+      <n0:blood_group></n0:blood_group>
+      <n0:type_deliveryfacility>private_facility</n0:type_deliveryfacility>
+      <n0:height><%= row['Height'] %></n0:height>
+      <n0:bpl_card_number />
+      <n0:lmp_date><%= Date.parse(row['LMP']).to_s %></n0:lmp_date>
+      <n0:asha_name>Unknown</n0:asha_name>
+      <n0:name_deliveryfacility><%= row['Place of Delivery'] %></n0:name_deliveryfacility>
+      <n0:anm_phone_number>9876556789</n0:anm_phone_number>
+      <n0:anm_name>latha</n0:anm_name>
+      <n0:husband_name><%= row['a.Husband Name'] %></n0:husband_name>
+      <n0:asha_phone_number>987651234</n0:asha_phone_number>
+      <n0:ec_phone_no>9876543210</n0:ec_phone_no>
+      <n0:economic_status><%= case row['BPL'] when "Yes"; "bpl" when "No"; "apl" else "apl"; end %></n0:economic_status>
+      <n0:weight_startofpregnancy>45</n0:weight_startofpregnancy>
+      <n0:high_risk_reason></n0:high_risk_reason>
+      <n0:is_high_risk>no</n0:is_high_risk>
+      <n0:phc>bherya</n0:phc>
+      <n0:woman_name><%= row['a.Wife Name'] %></n0:woman_name>
+      <n0:woman_age><%= row['a.Wife Age'] %></n0:woman_age>
+      <n0:anc_number><%= row['Sno'] %></n0:anc_number>
+      <n0:external_id><%= row['a.Thayi Card Number'] %></n0:external_id>
+      <n0:caste><%= case row['Caste'] when "SC"; "sc" when "ST"; "st" when "Others"; "c_others" else "c_others"; end %></n0:caste>
+    </n0:update>
+  </n0:case>
+  <n1:meta xmlns:n1="http://openrosa.org/jr/xforms">
+    <n1:deviceID>359918045600160</n1:deviceID>
+    <n1:timeStart>2012-09-11T11:48:22.259+05:30</n1:timeStart>
+    <n1:timeEnd>2012-09-11T11:52:23.019+05:30</n1:timeEnd>
+    <n1:username>c</n1:username>
+    <n1:userID>c3d86928a9c501cd88f42d6031ad70c9</n1:userID>
+    <n1:instanceID><%= row['Instance ID'] %></n1:instanceID>
+    <n2:appVersion xmlns:n2="http://commcarehq.org/xforms">CommCare ODK, version "2.1"(3027). CommCare Version 2.0. Build 3027, built on: August-07-2012</n2:appVersion>
+  </n1:meta>
+</OutofArea_Registration>
