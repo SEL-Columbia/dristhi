@@ -5,7 +5,7 @@ class Row
   end
 
   def default_value field_header, default
-    raise "Cannot find field with header: #{field_header} in this CSV. Are you using the right CSV?" if not @csv_row.header? field_header
+    raise "Adding default value: Cannot find field with header: '#{field_header}' in this CSV. Are you using the right CSV?" if not @csv_row.header? field_header
     add_field field_header, default
   end
 
@@ -20,6 +20,7 @@ class Row
   end
 
   def [](header)
+    raise "Finding value: Cannot find field with header: '#{header}' in this CSV. Are you using the right CSV?" unless @csv_row.header? header or @defaults.key? header
     field(header)
   end
 end
