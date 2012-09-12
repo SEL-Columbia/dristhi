@@ -121,17 +121,22 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/2369b9061b1bb85e7a35f14093b726e692f9850c"
+                            "nameSpace": "http://openrosa.org/formdesigner/28E0F77C-9E9B-40E6-AB90-EF7FA80998DA"
                         }
                     },
                     "mappings": {
                         "form|case|@case_id": "caseId",
-                        "form|delivery_registration_section|date_outcomes": "dateOfDelivery",
-                        "form|delivery_registration_section|pregnancy_outcomes": "pregnancyOutcome",
-                        "form|delivery_registration_section|live_birth_group|has_delivery_complications": "hasDeliveryComplications",
-                        "form|delivery_registration_section|live_birth_group|delivery_complications": "deliveryComplications",
-                        "form|is_HighRisk": "isHighRisk",
-                        "form|highRiskReason": "highRiskReason"
+                        "form|meta|username": "anmIdentifier"
+                    },
+                    "extraMappings": {
+                        "details": {
+                            "form|date_outcomes": "dateOfDelivery",
+                            "form|delivery_outcomes": "pregnancyOutcome",
+                            "form|delivery_complication_group|had_delivery_complications": "hasDeliveryComplications",
+                            "form|delivery_complication_group|complications": "deliveryComplications",
+                            "form|is_high_risk": "isHighRisk",
+                            "form|is_high_risk_reason": "highRiskReason"
+                        }
                     }
                 },
                 {

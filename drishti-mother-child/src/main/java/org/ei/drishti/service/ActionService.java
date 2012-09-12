@@ -114,4 +114,8 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.registerOutOfAreaANC(ecCaseId, wifeName, husbandName, village, subCenter, phc,
                 thaayiCardNumber, lmp, details)));
     }
+
+    public void updateANCOutcome(String caseId, String anmIdentifier, Map<String, String> details) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.updateANCOutcome(details)));
+    }
 }

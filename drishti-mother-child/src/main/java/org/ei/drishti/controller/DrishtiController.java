@@ -47,10 +47,10 @@ public class DrishtiController {
         mctsService.ancCareHasBeenProvided(ancInformation);
     }
 
-    public void updateOutcomeOfANC(AnteNatalCareOutcomeInformation outcomeInformation) {
+    public void updateOutcomeOfANC(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
         logger.info("ANC outcome: " + outcomeInformation);
 
-        ancService.updatePregnancyOutcome(outcomeInformation);
+        ancService.updatePregnancyOutcome(outcomeInformation, extraData);
         mctsService.updateANCOutcome(outcomeInformation);
     }
 

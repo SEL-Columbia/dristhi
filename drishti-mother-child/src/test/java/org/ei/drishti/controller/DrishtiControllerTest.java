@@ -68,9 +68,9 @@ public class DrishtiControllerTest {
     public void shouldDelegateToBothANCServiceAndMCTSDuringANCCareOutcome() throws Exception {
         AnteNatalCareOutcomeInformation careOutcomeInformation = mock(AnteNatalCareOutcomeInformation.class);
 
-        controller.updateOutcomeOfANC(careOutcomeInformation);
+        controller.updateOutcomeOfANC(careOutcomeInformation, EXTRA_DATA);
 
-        verify(ancService).updatePregnancyOutcome(careOutcomeInformation);
+        verify(ancService).updatePregnancyOutcome(careOutcomeInformation, EXTRA_DATA);
         verify(mctsService).updateANCOutcome(careOutcomeInformation);
     }
 

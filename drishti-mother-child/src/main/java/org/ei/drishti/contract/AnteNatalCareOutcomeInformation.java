@@ -1,18 +1,21 @@
 package org.ei.drishti.contract;
 
-import java.util.Date;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class AnteNatalCareOutcomeInformation {
     private String caseId;
-    private Date dateOfDelivery;
-    private String pregnancyOutcome;
-    private boolean hasDeliveryComplications;
-    private String deliveryComplications;
-    private boolean isHighRisk;
-    private String highRiskReason;
+    private String anmIdentifier;
+
+    public String caseId() {
+        return caseId;
+    }
+
+    public String anmIdentifier() {
+        return anmIdentifier;
+    }
 
     @Override
     public String toString() {
-        return "AnteNatalCareOutcomeInformation{caseId='" + caseId + '\'' + ", dateOfDelivery=" + dateOfDelivery + '}';
+        return ToStringBuilder.reflectionToString(this);
     }
 }

@@ -3,6 +3,7 @@ package org.ei.drishti.service;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.dto.ActionData;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
@@ -99,7 +100,8 @@ public class ANCService {
         actionService.ancCareProvided(motherWithUpdatedDetails.caseId(), motherWithUpdatedDetails.anmIdentifier(), ancInformation.visitNumber(), ancInformation.visitDate(), ancInformation.numberOfIFATabletsProvided());
     }
 
-    public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation) {
+    public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
+        actionService.updateANCOutcome(outcomeInformation.caseId(), outcomeInformation.anmIdentifier(), extraData.get("details"));
     }
 
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation, SafeMap data) {
