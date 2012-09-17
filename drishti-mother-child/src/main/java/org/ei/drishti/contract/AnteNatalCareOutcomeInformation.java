@@ -6,6 +6,11 @@ public class AnteNatalCareOutcomeInformation {
     private String caseId;
     private String anmIdentifier;
 
+    public AnteNatalCareOutcomeInformation(String caseId, String anmIdentifier) {
+        this.caseId = caseId;
+        this.anmIdentifier = anmIdentifier;
+    }
+
     public String caseId() {
         return caseId;
     }

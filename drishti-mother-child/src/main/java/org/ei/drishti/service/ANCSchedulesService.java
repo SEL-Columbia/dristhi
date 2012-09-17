@@ -59,7 +59,7 @@ public class ANCSchedulesService {
         trackingService.fulfillCurrentMilestone(externalId, scheduleName, today(), new Time(now()));
     }
 
-    public void closeCase(String caseId) {
+    public void unEnrollFromSchedules(String caseId) {
         List<EnrollmentRecord> openEnrollments = trackingService.search(new EnrollmentsQuery().havingExternalId(caseId).havingState(ACTIVE));
 
         for (EnrollmentRecord enrollment : openEnrollments) {

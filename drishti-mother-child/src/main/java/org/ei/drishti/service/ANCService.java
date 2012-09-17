@@ -3,11 +3,10 @@ package org.ei.drishti.service;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
-import org.ei.drishti.dto.ActionData;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
-import org.ei.drishti.util.SafeMap;
 import org.ei.drishti.service.reporting.MotherReportingService;
+import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.motechproject.model.Time;
@@ -101,7 +100,13 @@ public class ANCService {
     }
 
     public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
-        actionService.updateANCOutcome(outcomeInformation.caseId(), outcomeInformation.anmIdentifier(), extraData.get("details"));
+        String caseId = outcomeInformation.caseId();
+        if (!allMothers.motherExists(caseId)) {
+            logger.warn("Failed to update delivery outcome as there is no mother registered with case ID: " + caseId);
+            return;
+        }
+        ancSchedulesService.unEnrollFromSchedules(caseId);
+        actionService.updateANCOutcome(caseId, outcomeInformation.anmIdentifier(), extraData.get("details"));
     }
 
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation, SafeMap data) {
@@ -111,7 +116,7 @@ public class ANCService {
         }
 
         reportingService.closeANC(data);
-        ancSchedulesService.closeCase(closeInformation.caseId());
+        ancSchedulesService.unEnrollFromSchedules(closeInformation.caseId());
         actionService.closeANC(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.reason());
     }
 }

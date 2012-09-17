@@ -1,9 +1,6 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareCloseInformation;
-import org.ei.drishti.contract.AnteNatalCareEnrollmentInformation;
-import org.ei.drishti.contract.AnteNatalCareInformation;
-import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
+import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -198,7 +195,7 @@ public class ANCServiceTest {
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "Abort"), new SafeMap());
 
-        verify(ancSchedulesService).closeCase("CASE-X");
+        verify(ancSchedulesService).unEnrollFromSchedules("CASE-X");
         verify(actionService).closeANC("CASE-X", "ANM X", "Abort");
     }
 
@@ -209,5 +206,24 @@ public class ANCServiceTest {
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM", "ANM X", null), new SafeMap());
 
         verifyZeroInteractions(ancSchedulesService);
+    }
+
+    @Test
+    public void shouldUnEnrollMotherFromANCSchedulesWhenDeliveryOutcomeFormIsFilled() throws Exception {
+        when(mothers.motherExists("CASE X")).thenReturn(true);
+
+        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("CASE X", "ANM X"), EXTRA_DATA);
+
+        verify(ancSchedulesService).unEnrollFromSchedules("CASE X");
+    }
+
+    @Test
+    public void shouldIgnoreDeliveryOutcomeUploadIfThereIsNoCorrespondingMotherInRepo() throws Exception {
+        when(mothers.motherExists("CASE-X")).thenReturn(false);
+
+        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("CASE X", "ANM X"), EXTRA_DATA);
+
+        verifyZeroInteractions(ancSchedulesService);
+        verifyZeroInteractions(actionService);
     }
 }

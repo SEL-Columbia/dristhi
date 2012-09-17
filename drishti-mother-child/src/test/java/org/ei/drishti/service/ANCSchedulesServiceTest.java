@@ -159,7 +159,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
         when(scheduleTrackingService.search(queryFor("Case X"))).thenReturn(records);
 
-        schedulesService.closeCase("Case X");
+        schedulesService.unEnrollFromSchedules("Case X");
 
         verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 1"));
         verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 2"));
