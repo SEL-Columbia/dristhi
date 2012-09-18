@@ -17,7 +17,7 @@ class ANCServices
     @anc_services.collect {|anc_service| anc_service.to_hash}
   end
 
-  def anc_services_grouped_per_couple
+  def anc_services_per_ec
     anc_services.group_by {|service| [service['Village Code'].village, service['Wife Name'], service['Husband Name']]}
   end
 

@@ -1,3 +1,5 @@
+require_relative 'safe_hash'
+
 class Row
   def initialize(csv_row)
     @csv_row = csv_row
@@ -5,7 +7,7 @@ class Row
   end
 
   def to_hash
-    @values
+    SafeHash.new @values
   end
 
   def default_value field_header, default_value
