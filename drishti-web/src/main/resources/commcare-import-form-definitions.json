@@ -130,8 +130,8 @@
                     },
                     "extraMappings": {
                         "details": {
-                            "form|date_outcomes": "dateOfDelivery",
-                            "form|delivery_outcomes": "pregnancyOutcome",
+                            "form|date_outcome": "dateOfDelivery",
+                            "form|delivery_outcome": "pregnancyOutcome",
                             "form|delivery_complication_group|had_delivery_complications": "hasDeliveryComplications",
                             "form|delivery_complication_group|complications": "deliveryComplications",
                             "form|is_high_risk": "isHighRisk",
