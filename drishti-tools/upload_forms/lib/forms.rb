@@ -5,14 +5,31 @@ class Forms
     @anc_services = anc_services_data
   end
 
-  def fill
+  def fill_for_in_area
     fill_ec_form
     fill_anc_registration_forms if has_anc?
     fill_anc_services_forms if has_anc? and has_services?
     fill_anc_outcome_forms if has_anc? and has_services? and has_outcome?
   end
 
+  def fill_for_out_of_area
+    fill_out_of_area_anc_registration_forms if has_anc?
+    fill_anc_services_forms if has_anc? and has_services?
+    fill_anc_outcome_forms if has_anc? and has_services? and has_outcome?
+  end
+
   private
+  def fill_out_of_area_anc_registration_forms
+    @ancs.each do |anc|
+      puts "    Out of area ANC registration: #{anc['a.Wife Name']} - #{anc['a.Husband Name']} - #{anc['LMP']} - #{anc['Case ID']}"
+
+      out_of_area_anc_registration_erb = ERB.new(File.read('templates/out_of_area_anc_registration.erb'))
+
+      out_of_area_anc_registration_xml = out_of_area_anc_registration_erb.result(binding)
+      File.open("output/ANCOutOfArea_#{anc['Case ID']}.xml", "w") do |f| f.puts out_of_area_anc_registration_xml end
+    end
+  end
+
   def fill_ec_form
     puts "EC: #{@ec['Wife Name']} - #{@ec['Husband Name']} - #{@ec['Case ID']}"
 

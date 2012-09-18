@@ -9,8 +9,16 @@ anc_services_per_ec = ANCServices.new("examples/Munjanhalli.xlsx").anc_services_
 
 puts "Got: ECs: #{ecs.size}. ANCS grouped by EC: #{ancs_per_ec.size}. Services grouped by EC: #{anc_services_per_ec.size}"
 
+# In area ANCs.
 ecs.each do |ec|
   key = [ec['Village Code'].village, ec['Wife Name'], ec['Husband Name']]
 
-  Forms.new(ec, ancs_per_ec[key], anc_services_per_ec[key]).fill
+  Forms.new(ec, ancs_per_ec[key], anc_services_per_ec[key]).fill_for_in_area
+end
+
+# Out of area ANCs.
+ancs_per_ec.each do |anc_key, anc_values|
+  next if ecs.any? {|ec| anc_key == [ec['Village Code'].village, ec['Wife Name'], ec['Husband Name']]}
+
+  Forms.new(nil, anc_values, anc_services_per_ec[anc_key]).fill_for_out_of_area
 end

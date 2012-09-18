@@ -95,6 +95,9 @@ class ANCs
         anc.add_field "Case ID", Guid.new.to_s
         anc.add_field "Instance ID", Guid.new.to_s
 
+        anc.add_field "Three or More Live Births", anc['Number of livebirth(L)'].to_i >= 3
+        anc.add_field "Three or More Abortions", anc['Number of abortion(A)'].to_i >= 3
+
         @ancs << anc
       end
     ensure
