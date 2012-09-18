@@ -62,6 +62,9 @@ class ECs
         ec.add_field "Case ID", Guid.new.to_s
         ec.add_field "Instance ID", Guid.new.to_s
 
+        ec.add_field "Number of Pregnancies", (ec['Number of Abortion'].to_i + ec['Number of Still Birth'].to_i + ec['Number of Living Children'].to_i).to_s
+        ec.add_field "FP Start Date", Date.parse(ec['Registration date']).to_s
+
         @ecs << ec
       end
     ensure

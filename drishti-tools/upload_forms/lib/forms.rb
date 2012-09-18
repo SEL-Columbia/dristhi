@@ -15,6 +15,12 @@ class Forms
   private
   def fill_ec_form
     puts "EC: #{@ec['Wife Name']} - #{@ec['Husband Name']} - #{@ec['Case ID']}"
+    ec_registration_erb = ERB.new(File.read('templates/ec_registration.erb'))
+
+    ec = @ec
+    ec_registration_xml = ec_registration_erb.result(binding)
+
+    File.open("output/EC_#{ec['Case ID']}.xml", "w") do |f| f.puts ec_registration_xml end
   end
 
   def fill_anc_registration_forms
