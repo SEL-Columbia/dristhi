@@ -4,6 +4,6 @@ class Village
   def initialize phc, sc, village
     @phc = phc
     @sc = sc
-    @Village = village
+    @village = village
   end
 end

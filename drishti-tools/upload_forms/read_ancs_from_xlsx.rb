@@ -17,6 +17,10 @@ class ANCs
     @ancs.collect {|anc| anc.to_hash}
   end
 
+  def ancs_grouped_per_couple
+    ancs.group_by {|anc| [anc['a.Village Code'].village, anc['a.Wife Name'], anc['a.Husband Name']]}
+  end
+
   private
   def read_from xlsx_filename
     filename = "#{Random.rand(9999999)}_ANC_register.csv"

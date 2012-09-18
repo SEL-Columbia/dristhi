@@ -17,6 +17,10 @@ class ANCServices
     @anc_services.collect {|anc_service| anc_service.to_hash}
   end
 
+  def anc_services_grouped_per_couple
+    anc_services.group_by {|service| [service['Village Code'].village, service['Wife Name'], service['Husband Name']]}
+  end
+
   private
   def read_from xlsx_filename
     filename = "#{Random.rand(9999999)}_ANC_services.csv"
