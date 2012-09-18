@@ -45,19 +45,16 @@ class ANCServices
         anc_service.convert_value "Visit Number", :empty => "0"
         anc_service.convert_value "ANC Checkup", :empty => ""
         anc_service.convert_value "Weight", :empty => "40"
-        anc_service.convert_value "BP", :empty => ""
+        anc_service.convert_value "BP", :empty => "120/80"
         anc_service.convert_value "HB", :empty => ""
         anc_service.convert_value "HB date", :empty => ""
         anc_service.convert_value "Albumin", :empty => ""
         anc_service.convert_value "Albumin test date", :empty => Date.today.to_s
         anc_service.convert_value "Sugar", :empty => ""
         anc_service.convert_value "Sugar test date", :empty => Date.today.to_s
-        anc_service.convert_value "HIV", :empty => ""
         anc_service.convert_value "HIV test date", :empty => Date.today.to_s
         anc_service.convert_value "Micro", :empty => ""
         anc_service.convert_value "Micro test date", :empty => Date.today.to_s
-        anc_service.convert_value "TT1", :empty => ""
-        anc_service.convert_value "TT2", :empty => ""
         anc_service.convert_value "IFA tablets", :empty => ""
         anc_service.convert_value "IFA tablets given date", :empty => Date.today.to_s
         anc_service.convert_value "IFA tablets 2dose", :empty => ""
@@ -176,7 +173,30 @@ class ANCServices
           :empty           => "none",
           :default         => "none"
 
+        anc_service.convert_value "TT1",
+          "B/D"     => "",
+          :empty    => ""
+
+        anc_service.convert_value "TT2",
+          "B/D"     => "",
+          :empty    => ""
+
+        anc_service.convert_value "HIV",
+          "Positive" => "HIV",
+          :default   => "",
+          :empty     => ""
+
         anc_service.add_field "Instance ID", Guid.new.to_s
+        anc_service.add_field "BP Systolic", anc_service['BP'].gsub(/\/.*/, '')
+        anc_service.add_field "BP Diastolic", anc_service['BP'].gsub(/^.*\//, '')
+
+        anc_service.add_field "TT Shot Given?", (not anc_service['TT1'].empty? or not anc_service['TT2'].empty?) ? "yes" : "no"
+
+        tt_dose_given = ""
+        tt_dose_given = "tt1" unless anc_service['TT1'].empty?
+        tt_dose_given = "tt2" unless anc_service['TT2'].empty?
+
+        anc_service.add_field "TT Dose", tt_dose_given
 
         @anc_services << anc_service
       end

@@ -38,6 +38,15 @@ class Forms
   def fill_anc_services_forms
     @anc_services.each do |anc_service|
       puts "        ANC service: Visit number: #{anc_service['Visit Number']}"
+
+      anc_visit_erb = ERB.new(File.read('templates/anc_visit.erb'))
+
+      anc = @ancs.find {|anc| anc['a.Thayi Card Number'] == anc_service['Thayi Card Number']}
+      anc = @ancs.last if anc.nil?
+      ec = @ec
+
+      anc_visit_xml = anc_visit_erb.result(binding)
+      File.open("output/ANCVisit_#{anc_service['Instance ID']}.xml", "w") do |f| f.puts anc_visit_xml end
     end
   end
 
