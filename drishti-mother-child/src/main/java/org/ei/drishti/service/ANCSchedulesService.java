@@ -11,6 +11,8 @@ import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ import static org.motechproject.util.DateUtil.today;
 
 @Service
 public class ANCSchedulesService {
+    private static Logger logger = LoggerFactory.getLogger(ANCSchedulesService.class.toString());
+
     private final ScheduleTrackingService trackingService;
     private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_IFA, SCHEDULE_LAB, SCHEDULE_TT};
     private ActionService actionService;
@@ -86,16 +90,23 @@ public class ANCSchedulesService {
     }
 
     private void fulfillCurrentMilestone(AnteNatalCareInformation ancInformation, String scheduleName, String milestonePrefix) {
-        int expectedMilestoneNumber = currentMilestoneNumber(ancInformation.caseId(), SCHEDULE_IFA, "IFA");
-        if (expectedMilestoneNumber == 0) {
+        int expectedMilestoneNumber = currentMilestoneNumber(ancInformation.caseId(), scheduleName, milestonePrefix);
+        if (expectedMilestoneNumber == Integer.MAX_VALUE) {
+            logger.warn("Tried to fulfill non-existent schedule: " + scheduleName + " for case: " + ancInformation.caseId());
             return;
         }
+
         fastForwardSchedule(ancInformation, expectedMilestoneNumber, scheduleName, milestonePrefix);
     }
 
     private void fastForwardSchedule(AnteNatalCareInformation ancInformation, int visitNumberToFulfill, String scheduleName, String milestonePrefix) {
         String caseId = ancInformation.caseId();
+
         int currentMilestoneNumber = currentMilestoneNumber(caseId, scheduleName, milestonePrefix);
+        if (currentMilestoneNumber == Integer.MAX_VALUE) {
+            logger.warn("Tried to fulfill non-existent schedule: " + scheduleName + " for case: " + ancInformation.caseId());
+            return;
+        }
 
         for (int i = currentMilestoneNumber; i <= visitNumberToFulfill; i++) {
             trackingService.fulfillCurrentMilestone(caseId, scheduleName, ancInformation.visitDate(), new Time(now()));
@@ -106,7 +117,7 @@ public class ANCSchedulesService {
     private int currentMilestoneNumber(String caseId, String scheduleName, String milestonePrefix) {
         EnrollmentRecord record = trackingService.getEnrollment(caseId, scheduleName);
         if (record == null) {
-            return 0;
+            return Integer.MAX_VALUE;
         }
 
         return Integer.valueOf(record.getCurrentMilestoneName().replace(milestonePrefix + " ", ""));
