@@ -1,24 +1,25 @@
-require_relative 'lib/read_anc_services_from_xlsx.rb'
-require_relative 'lib/read_ancs_from_xlsx.rb'
-require_relative 'lib/read_ecs_from_xlsx.rb'
-require_relative 'lib/forms.rb'
+require_relative 'lib/commcare.rb'
 
-ecs = ECs.new("examples/Munjanhalli.xlsx").ecs
-ancs_per_ec = ANCs.new("examples/Munjanhalli.xlsx").ancs_grouped_per_couple
-anc_services_per_ec = ANCServices.new("examples/Munjanhalli.xlsx").anc_services_per_ec
+def upload_all filenames
+  filenames.each_with_index do |filename, index|
+    puts "Uploading #{index} of #{filenames.size}: #{filename}"
 
-puts "Got: ECs: #{ecs.size}. ANCS grouped by EC: #{ancs_per_ec.size}. Services grouped by EC: #{anc_services_per_ec.size}"
-
-# In area ANCs.
-ecs.each do |ec|
-  key = [ec['Village Code'].village, ec['Wife Name'], ec['Husband Name']]
-
-  Forms.new(ec, ancs_per_ec[key], anc_services_per_ec[key]).fill_for_in_area
+    CommCare.new.upload File.read filename
+    sleep 3
+  end
 end
 
-# Out of area ANCs.
-ancs_per_ec.each do |anc_key, anc_values|
-  next if ecs.any? {|ec| anc_key == [ec['Village Code'].village, ec['Wife Name'], ec['Husband Name']]}
+ec_forms = Dir['output/EC_*.xml']
+anc_registration_forms = Dir['output/ANC_*.xml'] + Dir['output/ANCOutOfArea_*.xml']
+anc_form_prefixes_to_upload_in_order = Dir['output/ANCVisit_*.xml'].collect {|filename| filename.gsub(/(output\/ANCVisit_\d+_).*/, '\1')}.sort.uniq
+anc_outcome_forms = Dir['output/ANCOutcome_*.xml']
 
-  Forms.new(nil, anc_values, anc_services_per_ec[anc_key]).fill_for_out_of_area
+upload_all ec_forms
+upload_all anc_registration_forms
+
+anc_form_prefixes_to_upload_in_order.each do |prefix|
+  upload_all Dir[prefix + "*"]
+  puts "Sleeping for 3 minutes so that Dristhi can pull in all the information for the old visits."; sleep 180
 end
+
+upload_all anc_outcome_forms

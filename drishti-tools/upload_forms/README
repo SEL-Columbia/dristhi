@@ -1,0 +1,3 @@
+Run create_forms.rb to create the forms from the Excel file (for now, examples/Munjanhalli.xlsx).
+
+Then, run upload_forms.rb when ready to upload.
