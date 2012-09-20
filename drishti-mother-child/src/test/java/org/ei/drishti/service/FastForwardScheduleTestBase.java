@@ -85,6 +85,10 @@ public class FastForwardScheduleTestBase {
         verifyAllActionInteractions(Arrays.asList(expectedVisitCodes));
     }
 
+    public void willNotFulfillAnything() {
+        willFulfillFor();
+    }
+
     private void verifyAllActionInteractions(List<String> expectedVisitCodes) {
         if (expectedVisitCodes.isEmpty()) {
             verifyZeroInteractions(actionService);

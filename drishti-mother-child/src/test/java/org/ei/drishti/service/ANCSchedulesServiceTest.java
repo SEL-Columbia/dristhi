@@ -24,10 +24,12 @@ import java.util.List;
 
 import static org.ei.drishti.scheduler.DrishtiSchedules.*;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
+import static org.motechproject.util.DateUtil.time;
 import static org.motechproject.util.DateUtil.today;
 import static org.powermock.api.mockito.PowerMockito.verifyZeroInteractions;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -52,10 +54,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         schedulesService.enrollMother("Case X", lmp, new Time(15, 0), new Time(14, 0));
 
         verify(scheduleTrackingService).enroll(ancEnrollmentFor("Case X", SCHEDULE_ANC, lmp, "ANC 1"));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_EDD, lmp));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_IFA, lmp));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_LAB, lmp));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_TT, lmp));
+        verifyNonANCScheduleEnrollments(lmp);
         verifyNoMoreInteractions(scheduleTrackingService);
     }
 
@@ -88,9 +87,9 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldEnrollMotherIntoANC1WhenLMPDateIsAfterTodayOrMoreThan40WeeksBeforeToday() throws Exception {
-        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 2, 1), "ANC 1");
-        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 10, 8), "ANC 1");
+    public void shouldNotEnrollMotherIntoANC1WhenLMPDateIsAfterTodayOrMoreThan40WeeksBeforeToday() throws Exception {
+        assertNoEnrollmentIntoMilestone(new LocalDate(2011, 12, 31));
+        assertNoEnrollmentIntoMilestone(new LocalDate(2012, 10, 8));
     }
 
     @Test
@@ -100,7 +99,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldNotFulfillANCMilestoneWhichHasAlreadyBeenFulfilled() {
-        new FastForwardScheduleTestBase().forANCSchedule().whenExpecting("ANC 3").providedWithVisitNumber(1);
+        new FastForwardScheduleTestBase().forANCSchedule().whenExpecting("ANC 3").providedWithVisitNumber(1).willNotFulfillAnything();
     }
 
     @Test
@@ -139,7 +138,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
         schedulesService.ifaVisitHasHappened(new AnteNatalCareInformation("Case X", "ANM 1", 0, "2012-01-23"));
 
-        verify(scheduleTrackingService).getEnrollment("Case X", SCHEDULE_IFA);
+        verify(scheduleTrackingService, times(2)).getEnrollment("Case X", SCHEDULE_IFA);
         verifyNoMoreInteractions(scheduleTrackingService);
         verifyZeroInteractions(actionService);
     }
@@ -178,14 +177,23 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     private void assertEnrollmentIntoMilestoneBasedOnDate(LocalDate enrollmentDate, String expectedMilestone) throws Exception {
+        assertEnrollmentIntoMilestoneBasedOnDate(enrollmentDate, expectedMilestone, 1);
+    }
+
+    private void assertNoEnrollmentIntoMilestone(LocalDate enrollmentDate) throws Exception {
+        assertEnrollmentIntoMilestoneBasedOnDate(enrollmentDate, "", 0);
+    }
+
+    private void assertEnrollmentIntoMilestoneBasedOnDate(LocalDate enrollmentDate, String expectedMilestone, int wantedNumberOfInvocations) throws Exception {
         setUp();
         LocalDate lmp = new LocalDate(2012, 1, 1);
         mockCurrentDate(enrollmentDate);
 
         schedulesService.enrollMother("Case X", lmp, new Time(15, 0), new Time(14, 0));
 
-        verify(scheduleTrackingService).enroll(ancEnrollmentFor("Case X", SCHEDULE_ANC, lmp, expectedMilestone));
-        verify(actionService).alertForBeneficiary(BeneficiaryType.mother, "Case X", expectedMilestone, AlertPriority.normal, lmp.toDateTime(new LocalTime(14, 0)), lmp.plusWeeks(12).toDateTime(new LocalTime(14, 0)));
+        verifyNonANCScheduleEnrollments(lmp);
+        verify(scheduleTrackingService, times(wantedNumberOfInvocations)).enroll(ancEnrollmentFor("Case X", SCHEDULE_ANC, lmp, expectedMilestone));
+        verify(actionService, times(wantedNumberOfInvocations)).alertForBeneficiary(BeneficiaryType.mother, "Case X", expectedMilestone, AlertPriority.normal, lmp.toDateTime(new LocalTime(14, 0)), lmp.plusWeeks(12).toDateTime(new LocalTime(14, 0)));
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate lmp) {
@@ -229,4 +237,10 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         });
     }
 
+    private void verifyNonANCScheduleEnrollments(LocalDate lmp) {
+        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_EDD, lmp));
+        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_IFA, lmp));
+        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_LAB, lmp));
+        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_TT, lmp));
+    }
 }

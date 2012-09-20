@@ -38,7 +38,7 @@ public class AnteNatalCareInformation {
     }
 
     public LocalDate visitDate() {
-        return DateTime.parse(submissionDate).toLocalDate();
+        return LocalDate.parse(submissionDate);
     }
 
     public String anmIdentifier() {

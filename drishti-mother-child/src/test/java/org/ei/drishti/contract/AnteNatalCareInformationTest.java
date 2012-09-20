@@ -7,8 +7,8 @@ import static junit.framework.Assert.assertEquals;
 
 public class AnteNatalCareInformationTest {
     @Test
-    public void shouldParseLocalDateFromISOFormattedDate() throws Exception {
-        AnteNatalCareInformation careInformation = new AnteNatalCareInformation("CASE X", "ANM 1", 1, "2012-09-04T08:42:17Z");
+    public void shouldParseLocalDateFromSubmissionDate() throws Exception {
+        AnteNatalCareInformation careInformation = new AnteNatalCareInformation("CASE X", "ANM 1", 1, "2012-09-04");
 
         assertEquals(LocalDate.parse("2012-09-04"), careInformation.visitDate());
     }
