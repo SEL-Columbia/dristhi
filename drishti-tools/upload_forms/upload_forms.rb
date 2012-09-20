@@ -5,7 +5,7 @@ def upload_all filenames
     puts "Uploading #{index} of #{filenames.size}: #{filename}"
 
     CommCare.new.upload File.read filename
-    sleep 3
+    sleep 0.5
   end
 end
 
