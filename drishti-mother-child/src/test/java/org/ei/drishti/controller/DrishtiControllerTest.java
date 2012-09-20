@@ -11,6 +11,7 @@ import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.motechproject.dao.MotechJsonReader;
 
 import java.util.HashMap;
 import java.util.Map;

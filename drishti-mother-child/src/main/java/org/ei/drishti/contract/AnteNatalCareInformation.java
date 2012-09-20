@@ -9,14 +9,14 @@ import org.joda.time.LocalDate;
 public class AnteNatalCareInformation {
     private String caseId;
     private String anmIdentifier;
-    private int ancVisitNumber;
-    private int numberOfIFATabletsGiven;
+    private String ancVisitNumber;
+    private String numberOfIFATabletsGiven;
     private String submissionDate;
 
     public AnteNatalCareInformation(String caseId, String anmIdentifier, int visitNumber, String submissionDate) {
         this.caseId = caseId;
         this.anmIdentifier = anmIdentifier;
-        this.ancVisitNumber = visitNumber;
+        this.ancVisitNumber = String.valueOf(visitNumber);
         this.submissionDate = submissionDate;
     }
 
@@ -24,17 +24,17 @@ public class AnteNatalCareInformation {
         return caseId;
     }
 
-    public AnteNatalCareInformation withNumberOfIFATabletsProvided(int numberOfTablets) {
-        this.numberOfIFATabletsGiven = numberOfTablets;
+    public AnteNatalCareInformation withNumberOfIFATabletsProvided(String numberOfTablets) {
+        this.numberOfIFATabletsGiven = String.valueOf(numberOfTablets);
         return this;
     }
 
     public boolean ifaTablesHaveBeenProvided() {
-        return numberOfIFATabletsGiven > 0;
+        return numberOfIFATabletsProvided() > 0;
     }
 
     public int visitNumber() {
-        return ancVisitNumber;
+        return coerceToInt(ancVisitNumber);
     }
 
     public LocalDate visitDate() {
@@ -46,7 +46,7 @@ public class AnteNatalCareInformation {
     }
 
     public int numberOfIFATabletsProvided() {
-        return numberOfIFATabletsGiven;
+        return coerceToInt(numberOfIFATabletsGiven);
     }
 
     @Override
@@ -62,6 +62,10 @@ public class AnteNatalCareInformation {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    private int coerceToInt(String x) {
+        return x == null || x.isEmpty() ? 0 : Integer.parseInt(x);
     }
 }
 
