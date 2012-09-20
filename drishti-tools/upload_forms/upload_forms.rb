@@ -3,7 +3,7 @@ require 'fileutils'
 
 def upload_all filenames
   filenames.each_with_index do |filename, index|
-    puts "Uploading #{index} of #{filenames.size}: #{filename}"
+    puts "Uploading #{index + 1} of #{filenames.size}: #{filename}"
 
     CommCare.new.upload File.read filename
     FileUtils.mv filename, 'output/DONE/'
