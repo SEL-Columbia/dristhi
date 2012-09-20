@@ -48,7 +48,7 @@ public class DrishtiController {
     }
 
     public void updateOutcomeOfANC(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
-        logger.info("ANC outcome: " + outcomeInformation);
+        logger.info("ANC outcome: " + outcomeInformation + ". Extra data: " + extraData);
 
         ancService.updatePregnancyOutcome(outcomeInformation, extraData);
         mctsService.updateANCOutcome(outcomeInformation);
@@ -101,7 +101,7 @@ public class DrishtiController {
     }
 
     public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
-        logger.info("Register Out of Area ANC: " + request);
+        logger.info("Register Out of Area ANC: " + request + ". Extra data: " + extraData);
 
         EligibleCouple couple = ecService.registerEligibleCoupleForOutOfAreaANC(request, extraData);
         ancService.registerOutOfAreaANC(request, couple, extraData);
