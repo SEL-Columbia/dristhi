@@ -4,6 +4,7 @@ require_relative 'lib/read_ecs_from_xlsx.rb'
 require_relative 'lib/forms.rb'
 
 Dir['output/*.xml'].each {|file| FileUtils.rm_f file}
+Dir['output/DONE/*.xml'].each {|file| FileUtils.rm_f file}
 
 ecs = ECs.new("examples/Munjanhalli.xlsx").ecs
 ancs_per_ec = ANCs.new("examples/Munjanhalli.xlsx").ancs_grouped_per_couple
