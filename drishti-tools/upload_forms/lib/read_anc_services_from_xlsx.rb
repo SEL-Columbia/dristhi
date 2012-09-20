@@ -49,38 +49,38 @@ class ANCServices
         anc_service.convert_value "HB", :empty => ""
         anc_service.convert_value "HB date", :empty => ""
         anc_service.convert_value "Albumin", :empty => ""
-        anc_service.convert_value "Albumin test date", :empty => Date.today.to_s
+        anc_service.convert_to_date "Albumin test date", :empty => Date.today.to_s
         anc_service.convert_value "Sugar", :empty => ""
-        anc_service.convert_value "Sugar test date", :empty => Date.today.to_s
-        anc_service.convert_value "HIV test date", :empty => Date.today.to_s
+        anc_service.convert_to_date "Sugar test date", :empty => Date.today.to_s
+        anc_service.convert_to_date "HIV test date", :empty => Date.today.to_s
         anc_service.convert_value "Micro", :empty => ""
-        anc_service.convert_value "Micro test date", :empty => Date.today.to_s
+        anc_service.convert_to_date "Micro test date", :empty => Date.today.to_s
         anc_service.convert_value "IFA tablets", :empty => ""
-        anc_service.convert_value "IFA tablets given date", :empty => Date.today.to_s
+        anc_service.convert_to_date "IFA tablets given date", :empty => Date.today.to_s
         anc_service.convert_value "IFA tablets 2dose", :empty => ""
-        anc_service.convert_value "IFA tablets 2dose date", :empty => Date.today.to_s
+        anc_service.convert_to_date "IFA tablets 2dose date", :empty => Date.today.to_s
         anc_service.convert_value "IFA tablets 3dose", :empty => ""
-        anc_service.convert_value "IFA tablets 3dose date", :empty => Date.today.to_s
+        anc_service.convert_to_date "IFA tablets 3dose date", :empty => Date.today.to_s
         anc_service.convert_value "Blood group", :empty => ""
         anc_service.convert_value "VDRL", :empty => ""
-        anc_service.convert_value "VDRLdate", :empty => Date.today.to_s
+        anc_service.convert_to_date "VDRLdate", :empty => Date.today.to_s
         anc_service.convert_value "HbS Ag", :empty => ""
-        anc_service.convert_value "HbS Agdate", :empty => Date.today.to_s
+        anc_service.convert_to_date "HbS Agdate", :empty => Date.today.to_s
         anc_service.convert_value "RTI/STI Detected(Male)", :empty => ""
         anc_service.convert_value "RTI/STI Detected(Female)", :empty => ""
         anc_service.convert_value "RTI/STI Treatement(Male)", :empty => ""
         anc_service.convert_value "RTI/STI Treatement(Female)", :empty => ""
         anc_service.convert_value "Pragnancy Outcome", :empty => ""
-        anc_service.convert_value "Outcome date", :empty => Date.today.to_s
+        anc_service.convert_to_date "Outcome date", :empty => Date.today.to_s
         anc_service.convert_value "Reason for High risk", :empty => ""
         anc_service.convert_value "Left the place", :empty => ""
-        anc_service.convert_value "Date of Left the Place", :empty => Date.today.to_s
+        anc_service.convert_to_date "Date of Left the Place", :empty => Date.today.to_s
         anc_service.convert_value "e.Year", :empty => "2012"
         anc_service.convert_value "e.Wife Name", :empty => "Wife Unknown"
         anc_service.convert_value "e.Wife Age", :empty => "20"
         anc_service.convert_value "e.Husband Name", :empty => "Husband Unknown"
         anc_service.convert_value "Sno", :empty => "1"
-        anc_service.convert_value "Registration date", :empty => Date.today.to_s
+        anc_service.convert_to_date "Registration date", :empty => Date.today.to_s
         anc_service.convert_value "aHouse Number", :empty => "12345"
         anc_service.convert_value "New EC No", :empty => "111111"
         anc_service.convert_value "Old  EC No", :empty => "111111"
@@ -97,16 +97,15 @@ class ANCServices
         anc_service.convert_value "Number of livebirth(L)", :empty => "0"
         anc_service.convert_value "Number of abortion(A)", :empty => "0"
         anc_service.convert_value "Duration of Pregnancy in Weeks", :empty => "0"
-        anc_service.convert_value "LMP", :empty => Date.today.to_s
-        anc_service.convert_value "EDD", :empty => Date.today.to_s
+        anc_service.convert_to_date "LMP", :empty => Date.today.to_s
+        anc_service.convert_to_date "EDD", :empty => Date.today.to_s
         anc_service.convert_value "Height", :empty => "150"
         anc_service.convert_value "No of ANM Visits", :empty => "0"
-        anc_service.convert_value "Date of Delivery", :empty => ""
-        anc_service.convert_value "Outcomes", :empty => ""
+        anc_service.convert_to_date "Date of Delivery", :empty => ""
         anc_service.convert_value "Child Weight at Delivery time", :empty => ""
         anc_service.convert_value "Place of Delivery", :empty => ""
-        anc_service.convert_value "e.Date of Left the Place", :empty => Date.today.to_s
-        anc_service.convert_value "eRegistration date", :empty => Date.today.to_s
+        anc_service.convert_to_date "e.Date of Left the Place", :empty => Date.today.to_s
+        anc_service.convert_to_date "eRegistration date", :empty => Date.today.to_s
         anc_service.convert_value "eHouse Number", :empty => "12345"
         anc_service.convert_value "e.EC Number", :empty => "111111"
         anc_service.convert_value "eWife Name", :empty => "Wife Unknown"
@@ -115,9 +114,9 @@ class ANCServices
         anc_service.convert_value "Number of Abortion", :empty => "0"
         anc_service.convert_value "Number of Still Birth", :empty => "0"
         anc_service.convert_value "Number of Living Children", :empty => "0"
-        anc_service.convert_value "DOB of youngest child", :empty => Date.today.to_s
-        anc_service.convert_value "Acceptance Date", :empty => Date.today.to_s
-        anc_service.convert_value "if Yes LMP date", :empty => Date.today.to_s
+        anc_service.convert_to_date "DOB of youngest child", :empty => Date.today.to_s
+        anc_service.convert_to_date "Acceptance Date", :empty => Date.today.to_s
+        anc_service.convert_to_date "if Yes LMP date", :empty => Date.today.to_s
         anc_service.convert_value "eThayi Card Number", :empty => "1234567"
 
         anc_service.convert_value "Village Code",
@@ -186,7 +185,13 @@ class ANCServices
           :default   => "",
           :empty     => ""
 
+        anc_service.convert_value "Outcomes",
+          "Live birth"  => "live_birth",
+          "Still birth" => "still_birth",
+          :empty => "live_birth"
+
         anc_service.add_field "Instance ID", Guid.new.to_s
+        anc_service.add_field "Outcome Instance ID", Guid.new.to_s
         anc_service.add_field "BP Systolic", anc_service['BP'].gsub(/\/.*/, '')
         anc_service.add_field "BP Diastolic", anc_service['BP'].gsub(/^.*\//, '')
 

@@ -28,7 +28,7 @@ class ECs
       CSV.foreach(filename, { :headers => true }) do |csv_row|
         ec = Row.new csv_row
 
-        ec.convert_value "Registration date", :empty => Date.today.to_s
+        ec.convert_to_date "Registration date", :empty => Date.today.to_s
         ec.convert_value "House Number ", :empty => "111111"
         ec.convert_value "EC Number ", :empty => "111111"
         ec.convert_value "Wife Name", :empty => "Wife Unknown"
@@ -37,9 +37,9 @@ class ECs
         ec.convert_value "Number of Abortion", :empty => "0"
         ec.convert_value "Number of Still Birth", :empty => "0"
         ec.convert_value "Number of Living Children", :empty => "0"
-        ec.convert_value "DOB of youngest child ", :empty => Date.today.to_s
+        ec.convert_to_date "DOB of youngest child ", :empty => Date.today.to_s
         ec.convert_value "Status of EC Woman [Permanent/ Continuting/Discontinued]", :empty => "Continuting"
-        ec.convert_value "Acceptance Date", :empty => Date.today.to_s
+        ec.convert_to_date "Acceptance Date", :empty => Date.today.to_s
         ec.convert_value "Pregnancy [Yes/No]", :empty => "No"
         ec.convert_value "if Yes LMP date", :empty => ""
         ec.convert_value "Thayi Card Number", :empty => "1234567"

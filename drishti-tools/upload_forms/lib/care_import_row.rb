@@ -15,6 +15,16 @@ class Row
     add_a_field field_header, {:default => default_value}
   end
 
+  def convert_to_date field_header, conversion_values
+    convert_value field_header, conversion_values
+
+    begin
+      @values[field_header] = Date.parse(@values[field_header]).to_s unless @values[field_header].nil? or @values[field_header].empty?
+    rescue
+      STDERR.puts "Failed to convert value (#{@values[field_header]}), of header '#{field_header}', to date."
+    end
+  end
+
   def convert_value field_header, conversion_values
     raise "Adding default value: Cannot find field with header: '#{field_header}' in this CSV. Are you using the right CSV?" if not @csv_row.header? field_header
     add_a_field field_header, conversion_values

@@ -1,6 +1,6 @@
-require_relative 'read_anc_services_from_xlsx.rb'
-require_relative 'read_ancs_from_xlsx.rb'
-require_relative 'read_ecs_from_xlsx.rb'
+require_relative 'lib/read_anc_services_from_xlsx.rb'
+require_relative 'lib/read_ancs_from_xlsx.rb'
+require_relative 'lib/read_ecs_from_xlsx.rb'
 require_relative 'lib/forms.rb'
 
 ecs = ECs.new("examples/Munjanhalli.xlsx").ecs

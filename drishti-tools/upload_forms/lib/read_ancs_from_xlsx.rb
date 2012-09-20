@@ -39,7 +39,7 @@ class ANCs
         anc.convert_value "a.Wife Age", :empty => "20"
         anc.convert_value "a.Husband Name", :empty => "Husband Name"
         anc.convert_value "Sno", :empty => "O/A 111111"
-        anc.convert_value "a.Registration date", :empty => Date.today.to_s
+        anc.convert_to_date "a.Registration date", :empty => Date.today.to_s
         anc.convert_value "a.House Number", :empty => "111111"
         anc.convert_value "New EC No", :empty => "111111"
         anc.convert_value "Old  EC No", :empty => "111111"
@@ -55,16 +55,16 @@ class ANCs
         anc.convert_value "Number of livebirth(L)", :empty => "0"
         anc.convert_value "Number of abortion(A)", :empty => "0"
         anc.convert_value "Duration of Pregnancy in Weeks", :empty => "36"
-        anc.convert_value "LMP", :empty => Date.today.to_s
-        anc.convert_value "EDD", :empty => Date.today.to_s
+        anc.convert_to_date "LMP", :empty => Date.today.to_s
+        anc.convert_to_date "EDD", :empty => Date.today.to_s
         anc.convert_value "Height", :empty => "150"
         anc.convert_value "Out of area", :empty => "Yes"
         anc.convert_value "No of ANM Visits", :empty => "0"
-        anc.convert_value "Date of Delivery", :empty => Date.today.to_s
+        anc.convert_to_date "Date of Delivery", :empty => Date.today.to_s
         anc.convert_value "Outcomes", :empty => "Unknown"
         anc.convert_value "Child Weight at Delivery time", :empty => "2.5"
         anc.convert_value "Place of Delivery", :empty => "Unknown"
-        anc.convert_value "Date of Left the Place", :empty => Date.today.to_s
+        anc.convert_to_date "Date of Left the Place", :empty => Date.today.to_s
         anc.convert_value "Religion", :default => "r_others"
 
         anc.convert_value "HRP",
