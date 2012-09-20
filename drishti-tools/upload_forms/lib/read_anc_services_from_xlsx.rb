@@ -43,7 +43,6 @@ class ANCServices
         anc_service.convert_value "Husband Name", :empty => "Husband Unknown"
         anc_service.convert_value "Husband Age", :empty => "20"
         anc_service.convert_value "Visit Number", :empty => "0"
-        anc_service.convert_value "ANC Checkup", :empty => ""
         anc_service.convert_value "Weight", :empty => "40"
         anc_service.convert_value "BP", :empty => "120/80"
         anc_service.convert_value "HB", :empty => ""
@@ -98,6 +97,7 @@ class ANCServices
         anc_service.convert_value "Number of abortion(A)", :empty => "0"
         anc_service.convert_value "Duration of Pregnancy in Weeks", :empty => "0"
         anc_service.convert_to_date "LMP", :empty => Date.today.to_s
+        anc_service.convert_to_date "ANC Checkup", :empty => anc_service['LMP']
         anc_service.convert_to_date "EDD", :empty => Date.today.to_s
         anc_service.convert_value "Height", :empty => "150"
         anc_service.convert_value "No of ANM Visits", :empty => "0"
