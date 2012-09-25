@@ -29,6 +29,7 @@
                         },
                         "details": {
                             "form|familyplanning_method": "currentMethod",
+                            "form|date_familyplanningstart": "familyPlanningMethodChangeDate",
                             "form|headofhousehold": "headOfHousehold",
                             "form|religion": "religion",
                             "form|num_pregnancies": "pregnancies",
