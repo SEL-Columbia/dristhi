@@ -173,9 +173,9 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSendAnANCCareProvidedAction() throws Exception {
-        service.ancCareProvided("CASE X", "ANM X", 1, LocalDate.parse("2012-01-01"), 20);
+        service.ancCareProvided("CASE X", "ANM X", 1, LocalDate.parse("2012-01-01"), 20, true, "TT DOSE");
 
-        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.ancCareProvided(1, LocalDate.parse("2012-01-01"), 20)));
+        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.ancCareProvided(1, LocalDate.parse("2012-01-01"), 20, true, "TT DOSE")));
     }
 
     @Test

@@ -80,11 +80,13 @@ public class ActionData {
                 withDetails(details);
     }
 
-    public static ActionData ancCareProvided(int visitNumber, LocalDate visitDate, int numberOfIFATabletsProvided) {
-            return new ActionData("mother", "ancCareProvided")
+    public static ActionData ancCareProvided(int visitNumber, LocalDate visitDate, int numberOfIFATabletsProvided, Boolean wasTTShotProvided, String ttDose) {
+        return new ActionData("mother", "ancCareProvided")
                 .with("visitNumber", String.valueOf(visitNumber))
                 .with("visitDate", visitDate.toString())
-                .with("numberOfIFATabletsProvided", String.valueOf(numberOfIFATabletsProvided));
+                .with("numberOfIFATabletsProvided", String.valueOf(numberOfIFATabletsProvided))
+                .with("wasTTShotProvided", wasTTShotProvided.toString())
+                .with("ttDose", ttDose.toString());
     }
 
     public static ActionData registerOutOfAreaANC(String ecCaseId, String wife, String husband, String village, String subCenter, String phc,

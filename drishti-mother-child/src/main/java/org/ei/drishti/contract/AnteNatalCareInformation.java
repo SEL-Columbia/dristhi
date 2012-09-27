@@ -3,7 +3,6 @@ package org.ei.drishti.contract;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 public class AnteNatalCareInformation {
@@ -12,6 +11,8 @@ public class AnteNatalCareInformation {
     private String ancVisitNumber;
     private String numberOfIFATabletsGiven;
     private String submissionDate;
+    private String ttShotGiven;
+    private String ttDose;
 
     public AnteNatalCareInformation(String caseId, String anmIdentifier, int visitNumber, String submissionDate) {
         this.caseId = caseId;
@@ -26,6 +27,12 @@ public class AnteNatalCareInformation {
 
     public AnteNatalCareInformation withNumberOfIFATabletsProvided(String numberOfTablets) {
         this.numberOfIFATabletsGiven = String.valueOf(numberOfTablets);
+        return this;
+    }
+
+    public AnteNatalCareInformation withTTDose(String ttDose) {
+        this.ttShotGiven = "true";
+        this.ttDose = ttDose;
         return this;
     }
 
@@ -66,6 +73,14 @@ public class AnteNatalCareInformation {
 
     private int coerceToInt(String x) {
         return x == null || x.isEmpty() ? 0 : Integer.parseInt(x);
+    }
+
+    public Boolean wasTTShotProvided() {
+        return Boolean.valueOf(ttShotGiven);
+    }
+
+    public String ttDose() {
+        return ttDose;
     }
 }
 

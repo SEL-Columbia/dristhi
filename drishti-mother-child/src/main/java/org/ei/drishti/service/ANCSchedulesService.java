@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,8 +51,7 @@ public class ANCSchedulesService {
         fastForwardSchedule(ancInformation, ancInformation.visitNumber(), SCHEDULE_ANC, "ANC");
     }
 
-    public void ttVisitHasHappened(String caseId, int visitNumber, LocalDate visitDate) {
-        final AnteNatalCareInformation ancInformation = new AnteNatalCareInformation(caseId, "ANM 1", visitNumber, visitDate.toString());
+    public void ttVisitHasHappened(AnteNatalCareInformation ancInformation) {
         fastForwardSchedule(ancInformation, ancInformation.visitNumber(), SCHEDULE_TT, "TT");
     }
 

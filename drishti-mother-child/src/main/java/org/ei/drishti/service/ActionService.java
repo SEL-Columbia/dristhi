@@ -105,8 +105,8 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.updateMotherDetails(details)));
     }
 
-    public void ancCareProvided(String caseId, String anmIdentifier, int visitNumber, LocalDate visitDate, int numberOfIFATabletsGiven) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.ancCareProvided(visitNumber, visitDate, numberOfIFATabletsGiven)));
+    public void ancCareProvided(String caseId, String anmIdentifier, int visitNumber, LocalDate visitDate, int numberOfIFATabletsGiven, Boolean wasTTShotProvided, String ttDose) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.ancCareProvided(visitNumber, visitDate, numberOfIFATabletsGiven, wasTTShotProvided, ttDose)));
     }
 
     public void registerOutOfAreaANC(String caseId, String ecCaseId, String wifeName, String husbandName, String anmIdentifier, String village, String subCenter, String phc, String thaayiCardNumber,
