@@ -219,7 +219,7 @@ public class ANCServiceTest {
 
         verify(mothers).updateDetails("CASE-X", detailsBeforeUpdate);
         verify(actionService).updateMotherDetails("CASE-X", "ANM X", updatedDetails);
-        verify(actionService).ancCareProvided("CASE-X", "ANM X", 1, today(), 10, "TT DOSE");
+        verify(actionService).ancCareProvided("CASE-X", "ANM X", 1, today(), 10, "TT DOSE", detailsBeforeUpdate);
     }
 
     @Test
