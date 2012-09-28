@@ -1,5 +1,6 @@
 package org.ei.drishti.dto;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -81,12 +82,13 @@ public class ActionData {
     }
 
     public static ActionData ancCareProvided(int visitNumber, LocalDate visitDate, int numberOfIFATabletsProvided, Boolean wasTTShotProvided, String ttDose) {
+        String ttDoseValue = ttDose == null ? "" : ttDose;
         return new ActionData("mother", "ancCareProvided")
                 .with("visitNumber", String.valueOf(visitNumber))
                 .with("visitDate", visitDate.toString())
                 .with("numberOfIFATabletsProvided", String.valueOf(numberOfIFATabletsProvided))
                 .with("wasTTShotProvided", wasTTShotProvided.toString())
-                .with("ttDose", ttDose.toString());
+                .with("ttDose", ttDoseValue);
     }
 
     public static ActionData registerOutOfAreaANC(String ecCaseId, String wife, String husband, String village, String subCenter, String phc,
