@@ -1,5 +1,6 @@
 package org.ei.drishti.contract;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -11,7 +12,6 @@ public class AnteNatalCareInformation {
     private String ancVisitNumber;
     private String numberOfIFATabletsGiven;
     private String submissionDate;
-    private String ttShotGiven;
     private String ttDose;
 
     public AnteNatalCareInformation(String caseId, String anmIdentifier, int visitNumber, String submissionDate) {
@@ -31,7 +31,6 @@ public class AnteNatalCareInformation {
     }
 
     public AnteNatalCareInformation withTTDose(String ttDose) {
-        this.ttShotGiven = "true";
         this.ttDose = ttDose;
         return this;
     }
@@ -76,7 +75,7 @@ public class AnteNatalCareInformation {
     }
 
     public Boolean wasTTShotProvided() {
-        return Boolean.valueOf(ttShotGiven);
+        return StringUtils.isNotBlank(ttDose);
     }
 
     public String ttDose() {

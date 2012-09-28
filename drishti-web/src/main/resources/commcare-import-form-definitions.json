@@ -131,7 +131,6 @@
                         "form|this_anc_number": "ancVisitNumber",
                         "form|ifa_tablets_given": "numberOfIFATabletsGiven",
                         "form|today": "submissionDate",
-                        "form|tt_shot_given": "ttShotGiven",
                         "form|tt_dose": "ttDose"
                     },
                     "extraMappings": {
