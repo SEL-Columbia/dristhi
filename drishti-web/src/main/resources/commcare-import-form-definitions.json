@@ -33,7 +33,8 @@
                             "form|headofhousehold": "headOfHousehold",
                             "form|religion": "religion",
                             "form|num_pregnancies": "pregnancies",
-                            "form|is_high_priority": "isHighPriority"
+                            "form|is_high_priority": "isHighPriority",
+                            "form|meta|timeEnd": "submissionDate"
                         }
                     }
                 },
@@ -113,7 +114,8 @@
                             "form|is_high_risk": "isHighRisk",
                             "form|name_deliveryfacility": "deliveryPlace",
                             "form|asha_name": "ashaName",
-                            "form|asha_phone_number": "ashaPhoneNumber"
+                            "form|asha_phone_number": "ashaPhoneNumber",
+                            "form|meta|timeEnd": "submissionDate"
                         }
                     }
                 },
