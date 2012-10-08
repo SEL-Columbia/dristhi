@@ -1,7 +1,7 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class PNCSchedulesServiceTest {
 
     @Test
     public void shouldEnrollChildIntoAllChildSchedulesAndUpdateEnrollments() {
-        schedulesService.enrollChild(new ChildRegistrationRequest("Case X", "child name", "bherya", "Sub Center", "PHC X", "TC 1", today().toDate(), "DEMO ANM", "bcg", "male"));
+        schedulesService.enrollChild(new AnteNatalCareOutcomeInformation("Case X", "ANM X", "Child 1", "female", "bcg", "live_birth", LocalDate.now().toString()));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_BCG, today()));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_DPT, today()));

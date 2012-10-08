@@ -1,10 +1,12 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.contract.ChildRegistrationRequest;
 import org.ei.drishti.domain.Child;
+import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
@@ -14,34 +16,41 @@ import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.ei.drishti.dto.BeneficiaryType.child;
+import java.util.Map;
+
 import static org.ei.drishti.dto.AlertPriority.normal;
+import static org.ei.drishti.dto.BeneficiaryType.child;
 
 @Service
 public class PNCService {
-    private final ActionService actionService;
-    private final PNCSchedulesService pncSchedulesService;
-    private final AllChildren allChildren;
-    private final ChildReportingService childReportingService;
+    private ActionService actionService;
+    private PNCSchedulesService pncSchedulesService;
+    private AllMothers allMothers;
+    private AllChildren allChildren;
+    private ChildReportingService childReportingService;
 
     @Autowired
-    public PNCService(ActionService actionService, PNCSchedulesService pncSchedulesService, ChildReportingService childReportingService, AllChildren allChildren) {
+    public PNCService(ActionService actionService, PNCSchedulesService pncSchedulesService, AllMothers allMothers, AllChildren allChildren, ChildReportingService childReportingService) {
         this.actionService = actionService;
         this.pncSchedulesService = pncSchedulesService;
+        this.allMothers = allMothers;
         this.allChildren = allChildren;
         this.childReportingService = childReportingService;
     }
 
-    public void registerChild(ChildRegistrationRequest request) {
-        allChildren.register(new Child(request.caseId(), request.thaayiCardNumber(), request.name(), request.immunizationsProvided(), request.gender())
-                .withAnm(request.anmIdentifier()).withLocation(request.village(), request.subCenter(), request.phc()));
+    public void registerChild(AnteNatalCareOutcomeInformation request, Map<String, Map<String, String>> extraData) {
+        Mother mother = allMothers.findByCaseId(request.caseId());
+        if ("live_birth".equals(request.pregnancyOutcome())) {
+            allChildren.register(new Child(request.caseId(), mother.thaayiCardNo(), request.childName(),
+                    request.immunizationsProvided(), request.gender()).withAnm(request.anmIdentifier()));
 
-        alertForMissingImmunization(request, "opv0", "OPV 0");
-        alertForMissingImmunization(request, "bcg", "BCG");
-        alertForMissingImmunization(request, "hepB0", "HEP B0");
+            alertForMissingImmunization(request, "opv0", "OPV 0");
+            alertForMissingImmunization(request, "bcg", "BCG");
+            alertForMissingImmunization(request, "hepB0", "HEP B0");
 
-        pncSchedulesService.enrollChild(request);
-        actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), request.thaayiCardNumber(), request.dateOfBirth(), request.gender());
+            pncSchedulesService.enrollChild(request);
+            actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), mother.thaayiCardNo(), request.dateOfBirth(), request.gender(), extraData.get("details"));
+        }
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap reportingData) {
@@ -66,14 +75,14 @@ public class PNCService {
         }
     }
 
-    private void alertForMissingImmunization(ChildRegistrationRequest childRegistrationRequest, String checkForThisImmunization, String visitCodeIfNotProvided) {
-        if (childRegistrationRequest.isImmunizationProvided(checkForThisImmunization)) {
+    private void alertForMissingImmunization(AnteNatalCareOutcomeInformation information, String checkForThisImmunization, String visitCodeIfNotProvided) {
+        if (information.isImmunizationProvided(checkForThisImmunization)) {
             return;
         }
 
-        LocalDate dueDateLocal = childRegistrationRequest.dateOfBirth().plusDays(2);
+        LocalDate dueDateLocal = information.dateOfBirth().plusDays(2);
         LocalTime currentTime = DateUtil.now().toLocalTime();
         DateTime dueDate = dueDateLocal.toDateTime(currentTime);
-        actionService.alertForBeneficiary(child, childRegistrationRequest.caseId(), visitCodeIfNotProvided, normal, dueDate, dueDateLocal.plusWeeks(1).toDateTime(currentTime));
+        actionService.alertForBeneficiary(child, information.caseId(), visitCodeIfNotProvided, normal, dueDate, dueDateLocal.plusWeeks(1).toDateTime(currentTime));
     }
 }

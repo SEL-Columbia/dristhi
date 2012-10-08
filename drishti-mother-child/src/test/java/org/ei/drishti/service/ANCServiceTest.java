@@ -245,7 +245,7 @@ public class ANCServiceTest {
     public void shouldUnEnrollMotherFromANCSchedulesWhenDeliveryOutcomeFormIsFilled() throws Exception {
         when(mothers.motherExists("CASE X")).thenReturn(true);
 
-        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("CASE X", "ANM X"), EXTRA_DATA);
+        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("CASE X", "ANM X", "Child 1", "female", "bcg opv0", "live_birth", "2012-01-01"), EXTRA_DATA);
 
         verify(ancSchedulesService).unEnrollFromSchedules("CASE X");
     }
@@ -254,7 +254,7 @@ public class ANCServiceTest {
     public void shouldIgnoreDeliveryOutcomeUploadIfThereIsNoCorrespondingMotherInRepo() throws Exception {
         when(mothers.motherExists("CASE-X")).thenReturn(false);
 
-        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("CASE X", "ANM X"), EXTRA_DATA);
+        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("CASE X", "ANM X", "Child 1", "female", "bcg opv0", "live_birth", "2012-01-01"), EXTRA_DATA);
 
         verifyZeroInteractions(ancSchedulesService);
         verifyZeroInteractions(actionService);

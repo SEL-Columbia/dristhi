@@ -86,7 +86,7 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.closeANC(reasonForClose)));
     }
 
-    public void registerChildBirth(String caseId, String anmIdentifier, String thaayiCardNumber, LocalDate dateOfBirth, String gender) {
+    public void registerChildBirth(String caseId, String anmIdentifier, String thaayiCardNumber, LocalDate dateOfBirth, String gender, Map<String, String> details) {
         Mother mother = allMothers.findByThaayiCardNumber(thaayiCardNumber);
         if (mother == null) {
             logger.warn(format("Found child birth without registered mother. Ignoring case: {0} for thaayiCardNumber: {1} for ANM: {2}",
@@ -94,7 +94,7 @@ public class ActionService {
             return;
         }
 
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerChildBirth(mother.caseId(), dateOfBirth, gender)));
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerChildBirth(mother.caseId(), dateOfBirth, gender, details)));
     }
 
     public void updateEligibleCoupleDetails(String caseId, String anmIdentifier, Map<String, String> details) {

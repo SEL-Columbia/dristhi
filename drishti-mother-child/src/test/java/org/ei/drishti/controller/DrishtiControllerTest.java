@@ -11,7 +11,6 @@ import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.dao.MotechJsonReader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,12 +66,14 @@ public class DrishtiControllerTest {
 
     @Test
     public void shouldDelegateToBothANCServiceAndMCTSDuringANCCareOutcome() throws Exception {
-        AnteNatalCareOutcomeInformation careOutcomeInformation = mock(AnteNatalCareOutcomeInformation.class);
+        AnteNatalCareOutcomeInformation outcomeInformation = mock(AnteNatalCareOutcomeInformation.class);
 
-        controller.updateOutcomeOfANC(careOutcomeInformation, EXTRA_DATA);
+        controller.updateOutcomeOfANC(outcomeInformation, EXTRA_DATA);
 
-        verify(ancService).updatePregnancyOutcome(careOutcomeInformation, EXTRA_DATA);
-        verify(mctsService).updateANCOutcome(careOutcomeInformation);
+        verify(ancService).updatePregnancyOutcome(outcomeInformation, EXTRA_DATA);
+        verify(mctsService).updateANCOutcome(outcomeInformation);
+        verify(pncService).registerChild(outcomeInformation, EXTRA_DATA);
+        verify(mctsService).registerChild(outcomeInformation);
     }
 
     @Test
@@ -83,16 +84,6 @@ public class DrishtiControllerTest {
 
         verify(ancService).closeANCCase(closeInformation, new SafeMap(EXTRA_DATA.get("reporting")));
         verify(mctsService).closeANCCase(closeInformation);
-    }
-
-    @Test
-    public void shouldDelegateToBothPNCServiceAndMCTSDuringNewChildRegistration() {
-        ChildRegistrationRequest childRegistrationRequest = mock(ChildRegistrationRequest.class);
-
-        controller.registerChild(childRegistrationRequest);
-
-        verify(pncService).registerChild(childRegistrationRequest);
-        verify(mctsService).registerChild(childRegistrationRequest);
     }
 
     @Test

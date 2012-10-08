@@ -156,12 +156,17 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/28E0F77C-9E9B-40E6-AB90-EF7FA80998DD"
+                            "nameSpace": "http://openrosa.org/formdesigner/4813183F-2917-4DDD-B885-ECFC63F93BB4"
                         }
                     },
                     "mappings": {
                         "form|case|@case_id": "caseId",
-                        "form|meta|username": "anmIdentifier"
+                        "form|meta|username": "anmIdentifier",
+                        "form|live_birth_group|child_only|child_name_only": "childName",
+                        "form|live_birth_group|child_only|sex_child_only": "gender",
+                        "form|live_birth_group|child_only|immunizations_atbirth_only": "immunizationsProvided",
+                        "form|delivery_outcome": "pregnancyOutcome",
+                        "form|date_outcome": "dateOfDelivery"
                     },
                     "extraMappings": {
                         "details": {
@@ -170,29 +175,13 @@
                             "form|delivery_complication_group|had_delivery_complications": "hasDeliveryComplications",
                             "form|delivery_complication_group|complications": "deliveryComplications",
                             "form|is_high_risk": "isHighRisk",
-                            "form|is_high_risk_reason": "highRiskReason"
+                            "form|is_high_risk_reason": "highRiskReason",
+                            "form|case|update|breastfeeding_postbirth": "isBreastFeeding",
+                            "form|live_birth_group|child_only|birthweight_only": "childWeight",
+                            "form|live_birth_group|child_only|child_blood_group_only": "bloodGroup",
+                            "form|name_delivery_facility": "deliveryFacility",
+                            "form|place_delivery": "placeOfDelivery"
                         }
-                    }
-                },
-                {
-                    "name": "registerChild",
-                    "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/NOTDONE"
-                        }
-                    },
-                    "mappings": {
-                        "form|child_DOB": "dateOfBirth",
-                        "form|child_name": "childName",
-                        "form|mother_thayino": "thaayiCardNumber",
-                        "form|child_village": "village",
-                        "form|child_subcenter": "subCenter",
-                        "form|phc": "phc",
-                        "form|meta|username": "anmIdentifier",
-                        "form|case|@case_id": "caseId",
-                        "form|immunization_multiselect": "immunizationsProvided",
-                        "form|child_sex": "gender"
                     }
                 },
                 {

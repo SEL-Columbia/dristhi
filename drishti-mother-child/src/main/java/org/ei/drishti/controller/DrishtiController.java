@@ -52,6 +52,8 @@ public class DrishtiController {
 
         ancService.updatePregnancyOutcome(outcomeInformation, extraData);
         mctsService.updateANCOutcome(outcomeInformation);
+        pncService.registerChild(outcomeInformation, extraData);
+        mctsService.registerChild(outcomeInformation);
     }
 
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
@@ -59,13 +61,6 @@ public class DrishtiController {
 
         ancService.closeANCCase(closeInformation, new SafeMap(extraData.get("reporting")));
         mctsService.closeANCCase(closeInformation);
-    }
-
-    public void registerChild(ChildRegistrationRequest childInformation) {
-        logger.info("New child registration: " + childInformation);
-
-        pncService.registerChild(childInformation);
-        mctsService.registerChild(childInformation);
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {

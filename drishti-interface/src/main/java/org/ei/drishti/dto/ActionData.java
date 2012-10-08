@@ -63,11 +63,12 @@ public class ActionData {
                 .with("reasonForClose", reasonForClose);
     }
 
-    public static ActionData registerChildBirth(String motherCaseId, LocalDate dateOfBirth, String gender) {
+    public static ActionData registerChildBirth(String motherCaseId, LocalDate dateOfBirth, String gender, Map<String, String> details) {
         return new ActionData("child", "register")
                 .with("motherCaseId", motherCaseId)
                 .with("referenceDate", dateOfBirth.toString())
-                .with("gender", gender);
+                .with("gender", gender)
+                .withDetails(details);
     }
 
     public static ActionData updateEligibleCoupleDetails(Map<String, String> details) {

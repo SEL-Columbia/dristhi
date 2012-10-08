@@ -37,6 +37,8 @@ public class ActionServiceTest {
 
     private ActionService service;
 
+    private Map<String, String> EXTRA_DETAILS = mapOf("someKey", "someValue");
+
     @Before
     public void setUp() throws Exception {
         initMocks(this);
@@ -143,16 +145,16 @@ public class ActionServiceTest {
     public void shouldRegisterChildBirth() throws Exception {
         when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MotherCaseId", "MotherThaayiCard 1", "Theresa"));
 
-        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1", DateUtil.today(), "female");
+        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1", DateUtil.today(), "female", EXTRA_DETAILS);
 
-        verify(allActions).add(new Action("ChildCase Y", "ANM X", ActionData.registerChildBirth("MotherCaseId", DateUtil.today(), "female")));
+        verify(allActions).add(new Action("ChildCase Y", "ANM X", ActionData.registerChildBirth("MotherCaseId", DateUtil.today(), "female", EXTRA_DETAILS)));
     }
 
     @Test
     public void shouldNotRegisterChildBirthWhenMotherIsNotFound() throws Exception {
         when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(null);
 
-        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1", DateUtil.today(), "female");
+        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1", DateUtil.today(), "female", EXTRA_DETAILS);
 
         verifyZeroInteractions(allActions);
     }
