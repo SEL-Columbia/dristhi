@@ -37,7 +37,7 @@ public class ChildReportingServiceTest {
         SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("bcg", "hepb1"), "female").withLocation("bherya", "Sub Center", "PHC X"));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", Arrays.asList("bcg", "hepb1"), "female").withLocation("bherya", "Sub Center", "PHC X"));
 
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hepb1 opv0", "2012-01-01"), reportingData);
 
@@ -50,7 +50,7 @@ public class ChildReportingServiceTest {
         SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", Arrays.asList("dpt1", "dpt2"), "female").withLocation("bherya", "Sub Center", "PHC X"));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", Arrays.asList("dpt1", "dpt2"), "female").withLocation("bherya", "Sub Center", "PHC X"));
 
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "dpt1 bcg dpt2 measles", "2012-01-01"), reportingData);
 
@@ -101,7 +101,7 @@ public class ChildReportingServiceTest {
         SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
-        when(children.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", new ArrayList<String>(), "female").withLocation("bherya", "Sub Center", "PHC X"));
+        when(children.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female").withLocation("bherya", "Sub Center", "PHC X"));
 
         childReportingService.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", immunizationProvided, "2012-01-01"), reportingData);
 
@@ -114,7 +114,7 @@ public class ChildReportingServiceTest {
         SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "TC 1", "boo", new ArrayList<String>(), "female").withLocation("bherya", "Sub Center", "PHC X"));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female").withLocation("bherya", "Sub Center", "PHC X"));
 
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "NON_EXISTENT_IMMUNIZATION bcg", "2012-01-01"), reportingData);
 

@@ -26,6 +26,7 @@ import static org.motechproject.util.DateUtil.today;
 public class PNCSchedulesServiceTest {
     @Mock
     private ScheduleTrackingService scheduleTrackingService;
+
     private PNCSchedulesService schedulesService;
 
     @Before
@@ -36,7 +37,7 @@ public class PNCSchedulesServiceTest {
 
     @Test
     public void shouldEnrollChildIntoAllChildSchedulesAndUpdateEnrollments() {
-        schedulesService.enrollChild(new AnteNatalCareOutcomeInformation("Case X", "ANM X", "Child 1", "female", "bcg", "live_birth", LocalDate.now().toString()));
+        schedulesService.enrollChild(new AnteNatalCareOutcomeInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", "bcg", "live_birth", LocalDate.now().toString()));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_BCG, today()));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_DPT, today()));
@@ -169,11 +170,11 @@ public class PNCSchedulesServiceTest {
         public TestForChildEnrollment() {
             scheduleTrackingService = mock(ScheduleTrackingService.class);
             service = new PNCSchedulesService(scheduleTrackingService);
-            allEnrollments = new ArrayList<EnrollmentRecord>();
+            allEnrollments = new ArrayList<>();
         }
 
         public TestForChildEnrollment givenEnrollmentIn(String schedule, String... milestoneNames) {
-            ArrayList<EnrollmentRecord> records = new ArrayList<EnrollmentRecord>();
+            ArrayList<EnrollmentRecord> records = new ArrayList<>();
             for (String milestoneName : milestoneNames) {
                 records.add(new EnrollmentRecord(caseId, schedule, milestoneName, null, null, null, null, null, null, null));
             }

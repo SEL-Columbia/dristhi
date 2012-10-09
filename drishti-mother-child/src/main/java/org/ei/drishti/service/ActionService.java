@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-import static java.text.MessageFormat.format;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 
 @Service
@@ -86,15 +85,8 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.closeANC(reasonForClose)));
     }
 
-    public void registerChildBirth(String caseId, String anmIdentifier, String thaayiCardNumber, LocalDate dateOfBirth, String gender, Map<String, String> details) {
-        Mother mother = allMothers.findByThaayiCardNumber(thaayiCardNumber);
-        if (mother == null) {
-            logger.warn(format("Found child birth without registered mother. Ignoring case: {0} for thaayiCardNumber: {1} for ANM: {2}",
-                    caseId, thaayiCardNumber, anmIdentifier));
-            return;
-        }
-
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerChildBirth(mother.caseId(), dateOfBirth, gender, details)));
+    public void registerChildBirth(String caseId, String anmIdentifier, String motherCaseId, String thaayiCardNumber, LocalDate dateOfBirth, String gender, Map<String, String> details) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerChildBirth(motherCaseId, thaayiCardNumber, dateOfBirth, gender, details)));
     }
 
     public void updateEligibleCoupleDetails(String caseId, String anmIdentifier, Map<String, String> details) {

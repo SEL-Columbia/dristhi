@@ -65,7 +65,7 @@ public class ChildReportingService {
 
         for (String immunizationProvidedThisTime : immunizations) {
             Indicator indicator = immunizationToIndicator.get(immunizationProvidedThisTime);
-            if (indicator == null){
+            if (indicator == null) {
                 logger.warn("Not reporting: Invalid immunization: " + immunizationProvidedThisTime + " in " +
                         updationRequest + " with reporting data: " + reportingData);
                 continue;

@@ -95,16 +95,16 @@ public class Mother extends MotechBaseDataObject {
         return subCenter;
     }
 
+    public Map<String, String> details() {
+        return details;
+    }
+
     private String getCaseId() {
         return caseId;
     }
 
     private String getThaayiCardNumber() {
         return thaayiCardNumber;
-    }
-
-    public Map<String, String> details() {
-        return details;
     }
 
     @Override

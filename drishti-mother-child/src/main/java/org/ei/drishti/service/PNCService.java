@@ -13,16 +13,21 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.motechproject.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+import static java.lang.String.format;
 import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
 
 @Service
 public class PNCService {
+    private static Logger logger = LoggerFactory.getLogger(PNCService.class.toString());
+
     private ActionService actionService;
     private PNCSchedulesService pncSchedulesService;
     private AllMothers allMothers;
@@ -39,9 +44,15 @@ public class PNCService {
     }
 
     public void registerChild(AnteNatalCareOutcomeInformation request, Map<String, Map<String, String>> extraData) {
-        Mother mother = allMothers.findByCaseId(request.caseId());
+        Mother mother = allMothers.findByCaseId(request.motherCaseId());
+
+        if (mother == null) {
+            logger.warn(format("Failed to register child as there is no mother registered with case ID: {0} for child case ID: {1} for ANM: {2}", request.motherCaseId(), request.caseId(), request.anmIdentifier()));
+            return;
+        }
+
         if ("live_birth".equals(request.pregnancyOutcome())) {
-            allChildren.register(new Child(request.caseId(), mother.thaayiCardNo(), request.childName(),
+            allChildren.register(new Child(request.caseId(), request.motherCaseId(), mother.thaayiCardNo(), request.childName(),
                     request.immunizationsProvided(), request.gender()).withAnm(request.anmIdentifier()));
 
             alertForMissingImmunization(request, "opv0", "OPV 0");
@@ -49,7 +60,7 @@ public class PNCService {
             alertForMissingImmunization(request, "hepB0", "HEP B0");
 
             pncSchedulesService.enrollChild(request);
-            actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), mother.thaayiCardNo(), request.dateOfBirth(), request.gender(), extraData.get("details"));
+            actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), mother.caseId(), mother.thaayiCardNo(), request.dateOfBirth(), request.gender(), extraData.get("details"));
         }
     }
 

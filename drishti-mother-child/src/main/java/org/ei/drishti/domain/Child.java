@@ -33,7 +33,7 @@ public class Child extends MotechBaseDataObject {
     private Child() {
     }
 
-    public Child(String caseId, String thaayiCardNumber, String name, List<String> immunizationsProvided, String gender) {
+    public Child(String caseId, String motherCaseId, String thaayiCardNumber, String name, List<String> immunizationsProvided, String gender) {
         this.caseId = caseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;

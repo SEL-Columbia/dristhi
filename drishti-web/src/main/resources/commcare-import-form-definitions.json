@@ -160,8 +160,10 @@
                         }
                     },
                     "mappings": {
-                        "form|case|@case_id": "caseId",
+                        "form|case|@case_id": "motherCaseId",
+                        "form|case|update|num_childrenborn": "numberOfChildrenBorn",
                         "form|meta|username": "anmIdentifier",
+                        "form|subcase_0|case|@case_id": "caseId",
                         "form|live_birth_group|child_only|child_name_only": "childName",
                         "form|live_birth_group|child_only|sex_child_only": "gender",
                         "form|live_birth_group|child_only|immunizations_atbirth_only": "immunizationsProvided",

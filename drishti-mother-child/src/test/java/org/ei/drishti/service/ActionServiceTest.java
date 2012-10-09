@@ -58,7 +58,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForChild() throws Exception {
-        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "Thaayi 1", "Kid", Arrays.<String>asList(), "female").withAnm("ANM ID C"));
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "Thaayi 1", "Kid", Arrays.<String>asList(), "female").withAnm("ANM ID C"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
@@ -143,20 +143,11 @@ public class ActionServiceTest {
 
     @Test
     public void shouldRegisterChildBirth() throws Exception {
-        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MotherCaseId", "MotherThaayiCard 1", "Theresa"));
+        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MOTHER-CASE-1", "MotherThaayiCard 1", "Theresa"));
 
-        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1", DateUtil.today(), "female", EXTRA_DETAILS);
+        service.registerChildBirth("ChildCase Y", "ANM X", "MOTHER-CASE-1", "MotherThaayiCard 1", DateUtil.today(), "female", EXTRA_DETAILS);
 
-        verify(allActions).add(new Action("ChildCase Y", "ANM X", ActionData.registerChildBirth("MotherCaseId", DateUtil.today(), "female", EXTRA_DETAILS)));
-    }
-
-    @Test
-    public void shouldNotRegisterChildBirthWhenMotherIsNotFound() throws Exception {
-        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(null);
-
-        service.registerChildBirth("ChildCase Y", "ANM X", "MotherThaayiCard 1", DateUtil.today(), "female", EXTRA_DETAILS);
-
-        verifyZeroInteractions(allActions);
+        verify(allActions).add(new Action("ChildCase Y", "ANM X", ActionData.registerChildBirth("MOTHER-CASE-1", "MotherThaayiCard 1", DateUtil.today(), "female", EXTRA_DETAILS)));
     }
 
     @Test

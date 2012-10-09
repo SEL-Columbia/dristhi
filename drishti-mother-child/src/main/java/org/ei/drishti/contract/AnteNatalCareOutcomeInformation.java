@@ -9,6 +9,8 @@ import java.util.List;
 
 public class AnteNatalCareOutcomeInformation {
     private String caseId;
+    private String motherCaseId;
+    private String numberOfChildrenBorn;
     private String anmIdentifier;
     private String childName;
     private String gender;
@@ -16,9 +18,10 @@ public class AnteNatalCareOutcomeInformation {
     private String pregnancyOutcome;
     private String dateOfDelivery;
 
-    public AnteNatalCareOutcomeInformation(String caseId, String anmIdentifier, String childName, String gender, String immunizationsProvided,
+    public AnteNatalCareOutcomeInformation(String caseId, String motherCaseId, String anmIdentifier, String childName, String gender, String immunizationsProvided,
                                            String pregnancyOutcome, String dateOfDelivery) {
         this.caseId = caseId;
+        this.motherCaseId = motherCaseId;
         this.anmIdentifier = anmIdentifier;
         this.childName = childName;
         this.gender = gender;
@@ -57,6 +60,10 @@ public class AnteNatalCareOutcomeInformation {
 
     public boolean isImmunizationProvided(String checkForThisImmunization) {
         return (" " + immunizationsProvided + " ").contains(" " + checkForThisImmunization + " ");
+    }
+
+    public String motherCaseId() {
+        return motherCaseId;
     }
 
     @Override
