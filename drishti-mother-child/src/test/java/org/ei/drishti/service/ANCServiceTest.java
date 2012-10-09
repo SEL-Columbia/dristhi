@@ -243,11 +243,11 @@ public class ANCServiceTest {
 
     @Test
     public void shouldUnEnrollMotherFromANCSchedulesWhenDeliveryOutcomeFormIsFilled() throws Exception {
-        when(mothers.motherExists("CASE X")).thenReturn(true);
+        when(mothers.motherExists("MOTHER-CASE-1")).thenReturn(true);
 
         service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("CASE X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", "bcg opv0", "live_birth", "2012-01-01"), EXTRA_DATA);
 
-        verify(ancSchedulesService).unEnrollFromSchedules("CASE X");
+        verify(ancSchedulesService).unEnrollFromSchedules("MOTHER-CASE-1");
     }
 
     @Test

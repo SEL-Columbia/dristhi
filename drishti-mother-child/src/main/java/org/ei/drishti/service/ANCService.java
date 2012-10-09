@@ -103,9 +103,9 @@ public class ANCService {
     }
 
     public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
-        String caseId = outcomeInformation.caseId();
+        String caseId = outcomeInformation.motherCaseId();
         if (!allMothers.motherExists(caseId)) {
-            logger.warn("Failed to update delivery outcome as there is no mother registered with case ID: " + caseId);
+            logger.warn("Failed to update delivery outcome as there is no mother registered: " + outcomeInformation);
             return;
         }
         ancSchedulesService.unEnrollFromSchedules(caseId);

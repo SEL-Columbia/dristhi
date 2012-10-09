@@ -55,12 +55,13 @@ public class PNCService {
             allChildren.register(new Child(request.caseId(), request.motherCaseId(), mother.thaayiCardNo(), request.childName(),
                     request.immunizationsProvided(), request.gender()).withAnm(request.anmIdentifier()));
 
+            actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), mother.caseId(), mother.thaayiCardNo(), request.dateOfBirth(), request.gender(), extraData.get("details"));
+
             alertForMissingImmunization(request, "opv0", "OPV 0");
             alertForMissingImmunization(request, "bcg", "BCG");
             alertForMissingImmunization(request, "hepB0", "HEP B0");
 
             pncSchedulesService.enrollChild(request);
-            actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), mother.caseId(), mother.thaayiCardNo(), request.dateOfBirth(), request.gender(), extraData.get("details"));
         }
     }
 
