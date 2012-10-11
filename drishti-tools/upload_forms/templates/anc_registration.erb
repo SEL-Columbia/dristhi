@@ -37,7 +37,7 @@
     <n0:case case_id="<%= anc['Case ID'] %>" user_id="<%= user_id %>" date_modified="2012-09-18T15:08:24.923+05:30" xmlns:n0="http://commcarehq.org/case/transaction/v2">
       <n0:create>
         <n0:case_name><%= anc['a.Thayi Card Number'] %></n0:case_name>
-        <n0:owner_id>c3d86928a9c501cd88f42d6031ad70c9</n0:owner_id>
+        <n0:owner_id><%= user_id %></n0:owner_id>
         <n0:case_type>pregnant_woman</n0:case_type>
       </n0:create>
       <n0:update>
@@ -63,13 +63,13 @@
       </n0:index>
     </n0:case>
   </subcase_0>
-  <n1:case case_id="<%= ec['Case ID'] %>" user_id="c3d86928a9c501cd88f42d6031ad70c9" date_modified="2012-09-18T15:08:24.923+05:30" xmlns:n1="http://commcarehq.org/case/transaction/v2" />
+  <n1:case case_id="<%= ec['Case ID'] %>" user_id="<%= user_id %>" date_modified="2012-09-18T15:08:24.923+05:30" xmlns:n1="http://commcarehq.org/case/transaction/v2" />
   <n2:meta xmlns:n2="http://openrosa.org/jr/xforms">
     <n2:deviceID>359918045600160</n2:deviceID>
     <n2:timeStart>2012-09-18T15:06:54.069+05:30</n2:timeStart>
     <n2:timeEnd>2012-09-18T15:08:24.923+05:30</n2:timeEnd>
-    <n2:username>c</n2:username>
-    <n2:userID>c3d86928a9c501cd88f42d6031ad70c9</n2:userID>
+    <n2:username><%= user_name %></n2:username>
+    <n2:userID><%= user_id %></n2:userID>
     <n2:instanceID><%= anc['Instance ID'] %></n2:instanceID>
     <n3:appVersion xmlns:n3="http://commcarehq.org/xforms">CommCare ODK, version "2.1"(3027). CommCare Version 2.0. Build 3027, built on: August-07-2012</n3:appVersion>
   </n2:meta>

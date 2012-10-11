@@ -1,6 +1,6 @@
 class Forms
-  def initialize user_id, ec_data, anc_data, anc_services_data
-    @user_id = user_id
+  def initialize mobile_worker, ec_data, anc_data, anc_services_data
+    @mobile_worker = mobile_worker
     @ec = ec_data
     @ancs = anc_data
     @anc_services = anc_services_data
@@ -26,7 +26,8 @@ class Forms
     ec_registration_erb = ERB.new(File.read('templates/ec_registration.erb'))
 
     ec = @ec
-    user_id = @user_id
+    user_id = @mobile_worker.user_id
+    user_name = @mobile_worker.user_name
     ec_registration_xml = ec_registration_erb.result(binding)
     File.open("output/EC_#{ec['Case ID']}.xml", "w") do |f| f.puts ec_registration_xml end
   end
@@ -37,7 +38,8 @@ class Forms
 
       out_of_area_anc_registration_erb = ERB.new(File.read('templates/out_of_area_anc_registration.erb'))
 
-      user_id = @user_id
+      user_id = @mobile_worker.user_id
+      user_name = @mobile_worker.user_name
       out_of_area_anc_registration_xml = out_of_area_anc_registration_erb.result(binding)
       File.open("output/ANCOutOfArea_#{anc['Case ID']}.xml", "w") do |f| f.puts out_of_area_anc_registration_xml end
     end
@@ -50,7 +52,8 @@ class Forms
       anc_registration_erb = ERB.new(File.read('templates/anc_registration.erb'))
 
       ec = @ec
-      user_id = @user_id
+      user_id = @mobile_worker.user_id
+      user_name = @mobile_worker.user_name
       anc_registration_xml = anc_registration_erb.result(binding)
       File.open("output/ANC_#{anc['Case ID']}.xml", "w") do |f| f.puts anc_registration_xml end
     end
@@ -65,7 +68,8 @@ class Forms
       anc = @ancs.find {|anc| anc['a.Thayi Card Number'] == anc_service['Thayi Card Number']}
       anc = @ancs.last if anc.nil?
       ec = @ec
-      user_id = @user_id
+      user_id = @mobile_worker.user_id
+      user_name = @mobile_worker.user_name
 
       anc_visit_xml = anc_visit_erb.result(binding)
       File.open("output/ANCVisit_#{index.to_s.rjust(4, '0')}_#{anc_service['Instance ID']}.xml", "w") do |f| f.puts anc_visit_xml end
@@ -78,7 +82,8 @@ class Forms
     anc_service = @anc_services.first
     anc = @ancs.find {|anc| anc['a.Thayi Card Number'] == anc_service['Thayi Card Number']}
     anc = @ancs.last if anc.nil?
-    user_id = @user_id
+    user_id = @mobile_worker.user_id
+    user_name = @mobile_worker.user_name
 
     puts "    Have ANC outcome: On #{anc_service['Date of Delivery']}. Result: #{anc_service['Outcomes']}"
 

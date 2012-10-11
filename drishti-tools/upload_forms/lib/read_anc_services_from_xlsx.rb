@@ -202,6 +202,7 @@ class ANCServices
         tt_dose_given = ""
         tt_dose_given = "tt1" unless anc_service['TT1'].empty?
         tt_dose_given = "tt2" unless anc_service['TT2'].empty?
+        tt_dose_given = "tt booster" unless (anc_service['TT Booster'] rescue "").empty?
 
         anc_service.add_field "TT Dose", tt_dose_given
 
