@@ -27,6 +27,8 @@ class ANCServices
 
     begin
       spreadsheet = Excelx.new xlsx_filename, nil, :ignore
+      return @anc_services unless spreadsheet.sheets.include? "ANC services"
+				
       spreadsheet.to_csv filename, "ANC services"
 
       CSV.foreach(filename, { :headers => true }) do |csv_row|

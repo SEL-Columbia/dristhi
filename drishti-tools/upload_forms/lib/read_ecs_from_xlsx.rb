@@ -22,22 +22,22 @@ class ECs
     filename = "#{Random.rand(9999999)}_EC_register.csv"
 
     begin
-      spreadsheet = Excelx.new "examples/Munjanhalli.xlsx", nil, :ignore
+      spreadsheet = Excelx.new xlsx_filename, nil, :ignore
       spreadsheet.to_csv filename, "EC register"
-
+      File.open('ecRegister.csv', 'w') {|f| f.write(filename) }
       CSV.foreach(filename, { :headers => true }) do |csv_row|
         ec = Row.new csv_row
 
         ec.convert_to_date "Registration date", :empty => Date.today.to_s
-        ec.convert_value "House Number ", :empty => "111111"
-        ec.convert_value "EC Number ", :empty => "111111"
+        ec.convert_value "House Number", :empty => "111111"
+        ec.convert_value "EC Number", :empty => "111111"
         ec.convert_value "Wife Name", :empty => "Wife Unknown"
         ec.convert_value "Wife Age", :empty => "20"
         ec.convert_value "Husband Name", :empty => "Husband Unknown"
         ec.convert_value "Number of Abortion", :empty => "0"
         ec.convert_value "Number of Still Birth", :empty => "0"
         ec.convert_value "Number of Living Children", :empty => "0"
-        ec.convert_to_date "DOB of youngest child ", :empty => Date.today.to_s
+        ec.convert_to_date "DOB of youngest child", :empty => Date.today.to_s
         ec.convert_value "Status of EC Woman [Permanent/ Continuting/Discontinued]", :empty => "Continuting"
         ec.convert_to_date "Acceptance Date", :empty => Date.today.to_s
         ec.convert_value "Pregnancy [Yes/No]", :empty => "No"
@@ -63,7 +63,7 @@ class ECs
         ec.add_field "Instance ID", Guid.new.to_s
 
         ec.add_field "Number of Pregnancies", (ec['Number of Abortion'].to_i + ec['Number of Still Birth'].to_i + ec['Number of Living Children'].to_i).to_s
-        ec.add_field "FP Start Date", Date.parse(ec['Registration date']).to_s
+        ec.add_field "FP Start Date", (Date.parse(ec['Registration date']).to_s rescue Date.today.to_s)
 
         @ecs << ec
       end

@@ -6,9 +6,13 @@ require_relative 'lib/forms.rb'
 Dir['output/*.xml'].each {|file| FileUtils.rm_f file}
 Dir['output/DONE/*.xml'].each {|file| FileUtils.rm_f file}
 
-ecs = ECs.new("examples/Munjanhalli.xlsx").ecs
-ancs_per_ec = ANCs.new("examples/Munjanhalli.xlsx").ancs_grouped_per_couple
-anc_services_per_ec = ANCServices.new("examples/Munjanhalli.xlsx").anc_services_per_ec
+spreadSheet = "examples/Munjanhalli.xlsx"
+#spreadSheet = "examples/Bheriya.xlsx"
+#spreadSheet = "examples/Keelanapura.xlsx"
+puts "Processing #{spreadSheet}"
+ecs = ECs.new(spreadSheet).ecs
+ancs_per_ec = ANCs.new(spreadSheet).ancs_grouped_per_couple
+anc_services_per_ec = ANCServices.new(spreadSheet).anc_services_per_ec
 
 puts "Got: ECs: #{ecs.size}. ANCS grouped by EC: #{ancs_per_ec.size}. Services grouped by EC: #{anc_services_per_ec.size}"
 
