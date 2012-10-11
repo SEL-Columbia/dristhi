@@ -1,5 +1,6 @@
 class Forms
-  def initialize ec_data, anc_data, anc_services_data
+  def initialize user_id, ec_data, anc_data, anc_services_data
+    @user_id = user_id
     @ec = ec_data
     @ancs = anc_data
     @anc_services = anc_services_data
@@ -19,25 +20,27 @@ class Forms
   end
 
   private
-  def fill_out_of_area_anc_registration_forms
-    @ancs.each do |anc|
-      puts "    Out of area ANC registration: #{anc['a.Wife Name']} - #{anc['a.Husband Name']} - #{anc['LMP']} - #{anc['Case ID']}"
-
-      out_of_area_anc_registration_erb = ERB.new(File.read('templates/out_of_area_anc_registration.erb'))
-
-      out_of_area_anc_registration_xml = out_of_area_anc_registration_erb.result(binding)
-      File.open("output/ANCOutOfArea_#{anc['Case ID']}.xml", "w") do |f| f.puts out_of_area_anc_registration_xml end
-    end
-  end
-
   def fill_ec_form
     puts "EC: #{@ec['Wife Name']} - #{@ec['Husband Name']} - #{@ec['Case ID']}"
 
     ec_registration_erb = ERB.new(File.read('templates/ec_registration.erb'))
 
     ec = @ec
+    user_id = @user_id
     ec_registration_xml = ec_registration_erb.result(binding)
     File.open("output/EC_#{ec['Case ID']}.xml", "w") do |f| f.puts ec_registration_xml end
+  end
+
+  def fill_out_of_area_anc_registration_forms
+    @ancs.each do |anc|
+      puts "    Out of area ANC registration: #{anc['a.Wife Name']} - #{anc['a.Husband Name']} - #{anc['LMP']} - #{anc['Case ID']}"
+
+      out_of_area_anc_registration_erb = ERB.new(File.read('templates/out_of_area_anc_registration.erb'))
+
+      user_id = @user_id
+      out_of_area_anc_registration_xml = out_of_area_anc_registration_erb.result(binding)
+      File.open("output/ANCOutOfArea_#{anc['Case ID']}.xml", "w") do |f| f.puts out_of_area_anc_registration_xml end
+    end
   end
 
   def fill_anc_registration_forms
@@ -47,6 +50,7 @@ class Forms
       anc_registration_erb = ERB.new(File.read('templates/anc_registration.erb'))
 
       ec = @ec
+      user_id = @user_id
       anc_registration_xml = anc_registration_erb.result(binding)
       File.open("output/ANC_#{anc['Case ID']}.xml", "w") do |f| f.puts anc_registration_xml end
     end
@@ -61,6 +65,7 @@ class Forms
       anc = @ancs.find {|anc| anc['a.Thayi Card Number'] == anc_service['Thayi Card Number']}
       anc = @ancs.last if anc.nil?
       ec = @ec
+      user_id = @user_id
 
       anc_visit_xml = anc_visit_erb.result(binding)
       File.open("output/ANCVisit_#{index.to_s.rjust(4, '0')}_#{anc_service['Instance ID']}.xml", "w") do |f| f.puts anc_visit_xml end
@@ -73,6 +78,7 @@ class Forms
     anc_service = @anc_services.first
     anc = @ancs.find {|anc| anc['a.Thayi Card Number'] == anc_service['Thayi Card Number']}
     anc = @ancs.last if anc.nil?
+    user_id = @user_id
 
     puts "    Have ANC outcome: On #{anc_service['Date of Delivery']}. Result: #{anc_service['Outcomes']}"
 

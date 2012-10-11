@@ -24,7 +24,7 @@ class ECs
     begin
       spreadsheet = Excelx.new xlsx_filename, nil, :ignore
       spreadsheet.to_csv filename, "EC register"
-      File.open('ecRegister.csv', 'w') {|f| f.write(filename) }
+
       CSV.foreach(filename, { :headers => true }) do |csv_row|
         ec = Row.new csv_row
 
