@@ -177,7 +177,9 @@
                             "form|delivery_complication_group|had_delivery_complications": "hasDeliveryComplications",
                             "form|delivery_complication_group|complications": "deliveryComplications",
                             "form|is_high_risk": "isHighRisk",
-                            "form|is_high_risk_reason": "highRiskReason",
+                            "form|is_high_risk_baby": "isHighRiskChild",
+                            "form|high_risk_reason_mother": "highRiskReason",
+                            "form|high_risk_reason_baby": "highRiskReasonChild",
                             "form|case|update|breastfeeding_postbirth": "isBreastFeeding",
                             "form|live_birth_group|child_only|birthweight_only": "childWeight",
                             "form|live_birth_group|child_only|child_blood_group_only": "bloodGroup",
@@ -215,11 +217,10 @@
                             "form|pnc_mother_group|mother_temperature": "motherTemperature",
                             "form|pnc_mother_group|pnc_mother_problems": "pncMotherProblems",
                             "form|pnc_mother_group|pulse_rate": "pulseRate",
-                            "form|is_high_risk": "isHighRisk",
                             "form|is_high_risk_child": "isHighRiskChild",
-                            "form|is_high_risk_mother": "isHighRiskMother",
+                            "form|is_high_risk_mother": "isHighRisk",
                             "form|high_risk_reason_child": "highRiskReasonChild",
-                            "form|high_risk_reason_mother": "highRiskReasonMother"
+                            "form|high_risk_reason_mother": "highRiskReason"
                         }
                     }
                 },
