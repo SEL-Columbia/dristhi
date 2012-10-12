@@ -7,7 +7,8 @@ require_relative 'lib/mobile_workers.rb'
 Dir['output/*.xml'].each { |file| FileUtils.rm_f file }
 Dir['output/DONE/*.xml'].each { |file| FileUtils.rm_f file }
 
-user_name = "latha"
+user_name = "test_upload"
+#user_name = "latha"
 #user_name = "elizab"
 #user_name = "jyothi"
 #user_name = "fathim"
