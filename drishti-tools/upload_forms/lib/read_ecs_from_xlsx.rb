@@ -54,7 +54,6 @@ class ECs
           "29230030069" => Village.new("bheriya","bheriya-b","sugganahalli"),
           "29230030059" => Village.new("bheriya","guluvinahattiguppe","arakere"),
           "29230030056" => Village.new("bheriya","guluvinahattiguppe","g.a.guppe"),
-
           "29230030071" => Village.new("bheriya","hosaagrahara","harambanahalli"),
           "29230030070" => Village.new("bheriya","hosaagrahara","hosaagrahara"),
           "29230030068" => Village.new("bheriya","hosaagrahara","mandiganahalli"),
@@ -63,17 +62,14 @@ class ECs
           "29230030060" => Village.new("bheriy","munjanahalli","munjanahalli"),
           "29230040138" => Village.new("keelanapura","keelanapura","inamuttanahalli"),
           "29230040113" => Village.new("keelanapura","keelanapura","keelanapura"),
-
           "29230040137" => Village.new("keelanapura","megalapura","hosahalli"),
           "29230040112" => Village.new("keelanapura","megalapura","madavagere"),
           "29230040114" => Village.new("keelanapura","megalapura","megalapura"),
           "29230040111" => Village.new("keelanapura","puttegowdanahundi","chatnahallipalya"),
           "29230040116" => Village.new("keelanapura","puttegowdanahundi","duddagere"),
-
           "29230040110" => Village.new("keelanapura","puttegowdanahundi","puttegowdanahundi"),
           "29230040104" => Village.new("keelanapura","vajamangala","chikkahalli"),
           "29230040101" => Village.new("keelanapura","vajamangala","vajamangala"),
-
           :empty        => Village.new("bherya", "munjanahalli", "munjanahalli"),
           :default      => Village.new("bherya", "munjanahalli", "munjanahalli")
 

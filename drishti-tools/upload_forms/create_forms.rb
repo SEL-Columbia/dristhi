@@ -13,9 +13,9 @@ user_name = "test_upload"
 #user_name = "jyothi"
 #user_name = "fathim"
 #user_name = "hemala"
-#user_name = "dhaksh"
+#user_name = "hemava"
 #user_name = "kamala"
-#user_name = "dhaksh1"
+#user_name = "dhaksh"
 #user_name = "indira"
 mobile_worker = MobileWorkers.new.find_by_user_name user_name
 puts "Creating forms for user: '#{user_name}' with spreadsheet '#{mobile_worker.spreadsheet}'"
@@ -28,14 +28,13 @@ puts "Got: ECs: #{ecs.size}. ANCS grouped by EC: #{ancs_per_ec.size}. Services g
 
 # In area ANCs.
 ecs.each do |ec|
-  key = [ec['Village Code'].village, ec['Wife Name'], ec['Husband Name']]
-
+  key = [ec['Village Code'].village.downcase, ec['Wife Name'].downcase, ec['Husband Name'].downcase]
   Forms.new(mobile_worker, ec, ancs_per_ec[key], anc_services_per_ec[key]).fill_for_in_area
 end
 
 # Out of area ANCs.
 ancs_per_ec.each do |anc_key, anc_values|
-  next if ecs.any? { |ec| anc_key == [ec['Village Code'].village, ec['Wife Name'], ec['Husband Name']] }
+  next if ecs.any? { |ec| anc_key == [ec['Village Code'].village.downcase, ec['Wife Name'].downcase, ec['Husband Name'].downcase] }
 
   Forms.new(mobile_worker, nil, anc_values, anc_services_per_ec[anc_key]).fill_for_out_of_area
 end
