@@ -43,8 +43,7 @@ public class ActionService {
         String anmIdentifier;
         if (mother.equals(beneficiaryType)) {
             anmIdentifier = allMothers.findByCaseId(caseID).anmIdentifier();
-        }
-        else {
+        } else {
             anmIdentifier = allChildren.findByCaseId(caseID).anmIdentifier();
         }
 
@@ -109,5 +108,9 @@ public class ActionService {
 
     public void updateANCOutcome(String caseId, String anmIdentifier, Map<String, String> details) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.updateANCOutcome(details)));
+    }
+
+    public void pncVisitHappened(BeneficiaryType beneficiaryType, String caseId, String anmIdentifier, Map<String, String> details) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.pncVisitHappened(beneficiaryType, details)));
     }
 }

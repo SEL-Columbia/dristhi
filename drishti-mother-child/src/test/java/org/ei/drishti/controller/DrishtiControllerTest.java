@@ -142,4 +142,13 @@ public class DrishtiControllerTest {
         verify(ecService).registerEligibleCoupleForOutOfAreaANC(request, EXTRA_DATA);
         verify(ancService).registerOutOfAreaANC(eq(request), any(EligibleCouple.class), eq(EXTRA_DATA));
     }
+
+    @Test
+    public void shouldDelegateToPNCServiceDuringPNCAndChildCareUpdate() throws Exception {
+        PostNatalCareInformation request = mock(PostNatalCareInformation.class);
+
+        controller.updatePNCAndChildInformation(request, EXTRA_DATA);
+
+        verify(pncService).pncVisitHappened(request, EXTRA_DATA);
+    }
 }

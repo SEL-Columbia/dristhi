@@ -3,8 +3,10 @@ package org.ei.drishti.service;
 import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
+import org.ei.drishti.contract.PostNatalCareInformation;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.reporting.ChildReportingService;
@@ -23,6 +25,7 @@ import java.util.Map;
 import static java.lang.String.format;
 import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
+import static org.ei.drishti.dto.BeneficiaryType.mother;
 
 @Service
 public class PNCService {
@@ -53,7 +56,7 @@ public class PNCService {
 
         if ("live_birth".equals(request.pregnancyOutcome())) {
             allChildren.register(new Child(request.caseId(), request.motherCaseId(), mother.thaayiCardNo(), request.childName(),
-                    request.immunizationsProvided(), request.gender()).withAnm(request.anmIdentifier()));
+                    request.immunizationsProvided(), request.gender()).withAnm(request.anmIdentifier()).withDetails(extraData.get("details")));
 
             actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), mother.caseId(), mother.thaayiCardNo(), request.dateOfBirth(), request.gender(), extraData.get("details"));
 
@@ -63,6 +66,25 @@ public class PNCService {
 
             pncSchedulesService.enrollChild(request);
         }
+    }
+
+    public void pncVisitHappened(PostNatalCareInformation info, Map<String, Map<String, String>> extraData) {
+        if (!allMothers.motherExists(info.caseId())) {
+            logger.warn("Found PNC visit without registered mother for case ID: " + info.caseId());
+            return;
+        }
+
+        Child child = allChildren.findByMotherCaseId(info.caseId());
+        Map<String, String> details = extraData.get("details");
+
+        Mother updatedMother = allMothers.updateDetails(info.caseId(), details);
+        actionService.pncVisitHappened(mother, info.caseId(), info.anmIdentifier(), updatedMother.details());
+
+        if (child != null) {
+            Child updatedChild = allChildren.updateDetails(child.caseId(), details);
+            actionService.pncVisitHappened(BeneficiaryType.child, child.caseId(), info.anmIdentifier(), updatedChild.details());
+        }
+
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap reportingData) {

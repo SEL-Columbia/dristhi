@@ -181,4 +181,17 @@ public class ActionServiceTest {
         verify(allActions).add(new Action("CASE X", "ANM X",
                 ActionData.registerOutOfAreaANC("ecCaseId", "Wife 1", "Husband 1", "Village X", "SubCenter X", "PHC X", "TC 1", lmp, extraData)));
     }
+
+    @Test
+    public void shouldSendPNCVisitHappenedAction() throws Exception {
+        Map<String, String> details = mapOf("someKey", "someValue");
+        service.pncVisitHappened(mother, "MOTHER-CASE-1", "ANM X", details);
+
+        verify(allActions).add(new Action("MOTHER-CASE-1", "ANM X", ActionData.pncVisitHappened(mother, details)));
+
+        service.pncVisitHappened(child, "CHILD-CASE-1", "ANM X", details);
+
+        verify(allActions).add(new Action("CHILD-CASE-1", "ANM X", ActionData.pncVisitHappened(child, details)));
+
+    }
 }

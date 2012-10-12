@@ -101,4 +101,10 @@ public class DrishtiController {
         EligibleCouple couple = ecService.registerEligibleCoupleForOutOfAreaANC(request, extraData);
         ancService.registerOutOfAreaANC(request, couple, extraData);
     }
+
+    public void updatePNCAndChildInformation(PostNatalCareInformation request, Map<String, Map<String, String>> extraData){
+        logger.info("PNC visit: " + request + ". Extra data: " + extraData);
+
+        pncService.pncVisitHappened(request,extraData);
+    }
 }

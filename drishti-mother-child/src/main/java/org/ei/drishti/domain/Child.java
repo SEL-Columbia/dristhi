@@ -8,11 +8,14 @@ import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
 import java.util.List;
+import java.util.Map;
 
 @TypeDiscriminator("doc.type === 'Child'")
 public class Child extends MotechBaseDataObject {
     @JsonProperty
     private String caseId;
+    @JsonProperty
+    private String motherCaseId;
     @JsonProperty
     private String thaayiCardNumber;
     @JsonProperty
@@ -29,12 +32,15 @@ public class Child extends MotechBaseDataObject {
     private List<String> immunizationsProvided;
     @JsonProperty
     private String gender;
+    @JsonProperty
+    private Map<String, String> details;
 
     private Child() {
     }
 
     public Child(String caseId, String motherCaseId, String thaayiCardNumber, String name, List<String> immunizationsProvided, String gender) {
         this.caseId = caseId;
+        this.motherCaseId = motherCaseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
         this.immunizationsProvided = immunizationsProvided;
@@ -48,6 +54,10 @@ public class Child extends MotechBaseDataObject {
 
     private String getCaseId() {
         return caseId;
+    }
+
+    private String getMotherCaseId() {
+        return motherCaseId;
     }
 
     public String caseId() {
@@ -89,22 +99,31 @@ public class Child extends MotechBaseDataObject {
         return this;
     }
 
+    public Child withDetails(Map<String, String> details) {
+        this.details = details;
+        return this;
+    }
+
     public Location location() {
         return new Location(village, subCenter, phc);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(0, this);
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+    public Map<String, String> details() {
+        return details;
     }
 
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(o, this, false, getClass());
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(17, 37, this, false, getClass());
     }
 }

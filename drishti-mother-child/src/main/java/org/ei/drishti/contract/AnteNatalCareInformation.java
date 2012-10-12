@@ -55,6 +55,18 @@ public class AnteNatalCareInformation {
         return coerceToInt(numberOfIFATabletsGiven);
     }
 
+    private int coerceToInt(String x) {
+        return x == null || x.isEmpty() ? 0 : Integer.parseInt(x);
+    }
+
+    public Boolean wasTTShotProvided() {
+        return StringUtils.isNotBlank(ttDose);
+    }
+
+    public String ttDose() {
+        return ttDose;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(o, this);
@@ -68,18 +80,6 @@ public class AnteNatalCareInformation {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
-    }
-
-    private int coerceToInt(String x) {
-        return x == null || x.isEmpty() ? 0 : Integer.parseInt(x);
-    }
-
-    public Boolean wasTTShotProvided() {
-        return StringUtils.isNotBlank(ttDose);
-    }
-
-    public String ttDose() {
-        return ttDose;
     }
 }
 
