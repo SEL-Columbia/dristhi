@@ -109,7 +109,8 @@ public class ANCService {
             return;
         }
         ancSchedulesService.unEnrollFromSchedules(caseId);
-        actionService.updateANCOutcome(caseId, outcomeInformation.anmIdentifier(), extraData.get("details"));
+        Mother updatedMother = allMothers.updateDetails(caseId, extraData.get("details"));
+        actionService.updateANCOutcome(caseId, outcomeInformation.anmIdentifier(), updatedMother.details());
     }
 
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation, SafeMap data) {
