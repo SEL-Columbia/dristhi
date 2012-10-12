@@ -8,6 +8,7 @@ class CommCare
     req = Net::HTTP::Post::Multipart.new url.path, "xml_submission_file" => UploadIO.new(file_contents, "application/xml", "file.xml")
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true
+    http.ca_file = '/opt/local/share/curl/curl-ca-bundle.crt'
 
     http.start { |http| http.request(req) }
   end
