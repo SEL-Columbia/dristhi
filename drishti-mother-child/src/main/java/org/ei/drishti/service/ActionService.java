@@ -110,7 +110,7 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.updateANCOutcome(details)));
     }
 
-    public void pncVisitHappened(BeneficiaryType beneficiaryType, String caseId, String anmIdentifier, Map<String, String> details) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.pncVisitHappened(beneficiaryType, details)));
+    public void pncVisitHappened(BeneficiaryType beneficiaryType, String caseId, String anmIdentifier, LocalDate visitDate, int visitNumber, int numberOfIFATabletsProvided, Map<String, String> details) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.pncVisitHappened(beneficiaryType, visitDate, visitNumber, numberOfIFATabletsProvided, details)));
     }
 }

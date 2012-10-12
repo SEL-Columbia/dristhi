@@ -112,8 +112,11 @@ public class ActionData {
                 .withDetails(details);
     }
 
-    public static ActionData pncVisitHappened(BeneficiaryType beneficiaryType, Map<String, String> details) {
+    public static ActionData pncVisitHappened(BeneficiaryType beneficiaryType, LocalDate visitDate, int visitNumber, int numberOfIFATabletsProvided, Map<String, String> details) {
         return new ActionData(beneficiaryType.value(), "pncVisitHappened")
+                .with("numberOfIFATabletsProvided", String.valueOf(numberOfIFATabletsProvided))
+                .with("visitNumber", String.valueOf(visitNumber))
+                .with("visitDate", visitDate.toString())
                 .withDetails(details);
     }
 

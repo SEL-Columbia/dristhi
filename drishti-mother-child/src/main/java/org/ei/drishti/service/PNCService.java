@@ -78,11 +78,11 @@ public class PNCService {
         Map<String, String> details = extraData.get("details");
 
         Mother updatedMother = allMothers.updateDetails(info.caseId(), details);
-        actionService.pncVisitHappened(mother, info.caseId(), info.anmIdentifier(), updatedMother.details());
+        actionService.pncVisitHappened(mother, info.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedMother.details());
 
         if (child != null) {
             Child updatedChild = allChildren.updateDetails(child.caseId(), details);
-            actionService.pncVisitHappened(BeneficiaryType.child, child.caseId(), info.anmIdentifier(), updatedChild.details());
+            actionService.pncVisitHappened(BeneficiaryType.child, child.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedChild.details());
         }
 
     }

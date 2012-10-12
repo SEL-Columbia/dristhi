@@ -197,7 +197,7 @@
                     "mappings": {
                         "form|case|@case_id": "caseId",
                         "form|meta|username": "anmIdentifier",
-                        "form|case|update|pnc_number": "pncVisitNumber",
+                        "form|case|update|pnc_number": "visitNumber",
                         "form|pnc_mother_group|ifa_supplementation": "numberOfIFATabletsGiven",
                         "form|today": "submissionDate"
                     },
@@ -210,7 +210,7 @@
                             "form|pnc_child_group|pnc_child_problems": "pncChildProblems",
                             "form|pnc_mother_group|bf_difficulties": "bfDifficulties",
                             "form|pnc_mother_group|exclusive_bf": "exclusiveBf",
-                            "form|pnc_mother_group|hb": "hbLevel",
+                            "form|pnc_mother_group|hb": "motherHBLevel",
                             "form|pnc_mother_group|ifa_supplementation": "numberOfIFATabletsGiven",
                             "form|pnc_mother_group|mother_temperature": "motherTemperature",
                             "form|pnc_mother_group|pnc_mother_problems": "pncMotherProblems",

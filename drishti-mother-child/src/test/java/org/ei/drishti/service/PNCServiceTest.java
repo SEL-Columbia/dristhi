@@ -118,8 +118,8 @@ public class PNCServiceTest extends BaseUnitTest {
 
         service.pncVisitHappened(new PostNatalCareInformation(motherCaseId, "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
 
-        verify(actionService).pncVisitHappened(BeneficiaryType.mother, motherCaseId, "ANM X", motherUpdatedDetails);
-        verify(actionService).pncVisitHappened(BeneficiaryType.child, childCaseId, "ANM X", childUpdatedDetails);
+        verify(actionService).pncVisitHappened(BeneficiaryType.mother, motherCaseId, "ANM X", LocalDate.parse("2012-12-12"), 1, 50, motherUpdatedDetails);
+        verify(actionService).pncVisitHappened(BeneficiaryType.child, childCaseId, "ANM X", LocalDate.parse("2012-12-12"), 1, 50, childUpdatedDetails);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
         service.pncVisitHappened(new PostNatalCareInformation(motherCaseId, "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
 
-        verify(actionService).pncVisitHappened(mother, motherCaseId, "ANM X", expectedDetails);
+        verify(actionService).pncVisitHappened(mother, motherCaseId, "ANM X", LocalDate.parse("2012-12-12"), 1, 50, expectedDetails);
     }
 
     @Test
@@ -234,7 +234,7 @@ public class PNCServiceTest extends BaseUnitTest {
         for (String expectedAlert : expectedAlertsRaised) {
             verify(actionService).alertForBeneficiary(child, "Case X", expectedAlert, normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
         }
-        verify(actionService, times(1)).registerChildBirth(any(String.class), any(String.class), any(String.class), any(String.class), any(LocalDate.class), any(String.class), any(Map.class));
+        verify(actionService, times(1)).registerChildBirth(any(String.class), any(String.class), any(String.class), any(String.class), any(LocalDate.class), any(String.class), eq(EXTRA_DATA.get("details")));
         verifyNoMoreInteractions(actionService);
     }
 }
