@@ -37,7 +37,7 @@ class ECs
         ec.convert_value "Number of Abortion", :empty => "0"
         ec.convert_value "Number of Still Birth", :empty => "0"
         ec.convert_value "Number of Living Children", :empty => "0"
-        ec.convert_to_date "DOB of youngest child", :empty => Date.today.to_s
+        ec.convert_to_date "DOB of youngest child", :empty => "0"
         ec.convert_value "Status of EC Woman [Permanent/ Continuting/Discontinued]", :empty => "Continuting"
         ec.convert_to_date "Acceptance Date", :empty => Date.today.to_s
         ec.convert_value "Pregnancy [Yes/No]", :empty => "No"
@@ -45,11 +45,38 @@ class ECs
         ec.convert_value "Thayi Card Number", :empty => "1234567"
 
         ec.convert_value "Village Code",
-          "29230030060" => Village.new("bherya", "munjanahalli", "munjanahalli"),
-          "29230030061" => Village.new("bherya", "munjanahalli", "chikkabheriya"),
-          "29230030058" => Village.new("bherya", "munjanahalli", "kaval_hosur"),
+          "29230030066" => Village.new("bheriya","bheriya-a","ardha bheriya"),
+          "29230060072" => Village.new("bheriya","bheriya-a","basavanapura"),
+          "29230030063" => Village.new("bheriya","bheriya-a","gerdada"),
+          "29230030067" => Village.new("bheriya","bheriya-a","sambaravalli"),
+          "29230030064" => Village.new("bheriya","bheriya-a","somanahalli colony"),
+          "29230030065" => Village.new("bheriya","bheriya-b","battiganahalli"),
+          "29230030069" => Village.new("bheriya","bheriya-b","sugganahalli"),
+          "29230030059" => Village.new("bheriya","guluvinahattiguppe","arakere"),
+          "29230030056" => Village.new("bheriya","guluvinahattiguppe","g.a.guppe"),
+
+          "29230030071" => Village.new("bheriya","hosaagrahara","harambanahalli"),
+          "29230030070" => Village.new("bheriya","hosaagrahara","hosaagrahara"),
+          "29230030068" => Village.new("bheriya","hosaagrahara","mandiganahalli"),
+          "29230030061" => Village.new("bheriya","munjanahalli","chikkabheriya"),
+          "29230030058" => Village.new("bheriya","munjanahalli","kaval_hosur"),
+          "29230030060" => Village.new("bheriy","munjanahalli","munjanahalli"),
+          "29230040138" => Village.new("keelanapura","keelanapura","inamuttanahalli"),
+          "29230040113" => Village.new("keelanapura","keelanapura","keelanapura"),
+
+          "29230040137" => Village.new("keelanapura","megalapura","hosahalli"),
+          "29230040112" => Village.new("keelanapura","megalapura","madavagere"),
+          "29230040114" => Village.new("keelanapura","megalapura","megalapura"),
+          "29230040111" => Village.new("keelanapura","puttegowdanahundi","chatnahallipalya"),
+          "29230040116" => Village.new("keelanapura","puttegowdanahundi","duddagere"),
+
+          "29230040110" => Village.new("keelanapura","puttegowdanahundi","puttegowdanahundi"),
+          "29230040104" => Village.new("keelanapura","vajamangala","chikkahalli"),
+          "29230040101" => Village.new("keelanapura","vajamangala","vajamangala"),
+
           :empty        => Village.new("bherya", "munjanahalli", "munjanahalli"),
           :default      => Village.new("bherya", "munjanahalli", "munjanahalli")
+
 
         ec.convert_value "FP Method",
           "OP"             => "ocp",

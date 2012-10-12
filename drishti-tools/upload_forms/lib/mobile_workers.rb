@@ -13,8 +13,17 @@ class MobileWorkers
   def initialize
     @mobileWorkers = {
         "c" => MobileWorker.new("c", "c3d86928a9c501cd88f42d6031ad70c9", "examples/Munjanhalli.xlsx"),
-        "d" => MobileWorker.new("d", "c3d86928a9c501cd88f42d6031ad70c9", "examples/Bheriya.xlsx"),
-        "e" => MobileWorker.new("e", "c3d86928a9c501cd88f42d6031ad70c9", "examples/Keelanapura.xlsx")
+        "d" => MobileWorker.new("d", "dUserID", "examples/Bheriya.xlsx"),
+        "e" => MobileWorker.new("e", "eUserID", "examples/Keelanapura.xlsx"),
+        "elizab" => MobileWorker.new("elizab", "elizabUserID", "examples/1 ElizabethD'Souza Bheriya-A.xlsx"),
+        "jyothi" => MobileWorker.new("jyothi", "jyothiUserID", "examples/2 Jyothilakshmi Bheriya-B.xlsx"),
+        "fathim" => MobileWorker.new("fathim", "fathimUserID", "examples/3 Fathima GAGuppe.xlsx"),
+        "hemala" => MobileWorker.new("hemala", "hemalaUserID", "examples/4 Hemalatha Hosaagrahara.xlsx"),
+        "latha" => MobileWorker.new("latha", "lathaUserID", "examples/5 Latha Munjanhalli.xlsx"),
+        "dhaksh" => MobileWorker.new("dhaksh", "dhakshUserID", "examples/6 Dhakshakanye Keelanapura.xlsx"),
+        "kamala" => MobileWorker.new("kamala", "kamalaUserID", "examples/7 N.R Kamalakshi Meghalapura.xlsx"),
+        "dhaksh1" => MobileWorker.new("dhaksh1", "dhaksh1UserID", "examples/8 Dhakshakanye PGHundi.xlsx"),
+        "indira" => MobileWorker.new("indira", "indiraUserID", "examples/9 B.T Indira Vajamangala.xlsx")
     }
   end
 

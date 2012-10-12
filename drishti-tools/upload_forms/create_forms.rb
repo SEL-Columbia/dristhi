@@ -7,7 +7,15 @@ require_relative 'lib/mobile_workers.rb'
 Dir['output/*.xml'].each { |file| FileUtils.rm_f file }
 Dir['output/DONE/*.xml'].each { |file| FileUtils.rm_f file }
 
-user_name = "e"
+user_name = "latha"
+#user_name = "elizab"
+#user_name = "jyothi"
+#user_name = "fathim"
+#user_name = "hemala"
+#user_name = "dhaksh"
+#user_name = "kamala"
+#user_name = "dhaksh1"
+#user_name = "indira"
 mobile_worker = MobileWorkers.new.find_by_user_name user_name
 puts "Creating forms for user: '#{user_name}' with spreadsheet '#{mobile_worker.spreadsheet}'"
 
