@@ -184,7 +184,8 @@
                             "form|live_birth_group|child_only|birthweight_only": "childWeight",
                             "form|live_birth_group|child_only|child_blood_group_only": "bloodGroup",
                             "form|name_delivery_facility": "deliveryFacility",
-                            "form|place_delivery": "placeOfDelivery"
+                            "form|place_delivery": "placeOfDelivery",
+                            "form|live_birth_group|child_only|immunizations_atbirth_only": "immunizationsProvided"
                         }
                     }
                 },
