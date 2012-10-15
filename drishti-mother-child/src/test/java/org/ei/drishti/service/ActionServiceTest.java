@@ -193,6 +193,14 @@ public class ActionServiceTest {
         service.pncVisitHappened(child, "CHILD-CASE-1", "ANM X", visitDate, 1, 10, details);
 
         verify(allActions).add(new Action("CHILD-CASE-1", "ANM X", ActionData.pncVisitHappened(child, visitDate, 1, 10, details)));
+    }
 
+    @Test
+    public void shouldSendBirthPlanningUpdatesWhenMotherFoundInDrishti(){
+        Map<String, String> details = mapOf("aKey", "aValue");
+
+        service.updateBirthPlanning("CASE X", "ANM X", details);
+
+        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateBirthPlanning(details)));
     }
 }

@@ -151,4 +151,13 @@ public class DrishtiControllerTest {
 
         verify(pncService).pncVisitHappened(request, EXTRA_DATA);
     }
+
+    @Test
+    public void shouldDelegateToANCServiceDuringBirthPlanningUpdate() throws Exception {
+        BirthPlanningRequest request = mock(BirthPlanningRequest.class);
+
+        controller.updateBirthPlanning(request, EXTRA_DATA);
+
+        verify(ancService).updateBirthPlanning(request, EXTRA_DATA);
+    }
 }

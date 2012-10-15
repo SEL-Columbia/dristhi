@@ -113,4 +113,8 @@ public class ActionService {
     public void pncVisitHappened(BeneficiaryType beneficiaryType, String caseId, String anmIdentifier, LocalDate visitDate, int visitNumber, int numberOfIFATabletsProvided, Map<String, String> details) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.pncVisitHappened(beneficiaryType, visitDate, visitNumber, numberOfIFATabletsProvided, details)));
     }
+
+    public void updateBirthPlanning(String caseId, String anmIdentifier, Map<String, String> details) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.updateBirthPlanning(details)));
+    }
 }

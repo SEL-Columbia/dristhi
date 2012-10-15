@@ -226,6 +226,30 @@
                     }
                 },
                 {
+                    "name": "updateBirthPlanning",
+                    "url": {
+                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "queryParams": {
+                            "nameSpace": "http://openrosa.org/formdesigner/9B328DBB-C2F0-4012-9903-200890BF199A"
+                        }
+                    },
+                    "mappings": {
+                        "form|case|@case_id": "caseId",
+                        "form|meta|username": "anmIdentifier"
+                    },
+                    "extraMappings": {
+                        "details": {
+                            "form|have_transportation_plan": "isTransportationPlanAvailable",
+                            "form|transport_plan": "transportPlan",
+                            "form|name_deliveryfacility": "deliveryFacility",
+                            "form|type_deliveryfacility": "deliveryFacilityType",
+                            "form|ec_phone_no": "contactNumber",
+                            "form|birth_companion": "isThereABirthCompanion",
+                            "form|case_is_high_risk":"isHighRiskStatusReviewed"
+                        }
+                    }
+                },
+                {
                     "name": "updateChildImmunization",
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",

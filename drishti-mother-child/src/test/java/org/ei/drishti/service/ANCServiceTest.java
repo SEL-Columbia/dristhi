@@ -25,6 +25,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.motechproject.util.DateUtil.time;
 import static org.motechproject.util.DateUtil.today;
 
 public class ANCServiceTest {
@@ -269,5 +270,27 @@ public class ANCServiceTest {
 
         verifyZeroInteractions(ancSchedulesService);
         verifyZeroInteractions(actionService);
+    }
+
+    @Test
+    public void shouldUpdateMotherDetailsAndSendAnActionWhenBirthPlanningDetailsAreUpdateAndMotherExists() throws Exception {
+        when(mothers.motherExists("CASE X")).thenReturn(true);
+        Map<String, String> updatedDetails = mapOf("aNewKey", "aNewValue");
+        when(mothers.updateDetails("CASE X", EXTRA_DATA.get("details"))).thenReturn(new Mother("CASE X", "TC X", "Theresa").withDetails(updatedDetails));
+
+        service.updateBirthPlanning(new BirthPlanningRequest("CASE X", "ANM X"), EXTRA_DATA);
+
+        verify(mothers).updateDetails("CASE X", EXTRA_DATA.get("details"));
+        verify(actionService).updateBirthPlanning("CASE X", "ANM X", updatedDetails);
+    }
+
+    @Test
+    public void shouldNotSendBirthPlanningUpdatesAsActionWhenMotherNotFoundInDrishti() throws Exception {
+        when(mothers.motherExists("CASE X")).thenReturn(false);
+
+        service.updateBirthPlanning(new BirthPlanningRequest("CASE X", "ANM X"), EXTRA_DATA);
+
+        verifyZeroInteractions(actionService);
+        verify(mothers, times(0)).updateDetails(any(String.class), any(Map.class));
     }
 }

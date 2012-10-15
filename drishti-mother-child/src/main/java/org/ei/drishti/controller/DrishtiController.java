@@ -102,6 +102,12 @@ public class DrishtiController {
         ancService.registerOutOfAreaANC(request, couple, extraData);
     }
 
+    public void updateBirthPlanning(BirthPlanningRequest request, Map<String, Map<String, String>> extraData) {
+        logger.info("Birth planning: " + request + ". Extra data: " + extraData);
+
+        ancService.updateBirthPlanning(request, extraData);
+    }
+
     public void updatePNCAndChildInformation(PostNatalCareInformation request, Map<String, Map<String, String>> extraData){
         logger.info("PNC visit: " + request + ". Extra data: " + extraData);
 

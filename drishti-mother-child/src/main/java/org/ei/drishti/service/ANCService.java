@@ -123,4 +123,14 @@ public class ANCService {
         ancSchedulesService.unEnrollFromSchedules(closeInformation.caseId());
         actionService.closeANC(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.reason());
     }
+
+    public void updateBirthPlanning(BirthPlanningRequest request, Map<String, Map<String, String>> extraData) {
+        if (!allMothers.motherExists(request.caseId())) {
+            logger.warn("Tried to update birth planning without registered mother: " + request);
+            return;
+        }
+
+        Mother motherWithUpdatedDetails = allMothers.updateDetails(request.caseId(), extraData.get("details"));
+        actionService.updateBirthPlanning(request.caseId(), request.anmIdentifier(), motherWithUpdatedDetails.details());
+    }
 }
