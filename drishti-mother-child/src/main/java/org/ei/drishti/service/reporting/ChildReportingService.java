@@ -69,7 +69,7 @@ public class ChildReportingService {
             return;
         }
 
-        List<String> immunizations = updationRequest.immunizationsProvided();
+        List<String> immunizations = updationRequest.immunizationsProvidedList();
         List<String> previouslyProvided = child.immunizationsProvided();
         immunizations.removeAll(previouslyProvided);
 

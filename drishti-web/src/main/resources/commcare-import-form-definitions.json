@@ -260,20 +260,16 @@
                         "form|meta|username": "anmIdentifier",
                         "form|case|@case_id": "caseId",
                         "form|vaccinations_given": "immunizationsProvided",
-                        "form|immunization_date": "immunizationDate"
+                        "form|immunization_date": "immunizationDate",
+                        "form|vit_a_dose": "vitaminADose"
                     },
                     "extraMappings": {
                         "reporting": {
                             "form|meta|username": "anmIdentifier",
                             "form|immunization_date": "immunizationsProvidedDate"
                         },
-                        "extraMappings": {
-                            "form|vitamin_a_given": "isVitaminAGiven",
-                            "form|vit_a_dose": "vitaminADose",
-                            "form|weight_measured": "isWeightMeasured",
-                            "form|child_weight": "childWeight",
-                            "form|today": "submissionDate",
-                            "form|immunization_date": "immunizationDate"
+                        "details": {
+                            "form|child_weight": "childWeight"
                         }
                     }
                 },

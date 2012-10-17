@@ -14,6 +14,7 @@ public class ChildImmunizationUpdationRequest {
     private String caseId;
     private String anmIdentifier;
     private String immunizationsProvided;
+    private String vitaminADose;
     private String immunizationDate;
 
     public ChildImmunizationUpdationRequest(String caseId, String anmIdentifier, String immunizationsProvided, String immunizationDate) {
@@ -21,6 +22,11 @@ public class ChildImmunizationUpdationRequest {
         this.anmIdentifier = anmIdentifier;
         this.immunizationsProvided = immunizationsProvided;
         this.immunizationDate = immunizationDate;
+    }
+
+    public ChildImmunizationUpdationRequest withVitaminADose(String vitaminADose) {
+        this.vitaminADose = vitaminADose;
+        return this;
     }
 
     public boolean isImmunizationProvided(String checkForThisImmunization) {
@@ -35,11 +41,15 @@ public class ChildImmunizationUpdationRequest {
         return caseId;
     }
 
-    public List<String> immunizationsProvided() {
+    public List<String> immunizationsProvidedList() {
         return new ArrayList<>(Arrays.asList(immunizationsProvided.split(" ")));
     }
 
-    public LocalDate visitDate() {
+    public String immunizationsProvided() {
+        return immunizationsProvided;
+    }
+
+    public LocalDate immunizationsProvidedDate() {
         return DateTime.parse(immunizationDate).toLocalDate();
     }
 
@@ -56,5 +66,9 @@ public class ChildImmunizationUpdationRequest {
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    public String vitaminADose() {
+        return vitaminADose;
     }
 }

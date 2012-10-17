@@ -196,11 +196,20 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldSendBirthPlanningUpdatesWhenMotherFoundInDrishti(){
+    public void shouldSendBirthPlanningUpdates(){
         Map<String, String> details = mapOf("aKey", "aValue");
 
         service.updateBirthPlanning("CASE X", "ANM X", details);
 
         verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateBirthPlanning(details)));
+    }
+
+    @Test
+    public void shouldSendImmunizationsUpdatesWhenMotherFoundInDrishti(){
+        Map<String, String> details = mapOf("aKey", "aValue");
+
+            service.updateImmunizations("CASE X", "ANM X", details, "bcg opv0", LocalDate.parse("2012-01-01"), "1");
+
+        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateImmunizations("bcg opv0", LocalDate.parse("2012-01-01"), "1", details)));
     }
 }

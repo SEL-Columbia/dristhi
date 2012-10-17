@@ -39,6 +39,10 @@ public class AllChildren extends MotechBaseRepository<Child> {
         return child;
     }
 
+    public boolean childExists(String caseId) {
+        return findByCaseId(caseId) != null;
+    }
+
     private Child findChild(String caseId, String criteria) {
         List<Child> children = queryView(criteria, caseId);
         if (children == null || children.isEmpty()) {

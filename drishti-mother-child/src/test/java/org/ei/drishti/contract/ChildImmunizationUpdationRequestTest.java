@@ -10,6 +10,6 @@ public class ChildImmunizationUpdationRequestTest {
     public void shouldParseLocalDateFromISOFormattedDate() throws Exception {
         ChildImmunizationUpdationRequest careInformation = new ChildImmunizationUpdationRequest("CASE X", "ANM 1", "OPV", "2012-09-04T08:42:17Z");
 
-        assertEquals(LocalDate.parse("2012-09-04"), careInformation.visitDate());
+        assertEquals(LocalDate.parse("2012-09-04"), careInformation.immunizationsProvidedDate());
     }
 }

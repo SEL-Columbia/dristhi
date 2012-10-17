@@ -17,6 +17,8 @@ import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
@@ -50,6 +52,15 @@ public class AllChildrenIntegrationTest {
         Child childFromDB = children.findByCaseId("CASE-1");
 
         assertThat(childFromDB, hasSameFieldsAs(child));
+    }
+
+    @Test
+    public void shouldCheckIfChildExists() {
+        Child child = new Child("CASE-1", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        children.register(child);
+
+        assertTrue(children.childExists("CASE-1"));
+        assertFalse(children.childExists("CASE-NON-EXISTENT"));
     }
 
     @Test

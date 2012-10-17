@@ -117,4 +117,8 @@ public class ActionService {
     public void updateBirthPlanning(String caseId, String anmIdentifier, Map<String, String> details) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.updateBirthPlanning(details)));
     }
+
+    public void updateImmunizations(String caseId, String anmIdentifier, Map<String, String> details, String immunizationsGiven, LocalDate immunizationsProvidedDate, String vitaminADose) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.updateImmunizations(immunizationsGiven, immunizationsProvidedDate, vitaminADose, details)));
+    }
 }

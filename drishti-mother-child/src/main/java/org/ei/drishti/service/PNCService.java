@@ -87,6 +87,15 @@ public class PNCService {
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {
+        if (!allChildren.childExists(updationRequest.caseId())) {
+            logger.warn("Found immunization update without registered child for case ID: " + updationRequest.caseId());
+            return;
+        }
+
+        Child updatedChild = allChildren.updateDetails(updationRequest.caseId(), extraData.get("details"));
+        actionService.updateImmunizations(updationRequest.caseId(), updationRequest.anmIdentifier(), updatedChild.details(), updationRequest.immunizationsProvided(),
+                updationRequest.immunizationsProvidedDate(), updationRequest.vitaminADose());
+
         childReportingService.updateChildImmunization(updationRequest, new SafeMap(extraData.get("reporting")));
 
         alertForImmunizationProvided(updationRequest, "opv0", "OPV 0");
@@ -104,7 +113,7 @@ public class PNCService {
 
     private void alertForImmunizationProvided(ChildImmunizationUpdationRequest updationRequest, String checkForThisImmunization, String visitCodeIfNotProvided) {
         if (updationRequest.isImmunizationProvided(checkForThisImmunization)) {
-            actionService.markAlertAsClosedForVisitForChild(updationRequest.caseId(), updationRequest.anmIdentifier(), visitCodeIfNotProvided, updationRequest.visitDate().toString());
+            actionService.markAlertAsClosedForVisitForChild(updationRequest.caseId(), updationRequest.anmIdentifier(), visitCodeIfNotProvided, updationRequest.immunizationsProvidedDate().toString());
         }
     }
 
