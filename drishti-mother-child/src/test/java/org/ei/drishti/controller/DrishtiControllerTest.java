@@ -92,7 +92,7 @@ public class DrishtiControllerTest {
 
         controller.updateChildImmunization(updationRequest, EXTRA_DATA);
 
-        verify(pncService).updateChildImmunization(updationRequest, new SafeMap(EXTRA_DATA.get("reporting")));
+        verify(pncService).updateChildImmunization(updationRequest, EXTRA_DATA);
         verify(mctsService).updateChildImmunization(updationRequest);
     }
 

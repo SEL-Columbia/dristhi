@@ -14,13 +14,13 @@ public class ChildImmunizationUpdationRequest {
     private String caseId;
     private String anmIdentifier;
     private String immunizationsProvided;
-    private String submissionDate;
+    private String immunizationDate;
 
-    public ChildImmunizationUpdationRequest(String caseId, String anmIdentifier, String immunizationsProvided, String submissionDate) {
+    public ChildImmunizationUpdationRequest(String caseId, String anmIdentifier, String immunizationsProvided, String immunizationDate) {
         this.caseId = caseId;
         this.anmIdentifier = anmIdentifier;
         this.immunizationsProvided = immunizationsProvided;
-        this.submissionDate = submissionDate;
+        this.immunizationDate = immunizationDate;
     }
 
     public boolean isImmunizationProvided(String checkForThisImmunization) {
@@ -40,7 +40,7 @@ public class ChildImmunizationUpdationRequest {
     }
 
     public LocalDate visitDate() {
-        return DateTime.parse(submissionDate).toLocalDate();
+        return DateTime.parse(immunizationDate).toLocalDate();
     }
 
     @Override

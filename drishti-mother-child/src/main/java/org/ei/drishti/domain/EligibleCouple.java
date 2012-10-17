@@ -93,6 +93,10 @@ public class EligibleCouple extends MotechBaseDataObject {
         return phc;
     }
 
+    public Location location() {
+        return new Location(village, subCenter, phc);
+    }
+
     private String getCaseId() {
         return caseId;
     }

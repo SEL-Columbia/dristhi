@@ -4,7 +4,9 @@ import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.domain.Child;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,31 +23,33 @@ import static org.ei.drishti.common.domain.Indicator.*;
 public class ChildReportingService {
     private final ReportingService reportingService;
     private final AllChildren allChildren;
+    private AllEligibleCouples allEligibleCouples;
     private static Logger logger = LoggerFactory.getLogger(ChildReportingService.class.toString());
     private Map<String, Indicator> immunizationToIndicator;
 
     @Autowired
-    public ChildReportingService(ReportingService reportingService, AllChildren allChildren) {
+    public ChildReportingService(ReportingService reportingService, AllChildren allChildren, AllEligibleCouples allEligibleCouples) {
         this.reportingService = reportingService;
         this.allChildren = allChildren;
+        this.allEligibleCouples = allEligibleCouples;
         immunizationToIndicator = new HashMap<>();
 
         immunizationToIndicator.put("bcg", BCG);
 
-        immunizationToIndicator.put("dpt1", DPT);
-        immunizationToIndicator.put("dpt2", DPT);
-        immunizationToIndicator.put("dpt3", DPT);
-        immunizationToIndicator.put("dptbooster1", DPT);
-        immunizationToIndicator.put("dptbooster2", DPT);
+        immunizationToIndicator.put("dpt_1", DPT);
+        immunizationToIndicator.put("dpt_2", DPT);
+        immunizationToIndicator.put("dpt_3", DPT);
+        immunizationToIndicator.put("dptbooster_1", DPT);
+        immunizationToIndicator.put("dptbooster_2", DPT);
 
-        immunizationToIndicator.put("hepB0", HEP);
-        immunizationToIndicator.put("hepb1", HEP);
-        immunizationToIndicator.put("hepb2", HEP);
-        immunizationToIndicator.put("hepb3", HEP);
+        immunizationToIndicator.put("hepB_0", HEP);
+        immunizationToIndicator.put("hepb_1", HEP);
+        immunizationToIndicator.put("hepb_2", HEP);
+        immunizationToIndicator.put("hepb_3", HEP);
 
-        immunizationToIndicator.put("opv0", OPV);
-        immunizationToIndicator.put("opv1", OPV);
-        immunizationToIndicator.put("opv2", OPV);
+        immunizationToIndicator.put("opv_0", OPV);
+        immunizationToIndicator.put("opv_1", OPV);
+        immunizationToIndicator.put("opv_2", OPV);
         immunizationToIndicator.put("opvbooster", OPV);
 
         immunizationToIndicator.put("measles", MEASLES);
@@ -56,6 +60,12 @@ public class ChildReportingService {
         Child child = allChildren.findByCaseId(updationRequest.caseId());
         if (child == null) {
             logger.warn("Child Case not found for child with CaseID " + updationRequest.caseId());
+            return;
+        }
+
+        EligibleCouple couple = allEligibleCouples.findByCaseId(child.ecCaseId());
+        if (couple == null) {
+            logger.warn("EC Case not found for child with CaseID " + child.ecCaseId());
             return;
         }
 
@@ -72,7 +82,7 @@ public class ChildReportingService {
             }
 
             ReportingData data = ReportingData.serviceProvidedData(reportingData.get("anmIdentifier"), child.thaayiCardNumber(),
-                    indicator, reportingData.get("immunizationsProvidedDate"), child.location());
+                    indicator, reportingData.get("immunizationsProvidedDate"), couple.location());
 
             reportingService.sendReportData(data);
         }

@@ -17,17 +17,17 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class MotherReportingServiceTest extends BaseUnitTest{
-    private MotherReportingService service;
     @Mock
     private ReportingService reportingService;
     @Mock
     private AllMothers allMothers;
-    private MotherReportingService motherReportingService;
+
+    private MotherReportingService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        motherReportingService = new MotherReportingService(reportingService, allMothers);
+        service = new MotherReportingService(reportingService, allMothers);
         mockCurrentDate(new LocalDate(2012, 1, 1));
     }
 
@@ -54,9 +54,11 @@ public class MotherReportingServiceTest extends BaseUnitTest{
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "Case X");
         reportData.put("closeReason", "death");
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("CASE-1", "TC 1", "Theresa").withAnm("ANM X", "12345").withLocation("bherya", "Sub Center", "PHC X"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("CASE-1", "EC-CASE-1", "TC 1", "Theresa")
+                .withAnm("ANM X", "12345")
+                .withLocation("bherya", "Sub Center", "PHC X"));
 
-        motherReportingService.closeANC(reportData);
+        service.closeANC(reportData);
 
         ReportingData data = ReportingData.serviceProvidedData("ANM X", "TC 1", MOTHER_MORTALITY, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
         verify(reportingService).sendReportData(data);
@@ -68,7 +70,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
         reportData.put("caseId", "Case X");
         reportData.put("closeReason", "delivery");
 
-        motherReportingService.closeANC(reportData);
+        service.closeANC(reportData);
 
         verifyZeroInteractions(reportingService);
     }
@@ -80,7 +82,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
         reportData.put("closeReason", "death");
 
         when(allMothers.findByCaseId("Case X")).thenReturn(null);
-        motherReportingService.closeANC(reportData);
+        service.closeANC(reportData);
 
         verifyZeroInteractions(reportingService);
     }

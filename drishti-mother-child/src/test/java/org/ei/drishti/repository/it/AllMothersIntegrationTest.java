@@ -37,7 +37,7 @@ public class AllMothersIntegrationTest {
     public void shouldRegisterAMother() {
         HashMap<String, String> details = new HashMap<>();
         details.put("some_field", "some_value");
-        Mother mother = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa").withAnm("ANM ID 1", "12345").withLMP(DateUtil.tomorrow())
+        Mother mother = new Mother("CASE-1", "EC-CASE-1", "THAAYI-CARD-1", "Theresa").withAnm("ANM ID 1", "12345").withLMP(DateUtil.tomorrow())
                 .withLocation("bherya", "Sub Center", "PHC X").withDetails(details);
 
         mothers.register(mother);
@@ -52,7 +52,7 @@ public class AllMothersIntegrationTest {
     @Test
     public void shouldFindARegisteredMotherByCaseId() {
         String caseId = "CASE-1";
-        Mother motherToRegister = new Mother(caseId, "THAAYI-CARD-1", "Theresa");
+        Mother motherToRegister = new Mother(caseId, "EC-CASE-1", "THAAYI-CARD-1", "Theresa");
         mothers.register(motherToRegister);
 
         assertThat(mothers.findByCaseId(caseId), hasSameFieldsAs(motherToRegister));
@@ -62,7 +62,7 @@ public class AllMothersIntegrationTest {
     @Test
     public void shouldFindARegisteredMotherByThaayiCardNumber() {
         String thaayiCardNumber = "THAAYI-CARD-1";
-        Mother motherToRegister = new Mother("CASE-1", thaayiCardNumber, "Theresa");
+        Mother motherToRegister = new Mother("CASE-1", "EC-CASE-1", thaayiCardNumber, "Theresa");
         mothers.register(motherToRegister);
 
         assertThat(mothers.findByThaayiCardNumber(thaayiCardNumber), hasSameFieldsAs(motherToRegister));
@@ -71,7 +71,7 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldSayThatAMotherDoesNotExistWhenTheMotherIsNotInTheDB() {
-        Mother motherToRegister = new Mother("CASE-1", "THAAYI-CARD-1", "Theresa");
+        Mother motherToRegister = new Mother("CASE-1", "EC-CASE-1", "THAAYI-CARD-1", "Theresa");
         mothers.register(motherToRegister);
 
         assertTrue(mothers.motherExists("CASE-1"));
@@ -89,6 +89,6 @@ public class AllMothersIntegrationTest {
     }
 
     private Mother motherWithoutDetails() {
-        return new Mother("CASE X", "TC 1", "Wife 1").withAnm("ANM X", "9888198881");
+        return new Mother("CASE X", "EC-CASE-1", "TC 1", "Wife 1").withAnm("ANM X", "9888198881");
     }
 }

@@ -55,7 +55,7 @@ public class PNCService {
         }
 
         if ("live_birth".equals(request.pregnancyOutcome())) {
-            allChildren.register(new Child(request.caseId(), request.motherCaseId(), mother.thaayiCardNo(), request.childName(),
+            allChildren.register(new Child(request.caseId(), mother.ecCaseId(), request.motherCaseId(), mother.thaayiCardNo(), request.childName(),
                     request.immunizationsProvided(), request.gender()).withAnm(request.anmIdentifier()).withDetails(extraData.get("details")));
 
             actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), mother.caseId(), mother.thaayiCardNo(), request.dateOfBirth(), request.gender(), extraData.get("details"));
@@ -84,11 +84,10 @@ public class PNCService {
             Child updatedChild = allChildren.updateDetails(child.caseId(), details);
             actionService.pncVisitHappened(BeneficiaryType.child, child.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedChild.details());
         }
-
     }
 
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap reportingData) {
-        childReportingService.updateChildImmunization(updationRequest, reportingData);
+    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {
+        childReportingService.updateChildImmunization(updationRequest, new SafeMap(extraData.get("reporting")));
 
         alertForImmunizationProvided(updationRequest, "opv0", "OPV 0");
         alertForImmunizationProvided(updationRequest, "bcg", "BCG");

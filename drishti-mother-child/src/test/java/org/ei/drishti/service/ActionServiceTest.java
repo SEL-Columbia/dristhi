@@ -47,7 +47,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID M", "ANM phone no"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thaayi 1", "Theresa").withAnm("ANM ID M", "ANM phone no"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
@@ -58,7 +58,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForChild() throws Exception {
-        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "Thaayi 1", "Kid", Arrays.<String>asList(), "female").withAnm("ANM ID C"));
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "Thaayi 1", "Kid", Arrays.<String>asList(), "female").withAnm("ANM ID C"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
@@ -76,7 +76,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateACloseActionForAVisitOfAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
 
         service.markAlertAsClosedForVisitForMother("Case X", "ANM ID 1", "ANC 1", "2012-12-12");
 
@@ -85,7 +85,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateADeleteAllActionForAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
 
         service.deleteAllAlertsForMother("Case X");
 
@@ -143,7 +143,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldRegisterChildBirth() throws Exception {
-        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MOTHER-CASE-1", "MotherThaayiCard 1", "Theresa"));
+        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "MotherThaayiCard 1", "Theresa"));
 
         service.registerChildBirth("ChildCase Y", "ANM X", "MOTHER-CASE-1", "MotherThaayiCard 1", DateUtil.today(), "female", EXTRA_DETAILS);
 

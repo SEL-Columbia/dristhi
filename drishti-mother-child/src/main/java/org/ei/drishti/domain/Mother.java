@@ -16,6 +16,8 @@ public class Mother extends MotechBaseDataObject {
     @JsonProperty
     private String caseId;
     @JsonProperty
+    private String ecCaseId;
+    @JsonProperty
     private String thaayiCardNumber;
     @JsonProperty
     private String name;
@@ -37,8 +39,9 @@ public class Mother extends MotechBaseDataObject {
     private Mother() {
     }
 
-    public Mother(String caseId, String thaayiCardNumber, String name) {
+    public Mother(String caseId, String ecCaseId, String thaayiCardNumber, String name) {
         this.caseId = caseId;
+        this.ecCaseId = ecCaseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
         this.details = new HashMap<>();
@@ -73,6 +76,10 @@ public class Mother extends MotechBaseDataObject {
 
     public String caseId() {
         return caseId;
+    }
+
+    public String ecCaseId() {
+        return ecCaseId;
     }
 
     public String thaayiCardNo() {

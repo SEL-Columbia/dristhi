@@ -9,7 +9,7 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/9f3c0ee4f16950464aabd1794a625329937e3919"
+                            "nameSpace": "http://openrosa.org/formdesigner/AD66C7B6-EB90-4D3E-B3C5-E06A53761B89"
                         }
                     },
                     "mappings": {
@@ -93,7 +93,7 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/67da255016caedc4384ad5afc88a710eb8f58afb"
+                            "nameSpace": "http://openrosa.org/formdesigner/67da255016caedc4384ad5afc88a710eb8f58af6"
                         }
                     },
                     "mappings": {
@@ -124,7 +124,7 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/22441e826574e38a13be76e94e8a179259dbe6ec"
+                            "nameSpace": "http://openrosa.org/formdesigner/22441e826574e38a13be76e94e8a179259dbe6e8"
                         }
                     },
                     "mappings": {
@@ -156,7 +156,7 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/4813183F-2917-4DDD-B885-ECFC63F93BB4"
+                            "nameSpace": "http://openrosa.org/formdesigner/A952EF50-8561-4E96-8752-F6560ABCA517"
                         }
                     },
                     "mappings": {
@@ -194,7 +194,7 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/2369b9061b1bb85e7a35f14093b726e692f9850b"
+                            "nameSpace": "http://openrosa.org/formdesigner/34A443A8-7465-47F7-9A90-5752921D05AD"
                         }
                     },
                     "mappings": {
@@ -253,19 +253,27 @@
                     "url": {
                         "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/NOTDONE"
+                            "nameSpace": "http://openrosa.org/formdesigner/5DFFE17C-AD1B-4053-B3CD-76C3184C39C4"
                         }
                     },
                     "mappings": {
                         "form|meta|username": "anmIdentifier",
                         "form|case|@case_id": "caseId",
-                        "form|immunization_multiselect1": "immunizationsProvided",
-                        "form|meta|timeEnd": "submissionDate"
+                        "form|vaccinations_given": "immunizationsProvided",
+                        "form|immunization_date": "immunizationDate"
                     },
                     "extraMappings": {
                         "reporting": {
                             "form|meta|username": "anmIdentifier",
-                            "form|case|update|immunization_servicedate": "immunizationsProvidedDate"
+                            "form|immunization_date": "immunizationsProvidedDate"
+                        },
+                        "extraMappings": {
+                            "form|vitamin_a_given": "isVitaminAGiven",
+                            "form|vit_a_dose": "vitaminADose",
+                            "form|weight_measured": "isWeightMeasured",
+                            "form|child_weight": "childWeight",
+                            "form|today": "submissionDate",
+                            "form|immunization_date": "immunizationDate"
                         }
                     }
                 },

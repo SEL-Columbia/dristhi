@@ -15,17 +15,13 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private String caseId;
     @JsonProperty
+    private String ecCaseId;
+    @JsonProperty
     private String motherCaseId;
     @JsonProperty
     private String thaayiCardNumber;
     @JsonProperty
     private String name;
-    @JsonProperty
-    private String village;
-    @JsonProperty
-    private String subCenter;
-    @JsonProperty
-    private String phc;
     @JsonProperty
     private String anmIdentifier;
     @JsonProperty
@@ -38,8 +34,9 @@ public class Child extends MotechBaseDataObject {
     private Child() {
     }
 
-    public Child(String caseId, String motherCaseId, String thaayiCardNumber, String name, List<String> immunizationsProvided, String gender) {
+    public Child(String caseId, String ecCaseId, String motherCaseId, String thaayiCardNumber, String name, List<String> immunizationsProvided, String gender) {
         this.caseId = caseId;
+        this.ecCaseId = ecCaseId;
         this.motherCaseId = motherCaseId;
         this.thaayiCardNumber = thaayiCardNumber;
         this.name = name;
@@ -52,16 +49,12 @@ public class Child extends MotechBaseDataObject {
         return this;
     }
 
-    private String getCaseId() {
-        return caseId;
-    }
-
-    private String getMotherCaseId() {
-        return motherCaseId;
-    }
-
     public String caseId() {
         return caseId;
+    }
+
+    public String ecCaseId() {
+        return ecCaseId;
     }
 
     public String thaayiCardNumber() {
@@ -72,31 +65,12 @@ public class Child extends MotechBaseDataObject {
         return name;
     }
 
-    public String village() {
-        return village;
-    }
-
     public String anmIdentifier() {
         return anmIdentifier;
     }
 
-    public String phc() {
-        return phc;
-    }
-
-    public String subCenter() {
-        return subCenter;
-    }
-
     public List<String> immunizationsProvided() {
         return immunizationsProvided;
-    }
-
-    public Child withLocation(String village, String subCenter, String phc) {
-        this.village = village;
-        this.subCenter = subCenter;
-        this.phc = phc;
-        return this;
     }
 
     public Child withDetails(Map<String, String> details) {
@@ -104,12 +78,16 @@ public class Child extends MotechBaseDataObject {
         return this;
     }
 
-    public Location location() {
-        return new Location(village, subCenter, phc);
-    }
-
     public Map<String, String> details() {
         return details;
+    }
+
+    private String getCaseId() {
+        return caseId;
+    }
+
+    private String getMotherCaseId() {
+        return motherCaseId;
     }
 
     @Override

@@ -66,7 +66,7 @@ public class DrishtiController {
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {
         logger.info("Child immunization updation: " + updationRequest + ". Extra data: " + extraData);
 
-        pncService.updateChildImmunization(updationRequest, new SafeMap(extraData.get("reporting")));
+        pncService.updateChildImmunization(updationRequest, extraData);
         mctsService.updateChildImmunization(updationRequest);
     }
 

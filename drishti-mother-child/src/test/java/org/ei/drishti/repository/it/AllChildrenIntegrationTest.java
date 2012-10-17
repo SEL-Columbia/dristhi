@@ -31,7 +31,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldRegisterAChild() {
-        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1").withLocation("bherya", "Sub Center", "PHC X");
+        Child child = new Child("CASE-1", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1");
 
         children.register(child);
 
@@ -44,7 +44,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldFindChildByCaseId() {
-        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1").withLocation("bherya", "Sub Center", "PHC X");
+        Child child = new Child("CASE-1", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1");
         children.register(child);
 
         Child childFromDB = children.findByCaseId("CASE-1");
@@ -54,7 +54,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldFindChildByMotherCaseId() {
-        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1").withLocation("bherya", "Sub Center", "PHC X");
+        Child child = new Child("CASE-1", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1");
         children.register(child);
 
         Child childFromDB = children.findByMotherCaseId("MOTHER-CASE-1");
@@ -73,7 +73,8 @@ public class AllChildrenIntegrationTest {
     }
 
     private Child childWithoutDetails() {
-        return new Child("CASE X", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1").withLocation("bherya", "Sub Center", "PHC X");
+        return new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male")
+                .withAnm("ANM ID 1");
     }
 
 }

@@ -50,7 +50,7 @@ public class ANCService {
             return;
         }
 
-        Mother mother = new Mother(info.caseId(), info.thaayiCardNumber(), couple.wife()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
+        Mother mother = new Mother(info.caseId(), couple.caseId(), info.thaayiCardNumber(), couple.wife()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
                 .withLMP(info.lmpDate()).withLocation(couple.village(), couple.subCenter(), couple.phc())
                 .withDetails(details);
         allMothers.register(mother);
@@ -70,13 +70,15 @@ public class ANCService {
     public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, EligibleCouple couple, Map<String, Map<String, String>> extraData) {
         Map<String, String> details = extraData.get("details");
 
-        Mother mother = new Mother(request.caseId(), request.thaayiCardNumber(), request.wife()).withAnm(request.anmIdentifier(), request.anmPhoneNumber())
+        Mother mother = new Mother(request.caseId(), couple.caseId(), request.thaayiCardNumber(), request.wife())
+                .withAnm(request.anmIdentifier(), request.anmPhoneNumber())
                 .withLMP(request.lmpDate()).withLocation(request.village(), request.subCenter(), request.phc())
                 .withDetails(details);
-
         allMothers.register(mother);
-        actionService.registerOutOfAreaANC(request.caseId(), couple.caseId(), request.wife(), request.husband(), request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), request.thaayiCardNumber(),
-                request.lmpDate(), details);
+
+        actionService.registerOutOfAreaANC(request.caseId(), couple.caseId(), request.wife(), request.husband(), request.anmIdentifier(),
+                request.village(), request.subCenter(), request.phc(), request.thaayiCardNumber(),request.lmpDate(), details);
+
         enrollMotherIntoSchedules(request.caseId(), request.lmpDate());
     }
 
