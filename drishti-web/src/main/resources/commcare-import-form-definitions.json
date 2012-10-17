@@ -239,7 +239,6 @@
                     },
                     "extraMappings": {
                         "details": {
-                            "form|have_transportation_plan": "isTransportationPlanAvailable",
                             "form|transport_plan": "transportPlan",
                             "form|name_deliveryfacility": "deliveryFacility",
                             "form|type_deliveryfacility": "deliveryFacilityType",
