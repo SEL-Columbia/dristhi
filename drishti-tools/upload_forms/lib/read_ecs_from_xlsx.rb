@@ -67,6 +67,7 @@ class ECs
                          "29230040114" => Village.new("keelanapura", "keelanapura-b", "megalapura"),
                          "29230040111" => Village.new("keelanapura", "puttegowdanahundi", "chattanahallipalya"),
                          "29230040116" => Village.new("keelanapura", "puttegowdanahundi", "duddagere"),
+                         "29230040039" => Village.new("keelanapura", "puttegowdanahundi", "lakshmipura"),
                          "29230040110" => Village.new("keelanapura", "puttegowdanahundi", "puttegowdanahundi"),
                          "29230040104" => Village.new("keelanapura", "vajamangala", "chikkahalli"),
                          "29230040101" => Village.new("keelanapura", "vajamangala", "vajamangala"),
