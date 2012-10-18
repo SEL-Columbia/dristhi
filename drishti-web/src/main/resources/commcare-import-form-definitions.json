@@ -7,9 +7,9 @@
                 {
                     "name": "registerEligibleCouple",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/AD66C7B6-EB90-4D3E-B3C5-E06A53761B89"
+                            "nameSpace": "http://openrosa.org/formdesigner/9D77A042-02D3-46AA-9063-900D9B381FEC"
                         }
                     },
                     "mappings": {
@@ -41,9 +41,9 @@
                 {
                     "name": "changeFamilyPlanningMethod",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/c5767cf804a62e88b9cd5d264114663cc181a941"
+                            "nameSpace": "http://openrosa.org/formdesigner/05FF8F8E-ED16-460A-997A-3B376EDEF9A9"
                         }
                     },
                     "mappings": {
@@ -60,9 +60,9 @@
                 {
                     "name": "registerMother",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/eabae7c1c11384a64a3cf39e26735b416736c6cd"
+                            "nameSpace": "http://openrosa.org/formdesigner/302518F0-F43A-4075-83C5-F94225AFB465"
                         }
                     },
                     "mappings": {
@@ -91,9 +91,9 @@
                 {
                     "name": "registerOutOfAreaANC",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/67da255016caedc4384ad5afc88a710eb8f58af6"
+                            "nameSpace": "http://openrosa.org/formdesigner/A2BEC2B9-0860-4D50-83DB-0BA2D8099896"
                         }
                     },
                     "mappings": {
@@ -122,9 +122,9 @@
                 {
                     "name": "updateANCCareInformation",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/22441e826574e38a13be76e94e8a179259dbe6e8"
+                            "nameSpace": "http://openrosa.org/formdesigner/1D01298A-AC83-4FB8-B61A-39D3419FFFA7"
                         }
                     },
                     "mappings": {
@@ -154,7 +154,7 @@
                 {
                     "name": "updateOutcomeOfANC",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
                             "nameSpace": "http://openrosa.org/formdesigner/A952EF50-8561-4E96-8752-F6560ABCA517"
                         }
@@ -192,7 +192,7 @@
                 {
                     "name": "updatePNCAndChildInformation",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
                             "nameSpace": "http://openrosa.org/formdesigner/34A443A8-7465-47F7-9A90-5752921D05AD"
                         }
@@ -228,9 +228,9 @@
                 {
                     "name": "updateBirthPlanning",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/9B328DBB-C2F0-4012-9903-200890BF199A"
+                            "nameSpace": "http://openrosa.org/formdesigner/332FC0FE-1B92-472A-B3C6-ABC7B9A520AF"
                         }
                     },
                     "mappings": {
@@ -251,7 +251,7 @@
                 {
                     "name": "updateChildImmunization",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
                             "nameSpace": "http://openrosa.org/formdesigner/5DFFE17C-AD1B-4053-B3CD-76C3184C39C4"
                         }
@@ -276,7 +276,7 @@
                 {
                     "name": "closeChildCase",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
                             "nameSpace": "http://openrosa.org/formdesigner/NOTDONE"
                         }
@@ -289,9 +289,9 @@
                 {
                     "name": "closeANCCase",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/3d8d47207b0d9164424ebe33cebc3fa3fec34a4"
+                            "nameSpace": "http://openrosa.org/formdesigner/4AFF7A16-9006-44EB-BC26-62BE63F32E8A"
                         }
                     },
                     "mappings": {
@@ -310,9 +310,9 @@
                 {
                     "name": "closeEligibleCouple",
                     "url": {
-                        "base": "https://www.commcarehq.org/a/frhs-who-columbia/reports/export/",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/9a04dc61053bc113ff0f0614ae6cf96638f070e"
+                            "nameSpace": "http://openrosa.org/formdesigner/9a04dc61053bc113ff0f0614ae6cf96638f0709"
                         }
                     },
                     "mappings": {
