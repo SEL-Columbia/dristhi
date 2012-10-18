@@ -14,11 +14,11 @@ class ANCs
   end
 
   def ancs
-    @ancs.collect {|anc| anc.to_hash}
+    @ancs.collect { |anc| anc.to_hash }
   end
 
   def ancs_grouped_per_couple
-    ancs.group_by {|anc| [anc['a.Village Code'].village.downcase, anc['a.Wife Name'].downcase, anc['a.Husband Name'].downcase]}
+    ancs.group_by { |anc| [anc['a.Village Code'].village.downcase, anc['a.Wife Name'].downcase, anc['a.Husband Name'].downcase] }
   end
 
   private
@@ -30,7 +30,7 @@ class ANCs
       spreadsheet.to_csv filename, "ANC register"
 
 
-      CSV.foreach(filename, { :headers => true }) do |csv_row|
+      CSV.foreach(filename, {:headers => true}) do |csv_row|
         anc = Row.new csv_row
 
         anc.convert_value "Year", :empty => "2012"
@@ -68,51 +68,51 @@ class ANCs
         anc.convert_value "Religion", :default => "r_others"
 
         anc.convert_value "HRP",
-          "No"     => "no",
-          "Yes"    => "yes",
-          :empty   => "no",
-          :default => "no"
+                          "No" => "no",
+                          "Yes" => "yes",
+                          :empty => "no",
+                          :default => "no"
 
         anc.convert_value "Caste",
-          "SC"     => "sc",
-          "ST"     => "st",
-          :empty   => "c_others",
-          :default => "c_others"
+                          "SC" => "sc",
+                          "ST" => "st",
+                          :empty => "c_others",
+                          :default => "c_others"
 
         anc.convert_value "BPL",
-          "Yes"    => "bpl",
-          "No"     => "apl",
-          :empty   => "apl",
-          :default => "apl"
+                          "Yes" => "bpl",
+                          "No" => "apl",
+                          :empty => "apl",
+                          :default => "apl"
 
         anc.convert_value "a.Village Code",
-          "29230030066" => Village.new("bheriya","bheriya-a","ardha bheriya"),
-          "29230060072" => Village.new("bheriya","bheriya-a","basavanapura"),
-          "29230030063" => Village.new("bheriya","bheriya-a","gerdada"),
-          "29230030067" => Village.new("bheriya","bheriya-a","sambaravalli"),
-          "29230030064" => Village.new("bheriya","bheriya-a","somanahalli colony"),
-          "29230030065" => Village.new("bheriya","bheriya-b","battiganahalli"),
-          "29230030069" => Village.new("bheriya","bheriya-b","sugganahalli"),
-          "29230030059" => Village.new("bheriya","guluvinahattiguppe","arakere"),
-          "29230030056" => Village.new("bheriya","guluvinahattiguppe","g.a.guppe"),
-          "29230030071" => Village.new("bheriya","hosaagrahara","harambanahalli"),
-          "29230030070" => Village.new("bheriya","hosaagrahara","hosaagrahara"),
-          "29230030068" => Village.new("bheriya","hosaagrahara","mandiganahalli"),
-          "29230030061" => Village.new("bheriya","munjanahalli","chikkabheriya"),
-          "29230030058" => Village.new("bheriya","munjanahalli","kaval_hosur"),
-          "29230030060" => Village.new("bheriy","munjanahalli","munjanahalli"),
-          "29230040138" => Village.new("keelanapura","keelanapura","inamuttanahalli"),
-          "29230040113" => Village.new("keelanapura","keelanapura","keelanapura"),
-          "29230040137" => Village.new("keelanapura","megalapura","hosahalli"),
-          "29230040112" => Village.new("keelanapura","megalapura","madavagere"),
-          "29230040114" => Village.new("keelanapura","megalapura","megalapura"),
-          "29230040111" => Village.new("keelanapura","puttegowdanahundi","chatnahallipalya"),
-          "29230040116" => Village.new("keelanapura","puttegowdanahundi","duddagere"),
-          "29230040110" => Village.new("keelanapura","puttegowdanahundi","puttegowdanahundi"),
-          "29230040104" => Village.new("keelanapura","vajamangala","chikkahalli"),
-          "29230040101" => Village.new("keelanapura","vajamangala","vajamangala"),
-          :empty        => Village.new("bherya", "munjanahalli", "munjanahalli"),
-          :default      => Village.new("bherya", "munjanahalli", "munjanahalli")
+                          "29230030066" => Village.new("bherya", "bherya-a", "ardha_bherya"),
+                          "29230060072" => Village.new("bherya", "bherya-a", "basavanapura"),
+                          "29230030063" => Village.new("bherya", "bherya-a", "geradada"),
+                          "29230030067" => Village.new("bherya", "bherya-a", "sambaravalli"),
+                          "29230030064" => Village.new("bherya", "bherya-a", "somanahalli colony"),
+                          "29230030065" => Village.new("bherya", "bherya-b", "battiganahalli"),
+                          "29230030069" => Village.new("bherya", "bherya-b", "sugganahalli"),
+                          "29230030059" => Village.new("bherya", "g.a.guppe", "arakere"),
+                          "29230030056" => Village.new("bherya", "g.a.guppe", "g.a.guppe"),
+                          "29230030071" => Village.new("bherya", "hosa_agrahara", "harambanahalli"),
+                          "29230030070" => Village.new("bherya", "hosa_agrahara", "hosa_agrahara"),
+                          "29230030068" => Village.new("bherya", "hosa_agrahara", "mandiganahalli"),
+                          "29230030061" => Village.new("bherya", "munjanahalli", "chikkabherya"),
+                          "29230030058" => Village.new("bherya", "munjanahalli", "kavalu_hosur"),
+                          "29230030060" => Village.new("bheriy", "munjanahalli", "munjanahalli"),
+                          "29230040138" => Village.new("keelanapura", "keelanapura-a", "inam_uttanahalli"),
+                          "29230040113" => Village.new("keelanapura", "keelanapura-a", "keelanapura"),
+                          "29230040137" => Village.new("keelanapura", "keelanapura-b", "hosahalli"),
+                          "29230040112" => Village.new("keelanapura", "keelanapura-b", "madhavagere"),
+                          "29230040114" => Village.new("keelanapura", "keelanapura-b", "megalapura"),
+                          "29230040111" => Village.new("keelanapura", "puttegowdanahundi", "chattanahallipalya"),
+                          "29230040116" => Village.new("keelanapura", "puttegowdanahundi", "duddagere"),
+                          "29230040110" => Village.new("keelanapura", "puttegowdanahundi", "puttegowdanahundi"),
+                          "29230040104" => Village.new("keelanapura", "vajamangala", "chikkahalli"),
+                          "29230040101" => Village.new("keelanapura", "vajamangala", "vajamangala"),
+                          :empty => Village.new("bherya", "munjanahalli", "munjanahalli"),
+                          :default => Village.new("bherya", "munjanahalli", "munjanahalli")
 
         anc.add_field "Case ID", Guid.new.to_s
         anc.add_field "Instance ID", Guid.new.to_s

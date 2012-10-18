@@ -15,7 +15,7 @@ class MobileWorkers
         "c" => MobileWorker.new("c", "c3d86928a9c501cd88f42d6031ad70c9", "examples/Munjanhalli.xlsx"),
         "d" => MobileWorker.new("d", "dUserID", "examples/Bheriya.xlsx"),
         "e" => MobileWorker.new("e", "eUserID", "examples/Keelanapura.xlsx"),
-        "test_upload" => MobileWorker.new("test_upload", "cd0435c0a929ceec9adb9dfb61bd01b7", "examples/1 ElizabethD'Souza Bheriya-A.xlsx"),
+        "test_upload" => MobileWorker.new("test_upload", "1def74f43eb5296a26341b6ac24b44c9", "examples/1 ElizabethD'Souza Bheriya-A.xlsx"),
         "elizab" => MobileWorker.new("elizab", "elizabUserID", "examples/1 ElizabethD'Souza Bheriya-A.xlsx"),
         "jyothi" => MobileWorker.new("jyothi", "jyothiUserID", "examples/2 Jyothilakshmi Bheriya-B.xlsx"),
         "fathim" => MobileWorker.new("fathim", "fathimUserID", "examples/3 Fathima GAGuppe.xlsx"),

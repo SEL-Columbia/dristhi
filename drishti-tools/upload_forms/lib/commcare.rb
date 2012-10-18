@@ -13,4 +13,3 @@ class CommCare
     http.start { |http| http.request(req) }
   end
 end
-
