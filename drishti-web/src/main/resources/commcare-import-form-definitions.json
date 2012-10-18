@@ -53,7 +53,7 @@
                     "extraMappings": {
                         "details": {
                             "form|date_familyplanningstart": "familyPlanningMethodChangeDate",
-                            "form|familyplanning_method_1": "currentMethod"
+                            "form|familyplanning_method": "currentMethod"
                         }
                     }
                 },
