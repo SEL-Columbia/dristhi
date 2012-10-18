@@ -44,16 +44,16 @@ public class AlertControllerRoutesTest {
 
     @Test
     public void shouldDoNothingForAllChildSchedules() throws Exception {
-        Event.of(CHILD_SCHEDULE_BCG, "REMINDER", WindowName.due).shouldDoNothing();
-        Event.of(CHILD_SCHEDULE_BCG, "REMINDER", WindowName.late).shouldDoNothing();
-        Event.of(CHILD_SCHEDULE_DPT, "DPT 1", WindowName.due).shouldDoNothing();
-        Event.of(CHILD_SCHEDULE_DPT, "DPT 1", WindowName.late).shouldDoNothing();
-        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.due).shouldDoNothing();
-        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.late).shouldDoNothing();
-        Event.of(CHILD_SCHEDULE_MEASLES, "REMINDER", WindowName.due).shouldDoNothing();
-        Event.of(CHILD_SCHEDULE_MEASLES, "REMINDER", WindowName.late).shouldDoNothing();
-        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.due).shouldDoNothing();
-        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.late).shouldDoNothing();
+        Event.of(CHILD_SCHEDULE_BCG, "REMINDER", WindowName.due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_BCG, "REMINDER", WindowName.late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT, "DPT 1", WindowName.due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT, "DPT 1", WindowName.late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_MEASLES, "REMINDER", WindowName.due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_MEASLES, "REMINDER", WindowName.late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.late).shouldRouteToAlertCreationActionForChild();
     }
 
     private static class Event {

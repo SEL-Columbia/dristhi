@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-import static java.lang.String.format;
+import static java.text.MessageFormat.format;
 import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
@@ -60,9 +60,9 @@ public class PNCService {
 
             actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), mother.caseId(), mother.thaayiCardNo(), request.dateOfBirth(), request.gender(), extraData.get("details"));
 
-            alertForMissingImmunization(request, "opv0", "OPV 0");
+            alertForMissingImmunization(request, "opv_0", "OPV 0");
             alertForMissingImmunization(request, "bcg", "BCG");
-            alertForMissingImmunization(request, "hepB0", "HEP B0");
+            alertForMissingImmunization(request, "hepb_0", "HEP B0");
 
             pncSchedulesService.enrollChild(request);
         }
@@ -98,9 +98,9 @@ public class PNCService {
 
         childReportingService.updateChildImmunization(updationRequest, new SafeMap(extraData.get("reporting")));
 
-        alertForImmunizationProvided(updationRequest, "opv0", "OPV 0");
+        alertForImmunizationProvided(updationRequest, "opv_0", "OPV 0");
         alertForImmunizationProvided(updationRequest, "bcg", "BCG");
-        alertForImmunizationProvided(updationRequest, "hepB0", "HEP B0");
+        alertForImmunizationProvided(updationRequest, "hepb_0", "HEP B0");
 
         pncSchedulesService.updateEnrollments(updationRequest);
     }

@@ -77,7 +77,7 @@ public class PNCSchedulesServiceTest {
     public void shouldUpdateEnrollmentForDPTWhenDPTHasBeenProvided() {
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_DPT, "DPT 0", "DPT 1", "DPT 2", "DPT 3")
-                .whenProvidedWithImmunizations("dpt0 dpt1 dpt2 dpt3")
+                .whenProvidedWithImmunizations("dpt_0 dpt_1 dpt_2 dpt_3")
                 .shouldFulfill(CHILD_SCHEDULE_DPT, 4).shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
@@ -90,7 +90,7 @@ public class PNCSchedulesServiceTest {
     public void shouldUpdateEnrollmentForHepatitis() {
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B1", "Hepatitis B2", "Hepatitis B3", "Hepatitis B4")
-                .whenProvidedWithImmunizations("hepb1 hepb2 hepb3 hepb4")
+                .whenProvidedWithImmunizations("hepb_1 hepb_2 hepb_3 hepb_4")
                 .shouldFulfill(CHILD_SCHEDULE_HEPATITIS, 4).shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
@@ -116,8 +116,9 @@ public class PNCSchedulesServiceTest {
     public void shouldUpdateEnrollmentForOPV() {
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_OPV, "OPV 0", "OPV 1", "OPV 2", "OPV 3")
-                .whenProvidedWithImmunizations("opv0 opv1 opv2 opv3")
-                .shouldFulfill(CHILD_SCHEDULE_OPV, 4).shouldNotFulfillAnythingElse();
+                .whenProvidedWithImmunizations("opv_0 opv_1 opv_2 opv_3")
+                .shouldFulfill(CHILD_SCHEDULE_OPV, 4)
+                .shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_OPV, "OPV 2")
@@ -131,7 +132,7 @@ public class PNCSchedulesServiceTest {
                 .givenEnrollmentIn(CHILD_SCHEDULE_BCG, "REMINDER")
                 .givenEnrollmentIn(CHILD_SCHEDULE_OPV, "OPV 1")
                 .givenEnrollmentIn(CHILD_SCHEDULE_DPT, "DPT 3")
-                .whenProvidedWithImmunizations("dpt1 dpt3 hepB0 hepb3 measles opv1")
+                .whenProvidedWithImmunizations("dpt_1 dpt_3 hepB0 hepb_3 measles opv_1")
                 .shouldFulfill(CHILD_SCHEDULE_OPV, 1)
                 .shouldFulfill(CHILD_SCHEDULE_DPT, 1)
                 .shouldNotFulfillAnythingElse();

@@ -153,17 +153,17 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldAddAlertsOnlyForMissingVaccinations() {
         assertMissingAlertsAdded("", "BCG", "OPV 0", "HEP B0");
         assertMissingAlertsAdded("bcg", "OPV 0", "HEP B0");
-        assertMissingAlertsAdded("bcg opv0", "HEP B0");
-        assertMissingAlertsAdded("bcg opv0 hepB0");
+        assertMissingAlertsAdded("bcg opv_0", "HEP B0");
+        assertMissingAlertsAdded("bcg opv_0 hepb_0");
 
-        assertMissingAlertsAdded("opv0 bcg hepB0");
-        assertMissingAlertsAdded("opv0 bcg", "HEP B0");
-        assertMissingAlertsAdded("opv0 bcg1", "BCG", "HEP B0");
+        assertMissingAlertsAdded("opv_0 bcg hepb_0");
+        assertMissingAlertsAdded("opv_0 bcg", "HEP B0");
+        assertMissingAlertsAdded("opv_0 bcg_1", "BCG", "HEP B0");
     }
 
     @Test
     public void shouldRemoveAlertsForUpdatedImmunizations() throws Exception {
-        assertCloseOfAlertsForProvidedImmunizations("bcg opv0", "BCG", "OPV 0");
+        assertCloseOfAlertsForProvidedImmunizations("bcg opv_0", "BCG", "OPV 0");
     }
 
     @Test
@@ -265,7 +265,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
         pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations, "2012-01-01").withVitaminADose("1"), EXTRA_DATA);
 
-        verify(actionService).updateImmunizations("Case X", "DEMO ANM", EXTRA_DATA.get("details"), "bcg opv0", LocalDate.parse("2012-01-01"), "1");
+        verify(actionService).updateImmunizations("Case X", "DEMO ANM", EXTRA_DATA.get("details"), providedImmunizations, LocalDate.parse("2012-01-01"), "1");
         for (String expectedAlert : expectedDeletedAlertsRaised) {
             verify(actionService).markAlertAsClosedForVisitForChild("Case X", "DEMO ANM", expectedAlert, "2012-01-01");
         }

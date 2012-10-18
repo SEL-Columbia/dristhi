@@ -39,22 +39,22 @@ public class PNCSchedulesService {
     public void updateEnrollments(ChildImmunizationUpdationRequest request) {
         fulfillIfImmunizationIsProvided(request, "bcg", CHILD_SCHEDULE_BCG, "REMINDER");
 
-        fulfillIfImmunizationIsProvided(request, "dpt0", CHILD_SCHEDULE_DPT, "DPT 0");
-        fulfillIfImmunizationIsProvided(request, "dpt1", CHILD_SCHEDULE_DPT, "DPT 1");
-        fulfillIfImmunizationIsProvided(request, "dpt2", CHILD_SCHEDULE_DPT, "DPT 2");
-        fulfillIfImmunizationIsProvided(request, "dpt3", CHILD_SCHEDULE_DPT, "DPT 3");
+        fulfillIfImmunizationIsProvided(request, "dpt_0", CHILD_SCHEDULE_DPT, "DPT 0");
+        fulfillIfImmunizationIsProvided(request, "dpt_1", CHILD_SCHEDULE_DPT, "DPT 1");
+        fulfillIfImmunizationIsProvided(request, "dpt_2", CHILD_SCHEDULE_DPT, "DPT 2");
+        fulfillIfImmunizationIsProvided(request, "dpt_3", CHILD_SCHEDULE_DPT, "DPT 3");
 
-        fulfillIfImmunizationIsProvided(request, "hepb1", CHILD_SCHEDULE_HEPATITIS, "Hepatitis B1");
-        fulfillIfImmunizationIsProvided(request, "hepb2", CHILD_SCHEDULE_HEPATITIS, "Hepatitis B2");
-        fulfillIfImmunizationIsProvided(request, "hepb3", CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3");
-        fulfillIfImmunizationIsProvided(request, "hepb4", CHILD_SCHEDULE_HEPATITIS, "Hepatitis B4");
+        fulfillIfImmunizationIsProvided(request, "hepb_1", CHILD_SCHEDULE_HEPATITIS, "Hepatitis B1");
+        fulfillIfImmunizationIsProvided(request, "hepb_2", CHILD_SCHEDULE_HEPATITIS, "Hepatitis B2");
+        fulfillIfImmunizationIsProvided(request, "hepb_3", CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3");
+        fulfillIfImmunizationIsProvided(request, "hepb_4", CHILD_SCHEDULE_HEPATITIS, "Hepatitis B4");
 
         fulfillIfImmunizationIsProvided(request, "measles", CHILD_SCHEDULE_MEASLES, "REMINDER");
 
-        fulfillIfImmunizationIsProvided(request, "opv0", CHILD_SCHEDULE_OPV, "OPV 0");
-        fulfillIfImmunizationIsProvided(request, "opv1", CHILD_SCHEDULE_OPV, "OPV 1");
-        fulfillIfImmunizationIsProvided(request, "opv2", CHILD_SCHEDULE_OPV, "OPV 2");
-        fulfillIfImmunizationIsProvided(request, "opv3", CHILD_SCHEDULE_OPV, "OPV 3");
+        fulfillIfImmunizationIsProvided(request, "opv_0", CHILD_SCHEDULE_OPV, "OPV 0");
+        fulfillIfImmunizationIsProvided(request, "opv_1", CHILD_SCHEDULE_OPV, "OPV 1");
+        fulfillIfImmunizationIsProvided(request, "opv_2", CHILD_SCHEDULE_OPV, "OPV 2");
+        fulfillIfImmunizationIsProvided(request, "opv_3", CHILD_SCHEDULE_OPV, "OPV 3");
     }
 
     public void unenrollChild(String caseId) {
