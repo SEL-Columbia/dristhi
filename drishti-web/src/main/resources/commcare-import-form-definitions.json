@@ -276,7 +276,7 @@
                 {
                     "name": "closeChildCase",
                     "url": {
-                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
+                        "base": "http://openrosa.org/formdesigner/E14690C6-828D-4902-83F8-7BB33EEB9DA6",
                         "queryParams": {
                             "nameSpace": "http://openrosa.org/formdesigner/NOTDONE"
                         }
