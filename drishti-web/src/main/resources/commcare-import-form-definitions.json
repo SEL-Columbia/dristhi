@@ -34,7 +34,8 @@
                             "form|religion": "religion",
                             "form|num_pregnancies": "pregnancies",
                             "form|is_high_priority": "isHighPriority",
-                            "form|today": "submissionDate"
+                            "form|today": "submissionDate",
+                            "form|high_priority_reason": "highPriorityReason"
                         }
                     }
                 },
