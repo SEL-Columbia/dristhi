@@ -125,6 +125,13 @@ public class ActionServiceTest {
     }
 
     @Test
+    public void shouldAddDeleteActionForChildClose() throws Exception {
+        service.closeChild("Case X", "ANM X");
+
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.deleteChild()));
+    }
+
+    @Test
     public void shouldAddActionForBeneficiaryRegistration() throws Exception {
         HashMap<String, String> details = new HashMap<>();
         details.put("some_field", "some_value");

@@ -107,6 +107,7 @@ public class PNCService {
 
     public void closeChildCase(ChildCloseRequest childCloseRequest) {
         actionService.deleteAllAlertsForChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
+        actionService.closeChild(childCloseRequest.caseId(),childCloseRequest.anmIdentifier());
 
         pncSchedulesService.unenrollChild(childCloseRequest.caseId());
     }

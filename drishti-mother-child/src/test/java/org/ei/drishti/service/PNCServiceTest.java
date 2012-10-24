@@ -246,6 +246,19 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldCreateACloseChildActionForChildCaseClose() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+
+        ActionService alertServiceMock = mock(ActionService.class);
+        PNCService pncService = new PNCService(alertServiceMock, mock(PNCSchedulesService.class), allMothers, allChildren, reportingService);
+
+        pncService.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"));
+
+        verify(alertServiceMock).closeChild("Case X", "DEMO ANM");
+    }
+
+    @Test
     public void shouldUnenrollChildWhoseCaseHasBeenClosed() {
         service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"));
 
