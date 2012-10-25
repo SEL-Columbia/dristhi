@@ -1,6 +1,7 @@
 {
     "userName": "drishtiapp@gmail.com",
     "password": "spoh-bosh-many-ku-tu",
+    "commcareServerBaseUrl": "https://india.commcarehq.org",
     "modules": [
         {
             "forms": [
@@ -277,7 +278,7 @@
                 {
                     "name": "closeChildCase",
                     "url": {
-                        "base": "http://openrosa.org/formdesigner/E14690C6-828D-4902-83F8-7BB33EEB9DA6",
+                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
                             "nameSpace": "http://openrosa.org/formdesigner/NOTDONE"
                         }
