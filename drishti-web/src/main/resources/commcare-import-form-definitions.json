@@ -36,7 +36,9 @@
                             "form|num_pregnancies": "pregnancies",
                             "form|is_high_priority": "isHighPriority",
                             "form|today": "submissionDate",
-                            "form|high_priority_reason": "highPriorityReason"
+                            "form|high_priority_reason": "highPriorityReason",
+                            "form|economic_status": "economicStatus",
+                            "form|caste": "caste"
                         }
                     }
                 },
