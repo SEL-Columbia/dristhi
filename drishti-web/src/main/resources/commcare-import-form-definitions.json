@@ -85,7 +85,8 @@
                             "form|meta|username": "anmIdentifier"
                         },
                         "details": {
-                            "form|isHighRisk": "isHighRisk",
+                            "form|is_high_risk": "isHighRisk",
+                            "form|high_risk_reason": "highRiskReason",
                             "form|name_deliveryfacility": "deliveryPlace",
                             "form|asha_name": "ashaName",
                             "form|asha_phone_number": "ashaPhoneNumber"
@@ -116,6 +117,7 @@
                         "details": {
                             "form|headofhousehold": "headOfHousehold",
                             "form|is_high_risk": "isHighRisk",
+                            "form|high_risk_reason": "highRiskReason",
                             "form|name_deliveryfacility": "deliveryPlace",
                             "form|asha_name": "ashaName",
                             "form|asha_phone_number": "ashaPhoneNumber",
