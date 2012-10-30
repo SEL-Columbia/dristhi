@@ -121,7 +121,9 @@
                             "form|name_deliveryfacility": "deliveryPlace",
                             "form|asha_name": "ashaName",
                             "form|asha_phone_number": "ashaPhoneNumber",
-                            "form|today": "submissionDate"
+                            "form|today": "submissionDate",
+                            "form|economic_status": "economicStatus",
+                            "form|caste": "caste"
                         }
                     }
                 },
