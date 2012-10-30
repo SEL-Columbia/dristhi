@@ -10,7 +10,7 @@
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/778EDB57-86D4-4C88-A900-6936D9F8BE8D"
+                            "nameSpace": "http://openrosa.org/formdesigner/166275B9-734B-4C33-9576-B234DD820C94"
                         }
                     },
                     "mappings": {
@@ -66,7 +66,7 @@
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/7D078525-FE9F-45EB-9138-B85BC8242CB4"
+                            "nameSpace": "http://openrosa.org/formdesigner/4D64A890-494D-4A5C-AE3D-3A483AC6D786"
                         }
                     },
                     "mappings": {
@@ -98,7 +98,7 @@
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/1C2DC4E7-BEF2-4590-8C25-12CD8034AA50"
+                            "nameSpace": "http://openrosa.org/formdesigner/A83006CE-0D9F-45D1-81A0-83319A3A585D"
                         }
                     },
                     "mappings": {
@@ -132,7 +132,7 @@
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/FD46D8D6-5E2C-423C-9E91-A722F9ADD07D"
+                            "nameSpace": "http://openrosa.org/formdesigner/0316AE9A-80C4-44F5-88A6-CE1C745D6AFF"
                         }
                     },
                     "mappings": {
@@ -164,7 +164,7 @@
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/A9E1ECB6-5819-40A8-B379-3D05A63A8348"
+                            "nameSpace": "http://openrosa.org/formdesigner/E47AD7C6-B3D4-47A2-B022-11B717AA8FBC"
                         }
                     },
                     "mappings": {
@@ -202,7 +202,7 @@
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/478349DA-F118-4087-BA17-7C47BCEC5FDA"
+                            "nameSpace": "http://openrosa.org/formdesigner/A6512B82-FEEF-46C2-84EF-CCDDDC050215"
                         }
                     },
                     "mappings": {
@@ -238,7 +238,7 @@
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/AD582814-5BB2-428E-91E5-E42155926E51"
+                            "nameSpace": "http://openrosa.org/formdesigner/3AADC892-29BA-4E15-9FAE-F54ED28C10DB"
                         }
                     },
                     "mappings": {
@@ -299,7 +299,7 @@
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/4AFF7A16-9006-44EB-BC26-62BE63F32E8A"
+                            "nameSpace": "http://openrosa.org/formdesigner/AF3840E4-DAFA-4B35-96C5-653CE95D667E"
                         }
                     },
                     "mappings": {
