@@ -23,7 +23,8 @@ class MobileWorkers
         "bhe5" => MobileWorker.new("bhe5", "1def74f43eb5296a26341b6ac29a1fde", "examples/5 Latha Munjanhalli.xlsx"),
         "klp1" => MobileWorker.new("klp1", "1def74f43eb5296a26341b6ac29a1202", "examples/8 Dhakshakanye PGHundi.xlsx"),
         "klp2" => MobileWorker.new("klp2", "1def74f43eb5296a26341b6ac29a0646", "examples/7 N.R Kamalakshi Meghalapura.xlsx"),
-        "klp3" => MobileWorker.new("klp3", "1def74f43eb5296a26341b6ac299f79e", "examples/9 B.T Indira Vajamangala.xlsx")
+        "klp3" => MobileWorker.new("klp3", "1def74f43eb5296a26341b6ac299f79e", "examples/9 B.T Indira Vajamangala.xlsx"),
+        "demo" => MobileWorker.new("demo", "102319141fe0fabde16f4222b615b9bf", "examples/5 Latha Munjanhalli.xlsx")
     }
   end
 
