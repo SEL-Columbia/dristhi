@@ -57,7 +57,10 @@
                     "extraMappings": {
                         "details": {
                             "form|date_familyplanningstart": "familyPlanningMethodChangeDate",
-                            "form|familyplanning_method": "currentMethod"
+                            "form|familyplanning_method": "currentMethod",
+                            "form|fp_update": "fpUpdate",
+                            "form|num_ocpdelivered": "numberOfOCPDelivered",
+                            "form|num_condomsdelivered": "numberOfCondomsDelivered"
                         }
                     }
                 },
