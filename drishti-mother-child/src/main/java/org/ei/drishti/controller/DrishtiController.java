@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -23,14 +24,16 @@ public class DrishtiController {
     private final PNCService pncService;
     private DrishtiMCTSService mctsService;
     private ECService ecService;
+    private ChildMapper childMapper;
 
     @Autowired
-    public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, PNCService pncService, ECService ecService, DrishtiMCTSService drishtiMctsService) {
+    public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, PNCService pncService, ECService ecService, DrishtiMCTSService drishtiMctsService, ChildMapper childMapper) {
         router.registerForDispatch(this);
         this.ancService = ancService;
         this.pncService = pncService;
         this.ecService = ecService;
         this.mctsService = drishtiMctsService;
+        this.childMapper = childMapper;
     }
 
     public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, Map<String, Map<String, String>> extraData) {
@@ -52,7 +55,13 @@ public class DrishtiController {
 
         ancService.updatePregnancyOutcome(outcomeInformation, extraData);
         mctsService.updateANCOutcome(outcomeInformation);
-        pncService.registerChild(outcomeInformation, extraData);
+
+        List<ChildInformation> childInformationList = childMapper.mapDeliveryOutcomeInformationToChildren(outcomeInformation, extraData);
+
+        for (ChildInformation childInformation : childInformationList) {
+            pncService.registerChild(childInformation);
+        }
+
         mctsService.registerChild(outcomeInformation);
     }
 

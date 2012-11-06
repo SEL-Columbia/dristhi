@@ -1,7 +1,7 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
+import org.ei.drishti.contract.ChildInformation;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,9 @@ import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.util.DateUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.scheduler.DrishtiSchedules.*;
@@ -37,7 +39,7 @@ public class PNCSchedulesServiceTest {
 
     @Test
     public void shouldEnrollChildIntoAllChildSchedulesAndUpdateEnrollments() {
-        schedulesService.enrollChild(new AnteNatalCareOutcomeInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", "bcg", "live_birth", LocalDate.now().toString()));
+        schedulesService.enrollChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "bcg", new HashMap<String, Map<String, String>>()));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_BCG, today()));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_DPT, today()));

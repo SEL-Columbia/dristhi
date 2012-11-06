@@ -15,16 +15,18 @@ import org.mockito.Mock;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DrishtiControllerTest {
-    public static final Map<String,Map<String,String>> EXTRA_DATA = create("reporting", mapOf("Some", "Data")).put("details", mapOf("SomeOther", "PieceOfData")).map();
+    public static final Map<String, Map<String, String>> EXTRA_DATA = create("reporting", mapOf("Some", "Data")).put("details", mapOf("SomeOther", "PieceOfData")).map();
     @Mock
     private CommCareFormSubmissionRouter dispatcher;
     @Mock
@@ -35,13 +37,15 @@ public class DrishtiControllerTest {
     private DrishtiMCTSService mctsService;
     @Mock
     private PNCService pncService;
+    @Mock
+    private ChildMapper childMapper;
 
     private DrishtiController controller;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new DrishtiController(dispatcher, ancService, pncService, ecService, mctsService);
+        controller = new DrishtiController(dispatcher, ancService, pncService, ecService, mctsService, childMapper);
     }
 
     @Test
@@ -67,12 +71,35 @@ public class DrishtiControllerTest {
     @Test
     public void shouldDelegateToBothANCServiceAndMCTSDuringANCCareOutcome() throws Exception {
         AnteNatalCareOutcomeInformation outcomeInformation = mock(AnteNatalCareOutcomeInformation.class);
+        ChildInformation childInformation = mock(ChildInformation.class);
+        when(childMapper.mapDeliveryOutcomeInformationToChildren(outcomeInformation, EXTRA_DATA)).thenReturn(asList(childInformation));
 
         controller.updateOutcomeOfANC(outcomeInformation, EXTRA_DATA);
 
         verify(ancService).updatePregnancyOutcome(outcomeInformation, EXTRA_DATA);
         verify(mctsService).updateANCOutcome(outcomeInformation);
-        verify(pncService).registerChild(outcomeInformation, EXTRA_DATA);
+        verify(pncService).registerChild(childInformation);
+        verify(mctsService).registerChild(outcomeInformation);
+    }
+
+    @Test
+    public void shouldDelegateToChildMapperBeforeRegisteringChildDuringANCCareOutcome() throws Exception {
+        AnteNatalCareOutcomeInformation outcomeInformation = mock(AnteNatalCareOutcomeInformation.class);
+        ChildInformation firstChildInformation = mock(ChildInformation.class);
+        ChildInformation secondChildInformation = mock(ChildInformation.class);
+        when(childMapper.mapDeliveryOutcomeInformationToChildren(outcomeInformation, EXTRA_DATA)).thenReturn(asList(firstChildInformation, secondChildInformation));
+
+        controller.updateOutcomeOfANC(outcomeInformation, EXTRA_DATA);
+
+        verify(ancService).updatePregnancyOutcome(outcomeInformation, EXTRA_DATA);
+        verify(mctsService).updateANCOutcome(outcomeInformation);
+
+        verify(childMapper).mapDeliveryOutcomeInformationToChildren(outcomeInformation, EXTRA_DATA);
+
+
+        verify(pncService).registerChild(firstChildInformation);
+        verify(pncService).registerChild(secondChildInformation);
+
         verify(mctsService).registerChild(outcomeInformation);
     }
 

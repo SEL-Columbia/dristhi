@@ -6,6 +6,10 @@ import java.util.Map;
 public class EasyMap<KeyType, ValueType> {
     private Map<KeyType, ValueType> map;
 
+    public EasyMap() {
+        this.map = new HashMap<>();
+    }
+
     public static <Key, Value> Map<Key, Value> mapOf(Key key, Value value) {
         HashMap<Key, Value> normalMap = new HashMap<>();
         normalMap.put(key, value);
@@ -17,12 +21,13 @@ public class EasyMap<KeyType, ValueType> {
         return easyMap.put(key, value);
     }
 
-    public EasyMap() {
-        this.map = new HashMap<>();
-    }
-
     public EasyMap<KeyType, ValueType> put(KeyType key, ValueType value) {
         map.put(key, value);
+        return this;
+    }
+
+    public EasyMap<KeyType, ValueType> putAll(Map<KeyType, ValueType> map) {
+        this.map.putAll(map);
         return this;
     }
 

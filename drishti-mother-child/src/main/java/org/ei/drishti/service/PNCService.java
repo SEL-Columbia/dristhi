@@ -1,9 +1,6 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
-import org.ei.drishti.contract.ChildCloseRequest;
-import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.contract.PostNatalCareInformation;
+import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.BeneficiaryType;
@@ -46,26 +43,24 @@ public class PNCService {
         this.childReportingService = childReportingService;
     }
 
-    public void registerChild(AnteNatalCareOutcomeInformation request, Map<String, Map<String, String>> extraData) {
-        Mother mother = allMothers.findByCaseId(request.motherCaseId());
+    public void registerChild(ChildInformation information) {
+        Mother mother = allMothers.findByCaseId(information.motherCaseId());
 
         if (mother == null) {
-            logger.warn(format("Failed to register child as there is no mother registered with case ID: {0} for child case ID: {1} for ANM: {2}", request.motherCaseId(), request.caseId(), request.anmIdentifier()));
+            logger.warn(format("Failed to register child as there is no mother registered with case ID: {0} for child case ID: {1} for ANM: {2}", information.motherCaseId(), information.caseId(), information.anmIdentifier()));
             return;
         }
 
-        if ("live_birth".equals(request.pregnancyOutcome())) {
-            allChildren.register(new Child(request.caseId(), mother.ecCaseId(), request.motherCaseId(), mother.thaayiCardNo(), request.childName(),
-                    request.immunizationsProvided(), request.gender()).withAnm(request.anmIdentifier()).withDetails(extraData.get("details")));
+        allChildren.register(new Child(information.caseId(), mother.ecCaseId(), information.motherCaseId(), mother.thaayiCardNo(), information.name(),
+                information.immunizationsProvided(), information.gender()).withAnm(information.anmIdentifier()).withDetails(information.details()));
 
-            actionService.registerChildBirth(request.caseId(), request.anmIdentifier(), mother.caseId(), mother.thaayiCardNo(), request.dateOfBirth(), request.gender(), extraData.get("details"));
+        actionService.registerChildBirth(information.caseId(), information.anmIdentifier(), mother.caseId(), mother.thaayiCardNo(), information.dateOfBirth(), information.gender(), information.details());
 
-            alertForMissingImmunization(request, "opv_0", "OPV 0");
-            alertForMissingImmunization(request, "bcg", "BCG");
-            alertForMissingImmunization(request, "hepb_0", "HEP B0");
+        alertForMissingImmunization(information, "opv_0", "OPV 0");
+        alertForMissingImmunization(information, "bcg", "BCG");
+        alertForMissingImmunization(information, "hepb_0", "HEP B0");
 
-            pncSchedulesService.enrollChild(request);
-        }
+        pncSchedulesService.enrollChild(information);
     }
 
     public void pncVisitHappened(PostNatalCareInformation info, Map<String, Map<String, String>> extraData) {
@@ -107,7 +102,7 @@ public class PNCService {
 
     public void closeChildCase(ChildCloseRequest childCloseRequest) {
         actionService.deleteAllAlertsForChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
-        actionService.closeChild(childCloseRequest.caseId(),childCloseRequest.anmIdentifier());
+        actionService.closeChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
 
         pncSchedulesService.unenrollChild(childCloseRequest.caseId());
     }
@@ -118,7 +113,7 @@ public class PNCService {
         }
     }
 
-    private void alertForMissingImmunization(AnteNatalCareOutcomeInformation information, String checkForThisImmunization, String visitCodeIfNotProvided) {
+    private void alertForMissingImmunization(ChildInformation information, String checkForThisImmunization, String visitCodeIfNotProvided) {
         if (information.isImmunizationProvided(checkForThisImmunization)) {
             return;
         }
