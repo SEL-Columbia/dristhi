@@ -36,8 +36,8 @@ public class PostNatalCareInformation {
         return Integer.parseInt(visitNumber);
     }
 
-    public int numberOfIFATabletsProvided() {
-        return Integer.parseInt(numberOfIFATabletsGiven);
+    public String numberOfIFATabletsProvided() {
+        return numberOfIFATabletsGiven;
     }
 
     @Override
