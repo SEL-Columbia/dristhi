@@ -244,18 +244,16 @@
                             "form|pnc_mother_group|bp_diastolic": "bpDiastolic",
                             "form|pnc_child_group|child_temperature": "childTemperature",
                             "form|pnc_child_group|child_weight": "childWeight",
-                            "form|pnc_child_group|pnc_child_problems": "pncChildProblems",
                             "form|pnc_mother_group|bf_difficulties": "bfDifficulties",
                             "form|pnc_mother_group|exclusive_bf": "exclusiveBf",
                             "form|pnc_mother_group|hb": "motherHBLevel",
                             "form|pnc_mother_group|ifa_supplementation": "numberOfIFATabletsGiven",
                             "form|pnc_mother_group|mother_temperature": "motherTemperature",
-                            "form|pnc_mother_group|pnc_mother_problems": "pncMotherProblems",
                             "form|pnc_mother_group|pulse_rate": "pulseRate",
-                            "form|is_high_risk_child": "isHighRiskChild",
-                            "form|is_high_risk_mother": "isHighRisk",
-                            "form|high_risk_reason_child": "highRiskReasonChild",
-                            "form|high_risk_reason_mother": "highRiskReason"
+                            "form|case_is_high_risk_baby    ": "isHighRiskChild",
+                            "form|is_high_risk": "isHighRisk",
+                            "form|case_high_risk_reason_baby": "highRiskReasonChild",
+                            "form|high_risk_reason": "highRiskReason"
                         }
                     }
                 },
@@ -278,7 +276,7 @@
                             "form|type_deliveryfacility": "deliveryFacilityType",
                             "form|ec_phone_no": "contactNumber",
                             "form|birth_companion": "isThereABirthCompanion",
-                            "form|case_is_high_risk":"isHighRiskStatusReviewed"
+                            "form|case_is_high_risk": "isHighRiskStatusReviewed"
                         }
                     }
                 },
