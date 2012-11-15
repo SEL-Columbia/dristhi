@@ -1,7 +1,7 @@
 package org.ei.drishti.reporting.repository.it;
 
 import org.ei.drishti.reporting.domain.*;
-import org.ei.drishti.reporting.repository.TestDataAccessTemplate;
+import org.ei.drishti.reporting.repository.TestServiceProvidedDataAccessTemplate;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +10,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/applicationContext-drishti-reporting.xml")
-public class RepositoryIntegrationTestBase {
+public class ServicesProvidedRepositoryIntegrationTestBase {
     @Autowired
-    protected TestDataAccessTemplate template;
+    protected TestServiceProvidedDataAccessTemplate template;
 
     @Before
     public void setUp() throws Exception {

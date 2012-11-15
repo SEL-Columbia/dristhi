@@ -25,8 +25,10 @@
                     },
                     "extraMappings": {
                         "reporting": {
-                            "form|husband_name": "husbandName",
-                            "form|headofhousehold": "headOfHousehold"
+                            "form|meta|username": "anmIdentifier",
+                            "form|ec_number": "ecNumber",
+                            "form|familyplanning_method": "currentMethod",
+                            "form|date_familyplanningstart": "familyPlanningMethodChangeDate"
                         },
                         "details": {
                             "form|familyplanning_method": "currentMethod",

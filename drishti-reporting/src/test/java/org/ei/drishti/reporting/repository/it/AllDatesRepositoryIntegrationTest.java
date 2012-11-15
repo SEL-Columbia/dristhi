@@ -5,15 +5,16 @@ import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.Date;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class AllDatesRepositoryIntegrationTest extends RepositoryIntegrationTestBase{
+public class AllDatesRepositoryIntegrationTest extends ServicesProvidedRepositoryIntegrationTestBase {
     @Autowired
-    private DatesCacheableRepository repository;
+    private @Qualifier("serviceProvidedDatesRepository") DatesCacheableRepository repository;
 
     @Test
     public void shouldSaveAndFetchDate() throws Exception {

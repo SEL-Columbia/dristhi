@@ -11,7 +11,7 @@
     <context:property-placeholder location="classpath*:drishti-report.properties"/>
     <context:annotation-config/>
 
-    <import resource="classpath:spring/applicationContext-reporting-repository.xml" />
+    <import resource="classpath:spring/applicationContext-reporting-repository.xml"/>
     <util:properties id="drishti" location="classpath:/drishti.properties"/>
 
     <context:component-scan base-package="org.ei.drishti.reporting, org.ei.drishti.common"/>
@@ -20,4 +20,31 @@
     <mvc:annotation-driven/>
 
     <bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl"/>
+
+    <bean id="serviceProvidedANMRepository" class="org.ei.drishti.reporting.repository.AllANMsRepository">
+        <constructor-arg name="dataAccessTemplate" ref="serviceProvidedDataAccessTemplate"/>
+    </bean>
+    <bean id="serviceProvidedDatesRepository" class="org.ei.drishti.reporting.repository.AllDatesRepository">
+        <constructor-arg name="dataAccessTemplate" ref="serviceProvidedDataAccessTemplate"/>
+    </bean>
+    <bean id="serviceProvidedIndicatorRepository" class="org.ei.drishti.reporting.repository.AllIndicatorsRepository">
+        <constructor-arg name="dataAccessTemplate" ref="serviceProvidedDataAccessTemplate"/>
+    </bean>
+    <bean id="serviceProvidedDataAccessTemplate" class="org.ei.drishti.reporting.repository.DataAccessTemplate">
+        <constructor-arg name="sessionFactory" ref="serviceProvidedSessionFactory"/>
+    </bean>
+
+    <bean id="anmReportsANMRepository" class="org.ei.drishti.reporting.repository.AllANMsRepository">
+        <constructor-arg name="dataAccessTemplate" ref="anmReportsDataAccessTemplate"/>
+    </bean>
+    <bean id="anmReportsDatesRepository" class="org.ei.drishti.reporting.repository.AllDatesRepository">
+        <constructor-arg name="dataAccessTemplate" ref="anmReportsDataAccessTemplate"/>
+    </bean>
+    <bean id="anmReportsIndicatorRepository" class="org.ei.drishti.reporting.repository.AllIndicatorsRepository">
+        <constructor-arg name="dataAccessTemplate" ref="anmReportsDataAccessTemplate"/>
+    </bean>
+    <bean id="anmReportsDataAccessTemplate" class="org.ei.drishti.reporting.repository.DataAccessTemplate">
+        <constructor-arg name="sessionFactory" ref="anmReportsSessionFactory"/>
+    </bean>
+
 </beans>

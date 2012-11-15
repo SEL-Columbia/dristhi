@@ -3,6 +3,7 @@ package org.ei.drishti.reporting.repository;
 import org.ei.drishti.reporting.domain.Location;
 import org.ei.drishti.reporting.repository.cache.LocationCacheableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,7 @@ public class AllLocationsRepository implements LocationCacheableRepository {
     }
 
     @Autowired
-    public AllLocationsRepository(DataAccessTemplate dataAccessTemplate) {
+    public AllLocationsRepository(@Qualifier("serviceProvidedDataAccessTemplate") DataAccessTemplate dataAccessTemplate) {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 

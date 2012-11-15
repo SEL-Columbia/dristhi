@@ -6,7 +6,9 @@ import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.contract.UpdateDetailsRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
+import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.util.IdGenerator;
+import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -28,23 +30,27 @@ public class ECServiceTest {
     private ActionService actionService;
     @Mock
     private IdGenerator idGenerator;
+    @Mock
+    private ECReportingService reportingService;
 
     private ECService ecService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        ecService = new ECService(allEligibleCouples, actionService, idGenerator);
+        ecService = new ECService(allEligibleCouples, actionService, reportingService, idGenerator);
     }
 
     @Test
     public void shouldRegisterEligibleCouple() throws Exception {
-        Map<String, Map<String, String>> extraData = mapOf("details", Collections.<String, String>emptyMap());
+        Map<String, Map<String, String>> extraData = create("details", Collections.<String, String>emptyMap()).put("reporting", mapOf("someKey", "someValue")).map();
+
         ecService.registerEligibleCouple(new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X"), extraData);
 
-        EligibleCouple couple = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1")
+        EligibleCouple expectedCouple = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1")
                 .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(extraData.get("details"));
-        verify(allEligibleCouples).register(couple);
+        verify(allEligibleCouples).register(expectedCouple);
+        verify(reportingService).fpMethodChanged(new SafeMap(extraData.get("reporting")));
         verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", extraData.get("details"));
     }
 

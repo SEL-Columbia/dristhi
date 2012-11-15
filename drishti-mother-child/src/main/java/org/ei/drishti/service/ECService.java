@@ -6,7 +6,9 @@ import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.contract.UpdateDetailsRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
+import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.util.IdGenerator;
+import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,15 @@ import java.util.Map;
 public class ECService {
     private AllEligibleCouples allEligibleCouples;
     private ActionService actionService;
+    private ECReportingService reportingService;
     private IdGenerator idGenerator;
     private static Logger logger = LoggerFactory.getLogger(ActionService.class.toString());
 
     @Autowired
-    public ECService(AllEligibleCouples allEligibleCouples, ActionService actionService, IdGenerator idGenerator) {
+    public ECService(AllEligibleCouples allEligibleCouples, ActionService actionService, ECReportingService reportingService, IdGenerator idGenerator) {
         this.allEligibleCouples = allEligibleCouples;
         this.actionService = actionService;
+        this.reportingService = reportingService;
         this.idGenerator = idGenerator;
     }
 
@@ -35,6 +39,7 @@ public class ECService {
 
         allEligibleCouples.register(couple);
 
+        reportingService.fpMethodChanged(new SafeMap(extraData.get("reporting")));
         actionService.registerEligibleCouple(request.caseId(), request.ecNumber(), request.wife(), request.husband(),
                 request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), extraData.get("details"));
     }

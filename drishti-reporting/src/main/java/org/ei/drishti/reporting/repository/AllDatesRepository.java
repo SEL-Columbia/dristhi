@@ -2,7 +2,6 @@ package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.reporting.domain.Dates;
 import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +15,8 @@ public class AllDatesRepository implements DatesCacheableRepository {
     protected AllDatesRepository() {
     }
 
-    @Autowired
-    public AllDatesRepository(DataAccessTemplate template) {
-        this.template = template;
+    public AllDatesRepository(DataAccessTemplate dataAccessTemplate) {
+        this.template = dataAccessTemplate;
     }
 
     @Override

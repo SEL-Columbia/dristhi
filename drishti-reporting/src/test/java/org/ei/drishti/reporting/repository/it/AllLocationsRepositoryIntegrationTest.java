@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class AllLocationsRepositoryIntegrationTest extends RepositoryIntegrationTestBase {
+public class AllLocationsRepositoryIntegrationTest extends ServicesProvidedRepositoryIntegrationTestBase {
     @Autowired
     private LocationCacheableRepository repository;
 

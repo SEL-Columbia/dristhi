@@ -23,6 +23,11 @@ public class ReportingData implements Serializable {
                 .with("externalId", externalId).with("village", location.village()).with("subCenter", location.subCenter()).with("phc", location.phc()).with("date", date);
     }
 
+    public static ReportingData anmReportData(String anmIdentifier, String externalId, Indicator indicator, String date) {
+        return new ReportingData("anmReportData").with("anmIdentifier", anmIdentifier).with("indicator", indicator.value())
+                .with("externalId", externalId).with("date", date);
+    }
+
     private ReportingData() {
     }
 

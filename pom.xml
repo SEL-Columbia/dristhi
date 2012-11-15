@@ -241,9 +241,12 @@
                             <password>${postgres.other.password}</password>
                             <autocommit>true</autocommit>
                             <sqlCommand>
-                                DROP SCHEMA IF EXISTS ${reporting.schema} CASCADE;
-                                CREATE SCHEMA ${reporting.schema} AUTHORIZATION ${postgres.user};
-                                GRANT ALL ON SCHEMA ${reporting.schema} TO ${postgres.user};
+                                DROP SCHEMA IF EXISTS ${service.provided.reporting.schema} CASCADE;
+                                DROP SCHEMA IF EXISTS ${anm.reporting.schema} CASCADE;
+                                CREATE SCHEMA ${service.provided.reporting.schema} AUTHORIZATION ${postgres.user};
+                                CREATE SCHEMA ${anm.reporting.schema} AUTHORIZATION ${postgres.user};
+                                GRANT ALL ON SCHEMA ${service.provided.reporting.schema} TO ${postgres.user};
+                                GRANT ALL ON SCHEMA ${anm.reporting.schema} TO ${postgres.user};
                             </sqlCommand>
                             <onError>abort</onError>
                         </configuration>

@@ -9,6 +9,7 @@ import org.ei.drishti.reporting.domain.Location;
 import org.ei.drishti.reporting.repository.cache.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +18,7 @@ import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_IN
 
 @Component
 @Repository
-public class ReportsRepository {
+public class ServicesProvidedRepository {
     private AllServicesProvidedRepository servicesProvidedRepository;
     private Monitor monitor;
 
@@ -26,12 +27,15 @@ public class ReportsRepository {
     private CachingRepository<Indicator> cachedIndicators;
     private CachingRepository<Location> cachedLocations;
 
-    protected ReportsRepository() {
+    protected ServicesProvidedRepository() {
     }
 
     @Autowired
-    public ReportsRepository(ANMCacheableRepository anmRepository, DatesCacheableRepository datesRepository, IndicatorCacheableRepository indicatorRepository,
-                             LocationCacheableRepository locationRepository, AllServicesProvidedRepository servicesProvidedRepository, Monitor monitor) {
+    public ServicesProvidedRepository(@Qualifier("serviceProvidedANMRepository") ANMCacheableRepository anmRepository,
+                                      @Qualifier("serviceProvidedDatesRepository") DatesCacheableRepository datesRepository,
+                                      @Qualifier("serviceProvidedIndicatorRepository") IndicatorCacheableRepository indicatorRepository,
+                                      LocationCacheableRepository locationRepository,
+                                      AllServicesProvidedRepository servicesProvidedRepository, Monitor monitor) {
         this.servicesProvidedRepository = servicesProvidedRepository;
         this.monitor = monitor;
         cachedANMs = new CachingRepository<>(anmRepository);

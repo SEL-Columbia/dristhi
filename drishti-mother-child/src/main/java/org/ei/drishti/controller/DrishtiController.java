@@ -36,6 +36,12 @@ public class DrishtiController {
         this.childMapper = childMapper;
     }
 
+    public void registerEligibleCouple(EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest, Map<String, Map<String, String>> extraData) {
+        logger.info("Eligible couple registration: " + eligibleCoupleRegistrationRequest + ". Extra data: " + extraData);
+
+        ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest, extraData);
+    }
+
     public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, Map<String, Map<String, String>> extraData) {
         logger.info("Mother registration: " + enrollmentInformation + ". Extra data: " + extraData);
 
@@ -84,12 +90,6 @@ public class DrishtiController {
 
         pncService.closeChildCase(childCloseRequest);
         mctsService.closeChildCase(childCloseRequest);
-    }
-
-    public void registerEligibleCouple(EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest, Map<String, Map<String, String>> extraData) {
-        logger.info("Eligible couple registration: " + eligibleCoupleRegistrationRequest + ". Extra data: " + extraData);
-
-        ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest, extraData);
     }
 
     public void changeFamilyPlanningMethod(UpdateDetailsRequest updateDetailsRequest, Map<String, Map<String, String>> extraData) {

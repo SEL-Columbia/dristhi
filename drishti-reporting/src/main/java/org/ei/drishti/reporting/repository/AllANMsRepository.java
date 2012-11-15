@@ -2,7 +2,6 @@ package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.reporting.domain.ANM;
 import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +15,6 @@ public class AllANMsRepository implements ANMCacheableRepository {
     protected AllANMsRepository() {
     }
 
-    @Autowired
     public AllANMsRepository(DataAccessTemplate dataAccessTemplate) {
         this.dataAccessTemplate = dataAccessTemplate;
     }
@@ -32,4 +30,3 @@ public class AllANMsRepository implements ANMCacheableRepository {
                 new String[]{"anmIdentifier"}, new Object[]{objectWhichShouldBeFilledWithMoreInformation.anmIdentifier()});
     }
 }
-

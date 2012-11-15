@@ -16,7 +16,7 @@ import java.util.Date;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class ReportsRepositoryTest {
+public class ServicesProvidedRepositoryTest {
     @Mock
     private ANMCacheableRepository anmRepository;
 
@@ -34,12 +34,13 @@ public class ReportsRepositoryTest {
 
     @Mock
     private Monitor monitor;
-    private ReportsRepository repository;
+
+    private ServicesProvidedRepository repository;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        repository = new ReportsRepository(anmRepository, datesRepository, indicatorRepository, locationRepository, servicesProvidedRepository, monitor);
+        repository = new ServicesProvidedRepository(anmRepository, datesRepository, indicatorRepository, locationRepository, servicesProvidedRepository, monitor);
     }
 
     @Test
