@@ -4,7 +4,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                              http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <bean id="serviceProvidedSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" depends-on="flyway">
+    <bean id="serviceProvidedSessionFactory"
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+          depends-on="serviceProvidedFlywayMigrations">
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="org.ei.drishti.reporting.domain"/>
 
@@ -31,7 +33,9 @@
         <property name="acquireIncrement" value="${hibernate.c3p0.acquire_increment}"/>
     </bean>
 
-    <bean id="anmReportsSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" depends-on="flyway">
+    <bean id="anmReportsSessionFactory"
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+          depends-on="anmReportFlywayMigrations">
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="org.ei.drishti.reporting.domain"/>
 
@@ -49,12 +53,18 @@
         <property name="sessionFactory" ref="serviceProvidedSessionFactory"/>
     </bean>
 
-    <bean id="flyway" class="com.googlecode.flyway.core.Flyway" init-method="migrate">
+    <bean id="serviceProvidedFlywayMigrations" class="com.googlecode.flyway.core.Flyway" init-method="migrate">
         <property name="dataSource" ref="dataSource"/>
-        <property name="schemas" value="report, anm_report" />
-        <property name="baseDir" value="/migrations"/>
+        <property name="schemas" value="report"/>
+        <property name="baseDir" value="/migrations/serviceProvided"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <bean id="anmReportFlywayMigrations" class="com.googlecode.flyway.core.Flyway" init-method="migrate">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="schemas" value="anm_report"/>
+        <property name="baseDir" value="/migrations/anmReport"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
 </beans>
