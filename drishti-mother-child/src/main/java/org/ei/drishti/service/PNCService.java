@@ -29,15 +29,15 @@ public class PNCService {
     private static Logger logger = LoggerFactory.getLogger(PNCService.class.toString());
 
     private ActionService actionService;
-    private PNCSchedulesService pncSchedulesService;
+    private ChildSchedulesService childSchedulesService;
     private AllMothers allMothers;
     private AllChildren allChildren;
     private ChildReportingService childReportingService;
 
     @Autowired
-    public PNCService(ActionService actionService, PNCSchedulesService pncSchedulesService, AllMothers allMothers, AllChildren allChildren, ChildReportingService childReportingService) {
+    public PNCService(ActionService actionService, ChildSchedulesService childSchedulesService, AllMothers allMothers, AllChildren allChildren, ChildReportingService childReportingService) {
         this.actionService = actionService;
-        this.pncSchedulesService = pncSchedulesService;
+        this.childSchedulesService = childSchedulesService;
         this.allMothers = allMothers;
         this.allChildren = allChildren;
         this.childReportingService = childReportingService;
@@ -60,7 +60,7 @@ public class PNCService {
         alertForMissingImmunization(information, "bcg", "BCG");
         alertForMissingImmunization(information, "hepb_0", "HEP B0");
 
-        pncSchedulesService.enrollChild(information);
+        childSchedulesService.enrollChild(information);
     }
 
     public void pncVisitHappened(PostNatalCareInformation info, Map<String, Map<String, String>> extraData) {
@@ -97,14 +97,14 @@ public class PNCService {
         alertForImmunizationProvided(updationRequest, "bcg", "BCG");
         alertForImmunizationProvided(updationRequest, "hepb_0", "HEP B0");
 
-        pncSchedulesService.updateEnrollments(updationRequest);
+        childSchedulesService.updateEnrollments(updationRequest);
     }
 
     public void closeChildCase(ChildCloseRequest childCloseRequest) {
         actionService.deleteAllAlertsForChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
         actionService.closeChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
 
-        pncSchedulesService.unenrollChild(childCloseRequest.caseId());
+        childSchedulesService.unenrollChild(childCloseRequest.caseId());
     }
 
     private void alertForImmunizationProvided(ChildImmunizationUpdationRequest updationRequest, String checkForThisImmunization, String visitCodeIfNotProvided) {

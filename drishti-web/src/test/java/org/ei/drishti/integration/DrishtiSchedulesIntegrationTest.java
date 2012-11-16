@@ -40,6 +40,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     private static final int SEPTEMBER = 9;
     private static final int OCTOBER = 10;
     private static final int NOVEMBER = 11;
+    private static final int DECEMBER = 12;
 
     @Autowired
     private ScheduleTrackingService trackingService;
@@ -248,16 +249,29 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldProvideAlertForMeaslesVaccinationAndVitaminSupplements() throws Exception {
-        schedule.enrollFor("Measles Vaccination and Vitamin Supplements", newDate(2012, 1, 1), new Time(14, 0));
+    public void shouldProvideAlertForMeaslesVaccination() throws Exception {
+        schedule.enrollFor("Measles Vaccination", newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("REMINDER", earliest);
-        schedule.assertAlerts("REMINDER", due, date(9, SEPTEMBER));
-        schedule.assertNoAlerts("REMINDER", late);
+        schedule.assertAlertsStartWith("REMINDER", due, date(1, OCTOBER), date(8, OCTOBER), date(15, OCTOBER), date(22, OCTOBER));
+        schedule.assertAlertsStartWith("REMINDER", late, dateWithYear(1, JANUARY, 2013), dateWithYear(8, JANUARY, 2013));
         schedule.assertNoAlerts("REMINDER", max);
 
-        visualization.outputTo("child-measles-and-vitamins.html", 2);
+        visualization.outputTo("child-measles.html", 4);
     }
+
+    @Test
+    public void shouldProvideAlertForMeaslesBoosterVaccination() throws Exception {
+        schedule.enrollFor("Measles Booster", newDate(2012, 1, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("REMINDER", earliest);
+        schedule.assertAlertsStartWith("REMINDER", due, date(1, AUGUST), date(8, AUGUST), date(15, AUGUST), date(22, AUGUST));
+        schedule.assertAlertsStartWith("REMINDER", late, dateWithYear(1, FEBRUARY, 2013), dateWithYear(8, FEBRUARY, 2013));
+        schedule.assertNoAlerts("REMINDER", max);
+
+        visualization.outputTo("child-measles-booster.html", 4);
+    }
+
 
     @Test
     public void shouldProvideAlertForBoosterDoses() throws Exception {
@@ -268,7 +282,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts("REMINDER", late);
         schedule.assertNoAlerts("REMINDER", max);
 
-        visualization.outputTo("child-boosters.html", 4);
+        visualization.outputTo("child-measles-boosters.html", 4);
     }
 
     @Before

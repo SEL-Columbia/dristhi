@@ -14,43 +14,38 @@ import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.util.DateUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.Arrays.asList;
+import static org.apache.commons.lang.StringUtils.join;
 import static org.ei.drishti.scheduler.DrishtiSchedules.*;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.motechproject.util.DateUtil.today;
 
-public class PNCSchedulesServiceTest {
+public class ChildSchedulesServiceTest {
     @Mock
     private ScheduleTrackingService scheduleTrackingService;
 
-    private PNCSchedulesService schedulesService;
+    private ChildSchedulesService childSchedulesService;
+
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        schedulesService = new PNCSchedulesService(scheduleTrackingService);
+        childSchedulesService = new ChildSchedulesService(scheduleTrackingService);
     }
 
     @Test
     public void shouldEnrollChildIntoAllChildSchedulesAndUpdateEnrollments() {
-        schedulesService.enrollChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "bcg", new HashMap<String, Map<String, String>>()));
-
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_BCG, today()));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_DPT, today()));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_HEPATITIS, today()));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_MEASLES, today()));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", CHILD_SCHEDULE_OPV, today()));
 
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, "REMINDER")
-                .whenProvidedWithImmunizations("bcg")
-                .shouldFulfill(CHILD_SCHEDULE_BCG, 1).shouldNotFulfillAnythingElse();
+                .whenEnrolledWithImmunizationsProvided("bcg", "opv_0", "opv_1", "dpt_2", "opv_2")
+                .shouldEnroll(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV)
+                .shouldFulfill(CHILD_SCHEDULE_BCG, 1)
+                .shouldFulfill(CHILD_SCHEDULE_OPV, 3)
+                .shouldFulfill(CHILD_SCHEDULE_DPT, 1)
+                .shouldNotFulfillAnythingElse();
     }
 
     @Test
@@ -164,15 +159,17 @@ public class PNCSchedulesServiceTest {
 
     private class TestForChildEnrollment {
         private final String caseId = "Case X";
+        private final String name = "Asha";
+        private final String dateOfBirth = "2012-01-01";
 
         private final ScheduleTrackingService scheduleTrackingService;
 
-        private final PNCSchedulesService service;
+        private final ChildSchedulesService childSchedulesService;
         private List<EnrollmentRecord> allEnrollments;
 
         public TestForChildEnrollment() {
             scheduleTrackingService = mock(ScheduleTrackingService.class);
-            service = new PNCSchedulesService(scheduleTrackingService);
+            childSchedulesService = new ChildSchedulesService(scheduleTrackingService);
             allEnrollments = new ArrayList<>();
         }
 
@@ -184,8 +181,7 @@ public class PNCSchedulesServiceTest {
 
             if (records.size() > 1) {
                 when(scheduleTrackingService.getEnrollment(caseId, schedule)).thenReturn(records.get(0), records.subList(1, records.size()).toArray(new EnrollmentRecord[0]));
-            }
-            else {
+            } else {
                 when(scheduleTrackingService.getEnrollment(caseId, schedule)).thenReturn(records.get(0));
             }
 
@@ -193,16 +189,40 @@ public class PNCSchedulesServiceTest {
             return this;
         }
 
-        public TestForChildEnrollment whenProvidedWithImmunizations(String providedImmunizations) {
-            service.updateEnrollments(new ChildImmunizationUpdationRequest(caseId, "ANM X", providedImmunizations, "2012-01-01"));
+        public TestForChildEnrollment whenUnenrolled() {
+            when(scheduleTrackingService.search(any(EnrollmentsQuery.class))).thenReturn(allEnrollments);
+
+            childSchedulesService.unenrollChild("Case X");
 
             return this;
         }
 
-        public TestForChildEnrollment whenUnenrolled() {
-            when(scheduleTrackingService.search(any(EnrollmentsQuery.class))).thenReturn(allEnrollments);
+        public TestForChildEnrollment whenProvidedWithImmunizations(String providedImmunizations) {
+            childSchedulesService.updateEnrollments(new ChildImmunizationUpdationRequest(caseId, "ANM X", providedImmunizations, "2012-01-01"));
 
-            service.unenrollChild("Case X");
+            return this;
+        }
+
+        public TestForChildEnrollment whenEnrolledWithImmunizationsProvided(String... immunizationsProvided) {
+            setExpectationsOnScheduleTrackingService();
+
+            childSchedulesService.enrollChild(new ChildInformation(caseId, null, null, name, null, dateOfBirth, join(asList(immunizationsProvided), " "), null));
+
+            return this;
+        }
+
+        private void setExpectationsOnScheduleTrackingService() {
+            this.givenEnrollmentIn(CHILD_SCHEDULE_BCG, "REMINDER")
+                    .givenEnrollmentIn(CHILD_SCHEDULE_DPT, "DPT 0", "DPT 1", "DPT 2", "DPT 3")
+                    .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B1", "Hepatitis B2", "Hepatitis B3", "Hepatitis B4")
+                    .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, "REMINDER")
+                    .givenEnrollmentIn(CHILD_SCHEDULE_OPV, "OPV 0", "OPV 1", "OPV 2", "OPV 3");
+        }
+
+        public TestForChildEnrollment shouldEnroll(String... expectedEnrolledSchedules) {
+            for (String expectedEnrolledSchedule : expectedEnrolledSchedules) {
+                verify(scheduleTrackingService).enroll(enrollmentFor("Case X", expectedEnrolledSchedule, LocalDate.parse(dateOfBirth)));
+            }
 
             return this;
         }
