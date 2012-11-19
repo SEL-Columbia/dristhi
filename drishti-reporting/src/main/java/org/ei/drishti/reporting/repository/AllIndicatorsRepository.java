@@ -5,6 +5,8 @@ import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.ei.drishti.reporting.domain.Indicator.FIND_BY_INDICATOR;
 
 @Repository
@@ -27,5 +29,10 @@ public class AllIndicatorsRepository implements IndicatorCacheableRepository {
     @Override
     public Indicator fetch(Indicator objectWhichShouldBeFilledWithMoreInformation) {
         return (Indicator) dataAccessTemplate.getUniqueResult(FIND_BY_INDICATOR, new String[] {"indicator"}, new Object[] {objectWhichShouldBeFilledWithMoreInformation.indicator()});
+    }
+
+    @Override
+    public List<Indicator> fetchAll() {
+        return dataAccessTemplate.loadAll(Indicator.class);
     }
 }

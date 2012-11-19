@@ -1,5 +1,6 @@
 package org.ei.drishti.reporting.controller;
 
+import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.domain.ANMIndicatorSummary;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
@@ -41,5 +42,11 @@ public class ReportDataController {
     @ResponseBody
     public List<ANMIndicatorSummary> getANMIndicatorSummaries(@RequestParam("anmIdentifier") String anmIdentifier) {
         return anmReportsRepository.fetchANMSummary(anmIdentifier);
+    }
+
+    @RequestMapping(value = "/report/fetchForAllANMs", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ANMReport> getAllANMsIndicatorSummaries() {
+        return anmReportsRepository.fetchAllANMsReport();
     }
 }

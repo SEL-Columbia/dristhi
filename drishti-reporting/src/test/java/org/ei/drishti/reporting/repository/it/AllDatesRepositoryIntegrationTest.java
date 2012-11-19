@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.Date;
+import java.util.List;
 
+import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
@@ -25,5 +27,19 @@ public class AllDatesRepositoryIntegrationTest extends ServicesProvidedRepositor
         Dates fetchedDate = repository.fetch(dates);
         assertEquals(date, fetchedDate.date());
         assertTrue("ID should be non-zero.", fetchedDate.id() != 0);
+    }
+
+    @Test
+    public void shouldFetchAllDates() throws Exception {
+        Date date1 = LocalDate.parse("2012-01-02").toDate();
+        Date date2 = LocalDate.parse("2012-01-01").toDate();
+        Dates firstDates = new Dates(date1);
+        Dates secondDates = new Dates(date2);
+        repository.save(firstDates);
+        repository.save(secondDates);
+
+        List<Dates> datesList = repository.fetchAll();
+
+        assertTrue(datesList.containsAll(asList(firstDates, secondDates)));
     }
 }

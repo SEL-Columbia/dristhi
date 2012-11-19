@@ -1,6 +1,7 @@
 package org.ei.drishti.reporting.repository.cache;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -39,5 +40,9 @@ public class CachingRepository<T> {
         } finally {
             lock.unlock();
         }
+    }
+
+    public List<T> fetchAll() {
+        return cacheableRepository.fetchAll();
     }
 }

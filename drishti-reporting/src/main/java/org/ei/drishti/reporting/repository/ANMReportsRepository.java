@@ -1,5 +1,6 @@
 package org.ei.drishti.reporting.repository;
 
+import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.domain.ANMIndicatorSummary;
 import org.ei.drishti.common.domain.MonthSummary;
 import org.ei.drishti.common.monitor.Monitor;
@@ -90,9 +91,18 @@ public class ANMReportsRepository {
             }
             AnnualTarget annualTarget = annualTargetsRepository.fetchFor(anmIdentifier, indicator);
             String target = annualTarget == null ? null : annualTarget.target();
-            anmIndicatorSummaries.add(new ANMIndicatorSummary(anmIdentifier, indicator.indicator(), target, monthSummaries));
+            anmIndicatorSummaries.add(new ANMIndicatorSummary(indicator.indicator(), target, monthSummaries));
         }
         return anmIndicatorSummaries;
+    }
+
+    public List<ANMReport> fetchAllANMsReport() {
+        List<ANM> allANMs = cachedANMs.fetchAll();
+        ArrayList<ANMReport> anmReports = new ArrayList<>();
+        for (ANM anm : allANMs) {
+            anmReports.add(new ANMReport(anm.anmIdentifier(), fetchANMSummary(anm.anmIdentifier())));
+        }
+        return anmReports;
     }
 
     private List<String> getAllExternalIds(List<ANMReportData> reportDataList) {

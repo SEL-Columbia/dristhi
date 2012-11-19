@@ -3,22 +3,16 @@ package org.ei.drishti.common.domain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
 
-public class ANMIndicatorSummary {
-    @JsonProperty
-    private final String indicator;
-    @JsonProperty
-    private final String annualTarget;
-    @JsonProperty
-    private final List<MonthSummary> monthlySummaries;
+public class ANMReport {
+    private List<ANMIndicatorSummary> summaries;
+    private String anmIdentifier;
 
-    public ANMIndicatorSummary(String indicator, String annualTarget, List<MonthSummary> monthlySummaries) {
-        this.indicator = indicator;
-        this.annualTarget = annualTarget;
-        this.monthlySummaries = monthlySummaries;
+    public ANMReport(String anmIdentifier, List<ANMIndicatorSummary> summaries) {
+        this.anmIdentifier = anmIdentifier;
+        this.summaries = summaries;
     }
 
     @Override

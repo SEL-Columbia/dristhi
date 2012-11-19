@@ -5,6 +5,8 @@ import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.ei.drishti.reporting.domain.ANM.FIND_BY_ANM_ID;
 
 @Repository
@@ -28,5 +30,10 @@ public class AllANMsRepository implements ANMCacheableRepository {
     public ANM fetch(ANM objectWhichShouldBeFilledWithMoreInformation) {
         return (ANM) dataAccessTemplate.getUniqueResult(FIND_BY_ANM_ID,
                 new String[]{"anmIdentifier"}, new Object[]{objectWhichShouldBeFilledWithMoreInformation.anmIdentifier()});
+    }
+
+    @Override
+    public List<ANM> fetchAll() {
+        return dataAccessTemplate.loadAll(ANM.class);
     }
 }
