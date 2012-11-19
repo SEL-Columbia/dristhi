@@ -37,13 +37,22 @@ public class ChildSchedulesServiceTest {
     }
 
     @Test
-    public void shouldEnrollChildIntoAllChildSchedulesAndUpdateEnrollments() {
+    public void shouldEnrollChildIntoAllNonDependentSchedulesAndShouldUpdateEnrollments() {
 
         new TestForChildEnrollment()
-                .whenEnrolledWithImmunizationsProvided("bcg", "opv_0", "opv_1", "dpt_2", "opv_2")
+                .whenEnrolledWithImmunizationsProvided("bcg", "opv_0", "dpt_2", "opv_2")
+                .shouldEnroll(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV)
+                .shouldNotEnroll(CHILD_SCHEDULE_MEASLES_BOOSTER)
+                .shouldFulfill(CHILD_SCHEDULE_BCG, 1)
+                .shouldFulfill(CHILD_SCHEDULE_OPV, 2)
+                .shouldFulfill(CHILD_SCHEDULE_DPT, 1)
+                .shouldNotFulfillAnythingElse();
+
+        new TestForChildEnrollment()
+                .whenEnrolledWithImmunizationsProvided("bcg", "opv_0", "dpt_2", "opv_2")
                 .shouldEnroll(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV)
                 .shouldFulfill(CHILD_SCHEDULE_BCG, 1)
-                .shouldFulfill(CHILD_SCHEDULE_OPV, 3)
+                .shouldFulfill(CHILD_SCHEDULE_OPV, 2)
                 .shouldFulfill(CHILD_SCHEDULE_DPT, 1)
                 .shouldNotFulfillAnythingElse();
     }
@@ -224,6 +233,13 @@ public class ChildSchedulesServiceTest {
                 verify(scheduleTrackingService).enroll(enrollmentFor("Case X", expectedEnrolledSchedule, LocalDate.parse(dateOfBirth)));
             }
 
+            return this;
+        }
+
+        public TestForChildEnrollment shouldNotEnroll(String... schedules){
+            for (String schedule : schedules) {
+                verify(scheduleTrackingService, times(0)).enroll(enrollmentFor("Case X", schedule, LocalDate.parse(dateOfBirth)));
+            }
             return this;
         }
 
