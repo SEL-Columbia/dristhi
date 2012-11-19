@@ -1,5 +1,6 @@
 package org.ei.drishti.reporting.controller;
 
+import org.ei.drishti.common.domain.ANMIndicatorSummary;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
@@ -7,10 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class ReportDataController {
@@ -35,5 +35,11 @@ public class ReportDataController {
             anmReportsRepository.save(reportingData.get("anmIdentifier"), reportingData.get("externalId"), reportingData.get("indicator"), reportingData.get("date"));
         }
         return "Success.";
+    }
+
+    @RequestMapping(value = "/report/fetch", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ANMIndicatorSummary> getANMIndicatorSummaries(@RequestParam("anmIdentifier") String anmIdentifier) {
+        return anmReportsRepository.fetchANMSummary(anmIdentifier);
     }
 }

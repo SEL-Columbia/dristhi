@@ -2,7 +2,7 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.dto.BeneficiaryType;
-import org.ei.drishti.scheduler.util.DateUtil;
+import org.ei.drishti.common.util.DateUtil;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Weeks;

@@ -1,9 +1,6 @@
 package org.ei.drishti.reporting.repository.it;
 
-import org.ei.drishti.reporting.domain.ANM;
-import org.ei.drishti.reporting.domain.ANMReportData;
-import org.ei.drishti.reporting.domain.Dates;
-import org.ei.drishti.reporting.domain.Indicator;
+import org.ei.drishti.reporting.domain.*;
 import org.ei.drishti.reporting.repository.TestANMReportDataAccessTemplate;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -20,6 +17,7 @@ public class ANMReportsRepositoryIntegrationTestBase {
     @Before
     public void setUp() throws Exception {
         template.deleteAll(template.loadAll(ANMReportData.class));
+        template.deleteAll(template.loadAll(AnnualTarget.class));
         template.deleteAll(template.loadAll(ANM.class));
         template.deleteAll(template.loadAll(Dates.class));
         template.deleteAll(template.loadAll(Indicator.class));
