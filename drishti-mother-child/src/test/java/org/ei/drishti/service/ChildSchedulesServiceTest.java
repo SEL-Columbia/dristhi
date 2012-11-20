@@ -29,6 +29,8 @@ public class ChildSchedulesServiceTest {
 
     private ChildSchedulesService childSchedulesService;
 
+    private final String immunizationsDate = "2012-05-04";
+
 
     @Before
     public void setUp() throws Exception {
@@ -37,7 +39,7 @@ public class ChildSchedulesServiceTest {
     }
 
     @Test
-    public void shouldEnrollChildIntoAllNonDependentSchedulesAndShouldUpdateEnrollments() {
+    public void shouldEnrollChildIntoSchedulesAndShouldUpdateEnrollments() {
 
         new TestForChildEnrollment()
                 .whenEnrolledWithImmunizationsProvided("bcg", "opv_0", "dpt_2", "opv_2")
@@ -47,22 +49,48 @@ public class ChildSchedulesServiceTest {
                 .shouldFulfill(CHILD_SCHEDULE_OPV, 2)
                 .shouldFulfill(CHILD_SCHEDULE_DPT, 1)
                 .shouldNotFulfillAnythingElse();
+    }
+
+    @Test
+    public void shouldEnrollChildIntoDependentModulesIfRequiredAndShouldUpdateEnrollments(){
 
         new TestForChildEnrollment()
-                .whenEnrolledWithImmunizationsProvided("bcg", "opv_0", "dpt_2", "opv_2")
+                .whenEnrolledWithImmunizationsProvided("bcg", "opv_0", "dpt_2", "opv_2", "measles")
                 .shouldEnroll(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV)
+                .shouldEnroll(LocalDate.now(), CHILD_SCHEDULE_MEASLES_BOOSTER)
                 .shouldFulfill(CHILD_SCHEDULE_BCG, 1)
                 .shouldFulfill(CHILD_SCHEDULE_OPV, 2)
                 .shouldFulfill(CHILD_SCHEDULE_DPT, 1)
+                .shouldFulfill(CHILD_SCHEDULE_MEASLES, 1)
                 .shouldNotFulfillAnythingElse();
     }
 
     @Test
-    public void shouldNotUpdateEnrollmentForAnyScheduleWhenNotEnrolledInSchedule() {
-        String manyImmunizations = "bcg opv0 hepB0 opv1 dpt1 hepb1 opv2 dpt2 hepb2 dpt3 hepb3 measles MeaslesBooster dptbooster1 dptbooster2 opvbooster";
+    public void shouldNotUpdateEnrollmentForAScheduleWhenNotEnrolledInSchedule() {
+        String manyImmunizations = "bcg opv0 hepB0 opv1 dpt1 hepb1 opv2 dpt2 hepb2 dpt3 hepb3 dptbooster1 dptbooster2 opvbooster";
 
         new TestForChildEnrollment()
                 .whenProvidedWithImmunizations(manyImmunizations)
+                .shouldNotFulfillAnythingElse();
+    }
+
+    @Test
+    public void shouldEnrollInDependentSchedulesAndUpdateThemEvenIfDependyIsNotPresentButImmunizationIsGiven() {
+        String manyImmunizations = "bcg opv0 measles measlesbooster dptbooster2 opvbooster";
+
+        new TestForChildEnrollment()
+                .givenEnrollmentWillHappenIn(CHILD_SCHEDULE_MEASLES_BOOSTER, "REMINDER")
+                .whenProvidedWithImmunizations(manyImmunizations)
+                .shouldEnroll(LocalDate.parse(immunizationsDate),CHILD_SCHEDULE_MEASLES_BOOSTER)
+                .shouldFulfill(CHILD_SCHEDULE_MEASLES_BOOSTER,1)
+                .shouldNotFulfillAnythingElse();
+    }
+
+    @Test
+    public void shouldNotEnrollDependentScheduleIfAlreadyEnrolled(){
+        new TestForChildEnrollment()
+                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES_BOOSTER, "REMINDER")
+                .whenProvidedWithImmunizations("measles")
                 .shouldNotFulfillAnythingElse();
     }
 
@@ -71,7 +99,8 @@ public class ChildSchedulesServiceTest {
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_BCG, "REMINDER")
                 .whenProvidedWithImmunizations("bcg")
-                .shouldFulfill(CHILD_SCHEDULE_BCG, 1).shouldNotFulfillAnythingElse();
+                .shouldFulfill(CHILD_SCHEDULE_BCG, 1)
+                .shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_BCG, "REMINDER")
@@ -110,7 +139,9 @@ public class ChildSchedulesServiceTest {
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, "REMINDER")
                 .whenProvidedWithImmunizations("measles")
-                .shouldFulfill(CHILD_SCHEDULE_MEASLES, 1).shouldNotFulfillAnythingElse();
+                .shouldFulfill(CHILD_SCHEDULE_MEASLES, 1)
+                .shouldEnroll(LocalDate.parse(immunizationsDate), CHILD_SCHEDULE_MEASLES_BOOSTER)
+                .shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, "REMINDER")
@@ -138,7 +169,7 @@ public class ChildSchedulesServiceTest {
                 .givenEnrollmentIn(CHILD_SCHEDULE_BCG, "REMINDER")
                 .givenEnrollmentIn(CHILD_SCHEDULE_OPV, "OPV 1")
                 .givenEnrollmentIn(CHILD_SCHEDULE_DPT, "DPT 3")
-                .whenProvidedWithImmunizations("dpt_1 dpt_3 hepB0 hepb_3 measles opv_1")
+                .whenProvidedWithImmunizations("dpt_1 dpt_3 hepB0 hepb_3 measlesbooster opv_1")
                 .shouldFulfill(CHILD_SCHEDULE_OPV, 1)
                 .shouldFulfill(CHILD_SCHEDULE_DPT, 1)
                 .shouldNotFulfillAnythingElse();
@@ -193,8 +224,19 @@ public class ChildSchedulesServiceTest {
             } else {
                 when(scheduleTrackingService.getEnrollment(caseId, schedule)).thenReturn(records.get(0));
             }
-
             allEnrollments.addAll(records);
+            return this;
+        }
+
+        public TestForChildEnrollment givenEnrollmentWillHappenIn(String schedule, String... milestoneNames){
+            ArrayList<EnrollmentRecord> records = new ArrayList<>();
+            for (String milestoneName : milestoneNames) {
+                records.add(new EnrollmentRecord(caseId, schedule, milestoneName, null, null, null, null, null, null, null));
+            }
+
+            when(scheduleTrackingService.getEnrollment(caseId,schedule)).thenReturn(null, records.toArray(new EnrollmentRecord[0]));
+            allEnrollments.addAll(records);
+
             return this;
         }
 
@@ -207,7 +249,7 @@ public class ChildSchedulesServiceTest {
         }
 
         public TestForChildEnrollment whenProvidedWithImmunizations(String providedImmunizations) {
-            childSchedulesService.updateEnrollments(new ChildImmunizationUpdationRequest(caseId, "ANM X", providedImmunizations, "2012-01-01"));
+            childSchedulesService.updateEnrollments(new ChildImmunizationUpdationRequest(caseId, "ANM X", providedImmunizations, immunizationsDate));
 
             return this;
         }
@@ -231,6 +273,14 @@ public class ChildSchedulesServiceTest {
         public TestForChildEnrollment shouldEnroll(String... expectedEnrolledSchedules) {
             for (String expectedEnrolledSchedule : expectedEnrolledSchedules) {
                 verify(scheduleTrackingService).enroll(enrollmentFor("Case X", expectedEnrolledSchedule, LocalDate.parse(dateOfBirth)));
+            }
+
+            return this;
+        }
+
+        public TestForChildEnrollment shouldEnroll(LocalDate referenceDate,String... expectedEnrolledSchedules) {
+            for (String expectedEnrolledSchedule : expectedEnrolledSchedules) {
+                verify(scheduleTrackingService).enroll(enrollmentFor("Case X", expectedEnrolledSchedule, referenceDate));
             }
 
             return this;

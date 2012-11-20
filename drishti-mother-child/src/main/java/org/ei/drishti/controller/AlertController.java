@@ -24,7 +24,7 @@ public class AlertController {
     }
 
     private Matcher childSchedules() {
-        return anyOf(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV);
+        return anyOf(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV, CHILD_SCHEDULE_MEASLES_BOOSTER);
     }
 
     private Matcher motherSchedules() {

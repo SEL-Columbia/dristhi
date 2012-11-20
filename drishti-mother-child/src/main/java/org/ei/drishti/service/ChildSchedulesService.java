@@ -38,8 +38,8 @@ public class ChildSchedulesService {
     }
 
     public void updateEnrollments(ChildImmunizationUpdationRequest information){
+        enrollDependentModulesIfRequired(information);
         updateMilestonesForEnrolledSchedules(information);
-        //enrollDependentModulesIfRequired(information);
     }
 
     public void unenrollChild(String caseId) {
@@ -57,17 +57,17 @@ public class ChildSchedulesService {
         }
     }
 
-//    private void enrollDependentModulesIfRequired(ChildImmunizationUpdationRequest information) {
-//        for (Schedule schedule : childSchedules.values()) {
-//            if(schedule.hasDependency()){
-//                Schedule dependsOn = schedule.getDependencySchedule();
-//                if(information.immunizationsProvidedList().contains(dependsOn.getLastMilestone())
-//                        && isNotEnrolled(information.caseId(), schedule.getName())){
-//                            scheduleTrackingService.enroll(new EnrollmentRequest(information.caseId(), schedule.getName(), null, information.immunizationsProvidedDate(), null, null, null, null, null));
-//                }
-//            }
-//        }
-//    }
+    private void enrollDependentModulesIfRequired(ChildImmunizationUpdationRequest information) {
+        for (Schedule schedule : childSchedules.values()) {
+            if(schedule.hasDependency()){
+                Schedule dependsOn = schedule.getDependencySchedule();
+                if(information.immunizationsProvidedList().contains(dependsOn.getLastMilestone())
+                        && isNotEnrolled(information.caseId(), schedule.getName())){
+                            scheduleTrackingService.enroll(new EnrollmentRequest(information.caseId(), schedule.getName(), null, information.immunizationsProvidedDate(), null, null, null, null, null));
+                }
+            }
+        }
+    }
 
     private void updateMilestonesForEnrolledSchedules(ChildImmunizationUpdationRequest information) {
         for (Schedule schedule : childSchedules.values()) {
