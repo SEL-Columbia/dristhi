@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(4).draw();
+schedule.addAlerts("REMINDER", "REMINDER - due", [new Date("Jul 01, 2012"), ]);
+schedule.addAlertsStartingWith("REMINDER", "REMINDER - late (Will continue till service is delivered)", [new Date("Jul 08, 2012"), new Date("Jul 15, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>DPT 1</center></body></html>
