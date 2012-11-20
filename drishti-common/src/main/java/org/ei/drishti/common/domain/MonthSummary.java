@@ -1,6 +1,5 @@
 package org.ei.drishti.common.domain;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -27,9 +26,42 @@ public class MonthSummary {
         this.externalIDs = externalIDs;
     }
 
+    public String month() {
+        return month;
+    }
+
+    public String year() {
+        return year;
+    }
+
+    public String currentProgress() {
+        return currentProgress;
+    }
+
+    public String aggregatedProgress() {
+        return aggregatedProgress;
+    }
+
+    public List<String> externalIDs() {
+        return externalIDs;
+    }
+
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o);
+        if (this == o) return true;
+        if (!(o instanceof MonthSummary)) return false;
+
+        MonthSummary that = (MonthSummary) o;
+
+        if (aggregatedProgress != null ? !aggregatedProgress.equals(that.aggregatedProgress) : that.aggregatedProgress != null)
+            return false;
+        if (currentProgress != null ? !currentProgress.equals(that.currentProgress) : that.currentProgress != null)
+            return false;
+        if (externalIDs != null ? !externalIDs.containsAll(that.externalIDs) : that.externalIDs != null) return false;
+        if (month != null ? !month.equals(that.month) : that.month != null) return false;
+        if (year != null ? !year.equals(that.year) : that.year != null) return false;
+
+        return true;
     }
 
     @Override

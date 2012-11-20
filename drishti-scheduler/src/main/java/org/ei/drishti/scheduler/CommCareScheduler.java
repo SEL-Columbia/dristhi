@@ -41,7 +41,7 @@ public class CommCareScheduler {
     }
 
     public void startTimedScheduler() {
-        logger.info("Scheduling timer ...");
+        logger.info("Scheduling CommCare fetch ...");
 
         Date startTime = DateTime.now().plusSeconds(60).toDate();
         MotechEvent event = new MotechEvent(SUBJECT, new HashMap<String, Object>());

@@ -125,4 +125,8 @@ public class ActionService {
     public void closeChild(String caseId, String anmIdentifier) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.deleteChild()));
     }
+
+    public void reportForIndicator(String anmIdentifier, ActionData actionData) {
+        allActions.add(new Action("", anmIdentifier, actionData));
+    }
 }

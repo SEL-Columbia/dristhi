@@ -137,6 +137,12 @@ public class ActionData {
         return new ActionData("child", "deleteChild");
     }
 
+    public static ActionData reportForIndicator(String indicator, String annualTarget, String monthSummaries) {
+        return new ActionData("report", indicator)
+                .with("annualTarget", annualTarget)
+                .with("monthlySummaries", monthSummaries);
+    }
+
     public static ActionData from(String actionType, String actionTarget, Map<String, String> data, Map<String, String> details) {
         ActionData actionData = new ActionData(actionTarget, actionType);
         actionData.data.putAll(data);

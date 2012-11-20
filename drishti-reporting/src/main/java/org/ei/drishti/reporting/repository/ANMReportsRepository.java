@@ -106,7 +106,8 @@ public class ANMReportsRepository {
     }
 
     private List<String> getAllExternalIds(List<ANMReportData> reportDataList) {
-        return extract(reportDataList, on(ANMReportData.class).externalId());
+        Collection<String> externalIds = selectDistinct(collect(reportDataList, on(ANMReportData.class).externalId()));
+        return new ArrayList<>(externalIds);
     }
 
     private Collection<Indicator> getDistinctIndicators(List<ANMReportData> reportDataList) {

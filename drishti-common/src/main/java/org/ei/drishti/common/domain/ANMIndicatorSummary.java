@@ -21,6 +21,18 @@ public class ANMIndicatorSummary {
         this.monthlySummaries = monthlySummaries;
     }
 
+    public List<MonthSummary> monthlySummaries() {
+        return monthlySummaries;
+    }
+
+    public String annualTarget() {
+        return annualTarget;
+    }
+
+    public String indicator() {
+        return indicator;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);

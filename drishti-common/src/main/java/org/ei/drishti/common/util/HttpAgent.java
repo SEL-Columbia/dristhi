@@ -2,6 +2,7 @@ package org.ei.drishti.common.util;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
@@ -54,6 +55,16 @@ public class HttpAgent {
         }
     }
 
+    public HttpResponse get(String url) {
+        HttpGet request = new HttpGet(url);
+        try {
+            org.apache.http.HttpResponse response = httpClient.execute(request);
+            return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private SocketFactory sslSocketFactoryWithDrishtiCertificate() {
         try {
             Security.addProvider(new BouncyCastleProvider());
@@ -83,5 +94,4 @@ public class HttpAgent {
             throw new AssertionError(e);
         }
     }
-
 }

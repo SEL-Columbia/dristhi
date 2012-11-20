@@ -1,9 +1,11 @@
 package org.ei.drishti.service;
 
+import com.google.gson.Gson;
 import org.ei.drishti.domain.Action;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.ActionData;
+import org.ei.drishti.dto.MonthSummaryDatum;
 import org.ei.drishti.repository.AllActions;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllMothers;
@@ -19,12 +21,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 import static org.ei.drishti.util.EasyMap.mapOf;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ActionServiceTest {
@@ -203,7 +207,7 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldSendBirthPlanningUpdates(){
+    public void shouldSendBirthPlanningUpdates() {
         Map<String, String> details = mapOf("aKey", "aValue");
 
         service.updateBirthPlanning("CASE X", "ANM X", details);
@@ -212,11 +216,20 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldSendImmunizationsUpdatesWhenMotherFoundInDrishti(){
+    public void shouldSendImmunizationsUpdatesWhenMotherFoundInDrishti() {
         Map<String, String> details = mapOf("aKey", "aValue");
 
-            service.updateImmunizations("CASE X", "ANM X", details, "bcg opv0", LocalDate.parse("2012-01-01"), "1");
+        service.updateImmunizations("CASE X", "ANM X", details, "bcg opv0", LocalDate.parse("2012-01-01"), "1");
 
         verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateImmunizations("bcg opv0", LocalDate.parse("2012-01-01"), "1", details)));
+    }
+
+    @Test
+    public void shouldReportForIndicator() {
+        ActionData summaryActionData = ActionData.reportForIndicator("ANC", "30", new Gson().toJson(asList(new MonthSummaryDatum("3", "2012", "2", "2", asList("CASE 5", "CASE 6")))));
+
+        service.reportForIndicator("ANM X", summaryActionData);
+
+        verify(allActions).add(new Action("", "ANM X", summaryActionData));
     }
 }
