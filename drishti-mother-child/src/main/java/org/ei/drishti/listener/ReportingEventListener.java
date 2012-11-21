@@ -45,6 +45,8 @@ public class ReportingEventListener {
 
     @MotechListener(subjects = SUBJECT)
     public void fetchANMReports(MotechEvent event) throws Exception {
+        logger.info("Fetching ANM reports...");
+
         HttpResponse response = httpAgent.get(url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION);
         if (!response.isSuccess()) {
             logger.error("ANM Reports fetch failed. URL: " + url + ". Response body: " + response.body());
@@ -56,5 +58,7 @@ public class ReportingEventListener {
             return;
         }
         anmReportService.processReports(anmReports);
+
+        logger.info("Done fetching ANM reports.");
     }
 }
