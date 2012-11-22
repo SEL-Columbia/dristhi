@@ -13,12 +13,11 @@ public class ScheduleTest {
 
     @Test
     public void shouldTestScheduleDependency(){
-        Schedule schedule1 = new Schedule("schedule1", new HashMap<String,String>(), null);
-        Schedule schedule2 = new Schedule("schedule2", new HashMap<String,String>(), null);
-        Schedule schedule3 = new Schedule("schedule3", new HashMap<String,String>(), schedule1);
+        Schedule schedule1 = new Schedule("schedule1", new ArrayList<String>());
+        Schedule schedule2 = new Schedule("schedule3", new ArrayList<String>()).withDependencyOn(schedule1);
         assertFalse(schedule1.hasDependency());
-        assertTrue(schedule3.hasDependency());
-        assertTrue(schedule3.dependsOn(schedule1));
-        assertFalse(schedule3.dependsOn(schedule2));
+        assertTrue(schedule2.hasDependency());
+        assertTrue(schedule2.dependsOn(schedule1));
+        assertFalse(schedule1.dependsOn(schedule2));
     }
 }

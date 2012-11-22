@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableMap;
 import static org.apache.commons.lang.StringUtils.join;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
@@ -73,17 +75,15 @@ public class ChildSchedulesService {
 
     private void updateMilestonesForEnrolledSchedules(ChildImmunizationUpdationRequest information) {
         for (Schedule schedule : childSchedules.values()) {
-            for (String mileStoneNameFromScheduler : schedule.getMileStonesNameMapping().keySet()) {
-                String mileStoneNameFromCommcareFrom = schedule.getMileStonesNameMapping().get(mileStoneNameFromScheduler);
-
+            for (String mileStoneName : schedule.getMileStones()) {
                 EnrollmentRecord record = scheduleTrackingService.getEnrollment(information.caseId(), schedule.getName());
                 if (record == null)
                     break;
                 String currentMilestoneName = record.getCurrentMilestoneName();
 
-                boolean isProvided = information.immunizationsProvidedList().contains(mileStoneNameFromCommcareFrom);
+                boolean isProvided = information.immunizationsProvidedList().contains(mileStoneName);
 
-                if (isProvided && currentMilestoneName.equals(mileStoneNameFromScheduler))
+                if (isProvided && currentMilestoneName.equals(mileStoneName))
                     scheduleTrackingService.fulfillCurrentMilestone(information.caseId(), schedule.getName(), DateUtil.today());
             }
         }
@@ -94,45 +94,37 @@ public class ChildSchedulesService {
     }
 
     private void initializeSchedules() {
-        Map<String, String> bcgMileStones = unmodifiableMap(new LinkedHashMap<String, String>() {{
-            put("BCG", "bcg");
-        }});
-        final Schedule bcg = new Schedule(CHILD_SCHEDULE_BCG, bcgMileStones, null);
+        List<String> bcgMileStones = unmodifiableList(asList(CHILD_SCHEDULE_BCG_MILESTONE));
+        final Schedule bcg = new Schedule(CHILD_SCHEDULE_BCG, bcgMileStones);
 
-        Map<String, String> dptMileStones = unmodifiableMap(new LinkedHashMap<String, String>() {{
-            put("DPT 0", "dpt_0");
-            put("DPT 1", "dpt_1");
-            put("DPT 2", "dpt_2");
-            put("DPT 3", "dpt_3");
-        }});
-        final Schedule dpt = new Schedule(CHILD_SCHEDULE_DPT, dptMileStones, null);
+        List<String> dptMileStones = unmodifiableList(asList(
+                CHILD_SCHEDULE_DPT_MILESTONE_0,
+                CHILD_SCHEDULE_DPT_MILESTONE_1,
+                CHILD_SCHEDULE_DPT_MILESTONE_2,
+                CHILD_SCHEDULE_DPT_MILESTONE_3));
+        final Schedule dpt = new Schedule(CHILD_SCHEDULE_DPT, dptMileStones);
 
-        Map<String, String> hepatitisMileStones = unmodifiableMap(new LinkedHashMap<String, String>() {{
-            put("Hepatitis B1", "hepb_1");
-            put("Hepatitis B2", "hepb_2");
-            put("Hepatitis B3", "hepb_3");
-            put("Hepatitis B4", "hepb_4");
-        }});
-        final Schedule hepatitis = new Schedule(CHILD_SCHEDULE_HEPATITIS, hepatitisMileStones, null);
+        List<String> hepMilestones = unmodifiableList(asList(
+                CHILD_SCHEDULE_HEPATITIS_MILESTONE_1,
+                CHILD_SCHEDULE_HEPATITIS_MILESTONE_2,
+                CHILD_SCHEDULE_HEPATITIS_MILESTONE_3,
+                CHILD_SCHEDULE_HEPATITIS_MILESTONE_4));
+        final Schedule hepatitis = new Schedule(CHILD_SCHEDULE_HEPATITIS, hepMilestones);
 
 
-        Map<String, String> measlesMiletones = unmodifiableMap(new LinkedHashMap<String, String>() {{
-            put("Measles", "measles");
-        }});
-        final Schedule measles = new Schedule(CHILD_SCHEDULE_MEASLES, measlesMiletones, null);
+        List<String> measleMileStones = unmodifiableList(asList(CHILD_SCHEDULE_MEASLES_MILESTONE));
+        final Schedule measles = new Schedule(CHILD_SCHEDULE_MEASLES, measleMileStones);
 
-        Map<String, String> measlesBoosterMileStones = unmodifiableMap(new LinkedHashMap<String, String>() {{
-            put("Measles Booster", "measlesbooster");
-        }});
-        final Schedule measlesBooster = new Schedule(CHILD_SCHEDULE_MEASLES_BOOSTER, measlesBoosterMileStones, measles);
+        List<String> measlesBoosterMileStones = unmodifiableList(asList(CHILD_SCHEDULE_MEASLES_BOOSTER_MILESTONE));
+        final Schedule measlesBooster = new Schedule(CHILD_SCHEDULE_MEASLES_BOOSTER, measlesBoosterMileStones).withDependencyOn(measles);
 
-        Map<String, String> opvMileStones = unmodifiableMap(new LinkedHashMap<String, String>() {{
-            put("OPV 0", "opv_0");
-            put("OPV 1", "opv_1");
-            put("OPV 2", "opv_2");
-            put("OPV 3", "opv_3");
-        }});
-        final Schedule opv = new Schedule(CHILD_SCHEDULE_OPV, opvMileStones, null);
+        List<String> opvMileStones = unmodifiableList(asList(
+                CHILD_SCHEDULE_OPV_MILESTONE_0,
+                CHILD_SCHEDULE_OPV_MILESTONE_1,
+                CHILD_SCHEDULE_OPV_MILESTONE_2,
+                CHILD_SCHEDULE_OPV_MILESTONE_3
+        ));
+        final Schedule opv = new Schedule(CHILD_SCHEDULE_OPV, opvMileStones);
 
 
         childSchedules = unmodifiableMap(new HashMap<String, Schedule>() {{
@@ -144,4 +136,6 @@ public class ChildSchedulesService {
             put(CHILD_SCHEDULE_OPV, opv);
         }});
     }
+
+
 }

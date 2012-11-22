@@ -5,25 +5,29 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.util.List;
-import java.util.Map;
 
 public class Schedule {
     private String name;
-    private final Map<String, String> mileStonesNameMapping;
-    private final Schedule dependsOn;
+    private final List<String> mileStones;
+    private Schedule dependsOn;
 
-    public Schedule(String name, Map<String, String> mileStonesNameMapping, Schedule dependsOn) {
+    public Schedule(String name, List<String> mileStones) {
         this.name = name;
-        this.mileStonesNameMapping = mileStonesNameMapping;
+        this.mileStones = mileStones;
+        this.dependsOn = null;
+    }
+
+    public Schedule withDependencyOn(Schedule dependsOn){
         this.dependsOn = dependsOn;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public Map<String, String> getMileStonesNameMapping() {
-        return mileStonesNameMapping;
+    public List<String> getMileStones() {
+        return mileStones;
     }
 
     public boolean hasDependency(){
@@ -31,6 +35,8 @@ public class Schedule {
     }
 
     public boolean dependsOn(Schedule schedule){
+        if(dependsOn == null)
+            return false;
         return dependsOn.equals(schedule);
     }
 
@@ -39,8 +45,7 @@ public class Schedule {
     }
 
     public String getLastMilestone(){
-        Object[] values = mileStonesNameMapping.values().toArray();
-        return (String)values[values.length-1];
+        return mileStones.get(mileStones.size()-1);
     }
 
     @Override
