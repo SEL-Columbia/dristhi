@@ -10,7 +10,8 @@ import org.motechproject.scheduletracking.api.domain.WindowName;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ei.drishti.scheduler.DrishtiSchedules.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
 import static org.mockito.Mockito.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.max;
 
@@ -44,14 +45,16 @@ public class AlertControllerRoutesTest {
 
     @Test
     public void shouldDoNothingForAllChildSchedules() throws Exception {
-        Event.of(CHILD_SCHEDULE_BCG, "REMINDER", WindowName.due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_BCG, "REMINDER", WindowName.late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_BCG, "BCG", WindowName.due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_BCG, "BCG", WindowName.late).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_DPT, "DPT 1", WindowName.due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_DPT, "DPT 1", WindowName.late).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.late).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_MEASLES, "REMINDER", WindowName.due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_MEASLES, "REMINDER", WindowName.late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_MEASLES, "Measles", WindowName.due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_MEASLES, "Measles", WindowName.late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", WindowName.due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", WindowName.late).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.late).shouldRouteToAlertCreationActionForChild();
     }

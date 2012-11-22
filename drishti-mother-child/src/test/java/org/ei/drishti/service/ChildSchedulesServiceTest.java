@@ -18,7 +18,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.join;
-import static org.ei.drishti.scheduler.DrishtiSchedules.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -79,7 +79,7 @@ public class ChildSchedulesServiceTest {
         String manyImmunizations = "bcg opv0 measles measlesbooster dptbooster2 opvbooster";
 
         new TestForChildEnrollment()
-                .givenEnrollmentWillHappenIn(CHILD_SCHEDULE_MEASLES_BOOSTER, "REMINDER")
+                .givenEnrollmentWillHappenIn(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster")
                 .whenProvidedWithImmunizations(manyImmunizations)
                 .shouldEnroll(LocalDate.parse(immunizationsDate),CHILD_SCHEDULE_MEASLES_BOOSTER)
                 .shouldFulfill(CHILD_SCHEDULE_MEASLES_BOOSTER,1)
@@ -89,7 +89,7 @@ public class ChildSchedulesServiceTest {
     @Test
     public void shouldNotEnrollDependentScheduleIfAlreadyEnrolled(){
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES_BOOSTER, "REMINDER")
+                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster")
                 .whenProvidedWithImmunizations("measles")
                 .shouldNotFulfillAnythingElse();
     }
@@ -97,13 +97,13 @@ public class ChildSchedulesServiceTest {
     @Test
     public void shouldUpdateEnrollmentForBCGOnlyWhenBCGHasBeenProvided() {
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, "REMINDER")
+                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, "BCG")
                 .whenProvidedWithImmunizations("bcg")
                 .shouldFulfill(CHILD_SCHEDULE_BCG, 1)
                 .shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, "REMINDER")
+                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, "BCG")
                 .whenProvidedWithImmunizations("SOME OTHER IMM")
                 .shouldNotFulfillAnythingElse();
     }
@@ -137,14 +137,14 @@ public class ChildSchedulesServiceTest {
     @Test
     public void shouldUpdateEnrollmentForMeasles() {
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, "REMINDER")
+                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, "Measles")
                 .whenProvidedWithImmunizations("measles")
                 .shouldFulfill(CHILD_SCHEDULE_MEASLES, 1)
                 .shouldEnroll(LocalDate.parse(immunizationsDate), CHILD_SCHEDULE_MEASLES_BOOSTER)
                 .shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, "REMINDER")
+                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, "Measles")
                 .whenProvidedWithImmunizations("SOME OTHER IMMUNIZATION")
                 .shouldNotFulfillAnythingElse();
     }
@@ -263,10 +263,10 @@ public class ChildSchedulesServiceTest {
         }
 
         private void setExpectationsOnScheduleTrackingService() {
-            this.givenEnrollmentIn(CHILD_SCHEDULE_BCG, "REMINDER")
+            this.givenEnrollmentIn(CHILD_SCHEDULE_BCG, "BCG")
                     .givenEnrollmentIn(CHILD_SCHEDULE_DPT, "DPT 0", "DPT 1", "DPT 2", "DPT 3")
                     .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B1", "Hepatitis B2", "Hepatitis B3", "Hepatitis B4")
-                    .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, "REMINDER")
+                    .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, "Measles")
                     .givenEnrollmentIn(CHILD_SCHEDULE_OPV, "OPV 0", "OPV 1", "OPV 2", "OPV 3");
         }
 

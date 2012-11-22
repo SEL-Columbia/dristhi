@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.delivery.schedule.util.FakeSchedule;
@@ -23,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.File;
 import java.util.Date;
 
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.*;
 import static org.motechproject.util.DateUtil.newDate;
 
@@ -143,12 +145,12 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertsForBCG() throws Exception {
         schedule.enrollFor("BCG", newDate(2012, 1, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("REMINDER", earliest);
-        schedule.assertAlertsStartWith("REMINDER", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
+        schedule.assertNoAlerts("BCG", earliest);
+        schedule.assertAlertsStartWith("BCG", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
                 date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
                 date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
-        schedule.assertNoAlerts("REMINDER", late);
-        schedule.assertNoAlerts("REMINDER", max);
+        schedule.assertNoAlerts("BCG", late);
+        schedule.assertNoAlerts("BCG", max);
 
         visualization.outputTo("child-bcg.html", 1);
     }
@@ -250,24 +252,24 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
     @Test
     public void shouldProvideAlertForMeaslesVaccination() throws Exception {
-        schedule.enrollFor("Measles Vaccination", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor(CHILD_SCHEDULE_MEASLES, newDate(2012, 1, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("REMINDER", earliest);
-        schedule.assertAlertsStartWith("REMINDER", due, date(1, OCTOBER), date(8, OCTOBER), date(15, OCTOBER), date(22, OCTOBER));
-        schedule.assertAlertsStartWith("REMINDER", late, dateWithYear(1, JANUARY, 2013), dateWithYear(8, JANUARY, 2013));
-        schedule.assertNoAlerts("REMINDER", max);
+        schedule.assertNoAlerts("Measles", earliest);
+        schedule.assertAlertsStartWith("Measles", due, date(1, OCTOBER), date(4, OCTOBER),date(8, OCTOBER), date(11, OCTOBER), date(15, OCTOBER));
+        schedule.assertAlertsStartWith("Measles", late, dateWithYear(1, JANUARY, 2013),dateWithYear(4, JANUARY, 2013), dateWithYear(8, JANUARY, 2013),dateWithYear(11, JANUARY, 2013));
+        schedule.assertNoAlerts("Measles", max);
 
         visualization.outputTo("child-measles.html", 4);
     }
 
     @Test
     public void shouldProvideAlertForMeaslesBoosterVaccination() throws Exception {
-        schedule.enrollFor("Measles Booster", newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor(CHILD_SCHEDULE_MEASLES_BOOSTER, newDate(2012, 1, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("REMINDER", earliest);
-        schedule.assertAlertsStartWith("REMINDER", due, date(1, AUGUST), date(8, AUGUST), date(15, AUGUST), date(22, AUGUST));
-        schedule.assertAlertsStartWith("REMINDER", late, dateWithYear(1, FEBRUARY, 2013), dateWithYear(8, FEBRUARY, 2013));
-        schedule.assertNoAlerts("REMINDER", max);
+        schedule.assertNoAlerts("Measles Booster", earliest);
+        schedule.assertAlertsStartWith("Measles Booster", due, date(1, AUGUST), date(4, AUGUST), date(8, AUGUST), date(11, AUGUST));
+        schedule.assertAlertsStartWith("Measles Booster", late, dateWithYear(1, FEBRUARY, 2013), dateWithYear(4, FEBRUARY, 2013), dateWithYear(8, FEBRUARY, 2013));
+        schedule.assertNoAlerts("Measles Booster", max);
 
         visualization.outputTo("child-measles-booster.html", 4);
     }
@@ -276,10 +278,10 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertForDPT1Vaccination() throws Exception {
         schedule.enrollFor("DPT 1", newDate(2012, 1, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("REMINDER", earliest);
-        schedule.assertAlerts("REMINDER", due, date(1, JULY));
-        schedule.assertAlertsStartWith("REMINDER", late, dateWithYear(8, JULY, 2012), dateWithYear(15, JULY, 2012));
-        schedule.assertNoAlerts("REMINDER", max);
+        schedule.assertNoAlerts("DPT 1", earliest);
+        schedule.assertAlerts("DPT 1", due, date(1, JULY), date(4, JULY));
+        schedule.assertAlertsStartWith("DPT 1", late, dateWithYear(8, JULY, 2012),dateWithYear(11, JULY, 2012), dateWithYear(15, JULY, 2012));
+        schedule.assertNoAlerts("DPT 1", max);
 
         visualization.outputTo("child-dpt1.html", 4);
     }
@@ -288,10 +290,10 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertForDPT2Vaccination() throws Exception {
         schedule.enrollFor("DPT 2", newDate(2012, 1, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("REMINDER", earliest);
-        schedule.assertAlerts("REMINDER", due, date(29, APRIL));
-        schedule.assertAlertsStartWith("REMINDER", late, dateWithYear(6, MAY, 2012), dateWithYear(13, MAY, 2012));
-        schedule.assertNoAlerts("REMINDER", max);
+        schedule.assertNoAlerts("DPT 2", earliest);
+        schedule.assertAlerts("DPT 2", due, date(29, APRIL), date(2, MAY));
+        schedule.assertAlertsStartWith("DPT 2", late, dateWithYear(6, MAY, 2012),dateWithYear(9, MAY, 2012), dateWithYear(13, MAY, 2012));
+        schedule.assertNoAlerts("DPT 2", max);
 
         visualization.outputTo("child-dpt2.html", 4);
     }
@@ -300,10 +302,10 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertForDPT3Vaccination() throws Exception {
         schedule.enrollFor("DPT 3", newDate(2012, 1, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("REMINDER", earliest);
-        schedule.assertAlerts("REMINDER", due, date(29, APRIL));
-        schedule.assertAlertsStartWith("REMINDER", late, dateWithYear(6, MAY, 2012), dateWithYear(13, MAY, 2012));
-        schedule.assertNoAlerts("REMINDER", max);
+        schedule.assertNoAlerts("DPT 3", earliest);
+        schedule.assertAlerts("DPT 3", due, date(29, APRIL),date(02, MAY));
+        schedule.assertAlertsStartWith("DPT 3", late, dateWithYear(6, MAY, 2012),dateWithYear(9, MAY, 2012), dateWithYear(13, MAY, 2012));
+        schedule.assertNoAlerts("DPT 3", max);
 
         visualization.outputTo("child-dpt3.html", 4);
     }
@@ -312,22 +314,22 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertForDPTBooster1Vaccination() throws Exception {
         schedule.enrollFor("DPT Booster 1", newDate(2012, 1, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("REMINDER", earliest);
-        schedule.assertAlertsStartWith("REMINDER", due, dateWithYear(1, FEBRUARY, 2013), dateWithYear(8, FEBRUARY, 2013));
-        schedule.assertAlertsStartWith("REMINDER", late, dateWithYear(1, OCTOBER, 2013), dateWithYear(8, OCTOBER, 2013));
-        schedule.assertNoAlerts("REMINDER", max);
+        schedule.assertNoAlerts("DPT Booster 1", earliest);
+        schedule.assertAlertsStartWith("DPT Booster 1", due, dateWithYear(1, FEBRUARY, 2013),dateWithYear(4, FEBRUARY, 2013), dateWithYear(8, FEBRUARY, 2013));
+        schedule.assertAlertsStartWith("DPT Booster 1", late, dateWithYear(1, OCTOBER, 2013),dateWithYear(4, OCTOBER, 2013),dateWithYear(8, OCTOBER, 2013));
+        schedule.assertNoAlerts("DPT Booster 1", max);
 
         visualization.outputTo("child-dpt-booster1.html", 4);
     }
 
-    @Test
+    @Ignore
     public void shouldProvideAlertForDPTBooster2Vaccination() throws Exception {
         schedule.enrollFor("DPT Booster 2", newDate(2012, 1, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("REMINDER", earliest);
-//        schedule.assertAlertsStartWith("REMINDER", due, dateWithYear(1, JANUARY, 2015), dateWithYear(8, JANUARY, 2015));
-//        schedule.assertAlertsStartWith("REMINDER", late, dateWithYear(1, OCTOBER, 2013), dateWithYear(8, OCTOBER, 2013));
-        schedule.assertNoAlerts("REMINDER", max);
+        schedule.assertNoAlerts("DPT Booster 2", earliest);
+        schedule.assertAlertsStartWith("DPT Booster 2", due, dateWithYear(1, JANUARY, 2015),dateWithYear(4, JANUARY, 2015), dateWithYear(8, JANUARY, 2015));
+        schedule.assertAlertsStartWith("DPT Booster 2", late, dateWithYear(1, OCTOBER, 2015),dateWithYear(4, OCTOBER, 2015), dateWithYear(8, OCTOBER, 2015));
+        schedule.assertNoAlerts("DPT Booster 2", max);
 
         visualization.outputTo("child-dpt-booster2.html", 4);
     }

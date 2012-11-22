@@ -1,9 +1,9 @@
 {
     "name": "Measles Booster",
-    "absolute": true,
+    "absolute": false,
     "milestones": [
         {
-            "name": "REMINDER",
+            "name": "Measles Booster",
             "scheduleWindows": {
                 "earliest": ["7 Months"],
                 "due": ["13 Months"],
@@ -13,13 +13,25 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["7 Months"],
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
+                    "count": "27"
+                },
+                {
+                    "window": "due",
+                    "offset": ["3 Days"],
                     "interval": ["1 Week"],
                     "count": "27"
                 },
                 {
                     "window": "late",
-                    "offset": ["13 Months"],
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
+                    "count": "204"
+                },
+                {
+                    "window": "late",
+                    "offset": ["3 Days"],
                     "interval": ["1 Week"],
                     "count": "204"
                 }

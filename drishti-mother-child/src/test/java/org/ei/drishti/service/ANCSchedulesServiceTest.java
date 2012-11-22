@@ -22,7 +22,7 @@ import org.motechproject.util.DateUtil;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.ei.drishti.scheduler.DrishtiSchedules.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

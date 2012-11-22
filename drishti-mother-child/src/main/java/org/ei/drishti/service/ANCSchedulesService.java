@@ -21,7 +21,7 @@ import java.util.List;
 
 import static java.text.MessageFormat.format;
 import static org.ei.drishti.dto.AlertPriority.normal;
-import static org.ei.drishti.scheduler.DrishtiSchedules.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.joda.time.LocalTime.now;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
 import static org.motechproject.util.DateUtil.today;

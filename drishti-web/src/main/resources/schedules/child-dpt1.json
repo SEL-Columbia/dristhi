@@ -1,9 +1,9 @@
 {
     "name": "DPT 1",
-    "absolute": true,
+    "absolute": false,
     "milestones": [
         {
-            "name": "REMINDER",
+            "name": "DPT 1",
             "scheduleWindows": {
                 "earliest": ["26 Weeks"],
                 "due": ["27 Weeks"],
@@ -13,13 +13,25 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["26 Weeks"],
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
+                    "count": "1"
+                },
+                {
+                    "window": "due",
+                    "offset": ["3 Days"],
                     "interval": ["1 Week"],
                     "count": "1"
                 },
                 {
                     "window": "late",
-                    "offset": ["27 Weeks"],
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
+                    "count": "234"
+                },
+                {
+                    "window": "late",
+                    "offset": ["3 Days"],
                     "interval": ["1 Week"],
                     "count": "234"
                 }

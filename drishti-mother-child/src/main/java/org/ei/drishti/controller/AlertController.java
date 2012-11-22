@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import static org.ei.drishti.scheduler.DrishtiSchedules.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.ei.drishti.scheduler.router.Matcher.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.*;
 

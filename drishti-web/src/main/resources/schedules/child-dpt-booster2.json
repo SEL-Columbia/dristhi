@@ -1,9 +1,9 @@
 {
     "name": "DPT Booster 2",
-    "absolute": true,
+    "absolute": false,
     "milestones": [
         {
-            "name": "REMINDER",
+            "name": "DPT Booster 2",
             "scheduleWindows": {
                 "earliest": ["36 Months"],
                 "due": ["40 Months"],
@@ -13,16 +13,30 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["36 Months"],
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
+                    "count": "17"
+                },
+                {
+                    "window": "due",
+                    "offset": ["3 Days"],
                     "interval": ["1 Week"],
                     "count": "17"
                 },
                 {
                     "window": "late",
-                    "offset": ["40 Months"],
+                    "offset": ["0 Days"],
+                    "interval": ["1 Week"],
+                    "count": "88"
+                },
+                {
+                    "window": "late",
+                    "offset": ["3 Days"],
                     "interval": ["1 Week"],
                     "count": "88"
                 }
+
+
             ]
         }
     ]
