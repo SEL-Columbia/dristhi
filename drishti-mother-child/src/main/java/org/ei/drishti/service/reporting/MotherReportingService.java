@@ -33,7 +33,7 @@ public class MotherReportingService {
                 new Location(village, subCenter, reportData.get("phc")));
         reportingService.sendReportData(serviceProvidedData);
 
-        ReportingData anmReportData = ReportingData.anmReportData(reportData.get("anmIdentifier"), reportData.get("thaayiCardNumber"), indicator, DateUtil.today().toString());
+        ReportingData anmReportData = ReportingData.anmReportData(reportData.get("anmIdentifier"), reportData.get("caseId"), indicator, DateUtil.today().toString());
         reportingService.sendReportData(anmReportData);
     }
 

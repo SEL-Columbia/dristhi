@@ -98,7 +98,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
         motherReportingService.registerANC(reportData, "bherya", "Sub Center");
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", indicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "TC 1", indicator, "2012-01-01");
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "Case Id", indicator, "2012-01-01");
         verify(fakeReportingService).sendReportData(serviceProvidedData);
         verify(fakeReportingService).sendReportData(anmReportData);
     }
@@ -107,6 +107,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
         SafeMap reportData = new SafeMap();
         reportData.put("anmIdentifier", "ANM X");
         reportData.put("thaayiCardNumber", "TC 1");
+        reportData.put("caseId", "Case Id");
         reportData.put("lmp", lmp);
         reportData.put("village", "bherya");
         reportData.put("subCenter", "Sub Center");

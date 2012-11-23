@@ -93,6 +93,7 @@
                     "extraMappings": {
                         "reporting": {
                             "form|case_phc": "phc",
+                            "form|subcase_0|case|@case_id": "caseId",
                             "form|lmp_date": "lmp",
                             "form|thayi_no": "thaayiCardNumber",
                             "form|meta|username": "anmIdentifier"
