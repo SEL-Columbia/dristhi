@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
+import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_MAPS_KEY_NAME;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Mockito.*;
@@ -43,14 +44,14 @@ public class ECServiceTest {
 
     @Test
     public void shouldRegisterEligibleCouple() throws Exception {
-        Map<String, Map<String, String>> extraData = create("details", Collections.<String, String>emptyMap()).put("reporting", mapOf("someKey", "someValue")).map();
+        Map<String, Map<String, String>> extraData = create("details", Collections.<String, String>emptyMap()).put(REPORT_EXTRA_MAPS_KEY_NAME, mapOf("someKey", "someValue")).map();
 
         ecService.registerEligibleCouple(new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X"), extraData);
 
         EligibleCouple expectedCouple = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1")
                 .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(extraData.get("details"));
         verify(allEligibleCouples).register(expectedCouple);
-        verify(reportingService).fpMethodChanged(new SafeMap(extraData.get("reporting")));
+        verify(reportingService).fpMethodChanged(new SafeMap(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME)));
         verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", extraData.get("details"));
     }
 
@@ -86,6 +87,20 @@ public class ECServiceTest {
     }
 
     @Test
+    public void shouldReportFPMethodChangeWhenDetailsAreUpdated() throws Exception {
+        Map<String, String> existingDetails = mapOf("existingThing", "existingValue");
+        EligibleCouple existingCoupleBeforeUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(existingDetails);
+        Map<String, String> updatedDetails = create("currentMethod", "CONDOM").put("existingThing", "existingValue").map();
+        EligibleCouple existingCoupleAfterUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(updatedDetails);
+        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(existingCoupleBeforeUpdate);
+        when(allEligibleCouples.updateDetails("CASE X", mapOf("currentMethod", "CONDOM"))).thenReturn(existingCoupleAfterUpdate);
+
+        ecService.updateDetails(new UpdateDetailsRequest("CASE X", "ANM X"), create("details", mapOf("currentMethod", "CONDOM")).put(REPORT_EXTRA_MAPS_KEY_NAME, mapOf("currentMethod", "CONDOM")).map());
+
+        verify(reportingService).fpMethodChanged(new SafeMap(mapOf("currentMethod", "CONDOM")));
+    }
+
+    @Test
     public void shouldIgnoreUpdationIfAnECIsNotFound() throws Exception {
         when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(null);
 
@@ -103,5 +118,4 @@ public class ECServiceTest {
         verify(allEligibleCouples).close("CASE X");
         verify(actionService).closeEligibleCouple("CASE X", "ANM X");
     }
-
 }

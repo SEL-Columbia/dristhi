@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_MAPS_KEY_NAME;
 import static org.joda.time.LocalTime.now;
 
 @Service
@@ -55,7 +57,7 @@ public class ANCService {
                 .withDetails(details);
         allMothers.register(mother);
         actionService.registerPregnancy(info.caseId(), couple.caseId(), info.thaayiCardNumber(), info.anmIdentifier(), info.lmpDate(), details);
-        reportingService.registerANC(new SafeMap(extraData.get("reporting")), couple.village(), couple.subCenter());
+        reportingService.registerANC(new SafeMap(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME)), couple.village(), couple.subCenter());
 
         enrollMotherIntoSchedules(info.caseId(), info.lmpDate());
     }

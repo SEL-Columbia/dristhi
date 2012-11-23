@@ -36,6 +36,20 @@ public class ECReportingServiceTest {
     }
 
     @Test
+    public void shouldNotReportFPMethodChangeWhenFPProductWasRenewed() throws Exception {
+        SafeMap reportingMap = new SafeMap(create("anmIdentifier", "ANM X")
+                .put("ecNumber", "EC NUMBER 1")
+                .put("currentMethod", "iud")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("fpUpdate", "renew_fp_product")
+                .map());
+
+        service.fpMethodChanged(reportingMap);
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
     public void shouldNotReportFPMethodChangeWhenNoIndicatorIsFoundForTheCurrentFPMethod() throws Exception {
         service.fpMethodChanged(new SafeMap(create("anmIdentifier", "ANM X")
                 .put("ecNumber", "EC NUMBER 1")

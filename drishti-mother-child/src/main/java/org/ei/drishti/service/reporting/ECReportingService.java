@@ -16,13 +16,16 @@ public class ECReportingService {
     }
 
     public void fpMethodChanged(SafeMap reporting) {
-        Indicator indicator = Indicator.from(reporting.get("currentMethod"));
-        if (indicator == null){
-            return;
-        }
+        if (!reporting.has("fpUpdate") || reporting.get("fpUpdate").equals("change_fp_product")) {
 
-        ReportingData data = ReportingData.anmReportData(reporting.get("anmIdentifier"), reporting.get("ecNumber"),
-                indicator, reporting.get("familyPlanningMethodChangeDate"));
-        service.sendReportData(data);
+            Indicator indicator = Indicator.from(reporting.get("currentMethod"));
+            if (indicator == null) {
+                return;
+            }
+
+            ReportingData data = ReportingData.anmReportData(reporting.get("anmIdentifier"), reporting.get("ecNumber"),
+                    indicator, reporting.get("familyPlanningMethodChangeDate"));
+            service.sendReportData(data);
+        }
     }
 }

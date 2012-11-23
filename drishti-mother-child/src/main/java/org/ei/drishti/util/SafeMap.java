@@ -30,6 +30,10 @@ public class SafeMap {
         return this;
     }
 
+    public boolean has(String key) {
+        return data.containsKey(key);
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);

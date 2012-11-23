@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
+import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_MAPS_KEY_NAME;
+
 @Component
 public class DrishtiController {
     private static Logger logger = LoggerFactory.getLogger(DrishtiController.class.toString());
@@ -74,7 +76,7 @@ public class DrishtiController {
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
         logger.info("ANC close: " + closeInformation + ". Extra data: " + extraData);
 
-        ancService.closeANCCase(closeInformation, new SafeMap(extraData.get("reporting")));
+        ancService.closeANCCase(closeInformation, new SafeMap(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME)));
         mctsService.closeANCCase(closeInformation);
     }
 

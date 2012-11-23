@@ -57,6 +57,12 @@
                         "form|meta|username": "anmIdentifier"
                     },
                     "extraMappings": {
+                        "reporting": {
+                            "form|meta|username": "anmIdentifier",
+                            "form|ec_number": "ecNumber",
+                            "form|familyplanning_method": "currentMethod",
+                            "form|date_familyplanningstart": "familyPlanningMethodChangeDate"
+                        },
                         "details": {
                             "form|date_familyplanningstart": "familyPlanningMethodChangeDate",
                             "form|familyplanning_method": "currentMethod",

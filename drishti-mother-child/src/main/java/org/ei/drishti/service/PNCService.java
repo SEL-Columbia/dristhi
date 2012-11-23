@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_MAPS_KEY_NAME;
 import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
@@ -91,7 +92,7 @@ public class PNCService {
         actionService.updateImmunizations(updationRequest.caseId(), updationRequest.anmIdentifier(), updatedChild.details(), updationRequest.immunizationsProvided(),
                 updationRequest.immunizationsProvidedDate(), updationRequest.vitaminADose());
 
-        childReportingService.updateChildImmunization(updationRequest, new SafeMap(extraData.get("reporting")));
+        childReportingService.updateChildImmunization(updationRequest, new SafeMap(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME)));
 
         alertForImmunizationProvided(updationRequest, "opv_0", "OPV 0");
         alertForImmunizationProvided(updationRequest, "bcg", "BCG");
