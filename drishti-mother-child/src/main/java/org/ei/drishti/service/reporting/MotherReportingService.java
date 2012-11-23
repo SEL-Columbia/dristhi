@@ -38,7 +38,7 @@ public class MotherReportingService {
     }
 
     public void closeANC(SafeMap reportData) {
-        if (!reportData.get("closeReason").equals("death")) {
+        if (!reportData.get("closeReason").equals("death_of_woman")) {
             return;
         }
 
@@ -47,10 +47,12 @@ public class MotherReportingService {
             return;
         }
 
-        ReportingData data = ReportingData.serviceProvidedData(mother.anmIdentifier(), mother.thaayiCardNo(), MOTHER_MORTALITY, DateUtil.today().toString(),
+        ReportingData serviceProvided = ReportingData.serviceProvidedData(mother.anmIdentifier(), mother.thaayiCardNo(), MOTHER_MORTALITY, DateUtil.today().toString(),
                 new Location(mother.village(), mother.subCenter(), mother.phc()));
+        reportingService.sendReportData(serviceProvided);
 
-        reportingService.sendReportData(data);
+        ReportingData anmReportData = ReportingData.anmReportData(mother.anmIdentifier(), mother.thaayiCardNo(), MOTHER_MORTALITY, DateUtil.today().toString());
+        reportingService.sendReportData(anmReportData);
     }
 
 }
