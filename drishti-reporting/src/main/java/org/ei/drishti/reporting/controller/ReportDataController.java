@@ -38,12 +38,6 @@ public class ReportDataController {
         return "Success.";
     }
 
-    @RequestMapping(value = "/report/fetch", method = RequestMethod.GET)
-    @ResponseBody
-    public List<ANMIndicatorSummary> getANMIndicatorSummaries(@RequestParam("anmIdentifier") String anmIdentifier) {
-        return anmReportsRepository.fetchANMSummary(anmIdentifier);
-    }
-
     @RequestMapping(value = "/report/fetchForAllANMs", method = RequestMethod.GET)
     @ResponseBody
     public List<ANMReport> getAllANMsIndicatorSummaries() {

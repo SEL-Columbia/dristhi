@@ -58,17 +58,6 @@ public class ReportDataControllerTest {
     }
 
     @Test
-    public void shouldReturnListOfANMIndicatorSummary() throws Exception {
-        ANMIndicatorSummary anmIUDSummary = createSummaryForIUD();
-        ANMIndicatorSummary anmANCSummary = ANMIndicatorSummaryFactory.createSummaryForANC();
-        when(anmReportsRepository.fetchANMSummary("ANM X")).thenReturn(asList(anmIUDSummary, anmANCSummary));
-
-        List<ANMIndicatorSummary> summaries = controller.getANMIndicatorSummaries("ANM X");
-
-        assertEquals(asList(anmIUDSummary, anmANCSummary), summaries);
-    }
-
-    @Test
     public void shouldReturnListOfANMIndicatorSummaryForAllANMs() throws Exception {
         ANMReport anmXReport = new ANMReport("ANM X", asList(createSummaryForIUD()));
         ANMReport anmYReport = new ANMReport("ANM Y", asList(createSummaryForANC()));
