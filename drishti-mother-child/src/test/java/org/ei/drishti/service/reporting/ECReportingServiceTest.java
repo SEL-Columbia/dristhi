@@ -2,6 +2,7 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.domain.Location;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,9 +31,10 @@ public class ECReportingServiceTest {
                 .put("ecNumber", "EC NUMBER 1")
                 .put("currentMethod", "iud")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
-                .map()));
+                .map()), "bherya", "Sub Center", "PHC X");
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC NUMBER 1", Indicator.IUD, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
     }
 
     @Test
@@ -44,7 +46,7 @@ public class ECReportingServiceTest {
                 .put("fpUpdate", "renew_fp_product")
                 .map());
 
-        service.fpMethodChanged(reportingMap);
+        service.fpMethodChanged(reportingMap, "bherya", "Sub Center", "PHC X");
 
         verifyZeroInteractions(reportingService);
     }
@@ -55,7 +57,7 @@ public class ECReportingServiceTest {
                 .put("ecNumber", "EC NUMBER 1")
                 .put("currentMethod", "none")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
-                .map()));
+                .map()), "bherya", "Sub Center", "PHC X");
 
         verifyZeroInteractions(reportingService);
     }
