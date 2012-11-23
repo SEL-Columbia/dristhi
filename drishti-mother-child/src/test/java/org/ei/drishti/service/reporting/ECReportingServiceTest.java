@@ -27,37 +27,44 @@ public class ECReportingServiceTest {
 
     @Test
     public void shouldReportFPMethodChange() throws Exception {
-        service.fpMethodChanged(new SafeMap(create("anmIdentifier", "ANM X")
+        SafeMap reportingMap = new SafeMap(create("anmIdentifier", "ANM X")
+                .put("caseId", "EC CASE 1")
                 .put("ecNumber", "EC NUMBER 1")
                 .put("currentMethod", "iud")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
-                .map()), "bherya", "Sub Center", "PHC X");
+                .map());
 
-        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01"));
+        service.fpMethodChangedWithECRegistrationDetails(reportingMap, "bherya", "Sub Center", "PHC X");
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_IUD, "2012-01-01"));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
     }
 
     @Test
     public void shouldNotReportFPMethodChangeWhenFPProductWasRenewed() throws Exception {
         SafeMap reportingMap = new SafeMap(create("anmIdentifier", "ANM X")
+                .put("caseId", "EC CASE 1")
                 .put("ecNumber", "EC NUMBER 1")
                 .put("currentMethod", "iud")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .put("fpUpdate", "renew_fp_product")
                 .map());
 
-        service.fpMethodChanged(reportingMap, "bherya", "Sub Center", "PHC X");
+        service.fpMethodChangedWithUpdatedECDetails(reportingMap, "EC NUMBER 1", "bherya", "Sub Center", "PHC X");
 
         verifyZeroInteractions(reportingService);
     }
 
     @Test
     public void shouldNotReportFPMethodChangeWhenNoIndicatorIsFoundForTheCurrentFPMethod() throws Exception {
-        service.fpMethodChanged(new SafeMap(create("anmIdentifier", "ANM X")
+        SafeMap reportingMap = new SafeMap(create("anmIdentifier", "ANM X")
+                .put("caseId", "EC CASE 1")
                 .put("ecNumber", "EC NUMBER 1")
                 .put("currentMethod", "none")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
-                .map()), "bherya", "Sub Center", "PHC X");
+                .map());
+
+        service.fpMethodChangedWithECRegistrationDetails(reportingMap, "bherya", "Sub Center", "PHC X");
 
         verifyZeroInteractions(reportingService);
     }

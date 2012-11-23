@@ -41,7 +41,7 @@ public class ECService {
 
         allEligibleCouples.register(couple);
 
-        reportingService.fpMethodChanged(new SafeMap(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME)), couple.village(), couple.subCenter(), couple.phc());
+        reportingService.fpMethodChangedWithECRegistrationDetails(new SafeMap(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME)), couple.village(), couple.subCenter(), couple.phc());
         actionService.registerEligibleCouple(request.caseId(), request.ecNumber(), request.wife(), request.husband(),
                 request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), extraData.get("details"));
     }
@@ -69,7 +69,7 @@ public class ECService {
         }
 
         EligibleCouple updatedCouple = allEligibleCouples.updateDetails(request.caseId(), extraDetails.get("details"));
-        reportingService.fpMethodChanged(new SafeMap(extraDetails.get(REPORT_EXTRA_MAPS_KEY_NAME)), updatedCouple.village(),updatedCouple.subCenter(),updatedCouple.phc());
+        reportingService.fpMethodChangedWithUpdatedECDetails(new SafeMap(extraDetails.get(REPORT_EXTRA_MAPS_KEY_NAME)), updatedCouple.ecNumber(), updatedCouple.village(), updatedCouple.subCenter(), updatedCouple.phc());
         actionService.updateEligibleCoupleDetails(request.caseId(), request.anmIdentifier(), updatedCouple.details());
     }
 }

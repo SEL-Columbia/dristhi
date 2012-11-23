@@ -16,21 +16,30 @@ public class ECReportingService {
         this.service = service;
     }
 
-    public void fpMethodChanged(SafeMap reporting, String village, String subCenter, String phc) {
-        if (!reporting.has("fpUpdate") || reporting.get("fpUpdate").equals("change_fp_product")) {
+    public void fpMethodChangedWithECRegistrationDetails(SafeMap reporting, String village, String subCenter, String phc) {
+        report(reporting, reporting.get("ecNumber"), village, subCenter, phc);
+    }
 
-            Indicator indicator = Indicator.from(reporting.get("currentMethod"));
-            if (indicator == null) {
-                return;
-            }
-
-            ReportingData anmReportData = ReportingData.anmReportData(reporting.get("anmIdentifier"), reporting.get("ecNumber"),
-                    indicator, reporting.get("familyPlanningMethodChangeDate"));
-            service.sendReportData(anmReportData);
-
-            ReportingData serviceProvidedData = ReportingData.serviceProvidedData(reporting.get("anmIdentifier"), reporting.get("ecNumber"),
-                    indicator, reporting.get("familyPlanningMethodChangeDate"), new Location(village, subCenter, phc));
-            service.sendReportData(serviceProvidedData);
+    public void fpMethodChangedWithUpdatedECDetails(SafeMap reporting, String ecNumber, String village, String subCenter, String phc) {
+        if (!reporting.get("fpUpdate").equals("change_fp_product")) {
+            return;
         }
+
+        report(reporting, ecNumber, village, subCenter, phc);
+    }
+
+    private void report(SafeMap reporting, String ecNumber, String village, String subCenter, String phc) {
+        Indicator indicator = Indicator.from(reporting.get("currentMethod"));
+        if (indicator == null) {
+            return;
+        }
+
+        ReportingData anmReportData = ReportingData.anmReportData(reporting.get("anmIdentifier"), reporting.get("caseId"),
+                indicator, reporting.get("familyPlanningMethodChangeDate"));
+        service.sendReportData(anmReportData);
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(reporting.get("anmIdentifier"), ecNumber,
+                indicator, reporting.get("familyPlanningMethodChangeDate"), new Location(village, subCenter, phc));
+        service.sendReportData(serviceProvidedData);
     }
 }

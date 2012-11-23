@@ -27,6 +27,7 @@
                         "reporting": {
                             "form|meta|username": "anmIdentifier",
                             "form|ec_number": "ecNumber",
+                            "form|case|@case_id": "caseId",
                             "form|familyplanning_method": "currentMethod",
                             "form|date_familyplanningstart": "familyPlanningMethodChangeDate"
                         },
@@ -59,6 +60,7 @@
                     "extraMappings": {
                         "reporting": {
                             "form|meta|username": "anmIdentifier",
+                            "form|case|@case_id": "caseId",
                             "form|ec_number": "ecNumber",
                             "form|familyplanning_method": "currentMethod",
                             "form|date_familyplanningstart": "familyPlanningMethodChangeDate"
