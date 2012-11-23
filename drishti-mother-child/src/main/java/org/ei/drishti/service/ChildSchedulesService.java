@@ -13,16 +13,19 @@ import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableMap;
 import static org.apache.commons.lang.StringUtils.join;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareValues.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
-
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
 
 @Service
 public class ChildSchedulesService {
@@ -94,35 +97,35 @@ public class ChildSchedulesService {
     }
 
     private void initializeSchedules() {
-        List<String> bcgMileStones = unmodifiableList(asList(CHILD_SCHEDULE_BCG_MILESTONE));
+        List<String> bcgMileStones = unmodifiableList(asList(BCG_COMMCARE_VALUE));
         final Schedule bcg = new Schedule(CHILD_SCHEDULE_BCG, bcgMileStones);
 
         List<String> dptMileStones = unmodifiableList(asList(
-                CHILD_SCHEDULE_DPT_MILESTONE_0,
-                CHILD_SCHEDULE_DPT_MILESTONE_1,
-                CHILD_SCHEDULE_DPT_MILESTONE_2,
-                CHILD_SCHEDULE_DPT_MILESTONE_3));
+                DPT_0_COMMCARE_VALUE,
+                DPT_1_COMMCARE_VALUE,
+                DPT_2_COMMCARE_VALUE,
+                DPT_3_COMMCARE_VALUE));
         final Schedule dpt = new Schedule(CHILD_SCHEDULE_DPT, dptMileStones);
 
         List<String> hepMilestones = unmodifiableList(asList(
-                CHILD_SCHEDULE_HEPATITIS_MILESTONE_1,
-                CHILD_SCHEDULE_HEPATITIS_MILESTONE_2,
-                CHILD_SCHEDULE_HEPATITIS_MILESTONE_3,
-                CHILD_SCHEDULE_HEPATITIS_MILESTONE_4));
+                HEPATITIS_0_COMMCARE_VALUE,
+                HEPATITIS_1_COMMCARE_VALUE,
+                HEPATITIS_2_COMMCARE_VALUE,
+                HEPATITIS_3_COMMCARE_VALUE));
         final Schedule hepatitis = new Schedule(CHILD_SCHEDULE_HEPATITIS, hepMilestones);
 
 
-        List<String> measleMileStones = unmodifiableList(asList(CHILD_SCHEDULE_MEASLES_MILESTONE));
+        List<String> measleMileStones = unmodifiableList(asList(MEASLES_COMMCARE_VALUE));
         final Schedule measles = new Schedule(CHILD_SCHEDULE_MEASLES, measleMileStones);
 
-        List<String> measlesBoosterMileStones = unmodifiableList(asList(CHILD_SCHEDULE_MEASLES_BOOSTER_MILESTONE));
+        List<String> measlesBoosterMileStones = unmodifiableList(asList(MEASLES_BOOSTER_COMMCARE_VALUE));
         final Schedule measlesBooster = new Schedule(CHILD_SCHEDULE_MEASLES_BOOSTER, measlesBoosterMileStones).withDependencyOn(measles);
 
         List<String> opvMileStones = unmodifiableList(asList(
-                CHILD_SCHEDULE_OPV_MILESTONE_0,
-                CHILD_SCHEDULE_OPV_MILESTONE_1,
-                CHILD_SCHEDULE_OPV_MILESTONE_2,
-                CHILD_SCHEDULE_OPV_MILESTONE_3
+                OPV_0_COMMCARE_VALUE,
+                OPV_1_COMMCARE_VALUE,
+                OPV_2_COMMCARE_VALUE,
+                OPV_3_COMMCARE_VALUE
         ));
         final Schedule opv = new Schedule(CHILD_SCHEDULE_OPV, opvMileStones);
 

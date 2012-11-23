@@ -18,6 +18,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.join;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareValues.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
@@ -79,7 +80,7 @@ public class ChildSchedulesServiceTest {
         String manyImmunizations = "bcg opv_0 measles measlesbooster dptbooster2 opvbooster";
 
         new TestForChildEnrollment()
-                .givenEnrollmentWillHappenIn(CHILD_SCHEDULE_MEASLES_BOOSTER, CHILD_SCHEDULE_MEASLES_BOOSTER_MILESTONE)
+                .givenEnrollmentWillHappenIn(CHILD_SCHEDULE_MEASLES_BOOSTER, MEASLES_BOOSTER_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations(manyImmunizations)
                 .shouldEnroll(LocalDate.parse(immunizationsDate),CHILD_SCHEDULE_MEASLES_BOOSTER)
                 .shouldFulfill(CHILD_SCHEDULE_MEASLES_BOOSTER,1)
@@ -97,13 +98,13 @@ public class ChildSchedulesServiceTest {
     @Test
     public void shouldUpdateEnrollmentForBCGOnlyWhenBCGHasBeenProvided() {
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_BCG_MILESTONE)
+                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, BCG_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("bcg")
                 .shouldFulfill(CHILD_SCHEDULE_BCG, 1)
                 .shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_BCG_MILESTONE)
+                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, BCG_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("SOME OTHER IMM")
                 .shouldNotFulfillAnythingElse();
     }
@@ -111,13 +112,13 @@ public class ChildSchedulesServiceTest {
     @Test
     public void shouldUpdateEnrollmentForDPTWhenDPTHasBeenProvided() {
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_DPT_MILESTONE_0,CHILD_SCHEDULE_DPT_MILESTONE_1, CHILD_SCHEDULE_DPT_MILESTONE_2, CHILD_SCHEDULE_DPT_MILESTONE_3)
+                .givenEnrollmentIn(CHILD_SCHEDULE_DPT, DPT_0_COMMCARE_VALUE, DPT_1_COMMCARE_VALUE, DPT_2_COMMCARE_VALUE, DPT_3_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("dpt_0 dpt_1 dpt_2 dpt_3")
                 .shouldFulfill(CHILD_SCHEDULE_DPT, 4)
                 .shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_DPT_MILESTONE_1)
+                .givenEnrollmentIn(CHILD_SCHEDULE_DPT, DPT_1_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("SOME OTHER IMMUNIZATION")
                 .shouldNotFulfillAnythingElse();
     }
@@ -125,13 +126,13 @@ public class ChildSchedulesServiceTest {
     @Test
     public void shouldUpdateEnrollmentForHepatitis() {
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_HEPATITIS_MILESTONE_1, CHILD_SCHEDULE_HEPATITIS_MILESTONE_2, CHILD_SCHEDULE_HEPATITIS_MILESTONE_3, CHILD_SCHEDULE_HEPATITIS_MILESTONE_4)
-                .whenProvidedWithImmunizations("hepb_1 hepb_2 hepb_3 hepb_4")
+                .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, HEPATITIS_0_COMMCARE_VALUE, HEPATITIS_1_COMMCARE_VALUE, HEPATITIS_2_COMMCARE_VALUE, HEPATITIS_3_COMMCARE_VALUE)
+                .whenProvidedWithImmunizations("hepb_0 hepb_1 hepb_2 hepb_3")
                 .shouldFulfill(CHILD_SCHEDULE_HEPATITIS, 4)
                 .shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_HEPATITIS_MILESTONE_1)
+                .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, HEPATITIS_0_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("SOME OTHER IMMUNIZATION")
                 .shouldNotFulfillAnythingElse();
     }
@@ -139,14 +140,14 @@ public class ChildSchedulesServiceTest {
     @Test
     public void shouldUpdateEnrollmentForMeasles() {
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_MEASLES_MILESTONE)
+                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, MEASLES_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("measles")
                 .shouldFulfill(CHILD_SCHEDULE_MEASLES, 1)
                 .shouldEnroll(LocalDate.parse(immunizationsDate), CHILD_SCHEDULE_MEASLES_BOOSTER)
                 .shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_MEASLES_MILESTONE)
+                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, MEASLES_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("SOME OTHER IMMUNIZATION")
                 .shouldNotFulfillAnythingElse();
     }
@@ -154,13 +155,13 @@ public class ChildSchedulesServiceTest {
     @Test
     public void shouldUpdateEnrollmentForOPV() {
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_OPV, CHILD_SCHEDULE_OPV_MILESTONE_0,CHILD_SCHEDULE_OPV_MILESTONE_1, CHILD_SCHEDULE_OPV_MILESTONE_2, CHILD_SCHEDULE_OPV_MILESTONE_3)
+                .givenEnrollmentIn(CHILD_SCHEDULE_OPV, OPV_0_COMMCARE_VALUE, OPV_1_COMMCARE_VALUE, OPV_2_COMMCARE_VALUE, OPV_3_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("opv_0 opv_1 opv_2 opv_3")
                 .shouldFulfill(CHILD_SCHEDULE_OPV, 4)
                 .shouldNotFulfillAnythingElse();
 
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_OPV, CHILD_SCHEDULE_OPV_MILESTONE_2)
+                .givenEnrollmentIn(CHILD_SCHEDULE_OPV, OPV_2_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("SOME OTHER IMMUNIZATION")
                 .shouldNotFulfillAnythingElse();
     }
@@ -168,9 +169,9 @@ public class ChildSchedulesServiceTest {
     @Test
     public void shouldUpdateEnrollmentsWhenMultipleDifferentKindsOfEnrollmentsArePresent() {
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_BCG_MILESTONE)
-                .givenEnrollmentIn(CHILD_SCHEDULE_OPV, CHILD_SCHEDULE_OPV_MILESTONE_1)
-                .givenEnrollmentIn(CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_DPT_MILESTONE_3)
+                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, BCG_COMMCARE_VALUE)
+                .givenEnrollmentIn(CHILD_SCHEDULE_OPV, OPV_1_COMMCARE_VALUE)
+                .givenEnrollmentIn(CHILD_SCHEDULE_DPT, DPT_3_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("dpt_1 dpt_3 hepb_0 hepb_3 measlesbooster opv_1")
                 .shouldFulfill(CHILD_SCHEDULE_OPV, 1)
                 .shouldFulfill(CHILD_SCHEDULE_DPT, 1)
@@ -180,10 +181,10 @@ public class ChildSchedulesServiceTest {
     @Test
     public void shouldCloseAllOpenSchedulesWhenAChildIsUnEnrolled() {
         new TestForChildEnrollment()
-                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_BCG_MILESTONE)
-                .givenEnrollmentIn(CHILD_SCHEDULE_OPV, CHILD_SCHEDULE_OPV_MILESTONE_1)
-                .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_HEPATITIS_MILESTONE_1)
-                .givenEnrollmentIn(CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_DPT_MILESTONE_0)
+                .givenEnrollmentIn(CHILD_SCHEDULE_BCG, BCG_COMMCARE_VALUE)
+                .givenEnrollmentIn(CHILD_SCHEDULE_OPV, OPV_1_COMMCARE_VALUE)
+                .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, HEPATITIS_0_COMMCARE_VALUE)
+                .givenEnrollmentIn(CHILD_SCHEDULE_DPT, DPT_0_COMMCARE_VALUE)
                 .whenUnenrolled()
                 .shouldUnEnrollFrom(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_OPV, CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_DPT);
     }
@@ -265,11 +266,11 @@ public class ChildSchedulesServiceTest {
         }
 
         private void setExpectationsOnScheduleTrackingService() {
-            this.givenEnrollmentIn(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_BCG_MILESTONE)
-                    .givenEnrollmentIn(CHILD_SCHEDULE_DPT, CHILD_SCHEDULE_DPT_MILESTONE_0, CHILD_SCHEDULE_DPT_MILESTONE_1, CHILD_SCHEDULE_DPT_MILESTONE_2, CHILD_SCHEDULE_DPT_MILESTONE_3)
-                    .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_HEPATITIS_MILESTONE_1, CHILD_SCHEDULE_HEPATITIS_MILESTONE_2, CHILD_SCHEDULE_HEPATITIS_MILESTONE_3, CHILD_SCHEDULE_HEPATITIS_MILESTONE_4)
-                    .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_MEASLES_MILESTONE)
-                    .givenEnrollmentIn(CHILD_SCHEDULE_OPV, CHILD_SCHEDULE_OPV_MILESTONE_0, CHILD_SCHEDULE_OPV_MILESTONE_1, CHILD_SCHEDULE_OPV_MILESTONE_2, CHILD_SCHEDULE_OPV_MILESTONE_3);
+            this.givenEnrollmentIn(CHILD_SCHEDULE_BCG, BCG_COMMCARE_VALUE)
+                    .givenEnrollmentIn(CHILD_SCHEDULE_DPT, DPT_0_COMMCARE_VALUE, DPT_1_COMMCARE_VALUE, DPT_2_COMMCARE_VALUE, DPT_3_COMMCARE_VALUE)
+                    .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, HEPATITIS_0_COMMCARE_VALUE, HEPATITIS_1_COMMCARE_VALUE, HEPATITIS_2_COMMCARE_VALUE, HEPATITIS_3_COMMCARE_VALUE)
+                    .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, MEASLES_COMMCARE_VALUE)
+                    .givenEnrollmentIn(CHILD_SCHEDULE_OPV, OPV_0_COMMCARE_VALUE, OPV_1_COMMCARE_VALUE, OPV_2_COMMCARE_VALUE, OPV_3_COMMCARE_VALUE);
         }
 
         public TestForChildEnrollment shouldEnroll(String... expectedEnrolledSchedules) {

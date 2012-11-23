@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareValues.*;
 import static org.ei.drishti.common.domain.Indicator.*;
 
 @Service
@@ -34,26 +35,28 @@ public class ChildReportingService {
         this.allEligibleCouples = allEligibleCouples;
         immunizationToIndicator = new HashMap<>();
 
-        immunizationToIndicator.put("bcg", BCG);
+        immunizationToIndicator.put(BCG_COMMCARE_VALUE, BCG);
 
-        immunizationToIndicator.put("dpt_1", DPT);
-        immunizationToIndicator.put("dpt_2", DPT);
-        immunizationToIndicator.put("dpt_3", DPT);
-        immunizationToIndicator.put("dptbooster_1", DPT);
-        immunizationToIndicator.put("dptbooster_2", DPT);
+        immunizationToIndicator.put(DPT_0_COMMCARE_VALUE, DPT);
+        immunizationToIndicator.put(DPT_1_COMMCARE_VALUE, DPT);
+        immunizationToIndicator.put(DPT_2_COMMCARE_VALUE, DPT);
+        immunizationToIndicator.put(DPT_3_COMMCARE_VALUE, DPT);
+        immunizationToIndicator.put(DPT_BOOSTER_1_COMMCARE_VALUE, DPT);
+        immunizationToIndicator.put(DPT_BOOSTER_2_COMMCARE_VALUE, DPT);
 
-        immunizationToIndicator.put("hepB_0", HEP);
-        immunizationToIndicator.put("hepb_1", HEP);
-        immunizationToIndicator.put("hepb_2", HEP);
-        immunizationToIndicator.put("hepb_3", HEP);
+        immunizationToIndicator.put(HEPATITIS_0_COMMCARE_VALUE, HEP);
+        immunizationToIndicator.put(HEPATITIS_1_COMMCARE_VALUE, HEP);
+        immunizationToIndicator.put(HEPATITIS_2_COMMCARE_VALUE, HEP);
+        immunizationToIndicator.put(HEPATITIS_3_COMMCARE_VALUE, HEP);
 
-        immunizationToIndicator.put("opv_0", OPV);
-        immunizationToIndicator.put("opv_1", OPV);
-        immunizationToIndicator.put("opv_2", OPV);
-        immunizationToIndicator.put("opvbooster", OPV);
+        immunizationToIndicator.put(OPV_0_COMMCARE_VALUE, OPV);
+        immunizationToIndicator.put(OPV_1_COMMCARE_VALUE, OPV);
+        immunizationToIndicator.put(OPV_2_COMMCARE_VALUE, OPV);
+        immunizationToIndicator.put(OPV_3_COMMCARE_VALUE, OPV);
+        immunizationToIndicator.put(OPV_BOOSTER_COMMCARE_VALUE, OPV);
 
-        immunizationToIndicator.put("measles", MEASLES);
-        immunizationToIndicator.put("MeaslesBooster", MEASLES);
+        immunizationToIndicator.put(MEASLES_COMMCARE_VALUE, MEASLES);
+        immunizationToIndicator.put(MEASLES_BOOSTER_COMMCARE_VALUE, MEASLES);
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap reportingData) {
@@ -81,10 +84,13 @@ public class ChildReportingService {
                 continue;
             }
 
-            ReportingData data = ReportingData.serviceProvidedData(reportingData.get("anmIdentifier"), child.thaayiCardNumber(),
+            ReportingData serviceProvidedData = ReportingData.serviceProvidedData(reportingData.get("anmIdentifier"), child.thaayiCardNumber(),
                     indicator, reportingData.get("immunizationsProvidedDate"), couple.location());
+            reportingService.sendReportData(serviceProvidedData);
 
-            reportingService.sendReportData(data);
+            ReportingData anmReportData = ReportingData.anmReportData(reportingData.get("anmIdentifier"), child.thaayiCardNumber(),
+                    indicator, reportingData.get("immunizationsProvidedDate"));
+            reportingService.sendReportData(anmReportData);
         }
     }
 }
