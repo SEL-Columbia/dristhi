@@ -7,11 +7,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import java.util.List;
 
 public class MonthSummaryDatum {
-    private final String month;
-    private final String year;
-    private final String currentProgress;
-    private final String aggregatedProgress;
-    private final List<String> externalIDs;
+    private String month;
+    private String year;
+    private String currentProgress;
+    private String aggregatedProgress;
+    private List<String> externalIDs;
 
     public MonthSummaryDatum(String month, String year, String currentProgress, String aggregatedProgress, List<String> externalIDs) {
         this.month = month;
@@ -19,6 +19,29 @@ public class MonthSummaryDatum {
         this.currentProgress = currentProgress;
         this.aggregatedProgress = aggregatedProgress;
         this.externalIDs = externalIDs;
+    }
+
+    public MonthSummaryDatum() {
+    }
+
+    public String month() {
+        return month;
+    }
+
+    public String year() {
+        return year;
+    }
+
+    public String currentProgress() {
+        return currentProgress;
+    }
+
+    public String aggregatedProgress() {
+        return aggregatedProgress;
+    }
+
+    public List<String> externalIDs() {
+        return externalIDs;
     }
 
     @Override
