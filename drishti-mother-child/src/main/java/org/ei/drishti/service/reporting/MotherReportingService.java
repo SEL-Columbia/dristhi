@@ -15,6 +15,7 @@ import static org.ei.drishti.common.domain.Indicator.*;
 
 @Service
 public class MotherReportingService {
+    public static final int NUMBER_OF_DAYS_IN_12_WEEKS = 84;
     private ReportingService reportingService;
     private AllMothers allMothers;
 
@@ -25,12 +26,15 @@ public class MotherReportingService {
     }
 
     public void registerANC(SafeMap reportData, String village, String subCenter) {
-        boolean isNotWithin12WeeksOfLMP = DateUtil.today().minusDays(84).isAfter(LocalDate.parse(reportData.get("lmp")));
+        boolean isNotWithin12WeeksOfLMP = DateUtil.today().minusDays(NUMBER_OF_DAYS_IN_12_WEEKS).isAfter(LocalDate.parse(reportData.get("lmp")));
         Indicator indicator = isNotWithin12WeeksOfLMP ? Indicator.ANC_AFTER_12_WEEKS : Indicator.ANC_BEFORE_12_WEEKS;
 
-        ReportingData data = ReportingData.serviceProvidedData(reportData.get("anmIdentifier"), reportData.get("thaayiCardNumber"), indicator, DateUtil.today().toString(),
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(reportData.get("anmIdentifier"), reportData.get("thaayiCardNumber"), indicator, DateUtil.today().toString(),
                 new Location(village, subCenter, reportData.get("phc")));
-        reportingService.sendReportData(data);
+        reportingService.sendReportData(serviceProvidedData);
+
+        ReportingData anmReportData = ReportingData.anmReportData(reportData.get("anmIdentifier"), reportData.get("thaayiCardNumber"), indicator, DateUtil.today().toString());
+        reportingService.sendReportData(anmReportData);
     }
 
     public void closeANC(SafeMap reportData) {

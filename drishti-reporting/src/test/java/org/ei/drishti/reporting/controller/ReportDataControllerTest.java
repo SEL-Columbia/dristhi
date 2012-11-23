@@ -1,9 +1,7 @@
 package org.ei.drishti.reporting.controller;
 
-import org.ei.drishti.common.domain.ANMIndicatorSummary;
 import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.domain.ReportingData;
-import org.ei.drishti.common.util.ANMIndicatorSummaryFactory;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
@@ -16,7 +14,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static org.ei.drishti.common.domain.Indicator.BCG;
-import static org.ei.drishti.common.domain.Indicator.IUD;
+import static org.ei.drishti.common.domain.Indicator.FP_IUD;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
 import static org.ei.drishti.common.util.ANMIndicatorSummaryFactory.createSummaryForANC;
@@ -50,7 +48,7 @@ public class ReportDataControllerTest {
 
     @Test
     public void shouldSaveANMReportDataInDB() throws Exception {
-        ReportingData data = anmReportData("ANM X", "EC Number 1", IUD, "2012-01-01");
+        ReportingData data = anmReportData("ANM X", "EC Number 1", FP_IUD, "2012-01-01");
 
         controller.submit(data);
 

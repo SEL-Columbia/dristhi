@@ -33,8 +33,8 @@ public class ECReportingServiceTest {
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .map()), "bherya", "Sub Center", "PHC X");
 
-        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC NUMBER 1", Indicator.IUD, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
     }
 
     @Test

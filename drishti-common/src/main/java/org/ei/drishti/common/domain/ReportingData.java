@@ -4,11 +4,15 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Location;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.ei.drishti.common.AllConstants.Report.ANM_REPORT_DATA_TYPE;
+import static org.ei.drishti.common.AllConstants.Report.SERVICE_PROVIDED_DATA_TYPE;
 
 public class ReportingData implements Serializable {
     private static final long serialVersionUID = 454645765753L;
@@ -19,12 +23,12 @@ public class ReportingData implements Serializable {
     private Map<String, String> data;
 
     public static ReportingData serviceProvidedData(String anmIdentifier, String externalId, Indicator indicator, String date, Location location) {
-        return new ReportingData("serviceProvided").with("anmIdentifier", anmIdentifier).with("indicator", indicator.value())
+        return new ReportingData(SERVICE_PROVIDED_DATA_TYPE).with("anmIdentifier", anmIdentifier).with("indicator", indicator.value())
                 .with("externalId", externalId).with("village", location.village()).with("subCenter", location.subCenter()).with("phc", location.phc()).with("date", date);
     }
 
     public static ReportingData anmReportData(String anmIdentifier, String externalId, Indicator indicator, String date) {
-        return new ReportingData("anmReportData").with("anmIdentifier", anmIdentifier).with("indicator", indicator.value())
+        return new ReportingData(ANM_REPORT_DATA_TYPE).with("anmIdentifier", anmIdentifier).with("indicator", indicator.value())
                 .with("externalId", externalId).with("date", date);
     }
 
