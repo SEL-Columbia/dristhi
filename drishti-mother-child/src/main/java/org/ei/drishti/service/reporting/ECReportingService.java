@@ -21,7 +21,7 @@ public class ECReportingService {
     }
 
     public void fpMethodChangedWithUpdatedECDetails(SafeMap reporting, String ecNumber, String village, String subCenter, String phc) {
-        if (!reporting.get("fpUpdate").equals("change_fp_product")) {
+        if (!"change_fp_product".equals(reporting.get("fpUpdate"))) {
             return;
         }
 
@@ -34,12 +34,12 @@ public class ECReportingService {
             return;
         }
 
-        ReportingData anmReportData = ReportingData.anmReportData(reporting.get("anmIdentifier"), reporting.get("caseId"),
-                indicator, reporting.get("familyPlanningMethodChangeDate"));
-        service.sendReportData(anmReportData);
-
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData(reporting.get("anmIdentifier"), ecNumber,
                 indicator, reporting.get("familyPlanningMethodChangeDate"), new Location(village, subCenter, phc));
         service.sendReportData(serviceProvidedData);
+
+        ReportingData anmReportData = ReportingData.anmReportData(reporting.get("anmIdentifier"), reporting.get("caseId"),
+                indicator, reporting.get("familyPlanningMethodChangeDate"));
+        service.sendReportData(anmReportData);
     }
 }
