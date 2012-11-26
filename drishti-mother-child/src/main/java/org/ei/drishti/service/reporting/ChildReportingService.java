@@ -88,7 +88,7 @@ public class ChildReportingService {
                     indicator, reportingData.get("immunizationsProvidedDate"), couple.location());
             reportingService.sendReportData(serviceProvidedData);
 
-            ReportingData anmReportData = ReportingData.anmReportData(reportingData.get("anmIdentifier"), child.thaayiCardNumber(),
+            ReportingData anmReportData = ReportingData.anmReportData(reportingData.get("anmIdentifier"), child.caseId(),
                     indicator, reportingData.get("immunizationsProvidedDate"));
             reportingService.sendReportData(anmReportData);
         }

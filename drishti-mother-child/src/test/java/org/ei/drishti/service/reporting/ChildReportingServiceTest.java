@@ -47,7 +47,7 @@ public class ChildReportingServiceTest {
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hepb_1 opv_0", "2012-01-01"), reportingData);
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", OPV, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "TC 1", OPV, "2012-01-01");
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", OPV, "2012-01-01");
         verify(reportingService).sendReportData(serviceProvidedData);
         verify(reportingService).sendReportData(anmReportData);
     }
@@ -63,9 +63,9 @@ public class ChildReportingServiceTest {
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "dpt1 bcg dpt2 measles", "2012-01-01"), reportingData);
 
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "TC 1", BCG, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", BCG, "2012-01-01"));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", MEASLES, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "TC 1", MEASLES, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", MEASLES, "2012-01-01"));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class ChildReportingServiceTest {
         childReportingService.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", immunizationProvided, "2012-01-01"), reportingData);
 
         verify(fakeReportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", expectedIndicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(fakeReportingService).sendReportData(ReportingData.anmReportData("ANM X", "TC 1", expectedIndicator, "2012-01-01"));
+        verify(fakeReportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", expectedIndicator, "2012-01-01"));
         verifyNoMoreInteractions(fakeReportingService);
     }
 
@@ -146,7 +146,7 @@ public class ChildReportingServiceTest {
         service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "NON_EXISTENT_IMMUNIZATION bcg", "2012-01-01"), reportingData);
 
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "TC 1", BCG, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", BCG, "2012-01-01"));
         verifyZeroInteractions(reportingService);
     }
 
