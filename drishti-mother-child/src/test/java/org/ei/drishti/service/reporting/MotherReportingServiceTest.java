@@ -52,9 +52,9 @@ public class MotherReportingServiceTest extends BaseUnitTest{
     @Test
     public void shouldReportCloseANCCaseIfReasonIsDeath() throws Exception {
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "Case X");
+        reportData.put("caseId", "CASE-1");
         reportData.put("closeReason", "death_of_woman");
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("CASE-1", "EC-CASE-1", "TC 1", "Theresa")
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(new Mother("CASE-1", "EC-CASE-1", "TC 1", "Theresa")
                 .withAnm("ANM X", "12345")
                 .withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -62,7 +62,7 @@ public class MotherReportingServiceTest extends BaseUnitTest{
 
         ReportingData serviceProvided = ReportingData.serviceProvidedData("ANM X", "TC 1", MOTHER_MORTALITY, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
         verify(reportingService).sendReportData(serviceProvided);
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "TC 1", MOTHER_MORTALITY, "2012-01-01");
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE-1", MOTHER_MORTALITY, "2012-01-01");
         verify(reportingService).sendReportData(anmReportData);
     }
 

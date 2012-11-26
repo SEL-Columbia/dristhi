@@ -51,7 +51,7 @@ public class MotherReportingService {
                 new Location(mother.village(), mother.subCenter(), mother.phc()));
         reportingService.sendReportData(serviceProvided);
 
-        ReportingData anmReportData = ReportingData.anmReportData(mother.anmIdentifier(), mother.thaayiCardNo(), MOTHER_MORTALITY, DateUtil.today().toString());
+        ReportingData anmReportData = ReportingData.anmReportData(mother.anmIdentifier(), mother.caseId(), MOTHER_MORTALITY, DateUtil.today().toString());
         reportingService.sendReportData(anmReportData);
     }
 
