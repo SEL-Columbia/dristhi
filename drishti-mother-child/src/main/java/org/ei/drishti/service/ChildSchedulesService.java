@@ -40,7 +40,7 @@ public class ChildSchedulesService {
 
     public void enrollChild(ChildInformation information) {
         enrollNonDependentModules(information);
-        updateEnrollments(new ChildImmunizationUpdationRequest(information.caseId(), information.anmIdentifier(), join(information.immunizationsProvided(), " "), LocalDate.now().toString()));
+        updateEnrollments(new ChildImmunizationUpdationRequest(information.caseId(), information.anmIdentifier(), join(information.immunizationsProvidedList(), " "), LocalDate.now().toString()));
     }
 
     public void updateEnrollments(ChildImmunizationUpdationRequest information) {

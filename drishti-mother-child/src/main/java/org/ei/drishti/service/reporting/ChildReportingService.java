@@ -3,6 +3,7 @@ package org.ei.drishti.service.reporting;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
+import org.ei.drishti.contract.ChildInformation;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllChildren;
@@ -60,36 +61,44 @@ public class ChildReportingService {
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap reportingData) {
-        Child child = allChildren.findByCaseId(updationRequest.caseId());
+        report(updationRequest.caseId(), updationRequest.immunizationsProvidedList(), reportingData.get("immunizationsProvidedDate"), reportingData.get("anmIdentifier"));
+    }
+
+    public void updateChildImmunization(ChildInformation childInformation) {
+        report(childInformation.caseId(),childInformation.immunizationsProvidedList(),childInformation.dateOfBirth().toString(),childInformation.anmIdentifier());
+    }
+
+    private void report(String childCaseId, List<String> immunizationsProvided, String immunizationsProvidedDate, String anmIdentifier) {
+        Child child = allChildren.findByCaseId(childCaseId);
         if (child == null) {
-            logger.warn("Child Case not found for child with CaseID " + updationRequest.caseId());
+            logger.warn("Child Case not found for child with CaseID " + childCaseId);
             return;
         }
 
         EligibleCouple couple = allEligibleCouples.findByCaseId(child.ecCaseId());
         if (couple == null) {
-            logger.warn("EC Case not found for child with CaseID " + child.ecCaseId());
+            logger.warn("EC Case not found for child with CaseID " + child.caseId() + " ec CaseID : " + child.ecCaseId());
             return;
         }
 
-        List<String> immunizations = updationRequest.immunizationsProvidedList();
+        List<String> immunizations = immunizationsProvided;
         List<String> previouslyProvided = child.immunizationsProvided();
         immunizations.removeAll(previouslyProvided);
 
         for (String immunizationProvidedThisTime : immunizations) {
             Indicator indicator = immunizationToIndicator.get(immunizationProvidedThisTime);
             if (indicator == null) {
-                logger.warn("Not reporting: Invalid immunization: " + immunizationProvidedThisTime + " in " +
-                        updationRequest + " with reporting data: " + reportingData);
+                logger.warn("Not reporting: Invalid immunization: " + immunizationProvidedThisTime + " for childCaseId: " +
+                        childCaseId + " with immunizations provided: " + immunizationsProvided);
                 continue;
             }
 
-            ReportingData serviceProvidedData = ReportingData.serviceProvidedData(reportingData.get("anmIdentifier"), child.thaayiCardNumber(),
-                    indicator, reportingData.get("immunizationsProvidedDate"), couple.location());
+            ReportingData serviceProvidedData = ReportingData.serviceProvidedData(anmIdentifier, child.thaayiCardNumber(),
+                    indicator, immunizationsProvidedDate, couple.location());
             reportingService.sendReportData(serviceProvidedData);
 
-            ReportingData anmReportData = ReportingData.anmReportData(reportingData.get("anmIdentifier"), child.caseId(),
-                    indicator, reportingData.get("immunizationsProvidedDate"));
+            ReportingData anmReportData = ReportingData.anmReportData(anmIdentifier, child.caseId(),
+                    indicator, immunizationsProvidedDate);
             reportingService.sendReportData(anmReportData);
         }
     }

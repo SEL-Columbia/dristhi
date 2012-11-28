@@ -44,7 +44,7 @@ public class ChildInformation {
         return name;
     }
 
-    public List<String> immunizationsProvided() {
+    public List<String> immunizationsProvidedList() {
         return new ArrayList<>(Arrays.asList(immunizationsProvided.split(" ")));
     }
 

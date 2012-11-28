@@ -39,7 +39,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Mock
     private AllChildren allChildren;
     @Mock
-    private ChildReportingService reportingService;
+    private ChildReportingService childReportingService;
 
     private PNCService service;
     private Map<String, Map<String, String>> EXTRA_DATA = mapOf("details", mapOf("someKey", "someValue"));
@@ -47,7 +47,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new PNCService(actionService, childSchedulesService, allMothers, allChildren, reportingService);
+        service = new PNCService(actionService, childSchedulesService, allMothers, allChildren, childReportingService);
     }
 
     @Test
@@ -69,9 +69,22 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
         ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", EXTRA_DATA);
+
         service.registerChild(childInformation);
 
         verify(childSchedulesService).enrollChild(childInformation);
+    }
+
+    @Test
+    public void shoulReportChildImmunizationsDuringRegistration() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
+        ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", EXTRA_DATA);
+
+        service.registerChild(childInformation);
+
+        verify(childReportingService).updateChildImmunization(childInformation);
     }
 
     @Test
@@ -210,7 +223,7 @@ public class PNCServiceTest extends BaseUnitTest {
         service.updateChildImmunization(request, EXTRA_DATA);
 
         verifyZeroInteractions(actionService);
-        verifyZeroInteractions(reportingService);
+        verifyZeroInteractions(childReportingService);
         verifyZeroInteractions(childSchedulesService);
     }
 
@@ -224,8 +237,8 @@ public class PNCServiceTest extends BaseUnitTest {
 
         service.updateChildImmunization(request, EXTRA_DATA);
 
-        InOrder inOrder = inOrder(reportingService, childSchedulesService);
-        inOrder.verify(reportingService).updateChildImmunization(eq(request), any(SafeMap.class));
+        InOrder inOrder = inOrder(childReportingService, childSchedulesService);
+        inOrder.verify(childReportingService).updateChildImmunization(eq(request), any(SafeMap.class));
         inOrder.verify(childSchedulesService).updateEnrollments(request);
     }
 
@@ -235,7 +248,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
 
         ActionService alertServiceMock = mock(ActionService.class);
-        PNCService pncService = new PNCService(alertServiceMock, mock(ChildSchedulesService.class), allMothers, allChildren, reportingService);
+        PNCService pncService = new PNCService(alertServiceMock, mock(ChildSchedulesService.class), allMothers, allChildren, childReportingService);
 
         pncService.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"));
 
@@ -248,7 +261,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
 
         ActionService alertServiceMock = mock(ActionService.class);
-        PNCService pncService = new PNCService(alertServiceMock, mock(ChildSchedulesService.class), allMothers, allChildren, reportingService);
+        PNCService pncService = new PNCService(alertServiceMock, mock(ChildSchedulesService.class), allMothers, allChildren, childReportingService);
 
         pncService.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"));
 
@@ -267,7 +280,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
 
         ActionService actionService = mock(ActionService.class);
-        PNCService pncService = new PNCService(actionService, mock(ChildSchedulesService.class), allMothers, allChildren, reportingService);
+        PNCService pncService = new PNCService(actionService, mock(ChildSchedulesService.class), allMothers, allChildren, childReportingService);
         when(allChildren.childExists("Case X")).thenReturn(true);
         when(allChildren.updateDetails("Case X", EXTRA_DATA.get("details")))
                 .thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female")
@@ -286,7 +299,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         ActionService actionService = mock(ActionService.class);
-        PNCService pncService = new PNCService(actionService, mock(ChildSchedulesService.class), allMothers, allChildren, reportingService);
+        PNCService pncService = new PNCService(actionService, mock(ChildSchedulesService.class), allMothers, allChildren, childReportingService);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
 
         pncService.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), providedImmunizations, EXTRA_DATA));
