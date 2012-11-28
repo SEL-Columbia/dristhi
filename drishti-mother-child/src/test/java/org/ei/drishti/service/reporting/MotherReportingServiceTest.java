@@ -2,8 +2,11 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.contract.AnteNatalCareInformation;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
@@ -21,13 +24,16 @@ public class MotherReportingServiceTest extends BaseUnitTest{
     private ReportingService reportingService;
     @Mock
     private AllMothers allMothers;
+    @Mock
+    private AllEligibleCouples allEligibleCouples;
+
 
     private MotherReportingService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new MotherReportingService(reportingService, allMothers);
+        service = new MotherReportingService(reportingService, allMothers, allEligibleCouples);
         mockCurrentDate(new LocalDate(2012, 1, 1));
     }
 
@@ -89,11 +95,49 @@ public class MotherReportingServiceTest extends BaseUnitTest{
         verifyZeroInteractions(reportingService);
     }
 
+    @Test
+    public void shouldReportTTProvidedIfTTVisitHasHappened(){
+        Mother mother = new Mother("CASE-X","ECCaseId X","TC 1","motherName");
+        EligibleCouple ec = new EligibleCouple("ECCaseId X","ecNumber").withLocation("bherya", "Sub Center", "PHC X");
+        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
+
+        when(allMothers.findByCaseId("CASE-X")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("ECCaseId X")).thenReturn(ec);
+        service.ttVisitHasHappened(ancInformation);
+
+        ReportingData serviceProvided = ReportingData.serviceProvidedData("ANM 1", "TC 1", TT, "2012-01-23", new Location("bherya", "Sub Center", "PHC X"));
+        verify(reportingService).sendReportData(serviceProvided);
+        ReportingData anmReportData = ReportingData.anmReportData("ANM 1", "CASE-X", TT, "2012-01-23");
+        verify(reportingService).sendReportData(anmReportData);
+    }
+
+    @Test
+    public void shouldNotReportTTProvidedIfTTVisitHasHappenedAndMotherIsNotFound(){
+        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
+
+        when(allMothers.findByCaseId("CASE-X")).thenReturn(null);
+        service.ttVisitHasHappened(ancInformation);
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldNotReportTTProvidedIfTTVisitHasHappenedAndECIsNotFound(){
+        Mother mother = new Mother("CASE-X","ECCaseId X","TC 1","motherName");
+        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
+
+        when(allMothers.findByCaseId("CASE-X")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("ECCaseId X")).thenReturn(null);
+        service.ttVisitHasHappened(ancInformation);
+
+        verifyZeroInteractions(reportingService);
+    }
+
     private void assertThatIndicatorIsSetBasedOnLMP(String lmp, Indicator indicator) {
         SafeMap reportData = setUpReportData(lmp);
 
         ReportingService fakeReportingService = mock(ReportingService.class);
-        MotherReportingService motherReportingService = new MotherReportingService(fakeReportingService, allMothers);
+        MotherReportingService motherReportingService = new MotherReportingService(fakeReportingService, allMothers, allEligibleCouples);
 
         motherReportingService.registerANC(reportData, "bherya", "Sub Center");
 

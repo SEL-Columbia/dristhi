@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
@@ -99,6 +98,7 @@ public class ANCService {
         }
         if (ancInformation.wasTTShotProvided()) {
             ancSchedulesService.ttVisitHasHappened(ancInformation);
+            reportingService.ttVisitHasHappened(ancInformation);
         }
 
         Mother motherWithUpdatedDetails = allMothers.updateDetails(ancInformation.caseId(), extraData.get("details"));

@@ -188,6 +188,29 @@ public class ANCServiceTest {
         verify(ancSchedulesService, times(0)).ttVisitHasHappened(ancInformation);
     }
 
+
+    @Test
+    public void shouldReportTTProvidedOnlyWhenTTDoseWasProvided() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName"));
+
+        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10").withTTDose("TT 2");
+        service.ancCareHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
+
+        verify(motherReportingService).ttVisitHasHappened(ancInformation);
+    }
+
+    @Test
+    public void shouldNotReportTTProvidedWhenTTDoseWasNotProvided() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName"));
+
+        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
+        service.ancCareHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
+
+        verify(motherReportingService, times(0)).ttVisitHasHappened(ancInformation);
+    }
+
     @Test
     public void shouldNotTellANCSchedulesServiceThatIFAIsProvidedWhenNumberOfIFATabletsProvidedIsEmpty() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
