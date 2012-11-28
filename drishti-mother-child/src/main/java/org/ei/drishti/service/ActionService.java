@@ -129,4 +129,8 @@ public class ActionService {
     public void reportForIndicator(String anmIdentifier, ActionData actionData) {
         allActions.add(new Action("", anmIdentifier, actionData));
     }
+
+    public void deleteReportActions() {
+        allActions.deleteAllByTarget("report");
+    }
 }

@@ -25,6 +25,7 @@ public class ANMReportingService {
     }
 
     public void processReports(List<ANMReport> reports) {
+        actionService.deleteReportActions();
         for (ANMReport report : reports) {
             for (ANMIndicatorSummary summary : report.summaries()) {
                 LambdaList<Object> monthSummaryData = with(summary.monthlySummaries()).convert(new Converter<MonthSummary, Object>() {

@@ -69,6 +69,10 @@ public class Action extends MotechBaseDataObject {
         return details;
     }
 
+    public String getActionTarget() {
+        return actionTarget;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, false, null, new String[]{"timeStamp"});

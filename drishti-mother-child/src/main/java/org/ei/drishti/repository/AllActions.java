@@ -4,6 +4,7 @@ import org.ei.drishti.domain.Action;
 import org.ektorp.BulkDeleteDocument;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
+import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,15 @@ public class AllActions extends MotechBaseRepository<Action> {
     public void addWithDelete(Action action, String actionTarget) {
         deleteAll(findByActionTargetAndCaseId(actionTarget, action.caseID()));
         super.add(action);
+    }
+
+    public void deleteAllByTarget(String target) {
+        deleteAll(findByActionTarget(target));
+    }
+
+    @GenerateView
+    private List<Action> findByActionTarget(String target) {
+        return queryView("by_actionTarget", target);
     }
 
     @View(name = "action_by_anm_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.anmIdentifier, doc.timeStamp], null); } }")

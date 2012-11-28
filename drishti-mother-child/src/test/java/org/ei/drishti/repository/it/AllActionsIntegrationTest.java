@@ -115,6 +115,30 @@ public class AllActionsIntegrationTest {
         assertEquals(asList(actionOfAnotherANM), allActions.findByANMIDAndTimeStamp("ANM 2", 0));
     }
 
+    @Test
+    public void shouldRemoveAllExistingActionsByTarget() {
+        Action firstAlertAction = new Action("Case X", "ANM 1", alert());
+        Action secondAlertAction = new Action("Case Y", "ANM 1", alert());
+        Action anotherAction = new Action("Case Z", "ANM 1", ActionData.registerPregnancy("EC Case 1", "Thaayi 1", DateUtil.today(), new HashMap<String, String>()));
+        allActions.add(firstAlertAction);
+        allActions.add(secondAlertAction);
+        allActions.add(anotherAction);
+
+        allActions.deleteAllByTarget("alert");
+
+        assertEquals(asList(anotherAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
+    }
+
+    @Test
+    public void shouldNotDoAnythingIfNoActionsAreFoundForATarget() {
+        Action alertAction = new Action("Case X", "ANM 1", alert());
+        allActions.add(alertAction);
+
+        allActions.deleteAllByTarget("report");
+
+        assertEquals(asList(alertAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
+    }
+
     private ActionData alert() {
         return ActionData.createAlert(mother, "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3));
     }

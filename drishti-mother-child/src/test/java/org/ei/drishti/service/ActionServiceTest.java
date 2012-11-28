@@ -232,4 +232,11 @@ public class ActionServiceTest {
 
         verify(allActions).add(new Action("", "ANM X", summaryActionData));
     }
+
+    @Test
+    public void shouldDeleteAllActionsWithTargetReport() {
+        service.deleteReportActions();
+
+        verify(allActions).deleteAllByTarget("report");
+    }
 }
