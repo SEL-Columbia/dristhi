@@ -29,6 +29,8 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private String gender;
     @JsonProperty
+    private String dateOfBirth;
+    @JsonProperty
     private Map<String, String> details;
 
     private Child() {
@@ -82,6 +84,11 @@ public class Child extends MotechBaseDataObject {
         return details;
     }
 
+    public String dateOfBirth() {
+        return dateOfBirth;
+    }
+
+    //These getters are used by CouchDB Repo
     private String getCaseId() {
         return caseId;
     }
@@ -103,5 +110,10 @@ public class Child extends MotechBaseDataObject {
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(17, 37, this, false, getClass());
+    }
+
+    public Child withDateOfBirth(String dob) {
+        this.dateOfBirth = dob;
+        return this;
     }
 }

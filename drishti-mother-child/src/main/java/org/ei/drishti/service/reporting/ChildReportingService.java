@@ -2,6 +2,7 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildInformation;
 import org.ei.drishti.domain.Child;
@@ -9,6 +10,7 @@ import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.util.SafeMap;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import static org.ei.drishti.common.domain.Indicator.*;
 
 @Service
 public class ChildReportingService {
+    public static final int CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS = 11;
     private final ReportingService reportingService;
     private final AllChildren allChildren;
     private AllEligibleCouples allEligibleCouples;
@@ -120,6 +123,12 @@ public class ChildReportingService {
         EligibleCouple couple = allEligibleCouples.findByCaseId(child.ecCaseId());
         if (couple == null) {
             logECNotFound(child);
+            return;
+        }
+
+        LocalDate childDateOfBirth = LocalDate.parse(child.dateOfBirth());
+        if((childDateOfBirth.plusMonths(CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS).isBefore(DateUtil.today()))){
+            logger.warn("Not reporting for child because child's age is more than " + CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS + " months.");
             return;
         }
 

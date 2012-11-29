@@ -2,6 +2,7 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildInformation;
 import org.ei.drishti.domain.Child;
@@ -10,12 +11,14 @@ import org.ei.drishti.domain.Location;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.util.SafeMap;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.util.EasyMap.create;
@@ -150,13 +153,14 @@ public class ChildReportingServiceTest {
         verify(reportingService).sendReportData(anmReportData);
     }
 
-
     @Test
     public void shouldReportCloseChildCaseWhenReasonIsDeath() {
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female"));
+        DateUtil.fakeIt(LocalDate.parse("2012-11-01"));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female").withDateOfBirth("2012-03-05"));
         when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.closeChild(create("closeReason", "death_of_child").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate","2012-03-05").map());
+        Map<String, String> reportData = create("closeReason", "death_of_child").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate", "2012-03-05").map();
+        service.closeChild(reportData);
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", CHILD_MORTALITY, "2012-03-05", new Location("bherya", "Sub Center", "PHC X"));
         ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", CHILD_MORTALITY, "2012-03-05");
@@ -169,7 +173,53 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female"));
         when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.closeChild(create("closeReason", "child_over5").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate","2012-03-05").map());
+        Map<String, String> reportData = create("closeReason", "child_over5").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate", "2012-03-05").map();
+        service.closeChild(reportData);
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldSendChildReportingDataWhenChildIsExactlyElevenMonthsOld() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2012-12-01"));
+        Child twelveMonthOldChild = new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female").withDateOfBirth("2012-01-01");
+        when(allChildren.findByCaseId("CASE X")).thenReturn(twelveMonthOldChild);
+        when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
+
+        Map<String, String> reportData = create("closeReason", "death_of_child").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate", "2012-03-05").map();
+        service.closeChild(reportData);
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", CHILD_MORTALITY, "2012-03-05", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", CHILD_MORTALITY, "2012-03-05");
+        verify(reportingService).sendReportData(serviceProvidedData);
+        verify(reportingService).sendReportData(anmReportData);
+    }
+
+    @Test
+    public void shouldSendChildReportingDataWhenChildIsYoungerThanElevenMonths() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2012-11-15"));
+        Child twelveMonthOldChild = new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female").withDateOfBirth("2012-01-01");
+        when(allChildren.findByCaseId("CASE X")).thenReturn(twelveMonthOldChild);
+        when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
+
+        Map<String, String> reportData = create("closeReason", "death_of_child").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate", "2012-03-05").map();
+        service.closeChild(reportData);
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", CHILD_MORTALITY, "2012-03-05", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", CHILD_MORTALITY, "2012-03-05");
+        verify(reportingService).sendReportData(serviceProvidedData);
+        verify(reportingService).sendReportData(anmReportData);
+    }
+
+    @Test
+    public void shouldNotSendChildReportingDataWhenChildIsOlderThanElevenMonths() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2012-12-31"));
+        Child twelveMonthOldChild = new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female").withDateOfBirth("2012-01-01");
+        when(allChildren.findByCaseId("CASE X")).thenReturn(twelveMonthOldChild);
+        when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
+
+        Map<String, String> reportData = create("closeReason", "death_of_child").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate", "2012-03-05").map();
+        service.closeChild(reportData);
 
         verifyZeroInteractions(reportingService);
     }
@@ -179,7 +229,8 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(null);
         when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.closeChild(create("closeReason", "child_over5").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate","2012-03-05").map());
+        Map<String, String> reportData = create("closeReason", "child_over5").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate", "2012-03-05").map();
+        service.closeChild(reportData);
 
         verifyZeroInteractions(reportingService);
     }
@@ -189,7 +240,7 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female"));
         when(allECs.findByCaseId("EC-CASE-1")).thenReturn(null);
 
-        service.closeChild(create("closeReason", "child_over5").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate","2012-03-05").map());
+        service.closeChild(create("closeReason", "child_over5").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate", "2012-03-05").map());
 
         verifyZeroInteractions(reportingService);
     }

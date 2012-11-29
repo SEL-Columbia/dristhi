@@ -53,7 +53,7 @@ public class PNCService {
         }
 
         allChildren.register(new Child(information.caseId(), mother.ecCaseId(), information.motherCaseId(), mother.thaayiCardNo(), information.name(),
-                information.immunizationsProvidedList(), information.gender()).withAnm(information.anmIdentifier()).withDetails(information.details()));
+                information.immunizationsProvidedList(), information.gender()).withAnm(information.anmIdentifier()).withDateOfBirth(information.dateOfBirth().toString()).withDetails(information.details()));
 
         actionService.registerChildBirth(information.caseId(), information.anmIdentifier(), mother.caseId(), mother.thaayiCardNo(), information.dateOfBirth(), information.gender(), information.details());
 

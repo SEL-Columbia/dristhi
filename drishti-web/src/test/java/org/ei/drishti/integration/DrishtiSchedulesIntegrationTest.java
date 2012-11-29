@@ -24,7 +24,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.File;
 import java.util.Date;
 
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_MEASLES;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_MEASLES_BOOSTER;
 import static org.motechproject.scheduletracking.api.domain.WindowName.*;
 import static org.motechproject.util.DateUtil.newDate;
 
@@ -328,7 +329,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
         schedule.assertNoAlerts("DPT Booster 2", earliest);
         schedule.assertAlertsStartWith("DPT Booster 2", due, dateWithYear(1, JANUARY, 2015),dateWithYear(4, JANUARY, 2015), dateWithYear(8, JANUARY, 2015));
-        schedule.assertAlertsStartWith("DPT Booster 2", late, dateWithYear(1, OCTOBER, 2015),dateWithYear(4, OCTOBER, 2015), dateWithYear(8, OCTOBER, 2015));
+        schedule.assertAlertsStartWith("DPT Booster 2", late, dateWithYear(1, OCTOBER, 2015), dateWithYear(4, OCTOBER, 2015), dateWithYear(8, OCTOBER, 2015));
         schedule.assertNoAlerts("DPT Booster 2", max);
 
         visualization.outputTo("child-dpt-booster2.html", 4);
