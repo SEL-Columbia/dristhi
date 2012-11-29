@@ -69,22 +69,9 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
         ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", EXTRA_DATA);
-
         service.registerChild(childInformation);
 
         verify(childSchedulesService).enrollChild(childInformation);
-    }
-
-    @Test
-    public void shoulReportChildImmunizationsDuringRegistration() {
-        DateTime currentTime = DateUtil.now();
-        mockCurrentDate(currentTime);
-        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
-        ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", EXTRA_DATA);
-
-        service.registerChild(childInformation);
-
-        verify(childReportingService).updateChildImmunization(childInformation);
     }
 
     @Test
@@ -250,7 +237,7 @@ public class PNCServiceTest extends BaseUnitTest {
         ActionService alertServiceMock = mock(ActionService.class);
         PNCService pncService = new PNCService(alertServiceMock, mock(ChildSchedulesService.class), allMothers, allChildren, childReportingService);
 
-        pncService.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"));
+        pncService.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"), EXTRA_DATA);
 
         verify(alertServiceMock).deleteAllAlertsForChild("Case X", "DEMO ANM");
     }
@@ -263,16 +250,23 @@ public class PNCServiceTest extends BaseUnitTest {
         ActionService alertServiceMock = mock(ActionService.class);
         PNCService pncService = new PNCService(alertServiceMock, mock(ChildSchedulesService.class), allMothers, allChildren, childReportingService);
 
-        pncService.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"));
+        pncService.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"), EXTRA_DATA);
 
         verify(alertServiceMock).closeChild("Case X", "DEMO ANM");
     }
 
     @Test
     public void shouldUnenrollChildWhoseCaseHasBeenClosed() {
-        service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"));
+        service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"), EXTRA_DATA);
 
         verify(childSchedulesService).unenrollChild("Case X");
+    }
+
+    @Test
+    public void shouldReportWhenChildCaseIsClosed() {
+        service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"), EXTRA_DATA);
+
+        verify(childReportingService).closeChild(EXTRA_DATA.get("reporting"));
     }
 
     private void assertCloseOfAlertsForProvidedImmunizations(String providedImmunizations, String... expectedDeletedAlertsRaised) {
@@ -284,7 +278,7 @@ public class PNCServiceTest extends BaseUnitTest {
         when(allChildren.childExists("Case X")).thenReturn(true);
         when(allChildren.updateDetails("Case X", EXTRA_DATA.get("details")))
                 .thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female")
-                .withDetails(EXTRA_DATA.get("details")));
+                        .withDetails(EXTRA_DATA.get("details")));
 
         pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations, "2012-01-01").withVitaminADose("1"), EXTRA_DATA);
 
@@ -293,6 +287,18 @@ public class PNCServiceTest extends BaseUnitTest {
             verify(actionService).markAlertAsClosedForVisitForChild("Case X", "DEMO ANM", expectedAlert, "2012-01-01");
         }
         verifyNoMoreInteractions(actionService);
+    }
+
+    @Test
+    public void shoulReportChildImmunizationsDuringRegistration() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
+        ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", EXTRA_DATA);
+
+        service.registerChild(childInformation);
+
+        verify(childReportingService).updateChildImmunization(childInformation);
     }
 
     private void assertMissingAlertsAdded(String providedImmunizations, String... expectedAlertsRaised) {

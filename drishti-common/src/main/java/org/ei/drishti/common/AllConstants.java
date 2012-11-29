@@ -7,6 +7,21 @@ public class AllConstants {
         public static final String ANM_REPORT_DATA_TYPE = "anmReportData";
     }
 
+    public static class MetaCommCareFields {
+        public static final String ANM_IDENTIFIER_COMMCARE_FIELD_NAME = "anmIdentifier";
+    }
+
+    public static class CommonCommCareFields {
+        public static final String CASE_ID_COMMCARE_FIELD_NAME = "caseId";
+        public static final String SUBMISSION_DATE_COMMCARE_FIELD_NAME = "submissionDate";
+    }
+
+    public static class ChildCloseCommCareFields {
+        public static final String CLOSE_REASON_COMMCARE_FIELD_NAME = "closeReason";
+        public static final String DEATH_OF_CHILD_COMMCARE_VALUE = "death_of_child";
+    }
+
+
     public static class ChildImmunizationCommCareValues {
         public static final String BCG_COMMCARE_VALUE = "bcg";
 

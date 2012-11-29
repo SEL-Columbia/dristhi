@@ -328,6 +328,14 @@
                     "mappings": {
                         "form|meta|username": "anmIdentifier",
                         "form|case|@case_id": "caseId"
+                    },
+                    "extraMappings": {
+                        "reporting": {
+                            "form|case|@case_id": "caseId",
+                            "form|meta|username": "anmIdentifier",
+                            "form|close_reason": "closeReason",
+                            "form|today": "submissionDate"
+                        }
                     }
                 },
                 {

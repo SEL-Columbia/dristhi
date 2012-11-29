@@ -103,9 +103,11 @@ public class PNCService {
         childSchedulesService.updateEnrollments(updationRequest);
     }
 
-    public void closeChildCase(ChildCloseRequest childCloseRequest) {
+    public void closeChildCase(ChildCloseRequest childCloseRequest, Map<String, Map<String, String>> extraData) {
         actionService.deleteAllAlertsForChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
         actionService.closeChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
+
+        childReportingService.closeChild(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME));
 
         childSchedulesService.unenrollChild(childCloseRequest.caseId());
     }

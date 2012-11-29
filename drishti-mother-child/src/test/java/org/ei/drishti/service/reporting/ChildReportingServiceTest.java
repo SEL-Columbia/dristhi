@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -147,6 +148,50 @@ public class ChildReportingServiceTest {
         ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", OPV, "2012-01-01");
         verify(reportingService).sendReportData(serviceProvidedData);
         verify(reportingService).sendReportData(anmReportData);
+    }
+
+
+    @Test
+    public void shouldReportCloseChildCaseWhenReasonIsDeath() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female"));
+        when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.closeChild(create("closeReason", "death_of_child").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate","2012-03-05").map());
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", CHILD_MORTALITY, "2012-03-05", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", CHILD_MORTALITY, "2012-03-05");
+        verify(reportingService).sendReportData(serviceProvidedData);
+        verify(reportingService).sendReportData(anmReportData);
+    }
+
+    @Test
+    public void shouldNotReportCloseChildCaseWhenReasonIsNotDeath() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female"));
+        when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.closeChild(create("closeReason", "child_over5").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate","2012-03-05").map());
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldNotReportCloseChildCaseWhenChildIsNotFound() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(null);
+        when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.closeChild(create("closeReason", "child_over5").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate","2012-03-05").map());
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldNotReportCloseChildCaseWhenParentsAreNotFound() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female"));
+        when(allECs.findByCaseId("EC-CASE-1")).thenReturn(null);
+
+        service.closeChild(create("closeReason", "child_over5").put("caseId", "CASE X").put("anmIdentifier", "ANM X").put("submissionDate","2012-03-05").map());
+
+        verifyZeroInteractions(reportingService);
     }
 
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator expectedIndicator) {

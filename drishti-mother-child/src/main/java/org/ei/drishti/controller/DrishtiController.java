@@ -87,10 +87,10 @@ public class DrishtiController {
         mctsService.updateChildImmunization(updationRequest);
     }
 
-    public void closeChildCase(ChildCloseRequest childCloseRequest) {
+    public void closeChildCase(ChildCloseRequest childCloseRequest, Map<String, Map<String, String>> extraData) {
         logger.info("Child close: " + childCloseRequest);
 
-        pncService.closeChildCase(childCloseRequest);
+        pncService.closeChildCase(childCloseRequest, extraData);
         mctsService.closeChildCase(childCloseRequest);
     }
 

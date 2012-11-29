@@ -18,7 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareValues.*;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.MetaCommCareFields.*;
 import static org.ei.drishti.common.domain.Indicator.*;
 
 @Service
@@ -65,19 +68,19 @@ public class ChildReportingService {
     }
 
     public void updateChildImmunization(ChildInformation childInformation) {
-        report(childInformation.caseId(),childInformation.immunizationsProvidedList(),childInformation.dateOfBirth().toString(),childInformation.anmIdentifier());
+        report(childInformation.caseId(), childInformation.immunizationsProvidedList(), childInformation.dateOfBirth().toString(), childInformation.anmIdentifier());
     }
 
     private void report(String childCaseId, List<String> immunizationsProvided, String immunizationsProvidedDate, String anmIdentifier) {
         Child child = allChildren.findByCaseId(childCaseId);
         if (child == null) {
-            logger.warn("Child Case not found for child with CaseID " + childCaseId);
+            logChildNotFound(childCaseId);
             return;
         }
 
         EligibleCouple couple = allEligibleCouples.findByCaseId(child.ecCaseId());
         if (couple == null) {
-            logger.warn("EC Case not found for child with CaseID " + child.caseId() + " ec CaseID : " + child.ecCaseId());
+            logECNotFound(child);
             return;
         }
 
@@ -101,5 +104,38 @@ public class ChildReportingService {
                     indicator, immunizationsProvidedDate);
             reportingService.sendReportData(anmReportData);
         }
+    }
+
+    public void closeChild(Map<String, String> reportData) {
+        if (!reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME).equals(DEATH_OF_CHILD_COMMCARE_VALUE)) {
+            return;
+        }
+
+        Child child = allChildren.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+        if (child == null) {
+            logChildNotFound(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+            return;
+        }
+
+        EligibleCouple couple = allEligibleCouples.findByCaseId(child.ecCaseId());
+        if (couple == null) {
+            logECNotFound(child);
+            return;
+        }
+
+        ReportingData serviceProvided = ReportingData.serviceProvidedData(reportData.get(ANM_IDENTIFIER_COMMCARE_FIELD_NAME), child.thaayiCardNumber(), CHILD_MORTALITY,
+                reportData.get(SUBMISSION_DATE_COMMCARE_FIELD_NAME), couple.location());
+        reportingService.sendReportData(serviceProvided);
+
+        ReportingData anmReportData = ReportingData.anmReportData(reportData.get("anmIdentifier"), child.caseId(), CHILD_MORTALITY, reportData.get("submissionDate"));
+        reportingService.sendReportData(anmReportData);
+    }
+
+    private void logChildNotFound(String childCaseId) {
+        logger.warn("Child Case not found for child with CaseID " + childCaseId);
+    }
+
+    private void logECNotFound(Child child) {
+        logger.warn("EC Case not found for child with CaseID " + child.caseId() + " ec CaseID : " + child.ecCaseId());
     }
 }

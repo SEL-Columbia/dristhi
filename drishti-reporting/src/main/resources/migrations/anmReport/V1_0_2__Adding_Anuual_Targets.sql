@@ -16,6 +16,7 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('CONDOM');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DMPA');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('FP_TRADITIONAL');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('LAM');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('TT');
 
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT'), 40);
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='HEP'), 50);
@@ -33,3 +34,4 @@ INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES (
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DMPA'), 10);
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='FP_TRADITIONAL'), 10);
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='LAM'), 10);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='TT'), 40);
