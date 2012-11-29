@@ -3,14 +3,12 @@ package org.ei.drishti.reporting.repository;
 import org.ei.drishti.reporting.domain.Dates;
 import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.ei.drishti.reporting.domain.Dates.FIND_DATES_BY_DATE;
 
 @Repository
-@Transactional
 public class AllDatesRepository implements DatesCacheableRepository {
     private DataAccessTemplate template;
 

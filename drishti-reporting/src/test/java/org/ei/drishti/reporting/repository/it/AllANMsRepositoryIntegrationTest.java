@@ -5,6 +5,8 @@ import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +19,8 @@ public class AllANMsRepositoryIntegrationTest extends ServicesProvidedRepository
     private @Qualifier("serviceProvidedANMRepository") ANMCacheableRepository repository;
 
     @Test
+    @Transactional("service_provided")
+    @Rollback
     public void shouldSaveANM() throws Exception {
         repository.save(new ANM("ANM X"));
 
@@ -26,6 +30,8 @@ public class AllANMsRepositoryIntegrationTest extends ServicesProvidedRepository
     }
 
     @Test
+    @Transactional("service_provided")
+    @Rollback
     public void shouldFetchAllANMs() throws Exception {
         ANM anmX = new ANM("ANM X");
         ANM anmY = new ANM("ANM Y");

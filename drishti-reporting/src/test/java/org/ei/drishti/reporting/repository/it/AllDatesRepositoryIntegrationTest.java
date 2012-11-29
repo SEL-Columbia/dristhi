@@ -6,6 +6,8 @@ import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,8 @@ public class AllDatesRepositoryIntegrationTest extends ServicesProvidedRepositor
     private @Qualifier("serviceProvidedDatesRepository") DatesCacheableRepository repository;
 
     @Test
+    @Transactional("service_provided")
+    @Rollback
     public void shouldSaveAndFetchDate() throws Exception {
         Date date = LocalDate.now().toDate();
         Dates dates = new Dates(date);
@@ -30,6 +34,8 @@ public class AllDatesRepositoryIntegrationTest extends ServicesProvidedRepositor
     }
 
     @Test
+    @Transactional("service_provided")
+    @Rollback
     public void shouldFetchAllDates() throws Exception {
         Date date1 = LocalDate.parse("2012-01-02").toDate();
         Date date2 = LocalDate.parse("2012-01-01").toDate();

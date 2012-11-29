@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_CACHE_TIME;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_INSERT_TIME;
@@ -44,6 +45,7 @@ public class ServicesProvidedRepository {
         cachedLocations = new CachingRepository<>(locationRepository);
     }
 
+    @Transactional("service_provided")
     public void save(String anmIdentifier, String externalId, String indicator, String date, String village, String subCenter, String phc) {
         Probe probeForCache = monitor.start(REPORTING_SERVICE_PROVIDED_CACHE_TIME);
         ANM anm = cachedANMs.fetch(new ANM(anmIdentifier));
