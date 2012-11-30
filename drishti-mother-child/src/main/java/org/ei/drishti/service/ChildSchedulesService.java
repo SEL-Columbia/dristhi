@@ -3,13 +3,11 @@ package org.ei.drishti.service;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildInformation;
 import org.ei.drishti.contract.Schedule;
-import org.joda.time.LocalDate;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
-import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +38,7 @@ public class ChildSchedulesService {
 
     public void enrollChild(ChildInformation information) {
         enrollNonDependentModules(information);
-        updateEnrollments(new ChildImmunizationUpdationRequest(information.caseId(), information.anmIdentifier(), join(information.immunizationsProvidedList(), " "), LocalDate.now().toString()));
+        updateEnrollments(new ChildImmunizationUpdationRequest(information.caseId(), information.anmIdentifier(), join(information.immunizationsProvidedList(), " "), information.dateOfBirth().toString()));
     }
 
     public void updateEnrollments(ChildImmunizationUpdationRequest information) {
@@ -87,7 +85,7 @@ public class ChildSchedulesService {
                 boolean isProvided = information.immunizationsProvidedList().contains(mileStoneName);
 
                 if (isProvided && currentMilestoneName.equals(mileStoneName))
-                    scheduleTrackingService.fulfillCurrentMilestone(information.caseId(), schedule.getName(), DateUtil.today());
+                    scheduleTrackingService.fulfillCurrentMilestone(information.caseId(), schedule.getName(), information.immunizationsProvidedDate());
             }
         }
     }
