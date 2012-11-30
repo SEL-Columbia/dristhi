@@ -1,7 +1,8 @@
-package org.ei.drishti.service;
+package org.ei.drishti.service.scheduling;
 
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildInformation;
+import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;

@@ -12,6 +12,7 @@ import java.util.Map;
 
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
 import static org.mockito.Mockito.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.max;
 
@@ -44,11 +45,15 @@ public class AlertControllerRoutesTest {
     }
 
     @Test
-    public void shouldDoNothingForAllChildSchedules() throws Exception {
+    public void shouldSendReminderForAllChildSchedulesToCaptureRemindersAction() throws Exception {
         Event.of(CHILD_SCHEDULE_BCG, "BCG", WindowName.due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_BCG, "BCG", WindowName.late).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", WindowName.due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", WindowName.late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT2, "DPT 2", WindowName.due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT2, "DPT 2", WindowName.late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT2, "DPT 3", WindowName.due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT2, "DPT 3", WindowName.late).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.late).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_MEASLES, "Measles", WindowName.due).shouldRouteToAlertCreationActionForChild();
@@ -57,6 +62,11 @@ public class AlertControllerRoutesTest {
         Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", WindowName.late).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.late).shouldRouteToAlertCreationActionForChild();
+    }
+
+    @Test
+    public void shouldSendDueRemindersOfAllEcsToCaptureRemindersAction() throws Exception {
+        Event.of(EC_SCHEDULE_FP_COMPLICATION, "FP Complications", WindowName.late).shouldRouteToAlertCreationActionForEC();
     }
 
     private static class Event {
@@ -88,14 +98,20 @@ public class AlertControllerRoutesTest {
             expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData));
         }
 
-        public void shouldDoNothing() {
-            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(0));
-        }
-
         public void shouldRouteToAlertCreationActionForChild() {
             Map<String, String> extraData = new HashMap<>();
             extraData.put("beneficiaryType", "child");
             expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData));
+        }
+
+        public void shouldRouteToAlertCreationActionForEC() {
+            Map<String, String> extraData = new HashMap<>();
+            extraData.put("beneficiaryType", "ec");
+            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData));
+        }
+
+        public void shouldDoNothing() {
+            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(0));
         }
 
         private void expectCalls(Expectation fulfillActionCallsExpected, Expectation groupSMSActionCallsExpected, Expectation captureReminderActionCallsExpected) {

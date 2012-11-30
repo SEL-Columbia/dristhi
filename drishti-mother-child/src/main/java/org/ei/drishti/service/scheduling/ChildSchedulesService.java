@@ -1,4 +1,4 @@
-package org.ei.drishti.service;
+package org.ei.drishti.service.scheduling;
 
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildInformation;

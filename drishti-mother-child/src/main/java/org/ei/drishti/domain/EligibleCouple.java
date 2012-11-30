@@ -101,6 +101,10 @@ public class EligibleCouple extends MotechBaseDataObject {
         return caseId;
     }
 
+    public String anmIdentifier() {
+        return anmIdentifier;
+    }
+
     public Map<String, String> details() {
         return details;
     }

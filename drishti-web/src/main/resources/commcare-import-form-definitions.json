@@ -21,7 +21,9 @@
                         "form|meta|username": "anmIdentifier",
                         "form|ec_village": "village",
                         "form|ec_village_subcenter": "subCenter",
-                        "form|ec_village_phc": "phc"
+                        "form|ec_village_phc": "phc",
+                        "form|familyplanning_method": "currentMethod",
+                        "form|is_high_priority": "isHighPriority"
                     },
                     "extraMappings": {
                         "reporting": {

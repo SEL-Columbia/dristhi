@@ -336,6 +336,18 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldProvideAlertForECFamilyPlanningComplications() throws Exception {
+        schedule.enrollFor("EC Family Planning Complications", newDate(2012, 1, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("FP Complications", due);
+        schedule.assertNoAlerts("FP Complications", earliest);
+        schedule.assertAlertsStartWith("FP Complications", late, date(1, JANUARY), date(4, JANUARY), date(8,JANUARY));
+        schedule.assertNoAlerts("FP Complications", max);
+
+        visualization.outputTo("ec-fp-complications.html", 1);
+    }
+
+    @Test
     public void shouldProvideAlertForBoosterDoses() throws Exception {
         schedule.enrollFor("Boosters", newDate(2012, 1, 1), new Time(14, 0));
 

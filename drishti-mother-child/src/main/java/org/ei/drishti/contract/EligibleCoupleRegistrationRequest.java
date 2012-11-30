@@ -11,8 +11,10 @@ public class EligibleCoupleRegistrationRequest {
     private String village;
     private String subCenter;
     private String phc;
+    private String currentMethod;
+    private String isHighPriority;
 
-    public EligibleCoupleRegistrationRequest(String caseId, String ecNumber, String wifeName, String husbandName, String anmIdentifier, String village, String subCenter, String phc) {
+    public EligibleCoupleRegistrationRequest(String caseId, String ecNumber, String wifeName, String husbandName, String anmIdentifier, String village, String subCenter, String phc, String currentMethod, String highPriority) {
         this.caseId = caseId;
         this.ecNumber = ecNumber;
         this.wifeName = wifeName;
@@ -21,6 +23,8 @@ public class EligibleCoupleRegistrationRequest {
         this.village = village;
         this.subCenter = subCenter;
         this.phc = phc;
+        this.currentMethod = currentMethod;
+        isHighPriority = highPriority;
     }
 
     public String caseId() {
@@ -53,6 +57,14 @@ public class EligibleCoupleRegistrationRequest {
 
     public String phc() {
         return phc;
+    }
+
+    public String currentMethod(){
+        return currentMethod;
+    }
+
+    public String highPriority() {
+        return isHighPriority;
     }
 
     @Override

@@ -3,11 +3,13 @@ package org.ei.drishti.service;
 import com.google.gson.Gson;
 import org.ei.drishti.domain.Action;
 import org.ei.drishti.domain.Child;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.ActionData;
 import org.ei.drishti.dto.MonthSummaryDatum;
 import org.ei.drishti.repository.AllActions;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -24,7 +26,9 @@ import java.util.Map;
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static org.ei.drishti.dto.AlertPriority.normal;
+import static org.ei.drishti.dto.AlertPriority.urgent;
 import static org.ei.drishti.dto.BeneficiaryType.child;
+import static org.ei.drishti.dto.BeneficiaryType.ec;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Mockito.verify;
@@ -38,6 +42,8 @@ public class ActionServiceTest {
     private AllMothers allMothers;
     @Mock
     private AllChildren allChildren;
+    @Mock
+    private AllEligibleCouples allEligibleCouples;
 
     private ActionService service;
 
@@ -46,7 +52,7 @@ public class ActionServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ActionService(allActions, allMothers, allChildren);
+        service = new ActionService(allActions, allMothers, allChildren, allEligibleCouples);
     }
 
     @Test
@@ -69,6 +75,22 @@ public class ActionServiceTest {
         service.alertForBeneficiary(child, "Case X", "OPV", normal, dueDate, expiryDate);
 
         verify(allActions).add(new Action("Case X", "ANM ID C", ActionData.createAlert(child, "OPV", normal, dueDate, expiryDate)));
+    }
+
+    @Test
+    public void shouldSaveAlertActionForEC() throws Exception {
+        when(allEligibleCouples.findByCaseId("Case X")).thenReturn(new EligibleCouple("Case X", "EC-CASE-1").withANMIdentifier("ANM ID C"));
+
+        DateTime dueDate = DateTime.now().minusDays(1);
+        DateTime expiryDate = dueDate.plusWeeks(2);
+        service.alertForBeneficiary(ec, "Case X", "FP Complications", urgent, dueDate, expiryDate);
+
+        verify(allActions).add(new Action("Case X", "ANM ID C", ActionData.createAlert(ec, "FP Complications", urgent, dueDate, expiryDate)));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionIfBenefiicaryTypeIsUnknown() throws Exception {
+        service.alertForBeneficiary(null, "Case X", "FP Complications", urgent, null, null);
     }
 
     @Test

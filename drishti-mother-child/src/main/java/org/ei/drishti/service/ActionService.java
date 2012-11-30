@@ -7,6 +7,7 @@ import org.ei.drishti.dto.AlertPriority;
 import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.repository.AllActions;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import static org.ei.drishti.dto.BeneficiaryType.child;
+import static org.ei.drishti.dto.BeneficiaryType.ec;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 
 @Service
@@ -25,13 +28,15 @@ public class ActionService {
     private AllActions allActions;
     private AllMothers allMothers;
     private AllChildren allChildren;
+    private AllEligibleCouples allEligibleCouples;
     private static Logger logger = LoggerFactory.getLogger(ActionService.class.toString());
 
     @Autowired
-    public ActionService(AllActions allActions, AllMothers allMothers, AllChildren allChildren) {
+    public ActionService(AllActions allActions, AllMothers allMothers, AllChildren allChildren, AllEligibleCouples allEligibleCouples) {
         this.allActions = allActions;
         this.allMothers = allMothers;
         this.allChildren = allChildren;
+        this.allEligibleCouples = allEligibleCouples;
     }
 
     public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
@@ -43,8 +48,12 @@ public class ActionService {
         String anmIdentifier;
         if (mother.equals(beneficiaryType)) {
             anmIdentifier = allMothers.findByCaseId(caseID).anmIdentifier();
-        } else {
+        } else if(child.equals(beneficiaryType)) {
             anmIdentifier = allChildren.findByCaseId(caseID).anmIdentifier();
+        } else if(ec.equals(beneficiaryType)){
+            anmIdentifier = allEligibleCouples.findByCaseId(caseID).anmIdentifier();
+        } else{
+            throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
 
         allActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, visitCode, alertPriority, startDate, expiryDate)));

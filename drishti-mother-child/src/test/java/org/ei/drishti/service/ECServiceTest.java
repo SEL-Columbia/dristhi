@@ -7,6 +7,7 @@ import org.ei.drishti.contract.UpdateDetailsRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.reporting.ECReportingService;
+import org.ei.drishti.service.scheduling.ECSchedulingService;
 import org.ei.drishti.util.IdGenerator;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
@@ -33,26 +34,30 @@ public class ECServiceTest {
     private IdGenerator idGenerator;
     @Mock
     private ECReportingService reportingService;
+    @Mock
+    private ECSchedulingService schedulingService;
 
     private ECService ecService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        ecService = new ECService(allEligibleCouples, actionService, reportingService, idGenerator);
+        ecService = new ECService(allEligibleCouples, actionService, reportingService, idGenerator, schedulingService);
     }
 
     @Test
     public void shouldRegisterEligibleCouple() throws Exception {
         Map<String, Map<String, String>> extraData = create("details", Collections.<String, String>emptyMap()).put(REPORT_EXTRA_MAPS_KEY_NAME, mapOf("someKey", "someValue")).map();
 
-        ecService.registerEligibleCouple(new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X"), extraData);
+        EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest = new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "Condom", "No");
+        ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest, extraData);
 
         EligibleCouple expectedCouple = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1")
                 .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(extraData.get("details"));
         verify(allEligibleCouples).register(expectedCouple);
         verify(reportingService).fpMethodChangedWithECRegistrationDetails(new SafeMap(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME)), "Village X", "SubCenter X", "PHC X");
         verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", extraData.get("details"));
+        verify(schedulingService).enrollToFPComplications(eligibleCoupleRegistrationRequest);
     }
 
     @Test

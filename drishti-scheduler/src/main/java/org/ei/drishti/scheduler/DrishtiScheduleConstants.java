@@ -36,5 +36,10 @@ public class DrishtiScheduleConstants {
 
     }
 
+    public static class ECSchedulesConstants{
+        public static final String EC_SCHEDULE_FP_COMPLICATION = "EC Family Planning Complications";
+        public static final String EC_SCHEDULE_FP_COMPLICATION_MILESTONE = "FP Complications";
+    }
+
 
 }

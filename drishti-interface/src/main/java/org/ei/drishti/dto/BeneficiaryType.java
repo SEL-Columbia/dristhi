@@ -2,7 +2,8 @@ package org.ei.drishti.dto;
 
 public enum BeneficiaryType {
     child("child"),
-    mother("mother");
+    mother("mother"),
+    ec("ec");
     private String value;
 
     BeneficiaryType(String value) {

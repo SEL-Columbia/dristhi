@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
 import static org.ei.drishti.scheduler.router.Matcher.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.*;
 
@@ -21,6 +22,7 @@ public class AlertController {
         router.addRoute(eq(SCHEDULE_LAB), any(), eq(max.toString()), forceFulfill);
         router.addRoute(motherSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "mother");
         router.addRoute(childSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "child");
+        router.addRoute(ecSchedules(), any(), anyOf(late.toString()), alertCreation).addExtraData("beneficiaryType", "ec");
         router.addRoute(any(), any(), any(), anmGroupSMS);
     }
 
@@ -44,4 +46,9 @@ public class AlertController {
     private Matcher motherSchedules() {
         return anyOf(SCHEDULE_ANC, SCHEDULE_TT, SCHEDULE_IFA, SCHEDULE_LAB, SCHEDULE_EDD);
     }
+
+    private Matcher ecSchedules() {
+        return anyOf(EC_SCHEDULE_FP_COMPLICATION);
+    }
+
 }
