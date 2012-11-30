@@ -5,10 +5,12 @@ import org.ei.drishti.reporting.domain.Indicator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.ei.drishti.reporting.domain.AnnualTarget.FIND_BY_ANM_AND_INDICATOR;
 
 @Repository
+@Transactional
 public class AllAnnualTargetsRepository {
     private DataAccessTemplate dataAccessTemplate;
 

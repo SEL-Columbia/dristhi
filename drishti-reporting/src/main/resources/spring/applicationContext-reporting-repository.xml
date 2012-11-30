@@ -5,9 +5,11 @@
                              http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
     <bean id="serviceProvidedSessionFactory"
-          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-        <property name="dataSource" ref="serviceProvidedDataSource"/>
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+          depends-on="serviceProvidedFlywayMigrations">
+        <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="org.ei.drishti.reporting.domain"/>
+
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
@@ -18,7 +20,7 @@
         </property>
     </bean>
 
-    <bean id="serviceProvidedDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.driverClassName}"/>
         <property name="jdbcUrl" value="${jdbc.url}"/>
         <property name="user" value="${jdbc.username}"/>
@@ -32,9 +34,11 @@
     </bean>
 
     <bean id="anmReportsSessionFactory"
-          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-        <property name="dataSource" ref="anmReportDataSource"/>
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+          depends-on="anmReportFlywayMigrations">
+        <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="org.ei.drishti.reporting.domain"/>
+
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
@@ -45,29 +49,22 @@
         </property>
     </bean>
 
-    <bean id="anmReportDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.driverClassName}"/>
-        <property name="jdbcUrl" value="${jdbc.url}"/>
-        <property name="user" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-        <property name="maxPoolSize" value="${hibernate.c3p0.max_size}"/>
-        <property name="minPoolSize" value="${hibernate.c3p0.min_size}"/>
-        <property name="checkoutTimeout" value="${hibernate.c3p0.timeout}"/>
-        <property name="maxStatements" value="${hibernate.c3p0.max_statements}"/>
-        <property name="idleConnectionTestPeriod" value="${hibernate.c3p0.idle_test_period}"/>
-        <property name="acquireIncrement" value="${hibernate.c3p0.acquire_increment}"/>
-    </bean>
-
-    <bean id="serviceProvidedTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="serviceProvidedSessionFactory"/>
-        <qualifier value="service_provided"/>
-    </bean>
-    <bean id="anmReportTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory" ref="anmReportsSessionFactory"/>
-        <qualifier value="anm_report"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="serviceProvidedTransactionManager"/>
-    <tx:annotation-driven transaction-manager="anmReportTransactionManager"/>
+    <bean id="serviceProvidedFlywayMigrations" class="com.googlecode.flyway.core.Flyway" init-method="migrate">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="schemas" value="report"/>
+        <property name="baseDir" value="/migrations/serviceProvided"/>
+    </bean>
+
+    <bean id="anmReportFlywayMigrations" class="com.googlecode.flyway.core.Flyway" init-method="migrate">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="schemas" value="anm_report"/>
+        <property name="baseDir" value="/migrations/anmReport"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
 </beans>

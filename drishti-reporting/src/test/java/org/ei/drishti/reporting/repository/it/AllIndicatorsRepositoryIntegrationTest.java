@@ -5,8 +5,6 @@ import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,8 +17,6 @@ public class AllIndicatorsRepositoryIntegrationTest extends ServicesProvidedRepo
     private @Qualifier("serviceProvidedIndicatorRepository") IndicatorCacheableRepository repository;
 
     @Test
-    @Transactional("service_provided")
-    @Rollback
     public void shouldSaveAndFetchIndicator() throws Exception {
         Indicator indicator = new Indicator("ANC");
         repository.save(indicator);
@@ -31,8 +27,6 @@ public class AllIndicatorsRepositoryIntegrationTest extends ServicesProvidedRepo
     }
 
     @Test
-    @Transactional("service_provided")
-    @Rollback
     public void shouldFetchAllIndicators() throws Exception {
         Indicator indicator1 = new Indicator("ANC");
         Indicator indicator2 = new Indicator("IUD");

@@ -3,12 +3,14 @@ package org.ei.drishti.reporting.repository;
 import org.ei.drishti.reporting.domain.Indicator;
 import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.ei.drishti.reporting.domain.Indicator.FIND_BY_INDICATOR;
 
 @Repository
+@Transactional
 public class AllIndicatorsRepository implements IndicatorCacheableRepository {
     private DataAccessTemplate dataAccessTemplate;
 

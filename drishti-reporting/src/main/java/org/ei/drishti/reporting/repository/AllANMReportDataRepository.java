@@ -7,6 +7,7 @@ import org.ei.drishti.reporting.domain.Indicator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 import static org.ei.drishti.reporting.domain.ANMReportData.FIND_BY_ANM_IDENTIFIER_AND_DATE;
 
 @Repository
+@Transactional
 public class AllANMReportDataRepository {
     private DataAccessTemplate dataAccessTemplate;
 

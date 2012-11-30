@@ -4,8 +4,6 @@ import org.ei.drishti.reporting.domain.Location;
 import org.ei.drishti.reporting.repository.cache.LocationCacheableRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,8 +16,6 @@ public class AllLocationsRepositoryIntegrationTest extends ServicesProvidedRepos
     private LocationCacheableRepository repository;
 
     @Test
-    @Transactional("service_provided")
-    @Rollback
     public void shouldSaveAndFetchLocation() throws Exception {
         Location location = new Location("Bherya", "Sub Center", "PHC X");
         repository.save(location);
@@ -33,8 +29,6 @@ public class AllLocationsRepositoryIntegrationTest extends ServicesProvidedRepos
     }
 
     @Test
-    @Transactional("service_provided")
-    @Rollback
     public void shouldLoadAllLocations() throws Exception {
         Location location1 = new Location("Bherya", "Sub Center", "PHC X");
         Location location2 = new Location("Keelanapura", "Sub Center 2", "PHC Y");

@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,7 +53,6 @@ public class ANMReportsRepository {
         cachedIndicators = new CachingRepository<>(indicatorRepository);
     }
 
-    @Transactional("anm_report")
     public void save(String anmIdentifier, String externalId, String indicator, String date) {
         Probe probeForCache = monitor.start(REPORTING_ANM_REPORTS_CACHE_TIME);
         ANM anm = cachedANMs.fetch(new ANM(anmIdentifier));
@@ -68,7 +66,6 @@ public class ANMReportsRepository {
     }
 
     //Need to refactor
-    @Transactional("anm_report")
     public List<ANMIndicatorSummary> fetchANMSummary(String anmIdentifier) {
         List<ANMIndicatorSummary> anmIndicatorSummaries = new ArrayList<>();
 
@@ -99,7 +96,6 @@ public class ANMReportsRepository {
         return anmIndicatorSummaries;
     }
 
-    @Transactional("anm_report")
     public List<ANMReport> fetchAllANMsReport() {
         List<ANM> allANMs = cachedANMs.fetchAll();
         ArrayList<ANMReport> anmReports = new ArrayList<>();

@@ -3,12 +3,14 @@ package org.ei.drishti.reporting.repository;
 import org.ei.drishti.reporting.domain.ANM;
 import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.ei.drishti.reporting.domain.ANM.FIND_BY_ANM_ID;
 
 @Repository
+@Transactional
 public class AllANMsRepository implements ANMCacheableRepository {
     private DataAccessTemplate dataAccessTemplate;
 
