@@ -11,6 +11,7 @@ import org.motechproject.server.event.annotations.MotechListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -26,11 +27,17 @@ public class CommCareScheduler {
     private final CommCareListener careListener;
     private static Logger logger = LoggerFactory.getLogger(CommCareScheduler.class.toString());
     private boolean shouldFetchFromCommCare = false;
+    private long commCarePollInterval;
+    private int commCarePollStartTime;
 
     @Autowired
-    public CommCareScheduler(MotechSchedulerService service, CommCareListener careListener, AuditorRegistrar auditorRegistrar, final Auditor drishtiAuditor) {
+    public CommCareScheduler(MotechSchedulerService service, CommCareListener careListener, AuditorRegistrar auditorRegistrar, final Auditor drishtiAuditor,
+                             @Value("#{drishti['commcare.poll.start.time']}") int commCarePollStartTime,
+                             @Value("#{drishti['commcare.poll.time.interval']}") Long commCarePollInterval) {
         this.service = service;
         this.careListener = careListener;
+        this.commCarePollInterval = commCarePollInterval;
+        this.commCarePollStartTime = commCarePollStartTime;
 
         auditorRegistrar.register(new org.ei.commcare.listener.Auditor() {
             @Override
@@ -43,9 +50,9 @@ public class CommCareScheduler {
     public void startTimedScheduler() {
         logger.info("Scheduling CommCare fetch ...");
 
-        Date startTime = DateTime.now().plusSeconds(60).toDate();
+        Date startTime = DateTime.now().plusSeconds(commCarePollStartTime).toDate();
         MotechEvent event = new MotechEvent(SUBJECT, new HashMap<String, Object>());
-        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, 60L * MILLIS_PER_SECOND);
+        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, commCarePollInterval * MILLIS_PER_SECOND);
 
         service.safeScheduleRepeatingJob(job);
 
