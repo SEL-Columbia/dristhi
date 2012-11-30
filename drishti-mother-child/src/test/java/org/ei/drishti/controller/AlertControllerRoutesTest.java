@@ -47,8 +47,8 @@ public class AlertControllerRoutesTest {
     public void shouldDoNothingForAllChildSchedules() throws Exception {
         Event.of(CHILD_SCHEDULE_BCG, "BCG", WindowName.due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_BCG, "BCG", WindowName.late).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT, "DPT 1", WindowName.due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT, "DPT 1", WindowName.late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", WindowName.due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", WindowName.late).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.late).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_MEASLES, "Measles", WindowName.due).shouldRouteToAlertCreationActionForChild();

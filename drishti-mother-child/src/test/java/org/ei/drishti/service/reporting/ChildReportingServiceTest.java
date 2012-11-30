@@ -103,7 +103,6 @@ public class ChildReportingServiceTest {
     public void shouldGetRidOfSequenceNumberFormImmunizationReportIndicator() throws Exception {
         assertIndicatorBasedOnImmunization("bcg", BCG);
 
-        assertIndicatorBasedOnImmunization("dpt_0", DPT);
         assertIndicatorBasedOnImmunization("dpt_1", DPT);
         assertIndicatorBasedOnImmunization("dpt_2", DPT);
         assertIndicatorBasedOnImmunization("dpt_3", DPT);

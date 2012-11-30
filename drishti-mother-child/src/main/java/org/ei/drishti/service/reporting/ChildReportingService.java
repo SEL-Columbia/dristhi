@@ -44,7 +44,6 @@ public class ChildReportingService {
 
         immunizationToIndicator.put(BCG_COMMCARE_VALUE, BCG);
 
-        immunizationToIndicator.put(DPT_0_COMMCARE_VALUE, DPT);
         immunizationToIndicator.put(DPT_1_COMMCARE_VALUE, DPT);
         immunizationToIndicator.put(DPT_2_COMMCARE_VALUE, DPT);
         immunizationToIndicator.put(DPT_3_COMMCARE_VALUE, DPT);

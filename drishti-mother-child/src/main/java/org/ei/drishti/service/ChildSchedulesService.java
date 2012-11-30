@@ -98,12 +98,20 @@ public class ChildSchedulesService {
         List<String> bcgMileStones = unmodifiableList(asList(BCG_COMMCARE_VALUE));
         final Schedule bcg = new Schedule(CHILD_SCHEDULE_BCG, bcgMileStones);
 
-        List<String> dptMileStones = unmodifiableList(asList(
-                DPT_0_COMMCARE_VALUE,
-                DPT_1_COMMCARE_VALUE,
-                DPT_2_COMMCARE_VALUE,
-                DPT_3_COMMCARE_VALUE));
-        final Schedule dpt = new Schedule(CHILD_SCHEDULE_DPT, dptMileStones);
+        List<String> dpt1MileStones = unmodifiableList(asList(DPT_1_COMMCARE_VALUE));
+        final Schedule dpt1 = new Schedule(CHILD_SCHEDULE_DPT1, dpt1MileStones);
+
+        List<String> dpt2MileStones = unmodifiableList(asList(DPT_2_COMMCARE_VALUE));
+        final Schedule dpt2 = new Schedule(CHILD_SCHEDULE_DPT2, dpt2MileStones).withDependencyOn(dpt1);
+
+        List<String> dpt3MileStones = unmodifiableList(asList(DPT_3_COMMCARE_VALUE));
+        final Schedule dpt3 = new Schedule(CHILD_SCHEDULE_DPT3, dpt3MileStones).withDependencyOn(dpt2);
+
+        List<String> dptBooster1MileStones = unmodifiableList(asList(DPT_BOOSTER_1_COMMCARE_VALUE));
+        final Schedule dptBooster1 = new Schedule(CHILD_SCHEDULE_DPT_BOOSTER1, dptBooster1MileStones).withDependencyOn(dpt3);
+
+        List<String> dptBooster2MileStones = unmodifiableList(asList(DPT_BOOSTER_2_COMMCARE_VALUE));
+        final Schedule dptBooster2 = new Schedule(CHILD_SCHEDULE_DPT_BOOSTER2, dptBooster2MileStones).withDependencyOn(dptBooster1);
 
         List<String> hepMilestones = unmodifiableList(asList(
                 HEPATITIS_0_COMMCARE_VALUE,
@@ -130,7 +138,11 @@ public class ChildSchedulesService {
 
         childSchedules = unmodifiableMap(new HashMap<String, Schedule>() {{
             put(CHILD_SCHEDULE_BCG, bcg);
-            put(CHILD_SCHEDULE_DPT, dpt);
+            put(CHILD_SCHEDULE_DPT1, dpt1);
+            put(CHILD_SCHEDULE_DPT2, dpt2);
+            put(CHILD_SCHEDULE_DPT3, dpt3);
+            put(CHILD_SCHEDULE_DPT_BOOSTER1, dptBooster1);
+            put(CHILD_SCHEDULE_DPT_BOOSTER2, dptBooster2);
             put(CHILD_SCHEDULE_HEPATITIS, hepatitis);
             put(CHILD_SCHEDULE_MEASLES, measles);
             put(CHILD_SCHEDULE_MEASLES_BOOSTER, measlesBooster);

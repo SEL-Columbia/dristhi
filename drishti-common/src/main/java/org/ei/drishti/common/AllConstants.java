@@ -25,7 +25,6 @@ public class AllConstants {
     public static class ChildImmunizationCommCareValues {
         public static final String BCG_COMMCARE_VALUE = "bcg";
 
-        public static final String DPT_0_COMMCARE_VALUE = "dpt_0";
         public static final String DPT_1_COMMCARE_VALUE = "dpt_1";
         public static final String DPT_2_COMMCARE_VALUE = "dpt_2";
         public static final String DPT_3_COMMCARE_VALUE = "dpt_3";
