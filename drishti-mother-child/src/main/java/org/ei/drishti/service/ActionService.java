@@ -67,6 +67,10 @@ public class ActionService {
         allActions.add(new Action(caseID, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
     }
 
+    public void markAlertAsClosedForVisitForEC(String caseID, String anmIdentifier, String visitCode, String completionDate) {
+        allActions.add(new Action(caseID, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
+    }
+
     public void deleteAllAlertsForMother(String caseID) {
         Mother mother = allMothers.findByCaseId(caseID);
 

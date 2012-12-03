@@ -22,7 +22,7 @@ public class Schedule {
         return this;
     }
 
-    public String getName() {
+    public String name() {
         return name;
     }
 

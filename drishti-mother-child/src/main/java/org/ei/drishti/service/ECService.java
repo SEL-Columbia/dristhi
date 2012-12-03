@@ -17,7 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_MAPS_KEY_NAME;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
 
 @Service
 public class ECService {
@@ -75,5 +78,15 @@ public class ECService {
         EligibleCouple updatedCouple = allEligibleCouples.updateDetails(request.caseId(), extraDetails.get("details"));
         reportingService.fpMethodChangedWithUpdatedECDetails(new SafeMap(extraDetails.get(REPORT_EXTRA_MAPS_KEY_NAME)), updatedCouple.ecNumber(), updatedCouple.village(), updatedCouple.subCenter(), updatedCouple.phc());
         actionService.updateEligibleCoupleDetails(request.caseId(), request.anmIdentifier(), updatedCouple.details());
+
+        schedulingService.updateFPComplications(request.caseId(), extraDetails.get("details"));
+
+        closeAlertsForFPComplications(request, extraDetails.get("details"));
+    }
+
+    private void closeAlertsForFPComplications(UpdateDetailsRequest request, Map<String,String> details) {
+        if(!(details.get(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME).equalsIgnoreCase("none") || details.get(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME).isEmpty())){
+            actionService.markAlertAsClosedForVisitForEC(request.caseId(), request.anmIdentifier(), EC_SCHEDULE_FP_COMPLICATION_MILESTONE, details.get(CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME));
+        }
     }
 }

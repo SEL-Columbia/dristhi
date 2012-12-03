@@ -106,6 +106,21 @@ public class ECServiceTest {
     }
 
     @Test
+    public void shouldUpdateFPComplicationsScheduelAndCloseAlertsWhenDetailsAreUpdated() throws Exception {
+        Map<String, String> existingDetails = mapOf("existingThing", "existingValue");
+        EligibleCouple existingCoupleBeforeUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(existingDetails);
+        Map<String, String> updatedDetails = create("currentMethod", "CONDOM").put("existingThing", "existingValue").map();
+        EligibleCouple existingCoupleAfterUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(updatedDetails);
+        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(existingCoupleBeforeUpdate);
+        when(allEligibleCouples.updateDetails("CASE X", mapOf("currentMethod", "CONDOM"))).thenReturn(existingCoupleAfterUpdate);
+        Map<String, Map<String, String>> extraDetails = create("details", mapOf("currentMethod", "CONDOM")).put(REPORT_EXTRA_MAPS_KEY_NAME, mapOf("currentMethod", "CONDOM")).map();
+
+        ecService.updateDetails(new UpdateDetailsRequest("CASE X", "ANM X"), extraDetails);
+
+        verify(schedulingService).updateFPComplications("CASE X", mapOf("currentMethod", "CONDOM"));
+    }
+
+    @Test
     public void shouldIgnoreUpdationIfAnECIsNotFound() throws Exception {
         when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(null);
 

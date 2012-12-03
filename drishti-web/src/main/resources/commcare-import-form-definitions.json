@@ -1,6 +1,6 @@
 {
-    "userName": "shashant@thoughtworks.com",
-    "password": "drishti",
+    "userName": "drishtiapp@gmail.com",
+    "password": "spoh-bosh-many-ku-tu",
     "commcareServerBaseUrl": "https://india.commcarehq.org",
     "modules": [
         {
@@ -73,7 +73,8 @@
                             "form|familyplanning_method": "currentMethod",
                             "form|fp_update": "fpUpdate",
                             "form|num_ocpdelivered": "numberOfOCPDelivered",
-                            "form|num_condomsdelivered": "numberOfCondomsDelivered"
+                            "form|num_condomsdelivered": "numberOfCondomsDelivered",
+                            "form|date_familyplanningstart": "familyPlanningMethodChangeDate"
                         }
                     }
                 },

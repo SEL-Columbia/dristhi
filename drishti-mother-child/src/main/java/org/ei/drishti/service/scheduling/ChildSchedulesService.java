@@ -57,7 +57,7 @@ public class ChildSchedulesService {
     private void enrollNonDependentModules(ChildInformation information) {
         for (Schedule schedule : childSchedules.values()) {
             if (!schedule.hasDependency()) {
-                scheduleTrackingService.enroll(new EnrollmentRequest(information.caseId(), schedule.getName(), new Time(PREFERED_TIME_FOR_SCHEDULES), information.dateOfBirth(), null, null, null, null, null));
+                scheduleTrackingService.enroll(new EnrollmentRequest(information.caseId(), schedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES), information.dateOfBirth(), null, null, null, null, null));
             }
         }
     }
@@ -67,8 +67,8 @@ public class ChildSchedulesService {
             if (schedule.hasDependency()) {
                 Schedule dependsOn = schedule.getDependencySchedule();
                 if (information.immunizationsProvidedList().contains(dependsOn.getLastMilestone())
-                        && isNotEnrolled(information.caseId(), schedule.getName())) {
-                    scheduleTrackingService.enroll(new EnrollmentRequest(information.caseId(), schedule.getName(), new Time(PREFERED_TIME_FOR_SCHEDULES), information.immunizationsProvidedDate(), null, null, null, null, null));
+                        && isNotEnrolled(information.caseId(), schedule.name())) {
+                    scheduleTrackingService.enroll(new EnrollmentRequest(information.caseId(), schedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES), information.immunizationsProvidedDate(), null, null, null, null, null));
                 }
             }
         }
@@ -77,7 +77,7 @@ public class ChildSchedulesService {
     private void updateMilestonesForEnrolledSchedules(ChildImmunizationUpdationRequest information) {
         for (Schedule schedule : childSchedules.values()) {
             for (String mileStoneName : schedule.getMileStones()) {
-                EnrollmentRecord record = scheduleTrackingService.getEnrollment(information.caseId(), schedule.getName());
+                EnrollmentRecord record = scheduleTrackingService.getEnrollment(information.caseId(), schedule.name());
                 if (record == null)
                     break;
                 String currentMilestoneName = record.getCurrentMilestoneName();
@@ -85,7 +85,7 @@ public class ChildSchedulesService {
                 boolean isProvided = information.immunizationsProvidedList().contains(mileStoneName);
 
                 if (isProvided && currentMilestoneName.equals(mileStoneName))
-                    scheduleTrackingService.fulfillCurrentMilestone(information.caseId(), schedule.getName(), information.immunizationsProvidedDate());
+                    scheduleTrackingService.fulfillCurrentMilestone(information.caseId(), schedule.name(), information.immunizationsProvidedDate());
             }
         }
     }

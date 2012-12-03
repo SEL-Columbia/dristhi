@@ -21,6 +21,7 @@ public class AllConstants {
     public static class CommonCommCareFields {
         public static final String CASE_ID_COMMCARE_FIELD_NAME = "caseId";
         public static final String SUBMISSION_DATE_COMMCARE_FIELD_NAME = "submissionDate";
+        public static final String HIGH_PRIORITY_COMMCARE_FIELD_NAME = "isHighPriority";
     }
 
     public static class ChildCloseCommCareFields {
@@ -28,6 +29,10 @@ public class AllConstants {
         public static final String DEATH_OF_CHILD_COMMCARE_VALUE = "death_of_child";
     }
 
+    public static class FamilyPlanningCommCareFields{
+        public static final String CURRENT_FP_METHOD_COMMCARE_FIELD_NAME = "currentMethod";
+        public static final String CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME = "familyPlanningMethodChangeDate";
+    }
 
     public static class ChildImmunizationCommCareValues {
         public static final String BCG_COMMCARE_VALUE = "bcg";
