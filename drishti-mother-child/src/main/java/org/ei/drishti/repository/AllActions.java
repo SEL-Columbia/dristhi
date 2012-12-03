@@ -54,7 +54,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     }
 
     private void deleteAll(List<Action> actions) {
-        ArrayList<BulkDeleteDocument> deleteDocuments = new ArrayList<BulkDeleteDocument>();
+        ArrayList<BulkDeleteDocument> deleteDocuments = new ArrayList<>();
         for (Action action : actions) {
             deleteDocuments.add(BulkDeleteDocument.of(action));
         }
