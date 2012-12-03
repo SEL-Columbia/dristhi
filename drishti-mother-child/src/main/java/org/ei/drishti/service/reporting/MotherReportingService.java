@@ -1,5 +1,6 @@
 package org.ei.drishti.service.reporting;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.contract.AnteNatalCareInformation;
@@ -10,7 +11,6 @@ import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
-import org.motechproject.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.THAYI_CARD_NUMBER_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.CommonCommRegisterMotherFields.*;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.MetaCommCareFields.ANM_IDENTIFIER_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.ei.drishti.common.domain.ReportingData.anmReportData;
+import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
+import static org.motechproject.util.DateUtil.today;
 
 @Service
 public class MotherReportingService {
@@ -39,14 +45,19 @@ public class MotherReportingService {
     }
 
     public void registerANC(SafeMap reportData, String village, String subCenter) {
-        boolean isNotWithin12WeeksOfLMP = DateUtil.today().minusDays(NUMBER_OF_DAYS_IN_12_WEEKS).isAfter(LocalDate.parse(reportData.get("lmp")));
-        Indicator indicator = isNotWithin12WeeksOfLMP ? Indicator.ANC_AFTER_12_WEEKS : Indicator.ANC_BEFORE_12_WEEKS;
+        reportANCRegistration(reportData, village, subCenter, ANC);
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(reportData.get("anmIdentifier"), reportData.get("thaayiCardNumber"), indicator, DateUtil.today().toString(),
-                new Location(village, subCenter, reportData.get("phc")));
+        boolean isRegisteredWithinTwelveWeeks = !(LocalDate.parse(reportData.get(REGISTRATION_COMMCARE_FIELD_NAME)).minusDays(NUMBER_OF_DAYS_IN_12_WEEKS).isAfter(LocalDate.parse(reportData.get(LMP))));
+        if (isRegisteredWithinTwelveWeeks) {
+            reportANCRegistration(reportData, village, subCenter, ANC_BEFORE_12_WEEKS);
+        }
+    }
+
+    private void reportANCRegistration(SafeMap reportData, String village, String subCenter, Indicator indicator) {
+        ReportingData serviceProvidedData = serviceProvidedData(reportData.get(ANM_IDENTIFIER_COMMCARE_FIELD_NAME), reportData.get(THAYI_CARD_NUMBER_COMMCARE_FIELD_NAME), indicator, reportData.get(REGISTRATION_COMMCARE_FIELD_NAME), new Location(village, subCenter, reportData.get(PHC)));
         reportingService.sendReportData(serviceProvidedData);
 
-        ReportingData anmReportData = ReportingData.anmReportData(reportData.get("anmIdentifier"), reportData.get("caseId"), indicator, DateUtil.today().toString());
+        ReportingData anmReportData = anmReportData(reportData.get(ANM_IDENTIFIER_COMMCARE_FIELD_NAME), reportData.get(CASE_ID_COMMCARE_FIELD_NAME), indicator, reportData.get(REGISTRATION_COMMCARE_FIELD_NAME));
         reportingService.sendReportData(anmReportData);
     }
 
@@ -61,11 +72,11 @@ public class MotherReportingService {
             return;
         }
 
-        ReportingData serviceProvided = ReportingData.serviceProvidedData(mother.anmIdentifier(), mother.thaayiCardNo(), MOTHER_MORTALITY, DateUtil.today().toString(),
+        ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thaayiCardNo(), MOTHER_MORTALITY, today().toString(),
                 new Location(mother.village(), mother.subCenter(), mother.phc()));
         reportingService.sendReportData(serviceProvided);
 
-        ReportingData anmReportData = ReportingData.anmReportData(mother.anmIdentifier(), mother.caseId(), MOTHER_MORTALITY, DateUtil.today().toString());
+        ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), MOTHER_MORTALITY, today().toString());
         reportingService.sendReportData(anmReportData);
     }
 
@@ -82,11 +93,11 @@ public class MotherReportingService {
             return;
         }
 
-        ReportingData serviceProvided = ReportingData.serviceProvidedData(ancInformation.anmIdentifier(), mother.thaayiCardNo(), TT, ancInformation.visitDate().toString(),
+        ReportingData serviceProvided = serviceProvidedData(ancInformation.anmIdentifier(), mother.thaayiCardNo(), TT, ancInformation.visitDate().toString(),
                 couple.location());
         reportingService.sendReportData(serviceProvided);
 
-        ReportingData anmReportData = ReportingData.anmReportData(ancInformation.anmIdentifier(), mother.caseId(), TT, ancInformation.visitDate().toString());
+        ReportingData anmReportData = anmReportData(ancInformation.anmIdentifier(), mother.caseId(), TT, ancInformation.visitDate().toString());
         reportingService.sendReportData(anmReportData);
     }
 
@@ -109,10 +120,10 @@ public class MotherReportingService {
         else
             indicator = STILL_BIRTH;
 
-        ReportingData serviceProvided = ReportingData.serviceProvidedData(reportData.get(ANM_IDENTIFIER_COMMCARE_FIELD_NAME), mother.thaayiCardNo(), indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME), couple.location());
+        ReportingData serviceProvided = serviceProvidedData(reportData.get(ANM_IDENTIFIER_COMMCARE_FIELD_NAME), mother.thaayiCardNo(), indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME), couple.location());
         reportingService.sendReportData(serviceProvided);
 
-        ReportingData anmReportData = ReportingData.anmReportData(reportData.get(ANM_IDENTIFIER_COMMCARE_FIELD_NAME), mother.caseId(), indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+        ReportingData anmReportData = anmReportData(reportData.get(ANM_IDENTIFIER_COMMCARE_FIELD_NAME), mother.caseId(), indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
         reportingService.sendReportData(anmReportData);
     }
 

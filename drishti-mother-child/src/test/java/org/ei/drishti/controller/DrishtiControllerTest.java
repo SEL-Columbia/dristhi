@@ -79,7 +79,6 @@ public class DrishtiControllerTest {
 
         verify(ancService).updatePregnancyOutcome(outcomeInformation, EXTRA_DATA);
         verify(mctsService).updateANCOutcome(outcomeInformation);
-        verify(pncService).registerChild(childInformation);
         verify(mctsService).registerChild(outcomeInformation);
     }
 
@@ -92,16 +91,9 @@ public class DrishtiControllerTest {
 
         controller.updateOutcomeOfANC(outcomeInformation, EXTRA_DATA);
 
-        verify(ancService).updatePregnancyOutcome(outcomeInformation, EXTRA_DATA);
-        verify(mctsService).updateANCOutcome(outcomeInformation);
-
         verify(childMapper).mapDeliveryOutcomeInformationToChildren(outcomeInformation, EXTRA_DATA);
-
-
         verify(pncService).registerChild(firstChildInformation);
         verify(pncService).registerChild(secondChildInformation);
-
-        verify(mctsService).registerChild(outcomeInformation);
     }
 
     @Test

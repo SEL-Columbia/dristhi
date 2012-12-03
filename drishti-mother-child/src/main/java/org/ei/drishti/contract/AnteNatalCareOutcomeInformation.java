@@ -91,7 +91,11 @@ public class AnteNatalCareOutcomeInformation {
     }
 
     public int numberOfChildrenBorn() {
-        return Integer.parseInt(numberOfChildrenBorn);
+        try {
+            return Integer.parseInt(numberOfChildrenBorn);
+        }catch (NumberFormatException e){
+            return 0;
+        }
     }
 
     public String deliveryOutcomeDate() {

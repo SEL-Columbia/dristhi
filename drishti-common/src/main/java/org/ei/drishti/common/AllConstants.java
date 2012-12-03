@@ -25,6 +25,13 @@ public class AllConstants {
         public static final String SUBMISSION_DATE_COMMCARE_FIELD_NAME = "submissionDate";
         public static final String HIGH_PRIORITY_COMMCARE_FIELD_NAME = "isHighPriority";
         public static final String BOOLEAN_TRUE_COMMCARE_VALUE = "Yes";
+        public static final String THAYI_CARD_NUMBER_COMMCARE_FIELD_NAME = "thaayiCardNumber";
+    }
+
+    public static class CommonCommRegisterMotherFields {
+        public static final String REGISTRATION_COMMCARE_FIELD_NAME = "registrationDate";
+        public static final String LMP = "lmp";
+        public static final String PHC = "phc";
     }
 
     public static class ChildCloseCommCareFields {
@@ -42,7 +49,6 @@ public class AllConstants {
 
     public static class ChildImmunizationCommCareFields {
         public static final String IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME = "immunizationsProvided";
-
         public static final String BCG_COMMCARE_VALUE = "bcg";
 
         public static final String DPT_1_COMMCARE_VALUE = "dpt_1";

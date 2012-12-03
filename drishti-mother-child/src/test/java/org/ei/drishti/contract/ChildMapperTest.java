@@ -50,7 +50,7 @@ public class ChildMapperTest {
 
     @Test
     public void shouldMapDeliveryOutcomeInformationForNoChild() throws Exception {
-        AnteNatalCareOutcomeInformation outcomeInformation = new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "0");
+        AnteNatalCareOutcomeInformation outcomeInformation = new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "---");
 
         List<ChildInformation> childInformationList = mapper.mapDeliveryOutcomeInformationToChildren(outcomeInformation, EXTRA_DATA);
 

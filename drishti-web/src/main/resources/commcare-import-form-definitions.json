@@ -1,6 +1,6 @@
 {
-    "userName": "drishtiapp@gmail.com",
-    "password": "spoh-bosh-many-ku-tu",
+    "userName": "kg@thoughtworks.com",
+    "password": "0112358",
     "commcareServerBaseUrl": "https://india.commcarehq.org",
     "modules": [
         {
@@ -102,7 +102,9 @@
                             "form|subcase_0|case|@case_id": "caseId",
                             "form|lmp_date": "lmp",
                             "form|meta|username": "anmIdentifier",
-                            "form|thayi_no": "thaayiCardNumber"
+                            "form|thayi_no": "thaayiCardNumber",
+                            "form|reg_date": "registrationDate"
+
                         },
                         "details": {
                             "form|is_high_risk": "isHighRisk",
