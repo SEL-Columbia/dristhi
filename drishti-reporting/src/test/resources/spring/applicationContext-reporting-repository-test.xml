@@ -5,14 +5,17 @@
                              http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
     <bean id="serviceProvidedSessionFactory"
-          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+          depends-on="serviceProvidedFlywayMigrations">
         <property name="dataSource" ref="serviceProvidedDataSource"/>
         <property name="packagesToScan" value="org.ei.drishti.reporting.domain"/>
+
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
                 <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
                 <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.connection.autocommit">${hibernate.auto_commit}</prop>
                 <prop key="hibernate.default_schema">${hibernate.default_schema}</prop>
             </props>
         </property>
@@ -32,14 +35,17 @@
     </bean>
 
     <bean id="anmReportsSessionFactory"
-          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+          depends-on="anmReportFlywayMigrations">
         <property name="dataSource" ref="anmReportDataSource"/>
         <property name="packagesToScan" value="org.ei.drishti.reporting.domain"/>
+
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
                 <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
                 <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.connection.autocommit">${hibernate.auto_commit}</prop>
                 <prop key="hibernate.default_schema">${hibernate.anm_report_schema}</prop>
             </props>
         </property>
@@ -65,6 +71,18 @@
     <bean id="anmReportTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="anmReportsSessionFactory"/>
         <qualifier value="anm_report"/>
+    </bean>
+
+    <bean id="serviceProvidedFlywayMigrations" class="com.googlecode.flyway.core.Flyway" init-method="migrate">
+        <property name="dataSource" ref="serviceProvidedDataSource"/>
+        <property name="schemas" value="report"/>
+        <property name="locations" value="/migrations/serviceProvided"/>
+    </bean>
+
+    <bean id="anmReportFlywayMigrations" class="com.googlecode.flyway.core.Flyway" init-method="migrate">
+        <property name="dataSource" ref="serviceProvidedDataSource"/>
+        <property name="schemas" value="anm_report"/>
+        <property name="locations" value="/migrations/anmReport"/>
     </bean>
 
     <tx:annotation-driven transaction-manager="serviceProvidedTransactionManager"/>

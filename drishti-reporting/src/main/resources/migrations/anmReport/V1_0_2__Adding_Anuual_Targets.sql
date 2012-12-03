@@ -1,0 +1,37 @@
+INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('c');
+
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DPT');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('HEP');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('OPV');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MEASLES');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('BCG');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('ANC>12');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('ANC<12');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MORT_M');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('OCP');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IUD');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MALE_STERILIZATION');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('FEMALE_STERILIZATION');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('CONDOM');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DMPA');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('FP_TRADITIONAL');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('LAM');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('TT');
+
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT'), 40);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='HEP'), 50);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='OPV'), 60);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='MEASLES'), 45);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='BCG'), 55);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='ANC>12'), 50);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='ANC<12'), 60);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='MORT_M'), 10);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='OCP'), 40);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='IUD'), 50);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='MALE_STERILIZATION'), 60);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='FEMALE_STERILIZATION'), 400);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='CONDOM'), 55);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DMPA'), 10);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='FP_TRADITIONAL'), 10);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='LAM'), 10);
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='TT'), 40);

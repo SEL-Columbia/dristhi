@@ -4,6 +4,7 @@ import org.ei.drishti.reporting.domain.ANM;
 import org.ei.drishti.reporting.domain.ANMReportData;
 import org.ei.drishti.reporting.domain.Dates;
 import org.ei.drishti.reporting.domain.Indicator;
+import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.AllANMReportDataRepository;
 import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
 import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
@@ -12,6 +13,8 @@ import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,26 +22,24 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegrationTestBase {
-
     @Autowired
     private AllANMReportDataRepository repository;
 
     @Autowired
-    private
     @Qualifier("anmReportsANMRepository")
-    ANMCacheableRepository allANMsRepository;
+    private ANMCacheableRepository allANMsRepository;
 
     @Autowired
-    private
     @Qualifier("anmReportsDatesRepository")
-    DatesCacheableRepository allDatesRepository;
+    private DatesCacheableRepository allDatesRepository;
 
     @Autowired
-    private
     @Qualifier("anmReportsIndicatorRepository")
-    IndicatorCacheableRepository allIndicatorsRepository;
+    private IndicatorCacheableRepository allIndicatorsRepository;
 
     @Test
+    @Transactional("anm_report")
+    @Rollback
     public void shouldSaveANMReportData() throws Exception {
         ANM anm = new ANM("ANM X");
         Dates dates = new Dates(LocalDate.now().toDate());
@@ -53,6 +54,8 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
     }
 
     @Test
+    @Transactional("anm_report")
+    @Rollback
     public void shouldLoadDataWithDimensions() throws Exception {
         ANM anm = new ANM("ANM X");
         Dates dates = new Dates(LocalDate.now().toDate());
@@ -70,6 +73,8 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
     }
 
     @Test
+    @Transactional("anm_report")
+    @Rollback
     public void shouldFetchReportDataByANMIdAndDate() throws Exception {
         ANM anm1 = new ANM("ANM X");
         ANM anm2 = new ANM("ANM Y");
@@ -89,6 +94,8 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
     }
 
     @Test
+    @Transactional("anm_report")
+    @Rollback
     public void shouldFetchReportDataOnOrAfterGivenDate() throws Exception {
         ANM anm1 = new ANM("ANM X");
         ANM anm2 = new ANM("ANM Y");

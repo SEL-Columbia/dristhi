@@ -2,6 +2,7 @@ package org.ei.drishti.reporting.repository.it;
 
 import org.ei.drishti.reporting.domain.*;
 import org.ei.drishti.reporting.repository.AllServicesProvidedRepository;
+import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
 import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
 import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
 import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
@@ -10,27 +11,33 @@ import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import static junit.framework.Assert.assertEquals;
 
 public class AllServicesProvidedIntegrationTest extends ServicesProvidedRepositoryIntegrationTestBase {
-
     @Autowired
     private AllServicesProvidedRepository repository;
 
     @Autowired
-    private @Qualifier("serviceProvidedANMRepository") ANMCacheableRepository allANMsRepository;
+    @Qualifier("serviceProvidedANMRepository")
+    private ANMCacheableRepository allANMsRepository;
 
     @Autowired
-    private @Qualifier("serviceProvidedDatesRepository") DatesCacheableRepository allDatesRepository;
+    @Qualifier("serviceProvidedDatesRepository")
+    private DatesCacheableRepository allDatesRepository;
 
     @Autowired
-    private @Qualifier("serviceProvidedIndicatorRepository") IndicatorCacheableRepository allIndicatorsRepository;
+    @Qualifier("serviceProvidedIndicatorRepository")
+    private IndicatorCacheableRepository allIndicatorsRepository;
 
     @Autowired
     private LocationCacheableRepository allLocationsRepository;
 
     @Test
+    @Transactional("service_provided")
+    @Rollback
     public void shouldSaveAService() throws Exception {
         ANM anm = new ANM("ANM X");
         Dates dates = new Dates(LocalDate.now().toDate());

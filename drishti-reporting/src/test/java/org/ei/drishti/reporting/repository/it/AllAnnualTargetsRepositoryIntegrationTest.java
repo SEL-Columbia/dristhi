@@ -9,6 +9,8 @@ import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -25,8 +27,10 @@ public class AllAnnualTargetsRepositoryIntegrationTest extends ANMReportsReposit
     private AllAnnualTargetsRepository repository;
 
     @Test
+    @Transactional("anm_report")
+    @Rollback
     public void shouldFetchAnnualTargetForGivenANMAndIndicator() throws Exception {
-        Indicator indicator = new Indicator("IUD");
+        Indicator indicator = new Indicator("INDICATOR");
         ANM anm = new ANM("ANM X");
         indicatorsRepository.save(indicator);
         anmsRepository.save(anm);
