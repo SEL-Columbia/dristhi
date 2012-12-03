@@ -16,6 +16,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.MetaCommCareFields.ANM_IDENTIFIER_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.domain.Indicator.*;
 
 @Service
@@ -53,7 +57,7 @@ public class MotherReportingService {
 
         Mother mother = allMothers.findByCaseId(reportData.get("caseId"));
         if (mother == null) {
-            logger.warn("Mother Case not found for mother with CaseID " + reportData.get("caseId"));
+            logMotherNotFound(reportData.get("caseId"));
             return;
         }
 
@@ -68,13 +72,13 @@ public class MotherReportingService {
     public void ttVisitHasHappened(AnteNatalCareInformation ancInformation) {
         Mother mother = allMothers.findByCaseId(ancInformation.caseId());
         if (mother == null) {
-            logger.warn("Mother Case not found for mother with CaseID " + ancInformation.caseId());
+            logMotherNotFound(ancInformation.caseId());
             return;
         }
 
         EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
         if (couple == null) {
-            logger.warn("EC Case not found for mother with CaseID " + mother.caseId() + " ec CaseID : " + mother.ecCaseId());
+            logECNotFound(mother);
             return;
         }
 
@@ -84,5 +88,39 @@ public class MotherReportingService {
 
         ReportingData anmReportData = ReportingData.anmReportData(ancInformation.anmIdentifier(), mother.caseId(), TT, ancInformation.visitDate().toString());
         reportingService.sendReportData(anmReportData);
+    }
+
+    public void updatePregnancyOutcome(Map<String, String> reportData) {
+        Mother mother = allMothers.findByCaseId(reportData.get(MOTHER_CASE_ID_COMMCARE_FIELD_NAME));
+        if (mother == null) {
+            logMotherNotFound(reportData.get(MOTHER_CASE_ID_COMMCARE_FIELD_NAME));
+            return;
+        }
+
+        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        if (couple == null) {
+            logECNotFound(mother);
+            return;
+        }
+
+        Indicator indicator;
+        if (LIVE_BIRTH_COMMCARE_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME_COMMCARE_FIELD_NAME)))
+            indicator = LIVE_BIRTH;
+        else
+            indicator = STILL_BIRTH;
+
+        ReportingData serviceProvided = ReportingData.serviceProvidedData(reportData.get(ANM_IDENTIFIER_COMMCARE_FIELD_NAME), mother.thaayiCardNo(), indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME), couple.location());
+        reportingService.sendReportData(serviceProvided);
+
+        ReportingData anmReportData = ReportingData.anmReportData(reportData.get(ANM_IDENTIFIER_COMMCARE_FIELD_NAME), mother.caseId(), indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+        reportingService.sendReportData(anmReportData);
+    }
+
+    private void logECNotFound(Mother mother) {
+        logger.warn("EC Case not found for mother with CaseID " + mother.caseId() + " ec CaseID : " + mother.ecCaseId());
+    }
+
+    private void logMotherNotFound(String caseId) {
+        logger.warn("Mother Case not found for mother with CaseID " + caseId);
     }
 }

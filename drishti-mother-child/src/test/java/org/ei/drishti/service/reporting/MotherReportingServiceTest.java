@@ -8,6 +8,7 @@ import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -15,11 +16,14 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
 
+import java.util.Map;
+
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.ei.drishti.util.EasyMap.create;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class MotherReportingServiceTest extends BaseUnitTest{
+public class MotherReportingServiceTest extends BaseUnitTest {
     @Mock
     private ReportingService reportingService;
     @Mock
@@ -96,9 +100,9 @@ public class MotherReportingServiceTest extends BaseUnitTest{
     }
 
     @Test
-    public void shouldReportTTProvidedIfTTVisitHasHappened(){
-        Mother mother = new Mother("CASE-X","ECCaseId X","TC 1","motherName");
-        EligibleCouple ec = new EligibleCouple("ECCaseId X","ecNumber").withLocation("bherya", "Sub Center", "PHC X");
+    public void shouldReportTTProvidedIfTTVisitHasHappened() {
+        Mother mother = new Mother("CASE-X", "ECCaseId X", "TC 1", "motherName");
+        EligibleCouple ec = new EligibleCouple("ECCaseId X", "ecNumber").withLocation("bherya", "Sub Center", "PHC X");
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
 
         when(allMothers.findByCaseId("CASE-X")).thenReturn(mother);
@@ -112,25 +116,79 @@ public class MotherReportingServiceTest extends BaseUnitTest{
     }
 
     @Test
-    public void shouldNotReportTTProvidedIfTTVisitHasHappenedAndMotherIsNotFound(){
+    public void shouldNotReportTTProvidedIfTTVisitHasHappenedAndMotherIsNotFound() {
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
-
         when(allMothers.findByCaseId("CASE-X")).thenReturn(null);
+
         service.ttVisitHasHappened(ancInformation);
 
         verifyZeroInteractions(reportingService);
     }
 
     @Test
-    public void shouldNotReportTTProvidedIfTTVisitHasHappenedAndECIsNotFound(){
-        Mother mother = new Mother("CASE-X","ECCaseId X","TC 1","motherName");
+    public void shouldNotReportTTProvidedIfTTVisitHasHappenedAndECIsNotFound() {
+        Mother mother = new Mother("CASE-X", "ECCaseId X", "TC 1", "motherName");
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
-
         when(allMothers.findByCaseId("CASE-X")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("ECCaseId X")).thenReturn(null);
+
         service.ttVisitHasHappened(ancInformation);
 
         verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportLiveBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsLiveBirth() {
+        Mother mother = new Mother("CASE-X", "ECCaseId X", "TC 1", "motherName");
+        EligibleCouple ec = new EligibleCouple("ECCaseId X", "ecNumber").withLocation("bherya", "Sub Center", "PHC X");
+        when(allMothers.findByCaseId("CASE-X")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("ECCaseId X")).thenReturn(ec);
+
+        Map<String,String> reportData = create("motherCaseId", "CASE-X").put("anmIdentifier", "ANM 1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").map();
+        service.updatePregnancyOutcome(reportData);
+
+        ReportingData serviceProvided = ReportingData.serviceProvidedData("ANM 1", "TC 1", LIVE_BIRTH, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        verify(reportingService).sendReportData(serviceProvided);
+        ReportingData anmReportData = ReportingData.anmReportData("ANM 1", "CASE-X", LIVE_BIRTH, "2012-01-01");
+        verify(reportingService).sendReportData(anmReportData);
+    }
+
+    @Test
+    public void shouldNotReportLiveBirthWhenDeliveryOutcomeIsUpdatedAndECIsNotFound() {
+        Mother mother = new Mother("CASE-X", "ECCaseId X", "TC 1", "motherName");
+        when(allMothers.findByCaseId("CASE-X")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("ECCaseId X")).thenReturn(null);
+
+        Map<String,String> reportData = create("motherCaseId", "CASE-X").put("anmIdentifier", "ANM 1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").map();
+        service.updatePregnancyOutcome(reportData);
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldNotReportLiveBirthWhenDeliveryOutcomeIsUpdatedAndMotherIsNotFound() {
+        when(allMothers.findByCaseId("CASE-X")).thenReturn(null);
+
+        Map<String,String> reportData = create("motherCaseId", "CASE-X").put("anmIdentifier", "ANM 1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").map();
+        service.updatePregnancyOutcome(reportData);
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportStillBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsStillBirth() {
+        Mother mother = new Mother("CASE-X", "ECCaseId X", "TC 1", "motherName");
+        EligibleCouple ec = new EligibleCouple("ECCaseId X", "ecNumber").withLocation("bherya", "Sub Center", "PHC X");
+        when(allMothers.findByCaseId("CASE-X")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("ECCaseId X")).thenReturn(ec);
+
+        Map<String,String> reportData = create("motherCaseId", "CASE-X").put("anmIdentifier", "ANM 1").put("pregnancyOutcome", "still_birth").put("dateOfDelivery", "2012-01-01").map();
+        service.updatePregnancyOutcome(reportData);
+
+        ReportingData serviceProvided = ReportingData.serviceProvidedData("ANM 1", "TC 1", STILL_BIRTH, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        verify(reportingService).sendReportData(serviceProvided);
+        ReportingData anmReportData = ReportingData.anmReportData("ANM 1", "CASE-X", STILL_BIRTH, "2012-01-01");
+        verify(reportingService).sendReportData(anmReportData);
     }
 
     private void assertThatIndicatorIsSetBasedOnLMP(String lmp, Indicator indicator) {

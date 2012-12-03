@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
@@ -112,6 +113,7 @@ public class ANCService {
             logger.warn("Failed to update delivery outcome as there is no mother registered: " + outcomeInformation);
             return;
         }
+        reportingService.updatePregnancyOutcome(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME));
         ancSchedulesService.unEnrollFromSchedules(caseId);
         Mother updatedMother = allMothers.updateDetails(caseId, extraData.get("details"));
         actionService.updateANCOutcome(caseId, outcomeInformation.anmIdentifier(), updatedMother.details());

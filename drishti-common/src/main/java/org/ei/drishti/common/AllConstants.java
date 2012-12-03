@@ -2,13 +2,20 @@ package org.ei.drishti.common;
 
 public class AllConstants {
     public static class Report {
-        public final static String REPORT_EXTRA_MAPS_KEY_NAME = "reporting";
+        public static final String REPORT_EXTRA_MAPS_KEY_NAME = "reporting";
         public static final String SERVICE_PROVIDED_DATA_TYPE = "serviceProvided";
         public static final String ANM_REPORT_DATA_TYPE = "anmReportData";
     }
 
     public static class MetaCommCareFields {
         public static final String ANM_IDENTIFIER_COMMCARE_FIELD_NAME = "anmIdentifier";
+    }
+
+    public static class DeliveryOutcomeCommCareFields {
+        public static final String MOTHER_CASE_ID_COMMCARE_FIELD_NAME = "motherCaseId";
+        public static final String DATE_OF_DELIVERY_COMMCARE_FIELD_NAME = "dateOfDelivery";
+        public static final String DELIVERY_OUTCOME_COMMCARE_FIELD_NAME = "pregnancyOutcome";
+        public static final String LIVE_BIRTH_COMMCARE_FIELD_VALUE = "live_birth";
     }
 
     public static class CommonCommCareFields {
