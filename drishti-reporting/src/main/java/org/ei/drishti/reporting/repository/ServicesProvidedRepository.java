@@ -2,10 +2,7 @@ package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.monitor.Probe;
-import org.ei.drishti.reporting.domain.ANM;
-import org.ei.drishti.reporting.domain.Dates;
-import org.ei.drishti.reporting.domain.Indicator;
-import org.ei.drishti.reporting.domain.Location;
+import org.ei.drishti.reporting.domain.*;
 import org.ei.drishti.reporting.repository.cache.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,46 +13,47 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_CACHE_TIME;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_INSERT_TIME;
+import static org.ei.drishti.reporting.domain.ServiceProviderType.parse;
 
 @Component
 @Repository
 public class ServicesProvidedRepository {
+    private AllServiceProvidersRepository serviceProvidersRepository;
     private AllServicesProvidedRepository servicesProvidedRepository;
     private Monitor monitor;
 
-    private CachingRepository<ANM> cachedANMs;
     private CachingRepository<Dates> cachedDates;
-    private CachingRepository<Indicator> cachedIndicators;
-    private CachingRepository<Location> cachedLocations;
+    private ReadOnlyCachingRepository<Indicator> cachedIndicators;
+    private AllLocationsRepository locationRepository;
 
     protected ServicesProvidedRepository() {
     }
 
     @Autowired
-    public ServicesProvidedRepository(@Qualifier("serviceProvidedANMRepository") ANMCacheableRepository anmRepository,
-                                      @Qualifier("serviceProvidedDatesRepository") DatesCacheableRepository datesRepository,
+    public ServicesProvidedRepository(@Qualifier("serviceProvidedDatesRepository") DatesCacheableRepository datesRepository,
                                       @Qualifier("serviceProvidedIndicatorRepository") IndicatorCacheableRepository indicatorRepository,
-                                      LocationCacheableRepository locationRepository,
+                                      AllLocationsRepository locationRepository,
+                                      AllServiceProvidersRepository serviceProvidersRepository,
                                       AllServicesProvidedRepository servicesProvidedRepository, Monitor monitor) {
+        this.serviceProvidersRepository = serviceProvidersRepository;
         this.servicesProvidedRepository = servicesProvidedRepository;
         this.monitor = monitor;
-        cachedANMs = new CachingRepository<>(anmRepository);
+        cachedIndicators = new ReadOnlyCachingRepository<>(indicatorRepository);
+        this.locationRepository = locationRepository;
         cachedDates = new CachingRepository<>(datesRepository);
-        cachedIndicators = new CachingRepository<>(indicatorRepository);
-        cachedLocations = new CachingRepository<>(locationRepository);
     }
 
     @Transactional("service_provided")
-    public void save(String anmIdentifier, String externalId, String indicator, String date, String village, String subCenter, String phc) {
+    public void save(String serviceProviderIdentifier, String serviceProviderType, String externalId, String indicator, String date, String village, String subCenter, String phcIdentifier) {
         Probe probeForCache = monitor.start(REPORTING_SERVICE_PROVIDED_CACHE_TIME);
-        ANM anm = cachedANMs.fetch(new ANM(anmIdentifier));
         Indicator fetchedIndicator = cachedIndicators.fetch(new Indicator(indicator));
         Dates dates = cachedDates.fetch(new Dates(LocalDate.parse(date).toDate()));
-        Location location = cachedLocations.fetch(new Location(village, subCenter, phc));
+        Location location = locationRepository.fetchBy(village, subCenter, phcIdentifier);
+        ServiceProvider serviceProvider = serviceProvidersRepository.fetchBy(serviceProviderIdentifier, parse(serviceProviderType));
         monitor.end(probeForCache);
 
         Probe probeForInsert = monitor.start(REPORTING_SERVICE_PROVIDED_INSERT_TIME);
-        servicesProvidedRepository.save(anm.id(), externalId, fetchedIndicator.id(), dates.id(), location.id());
+        servicesProvidedRepository.save(serviceProvider.id(), externalId, fetchedIndicator.id(), dates.id(), location.id());
         monitor.end(probeForInsert);
     }
 }

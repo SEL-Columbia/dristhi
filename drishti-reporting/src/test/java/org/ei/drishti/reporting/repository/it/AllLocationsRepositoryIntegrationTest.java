@@ -1,48 +1,41 @@
 package org.ei.drishti.reporting.repository.it;
 
 import org.ei.drishti.reporting.domain.Location;
-import org.ei.drishti.reporting.repository.cache.LocationCacheableRepository;
+import org.ei.drishti.reporting.domain.PHC;
+import org.ei.drishti.reporting.repository.AllLocationsRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 public class AllLocationsRepositoryIntegrationTest extends ServicesProvidedRepositoryIntegrationTestBase {
     @Autowired
-    private LocationCacheableRepository repository;
+    private AllLocationsRepository repository;
 
     @Test
     @Transactional("service_provided")
     @Rollback
-    public void shouldSaveAndFetchLocation() throws Exception {
-        Location location = new Location("Bherya", "Sub Center", "PHC X");
-        repository.save(location);
+    public void shouldFetchByVillageSCAndPHC() throws Exception {
+        PHC phc = new PHC("PHC X", "Bherya");
+        PHC anotherPHC = new PHC("PHC Y", "Bherya");
+        template.save(phc);
+        template.save(anotherPHC);
+        Location location = new Location("Bherya", "Sub Center", phc, "taluka", "mysore", "karnataka");
+        Location anotherLocation = new Location("Keelanapura", "Sub Center 2", anotherPHC, "taluka", "mysore", "karnataka");
+        template.save(location);
+        template.save(anotherLocation);
 
-        Location fetchedLocation = repository.fetch(location);
+        Location fetchedLocation = repository.fetchBy("Bherya", "Sub Center", "PHC X");
 
         assertEquals("Bherya", fetchedLocation.village());
         assertEquals("Sub Center", fetchedLocation.subCenter());
-        assertEquals("PHC X", fetchedLocation.phc());
+        assertEquals(phc, fetchedLocation.phc());
+        assertEquals("taluka", fetchedLocation.taluka());
+        assertEquals("mysore", fetchedLocation.district());
+        assertEquals("karnataka", fetchedLocation.state());
         assertTrue("ID should be non-zero.", fetchedLocation.id() != 0);
-    }
-
-    @Test
-    @Transactional("service_provided")
-    @Rollback
-    public void shouldLoadAllLocations() throws Exception {
-        Location location1 = new Location("Bherya", "Sub Center", "PHC X");
-        Location location2 = new Location("Keelanapura", "Sub Center 2", "PHC Y");
-        repository.save(location1);
-        repository.save(location2);
-
-        List<Location> locations = repository.fetchAll();
-
-        assertTrue(locations.containsAll(asList(location1, location2)));
     }
 }

@@ -43,7 +43,7 @@ public class ReportDataControllerTest {
 
         controller.submit(data);
 
-        verify(servicesProvidedRepository).save("ANM X", "TC 1", "BCG", "2012-01-01", "bherya", "Sub Center", "PHC X");
+        verify(servicesProvidedRepository).save("ANM X", "ANM", "TC 1", "BCG", "2012-01-01", "bherya", "Sub Center", "PHC X");
     }
 
     @Test

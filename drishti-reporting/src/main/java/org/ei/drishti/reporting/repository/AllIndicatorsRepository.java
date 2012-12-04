@@ -2,6 +2,8 @@ package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.reporting.domain.Indicator;
 import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,13 +17,9 @@ public class AllIndicatorsRepository implements IndicatorCacheableRepository {
     protected AllIndicatorsRepository() {
     }
 
-    public AllIndicatorsRepository(DataAccessTemplate dataAccessTemplate) {
+    @Autowired
+    public AllIndicatorsRepository(@Qualifier("anmReportsDataAccessTemplate") DataAccessTemplate dataAccessTemplate) {
         this.dataAccessTemplate = dataAccessTemplate;
-    }
-
-    @Override
-    public void save(Indicator objectToBeSaved) {
-        dataAccessTemplate.save(objectToBeSaved);
     }
 
     @Override

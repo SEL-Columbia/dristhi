@@ -8,8 +8,11 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "dim_location")
-@NamedQuery(name = Location.FIND_BY_VILLAGE_SUBCENTER_AND_PHC, query = "select r from Location r where r.village=:village and r.subCenter=:subCenter and r.phc=:phc")
+@NamedQuery(name = Location.FIND_BY_VILLAGE_SUBCENTER_AND_PHC_IDENTIFIER,
+        query = "select r from Location r, PHC p where r.phc=p.id and r.village=:village and r.subCenter=:subCenter and p.phcIdentifier=:phcIdentifier")
 public class Location {
+    public static final String FIND_BY_VILLAGE_SUBCENTER_AND_PHC_IDENTIFIER = "find.by.village.subcenter.and.phcIdentifier";
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,23 +24,34 @@ public class Location {
     @Column(name = "subCenter")
     private String subCenter;
 
-    @Column(name = "phc")
-    private String phc;
+    @JoinColumn(name = "phc", insertable = true, updatable = true)
+    @ManyToOne
+    private PHC phc;
 
-    public static final String FIND_BY_VILLAGE_SUBCENTER_AND_PHC = "find.by.village.subcenter.and.phc";
+    @Column(name = "taluka")
+    private String taluka;
+
+    @Column(name = "district")
+    private String district;
+
+    @Column(name = "state")
+    private String state;
 
     private Location() {
     }
 
-    public Location(Integer id, String village, String subCenter, String phc) {
+    public Location(Integer id, String village, String subCenter, PHC phc, String taluka, String district, String state) {
         this.id = id;
         this.village = village;
         this.subCenter = subCenter;
         this.phc = phc;
+        this.taluka = taluka;
+        this.district = district;
+        this.state = state;
     }
 
-    public Location(String village, String subCenter, String phc) {
-        this(0, village, subCenter, phc);
+    public Location(String village, String subCenter, PHC phc, String taluka, String district, String state) {
+        this(0, village, subCenter, phc, taluka, district, state);
     }
 
     public Integer id() {
@@ -52,7 +66,7 @@ public class Location {
         return subCenter;
     }
 
-    public String phc() {
+    public PHC phc() {
         return phc;
     }
 
@@ -69,5 +83,17 @@ public class Location {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public String taluka() {
+        return taluka;
+    }
+
+    public String district() {
+        return district;
+    }
+
+    public String state() {
+        return state;
     }
 }

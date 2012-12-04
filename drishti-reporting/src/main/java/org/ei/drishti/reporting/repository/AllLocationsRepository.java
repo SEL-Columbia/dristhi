@@ -1,15 +1,12 @@
 package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.reporting.domain.Location;
-import org.ei.drishti.reporting.repository.cache.LocationCacheableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public class AllLocationsRepository implements LocationCacheableRepository {
+public class AllLocationsRepository {
     private DataAccessTemplate dataAccessTemplate;
 
     protected AllLocationsRepository() {
@@ -20,20 +17,10 @@ public class AllLocationsRepository implements LocationCacheableRepository {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 
-    @Override
-    public void save(Location objectToBeSaved) {
-        dataAccessTemplate.save(objectToBeSaved);
-    }
+    public Location fetchBy(String village, String subCenter, String phcIdentifier) {
+        return (Location) dataAccessTemplate.getUniqueResult(Location.FIND_BY_VILLAGE_SUBCENTER_AND_PHC_IDENTIFIER,
+                new String[] {"village", "subCenter", "phcIdentifier"}, new Object[] {village,
+                subCenter, phcIdentifier});
 
-    @Override
-    public Location fetch(Location objectWhichShouldBeFilledWithMoreInformation) {
-        return (Location) dataAccessTemplate.getUniqueResult(Location.FIND_BY_VILLAGE_SUBCENTER_AND_PHC,
-                new String[] {"village", "subCenter", "phc"}, new Object[] {objectWhichShouldBeFilledWithMoreInformation.village(),
-                objectWhichShouldBeFilledWithMoreInformation.subCenter(), objectWhichShouldBeFilledWithMoreInformation.phc()});
-    }
-
-    @Override
-    public List<Location> fetchAll() {
-        return dataAccessTemplate.loadAll(Location.class);
     }
 }

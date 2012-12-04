@@ -4,7 +4,6 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Location;
 
 import java.io.Serializable;
@@ -24,7 +23,7 @@ public class ReportingData implements Serializable {
 
     public static ReportingData serviceProvidedData(String anmIdentifier, String externalId, Indicator indicator, String date, Location location) {
         return new ReportingData(SERVICE_PROVIDED_DATA_TYPE).with("anmIdentifier", anmIdentifier).with("indicator", indicator.value())
-                .with("externalId", externalId).with("village", location.village()).with("subCenter", location.subCenter()).with("phc", location.phc()).with("date", date);
+                .with("externalId", externalId).with("village", location.village()).with("subCenter", location.subCenter()).with("phc", location.phc()).with("date", date).with("serviceProviderType", "ANM");
     }
 
     public static ReportingData anmReportData(String anmIdentifier, String externalId, Indicator indicator, String date) {

@@ -5,10 +5,7 @@ import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.reporting.domain.*;
-import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
-import org.ei.drishti.reporting.repository.cache.CacheableRepository;
-import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
-import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
+import org.ei.drishti.reporting.repository.cache.*;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,8 +67,8 @@ public class ANMReportsRepositoryTest {
         repository.save(anmIdentifier, externalId, indicator, "2012-04-04");
         repository.save(anmIdentifier, externalId, indicator, "2012-04-04");
 
-        verifyCallsToCachedRepository(anmRepository, new ANM(anmIdentifier));
-        verifyCallsToCachedRepository(indicatorRepository, indicator_);
+        verifyCallsToReadOnlyCachedRepository(anmRepository, new ANM(anmIdentifier));
+        verifyCallsToReadOnlyCachedRepository(indicatorRepository, indicator_);
         verifyCallsToCachedRepository(datesRepository, dates);
 
         verify(anmReportDataRepository, times(2)).save(anm, externalId, indicator_, dates);
@@ -178,6 +175,12 @@ public class ANMReportsRepositoryTest {
         assertTrue(anmReports.containsAll(asList(anmXReport, anmYReport)));
         assertEquals(2, anmReports.size());
     }
+
+    private <T> void verifyCallsToReadOnlyCachedRepository(ReadOnlyCacheableRepository<T> repo, T object) {
+        verify(repo, times(1)).fetch(object);
+        verifyNoMoreInteractions(repo);
+    }
+
 
     private <T> void verifyCallsToCachedRepository(CacheableRepository<T> blah, T obj) {
         verify(blah, times(1)).fetch(obj);

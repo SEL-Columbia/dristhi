@@ -10,8 +10,8 @@ public class ServiceProvided {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "anmIdentifier")
-    private Integer anmIdentifier;
+    @Column(name = "service_provider")
+    private Integer serviceProvider;
 
     @Column(name = "externalId")
     private String externalId;
@@ -28,8 +28,8 @@ public class ServiceProvided {
     private ServiceProvided() {
     }
 
-    public ServiceProvided(Integer anmIdentifier, String externalId, Integer indicator, Integer date, Integer location) {
-        this.anmIdentifier = anmIdentifier;
+    public ServiceProvided(Integer serviceProvider, String externalId, Integer indicator, Integer date, Integer location) {
+        this.serviceProvider = serviceProvider;
         this.externalId = externalId;
         this.indicator = indicator;
         this.date = date;

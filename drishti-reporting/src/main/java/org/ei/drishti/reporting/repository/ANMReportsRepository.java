@@ -1,16 +1,13 @@
 package org.ei.drishti.reporting.repository;
 
-import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.domain.ANMIndicatorSummary;
+import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.domain.MonthSummary;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.monitor.Probe;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.reporting.domain.*;
-import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
-import org.ei.drishti.reporting.repository.cache.CachingRepository;
-import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
-import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
+import org.ei.drishti.reporting.repository.cache.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,24 +31,24 @@ public class ANMReportsRepository {
     private AllAnnualTargetsRepository annualTargetsRepository;
     private Monitor monitor;
 
-    private CachingRepository<ANM> cachedANMs;
+    private ReadOnlyCachingRepository<ANM> cachedANMs;
+    private ReadOnlyCachingRepository<Indicator> cachedIndicators;
     private CachingRepository<Dates> cachedDates;
-    private CachingRepository<Indicator> cachedIndicators;
 
     protected ANMReportsRepository() {
     }
 
     @Autowired
-    public ANMReportsRepository(@Qualifier("anmReportsANMRepository") ANMCacheableRepository anmRepository,
+    public ANMReportsRepository(ANMCacheableRepository anmRepository,
                                 @Qualifier("anmReportsDatesRepository") DatesCacheableRepository datesRepository,
                                 @Qualifier("anmReportsIndicatorRepository") IndicatorCacheableRepository indicatorRepository,
                                 AllANMReportDataRepository anmReportDataRepository, AllAnnualTargetsRepository annualTargetsRepository, Monitor monitor) {
         this.anmReportDataRepository = anmReportDataRepository;
         this.annualTargetsRepository = annualTargetsRepository;
         this.monitor = monitor;
-        cachedANMs = new CachingRepository<>(anmRepository);
+        cachedANMs = new ReadOnlyCachingRepository<>(anmRepository);
+        cachedIndicators = new ReadOnlyCachingRepository<>(indicatorRepository);
         cachedDates = new CachingRepository<>(datesRepository);
-        cachedIndicators = new CachingRepository<>(indicatorRepository);
     }
 
     @Transactional("anm_report")

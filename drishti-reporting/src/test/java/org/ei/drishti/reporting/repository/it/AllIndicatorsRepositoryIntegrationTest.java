@@ -1,7 +1,7 @@
 package org.ei.drishti.reporting.repository.it;
 
 import org.ei.drishti.reporting.domain.Indicator;
-import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
+import org.ei.drishti.reporting.repository.AllIndicatorsRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,14 +16,15 @@ import static junit.framework.Assert.assertTrue;
 
 public class AllIndicatorsRepositoryIntegrationTest extends ServicesProvidedRepositoryIntegrationTestBase {
     @Autowired
-    private @Qualifier("serviceProvidedIndicatorRepository") IndicatorCacheableRepository repository;
+    @Qualifier("serviceProvidedIndicatorRepository")
+    private AllIndicatorsRepository repository;
 
     @Test
     @Transactional("service_provided")
     @Rollback
     public void shouldSaveAndFetchIndicator() throws Exception {
         Indicator indicator = new Indicator("ANC");
-        repository.save(indicator);
+        template.save(indicator);
 
         Indicator fetchedIndicator = repository.fetch(indicator);
         assertEquals("ANC", fetchedIndicator.indicator());
@@ -36,11 +37,12 @@ public class AllIndicatorsRepositoryIntegrationTest extends ServicesProvidedRepo
     public void shouldFetchAllIndicators() throws Exception {
         Indicator indicator1 = new Indicator("ANC");
         Indicator indicator2 = new Indicator("IUD");
-        repository.save(indicator1);
-        repository.save(indicator2);
+        template.save(indicator1);
+        template.save(indicator2);
 
         List<Indicator> indicators = repository.fetchAll();
 
         assertTrue(indicators.containsAll(asList(indicator1, indicator2)));
+        assertTrue("ID should be non-zero.", indicators.get(0).id() != 0);
     }
 }

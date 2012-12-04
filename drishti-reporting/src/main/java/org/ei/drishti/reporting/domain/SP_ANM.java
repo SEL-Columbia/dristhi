@@ -7,36 +7,33 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "annual_target")
-@NamedQuery(name = AnnualTarget.FIND_BY_ANM_AND_INDICATOR, query = "select r from AnnualTarget r, ANM a, Indicator i where r.anmIdentifier=a.id and r.indicator=i.id and a.anmIdentifier=:anmIdentifier and i.indicator=:indicator")
-public class AnnualTarget {
-    public static final String FIND_BY_ANM_AND_INDICATOR = "find.by.anm.and.indicator";
-
+@Table(name = "dim_anm")
+public class SP_ANM {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "anmIdentifier")
-    private Integer anmIdentifier;
+    private String anmIdentifier;
 
-    @Column(name = "indicator")
-    private Integer indicator;
+    @Column(name = "phc")
+    private Integer phcId;
 
-    @Column(name = "target")
-    private String target;
-
-    private AnnualTarget() {
+    private SP_ANM() {
     }
 
-    public AnnualTarget(Integer anmIdentifier, Integer indicator, String target) {
+    public SP_ANM(String anmIdentifier, Integer phcId) {
         this.anmIdentifier = anmIdentifier;
-        this.indicator = indicator;
-        this.target = target;
+        this.phcId = phcId;
     }
 
-    public String target() {
-        return target;
+    public Integer id() {
+        return id;
+    }
+
+    public String anmIdentifier() {
+        return anmIdentifier;
     }
 
     @Override

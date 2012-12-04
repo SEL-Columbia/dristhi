@@ -20,10 +20,6 @@ public class AllAnnualTargetsRepository {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 
-    public void save(AnnualTarget annualTarget) {
-        dataAccessTemplate.save(annualTarget);
-    }
-
     public AnnualTarget fetchFor(String anmIdentifier, Indicator indicator) {
         return (AnnualTarget) dataAccessTemplate.getUniqueResult(FIND_BY_ANM_AND_INDICATOR, new String[]{"anmIdentifier", "indicator"}, new Object[]{anmIdentifier, indicator.indicator()});
     }

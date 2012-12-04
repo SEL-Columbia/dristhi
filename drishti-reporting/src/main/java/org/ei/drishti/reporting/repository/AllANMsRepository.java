@@ -2,6 +2,8 @@ package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.reporting.domain.ANM;
 import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,19 +17,15 @@ public class AllANMsRepository implements ANMCacheableRepository {
     protected AllANMsRepository() {
     }
 
-    public AllANMsRepository(DataAccessTemplate dataAccessTemplate) {
+    @Autowired
+    public AllANMsRepository(@Qualifier("anmReportsDataAccessTemplate") DataAccessTemplate dataAccessTemplate) {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 
     @Override
-    public void save(ANM objectToBeSaved) {
-        dataAccessTemplate.save(objectToBeSaved);
-    }
-
-    @Override
-    public ANM fetch(ANM objectWhichShouldBeFilledWithMoreInformation) {
+    public ANM fetch(ANM object) {
         return (ANM) dataAccessTemplate.getUniqueResult(FIND_BY_ANM_ID,
-                new String[]{"anmIdentifier"}, new Object[]{objectWhichShouldBeFilledWithMoreInformation.anmIdentifier()});
+                new String[]{"anmIdentifier"}, new Object[]{object.anmIdentifier()});
     }
 
     @Override

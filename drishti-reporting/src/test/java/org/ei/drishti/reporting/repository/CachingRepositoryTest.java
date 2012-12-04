@@ -1,11 +1,9 @@
 package org.ei.drishti.reporting.repository;
 
-import org.ei.drishti.reporting.domain.ANM;
 import org.ei.drishti.reporting.domain.Dates;
-import org.ei.drishti.reporting.domain.Indicator;
-import org.ei.drishti.reporting.domain.Location;
-import org.ei.drishti.reporting.repository.cache.*;
-import org.joda.time.LocalDate;
+import org.ei.drishti.reporting.repository.cache.CacheableRepository;
+import org.ei.drishti.reporting.repository.cache.CachingRepository;
+import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -13,18 +11,14 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
+import static org.joda.time.LocalDate.now;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class CachingRepositoryTest {
-    @Mock
-    private ANMCacheableRepository allANMsRepository;
-    @Mock
-    private IndicatorCacheableRepository indicatorRepository;
-    @Mock
-    private LocationCacheableRepository locationRepository;
     @Mock
     private DatesCacheableRepository datesRepository;
 
@@ -34,103 +28,59 @@ public class CachingRepositoryTest {
     }
 
     @Test
-    public void shouldSaveNewANMsAndFetchOldOnesFromCache() throws Exception {
-        assertCacheable(allANMsRepository, new Factory<ANM>() {
-            @Override
-            public ANM makeObjectWithIDOfZero() {
-                return new ANM("ANM X");
-            }
-
-            @Override
-            public ANM makeObjectWithIDOfFour() {
-                return new ANM(4, "ANM X");
-            }
-        });
-    }
-
-    @Test
-    public void shouldSaveNewIndicationsAndFetchOldOnesFromCache() throws Exception {
-        assertCacheable(indicatorRepository, new Factory<Indicator>() {
-            @Override
-            public Indicator makeObjectWithIDOfZero() {
-                return new Indicator("BCG");
-            }
-
-            @Override
-            public Indicator makeObjectWithIDOfFour() {
-                return new Indicator(4, "BCG");
-            }
-        });
-    }
-
-    @Test
     public void shouldSaveNewDatesAndFetchOldOnesFromCache() throws Exception {
         assertCacheable(datesRepository, new Factory<Dates>() {
             @Override
             public Dates makeObjectWithIDOfZero() {
-                return new Dates(LocalDate.now().toDate());
+                return new Dates(now().toDate());
             }
 
             @Override
             public Dates makeObjectWithIDOfFour() {
-                return new Dates(4, LocalDate.now().toDate());
-            }
-        });
-    }
-
-    @Test
-    public void shouldSaveNewLocationsAndFetchOldOnesFromCache() throws Exception {
-        assertCacheable(locationRepository, new Factory<Location>() {
-            @Override
-            public Location makeObjectWithIDOfZero() {
-                return new Location("Bherya", "Sub Center", "PHC X");
-            }
-
-            @Override
-            public Location makeObjectWithIDOfFour() {
-                return new Location(4, "Bherya", "Sub Center", "PHC X");
+                return new Dates(4, now().toDate());
             }
         });
     }
 
     @Test
     public void shouldNotTryAndSaveAnAlreadySavedItemWhenThereAreCallsFromMultipleThreadsUsingTheSameCachingRepository() throws Exception {
-        AllANMsRepository anMsRepository = mock(AllANMsRepository.class);
-        CachingRepository<ANM> anmCachingRepository = new CachingRepository<>(anMsRepository);
+        AllDatesRepository allDatesRepository = mock(AllDatesRepository.class);
+        CachingRepository<Dates> datesCachingRepository = new CachingRepository<>(allDatesRepository);
 
-        fetchFromCacheAcrossThreads(anmCachingRepository, anmCachingRepository);
+        fetchFromCacheAcrossThreads(datesCachingRepository, datesCachingRepository);
 
-        verify(anMsRepository, times(1)).save(new ANM(0, "ANM X"));
+        verify(allDatesRepository, times(1)).save(new Dates(0, now().toDate()));
     }
 
     @Test
     public void shouldFetchFromDBToFillCacheIfAnObjectIsInTheDBButNotInTheCache() throws Exception {
-        when(allANMsRepository.fetch(new ANM(0, "ANM B"))).thenReturn(new ANM(10, "ANM B"));
+        Date today = now().toDate();
+        when(datesRepository.fetch(new Dates(0, today))).thenReturn(new Dates(10, today));
 
-        CachingRepository<ANM> repoWhichCaches = new CachingRepository<>(allANMsRepository);
-        ANM anmFromCache = repoWhichCaches.fetch(new ANM(0, "ANM B"));
-        repoWhichCaches.fetch(new ANM(0, "ANM B"));
-        repoWhichCaches.fetch(new ANM(0, "ANM B"));
-        repoWhichCaches.fetch(new ANM(0, "ANM B"));
+        CachingRepository<Dates> repoWhichCaches = new CachingRepository<>(datesRepository);
+        Dates dateFromCache = repoWhichCaches.fetch(new Dates(0, today));
+        repoWhichCaches.fetch(new Dates(0, today));
+        repoWhichCaches.fetch(new Dates(0, today));
+        repoWhichCaches.fetch(new Dates(0, today));
 
-        assertEquals(new Integer(10), anmFromCache.id());
-        assertEquals("ANM B", anmFromCache.anmIdentifier());
+        assertEquals(new Integer(10), dateFromCache.id());
+        assertEquals(today, dateFromCache.date());
 
-        verify(allANMsRepository, times(1)).fetch(new ANM(0, "ANM B"));
-        verify(allANMsRepository, times(0)).save(any(ANM.class));
+        verify(datesRepository, times(1)).fetch(new Dates(0, today));
+        verify(datesRepository, times(0)).save(any(Dates.class));
     }
 
-    private void fetchFromCacheAcrossThreads(final CachingRepository<ANM> repository1, final CachingRepository<ANM> repository2) throws InterruptedException {
+    private void fetchFromCacheAcrossThreads(final CachingRepository<Dates> repository1, final CachingRepository<Dates> repository2) throws InterruptedException {
         Thread thread1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                repository1.fetch(new ANM(0, "ANM X"));
+                repository1.fetch(new Dates(0, now().toDate()));
             }
         });
         Thread thread2 = new Thread(new Runnable() {
             @Override
             public void run() {
-                repository2.fetch(new ANM(0, "ANM X"));
+                repository2.fetch(new Dates(0, now().toDate()));
             }
         });
 

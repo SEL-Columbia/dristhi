@@ -4,11 +4,8 @@ import org.ei.drishti.reporting.domain.ANM;
 import org.ei.drishti.reporting.domain.ANMReportData;
 import org.ei.drishti.reporting.domain.Dates;
 import org.ei.drishti.reporting.domain.Indicator;
-import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.AllANMReportDataRepository;
-import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
 import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
-import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +23,8 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
     private AllANMReportDataRepository repository;
 
     @Autowired
-    @Qualifier("anmReportsANMRepository")
-    private ANMCacheableRepository allANMsRepository;
-
-    @Autowired
     @Qualifier("anmReportsDatesRepository")
     private DatesCacheableRepository allDatesRepository;
-
-    @Autowired
-    @Qualifier("anmReportsIndicatorRepository")
-    private IndicatorCacheableRepository allIndicatorsRepository;
 
     @Test
     @Transactional("anm_report")
@@ -44,9 +33,9 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
         ANM anm = new ANM("ANM X");
         Dates dates = new Dates(LocalDate.now().toDate());
         Indicator indicator = new Indicator("ANC");
-        allANMsRepository.save(anm);
+        template.save(anm);
         allDatesRepository.save(dates);
-        allIndicatorsRepository.save(indicator);
+        template.save(indicator);
 
         repository.save(anm, "EC CASE X", indicator, dates);
 
@@ -60,9 +49,9 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
         ANM anm = new ANM("ANM X");
         Dates dates = new Dates(LocalDate.now().toDate());
         Indicator indicator = new Indicator("ANC");
-        allANMsRepository.save(anm);
+        template.save(anm);
         allDatesRepository.save(dates);
-        allIndicatorsRepository.save(indicator);
+        template.save(indicator);
 
         repository.save(anm, "EC CASE X", indicator, dates);
 
@@ -80,10 +69,10 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
         ANM anm2 = new ANM("ANM Y");
         Dates dates = new Dates(LocalDate.parse("2012-03-31").toDate());
         Indicator indicator = new Indicator("ANC");
-        allANMsRepository.save(anm1);
-        allANMsRepository.save(anm2);
+        template.save(anm1);
+        template.save(anm2);
         allDatesRepository.save(dates);
-        allIndicatorsRepository.save(indicator);
+        template.save(indicator);
         repository.save(anm1, "EC CASE X", indicator, dates);
         repository.save(anm2, "EC CASE Y", indicator, dates);
 
@@ -103,12 +92,12 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
         Dates dates2 = new Dates(LocalDate.parse("2012-03-31").toDate());
         Dates dates3 = new Dates(LocalDate.parse("2012-04-01").toDate());
         Indicator indicator = new Indicator("ANC");
-        allANMsRepository.save(anm1);
-        allANMsRepository.save(anm2);
+        template.save(anm1);
+        template.save(anm2);
         allDatesRepository.save(dates1);
         allDatesRepository.save(dates2);
         allDatesRepository.save(dates3);
-        allIndicatorsRepository.save(indicator);
+        template.save(indicator);
         repository.save(anm1, "EC CASE X", indicator, dates1);
         repository.save(anm1, "EC CASE X", indicator, dates2);
         repository.save(anm1, "EC CASE X", indicator, dates3);

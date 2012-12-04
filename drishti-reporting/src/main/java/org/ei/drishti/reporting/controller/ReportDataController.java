@@ -35,7 +35,7 @@ public class ReportDataController {
     public String submit(@RequestBody ReportingData reportingData) {
         logger.info("Reporting on: " + reportingData);
         if (reportingData.type().equals(SERVICE_PROVIDED_DATA_TYPE)) {
-            servicesProvidedRepository.save(reportingData.get("anmIdentifier"), reportingData.get("externalId"),
+            servicesProvidedRepository.save(reportingData.get("anmIdentifier"), reportingData.get("serviceProviderType"), reportingData.get("externalId"),
                     reportingData.get("indicator"), reportingData.get("date"), reportingData.get("village"), reportingData.get("subCenter"), reportingData.get("phc"));
         } else if (reportingData.type().equals(ANM_REPORT_DATA_TYPE)) {
             anmReportsRepository.save(reportingData.get("anmIdentifier"), reportingData.get("externalId"), reportingData.get("indicator"), reportingData.get("date"));
