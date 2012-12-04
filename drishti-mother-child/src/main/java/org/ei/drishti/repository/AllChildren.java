@@ -7,13 +7,13 @@ import org.motechproject.dao.MotechBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME;
+import static org.springframework.util.StringUtils.collectionToDelimitedString;
 
 @Repository
 public class AllChildren extends MotechBaseRepository<Child> {
@@ -47,14 +47,14 @@ public class AllChildren extends MotechBaseRepository<Child> {
     private Child updateChildImmunizationIfProvided(Child child, Map<String, String> details) {
         if(details.containsKey(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME)){
             List<String> immunizationsProvided = child.immunizationsProvided();
-            List<String> recentImmunizations = Arrays.asList(details.get(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME).split(" "));
+            List<String> recentImmunizations = asList(details.get(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME).split(" "));
             for (String recentImmunization : recentImmunizations) {
                 if(!immunizationsProvided.contains(recentImmunization)){
                     immunizationsProvided.add(recentImmunization);
                 }
             }
             child.setImmunizationsProvided(immunizationsProvided);
-            details.put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, StringUtils.collectionToDelimitedString(immunizationsProvided, " "));
+            details.put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, collectionToDelimitedString(immunizationsProvided, " "));
         }
         return child;
     }

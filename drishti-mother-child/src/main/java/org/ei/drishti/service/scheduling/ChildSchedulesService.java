@@ -3,6 +3,7 @@ package org.ei.drishti.service.scheduling;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildInformation;
 import org.ei.drishti.contract.Schedule;
+import org.ei.drishti.repository.AllChildren;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
@@ -28,11 +29,13 @@ import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACT
 @Service
 public class ChildSchedulesService {
     private final ScheduleTrackingService scheduleTrackingService;
+    private final AllChildren allChildren;
     private Map<String, Schedule> childSchedules;
 
     @Autowired
-    public ChildSchedulesService(ScheduleTrackingService scheduleTrackingService) {
+    public ChildSchedulesService(ScheduleTrackingService scheduleTrackingService, AllChildren allChildren) {
         this.scheduleTrackingService = scheduleTrackingService;
+        this.allChildren = allChildren;
         initializeSchedules();
     }
 
@@ -64,7 +67,7 @@ public class ChildSchedulesService {
 
     private void enrollDependentModulesIfRequired(ChildImmunizationUpdationRequest information) {
         for (Schedule schedule : childSchedules.values()) {
-            if (schedule.hasDependency()) {
+            if (schedule.hasDependency() && !isImmunizationAlreadyProvided(information.caseId(),schedule)) {
                 Schedule dependsOn = schedule.getDependencySchedule();
                 if (information.immunizationsProvidedList().contains(dependsOn.getLastMilestone())
                         && isNotEnrolled(information.caseId(), schedule.name())) {
@@ -72,6 +75,16 @@ public class ChildSchedulesService {
                 }
             }
         }
+    }
+
+    private boolean isImmunizationAlreadyProvided(String caseid, Schedule schedule) {
+        List<String> alreadyProvidedImmunizations = allChildren.findByCaseId(caseid).immunizationsProvided();
+        List<String> mileStones = schedule.getMileStones();
+        for (String mileStone : mileStones) {
+            if(!alreadyProvidedImmunizations.contains(mileStone))
+                return false;
+        }
+        return true;
     }
 
     private void updateMilestonesForEnrolledSchedules(ChildImmunizationUpdationRequest information) {

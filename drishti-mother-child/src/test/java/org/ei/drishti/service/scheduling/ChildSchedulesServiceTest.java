@@ -2,6 +2,8 @@ package org.ei.drishti.service.scheduling;
 
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildInformation;
+import org.ei.drishti.domain.Child;
+import org.ei.drishti.repository.AllChildren;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,13 +28,12 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class ChildSchedulesServiceTest {
     @Mock
     private ScheduleTrackingService scheduleTrackingService;
-
-    private ChildSchedulesService childSchedulesService;
+    @Mock
+    private AllChildren allChildren;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        childSchedulesService = new ChildSchedulesService(scheduleTrackingService);
     }
 
     @Test
@@ -86,6 +87,14 @@ public class ChildSchedulesServiceTest {
         new TestForChildEnrollment()
                 .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES_BOOSTER, MEASLES_BOOSTER_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("measles")
+                .shouldNotEnrollAndFulfillAnythingElse();
+    }
+
+    @Test
+    public void shouldNotEnrollDependentSchedulesIfImmunizationForThemIsAlreadyGiven() {
+        new TestForChildEnrollment()
+                .givenChildIsAlreadyProvidedWithImmunizations("dpt_2")
+                .whenProvidedWithImmunizations("dpt_1")
                 .shouldNotEnrollAndFulfillAnythingElse();
     }
 
@@ -202,7 +211,6 @@ public class ChildSchedulesServiceTest {
         private final String name = "Asha";
         private final String dateOfBirth = "2012-01-01";
         private final String immunizationsDate = "2012-05-04";
-        private String immunizationsAlreadyProvided;
 
         private final ScheduleTrackingService scheduleTrackingService;
 
@@ -211,8 +219,15 @@ public class ChildSchedulesServiceTest {
 
         public TestForChildEnrollment() {
             scheduleTrackingService = mock(ScheduleTrackingService.class);
-            childSchedulesService = new ChildSchedulesService(scheduleTrackingService);
+            childSchedulesService = new ChildSchedulesService(scheduleTrackingService, allChildren);
             allEnrollments = new ArrayList<>();
+            initCommonExpectations();
+        }
+
+        private void initCommonExpectations() {
+            Child child = mock(Child.class);
+            when(allChildren.findByCaseId(caseId)).thenReturn(child);
+            when(child.immunizationsProvided()).thenReturn(asList(""));
         }
 
         public TestForChildEnrollment givenEnrollmentIn(String schedule, String... milestoneNames) {
@@ -320,7 +335,9 @@ public class ChildSchedulesServiceTest {
         }
 
         public TestForChildEnrollment givenChildIsAlreadyProvidedWithImmunizations(String immunizationsAlreadyProvided) {
-            this.immunizationsAlreadyProvided = immunizationsAlreadyProvided;
+            Child child = mock(Child.class);
+            when(allChildren.findByCaseId(caseId)).thenReturn(child);
+            when(child.immunizationsProvided()).thenReturn(asList(immunizationsAlreadyProvided.split(" ")));
             return this;
         }
     }
