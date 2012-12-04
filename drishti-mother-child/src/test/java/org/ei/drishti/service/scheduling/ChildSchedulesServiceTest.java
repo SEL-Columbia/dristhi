@@ -2,7 +2,6 @@ package org.ei.drishti.service.scheduling;
 
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.ChildInformation;
-import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +17,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.join;
-import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareValues.*;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
@@ -72,7 +71,7 @@ public class ChildSchedulesServiceTest {
     }
 
     @Test
-    public void shouldEnrollInDependentSchedulesEvenIfDependyIsNotPresentButImmunizationIsGiven() {
+    public void shouldEnrollDependentSchedulesEvenIfDependeeIsNotPresentButImmunizationIsGiven() {
         new TestForChildEnrollment()
                 .givenEnrollmentWillHappenIn(CHILD_SCHEDULE_MEASLES_BOOSTER, MEASLES_BOOSTER_COMMCARE_VALUE)
                 .givenEnrollmentWillHappenIn(CHILD_SCHEDULE_DPT_BOOSTER2, DPT_BOOSTER_2_COMMCARE_VALUE)
@@ -203,10 +202,11 @@ public class ChildSchedulesServiceTest {
         private final String name = "Asha";
         private final String dateOfBirth = "2012-01-01";
         private final String immunizationsDate = "2012-05-04";
+        private String immunizationsAlreadyProvided;
 
         private final ScheduleTrackingService scheduleTrackingService;
-        private final ChildSchedulesService childSchedulesService;
 
+        private final ChildSchedulesService childSchedulesService;
         private List<EnrollmentRecord> allEnrollments;
 
         public TestForChildEnrollment() {
@@ -319,6 +319,10 @@ public class ChildSchedulesServiceTest {
             return this;
         }
 
+        public TestForChildEnrollment givenChildIsAlreadyProvidedWithImmunizations(String immunizationsAlreadyProvided) {
+            this.immunizationsAlreadyProvided = immunizationsAlreadyProvided;
+            return this;
+        }
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate lmp) {

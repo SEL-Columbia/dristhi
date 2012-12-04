@@ -16,12 +16,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.*;
-import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareValues.*;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.MetaCommCareFields.*;
 import static org.ei.drishti.common.domain.Indicator.*;
@@ -65,15 +67,15 @@ public class ChildReportingService {
         immunizationToIndicator.put(MEASLES_BOOSTER_COMMCARE_VALUE, MEASLES);
     }
 
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, SafeMap reportingData) {
-        report(updationRequest.caseId(), updationRequest.immunizationsProvidedList(), reportingData.get("immunizationsProvidedDate"), reportingData.get("anmIdentifier"));
+    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, List<String> previousImmunizations, SafeMap reportingData) {
+        report(updationRequest.caseId(), updationRequest.immunizationsProvidedList(), previousImmunizations, reportingData.get("immunizationsProvidedDate"), reportingData.get("anmIdentifier"));
     }
 
     public void updateChildImmunization(ChildInformation childInformation) {
-        report(childInformation.caseId(), childInformation.immunizationsProvidedList(), childInformation.dateOfBirth().toString(), childInformation.anmIdentifier());
+        report(childInformation.caseId(), childInformation.immunizationsProvidedList(), asList(""), childInformation.dateOfBirth().toString(), childInformation.anmIdentifier());
     }
 
-    private void report(String childCaseId, List<String> immunizationsProvided, String immunizationsProvidedDate, String anmIdentifier) {
+    private void report(String childCaseId, List<String> immunizationsProvided, Collection<?> previousImmunizations, String immunizationsProvidedDate, String anmIdentifier) {
         Child child = allChildren.findByCaseId(childCaseId);
         if (child == null) {
             logChildNotFound(childCaseId);
@@ -87,8 +89,7 @@ public class ChildReportingService {
         }
 
         List<String> immunizations = immunizationsProvided;
-        List<String> previouslyProvided = child.immunizationsProvided();
-        immunizations.removeAll(previouslyProvided);
+        immunizations.removeAll(previousImmunizations);
 
         for (String immunizationProvidedThisTime : immunizations) {
             Indicator indicator = immunizationToIndicator.get(immunizationProvidedThisTime);
@@ -126,7 +127,7 @@ public class ChildReportingService {
         }
 
         LocalDate childDateOfBirth = LocalDate.parse(child.dateOfBirth());
-        if((childDateOfBirth.plusMonths(CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS).isBefore(DateUtil.today()))){
+        if ((childDateOfBirth.plusMonths(CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS).isBefore(DateUtil.today()))) {
             logger.warn("Not reporting for child because child's age is more than " + CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS + " months.");
             return;
         }

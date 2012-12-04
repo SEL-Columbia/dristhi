@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
@@ -50,7 +51,7 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", Arrays.asList("bcg", "hepb1"), "female"));
         when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hepb_1 opv_0", "2012-01-01"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hepb_1 opv_0", "2012-01-01"), asList(""), reportingData);
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", OPV, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
         ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", OPV, "2012-01-01");
@@ -66,7 +67,7 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", Arrays.asList("dpt1", "dpt2"), "female"));
         when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "dpt1 bcg dpt2 measles", "2012-01-01"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "dpt1 bcg dpt2 measles", "2012-01-01"), asList(""), reportingData);
 
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", BCG, "2012-01-01"));
@@ -81,7 +82,7 @@ public class ChildReportingServiceTest {
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(null);
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv", "2012-01-01"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv", "2012-01-01"), asList(""), reportingData);
 
         verifyZeroInteractions(reportingService);
     }
@@ -94,7 +95,7 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "bcg", Arrays.asList("dpt1", "dpt2"), "female"));
         when(allECs.findByCaseId("EC-CASE-1")).thenReturn(null);
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv", "2012-01-01"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "bcg hep opv", "2012-01-01"), asList(""), reportingData);
 
         verifyZeroInteractions(reportingService);
     }
@@ -132,7 +133,7 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female"));
         when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "NON_EXISTENT_IMMUNIZATION bcg", "2012-01-01"), reportingData);
+        service.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", "NON_EXISTENT_IMMUNIZATION bcg", "2012-01-01"), asList(""), reportingData);
 
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", BCG, "2012-01-01"));
@@ -255,7 +256,7 @@ public class ChildReportingServiceTest {
         when(children.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female"));
         when(allECs.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        childReportingService.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", immunizationProvided, "2012-01-01"), reportingData);
+        childReportingService.updateChildImmunization(new ChildImmunizationUpdationRequest("CASE X", "ANM X", immunizationProvided, "2012-01-01"), asList(""), reportingData);
 
         verify(fakeReportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", expectedIndicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
         verify(fakeReportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", expectedIndicator, "2012-01-01"));

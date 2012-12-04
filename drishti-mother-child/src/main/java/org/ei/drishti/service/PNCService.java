@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
@@ -94,11 +95,13 @@ public class PNCService {
             return;
         }
 
+        List<String> previousImmunizations = allChildren.findByCaseId(updationRequest.caseId()).immunizationsProvided();
+
         Child updatedChild = allChildren.updateDetails(updationRequest.caseId(), extraData.get("details"));
         actionService.updateImmunizations(updationRequest.caseId(), updationRequest.anmIdentifier(), updatedChild.details(), updationRequest.immunizationsProvided(),
                 updationRequest.immunizationsProvidedDate(), updationRequest.vitaminADose());
 
-        childReportingService.updateChildImmunization(updationRequest, new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
+        childReportingService.updateChildImmunization(updationRequest, previousImmunizations, new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
 
         alertForImmunizationProvided(updationRequest, "opv_0", "OPV 0");
         alertForImmunizationProvided(updationRequest, "bcg", "BCG");

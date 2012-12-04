@@ -20,7 +20,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableMap;
 import static org.apache.commons.lang.StringUtils.join;
-import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareValues.*;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;

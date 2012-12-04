@@ -88,6 +88,11 @@ public class Child extends MotechBaseDataObject {
         return dateOfBirth;
     }
 
+    public Child setImmunizationsProvided(List<String> immunizationsProvided){
+        this.immunizationsProvided = immunizationsProvided;
+        return this;
+    }
+
     //These getters are used by CouchDB Repo
     private String getCaseId() {
         return caseId;
