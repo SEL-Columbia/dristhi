@@ -12,12 +12,16 @@ import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 
+import java.util.Map;
+
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
+import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
+import static org.joda.time.LocalDate.*;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -40,25 +44,28 @@ public class ECSchedulingServiceTest {
     public void shouldEnrollHighPriorityECIntoFPComplicationsSchedulesWhenECIsRegisteredAndFPMethodIsNone() {
         EligibleCoupleRegistrationRequest request = new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "none", "Yes");
 
-        ecSchedulingService.enrollToFPComplications(request);
+        Map<String,String > details = create("submissionDate", "2012-01-01").map();
+        ecSchedulingService.enrollToFPComplications(request, details);
 
-        verify(scheduleTrackingService).enroll(enrollmentFor(request.caseId(),EC_SCHEDULE_FP_COMPLICATION,LocalDate.now()));
+        verify(scheduleTrackingService).enroll(enrollmentFor(request.caseId(),EC_SCHEDULE_FP_COMPLICATION, parse("2012-01-01")));
     }
 
     @Test
     public void shouldEnrollHighPriorityECIntoFPComplicationsSchedulesWhenECIsRegisteredAndFPMethodIsEmpty() {
         EligibleCoupleRegistrationRequest request = new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "", "Yes");
 
-        ecSchedulingService.enrollToFPComplications(request);
+        Map<String,String > details = create("submissionDate", "2012-01-01").map();
+        ecSchedulingService.enrollToFPComplications(request, details);
 
-        verify(scheduleTrackingService).enroll(enrollmentFor(request.caseId(),EC_SCHEDULE_FP_COMPLICATION,LocalDate.now()));
+        verify(scheduleTrackingService).enroll(enrollmentFor(request.caseId(),EC_SCHEDULE_FP_COMPLICATION, parse("2012-01-01")));
     }
 
     @Test
     public void shouldNotEnrollHighPriorityECIntoFPComplicationsSchedulesWhenECIsRegisteredAndFPMethodIsNeitherNoneNorEmpty() {
         EligibleCoupleRegistrationRequest request = new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "some method", "Yes");
 
-        ecSchedulingService.enrollToFPComplications(request);
+        Map<String,String > details = create("submissionDate", "2012-01-01").map();
+        ecSchedulingService.enrollToFPComplications(request, details);
 
         verifyZeroInteractions(scheduleTrackingService);
     }
@@ -67,7 +74,8 @@ public class ECSchedulingServiceTest {
     public void shouldNotEnrollNormalPriorityECIntoFPComplicationsSchedulesWhenECIsRegistered() {
         EligibleCoupleRegistrationRequest request = new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "some method", "no");
 
-        ecSchedulingService.enrollToFPComplications(request);
+        Map<String,String > details = create("submissionDate", "2012-01-01").map();
+        ecSchedulingService.enrollToFPComplications(request, details);
 
         verifyZeroInteractions(scheduleTrackingService);
     }
@@ -79,7 +87,7 @@ public class ECSchedulingServiceTest {
                 .put(CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME, "2012-12-08")
                 .map());
 
-        verify(scheduleTrackingService).fulfillCurrentMilestone("CASE X", EC_SCHEDULE_FP_COMPLICATION, LocalDate.parse("2012-12-08"));
+        verify(scheduleTrackingService).fulfillCurrentMilestone("CASE X", EC_SCHEDULE_FP_COMPLICATION, parse("2012-12-08"));
     }
 
     @Test
@@ -121,7 +129,7 @@ public class ECSchedulingServiceTest {
                 .put(CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME, "2012-12-08")
                 .map());
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("CASE X", EC_SCHEDULE_FP_COMPLICATION, LocalDate.parse("2012-12-08")));
+        verify(scheduleTrackingService).enroll(enrollmentFor("CASE X", EC_SCHEDULE_FP_COMPLICATION, parse("2012-12-08")));
     }
 
     @Test
@@ -135,7 +143,7 @@ public class ECSchedulingServiceTest {
                 .put(CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME, "2012-12-08")
                 .map());
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("CASE X", EC_SCHEDULE_FP_COMPLICATION, LocalDate.parse("2012-12-08")));
+        verify(scheduleTrackingService).enroll(enrollmentFor("CASE X", EC_SCHEDULE_FP_COMPLICATION, parse("2012-12-08")));
     }
 
     @Test

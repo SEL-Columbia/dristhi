@@ -17,9 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_MAPS_KEY_NAME;
+import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
 
 @Service
@@ -43,20 +44,20 @@ public class ECService {
     public void registerEligibleCouple(EligibleCoupleRegistrationRequest request, Map<String, Map<String, String>> extraData) {
         EligibleCouple couple = new EligibleCouple(request.caseId(), request.ecNumber())
                 .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
-                .withLocation(request.village(), request.subCenter(), request.phc()).withDetails(extraData.get("details"));
+                .withLocation(request.village(), request.subCenter(), request.phc()).withDetails(extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
 
         allEligibleCouples.register(couple);
 
-        reportingService.fpMethodChangedWithECRegistrationDetails(new SafeMap(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME)), couple.village(), couple.subCenter(), couple.phc());
+        reportingService.fpMethodChangedWithECRegistrationDetails(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)), couple.village(), couple.subCenter(), couple.phc());
         actionService.registerEligibleCouple(request.caseId(), request.ecNumber(), request.wife(), request.husband(),
-                request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), extraData.get("details"));
-        schedulingService.enrollToFPComplications(request);
+                request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
+        schedulingService.enrollToFPComplications(request, extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
     }
 
     public EligibleCouple registerEligibleCoupleForOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
         EligibleCouple couple = new EligibleCouple(idGenerator.generateUUID().toString(), "0")
                 .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
-                .withLocation(request.village(), request.subCenter(), request.phc()).withDetails(extraData.get("details"))
+                .withLocation(request.village(), request.subCenter(), request.phc()).withDetails(extraData.get(DETAILS_EXTRA_DATA_KEY_NAME))
                 .asOutOfArea();
 
         allEligibleCouples.register(couple);
@@ -68,7 +69,7 @@ public class ECService {
         actionService.closeEligibleCouple(request.caseId(), request.anmIdentifier());
     }
 
-    public void updateDetails(UpdateDetailsRequest request, Map<String, Map<String, String>> extraDetails) {
+    public void renewFamilyPlanningMethod(UpdateDetailsRequest request, Map<String, Map<String, String>> extraDetails) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(request.caseId());
         if (couple == null) {
             logger.warn("Tried to update details of a non-existing EC: " + request + ". Extra details: " + extraDetails);
@@ -76,7 +77,7 @@ public class ECService {
         }
 
         EligibleCouple updatedCouple = allEligibleCouples.updateDetails(request.caseId(), extraDetails.get("details"));
-        reportingService.fpMethodChangedWithUpdatedECDetails(new SafeMap(extraDetails.get(REPORT_EXTRA_MAPS_KEY_NAME)), updatedCouple.ecNumber(), updatedCouple.village(), updatedCouple.subCenter(), updatedCouple.phc());
+        reportingService.fpMethodChangedWithUpdatedECDetails(new SafeMap(extraDetails.get(REPORT_EXTRA_DATA_KEY_NAME)), updatedCouple.ecNumber(), updatedCouple.village(), updatedCouple.subCenter(), updatedCouple.phc());
         actionService.updateEligibleCoupleDetails(request.caseId(), request.anmIdentifier(), updatedCouple.details());
 
         schedulingService.updateFPComplications(request.caseId(), extraDetails.get("details"));

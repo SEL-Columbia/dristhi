@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_MAPS_KEY_NAME;
+import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
@@ -59,12 +59,12 @@ public class ANCServiceTest {
         String motherName = "Theresa";
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", lmp.toDate());
         when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
-        Map<String, Map<String, String>> extraData = create("details", mapOf("some_field", "some_value")).put(REPORT_EXTRA_MAPS_KEY_NAME, Collections.<String, String>emptyMap()).map();
+        Map<String, Map<String, String>> extraData = create("details", mapOf("some_field", "some_value")).put(REPORT_EXTRA_DATA_KEY_NAME, Collections.<String, String>emptyMap()).map();
 
         service.registerANCCase(enrollmentInfo, extraData);
         Map<String, String> details = extraData.get("details");
 
-        verify(motherReportingService).registerANC(new SafeMap(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME)), "bherya", "Sub Center");
+        verify(motherReportingService).registerANC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)), "bherya", "Sub Center");
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", "EC-CASE-1", thaayiCardNumber, motherName)
                 .withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp)
                 .withLocation("bherya", "Sub Center", "PHC X").withDetails(details)));
@@ -76,7 +76,7 @@ public class ANCServiceTest {
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", "THAAYI-CARD-NUMBER-1", "12345", "ANM ID 1", null);
         when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(null);
 
-        service.registerANCCase(enrollmentInfo, mapOf(REPORT_EXTRA_MAPS_KEY_NAME, Collections.<String, String>emptyMap()));
+        service.registerANCCase(enrollmentInfo, mapOf(REPORT_EXTRA_DATA_KEY_NAME, Collections.<String, String>emptyMap()));
 
         verifyZeroInteractions(mothers);
         verifyZeroInteractions(ancSchedulesService);
@@ -90,7 +90,7 @@ public class ANCServiceTest {
         String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
         OutOfAreaANCRegistrationRequest request = new OutOfAreaANCRegistrationRequest("CASE X", motherName, "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", thaayiCardNumber, lmp.toString(), "9876543210");
-        Map<String, Map<String, String>> extraData = create("details", mapOf("some_field", "some_value")).put(REPORT_EXTRA_MAPS_KEY_NAME, Collections.<String, String>emptyMap()).map();
+        Map<String, Map<String, String>> extraData = create("details", mapOf("some_field", "some_value")).put(REPORT_EXTRA_DATA_KEY_NAME, Collections.<String, String>emptyMap()).map();
         EligibleCouple couple = new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X").asOutOfArea();
 
         service.registerOutOfAreaANC(request, couple, extraData);
@@ -113,7 +113,7 @@ public class ANCServiceTest {
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", lmp.toDate());
         when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.registerANCCase(enrollmentInfo, create(REPORT_EXTRA_MAPS_KEY_NAME, Collections.<String, String>emptyMap()).put("details", Collections.<String, String>emptyMap()).map());
+        service.registerANCCase(enrollmentInfo, create(REPORT_EXTRA_DATA_KEY_NAME, Collections.<String, String>emptyMap()).put("details", Collections.<String, String>emptyMap()).map());
 
         InOrder inOrder = inOrder(actionService, ancSchedulesService);
         inOrder.verify(actionService).registerPregnancy("CASE-1", "EC-CASE-1", thaayiCardNumber, "ANM ID 1", lmp, Collections.<String, String>emptyMap());
@@ -128,7 +128,7 @@ public class ANCServiceTest {
         when(eligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X"));
 
         HashMap<String, Map<String, String>> extraData = new HashMap<>();
-        extraData.put(REPORT_EXTRA_MAPS_KEY_NAME, new HashMap<String, String>());
+        extraData.put(REPORT_EXTRA_DATA_KEY_NAME, new HashMap<String, String>());
         service.registerANCCase(enrollmentInfo, extraData);
 
         verify(ancSchedulesService).enrollMother(eq("CASE-1"), eq(today()), any(Time.class), any(Time.class));

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
-import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_MAPS_KEY_NAME;
+import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 
 @Component
 public class DrishtiController {
@@ -76,7 +76,7 @@ public class DrishtiController {
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
         logger.info("ANC close: " + closeInformation + ". Extra data: " + extraData);
 
-        ancService.closeANCCase(closeInformation, new SafeMap(extraData.get(REPORT_EXTRA_MAPS_KEY_NAME)));
+        ancService.closeANCCase(closeInformation, new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         mctsService.closeANCCase(closeInformation);
     }
 
@@ -94,10 +94,10 @@ public class DrishtiController {
         mctsService.closeChildCase(childCloseRequest);
     }
 
-    public void changeFamilyPlanningMethod(UpdateDetailsRequest updateDetailsRequest, Map<String, Map<String, String>> extraData) {
+    public void renewFamilyPlanningMethod(UpdateDetailsRequest updateDetailsRequest, Map<String, Map<String, String>> extraData) {
         logger.info("Eligible couple change FP: " + updateDetailsRequest + ". Extra data: " + extraData);
 
-        ecService.updateDetails(updateDetailsRequest, extraData);
+        ecService.renewFamilyPlanningMethod(updateDetailsRequest, extraData);
     }
 
     public void closeEligibleCouple(EligibleCoupleCloseRequest eligibleCoupleCloseRequest) {

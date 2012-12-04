@@ -48,7 +48,7 @@
                     }
                 },
                 {
-                    "name": "changeFamilyPlanningMethod",
+                    "name": "renewFamilyPlanningMethod",
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
                         "queryParams": {

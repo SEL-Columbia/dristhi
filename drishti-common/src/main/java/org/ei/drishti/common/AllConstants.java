@@ -1,8 +1,10 @@
 package org.ei.drishti.common;
 
 public class AllConstants {
+    public static final String DETAILS_EXTRA_DATA_KEY_NAME = "details";
+
     public static class Report {
-        public static final String REPORT_EXTRA_MAPS_KEY_NAME = "reporting";
+        public static final String REPORT_EXTRA_DATA_KEY_NAME = "reporting";
         public static final String SERVICE_PROVIDED_DATA_TYPE = "serviceProvided";
         public static final String ANM_REPORT_DATA_TYPE = "anmReportData";
     }
@@ -22,6 +24,7 @@ public class AllConstants {
         public static final String CASE_ID_COMMCARE_FIELD_NAME = "caseId";
         public static final String SUBMISSION_DATE_COMMCARE_FIELD_NAME = "submissionDate";
         public static final String HIGH_PRIORITY_COMMCARE_FIELD_NAME = "isHighPriority";
+        public static final String BOOLEAN_TRUE_COMMCARE_VALUE = "Yes";
     }
 
     public static class ChildCloseCommCareFields {
@@ -29,9 +32,10 @@ public class AllConstants {
         public static final String DEATH_OF_CHILD_COMMCARE_VALUE = "death_of_child";
     }
 
-    public static class FamilyPlanningCommCareFields{
+    public static class FamilyPlanningCommCareFields {
         public static final String CURRENT_FP_METHOD_COMMCARE_FIELD_NAME = "currentMethod";
         public static final String CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME = "familyPlanningMethodChangeDate";
+        public static final String NO_FP_METHOD_COMMCARE_FIELD_VALUE = "none";
     }
 
     public static class ChildImmunizationCommCareValues {

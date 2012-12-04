@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_MAPS_KEY_NAME;
+import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Matchers.any;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DrishtiControllerTest {
-    public static final Map<String, Map<String, String>> EXTRA_DATA = create(REPORT_EXTRA_MAPS_KEY_NAME, mapOf("Some", "Data")).put("details", mapOf("SomeOther", "PieceOfData")).map();
+    public static final Map<String, Map<String, String>> EXTRA_DATA = create(REPORT_EXTRA_DATA_KEY_NAME, mapOf("Some", "Data")).put("details", mapOf("SomeOther", "PieceOfData")).map();
     @Mock
     private CommCareFormSubmissionRouter dispatcher;
     @Mock
@@ -110,7 +110,7 @@ public class DrishtiControllerTest {
 
         controller.closeANCCase(closeInformation, EXTRA_DATA);
 
-        verify(ancService).closeANCCase(closeInformation, new SafeMap(EXTRA_DATA.get(REPORT_EXTRA_MAPS_KEY_NAME)));
+        verify(ancService).closeANCCase(closeInformation, new SafeMap(EXTRA_DATA.get(REPORT_EXTRA_DATA_KEY_NAME)));
         verify(mctsService).closeANCCase(closeInformation);
     }
 
@@ -144,12 +144,12 @@ public class DrishtiControllerTest {
     }
 
     @Test
-    public void shouldDelegateToECServiceDuringEligibleCoupleFamilyPlanningMethodChange() {
+    public void shouldDelegateToECServiceDuringEligibleCoupleFamilyPlanningMethodRenew() {
         UpdateDetailsRequest request = mock(UpdateDetailsRequest.class);
 
-        controller.changeFamilyPlanningMethod(request, EXTRA_DATA);
+        controller.renewFamilyPlanningMethod(request, EXTRA_DATA);
 
-        verify(ecService).updateDetails(request, EXTRA_DATA);
+        verify(ecService).renewFamilyPlanningMethod(request, EXTRA_DATA);
     }
 
     @Test
