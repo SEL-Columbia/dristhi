@@ -113,7 +113,7 @@ public class ANCSchedulesService {
         }
 
         trackingService.fulfillCurrentMilestone(caseId, scheduleName, ancInformation.visitDate(), new Time(now()));
-        actionService.markAlertAsClosedForVisitForMother(caseId, ancInformation.anmIdentifier(), milestonePrefix + " " + visitNumber, ancInformation.visitDate().toString());
+        actionService.markAlertAsClosed(caseId, ancInformation.anmIdentifier(), milestonePrefix + " " + visitNumber, ancInformation.visitDate().toString());
     }
 
     private int currentMilestoneNumber(String caseId, String scheduleName, String milestonePrefix) {

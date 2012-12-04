@@ -288,7 +288,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
         verify(actionService).updateImmunizations("Case X", "DEMO ANM", EXTRA_DATA.get("details"), providedImmunizations, LocalDate.parse("2012-01-01"), "1");
         for (String expectedAlert : expectedDeletedAlertsRaised) {
-            verify(actionService).markAlertAsClosedForVisitForChild("Case X", "DEMO ANM", expectedAlert, "2012-01-01");
+            verify(actionService).markAlertAsClosed("Case X", "DEMO ANM", expectedAlert, "2012-01-01");
         }
         verifyNoMoreInteractions(actionService);
     }

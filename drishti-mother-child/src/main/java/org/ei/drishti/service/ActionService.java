@@ -59,16 +59,8 @@ public class ActionService {
         allActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, visitCode, alertPriority, startDate, expiryDate)));
     }
 
-    public void markAlertAsClosedForVisitForMother(String caseId, String anmIdentifier, String visitCode, String completionDate) {
+    public void markAlertAsClosed(String caseId, String anmIdentifier, String visitCode, String completionDate) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
-    }
-
-    public void markAlertAsClosedForVisitForChild(String caseID, String anmIdentifier, String visitCode, String completionDate) {
-        allActions.add(new Action(caseID, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
-    }
-
-    public void markAlertAsClosedForVisitForEC(String caseID, String anmIdentifier, String visitCode, String completionDate) {
-        allActions.add(new Action(caseID, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
     }
 
     public void deleteAllAlertsForMother(String caseID) {

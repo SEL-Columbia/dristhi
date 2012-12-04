@@ -118,7 +118,7 @@ public class PNCService {
 
     private void alertForImmunizationProvided(ChildImmunizationUpdationRequest updationRequest, String checkForThisImmunization, String visitCodeIfNotProvided) {
         if (updationRequest.isImmunizationProvided(checkForThisImmunization)) {
-            actionService.markAlertAsClosedForVisitForChild(updationRequest.caseId(), updationRequest.anmIdentifier(), visitCodeIfNotProvided, updationRequest.immunizationsProvidedDate().toString());
+            actionService.markAlertAsClosed(updationRequest.caseId(), updationRequest.anmIdentifier(), visitCodeIfNotProvided, updationRequest.immunizationsProvidedDate().toString());
         }
     }
 

@@ -86,7 +86,7 @@ public class ECService {
 
     private void closeAlertsForFPComplications(UpdateDetailsRequest request, Map<String,String> details) {
         if(!(details.get(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME).equalsIgnoreCase("none") || details.get(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME).isEmpty())){
-            actionService.markAlertAsClosedForVisitForEC(request.caseId(), request.anmIdentifier(), EC_SCHEDULE_FP_COMPLICATION_MILESTONE, details.get(CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME));
+            actionService.markAlertAsClosed(request.caseId(), request.anmIdentifier(), EC_SCHEDULE_FP_COMPLICATION_MILESTONE, details.get(CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME));
         }
     }
 }

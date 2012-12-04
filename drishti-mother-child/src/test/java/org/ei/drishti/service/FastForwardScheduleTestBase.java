@@ -94,7 +94,7 @@ public class FastForwardScheduleTestBase {
             verifyZeroInteractions(actionService);
         }
         for (String visitCode : expectedVisitCodes) {
-            verify(actionService).markAlertAsClosedForVisitForMother("Case X", "ANM 1", visitCode, LocalDate.now().toString());
+            verify(actionService).markAlertAsClosed("Case X", "ANM 1", visitCode, LocalDate.now().toString());
         }
         verifyNoMoreInteractions(actionService);
     }
