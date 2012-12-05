@@ -12,10 +12,7 @@ import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
@@ -55,6 +52,18 @@ public class ChildSchedulesService {
         for (EnrollmentRecord enrollment : openEnrollments) {
             scheduleTrackingService.unenroll(caseId, Arrays.asList(enrollment.getScheduleName()));
         }
+    }
+
+    public List<String> visitCodeForSchedules(List<String> immunizationsProvided) {
+        List<String> visitCodes = new ArrayList<>();
+        for (Schedule schedule : childSchedules.values()) {
+            for (String milestone : schedule.getMileStones()) {
+                if(immunizationsProvided.contains(milestone)){
+                    visitCodes.add(milestone);
+                }
+            }
+        }
+        return visitCodes;
     }
 
     private void enrollNonDependentModules(ChildInformation information) {
@@ -106,6 +115,7 @@ public class ChildSchedulesService {
     private boolean isNotEnrolled(String caseId, String scheduleName) {
         return scheduleTrackingService.getEnrollment(caseId, scheduleName) == null;
     }
+
 
     private void initializeSchedules() {
         List<String> bcgMileStones = unmodifiableList(asList(BCG_COMMCARE_VALUE));
@@ -162,6 +172,4 @@ public class ChildSchedulesService {
             put(CHILD_SCHEDULE_OPV, opv);
         }});
     }
-
-
 }

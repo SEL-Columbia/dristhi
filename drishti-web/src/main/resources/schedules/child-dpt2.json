@@ -3,7 +3,7 @@
     "absolute": false,
     "milestones": [
         {
-            "name": "DPT 2",
+            "name": "dpt_2",
             "scheduleWindows": {
                 "earliest": ["17 Weeks"],
                 "due": ["18 Weeks"],

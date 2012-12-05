@@ -3,7 +3,7 @@
     "absolute": false,
     "milestones": [
         {
-            "name": "BCG",
+            "name": "bcg",
             "scheduleWindows": {
                 "earliest": ["2 Weeks"],
                 "due": ["100 Weeks"],

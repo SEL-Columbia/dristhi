@@ -3,7 +3,7 @@
     "absolute": false,
     "milestones": [
         {
-            "name": "DPT Booster 2",
+            "name": "dptbooster_2",
             "scheduleWindows": {
                 "earliest": ["36 Months"],
                 "due": ["40 Months"],

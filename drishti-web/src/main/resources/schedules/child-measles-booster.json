@@ -3,7 +3,7 @@
     "absolute": false,
     "milestones": [
         {
-            "name": "Measles Booster",
+            "name": "measlesbooster",
             "scheduleWindows": {
                 "earliest": ["7 Months"],
                 "due": ["13 Months"],

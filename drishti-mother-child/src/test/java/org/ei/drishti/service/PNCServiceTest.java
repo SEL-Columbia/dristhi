@@ -163,11 +163,6 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldRemoveAlertsForUpdatedImmunizations() throws Exception {
-        assertCloseOfAlertsForProvidedImmunizations("bcg opv_0", "BCG", "OPV 0");
-    }
-
-    @Test
     public void shouldUpdateEnrollmentsForUpdatedImmunizations() {
         Child child = mock(Child.class);
         when(allChildren.childExists("Case X")).thenReturn(true);
@@ -228,12 +223,12 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldSendPreviousImmunizationsToReportingRatherThanTheUpdatedOne() throws Exception {
+    public void shouldCallReportingServiceWithPreviousImmunizationsInsteadOfCurrentImmunizations() throws Exception {
         when(allChildren.childExists("Case X")).thenReturn(true);
         when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("hep"), "female")
                 .withDetails(EXTRA_DATA.get("details")));
         when(allChildren.updateDetails("Case X", EXTRA_DATA.get("details")))
-                .thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("hep","bcg", "opv0"), "female")
+                .thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("hep", "bcg", "opv0"), "female")
                         .withDetails(EXTRA_DATA.get("details")));
         ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01");
 
@@ -282,7 +277,8 @@ public class PNCServiceTest extends BaseUnitTest {
         verify(childReportingService).closeChild(EXTRA_DATA.get("reporting"));
     }
 
-    private void assertCloseOfAlertsForProvidedImmunizations(String providedImmunizations, String... expectedDeletedAlertsRaised) {
+    @Test
+    public void shouldCloseAlertsForProvidedImmunizations() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
 
@@ -296,10 +292,11 @@ public class PNCServiceTest extends BaseUnitTest {
                 .thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female")
                         .withDetails(EXTRA_DATA.get("details")));
 
-        pncService.updateChildImmunization(new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", providedImmunizations, "2012-01-01").withVitaminADose("1"), EXTRA_DATA);
+        ChildImmunizationUpdationRequest updationRequest = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg dpt_1 measlesbooster", "2012-01-01").withVitaminADose("1");
+        pncService.updateChildImmunization(updationRequest, EXTRA_DATA);
 
-        verify(actionService).updateImmunizations("Case X", "DEMO ANM", EXTRA_DATA.get("details"), providedImmunizations, LocalDate.parse("2012-01-01"), "1");
-        for (String expectedAlert : expectedDeletedAlertsRaised) {
+        verify(actionService).updateImmunizations("Case X", "DEMO ANM", EXTRA_DATA.get("details"), "bcg dpt_1 measlesbooster", LocalDate.parse("2012-01-01"), "1");
+        for (String expectedAlert : updationRequest.immunizationsProvidedList()) {
             verify(actionService).markAlertAsClosed("Case X", "DEMO ANM", expectedAlert, "2012-01-01");
         }
         verifyNoMoreInteractions(actionService);

@@ -103,11 +103,8 @@ public class PNCService {
 
         childReportingService.updateChildImmunization(updationRequest, previousImmunizations, new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
 
-        alertForImmunizationProvided(updationRequest, "opv_0", "OPV 0");
-        alertForImmunizationProvided(updationRequest, "bcg", "BCG");
-        alertForImmunizationProvided(updationRequest, "hepb_0", "HEP B0");
-
         childSchedulesService.updateEnrollments(updationRequest);
+        closeAlertsForProvidedImmunizations(updationRequest);
     }
 
     public void closeChildCase(ChildCloseRequest childCloseRequest, Map<String, Map<String, String>> extraData) {
@@ -119,9 +116,9 @@ public class PNCService {
         childSchedulesService.unenrollChild(childCloseRequest.caseId());
     }
 
-    private void alertForImmunizationProvided(ChildImmunizationUpdationRequest updationRequest, String checkForThisImmunization, String visitCodeIfNotProvided) {
-        if (updationRequest.isImmunizationProvided(checkForThisImmunization)) {
-            actionService.markAlertAsClosed(updationRequest.caseId(), updationRequest.anmIdentifier(), visitCodeIfNotProvided, updationRequest.immunizationsProvidedDate().toString());
+    private void closeAlertsForProvidedImmunizations(ChildImmunizationUpdationRequest updationRequest) {
+        for (String immunization : updationRequest.immunizationsProvidedList()) {
+            actionService.markAlertAsClosed(updationRequest.caseId(),updationRequest.anmIdentifier(),immunization, updationRequest.immunizationsProvidedDate().toString());
         }
     }
 
