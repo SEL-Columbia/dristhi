@@ -7,6 +7,8 @@ import org.ei.drishti.util.SafeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
+
 @Service
 public class ECReportingService {
     private ReportingService service;
@@ -21,7 +23,7 @@ public class ECReportingService {
     }
 
     public void fpMethodChangedWithUpdatedECDetails(SafeMap reporting, String ecNumber, String village, String subCenter, String phc) {
-        if (!"change_fp_product".equals(reporting.get("fpUpdate"))) {
+        if (!FP_METHOD_CHANGED_COMMCARE_FIELD_VALUE.equals(reporting.get(FP_UPDATE_COMMCARE_FIELD_NAME))) {
             return;
         }
 

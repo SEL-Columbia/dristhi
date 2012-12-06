@@ -144,12 +144,12 @@ public class DrishtiControllerTest {
     }
 
     @Test
-    public void shouldDelegateToECServiceDuringEligibleCoupleFamilyPlanningMethodRenew() {
-        UpdateDetailsRequest request = mock(UpdateDetailsRequest.class);
+    public void shouldDelegateToECServiceDuringEligibleCoupleFamilyPlanningMethodUpdate() {
+        FamilyPlanningUpdateRequest request = mock(FamilyPlanningUpdateRequest.class);
 
-        controller.renewFamilyPlanningMethod(request, EXTRA_DATA);
+        controller.updateFamilyPlanningMethod(request, EXTRA_DATA);
 
-        verify(ecService).renewFamilyPlanningMethod(request, EXTRA_DATA);
+        verify(ecService).updateFamilyPlanningMethod(request, EXTRA_DATA);
     }
 
     @Test

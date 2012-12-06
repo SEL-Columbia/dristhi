@@ -94,10 +94,10 @@ public class DrishtiController {
         mctsService.closeChildCase(childCloseRequest);
     }
 
-    public void renewFamilyPlanningMethod(UpdateDetailsRequest updateDetailsRequest, Map<String, Map<String, String>> extraData) {
-        logger.info("Eligible couple change FP: " + updateDetailsRequest + ". Extra data: " + extraData);
+    public void updateFamilyPlanningMethod(FamilyPlanningUpdateRequest familyPlanningUpdateRequest, Map<String, Map<String, String>> extraData) {
+        logger.info("Eligible couple change FP: " + familyPlanningUpdateRequest + ". Extra data: " + extraData);
 
-        ecService.renewFamilyPlanningMethod(updateDetailsRequest, extraData);
+        ecService.updateFamilyPlanningMethod(familyPlanningUpdateRequest, extraData);
     }
 
     public void closeEligibleCouple(EligibleCoupleCloseRequest eligibleCoupleCloseRequest) {

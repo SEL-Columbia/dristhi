@@ -2,8 +2,8 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.contract.EligibleCoupleCloseRequest;
 import org.ei.drishti.contract.EligibleCoupleRegistrationRequest;
+import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
-import org.ei.drishti.contract.UpdateDetailsRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.reporting.ECReportingService;
@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
-import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.NO_FP_METHOD_COMMCARE_FIELD_VALUE;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
 
@@ -69,7 +69,7 @@ public class ECService {
         actionService.closeEligibleCouple(request.caseId(), request.anmIdentifier());
     }
 
-    public void renewFamilyPlanningMethod(UpdateDetailsRequest request, Map<String, Map<String, String>> extraDetails) {
+    public void updateFamilyPlanningMethod(FamilyPlanningUpdateRequest request, Map<String, Map<String, String>> extraDetails) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(request.caseId());
         if (couple == null) {
             logger.warn("Tried to update details of a non-existing EC: " + request + ". Extra details: " + extraDetails);
@@ -80,14 +80,14 @@ public class ECService {
         reportingService.fpMethodChangedWithUpdatedECDetails(new SafeMap(extraDetails.get(REPORT_EXTRA_DATA_KEY_NAME)), updatedCouple.ecNumber(), updatedCouple.village(), updatedCouple.subCenter(), updatedCouple.phc());
         actionService.updateEligibleCoupleDetails(request.caseId(), request.anmIdentifier(), updatedCouple.details());
 
-        schedulingService.updateFPComplications(request.caseId(), extraDetails.get("details"));
+        schedulingService.updateFPComplications(request, updatedCouple);
 
-        closeAlertsForFPComplications(request, extraDetails.get("details"));
+        closeAlertsForFPComplications(request);
     }
 
-    private void closeAlertsForFPComplications(UpdateDetailsRequest request, Map<String,String> details) {
-        if(!(details.get(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME).equalsIgnoreCase("none") || details.get(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME).isEmpty())){
-            actionService.markAlertAsClosed(request.caseId(), request.anmIdentifier(), EC_SCHEDULE_FP_COMPLICATION_MILESTONE, details.get(CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME));
+    private void closeAlertsForFPComplications(FamilyPlanningUpdateRequest request) {
+        if (!(isBlank(request.currentMethod()) || NO_FP_METHOD_COMMCARE_FIELD_VALUE.equalsIgnoreCase(request.currentMethod()))) {
+            actionService.markAlertAsClosed(request.caseId(), request.anmIdentifier(), EC_SCHEDULE_FP_COMPLICATION_MILESTONE, request.familyPlanningMethodChangeDate());
         }
     }
 }
