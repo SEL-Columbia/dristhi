@@ -82,10 +82,10 @@ public class ECService {
 
         schedulingService.updateFPComplications(request, updatedCouple);
 
-        closeAlertsForFPComplications(request);
+        closeAlertsForFPComplicationSchedule(request);
     }
 
-    private void closeAlertsForFPComplications(FamilyPlanningUpdateRequest request) {
+    private void closeAlertsForFPComplicationSchedule(FamilyPlanningUpdateRequest request) {
         if (!(isBlank(request.currentMethod()) || NO_FP_METHOD_COMMCARE_FIELD_VALUE.equalsIgnoreCase(request.currentMethod()))) {
             actionService.markAlertAsClosed(request.caseId(), request.anmIdentifier(), EC_SCHEDULE_FP_COMPLICATION_MILESTONE, request.familyPlanningMethodChangeDate());
         }
