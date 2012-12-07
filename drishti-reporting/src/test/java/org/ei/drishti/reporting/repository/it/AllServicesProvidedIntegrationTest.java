@@ -30,7 +30,7 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedReposito
         SP_ANM anm = new SP_ANM("ANM X", phc.id());
         template.save(anm);
         Dates dates = new Dates(LocalDate.now().toDate());
-        Indicator indicator = new Indicator("ANC");
+        Indicator indicator = new Indicator("ANC indicator");
         Location location = new Location("Bherya", "Sub Center", phc, "taluka", "mysore", "karnataka");
         ServiceProvider serviceProvider = new ServiceProvider(anm.id(), ANM);
         template.save(location);

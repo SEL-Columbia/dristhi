@@ -23,11 +23,11 @@ public class AllIndicatorsRepositoryIntegrationTest extends ServicesProvidedRepo
     @Transactional("service_provided")
     @Rollback
     public void shouldSaveAndFetchIndicator() throws Exception {
-        Indicator indicator = new Indicator("ANC");
+        Indicator indicator = new Indicator("ANC indicator");
         template.save(indicator);
 
         Indicator fetchedIndicator = repository.fetch(indicator);
-        assertEquals("ANC", fetchedIndicator.indicator());
+        assertEquals(indicator.indicator(), fetchedIndicator.indicator());
         assertTrue("ID should be non-zero.", fetchedIndicator.id() != 0);
     }
 
@@ -35,8 +35,8 @@ public class AllIndicatorsRepositoryIntegrationTest extends ServicesProvidedRepo
     @Transactional("service_provided")
     @Rollback
     public void shouldFetchAllIndicators() throws Exception {
-        Indicator indicator1 = new Indicator("ANC");
-        Indicator indicator2 = new Indicator("IUD");
+        Indicator indicator1 = new Indicator("ANC indicator");
+        Indicator indicator2 = new Indicator("IUD indicator");
         template.save(indicator1);
         template.save(indicator2);
 
