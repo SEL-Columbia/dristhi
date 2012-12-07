@@ -32,7 +32,7 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
     public void shouldSaveANMReportData() throws Exception {
         ANM anm = new ANM("ANM X");
         Dates dates = new Dates(LocalDate.now().toDate());
-        Indicator indicator = new Indicator("ANC");
+        Indicator indicator = new Indicator("ANC Indicator");
         template.save(anm);
         allDatesRepository.save(dates);
         template.save(indicator);
@@ -48,7 +48,7 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
     public void shouldLoadDataWithDimensions() throws Exception {
         ANM anm = new ANM("ANM X");
         Dates dates = new Dates(LocalDate.now().toDate());
-        Indicator indicator = new Indicator("ANC");
+        Indicator indicator = new Indicator("ANC Indicator");
         template.save(anm);
         allDatesRepository.save(dates);
         template.save(indicator);
@@ -68,7 +68,7 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
         ANM anm1 = new ANM("ANM X");
         ANM anm2 = new ANM("ANM Y");
         Dates dates = new Dates(LocalDate.parse("2012-03-31").toDate());
-        Indicator indicator = new Indicator("ANC");
+        Indicator indicator = new Indicator("ANC Indicator");
         template.save(anm1);
         template.save(anm2);
         allDatesRepository.save(dates);
@@ -91,7 +91,7 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
         Dates dates1 = new Dates(LocalDate.parse("2012-03-30").toDate());
         Dates dates2 = new Dates(LocalDate.parse("2012-03-31").toDate());
         Dates dates3 = new Dates(LocalDate.parse("2012-04-01").toDate());
-        Indicator indicator = new Indicator("ANC");
+        Indicator indicator = new Indicator("ANC Indicator");
         template.save(anm1);
         template.save(anm2);
         allDatesRepository.save(dates1);
