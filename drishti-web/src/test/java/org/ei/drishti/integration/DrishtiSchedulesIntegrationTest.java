@@ -119,8 +119,8 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.enrollFor("Expected Date Of Delivery", newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("EDD", earliest);
-        schedule.assertAlerts("EDD", due, date(16, SEPTEMBER), date(23, SEPTEMBER), date(30, SEPTEMBER));
-        schedule.assertAlertsStartWith("EDD", late, date(4, OCTOBER), date(8, OCTOBER), date(11, OCTOBER), date(15, OCTOBER), date(18, OCTOBER), date(22, OCTOBER), date(25, OCTOBER), date(29, OCTOBER));
+        schedule.assertAlerts("EDD", due, date(23, SEPTEMBER), date(30, SEPTEMBER), date(7, OCTOBER));
+        schedule.assertAlertsStartWith("EDD", late, date(10, OCTOBER), date(14, OCTOBER), date(17, OCTOBER), date(21, OCTOBER), date(24, OCTOBER), date(28, OCTOBER), date(31, OCTOBER), date(4, NOVEMBER));
         schedule.assertNoAlerts("EDD", max);
 
         visualization.outputTo("mother-expected-date-of-delivery.html", 3);
