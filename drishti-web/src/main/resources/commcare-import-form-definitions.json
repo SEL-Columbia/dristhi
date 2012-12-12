@@ -368,6 +368,8 @@
                         "reporting": {
                             "form|case|@case_id": "caseId",
                             "form|meta|username": "anmIdentifier",
+                            "form|induced_abortion_group|time_induced": "mtpTime",
+                            "form|induced_abortion_group|date_induced": "dateInduced",
                             "form|close_reason": "closeReason"
                         }
                     }

@@ -56,7 +56,7 @@ public class ANCService {
                 .withDetails(details);
         allMothers.register(mother);
         actionService.registerPregnancy(info.caseId(), couple.caseId(), info.thaayiCardNumber(), info.anmIdentifier(), info.lmpDate(), details);
-        reportingService.registerANC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)), couple.village(), couple.subCenter());
+        reportingService.registerANC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
 
         enrollMotherIntoSchedules(info.caseId(), info.lmpDate());
     }

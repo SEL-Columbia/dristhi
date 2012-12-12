@@ -39,6 +39,13 @@ public class AllConstants {
         public static final String DEATH_OF_CHILD_COMMCARE_VALUE = "death_of_child";
     }
 
+    public static class ANCCloseCommCareFields {
+        public static final String CLOSE_MTP_DATE_COMMCARE_FIELD_NAME = "dateInduced";
+        public static final String CLOSE_MTP_TIME_COMMCARE_FIELD_NAME = "mtpTime";
+        public static final String CLOSE_REASON_COMMCARE_FIELD_NAME = "closeReason";
+        public static final String DEATH_OF_MOTHER_COMMCARE_VALUE = "death_of_woman";
+    }
+
     public static class FamilyPlanningCommCareFields {
         public static final String CURRENT_FP_METHOD_COMMCARE_FIELD_NAME = "currentMethod";
         public static final String CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME = "familyPlanningMethodChangeDate";

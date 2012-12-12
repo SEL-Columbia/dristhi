@@ -64,7 +64,7 @@ public class ANCServiceTest {
         service.registerANCCase(enrollmentInfo, extraData);
         Map<String, String> details = extraData.get("details");
 
-        verify(motherReportingService).registerANC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)), "bherya", "Sub Center");
+        verify(motherReportingService).registerANC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE-1", "EC-CASE-1", thaayiCardNumber, motherName)
                 .withAnm(enrollmentInfo.anmIdentifier(), "12345").withLMP(lmp)
                 .withLocation("bherya", "Sub Center", "PHC X").withDetails(details)));
