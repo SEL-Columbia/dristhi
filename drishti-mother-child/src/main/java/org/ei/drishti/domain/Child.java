@@ -31,6 +31,12 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private String dateOfBirth;
     @JsonProperty
+    private String village;
+    @JsonProperty
+    private String subCenter;
+    @JsonProperty
+    private String phc;
+    @JsonProperty
     private Map<String, String> details;
 
     private Child() {
@@ -48,6 +54,18 @@ public class Child extends MotechBaseDataObject {
 
     public Child withAnm(String anmIdentifier) {
         this.anmIdentifier = anmIdentifier;
+        return this;
+    }
+
+    public Child withLocation(String village, String subCenter, String phc) {
+        this.village = village;
+        this.subCenter = subCenter;
+        this.phc = phc;
+        return this;
+    }
+
+    public Child withDateOfBirth(String dob) {
+        this.dateOfBirth = dob;
         return this;
     }
 
@@ -93,7 +111,10 @@ public class Child extends MotechBaseDataObject {
         return this;
     }
 
-    //These getters are used by CouchDB Repo
+    public Location location() {
+        return new Location(village, subCenter, phc);
+    }
+
     private String getCaseId() {
         return caseId;
     }
@@ -115,10 +136,5 @@ public class Child extends MotechBaseDataObject {
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(17, 37, this, false, getClass());
-    }
-
-    public Child withDateOfBirth(String dob) {
-        this.dateOfBirth = dob;
-        return this;
     }
 }

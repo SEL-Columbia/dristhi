@@ -128,16 +128,6 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldNotReportTTProvidedIfTTVisitHasHappenedAndMotherIsNotFound() {
-        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
-        when(allMothers.findByCaseId("CASE-X")).thenReturn(null);
-
-        service.ttVisitHasHappened(ancInformation);
-
-        verifyZeroInteractions(reportingService);
-    }
-
-    @Test
     public void shouldReportLiveBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsLiveBirth() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 

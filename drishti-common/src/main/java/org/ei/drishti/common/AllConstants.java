@@ -56,6 +56,7 @@ public class AllConstants {
 
     public static class ChildImmunizationCommCareFields {
         public static final String IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME = "immunizationsProvided";
+        public static final String IMMUNIZATIONS_PROVIDED_DATE_COMMCARE_FIELD_NAME = "immunizationsProvidedDate";
         public static final String BCG_COMMCARE_VALUE = "bcg";
 
         public static final String DPT_1_COMMCARE_VALUE = "dpt_1";

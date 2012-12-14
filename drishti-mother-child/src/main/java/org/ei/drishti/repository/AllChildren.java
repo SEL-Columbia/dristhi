@@ -36,7 +36,7 @@ public class AllChildren extends MotechBaseRepository<Child> {
         return findChild(motherCaseId, "by_motherCaseId");
     }
 
-    public Child updateDetails(String caseId, Map<String, String> details) {
+    public Child update(String caseId, Map<String, String> details) {
         Child child = findByCaseId(caseId);
         child = updateChildImmunizationIfProvided(child, details);
         child.details().putAll(details);

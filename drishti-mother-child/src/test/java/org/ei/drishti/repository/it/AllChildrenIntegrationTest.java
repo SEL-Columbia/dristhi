@@ -77,7 +77,7 @@ public class AllChildrenIntegrationTest {
     @Test
     public void shouldUpdateDetailsOfAnExistingChild() throws Exception {
         children.register(childWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
-        Child updatedChild = children.updateDetails("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map());
+        Child updatedChild = children.update("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map());
 
         Map<String, String> expectedUpdatedDetails = create("Key 1", "Value 1").put("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map();
         assertThat(children.findByCaseId("CASE X"), is(childWithoutDetails().withDetails(expectedUpdatedDetails)));
@@ -89,7 +89,7 @@ public class AllChildrenIntegrationTest {
         children.register(childWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
         Map<String, String> expectedUpdatedDetails = create("Key 1", "Value 1").put("Key 2", "Value 2 NEW").put("Key 3", "Value 3").put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, "bcg hep dpt_1 measles").map();
 
-        Child updatedChild = children.updateDetails("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, "dpt_1 hep measles").map());
+        Child updatedChild = children.update("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, "dpt_1 hep measles").map());
 
         Child exptectedChild = new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep", "dpt_1", "measles"), "male")
                 .withAnm("ANM ID 1").withDetails(expectedUpdatedDetails);

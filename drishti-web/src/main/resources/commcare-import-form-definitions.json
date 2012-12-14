@@ -322,7 +322,8 @@
                     },
                     "extraMappings": {
                         "reporting": {
-                            "form|meta|username": "anmIdentifier",
+                            "form|case|@case_id": "caseId",
+                            "form|vaccinations_given": "immunizationsProvided",
                             "form|immunization_date": "immunizationsProvidedDate"
                         },
                         "details": {

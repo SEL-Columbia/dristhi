@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
@@ -58,11 +59,17 @@ public class PNCService {
         }
 
         allChildren.register(new Child(information.caseId(), mother.ecCaseId(), information.motherCaseId(), mother.thaayiCardNo(), information.name(),
-                information.immunizationsProvidedList(), information.gender()).withAnm(information.anmIdentifier()).withDateOfBirth(information.dateOfBirth().toString()).withDetails(information.details()));
+                information.immunizationsProvidedList(), information.gender())
+                .withAnm(information.anmIdentifier())
+                .withDateOfBirth(information.dateOfBirth().toString())
+                .withLocation(mother.village(), mother.subCenter(), mother.phc())
+                .withDetails(information.details()));
 
         actionService.registerChildBirth(information.caseId(), information.anmIdentifier(), mother.caseId(), mother.thaayiCardNo(), information.dateOfBirth(), information.gender(), information.details());
 
-        childReportingService.updateChildImmunization(information);
+        SafeMap reportingData = new SafeMap();
+        reportingData.put(CASE_ID_COMMCARE_FIELD_NAME, information.caseId());
+        childReportingService.registerChild(reportingData);
 
         alertForMissingImmunization(information, "opv_0", "OPV 0");
         alertForMissingImmunization(information, "bcg", "BCG");
@@ -84,7 +91,7 @@ public class PNCService {
         actionService.pncVisitHappened(mother, info.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedMother.details());
 
         if (child != null) {
-            Child updatedChild = allChildren.updateDetails(child.caseId(), details);
+            Child updatedChild = allChildren.update(child.caseId(), details);
             actionService.pncVisitHappened(BeneficiaryType.child, child.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedChild.details());
         }
     }
@@ -97,21 +104,25 @@ public class PNCService {
 
         List<String> previousImmunizations = allChildren.findByCaseId(updationRequest.caseId()).immunizationsProvided();
 
-        Child updatedChild = allChildren.updateDetails(updationRequest.caseId(), extraData.get("details"));
+        Child updatedChild = allChildren.update(updationRequest.caseId(), extraData.get("details"));
         actionService.updateImmunizations(updationRequest.caseId(), updationRequest.anmIdentifier(), updatedChild.details(), updationRequest.immunizationsProvided(),
                 updationRequest.immunizationsProvidedDate(), updationRequest.vitaminADose());
 
-        childReportingService.updateChildImmunization(updationRequest, previousImmunizations, new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
+        childReportingService.immunizationProvided(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)), previousImmunizations);
 
         childSchedulesService.updateEnrollments(updationRequest);
         closeAlertsForProvidedImmunizations(updationRequest);
     }
 
     public void closeChildCase(ChildCloseRequest childCloseRequest, Map<String, Map<String, String>> extraData) {
+        if (!allChildren.childExists(childCloseRequest.caseId())) {
+            logger.warn("Found close child request without registered child for case ID: " + childCloseRequest.caseId());
+            return;
+        }
         actionService.deleteAllAlertsForChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
         actionService.closeChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
 
-        childReportingService.closeChild(extraData.get(REPORT_EXTRA_DATA_KEY_NAME));
+        childReportingService.closeChild(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
 
         childSchedulesService.unenrollChild(childCloseRequest.caseId());
     }

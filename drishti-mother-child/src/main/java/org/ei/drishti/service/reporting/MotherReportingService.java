@@ -8,8 +8,6 @@ import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +28,6 @@ public class MotherReportingService {
     public static final int NUMBER_OF_DAYS_IN_12_WEEKS = 84;
     private ReportingService reportingService;
     private AllMothers allMothers;
-    private static Logger logger = LoggerFactory.getLogger(ChildReportingService.class);
 
 
     @Autowired
@@ -66,10 +63,6 @@ public class MotherReportingService {
 
     public void ttVisitHasHappened(AnteNatalCareInformation ancInformation) {
         Mother mother = allMothers.findByCaseId(ancInformation.caseId());
-        if (mother == null) {
-            logMotherNotFound(ancInformation.caseId());
-            return;
-        }
 
         reportToBoth(mother, TT, ancInformation.visitDate().toString());
     }
@@ -92,9 +85,5 @@ public class MotherReportingService {
 
         ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);
-    }
-
-    private void logMotherNotFound(String caseId) {
-        logger.warn("Mother Case not found for mother with CaseID " + caseId);
     }
 }
