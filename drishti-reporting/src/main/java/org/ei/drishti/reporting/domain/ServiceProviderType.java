@@ -24,7 +24,7 @@ public class ServiceProviderType {
     private ServiceProviderType() {
     }
 
-    protected ServiceProviderType(String type) {
+    public ServiceProviderType(String type) {
         this.type = type;
     }
 
@@ -49,5 +49,9 @@ public class ServiceProviderType {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public String type() {
+        return type;
     }
 }

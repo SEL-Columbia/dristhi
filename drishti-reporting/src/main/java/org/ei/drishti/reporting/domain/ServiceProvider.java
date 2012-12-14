@@ -25,7 +25,7 @@ public class ServiceProvider {
     private Integer serviceProvider;
 
     @ManyToOne
-    @JoinColumn(name = "type", insertable = false, updatable = false)
+    @JoinColumn(name = "type", insertable = true, updatable = true)
     private ServiceProviderType type;
 
 
