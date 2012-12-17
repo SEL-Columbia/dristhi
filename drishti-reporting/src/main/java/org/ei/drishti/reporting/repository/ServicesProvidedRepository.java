@@ -44,7 +44,7 @@ public class ServicesProvidedRepository {
     }
 
     @Transactional("service_provided")
-    public void save(String serviceProviderIdentifier, String serviceProviderType, String externalId, String indicator, String date, String village, String subCenter, String phcIdentifier) {
+    public void save(String serviceProviderIdentifier, String serviceProviderType, String externalId, String indicator, String date, String village, String subCenter, String phcIdentifier, String quantity) {
         Probe probeForCache = monitor.start(REPORTING_SERVICE_PROVIDED_CACHE_TIME);
         Indicator fetchedIndicator = cachedIndicators.fetch(new Indicator(indicator));
         Dates dates = cachedDates.fetch(new Dates(LocalDate.parse(date).toDate()));
@@ -52,8 +52,15 @@ public class ServicesProvidedRepository {
         ServiceProvider serviceProvider = serviceProvidersRepository.fetchBy(serviceProviderIdentifier, parse(serviceProviderType));
         monitor.end(probeForCache);
 
+        int count = getCount(quantity);
         Probe probeForInsert = monitor.start(REPORTING_SERVICE_PROVIDED_INSERT_TIME);
-        servicesProvidedRepository.save(serviceProvider.id(), externalId, fetchedIndicator.id(), dates.id(), location.id());
+        for (int i = 0; i < count; i++) {
+            servicesProvidedRepository.save(serviceProvider.id(), externalId, fetchedIndicator.id(), dates.id(), location.id());
+        }
         monitor.end(probeForInsert);
+    }
+
+    private int getCount(String quantity) {
+        return quantity == null ? 1 : Integer.parseInt(quantity);
     }
 }

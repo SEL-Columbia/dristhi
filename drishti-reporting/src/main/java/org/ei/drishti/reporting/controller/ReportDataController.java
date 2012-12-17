@@ -36,9 +36,9 @@ public class ReportDataController {
         logger.info("Reporting on: " + reportingData);
         if (reportingData.type().equals(SERVICE_PROVIDED_DATA_TYPE)) {
             servicesProvidedRepository.save(reportingData.get("anmIdentifier"), reportingData.get("serviceProviderType"), reportingData.get("externalId"),
-                    reportingData.get("indicator"), reportingData.get("date"), reportingData.get("village"), reportingData.get("subCenter"), reportingData.get("phc"));
+                    reportingData.get("indicator"), reportingData.get("date"), reportingData.get("village"), reportingData.get("subCenter"), reportingData.get("phc"), reportingData.get("quantity"));
         } else if (reportingData.type().equals(ANM_REPORT_DATA_TYPE)) {
-            anmReportsRepository.save(reportingData.get("anmIdentifier"), reportingData.get("externalId"), reportingData.get("indicator"), reportingData.get("date"));
+            anmReportsRepository.save(reportingData.get("anmIdentifier"), reportingData.get("externalId"), reportingData.get("indicator"), reportingData.get("date"), reportingData.get("quantity"));
         }
         return "Success.";
     }

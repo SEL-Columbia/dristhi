@@ -39,20 +39,20 @@ public class ReportDataControllerTest {
 
     @Test
     public void shouldSaveServiceProvidedInDB() throws Exception {
-        ReportingData data = serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData data = serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")).withQuantity("40");
 
         controller.submit(data);
 
-        verify(servicesProvidedRepository).save("ANM X", "ANM", "TC 1", "BCG", "2012-01-01", "bherya", "Sub Center", "PHC X");
+        verify(servicesProvidedRepository).save("ANM X", "ANM", "TC 1", "BCG", "2012-01-01", "bherya", "Sub Center", "PHC X", "40");
     }
 
     @Test
     public void shouldSaveANMReportDataInDB() throws Exception {
-        ReportingData data = anmReportData("ANM X", "EC Number 1", FP_IUD, "2012-01-01");
+        ReportingData data = anmReportData("ANM X", "EC Number 1", FP_IUD, "2012-01-01").withQuantity("40");
 
         controller.submit(data);
 
-        verify(anmReportsRepository).save("ANM X", "EC Number 1", "IUD", "2012-01-01");
+        verify(anmReportsRepository).save("ANM X", "EC Number 1", "IUD", "2012-01-01", "40");
     }
 
     @Test

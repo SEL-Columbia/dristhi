@@ -55,15 +55,18 @@ public class ANMReportsRepository {
     }
 
     @Transactional("anm_report")
-    public void save(String anmIdentifier, String externalId, String indicator, String date) {
+    public void save(String anmIdentifier, String externalId, String indicator, String date, String quantity) {
         Probe probeForCache = monitor.start(REPORTING_ANM_REPORTS_CACHE_TIME);
         ANM anm = cachedANMs.fetch(new ANM(anmIdentifier));
         Indicator fetchedIndicator = cachedIndicators.fetch(new Indicator(indicator));
         Dates dates = cachedDates.fetch(new Dates(LocalDate.parse(date).toDate()));
         monitor.end(probeForCache);
 
+        int count = getCount(quantity);
         Probe probeForInsert = monitor.start(REPORTING_ANM_REPORTS_INSERT_TIME);
-        anmReportDataRepository.save(anm, externalId, fetchedIndicator, dates);
+        for (int i = 0; i < count; i++) {
+            anmReportDataRepository.save(anm, externalId, fetchedIndicator, dates);
+        }
         monitor.end(probeForInsert);
     }
 
@@ -131,5 +134,9 @@ public class ANMReportsRepository {
 
     private List<ANMReportData> filterReportsByIndicator(List<ANMReportData> reportDataList, Indicator indicator) {
         return filter(having(on(ANMReportData.class).indicator(), equalTo(indicator)), reportDataList);
+    }
+
+    private int getCount(String quantity) {
+        return quantity == null ? 1 : Integer.parseInt(quantity);
     }
 }

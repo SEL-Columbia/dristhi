@@ -49,6 +49,11 @@ public class ReportingData implements Serializable {
         return this;
     }
 
+    public ReportingData withQuantity(String quantity) {
+        data.put("quantity", quantity);
+        return this;
+    }
+
     public String get(String key) {
         return data.get(key);
     }

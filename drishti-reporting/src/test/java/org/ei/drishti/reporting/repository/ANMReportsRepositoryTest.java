@@ -63,14 +63,35 @@ public class ANMReportsRepositoryTest {
         when(datesRepository.fetch(new Dates(date))).thenReturn(dates);
         when(indicatorRepository.fetch(new Indicator(indicator))).thenReturn(indicator_);
 
-        repository.save(anmIdentifier, externalId, indicator, "2012-04-04");
-        repository.save(anmIdentifier, externalId, indicator, "2012-04-04");
+        repository.save(anmIdentifier, externalId, indicator, "2012-04-04", null);
+        repository.save(anmIdentifier, externalId, indicator, "2012-04-04", null);
 
         verifyCallsToReadOnlyCachedRepository(anmRepository, new ANM(anmIdentifier));
         verifyCallsToReadOnlyCachedRepository(indicatorRepository, indicator_);
         verifyCallsToCachedRepository(datesRepository, dates);
 
         verify(anmReportDataRepository, times(2)).save(anm, externalId, indicator_, dates);
+    }
+
+
+    @Test
+    public void shouldSaveAsPerQuantityIfQuantityIsNotNull() throws Exception {
+        String anmIdentifier = "ANM X";
+        String externalId = "EC CASE 1";
+        String indicator = "IUD";
+        Date date = parse("2012-04-04").toDate();
+
+        Dates dates = new Dates(2, date);
+        Indicator indicator_ = new Indicator(2, indicator);
+        ANM anm = new ANM(2, anmIdentifier);
+
+        when(anmRepository.fetch(new ANM((anmIdentifier)))).thenReturn(anm);
+        when(datesRepository.fetch(new Dates(date))).thenReturn(dates);
+        when(indicatorRepository.fetch(new Indicator(indicator))).thenReturn(indicator_);
+
+        repository.save(anmIdentifier, externalId, indicator, "2012-04-04", "50");
+
+        verify(anmReportDataRepository, times(50)).save(anm, externalId, indicator_, dates);
     }
 
     @Test

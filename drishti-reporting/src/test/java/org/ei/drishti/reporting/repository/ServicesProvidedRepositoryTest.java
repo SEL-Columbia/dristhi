@@ -56,14 +56,34 @@ public class ServicesProvidedRepositoryTest {
         when(indicatorRepository.fetch(new Indicator(indicator))).thenReturn(new Indicator(2, indicator));
         when(locationRepository.fetchBy(village, subCenter, phc.phcIdentifier())).thenReturn(new Location(2, village, subCenter, phc, "taluka", "mysore", "karnataka"));
 
-        repository.save(anmIdentifier, "ANM", externalId, indicator, "2012-04-04", village, subCenter, phc.phcIdentifier());
-        repository.save(anmIdentifier, "ANM", externalId, indicator, "2012-04-04", village, subCenter, phc.phcIdentifier());
+        repository.save(anmIdentifier, "ANM", externalId, indicator, "2012-04-04", village, subCenter, phc.phcIdentifier(), null);
+        repository.save(anmIdentifier, "ANM", externalId, indicator, "2012-04-04", village, subCenter, phc.phcIdentifier(), null);
 
         verifyCallsToReadOnlyCachedRepository(indicatorRepository, new Indicator(indicator));
         verifyCallsToCachedRepository(datesRepository, new Dates(date));
         verify(locationRepository, times(2)).fetchBy(village, subCenter, phc.phcIdentifier());
         verify(serviceProvidersRepository, times(2)).fetchBy(anmIdentifier, ANM);
         verify(servicesProvidedRepository, times(2)).save(2, "12345", 2, 2, 2);
+    }
+
+    @Test
+    public void shouldSaveAsPerQuantityIfQuantityIsNotNull() throws Exception {
+        String anmIdentifier = "ANM X";
+        String externalId = "12345";
+        String indicator = "ANC";
+        String village = "Bherya";
+        String subCenter = "Sub Center";
+        Date date = LocalDate.parse("2012-04-04").toDate();
+        PHC phc = new PHC(34, "PHC X", "PHC");
+
+        when(serviceProvidersRepository.fetchBy("ANM X", ANM)).thenReturn(new ServiceProvider(2, 2, ANM));
+        when(datesRepository.fetch(new Dates(date))).thenReturn(new Dates(2, date));
+        when(indicatorRepository.fetch(new Indicator(indicator))).thenReturn(new Indicator(2, indicator));
+        when(locationRepository.fetchBy(village, subCenter, phc.phcIdentifier())).thenReturn(new Location(2, village, subCenter, phc, "taluka", "mysore", "karnataka"));
+
+        repository.save(anmIdentifier, "ANM", externalId, indicator, "2012-04-04", village, subCenter, phc.phcIdentifier(), "40");
+
+        verify(servicesProvidedRepository, times(40)).save(2, "12345", 2, 2, 2);
     }
 
     private <T> void verifyCallsToReadOnlyCachedRepository(ReadOnlyCacheableRepository<T> repo, T object) {
