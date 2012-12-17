@@ -83,7 +83,7 @@ public class ANMReportsRepositoryTest {
         Dates march = new Dates(parse("2012-03-25").toDate());
         Indicator indicator1 = new Indicator("IUD");
         Indicator indicator2 = new Indicator("ANC");
-        when(anmReportDataRepository.fetchByANMIdAndDate("ANM X", parse("2012-01-01").toDate())).thenReturn(asList(
+        when(anmReportDataRepository.fetchByANMIdAndDate("ANM X", parse("2012-03-26").toDate())).thenReturn(asList(
                 new ANMReportData(anm, "CASE 1", indicator1, january),
                 new ANMReportData(anm, "CASE 2", indicator1, january),
                 new ANMReportData(anm, "CASE 3", indicator1, february),
@@ -105,7 +105,7 @@ public class ANMReportsRepositoryTest {
         ANM anm = new ANM("ANM X");
         Dates dates = new Dates(parse("2012-01-05").toDate());
         Indicator indicator = new Indicator("CONDOM");
-        when(anmReportDataRepository.fetchByANMIdAndDate("ANM X", parse("2012-01-01").toDate())).thenReturn(asList(
+        when(anmReportDataRepository.fetchByANMIdAndDate("ANM X", parse("2012-03-26").toDate())).thenReturn(asList(
                 new ANMReportData(anm, "CASE 7", indicator, dates),
                 new ANMReportData(anm, "CASE 7", indicator, dates)));
         when(annualTargetsRepository.fetchFor("ANM X", indicator)).thenReturn(new AnnualTarget(1, 1, "20"));
@@ -114,6 +114,33 @@ public class ANMReportsRepositoryTest {
 
         assertTrue(anmIndicatorSummaries.containsAll(asList(createSummaryForCondom())));
         assertEquals(1, anmIndicatorSummaries.size());
+    }
+
+    @Test
+    public void shouldFetchANMIndicatorSummariesForCurrentReportingYear() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2012-03-31"));
+
+        repository.fetchANMSummary("ANM X");
+
+        verify(anmReportDataRepository).fetchByANMIdAndDate("ANM X", parse("2012-03-26").toDate());
+    }
+
+    @Test
+    public void shouldFetchReportsForCurrentYearIfCurrentDayIsFirstDayOfTheReportingYear() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2012-03-26"));
+
+        repository.fetchANMSummary("ANM X");
+
+        verify(anmReportDataRepository).fetchByANMIdAndDate("ANM X", parse("2012-03-26").toDate());
+    }
+
+    @Test
+    public void shouldFetchReportsForPreviousYearIfCurrentDayIsLastDayOfTheReportingYear() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2013-03-25"));
+
+        repository.fetchANMSummary("ANM X");
+
+        verify(anmReportDataRepository).fetchByANMIdAndDate("ANM X", parse("2012-03-26").toDate());
     }
 
     @Test
@@ -133,7 +160,7 @@ public class ANMReportsRepositoryTest {
         Dates january = new Dates(parse("2012-01-05").toDate());
         Dates february = new Dates(parse("2012-02-15").toDate());
         Indicator indicator = new Indicator("IUD");
-        when(anmReportDataRepository.fetchByANMIdAndDate("ANM X", parse("2012-01-01").toDate())).thenReturn(asList(
+        when(anmReportDataRepository.fetchByANMIdAndDate("ANM X", parse("2012-03-26").toDate())).thenReturn(asList(
                 new ANMReportData(anm, "CASE 1", indicator, january),
                 new ANMReportData(anm, "CASE 2", indicator, january),
                 new ANMReportData(anm, "CASE 3", indicator, february),
@@ -156,12 +183,12 @@ public class ANMReportsRepositoryTest {
         Dates march = new Dates(parse("2012-03-25").toDate());
         Indicator indicator1 = new Indicator("IUD");
         Indicator indicator2 = new Indicator("ANC");
-        when(anmReportDataRepository.fetchByANMIdAndDate("ANM X", parse("2012-01-01").toDate())).thenReturn(asList(
+        when(anmReportDataRepository.fetchByANMIdAndDate("ANM X", parse("2012-03-26").toDate())).thenReturn(asList(
                 new ANMReportData(anmX, "CASE 1", indicator1, january),
                 new ANMReportData(anmX, "CASE 2", indicator1, january),
                 new ANMReportData(anmX, "CASE 3", indicator1, february),
                 new ANMReportData(anmX, "CASE 4", indicator1, february)));
-        when(anmReportDataRepository.fetchByANMIdAndDate("ANM Y", parse("2012-01-01").toDate())).thenReturn(asList(
+        when(anmReportDataRepository.fetchByANMIdAndDate("ANM Y", parse("2012-03-26").toDate())).thenReturn(asList(
                 new ANMReportData(anmY, "CASE 5", indicator2, march),
                 new ANMReportData(anmY, "CASE 6", indicator2, march)));
         when(annualTargetsRepository.fetchFor("ANM X", indicator1)).thenReturn(new AnnualTarget(1, 1, "40"));

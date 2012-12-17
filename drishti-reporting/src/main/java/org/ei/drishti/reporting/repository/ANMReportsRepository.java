@@ -5,7 +5,6 @@ import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.domain.MonthSummary;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.monitor.Probe;
-import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.reporting.domain.*;
 import org.ei.drishti.reporting.repository.cache.*;
 import org.joda.time.LocalDate;
@@ -17,11 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import static ch.lambdaj.Lambda.*;
+import static org.ei.drishti.common.AllConstants.Report.REPORTING_DAY;
+import static org.ei.drishti.common.AllConstants.Report.REPORTING_MONTH;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_ANM_REPORTS_CACHE_TIME;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_ANM_REPORTS_INSERT_TIME;
+import static org.ei.drishti.common.util.DateUtil.today;
 import static org.hamcrest.Matchers.equalTo;
 
 @Component
@@ -69,14 +72,14 @@ public class ANMReportsRepository {
     public List<ANMIndicatorSummary> fetchANMSummary(String anmIdentifier) {
         List<ANMIndicatorSummary> anmIndicatorSummaries = new ArrayList<>();
 
-        List<ANMReportData> allReportData = anmReportDataRepository.fetchByANMIdAndDate(anmIdentifier, LocalDate.parse("2012-01-01").toDate());
+        List<ANMReportData> allReportData = anmReportDataRepository.fetchByANMIdAndDate(anmIdentifier, startDateOfReportingYear());
 
         Collection<Indicator> indicators = getDistinctIndicators(allReportData);
         for (Indicator indicator : indicators) {
             List<ANMReportData> allReportDataForIndicator = filterReportsByIndicator(allReportData, indicator);
             int aggregatedProgress = 0;
             List<MonthSummary> monthSummaries = new ArrayList<>();
-            for (int month = 0; month < DateUtil.today().getMonthOfYear(); month++) {
+            for (int month = 0; month < today().getMonthOfYear(); month++) {
                 List<ANMReportData> allReportDataForAMonth = filterReportsByMonth(allReportDataForIndicator, month);
                 if (allReportDataForAMonth.size() == 0) {
                     continue;
@@ -104,6 +107,13 @@ public class ANMReportsRepository {
             anmReports.add(new ANMReport(anm.anmIdentifier(), fetchANMSummary(anm.anmIdentifier())));
         }
         return anmReports;
+    }
+
+    private Date startDateOfReportingYear() {
+        LocalDate now = today();
+        LocalDate beginningOfReportingYear = today().withMonthOfYear(REPORTING_MONTH).withDayOfMonth(REPORTING_DAY);
+        int reportingYear = now.isBefore(beginningOfReportingYear) ? now.getYear() - 1 : now.getYear();
+        return new LocalDate().withDayOfMonth(REPORTING_DAY).withMonthOfYear(REPORTING_MONTH).withYear(reportingYear).toDate();
     }
 
     private List<String> getAllExternalIds(List<ANMReportData> reportDataList) {
