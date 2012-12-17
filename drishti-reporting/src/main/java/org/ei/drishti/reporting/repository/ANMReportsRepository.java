@@ -92,7 +92,7 @@ public class ANMReportsRepository {
 
                 monthSummaries.add(new MonthSummary(String.valueOf(month + 1), String.valueOf(year), String.valueOf(currentProgress), String.valueOf(aggregatedProgress), externalIds));
             }
-            AnnualTarget annualTarget = annualTargetsRepository.fetchFor(anmIdentifier, indicator);
+            AnnualTarget annualTarget = annualTargetsRepository.fetchFor(anmIdentifier, indicator, today().toDate());
             String target = annualTarget == null ? null : annualTarget.target();
             anmIndicatorSummaries.add(new ANMIndicatorSummary(indicator.indicator(), target, monthSummaries));
         }

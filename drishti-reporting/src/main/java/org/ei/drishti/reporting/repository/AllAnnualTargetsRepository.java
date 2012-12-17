@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import static org.ei.drishti.reporting.domain.AnnualTarget.FIND_BY_ANM_AND_INDICATOR;
+import java.util.Date;
+
+import static org.ei.drishti.reporting.domain.AnnualTarget.FIND_BY_ANM_AND_INDICATOR_AND_DATE;
 
 @Repository
 public class AllAnnualTargetsRepository {
@@ -20,7 +22,8 @@ public class AllAnnualTargetsRepository {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 
-    public AnnualTarget fetchFor(String anmIdentifier, Indicator indicator) {
-        return (AnnualTarget) dataAccessTemplate.getUniqueResult(FIND_BY_ANM_AND_INDICATOR, new String[]{"anmIdentifier", "indicator"}, new Object[]{anmIdentifier, indicator.indicator()});
+    public AnnualTarget fetchFor(String anmIdentifier, Indicator indicator, Date reportDate) {
+        return (AnnualTarget) dataAccessTemplate.getUniqueResult(FIND_BY_ANM_AND_INDICATOR_AND_DATE,
+                new String[]{"anmIdentifier", "indicator", "reportDate"}, new Object[]{anmIdentifier, indicator.indicator(), reportDate});
     }
 }
