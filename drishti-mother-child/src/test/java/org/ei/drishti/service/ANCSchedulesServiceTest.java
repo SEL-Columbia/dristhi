@@ -48,6 +48,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldEnrollMotherIntoSchedules() {
+        mockCurrentDate(LocalDate.parse("2012-01-01"));
         LocalDate lmp = DateUtil.today().minusDays(3);
 
         schedulesService.enrollMother("Case X", lmp, new Time(15, 0), new Time(14, 0));
