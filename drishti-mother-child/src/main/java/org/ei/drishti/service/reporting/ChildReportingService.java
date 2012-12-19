@@ -72,9 +72,13 @@ public class ChildReportingService {
     }
 
     private void reportLowBirthWeight(String weight, Child child) {
-        double birthWeight = Double.parseDouble(weight);
-        if (birthWeight < LOW_BIRTH_WEIGHT_THRESHOLD) {
-            reportToBoth(child, LBW, child.dateOfBirth());
+        try {
+            double birthWeight = Double.parseDouble(weight);
+            if (birthWeight < LOW_BIRTH_WEIGHT_THRESHOLD) {
+                reportToBoth(child, LBW, child.dateOfBirth());
+            }
+        } catch (NumberFormatException e) {
+            logger.warn("Not reporting: Invalid value received for childWeight : " + weight + " for childCaseId : " + child.caseId());
         }
     }
 
