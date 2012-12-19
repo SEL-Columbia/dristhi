@@ -2,8 +2,14 @@ package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.monitor.Probe;
-import org.ei.drishti.reporting.domain.*;
-import org.ei.drishti.reporting.repository.cache.*;
+import org.ei.drishti.reporting.domain.Dates;
+import org.ei.drishti.reporting.domain.Indicator;
+import org.ei.drishti.reporting.domain.Location;
+import org.ei.drishti.reporting.domain.ServiceProvider;
+import org.ei.drishti.reporting.repository.cache.CachingRepository;
+import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
+import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
+import org.ei.drishti.reporting.repository.cache.ReadOnlyCachingRepository;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,7 +61,12 @@ public class ServicesProvidedRepository {
         int count = getCount(quantity);
         Probe probeForInsert = monitor.start(REPORTING_SERVICE_PROVIDED_INSERT_TIME);
         for (int i = 0; i < count; i++) {
-            servicesProvidedRepository.save(serviceProvider.id(), externalId, fetchedIndicator.id(), dates.id(), location.id());
+            try {
+                servicesProvidedRepository.save(serviceProvider.id(), externalId, fetchedIndicator.id(), dates.id(), location.id());
+            } catch (Exception e) {
+                cachedIndicators.clear(fetchedIndicator);
+                cachedDates.clear(dates);
+            }
         }
         monitor.end(probeForInsert);
     }

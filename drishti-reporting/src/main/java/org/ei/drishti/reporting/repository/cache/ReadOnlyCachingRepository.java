@@ -23,6 +23,12 @@ public class ReadOnlyCachingRepository<T> {
         return writeToCache(object);
     }
 
+    public void clear(T object){
+        if (cache.containsKey(object)) {
+            cache.remove(object);
+        }
+    }
+
     private T writeToCache(T object) {
         lock.lock();
         try {

@@ -24,6 +24,12 @@ public class CachingRepository<T> {
         return cache.get(object);
     }
 
+    public void clear(T object){
+        if (cache.containsKey(object)) {
+            cache.remove(object);
+        }
+    }
+
     private void saveToCache(T object) {
         lock.lock();
         try {

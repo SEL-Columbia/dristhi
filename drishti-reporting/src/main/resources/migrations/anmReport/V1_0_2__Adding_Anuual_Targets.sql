@@ -18,6 +18,9 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DMPA');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('FP_TRADITIONAL');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('LAM');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('TT');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('LBW');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MTP<12');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MTP>12');
 
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT'), 40, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='HEP'), 50, '2012-03-26', '2013-03-25');

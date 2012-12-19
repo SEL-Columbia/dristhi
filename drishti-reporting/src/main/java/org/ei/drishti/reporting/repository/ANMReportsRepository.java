@@ -65,7 +65,13 @@ public class ANMReportsRepository {
         int count = getCount(quantity);
         Probe probeForInsert = monitor.start(REPORTING_ANM_REPORTS_INSERT_TIME);
         for (int i = 0; i < count; i++) {
-            anmReportDataRepository.save(anm, externalId, fetchedIndicator, dates);
+            try {
+                anmReportDataRepository.save(anm, externalId, fetchedIndicator, dates);
+            } catch (Exception e) {
+                cachedANMs.clear(anm);
+                cachedIndicators.clear(fetchedIndicator);
+                cachedDates.clear(dates);
+            }
         }
         monitor.end(probeForInsert);
     }
