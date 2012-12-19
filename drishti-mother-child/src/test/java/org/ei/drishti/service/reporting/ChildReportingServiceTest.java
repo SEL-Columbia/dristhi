@@ -94,7 +94,7 @@ public class ChildReportingServiceTest {
     }
 
     @Test
-    public void shouldSendChildReportingDataWhenChildInformationIsProvided() throws Exception {
+    public void shouldSendChildImmunizationDataWhenChildIsRegistered() throws Exception {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", asList("opv_0"), "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X")
@@ -102,12 +102,43 @@ public class ChildReportingServiceTest {
 
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE X");
+        reportData.put("childWeight", "5");
         service.registerChild(reportData);
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", OPV, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
         ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", OPV, "2012-01-01");
         verify(reportingService).sendReportData(serviceProvidedData);
         verify(reportingService).sendReportData(anmReportData);
+    }
+
+    @Test
+    public void shouldReportLowWeightDuringChildRegistration() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE X");
+        reportData.put("childWeight", "2.2");
+        service.registerChild(reportData);
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", LBW, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", LBW, "2012-01-01");
+        verify(reportingService).sendReportData(serviceProvidedData);
+        verify(reportingService).sendReportData(anmReportData);
+    }
+
+    @Test
+    public void shouldNotReportNormalWeight() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE X");
+        reportData.put("childWeight", "2.5");
+        service.registerChild(reportData);
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", LBW, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", LBW, "2012-01-01");
+        verify(reportingService, times(0)).sendReportData(serviceProvidedData);
+        verify(reportingService, times(0)).sendReportData(anmReportData);
     }
 
     @Test

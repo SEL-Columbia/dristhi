@@ -18,10 +18,11 @@ public class ChildInformation {
     private String gender;
     private String dateOfDelivery;
     private String immunizationsProvided;
+    private String childWeight;
     private Map<String, Map<String, String>> extraData;
 
     public ChildInformation(String caseId, String motherCaseId, String anmIdentifier, String name, String gender, String dateOfDelivery,
-                            String immunizationsProvided, Map<String, Map<String, String>> extraData) {
+                            String immunizationsProvided, String childWeight, Map<String, Map<String, String>> extraData) {
         this.caseId = caseId;
         this.motherCaseId = motherCaseId;
         this.anmIdentifier = anmIdentifier;
@@ -29,6 +30,7 @@ public class ChildInformation {
         this.gender = gender;
         this.dateOfDelivery = dateOfDelivery;
         this.immunizationsProvided = immunizationsProvided;
+        this.childWeight = childWeight;
         this.extraData = extraData;
     }
 
@@ -66,6 +68,10 @@ public class ChildInformation {
 
     public LocalDate dateOfBirth() {
         return LocalDate.parse(dateOfDelivery);
+    }
+
+    public String childWeight() {
+        return childWeight;
     }
 
     @Override

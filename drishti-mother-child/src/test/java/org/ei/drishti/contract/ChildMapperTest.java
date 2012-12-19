@@ -30,7 +30,7 @@ public class ChildMapperTest {
         mapper = new ChildMapper();
         List<ChildInformation> childInformationList = mapper.mapDeliveryOutcomeInformationToChildren(outcomeInformation, EXTRA_DATA);
 
-        assertEquals(asList(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "child0", "female", "2012-01-01", "bcg_0 opv_0", expectedExtraData)), childInformationList);
+        assertEquals(asList(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "child0", "female", "2012-01-01", "bcg_0 opv_0", "2", expectedExtraData)), childInformationList);
     }
 
     @Test
@@ -40,8 +40,8 @@ public class ChildMapperTest {
                 .withChild("Case Y", "1", "child1", "male", "3", "B", "bcg_0");
         Map<String, Map<String, String>> expectedExtraDataForChild1 = mapOf("details", create("someKey", "someValue").put("childWeight", "2").put("childBloodGroup", "A").map());
         Map<String, Map<String, String>> expectedExtraDataForChild2 = mapOf("details", create("someKey", "someValue").put("childWeight", "3").put("childBloodGroup", "B").map());
-        ChildInformation childOneInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "child0", "female", "2012-01-01", "bcg_0 opv_0", expectedExtraDataForChild1);
-        ChildInformation childTwoInformation = new ChildInformation("Case Y", "MOTHER-CASE-1", "ANM X", "child1", "male", "2012-01-01", "bcg_0", expectedExtraDataForChild2);
+        ChildInformation childOneInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "child0", "female", "2012-01-01", "bcg_0 opv_0", "2", expectedExtraDataForChild1);
+        ChildInformation childTwoInformation = new ChildInformation("Case Y", "MOTHER-CASE-1", "ANM X", "child1", "male", "2012-01-01", "bcg_0", "3", expectedExtraDataForChild2);
 
         List<ChildInformation> childInformationList = mapper.mapDeliveryOutcomeInformationToChildren(outcomeInformation, EXTRA_DATA);
 

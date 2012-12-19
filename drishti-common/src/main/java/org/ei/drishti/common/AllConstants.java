@@ -9,6 +9,7 @@ public class AllConstants {
         public static final String REPORT_EXTRA_DATA_KEY_NAME = "reporting";
         public static final String SERVICE_PROVIDED_DATA_TYPE = "serviceProvided";
         public static final String ANM_REPORT_DATA_TYPE = "anmReportData";
+        public static final double LOW_BIRTH_WEIGHT_THRESHOLD = 2.5;
     }
 
     public static class MetaCommCareFields {
@@ -28,6 +29,11 @@ public class AllConstants {
         public static final String HIGH_PRIORITY_COMMCARE_FIELD_NAME = "isHighPriority";
         public static final String BOOLEAN_TRUE_COMMCARE_VALUE = "Yes";
         public static final String THAYI_CARD_NUMBER_COMMCARE_FIELD_NAME = "thaayiCardNumber";
+    }
+
+    public static class ChildBirthCommCareFields{
+        public static final String BIRTH_WEIGHT_COMMCARE_FIELD_NAME = "childWeight";
+        public static final String BLOOD_GROUP_COMMCARE_FIELD_NAME = "childBloodGroup";
     }
 
     public static class CommonCommRegisterMotherFields {

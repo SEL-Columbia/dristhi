@@ -60,7 +60,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
 
-        service.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", EXTRA_DATA));
+        service.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", "4", EXTRA_DATA));
 
         verify(actionService).alertForBeneficiary(child, "Case X", "OPV 0", normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
         verify(actionService).alertForBeneficiary(child, "Case X", "BCG", normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
@@ -72,7 +72,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
-        ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", EXTRA_DATA);
+        ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", "4", EXTRA_DATA);
 
         service.registerChild(childInformation);
 
@@ -85,7 +85,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1", "Theresa"));
 
-        service.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", "2012-01-01", "bcg hep", EXTRA_DATA));
+        service.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", "2012-01-01", "bcg hep", "4", EXTRA_DATA));
 
         verify(allChildren).register(objectWithSameFieldsAs(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female").withAnm("ANM X").withDateOfBirth("2012-01-01").withDetails(EXTRA_DATA.get("details"))));
     }
@@ -96,7 +96,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(null);
 
-        service.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", "2012-01-01", "bcg hep", EXTRA_DATA));
+        service.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", "2012-01-01", "bcg hep", "4", EXTRA_DATA));
 
         verifyZeroInteractions(allChildren);
     }
@@ -318,8 +318,9 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "Case X");
+        reportData.put("childWeight","4");
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
-        ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", EXTRA_DATA);
+        ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", "4", EXTRA_DATA);
 
         service.registerChild(childInformation);
 
@@ -333,7 +334,7 @@ public class PNCServiceTest extends BaseUnitTest {
         PNCService pncService = new PNCService(actionService, childSchedulesService, allMothers, allChildren, childReportingService);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
 
-        pncService.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), providedImmunizations, EXTRA_DATA));
+        pncService.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), providedImmunizations, "4", EXTRA_DATA));
 
         for (String expectedAlert : expectedAlertsRaised) {
             verify(actionService).alertForBeneficiary(child, "Case X", expectedAlert, normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));

@@ -15,11 +15,13 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static java.util.Arrays.asList;
+import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.CLOSE_REASON_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.DEATH_OF_CHILD_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.Report.LOW_BIRTH_WEIGHT_THRESHOLD;
 import static org.ei.drishti.common.domain.Indicator.*;
 
 @Service
@@ -66,6 +68,14 @@ public class ChildReportingService {
         List<String> immunizations = child.immunizationsProvided();
 
         reportImmunizations(caseId, child, immunizations, child.dateOfBirth());
+        reportLowBirthWeight(reportData.get(BIRTH_WEIGHT_COMMCARE_FIELD_NAME), child);
+    }
+
+    private void reportLowBirthWeight(String weight, Child child) {
+        double birthWeight = Double.parseDouble(weight);
+        if (birthWeight < LOW_BIRTH_WEIGHT_THRESHOLD) {
+            reportToBoth(child, LBW, child.dateOfBirth());
+        }
     }
 
     public void immunizationProvided(SafeMap reportData, Collection<String> previousImmunizations) {
@@ -107,9 +117,9 @@ public class ChildReportingService {
     }
 
     private void reportToBoth(Child child, Indicator indicator, String date) {
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thaayiCardNumber(),indicator, date, child.location());
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thaayiCardNumber(), indicator, date, child.location());
         reportingService.sendReportData(serviceProvidedData);
-        ReportingData anmReportData = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(),indicator, date);
+        ReportingData anmReportData = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);
     }
 }

@@ -275,7 +275,7 @@ public class ChildSchedulesServiceTest {
         public TestForChildEnrollmentAndUpdate whenEnrolledWithImmunizationsProvided(String... immunizationsProvided) {
             setExpectationsForNonDependentSchedules();
 
-            childSchedulesService.enrollChild(new ChildInformation(caseId, null, null, name, null, dateOfBirth, join(asList(immunizationsProvided), " "), null));
+            childSchedulesService.enrollChild(new ChildInformation(caseId, null, null, name, null, dateOfBirth, join(asList(immunizationsProvided), " "), "4", null));
 
             return this;
         }
