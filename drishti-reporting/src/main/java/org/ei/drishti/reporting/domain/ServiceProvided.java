@@ -10,25 +10,29 @@ public class ServiceProvided {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "service_provider")
-    private Integer serviceProvider;
+    @ManyToOne
+    @JoinColumn(name = "service_provider")
+    private ServiceProvider serviceProvider;
 
     @Column(name = "externalId")
     private String externalId;
 
-    @Column(name = "indicator")
-    private Integer indicator;
+    @ManyToOne
+    @JoinColumn(name = "indicator")
+    private Indicator indicator;
 
-    @Column(name = "date_")
-    private Integer date;
+    @ManyToOne
+    @JoinColumn(name = "date_")
+    private Dates date;
 
-    @Column(name = "location")
-    private Integer location;
+    @ManyToOne
+    @JoinColumn(name = "location")
+    private Location location;
 
     private ServiceProvided() {
     }
 
-    public ServiceProvided(Integer serviceProvider, String externalId, Integer indicator, Integer date, Integer location) {
+    public ServiceProvided(ServiceProvider serviceProvider, String externalId, Indicator indicator, Dates date, Location location) {
         this.serviceProvider = serviceProvider;
         this.externalId = externalId;
         this.indicator = indicator;

@@ -1,6 +1,6 @@
 package org.ei.drishti.reporting.repository;
 
-import org.ei.drishti.reporting.domain.ServiceProvided;
+import org.ei.drishti.reporting.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -17,7 +17,7 @@ public class AllServicesProvidedRepository {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 
-    public void save(Integer anmIdentifier, String externalId, Integer indicator, Integer date, Integer location) {
-        dataAccessTemplate.save(new ServiceProvided(anmIdentifier, externalId, indicator, date, location));
+    public void save(ServiceProvider serviceProvider, String externalId, Indicator indicator, Dates date, Location location) {
+        dataAccessTemplate.save(new ServiceProvided(serviceProvider, externalId, indicator, date, location));
     }
 }

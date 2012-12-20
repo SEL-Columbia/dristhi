@@ -62,10 +62,11 @@ public class ServicesProvidedRepository {
         Probe probeForInsert = monitor.start(REPORTING_SERVICE_PROVIDED_INSERT_TIME);
         for (int i = 0; i < count; i++) {
             try {
-                servicesProvidedRepository.save(serviceProvider.id(), externalId, fetchedIndicator.id(), dates.id(), location.id());
+                servicesProvidedRepository.save(serviceProvider, externalId, fetchedIndicator, dates, location);
             } catch (Exception e) {
                 cachedIndicators.clear(fetchedIndicator);
                 cachedDates.clear(dates);
+
             }
         }
         monitor.end(probeForInsert);

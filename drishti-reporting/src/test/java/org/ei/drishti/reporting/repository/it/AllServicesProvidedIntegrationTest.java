@@ -44,7 +44,7 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedReposito
         template.save(serviceProvider);
         allDatesRepository.save(dates);
 
-        repository.save(serviceProvider.id(), "123", indicator.id(), dates.id(), location.id());
+        repository.save(serviceProvider, "123", indicator, dates, location);
 
         assertEquals(1, template.loadAll(ServiceProvided.class).size());
     }
