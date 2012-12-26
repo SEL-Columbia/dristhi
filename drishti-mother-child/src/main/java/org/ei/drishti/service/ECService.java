@@ -48,7 +48,7 @@ public class ECService {
 
         allEligibleCouples.register(couple);
 
-        reportingService.fpMethodChangedWithECRegistrationDetails(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)), couple.village(), couple.subCenter(), couple.phc());
+        reportingService.registerEC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         actionService.registerEligibleCouple(request.caseId(), request.ecNumber(), request.wife(), request.husband(),
                 request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
         schedulingService.enrollToFPComplications(request, extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
@@ -77,7 +77,7 @@ public class ECService {
         }
 
         EligibleCouple updatedCouple = allEligibleCouples.updateDetails(request.caseId(), extraDetails.get("details"));
-        reportingService.fpMethodChangedWithUpdatedECDetails(new SafeMap(extraDetails.get(REPORT_EXTRA_DATA_KEY_NAME)), updatedCouple.ecNumber(), updatedCouple.village(), updatedCouple.subCenter(), updatedCouple.phc());
+        reportingService.updateFamilyPlanningMethod(new SafeMap(extraDetails.get(REPORT_EXTRA_DATA_KEY_NAME)));
         actionService.updateEligibleCoupleDetails(request.caseId(), request.anmIdentifier(), updatedCouple.details());
 
         schedulingService.updateFPComplications(request, updatedCouple);

@@ -59,7 +59,7 @@ public class ECServiceTest {
         EligibleCouple expectedCouple = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1")
                 .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(extraData.get("details"));
         verify(allEligibleCouples).register(expectedCouple);
-        verify(reportingService).fpMethodChangedWithECRegistrationDetails(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)), "Village X", "SubCenter X", "PHC X");
+        verify(reportingService).registerEC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", extraData.get("details"));
         verify(schedulingService).enrollToFPComplications(eligibleCoupleRegistrationRequest, extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
     }
@@ -106,7 +106,7 @@ public class ECServiceTest {
 
         ecService.updateFamilyPlanningMethod(new FamilyPlanningUpdateRequest("CASE X", "ANM X"), create("details", mapOf("currentMethod", "CONDOM")).put(REPORT_EXTRA_DATA_KEY_NAME, mapOf("currentMethod", "CONDOM")).map());
 
-        verify(reportingService).fpMethodChangedWithUpdatedECDetails(new SafeMap(mapOf("currentMethod", "CONDOM")), "EC Number 1", "Village X", "SubCenter X", "PHC X");
+        verify(reportingService).updateFamilyPlanningMethod(new SafeMap(mapOf("currentMethod", "CONDOM")));
     }
 
     @Test
