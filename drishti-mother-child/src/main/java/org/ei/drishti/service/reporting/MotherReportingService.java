@@ -52,7 +52,7 @@ public class MotherReportingService {
             reportToBoth(mother, MOTHER_MORTALITY, today().toString());
         }
 
-        if(SPONTANEOUS_ABORTION_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
+        if (SPONTANEOUS_ABORTION_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
             reportToBoth(mother, SPONTANEOUS_ABORTION, reportData.get(CLOSE_SPONTANEOUS_ABORTION_DATE_COMMCARE_FIELD_NAME));
         }
 
@@ -74,6 +74,11 @@ public class MotherReportingService {
         Mother mother = allMothers.findByCaseId(reportData.get(MOTHER_CASE_ID_COMMCARE_FIELD_NAME));
         Indicator indicator = LIVE_BIRTH_COMMCARE_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME_COMMCARE_FIELD_NAME)) ? LIVE_BIRTH : STILL_BIRTH;
         reportToBoth(mother, indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+
+        if (!HOME_COMMCARE_FIELD_VALUE.equals(reportData.get(PLACE_OF_DELIVERY_COMMCARE_FIELD_NAME))) {
+            reportToBoth(mother, INSTITUTIONAL_DELIVERY, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+        }
+
         reportToBoth(mother, DELIVERY, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
     }
 
