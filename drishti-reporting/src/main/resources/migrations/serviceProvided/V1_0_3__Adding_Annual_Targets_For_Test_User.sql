@@ -27,6 +27,8 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('TT');
 INSERT INTO report.dim_indicator (indicator) VALUES ('LBW');
 INSERT INTO report.dim_indicator (indicator) VALUES ('MTP<12');
 INSERT INTO report.dim_indicator (indicator) VALUES ('MTP>12');
+INSERT INTO report.dim_indicator (indicator) VALUES ('SPONTANEOUS_ABORTION');
+INSERT INTO report.dim_indicator (indicator) VALUES ('DELIVERY');
 
 INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='c'), (SELECT ID FROM report.dim_indicator WHERE indicator='DPT'), 40, '2012-03-26', '2013-03-25');
 INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='c'), (SELECT ID FROM report.dim_indicator WHERE indicator='HEP'), 50, '2012-03-26', '2013-03-25');

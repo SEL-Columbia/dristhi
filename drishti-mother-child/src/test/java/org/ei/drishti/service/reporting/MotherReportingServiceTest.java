@@ -159,6 +159,17 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldReportDeliveryWhenDeliveryOutcomeIsUpdatedWithOutcome() {
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        Map<String, String> reportData = create("motherCaseId", "CASE-1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").map();
+        service.updatePregnancyOutcome(new SafeMap(reportData));
+
+        verify(reportingService).sendReportData(serviceProvided(DELIVERY, "2012-01-01"));
+        verify(reportingService).sendReportData(anmReport(DELIVERY, "2012-01-01"));
+    }
+
+    @Test
     public void shouldReportLiveBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsLiveBirth() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
