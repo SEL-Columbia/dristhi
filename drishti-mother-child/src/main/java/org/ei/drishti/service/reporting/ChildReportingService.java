@@ -70,7 +70,7 @@ public class ChildReportingService {
         List<String> immunizations = child.immunizationsProvided();
 
         reportImmunizations(caseId, child, immunizations, child.dateOfBirth());
-        reportLowBirthWeight(reportData.get(BIRTH_WEIGHT_COMMCARE_FIELD_NAME), child);
+        reportBirthWeight(reportData.get(BIRTH_WEIGHT_COMMCARE_FIELD_NAME), child);
         reportBFPostBirth(reportData.get(BF_POSTBIRTH_COMMCARE_FIELD_NAME), child);
     }
 
@@ -99,12 +99,13 @@ public class ChildReportingService {
         reportToBoth(child, CHILD_MORTALITY, reportData.get(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
     }
 
-    private void reportLowBirthWeight(String weight, Child child) {
+    private void reportBirthWeight(String weight, Child child) {
         try {
             double birthWeight = Double.parseDouble(weight);
             if (birthWeight < LOW_BIRTH_WEIGHT_THRESHOLD) {
                 reportToBoth(child, LBW, child.dateOfBirth());
             }
+            reportToBoth(child, WEIGHED_AT_BIRTH, child.dateOfBirth());
         } catch (NumberFormatException e) {
             logger.warn("Not reporting: Invalid value received for childWeight : " + weight + " for childCaseId : " + child.caseId());
         }
