@@ -41,6 +41,8 @@ public class AllConstants {
     public static class ChildBirthCommCareFields{
         public static final String BIRTH_WEIGHT_COMMCARE_FIELD_NAME = "childWeight";
         public static final String BLOOD_GROUP_COMMCARE_FIELD_NAME = "childBloodGroup";
+        public static final String BF_POSTBIRTH_COMMCARE_FIELD_NAME = "bfPostBirth";
+        public static final String YES_BF_POSTBIRTH_COMMCARE_FIELD_NAME = "yes";
     }
 
     public static class CommonCommRegisterMotherFields {

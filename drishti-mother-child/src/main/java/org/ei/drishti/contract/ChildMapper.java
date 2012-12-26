@@ -25,7 +25,7 @@ public class ChildMapper {
                     .map());
             childInformationList.add(new ChildInformation(outcomeInformation.caseId(childNumber), outcomeInformation.motherCaseId(), outcomeInformation.anmIdentifier(), outcomeInformation.childName(childNumber),
                     outcomeInformation.gender(childNumber), outcomeInformation.deliveryOutcomeDate(), outcomeInformation.immunizationsProvided(childNumber),
-                    outcomeInformation.childWeight(childNumber), childData));
+                    outcomeInformation.childWeight(childNumber), outcomeInformation.bfPostBirth(), childData));
         }
 
         return childInformationList;

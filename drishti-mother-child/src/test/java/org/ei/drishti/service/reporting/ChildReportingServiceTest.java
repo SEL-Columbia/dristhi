@@ -103,6 +103,7 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE X");
         reportData.put("childWeight", "5");
+        reportData.put("bfPostBirth", "");
         service.registerChild(reportData);
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", OPV, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
@@ -118,6 +119,7 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE X");
         reportData.put("childWeight", "2.2");
+        reportData.put("bfPostBirth", "");
         service.registerChild(reportData);
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", LBW, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
@@ -127,12 +129,45 @@ public class ChildReportingServiceTest {
     }
 
     @Test
+    public void shouldReportIfBreastFeedingInitiatedDuringChildRegistration() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE X");
+        reportData.put("childWeight", "2.2");
+        reportData.put("bfPostBirth", "yes");
+        service.registerChild(reportData);
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", BF_POST_BIRTH, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", BF_POST_BIRTH, "2012-01-01");
+        verify(reportingService).sendReportData(serviceProvidedData);
+        verify(reportingService).sendReportData(anmReportData);
+    }
+
+    @Test
+    public void shouldNotReportBreastFeedingIfNotInitiatedDuringChildRegistration() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE X");
+        reportData.put("childWeight", "2.2");
+        reportData.put("bfPostBirth", "");
+        service.registerChild(reportData);
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", BF_POST_BIRTH, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", BF_POST_BIRTH, "2012-01-01");
+        verify(reportingService, times(0)).sendReportData(serviceProvidedData);
+        verify(reportingService, times(0)).sendReportData(anmReportData);
+    }
+
+    @Test
     public void shouldNotReportNormalWeight() throws Exception {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE X");
         reportData.put("childWeight", "2.5");
+        reportData.put("bfPostBirth", "");
         service.registerChild(reportData);
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", LBW, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
@@ -148,6 +183,7 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE X");
         reportData.put("childWeight", "");
+        reportData.put("bfPostBirth", "");
         service.registerChild(reportData);
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", LBW, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));

@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static java.util.Arrays.asList;
+import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.YES_BF_POSTBIRTH_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.CLOSE_REASON_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.DEATH_OF_CHILD_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
@@ -69,17 +71,7 @@ public class ChildReportingService {
 
         reportImmunizations(caseId, child, immunizations, child.dateOfBirth());
         reportLowBirthWeight(reportData.get(BIRTH_WEIGHT_COMMCARE_FIELD_NAME), child);
-    }
-
-    private void reportLowBirthWeight(String weight, Child child) {
-        try {
-            double birthWeight = Double.parseDouble(weight);
-            if (birthWeight < LOW_BIRTH_WEIGHT_THRESHOLD) {
-                reportToBoth(child, LBW, child.dateOfBirth());
-            }
-        } catch (NumberFormatException e) {
-            logger.warn("Not reporting: Invalid value received for childWeight : " + weight + " for childCaseId : " + child.caseId());
-        }
+        reportBFPostBirth(reportData.get(BF_POSTBIRTH_COMMCARE_FIELD_NAME), child);
     }
 
     public void immunizationProvided(SafeMap reportData, Collection<String> previousImmunizations) {
@@ -90,19 +82,6 @@ public class ChildReportingService {
         immunizations.removeAll(previousImmunizations);
 
         reportImmunizations(caseId, child, immunizations, reportData.get(IMMUNIZATIONS_PROVIDED_DATE_COMMCARE_FIELD_NAME));
-    }
-
-    private void reportImmunizations(String caseId, Child child, List<String> immunizations, String date) {
-        for (String immunizationProvidedThisTime : immunizations) {
-            Indicator indicator = immunizationToIndicator.get(immunizationProvidedThisTime);
-            if (indicator == null) {
-                logger.warn("Not reporting: Invalid immunization: " + immunizationProvidedThisTime + " for childCaseId: " +
-                        caseId + " with immunizations provided: " + immunizations);
-                continue;
-            }
-
-            reportToBoth(child, indicator, date);
-        }
     }
 
     public void closeChild(SafeMap reportData) {
@@ -118,6 +97,36 @@ public class ChildReportingService {
         }
 
         reportToBoth(child, CHILD_MORTALITY, reportData.get(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
+    }
+
+    private void reportLowBirthWeight(String weight, Child child) {
+        try {
+            double birthWeight = Double.parseDouble(weight);
+            if (birthWeight < LOW_BIRTH_WEIGHT_THRESHOLD) {
+                reportToBoth(child, LBW, child.dateOfBirth());
+            }
+        } catch (NumberFormatException e) {
+            logger.warn("Not reporting: Invalid value received for childWeight : " + weight + " for childCaseId : " + child.caseId());
+        }
+    }
+
+    private void reportBFPostBirth(String bfPostBirth, Child child) {
+        if (YES_BF_POSTBIRTH_COMMCARE_FIELD_NAME.equals(bfPostBirth)) {
+            reportToBoth(child, BF_POST_BIRTH, child.dateOfBirth());
+        }
+    }
+
+    private void reportImmunizations(String caseId, Child child, List<String> immunizations, String date) {
+        for (String immunizationProvidedThisTime : immunizations) {
+            Indicator indicator = immunizationToIndicator.get(immunizationProvidedThisTime);
+            if (indicator == null) {
+                logger.warn("Not reporting: Invalid immunization: " + immunizationProvidedThisTime + " for childCaseId: " +
+                        caseId + " with immunizations provided: " + immunizations);
+                continue;
+            }
+
+            reportToBoth(child, indicator, date);
+        }
     }
 
     private void reportToBoth(Child child, Indicator indicator, String date) {

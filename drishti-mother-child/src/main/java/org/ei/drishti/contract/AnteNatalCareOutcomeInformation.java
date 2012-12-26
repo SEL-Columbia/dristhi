@@ -38,12 +38,14 @@ public class AnteNatalCareOutcomeInformation {
     private String immunizationsProvided_4;
     private String pregnancyOutcome;
     private String dateOfDelivery;
+    private String bfPostBirth;
 
-    public AnteNatalCareOutcomeInformation(String motherCaseId, String anmIdentifier, String pregnancyOutcome, String dateOfDelivery, String numberOfChildrenBorn) {
+    public AnteNatalCareOutcomeInformation(String motherCaseId, String anmIdentifier, String pregnancyOutcome, String dateOfDelivery, String bfPostBirth, String numberOfChildrenBorn) {
         this.motherCaseId = motherCaseId;
         this.anmIdentifier = anmIdentifier;
         this.pregnancyOutcome = pregnancyOutcome;
         this.dateOfDelivery = dateOfDelivery;
+        this.bfPostBirth = bfPostBirth;
         this.numberOfChildrenBorn = numberOfChildrenBorn;
     }
 
@@ -100,6 +102,10 @@ public class AnteNatalCareOutcomeInformation {
 
     public String deliveryOutcomeDate() {
         return dateOfDelivery;
+    }
+
+    public String bfPostBirth() {
+        return bfPostBirth;
     }
 
     private void setField(String fieldPrefix, String childNumber, String value) {

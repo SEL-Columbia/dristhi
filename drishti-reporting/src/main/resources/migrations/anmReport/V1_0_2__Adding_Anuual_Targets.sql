@@ -24,6 +24,7 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MTP>12');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('SPONTANEOUS_ABORTION');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DELIVERY');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('INSTITUTIONAL_DELIVERY');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('BF_POST_BIRTH');
 
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT'), 40, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='HEP'), 50, '2012-03-26', '2013-03-25');
@@ -43,3 +44,4 @@ INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_da
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='TT'), 40, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='LIVE_BIRTH'), 200, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='INSTITUTIONAL_DELIVERY'), 200, '2012-03-26', '2013-03-25');
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='BF_POST_BIRTH'), 200, '2012-03-26', '2013-03-25');

@@ -224,7 +224,8 @@
                         "form|subcase_4|case|update|c_blood_group": "childBloodGroup_4",
                         "form|subcase_4|case|update|immunizations_at_birth": "immunizationsProvided_4",
                         "form|delivery_outcome": "pregnancyOutcome",
-                        "form|date_outcome": "dateOfDelivery"
+                        "form|date_outcome": "dateOfDelivery",
+                        "form|live_birth_group|breastfeeding_postbirth": "bfPostBirth"
                     },
                     "extraMappings": {
                         "reporting": {

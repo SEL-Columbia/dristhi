@@ -19,10 +19,11 @@ public class ChildInformation {
     private String dateOfDelivery;
     private String immunizationsProvided;
     private String childWeight;
+    private String bfPostBirth;
     private Map<String, Map<String, String>> extraData;
 
     public ChildInformation(String caseId, String motherCaseId, String anmIdentifier, String name, String gender, String dateOfDelivery,
-                            String immunizationsProvided, String childWeight, Map<String, Map<String, String>> extraData) {
+                            String immunizationsProvided, String childWeight, String bfPostBirth, Map<String, Map<String, String>> extraData) {
         this.caseId = caseId;
         this.motherCaseId = motherCaseId;
         this.anmIdentifier = anmIdentifier;
@@ -31,6 +32,7 @@ public class ChildInformation {
         this.dateOfDelivery = dateOfDelivery;
         this.immunizationsProvided = immunizationsProvided;
         this.childWeight = childWeight;
+        this.bfPostBirth = bfPostBirth;
         this.extraData = extraData;
     }
 
@@ -72,6 +74,10 @@ public class ChildInformation {
 
     public String childWeight() {
         return childWeight;
+    }
+
+    public String bfPostBirth() {
+        return bfPostBirth;
     }
 
     @Override

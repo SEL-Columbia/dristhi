@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
@@ -71,6 +72,7 @@ public class PNCService {
         SafeMap reportingData = new SafeMap();
         reportingData.put(CASE_ID_COMMCARE_FIELD_NAME, information.caseId());
         reportingData.put(BIRTH_WEIGHT_COMMCARE_FIELD_NAME, information.childWeight());
+        reportingData.put(BF_POSTBIRTH_COMMCARE_FIELD_NAME, information.bfPostBirth());
         childReportingService.registerChild(reportingData);
 
         alertForMissingImmunization(information, "opv_0", "OPV 0");
