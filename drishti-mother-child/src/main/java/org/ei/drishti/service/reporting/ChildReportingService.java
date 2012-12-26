@@ -42,11 +42,11 @@ public class ChildReportingService {
 
         immunizationToIndicator.put(BCG_COMMCARE_VALUE, BCG);
 
-        immunizationToIndicator.put(DPT_1_COMMCARE_VALUE, DPT);
-        immunizationToIndicator.put(DPT_2_COMMCARE_VALUE, DPT);
-        immunizationToIndicator.put(DPT_3_COMMCARE_VALUE, DPT);
+        immunizationToIndicator.put(DPT_1_COMMCARE_VALUE, DPT1);
+        immunizationToIndicator.put(DPT_2_COMMCARE_VALUE, DPT2);
+        immunizationToIndicator.put(DPT_3_COMMCARE_VALUE, DPT3);
         immunizationToIndicator.put(DPT_BOOSTER_1_COMMCARE_VALUE, DPT);
-        immunizationToIndicator.put(DPT_BOOSTER_2_COMMCARE_VALUE, DPT);
+        immunizationToIndicator.put(DPT_BOOSTER_2_COMMCARE_VALUE, DPT_BOOSTER2);
 
         immunizationToIndicator.put(HEPATITIS_0_COMMCARE_VALUE, HEP);
         immunizationToIndicator.put(HEPATITIS_1_COMMCARE_VALUE, HEP);

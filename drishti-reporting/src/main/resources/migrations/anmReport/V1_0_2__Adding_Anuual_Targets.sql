@@ -1,6 +1,10 @@
 INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('c');
 
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DPT');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DPT_1');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DPT_2');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DPT_3');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DPT_BOOSTER_2');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('HEP');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('OPV');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MEASLES');
@@ -25,8 +29,13 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('SPONTANEOUS_ABORTION')
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DELIVERY');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('INSTITUTIONAL_DELIVERY');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('BF_POST_BIRTH');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('WEIGHED_AT_BIRTH');
 
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT'), 40, '2012-03-26', '2013-03-25');
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT_1'), 40, '2012-03-26', '2013-03-25');
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT_2'), 40, '2012-03-26', '2013-03-25');
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT_3'), 40, '2012-03-26', '2013-03-25');
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT_BOOSTER_2'), 40, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='HEP'), 50, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='OPV'), 60, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='MEASLES'), 45, '2012-03-26', '2013-03-25');
@@ -45,3 +54,4 @@ INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_da
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='LIVE_BIRTH'), 200, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='INSTITUTIONAL_DELIVERY'), 200, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='BF_POST_BIRTH'), 200, '2012-03-26', '2013-03-25');
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='WEIGHED_AT_BIRTH'), 200, '2012-03-26', '2013-03-25');
