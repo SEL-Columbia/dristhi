@@ -116,6 +116,22 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldReportIfReasonIsSpontaneousAbortion() throws Exception {
+        mockCurrentDate(new LocalDate(2012, 1, 1));
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("mtpTime", "");
+        reportData.put("closeReason", "spontaneous_abortion");
+        reportData.put("dateSpontaneous", "2012-12-12");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.closeANC(reportData);
+
+        verify(reportingService).sendReportData(serviceProvided(SPONTANEOUS_ABORTION, "2012-12-12"));
+        verify(reportingService).sendReportData(anmReport(SPONTANEOUS_ABORTION, "2012-12-12"));
+    }
+
+    @Test
     public void shouldReportTTProvidedIfTTVisitHasHappened() {
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE-1");

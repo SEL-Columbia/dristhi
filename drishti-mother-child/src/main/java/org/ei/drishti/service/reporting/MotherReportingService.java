@@ -48,8 +48,12 @@ public class MotherReportingService {
     public void closeANC(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
 
-        if (reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME).equals(DEATH_OF_MOTHER_COMMCARE_VALUE)) {
+        if (DEATH_OF_MOTHER_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
             reportToBoth(mother, MOTHER_MORTALITY, today().toString());
+        }
+
+        if(SPONTANEOUS_ABORTION_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
+            reportToBoth(mother, SPONTANEOUS_ABORTION, reportData.get(CLOSE_SPONTANEOUS_ABORTION_DATE_COMMCARE_FIELD_NAME));
         }
 
         if ("greater_12wks".equals(reportData.get(CLOSE_MTP_TIME_COMMCARE_FIELD_NAME))) {
