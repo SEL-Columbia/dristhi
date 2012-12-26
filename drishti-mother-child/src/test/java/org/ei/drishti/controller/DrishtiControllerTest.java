@@ -65,7 +65,7 @@ public class DrishtiControllerTest {
 
         controller.updateANCCareInformation(ancInformation, EXTRA_DATA);
 
-        verify(ancService).ancCareHasBeenProvided(ancInformation, EXTRA_DATA);
+        verify(ancService).ancHasBeenProvided(ancInformation, EXTRA_DATA);
         verify(mctsService).ancCareHasBeenProvided(ancInformation);
     }
 

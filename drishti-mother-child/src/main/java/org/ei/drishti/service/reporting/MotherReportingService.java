@@ -2,7 +2,6 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
-import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
@@ -11,9 +10,9 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.VISIT_DATE_COMMCARE_FIELD;
+import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.WAS_TT_SHOT_PROVIDED;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommRegisterMotherFields.LMP;
 import static org.ei.drishti.common.AllConstants.CommonCommRegisterMotherFields.REGISTRATION_COMMCARE_FIELD_NAME;
@@ -61,20 +60,15 @@ public class MotherReportingService {
         }
     }
 
-    public void ttVisitHasHappened(AnteNatalCareInformation ancInformation) {
-        Mother mother = allMothers.findByCaseId(ancInformation.caseId());
+    public void ancHasBeenProvided(SafeMap reportData) {
+        Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
 
-        reportToBoth(mother, TT, ancInformation.visitDate().toString());
+        reportTTVisit(reportData, mother);
     }
 
-    public void updatePregnancyOutcome(Map<String, String> reportData) {
+    public void updatePregnancyOutcome(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(MOTHER_CASE_ID_COMMCARE_FIELD_NAME));
-        Indicator indicator;
-
-        if (LIVE_BIRTH_COMMCARE_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME_COMMCARE_FIELD_NAME)))
-            indicator = LIVE_BIRTH;
-        else
-            indicator = STILL_BIRTH;
+        Indicator indicator = LIVE_BIRTH_COMMCARE_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME_COMMCARE_FIELD_NAME)) ? LIVE_BIRTH : STILL_BIRTH;
         reportToBoth(mother, indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
     }
 
@@ -85,5 +79,11 @@ public class MotherReportingService {
 
         ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);
+    }
+
+    private void reportTTVisit(SafeMap reportData, Mother mother) {
+        if (Boolean.parseBoolean(reportData.get(WAS_TT_SHOT_PROVIDED))) {
+            reportToBoth(mother, TT, reportData.get(VISIT_DATE_COMMCARE_FIELD));
+        }
     }
 }

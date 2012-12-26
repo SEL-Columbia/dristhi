@@ -54,7 +54,7 @@ public class DrishtiController {
     public void updateANCCareInformation(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {
         logger.info("ANC care: " + ancInformation + ". Extra data: " + extraData);
 
-        ancService.ancCareHasBeenProvided(ancInformation, extraData);
+        ancService.ancHasBeenProvided(ancInformation, extraData);
         mctsService.ancCareHasBeenProvided(ancInformation);
     }
 

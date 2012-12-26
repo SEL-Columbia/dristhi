@@ -2,7 +2,6 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
-import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
@@ -118,13 +117,29 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldReportTTProvidedIfTTVisitHasHappened() {
-        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-1", "ANM X", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
-
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("visitDate", "2012-01-23");
+        reportData.put("ttShotProvided", "true");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
-        service.ttVisitHasHappened(ancInformation);
+
+        service.ancHasBeenProvided(reportData);
 
         verify(reportingService).sendReportData(serviceProvided(TT, "2012-01-23"));
         verify(reportingService).sendReportData(anmReport(TT, "2012-01-23"));
+    }
+
+    @Test
+    public void shouldNotReportTTProvidedIfTTVisitHasNotHappened() {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("visitDate", "2012-01-23");
+        reportData.put("ttShotProvided", "false");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.ancHasBeenProvided(reportData);
+
+        verifyZeroInteractions(reportingService);
     }
 
     @Test
@@ -132,7 +147,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
         Map<String, String> reportData = create("motherCaseId", "CASE-1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").map();
-        service.updatePregnancyOutcome(reportData);
+        service.updatePregnancyOutcome(new SafeMap(reportData));
 
         verify(reportingService).sendReportData(serviceProvided(LIVE_BIRTH, "2012-01-01"));
         verify(reportingService).sendReportData(anmReport(LIVE_BIRTH, "2012-01-01"));
@@ -143,7 +158,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
         Map<String, String> reportData = create("motherCaseId", "CASE-1").put("anmIdentifier", "ANM 1").put("pregnancyOutcome", "still_birth").put("dateOfDelivery", "2012-01-01").map();
-        service.updatePregnancyOutcome(reportData);
+        service.updatePregnancyOutcome(new SafeMap(reportData));
 
         verify(reportingService).sendReportData(serviceProvided(STILL_BIRTH, "2012-01-01"));
         verify(reportingService).sendReportData(anmReport(STILL_BIRTH, "2012-01-01"));

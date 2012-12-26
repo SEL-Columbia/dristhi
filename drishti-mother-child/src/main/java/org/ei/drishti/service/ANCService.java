@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.VISIT_DATE_COMMCARE_FIELD;
+import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.WAS_TT_SHOT_PROVIDED;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.joda.time.LocalTime.now;
 
@@ -83,7 +86,7 @@ public class ANCService {
         enrollMotherIntoSchedules(request.caseId(), request.lmpDate());
     }
 
-    public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {
+    public void ancHasBeenProvided(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {
         if (!allMothers.motherExists(ancInformation.caseId())) {
             logger.warn("Found care provided without registered mother for case ID: " + ancInformation.caseId());
             return;
@@ -92,14 +95,18 @@ public class ANCService {
         if (ancInformation.visitNumber() > 0) {
             ancSchedulesService.ancVisitHasHappened(ancInformation);
         }
-
         if (ancInformation.ifaTablesHaveBeenProvided()) {
             ancSchedulesService.ifaVisitHasHappened(ancInformation);
         }
         if (ancInformation.wasTTShotProvided()) {
             ancSchedulesService.ttVisitHasHappened(ancInformation);
-            reportingService.ttVisitHasHappened(ancInformation);
         }
+
+        SafeMap reportData = new SafeMap();
+        reportData.put(CASE_ID_COMMCARE_FIELD_NAME, ancInformation.caseId());
+        reportData.put(VISIT_DATE_COMMCARE_FIELD, ancInformation.visitDate().toString());
+        reportData.put(WAS_TT_SHOT_PROVIDED, ancInformation.wasTTShotProvided().toString());
+        reportingService.ancHasBeenProvided(reportData);
 
         Mother motherWithUpdatedDetails = allMothers.updateDetails(ancInformation.caseId(), extraData.get("details"));
         actionService.updateMotherDetails(motherWithUpdatedDetails.caseId(), motherWithUpdatedDetails.anmIdentifier(), motherWithUpdatedDetails.details());
@@ -112,7 +119,7 @@ public class ANCService {
             logger.warn("Failed to update delivery outcome as there is no mother registered: " + outcomeInformation);
             return;
         }
-        reportingService.updatePregnancyOutcome(extraData.get(REPORT_EXTRA_DATA_KEY_NAME));
+        reportingService.updatePregnancyOutcome(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         ancSchedulesService.unEnrollFromSchedules(caseId);
         Mother updatedMother = allMothers.updateDetails(caseId, extraData.get("details"));
         actionService.updateANCOutcome(caseId, outcomeInformation.anmIdentifier(), updatedMother.details());

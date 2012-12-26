@@ -23,6 +23,11 @@ public class AllConstants {
         public static final String LIVE_BIRTH_COMMCARE_FIELD_VALUE = "live_birth";
     }
 
+    public static class ANCVisitCommCareFields {
+        public static final String VISIT_DATE_COMMCARE_FIELD = "visitDate";
+        public static final String WAS_TT_SHOT_PROVIDED = "ttShotProvided";
+    }
+
     public static class CommonCommCareFields {
         public static final String CASE_ID_COMMCARE_FIELD_NAME = "caseId";
         public static final String SUBMISSION_DATE_COMMCARE_FIELD_NAME = "submissionDate";

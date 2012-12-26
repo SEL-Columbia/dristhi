@@ -140,7 +140,7 @@ public class ANCServiceTest {
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName"));
 
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 2, "2012-01-23");
-        service.ancCareHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
+        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
 
         verify(ancSchedulesService).ancVisitHasHappened(ancInformation);
     }
@@ -150,7 +150,7 @@ public class ANCServiceTest {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName"));
 
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23"), EXTRA_DATA_EMPTY);
+        service.ancHasBeenProvided(new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23"), EXTRA_DATA_EMPTY);
 
         verifyZeroInteractions(ancSchedulesService);
     }
@@ -161,7 +161,7 @@ public class ANCServiceTest {
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName"));
 
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
-        service.ancCareHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
+        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
 
         verify(ancSchedulesService).ifaVisitHasHappened(ancInformation);
     }
@@ -172,7 +172,7 @@ public class ANCServiceTest {
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName"));
 
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10").withTTDose("TT 2");
-        service.ancCareHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
+        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
 
         verify(ancSchedulesService).ttVisitHasHappened(ancInformation);
     }
@@ -183,32 +183,24 @@ public class ANCServiceTest {
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName"));
 
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
-        service.ancCareHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
+        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
 
         verify(ancSchedulesService, times(0)).ttVisitHasHappened(ancInformation);
     }
 
-
     @Test
-    public void shouldReportTTProvidedOnlyWhenTTDoseWasProvided() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
-        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName"));
-
+    public void shouldReportANCVisit() {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-X");
+        reportData.put("visitDate", "2012-01-23");
+        reportData.put("ttShotProvided", "true");
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10").withTTDose("TT 2");
-        service.ancCareHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
-
-        verify(motherReportingService).ttVisitHasHappened(ancInformation);
-    }
-
-    @Test
-    public void shouldNotReportTTProvidedWhenTTDoseWasNotProvided() {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName"));
 
-        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
-        service.ancCareHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
+        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
 
-        verify(motherReportingService, times(0)).ttVisitHasHappened(ancInformation);
+        verify(motherReportingService).ancHasBeenProvided(reportData);
     }
 
     @Test
@@ -217,7 +209,7 @@ public class ANCServiceTest {
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName"));
 
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("");
-        service.ancCareHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
+        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
 
         verify(ancSchedulesService, times(0)).ifaVisitHasHappened(ancInformation);
     }
@@ -226,7 +218,7 @@ public class ANCServiceTest {
     public void shouldNotTryAndFulfillMilestoneWhenANCCareIsProvidedToAMotherWhoIsNotRegisteredInTheSystem() {
         when(mothers.motherExists("CASE-UNKNOWN-MOM")).thenReturn(false);
 
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-UNKNOWN-MOM", "ANM 1", 0, "2012-01-23"), EXTRA_DATA_EMPTY);
+        service.ancHasBeenProvided(new AnteNatalCareInformation("CASE-UNKNOWN-MOM", "ANM 1", 0, "2012-01-23"), EXTRA_DATA_EMPTY);
 
         verifyZeroInteractions(ancSchedulesService);
     }
@@ -239,7 +231,7 @@ public class ANCServiceTest {
         when(mothers.motherExists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails("CASE-X", detailsBeforeUpdate)).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName").withAnm("ANM X", "1234").withDetails(updatedDetails));
 
-        service.ancCareHasBeenProvided(new AnteNatalCareInformation("CASE-X", "ANM X", 1, today().toString()).withNumberOfIFATabletsProvided("10").withTTDose("TT DOSE"), EXTRA_DATA);
+        service.ancHasBeenProvided(new AnteNatalCareInformation("CASE-X", "ANM X", 1, today().toString()).withNumberOfIFATabletsProvided("10").withTTDose("TT DOSE"), EXTRA_DATA);
 
         verify(mothers).updateDetails("CASE-X", detailsBeforeUpdate);
         verify(actionService).updateMotherDetails("CASE-X", "ANM X", updatedDetails);
@@ -292,7 +284,7 @@ public class ANCServiceTest {
 
         service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "0"), EXTRA_DATA);
 
-        verify(motherReportingService).updatePregnancyOutcome(EXTRA_DATA.get("reporting"));
+        verify(motherReportingService).updatePregnancyOutcome(new SafeMap(EXTRA_DATA.get("reporting")));
     }
 
     @Test
