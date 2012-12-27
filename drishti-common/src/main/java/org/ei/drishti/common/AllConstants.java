@@ -54,6 +54,7 @@ public class AllConstants {
     public static class ChildCloseCommCareFields {
         public static final String CLOSE_REASON_COMMCARE_FIELD_NAME = "closeReason";
         public static final String DEATH_OF_CHILD_COMMCARE_VALUE = "death_of_child";
+        public static final String DATE_OF_DEATH_COMMCARE_FIELD_NAME = "diedOn";
     }
 
     public static class ANCCloseCommCareFields {

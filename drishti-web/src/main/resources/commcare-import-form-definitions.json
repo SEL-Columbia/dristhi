@@ -369,7 +369,8 @@
                             "form|case|@case_id": "caseId",
                             "form|meta|username": "anmIdentifier",
                             "form|close_reason": "closeReason",
-                            "form|today": "submissionDate"
+                            "form|today": "submissionDate",
+                            "form|death_child_group|death_date": "diedOn"
                         }
                     }
                 },

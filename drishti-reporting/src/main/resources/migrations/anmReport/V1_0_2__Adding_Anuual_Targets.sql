@@ -30,6 +30,7 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DELIVERY');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('INSTITUTIONAL_DELIVERY');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('BF_POST_BIRTH');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('WEIGHED_AT_BIRTH');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('ENM');
 
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT'), 40, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT_1'), 40, '2012-03-26', '2013-03-25');

@@ -19,12 +19,14 @@ import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POS
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.YES_BF_POSTBIRTH_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.CLOSE_REASON_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.DATE_OF_DEATH_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.DEATH_OF_CHILD_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.LOW_BIRTH_WEIGHT_THRESHOLD;
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.joda.time.LocalDate.parse;
 
 @Service
 public class ChildReportingService {
@@ -90,7 +92,11 @@ public class ChildReportingService {
         }
 
         Child child = allChildren.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
-        LocalDate childDateOfBirth = LocalDate.parse(child.dateOfBirth());
+        LocalDate childDateOfBirth = parse(child.dateOfBirth());
+        if (childDateOfBirth.plusDays(8).isAfter(parse(reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME)))) {
+            reportToBoth(child, ENM, reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME));
+        }
+
         if ((childDateOfBirth.plusMonths(CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS).isBefore(DateUtil.today()))) {
             logger.warn("Not reporting for child because child's age is more than " + CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS + " months.");
             return;

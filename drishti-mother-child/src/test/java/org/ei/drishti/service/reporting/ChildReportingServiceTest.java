@@ -229,7 +229,7 @@ public class ChildReportingServiceTest {
         DateUtil.fakeIt(LocalDate.parse("2012-11-01"));
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
-        service.closeChild(reportDataForCloseChild("death_of_child"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", CHILD_MORTALITY, "2012-03-05", new Location("bherya", "Sub Center", "PHC X"));
         ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", CHILD_MORTALITY, "2012-03-05");
@@ -238,10 +238,36 @@ public class ChildReportingServiceTest {
     }
 
     @Test
+    public void shouldReportEarlyNeonatalMortalityDeath() {
+        DateUtil.fakeIt(LocalDate.parse("2011-12-01"));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-07"));
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", ENM, "2012-01-07", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", ENM, "2012-01-07");
+        verify(reportingService).sendReportData(serviceProvidedData);
+        verify(reportingService).sendReportData(anmReportData);
+    }
+
+    @Test
+    public void shouldNotReportEarlyNeonatalMortalityDeathIfDateOfDeathIsAfterOneWeekOfBirth() {
+        DateUtil.fakeIt(LocalDate.parse("2011-12-01"));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-09"));
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", ENM, "2012-01-09", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", ENM, "2012-01-09");
+        verify(reportingService, times(0)).sendReportData(serviceProvidedData);
+        verify(reportingService, times(0)).sendReportData(anmReportData);
+    }
+
+    @Test
     public void shouldNotReportCloseChildCaseWhenReasonIsNotDeath() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
-        service.closeChild(reportDataForCloseChild("child_over5"));
+        service.closeChild(reportDataForCloseChild("child_over5", "2012-03-05"));
 
         verifyZeroInteractions(reportingService);
     }
@@ -251,7 +277,7 @@ public class ChildReportingServiceTest {
         DateUtil.fakeIt(LocalDate.parse("2012-12-01"));
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
-        service.closeChild(reportDataForCloseChild("death_of_child"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", CHILD_MORTALITY, "2012-03-05", new Location("bherya", "Sub Center", "PHC X"));
         ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", CHILD_MORTALITY, "2012-03-05");
@@ -264,7 +290,7 @@ public class ChildReportingServiceTest {
         DateUtil.fakeIt(LocalDate.parse("2012-11-15"));
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
-        service.closeChild(reportDataForCloseChild("death_of_child"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", CHILD_MORTALITY, "2012-03-05", new Location("bherya", "Sub Center", "PHC X"));
         ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", CHILD_MORTALITY, "2012-03-05");
@@ -277,7 +303,7 @@ public class ChildReportingServiceTest {
         DateUtil.fakeIt(LocalDate.parse("2012-12-31"));
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
-        service.closeChild(reportDataForCloseChild("death_of_child"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
 
         verifyZeroInteractions(reportingService);
     }
@@ -286,7 +312,7 @@ public class ChildReportingServiceTest {
     public void shouldNotReportCloseChildCaseWhenChildIsNotFound() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(null);
 
-        service.closeChild(reportDataForCloseChild("child_over5"));
+        service.closeChild(reportDataForCloseChild("child_over5", "2012-03-05"));
 
         verifyZeroInteractions(reportingService);
     }
@@ -312,11 +338,12 @@ public class ChildReportingServiceTest {
         return reportingData;
     }
 
-    private SafeMap reportDataForCloseChild(String closeReason) {
+    private SafeMap reportDataForCloseChild(String closeReason, String closeDate) {
         SafeMap reportingData = new SafeMap();
         reportingData.put("caseId", "CASE X");
         reportingData.put("closeReason", closeReason);
-        reportingData.put("submissionDate", "2012-03-05");
+        reportingData.put("submissionDate", closeDate);
+        reportingData.put("diedOn", closeDate);
         return reportingData;
     }
 }
