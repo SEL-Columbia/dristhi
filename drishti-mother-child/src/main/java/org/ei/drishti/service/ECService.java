@@ -1,9 +1,6 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.EligibleCoupleCloseRequest;
-import org.ei.drishti.contract.EligibleCoupleRegistrationRequest;
-import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
-import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
+import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.reporting.ECReportingService;
@@ -69,15 +66,15 @@ public class ECService {
         actionService.closeEligibleCouple(request.caseId(), request.anmIdentifier());
     }
 
-    public void updateFamilyPlanningMethod(FamilyPlanningUpdateRequest request, Map<String, Map<String, String>> extraDetails) {
+    public void updateFamilyPlanningMethod(FamilyPlanningUpdateRequest request, Map<String, Map<String, String>> extraData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(request.caseId());
         if (couple == null) {
-            logger.warn("Tried to update details of a non-existing EC: " + request + ". Extra details: " + extraDetails);
+            logger.warn("Tried to update details of a non-existing EC: " + request + ". Extra details: " + extraData);
             return;
         }
 
-        EligibleCouple updatedCouple = allEligibleCouples.updateDetails(request.caseId(), extraDetails.get("details"));
-        reportingService.updateFamilyPlanningMethod(new SafeMap(extraDetails.get(REPORT_EXTRA_DATA_KEY_NAME)));
+        EligibleCouple updatedCouple = allEligibleCouples.updateDetails(request.caseId(), extraData.get("details"));
+        reportingService.updateFamilyPlanningMethod(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         actionService.updateEligibleCoupleDetails(request.caseId(), request.anmIdentifier(), updatedCouple.details());
 
         schedulingService.updateFPComplications(request, updatedCouple);
@@ -89,5 +86,15 @@ public class ECService {
         if (!(isBlank(request.currentMethod()) || NO_FP_METHOD_COMMCARE_FIELD_VALUE.equalsIgnoreCase(request.currentMethod()))) {
             actionService.markAlertAsClosed(request.caseId(), request.anmIdentifier(), EC_SCHEDULE_FP_COMPLICATION_MILESTONE, request.familyPlanningMethodChangeDate());
         }
+    }
+
+    public void reportFPComplications(FPComplicationsRequest request, Map<String, Map<String, String>> extraData) {
+        EligibleCouple couple = allEligibleCouples.findByCaseId(request.caseId());
+        if (couple == null) {
+            logger.warn("Tried to report FP Complications of a non-existing EC: " + request + ". Extra details: " + extraData);
+            return;
+        }
+
+        reportingService.fpComplications(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
     }
 }

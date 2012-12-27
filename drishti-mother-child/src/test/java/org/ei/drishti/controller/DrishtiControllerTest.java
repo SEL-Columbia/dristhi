@@ -145,6 +145,15 @@ public class DrishtiControllerTest {
     }
 
     @Test
+    public void shouldDelegateToECServiceDuringReportFPComplications() {
+        FPComplicationsRequest request = mock(FPComplicationsRequest.class);
+
+        controller.reportFPComplications(request, EXTRA_DATA);
+
+        verify(ecService).reportFPComplications(request, EXTRA_DATA);
+    }
+
+    @Test
     public void shouldDelegateToECServiceDuringEligibleCoupleClose() {
         EligibleCoupleCloseRequest eligibleCoupleCloseRequest = mock(EligibleCoupleCloseRequest.class);
 

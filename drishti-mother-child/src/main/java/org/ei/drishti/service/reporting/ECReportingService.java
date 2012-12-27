@@ -37,6 +37,14 @@ public class ECReportingService {
         reportFPMethod(reportData, couple);
     }
 
+    public void fpComplications(SafeMap reportData) {
+        EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+
+        if ("no".equals(reportData.get(IS_FP_METHOD_SAME_COMMCARE_FIELD_NAME))) {
+            reportFPMethod(reportData, couple);
+        }
+    }
+
     private void reportFPMethod(SafeMap reportData, EligibleCouple ec) {
         Indicator indicator = Indicator.from(reportData.get(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME));
         if (indicator == null) {
@@ -45,10 +53,10 @@ public class ECReportingService {
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData(ec.anmIdentifier(), ec.ecNumber(),
                 indicator, reportData.get(CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME), new Location(ec.village(), ec.subCenter(), ec.phc()));
-        service.sendReportData(serviceProvidedData);
-
         ReportingData anmReportData = ReportingData.anmReportData(ec.anmIdentifier(), reportData.get(CASE_ID_COMMCARE_FIELD_NAME),
                 indicator, reportData.get(CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME));
+
+        service.sendReportData(serviceProvidedData);
         service.sendReportData(anmReportData);
     }
 }

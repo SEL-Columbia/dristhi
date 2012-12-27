@@ -1,9 +1,6 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.EligibleCoupleCloseRequest;
-import org.ei.drishti.contract.EligibleCoupleRegistrationRequest;
-import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
-import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
+import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.reporting.ECReportingService;
@@ -148,6 +145,29 @@ public class ECServiceTest {
         verify(allEligibleCouples).findByCaseId("CASE X");
         verifyNoMoreInteractions(allEligibleCouples);
         verifyZeroInteractions(actionService);
+    }
+
+    @Test
+    public void shouldSendDataToReportingServiceDuringReportFPComplications() throws Exception {
+        EligibleCouple ec = new EligibleCouple("CASE X", "EC Number 1");
+        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(ec);
+
+        Map<String, Map<String, String>> extraDetails = create("details", mapOf("currentMethod", "CONDOM")).put(REPORT_EXTRA_DATA_KEY_NAME, mapOf("currentMethod", "CONDOM")).map();
+        ecService.reportFPComplications(new FPComplicationsRequest("CASE X", "ANM X"), extraDetails);
+
+        verify(allEligibleCouples).findByCaseId("CASE X");
+        verify(reportingService).fpComplications(new SafeMap(extraDetails.get(REPORT_EXTRA_DATA_KEY_NAME)));
+    }
+
+    @Test
+    public void shouldNotSendDataToReportingServiceDuringReportFPComplications() throws Exception {
+        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(null);
+
+        Map<String, Map<String, String>> extraDetails = create("details", mapOf("currentMethod", "CONDOM")).map();
+        ecService.reportFPComplications(new FPComplicationsRequest("CASE X", "ANM X"), extraDetails);
+
+        verify(allEligibleCouples).findByCaseId("CASE X");
+        verifyZeroInteractions(reportingService);
     }
 
     @Test

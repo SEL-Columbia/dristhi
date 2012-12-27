@@ -11,9 +11,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import static org.ei.drishti.util.EasyMap.create;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ECReportingServiceTest {
@@ -31,40 +29,70 @@ public class ECReportingServiceTest {
     }
 
     @Test
-    public void shouldReportFPMethodChange() throws Exception {
+    public void shouldReportFPMethodChangeDuringRegisterEC() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
-        SafeMap reportingMap = new SafeMap(create("caseId", "EC CASE 1")
+        SafeMap reportData = new SafeMap(create("caseId", "EC CASE 1")
                 .put("currentMethod", "iud")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .map());
-        service.registerEC(reportingMap);
+        service.registerEC(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_IUD, "2012-01-01"));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
     }
 
     @Test
+    public void shouldReportFPMethodChangeDuringReportFPComplications() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("caseId", "EC CASE 1")
+                .put("currentMethod", "iud")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("isMethodSame", "no")
+                .map());
+        service.fpComplications(reportData);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_IUD, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+    }
+
+    @Test
+    public void shouldNotReportFPMethodChangeDuringReportFPComplicationsIfMethodIsSame() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("caseId", "EC CASE 1")
+                .put("currentMethod", "iud")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("isMethodSame", "yes")
+                .map());
+        service.fpComplications(reportData);
+
+        verify(reportingService, times(0)).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_IUD, "2012-01-01"));
+        verify(reportingService, times(0)).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+    }
+
+    @Test
     public void shouldNotReportFPMethodChangeWhenFPProductWasRenewed() throws Exception {
-        SafeMap reportingMap = new SafeMap(create("caseId", "EC CASE 1")
+        SafeMap reportData = new SafeMap(create("caseId", "EC CASE 1")
                 .put("currentMethod", "iud")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .put("fpUpdate", "renew_fp_product")
                 .map());
 
-        service.updateFamilyPlanningMethod(reportingMap);
+        service.updateFamilyPlanningMethod(reportData);
 
         verifyZeroInteractions(reportingService);
     }
 
     @Test
     public void shouldNotReportFPMethodChangeWhenNoIndicatorIsFoundForTheCurrentFPMethod() throws Exception {
-        SafeMap reportingMap = new SafeMap(create("caseId", "EC CASE 1")
+        SafeMap reportData = new SafeMap(create("caseId", "EC CASE 1")
                 .put("currentMethod", "none")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .map());
 
-        service.registerEC(reportingMap);
+        service.registerEC(reportData);
 
         verifyZeroInteractions(reportingService);
     }

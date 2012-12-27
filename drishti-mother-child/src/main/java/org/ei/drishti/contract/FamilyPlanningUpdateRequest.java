@@ -22,11 +22,6 @@ public class FamilyPlanningUpdateRequest {
         return anmIdentifier;
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
     public String fpUpdate() {
         return fpUpdate;
     }
@@ -52,5 +47,10 @@ public class FamilyPlanningUpdateRequest {
     public FamilyPlanningUpdateRequest withFPStartDate(String fpStartDate) {
         familyPlanningMethodChangeDate = fpStartDate;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

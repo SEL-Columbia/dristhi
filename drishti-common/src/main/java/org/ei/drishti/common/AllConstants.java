@@ -70,6 +70,7 @@ public class AllConstants {
         public static final String CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME = "familyPlanningMethodChangeDate";
         public static final String NO_FP_METHOD_COMMCARE_FIELD_VALUE = "none";
         public static final String FP_UPDATE_COMMCARE_FIELD_NAME = "fpUpdate";
+        public static final String IS_FP_METHOD_SAME_COMMCARE_FIELD_NAME = "isMethodSame";
         public static final String FP_METHOD_CHANGED_COMMCARE_FIELD_VALUE = "change_fp_product";
     }
 

@@ -44,6 +44,18 @@ public class DrishtiController {
         ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest, extraData);
     }
 
+    public void updateFamilyPlanningMethod(FamilyPlanningUpdateRequest familyPlanningUpdateRequest, Map<String, Map<String, String>> extraData) {
+        logger.info("Eligible couple change FP: " + familyPlanningUpdateRequest + ". Extra data: " + extraData);
+
+        ecService.updateFamilyPlanningMethod(familyPlanningUpdateRequest, extraData);
+    }
+
+    public void reportFPComplications(FPComplicationsRequest request, Map<String, Map<String, String>> extraData) {
+        logger.info("Eligible couple report FP Complication: " + request + ". Extra data: " + extraData);
+
+        ecService.reportFPComplications(request, extraData);
+    }
+
     public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, Map<String, Map<String, String>> extraData) {
         logger.info("Mother registration: " + enrollmentInformation + ". Extra data: " + extraData);
 
@@ -92,12 +104,6 @@ public class DrishtiController {
 
         pncService.closeChildCase(childCloseRequest, extraData);
         mctsService.closeChildCase(childCloseRequest);
-    }
-
-    public void updateFamilyPlanningMethod(FamilyPlanningUpdateRequest familyPlanningUpdateRequest, Map<String, Map<String, String>> extraData) {
-        logger.info("Eligible couple change FP: " + familyPlanningUpdateRequest + ". Extra data: " + extraData);
-
-        ecService.updateFamilyPlanningMethod(familyPlanningUpdateRequest, extraData);
     }
 
     public void closeEligibleCouple(EligibleCoupleCloseRequest eligibleCoupleCloseRequest) {
