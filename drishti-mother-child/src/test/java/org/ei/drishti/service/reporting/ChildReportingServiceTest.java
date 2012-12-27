@@ -264,6 +264,32 @@ public class ChildReportingServiceTest {
     }
 
     @Test
+    public void shouldReportNeonatalMortalityDeath() {
+        DateUtil.fakeIt(LocalDate.parse("2011-12-01"));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-28"));
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", NM, "2012-01-28", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", NM, "2012-01-28");
+        verify(reportingService).sendReportData(serviceProvidedData);
+        verify(reportingService).sendReportData(anmReportData);
+    }
+
+    @Test
+    public void shouldNotReportNeonatalMortalityDeathIfDateOfDeathIsAfterOneWeekOfBirth() {
+        DateUtil.fakeIt(LocalDate.parse("2011-12-01"));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-29"));
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", NM, "2012-01-29", new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", NM, "2012-01-29");
+        verify(reportingService, times(0)).sendReportData(serviceProvidedData);
+        verify(reportingService, times(0)).sendReportData(anmReportData);
+    }
+
+    @Test
     public void shouldNotReportCloseChildCaseWhenReasonIsNotDeath() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 

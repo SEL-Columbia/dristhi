@@ -97,6 +97,10 @@ public class ChildReportingService {
             reportToBoth(child, ENM, reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME));
         }
 
+        if (childDateOfBirth.plusDays(28).isAfter(parse(reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME)))) {
+            reportToBoth(child, NM, reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME));
+        }
+
         if ((childDateOfBirth.plusMonths(CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS).isBefore(DateUtil.today()))) {
             logger.warn("Not reporting for child because child's age is more than " + CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS + " months.");
             return;
