@@ -49,18 +49,9 @@ public class MotherReportingService {
         Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
 
         if (DEATH_OF_MOTHER_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
-            reportToBoth(mother, MOTHER_MORTALITY, today().toString());
-        }
-
-        if (SPONTANEOUS_ABORTION_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
-            reportToBoth(mother, SPONTANEOUS_ABORTION, reportData.get(CLOSE_SPONTANEOUS_ABORTION_DATE_COMMCARE_FIELD_NAME));
-        }
-
-        if ("greater_12wks".equals(reportData.get(CLOSE_MTP_TIME_COMMCARE_FIELD_NAME))) {
-            reportToBoth(mother, MTP_GREATER_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_COMMCARE_FIELD_NAME));
-        }
-        if ("less_12wks".equals(reportData.get(CLOSE_MTP_TIME_COMMCARE_FIELD_NAME))) {
-            reportToBoth(mother, MTP_LESS_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_COMMCARE_FIELD_NAME));
+            reportDeath(reportData, mother);
+        } else {
+            reportAbortion(reportData, mother);
         }
     }
 
@@ -80,6 +71,26 @@ public class MotherReportingService {
         }
 
         reportToBoth(mother, DELIVERY, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+    }
+
+    private void reportDeath(SafeMap reportData, Mother mother) {
+        if("yes".equals(reportData.get(IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME))){
+            reportToBoth(mother, MMA, reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME));
+        }
+        reportToBoth(mother, MOTHER_MORTALITY, today().toString());
+    }
+
+    private void reportAbortion(SafeMap reportData, Mother mother) {
+        if (SPONTANEOUS_ABORTION_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
+            reportToBoth(mother, SPONTANEOUS_ABORTION, reportData.get(CLOSE_SPONTANEOUS_ABORTION_DATE_COMMCARE_FIELD_NAME));
+        }
+
+        if (MTP_GREATER_THAN_12_WEEKS_FIELD_NAME.equals(reportData.get(CLOSE_MTP_TIME_COMMCARE_FIELD_NAME))) {
+            reportToBoth(mother, MTP_GREATER_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_COMMCARE_FIELD_NAME));
+        }
+        if (MTP_LESS_THAN_12_WEEKS_FIELD_NAME.equals(reportData.get(CLOSE_MTP_TIME_COMMCARE_FIELD_NAME))) {
+            reportToBoth(mother, MTP_LESS_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_COMMCARE_FIELD_NAME));
+        }
     }
 
     private void reportToBoth(Mother mother, Indicator indicator, String date) {

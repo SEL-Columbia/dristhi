@@ -10,7 +10,6 @@ import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.internal.verification.Times;
 import org.motechproject.testing.utils.BaseUnitTest;
 
 import java.util.Map;
@@ -62,73 +61,54 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         service.registerANC(reportData);
 
-        verify(reportingService, new Times(0)).sendReportData(serviceProvided(ANC_BEFORE_12_WEEKS, "2012-01-01"));
-        verify(reportingService, new Times(0)).sendReportData(anmReport(ANC_BEFORE_12_WEEKS, "2012-01-01"));
-    }
-
-    @Test
-    public void shouldReportCloseANCCaseIfReasonIsDeathAlongWithMTP() throws Exception {
-        mockCurrentDate(new LocalDate(2012, 1, 1));
-        SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE-1");
-        reportData.put("closeReason", "death_of_woman");
-        reportData.put("mtpTime", "less_12wks");
-        reportData.put("dateInduced", "2012-12-12");
-        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
-
-        service.closeANC(reportData);
-
-        verify(reportingService).sendReportData(serviceProvided(MOTHER_MORTALITY, "2012-01-01"));
-        verify(reportingService).sendReportData(anmReport(MOTHER_MORTALITY, "2012-01-01"));
-        verify(reportingService).sendReportData(serviceProvided(MTP_LESS_THAN_12_WEEKS, "2012-12-12"));
-        verify(reportingService).sendReportData(anmReport(MTP_LESS_THAN_12_WEEKS, "2012-12-12"));
+        verifyNoReportingCalls(ANC_BEFORE_12_WEEKS, "2012-01-01");
     }
 
     @Test
     public void shouldReportMTPIndicatorBasedOnMTPTime() throws Exception {
-        SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE-1");
-        reportData.put("mtpTime", "greater_12wks");
-        reportData.put("closeReason", "delivery");
-        reportData.put("dateInduced", "2012-12-12");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
-        service.closeANC(reportData);
+        service.closeANC(reportDataForANCClose("greater_12wks", "spontaneous_abortion", null));
 
-        verify(reportingService).sendReportData(serviceProvided(MTP_GREATER_THAN_12_WEEKS, "2012-12-12"));
-        verify(reportingService).sendReportData(anmReport(MTP_GREATER_THAN_12_WEEKS, "2012-12-12"));
+        verifyBothReportingCalls(MTP_GREATER_THAN_12_WEEKS, "2012-12-12");
+    }
+
+    @Test
+    public void shouldReportMaternalDeath() throws Exception {
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.closeANC(reportDataForANCClose("", "death_of_woman", "yes"));
+
+        verifyBothReportingCalls(MMA, "2012-12-12");
+    }
+
+    @Test
+    public void shouldNotReportMaternalDeathIfItIsNot() throws Exception {
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.closeANC(reportDataForANCClose("", "death_of_woman", "no"));
+
+        verifyNoReportingCalls(MMA, "2012-12-12");
     }
 
     @Test
     public void shouldNotReportIfReasonIsNotDeath() throws Exception {
         mockCurrentDate(new LocalDate(2012, 1, 1));
-        SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE-1");
-        reportData.put("closeReason", "delivery");
-        reportData.put("mtpTime", "greater_12wks");
-        reportData.put("dateInduced", "2012-12-12");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
-        service.closeANC(reportData);
+        service.closeANC(reportDataForANCClose("greater_12wks", null, null));
 
-        verify(reportingService, times(0)).sendReportData(serviceProvided(MOTHER_MORTALITY, "2012-01-01"));
-        verify(reportingService, times(0)).sendReportData(anmReport(MOTHER_MORTALITY, "2012-01-01"));
+        verifyNoReportingCalls(MOTHER_MORTALITY, "2012-01-01");
     }
 
     @Test
     public void shouldReportIfReasonIsSpontaneousAbortion() throws Exception {
         mockCurrentDate(new LocalDate(2012, 1, 1));
-        SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE-1");
-        reportData.put("mtpTime", "");
-        reportData.put("closeReason", "spontaneous_abortion");
-        reportData.put("dateSpontaneous", "2012-12-12");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
-        service.closeANC(reportData);
+        service.closeANC(reportDataForANCClose("", "spontaneous_abortion", null));
 
-        verify(reportingService).sendReportData(serviceProvided(SPONTANEOUS_ABORTION, "2012-12-12"));
-        verify(reportingService).sendReportData(anmReport(SPONTANEOUS_ABORTION, "2012-12-12"));
+        verifyBothReportingCalls(SPONTANEOUS_ABORTION, "2012-12-12");
     }
 
     @Test
@@ -141,8 +121,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         service.ancHasBeenProvided(reportData);
 
-        verify(reportingService).sendReportData(serviceProvided(TT, "2012-01-23"));
-        verify(reportingService).sendReportData(anmReport(TT, "2012-01-23"));
+        verifyBothReportingCalls(TT, "2012-01-23");
     }
 
     @Test
@@ -165,8 +144,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         Map<String, String> reportData = create("motherCaseId", "CASE-1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").put("placeOfDelivery", "home").map();
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
-        verify(reportingService).sendReportData(serviceProvided(DELIVERY, "2012-01-01"));
-        verify(reportingService).sendReportData(anmReport(DELIVERY, "2012-01-01"));
+        verifyBothReportingCalls(DELIVERY, "2012-01-01");
     }
 
     @Test
@@ -176,8 +154,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         Map<String, String> reportData = create("motherCaseId", "CASE-1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").put("placeOfDelivery", "phc").map();
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
-        verify(reportingService).sendReportData(serviceProvided(INSTITUTIONAL_DELIVERY, "2012-01-01"));
-        verify(reportingService).sendReportData(anmReport(INSTITUTIONAL_DELIVERY, "2012-01-01"));
+        verifyBothReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
     }
 
     @Test
@@ -187,8 +164,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         Map<String, String> reportData = create("motherCaseId", "CASE-1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").put("placeOfDelivery", "home").map();
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
-        verify(reportingService, times(0)).sendReportData(serviceProvided(INSTITUTIONAL_DELIVERY, "2012-01-01"));
-        verify(reportingService, times(0)).sendReportData(anmReport(INSTITUTIONAL_DELIVERY, "2012-01-01"));
+        verifyNoReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
     }
 
     @Test
@@ -198,8 +174,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         Map<String, String> reportData = create("motherCaseId", "CASE-1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").put("placeOfDelivery", "phc").map();
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
-        verify(reportingService).sendReportData(serviceProvided(LIVE_BIRTH, "2012-01-01"));
-        verify(reportingService).sendReportData(anmReport(LIVE_BIRTH, "2012-01-01"));
+        verifyBothReportingCalls(LIVE_BIRTH, "2012-01-01");
     }
 
     @Test
@@ -209,8 +184,17 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         Map<String, String> reportData = create("motherCaseId", "CASE-1").put("anmIdentifier", "ANM 1").put("pregnancyOutcome", "still_birth").put("dateOfDelivery", "2012-01-01").put("placeOfDelivery", "phc").map();
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
-        verify(reportingService).sendReportData(serviceProvided(STILL_BIRTH, "2012-01-01"));
-        verify(reportingService).sendReportData(anmReport(STILL_BIRTH, "2012-01-01"));
+        verifyBothReportingCalls(STILL_BIRTH, "2012-01-01");
+    }
+
+    private void verifyBothReportingCalls(Indicator indicator, String date) {
+        verify(reportingService).sendReportData(serviceProvided(indicator, date));
+        verify(reportingService).sendReportData(anmReport(indicator, date));
+    }
+
+    private void verifyNoReportingCalls(Indicator indicator, String date) {
+        verify(reportingService, times(0)).sendReportData(serviceProvided(indicator, date));
+        verify(reportingService, times(0)).sendReportData(anmReport(indicator, date));
     }
 
     private void assertThatIndicatorIsSetBasedOnLMP(String lmp, Indicator indicator) {
@@ -235,5 +219,17 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     private ReportingData serviceProvided(Indicator indicator, String date) {
         return serviceProvidedData("ANM X", "TC 1", indicator, date, new Location("bherya", "Sub Center", "PHC X"));
+    }
+
+    private SafeMap reportDataForANCClose(String mtpTime, String closeReason, String isMaternalDeath) {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("mtpTime", mtpTime);
+        reportData.put("closeReason", closeReason);
+        reportData.put("dateSpontaneous", "2012-12-12");
+        reportData.put("dateInduced", "2012-12-12");
+        reportData.put("isMaternalDeath", isMaternalDeath);
+        reportData.put("diedOn", "2012-12-12");
+        return reportData;
     }
 }

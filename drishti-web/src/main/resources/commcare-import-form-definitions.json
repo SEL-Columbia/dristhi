@@ -394,7 +394,9 @@
                             "form|induced_abortion_group|time_induced": "mtpTime",
                             "form|induced_abortion_group|date_induced": "dateInduced",
                             "form|close_reason": "closeReason",
-                            "form|spontaneous_abortion_group|date_spontaneous": "dateSpontaneous"
+                            "form|spontaneous_abortion_group|date_spontaneous": "dateSpontaneous",
+                            "form|maternal_death": "isMaternalDeath",
+                            "form|maternal_death_group|date_maternal_death": "diedOn"
                         }
                     }
                 },
