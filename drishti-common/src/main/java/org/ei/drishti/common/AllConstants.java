@@ -10,7 +10,8 @@ public class AllConstants {
         public static final String SERVICE_PROVIDED_DATA_TYPE = "serviceProvided";
         public static final String ANM_REPORT_DATA_TYPE = "anmReportData";
         public static final double LOW_BIRTH_WEIGHT_THRESHOLD = 2.5;
-        public static final int CHILD_MORTALITY_THRESHOLD_IN_YEARS = 1;
+        public static final int INFANT_MORTALITY_THRESHOLD_IN_YEARS = 1;
+        public static final int CHILD_MORTALITY_THRESHOLD_IN_YEARS = 5;
         public static final int CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 7;
         public static final int CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 28;
     }

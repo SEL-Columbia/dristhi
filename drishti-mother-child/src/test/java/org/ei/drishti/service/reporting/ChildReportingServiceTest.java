@@ -201,7 +201,7 @@ public class ChildReportingServiceTest {
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
 
-        verifyBothReportingCalls(CHILD_MORTALITY, "2012-03-05");
+        verifyBothReportingCalls(INFANT_MORTALITY, "2012-03-05");
     }
 
     @Test
@@ -263,23 +263,41 @@ public class ChildReportingServiceTest {
     }
 
     @Test
-    public void shouldNotReportCloseChildCaseWhenReasonIsNotDeath() {
-        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
-
-        service.closeChild(reportDataForCloseChild("child_over5", "2012-03-05"));
-
-        verifyZeroInteractions(reportingService);
-    }
-
-    @Test
     public void shouldReportChildMortalityWithin7DaysAnd1YearOfBirth() throws Exception {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-08"));
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-12-31"));
 
-        verifyNoReportingCalls(CHILD_MORTALITY, "2012-01-07");
-        verifyNoReportingCalls(CHILD_MORTALITY, "2013-01-01");
+        verifyNoReportingCalls(INFANT_MORTALITY, "2012-01-07");
+        verifyNoReportingCalls(INFANT_MORTALITY, "2013-01-01");
+    }
+
+    @Test
+    public void shouldReportChildMortalityWithin5YearOfBirth() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        service.closeChild(reportDataForCloseChild("death_of_child", "2016-12-31"));
+
+        verifyBothReportingCalls(CHILD_MORTALITY, "2016-12-31");
+    }
+
+    @Test
+    public void shouldNotReportChildMortalityAfter5YearOfBirth() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        service.closeChild(reportDataForCloseChild("death_of_child", "2017-01-01"));
+
+        verifyNoReportingCalls(CHILD_MORTALITY, "2017-01-01");
+    }
+
+    @Test
+    public void shouldNotReportCloseChildCaseWhenReasonIsNotDeath() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        service.closeChild(reportDataForCloseChild("child_over5", "2012-03-05"));
+
+        verifyZeroInteractions(reportingService);
     }
 
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator expectedIndicator) {

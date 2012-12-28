@@ -87,18 +87,23 @@ public class ChildReportingService {
         Child child = allChildren.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
         LocalDate childDateOfBirth = parse(child.dateOfBirth());
         String diedOn = reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME);
+        LocalDate diedOnDate = parse(diedOn);
 
-        if (childDateOfBirth.plusDays(CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS).isAfter(parse(diedOn))) {
+        if (childDateOfBirth.plusDays(CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS).isAfter(diedOnDate)) {
             reportToBoth(child, ENM, diedOn);
         }
-        if (childDateOfBirth.plusDays(CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS).isAfter(parse(diedOn))) {
+        if (childDateOfBirth.plusDays(CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS).isAfter(diedOnDate)) {
             reportToBoth(child, NM, diedOn);
-            reportToBoth(child, CHILD_MORTALITY, diedOn);
-        } else if (childDateOfBirth.plusYears(CHILD_MORTALITY_THRESHOLD_IN_YEARS).isAfter(parse(diedOn))) {
+            reportToBoth(child, INFANT_MORTALITY, diedOn);
+        } else if (childDateOfBirth.plusYears(INFANT_MORTALITY_THRESHOLD_IN_YEARS).isAfter(diedOnDate)) {
             reportToBoth(child, LNM, diedOn);
+            reportToBoth(child, INFANT_MORTALITY, diedOn);
+        }
+        if (childDateOfBirth.plusYears(CHILD_MORTALITY_THRESHOLD_IN_YEARS).isAfter(diedOnDate)) {
             reportToBoth(child, CHILD_MORTALITY, diedOn);
-        } else {
-            logger.warn("Not reporting for child with CaseID" + child.caseId() + "because child's age is more than " + CHILD_MORTALITY_THRESHOLD_IN_YEARS + " year.");
+        }
+        else {
+            logger.warn("Not reporting for child with CaseID" + child.caseId() + "because child's age is more than " + CHILD_MORTALITY_THRESHOLD_IN_YEARS + " years.");
         }
     }
 
