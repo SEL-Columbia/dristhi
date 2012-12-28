@@ -2,12 +2,10 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
-import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.util.SafeMap;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -72,10 +70,8 @@ public class ChildReportingServiceTest {
 
         service.immunizationProvided(reportingData, asList("dpt_1"));
 
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", BCG, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", MEASLES, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", MEASLES, "2012-01-01"));
+        verifyBothReportingCalls(BCG, "2012-01-01");
+        verifyBothReportingCalls(MEASLES, "2012-01-01");
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -88,8 +84,7 @@ public class ChildReportingServiceTest {
 
         service.immunizationProvided(reportDataForImmunization("NON_EXISTENT_IMMUNIZATION bcg"), new ArrayList<String>());
 
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", BCG, "2012-01-01"));
+        verifyBothReportingCalls(BCG, "2012-01-01");
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -106,10 +101,7 @@ public class ChildReportingServiceTest {
         reportData.put("bfPostBirth", "");
         service.registerChild(reportData);
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", OPV, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", OPV, "2012-01-01");
-        verify(reportingService).sendReportData(serviceProvidedData);
-        verify(reportingService).sendReportData(anmReportData);
+        verifyBothReportingCalls(OPV, "2012-01-01");
     }
 
     @Test
@@ -122,10 +114,7 @@ public class ChildReportingServiceTest {
         reportData.put("bfPostBirth", "");
         service.registerChild(reportData);
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", LBW, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", LBW, "2012-01-01");
-        verify(reportingService).sendReportData(serviceProvidedData);
-        verify(reportingService).sendReportData(anmReportData);
+        verifyBothReportingCalls(LBW, "2012-01-01");
     }
 
     @Test
@@ -138,10 +127,7 @@ public class ChildReportingServiceTest {
         reportData.put("bfPostBirth", "yes");
         service.registerChild(reportData);
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", BF_POST_BIRTH, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", BF_POST_BIRTH, "2012-01-01");
-        verify(reportingService).sendReportData(serviceProvidedData);
-        verify(reportingService).sendReportData(anmReportData);
+        verifyBothReportingCalls(BF_POST_BIRTH, "2012-01-01");
     }
 
     @Test
@@ -154,10 +140,7 @@ public class ChildReportingServiceTest {
         reportData.put("bfPostBirth", "yes");
         service.registerChild(reportData);
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", WEIGHED_AT_BIRTH, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", WEIGHED_AT_BIRTH, "2012-01-01");
-        verify(reportingService).sendReportData(serviceProvidedData);
-        verify(reportingService).sendReportData(anmReportData);
+        verifyBothReportingCalls(WEIGHED_AT_BIRTH, "2012-01-01");
     }
 
     @Test
@@ -170,10 +153,7 @@ public class ChildReportingServiceTest {
         reportData.put("bfPostBirth", "");
         service.registerChild(reportData);
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", WEIGHED_AT_BIRTH, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", WEIGHED_AT_BIRTH, "2012-01-01");
-        verify(reportingService, times(0)).sendReportData(serviceProvidedData);
-        verify(reportingService, times(0)).sendReportData(anmReportData);
+        verifyNoReportingCalls(WEIGHED_AT_BIRTH, "2012-01-01");
     }
 
     @Test
@@ -186,10 +166,7 @@ public class ChildReportingServiceTest {
         reportData.put("bfPostBirth", "");
         service.registerChild(reportData);
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", BF_POST_BIRTH, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", BF_POST_BIRTH, "2012-01-01");
-        verify(reportingService, times(0)).sendReportData(serviceProvidedData);
-        verify(reportingService, times(0)).sendReportData(anmReportData);
+        verifyNoReportingCalls(BF_POST_BIRTH, "2012-01-01");
     }
 
     @Test
@@ -202,10 +179,7 @@ public class ChildReportingServiceTest {
         reportData.put("bfPostBirth", "");
         service.registerChild(reportData);
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", LBW, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", LBW, "2012-01-01");
-        verify(reportingService, times(0)).sendReportData(serviceProvidedData);
-        verify(reportingService, times(0)).sendReportData(anmReportData);
+        verifyNoReportingCalls(LBW, "2012-01-01");
     }
 
     @Test
@@ -218,75 +192,74 @@ public class ChildReportingServiceTest {
         reportData.put("bfPostBirth", "");
         service.registerChild(reportData);
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", LBW, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", LBW, "2012-01-01");
-        verify(reportingService, times(0)).sendReportData(serviceProvidedData);
-        verify(reportingService, times(0)).sendReportData(anmReportData);
+        verifyNoReportingCalls(LBW, "2012-01-01");
     }
 
     @Test
     public void shouldReportCloseChildCaseWhenReasonIsDeath() {
-        DateUtil.fakeIt(LocalDate.parse("2012-11-01"));
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", CHILD_MORTALITY, "2012-03-05", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", CHILD_MORTALITY, "2012-03-05");
-        verify(reportingService).sendReportData(serviceProvidedData);
-        verify(reportingService).sendReportData(anmReportData);
+        verifyBothReportingCalls(CHILD_MORTALITY, "2012-03-05");
     }
 
     @Test
     public void shouldReportEarlyNeonatalMortalityDeath() {
-        DateUtil.fakeIt(LocalDate.parse("2011-12-01"));
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-07"));
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", ENM, "2012-01-07", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", ENM, "2012-01-07");
-        verify(reportingService).sendReportData(serviceProvidedData);
-        verify(reportingService).sendReportData(anmReportData);
+        verifyBothReportingCalls(ENM, "2012-01-07");
     }
 
     @Test
     public void shouldNotReportEarlyNeonatalMortalityDeathIfDateOfDeathIsAfterOneWeekOfBirth() {
-        DateUtil.fakeIt(LocalDate.parse("2011-12-01"));
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-09"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-08"));
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", ENM, "2012-01-09", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", ENM, "2012-01-09");
-        verify(reportingService, times(0)).sendReportData(serviceProvidedData);
-        verify(reportingService, times(0)).sendReportData(anmReportData);
+        verifyNoReportingCalls(ENM, "2012-01-08");
     }
 
     @Test
     public void shouldReportNeonatalMortalityDeath() {
-        DateUtil.fakeIt(LocalDate.parse("2011-12-01"));
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-28"));
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", NM, "2012-01-28", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", NM, "2012-01-28");
-        verify(reportingService).sendReportData(serviceProvidedData);
-        verify(reportingService).sendReportData(anmReportData);
+        verifyBothReportingCalls(NM, "2012-01-28");
     }
 
     @Test
     public void shouldNotReportNeonatalMortalityDeathIfDateOfDeathIsAfterOneWeekOfBirth() {
-        DateUtil.fakeIt(LocalDate.parse("2011-12-01"));
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-29"));
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", NM, "2012-01-29", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", NM, "2012-01-29");
-        verify(reportingService, times(0)).sendReportData(serviceProvidedData);
-        verify(reportingService, times(0)).sendReportData(anmReportData);
+        verifyNoReportingCalls(NM, "2012-01-29");
+    }
+
+    @Test
+    public void shouldReportLateMortalityWithin29DaysAnd1YearOfBirth() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-29"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-12-31"));
+
+        verifyBothReportingCalls(LNM, "2012-01-29");
+        verifyBothReportingCalls(LNM, "2012-12-31");
+    }
+
+    @Test
+    public void shouldNotReportLateMortalityIfNotWithin29DaysAnd1YearOfBirth() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-28"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2013-01-01"));
+
+        verifyNoReportingCalls(LNM, "2012-01-28");
+        verifyNoReportingCalls(LNM, "2013-12-31");
     }
 
     @Test
@@ -299,48 +272,14 @@ public class ChildReportingServiceTest {
     }
 
     @Test
-    public void shouldSendChildReportingDataWhenChildIsExactlyElevenMonthsOld() throws Exception {
-        DateUtil.fakeIt(LocalDate.parse("2012-12-01"));
+    public void shouldReportChildMortalityWithin7DaysAnd1YearOfBirth() throws Exception {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-08"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-12-31"));
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", CHILD_MORTALITY, "2012-03-05", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", CHILD_MORTALITY, "2012-03-05");
-        verify(reportingService).sendReportData(serviceProvidedData);
-        verify(reportingService).sendReportData(anmReportData);
-    }
-
-    @Test
-    public void shouldSendChildReportingDataWhenChildIsYoungerThanElevenMonths() throws Exception {
-        DateUtil.fakeIt(LocalDate.parse("2012-11-15"));
-        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
-
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
-
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", CHILD_MORTALITY, "2012-03-05", new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", CHILD_MORTALITY, "2012-03-05");
-        verify(reportingService).sendReportData(serviceProvidedData);
-        verify(reportingService).sendReportData(anmReportData);
-    }
-
-    @Test
-    public void shouldNotSendChildReportingDataWhenChildIsOlderThanElevenMonths() throws Exception {
-        DateUtil.fakeIt(LocalDate.parse("2012-12-31"));
-        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
-
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
-
-        verifyZeroInteractions(reportingService);
-    }
-
-    @Test
-    public void shouldNotReportCloseChildCaseWhenChildIsNotFound() {
-        when(allChildren.findByCaseId("CASE X")).thenReturn(null);
-
-        service.closeChild(reportDataForCloseChild("child_over5", "2012-03-05"));
-
-        verifyZeroInteractions(reportingService);
+        verifyNoReportingCalls(CHILD_MORTALITY, "2012-01-07");
+        verifyNoReportingCalls(CHILD_MORTALITY, "2013-01-01");
     }
 
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator expectedIndicator) {
@@ -368,8 +307,21 @@ public class ChildReportingServiceTest {
         SafeMap reportingData = new SafeMap();
         reportingData.put("caseId", "CASE X");
         reportingData.put("closeReason", closeReason);
-        reportingData.put("submissionDate", closeDate);
         reportingData.put("diedOn", closeDate);
         return reportingData;
+    }
+
+    private void verifyBothReportingCalls(Indicator indicator, String date) {
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", indicator, date, new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", indicator, date);
+        verify(reportingService).sendReportData(serviceProvidedData);
+        verify(reportingService).sendReportData(anmReportData);
+    }
+
+    private void verifyNoReportingCalls(Indicator indicator, String date) {
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", "TC 1", indicator, date, new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", "CASE X", indicator, date);
+        verify(reportingService, times(0)).sendReportData(serviceProvidedData);
+        verify(reportingService, times(0)).sendReportData(anmReportData);
     }
 }

@@ -10,10 +10,9 @@ public class AllConstants {
         public static final String SERVICE_PROVIDED_DATA_TYPE = "serviceProvided";
         public static final String ANM_REPORT_DATA_TYPE = "anmReportData";
         public static final double LOW_BIRTH_WEIGHT_THRESHOLD = 2.5;
-    }
-
-    public static class MetaCommCareFields {
-        public static final String ANM_IDENTIFIER_COMMCARE_FIELD_NAME = "anmIdentifier";
+        public static final int CHILD_MORTALITY_THRESHOLD_IN_YEARS = 1;
+        public static final int CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 7;
+        public static final int CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 28;
     }
 
     public static class DeliveryOutcomeCommCareFields {
@@ -35,7 +34,6 @@ public class AllConstants {
         public static final String SUBMISSION_DATE_COMMCARE_FIELD_NAME = "submissionDate";
         public static final String HIGH_PRIORITY_COMMCARE_FIELD_NAME = "isHighPriority";
         public static final String BOOLEAN_TRUE_COMMCARE_VALUE = "Yes";
-        public static final String THAYI_CARD_NUMBER_COMMCARE_FIELD_NAME = "thaayiCardNumber";
     }
 
     public static class ChildBirthCommCareFields{

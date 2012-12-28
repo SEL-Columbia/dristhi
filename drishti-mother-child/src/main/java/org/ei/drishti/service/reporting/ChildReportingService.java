@@ -2,7 +2,6 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
-import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.util.SafeMap;
@@ -15,22 +14,16 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.YES_BF_POSTBIRTH_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.CLOSE_REASON_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.DATE_OF_DEATH_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.DEATH_OF_CHILD_COMMCARE_VALUE;
+import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.Report.LOW_BIRTH_WEIGHT_THRESHOLD;
+import static org.ei.drishti.common.AllConstants.Report.*;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.joda.time.LocalDate.parse;
 
 @Service
 public class ChildReportingService {
-    public static final int CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS = 11;
     private final ReportingService reportingService;
     private final AllChildren allChildren;
     private static Logger logger = LoggerFactory.getLogger(ChildReportingService.class.toString());
@@ -93,20 +86,20 @@ public class ChildReportingService {
 
         Child child = allChildren.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
         LocalDate childDateOfBirth = parse(child.dateOfBirth());
-        if (childDateOfBirth.plusDays(8).isAfter(parse(reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME)))) {
-            reportToBoth(child, ENM, reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME));
-        }
+        String diedOn = reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME);
 
-        if (childDateOfBirth.plusDays(28).isAfter(parse(reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME)))) {
-            reportToBoth(child, NM, reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME));
+        if (childDateOfBirth.plusDays(CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS).isAfter(parse(diedOn))) {
+            reportToBoth(child, ENM, diedOn);
         }
-
-        if ((childDateOfBirth.plusMonths(CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS).isBefore(DateUtil.today()))) {
-            logger.warn("Not reporting for child because child's age is more than " + CHILD_MORTALITY_REPORTING_THRESHOLD_IN_MONTHS + " months.");
-            return;
+        if (childDateOfBirth.plusDays(CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS).isAfter(parse(diedOn))) {
+            reportToBoth(child, NM, diedOn);
+            reportToBoth(child, CHILD_MORTALITY, diedOn);
+        } else if (childDateOfBirth.plusYears(CHILD_MORTALITY_THRESHOLD_IN_YEARS).isAfter(parse(diedOn))) {
+            reportToBoth(child, LNM, diedOn);
+            reportToBoth(child, CHILD_MORTALITY, diedOn);
+        } else {
+            logger.warn("Not reporting for child with CaseID" + child.caseId() + "because child's age is more than " + CHILD_MORTALITY_THRESHOLD_IN_YEARS + " year.");
         }
-
-        reportToBoth(child, CHILD_MORTALITY, reportData.get(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
     }
 
     private void reportBirthWeight(String weight, Child child) {
