@@ -77,6 +77,12 @@ public class ChildReportingService {
         immunizations.removeAll(previousImmunizations);
 
         reportImmunizations(caseId, child, immunizations, reportData.get(IMMUNIZATIONS_PROVIDED_DATE_COMMCARE_FIELD_NAME));
+
+        if ("1".equals(reportData.get(VITAMIN_A_DOSE_COMMCARE_FIELD_NAME))) {
+            reportToBoth(child, VIT_A_1, reportData.get(IMMUNIZATIONS_PROVIDED_DATE_COMMCARE_FIELD_NAME));
+        } else if ("2".equals(reportData.get(VITAMIN_A_DOSE_COMMCARE_FIELD_NAME))) {
+            reportToBoth(child, VIT_A_2, reportData.get(IMMUNIZATIONS_PROVIDED_DATE_COMMCARE_FIELD_NAME));
+        }
     }
 
     public void closeChild(SafeMap reportData) {
@@ -101,8 +107,7 @@ public class ChildReportingService {
         }
         if (childDateOfBirth.plusYears(CHILD_MORTALITY_THRESHOLD_IN_YEARS).isAfter(diedOnDate)) {
             reportToBoth(child, CHILD_MORTALITY, diedOn);
-        }
-        else {
+        } else {
             logger.warn("Not reporting for child with CaseID" + child.caseId() + "because child's age is more than " + CHILD_MORTALITY_THRESHOLD_IN_YEARS + " years.");
         }
     }

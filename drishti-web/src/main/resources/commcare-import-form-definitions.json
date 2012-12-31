@@ -347,7 +347,8 @@
                         "reporting": {
                             "form|case|@case_id": "caseId",
                             "form|vaccinations_given": "immunizationsProvided",
-                            "form|immunization_date": "immunizationsProvidedDate"
+                            "form|immunization_date": "immunizationsProvidedDate",
+                            "form|vit_a_dose": "vitaminADose"
                         },
                         "details": {
                             "form|child_weight": "childWeight"

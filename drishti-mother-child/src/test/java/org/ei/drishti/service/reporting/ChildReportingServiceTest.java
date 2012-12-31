@@ -63,7 +63,7 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldMakeAReportingCallForEachNewlyProvidedImmunization() throws Exception {
-        SafeMap reportingData = reportDataForImmunization("dpt_1 bcg measles");
+        SafeMap reportingData = reportDataForImmunization("dpt_1 bcg measles", "");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X"));
@@ -76,13 +76,39 @@ public class ChildReportingServiceTest {
     }
 
     @Test
+    public void shouldReportFirstVitaminDoseDuringImmunizationProvided() throws Exception {
+        SafeMap reportingData = reportDataForImmunization("", "1");
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
+                .withLocation("bherya", "Sub Center", "PHC X")
+                .withAnm("ANM X"));
+
+        service.immunizationProvided(reportingData, asList("dpt_1"));
+
+        verifyBothReportingCalls(VIT_A_1, "2012-01-01");
+        verifyNoMoreInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportSecondVitaminDoseDuringImmunizationProvided() throws Exception {
+        SafeMap reportingData = reportDataForImmunization("", "2");
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
+                .withLocation("bherya", "Sub Center", "PHC X")
+                .withAnm("ANM X"));
+
+        service.immunizationProvided(reportingData, asList("dpt_1"));
+
+        verifyBothReportingCalls(VIT_A_2, "2012-01-01");
+        verifyNoMoreInteractions(reportingService);
+    }
+
+    @Test
     public void shouldNotSendChildReportingDataWhenWrongImmunizationIsProvided() throws Exception {
         SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
-        service.immunizationProvided(reportDataForImmunization("NON_EXISTENT_IMMUNIZATION bcg"), new ArrayList<String>());
+        service.immunizationProvided(reportDataForImmunization("NON_EXISTENT_IMMUNIZATION bcg", ""), new ArrayList<String>());
 
         verifyBothReportingCalls(BCG, "2012-01-01");
         verifyNoMoreInteractions(reportingService);
@@ -303,7 +329,7 @@ public class ChildReportingServiceTest {
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator expectedIndicator) {
         ReportingService fakeReportingService = mock(ReportingService.class);
         ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, allChildren);
-        SafeMap reportingData = reportDataForImmunization(immunizationProvided);
+        SafeMap reportingData = reportDataForImmunization(immunizationProvided, "");
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 
         childReportingService.immunizationProvided(reportingData, new ArrayList<String>());
@@ -313,11 +339,12 @@ public class ChildReportingServiceTest {
         verifyNoMoreInteractions(fakeReportingService);
     }
 
-    private SafeMap reportDataForImmunization(String immunizationProvided) {
+    private SafeMap reportDataForImmunization(String immunizationProvided, String vitaminADose) {
         SafeMap reportingData = new SafeMap();
         reportingData.put("caseId", "CASE X");
         reportingData.put("immunizationsProvided", immunizationProvided);
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
+        reportingData.put("vitaminADose", vitaminADose);
         return reportingData;
     }
 
