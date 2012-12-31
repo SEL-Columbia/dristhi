@@ -71,10 +71,14 @@ public class MotherReportingService {
         }
 
         reportToBoth(mother, DELIVERY, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+
+        if ("no".equals(reportData.get(MOTHER_SURVIVED_COMMCARE_FIELD_NAME)) || "no".equals(reportData.get(WOMAN_SURVIVED_COMMCARE_FIELD_NAME))) {
+            reportToBoth(mother, MMD, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+        }
     }
 
     private void reportDeath(SafeMap reportData, Mother mother) {
-        if("yes".equals(reportData.get(IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME))){
+        if ("yes".equals(reportData.get(IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME))) {
             reportToBoth(mother, MMA, reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME));
         }
         reportToBoth(mother, MOTHER_MORTALITY, today().toString());

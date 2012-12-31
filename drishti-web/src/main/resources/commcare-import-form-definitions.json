@@ -252,7 +252,9 @@
                             "form|meta|username": "anmIdentifier",
                             "form|delivery_outcome": "pregnancyOutcome",
                             "form|date_outcome": "dateOfDelivery",
-                            "form|place_delivery": "placeOfDelivery"
+                            "form|place_delivery": "placeOfDelivery",
+                            "form|case|update|woman_survived": "womanSurvived",
+                            "form|case|update|mother_survived": "motherSurvived"
                         },
                         "details": {
                             "form|date_outcome": "dateOfDelivery",

@@ -141,7 +141,12 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportDeliveryWhenDeliveryOutcomeIsUpdatedWithOutcome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
-        Map<String, String> reportData = create("motherCaseId", "CASE-1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").put("placeOfDelivery", "home").map();
+        Map<String, String> reportData = create("motherCaseId", "CASE-1")
+                .put("womanSurvived", "")
+                .put("motherSurvived", "yes")
+                .put("pregnancyOutcome", "live_birth")
+                .put("dateOfDelivery", "2012-01-01")
+                .put("placeOfDelivery", "home").map();
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(DELIVERY, "2012-01-01");
@@ -151,7 +156,12 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportInstitutionalDeliveryWhenPlaceOfDeliveryIsNotHome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
-        Map<String, String> reportData = create("motherCaseId", "CASE-1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").put("placeOfDelivery", "phc").map();
+        Map<String, String> reportData = create("motherCaseId", "CASE-1")
+                .put("womanSurvived", "")
+                .put("motherSurvived", "yes")
+                .put("pregnancyOutcome", "live_birth")
+                .put("dateOfDelivery", "2012-01-01")
+                .put("placeOfDelivery", "phc").map();
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
@@ -161,7 +171,12 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldNotReportInstitutionalDeliveryWhenPlaceOfDeliveryIsHome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
-        Map<String, String> reportData = create("motherCaseId", "CASE-1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").put("placeOfDelivery", "home").map();
+        Map<String, String> reportData = create("motherCaseId", "CASE-1")
+                .put("womanSurvived", "")
+                .put("motherSurvived", "yes")
+                .put("pregnancyOutcome", "live_birth")
+                .put("dateOfDelivery", "2012-01-01")
+                .put("placeOfDelivery", "home").map();
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
         verifyNoReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
@@ -171,7 +186,12 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportLiveBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsLiveBirth() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
-        Map<String, String> reportData = create("motherCaseId", "CASE-1").put("pregnancyOutcome", "live_birth").put("dateOfDelivery", "2012-01-01").put("placeOfDelivery", "phc").map();
+        Map<String, String> reportData = create("motherCaseId", "CASE-1")
+                .put("womanSurvived", "")
+                .put("motherSurvived", "yes")
+                .put("pregnancyOutcome", "live_birth")
+                .put("dateOfDelivery", "2012-01-01")
+                .put("placeOfDelivery", "phc").map();
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(LIVE_BIRTH, "2012-01-01");
@@ -181,10 +201,48 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportStillBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsStillBirth() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
-        Map<String, String> reportData = create("motherCaseId", "CASE-1").put("anmIdentifier", "ANM 1").put("pregnancyOutcome", "still_birth").put("dateOfDelivery", "2012-01-01").put("placeOfDelivery", "phc").map();
+        Map<String, String> reportData = create("motherCaseId", "CASE-1")
+                .put("womanSurvived", "")
+                .put("motherSurvived", "yes")
+                .put("anmIdentifier", "ANM 1")
+                .put("pregnancyOutcome", "still_birth")
+                .put("dateOfDelivery", "2012-01-01")
+                .put("placeOfDelivery", "phc").map();
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(STILL_BIRTH, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportMotherDeathDuringPregnancyOutcome() {
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        Map<String, String> reportData = create("motherCaseId", "CASE-1")
+                .put("anmIdentifier", "ANM 1")
+                .put("motherSurvived", "no")
+                .put("womanSurvived", "")
+                .put("pregnancyOutcome", "live_birth")
+                .put("placeOfDelivery", "phc")
+                .put("dateOfDelivery", "2012-01-01").map();
+        service.updatePregnancyOutcome(new SafeMap(reportData));
+
+        verifyBothReportingCalls(MMD, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportWomanDeathDuringPregnancyOutcome() {
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        Map<String, String> reportData = create("motherCaseId", "CASE-1")
+                .put("anmIdentifier", "ANM 1")
+                .put("motherSurvived", "")
+                .put("womanSurvived", "no")
+                .put("pregnancyOutcome", "live_birth")
+                .put("placeOfDelivery", "phc")
+                .put("dateOfDelivery", "2012-01-01").map();
+        service.updatePregnancyOutcome(new SafeMap(reportData));
+
+        verifyBothReportingCalls(MMD, "2012-01-01");
     }
 
     private void verifyBothReportingCalls(Indicator indicator, String date) {

@@ -42,6 +42,7 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('LNM');
 INSERT INTO report.dim_indicator (indicator) VALUES ('IM');
 INSERT INTO report.dim_indicator (indicator) VALUES ('UFM');
 INSERT INTO report.dim_indicator (indicator) VALUES ('MMA');
+INSERT INTO report.dim_indicator (indicator) VALUES ('MMD');
 
 INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='c'), (SELECT ID FROM report.dim_indicator WHERE indicator='DPT'), 40, '2012-03-26', '2013-03-25');
 INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='c'), (SELECT ID FROM report.dim_indicator WHERE indicator='DPT_1'), 40, '2012-03-26', '2013-03-25');

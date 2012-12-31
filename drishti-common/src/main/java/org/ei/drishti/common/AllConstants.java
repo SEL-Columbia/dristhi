@@ -21,6 +21,8 @@ public class AllConstants {
         public static final String DATE_OF_DELIVERY_COMMCARE_FIELD_NAME = "dateOfDelivery";
         public static final String DELIVERY_OUTCOME_COMMCARE_FIELD_NAME = "pregnancyOutcome";
         public static final String PLACE_OF_DELIVERY_COMMCARE_FIELD_NAME = "placeOfDelivery";
+        public static final String MOTHER_SURVIVED_COMMCARE_FIELD_NAME = "motherSurvived";
+        public static final String WOMAN_SURVIVED_COMMCARE_FIELD_NAME = "womanSurvived";
         public static final String LIVE_BIRTH_COMMCARE_FIELD_VALUE = "live_birth";
         public static final String HOME_COMMCARE_FIELD_VALUE = "home";
     }
