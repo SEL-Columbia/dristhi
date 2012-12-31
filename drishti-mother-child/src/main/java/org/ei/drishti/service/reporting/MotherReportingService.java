@@ -6,21 +6,22 @@ import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.VISIT_DATE_COMMCARE_FIELD;
 import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.WAS_TT_SHOT_PROVIDED;
+import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommRegisterMotherFields.LMP;
 import static org.ei.drishti.common.AllConstants.CommonCommRegisterMotherFields.REGISTRATION_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.DEATH_OF_MOTHER_COMMCARE_VALUE;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
-import static org.motechproject.util.DateUtil.today;
+import static org.joda.time.LocalDate.parse;
 
 @Service
 public class MotherReportingService {
@@ -39,19 +40,9 @@ public class MotherReportingService {
         Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
         reportToBoth(mother, ANC, reportData.get(REGISTRATION_COMMCARE_FIELD_NAME));
 
-        boolean isRegisteredWithinTwelveWeeks = !(LocalDate.parse(reportData.get(REGISTRATION_COMMCARE_FIELD_NAME)).minusDays(NUMBER_OF_DAYS_IN_12_WEEKS).isAfter(LocalDate.parse(reportData.get(LMP))));
+        boolean isRegisteredWithinTwelveWeeks = !(parse(reportData.get(REGISTRATION_COMMCARE_FIELD_NAME)).minusDays(NUMBER_OF_DAYS_IN_12_WEEKS).isAfter(parse(reportData.get(LMP))));
         if (isRegisteredWithinTwelveWeeks) {
             reportToBoth(mother, ANC_BEFORE_12_WEEKS, reportData.get(REGISTRATION_COMMCARE_FIELD_NAME));
-        }
-    }
-
-    public void closeANC(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
-
-        if (DEATH_OF_MOTHER_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
-            reportDeath(reportData, mother);
-        } else {
-            reportAbortion(reportData, mother);
         }
     }
 
@@ -73,15 +64,33 @@ public class MotherReportingService {
         reportToBoth(mother, DELIVERY, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
 
         if ("no".equals(reportData.get(MOTHER_SURVIVED_COMMCARE_FIELD_NAME)) || "no".equals(reportData.get(WOMAN_SURVIVED_COMMCARE_FIELD_NAME))) {
-            reportToBoth(mother, MMD, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+            reportDeath(mother, MMD, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
         }
     }
 
-    private void reportDeath(SafeMap reportData, Mother mother) {
-        if ("yes".equals(reportData.get(IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME))) {
-            reportToBoth(mother, MMA, reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME));
+    public void closeANC(SafeMap reportData) {
+        Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+
+        if (DEATH_OF_WOMAN_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME)) && "yes".equals(reportData.get(IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME))) {
+            reportDeath(mother, MMA, reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME));
+        } else {
+            reportAbortion(reportData, mother);
         }
-        reportToBoth(mother, MOTHER_MORTALITY, today().toString());
+    }
+
+    public void closePNC(SafeMap reportData) {
+        Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+
+        if (DEATH_OF_MOTHER_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))
+                && "yes".equals(reportData.get(IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME))
+                && mother.dateOfDelivery().plusDays(42).isAfter(parse(reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME)))) {
+            reportDeath(mother, MMP, reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME));
+        }
+    }
+
+    private void reportDeath(Mother mother, Indicator indicator, String date) {
+        reportToBoth(mother, indicator, date);
+        reportToBoth(mother, MOTHER_MORTALITY, date);
     }
 
     private void reportAbortion(SafeMap reportData, Mother mother) {

@@ -80,6 +80,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         service.closeANC(reportDataForANCClose("", "death_of_woman", "yes"));
 
         verifyBothReportingCalls(MMA, "2012-12-12");
+        verifyBothReportingCalls(MOTHER_MORTALITY, "2012-12-12");
     }
 
     @Test
@@ -227,6 +228,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(MMD, "2012-01-01");
+        verifyBothReportingCalls(MOTHER_MORTALITY, "2012-01-01");
     }
 
     @Test
@@ -243,6 +245,64 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         service.updatePregnancyOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(MMD, "2012-01-01");
+        verifyBothReportingCalls(MOTHER_MORTALITY, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportMotherDeathDuringPNCClose() {
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER.withDeliveryOutCome("2012-01-01"));
+
+        Map<String, String> reportData = create("caseId", "CASE-1")
+                .put("closeReason", "death_of_mother")
+                .put("isMaternalDeath", "yes")
+                .put("diedOn", "2012-02-01")
+                .map();
+        service.closePNC(new SafeMap(reportData));
+
+        verifyBothReportingCalls(MMP, "2012-02-01");
+        verifyBothReportingCalls(MOTHER_MORTALITY, "2012-02-01");
+    }
+
+    @Test
+    public void shouldNotReportMotherDeathDuringPNCCloseIfCloseReasonIsNotDeath() {
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER.withDeliveryOutCome("2012-01-01"));
+
+        Map<String, String> reportData = create("caseId", "CASE-1")
+                .put("closeReason", "")
+                .put("isMaternalDeath", "")
+                .put("diedOn", "2012-02-01")
+                .map();
+        service.closePNC(new SafeMap(reportData));
+
+        verifyNoReportingCalls(MMP, "2012-02-01");
+    }
+
+    @Test
+    public void shouldNotReportMotherDeathDuringPNCCloseIfNotMaternalDeath() {
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER.withDeliveryOutCome("2012-01-01"));
+
+        Map<String, String> reportData = create("caseId", "CASE-1")
+                .put("closeReason", "death_of_mother")
+                .put("isMaternalDeath", "")
+                .put("diedOn", "2012-02-01")
+                .map();
+        service.closePNC(new SafeMap(reportData));
+
+        verifyNoReportingCalls(MMP, "2012-02-01");
+    }
+
+    @Test
+    public void shouldNotReportMotherDeathDuringPNCCloseIfNotWithin42DaysOfDeliveryOutcome() {
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER.withDeliveryOutCome("2012-01-01"));
+
+        Map<String, String> reportData = create("caseId", "CASE-1")
+                .put("closeReason", "death_of_mother")
+                .put("isMaternalDeath", "yes")
+                .put("diedOn", "2012-02-12")
+                .map();
+        service.closePNC(new SafeMap(reportData));
+
+        verifyNoReportingCalls(MMP, "2012-02-12");
     }
 
     private void verifyBothReportingCalls(Indicator indicator, String date) {

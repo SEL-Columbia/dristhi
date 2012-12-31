@@ -92,11 +92,18 @@ public class DrishtiController {
         mctsService.closeANCCase(closeInformation);
     }
 
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {
-        logger.info("Child immunization updation: " + updationRequest + ". Extra data: " + extraData);
+    public void updateChildImmunization(ChildImmunizationUpdationRequest request, Map<String, Map<String, String>> extraData) {
+        logger.info("Child immunization updation: " + request + ". Extra data: " + extraData);
 
-        pncService.updateChildImmunization(updationRequest, extraData);
-        mctsService.updateChildImmunization(updationRequest);
+        pncService.updateChildImmunization(request, extraData);
+        mctsService.updateChildImmunization(request);
+    }
+
+    public void closePNCCase(PostNatalCareCloseInformation request, Map<String, Map<String, String>> extraData) {
+        logger.info("PNC close: " + request + ". Extra data: " + extraData);
+
+        pncService.closePNCCase(request, extraData);
+        mctsService.closePNCCase(request);
     }
 
     public void closeChildCase(ChildCloseRequest childCloseRequest, Map<String, Map<String, String>> extraData) {
@@ -125,9 +132,9 @@ public class DrishtiController {
         ancService.updateBirthPlanning(request, extraData);
     }
 
-    public void updatePNCAndChildInformation(PostNatalCareInformation request, Map<String, Map<String, String>> extraData){
+    public void updatePNCAndChildInformation(PostNatalCareInformation request, Map<String, Map<String, String>> extraData) {
         logger.info("PNC visit: " + request + ". Extra data: " + extraData);
 
-        pncService.pncVisitHappened(request,extraData);
+        pncService.pncVisitHappened(request, extraData);
     }
 }

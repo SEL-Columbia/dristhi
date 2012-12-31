@@ -28,6 +28,8 @@ public class Mother extends MotechBaseDataObject {
     @JsonProperty
     private LocalDate lmp;
     @JsonProperty
+    private String dateOfDelivery;
+    @JsonProperty
     private String village;
     @JsonProperty
     private String subCenter;
@@ -69,6 +71,11 @@ public class Mother extends MotechBaseDataObject {
         return this;
     }
 
+    public Mother withDeliveryOutCome(String dateOfDelivery) {
+        this.dateOfDelivery = dateOfDelivery;
+        return this;
+    }
+
     public Mother withDetails(Map<String, String> details) {
         this.details = details;
         return this;
@@ -104,6 +111,10 @@ public class Mother extends MotechBaseDataObject {
 
     public Map<String, String> details() {
         return details;
+    }
+
+    public LocalDate dateOfDelivery() {
+        return LocalDate.parse(dateOfDelivery);
     }
 
     private String getCaseId() {

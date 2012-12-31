@@ -278,6 +278,16 @@ public class ANCServiceTest {
     }
 
     @Test
+    public void shouldUpdateMotherDeliveryDetailsWhenDeliveryOutcomeFormIsFilled() throws Exception {
+        when(mothers.motherExists("MOTHER-CASE-1")).thenReturn(true);
+        when(mothers.updateDetails("MOTHER-CASE-1", EXTRA_DATA.get("details"))).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1", "Theresa").withDetails(EXTRA_DATA.get("details")));
+
+        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0"), EXTRA_DATA);
+
+        verify(mothers).updateDeliveryOutcomeFor("MOTHER-CASE-1", "2012-01-01");
+    }
+
+    @Test
     public void shouldReportWhenDeliveryOutcomeFormIsFilled() throws Exception {
         when(mothers.motherExists("MOTHER-CASE-1")).thenReturn(true);
         when(mothers.updateDetails("MOTHER-CASE-1", EXTRA_DATA.get("details"))).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1", "Theresa").withDetails(EXTRA_DATA.get("details")));

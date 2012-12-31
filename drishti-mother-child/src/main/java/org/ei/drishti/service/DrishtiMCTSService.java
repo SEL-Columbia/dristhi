@@ -36,4 +36,7 @@ public class DrishtiMCTSService {
 
     public void closeChildCase(ChildCloseRequest childCloseRequest) {
     }
+
+    public void closePNCCase(PostNatalCareCloseInformation closeInformation) {
+    }
 }

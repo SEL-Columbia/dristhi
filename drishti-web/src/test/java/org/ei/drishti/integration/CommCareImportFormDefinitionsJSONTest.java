@@ -15,7 +15,7 @@ import static org.junit.Assert.fail;
 
 public class CommCareImportFormDefinitionsJSONTest {
     private final String definitionsJSONPath = "commcare-import-form-definitions.json";
-    private List<CommCareFormDefinition> forms = new ArrayList<CommCareFormDefinition>();
+    private List<CommCareFormDefinition> forms = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -30,21 +30,22 @@ public class CommCareImportFormDefinitionsJSONTest {
 
     @Test
     public void everyFormInTheJSONShouldHaveAllTheCorrectMappings() {
-        Map<String, Class<?>> classEveryFormMappingConvertsTo = new HashMap<String, Class<?>>();
+        Map<String, Class<?>> classEveryFormMappingConvertsTo = new HashMap<>();
 
-        classEveryFormMappingConvertsTo.put("registerMother", AnteNatalCareEnrollmentInformation.class);
+        classEveryFormMappingConvertsTo.put("registerEligibleCouple", EligibleCoupleRegistrationRequest.class);
         classEveryFormMappingConvertsTo.put("updateFamilyPlanningMethod", FamilyPlanningUpdateRequest.class);
         classEveryFormMappingConvertsTo.put("reportFPComplications", FPComplicationsRequest.class);
+        classEveryFormMappingConvertsTo.put("registerOutOfAreaANC", OutOfAreaANCRegistrationRequest.class);
+        classEveryFormMappingConvertsTo.put("registerMother", AnteNatalCareEnrollmentInformation.class);
         classEveryFormMappingConvertsTo.put("updateANCCareInformation", AnteNatalCareInformation.class);
         classEveryFormMappingConvertsTo.put("updateOutcomeOfANC", AnteNatalCareOutcomeInformation.class);
-        classEveryFormMappingConvertsTo.put("closeANCCase", AnteNatalCareCloseInformation.class);
         classEveryFormMappingConvertsTo.put("updateChildImmunization", ChildImmunizationUpdationRequest.class);
-        classEveryFormMappingConvertsTo.put("closeChildCase", ChildCloseRequest.class);
-        classEveryFormMappingConvertsTo.put("registerEligibleCouple", EligibleCoupleRegistrationRequest.class);
-        classEveryFormMappingConvertsTo.put("closeEligibleCouple", EligibleCoupleCloseRequest.class);
-        classEveryFormMappingConvertsTo.put("registerOutOfAreaANC", OutOfAreaANCRegistrationRequest.class);
         classEveryFormMappingConvertsTo.put("updatePNCAndChildInformation", PostNatalCareInformation.class);
         classEveryFormMappingConvertsTo.put("updateBirthPlanning", BirthPlanningRequest.class);
+        classEveryFormMappingConvertsTo.put("closePNCCase", PostNatalCareCloseInformation.class);
+        classEveryFormMappingConvertsTo.put("closeChildCase", ChildCloseRequest.class);
+        classEveryFormMappingConvertsTo.put("closeANCCase", AnteNatalCareCloseInformation.class);
+        classEveryFormMappingConvertsTo.put("closeEligibleCouple", EligibleCoupleCloseRequest.class);
 
         assertEveryFormDefinitionInTheJSONHasBeenRepresentedInThisTest(classEveryFormMappingConvertsTo);
         assertThatTheControllerHasTheMethodsCorrespondingToTheseFormNames(DrishtiController.class, classEveryFormMappingConvertsTo);

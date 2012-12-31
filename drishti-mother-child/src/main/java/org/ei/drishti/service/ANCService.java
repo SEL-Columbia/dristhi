@@ -22,6 +22,7 @@ import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.VISIT_DATE_COMMCARE_FIELD;
 import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.WAS_TT_SHOT_PROVIDED;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.joda.time.LocalTime.now;
 
@@ -108,7 +109,7 @@ public class ANCService {
         reportData.put(WAS_TT_SHOT_PROVIDED, ancInformation.wasTTShotProvided().toString());
         reportingService.ancHasBeenProvided(reportData);
 
-        Mother motherWithUpdatedDetails = allMothers.updateDetails(ancInformation.caseId(), extraData.get("details"));
+        Mother motherWithUpdatedDetails = allMothers.updateDetails(ancInformation.caseId(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
         actionService.updateMotherDetails(motherWithUpdatedDetails.caseId(), motherWithUpdatedDetails.anmIdentifier(), motherWithUpdatedDetails.details());
         actionService.ancCareProvided(motherWithUpdatedDetails.caseId(), motherWithUpdatedDetails.anmIdentifier(), ancInformation.visitNumber(), ancInformation.visitDate(), ancInformation.numberOfIFATabletsProvided(), ancInformation.ttDose(), extraData.get("details"));
     }
@@ -121,7 +122,8 @@ public class ANCService {
         }
         reportingService.updatePregnancyOutcome(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         ancSchedulesService.unEnrollFromSchedules(caseId);
-        Mother updatedMother = allMothers.updateDetails(caseId, extraData.get("details"));
+        allMothers.updateDeliveryOutcomeFor(caseId, outcomeInformation.deliveryOutcomeDate());
+        Mother updatedMother = allMothers.updateDetails(caseId, extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
         actionService.updateANCOutcome(caseId, outcomeInformation.anmIdentifier(), updatedMother.details());
     }
 
@@ -142,7 +144,7 @@ public class ANCService {
             return;
         }
 
-        Mother motherWithUpdatedDetails = allMothers.updateDetails(request.caseId(), extraData.get("details"));
+        Mother motherWithUpdatedDetails = allMothers.updateDetails(request.caseId(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
         actionService.updateBirthPlanning(request.caseId(), request.anmIdentifier(), motherWithUpdatedDetails.details());
     }
 }

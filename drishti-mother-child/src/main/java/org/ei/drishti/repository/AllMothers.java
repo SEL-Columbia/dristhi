@@ -1,6 +1,5 @@
 package org.ei.drishti.repository;
 
-import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
@@ -48,6 +47,14 @@ public class AllMothers extends MotechBaseRepository<Mother> {
     public Mother updateDetails(String caseId, Map<String, String> details) {
         Mother mother = findByCaseId(caseId);
         mother.details().putAll(details);
+        update(mother);
+
+        return mother;
+    }
+
+    public Mother updateDeliveryOutcomeFor(String caseId, String dateOfDelivery) {
+        Mother mother = findByCaseId(caseId);
+        mother.withDeliveryOutCome(dateOfDelivery);
         update(mother);
 
         return mother;

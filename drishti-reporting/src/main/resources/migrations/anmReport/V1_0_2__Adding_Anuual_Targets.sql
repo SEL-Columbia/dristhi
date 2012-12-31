@@ -37,6 +37,8 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IM');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('UFM');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MMA');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MMD');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MMP');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MM');
 
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT'), 40, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT_1'), 40, '2012-03-26', '2013-03-25');

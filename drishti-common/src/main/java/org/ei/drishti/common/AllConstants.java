@@ -58,17 +58,24 @@ public class AllConstants {
         public static final String DATE_OF_DEATH_COMMCARE_FIELD_NAME = "diedOn";
     }
 
+    public static class CaseCloseCommCareFields {
+        public static final String CLOSE_REASON_COMMCARE_FIELD_NAME = "closeReason";
+        public static final String DEATH_DATE_COMMCARE_FIELD_NAME = "diedOn";
+        public static final String IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME = "isMaternalDeath";
+    }
+
     public static class ANCCloseCommCareFields {
         public static final String CLOSE_MTP_DATE_COMMCARE_FIELD_NAME = "dateInduced";
         public static final String CLOSE_SPONTANEOUS_ABORTION_DATE_COMMCARE_FIELD_NAME = "dateSpontaneous";
         public static final String CLOSE_MTP_TIME_COMMCARE_FIELD_NAME = "mtpTime";
-        public static final String CLOSE_REASON_COMMCARE_FIELD_NAME = "closeReason";
-        public static final String IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME = "isMaternalDeath";
-        public static final String DEATH_DATE_COMMCARE_FIELD_NAME = "diedOn";
         public static final String MTP_GREATER_THAN_12_WEEKS_FIELD_NAME = "greater_12wks";
         public static final String MTP_LESS_THAN_12_WEEKS_FIELD_NAME = "less_12wks";
-        public static final String DEATH_OF_MOTHER_COMMCARE_VALUE = "death_of_woman";
+        public static final String DEATH_OF_WOMAN_COMMCARE_VALUE = "death_of_woman";
         public static final String SPONTANEOUS_ABORTION_COMMCARE_VALUE = "spontaneous_abortion";
+    }
+
+    public static class PNCCloseCommCareFields {
+        public static final String DEATH_OF_MOTHER_COMMCARE_VALUE = "death_of_mother";
     }
 
     public static class FamilyPlanningCommCareFields {

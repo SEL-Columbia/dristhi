@@ -1,15 +1,13 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.ChildCloseRequest;
-import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.contract.ChildInformation;
-import org.ei.drishti.contract.PostNatalCareInformation;
+import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.reporting.ChildReportingService;
+import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
@@ -43,6 +41,8 @@ public class PNCServiceTest extends BaseUnitTest {
     @Mock
     private AllChildren allChildren;
     @Mock
+    private MotherReportingService motherReportingService;
+    @Mock
     private ChildReportingService childReportingService;
 
     private PNCService service;
@@ -51,7 +51,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new PNCService(actionService, childSchedulesService, allMothers, allChildren, childReportingService);
+        service = new PNCService(actionService, childSchedulesService, allMothers, allChildren, motherReportingService, childReportingService);
     }
 
     @Test
@@ -290,6 +290,24 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldReportWhenPNCCaseIsClosed() {
+        when(allMothers.motherExists("Case X")).thenReturn(true);
+
+        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y"), EXTRA_DATA);
+
+        verify(motherReportingService).closePNC(new SafeMap(EXTRA_DATA.get("reporting")));
+    }
+
+    @Test
+    public void shouldNotDoAnythingIfMotherDoesNotExistsDuringClose() {
+        when(allMothers.motherExists("Case X")).thenReturn(false);
+
+        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y"), EXTRA_DATA);
+
+        verifyZeroInteractions(motherReportingService);
+    }
+
+    @Test
     public void shouldCloseAlertsForProvidedImmunizations() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
@@ -318,8 +336,8 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "Case X");
-        reportData.put("childWeight","4");
-        reportData.put("bfPostBirth","yes");
+        reportData.put("childWeight", "4");
+        reportData.put("bfPostBirth", "yes");
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
         ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", "4", "yes", EXTRA_DATA);
 
@@ -332,7 +350,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         ActionService actionService = mock(ActionService.class);
-        PNCService pncService = new PNCService(actionService, childSchedulesService, allMothers, allChildren, childReportingService);
+        PNCService pncService = new PNCService(actionService, childSchedulesService, allMothers, allChildren, motherReportingService, childReportingService);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
 
         pncService.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), providedImmunizations, "4", "yes", EXTRA_DATA));

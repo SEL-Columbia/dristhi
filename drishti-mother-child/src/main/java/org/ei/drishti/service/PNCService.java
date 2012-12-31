@@ -1,15 +1,13 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.ChildCloseRequest;
-import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.contract.ChildInformation;
-import org.ei.drishti.contract.PostNatalCareInformation;
+import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.reporting.ChildReportingService;
+import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
@@ -41,14 +39,17 @@ public class PNCService {
     private ChildSchedulesService childSchedulesService;
     private AllMothers allMothers;
     private AllChildren allChildren;
+    private MotherReportingService motherReportingService;
     private ChildReportingService childReportingService;
 
     @Autowired
-    public PNCService(ActionService actionService, ChildSchedulesService childSchedulesService, AllMothers allMothers, AllChildren allChildren, ChildReportingService childReportingService) {
+    public PNCService(ActionService actionService, ChildSchedulesService childSchedulesService, AllMothers allMothers,
+                      AllChildren allChildren, MotherReportingService motherReportingService, ChildReportingService childReportingService) {
         this.actionService = actionService;
         this.childSchedulesService = childSchedulesService;
         this.allMothers = allMothers;
         this.allChildren = allChildren;
+        this.motherReportingService = motherReportingService;
         this.childReportingService = childReportingService;
     }
 
@@ -131,9 +132,18 @@ public class PNCService {
         childSchedulesService.unenrollChild(childCloseRequest.caseId());
     }
 
+    public void closePNCCase(PostNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
+        if (!allMothers.motherExists(closeInformation.caseId())) {
+            logger.warn("Found PNC Close visit without registered mother for it: " + closeInformation.caseId());
+            return;
+        }
+
+        motherReportingService.closePNC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
+    }
+
     private void closeAlertsForProvidedImmunizations(ChildImmunizationUpdationRequest updationRequest) {
         for (String immunization : updationRequest.immunizationsProvidedList()) {
-            actionService.markAlertAsClosed(updationRequest.caseId(),updationRequest.anmIdentifier(),immunization, updationRequest.immunizationsProvidedDate().toString());
+            actionService.markAlertAsClosed(updationRequest.caseId(), updationRequest.anmIdentifier(), immunization, updationRequest.immunizationsProvidedDate().toString());
         }
     }
 
