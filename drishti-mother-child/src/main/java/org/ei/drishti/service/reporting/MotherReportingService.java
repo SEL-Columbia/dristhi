@@ -9,9 +9,10 @@ import org.ei.drishti.util.SafeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.TT_DOSE;
 import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.VISIT_DATE_COMMCARE_FIELD;
-import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.WAS_TT_SHOT_PROVIDED;
 import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommRegisterMotherFields.LMP;
@@ -106,6 +107,12 @@ public class MotherReportingService {
         }
     }
 
+    private void reportTTVisit(SafeMap reportData, Mother mother) {
+        if (isNotBlank(reportData.get(TT_DOSE))) {
+            reportToBoth(mother, TT, reportData.get(VISIT_DATE_COMMCARE_FIELD));
+        }
+    }
+
     private void reportToBoth(Mother mother, Indicator indicator, String date) {
         ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thaayiCardNo(), indicator, date,
                 new Location(mother.village(), mother.subCenter(), mother.phc()));
@@ -113,11 +120,5 @@ public class MotherReportingService {
 
         ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);
-    }
-
-    private void reportTTVisit(SafeMap reportData, Mother mother) {
-        if (Boolean.parseBoolean(reportData.get(WAS_TT_SHOT_PROVIDED))) {
-            reportToBoth(mother, TT, reportData.get(VISIT_DATE_COMMCARE_FIELD));
-        }
     }
 }

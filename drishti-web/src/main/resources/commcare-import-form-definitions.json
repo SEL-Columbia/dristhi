@@ -181,7 +181,7 @@
                         "form|meta|username": "anmIdentifier",
                         "form|this_anc_number": "ancVisitNumber",
                         "form|ifa_tablets_given": "numberOfIFATabletsGiven",
-                        "form|today": "submissionDate",
+                        "form|anc_visit_date": "visitDate",
                         "form|tt_dose": "ttDose"
                     },
                     "extraMappings": {
@@ -197,6 +197,12 @@
                             "form|weight": "weight",
                             "form|vitals_taken": "vitalsTaken",
                             "form|test_results|hb": "hbLevel"
+                        },
+                        "reporting": {
+                            "form|case|@case_id": "caseId",
+                            "form|anc_visit_date": "visitDate",
+                            "form|this_anc_number": "visitNumber",
+                            "form|tt_dose": "ttDose"
                         }
                     }
                 },

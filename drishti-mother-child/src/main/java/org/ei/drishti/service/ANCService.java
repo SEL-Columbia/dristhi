@@ -19,9 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
-import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.VISIT_DATE_COMMCARE_FIELD;
-import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.WAS_TT_SHOT_PROVIDED;
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.joda.time.LocalTime.now;
@@ -103,11 +100,7 @@ public class ANCService {
             ancSchedulesService.ttVisitHasHappened(ancInformation);
         }
 
-        SafeMap reportData = new SafeMap();
-        reportData.put(CASE_ID_COMMCARE_FIELD_NAME, ancInformation.caseId());
-        reportData.put(VISIT_DATE_COMMCARE_FIELD, ancInformation.visitDate().toString());
-        reportData.put(WAS_TT_SHOT_PROVIDED, ancInformation.wasTTShotProvided().toString());
-        reportingService.ancHasBeenProvided(reportData);
+        reportingService.ancHasBeenProvided(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
 
         Mother motherWithUpdatedDetails = allMothers.updateDetails(ancInformation.caseId(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
         actionService.updateMotherDetails(motherWithUpdatedDetails.caseId(), motherWithUpdatedDetails.anmIdentifier(), motherWithUpdatedDetails.details());

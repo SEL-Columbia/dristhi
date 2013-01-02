@@ -43,7 +43,7 @@ public class ANCServiceTest {
     private ANCService service;
 
     private Map<String, Map<String, String>> EXTRA_DATA_EMPTY = new HashMap<>();
-    private Map<String, Map<String, String>> EXTRA_DATA = mapOf("details", mapOf("someKey", "someValue"));
+    private Map<String, Map<String, String>> EXTRA_DATA = create("details", mapOf("someKey", "someValue")).put("reporting", mapOf("someKey", "someValue")).map();
 
     @Before
     public void setUp() throws Exception {
@@ -190,17 +190,13 @@ public class ANCServiceTest {
 
     @Test
     public void shouldReportANCVisit() {
-        SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE-X");
-        reportData.put("visitDate", "2012-01-23");
-        reportData.put("ttShotProvided", "true");
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10").withTTDose("TT 2");
         when(mothers.motherExists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1", "SomeName"));
 
-        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
+        service.ancHasBeenProvided(ancInformation, EXTRA_DATA);
 
-        verify(motherReportingService).ancHasBeenProvided(reportData);
+        verify(motherReportingService).ancHasBeenProvided(new SafeMap(EXTRA_DATA.get("reporting")));
     }
 
     @Test

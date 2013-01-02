@@ -1,24 +1,25 @@
 package org.ei.drishti.contract;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class AnteNatalCareInformation {
     private String caseId;
     private String anmIdentifier;
     private String ancVisitNumber;
     private String numberOfIFATabletsGiven;
-    private String submissionDate;
+    private String visitDate;
     private String ttDose;
 
-    public AnteNatalCareInformation(String caseId, String anmIdentifier, int visitNumber, String submissionDate) {
+    public AnteNatalCareInformation(String caseId, String anmIdentifier, int visitNumber, String visitDate) {
         this.caseId = caseId;
         this.anmIdentifier = anmIdentifier;
         this.ancVisitNumber = String.valueOf(visitNumber);
-        this.submissionDate = submissionDate;
+        this.visitDate = visitDate;
     }
 
     public String caseId() {
@@ -44,7 +45,7 @@ public class AnteNatalCareInformation {
     }
 
     public LocalDate visitDate() {
-        return LocalDate.parse(submissionDate);
+        return LocalDate.parse(visitDate);
     }
 
     public String anmIdentifier() {
@@ -60,7 +61,7 @@ public class AnteNatalCareInformation {
     }
 
     public Boolean wasTTShotProvided() {
-        return StringUtils.isNotBlank(ttDose);
+        return isNotBlank(ttDose);
     }
 
     public String ttDose() {

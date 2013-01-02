@@ -117,7 +117,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE-1");
         reportData.put("visitDate", "2012-01-23");
-        reportData.put("ttShotProvided", "true");
+        reportData.put("ttDose", "TT1");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
         service.ancHasBeenProvided(reportData);
@@ -130,7 +130,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE-1");
         reportData.put("visitDate", "2012-01-23");
-        reportData.put("ttShotProvided", "false");
+        reportData.put("ttDose", "");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
         service.ancHasBeenProvided(reportData);

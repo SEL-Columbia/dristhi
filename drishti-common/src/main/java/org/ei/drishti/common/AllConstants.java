@@ -29,7 +29,7 @@ public class AllConstants {
 
     public static class ANCVisitCommCareFields {
         public static final String VISIT_DATE_COMMCARE_FIELD = "visitDate";
-        public static final String WAS_TT_SHOT_PROVIDED = "ttShotProvided";
+        public static final String TT_DOSE = "ttDose";
     }
 
     public static class CommonCommCareFields {
