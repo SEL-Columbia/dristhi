@@ -47,6 +47,7 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('MMP');
 INSERT INTO report.dim_indicator (indicator) VALUES ('MM');
 INSERT INTO report.dim_indicator (indicator) VALUES ('VIT_A_1');
 INSERT INTO report.dim_indicator (indicator) VALUES ('VIT_A_2');
+INSERT INTO report.dim_indicator (indicator) VALUES ('ANC4');
 
 INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='c'), (SELECT ID FROM report.dim_indicator WHERE indicator='DPT'), 40, '2012-03-26', '2013-03-25');
 INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='c'), (SELECT ID FROM report.dim_indicator WHERE indicator='DPT_1'), 40, '2012-03-26', '2013-03-25');
@@ -74,3 +75,4 @@ INSERT INTO report.annual_target (service_provider, indicator, target, start_dat
 INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='c'), (SELECT ID FROM report.dim_indicator WHERE indicator='WEIGHED_AT_BIRTH'), 200, '2012-03-26', '2013-03-25');
 INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='c'), (SELECT ID FROM report.dim_indicator WHERE indicator='VIT_A_1'), 50, '2012-03-26', '2013-03-25');
 INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='c'), (SELECT ID FROM report.dim_indicator WHERE indicator='VIT_A_2'), 50, '2012-03-26', '2013-03-25');
+INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='c'), (SELECT ID FROM report.dim_indicator WHERE indicator='ANC4'), 50, '2012-03-26', '2013-03-25');

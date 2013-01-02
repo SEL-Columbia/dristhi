@@ -10,7 +10,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 public class AnteNatalCareInformation {
     private String caseId;
     private String anmIdentifier;
-    private String ancVisitNumber;
+    private String visitNumber;
     private String numberOfIFATabletsGiven;
     private String visitDate;
     private String ttDose;
@@ -18,7 +18,7 @@ public class AnteNatalCareInformation {
     public AnteNatalCareInformation(String caseId, String anmIdentifier, int visitNumber, String visitDate) {
         this.caseId = caseId;
         this.anmIdentifier = anmIdentifier;
-        this.ancVisitNumber = String.valueOf(visitNumber);
+        this.visitNumber = String.valueOf(visitNumber);
         this.visitDate = visitDate;
     }
 
@@ -41,7 +41,7 @@ public class AnteNatalCareInformation {
     }
 
     public int visitNumber() {
-        return coerceToInt(ancVisitNumber);
+        return coerceToInt(visitNumber);
     }
 
     public LocalDate visitDate() {

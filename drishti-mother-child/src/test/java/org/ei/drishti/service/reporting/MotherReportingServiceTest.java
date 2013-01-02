@@ -18,6 +18,7 @@ import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
 import static org.ei.drishti.util.EasyMap.create;
+import static org.joda.time.LocalDate.parse;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -31,7 +32,8 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     private final Mother MOTHER = new Mother("CASE-1", "EC-CASE-1", "TC 1", "Theresa")
             .withAnm("ANM X", "12345")
-            .withLocation("bherya", "Sub Center", "PHC X");
+            .withLocation("bherya", "Sub Center", "PHC X")
+            .withLMP(parse("2012-01-01"));
 
     @Before
     public void setUp() throws Exception {
@@ -117,6 +119,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE-1");
         reportData.put("visitDate", "2012-01-23");
+        reportData.put("visitNumber", "4");
         reportData.put("ttDose", "TT1");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
@@ -130,12 +133,58 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE-1");
         reportData.put("visitDate", "2012-01-23");
+        reportData.put("visitNumber", "4");
         reportData.put("ttDose", "");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
         service.ancHasBeenProvided(reportData);
 
         verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportANC4ProvidedWhenANCCareIsProvidedAfter36Weeks() {
+        String visitDate = parse("2012-01-01").plusWeeks(36).toString();
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("visitDate", visitDate);
+        reportData.put("ttDose", "");
+        reportData.put("visitNumber", "4");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.ancHasBeenProvided(reportData);
+
+        verifyBothReportingCalls(ANC4, visitDate);
+    }
+
+    @Test
+    public void shouldNotReportANC4ProvidedWhenANCVisitIsNotFourthVisit() {
+        String visitDate = parse("2012-01-01").plusWeeks(36).toString();
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("visitDate", visitDate);
+        reportData.put("ttDose", "");
+        reportData.put("visitNumber", "3");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.ancHasBeenProvided(reportData);
+
+        verifyNoReportingCalls(ANC4, visitDate);
+    }
+
+    @Test
+    public void shouldNotReportANC4ProvidedWhenANCCareIsProvidedBefore36Weeks() {
+        String visitDate = parse("2012-01-01").plusWeeks(36).minusDays(1).toString();
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("visitDate", visitDate);
+        reportData.put("ttDose", "");
+        reportData.put("visitNumber", "4");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.ancHasBeenProvided(reportData);
+
+        verifyNoReportingCalls(ANC4, visitDate);
     }
 
     @Test

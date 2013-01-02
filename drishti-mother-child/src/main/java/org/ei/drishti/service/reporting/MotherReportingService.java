@@ -9,10 +9,10 @@ import org.ei.drishti.util.SafeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static java.lang.Integer.parseInt;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.*;
-import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.TT_DOSE;
-import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.VISIT_DATE_COMMCARE_FIELD;
+import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommRegisterMotherFields.LMP;
@@ -51,6 +51,7 @@ public class MotherReportingService {
         Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
 
         reportTTVisit(reportData, mother);
+        reportANC4Visit(reportData, mother);
     }
 
     public void updatePregnancyOutcome(SafeMap reportData) {
@@ -107,8 +108,15 @@ public class MotherReportingService {
         }
     }
 
+    private void reportANC4Visit(SafeMap reportData, Mother mother) {
+        if ((parseInt(reportData.get(VISIT_NUMBER_COMMCARE_FIELD)) == ANC4_VISIT_NUMBER_COMMCARE_VALUE)
+                && (!parse(reportData.get(VISIT_DATE_COMMCARE_FIELD)).minusWeeks(36).isBefore(mother.lmp()))) {
+            reportToBoth(mother, ANC4, reportData.get(VISIT_DATE_COMMCARE_FIELD));
+        }
+    }
+
     private void reportTTVisit(SafeMap reportData, Mother mother) {
-        if (isNotBlank(reportData.get(TT_DOSE))) {
+        if (isNotBlank(reportData.get(TT_DOSE_COMMCARE_FIELD))) {
             reportToBoth(mother, TT, reportData.get(VISIT_DATE_COMMCARE_FIELD));
         }
     }

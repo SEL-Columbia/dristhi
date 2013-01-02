@@ -179,7 +179,7 @@
                     "mappings": {
                         "form|case|@case_id": "caseId",
                         "form|meta|username": "anmIdentifier",
-                        "form|this_anc_number": "ancVisitNumber",
+                        "form|this_anc_number": "visitNumber",
                         "form|ifa_tablets_given": "numberOfIFATabletsGiven",
                         "form|anc_visit_date": "visitDate",
                         "form|tt_dose": "ttDose"
