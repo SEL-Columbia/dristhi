@@ -173,6 +173,60 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldReportTT1ProvidedIfANCSubsetHasHappenedWithTT1() {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("ttDate", "2012-01-23");
+        reportData.put("ttDose", "tt1");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.subsetOfANCHasBeenProvided(reportData);
+
+        verifyBothReportingCalls(TT1, "2012-01-23");
+    }
+
+    @Test
+    public void shouldReportTT2AndSUBTTProvidedIfANCSubsetHasHappenedWithTT2() {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("ttDate", "2012-01-23");
+        reportData.put("ttDose", "tt2");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.subsetOfANCHasBeenProvided(reportData);
+
+        verifyBothReportingCalls(TT2, "2012-01-23");
+        verifyBothReportingCalls(SUB_TT, "2012-01-23");
+    }
+
+    @Test
+    public void shouldReportTTBAndSUBTTProvidedIfTTANCSubsetHasHappenedWithTTBooster() {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("ttDate", "2012-01-23");
+        reportData.put("ttDose", "ttbooster");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.subsetOfANCHasBeenProvided(reportData);
+
+        verifyBothReportingCalls(TTB, "2012-01-23");
+        verifyBothReportingCalls(SUB_TT, "2012-01-23");
+    }
+
+    @Test
+    public void shouldNotReportTTProvidedIfANCSubsetHasNotHappenedWithAnyTTDose() {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("ttDate", "");
+        reportData.put("ttDose", "");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.subsetOfANCHasBeenProvided(reportData);
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
     public void shouldReportANC4ProvidedWhenANCCareIsProvidedAfter36Weeks() {
         String visitDate = parse("2012-01-01").plusWeeks(36).toString();
         SafeMap reportData = new SafeMap();
@@ -210,6 +264,21 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("visitDate", visitDate);
         reportData.put("ttDose", "");
         reportData.put("visitNumber", "4");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.ancHasBeenProvided(reportData);
+
+        verifyNoReportingCalls(ANC4, visitDate);
+    }
+
+    @Test
+    public void shouldNotReportANC4ProvidedWhenVisitNumberIsInvalid() {
+        String visitDate = parse("2012-01-01").plusWeeks(36).toString();
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("visitDate", visitDate);
+        reportData.put("ttDose", "tt1");
+        reportData.put("visitNumber", "");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
         service.ancHasBeenProvided(reportData);

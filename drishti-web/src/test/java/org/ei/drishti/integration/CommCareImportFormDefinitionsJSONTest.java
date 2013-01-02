@@ -38,6 +38,7 @@ public class CommCareImportFormDefinitionsJSONTest {
         classEveryFormMappingConvertsTo.put("registerOutOfAreaANC", OutOfAreaANCRegistrationRequest.class);
         classEveryFormMappingConvertsTo.put("registerMother", AnteNatalCareEnrollmentInformation.class);
         classEveryFormMappingConvertsTo.put("updateANCCareInformation", AnteNatalCareInformation.class);
+        classEveryFormMappingConvertsTo.put("updateSubsetOfANCInformation", AnteNatalCareInformationSubset.class);
         classEveryFormMappingConvertsTo.put("updateOutcomeOfANC", AnteNatalCareOutcomeInformation.class);
         classEveryFormMappingConvertsTo.put("updateChildImmunization", ChildImmunizationUpdationRequest.class);
         classEveryFormMappingConvertsTo.put("updatePNCAndChildInformation", PostNatalCareInformation.class);

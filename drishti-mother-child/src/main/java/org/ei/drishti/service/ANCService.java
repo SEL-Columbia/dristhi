@@ -140,4 +140,13 @@ public class ANCService {
         Mother motherWithUpdatedDetails = allMothers.updateDetails(request.caseId(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
         actionService.updateBirthPlanning(request.caseId(), request.anmIdentifier(), motherWithUpdatedDetails.details());
     }
+
+    public void updateSubsetOfANCInformation(AnteNatalCareInformationSubset request, Map<String, Map<String, String>> extraData) {
+        if (!allMothers.motherExists(request.caseId())) {
+            logger.warn("Tried to update subset of ANC information without registered mother: " + request);
+            return;
+        }
+
+        reportingService.subsetOfANCHasBeenProvided(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
+    }
 }

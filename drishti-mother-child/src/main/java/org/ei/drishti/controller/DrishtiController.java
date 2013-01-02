@@ -70,6 +70,12 @@ public class DrishtiController {
         mctsService.ancCareHasBeenProvided(ancInformation);
     }
 
+    public void updateSubsetOfANCInformation(AnteNatalCareInformationSubset request, Map<String, Map<String, String>> extraData) {
+        logger.info("ANC subset updation: " + request + ". Extra data: " + extraData);
+
+        ancService.updateSubsetOfANCInformation(request, extraData);
+    }
+
     public void updateOutcomeOfANC(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
         logger.info("ANC outcome: " + outcomeInformation + ". Extra data: " + extraData);
 

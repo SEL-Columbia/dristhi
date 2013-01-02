@@ -324,4 +324,22 @@ public class ANCServiceTest {
         verifyZeroInteractions(actionService);
         verify(mothers, times(0)).updateDetails(any(String.class), any(Map.class));
     }
+
+    @Test
+    public void shouldReportSubsetOfANCUpdate() throws Exception {
+        when(mothers.motherExists("CASE X")).thenReturn(true);
+
+        service.updateSubsetOfANCInformation(new AnteNatalCareInformationSubset("CASE X", "ANM X"), EXTRA_DATA);
+
+        verify(motherReportingService).subsetOfANCHasBeenProvided(new SafeMap(EXTRA_DATA.get("reporting")));
+    }
+
+    @Test
+    public void shouldNotReportSubsetOfANCUpdateWhenMotherNotFoundInDrishti() throws Exception {
+        when(mothers.motherExists("CASE X")).thenReturn(false);
+
+        service.updateSubsetOfANCInformation(new AnteNatalCareInformationSubset("CASE X", "ANM X"), EXTRA_DATA);
+
+        verifyZeroInteractions(motherReportingService);
+    }
 }

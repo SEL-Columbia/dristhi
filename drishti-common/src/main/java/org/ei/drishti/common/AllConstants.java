@@ -35,13 +35,15 @@ public class AllConstants {
         public static final String TT2_DOSE_COMMCARE_VALUE = "tt2";
         public static final String TT_BOOSTER_DOSE_COMMCARE_VALUE = "ttbooster";
         public static final String TT_DOSE_COMMCARE_FIELD = "ttDose";
+        public static final String TT_DATE_COMMCARE_FIELD = "ttDate";
     }
 
     public static class CommonCommCareFields {
         public static final String CASE_ID_COMMCARE_FIELD_NAME = "caseId";
         public static final String SUBMISSION_DATE_COMMCARE_FIELD_NAME = "submissionDate";
         public static final String HIGH_PRIORITY_COMMCARE_FIELD_NAME = "isHighPriority";
-        public static final String BOOLEAN_TRUE_COMMCARE_VALUE = "Yes";
+        public static final String BOOLEAN_TRUE_COMMCARE_VALUE = "yes";
+        public static final String BOOLEAN_FALSE_COMMCARE_VALUE = "no";
     }
 
     public static class ChildBirthCommCareFields{
