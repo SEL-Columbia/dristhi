@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static java.lang.Integer.parseInt;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.*;
@@ -116,8 +115,14 @@ public class MotherReportingService {
     }
 
     private void reportTTVisit(SafeMap reportData, Mother mother) {
-        if (isNotBlank(reportData.get(TT_DOSE_COMMCARE_FIELD))) {
-            reportToBoth(mother, TT, reportData.get(VISIT_DATE_COMMCARE_FIELD));
+        if (TT1_DOSE_COMMCARE_VALUE.equalsIgnoreCase(reportData.get(TT_DOSE_COMMCARE_FIELD))) {
+            reportToBoth(mother, TT1, reportData.get(VISIT_DATE_COMMCARE_FIELD));
+        } else if (TT2_DOSE_COMMCARE_VALUE.equalsIgnoreCase(reportData.get(TT_DOSE_COMMCARE_FIELD))) {
+            reportToBoth(mother, TT2, reportData.get(VISIT_DATE_COMMCARE_FIELD));
+            reportToBoth(mother, SUB_TT, reportData.get(VISIT_DATE_COMMCARE_FIELD));
+        } else if (TT_BOOSTER_DOSE_COMMCARE_VALUE.equalsIgnoreCase(reportData.get(TT_DOSE_COMMCARE_FIELD))) {
+            reportToBoth(mother, TTB, reportData.get(VISIT_DATE_COMMCARE_FIELD));
+            reportToBoth(mother, SUB_TT, reportData.get(VISIT_DATE_COMMCARE_FIELD));
         }
     }
 

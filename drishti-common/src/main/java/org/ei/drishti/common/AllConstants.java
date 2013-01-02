@@ -31,6 +31,9 @@ public class AllConstants {
         public static final String VISIT_DATE_COMMCARE_FIELD = "visitDate";
         public static final String VISIT_NUMBER_COMMCARE_FIELD = "visitNumber";
         public static final int ANC4_VISIT_NUMBER_COMMCARE_VALUE = 4;
+        public static final String TT1_DOSE_COMMCARE_VALUE = "tt1";
+        public static final String TT2_DOSE_COMMCARE_VALUE = "tt2";
+        public static final String TT_BOOSTER_DOSE_COMMCARE_VALUE = "ttbooster";
         public static final String TT_DOSE_COMMCARE_FIELD = "ttDose";
     }
 

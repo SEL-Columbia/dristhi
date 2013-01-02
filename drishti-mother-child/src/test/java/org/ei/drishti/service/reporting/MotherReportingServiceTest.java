@@ -115,17 +115,47 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldReportTTProvidedIfTTVisitHasHappened() {
+    public void shouldReportTT1ProvidedIfTTVisitHasHappenedWithTT1() {
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE-1");
         reportData.put("visitDate", "2012-01-23");
         reportData.put("visitNumber", "4");
-        reportData.put("ttDose", "TT1");
+        reportData.put("ttDose", "tt1");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
         service.ancHasBeenProvided(reportData);
 
-        verifyBothReportingCalls(TT, "2012-01-23");
+        verifyBothReportingCalls(TT1, "2012-01-23");
+    }
+
+    @Test
+    public void shouldReportTT2AndSUBTTProvidedIfTTVisitHasHappenedWithTT2() {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("visitDate", "2012-01-23");
+        reportData.put("visitNumber", "4");
+        reportData.put("ttDose", "tt2");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.ancHasBeenProvided(reportData);
+
+        verifyBothReportingCalls(TT2, "2012-01-23");
+        verifyBothReportingCalls(SUB_TT, "2012-01-23");
+    }
+
+    @Test
+    public void shouldReportTTBAndSUBTTProvidedIfTTVisitHasHappenedWithTTBooster() {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("visitDate", "2012-01-23");
+        reportData.put("visitNumber", "4");
+        reportData.put("ttDose", "ttbooster");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.ancHasBeenProvided(reportData);
+
+        verifyBothReportingCalls(TTB, "2012-01-23");
+        verifyBothReportingCalls(SUB_TT, "2012-01-23");
     }
 
     @Test
