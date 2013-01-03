@@ -453,6 +453,45 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         verifyNoReportingCalls(MMP, "2012-02-12");
     }
 
+    @Test
+    public void shouldReportPNCVisit3DuringPNCVisit() throws Exception {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("visitDate", "2012-01-01");
+        reportData.put("visitNumber", "3");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.pncVisitHappened(reportData);
+
+        verifyBothReportingCalls(PNC3, "2012-01-01");
+    }
+
+    @Test
+    public void shouldNotReportPNCVisit3IfPNCVisitNumberIsNot3() throws Exception {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("visitDate", "2012-01-01");
+        reportData.put("visitNumber", "1");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.pncVisitHappened(reportData);
+
+        verifyNoReportingCalls(PNC3, "2012-01-01");
+    }
+
+    @Test
+    public void shouldNotReportPNCVisit3IfPNCVisitNumberIsInvalid() throws Exception {
+        SafeMap reportData = new SafeMap();
+        reportData.put("caseId", "CASE-1");
+        reportData.put("visitDate", "2012-01-01");
+        reportData.put("visitNumber", "");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        service.pncVisitHappened(reportData);
+
+        verifyNoReportingCalls(PNC3, "2012-01-01");
+    }
+
     private void verifyBothReportingCalls(Indicator indicator, String date) {
         verify(reportingService).sendReportData(serviceProvided(indicator, date));
         verify(reportingService).sendReportData(anmReport(indicator, date));

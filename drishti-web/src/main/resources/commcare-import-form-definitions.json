@@ -310,7 +310,7 @@
                         "form|meta|username": "anmIdentifier",
                         "form|case|update|pnc_number": "visitNumber",
                         "form|pnc_mother_group|ifa_supplementation": "numberOfIFATabletsGiven",
-                        "form|today": "submissionDate"
+                        "form|visit_date": "visitDate"
                     },
                     "extraMappings": {
                         "details": {
@@ -328,6 +328,11 @@
                             "form|is_high_risk": "isHighRisk",
                             "form|case_high_risk_reason_baby": "highRiskReasonChild",
                             "form|high_risk_reason": "highRiskReason"
+                        },
+                        "reporting": {
+                            "form|case|@case_id": "caseId",
+                            "form|pnc_number": "visitNumber",
+                            "form|visit_date": "visitDate"
                         }
                     }
                 },

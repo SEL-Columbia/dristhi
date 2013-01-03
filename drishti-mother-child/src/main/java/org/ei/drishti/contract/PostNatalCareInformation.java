@@ -10,14 +10,14 @@ public class PostNatalCareInformation {
     private String anmIdentifier;
     private String visitNumber;
     private String numberOfIFATabletsGiven;
-    private String submissionDate;
+    private String visitDate;
 
-    public PostNatalCareInformation(String caseId, String anmIdentifier, String visitNumber, String numberOfIFATabletsGiven, String submissionDate) {
+    public PostNatalCareInformation(String caseId, String anmIdentifier, String visitNumber, String numberOfIFATabletsGiven, String visitDate) {
         this.caseId = caseId;
         this.anmIdentifier = anmIdentifier;
         this.visitNumber = visitNumber;
         this.numberOfIFATabletsGiven = numberOfIFATabletsGiven;
-        this.submissionDate = submissionDate;
+        this.visitDate = visitDate;
     }
 
     public String caseId() {
@@ -29,7 +29,7 @@ public class PostNatalCareInformation {
     }
 
     public LocalDate visitDate() {
-        return LocalDate.parse(submissionDate);
+        return LocalDate.parse(visitDate);
     }
 
     public int visitNumber() {

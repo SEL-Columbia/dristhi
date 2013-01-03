@@ -45,6 +45,7 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MM');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('VIT_A_1');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('VIT_A_2');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('ANC4');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('PNC3');
 
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT'), 40, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT_1'), 40, '2012-03-26', '2013-03-25');
@@ -76,3 +77,4 @@ INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_da
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='VIT_A_1'), 50, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='VIT_A_2'), 50, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='ANC4'), 50, '2012-03-26', '2013-03-25');
+INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='c'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='PNC4'), 20, '2012-03-26', '2013-03-25');

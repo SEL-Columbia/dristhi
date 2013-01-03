@@ -62,6 +62,20 @@ public class MotherReportingService {
         reportTTVisit(reportData.get(TT_DOSE_COMMCARE_FIELD), reportData.get(TT_DATE_COMMCARE_FIELD), mother);
     }
 
+    public void pncVisitHappened(SafeMap reportData) {
+        Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+
+        String visitNumber;
+        try {
+            visitNumber = reportData.get(VISIT_NUMBER_COMMCARE_FIELD);
+            if (parseInt(visitNumber) == 3) {
+                reportToBoth(mother, PNC3, reportData.get(VISIT_DATE_COMMCARE_FIELD));
+            }
+        } catch (Exception e) {
+            logger.warn("Not reporting PNC visit for mother: " + mother.caseId() + " as visit number is invalid, visit number:" + reportData.get(VISIT_NUMBER_COMMCARE_FIELD));
+        }
+    }
+
     public void updatePregnancyOutcome(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(MOTHER_CASE_ID_COMMCARE_FIELD_NAME));
         Indicator indicator = LIVE_BIRTH_COMMCARE_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME_COMMCARE_FIELD_NAME)) ? LIVE_BIRTH : STILL_BIRTH;

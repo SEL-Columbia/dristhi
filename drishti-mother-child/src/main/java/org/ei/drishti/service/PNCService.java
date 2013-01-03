@@ -89,12 +89,13 @@ public class PNCService {
             return;
         }
 
-        Child child = allChildren.findByMotherCaseId(info.caseId());
         Map<String, String> details = extraData.get("details");
 
         Mother updatedMother = allMothers.updateDetails(info.caseId(), details);
         actionService.pncVisitHappened(mother, info.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedMother.details());
+        motherReportingService.pncVisitHappened(new SafeMap(extraData.get("reporting")));
 
+        Child child = allChildren.findByMotherCaseId(info.caseId());
         if (child != null) {
             Child updatedChild = allChildren.update(child.caseId(), details);
             actionService.pncVisitHappened(BeneficiaryType.child, child.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedChild.details());
