@@ -17,6 +17,7 @@ import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.BOOLEAN_TRUE_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.*;
 import static org.ei.drishti.common.domain.Indicator.*;
@@ -55,7 +56,6 @@ public class ChildReportingService {
         immunizationToIndicator.put(OPV_BOOSTER_COMMCARE_VALUE, OPV);
 
         immunizationToIndicator.put(MEASLES_COMMCARE_VALUE, MEASLES);
-        immunizationToIndicator.put(MEASLES_BOOSTER_COMMCARE_VALUE, MEASLES);
     }
 
     public void registerChild(SafeMap reportData) {
@@ -125,7 +125,7 @@ public class ChildReportingService {
     }
 
     private void reportBFPostBirth(String bfPostBirth, Child child) {
-        if (YES_BF_POSTBIRTH_COMMCARE_FIELD_NAME.equals(bfPostBirth)) {
+        if (BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(bfPostBirth)) {
             reportToBoth(child, BF_POST_BIRTH, child.dateOfBirth());
         }
     }

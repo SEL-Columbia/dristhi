@@ -58,7 +58,6 @@ public class ChildReportingServiceTest {
         assertIndicatorBasedOnImmunization("opvbooster", OPV);
 
         assertIndicatorBasedOnImmunization("measles", MEASLES);
-        assertIndicatorBasedOnImmunization("measlesbooster", MEASLES);
     }
 
     @Test
