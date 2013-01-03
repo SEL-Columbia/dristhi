@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "dim_service_provider")
 @NamedQueries({
-        @NamedQuery(name = ServiceProvider.FIND_BY_PHC_IDENTIFIER, query = "select r from ServiceProvider r, PHC p, ServiceProviderType s where r.serviceProvider = p.id and p.phcIdentifier=:phcIdentifier and s.type='PHC'"),
-        @NamedQuery(name = ServiceProvider.FIND_BY_ANM_IDENTIFIER, query = "select r from ServiceProvider r, SP_ANM a, ServiceProviderType s where r.serviceProvider = a.id and a.anmIdentifier=:anmIdentifier and s.type='ANM'")
+        @NamedQuery(name = ServiceProvider.FIND_BY_PHC_IDENTIFIER, query = "select r from ServiceProvider r, PHC p, ServiceProviderType s where r.serviceProvider = p.id and r.type = s.id and p.phcIdentifier=:phcIdentifier and s.type='PHC'"),
+        @NamedQuery(name = ServiceProvider.FIND_BY_ANM_IDENTIFIER, query = "select r from ServiceProvider r, SP_ANM a, ServiceProviderType s where r.serviceProvider = a.id and r.type = s.id and a.anmIdentifier=:anmIdentifier and s.type='ANM'")
 })
 public class ServiceProvider {
     public static final String FIND_BY_PHC_IDENTIFIER = "find.service.provider.by.phc.identifier";
