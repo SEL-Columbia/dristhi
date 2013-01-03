@@ -10,7 +10,6 @@ import org.ei.drishti.reporting.repository.cache.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,6 @@ import static org.ei.drishti.common.monitor.Metric.REPORTING_ANM_REPORTS_INSERT_
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.hamcrest.Matchers.equalTo;
 
-@Component
 @Repository
 public class ANMReportsRepository {
     private AllANMReportDataRepository anmReportDataRepository;
@@ -88,18 +86,19 @@ public class ANMReportsRepository {
             List<ANMReportData> allReportDataForIndicator = filterReportsByIndicator(allReportData, indicator);
             int aggregatedProgress = 0;
             List<MonthSummary> monthSummaries = new ArrayList<>();
-            for (int month = 0; month < today().getMonthOfYear(); month++) {
-                List<ANMReportData> allReportDataForAMonth = filterReportsByMonth(allReportDataForIndicator, month);
+
+            for (LocalDate indexDate = new LocalDate(startDateOfReportingYear()); indexDate.isBefore(today()); indexDate = indexDate.plusMonths(1)) {
+                int month = indexDate.getMonthOfYear();
+                List<ANMReportData> allReportDataForAMonth = filterReportsByMonth(allReportDataForIndicator, month - 1);
                 if (allReportDataForAMonth.size() == 0) {
                     continue;
                 }
 
-                int year = allReportDataForAMonth.get(0).date().year();
                 int currentProgress = allReportDataForAMonth.size();
                 aggregatedProgress += currentProgress;
                 List<String> externalIds = getAllExternalIds(allReportDataForAMonth);
 
-                monthSummaries.add(new MonthSummary(String.valueOf(month + 1), String.valueOf(year), String.valueOf(currentProgress), String.valueOf(aggregatedProgress), externalIds));
+                monthSummaries.add(new MonthSummary(String.valueOf(month), String.valueOf(indexDate.getYear()), String.valueOf(currentProgress), String.valueOf(aggregatedProgress), externalIds));
             }
             AnnualTarget annualTarget = annualTargetsRepository.fetchFor(anmIdentifier, indicator, today().toDate());
             String target = annualTarget == null ? null : annualTarget.target();

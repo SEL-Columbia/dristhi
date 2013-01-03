@@ -41,9 +41,9 @@ public class ANMReportingServiceTest {
         InOrder inOrder = inOrder(actionService);
         inOrder.verify(actionService).deleteReportActions();
         inOrder.verify(actionService).reportForIndicator("ANM X",
-                ActionData.reportForIndicator("IUD", "40", new Gson().toJson(asList(new MonthSummaryDatum("1", "2012", "2", "2", asList("CASE 1", "CASE 2")),
-                        new MonthSummaryDatum("2", "2012", "2", "4", asList("CASE 3", "CASE 4"))))));
+                ActionData.reportForIndicator("IUD", "40", new Gson().toJson(asList(new MonthSummaryDatum("3", "2012", "2", "2", asList("CASE 1", "CASE 2")),
+                        new MonthSummaryDatum("4", "2012", "2", "4", asList("CASE 3", "CASE 4"))))));
         inOrder.verify(actionService).reportForIndicator("ANM Y",
-                ActionData.reportForIndicator("ANC", "30", new Gson().toJson(asList(new MonthSummaryDatum("3", "2012", "2", "2", asList("CASE 5", "CASE 6"))))));
+                ActionData.reportForIndicator("ANC", "30", new Gson().toJson(asList(new MonthSummaryDatum("5", "2012", "2", "2", asList("CASE 5", "CASE 6"))))));
     }
 }

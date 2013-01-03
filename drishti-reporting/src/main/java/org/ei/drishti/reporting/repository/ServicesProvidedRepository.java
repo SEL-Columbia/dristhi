@@ -13,7 +13,6 @@ import org.ei.drishti.reporting.repository.cache.ReadOnlyCachingRepository;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +20,6 @@ import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_CA
 import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_INSERT_TIME;
 import static org.ei.drishti.reporting.domain.ServiceProviderType.parse;
 
-@Component
 @Repository
 public class ServicesProvidedRepository {
     private AllServiceProvidersRepository serviceProvidersRepository;
