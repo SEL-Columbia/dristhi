@@ -20,7 +20,7 @@ class Village
         "29230030068" => Village.new("bherya", "hosa_agrahara", "mandiganahalli"),
         "29230030061" => Village.new("bherya", "munjanahalli", "chikkabherya"),
         "29230030058" => Village.new("bherya", "munjanahalli", "kavalu_hosur"),
-        "29230030060" => Village.new("bheriy", "munjanahalli", "munjanahalli"),
+        "29230030060" => Village.new("bherya", "munjanahalli", "munjanahalli"),
         "29230040138" => Village.new("keelanapura", "keelanapura-a", "inam_uttanahalli"),
         "29230040113" => Village.new("keelanapura", "keelanapura-a", "keelanapura"),
         "29230040113a" => Village.new("keelanapura", "keelanapura-a", "m.c._hundi"),
