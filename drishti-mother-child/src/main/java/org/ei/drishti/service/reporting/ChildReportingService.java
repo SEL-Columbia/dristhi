@@ -28,7 +28,7 @@ public class ChildReportingService {
     private final ReportingService reportingService;
     private final AllChildren allChildren;
     private static Logger logger = LoggerFactory.getLogger(ChildReportingService.class.toString());
-    private Map<String, Indicator> immunizationToIndicator;
+    private Map<String, List<Indicator>> immunizationToIndicator;
 
     @Autowired
     public ChildReportingService(ReportingService reportingService, AllChildren allChildren) {
@@ -36,26 +36,26 @@ public class ChildReportingService {
         this.allChildren = allChildren;
         immunizationToIndicator = new HashMap<>();
 
-        immunizationToIndicator.put(BCG_COMMCARE_VALUE, BCG);
+        immunizationToIndicator.put(BCG_COMMCARE_VALUE, asList(BCG));
 
-        immunizationToIndicator.put(DPT_1_COMMCARE_VALUE, DPT1);
-        immunizationToIndicator.put(DPT_2_COMMCARE_VALUE, DPT2);
-        immunizationToIndicator.put(DPT_3_COMMCARE_VALUE, DPT3);
-        immunizationToIndicator.put(DPT_BOOSTER_1_COMMCARE_VALUE, DPT);
-        immunizationToIndicator.put(DPT_BOOSTER_2_COMMCARE_VALUE, DPT_BOOSTER2);
+        immunizationToIndicator.put(DPT_1_COMMCARE_VALUE, asList(DPT1));
+        immunizationToIndicator.put(DPT_2_COMMCARE_VALUE, asList(DPT2));
+        immunizationToIndicator.put(DPT_3_COMMCARE_VALUE, asList(DPT3, DPT3_OR_OPV3));
+        immunizationToIndicator.put(DPT_BOOSTER_1_COMMCARE_VALUE, asList(DPT, DPT_BOOSTER_OR_OPV_BOOSTER));
+        immunizationToIndicator.put(DPT_BOOSTER_2_COMMCARE_VALUE, asList(DPT_BOOSTER2));
 
-        immunizationToIndicator.put(HEPATITIS_0_COMMCARE_VALUE, HEP);
-        immunizationToIndicator.put(HEPATITIS_1_COMMCARE_VALUE, HEP);
-        immunizationToIndicator.put(HEPATITIS_2_COMMCARE_VALUE, HEP);
-        immunizationToIndicator.put(HEPATITIS_3_COMMCARE_VALUE, HEP);
+        immunizationToIndicator.put(HEPATITIS_0_COMMCARE_VALUE, asList(HEP));
+        immunizationToIndicator.put(HEPATITIS_1_COMMCARE_VALUE, asList(HEP));
+        immunizationToIndicator.put(HEPATITIS_2_COMMCARE_VALUE, asList(HEP));
+        immunizationToIndicator.put(HEPATITIS_3_COMMCARE_VALUE, asList(HEP));
 
-        immunizationToIndicator.put(OPV_0_COMMCARE_VALUE, OPV);
-        immunizationToIndicator.put(OPV_1_COMMCARE_VALUE, OPV);
-        immunizationToIndicator.put(OPV_2_COMMCARE_VALUE, OPV);
-        immunizationToIndicator.put(OPV_3_COMMCARE_VALUE, OPV);
-        immunizationToIndicator.put(OPV_BOOSTER_COMMCARE_VALUE, OPV);
+        immunizationToIndicator.put(OPV_0_COMMCARE_VALUE, asList(OPV));
+        immunizationToIndicator.put(OPV_1_COMMCARE_VALUE, asList(OPV));
+        immunizationToIndicator.put(OPV_2_COMMCARE_VALUE, asList(OPV));
+        immunizationToIndicator.put(OPV_3_COMMCARE_VALUE, asList(OPV, DPT3_OR_OPV3));
+        immunizationToIndicator.put(OPV_BOOSTER_COMMCARE_VALUE, asList(OPV, DPT_BOOSTER_OR_OPV_BOOSTER));
 
-        immunizationToIndicator.put(MEASLES_COMMCARE_VALUE, MEASLES);
+        immunizationToIndicator.put(MEASLES_COMMCARE_VALUE, asList(MEASLES));
     }
 
     public void registerChild(SafeMap reportData) {
@@ -132,14 +132,16 @@ public class ChildReportingService {
 
     private void reportImmunizations(String caseId, Child child, List<String> immunizations, String date) {
         for (String immunizationProvidedThisTime : immunizations) {
-            Indicator indicator = immunizationToIndicator.get(immunizationProvidedThisTime);
-            if (indicator == null) {
+            List<Indicator> indicators = immunizationToIndicator.get(immunizationProvidedThisTime);
+            if (indicators == null) {
                 logger.warn("Not reporting: Invalid immunization: " + immunizationProvidedThisTime + " for childCaseId: " +
                         caseId + " with immunizations provided: " + immunizations);
                 continue;
             }
 
-            reportToBoth(child, indicator, date);
+            for (Indicator indicator : indicators) {
+                reportToBoth(child, indicator, date);
+            }
         }
     }
 

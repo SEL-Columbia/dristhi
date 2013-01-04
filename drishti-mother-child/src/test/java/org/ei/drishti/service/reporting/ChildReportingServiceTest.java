@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.ei.drishti.common.domain.Indicator.DPT3_OR_OPV3;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -42,8 +43,8 @@ public class ChildReportingServiceTest {
 
         assertIndicatorBasedOnImmunization("dpt_1", DPT1);
         assertIndicatorBasedOnImmunization("dpt_2", DPT2);
-        assertIndicatorBasedOnImmunization("dpt_3", DPT3);
-        assertIndicatorBasedOnImmunization("dptbooster_1", DPT);
+        assertIndicatorBasedOnImmunization("dpt_3", DPT3, DPT3_OR_OPV3);
+        assertIndicatorBasedOnImmunization("dptbooster_1", DPT, DPT_BOOSTER_OR_OPV_BOOSTER);
         assertIndicatorBasedOnImmunization("dptbooster_2", DPT_BOOSTER2);
 
         assertIndicatorBasedOnImmunization("hepb_0", HEP);
@@ -54,8 +55,8 @@ public class ChildReportingServiceTest {
         assertIndicatorBasedOnImmunization("opv_0", OPV);
         assertIndicatorBasedOnImmunization("opv_1", OPV);
         assertIndicatorBasedOnImmunization("opv_2", OPV);
-        assertIndicatorBasedOnImmunization("opv_3", OPV);
-        assertIndicatorBasedOnImmunization("opvbooster", OPV);
+        assertIndicatorBasedOnImmunization("opv_3", OPV, DPT3_OR_OPV3);
+        assertIndicatorBasedOnImmunization("opvbooster", OPV, DPT_BOOSTER_OR_OPV_BOOSTER);
 
         assertIndicatorBasedOnImmunization("measles", MEASLES);
     }
@@ -325,7 +326,7 @@ public class ChildReportingServiceTest {
         verifyZeroInteractions(reportingService);
     }
 
-    private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator expectedIndicator) {
+    private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator... expectedIndicators) {
         ReportingService fakeReportingService = mock(ReportingService.class);
         ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, allChildren);
         SafeMap reportingData = reportDataForImmunization(immunizationProvided, "");
@@ -333,8 +334,10 @@ public class ChildReportingServiceTest {
 
         childReportingService.immunizationProvided(reportingData, new ArrayList<String>());
 
-        verify(fakeReportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", expectedIndicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
-        verify(fakeReportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", expectedIndicator, "2012-01-01"));
+        for (Indicator expectedIndicator : expectedIndicators) {
+            verify(fakeReportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", expectedIndicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+            verify(fakeReportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", expectedIndicator, "2012-01-01"));
+        }
         verifyNoMoreInteractions(fakeReportingService);
     }
 

@@ -97,4 +97,3 @@ INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_da
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='klp2'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT_BOOSTER_2'), 22, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='klp3'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT_BOOSTER_2'), 84, '2012-03-26', '2013-03-25');
 INSERT INTO anm_report.annual_target (anmIdentifier, indicator, target, start_date, end_date) VALUES ((SELECT ID FROM anm_report.dim_anm WHERE anmIdentifier='klp4'), (SELECT ID FROM anm_report.dim_indicator WHERE indicator='DPT_BOOSTER_2'), 45, '2012-03-26', '2013-03-25');
-

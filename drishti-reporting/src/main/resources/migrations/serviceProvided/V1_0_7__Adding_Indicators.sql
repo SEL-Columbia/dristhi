@@ -51,3 +51,5 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('D_CHC');
 INSERT INTO report.dim_indicator (indicator) VALUES ('D_SDH');
 INSERT INTO report.dim_indicator (indicator) VALUES ('D_DH');
 INSERT INTO report.dim_indicator (indicator) VALUES ('D_PRI');
+INSERT INTO report.dim_indicator (indicator) VALUES ('DPT3_OPV3');
+INSERT INTO report.dim_indicator (indicator) VALUES ('DPTB_OPVB');
