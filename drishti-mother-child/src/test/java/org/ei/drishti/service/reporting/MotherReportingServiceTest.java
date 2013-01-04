@@ -397,6 +397,20 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldReportPlaceOfDeliveryDuringPregnancyOutcome() {
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+
+        testPlaceOfDeliveryIsReported("home", D_HOM);
+        testPlaceOfDeliveryIsReported("subcenter", D_SC);
+        testPlaceOfDeliveryIsReported("phc", D_PHC);
+        testPlaceOfDeliveryIsReported("chc", D_CHC);
+        testPlaceOfDeliveryIsReported("sdh", D_SDH);
+        testPlaceOfDeliveryIsReported("dh", D_DH);
+        testPlaceOfDeliveryIsReported("private_facility", D_PRI);
+        testPlaceOfDeliveryIsReported("private_facility2", D_PRI);
+    }
+
+    @Test
     public void shouldReportMotherDeathDuringPNCClose() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER.withDeliveryOutCome("2012-01-01"));
 
@@ -502,6 +516,16 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         verify(reportingService, times(0)).sendReportData(anmReport(indicator, date));
     }
 
+    private void testPlaceOfDeliveryIsReported(String placeOfDelivery, Indicator expectedIndicator) {
+        ReportingService reportingService = mock(ReportingService.class);
+        MotherReportingService service = new MotherReportingService(reportingService, allMothers);
+
+        service.updatePregnancyOutcome(reportDataForPlaceOfDelivery(placeOfDelivery));
+
+        verify(reportingService).sendReportData(serviceProvided(expectedIndicator, "2012-05-01"));
+        verify(reportingService).sendReportData(anmReport(expectedIndicator, "2012-05-01"));
+    }
+
     private void assertThatIndicatorIsSetBasedOnLMP(String lmp, Indicator indicator) {
         SafeMap reportData = new SafeMap();
         reportData.put("lmp", lmp);
@@ -524,6 +548,17 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     private ReportingData serviceProvided(Indicator indicator, String date) {
         return serviceProvidedData("ANM X", "TC 1", indicator, date, new Location("bherya", "Sub Center", "PHC X"));
+    }
+
+    private SafeMap reportDataForPlaceOfDelivery(String placeOfDelivery) {
+        return new SafeMap(create("motherCaseId", "CASE-1")
+                .put("anmIdentifier", "ANM 1")
+                .put("motherSurvived", "no")
+                .put("womanSurvived", "no")
+                .put("pregnancyOutcome", "still_birth")
+                .put("placeOfDelivery", placeOfDelivery)
+                .put("dateOfDelivery", "2012-05-01")
+                .map());
     }
 
     private SafeMap reportDataForANCClose(String mtpTime, String closeReason, String isMaternalDeath) {

@@ -25,6 +25,14 @@ public class AllConstants {
         public static final String WOMAN_SURVIVED_COMMCARE_FIELD_NAME = "womanSurvived";
         public static final String LIVE_BIRTH_COMMCARE_FIELD_VALUE = "live_birth";
         public static final String HOME_COMMCARE_FIELD_VALUE = "home";
+        public static final String SC_COMMCARE_FIELD_VALUE = "subcenter";
+        public static final String PHC_COMMCARE_FIELD_VALUE = "phc";
+        public static final String CHC_COMMCARE_FIELD_VALUE = "chc";
+        public static final String SDH_COMMCARE_FIELD_VALUE = "sdh";
+        public static final String DH_COMMCARE_FIELD_VALUE = "dh";
+        public static final String PRIVATE_FACILITY_COMMCARE_FIELD_VALUE = "private_facility";
+        public static final String PRIVATE_FACILITY2_COMMCARE_FIELD_VALUE = "private_facility2";
+
     }
 
     public static class ANCVisitCommCareFields {

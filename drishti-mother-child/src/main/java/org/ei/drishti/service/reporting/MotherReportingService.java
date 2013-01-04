@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static java.lang.Integer.parseInt;
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
@@ -31,12 +34,23 @@ public class MotherReportingService {
     public static final int NUMBER_OF_DAYS_IN_12_WEEKS = 84;
     private ReportingService reportingService;
     private AllMothers allMothers;
+    private final Map<String, Indicator> placeOfDeliveryToIndicator;
 
 
     @Autowired
     public MotherReportingService(ReportingService reportingService, AllMothers allMothers) {
         this.reportingService = reportingService;
         this.allMothers = allMothers;
+
+        placeOfDeliveryToIndicator = new HashMap<>();
+        placeOfDeliveryToIndicator.put(HOME_COMMCARE_FIELD_VALUE, D_HOM);
+        placeOfDeliveryToIndicator.put(SC_COMMCARE_FIELD_VALUE, D_SC);
+        placeOfDeliveryToIndicator.put(PHC_COMMCARE_FIELD_VALUE, D_PHC);
+        placeOfDeliveryToIndicator.put(CHC_COMMCARE_FIELD_VALUE, D_CHC);
+        placeOfDeliveryToIndicator.put(SDH_COMMCARE_FIELD_VALUE, D_SDH);
+        placeOfDeliveryToIndicator.put(DH_COMMCARE_FIELD_VALUE, D_DH);
+        placeOfDeliveryToIndicator.put(PRIVATE_FACILITY_COMMCARE_FIELD_VALUE, D_PRI);
+        placeOfDeliveryToIndicator.put(PRIVATE_FACILITY2_COMMCARE_FIELD_VALUE, D_PRI);
     }
 
     public void registerANC(SafeMap reportData) {
@@ -78,19 +92,39 @@ public class MotherReportingService {
 
     public void updatePregnancyOutcome(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(MOTHER_CASE_ID_COMMCARE_FIELD_NAME));
-        Indicator indicator = LIVE_BIRTH_COMMCARE_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME_COMMCARE_FIELD_NAME)) ? LIVE_BIRTH : STILL_BIRTH;
-        reportToBoth(mother, indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
-
-        if (!HOME_COMMCARE_FIELD_VALUE.equals(reportData.get(PLACE_OF_DELIVERY_COMMCARE_FIELD_NAME))) {
-            reportToBoth(mother, INSTITUTIONAL_DELIVERY, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
-        }
-
+        reportPregnancyOutcome(reportData, mother);
+        reportIfInstitutionalDelivery(reportData, mother);
         reportToBoth(mother, DELIVERY, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+        reportMotherMortality(reportData, mother);
+        reportPlaceOfDelivery(reportData, mother);
+    }
 
+    private void reportPlaceOfDelivery(SafeMap reportData, Mother mother) {
+        Indicator indicator = placeOfDeliveryToIndicator.get(reportData.get(PLACE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+        if (indicator != null) {
+            reportToBoth(mother, indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+        } else {
+            logger.warn("Not reporting: Invalid place of delivery: " + reportData.get(PLACE_OF_DELIVERY_COMMCARE_FIELD_NAME) + " for motherCaseId: " +
+                    mother.caseId());
+        }
+    }
+
+    private void reportMotherMortality(SafeMap reportData, Mother mother) {
         if (BOOLEAN_FALSE_COMMCARE_VALUE.equals(reportData.get(MOTHER_SURVIVED_COMMCARE_FIELD_NAME)) ||
                 BOOLEAN_FALSE_COMMCARE_VALUE.equals(reportData.get(WOMAN_SURVIVED_COMMCARE_FIELD_NAME))) {
             reportDeath(mother, MMD, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
         }
+    }
+
+    private void reportIfInstitutionalDelivery(SafeMap reportData, Mother mother) {
+        if (!HOME_COMMCARE_FIELD_VALUE.equals(reportData.get(PLACE_OF_DELIVERY_COMMCARE_FIELD_NAME))) {
+            reportToBoth(mother, INSTITUTIONAL_DELIVERY, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
+        }
+    }
+
+    private void reportPregnancyOutcome(SafeMap reportData, Mother mother) {
+        Indicator indicator = LIVE_BIRTH_COMMCARE_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME_COMMCARE_FIELD_NAME)) ? LIVE_BIRTH : STILL_BIRTH;
+        reportToBoth(mother, indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
     }
 
     public void closeANC(SafeMap reportData) {
