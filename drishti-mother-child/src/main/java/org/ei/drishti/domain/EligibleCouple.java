@@ -31,6 +31,8 @@ public class EligibleCouple extends MotechBaseDataObject {
     @JsonProperty
     private boolean isOutOfArea;
     @JsonProperty
+    private boolean isClosed;
+    @JsonProperty
     private Map<String, String> details;
 
     public EligibleCouple() {
@@ -107,6 +109,11 @@ public class EligibleCouple extends MotechBaseDataObject {
 
     public Map<String, String> details() {
         return details;
+    }
+
+    public EligibleCouple setIsClosed(boolean isClosed) {
+        this.isClosed = isClosed;
+        return this;
     }
 
     @Override

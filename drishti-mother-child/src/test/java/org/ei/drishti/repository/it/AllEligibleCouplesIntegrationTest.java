@@ -16,7 +16,6 @@ import static java.util.Arrays.asList;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
@@ -41,7 +40,7 @@ public class AllEligibleCouplesIntegrationTest {
     }
 
     @Test
-    public void shouldRemoveEligibleCoupleOnClose() throws Exception {
+    public void shouldMarkAsCloseOnEligibleCoupleClose() throws Exception {
         EligibleCouple couple1 = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1").withANMIdentifier("ANM X");
         EligibleCouple couple2 = new EligibleCouple("CASE Y", "EC Number 2").withCouple("Wife 2", "Husband 2").withANMIdentifier("ANM X");
         eligibleCouples.register(couple1);
@@ -50,11 +49,11 @@ public class AllEligibleCouplesIntegrationTest {
 
         eligibleCouples.close("CASE X");
 
-        assertThat(eligibleCouples.getAll(), is(asList(couple2)));
+        assertThat(eligibleCouples.getAll(), is(asList(couple1.setIsClosed(true), couple2)));
     }
 
     @Test
-    public void shouldNotTryAndRemoveANonExistingCouple() {
+    public void shouldNotTryAndCloseANonExistingCouple() {
         EligibleCouple couple = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1").withANMIdentifier("ANM X");
         eligibleCouples.register(couple);
         assertThat(eligibleCouples.getAll(), is(asList(couple)));

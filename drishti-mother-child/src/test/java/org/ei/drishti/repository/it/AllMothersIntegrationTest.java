@@ -97,6 +97,16 @@ public class AllMothersIntegrationTest {
         assertThat(mothers.findByCaseId("CASE-1"), is(motherToRegister.withDeliveryOutCome("2013-01-01")));
     }
 
+    @Test
+    public void shouldMarkMotherAsClosedWhenMotherClose() {
+        Mother motherToRegister = motherWithoutDetails();
+        mothers.register(motherToRegister);
+
+        mothers.close("CASE X");
+
+        assertThat(mothers.findByCaseId("CASE X"), is(motherToRegister.setIsClosed(true)));
+    }
+
     private Mother motherWithoutDetails() {
         return new Mother("CASE X", "EC-CASE-1", "TC 1", "Wife 1").withAnm("ANM X", "9888198881");
     }

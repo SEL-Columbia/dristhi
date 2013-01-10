@@ -36,6 +36,8 @@ public class Mother extends MotechBaseDataObject {
     @JsonProperty
     private String phc;
     @JsonProperty
+    private boolean isClosed;
+    @JsonProperty
     private Map<String, String> details;
 
     private Mother() {
@@ -119,6 +121,11 @@ public class Mother extends MotechBaseDataObject {
 
     public LocalDate lmp() {
         return lmp;
+    }
+
+    public Mother setIsClosed(boolean isClosed) {
+        this.isClosed = isClosed;
+        return this;
     }
 
     private String getCaseId() {

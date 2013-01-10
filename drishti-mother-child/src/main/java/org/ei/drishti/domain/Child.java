@@ -37,6 +37,8 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private String phc;
     @JsonProperty
+    private boolean isClosed;
+    @JsonProperty
     private Map<String, String> details;
 
     private Child() {
@@ -113,6 +115,11 @@ public class Child extends MotechBaseDataObject {
 
     public Location location() {
         return new Location(village, subCenter, phc);
+    }
+
+    public Child setIsClosed(boolean isClosed) {
+        this.isClosed = isClosed;
+        return this;
     }
 
     private String getCaseId() {

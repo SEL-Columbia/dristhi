@@ -37,9 +37,9 @@ public class PNCServiceTest extends BaseUnitTest {
     @Mock
     private ChildSchedulesService childSchedulesService;
     @Mock
-    private AllMothers allMothers;
+    private AllMothers mothers;
     @Mock
-    private AllChildren allChildren;
+    private AllChildren children;
     @Mock
     private MotherReportingService motherReportingService;
     @Mock
@@ -51,14 +51,14 @@ public class PNCServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new PNCService(actionService, childSchedulesService, allMothers, allChildren, motherReportingService, childReportingService);
+        service = new PNCService(actionService, childSchedulesService, mothers, children, motherReportingService, childReportingService);
     }
 
     @Test
     public void shouldAddAlertsForVaccinationsForChildren() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
+        when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
 
         service.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", "4", "yes", EXTRA_DATA));
 
@@ -71,7 +71,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldEnrollChildIntoSchedulesDuringRegistration() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
+        when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
         ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", "4", "yes", EXTRA_DATA);
 
         service.registerChild(childInformation);
@@ -83,22 +83,22 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldSaveChildIntoRepositoryDuringRegistration() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1", "Theresa"));
+        when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1", "Theresa"));
 
         service.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", "2012-01-01", "bcg hep", "4", "yes", EXTRA_DATA));
 
-        verify(allChildren).register(objectWithSameFieldsAs(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female").withAnm("ANM X").withDateOfBirth("2012-01-01").withDetails(EXTRA_DATA.get("details"))));
+        verify(children).register(objectWithSameFieldsAs(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female").withAnm("ANM X").withDateOfBirth("2012-01-01").withDetails(EXTRA_DATA.get("details"))));
     }
 
     @Test
     public void shouldNotSaveChildIntoRepositoryDuringRegistrationWhenMotherIsNotFound() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(null);
+        when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(null);
 
         service.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", "2012-01-01", "bcg hep", "4", "yes", EXTRA_DATA));
 
-        verifyZeroInteractions(allChildren);
+        verifyZeroInteractions(children);
     }
 
     @Test
@@ -112,10 +112,10 @@ public class PNCServiceTest extends BaseUnitTest {
         Mother mother = new Mother(motherCaseId, "EC-CASE-1", "TC 1", "Theresa");
         Child child = new Child(childCaseId, "EC-CASE-1", motherCaseId, "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female");
 
-        when(allMothers.motherExists(motherCaseId)).thenReturn(true);
-        when(allChildren.findByMotherCaseId(motherCaseId)).thenReturn(child);
-        when(allChildren.update(childCaseId, newDetails)).thenReturn(child.withDetails(childUpdatedDetails));
-        when(allMothers.updateDetails(motherCaseId, newDetails)).thenReturn(mother.withDetails(motherUpdatedDetails));
+        when(mothers.motherExists(motherCaseId)).thenReturn(true);
+        when(children.findByMotherCaseId(motherCaseId)).thenReturn(child);
+        when(children.update(childCaseId, newDetails)).thenReturn(child.withDetails(childUpdatedDetails));
+        when(mothers.updateDetails(motherCaseId, newDetails)).thenReturn(mother.withDetails(motherUpdatedDetails));
 
         service.pncVisitHappened(new PostNatalCareInformation(motherCaseId, "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
 
@@ -126,12 +126,12 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldUpdateMotherButNotChildDetailsWhenChildIsNotFoundDuringPNCVisit() throws Exception {
         String motherCaseId = "MOTHER-CASE-1";
-        when(allMothers.motherExists(motherCaseId)).thenReturn(true);
-        when(allChildren.findByMotherCaseId(motherCaseId)).thenReturn(null);
+        when(mothers.motherExists(motherCaseId)).thenReturn(true);
+        when(children.findByMotherCaseId(motherCaseId)).thenReturn(null);
         Map<String, String> expectedDetails = create("key", "value").put("someKey", "someValue").map();
         Map<String, String> details = mapOf("someKey", "someValue");
 
-        when(allMothers.updateDetails(motherCaseId, details)).thenReturn(new Mother(motherCaseId, "EC-CASE-1", "TC 1", "Theresa").withDetails(expectedDetails));
+        when(mothers.updateDetails(motherCaseId, details)).thenReturn(new Mother(motherCaseId, "EC-CASE-1", "TC 1", "Theresa").withDetails(expectedDetails));
 
         service.pncVisitHappened(new PostNatalCareInformation(motherCaseId, "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
 
@@ -141,13 +141,13 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotDoAnythingIfMotherIsNotFoundDuringPNCVisit() throws Exception {
         String motherCaseId = "MOTHER-CASE-1";
-        when(allMothers.motherExists(motherCaseId)).thenReturn(false);
+        when(mothers.motherExists(motherCaseId)).thenReturn(false);
 
         service.pncVisitHappened(new PostNatalCareInformation(motherCaseId, "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
 
-        verify(allMothers).motherExists("MOTHER-CASE-1");
-        verifyNoMoreInteractions(allMothers);
-        verifyZeroInteractions(allChildren);
+        verify(mothers).motherExists("MOTHER-CASE-1");
+        verifyNoMoreInteractions(mothers);
+        verifyZeroInteractions(children);
         verifyZeroInteractions(actionService);
     }
 
@@ -166,11 +166,11 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldUpdateEnrollmentsForUpdatedImmunizations() {
         Child child = mock(Child.class);
-        when(allChildren.childExists("Case X")).thenReturn(true);
-        when(allChildren.findByCaseId("Case X")).thenReturn(child);
+        when(children.childExists("Case X")).thenReturn(true);
+        when(children.findByCaseId("Case X")).thenReturn(child);
         when(child.immunizationsProvided()).thenReturn(asList(""));
         ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01");
-        when(allChildren.update("Case X", EXTRA_DATA.get("details")))
+        when(children.update("Case X", EXTRA_DATA.get("details")))
                 .thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female")
                         .withDetails(EXTRA_DATA.get("details")));
 
@@ -182,27 +182,27 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldUpdateChildDetailsForUpdatedImmunizations() {
         Child child = mock(Child.class);
-        when(allChildren.childExists("Case X")).thenReturn(true);
-        when(allChildren.findByCaseId("Case X")).thenReturn(child);
+        when(children.childExists("Case X")).thenReturn(true);
+        when(children.findByCaseId("Case X")).thenReturn(child);
         when(child.immunizationsProvided()).thenReturn(asList(""));
         ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01");
-        when(allChildren.update("Case X", EXTRA_DATA.get("details")))
+        when(children.update("Case X", EXTRA_DATA.get("details")))
                 .thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female")
                         .withDetails(EXTRA_DATA.get("details")));
 
         service.updateChildImmunization(request, EXTRA_DATA);
 
-        verify(allChildren).update("Case X", EXTRA_DATA.get("details"));
+        verify(children).update("Case X", EXTRA_DATA.get("details"));
     }
 
     @Test
     public void shouldCreateActionForUpdatedImmunizations() {
         Child child = mock(Child.class);
-        when(allChildren.childExists("Case X")).thenReturn(true);
-        when(allChildren.findByCaseId("Case X")).thenReturn(child);
+        when(children.childExists("Case X")).thenReturn(true);
+        when(children.findByCaseId("Case X")).thenReturn(child);
         when(child.immunizationsProvided()).thenReturn(asList(""));
         ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01").withVitaminADose("1");
-        when(allChildren.update("Case X", EXTRA_DATA.get("details")))
+        when(children.update("Case X", EXTRA_DATA.get("details")))
                 .thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female")
                         .withDetails(EXTRA_DATA.get("details")));
 
@@ -214,7 +214,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotDoAnythingIfChildIsNotFoundForUpdatedImmunizations() {
         ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01").withVitaminADose("1");
-        when(allChildren.childExists("Case X")).thenReturn(false);
+        when(children.childExists("Case X")).thenReturn(false);
 
         service.updateChildImmunization(request, EXTRA_DATA);
 
@@ -225,10 +225,10 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldCallReportingServiceWithPreviousImmunizationsInsteadOfCurrentImmunizations() throws Exception {
-        when(allChildren.childExists("Case X")).thenReturn(true);
-        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("hep"), "female")
+        when(children.childExists("Case X")).thenReturn(true);
+        when(children.findByCaseId("Case X")).thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("hep"), "female")
                 .withDetails(EXTRA_DATA.get("details")));
-        when(allChildren.update("Case X", EXTRA_DATA.get("details")))
+        when(children.update("Case X", EXTRA_DATA.get("details")))
                 .thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("hep", "bcg", "opv0"), "female")
                         .withDetails(EXTRA_DATA.get("details")));
         ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01");
@@ -242,7 +242,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldDeleteAllAlertsForChildCaseClose() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(allChildren.childExists("Case X")).thenReturn(true);
+        when(children.childExists("Case X")).thenReturn(true);
 
         service.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"), EXTRA_DATA);
 
@@ -253,7 +253,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldCreateACloseChildActionForChildCaseClose() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(allChildren.childExists("Case X")).thenReturn(true);
+        when(children.childExists("Case X")).thenReturn(true);
 
         service.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"), EXTRA_DATA);
 
@@ -262,7 +262,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldUnenrollChildWhoseCaseHasBeenClosed() {
-        when(allChildren.childExists("Case X")).thenReturn(true);
+        when(children.childExists("Case X")).thenReturn(true);
 
         service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"), EXTRA_DATA);
 
@@ -271,7 +271,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldReportWhenChildCaseIsClosed() {
-        when(allChildren.childExists("Case X")).thenReturn(true);
+        when(children.childExists("Case X")).thenReturn(true);
 
         service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"), EXTRA_DATA);
 
@@ -279,29 +279,58 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldNotDoAnythingIfChildDoesNotExistsDuringClose() {
-        when(allChildren.childExists("Case X")).thenReturn(false);
+    public void shouldCloseWhenChildCaseIsClosed() {
+        when(children.childExists("Case X")).thenReturn(true);
 
         service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"), EXTRA_DATA);
 
+        verify(children).close("Case X");
+    }
+
+    @Test
+    public void shouldNotDoAnythingIfChildDoesNotExistsDuringClose() {
+        when(children.childExists("Case X")).thenReturn(false);
+
+        service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"), EXTRA_DATA);
+
+        verify(children).childExists("Case X");
         verifyZeroInteractions(childReportingService);
         verifyZeroInteractions(childSchedulesService);
         verifyZeroInteractions(actionService);
+        verifyNoMoreInteractions(children);
     }
 
     @Test
     public void shouldReportWhenPNCCaseIsClosed() {
-        when(allMothers.motherExists("Case X")).thenReturn(true);
+        when(mothers.motherExists("Case X")).thenReturn(true);
 
-        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y"), EXTRA_DATA);
+        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
 
         verify(motherReportingService).closePNC(new SafeMap(EXTRA_DATA.get("reporting")));
     }
 
     @Test
+    public void shouldCreateActionsWhenPNCCaseIsClosed() {
+        when(mothers.motherExists("Case X")).thenReturn(true);
+
+        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
+
+        verify(actionService).closeMother("Case X", "ANM Y", "Permanent Transfer");
+    }
+
+    @Test
+    public void shouldCloseMotherWhenPNCCaseIsClosed() {
+        when(mothers.motherExists("Case X")).thenReturn(true);
+
+        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
+
+        verify(mothers).close("Case X");
+    }
+
+    @Test
     public void shouldReportWhenPNCVisitForMotherHappens() {
-        when(allMothers.motherExists("Case X")).thenReturn(true);
-        when(allMothers.updateDetails("Case X", EXTRA_DATA.get("details"))).thenReturn(new Mother("Case X", "EC-CASE-1", "TC 1", "Theresa"));
+        when(mothers.motherExists("Case X")).thenReturn(true);
+        when(mothers.updateDetails("Case X", EXTRA_DATA.get("details"))).thenReturn(new Mother("Case X", "EC-CASE-1", "TC 1", "Theresa"));
 
         service.pncVisitHappened(new PostNatalCareInformation("Case X", "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
 
@@ -310,7 +339,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldNotReportPNCVisitForMotherWhenThereIsNoMotherInDrishti() {
-        when(allMothers.motherExists("Case X")).thenReturn(false);
+        when(mothers.motherExists("Case X")).thenReturn(false);
 
         service.pncVisitHappened(new PostNatalCareInformation("Case X", "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
 
@@ -319,11 +348,14 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldNotDoAnythingIfMotherDoesNotExistsDuringClose() {
-        when(allMothers.motherExists("Case X")).thenReturn(false);
+        when(mothers.motherExists("Case X")).thenReturn(false);
 
-        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y"), EXTRA_DATA);
+        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
 
+        verify(mothers).motherExists("Case X");
+        verifyZeroInteractions(actionService);
         verifyZeroInteractions(motherReportingService);
+        verifyNoMoreInteractions(mothers);
     }
 
     @Test
@@ -332,10 +364,10 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
 
         Child child = mock(Child.class);
-        when(allChildren.childExists("Case X")).thenReturn(true);
-        when(allChildren.findByCaseId("Case X")).thenReturn(child);
+        when(children.childExists("Case X")).thenReturn(true);
+        when(children.findByCaseId("Case X")).thenReturn(child);
         when(child.immunizationsProvided()).thenReturn(asList(""));
-        when(allChildren.update("Case X", EXTRA_DATA.get("details")))
+        when(children.update("Case X", EXTRA_DATA.get("details")))
                 .thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female")
                         .withDetails(EXTRA_DATA.get("details")));
 
@@ -357,7 +389,7 @@ public class PNCServiceTest extends BaseUnitTest {
         reportData.put("caseId", "Case X");
         reportData.put("childWeight", "4");
         reportData.put("bfPostBirth", "yes");
-        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
+        when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
         ChildInformation childInformation = new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", "4", "yes", EXTRA_DATA);
 
         service.registerChild(childInformation);
@@ -369,8 +401,8 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         ActionService actionService = mock(ActionService.class);
-        PNCService pncService = new PNCService(actionService, childSchedulesService, allMothers, allChildren, motherReportingService, childReportingService);
-        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
+        PNCService pncService = new PNCService(actionService, childSchedulesService, mothers, children, motherReportingService, childReportingService);
+        when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
 
         pncService.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), providedImmunizations, "4", "yes", EXTRA_DATA));
 

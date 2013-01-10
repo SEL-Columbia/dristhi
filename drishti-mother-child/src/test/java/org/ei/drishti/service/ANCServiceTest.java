@@ -241,7 +241,16 @@ public class ANCServiceTest {
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "Abort"), new SafeMap());
 
         verify(ancSchedulesService).unEnrollFromSchedules("CASE-X");
-        verify(actionService).closeANC("CASE-X", "ANM X", "Abort");
+        verify(actionService).closeMother("CASE-X", "ANM X", "Abort");
+    }
+
+    @Test
+    public void shouldCloseAMotherWhenANCCaseIsClosed() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "Abort"), new SafeMap());
+
+        verify(mothers).close("CASE-X");
     }
 
     @Test

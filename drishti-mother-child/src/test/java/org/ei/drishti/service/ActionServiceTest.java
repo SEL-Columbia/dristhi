@@ -167,9 +167,9 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCloseANCCase() throws Exception {
-        service.closeANC("Case X", "ANM X", "delivery");
+        service.closeMother("Case X", "ANM X", "delivery");
 
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.closeANC("delivery")));
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.closeMother("delivery")));
     }
 
     @Test

@@ -126,9 +126,10 @@ public class ANCService {
             return;
         }
 
+        allMothers.close(closeInformation.caseId());
         reportingService.closeANC(data);
         ancSchedulesService.unEnrollFromSchedules(closeInformation.caseId());
-        actionService.closeANC(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.reason());
+        actionService.closeMother(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.reason());
     }
 
     public void updateBirthPlanning(BirthPlanningRequest request, Map<String, Map<String, String>> extraData) {

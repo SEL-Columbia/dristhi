@@ -3,8 +3,8 @@ package org.ei.drishti.contract;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class ChildCloseRequest {
-    String caseId;
-    String anmIdentifier;
+    private String caseId;
+    private String anmIdentifier;
 
     public ChildCloseRequest(String caseId, String anmIdentifier) {
         this.caseId = caseId;

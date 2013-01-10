@@ -45,11 +45,11 @@ public class AllChildren extends MotechBaseRepository<Child> {
     }
 
     private Child updateChildImmunizationIfProvided(Child child, Map<String, String> details) {
-        if(details.containsKey(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME)){
+        if (details.containsKey(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME)) {
             List<String> immunizationsProvided = child.immunizationsProvided();
             List<String> recentImmunizations = asList(details.get(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME).split(" "));
             for (String recentImmunization : recentImmunizations) {
-                if(!immunizationsProvided.contains(recentImmunization)){
+                if (!immunizationsProvided.contains(recentImmunization)) {
                     immunizationsProvided.add(recentImmunization);
                 }
             }
@@ -61,6 +61,11 @@ public class AllChildren extends MotechBaseRepository<Child> {
 
     public boolean childExists(String caseId) {
         return findByCaseId(caseId) != null;
+    }
+
+    public void close(String caseId) {
+        Child child = findByCaseId(caseId);
+        update(child.setIsClosed(true));
     }
 
     private Child findChild(String caseId, String criteria) {

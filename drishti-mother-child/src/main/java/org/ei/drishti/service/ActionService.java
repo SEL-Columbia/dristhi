@@ -85,8 +85,8 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.registerPregnancy(ecCaseId, thaayiCardNumber, lmpDate, details)));
     }
 
-    public void closeANC(String caseId, String anmIdentifier, String reasonForClose) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.closeANC(reasonForClose)));
+    public void closeMother(String caseId, String anmIdentifier, String reasonForClose) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.closeMother(reasonForClose)));
     }
 
     public void registerChildBirth(String caseId, String anmIdentifier, String motherCaseId, String thaayiCardNumber, LocalDate dateOfBirth, String gender, Map<String, String> details) {

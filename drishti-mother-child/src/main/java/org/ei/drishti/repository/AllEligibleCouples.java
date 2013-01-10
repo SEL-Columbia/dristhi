@@ -1,10 +1,8 @@
 package org.ei.drishti.repository;
 
 import org.ei.drishti.domain.EligibleCouple;
-import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
-import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +41,7 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
             logger.warn("Unable to close eligible couple with caseId: " + caseId + ". Case not found.");
             return;
         }
-        remove(couple);
+        update(couple.setIsClosed(true));
     }
 
     public EligibleCouple updateDetails(String caseId, Map<String, String> details) {

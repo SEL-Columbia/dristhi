@@ -58,8 +58,8 @@ public class ActionData {
                 .withDetails(details);
     }
 
-    public static ActionData closeANC(String reasonForClose) {
-        return new ActionData("mother", "closeANC")
+    public static ActionData closeMother(String reasonForClose) {
+        return new ActionData("mother", "close")
                 .with("reasonForClose", reasonForClose);
     }
 

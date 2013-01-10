@@ -75,6 +75,16 @@ public class AllChildrenIntegrationTest {
     }
 
     @Test
+    public void shouldMarkChildAsClosedOnClose() {
+        Child child = childWithoutDetails();
+        children.register(child);
+
+        children.close(child.caseId());
+
+        assertThat(children.findByCaseId("CASE X"), is(child.setIsClosed(true)));
+    }
+
+    @Test
     public void shouldUpdateDetailsOfAnExistingChild() throws Exception {
         children.register(childWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
         Child updatedChild = children.update("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map());
@@ -101,5 +111,4 @@ public class AllChildrenIntegrationTest {
         return new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male")
                 .withAnm("ANM ID 1");
     }
-
 }

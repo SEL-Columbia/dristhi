@@ -56,6 +56,13 @@ public class DrishtiController {
         ecService.reportFPComplications(request, extraData);
     }
 
+    public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
+        logger.info("Register Out of Area ANC: " + request + ". Extra data: " + extraData);
+
+        EligibleCouple couple = ecService.registerEligibleCoupleForOutOfAreaANC(request, extraData);
+        ancService.registerOutOfAreaANC(request, couple, extraData);
+    }
+
     public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, Map<String, Map<String, String>> extraData) {
         logger.info("Mother registration: " + enrollmentInformation + ". Extra data: " + extraData);
 
@@ -91,18 +98,18 @@ public class DrishtiController {
         mctsService.registerChild(outcomeInformation);
     }
 
-    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
-        logger.info("ANC close: " + closeInformation + ". Extra data: " + extraData);
-
-        ancService.closeANCCase(closeInformation, new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-        mctsService.closeANCCase(closeInformation);
-    }
-
     public void updateChildImmunization(ChildImmunizationUpdationRequest request, Map<String, Map<String, String>> extraData) {
         logger.info("Child immunization updation: " + request + ". Extra data: " + extraData);
 
         pncService.updateChildImmunization(request, extraData);
         mctsService.updateChildImmunization(request);
+    }
+
+    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
+        logger.info("ANC close: " + closeInformation + ". Extra data: " + extraData);
+
+        ancService.closeANCCase(closeInformation, new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
+        mctsService.closeANCCase(closeInformation);
     }
 
     public void closePNCCase(PostNatalCareCloseInformation request, Map<String, Map<String, String>> extraData) {
@@ -123,13 +130,6 @@ public class DrishtiController {
         logger.info("Eligible couple close: " + eligibleCoupleCloseRequest);
 
         ecService.closeEligibleCouple(eligibleCoupleCloseRequest);
-    }
-
-    public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
-        logger.info("Register Out of Area ANC: " + request + ". Extra data: " + extraData);
-
-        EligibleCouple couple = ecService.registerEligibleCoupleForOutOfAreaANC(request, extraData);
-        ancService.registerOutOfAreaANC(request, couple, extraData);
     }
 
     public void updateBirthPlanning(BirthPlanningRequest request, Map<String, Map<String, String>> extraData) {

@@ -125,11 +125,11 @@ public class PNCService {
             logger.warn("Found close child request without registered child for case ID: " + childCloseRequest.caseId());
             return;
         }
+
+        allChildren.close(childCloseRequest.caseId());
         actionService.deleteAllAlertsForChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
         actionService.closeChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
-
         childReportingService.closeChild(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-
         childSchedulesService.unenrollChild(childCloseRequest.caseId());
     }
 
@@ -139,7 +139,9 @@ public class PNCService {
             return;
         }
 
+        allMothers.close(closeInformation.caseId());
         motherReportingService.closePNC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
+        actionService.closeMother(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.closeReason());
     }
 
     private void closeAlertsForProvidedImmunizations(ChildImmunizationUpdationRequest updationRequest) {

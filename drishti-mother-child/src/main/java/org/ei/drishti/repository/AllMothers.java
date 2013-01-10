@@ -59,4 +59,9 @@ public class AllMothers extends MotechBaseRepository<Mother> {
 
         return mother;
     }
+
+    public void close(String caseId) {
+        Mother mother = findByCaseId(caseId);
+        update(mother.setIsClosed(true));
+    }
 }

@@ -396,7 +396,8 @@
                     },
                     "mappings": {
                         "form|meta|username": "anmIdentifier",
-                        "form|case|@case_id": "caseId"
+                        "form|case|@case_id": "caseId",
+                        "form|pnc_close_reason": "closeReason"
                     },
                     "extraMappings": {
                         "reporting": {
