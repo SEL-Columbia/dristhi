@@ -19,12 +19,13 @@ import java.util.Date;
 import java.util.List;
 
 import static ch.lambdaj.Lambda.*;
-import static org.ei.drishti.common.AllConstants.Report.REPORTING_DAY;
+import static java.lang.String.valueOf;
 import static org.ei.drishti.common.AllConstants.Report.REPORTING_MONTH;
+import static org.ei.drishti.common.AllConstants.Report.REPORTING_MONTH_START_DAY;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_ANM_REPORTS_CACHE_TIME;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_ANM_REPORTS_INSERT_TIME;
 import static org.ei.drishti.common.util.DateUtil.today;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 @Repository
 public class ANMReportsRepository {
@@ -87,9 +88,9 @@ public class ANMReportsRepository {
             int aggregatedProgress = 0;
             List<MonthSummary> monthSummaries = new ArrayList<>();
 
-            for (LocalDate indexDate = new LocalDate(startDateOfReportingYear()); indexDate.isBefore(today()); indexDate = indexDate.plusMonths(1)) {
+            for (LocalDate indexDate = new LocalDate(startDateOfReportingYear()); indexDate.isBefore(startDateOfNextReportingMonth()); indexDate = indexDate.plusMonths(1)) {
                 int month = indexDate.getMonthOfYear();
-                List<ANMReportData> allReportDataForAMonth = filterReportsByMonth(allReportDataForIndicator, month - 1);
+                List<ANMReportData> allReportDataForAMonth = filterReportsByMonth(allReportDataForIndicator, indexDate, endDateOfReportingMonth(indexDate));
                 if (allReportDataForAMonth.size() == 0) {
                     continue;
                 }
@@ -98,7 +99,7 @@ public class ANMReportsRepository {
                 aggregatedProgress += currentProgress;
                 List<String> externalIds = getAllExternalIds(allReportDataForAMonth);
 
-                monthSummaries.add(new MonthSummary(String.valueOf(month), String.valueOf(indexDate.getYear()), String.valueOf(currentProgress), String.valueOf(aggregatedProgress), externalIds));
+                monthSummaries.add(new MonthSummary(valueOf(month + 1), valueOf(indexDate.getYear()), valueOf(currentProgress), valueOf(aggregatedProgress), externalIds));
             }
             AnnualTarget annualTarget = annualTargetsRepository.fetchFor(anmIdentifier, indicator, today().toDate());
             String target = annualTarget == null ? null : annualTarget.target();
@@ -117,11 +118,23 @@ public class ANMReportsRepository {
         return anmReports;
     }
 
+    private LocalDate endDateOfReportingMonth(LocalDate date) {
+        return date.plusMonths(1).minusDays(1);
+    }
+
     private Date startDateOfReportingYear() {
         LocalDate now = today();
-        LocalDate beginningOfReportingYear = today().withMonthOfYear(REPORTING_MONTH).withDayOfMonth(REPORTING_DAY);
+        LocalDate beginningOfReportingYear = today().withMonthOfYear(REPORTING_MONTH).withDayOfMonth(REPORTING_MONTH_START_DAY);
         int reportingYear = now.isBefore(beginningOfReportingYear) ? now.getYear() - 1 : now.getYear();
-        return new LocalDate().withDayOfMonth(REPORTING_DAY).withMonthOfYear(REPORTING_MONTH).withYear(reportingYear).toDate();
+        return new LocalDate().withDayOfMonth(REPORTING_MONTH_START_DAY).withMonthOfYear(REPORTING_MONTH).withYear(reportingYear).toDate();
+    }
+
+    private LocalDate startDateOfNextReportingMonth() {
+        LocalDate today = today();
+        if (today.getDayOfMonth() < REPORTING_MONTH_START_DAY) {
+            return new LocalDate(today.getYear(), today.getMonthOfYear(), REPORTING_MONTH_START_DAY);
+        }
+        return new LocalDate(today.getYear(), today.getMonthOfYear() + 1, REPORTING_MONTH_START_DAY);
     }
 
     private List<String> getAllExternalIds(List<ANMReportData> reportDataList) {
@@ -133,8 +146,8 @@ public class ANMReportsRepository {
         return selectDistinct(collect(reportDataList, on(ANMReportData.class).indicator()));
     }
 
-    private List<ANMReportData> filterReportsByMonth(List<ANMReportData> reportDataList, int month) {
-        return filter(having(on(ANMReportData.class).date().month(), equalTo(month)), reportDataList);
+    private List<ANMReportData> filterReportsByMonth(List<ANMReportData> reportDataList, LocalDate startDate, LocalDate endDate) {
+        return filter(having(on(ANMReportData.class).date().date(), allOf(greaterThanOrEqualTo(startDate.toDate()), lessThanOrEqualTo(endDate.toDate()))), reportDataList);
     }
 
     private List<ANMReportData> filterReportsByIndicator(List<ANMReportData> reportDataList, Indicator indicator) {

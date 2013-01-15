@@ -5,7 +5,7 @@ public class AllConstants {
 
     public static class Report {
         public static final int REPORTING_MONTH = 3;
-        public static final int REPORTING_DAY = 26;
+        public static final int REPORTING_MONTH_START_DAY = 26;
         public static final String REPORT_EXTRA_DATA_KEY_NAME = "reporting";
         public static final String SERVICE_PROVIDED_DATA_TYPE = "serviceProvided";
         public static final String ANM_REPORT_DATA_TYPE = "anmReportData";
