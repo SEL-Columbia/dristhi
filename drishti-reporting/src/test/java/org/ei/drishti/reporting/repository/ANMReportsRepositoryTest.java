@@ -2,6 +2,7 @@ package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.common.domain.ANMIndicatorSummary;
 import org.ei.drishti.common.domain.ANMReport;
+import org.ei.drishti.common.domain.MonthSummary;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.reporting.domain.*;
@@ -117,6 +118,20 @@ public class ANMReportsRepositoryTest {
 
         assertTrue(anmIndicatorSummaries.containsAll(asList(createSummaryForANC(), createSummaryForIUD())));
         assertEquals(2, anmIndicatorSummaries.size());
+    }
+
+    @Test
+    public void shouldSetMonthOfSummaryToBeNextYearsInCaseOfLastMonthOfTheYear() throws Exception {
+        DateUtil.fakeIt(parse("2013-01-30"));
+        ANM anm = new ANM("ANM X");
+        Dates date = new Dates(parse("2012-12-29").toDate());
+        Indicator indicator = new Indicator("IUD");
+        when(anmReportDataRepository.fetchByANMIdAndDate("ANM X", parse("2012-03-26").toDate())).thenReturn(asList(new ANMReportData(anm, "CASE 1", indicator, date)));
+        when(annualTargetsRepository.fetchFor("ANM X", indicator, parse("2013-01-30").toDate())).thenReturn(new AnnualTarget(1, 1, "40", parse("2012-03-26").toDate(), parse("2013-03-25").toDate()));
+
+        List<ANMIndicatorSummary> anmIndicatorSummaries = repository.fetchANMSummary("ANM X");
+
+        assertEquals(asList(new ANMIndicatorSummary("IUD", "40", asList(new MonthSummary("1", "2013", "1", "1", asList("CASE 1"))))), anmIndicatorSummaries);
     }
 
     @Test

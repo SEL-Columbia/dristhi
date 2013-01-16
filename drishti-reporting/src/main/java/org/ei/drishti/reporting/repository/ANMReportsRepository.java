@@ -75,7 +75,7 @@ public class ANMReportsRepository {
         monitor.end(probeForInsert);
     }
 
-    //Need to refactor
+    //Todo: Need to refactor
     @Transactional("anm_report")
     public List<ANMIndicatorSummary> fetchANMSummary(String anmIdentifier) {
         List<ANMIndicatorSummary> anmIndicatorSummaries = new ArrayList<>();
@@ -89,7 +89,7 @@ public class ANMReportsRepository {
             List<MonthSummary> monthSummaries = new ArrayList<>();
 
             for (LocalDate indexDate = new LocalDate(startDateOfReportingYear()); indexDate.isBefore(startDateOfNextReportingMonth()); indexDate = indexDate.plusMonths(1)) {
-                int month = indexDate.getMonthOfYear();
+                LocalDate reportingMonthEndDate = new LocalDate(indexDate).plusMonths(1);
                 List<ANMReportData> allReportDataForAMonth = filterReportsByMonth(allReportDataForIndicator, indexDate, endDateOfReportingMonth(indexDate));
                 if (allReportDataForAMonth.size() == 0) {
                     continue;
@@ -99,7 +99,8 @@ public class ANMReportsRepository {
                 aggregatedProgress += currentProgress;
                 List<String> externalIds = getAllExternalIds(allReportDataForAMonth);
 
-                monthSummaries.add(new MonthSummary(valueOf(month + 1), valueOf(indexDate.getYear()), valueOf(currentProgress), valueOf(aggregatedProgress), externalIds));
+                monthSummaries.add(new MonthSummary(valueOf(reportingMonthEndDate.getMonthOfYear()), valueOf(reportingMonthEndDate.getYear()),
+                        valueOf(currentProgress), valueOf(aggregatedProgress), externalIds));
             }
             AnnualTarget annualTarget = annualTargetsRepository.fetchFor(anmIdentifier, indicator, today().toDate());
             String target = annualTarget == null ? null : annualTarget.target();
