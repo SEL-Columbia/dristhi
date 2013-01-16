@@ -19,14 +19,17 @@ public class Action {
     @JsonProperty
     private String timeStamp;
     @JsonProperty
+    private boolean isActionActive;
+    @JsonProperty
     private Map<String, String> details;
 
-    public Action(String caseID, String actionTarget, String actionType, Map<String, String> data, String timeStamp, Map<String, String> details) {
+    public Action(String caseID, String actionTarget, String actionType, Map<String, String> data, String timeStamp, boolean isActionActive, Map<String, String> details) {
         this.caseID = caseID;
         this.data = data;
         this.timeStamp = timeStamp;
         this.actionTarget = actionTarget;
         this.actionType = actionType;
+        this.isActionActive = isActionActive;
         this.details = details;
     }
 
@@ -43,6 +46,10 @@ public class Action {
 
     public String type() {
         return actionType;
+    }
+
+    public boolean isActionActive() {
+        return isActionActive;
     }
 
     public String index() {

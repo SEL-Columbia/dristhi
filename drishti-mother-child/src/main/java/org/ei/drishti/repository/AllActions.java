@@ -25,19 +25,13 @@ public class AllActions extends MotechBaseRepository<Action> {
         super.add(action);
     }
 
-    @View(name = "by_caseID", map = "function(doc) { if(doc.type === 'Action' && doc.caseID) {emit(doc.caseID, null)} }")
-    public void addWithDelete(Action action, String actionTarget) {
-        deleteAll(findByActionTargetAndCaseId(actionTarget, action.caseID()));
+    public void addWithDeleteByTarget(Action action, String actionTarget) {
+        deleteAll(findByActionTargetAndCaseId(actionTarget, action.caseId()));
         super.add(action);
     }
 
     public void deleteAllByTarget(String target) {
         deleteAll(findByActionTarget(target));
-    }
-
-    @GenerateView
-    private List<Action> findByActionTarget(String target) {
-        return queryView("by_actionTarget", target);
     }
 
     @View(name = "action_by_anm_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.anmIdentifier, doc.timeStamp], null); } }")
@@ -47,7 +41,25 @@ public class AllActions extends MotechBaseRepository<Action> {
         return db.queryView(createQuery("action_by_anm_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
     }
 
-    @View(name = "action_by_target_and_caseId", map = "function(doc) { if (doc.type === 'Action') { emit([doc.actionTarget, doc.caseID], null); } }")
+    public void markAllAsInActiveFor(String caseId) {
+        List<Action> actions = findByCaseId(caseId);
+        for (Action action : actions) {
+            action.markAsInActive();
+        }
+        db.executeBulk(actions);
+    }
+
+    @GenerateView
+    private List<Action> findByActionTarget(String target) {
+        return queryView("by_actionTarget", target);
+    }
+
+    @GenerateView
+    private List<Action> findByCaseId(String caseId) {
+        return queryView("by_caseId", caseId);
+    }
+
+    @View(name = "action_by_target_and_caseId", map = "function(doc) { if (doc.type === 'Action') { emit([doc.actionTarget, doc.caseId], null); } }")
     private List<Action> findByActionTargetAndCaseId(String actionTarget, String caseId) {
         ComplexKey key = ComplexKey.of(actionTarget, caseId);
         return db.queryView(createQuery("action_by_target_and_caseId").key(key).includeDocs(true), Action.class);

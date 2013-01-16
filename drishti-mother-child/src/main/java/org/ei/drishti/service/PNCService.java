@@ -127,7 +127,6 @@ public class PNCService {
         }
 
         allChildren.close(childCloseRequest.caseId());
-        actionService.deleteAllAlertsForChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
         actionService.closeChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
         childReportingService.closeChild(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         childSchedulesService.unenrollChild(childCloseRequest.caseId());

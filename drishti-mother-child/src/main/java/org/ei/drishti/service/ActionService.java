@@ -11,17 +11,13 @@ import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.ei.drishti.dto.BeneficiaryType.child;
-import static org.ei.drishti.dto.BeneficiaryType.ec;
-import static org.ei.drishti.dto.BeneficiaryType.mother;
+import static org.ei.drishti.dto.BeneficiaryType.*;
 
 @Service
 public class ActionService {
@@ -29,7 +25,6 @@ public class ActionService {
     private AllMothers allMothers;
     private AllChildren allChildren;
     private AllEligibleCouples allEligibleCouples;
-    private static Logger logger = LoggerFactory.getLogger(ActionService.class.toString());
 
     @Autowired
     public ActionService(AllActions allActions, AllMothers allMothers, AllChildren allChildren, AllEligibleCouples allEligibleCouples) {
@@ -48,29 +43,25 @@ public class ActionService {
         String anmIdentifier;
         if (mother.equals(beneficiaryType)) {
             anmIdentifier = allMothers.findByCaseId(caseID).anmIdentifier();
-        } else if(child.equals(beneficiaryType)) {
+        } else if (child.equals(beneficiaryType)) {
             anmIdentifier = allChildren.findByCaseId(caseID).anmIdentifier();
-        } else if(ec.equals(beneficiaryType)){
+        } else if (ec.equals(beneficiaryType)) {
             anmIdentifier = allEligibleCouples.findByCaseId(caseID).anmIdentifier();
-        } else{
+        } else {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
 
         allActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, visitCode, alertPriority, startDate, expiryDate)));
     }
 
-    public void markAlertAsClosed(String caseId, String anmIdentifier, String visitCode, String completionDate) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
-    }
-
     public void deleteAllAlertsForMother(String caseID) {
         Mother mother = allMothers.findByCaseId(caseID);
 
-        allActions.addWithDelete(new Action(caseID, mother.anmIdentifier(), ActionData.deleteAllAlerts()), "alert");
+        allActions.addWithDeleteByTarget(new Action(caseID, mother.anmIdentifier(), ActionData.deleteAllAlerts()), "alert");
     }
 
-    public void deleteAllAlertsForChild(String caseID, String anmIdentifier) {
-        allActions.addWithDelete(new Action(caseID, anmIdentifier, ActionData.deleteAllAlerts()), "alert");
+    public void markAlertAsClosed(String caseId, String anmIdentifier, String visitCode, String completionDate) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
     }
 
     public void registerEligibleCouple(String caseId, String ecNumber, String wife, String husband, String anmIdentifier, String village, String subCenter, String phc, Map<String, String> details) {
@@ -78,7 +69,8 @@ public class ActionService {
     }
 
     public void closeEligibleCouple(String caseId, String anmIdentifier) {
-        allActions.addWithDelete(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()), "alert");
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()));
+        allActions.markAllAsInActiveFor(caseId);
     }
 
     public void registerPregnancy(String caseId, String ecCaseId, String thaayiCardNumber, String anmIdentifier, LocalDate lmpDate, Map<String, String> details) {
@@ -87,6 +79,7 @@ public class ActionService {
 
     public void closeMother(String caseId, String anmIdentifier, String reasonForClose) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.closeMother(reasonForClose)));
+        allActions.markAllAsInActiveFor(caseId);
     }
 
     public void registerChildBirth(String caseId, String anmIdentifier, String motherCaseId, String thaayiCardNumber, LocalDate dateOfBirth, String gender, Map<String, String> details) {
@@ -129,6 +122,7 @@ public class ActionService {
 
     public void closeChild(String caseId, String anmIdentifier) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.deleteChild()));
+        allActions.markAllAsInActiveFor(caseId);
     }
 
     public void reportForIndicator(String anmIdentifier, ActionData actionData) {

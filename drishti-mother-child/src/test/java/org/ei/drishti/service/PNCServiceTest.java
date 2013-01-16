@@ -239,17 +239,6 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldDeleteAllAlertsForChildCaseClose() {
-        DateTime currentTime = DateUtil.now();
-        mockCurrentDate(currentTime);
-        when(children.childExists("Case X")).thenReturn(true);
-
-        service.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"), EXTRA_DATA);
-
-        verify(actionService).deleteAllAlertsForChild("Case X", "DEMO ANM");
-    }
-
-    @Test
     public void shouldCreateACloseChildActionForChildCaseClose() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);

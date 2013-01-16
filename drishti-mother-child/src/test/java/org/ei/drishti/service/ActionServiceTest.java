@@ -113,14 +113,7 @@ public class ActionServiceTest {
 
         service.deleteAllAlertsForMother("Case X");
 
-        verify(allActions).addWithDelete(new Action("Case X", "ANM ID 1", ActionData.deleteAllAlerts()), "alert");
-    }
-
-    @Test
-    public void shouldCreateADeleteAllActionForAChild() throws Exception {
-        service.deleteAllAlertsForChild("Case X", "DEMO ANM");
-
-        verify(allActions).addWithDelete(new Action("Case X", "DEMO ANM", ActionData.deleteAllAlerts()), "alert");
+        verify(allActions).addWithDeleteByTarget(new Action("Case X", "ANM ID 1", ActionData.deleteAllAlerts()), "alert");
     }
 
     @Test
@@ -145,7 +138,14 @@ public class ActionServiceTest {
     public void shouldAddDeleteActionForEligibleCoupleClose() throws Exception {
         service.closeEligibleCouple("Case X", "ANM X");
 
-        verify(allActions).addWithDelete(new Action("Case X", "ANM X", ActionData.deleteEligibleCouple()), "alert");
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.deleteEligibleCouple()));
+    }
+
+    @Test
+    public void shouldMarkAsInActiveActionForEligibleCoupleClose() throws Exception {
+        service.closeEligibleCouple("Case X", "ANM X");
+
+        verify(allActions).markAllAsInActiveFor("Case X");
     }
 
     @Test
@@ -153,6 +153,13 @@ public class ActionServiceTest {
         service.closeChild("Case X", "ANM X");
 
         verify(allActions).add(new Action("Case X", "ANM X", ActionData.deleteChild()));
+    }
+
+    @Test
+    public void shouldMarkInActiveForChildClose() throws Exception {
+        service.closeChild("Case X", "ANM X");
+
+        verify(allActions).markAllAsInActiveFor("Case X");
     }
 
     @Test
@@ -170,6 +177,13 @@ public class ActionServiceTest {
         service.closeMother("Case X", "ANM X", "delivery");
 
         verify(allActions).add(new Action("Case X", "ANM X", ActionData.closeMother("delivery")));
+    }
+
+    @Test
+    public void shouldMarkMotherAsInActiveDuringCloseANCCase() throws Exception {
+        service.closeMother("Case X", "ANM X", "delivery");
+
+        verify(allActions).markAllAsInActiveFor("Case X");
     }
 
     @Test

@@ -79,6 +79,21 @@ public class AllActionsIntegrationTest {
     }
 
     @Test
+    public void shouldMarkAllActionsAsInActiveForACase() throws Exception {
+        Action firstAction = new Action("Case X", "ANM 1", alert());
+        Action secondAction = new Action("Case X", "ANM 1", alert());
+        Action thirdAction = new Action("Case Y", "ANM 2", alert());
+        allActions.add(firstAction);
+        allActions.add(secondAction);
+        allActions.add(thirdAction);
+
+        allActions.markAllAsInActiveFor("Case X");
+
+        assertEquals(asList(firstAction.markAsInActive(), secondAction.markAsInActive()), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
+        assertEquals(asList(thirdAction), allActions.findByANMIDAndTimeStamp("ANM 2", 0));
+    }
+
+    @Test
     public void shouldFetchAlertsSortedByTimestamp() throws Exception {
         Action earlierAction = new Action("Case X", "ANM 1", alert());
         Thread.sleep(100);
@@ -109,7 +124,7 @@ public class AllActionsIntegrationTest {
         allActions.add(actionOfSameANMForAnotherMother);
 
         Action deleteAllAction = new Action("Case X", "ANM 1", ActionData.deleteAllAlerts());
-        allActions.addWithDelete(deleteAllAction, "alert");
+        allActions.addWithDeleteByTarget(deleteAllAction, "alert");
 
         assertEquals(asList(fourthNonAlertActionForSameMother, actionOfSameANMForAnotherMother, deleteAllAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
         assertEquals(asList(actionOfAnotherANM), allActions.findByANMIDAndTimeStamp("ANM 2", 0));
