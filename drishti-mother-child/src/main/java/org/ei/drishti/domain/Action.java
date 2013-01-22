@@ -26,7 +26,7 @@ public class Action extends MotechBaseDataObject {
     @JsonProperty
     private String actionType;
     @JsonProperty
-    private boolean isActionActive;
+    private Boolean isActionActive;
     @JsonProperty
     private long timeStamp;
     @JsonProperty
@@ -75,7 +75,7 @@ public class Action extends MotechBaseDataObject {
         return this;
     }
 
-    public boolean isActionActive() {
+    public Boolean isActionActive() {
         return isActionActive;
     }
 
