@@ -18,7 +18,7 @@ public class Action extends MotechBaseDataObject {
     @JsonProperty
     private String anmIdentifier;
     @JsonProperty
-    private String caseId;
+    private String caseID;
     @JsonProperty
     private Map<String, String> data;
     @JsonProperty
@@ -35,9 +35,9 @@ public class Action extends MotechBaseDataObject {
     private Action() {
     }
 
-    public Action(String caseId, String anmIdentifier, ActionData actionData) {
+    public Action(String caseID, String anmIdentifier, ActionData actionData) {
         this.anmIdentifier = anmIdentifier;
-        this.caseId = caseId;
+        this.caseID = caseID;
         this.data = actionData.data();
         this.actionTarget = actionData.target();
         this.actionType = actionData.type();
@@ -51,7 +51,7 @@ public class Action extends MotechBaseDataObject {
     }
 
     public String caseId() {
-        return caseId;
+        return caseID;
     }
 
     public Map<String, String> data() {
@@ -83,8 +83,8 @@ public class Action extends MotechBaseDataObject {
         return details;
     }
 
-    private String getCaseId() {
-        return caseId;
+    private String getCaseID() {
+        return caseID;
     }
 
     public String getActionTarget() {

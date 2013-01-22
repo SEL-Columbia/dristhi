@@ -42,7 +42,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     }
 
     public void markAllAsInActiveFor(String caseId) {
-        List<Action> actions = findByCaseId(caseId);
+        List<Action> actions = findByCaseID(caseId);
         for (Action action : actions) {
             action.markAsInActive();
         }
@@ -55,14 +55,14 @@ public class AllActions extends MotechBaseRepository<Action> {
     }
 
     @GenerateView
-    private List<Action> findByCaseId(String caseId) {
-        return queryView("by_caseId", caseId);
+    private List<Action> findByCaseID(String caseId) {
+        return queryView("by_caseID", caseId);
     }
 
-    @View(name = "action_by_target_and_caseId", map = "function(doc) { if (doc.type === 'Action') { emit([doc.actionTarget, doc.caseId], null); } }")
+    @View(name = "action_by_target_and_caseID", map = "function(doc) { if (doc.type === 'Action') { emit([doc.actionTarget, doc.caseID], null); } }")
     private List<Action> findByActionTargetAndCaseId(String actionTarget, String caseId) {
         ComplexKey key = ComplexKey.of(actionTarget, caseId);
-        return db.queryView(createQuery("action_by_target_and_caseId").key(key).includeDocs(true), Action.class);
+        return db.queryView(createQuery("action_by_target_and_caseID").key(key).includeDocs(true), Action.class);
     }
 
     private void deleteAll(List<Action> actions) {
