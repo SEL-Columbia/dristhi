@@ -2,6 +2,7 @@ package org.ei.drishti.service;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import static java.text.MessageFormat.format;
@@ -9,15 +10,16 @@ import static java.text.MessageFormat.format;
 @Service
 public class MCTSSMSService {
     private final DrishtiSMSService smsService;
-    private static final String MCTS_PHONE_NUMBER = "9243355223";
+    private String mctsPhoneNumber;
 
     @Autowired
-    public MCTSSMSService(DrishtiSMSService smsService) {
+    public MCTSSMSService(DrishtiSMSService smsService, @Value("#{drishti['mcts.phone.number']}") String mctsPhoneNumber) {
         this.smsService = smsService;
+        this.mctsPhoneNumber = mctsPhoneNumber;
     }
 
     public void send(MCTSServiceCode typeOfService, String thaayiCardNumber, LocalDate date) {
-        smsService.sendSMS(MCTS_PHONE_NUMBER, typeOfService.messageFor(thaayiCardNumber, date));
+        smsService.sendSMS(mctsPhoneNumber, typeOfService.messageFor(thaayiCardNumber, date));
     }
 
     public static enum MCTSServiceCode {

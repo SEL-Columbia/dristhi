@@ -26,7 +26,8 @@ import java.util.Date;
 
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
 import static org.motechproject.scheduletracking.api.domain.WindowName.*;
 import static org.motechproject.util.DateUtil.newDate;
 
@@ -90,7 +91,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts("TT 1", earliest);
         schedule.assertAlertsStartWith("TT 1", due, date(8, JANUARY), date(15, JANUARY), date(22, JANUARY), date(29, JANUARY), date(5, FEBRUARY), date(12, FEBRUARY), date(19, FEBRUARY),
                 date(26, FEBRUARY), date(4, MARCH), date(11, MARCH), date(18, MARCH));
-        schedule.assertNoAlerts("TT 1",late);
+        schedule.assertNoAlerts("TT 1", late);
         schedule.assertNoAlerts("TT 1", max);
 
         schedule.assertNoAlerts("TT 2", earliest);
@@ -257,8 +258,8 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.enrollFor(CHILD_SCHEDULE_MEASLES, newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts(MEASLES_COMMCARE_VALUE, earliest);
-        schedule.assertAlertsStartWith(MEASLES_COMMCARE_VALUE, due, date(1, OCTOBER), date(4, OCTOBER),date(8, OCTOBER), date(11, OCTOBER), date(15, OCTOBER));
-        schedule.assertAlertsStartWith(MEASLES_COMMCARE_VALUE, late, dateWithYear(1, JANUARY, 2013),dateWithYear(4, JANUARY, 2013), dateWithYear(8, JANUARY, 2013),dateWithYear(11, JANUARY, 2013));
+        schedule.assertAlertsStartWith(MEASLES_COMMCARE_VALUE, due, date(1, OCTOBER), date(4, OCTOBER), date(8, OCTOBER), date(11, OCTOBER), date(15, OCTOBER));
+        schedule.assertAlertsStartWith(MEASLES_COMMCARE_VALUE, late, dateWithYear(1, JANUARY, 2013), dateWithYear(4, JANUARY, 2013), dateWithYear(8, JANUARY, 2013), dateWithYear(11, JANUARY, 2013));
         schedule.assertNoAlerts(MEASLES_COMMCARE_VALUE, max);
 
         visualization.outputTo("child-measles.html", 4);
@@ -282,7 +283,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
         schedule.assertNoAlerts(DPT_1_COMMCARE_VALUE, earliest);
         schedule.assertAlerts(DPT_1_COMMCARE_VALUE, due, date(1, JULY), date(4, JULY));
-        schedule.assertAlertsStartWith(DPT_1_COMMCARE_VALUE, late, dateWithYear(8, JULY, 2012),dateWithYear(11, JULY, 2012), dateWithYear(15, JULY, 2012));
+        schedule.assertAlertsStartWith(DPT_1_COMMCARE_VALUE, late, dateWithYear(8, JULY, 2012), dateWithYear(11, JULY, 2012), dateWithYear(15, JULY, 2012));
         schedule.assertNoAlerts(DPT_1_COMMCARE_VALUE, max);
 
         visualization.outputTo("child-dpt1.html", 4);
@@ -294,7 +295,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
         schedule.assertNoAlerts(DPT_2_COMMCARE_VALUE, earliest);
         schedule.assertAlerts(DPT_2_COMMCARE_VALUE, due, date(29, APRIL), date(2, MAY));
-        schedule.assertAlertsStartWith(DPT_2_COMMCARE_VALUE, late, dateWithYear(6, MAY, 2012),dateWithYear(9, MAY, 2012), dateWithYear(13, MAY, 2012));
+        schedule.assertAlertsStartWith(DPT_2_COMMCARE_VALUE, late, dateWithYear(6, MAY, 2012), dateWithYear(9, MAY, 2012), dateWithYear(13, MAY, 2012));
         schedule.assertNoAlerts(DPT_2_COMMCARE_VALUE, max);
 
         visualization.outputTo("child-dpt2.html", 4);
@@ -305,8 +306,8 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.enrollFor(CHILD_SCHEDULE_DPT3, newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts(DPT_3_COMMCARE_VALUE, earliest);
-        schedule.assertAlerts(DPT_3_COMMCARE_VALUE, due, date(29, APRIL),date(02, MAY));
-        schedule.assertAlertsStartWith(DPT_3_COMMCARE_VALUE, late, dateWithYear(6, MAY, 2012),dateWithYear(9, MAY, 2012), dateWithYear(13, MAY, 2012));
+        schedule.assertAlerts(DPT_3_COMMCARE_VALUE, due, date(29, APRIL), date(02, MAY));
+        schedule.assertAlertsStartWith(DPT_3_COMMCARE_VALUE, late, dateWithYear(6, MAY, 2012), dateWithYear(9, MAY, 2012), dateWithYear(13, MAY, 2012));
         schedule.assertNoAlerts(DPT_3_COMMCARE_VALUE, max);
 
         visualization.outputTo("child-dpt3.html", 4);
@@ -317,8 +318,8 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.enrollFor(CHILD_SCHEDULE_DPT_BOOSTER1, newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts(DPT_BOOSTER_1_COMMCARE_VALUE, earliest);
-        schedule.assertAlertsStartWith(DPT_BOOSTER_1_COMMCARE_VALUE, due, dateWithYear(1, FEBRUARY, 2013),dateWithYear(4, FEBRUARY, 2013), dateWithYear(8, FEBRUARY, 2013));
-        schedule.assertAlertsStartWith(DPT_BOOSTER_1_COMMCARE_VALUE, late, dateWithYear(1, OCTOBER, 2013),dateWithYear(4, OCTOBER, 2013),dateWithYear(8, OCTOBER, 2013));
+        schedule.assertAlertsStartWith(DPT_BOOSTER_1_COMMCARE_VALUE, due, dateWithYear(1, FEBRUARY, 2013), dateWithYear(4, FEBRUARY, 2013), dateWithYear(8, FEBRUARY, 2013));
+        schedule.assertAlertsStartWith(DPT_BOOSTER_1_COMMCARE_VALUE, late, dateWithYear(1, OCTOBER, 2013), dateWithYear(4, OCTOBER, 2013), dateWithYear(8, OCTOBER, 2013));
         schedule.assertNoAlerts(DPT_BOOSTER_1_COMMCARE_VALUE, max);
 
         visualization.outputTo("child-dpt-booster1.html", 4);
@@ -329,7 +330,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.enrollFor(CHILD_SCHEDULE_DPT_BOOSTER2, newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts(DPT_BOOSTER_2_COMMCARE_VALUE, earliest);
-        schedule.assertAlertsStartWith(DPT_BOOSTER_2_COMMCARE_VALUE, due, dateWithYear(1, JANUARY, 2015),dateWithYear(4, JANUARY, 2015), dateWithYear(8, JANUARY, 2015));
+        schedule.assertAlertsStartWith(DPT_BOOSTER_2_COMMCARE_VALUE, due, dateWithYear(1, JANUARY, 2015), dateWithYear(4, JANUARY, 2015), dateWithYear(8, JANUARY, 2015));
         schedule.assertAlertsStartWith(DPT_BOOSTER_2_COMMCARE_VALUE, late, dateWithYear(1, OCTOBER, 2015), dateWithYear(4, OCTOBER, 2015), dateWithYear(8, OCTOBER, 2015));
         schedule.assertNoAlerts(DPT_BOOSTER_2_COMMCARE_VALUE, max);
 
@@ -342,7 +343,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
         schedule.assertNoAlerts(EC_SCHEDULE_FP_COMPLICATION_MILESTONE, due);
         schedule.assertNoAlerts(EC_SCHEDULE_FP_COMPLICATION_MILESTONE, earliest);
-        schedule.assertAlertsStartWith(EC_SCHEDULE_FP_COMPLICATION_MILESTONE, late, date(1, JANUARY), date(4, JANUARY), date(8,JANUARY));
+        schedule.assertAlertsStartWith(EC_SCHEDULE_FP_COMPLICATION_MILESTONE, late, date(1, JANUARY), date(4, JANUARY), date(8, JANUARY));
         schedule.assertNoAlerts(EC_SCHEDULE_FP_COMPLICATION_MILESTONE, max);
 
         visualization.outputTo("ec-fp-complications.html", 1);
@@ -372,8 +373,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         String outputDir = null;
         if (new File("drishti-web").exists()) {
             outputDir = "drishti-web/doc/schedules/";
-        }
-        else if (new File("doc").exists()) {
+        } else if (new File("doc").exists()) {
             outputDir = "doc/schedules/";
         }
         visualization = new ScheduleVisualization(fakeSchedule, outputDir);

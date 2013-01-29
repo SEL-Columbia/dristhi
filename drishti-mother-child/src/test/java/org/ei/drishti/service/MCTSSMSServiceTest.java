@@ -17,20 +17,20 @@ public class MCTSSMSServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        mctsSMSService = new MCTSSMSService(smsService);
+        mctsSMSService = new MCTSSMSService(smsService, "9986048731");
     }
 
     @Test
     public void shouldSendSMSBasedOnCodeForANC1() {
         mctsSMSService.send(MCTSServiceCode.ANC_1, "1234567", DateUtil.newDate(2012, 3, 21));
 
-        verify(smsService).sendSMS("9243355223", "ANMPW 1234567 ANC1 210312");
+        verify(smsService).sendSMS("9986048731", "ANMPW 1234567 ANC1 210312");
     }
 
     @Test
     public void shouldSendSMSWithZeroPaddedDateWhenDateIsBefore10th() {
         mctsSMSService.send(MCTSServiceCode.ANC_1, "1234567", DateUtil.newDate(2012, 3, 8));
 
-        verify(smsService).sendSMS("9243355223", "ANMPW 1234567 ANC1 080312");
+        verify(smsService).sendSMS("9986048731", "ANMPW 1234567 ANC1 080312");
     }
 }

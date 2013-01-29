@@ -142,5 +142,6 @@ public class DrishtiController {
         logger.info("PNC visit: " + request + ". Extra data: " + extraData);
 
         pncService.pncVisitHappened(request, extraData);
+        mctsService.pncProvided(request);
     }
 }
