@@ -18,15 +18,15 @@ public class PNCSchedulesService {
     private static Logger logger = LoggerFactory.getLogger(PNCSchedulesService.class.toString());
 
     private final ScheduleTrackingService trackingService;
-    private ActionService actionService;
 
     @Autowired
-    public PNCSchedulesService(ScheduleTrackingService trackingService, ActionService actionService) {
+    public PNCSchedulesService(ScheduleTrackingService trackingService) {
         this.trackingService = trackingService;
-        this.actionService = actionService;
     }
 
     public void enrollMother(AnteNatalCareOutcomeInformation outcomeInformation) {
+        logger.info("Enrolling mother into Auto Close PNC schedule. Details: {0}", outcomeInformation);
+
         trackingService.enroll(
                 new EnrollmentRequest(outcomeInformation.motherCaseId(),
                         SCHEDULE_AUTO_CLOSE_PNC,

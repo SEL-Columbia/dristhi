@@ -27,7 +27,7 @@ public class PNCSchedulesServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        schedulesService = new PNCSchedulesService(scheduleTrackingService, actionService);
+        schedulesService = new PNCSchedulesService(scheduleTrackingService);
     }
 
     @Test
