@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.removeEndIgnoreCase;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.NO_FP_METHOD_COMMCARE_FIELD_VALUE;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
@@ -62,6 +63,12 @@ public class ECService {
     }
 
     public void closeEligibleCouple(EligibleCoupleCloseRequest request) {
+        if(!allEligibleCouples.exists(request.caseId())){
+            logger.warn("Cannot close EC as it does not exist! Details: " + request);
+            return;
+        }
+        logger.info("Closing EC : " + request);
+
         allEligibleCouples.close(request.caseId());
         actionService.closeEligibleCouple(request.caseId(), request.anmIdentifier());
     }

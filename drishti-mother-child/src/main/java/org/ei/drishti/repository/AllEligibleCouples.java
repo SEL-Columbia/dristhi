@@ -51,4 +51,8 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
 
         return couple;
     }
+
+    public boolean exists(String caseId) {
+        return findByCaseId(caseId) != null;
+    }
 }

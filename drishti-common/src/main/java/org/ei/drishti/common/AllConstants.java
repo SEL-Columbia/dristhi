@@ -90,6 +90,7 @@ public class AllConstants {
 
     public static class PNCCloseCommCareFields {
         public static final String DEATH_OF_MOTHER_COMMCARE_VALUE = "death_of_mother";
+        public static final String PERMANENT_RELOCATION_COMMCARE_VALUE = "permanent_relocation";
         public static final String END_OF_PP_PERIOD_COMMCARE_VALUE = "end_of_pp_period";
     }
 

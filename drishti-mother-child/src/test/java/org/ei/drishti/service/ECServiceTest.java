@@ -172,9 +172,21 @@ public class ECServiceTest {
 
     @Test
     public void shouldCloseEligibleCouple() throws Exception {
+        when(allEligibleCouples.exists("CASE X")).thenReturn(true);
+
         ecService.closeEligibleCouple(new EligibleCoupleCloseRequest("CASE X", "ANM X"));
 
         verify(allEligibleCouples).close("CASE X");
         verify(actionService).closeEligibleCouple("CASE X", "ANM X");
+    }
+
+    @Test
+    public void shouldNotCloseEligibleCoupleWhenECDoesNotExist() throws Exception {
+        when(allEligibleCouples.exists("CASE X")).thenReturn(false);
+
+        ecService.closeEligibleCouple(new EligibleCoupleCloseRequest("CASE X", "ANM X"));
+
+        verify(allEligibleCouples, times(0)).close("CASE X");
+        verifyZeroInteractions(actionService);
     }
 }

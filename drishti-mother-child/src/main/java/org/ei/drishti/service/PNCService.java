@@ -26,7 +26,7 @@ import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.END_OF_PP_PERIOD_COMMCARE_VALUE;
+import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
@@ -43,10 +43,12 @@ public class PNCService {
     private AllChildren allChildren;
     private MotherReportingService motherReportingService;
     private ChildReportingService childReportingService;
+    private ECService ecService;
 
     @Autowired
-    public PNCService(ActionService actionService, ChildSchedulesService childSchedulesService, PNCSchedulesService pncSchedulesService, AllMothers allMothers,
+    public PNCService(ECService ecService, ActionService actionService, ChildSchedulesService childSchedulesService, PNCSchedulesService pncSchedulesService, AllMothers allMothers,
                       AllChildren allChildren, MotherReportingService motherReportingService, ChildReportingService childReportingService) {
+        this.ecService = ecService;
         this.actionService = actionService;
         this.childSchedulesService = childSchedulesService;
         this.pncSchedulesService = pncSchedulesService;
@@ -81,9 +83,16 @@ public class PNCService {
             return;
         }
 
+        logger.info("Closing PNC case. Details: " + closeInformation);
         allMothers.close(closeInformation.caseId());
         motherReportingService.closePNC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         actionService.closeMother(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.closeReason());
+
+        if (DEATH_OF_MOTHER_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.closeReason())
+                || PERMANENT_RELOCATION_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.closeReason())) {
+            logger.info("Closing EC case along with PNC case. Details: " + closeInformation);
+            ecService.closeEligibleCouple(new EligibleCoupleCloseRequest(closeInformation.caseId(), closeInformation.anmIdentifier()));
+        }
     }
 
     public void autoClosePNCCase(String caseId) {
