@@ -339,6 +339,15 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldNotCloseECCaseWhenPNCCaseIsClosedAndReasonIsNeitherDeathOrPermanentRelocation() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.closePNCCase(new PostNatalCareCloseInformation("CASE-X", "ANM X", "end_of_pp_period"), EXTRA_DATA);
+
+        verifyZeroInteractions(ecService);
+    }
+
+    @Test
     public void shouldReportWhenPNCVisitForMotherHappens() {
         when(mothers.motherExists("Case X")).thenReturn(true);
         when(mothers.updateDetails("Case X", EXTRA_DATA.get("details"))).thenReturn(new Mother("Case X", "EC-CASE-1", "TC 1", "Theresa"));

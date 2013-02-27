@@ -85,6 +85,7 @@ public class AllConstants {
         public static final String MTP_GREATER_THAN_12_WEEKS_FIELD_NAME = "greater_12wks";
         public static final String MTP_LESS_THAN_12_WEEKS_FIELD_NAME = "less_12wks";
         public static final String DEATH_OF_WOMAN_COMMCARE_VALUE = "death_of_woman";
+        public static final String PERMANENT_RELOCATION_COMMCARE_VALUE = "relocation_permanent";
         public static final String SPONTANEOUS_ABORTION_COMMCARE_VALUE = "spontaneous_abortion";
     }
 

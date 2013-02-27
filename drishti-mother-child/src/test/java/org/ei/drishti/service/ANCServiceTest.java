@@ -39,6 +39,8 @@ public class ANCServiceTest {
     private ANCSchedulesService ancSchedulesService;
     @Mock
     protected MotherReportingService motherReportingService;
+    @Mock
+    private ECService ecService;
 
     private ANCService service;
 
@@ -48,7 +50,7 @@ public class ANCServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ANCService(mothers, eligibleCouples, ancSchedulesService, actionService, motherReportingService);
+        service = new ANCService(ecService, mothers, eligibleCouples, ancSchedulesService, actionService, motherReportingService);
     }
 
     @Test
@@ -260,6 +262,33 @@ public class ANCServiceTest {
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM", "ANM X", null), new SafeMap());
 
         verifyZeroInteractions(ancSchedulesService);
+    }
+
+    @Test
+    public void shouldCloseECCaseAlsoWhenPNCCaseIsClosedAndReasonIsDeath() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "death_of_woman"), new SafeMap());
+
+        verify(ecService).closeEligibleCouple(new EligibleCoupleCloseRequest("CASE-X", "ANM X"));
+    }
+
+    @Test
+    public void shouldCloseECCaseAlsoWhenPNCCaseIsClosedAndReasonIsPermanentRelocation() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "relocation_permanent"), new SafeMap());
+
+        verify(ecService).closeEligibleCouple(new EligibleCoupleCloseRequest("CASE-X", "ANM X"));
+    }
+
+    @Test
+    public void shouldNotCloseECCaseWhenPNCCaseIsClosedAndReasonIsNeitherDeathOrPermanentRelocation() {
+        when(mothers.motherExists("CASE-X")).thenReturn(true);
+
+        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "other_reason"), new SafeMap());
+
+        verifyZeroInteractions(ecService);
     }
 
     @Test

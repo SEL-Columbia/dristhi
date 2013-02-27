@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.joda.time.LocalTime.now;
@@ -32,9 +33,11 @@ public class ANCService {
     private ANCSchedulesService ancSchedulesService;
     private ActionService actionService;
     private MotherReportingService reportingService;
+    private ECService ecService;
 
     @Autowired
-    public ANCService(AllMothers allMothers, AllEligibleCouples eligibleCouples, ANCSchedulesService ancSchedulesService, ActionService actionService, MotherReportingService reportingService) {
+    public ANCService(ECService ecService, AllMothers allMothers, AllEligibleCouples eligibleCouples, ANCSchedulesService ancSchedulesService, ActionService actionService, MotherReportingService reportingService) {
+        this.ecService = ecService;
         this.allMothers = allMothers;
         this.eligibleCouples = eligibleCouples;
         this.ancSchedulesService = ancSchedulesService;
@@ -79,7 +82,7 @@ public class ANCService {
         allMothers.register(mother);
 
         actionService.registerOutOfAreaANC(request.caseId(), couple.caseId(), request.wife(), request.husband(), request.anmIdentifier(),
-                request.village(), request.subCenter(), request.phc(), request.thaayiCardNumber(),request.lmpDate(), details);
+                request.village(), request.subCenter(), request.phc(), request.thaayiCardNumber(), request.lmpDate(), details);
 
         enrollMotherIntoSchedules(request.caseId(), request.lmpDate());
     }
@@ -130,6 +133,12 @@ public class ANCService {
         reportingService.closeANC(data);
         ancSchedulesService.unEnrollFromSchedules(closeInformation.caseId());
         actionService.closeMother(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.reason());
+
+        if (DEATH_OF_WOMAN_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.reason())
+                || PERMANENT_RELOCATION_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.reason())) {
+            logger.info("Closing EC case along with ANC case. Details: " + closeInformation);
+            ecService.closeEligibleCouple(new EligibleCoupleCloseRequest(closeInformation.caseId(), closeInformation.anmIdentifier()));
+        }
     }
 
     public void updateBirthPlanning(BirthPlanningRequest request, Map<String, Map<String, String>> extraData) {
