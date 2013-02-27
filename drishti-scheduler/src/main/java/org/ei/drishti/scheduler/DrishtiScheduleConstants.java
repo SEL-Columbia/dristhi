@@ -33,7 +33,7 @@ public class DrishtiScheduleConstants {
         public static final String SCHEDULE_IFA = "Iron Folic Acid Supplements";
         public static final String SCHEDULE_LAB = "Lab Reminders";
         public static final String SCHEDULE_TT = "Tetatnus Toxoid Vaccination";
-
+        public static final String SCHEDULE_AUTO_CLOSE_PNC = "Auto Close PNC";
     }
 
     public static class ECSchedulesConstants{

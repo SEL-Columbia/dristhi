@@ -44,6 +44,8 @@ public class PNCServiceTest extends BaseUnitTest {
     private MotherReportingService motherReportingService;
     @Mock
     private ChildReportingService childReportingService;
+    @Mock
+    private PNCSchedulesService pncSchedulesService;
 
     private PNCService service;
     private Map<String, Map<String, String>> EXTRA_DATA = create("details", mapOf("someKey", "someValue")).put("reporting", mapOf("someKey", "someValue")).map();
@@ -51,7 +53,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new PNCService(actionService, childSchedulesService, mothers, children, motherReportingService, childReportingService);
+        service = new PNCService(actionService, childSchedulesService, pncSchedulesService, mothers, children, motherReportingService, childReportingService);
     }
 
     @Test
@@ -386,11 +388,60 @@ public class PNCServiceTest extends BaseUnitTest {
         verify(childReportingService).registerChild(reportData);
     }
 
+    @Test
+    public void shouldEnrollPNCIntoSchedulesDuringRegistration() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(mothers.motherExists("MOTHER-CASE-1")).thenReturn(true);
+
+        AnteNatalCareOutcomeInformation outcomeInformation = new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0");
+        service.registerPNC(outcomeInformation);
+
+        verify(pncSchedulesService).enrollMother(outcomeInformation);
+    }
+
+    @Test
+    public void shouldNotEnrollPNCIntoSchedulesWhenMotherDoesNotExist() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(mothers.motherExists("MOTHER-CASE-1")).thenReturn(false);
+
+        AnteNatalCareOutcomeInformation outcomeInformation = new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0");
+        service.registerPNC(outcomeInformation);
+
+        verifyZeroInteractions(pncSchedulesService);
+    }
+
+    @Test
+    public void shouldAutoClosePNCCaseWhenMotherExists() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa").withAnm("ANM 1", "9090909090"));
+
+        service.autoClosePNCCase("MOTHER-CASE-1");
+
+        verify(mothers).close("MOTHER-CASE-1");
+        verify(actionService).closeMother("MOTHER-CASE-1", "ANM 1", "end_of_pp_period");
+        verifyZeroInteractions(motherReportingService);
+    }
+
+    @Test
+    public void shouldNotAutoClosePNCCaseWhenMotherDoesNotExist() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(null);
+
+        service.autoClosePNCCase("MOTHER-CASE-1");
+
+        verify(mothers, times(0)).close("MOTHER-CASE-1");
+        verifyZeroInteractions(actionService);
+    }
+
     private void assertMissingAlertsAdded(String providedImmunizations, String... expectedAlertsRaised) {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         ActionService actionService = mock(ActionService.class);
-        PNCService pncService = new PNCService(actionService, childSchedulesService, mothers, children, motherReportingService, childReportingService);
+        PNCService pncService = new PNCService(actionService, childSchedulesService, pncSchedulesService, mothers, children, motherReportingService, childReportingService);
         when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1", "Theresa"));
 
         pncService.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), providedImmunizations, "4", "yes", EXTRA_DATA));

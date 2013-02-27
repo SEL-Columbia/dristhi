@@ -8,18 +8,22 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
 import static org.ei.drishti.scheduler.router.Matcher.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.*;
 
 @Component
 public class AlertController {
     @Autowired
-    public AlertController(AlertRouter router, @Qualifier("ANMGroupSMSAction") Action anmGroupSMS,
-                           @Qualifier("ForceFulfillAction") Action forceFulfill, @Qualifier("AlertCreationAction") Action alertCreation) {
+    public AlertController(AlertRouter router,
+                           @Qualifier("ANMGroupSMSAction") Action anmGroupSMS,
+                           @Qualifier("ForceFulfillAction") Action forceFulfill,
+                           @Qualifier("AlertCreationAction") Action alertCreation,
+                           @Qualifier("AutoClosePNCAction") Action autoClosePNCAction) {
         router.addRoute(eq(SCHEDULE_ANC), any(), eq(max.toString()), forceFulfill);
         router.addRoute(eq(SCHEDULE_LAB), any(), eq(max.toString()), forceFulfill);
+        router.addRoute(eq(SCHEDULE_AUTO_CLOSE_PNC), any(), any(), autoClosePNCAction);
         router.addRoute(motherSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "mother");
         router.addRoute(childSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "child");
         router.addRoute(ecSchedules(), any(), anyOf(late.toString()), alertCreation).addExtraData("beneficiaryType", "ec");

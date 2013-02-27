@@ -10,9 +10,9 @@ import org.motechproject.scheduletracking.api.domain.WindowName;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.mockito.Mockito.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.max;
 
@@ -69,6 +69,11 @@ public class AlertControllerRoutesTest {
         Event.of(EC_SCHEDULE_FP_COMPLICATION, "FP Complications", WindowName.late).shouldRouteToAlertCreationActionForEC();
     }
 
+    @Test
+    public void shouldSendDueRemindersOfPNCCloseToAutoClosePNCAction() throws Exception {
+        Event.of(SCHEDULE_AUTO_CLOSE_PNC, "PNC Close", WindowName.due).shouldRouteToAutoClosePNCAction();
+    }
+
     private static class Event {
         private final String schedule;
         private final String milestone;
@@ -85,51 +90,58 @@ public class AlertControllerRoutesTest {
         }
 
         public void shouldRouteToForceFulfillAction() {
-            expectCalls(Expectation.of(1), Expectation.of(0), Expectation.of(0));
+            expectCalls(Expectation.of(1), Expectation.of(0), Expectation.of(0), Expectation.of(0));
         }
 
         public void shouldRouteToGroupSMSAction() {
-            expectCalls(Expectation.of(0), Expectation.of(1), Expectation.of(0));
+            expectCalls(Expectation.of(0), Expectation.of(1), Expectation.of(0), Expectation.of(0));
         }
 
         public void shouldRouteToAlertCreationActionForMother() {
             Map<String, String> extraData = new HashMap<>();
             extraData.put("beneficiaryType", "mother");
-            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData));
+            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData), Expectation.of(0));
         }
 
         public void shouldRouteToAlertCreationActionForChild() {
             Map<String, String> extraData = new HashMap<>();
             extraData.put("beneficiaryType", "child");
-            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData));
+            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData), Expectation.of(0));
         }
 
         public void shouldRouteToAlertCreationActionForEC() {
             Map<String, String> extraData = new HashMap<>();
             extraData.put("beneficiaryType", "ec");
-            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData));
+            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData), Expectation.of(0));
         }
 
-        public void shouldDoNothing() {
-            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(0));
+        public void shouldRouteToAutoClosePNCAction() {
+            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(0), Expectation.of(1));
         }
 
-        private void expectCalls(Expectation fulfillActionCallsExpected, Expectation groupSMSActionCallsExpected, Expectation captureReminderActionCallsExpected) {
+        private void expectCalls(Expectation fulfillActionCallsExpected, Expectation groupSMSActionCallsExpected, Expectation captureReminderActionCallsExpected, Expectation autoClosePNCActionCallsExpected) {
             Action groupSMSAction = mock(Action.class);
             Action forceFulfillAction = mock(Action.class);
             Action captureANCReminderAction = mock(Action.class);
+            Action autoClosePNCAction = mock(Action.class);
 
-            MotechEvent event = routeEvent(groupSMSAction, forceFulfillAction, captureANCReminderAction);
+            MotechEvent event = routeEvent(groupSMSAction, forceFulfillAction, captureANCReminderAction, autoClosePNCAction);
 
             verify(forceFulfillAction, times(fulfillActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), fulfillActionCallsExpected.extraDataExpected);
             verify(groupSMSAction, times(groupSMSActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), groupSMSActionCallsExpected.extraDataExpected);
             verify(captureANCReminderAction, times(captureReminderActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), captureReminderActionCallsExpected.extraDataExpected);
+            verify(autoClosePNCAction, times(autoClosePNCActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), autoClosePNCActionCallsExpected.extraDataExpected);
         }
 
-        private MotechEvent routeEvent(Action groupSMSAction, Action ancMissedAction, Action captureANCReminderAction) {
+        private MotechEvent routeEvent(Action groupSMSAction, Action ancMissedAction, Action captureANCReminderAction, Action autoClosePNCAction) {
             AlertRouter router = new AlertRouter();
-            new AlertController(router, groupSMSAction, ancMissedAction, captureANCReminderAction);
-            MotechEvent event = org.ei.drishti.util.Event.create().withMilestone(milestone).withSchedule(schedule).withWindow(window).build();
+            new AlertController(router, groupSMSAction, ancMissedAction, captureANCReminderAction, autoClosePNCAction);
+            MotechEvent event = org.ei.drishti.util.Event
+                    .create()
+                    .withMilestone(milestone)
+                    .withSchedule(schedule)
+                    .withWindow(window)
+                    .build();
 
             router.handle(event);
 

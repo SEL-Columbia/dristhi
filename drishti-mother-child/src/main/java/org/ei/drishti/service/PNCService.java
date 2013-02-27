@@ -26,6 +26,7 @@ import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.END_OF_PP_PERIOD_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
@@ -37,27 +38,81 @@ public class PNCService {
 
     private ActionService actionService;
     private ChildSchedulesService childSchedulesService;
+    private PNCSchedulesService pncSchedulesService;
     private AllMothers allMothers;
     private AllChildren allChildren;
     private MotherReportingService motherReportingService;
     private ChildReportingService childReportingService;
 
     @Autowired
-    public PNCService(ActionService actionService, ChildSchedulesService childSchedulesService, AllMothers allMothers,
+    public PNCService(ActionService actionService, ChildSchedulesService childSchedulesService, PNCSchedulesService pncSchedulesService, AllMothers allMothers,
                       AllChildren allChildren, MotherReportingService motherReportingService, ChildReportingService childReportingService) {
         this.actionService = actionService;
         this.childSchedulesService = childSchedulesService;
+        this.pncSchedulesService = pncSchedulesService;
         this.allMothers = allMothers;
         this.allChildren = allChildren;
         this.motherReportingService = motherReportingService;
         this.childReportingService = childReportingService;
     }
 
+    public void pncVisitHappened(PostNatalCareInformation info, Map<String, Map<String, String>> extraData) {
+        if (!allMothers.motherExists(info.caseId())) {
+            logger.warn("Found PNC visit without registered mother for case ID: " + info.caseId());
+            return;
+        }
+
+        Map<String, String> details = extraData.get("details");
+
+        Mother updatedMother = allMothers.updateDetails(info.caseId(), details);
+        actionService.pncVisitHappened(mother, info.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedMother.details());
+        motherReportingService.pncVisitHappened(new SafeMap(extraData.get("reporting")));
+
+        Child child = allChildren.findByMotherCaseId(info.caseId());
+        if (child != null) {
+            Child updatedChild = allChildren.update(child.caseId(), details);
+            actionService.pncVisitHappened(BeneficiaryType.child, child.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedChild.details());
+        }
+    }
+
+    public void closePNCCase(PostNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
+        if (!allMothers.motherExists(closeInformation.caseId())) {
+            logger.warn("Found PNC Close visit without registered mother for it: " + closeInformation.caseId());
+            return;
+        }
+
+        allMothers.close(closeInformation.caseId());
+        motherReportingService.closePNC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
+        actionService.closeMother(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.closeReason());
+    }
+
+    public void autoClosePNCCase(String caseId) {
+        Mother mother = allMothers.findByCaseId(caseId);
+        if (mother == null) {
+            logger.warn(format("Failed to auto close PNC as there is no mother registered with case ID: {0}", caseId));
+            return;
+        }
+
+        logger.info("Auto closing mother case with case id {0} as the Post-pregnancy period has elapsed.");
+        allMothers.close(caseId);
+        actionService.closeMother(caseId, mother.anmIdentifier(), END_OF_PP_PERIOD_COMMCARE_VALUE);
+    }
+
+    public void registerPNC(AnteNatalCareOutcomeInformation outcomeInformation) {
+        if (!allMothers.motherExists(outcomeInformation.motherCaseId())) {
+            logger.warn("Failed to register PNC as there is no mother registered: " + outcomeInformation);
+            return;
+        }
+
+        pncSchedulesService.enrollMother(outcomeInformation);
+    }
+
     public void registerChild(ChildInformation information) {
         Mother mother = allMothers.findByCaseId(information.motherCaseId());
 
         if (mother == null) {
-            logger.warn(format("Failed to register child as there is no mother registered with case ID: {0} for child case ID: {1} for ANM: {2}", information.motherCaseId(), information.caseId(), information.anmIdentifier()));
+            logger.warn(format("Failed to register child as there is no mother registered with case ID: {0} for child case ID: {1} for ANM: {2}",
+                    information.motherCaseId(), information.caseId(), information.anmIdentifier()));
             return;
         }
 
@@ -81,25 +136,6 @@ public class PNCService {
         alertForMissingImmunization(information, "hepb_0", "HEP B0");
 
         childSchedulesService.enrollChild(information);
-    }
-
-    public void pncVisitHappened(PostNatalCareInformation info, Map<String, Map<String, String>> extraData) {
-        if (!allMothers.motherExists(info.caseId())) {
-            logger.warn("Found PNC visit without registered mother for case ID: " + info.caseId());
-            return;
-        }
-
-        Map<String, String> details = extraData.get("details");
-
-        Mother updatedMother = allMothers.updateDetails(info.caseId(), details);
-        actionService.pncVisitHappened(mother, info.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedMother.details());
-        motherReportingService.pncVisitHappened(new SafeMap(extraData.get("reporting")));
-
-        Child child = allChildren.findByMotherCaseId(info.caseId());
-        if (child != null) {
-            Child updatedChild = allChildren.update(child.caseId(), details);
-            actionService.pncVisitHappened(BeneficiaryType.child, child.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedChild.details());
-        }
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {
@@ -130,17 +166,6 @@ public class PNCService {
         actionService.closeChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
         childReportingService.closeChild(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         childSchedulesService.unenrollChild(childCloseRequest.caseId());
-    }
-
-    public void closePNCCase(PostNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
-        if (!allMothers.motherExists(closeInformation.caseId())) {
-            logger.warn("Found PNC Close visit without registered mother for it: " + closeInformation.caseId());
-            return;
-        }
-
-        allMothers.close(closeInformation.caseId());
-        motherReportingService.closePNC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-        actionService.closeMother(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.closeReason());
     }
 
     private void closeAlertsForProvidedImmunizations(ChildImmunizationUpdationRequest updationRequest) {

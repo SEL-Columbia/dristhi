@@ -87,6 +87,7 @@ public class DrishtiController {
         logger.info("ANC outcome: " + outcomeInformation + ". Extra data: " + extraData);
 
         ancService.updatePregnancyOutcome(outcomeInformation, extraData);
+        pncService.registerPNC(outcomeInformation);
         mctsService.updateANCOutcome(outcomeInformation);
 
         List<ChildInformation> childInformationList = childMapper.mapDeliveryOutcomeInformationToChildren(outcomeInformation, extraData);

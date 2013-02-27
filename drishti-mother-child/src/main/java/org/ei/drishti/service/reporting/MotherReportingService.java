@@ -30,8 +30,9 @@ import static org.joda.time.LocalDate.parse;
 @Service
 public class MotherReportingService {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(MotherReportingService.class.toString());
-
     public static final int NUMBER_OF_DAYS_IN_12_WEEKS = 84;
+
+    public static final int NUMBER_OF_DAYS_IN_PNC_PERIOD = 42;
     private ReportingService reportingService;
     private AllMothers allMothers;
     private final Map<String, Indicator> placeOfDeliveryToIndicator;
@@ -143,7 +144,7 @@ public class MotherReportingService {
 
         if (DEATH_OF_MOTHER_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))
                 && BOOLEAN_TRUE_COMMCARE_VALUE.equals(reportData.get(IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME))
-                && mother.dateOfDelivery().plusDays(42).isAfter(parse(reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME)))) {
+                && mother.dateOfDelivery().plusDays(NUMBER_OF_DAYS_IN_PNC_PERIOD).isAfter(parse(reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME)))) {
             reportDeath(mother, MMP, reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME));
         }
     }

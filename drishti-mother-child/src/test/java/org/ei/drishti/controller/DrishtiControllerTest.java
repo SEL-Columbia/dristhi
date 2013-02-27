@@ -78,6 +78,7 @@ public class DrishtiControllerTest {
         controller.updateOutcomeOfANC(outcomeInformation, EXTRA_DATA);
 
         verify(ancService).updatePregnancyOutcome(outcomeInformation, EXTRA_DATA);
+        verify(pncService).registerPNC(outcomeInformation);
         verify(mctsService).updateANCOutcome(outcomeInformation);
         verify(mctsService).registerChild(outcomeInformation);
     }

@@ -361,6 +361,21 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("child-measles-boosters.html", 4);
     }
 
+    @Test
+    public void shouldProvideAlertsForPNCCloseAtTheRightTimes() throws Exception {
+        LocalDate referenceDate = newDate(2012, 1, 1);
+
+        schedule.enrollFor("Auto Close PNC", referenceDate, new Time(14, 0));
+
+        schedule.assertNoAlerts("Auto Close PNC", earliest);
+        schedule.assertAlertsStartWith("Auto Close PNC", due, dateWithYear(26, FEBRUARY, 2012), dateWithYear(29, FEBRUARY, 2012));
+        schedule.assertNoAlerts("Auto Close PNC", late);
+        schedule.assertNoAlerts("Auto Close PNC", max);
+
+        visualization.outputTo("mother-auto-close-pnc.html", 1);
+    }
+
+
     @Before
     public void setUp() throws Exception {
         FakeSchedule fakeSchedule = new FakeSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {
