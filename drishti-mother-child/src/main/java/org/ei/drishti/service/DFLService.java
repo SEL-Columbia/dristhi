@@ -1,5 +1,8 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.repository.FormDataRepository;
+import org.springframework.stereotype.Service;
+
 import javax.script.Bindings;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -10,8 +13,8 @@ import java.util.Arrays;
 
 import static javax.script.ScriptContext.ENGINE_SCOPE;
 
+@Service
 public class DFLService {
-
     private static final String SAVE_METHOD_NAME = "save";
     private static final String JS_INIT_SCRIPT = "var formDataRepository = new enketo.FormDataRepository();\n" +
             "    var controller = new enketo.FormDataController(\n" +
@@ -20,9 +23,11 @@ public class DFLService {
             "        new enketo.FormModelMapper(formDataRepository, new enketo.SQLQueryBuilder(formDataRepository), new enketo.IdFactory(new enketo.IdFactoryBridge())),\n" +
             "        formDataRepository);";
     private JSONFileLoader jsonFileLoader;
+    private FormDataRepository dataRepository;
 
-    public DFLService(JSONFileLoader jsonFileLoader) {
+    public DFLService(JSONFileLoader jsonFileLoader, FormDataRepository dataRepository) {
         this.jsonFileLoader = jsonFileLoader;
+        this.dataRepository = dataRepository;
     }
 
     public void saveForm(String params, String formInstance) {
@@ -32,6 +37,7 @@ public class DFLService {
         try {
             Bindings bindings = engine.createBindings();
             bindings.put("jsonFileLoader", jsonFileLoader);
+            bindings.put("repository", dataRepository);
             engine.setBindings(bindings, ENGINE_SCOPE);
             File jsFolder = new File("drishti-mother-child/js");
             System.out.println(jsFolder.getAbsoluteFile());

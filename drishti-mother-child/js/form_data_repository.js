@@ -3,20 +3,6 @@ if (typeof enketo == "undefined" || !enketo) {
 }
 
 enketo.FormDataRepository = function () {
-    var repository;
-
-        var fakeRepository = {
-            queryUniqueResult: function (sql) {
-            },
-            queryList: function (sql) {
-            },
-            saveFormSubmission: function (params, data) {
-            },
-            saveEntity: function (entityType, entity) {
-            }
-        };
-        repository = fakeRepository
-
     return {
         getFormInstanceByFormTypeAndId: function (formID, formName) {
             return null;
