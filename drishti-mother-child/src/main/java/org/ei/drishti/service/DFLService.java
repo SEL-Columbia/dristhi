@@ -1,6 +1,7 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.repository.FormDataRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.script.Bindings;
@@ -9,7 +10,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.File;
 import java.io.FileFilter;
-import java.util.Arrays;
+import java.io.IOException;
 
 import static javax.script.ScriptContext.ENGINE_SCOPE;
 
@@ -25,6 +26,7 @@ public class DFLService {
     private JSONFileLoader jsonFileLoader;
     private FormDataRepository dataRepository;
 
+    @Autowired
     public DFLService(JSONFileLoader jsonFileLoader, FormDataRepository dataRepository) {
         this.jsonFileLoader = jsonFileLoader;
         this.dataRepository = dataRepository;
@@ -39,32 +41,32 @@ public class DFLService {
             bindings.put("jsonFileLoader", jsonFileLoader);
             bindings.put("repository", dataRepository);
             engine.setBindings(bindings, ENGINE_SCOPE);
-            File jsFolder = new File("drishti-mother-child/js");
-            System.out.println(jsFolder.getAbsoluteFile());
-            File[] files = jsFolder.listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File file) {
-                    return file.getName().endsWith(".js");
-                }
-            });
-            System.out.println(Arrays.toString(files));
-            StringBuilder builder = new StringBuilder();
-            for (File file : files) {
-                builder.append(jsonFileLoader.load(file));
-            }
-            String jsFiles = builder.toString();
+
+            String jsFiles = getJSFiles();
 
             engine.eval(jsFiles);
             engine.eval(JS_INIT_SCRIPT);
 
             Object formDataRepository = engine.get("controller");
-
             Invocable invocable = (Invocable) engine;
-
             invocable.invokeMethod(formDataRepository, SAVE_METHOD_NAME, params, formInstance);
-            System.out.println(formDataRepository);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private String getJSFiles() throws IOException {
+        File jsFolder = new File("drishti-mother-child/js");
+        File[] files = jsFolder.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return file.getName().endsWith(".js");
+            }
+        });
+        StringBuilder builder = new StringBuilder();
+        for (File file : files) {
+            builder.append(jsonFileLoader.load(file));
+        }
+        return builder.toString();
     }
 }

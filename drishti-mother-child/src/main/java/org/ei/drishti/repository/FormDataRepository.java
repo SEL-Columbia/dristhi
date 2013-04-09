@@ -31,7 +31,7 @@ public class FormDataRepository {
     private static final String DOCUMENT_TYPE = "type";
     private static final String ID_FIELD_ON_ENTITY = "caseId";
     private static final String CASE_ID_VIEW_NAME = "by_caseId";
-    private final Map<String, Field[]> fieldSetMap;
+    private Map<String, Field[]> fieldSetMap;
     private AllFormSubmissions allFormSubmissions;
     private CouchDbConnector db;
     private Map<String, String> designDocMap;
@@ -40,6 +40,11 @@ public class FormDataRepository {
     public FormDataRepository(AllFormSubmissions allFormSubmissions, @Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
         this.allFormSubmissions = allFormSubmissions;
         this.db = db;
+        initMaps();
+
+    }
+
+    private void initMaps() {
         designDocMap = new HashMap<>();
         fieldSetMap = new HashMap<>();
         designDocMap.put("eligible_couple", "EligibleCouple");
@@ -48,7 +53,6 @@ public class FormDataRepository {
         fieldSetMap.put("eligible_couple", EligibleCouple.class.getDeclaredFields());
         fieldSetMap.put("mother", Mother.class.getDeclaredFields());
         fieldSetMap.put("child", Child.class.getDeclaredFields());
-
     }
 
     public void saveFormSubmission(String paramsJSON, String data) {
@@ -65,18 +69,18 @@ public class FormDataRepository {
 
         List<ViewResult.Row> viewQueryResult = getDBViewQueryResult(entityId, docEntityType);
 
-            ObjectNode entity;
-            ObjectNode details;
-            if (viewQueryResult.size() != 0) {
-                JsonNode document = viewQueryResult.get(0).getDocAsNode();
-                entity = (ObjectNode) document;
-                details = (ObjectNode) document.get(DETAILS);
-            } else {
-                entity = new ObjectNode(JsonNodeFactory.instance);
-                details = new ObjectNode(JsonNodeFactory.instance);
-                entity.put("_id", randomUUID().toString());
-                entity.put(DOCUMENT_TYPE, docEntityType);
-            }
+        ObjectNode entity;
+        ObjectNode details;
+        if (viewQueryResult.size() != 0) {
+            JsonNode document = viewQueryResult.get(0).getDocAsNode();
+            entity = (ObjectNode) document;
+            details = (ObjectNode) document.get(DETAILS);
+        } else {
+            entity = new ObjectNode(JsonNodeFactory.instance);
+            details = new ObjectNode(JsonNodeFactory.instance);
+            entity.put("_id", randomUUID().toString());
+            entity.put(DOCUMENT_TYPE, docEntityType);
+        }
 
         List<String> fieldList = getFieldsList(entityType);
         for (String fieldName : updatedFieldsMap.keySet()) {
