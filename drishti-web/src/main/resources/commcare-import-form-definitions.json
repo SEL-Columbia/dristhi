@@ -41,7 +41,15 @@
                             "form|today": "submissionDate",
                             "form|high_priority_reason": "highPriorityReason",
                             "form|economic_status": "economicStatus",
-                            "form|caste": "caste"
+                            "form|caste": "caste",
+                            "form|woman_age": "wifeAge",
+                            "form|woman_date_of_birth": "dateOfBirth",
+                            "form|num_pregnancies": "numberOfPregnancies",
+                            "form|num_livingchildren": "numberOfLivingChildren",
+                            "form|num_stillbirths": "numberOfStillBirths",
+                            "form|num_abortions": "numberOfAbortions",
+                            "form|side_effects": "sideEffects",
+                            "form|parity": "parity"
                         }
                     }
                 },
@@ -164,7 +172,8 @@
                             "form|asha_phone_number": "ashaPhoneNumber",
                             "form|today": "submissionDate",
                             "form|economic_status": "economicStatus",
-                            "form|caste": "caste"
+                            "form|caste": "caste",
+                            "form|woman_age": "wifeAge"
                         }
                     }
                 },
