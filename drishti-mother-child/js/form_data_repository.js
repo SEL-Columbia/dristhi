@@ -3,6 +3,11 @@ if (typeof enketo == "undefined" || !enketo) {
 }
 
 enketo.FormDataRepository = function () {
+    var repository;
+    if (typeof formDataRepositoryContext !== "undefined") {
+        repository = formDataRepositoryContext;
+    }
+
     return {
         getFormInstanceByFormTypeAndId: function (formID, formName) {
             return null;
@@ -20,5 +25,4 @@ enketo.FormDataRepository = function () {
             return repository.saveEntity(entityType, JSON.stringify(entity));
         }
     };
-}
-;
+};

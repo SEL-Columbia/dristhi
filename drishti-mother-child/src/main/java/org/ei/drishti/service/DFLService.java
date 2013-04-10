@@ -29,7 +29,7 @@ public class DFLService {
             "        new enketo.FormModelMapper(formDataRepository, new enketo.SQLQueryBuilder(formDataRepository), new enketo.IdFactory(new enketo.IdFactoryBridge())),\n" +
             "        formDataRepository);";
     private static final String JSON_FILE_LOADER = "jsonFileLoader";
-    private static final String REPOSITORY = "repository";
+    private static final String REPOSITORY = "formDataRepositoryContext";
 
     private JSONFileLoader jsonFileLoader;
     private FormDataRepository dataRepository;

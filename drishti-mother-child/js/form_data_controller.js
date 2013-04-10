@@ -23,6 +23,7 @@ enketo.FormDataController = function (entityRelationshipLoader, formDefinitionLo
         var mapToFormModel = formModelMapper.mapToFormModel(self.entitiesDef, self.formDefinition, params);
         return mapToFormModel;
     };
+
     self.save = function (params, data) {
         init(JSON.parse(params));
         if (enketo.hasValue(self.entitiesDef) && self.entitiesDef.length != 0) {
@@ -30,6 +31,7 @@ enketo.FormDataController = function (entityRelationshipLoader, formDefinitionLo
         }
         formDataRepository.saveFormSubmission(JSON.parse(params), JSON.parse(data));
     };
+
     self.deleteSubmission = function (params) {
         init(params);
         //dataSource.remove(instanceId);

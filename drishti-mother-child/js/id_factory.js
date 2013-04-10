@@ -11,19 +11,14 @@ enketo.IdFactory = function (idFactoryBridge) {
 };
 
 enketo.IdFactoryBridge = function () {
-    var idFactoryContextnew= enketo.FakeIdFactoryContext();
+    var idFactoryContext;
+    if (typeof formDataRepositoryContext !== "undefined") {
+        idFactoryContext = formDataRepositoryContext;
+    }
 
     return {
         generateIdFor: function (entityType) {
             return idFactoryContext.generateIdFor(entityType);
         }
     };
-};
-
-enketo.FakeIdFactoryContext = function () {
-    return {
-        generateIdFor: function (entityType) {
-            return "new uuid : " + entityType;
-        }
-    }
 };
