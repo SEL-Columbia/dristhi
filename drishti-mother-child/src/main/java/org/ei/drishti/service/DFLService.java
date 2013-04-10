@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 
+import static java.text.MessageFormat.format;
 import static javax.script.ScriptContext.ENGINE_SCOPE;
 
 @Service
@@ -36,7 +37,7 @@ public class DFLService {
     private Invocable invocable;
 
     @Autowired
-    public DFLService(JSONFileLoader jsonFileLoader, FormDataRepository dataRepository, @Value("#{drishti['js.files.path']}") String jsFilesPath) {
+    public DFLService(JSONFileLoader jsonFileLoader, FormDataRepository dataRepository, @Value("#{drishti['js.files.path']}") String jsFilesPath) throws Exception {
         this.jsonFileLoader = jsonFileLoader;
         this.dataRepository = dataRepository;
         initRhino(jsFilesPath);
@@ -46,28 +47,24 @@ public class DFLService {
         try {
             invocable.invokeMethod(dflFormController, SAVE_METHOD_NAME, params, formInstance);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(format("Form save failed, with params: {0}, with instance {1}. Exception: {2}", params, formInstance, e));
         }
     }
 
-    private void initRhino(String jsFilesPath) {
-        try {
-            ScriptEngineManager manager = new ScriptEngineManager();
-            ScriptEngine engine = manager.getEngineByName("JavaScript");
+    private void initRhino(String jsFilesPath) throws Exception {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("JavaScript");
 
-            Bindings bindings = getBindings(engine);
-            engine.setBindings(bindings, ENGINE_SCOPE);
+        Bindings bindings = getBindings(engine);
+        engine.setBindings(bindings, ENGINE_SCOPE);
 
-            String jsFiles = getJSFiles(jsFilesPath);
+        String jsFiles = getJSFiles(jsFilesPath);
 
-            engine.eval(jsFiles);
-            engine.eval(JS_INIT_SCRIPT);
+        engine.eval(jsFiles);
+        engine.eval(JS_INIT_SCRIPT);
 
-            dflFormController = engine.get("controller");
-            invocable = (Invocable) engine;
-        } catch (Exception e) {
-            logger.error("Rhino initialization failed: " + e);
-        }
+        dflFormController = engine.get("controller");
+        invocable = (Invocable) engine;
     }
 
     private Bindings getBindings(ScriptEngine engine) {
