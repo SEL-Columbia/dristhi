@@ -3,6 +3,14 @@ package org.ei.drishti.common;
 public class AllConstants {
     public static final String DETAILS_EXTRA_DATA_KEY_NAME = "details";
 
+    public static class Form {
+        public static final String ENTITY_ID = "entityId";
+        public static final String ANM_ID = "anmId";
+        public static final String FORM_NAME = "formName";
+        public static final String INSTANCE_ID = "instanceId";
+        public static final String TIME_STAMP = "timeStamp";
+    }
+
     public static class Report {
         public static final int REPORTING_MONTH = 3;
         public static final int REPORTING_MONTH_START_DAY = 26;
@@ -54,7 +62,7 @@ public class AllConstants {
         public static final String BOOLEAN_FALSE_COMMCARE_VALUE = "no";
     }
 
-    public static class ChildBirthCommCareFields{
+    public static class ChildBirthCommCareFields {
         public static final String BIRTH_WEIGHT_COMMCARE_FIELD_NAME = "childWeight";
         public static final String BLOOD_GROUP_COMMCARE_FIELD_NAME = "childBloodGroup";
         public static final String BF_POSTBIRTH_COMMCARE_FIELD_NAME = "bfPostBirth";

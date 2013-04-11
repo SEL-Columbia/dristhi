@@ -1,4 +1,4 @@
-package org.ei.drishti.listener;
+package org.ei.drishti.event;
 
 import org.ei.drishti.common.domain.ReportingData;
 import org.motechproject.scheduler.domain.MotechEvent;
@@ -14,7 +14,7 @@ public class ReportEvent {
     }
 
     public MotechEvent toEvent() {
-        HashMap<String, Object> parameters = new HashMap<String, Object>();
+        HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("data", data);
         return new MotechEvent(SUBJECT, parameters);
     }

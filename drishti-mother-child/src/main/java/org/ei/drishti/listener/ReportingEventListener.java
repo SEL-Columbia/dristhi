@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
+import org.ei.drishti.event.ReportEvent;
 import org.ei.drishti.service.ANMReportingService;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;

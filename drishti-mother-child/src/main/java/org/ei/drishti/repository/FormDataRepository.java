@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.UUID.randomUUID;
+import static org.ei.drishti.common.AllConstants.Form.*;
 
 @Repository
 public class FormDataRepository {
@@ -58,8 +59,8 @@ public class FormDataRepository {
     public void saveFormSubmission(String paramsJSON, String data) {
         Map<String, String> params = getStringMapFromJSON(paramsJSON);
 
-        allFormSubmissions.add(new FormSubmission(params.get("instanceId"), params.get("formName"), params.get("anmId"),
-                params.get("timeStamp"), params.get("entityId"), data));
+        allFormSubmissions.add(new FormSubmission(params.get(INSTANCE_ID), params.get(FORM_NAME), params.get(ANM_ID),
+                params.get(TIME_STAMP), params.get(ENTITY_ID), data));
     }
 
     public String saveEntity(String entityType, String fields) {
