@@ -5,7 +5,7 @@ if (typeof enketo == "undefined" || !enketo) {
 enketo.EntityRelationshipLoader = function () {
     return {
         load: function () {
-            return JSON.parse(jsonFileLoader.loadFormData("entity_relationship.json"));
+            return JSON.parse(dflFileLoader.loadAppData("entity_relationship.json"));
         }
     };
 };

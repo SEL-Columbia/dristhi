@@ -29,6 +29,9 @@
             <resource>
                 <directory>../assets/config</directory>
             </resource>
+            <resource>
+                <directory>../drishti-mother-child/src/main/resources</directory>
+            </resource>
         </resources>
         <plugins>
             <plugin>
