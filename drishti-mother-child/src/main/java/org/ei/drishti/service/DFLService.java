@@ -16,6 +16,7 @@ import static javax.script.ScriptContext.ENGINE_SCOPE;
 
 @Service
 public class DFLService {
+    public static final String JAVA_SCRIPT = "JavaScript";
     private static Logger logger = LoggerFactory.getLogger(DFLService.class.toString());
     private static final String SAVE_METHOD_NAME = "save";
     private static final String JS_INIT_SCRIPT = "var formDataRepository = new enketo.FormDataRepository();\n" +
@@ -42,6 +43,7 @@ public class DFLService {
     public void saveForm(String params, String formInstance) {
         try {
             invocable.invokeMethod(dflFormController, SAVE_METHOD_NAME, params, formInstance);
+            logger.info(format("Saving form successful, with params: {0}, with instance {1}.", params, formInstance));
         } catch (Exception e) {
             logger.error(format("Form save failed, with params: {0}, with instance {1}. Exception: {2}", params, formInstance, e));
         }
@@ -49,7 +51,7 @@ public class DFLService {
 
     private void initRhino() throws Exception {
         ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("JavaScript");
+        ScriptEngine engine = manager.getEngineByName(JAVA_SCRIPT);
 
         Bindings bindings = getBindings(engine);
         engine.setBindings(bindings, ENGINE_SCOPE);

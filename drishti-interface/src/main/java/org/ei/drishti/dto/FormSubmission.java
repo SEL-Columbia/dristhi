@@ -1,12 +1,20 @@
 package org.ei.drishti.dto;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 public class FormSubmission {
-    private final String anmId;
-    private final String instanceId;
-    private final String entityId;
-    private final String formName;
-    private final String formInstance;
-    private final long timeStamp;
+    @JsonProperty
+    private String anmId;
+    @JsonProperty
+    private String instanceId;
+    @JsonProperty
+    private String entityId;
+    @JsonProperty
+    private String formName;
+    @JsonProperty
+    private String formInstance;
+    @JsonProperty
+    private long timeStamp;
 
     public FormSubmission(String anmId, String instanceId, String entityId, String formName, String formInstance, long timeStamp) {
         this.anmId = anmId;

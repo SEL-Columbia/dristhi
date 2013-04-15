@@ -5,6 +5,7 @@ import org.motechproject.scheduler.domain.MotechEvent;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FormSubmissionEvent {
     public static final String SUBJECT = "FORM-SUBMISSION";
@@ -16,7 +17,7 @@ public class FormSubmissionEvent {
     }
 
     public MotechEvent toEvent() {
-        HashMap<String, Object> parameters = new HashMap<>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put("data", formSubmissions);
         return new MotechEvent(SUBJECT, parameters);
     }
