@@ -1,6 +1,6 @@
 package org.ei.drishti.event;
 
-import org.ei.drishti.dto.FormSubmission;
+import org.ei.drishti.dto.form.FormSubmission;
 import org.motechproject.scheduler.domain.MotechEvent;
 
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package org.ei.drishti.listener;
 
-import org.ei.drishti.dto.FormSubmission;
+import org.ei.drishti.dto.form.FormSubmission;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.service.FormSubmissionService;
 import org.motechproject.scheduler.domain.MotechEvent;

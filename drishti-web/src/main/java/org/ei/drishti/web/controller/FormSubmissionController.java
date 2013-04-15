@@ -1,6 +1,6 @@
 package org.ei.drishti.web.controller;
 
-import org.ei.drishti.dto.FormSubmission;
+import org.ei.drishti.dto.form.FormSubmission;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.slf4j.Logger;

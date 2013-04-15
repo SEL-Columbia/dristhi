@@ -1,0 +1,7 @@
+{
+    "ec_registration": [
+        "id",
+        "case_familyplanning_method",
+        "date_familyplanningstart"
+    ]
+}

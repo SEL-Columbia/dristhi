@@ -1,17 +1,13 @@
 package org.ei.drishti.service.scheduling;
 
-import org.ei.drishti.contract.EligibleCoupleRegistrationRequest;
 import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.contract.Schedule;
 import org.ei.drishti.domain.EligibleCouple;
-import org.ei.drishti.repository.AllEligibleCouples;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.isBlank;
@@ -33,10 +29,10 @@ public class ECSchedulingService {
         this.scheduleTrackingService = scheduleTrackingService;
     }
 
-    public void enrollToFPComplications(EligibleCoupleRegistrationRequest request, Map<String, String> details) {
-        if (isCoupleHighPriority(request.highPriority()) && isFPMethodNone(request.currentMethod())) {
-            scheduleTrackingService.enroll(new EnrollmentRequest(request.caseId(), fpComplicationSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
-                    parse(details.get(SUBMISSION_DATE_COMMCARE_FIELD_NAME)), null, null, null, null, null));
+    public void enrollToFPComplications(String entityId, String currentFPMethod, String isHighPriority, String submissionDate) {
+        if (isCoupleHighPriority(isHighPriority) && isFPMethodNone(currentFPMethod)) {
+            scheduleTrackingService.enroll(new EnrollmentRequest(entityId, fpComplicationSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
+                    parse(submissionDate), null, null, null, null, null));
         }
     }
 

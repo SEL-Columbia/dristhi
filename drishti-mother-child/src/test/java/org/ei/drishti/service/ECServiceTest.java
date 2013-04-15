@@ -2,9 +2,12 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
+import org.ei.drishti.dto.form.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
+import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.service.scheduling.ECSchedulingService;
+import org.ei.drishti.util.FormSubmissionBuilder;
 import org.ei.drishti.util.IdGenerator;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
@@ -15,8 +18,12 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
+import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
+import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
 import static org.ei.drishti.util.EasyMap.create;
@@ -35,21 +42,22 @@ public class ECServiceTest {
     private ECReportingService reportingService;
     @Mock
     private ECSchedulingService schedulingService;
+    @Mock
+    private ReportFieldsDefinition reportFieldsDefinition;
 
     private ECService ecService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        ecService = new ECService(allEligibleCouples, actionService, reportingService, idGenerator, schedulingService);
+        ecService = new ECService(allEligibleCouples, actionService, reportingService, idGenerator, schedulingService, reportFieldsDefinition);
     }
 
     @Test
-    public void shouldRegisterEligibleCouple() throws Exception {
+    public void shouldRegisterEligibleCouple_Depricated() throws Exception {
         Map<String, Map<String, String>> extraData = create("details", Collections.<String, String>emptyMap())
                 .put(REPORT_EXTRA_DATA_KEY_NAME, mapOf("someKey", "someValue"))
                 .put(DETAILS_EXTRA_DATA_KEY_NAME, mapOf("someKey", "someValue")).map();
-
         EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest = new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "Condom", "No");
         ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest, extraData);
 
@@ -58,7 +66,22 @@ public class ECServiceTest {
         verify(allEligibleCouples).register(expectedCouple);
         verify(reportingService).registerEC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", extraData.get("details"));
-        verify(schedulingService).enrollToFPComplications(eligibleCoupleRegistrationRequest, extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
+        verify(schedulingService).enrollToFPComplications(eligibleCoupleRegistrationRequest.caseId(), eligibleCoupleRegistrationRequest.currentMethod(), eligibleCoupleRegistrationRequest.highPriority(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME).get(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
+    }
+
+    @Test
+    public void shouldRegisterEligibleCouple() throws Exception {
+        FormSubmission submission = FormSubmissionBuilder.create().withFormName("ec_registration").addFormField("someKey", "someValue")
+                .addFormField(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME, "some method")
+                .addFormField(HIGH_PRIORITY_COMMCARE_FIELD_NAME, "yes")
+                .addFormField(SUBMISSION_DATE_COMMCARE_FIELD_NAME, "2011-01-01")
+                .build();
+        when(reportFieldsDefinition.get("ec_registration")).thenReturn(asList("someKey"));
+
+        ecService.registerEligibleCouple(submission);
+
+        verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
+        verify(schedulingService).enrollToFPComplications("entity id 1", "some method", "yes", "2011-01-01");
     }
 
     @Test

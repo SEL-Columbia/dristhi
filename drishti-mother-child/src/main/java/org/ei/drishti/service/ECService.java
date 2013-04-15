@@ -2,7 +2,9 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
+import org.ei.drishti.dto.form.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
+import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.service.scheduling.ECSchedulingService;
 import org.ei.drishti.util.IdGenerator;
@@ -12,10 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
+import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.NO_FP_METHOD_COMMCARE_FIELD_VALUE;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
@@ -28,16 +34,19 @@ public class ECService {
     private ECSchedulingService schedulingService;
     private IdGenerator idGenerator;
     private static Logger logger = LoggerFactory.getLogger(ActionService.class.toString());
+    private ReportFieldsDefinition reportFieldsDefinition;
 
     @Autowired
-    public ECService(AllEligibleCouples allEligibleCouples, ActionService actionService, ECReportingService reportingService, IdGenerator idGenerator, ECSchedulingService schedulingService) {
+    public ECService(AllEligibleCouples allEligibleCouples, ActionService actionService, ECReportingService reportingService, IdGenerator idGenerator, ECSchedulingService schedulingService, ReportFieldsDefinition reportFieldsDefinition) {
         this.allEligibleCouples = allEligibleCouples;
         this.actionService = actionService;
         this.reportingService = reportingService;
         this.idGenerator = idGenerator;
         this.schedulingService = schedulingService;
+        this.reportFieldsDefinition = reportFieldsDefinition;
     }
 
+    @Deprecated
     public void registerEligibleCouple(EligibleCoupleRegistrationRequest request, Map<String, Map<String, String>> extraData) {
         EligibleCouple couple = new EligibleCouple(request.caseId(), request.ecNumber())
                 .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
@@ -48,7 +57,16 @@ public class ECService {
         reportingService.registerEC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
         actionService.registerEligibleCouple(request.caseId(), request.ecNumber(), request.wife(), request.husband(),
                 request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
-        schedulingService.enrollToFPComplications(request, extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
+        schedulingService.enrollToFPComplications(request.caseId(), request.currentMethod(), request.highPriority(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME).get(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
+    }
+
+    public void registerEligibleCouple(FormSubmission submission) {
+        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+        reportingService.registerEC(new SafeMap(submission.getFields(reportFields)));
+        schedulingService.enrollToFPComplications(submission.entityId(),
+                submission.getField(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME),
+                submission.getField(HIGH_PRIORITY_COMMCARE_FIELD_NAME),
+                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
     }
 
     public EligibleCouple registerEligibleCoupleForOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
