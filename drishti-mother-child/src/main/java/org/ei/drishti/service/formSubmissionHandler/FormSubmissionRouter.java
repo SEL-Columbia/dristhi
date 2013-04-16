@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static org.ei.drishti.common.AllConstants.Form.EC_REGISTRATION;
+import static org.ei.drishti.common.AllConstants.Form.FP_COMPLICATIONS;
+
 @Component
 public class FormSubmissionRouter {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionRouter.class.toString());
@@ -16,7 +19,9 @@ public class FormSubmissionRouter {
 
     @Autowired
     public FormSubmissionRouter(ECRegistrationHandler ecRegistrationHandler, FPComplicationsHandler fpComplicationsHandler) {
-        handlerMap = EasyMap.create("ec_registration", (FormSubmissionHandler) ecRegistrationHandler).put("fp_complications", fpComplicationsHandler).map();
+        handlerMap = EasyMap.create(EC_REGISTRATION, (FormSubmissionHandler) ecRegistrationHandler)
+                .put(FP_COMPLICATIONS, fpComplicationsHandler)
+                .map();
     }
 
     public void route(FormSubmission submission) {

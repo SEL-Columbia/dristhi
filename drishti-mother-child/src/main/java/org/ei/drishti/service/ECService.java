@@ -28,12 +28,12 @@ import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConst
 
 @Service
 public class ECService {
+    private static Logger logger = LoggerFactory.getLogger(ActionService.class.toString());
     private AllEligibleCouples allEligibleCouples;
     private ActionService actionService;
     private ECReportingService reportingService;
     private ECSchedulingService schedulingService;
     private IdGenerator idGenerator;
-    private static Logger logger = LoggerFactory.getLogger(ActionService.class.toString());
     private ReportFieldsDefinition reportFieldsDefinition;
 
     @Autowired
@@ -106,6 +106,7 @@ public class ECService {
         }
     }
 
+    @Deprecated
     public void reportFPComplications(FPComplicationsRequest request, Map<String, Map<String, String>> extraData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(request.caseId());
         if (couple == null) {
@@ -114,5 +115,16 @@ public class ECService {
         }
 
         reportingService.fpComplications(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
+    }
+
+    public void reportFPComplications(FormSubmission submission) {
+        EligibleCouple couple = allEligibleCouples.findByCaseId(submission.entityId());
+        if (couple == null) {
+            logger.warn("Tried to report FP Complications of a non-existing EC, with submission: " + submission);
+            return;
+        }
+
+        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+        reportingService.fpComplications(new SafeMap(submission.getFields(reportFields)));
     }
 }

@@ -54,7 +54,7 @@ public class ECServiceTest {
     }
 
     @Test
-    public void shouldRegisterEligibleCouple_Depricated() throws Exception {
+    public void shouldRegisterEligibleCouple_Deprecated() throws Exception {
         Map<String, Map<String, String>> extraData = create("details", Collections.<String, String>emptyMap())
                 .put(REPORT_EXTRA_DATA_KEY_NAME, mapOf("someKey", "someValue"))
                 .put(DETAILS_EXTRA_DATA_KEY_NAME, mapOf("someKey", "someValue")).map();
@@ -71,7 +71,9 @@ public class ECServiceTest {
 
     @Test
     public void shouldRegisterEligibleCouple() throws Exception {
-        FormSubmission submission = FormSubmissionBuilder.create().withFormName("ec_registration").addFormField("someKey", "someValue")
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("ec_registration")
+                .addFormField("someKey", "someValue")
                 .addFormField(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME, "some method")
                 .addFormField(HIGH_PRIORITY_COMMCARE_FIELD_NAME, "yes")
                 .addFormField(SUBMISSION_DATE_COMMCARE_FIELD_NAME, "2011-01-01")
@@ -171,7 +173,7 @@ public class ECServiceTest {
     }
 
     @Test
-    public void shouldSendDataToReportingServiceDuringReportFPComplications() throws Exception {
+    public void shouldSendDataToReportingServiceDuringReportFPComplications_Deprecated() throws Exception {
         EligibleCouple ec = new EligibleCouple("CASE X", "EC Number 1");
         when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(ec);
 
@@ -183,13 +185,40 @@ public class ECServiceTest {
     }
 
     @Test
-    public void shouldNotSendDataToReportingServiceDuringReportFPComplications() throws Exception {
+    public void shouldSendDataToReportingServiceDuringReportFPComplications() throws Exception {
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("fp_complications")
+                .addFormField("someKey", "someValue")
+                .build();
+        when(reportFieldsDefinition.get("fp_complications")).thenReturn(asList("someKey"));
+
+        ecService.reportFPComplications(submission);
+
+        verify(allEligibleCouples).findByCaseId("entity id 1");
+        verify(reportingService).fpComplications(new SafeMap(mapOf("someKey", "someValue")));
+    }
+
+    @Test
+    public void shouldNotSendDataToReportingServiceDuringReportFPComplicationsIfNoECIsFound_Deprecated() throws Exception {
         when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(null);
 
         Map<String, Map<String, String>> extraDetails = create("details", mapOf("currentMethod", "CONDOM")).map();
         ecService.reportFPComplications(new FPComplicationsRequest("CASE X", "ANM X"), extraDetails);
 
         verify(allEligibleCouples).findByCaseId("CASE X");
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldNotSendDataToReportingServiceDuringReportFPComplicationsIfNoECIsFound() throws Exception {
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(null);
+        FormSubmission submission = FormSubmissionBuilder.create().build();
+
+        ecService.reportFPComplications(submission);
+
+        verify(allEligibleCouples).findByCaseId("entity id 1");
         verifyZeroInteractions(reportingService);
     }
 

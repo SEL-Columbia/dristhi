@@ -3,5 +3,11 @@
         "id",
         "case_familyplanning_method",
         "date_familyplanningstart"
+    ],
+    "fp_complications": [
+        "id",
+        "case_familyplanning_method",
+        "date_familyplanningstart",
+        "method_still_the_same"
     ]
 }
