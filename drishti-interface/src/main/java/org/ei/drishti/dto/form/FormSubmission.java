@@ -21,9 +21,9 @@ public class FormSubmission {
     @JsonProperty
     private FormInstance formInstance;
     @JsonProperty
-    private long timeStamp;
+    private String timeStamp;
 
-    public FormSubmission(String anmId, String instanceId, String entityId, String formName, FormInstance formInstance, long timeStamp) {
+    public FormSubmission(String anmId, String instanceId, String entityId, String formName, FormInstance formInstance, String timeStamp) {
         this.anmId = anmId;
         this.instanceId = instanceId;
         this.entityId = entityId;
@@ -52,7 +52,7 @@ public class FormSubmission {
         return formInstance;
     }
 
-    public long timeStamp() {
+    public String timeStamp() {
         return this.timeStamp;
     }
 

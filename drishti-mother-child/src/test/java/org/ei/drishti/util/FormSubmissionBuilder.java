@@ -4,7 +4,6 @@ import org.ei.drishti.dto.form.FormData;
 import org.ei.drishti.dto.form.FormField;
 import org.ei.drishti.dto.form.FormInstance;
 import org.ei.drishti.dto.form.FormSubmission;
-import org.motechproject.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ public class FormSubmissionBuilder {
     private String default_bind_path = "bind path 1";
     private List<FormField> fields = new ArrayList<>();
     private FormInstance formInstance = new FormInstance(new FormData(bind_type, default_bind_path, fields));
-    private long timestamp = DateUtil.now().getMillis();
+    private String timestamp = "0";
 
     public static FormSubmissionBuilder create() {
         return new FormSubmissionBuilder();
@@ -34,7 +33,7 @@ public class FormSubmissionBuilder {
         return this;
     }
 
-    public FormSubmissionBuilder withTimeStamp(long timestamp) {
+    public FormSubmissionBuilder withTimeStamp(String timestamp) {
         this.timestamp = timestamp;
         return this;
     }

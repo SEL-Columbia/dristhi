@@ -49,8 +49,9 @@ public class FormSubmissionService {
     private Comparator<FormSubmission> timeStampComparator() {
         return new Comparator<FormSubmission>() {
             public int compare(FormSubmission firstSubmission, FormSubmission secondSubmission) {
-                return firstSubmission.timeStamp() == secondSubmission.timeStamp() ? 0 :
-                        firstSubmission.timeStamp() < secondSubmission.timeStamp() ? -1 : 1;
+                long firstTimestamp = Long.parseLong(firstSubmission.timeStamp());
+                long secondTimestamp = Long.parseLong(secondSubmission.timeStamp());
+                return firstTimestamp == secondTimestamp ? 0 : firstTimestamp < secondTimestamp ? -1 : 1;
             }
         };
     }

@@ -7,7 +7,6 @@ import org.mockito.Mock;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.motechproject.util.DateUtil.now;
 
 public class FormSubmissionRouterTest {
     @Mock
@@ -25,13 +24,13 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateFormSubmissionHandlingToHandlerBasedOnFormName() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "entity id 1", "ec_registration", null, now().getMillis());
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "entity id 1", "ec_registration", null, "0");
 
         router.route(formSubmission);
 
         verify(ecRegistrationHandler).handle(formSubmission);
 
-        formSubmission = new FormSubmission("anm id 1", "instance id 2", "entity id 2", "fp_complications", null, now().getMillis());
+        formSubmission = new FormSubmission("anm id 1", "instance id 2", "entity id 2", "fp_complications", null, "0");
 
         router.route(formSubmission);
 

@@ -8,7 +8,6 @@ import org.mockito.Mock;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.motechproject.util.DateUtil.now;
 
 public class ECRegistrationHandlerTest {
     @Mock
@@ -24,7 +23,7 @@ public class ECRegistrationHandlerTest {
 
     @Test
     public void shouldDelegateFormSubmissionHandlingToECService() throws Exception {
-        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "entity id 1", "ec_registration", null, now().getMillis());
+        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "entity id 1", "ec_registration", null, "0");
 
         handler.handle(submission);
 
