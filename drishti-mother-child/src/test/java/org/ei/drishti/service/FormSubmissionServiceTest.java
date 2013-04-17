@@ -2,6 +2,7 @@ package org.ei.drishti.service;
 
 import com.google.gson.Gson;
 import org.ei.drishti.domain.form.FormSubmission;
+import org.ei.drishti.repository.AllFormSubmissions;
 import org.ei.drishti.service.formSubmissionHandler.FormSubmissionRouter;
 import org.ei.drishti.util.FormSubmissionBuilder;
 import org.junit.Before;
@@ -23,13 +24,15 @@ public class FormSubmissionServiceTest {
     private DFLService dflService;
     @Mock
     private FormSubmissionRouter formSubmissionRouter;
+    @Mock
+    private AllFormSubmissions allFormSubmissions;
 
     private FormSubmissionService submissionService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        submissionService = new FormSubmissionService(dflService, formSubmissionRouter);
+        submissionService = new FormSubmissionService(dflService, formSubmissionRouter, allFormSubmissions);
     }
 
     @Test
@@ -60,5 +63,12 @@ public class FormSubmissionServiceTest {
         submissionService.processSubmissions(asList(formSubmission));
 
         verify(formSubmissionRouter).route(formSubmission);
+    }
+
+    @Test
+    public void shouldFetchNewSubmissionsForANM() throws Exception {
+        submissionService.getNewSubmissionsForANM("anm x", 0L);
+
+        verify(allFormSubmissions).findByANMIDAndTimeStamp("anm x", 0L);
     }
 }

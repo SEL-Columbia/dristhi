@@ -7,7 +7,7 @@ import org.ei.drishti.dto.form.FormSubmission;
 public class FormSubmissionConvertor {
     public static FormSubmission from(org.ei.drishti.domain.form.FormSubmission formSubmission) {
         return new FormSubmission(formSubmission.anmId(), formSubmission.instanceId(), formSubmission.entityId(), formSubmission.formName(),
-                new Gson().toJson(formSubmission.instance()), String.valueOf(formSubmission.timeStamp()));
+                new Gson().toJson(formSubmission.instance()), String.valueOf(formSubmission.timestamp()));
     }
 
     public static org.ei.drishti.domain.form.FormSubmission toFormSubmission(FormSubmission formSubmission) {

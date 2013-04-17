@@ -3,6 +3,7 @@ package org.ei.drishti.web.controller;
 import ch.lambdaj.function.convert.Converter;
 import org.ei.drishti.dto.form.FormSubmission;
 import org.ei.drishti.event.FormSubmissionEvent;
+import org.ei.drishti.service.FormSubmissionService;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,22 +13,39 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
 import static java.text.MessageFormat.format;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 @RequestMapping(value = "/form-submissions")
 public class FormSubmissionController {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionController.class.toString());
+    private FormSubmissionService formSubmissionService;
     private OutboundEventGateway gateway;
 
     @Autowired
-    public FormSubmissionController(OutboundEventGateway gateway) {
+    public FormSubmissionController(FormSubmissionService formSubmissionService, OutboundEventGateway gateway) {
+        this.formSubmissionService = formSubmissionService;
         this.gateway = gateway;
+    }
+
+    @RequestMapping(method = GET)
+    @ResponseBody
+    private List<FormSubmission> getNewSubmissionsForANM(@RequestParam("anmIdentifier") String anmIdentifier, @RequestParam("timeStamp") Long timeStamp) {
+        List<org.ei.drishti.domain.form.FormSubmission> newSubmissionsForANM = formSubmissionService.getNewSubmissionsForANM(anmIdentifier, timeStamp);
+        return with(newSubmissionsForANM).convert(new Converter<org.ei.drishti.domain.form.FormSubmission, FormSubmission>() {
+            @Override
+            public FormSubmission convert(org.ei.drishti.domain.form.FormSubmission submission) {
+                return FormSubmissionConvertor.from(submission);
+            }
+        });
     }
 
     @RequestMapping(headers = {"Accept=application/json"}, method = POST)

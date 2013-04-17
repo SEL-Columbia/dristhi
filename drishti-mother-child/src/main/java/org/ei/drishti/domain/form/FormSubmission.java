@@ -20,7 +20,7 @@ public class FormSubmission extends MotechBaseDataObject {
     @JsonProperty
     private String anmId;
     @JsonProperty
-    private long timeStamp;
+    private long timestamp;
     @JsonProperty
     private String entityId;
     @JsonProperty
@@ -29,11 +29,11 @@ public class FormSubmission extends MotechBaseDataObject {
     public FormSubmission() {
     }
 
-    public FormSubmission(String anmId, String instanceId, String formName, String entityId, FormInstance formInstance, long timeStamp) {
+    public FormSubmission(String anmId, String instanceId, String formName, String entityId, FormInstance formInstance, long timestamp) {
         this.instanceId = instanceId;
         this.formName = formName;
         this.anmId = anmId;
-        this.timeStamp = timeStamp;
+        this.timestamp = timestamp;
         this.entityId = entityId;
         this.formInstance = formInstance;
     }
@@ -58,8 +58,8 @@ public class FormSubmission extends MotechBaseDataObject {
         return formInstance;
     }
 
-    public long timeStamp() {
-        return this.timeStamp;
+    public long timestamp() {
+        return this.timestamp;
     }
 
     public List<FormField> fields() {
