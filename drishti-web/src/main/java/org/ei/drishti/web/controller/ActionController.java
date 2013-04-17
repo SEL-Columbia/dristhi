@@ -26,8 +26,8 @@ public class ActionController {
     @RequestMapping(method = RequestMethod.GET, value = "/actions")
     @ResponseBody
     public List<Action> getNewActionForANM(@RequestParam("anmIdentifier") String anmIdentifier, @RequestParam("timeStamp") Long timeStamp){
-        List<org.ei.drishti.domain.Action> alertActions = actionService.getNewAlertsForANM(anmIdentifier, timeStamp);
-        return with(alertActions).convert(new Converter<org.ei.drishti.domain.Action, Action>() {
+        List<org.ei.drishti.domain.Action> actions = actionService.getNewAlertsForANM(anmIdentifier, timeStamp);
+        return with(actions).convert(new Converter<org.ei.drishti.domain.Action, Action>() {
             @Override
             public Action convert(org.ei.drishti.domain.Action action) {
                 return ActionConvertor.from(action);

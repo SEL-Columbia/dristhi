@@ -1,6 +1,6 @@
 package org.ei.drishti.service.formSubmissionHandler;
 
-import org.ei.drishti.dto.form.FormSubmission;
+import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.service.ECService;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +23,7 @@ public class FPComplicationsHandlerTest {
 
     @Test
     public void shouldDelegateFormSubmissionHandlingToECService() throws Exception {
-        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "entity id 1", "ec_registration", null, "0");
+        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "ec_registration", "entity id 1", null, 0L);
 
         handler.handle(submission);
 

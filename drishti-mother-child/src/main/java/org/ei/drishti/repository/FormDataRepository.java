@@ -7,7 +7,8 @@ import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.EligibleCouple;
-import org.ei.drishti.domain.FormSubmission;
+import org.ei.drishti.domain.form.FormInstance;
+import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.domain.Mother;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
@@ -59,8 +60,8 @@ public class FormDataRepository {
     public void saveFormSubmission(String paramsJSON, String data) {
         Map<String, String> params = getStringMapFromJSON(paramsJSON);
 
-        allFormSubmissions.add(new FormSubmission(params.get(INSTANCE_ID), params.get(FORM_NAME), params.get(ANM_ID),
-                params.get(TIME_STAMP), params.get(ENTITY_ID), data));
+        allFormSubmissions.add(new FormSubmission(params.get(ANM_ID), params.get(INSTANCE_ID), params.get(FORM_NAME),
+                params.get(ENTITY_ID), new Gson().fromJson(data, FormInstance.class), Long.parseLong(params.get(TIME_STAMP))));
     }
 
     public String saveEntity(String entityType, String fields) {

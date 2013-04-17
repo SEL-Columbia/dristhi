@@ -1,7 +1,7 @@
 package org.ei.drishti.service;
 
 import com.google.gson.Gson;
-import org.ei.drishti.dto.form.FormSubmission;
+import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.service.formSubmissionHandler.FormSubmissionRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +50,8 @@ public class FormSubmissionService {
     private Comparator<FormSubmission> timeStampComparator() {
         return new Comparator<FormSubmission>() {
             public int compare(FormSubmission firstSubmission, FormSubmission secondSubmission) {
-                long firstTimestamp = Long.parseLong(firstSubmission.timeStamp());
-                long secondTimestamp = Long.parseLong(secondSubmission.timeStamp());
+                long firstTimestamp = firstSubmission.timeStamp();
+                long secondTimestamp = secondSubmission.timeStamp();
                 return firstTimestamp == secondTimestamp ? 0 : firstTimestamp < secondTimestamp ? -1 : 1;
             }
         };

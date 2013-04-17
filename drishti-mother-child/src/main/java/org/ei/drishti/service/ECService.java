@@ -2,7 +2,7 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
-import org.ei.drishti.dto.form.FormSubmission;
+import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;

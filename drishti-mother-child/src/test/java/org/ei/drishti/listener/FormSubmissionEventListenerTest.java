@@ -1,7 +1,7 @@
 package org.ei.drishti.listener;
 
 import com.google.gson.Gson;
-import org.ei.drishti.dto.form.FormSubmission;
+import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.service.FormSubmissionService;
 import org.junit.Before;
@@ -30,8 +30,8 @@ public class FormSubmissionEventListenerTest {
 
     @Test
     public void shouldDelegateToFormSubmissionService() throws Exception {
-        List<FormSubmission> formSubmissions = asList(new FormSubmission("anm id 1", "instance id 1", "entity id 1", "form name", null, "0"),
-                new FormSubmission("anm id 2", "instance id 2", "entity id 2", "form name", null, "0"));
+        List<FormSubmission> formSubmissions = asList(new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", null, 0L),
+                new FormSubmission("anm id 2", "instance id 2", "form name", "entity id 2" , null, 0L));
 
         listener.submitForms(new MotechEvent(FormSubmissionEvent.SUBJECT, mapOf("data", (Object) new Gson().toJson(formSubmissions))));
 

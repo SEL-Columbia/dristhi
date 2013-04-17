@@ -1,4 +1,4 @@
-package org.ei.drishti.dto.form;
+package org.ei.drishti.domain.form;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -12,6 +12,9 @@ public class FormField {
     private String value;
     @JsonProperty
     private String source;
+
+    public FormField() {
+    }
 
     public FormField(String name, String value, String source) {
         this.name = name;

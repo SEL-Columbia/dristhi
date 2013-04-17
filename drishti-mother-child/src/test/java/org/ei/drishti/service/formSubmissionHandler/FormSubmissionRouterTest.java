@@ -1,6 +1,6 @@
 package org.ei.drishti.service.formSubmissionHandler;
 
-import org.ei.drishti.dto.form.FormSubmission;
+import org.ei.drishti.domain.form.FormSubmission;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -24,13 +24,13 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateFormSubmissionHandlingToHandlerBasedOnFormName() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "entity id 1", "ec_registration", null, "0");
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ec_registration", "entity id 1", null, 0L);
 
         router.route(formSubmission);
 
         verify(ecRegistrationHandler).handle(formSubmission);
 
-        formSubmission = new FormSubmission("anm id 1", "instance id 2", "entity id 2", "fp_complications", null, "0");
+        formSubmission = new FormSubmission("anm id 1", "instance id 2", "fp_complications", "entity id 2", null, 0L);
 
         router.route(formSubmission);
 

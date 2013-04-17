@@ -1,4 +1,4 @@
-package org.ei.drishti.dto.form;
+package org.ei.drishti.domain.form;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -8,6 +8,9 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class FormInstance {
     @JsonProperty
     private FormData form;
+
+    public FormInstance() {
+    }
 
     public FormInstance(FormData form) {
         this.form = form;

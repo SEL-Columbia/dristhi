@@ -1,7 +1,7 @@
 package org.ei.drishti.event;
 
 import com.google.gson.Gson;
-import org.ei.drishti.dto.form.FormSubmission;
+import org.ei.drishti.domain.form.FormSubmission;
 import org.motechproject.scheduler.domain.MotechEvent;
 
 import java.util.HashMap;

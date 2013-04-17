@@ -1,6 +1,6 @@
 package org.ei.drishti.service.formSubmissionHandler;
 
-import org.ei.drishti.dto.form.FormSubmission;
+import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.service.ECService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

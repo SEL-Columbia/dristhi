@@ -1,6 +1,6 @@
 package org.ei.drishti.service.formSubmissionHandler;
 
-import org.ei.drishti.dto.form.FormSubmission;
+import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.util.EasyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

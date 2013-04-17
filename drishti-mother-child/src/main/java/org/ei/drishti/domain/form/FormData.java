@@ -1,4 +1,4 @@
-package org.ei.drishti.dto.form;
+package org.ei.drishti.domain.form;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -19,6 +19,9 @@ public class FormData {
 
     private Map<String, String> mapOfFieldsByName;
 
+    public FormData() {
+    }
+
     public FormData(String bind_type, String default_bind_path, List<FormField> fields) {
         this.bind_type = bind_type;
         this.default_bind_path = default_bind_path;
@@ -37,7 +40,7 @@ public class FormData {
     }
 
     private void createFieldMapByName() {
-        mapOfFieldsByName = new HashMap<String, String>();
+        mapOfFieldsByName = new HashMap<>();
         for (FormField field : fields) {
             mapOfFieldsByName.put(field.name(), field.value());
         }

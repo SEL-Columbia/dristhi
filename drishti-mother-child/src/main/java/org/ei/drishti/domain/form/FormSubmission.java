@@ -1,4 +1,4 @@
-package org.ei.drishti.domain;
+package org.ei.drishti.domain.form;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -6,6 +6,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @TypeDiscriminator("doc.type === 'FormSubmission'")
 public class FormSubmission extends MotechBaseDataObject {
@@ -16,22 +20,62 @@ public class FormSubmission extends MotechBaseDataObject {
     @JsonProperty
     private String anmId;
     @JsonProperty
-    private String timeStamp;
+    private long timeStamp;
     @JsonProperty
     private String entityId;
     @JsonProperty
-    private String data;
+    private FormInstance formInstance;
 
     public FormSubmission() {
     }
 
-    public FormSubmission(String instanceId, String formName, String anmId, String timeStamp, String entityId, String data) {
+    public FormSubmission(String anmId, String instanceId, String formName, String entityId, FormInstance formInstance, long timeStamp) {
         this.instanceId = instanceId;
         this.formName = formName;
         this.anmId = anmId;
         this.timeStamp = timeStamp;
         this.entityId = entityId;
-        this.data = data;
+        this.formInstance = formInstance;
+    }
+
+    public String anmId() {
+        return this.anmId;
+    }
+
+    public String instanceId() {
+        return this.instanceId;
+    }
+
+    public String entityId() {
+        return this.entityId;
+    }
+
+    public String formName() {
+        return this.formName;
+    }
+
+    public FormInstance instance() {
+        return formInstance;
+    }
+
+    public long timeStamp() {
+        return this.timeStamp;
+    }
+
+    public List<FormField> fields() {
+        return formInstance.form().fields();
+    }
+
+    public String getField(String name) {
+        return formInstance.getField(name);
+    }
+
+    public Map<String, String> getFields(List<String> fieldNames) {
+        Map<String, String> fieldsMap = new HashMap<>();
+        for (String fieldName : fieldNames) {
+            fieldsMap.put(fieldName, getField(fieldName));
+        }
+        return fieldsMap;
     }
 
     @Override

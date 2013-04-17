@@ -2,7 +2,7 @@ package org.ei.drishti.listener;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.ei.drishti.dto.form.FormSubmission;
+import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.service.FormSubmissionService;
 import org.motechproject.scheduler.domain.MotechEvent;

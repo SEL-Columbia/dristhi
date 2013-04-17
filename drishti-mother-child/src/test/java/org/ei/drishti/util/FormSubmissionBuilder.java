@@ -1,15 +1,14 @@
 package org.ei.drishti.util;
 
-import org.ei.drishti.dto.form.FormData;
-import org.ei.drishti.dto.form.FormField;
-import org.ei.drishti.dto.form.FormInstance;
-import org.ei.drishti.dto.form.FormSubmission;
+import org.ei.drishti.domain.form.FormData;
+import org.ei.drishti.domain.form.FormField;
+import org.ei.drishti.domain.form.FormInstance;
+import org.ei.drishti.domain.form.FormSubmission;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FormSubmissionBuilder {
-
     private String anmId = "anmId";
     private String instanceId = "instance id 1";
     private String entityId = "entity id 1";
@@ -18,14 +17,14 @@ public class FormSubmissionBuilder {
     private String default_bind_path = "bind path 1";
     private List<FormField> fields = new ArrayList<>();
     private FormInstance formInstance = new FormInstance(new FormData(bind_type, default_bind_path, fields));
-    private String timestamp = "0";
+    private Long timestamp = 0L;
 
     public static FormSubmissionBuilder create() {
         return new FormSubmissionBuilder();
     }
 
     public FormSubmission build() {
-        return new FormSubmission(anmId, instanceId, entityId, formName, formInstance, timestamp);
+        return new FormSubmission(anmId, instanceId, formName, entityId, formInstance, timestamp);
     }
 
     public FormSubmissionBuilder addFormField(String name, String value) {
@@ -33,7 +32,7 @@ public class FormSubmissionBuilder {
         return this;
     }
 
-    public FormSubmissionBuilder withTimeStamp(String timestamp) {
+    public FormSubmissionBuilder withTimeStamp(Long timestamp) {
         this.timestamp = timestamp;
         return this;
     }

@@ -3,7 +3,10 @@ package org.ei.drishti.repository.it;
 import com.google.gson.Gson;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.domain.form.FormInstance;
+import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
+import org.ei.drishti.repository.AllFormSubmissions;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.repository.FormDataRepository;
 import org.junit.Before;
@@ -31,10 +34,31 @@ public class FormDataRepositoryIntegrationTest {
     @Autowired
     private AllMothers mothers;
 
+    @Autowired
+    private AllFormSubmissions formSubmissions;
+
     @Before
     public void setUp() throws Exception {
         eligibleCouples.removeAll();
         mothers.removeAll();
+        formSubmissions.removeAll();
+    }
+
+    @Test
+    public void shouldSaveFormSubmission() throws Exception {
+        Map<String, String> params = create("instanceId", "id 1")
+                .put("formName", "form name")
+                .put("anmId", "anm 1")
+                .put("timeStamp", "0")
+                .put("entityId", "entity id 1")
+                .map();
+        String formInstanceJSON = "{form:{bind_type: 'ec'}}";
+        String paramsJSON = new Gson().toJson(params);
+        FormSubmission submission = new FormSubmission("anm 1", "id 1", "form name", "entity id 1", new Gson().fromJson(formInstanceJSON, FormInstance.class), 0L);
+
+        repository.saveFormSubmission(paramsJSON, formInstanceJSON);
+
+        assertEquals(submission, formSubmissions.getAll().get(0));
     }
 
     @Test
