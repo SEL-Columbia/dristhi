@@ -35,12 +35,12 @@ public class FormSubmissionServiceTest {
     @Test
     public void shouldSortAllSubmissionsAndSaveEachOne() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
-        String paramsForEarlierFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 1").put(INSTANCE_ID, "instance id 1").put(ENTITY_ID, "entity id 1").put(FORM_NAME, "form name").put(TIME_STAMP, String.valueOf(baseTimeStamp)));
-        String paramsForLaterFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 2").put(INSTANCE_ID, "instance id 2").put(ENTITY_ID, "entity id 2").put(FORM_NAME, "form name").put(TIME_STAMP, String.valueOf(baseTimeStamp + 1)));
-        String paramsForVeryLateFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 2").put(INSTANCE_ID, "instance id 3").put(ENTITY_ID, "entity id 3").put(FORM_NAME, "form name").put(TIME_STAMP, String.valueOf(baseTimeStamp + 2)));
-        FormSubmission earlierFormSubmission = FormSubmissionBuilder.create().addFormField("field 1", "value 1").withTimeStamp(String.valueOf(baseTimeStamp)).build();
+        String paramsForEarlierFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 1").put(INSTANCE_ID, "instance id 1").put(ENTITY_ID, "entity id 1").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp)).map());
+        String paramsForLaterFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 2").put(INSTANCE_ID, "instance id 2").put(ENTITY_ID, "entity id 2").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp + 1)).map());
+        String paramsForVeryLateFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 2").put(INSTANCE_ID, "instance id 3").put(ENTITY_ID, "entity id 3").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp + 2)).map());
+        FormSubmission earlierFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 1").addFormField("field 1", "value 1").withTimeStamp(String.valueOf(baseTimeStamp)).build();
         FormSubmission laterFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 2").withInstanceId("instance id 2").withEntityId("entity id 2").addFormField("field 1", "value 2").withTimeStamp(String.valueOf(baseTimeStamp + 1)).build();
-         FormSubmission veryLateFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 2").withInstanceId("instance id 3").withEntityId("entity id 3").addFormField("field 1", "value 3").withTimeStamp(String.valueOf(baseTimeStamp + 2)).build();
+        FormSubmission veryLateFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 2").withInstanceId("instance id 3").withEntityId("entity id 3").addFormField("field 1", "value 3").withTimeStamp(String.valueOf(baseTimeStamp + 2)).build();
         List<FormSubmission> formSubmissions = asList(laterFormSubmission, earlierFormSubmission, veryLateFormSubmission);
 
         submissionService.processSubmissions(formSubmissions);

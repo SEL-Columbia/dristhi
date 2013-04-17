@@ -5,12 +5,16 @@ public class AllConstants {
 
     public static class Form {
         public static final String ENTITY_ID = "entityId";
+        public static final String ID = "id";
         public static final String ANM_ID = "anmId";
         public static final String FORM_NAME = "formName";
         public static final String INSTANCE_ID = "instanceId";
         public static final String TIME_STAMP = "timeStamp";
         public static final String EC_REGISTRATION = "ec_registration";
         public static final String FP_COMPLICATIONS = "fp_complications";
+        public static final String METHOD_STILL_THE_SAME = "method_still_the_same";
+        public static final String DATE_FAMILY_PLANNING_START = "date_familyplanningstart";
+        public static final String CURRENT_FAMILY_PLANNING_METHOD = "case_familyplanning_method";
     }
 
     public static class Report {

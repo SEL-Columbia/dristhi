@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.Form.*;
 
 @Service
 public class ECReportingService {
@@ -24,7 +25,7 @@ public class ECReportingService {
     }
 
     public void registerEC(SafeMap reportData) {
-        EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+        EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
         reportFPMethod(reportData, couple);
     }
 
@@ -38,23 +39,23 @@ public class ECReportingService {
     }
 
     public void fpComplications(SafeMap reportData) {
-        EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+        EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
 
-        if ("no".equals(reportData.get(IS_FP_METHOD_SAME_COMMCARE_FIELD_NAME))) {
+        if ("no".equals(reportData.get(METHOD_STILL_THE_SAME))) {
             reportFPMethod(reportData, couple);
         }
     }
 
     private void reportFPMethod(SafeMap reportData, EligibleCouple ec) {
-        Indicator indicator = Indicator.from(reportData.get(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME));
+        Indicator indicator = Indicator.from(reportData.get(CURRENT_FAMILY_PLANNING_METHOD));
         if (indicator == null) {
             return;
         }
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData(ec.anmIdentifier(), ec.ecNumber(),
-                indicator, reportData.get(CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME), new Location(ec.village(), ec.subCenter(), ec.phc()));
-        ReportingData anmReportData = ReportingData.anmReportData(ec.anmIdentifier(), reportData.get(CASE_ID_COMMCARE_FIELD_NAME),
-                indicator, reportData.get(CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME));
+                indicator, reportData.get(DATE_FAMILY_PLANNING_START), new Location(ec.village(), ec.subCenter(), ec.phc()));
+        ReportingData anmReportData = ReportingData.anmReportData(ec.anmIdentifier(), reportData.get(ID),
+                indicator, reportData.get(DATE_FAMILY_PLANNING_START));
 
         service.sendReportData(serviceProvidedData);
         service.sendReportData(anmReportData);

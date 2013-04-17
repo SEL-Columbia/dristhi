@@ -1,5 +1,6 @@
 package org.ei.drishti.listener;
 
+import com.google.gson.Gson;
 import org.ei.drishti.dto.form.FormSubmission;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.service.FormSubmissionService;
@@ -32,7 +33,7 @@ public class FormSubmissionEventListenerTest {
         List<FormSubmission> formSubmissions = asList(new FormSubmission("anm id 1", "instance id 1", "entity id 1", "form name", null, "0"),
                 new FormSubmission("anm id 2", "instance id 2", "entity id 2", "form name", null, "0"));
 
-        listener.submitForms(new MotechEvent(FormSubmissionEvent.SUBJECT, mapOf("data", (Object) formSubmissions)));
+        listener.submitForms(new MotechEvent(FormSubmissionEvent.SUBJECT, mapOf("data", (Object) new Gson().toJson(formSubmissions))));
 
         verify(formSubmissionService).processSubmissions(formSubmissions);
     }

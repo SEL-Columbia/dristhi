@@ -1,5 +1,6 @@
 package org.ei.drishti.event;
 
+import com.google.gson.Gson;
 import org.ei.drishti.dto.form.FormSubmission;
 import org.motechproject.scheduler.domain.MotechEvent;
 
@@ -18,7 +19,7 @@ public class FormSubmissionEvent {
 
     public MotechEvent toEvent() {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("data", formSubmissions);
+        parameters.put("data", new Gson().toJson(formSubmissions));
         return new MotechEvent(SUBJECT, parameters);
     }
 }

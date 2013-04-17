@@ -43,7 +43,8 @@ public class FormSubmissionService {
                 .put(INSTANCE_ID, formSubmission.instanceId())
                 .put(ENTITY_ID, formSubmission.entityId())
                 .put(FORM_NAME, formSubmission.formName())
-                .put(TIME_STAMP, String.valueOf(formSubmission.timeStamp())));
+                .put(TIME_STAMP, String.valueOf(formSubmission.timeStamp()))
+                .map());
     }
 
     private Comparator<FormSubmission> timeStampComparator() {

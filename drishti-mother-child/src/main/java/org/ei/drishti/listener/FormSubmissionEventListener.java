@@ -1,5 +1,7 @@
 package org.ei.drishti.listener;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.ei.drishti.dto.form.FormSubmission;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.service.FormSubmissionService;
@@ -21,7 +23,8 @@ public class FormSubmissionEventListener {
 
     @MotechListener(subjects = FormSubmissionEvent.SUBJECT)
     public void submitForms(MotechEvent event) {
-        List<FormSubmission> formSubmissions = (List<FormSubmission>) event.getParameters().get("data");
+        List<FormSubmission> formSubmissions = new Gson().fromJson((String) event.getParameters().get("data"), new TypeToken<List<FormSubmission>>() {
+        }.getType());
         submissionService.processSubmissions(formSubmissions);
     }
 }
