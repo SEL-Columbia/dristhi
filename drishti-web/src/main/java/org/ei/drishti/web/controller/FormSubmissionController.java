@@ -20,6 +20,9 @@ import java.util.List;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
 import static java.text.MessageFormat.format;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -38,7 +41,7 @@ public class FormSubmissionController {
 
     @RequestMapping(method = GET)
     @ResponseBody
-    private List<FormSubmission> getNewSubmissionsForANM(@RequestParam("anmIdentifier") String anmIdentifier, @RequestParam("timeStamp") Long timeStamp) {
+    private List<FormSubmission> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier, @RequestParam("timestamp") Long timeStamp) {
         List<org.ei.drishti.domain.form.FormSubmission> newSubmissionsForANM = formSubmissionService.getNewSubmissionsForANM(anmIdentifier, timeStamp);
         return with(newSubmissionsForANM).convert(new Converter<org.ei.drishti.domain.form.FormSubmission, FormSubmission>() {
             @Override
@@ -52,7 +55,7 @@ public class FormSubmissionController {
     public ResponseEntity<HttpStatus> submitForms(@RequestBody List<FormSubmission> formSubmissions) {
         try {
             if (formSubmissions.isEmpty()) {
-                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(BAD_REQUEST);
             }
 
             List<org.ei.drishti.domain.form.FormSubmission> submissions = with(formSubmissions).convert(new Converter<FormSubmission, org.ei.drishti.domain.form.FormSubmission>() {
@@ -65,8 +68,8 @@ public class FormSubmissionController {
             logger.info(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissions));
         } catch (Exception e) {
             logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e, formSubmissions));
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(CREATED);
     }
 }
