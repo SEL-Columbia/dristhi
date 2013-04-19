@@ -34,6 +34,10 @@ public class FormSubmissionService {
     public void processSubmissions(List<FormSubmission> formSubmissions) {
         sort(formSubmissions, timeStampComparator());
         for (FormSubmission submission : formSubmissions) {
+            if (allFormSubmissions.exists(submission.instanceId())) {
+                logger.warn(format("Received form submission that already exists. Skipping. Submission: {0}", submission));
+                continue;
+            }
             String params = getParams(submission);
             logger.info(format("Invoking save form for with params: {0} and instance: {1}", params, submission.instance()));
             dflService.saveForm(params, new Gson().toJson(submission.instance()));

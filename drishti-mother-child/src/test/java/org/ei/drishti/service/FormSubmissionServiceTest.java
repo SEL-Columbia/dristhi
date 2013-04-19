@@ -45,6 +45,7 @@ public class FormSubmissionServiceTest {
         FormSubmission laterFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 2").withInstanceId("instance id 2").withEntityId("entity id 2").addFormField("field 1", "value 2").withTimeStamp(baseTimeStamp + 1).build();
         FormSubmission veryLateFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 2").withInstanceId("instance id 3").withEntityId("entity id 3").addFormField("field 1", "value 3").withTimeStamp(baseTimeStamp + 2).build();
         List<FormSubmission> formSubmissions = asList(laterFormSubmission, earlierFormSubmission, veryLateFormSubmission);
+        when(allFormSubmissions.exists(anyString())).thenReturn(false);
 
         submissionService.processSubmissions(formSubmissions);
 
@@ -58,11 +59,31 @@ public class FormSubmissionServiceTest {
     @Test
     public void shouldDelegateFormSubmissionHandlerAfterSave() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "entity id 1", "form name", null, baseTimeStamp);
+        when(allFormSubmissions.exists(anyString())).thenReturn(false);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", null, baseTimeStamp);
 
         submissionService.processSubmissions(asList(formSubmission));
 
         verify(formSubmissionRouter).route(formSubmission);
+    }
+
+    @Test
+    public void shouldNotDelegateFormSubmissionIfAlreadyExists() throws Exception {
+        long baseTimeStamp = DateUtil.now().getMillis();
+        String paramsForFirstFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 1").put(INSTANCE_ID, "instance id 1").put(ENTITY_ID, "entity id 1").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp)).map());
+        String paramsForSecondFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 2").put(INSTANCE_ID, "instance id 2").put(ENTITY_ID, "entity id 2").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp + 1)).map());
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, baseTimeStamp);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1);
+        when(allFormSubmissions.exists("instance id 1")).thenReturn(true);
+        when(allFormSubmissions.exists("instance id 2")).thenReturn(false);
+
+        submissionService.processSubmissions(asList(firstFormSubmission, secondFormSubmission));
+
+        InOrder inOrder = inOrder(dflService, formSubmissionRouter);
+        inOrder.verify(dflService, times(0)).saveForm(paramsForFirstFormSubmission, "");
+        inOrder.verify(formSubmissionRouter, times(0)).route(firstFormSubmission);
+        inOrder.verify(dflService).saveForm(paramsForSecondFormSubmission, "");
+        inOrder.verify(formSubmissionRouter).route(secondFormSubmission);
     }
 
     @Test

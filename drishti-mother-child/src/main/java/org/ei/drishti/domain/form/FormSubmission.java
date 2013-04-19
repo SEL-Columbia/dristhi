@@ -70,6 +70,10 @@ public class FormSubmission extends MotechBaseDataObject {
         return formInstance.getField(name);
     }
 
+    public String getInstanceId() {
+        return instanceId;
+    }
+
     public Map<String, String> getFields(List<String> fieldNames) {
         Map<String, String> fieldsMap = new HashMap<>();
         for (String fieldName : fieldNames) {

@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
@@ -42,5 +44,15 @@ public class AllFormSubmissionsIntegrationTest {
         assertEquals(asList(thirdFormSubmission), formSubmissions.findByANMIDAndTimeStamp("ANM 1", secondFormSubmission.timestamp()));
 
         assertEquals(0, formSubmissions.findByANMIDAndTimeStamp("ANM 1", thirdFormSubmission.timestamp()).size());
+    }
+
+    @Test
+    public void shouldCheckIfFormSubmissionExistsByInstanceId() throws Exception {
+        FormSubmission formSubmission = FormSubmissionBuilder.create().withANMId("ANM 1").withInstanceId("instance id 1")
+                .addFormField("field 1", "value 1").build();
+        formSubmissions.add(formSubmission);
+
+        assertTrue(formSubmissions.exists("instance id 1"));
+        assertFalse(formSubmissions.exists("Invalid Instance Id"));
     }
 }
