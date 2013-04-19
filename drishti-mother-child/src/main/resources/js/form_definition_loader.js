@@ -5,7 +5,7 @@ if (typeof enketo == "undefined" || !enketo) {
 enketo.FormDefinitionLoader = function () {
     return {
         load: function (formName) {
-            return JSON.parse(dflFileLoader.loadAppData(formName + "/form_definition.json"));
+            return JSON.parse(ziggyFileLoader.loadAppData(formName + "/form_definition.json"));
         }
     };
 };

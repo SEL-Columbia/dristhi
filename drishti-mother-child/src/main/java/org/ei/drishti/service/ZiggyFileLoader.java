@@ -16,14 +16,14 @@ import java.net.URISyntaxException;
 import static java.text.MessageFormat.format;
 
 @Component
-public class DFLFileLoader {
-    private static Logger logger = LoggerFactory.getLogger(DFLFileLoader.class.toString());
+public class ZiggyFileLoader {
+    private static Logger logger = LoggerFactory.getLogger(ZiggyFileLoader.class.toString());
 
     private String jsDirectoryName;
     private String formDirectoryName;
 
     @Autowired
-    public DFLFileLoader(@Value("#{drishti['js.directory.name']}") String jsDirectoryName, @Value("#{drishti['form.directory.name']}") String formDirectoryName) {
+    public ZiggyFileLoader(@Value("#{drishti['js.directory.name']}") String jsDirectoryName, @Value("#{drishti['form.directory.name']}") String formDirectoryName) {
         this.jsDirectoryName = jsDirectoryName;
         this.formDirectoryName = formDirectoryName;
     }

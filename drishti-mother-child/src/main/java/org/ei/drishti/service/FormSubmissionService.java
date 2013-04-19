@@ -20,13 +20,13 @@ import static org.ei.drishti.util.EasyMap.create;
 @Service
 public class FormSubmissionService {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionService.class.toString());
-    private DFLService dflService;
+    private ZiggyService ziggyService;
     private FormSubmissionRouter formSubmissionRouter;
     private AllFormSubmissions allFormSubmissions;
 
     @Autowired
-    public FormSubmissionService(DFLService dflService, FormSubmissionRouter formSubmissionRouter, AllFormSubmissions allFormSubmissions) {
-        this.dflService = dflService;
+    public FormSubmissionService(ZiggyService ziggyService, FormSubmissionRouter formSubmissionRouter, AllFormSubmissions allFormSubmissions) {
+        this.ziggyService = ziggyService;
         this.formSubmissionRouter = formSubmissionRouter;
         this.allFormSubmissions = allFormSubmissions;
     }
@@ -40,7 +40,7 @@ public class FormSubmissionService {
             }
             String params = getParams(submission);
             logger.info(format("Invoking save form for with params: {0} and instance: {1}", params, submission.instance()));
-            dflService.saveForm(params, new Gson().toJson(submission.instance()));
+            ziggyService.saveForm(params, new Gson().toJson(submission.instance()));
             formSubmissionRouter.route(submission);
         }
     }

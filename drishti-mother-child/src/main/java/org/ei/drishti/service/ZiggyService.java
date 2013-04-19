@@ -15,9 +15,9 @@ import static java.text.MessageFormat.format;
 import static javax.script.ScriptContext.ENGINE_SCOPE;
 
 @Service
-public class DFLService {
+public class ZiggyService {
     public static final String JAVA_SCRIPT = "JavaScript";
-    private static Logger logger = LoggerFactory.getLogger(DFLService.class.toString());
+    private static Logger logger = LoggerFactory.getLogger(ZiggyService.class.toString());
     private static final String SAVE_METHOD_NAME = "save";
     private static final String JS_INIT_SCRIPT = "var formDataRepository = new enketo.FormDataRepository();\n" +
             "    var controller = new enketo.FormDataController(\n" +
@@ -25,24 +25,24 @@ public class DFLService {
             "        new enketo.FormDefinitionLoader(),\n" +
             "        new enketo.FormModelMapper(formDataRepository, new enketo.SQLQueryBuilder(formDataRepository), new enketo.IdFactory(new enketo.IdFactoryBridge())),\n" +
             "        formDataRepository);";
-    private static final String DFL_FILE_LOADER = "dflFileLoader";
+    private static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     private static final String REPOSITORY = "formDataRepositoryContext";
 
-    private DFLFileLoader dflFileLoader;
+    private ZiggyFileLoader ziggyFileLoader;
     private FormDataRepository dataRepository;
-    private Object dflFormController;
+    private Object ziggyFormController;
     private Invocable invocable;
 
     @Autowired
-    public DFLService(DFLFileLoader dflFileLoader, FormDataRepository dataRepository) throws Exception {
-        this.dflFileLoader = dflFileLoader;
+    public ZiggyService(ZiggyFileLoader ziggyFileLoader, FormDataRepository dataRepository) throws Exception {
+        this.ziggyFileLoader = ziggyFileLoader;
         this.dataRepository = dataRepository;
         initRhino();
     }
 
     public void saveForm(String params, String formInstance) {
         try {
-            invocable.invokeMethod(dflFormController, SAVE_METHOD_NAME, params, formInstance);
+            invocable.invokeMethod(ziggyFormController, SAVE_METHOD_NAME, params, formInstance);
             logger.info(format("Saving form successful, with params: {0}, with instance {1}.", params, formInstance));
         } catch (Exception e) {
             logger.error(format("Form save failed, with params: {0}, with instance {1}. Exception: {2}", params, formInstance, e));
@@ -56,18 +56,18 @@ public class DFLService {
         Bindings bindings = getBindings(engine);
         engine.setBindings(bindings, ENGINE_SCOPE);
 
-        String jsFiles = dflFileLoader.getJSFiles();
+        String jsFiles = ziggyFileLoader.getJSFiles();
 
         engine.eval(jsFiles);
         engine.eval(JS_INIT_SCRIPT);
 
-        dflFormController = engine.get("controller");
+        ziggyFormController = engine.get("controller");
         invocable = (Invocable) engine;
     }
 
     private Bindings getBindings(ScriptEngine engine) {
         Bindings bindings = engine.createBindings();
-        bindings.put(DFL_FILE_LOADER, dflFileLoader);
+        bindings.put(ZIGGY_FILE_LOADER, ziggyFileLoader);
         bindings.put(REPOSITORY, dataRepository);
         return bindings;
     }

@@ -21,7 +21,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class FormSubmissionServiceTest {
     @Mock
-    private DFLService dflService;
+    private ZiggyService ziggyService;
     @Mock
     private FormSubmissionRouter formSubmissionRouter;
     @Mock
@@ -32,7 +32,7 @@ public class FormSubmissionServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        submissionService = new FormSubmissionService(dflService, formSubmissionRouter, allFormSubmissions);
+        submissionService = new FormSubmissionService(ziggyService, formSubmissionRouter, allFormSubmissions);
     }
 
     @Test
@@ -49,11 +49,11 @@ public class FormSubmissionServiceTest {
 
         submissionService.processSubmissions(formSubmissions);
 
-        InOrder inOrder = inOrder(dflService);
-        inOrder.verify(dflService).saveForm(paramsForEarlierFormSubmission, new Gson().toJson(earlierFormSubmission.instance()));
-        inOrder.verify(dflService).saveForm(paramsForLaterFormSubmission, new Gson().toJson(laterFormSubmission.instance()));
-        inOrder.verify(dflService).saveForm(paramsForVeryLateFormSubmission, new Gson().toJson(veryLateFormSubmission.instance()));
-        verifyNoMoreInteractions(dflService);
+        InOrder inOrder = inOrder(ziggyService);
+        inOrder.verify(ziggyService).saveForm(paramsForEarlierFormSubmission, new Gson().toJson(earlierFormSubmission.instance()));
+        inOrder.verify(ziggyService).saveForm(paramsForLaterFormSubmission, new Gson().toJson(laterFormSubmission.instance()));
+        inOrder.verify(ziggyService).saveForm(paramsForVeryLateFormSubmission, new Gson().toJson(veryLateFormSubmission.instance()));
+        verifyNoMoreInteractions(ziggyService);
     }
 
     @Test
@@ -79,10 +79,10 @@ public class FormSubmissionServiceTest {
 
         submissionService.processSubmissions(asList(firstFormSubmission, secondFormSubmission));
 
-        InOrder inOrder = inOrder(dflService, formSubmissionRouter);
-        inOrder.verify(dflService, times(0)).saveForm(paramsForFirstFormSubmission, "");
+        InOrder inOrder = inOrder(ziggyService, formSubmissionRouter);
+        inOrder.verify(ziggyService, times(0)).saveForm(paramsForFirstFormSubmission, "");
         inOrder.verify(formSubmissionRouter, times(0)).route(firstFormSubmission);
-        inOrder.verify(dflService).saveForm(paramsForSecondFormSubmission, "");
+        inOrder.verify(ziggyService).saveForm(paramsForSecondFormSubmission, "");
         inOrder.verify(formSubmissionRouter).route(secondFormSubmission);
     }
 
