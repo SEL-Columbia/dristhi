@@ -37,7 +37,8 @@ public class ECService {
     private ReportFieldsDefinition reportFieldsDefinition;
 
     @Autowired
-    public ECService(AllEligibleCouples allEligibleCouples, ActionService actionService, ECReportingService reportingService, IdGenerator idGenerator, ECSchedulingService schedulingService, ReportFieldsDefinition reportFieldsDefinition) {
+    public ECService(AllEligibleCouples allEligibleCouples, ActionService actionService, ECReportingService reportingService,
+                     IdGenerator idGenerator, ECSchedulingService schedulingService, ReportFieldsDefinition reportFieldsDefinition) {
         this.allEligibleCouples = allEligibleCouples;
         this.actionService = actionService;
         this.reportingService = reportingService;

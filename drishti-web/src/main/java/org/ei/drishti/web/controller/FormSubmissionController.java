@@ -1,6 +1,8 @@
 package org.ei.drishti.web.controller;
 
 import ch.lambdaj.function.convert.Converter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.ei.drishti.dto.form.FormSubmission;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.service.FormSubmissionService;
@@ -58,12 +60,13 @@ public class FormSubmissionController {
                 return new ResponseEntity<>(BAD_REQUEST);
             }
 
-            List<org.ei.drishti.domain.form.FormSubmission> submissions = with(formSubmissions).convert(new Converter<FormSubmission, org.ei.drishti.domain.form.FormSubmission>() {
-                @Override
-                public org.ei.drishti.domain.form.FormSubmission convert(FormSubmission submission) {
-                    return FormSubmissionConvertor.toFormSubmission(submission);
-                }
-            });
+            List<org.ei.drishti.domain.form.FormSubmission> submissions = with(getSubmissionsInProperFormat(formSubmissions))
+                    .convert(new Converter<FormSubmission, org.ei.drishti.domain.form.FormSubmission>() {
+                        @Override
+                        public org.ei.drishti.domain.form.FormSubmission convert(FormSubmission submission) {
+                            return FormSubmissionConvertor.toFormSubmission(submission);
+                        }
+                    });
             gateway.sendEventMessage(new FormSubmissionEvent(submissions).toEvent());
             logger.info(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissions));
         } catch (Exception e) {
@@ -71,5 +74,10 @@ public class FormSubmissionController {
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(CREATED);
+    }
+
+    private List<FormSubmission> getSubmissionsInProperFormat(List<FormSubmission> formSubmissions) {
+        return new Gson().fromJson(new Gson().toJson(formSubmissions), new TypeToken<List<FormSubmission>>() {
+        }.getType());
     }
 }

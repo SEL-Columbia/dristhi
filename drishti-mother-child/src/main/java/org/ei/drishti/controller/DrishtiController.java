@@ -29,7 +29,8 @@ public class DrishtiController {
     private ChildMapper childMapper;
 
     @Autowired
-    public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, PNCService pncService, ECService ecService, DrishtiMCTSService drishtiMctsService, ChildMapper childMapper) {
+    public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, PNCService pncService,
+                             ECService ecService, DrishtiMCTSService drishtiMctsService, ChildMapper childMapper) {
         router.registerForDispatch(this);
         this.ancService = ancService;
         this.pncService = pncService;
