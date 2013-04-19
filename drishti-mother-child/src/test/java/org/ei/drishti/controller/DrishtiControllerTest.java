@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
@@ -21,9 +20,7 @@ import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DrishtiControllerTest {
@@ -137,30 +134,12 @@ public class DrishtiControllerTest {
     }
 
     @Test
-    public void shouldDelegateToECServiceDuringEligibleCoupleRegistration() {
-        EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest = mock(EligibleCoupleRegistrationRequest.class);
-
-        controller.registerEligibleCouple(eligibleCoupleRegistrationRequest, new HashMap<String, Map<String, String>>());
-
-        verify(ecService).registerEligibleCouple(eligibleCoupleRegistrationRequest, new HashMap<String, Map<String, String>>());
-    }
-
-    @Test
     public void shouldDelegateToECServiceDuringEligibleCoupleFamilyPlanningMethodUpdate() {
         FamilyPlanningUpdateRequest request = mock(FamilyPlanningUpdateRequest.class);
 
         controller.updateFamilyPlanningMethod(request, EXTRA_DATA);
 
         verify(ecService).updateFamilyPlanningMethod(request, EXTRA_DATA);
-    }
-
-    @Test
-    public void shouldDelegateToECServiceDuringReportFPComplications() {
-        FPComplicationsRequest request = mock(FPComplicationsRequest.class);
-
-        controller.reportFPComplications(request, EXTRA_DATA);
-
-        verify(ecService).reportFPComplications(request, EXTRA_DATA);
     }
 
     @Test

@@ -47,20 +47,6 @@ public class ECService {
         this.reportFieldsDefinition = reportFieldsDefinition;
     }
 
-    @Deprecated
-    public void registerEligibleCouple(EligibleCoupleRegistrationRequest request, Map<String, Map<String, String>> extraData) {
-        EligibleCouple couple = new EligibleCouple(request.caseId(), request.ecNumber())
-                .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
-                .withLocation(request.village(), request.subCenter(), request.phc()).withDetails(extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
-
-        allEligibleCouples.register(couple);
-
-        reportingService.registerEC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-        actionService.registerEligibleCouple(request.caseId(), request.ecNumber(), request.wife(), request.husband(),
-                request.anmIdentifier(), request.village(), request.subCenter(), request.phc(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
-        schedulingService.enrollToFPComplications(request.caseId(), request.currentMethod(), request.highPriority(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME).get(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
-    }
-
     public void registerEligibleCouple(FormSubmission submission) {
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.registerEC(new SafeMap(submission.getFields(reportFields)));
@@ -105,17 +91,6 @@ public class ECService {
         if (!(isBlank(request.currentMethod()) || NO_FP_METHOD_COMMCARE_FIELD_VALUE.equalsIgnoreCase(request.currentMethod()))) {
             actionService.markAlertAsClosed(request.caseId(), request.anmIdentifier(), EC_SCHEDULE_FP_COMPLICATION_MILESTONE, request.familyPlanningMethodChangeDate());
         }
-    }
-
-    @Deprecated
-    public void reportFPComplications(FPComplicationsRequest request, Map<String, Map<String, String>> extraData) {
-        EligibleCouple couple = allEligibleCouples.findByCaseId(request.caseId());
-        if (couple == null) {
-            logger.warn("Tried to report FP Complications of a non-existing EC: " + request + ". Extra details: " + extraData);
-            return;
-        }
-
-        reportingService.fpComplications(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
     }
 
     public void reportFPComplications(FormSubmission submission) {

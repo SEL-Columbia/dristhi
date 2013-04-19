@@ -39,22 +39,10 @@ public class DrishtiController {
         this.childMapper = childMapper;
     }
 
-    public void registerEligibleCouple(EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest, Map<String, Map<String, String>> extraData) {
-        logger.info("Eligible couple registration: " + eligibleCoupleRegistrationRequest + ". Extra data: " + extraData);
-
-        ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest, extraData);
-    }
-
     public void updateFamilyPlanningMethod(FamilyPlanningUpdateRequest familyPlanningUpdateRequest, Map<String, Map<String, String>> extraData) {
         logger.info("Eligible couple change FP: " + familyPlanningUpdateRequest + ". Extra data: " + extraData);
 
         ecService.updateFamilyPlanningMethod(familyPlanningUpdateRequest, extraData);
-    }
-
-    public void reportFPComplications(FPComplicationsRequest request, Map<String, Map<String, String>> extraData) {
-        logger.info("Eligible couple report FP Complication: " + request + ". Extra data: " + extraData);
-
-        ecService.reportFPComplications(request, extraData);
     }
 
     public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {

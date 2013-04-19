@@ -1,6 +1,8 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.*;
+import org.ei.drishti.contract.EligibleCoupleCloseRequest;
+import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
+import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -22,7 +24,6 @@ import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
@@ -51,22 +52,6 @@ public class ECServiceTest {
     public void setUp() throws Exception {
         initMocks(this);
         ecService = new ECService(allEligibleCouples, actionService, reportingService, idGenerator, schedulingService, reportFieldsDefinition);
-    }
-
-    @Test
-    public void shouldRegisterEligibleCouple_Deprecated() throws Exception {
-        Map<String, Map<String, String>> extraData = create("details", Collections.<String, String>emptyMap())
-                .put(REPORT_EXTRA_DATA_KEY_NAME, mapOf("someKey", "someValue"))
-                .put(DETAILS_EXTRA_DATA_KEY_NAME, mapOf("someKey", "someValue")).map();
-        EligibleCoupleRegistrationRequest eligibleCoupleRegistrationRequest = new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "Condom", "No");
-        ecService.registerEligibleCouple(eligibleCoupleRegistrationRequest, extraData);
-
-        EligibleCouple expectedCouple = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1")
-                .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(extraData.get("details"));
-        verify(allEligibleCouples).register(expectedCouple);
-        verify(reportingService).registerEC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-        verify(actionService).registerEligibleCouple("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", extraData.get("details"));
-        verify(schedulingService).enrollToFPComplications(eligibleCoupleRegistrationRequest.caseId(), eligibleCoupleRegistrationRequest.currentMethod(), eligibleCoupleRegistrationRequest.highPriority(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME).get(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
     }
 
     @Test
@@ -173,18 +158,6 @@ public class ECServiceTest {
     }
 
     @Test
-    public void shouldSendDataToReportingServiceDuringReportFPComplications_Deprecated() throws Exception {
-        EligibleCouple ec = new EligibleCouple("CASE X", "EC Number 1");
-        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(ec);
-
-        Map<String, Map<String, String>> extraDetails = create("details", mapOf("currentMethod", "CONDOM")).put(REPORT_EXTRA_DATA_KEY_NAME, mapOf("currentMethod", "CONDOM")).map();
-        ecService.reportFPComplications(new FPComplicationsRequest("CASE X", "ANM X"), extraDetails);
-
-        verify(allEligibleCouples).findByCaseId("CASE X");
-        verify(reportingService).fpComplications(new SafeMap(extraDetails.get(REPORT_EXTRA_DATA_KEY_NAME)));
-    }
-
-    @Test
     public void shouldSendDataToReportingServiceDuringReportFPComplications() throws Exception {
         EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
@@ -198,17 +171,6 @@ public class ECServiceTest {
 
         verify(allEligibleCouples).findByCaseId("entity id 1");
         verify(reportingService).fpComplications(new SafeMap(mapOf("someKey", "someValue")));
-    }
-
-    @Test
-    public void shouldNotSendDataToReportingServiceDuringReportFPComplicationsIfNoECIsFound_Deprecated() throws Exception {
-        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(null);
-
-        Map<String, Map<String, String>> extraDetails = create("details", mapOf("currentMethod", "CONDOM")).map();
-        ecService.reportFPComplications(new FPComplicationsRequest("CASE X", "ANM X"), extraDetails);
-
-        verify(allEligibleCouples).findByCaseId("CASE X");
-        verifyZeroInteractions(reportingService);
     }
 
     @Test
