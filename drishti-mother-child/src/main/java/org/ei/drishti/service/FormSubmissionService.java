@@ -36,7 +36,8 @@ public class FormSubmissionService {
                 continue;
             }
             String params = getParams(submission);
-            logger.info(format("Invoking save form for with params: {0} and instance: {1}", params, submission.instance()));
+            logger.info(format("Invoking save for form with instance Id: {0} and for entity Id: {1}",
+                    submission.instanceId(), submission.entityId()));
             ziggyService.saveForm(params, new Gson().toJson(submission.instance()));
         }
     }
