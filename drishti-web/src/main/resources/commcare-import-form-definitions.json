@@ -6,54 +6,6 @@
         {
             "forms": [
                 {
-                    "name": "registerEligibleCouple",
-                    "url": {
-                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/B377DFFB-1712-46BC-B7DE-1AE3FE8D2AB8"
-                        }
-                    },
-                    "mappings": {
-                        "form|ec_number": "ecNumber",
-                        "form|woman_name": "wifeName",
-                        "form|husband_name": "husbandName",
-                        "form|case|@case_id": "caseId",
-                        "form|meta|username": "anmIdentifier",
-                        "form|ec_village": "village",
-                        "form|ec_village_subcenter": "subCenter",
-                        "form|ec_village_phc": "phc",
-                        "form|familyplanning_method": "currentMethod",
-                        "form|is_high_priority": "isHighPriority"
-                    },
-                    "extraMappings": {
-                        "reporting": {
-                            "form|case|@case_id": "caseId",
-                            "form|familyplanning_method": "currentMethod",
-                            "form|date_familyplanningstart": "familyPlanningMethodChangeDate"
-                        },
-                        "details": {
-                            "form|familyplanning_method": "currentMethod",
-                            "form|date_familyplanningstart": "familyPlanningMethodChangeDate",
-                            "form|headofhousehold": "headOfHousehold",
-                            "form|religion": "religion",
-                            "form|num_pregnancies": "pregnancies",
-                            "form|is_high_priority": "isHighPriority",
-                            "form|today": "submissionDate",
-                            "form|high_priority_reason": "highPriorityReason",
-                            "form|economic_status": "economicStatus",
-                            "form|caste": "caste",
-                            "form|woman_age": "wifeAge",
-                            "form|woman_date_of_birth": "dateOfBirth",
-                            "form|num_pregnancies": "numberOfPregnancies",
-                            "form|num_livingchildren": "numberOfLivingChildren",
-                            "form|num_stillbirths": "numberOfStillBirths",
-                            "form|num_abortions": "numberOfAbortions",
-                            "form|side_effects": "sideEffects",
-                            "form|parity": "parity"
-                        }
-                    }
-                },
-                {
                     "name": "updateFamilyPlanningMethod",
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
@@ -81,29 +33,6 @@
                             "form|num_ocpdelivered": "numberOfOCPDelivered",
                             "form|num_condomsdelivered": "numberOfCondomsDelivered",
                             "form|date_familyplanningstart": "familyPlanningMethodChangeDate"
-                        }
-                    }
-                },
-                {
-                    "name": "reportFPComplications",
-                    "url": {
-                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/920F24F2-9FC5-4818-B651-C0E913A2FD72"
-                        }
-                    },
-                    "mappings": {
-                        "form|case|@case_id": "caseId",
-                        "form|meta|username": "anmIdentifier"
-                    },
-                    "extraMappings": {
-                        "reporting": {
-                            "form|case|@case_id": "caseId",
-                            "form|familyplanning_method": "currentMethod",
-                            "form|date_familyplanningstart": "familyPlanningMethodChangeDate",
-                            "form|method_still_the_same": "isMethodSame"
-                        },
-                        "details": {
                         }
                     }
                 },

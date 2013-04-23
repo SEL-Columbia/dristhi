@@ -1,6 +1,5 @@
 package org.ei.drishti.service.scheduling;
 
-import org.ei.drishti.contract.EligibleCoupleRegistrationRequest;
 import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -12,12 +11,9 @@ import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 
-import java.util.Map;
-
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
-import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.joda.time.LocalDate.parse;
 import static org.mockito.Matchers.argThat;
@@ -40,40 +36,28 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldEnrollHighPriorityECIntoFPComplicationsSchedulesWhenECIsRegisteredAndFPMethodIsNone() {
-        EligibleCoupleRegistrationRequest request = new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "none", "Yes");
+        ecSchedulingService.enrollToFPComplications("CASE X", "none", "Yes", "2012-01-01");
 
-        Map<String, String> details = create("submissionDate", "2012-01-01").map();
-        ecSchedulingService.enrollToFPComplications(request, details);
-
-        verify(scheduleTrackingService).enroll(enrollmentFor(request.caseId(), EC_SCHEDULE_FP_COMPLICATION, parse("2012-01-01")));
+        verify(scheduleTrackingService).enroll(enrollmentFor("CASE X", EC_SCHEDULE_FP_COMPLICATION, parse("2012-01-01")));
     }
 
     @Test
     public void shouldEnrollHighPriorityECIntoFPComplicationsSchedulesWhenECIsRegisteredAndFPMethodIsEmpty() {
-        EligibleCoupleRegistrationRequest request = new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "", "Yes");
+        ecSchedulingService.enrollToFPComplications("CASE X", "", "Yes", "2012-01-01");
 
-        Map<String, String> details = create("submissionDate", "2012-01-01").map();
-        ecSchedulingService.enrollToFPComplications(request, details);
-
-        verify(scheduleTrackingService).enroll(enrollmentFor(request.caseId(), EC_SCHEDULE_FP_COMPLICATION, parse("2012-01-01")));
+        verify(scheduleTrackingService).enroll(enrollmentFor("CASE X", EC_SCHEDULE_FP_COMPLICATION, parse("2012-01-01")));
     }
 
     @Test
     public void shouldNotEnrollHighPriorityECIntoFPComplicationsSchedulesWhenECIsRegisteredAndFPMethodIsNeitherNoneNorEmpty() {
-        EligibleCoupleRegistrationRequest request = new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "some method", "Yes");
-
-        Map<String, String> details = create("submissionDate", "2012-01-01").map();
-        ecSchedulingService.enrollToFPComplications(request, details);
+        ecSchedulingService.enrollToFPComplications("CASE X", "some method", "Yes", "2012-01-01");
 
         verifyZeroInteractions(scheduleTrackingService);
     }
 
     @Test
     public void shouldNotEnrollNormalPriorityECIntoFPComplicationsSchedulesWhenECIsRegistered() {
-        EligibleCoupleRegistrationRequest request = new EligibleCoupleRegistrationRequest("CASE X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "some method", "no");
-
-        Map<String, String> details = create("submissionDate", "2012-01-01").map();
-        ecSchedulingService.enrollToFPComplications(request, details);
+        ecSchedulingService.enrollToFPComplications("CASE X", "some method", "no", "2012-01-01");
 
         verifyZeroInteractions(scheduleTrackingService);
     }
