@@ -11,8 +11,8 @@
                 "source": "eligible_couple.currentMethod"
             },
             {
-                "name": "method_still_the_same",
-                "source": "eligible_couple.isMethodSame"
+                "name": "isMethodSame",
+                "bind": "/model/instance/Family_Planning_Complications_EngKan/method_still_the_same"
             },
             {
                 "name": "iud_removal_date",
@@ -23,12 +23,12 @@
                 "source": "eligible_couple.iudRemovalPlace"
             },
             {
-                "name": "familyplanning_method_1",
-                "source": "eligible_couple.fpMethodProblem"
+                "name": "fpMethodProblem",
+                "bind": "/model/instance/Family_Planning_Complications_EngKan/familyplanning_method_1"
             },
             {
-                "name": "date_familyplanningstart",
-                "source": "eligible_couple.familyPlanningMethodChangeDate"
+                "name": "familyPlanningMethodChangeDate",
+                "bind": "/model/instance/Family_Planning_Complications_EngKan/date_familyplanningstart"
             },
             {
                 "name": "iud_place",
@@ -48,8 +48,8 @@
                 "bind": "/model/instance/Family_Planning_Complications_EngKan/male_sterilizaton_group/threemonths_from_sterilization_date"
             },
             {
-                "name": "familyplanning_method",
-                "source": "eligible_couple.currentMethod"
+                "name": "currentMethod",
+                "bind": "/model/instance/Family_Planning_Complications_EngKan/familyplanning_method"
             },
             {
                 "name": "complication_date",
@@ -74,6 +74,14 @@
             {
                 "name": "injectable_sideeffect",
                 "source": "eligible_couple.injectableSideEffect"
+            },
+            {
+                "name": "previousFPMethod",
+                "source": "eligible_couple.currentMethod"
+            },
+            {
+                "name": "submissionDate",
+                "bind": "/model/instance/EC_Registration_EngKan/today"
             }
         ]
     }

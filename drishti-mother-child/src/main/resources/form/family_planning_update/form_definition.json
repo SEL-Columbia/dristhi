@@ -1,7 +1,7 @@
 {
     "form": {
         "bind_type": "eligible_couple",
-        "default_bind_path": "/model/instance/EC_New_Family_Planning_EngKan_Final/",
+        "default_bind_path": "/model/instance/Family_Planning_Change_Method/",
         "fields": [
             {
                 "name": "id"
@@ -73,6 +73,10 @@
             {
                 "name": "childIsClosed",
                 "source": "eligible_couple.mother.child.isClosed"
+            },
+            {
+                "name": "submissionDate",
+                "bind": "/model/instance/EC_Registration_EngKan/today"
             }
         ]
     }
