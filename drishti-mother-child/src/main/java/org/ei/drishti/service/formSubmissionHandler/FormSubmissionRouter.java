@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.Form.EC_REGISTRATION;
 import static org.ei.drishti.common.AllConstants.Form.FP_COMPLICATIONS;
 
@@ -34,6 +35,8 @@ public class FormSubmissionRouter {
             logger.warn("Could not find a handler due to unknown form submission: " + submission);
             return;
         }
+        logger.info(format("Handling {0} form submission with instance Id: {1} for entity: {2}", submission.formName(),
+                submission.instanceId(), submission.entityId()));
         handler.handle(submission);
     }
 }

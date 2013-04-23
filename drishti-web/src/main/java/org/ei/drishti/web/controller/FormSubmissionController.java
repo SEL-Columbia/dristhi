@@ -68,7 +68,7 @@ public class FormSubmissionController {
                         }
                     });
             gateway.sendEventMessage(new FormSubmissionEvent(submissions).toEvent());
-            logger.info(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissions));
+            logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissions));
         } catch (Exception e) {
             logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e, formSubmissions));
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
