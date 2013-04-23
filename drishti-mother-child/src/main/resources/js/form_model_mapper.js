@@ -46,6 +46,18 @@ enketo.FormModelMapper = function (formDataRepository, queryBuilder, idFactory) 
         });
     };
 
+    var addIdValueToFormModel = function (formModel, idField) {
+        var idFormField = formModel.form.fields.filter(function (formField) {
+            return formField.source === idField.source;
+        })[0];
+        if (!enketo.hasValue(idFormField)) {
+            formModel.form.fields.push(idField);
+        }
+        else if (!enketo.hasValue(idFormField.value)) {
+            idFormField.value = idField.value;
+        }
+    };
+
     var identify = function (entitiesToSave, formModel) {
         entitiesToSave.forEach(function (entity) {
             var idField = entity.getFieldByPersistenceName("id");
@@ -57,18 +69,11 @@ enketo.FormModelMapper = function (formDataRepository, queryBuilder, idFactory) 
                     "value": idFactory.generateIdFor(entity.type)
                 };
                 entity.addField(idField);
-                var idFormField = formModel.form.fields.filter(function (formField) {
-                    return formField.source === idField.source;
-                })[0];
-                if (!enketo.hasValue(idFormField)) {
-                    formModel.form.fields.push(idField);
-                }
-                else if (!enketo.hasValue(idFormField.value)) {
-                    idFormField.value = idField.value;
-                }
+                addIdValueToFormModel(formModel, idField);
             }
             else if (!enketo.hasValue(idField.value)) {
                 idField.value = idFactory.generateIdFor(entity.type);
+                addIdValueToFormModel(formModel, idField);
             }
         });
     };
@@ -115,6 +120,11 @@ enketo.FormModelMapper = function (formDataRepository, queryBuilder, idFactory) 
             }
             //TODO: not every case entityId maybe applicable.
             if (!enketo.hasValue(params.entityId)) {
+                formDefinition.form.fields.forEach(function (field) {
+                    if (!enketo.hasValue(field.source)) {
+                        field["source"] = formDefinition.form.bind_type + "." + field.name;
+                    }
+                });
                 return formDefinition;
             }
             //TODO: pass all the params to the query builder and let it decide what it wants to use for querying.

@@ -19,7 +19,7 @@ enketo.FormDataRepository = function () {
             return repository.queryList(sql);
         },
         saveFormSubmission: function (params, data) {
-            repository.saveFormSubmission(JSON.stringify(params), JSON.stringify(data));
+            return repository.saveFormSubmission(JSON.stringify(params), JSON.stringify(data));
         },
         saveEntity: function (entityType, entity) {
             return repository.saveEntity(entityType, JSON.stringify(entity));

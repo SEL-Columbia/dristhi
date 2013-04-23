@@ -31,7 +31,7 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
     }
 
     @GenerateView
-    private FormSubmission findByInstanceId(String instanceId) {
+    public FormSubmission findByInstanceId(String instanceId) {
         List<FormSubmission> submissions = queryView("by_instanceId", instanceId);
         if (submissions == null || submissions.isEmpty()) {
             return null;

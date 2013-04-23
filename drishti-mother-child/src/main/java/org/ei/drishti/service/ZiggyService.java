@@ -1,6 +1,7 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.repository.FormDataRepository;
+import org.ei.drishti.service.formSubmissionHandler.FormSubmissionRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +25,22 @@ public class ZiggyService {
             "        new enketo.EntityRelationshipLoader(),\n" +
             "        new enketo.FormDefinitionLoader(),\n" +
             "        new enketo.FormModelMapper(formDataRepository, new enketo.SQLQueryBuilder(formDataRepository), new enketo.IdFactory(new enketo.IdFactoryBridge())),\n" +
-            "        formDataRepository);";
+            "        formDataRepository, new enketo.FormSubmissionRouter());";
     private static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     private static final String REPOSITORY = "formDataRepositoryContext";
+    private static final String FORM_SUBMISSION_ROUTER = "formSubmissionRouter";
 
     private ZiggyFileLoader ziggyFileLoader;
     private FormDataRepository dataRepository;
+    private FormSubmissionRouter formSubmissionRouter;
     private Object ziggyFormController;
     private Invocable invocable;
 
     @Autowired
-    public ZiggyService(ZiggyFileLoader ziggyFileLoader, FormDataRepository dataRepository) throws Exception {
+    public ZiggyService(ZiggyFileLoader ziggyFileLoader, FormDataRepository dataRepository, FormSubmissionRouter formSubmissionRouter) throws Exception {
         this.ziggyFileLoader = ziggyFileLoader;
         this.dataRepository = dataRepository;
+        this.formSubmissionRouter = formSubmissionRouter;
         initRhino();
     }
 
@@ -69,6 +73,7 @@ public class ZiggyService {
         Bindings bindings = engine.createBindings();
         bindings.put(ZIGGY_FILE_LOADER, ziggyFileLoader);
         bindings.put(REPOSITORY, dataRepository);
+        bindings.put(FORM_SUBMISSION_ROUTER, formSubmissionRouter);
         return bindings;
     }
 }

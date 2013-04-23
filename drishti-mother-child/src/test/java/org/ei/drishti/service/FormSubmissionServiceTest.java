@@ -32,7 +32,7 @@ public class FormSubmissionServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        submissionService = new FormSubmissionService(ziggyService, formSubmissionRouter, allFormSubmissions);
+        submissionService = new FormSubmissionService(ziggyService, allFormSubmissions);
     }
 
     @Test
@@ -57,17 +57,6 @@ public class FormSubmissionServiceTest {
     }
 
     @Test
-    public void shouldDelegateFormSubmissionHandlerAfterSave() throws Exception {
-        long baseTimeStamp = DateUtil.now().getMillis();
-        when(allFormSubmissions.exists(anyString())).thenReturn(false);
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", null, baseTimeStamp);
-
-        submissionService.processSubmissions(asList(formSubmission));
-
-        verify(formSubmissionRouter).route(formSubmission);
-    }
-
-    @Test
     public void shouldNotDelegateFormSubmissionIfAlreadyExists() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
         String paramsForFirstFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 1").put(INSTANCE_ID, "instance id 1").put(ENTITY_ID, "entity id 1").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp)).map());
@@ -81,9 +70,7 @@ public class FormSubmissionServiceTest {
 
         InOrder inOrder = inOrder(ziggyService, formSubmissionRouter);
         inOrder.verify(ziggyService, times(0)).saveForm(paramsForFirstFormSubmission, "");
-        inOrder.verify(formSubmissionRouter, times(0)).route(firstFormSubmission);
         inOrder.verify(ziggyService).saveForm(paramsForSecondFormSubmission, "");
-        inOrder.verify(formSubmissionRouter).route(secondFormSubmission);
     }
 
     @Test

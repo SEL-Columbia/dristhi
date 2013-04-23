@@ -57,11 +57,13 @@ public class FormDataRepository {
         fieldSetMap.put("child", Child.class.getDeclaredFields());
     }
 
-    public void saveFormSubmission(String paramsJSON, String data) {
+    public String saveFormSubmission(String paramsJSON, String data) {
         Map<String, String> params = getStringMapFromJSON(paramsJSON);
 
         allFormSubmissions.add(new FormSubmission(params.get(ANM_ID), params.get(INSTANCE_ID), params.get(FORM_NAME),
                 params.get(ENTITY_ID), new Gson().fromJson(data, FormInstance.class), Long.parseLong(params.get(TIME_STAMP))));
+
+        return params.get(INSTANCE_ID);
     }
 
     public String saveEntity(String entityType, String fields) {

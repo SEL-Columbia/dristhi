@@ -3,7 +3,6 @@ package org.ei.drishti.service;
 import com.google.gson.Gson;
 import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.repository.AllFormSubmissions;
-import org.ei.drishti.service.formSubmissionHandler.FormSubmissionRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +20,11 @@ import static org.ei.drishti.util.EasyMap.create;
 public class FormSubmissionService {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionService.class.toString());
     private ZiggyService ziggyService;
-    private FormSubmissionRouter formSubmissionRouter;
     private AllFormSubmissions allFormSubmissions;
 
     @Autowired
-    public FormSubmissionService(ZiggyService ziggyService, FormSubmissionRouter formSubmissionRouter, AllFormSubmissions allFormSubmissions) {
+    public FormSubmissionService(ZiggyService ziggyService, AllFormSubmissions allFormSubmissions) {
         this.ziggyService = ziggyService;
-        this.formSubmissionRouter = formSubmissionRouter;
         this.allFormSubmissions = allFormSubmissions;
     }
 
@@ -41,7 +38,6 @@ public class FormSubmissionService {
             String params = getParams(submission);
             logger.info(format("Invoking save form for with params: {0} and instance: {1}", params, submission.instance()));
             ziggyService.saveForm(params, new Gson().toJson(submission.instance()));
-            formSubmissionRouter.route(submission);
         }
     }
 

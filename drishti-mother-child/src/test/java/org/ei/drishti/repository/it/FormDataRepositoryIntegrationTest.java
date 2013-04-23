@@ -56,9 +56,10 @@ public class FormDataRepositoryIntegrationTest {
         String paramsJSON = new Gson().toJson(params);
         FormSubmission submission = new FormSubmission("anm 1", "id 1", "form name", "entity id 1", new Gson().fromJson(formInstanceJSON, FormInstance.class), 0L);
 
-        repository.saveFormSubmission(paramsJSON, formInstanceJSON);
+        String instanceId = repository.saveFormSubmission(paramsJSON, formInstanceJSON);
 
         assertEquals(submission, formSubmissions.getAll().get(0));
+        assertEquals("id 1", instanceId);
     }
 
     @Test
