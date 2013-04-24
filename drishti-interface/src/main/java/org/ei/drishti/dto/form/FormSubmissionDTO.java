@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class FormSubmission {
+public class FormSubmissionDTO {
     @JsonProperty
     private String anmId;
     @JsonProperty
@@ -19,7 +19,7 @@ public class FormSubmission {
     @JsonProperty
     private String timeStamp;
 
-    public FormSubmission(String anmId, String instanceId, String entityId, String formName, String formInstance, String timeStamp) {
+    public FormSubmissionDTO(String anmId, String instanceId, String entityId, String formName, String formInstance, String timeStamp) {
         this.anmId = anmId;
         this.instanceId = instanceId;
         this.entityId = entityId;

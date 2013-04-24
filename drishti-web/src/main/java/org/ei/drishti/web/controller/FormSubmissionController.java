@@ -3,7 +3,7 @@ package org.ei.drishti.web.controller;
 import ch.lambdaj.function.convert.Converter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.ei.drishti.dto.form.FormSubmission;
+import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.service.FormSubmissionService;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
@@ -43,41 +43,41 @@ public class FormSubmissionController {
 
     @RequestMapping(method = GET)
     @ResponseBody
-    private List<FormSubmission> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier, @RequestParam("timestamp") Long timeStamp) {
+    private List<FormSubmissionDTO> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier, @RequestParam("timestamp") Long timeStamp) {
         List<org.ei.drishti.domain.form.FormSubmission> newSubmissionsForANM = formSubmissionService.getNewSubmissionsForANM(anmIdentifier, timeStamp);
-        return with(newSubmissionsForANM).convert(new Converter<org.ei.drishti.domain.form.FormSubmission, FormSubmission>() {
+        return with(newSubmissionsForANM).convert(new Converter<org.ei.drishti.domain.form.FormSubmission, FormSubmissionDTO>() {
             @Override
-            public FormSubmission convert(org.ei.drishti.domain.form.FormSubmission submission) {
+            public FormSubmissionDTO convert(org.ei.drishti.domain.form.FormSubmission submission) {
                 return FormSubmissionConvertor.from(submission);
             }
         });
     }
 
     @RequestMapping(headers = {"Accept=application/json"}, method = POST)
-    public ResponseEntity<HttpStatus> submitForms(@RequestBody List<FormSubmission> formSubmissions) {
+    public ResponseEntity<HttpStatus> submitForms(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
         try {
-            if (formSubmissions.isEmpty()) {
+            if (formSubmissionsDTO.isEmpty()) {
                 return new ResponseEntity<>(BAD_REQUEST);
             }
 
-            List<org.ei.drishti.domain.form.FormSubmission> submissions = with(getSubmissionsInProperFormat(formSubmissions))
-                    .convert(new Converter<FormSubmission, org.ei.drishti.domain.form.FormSubmission>() {
+            List<org.ei.drishti.domain.form.FormSubmission> submissions = with(getSubmissionsInProperFormat(formSubmissionsDTO))
+                    .convert(new Converter<FormSubmissionDTO, org.ei.drishti.domain.form.FormSubmission>() {
                         @Override
-                        public org.ei.drishti.domain.form.FormSubmission convert(FormSubmission submission) {
+                        public org.ei.drishti.domain.form.FormSubmission convert(FormSubmissionDTO submission) {
                             return FormSubmissionConvertor.toFormSubmission(submission);
                         }
                     });
             gateway.sendEventMessage(new FormSubmissionEvent(submissions).toEvent());
-            logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissions));
+            logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
         } catch (Exception e) {
-            logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e, formSubmissions));
+            logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e, formSubmissionsDTO));
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(CREATED);
     }
 
-    private List<FormSubmission> getSubmissionsInProperFormat(List<FormSubmission> formSubmissions) {
-        return new Gson().fromJson(new Gson().toJson(formSubmissions), new TypeToken<List<FormSubmission>>() {
+    private List<FormSubmissionDTO> getSubmissionsInProperFormat(List<FormSubmissionDTO> formSubmissionsDTO) {
+        return new Gson().fromJson(new Gson().toJson(formSubmissionsDTO), new TypeToken<List<FormSubmissionDTO>>() {
         }.getType());
     }
 }
