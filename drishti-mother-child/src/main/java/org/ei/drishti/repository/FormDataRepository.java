@@ -103,7 +103,8 @@ public class FormDataRepository {
     }
 
     private List<ViewResult.Row> getDBViewQueryResult(String id, String docEntityType) {
-        return db.queryView(new ViewQuery().viewName(CASE_ID_VIEW_NAME).designDocId("_design/" + docEntityType).queryParam(ID_FIELD_ON_ENTITY, id).includeDocs(true)).getRows();
+        return db.queryView(new ViewQuery().viewName(CASE_ID_VIEW_NAME).designDocId("_design/" + docEntityType).key(id)
+                .queryParam(ID_FIELD_ON_ENTITY, id).includeDocs(true)).getRows();
     }
 
     private List<String> getFieldsList(String entityType) {

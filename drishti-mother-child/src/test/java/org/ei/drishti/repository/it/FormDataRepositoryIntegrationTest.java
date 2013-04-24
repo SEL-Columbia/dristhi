@@ -84,8 +84,40 @@ public class FormDataRepositoryIntegrationTest {
         Map<String, String> expectedDetails = create("currentMethod", "ocp")
                 .put("isHighPriority", "no")
                 .map();
-        EligibleCouple expectedEligibleCouple = new EligibleCouple("entity id 1", "ec 123").withCouple("asha", "raja").withLocation("", "sub center", "phc").withDetails(expectedDetails);
+        EligibleCouple expectedEligibleCouple = new EligibleCouple("entity id 1", "ec 123")
+                .withCouple("asha", "raja").withLocation("", "sub center", "phc").withDetails(expectedDetails);
         assertEquals(expectedEligibleCouple, savedEC);
+    }
+
+    @Test
+    public void shouldSaveNewEntityWhenThereIsAnDifferentExistingEntityOfSameType() throws Exception {
+        EligibleCouple existingEligibleCouple = new EligibleCouple("entity id 0", "ec 123").withDetails(mapOf("key", "value"));
+        eligibleCouples.add(existingEligibleCouple);
+        Map<String, String> fields =
+                create("id", "entity id 1")
+                        .put("husband", "raja")
+                        .put("ecNumber", "ec 123")
+                        .put("wife", "asha")
+                        .put("village", "")
+                        .put("phc", "phc")
+                        .put("subCenter", "sub center")
+                        .put("currentMethod", "ocp")
+                        .put("isHighPriority", "no")
+                        .map();
+        String fieldsJSON = new Gson().toJson(fields);
+
+        String entityId = repository.saveEntity("eligible_couple", fieldsJSON);
+
+        assertEquals(entityId, "entity id 1");
+        EligibleCouple savedEC = eligibleCouples.findByCaseId(entityId);
+        EligibleCouple existingEC = eligibleCouples.findByCaseId("entity id 0");
+        Map<String, String> expectedDetails = create("currentMethod", "ocp")
+                .put("isHighPriority", "no")
+                .map();
+        EligibleCouple expectedEligibleCouple = new EligibleCouple("entity id 1", "ec 123")
+                .withCouple("asha", "raja").withLocation("", "sub center", "phc").withDetails(expectedDetails);
+        assertEquals(expectedEligibleCouple, savedEC);
+        assertEquals(existingEligibleCouple, existingEC);
     }
 
     @Test
@@ -103,7 +135,8 @@ public class FormDataRepositoryIntegrationTest {
                 .put("isHighPriority", "yes")
                 .put("bloodGroup", "o-ve")
                 .map();
-        EligibleCouple oldEC = new EligibleCouple("entity id 1", "ec 123").withCouple("old wife name", "old husband name").withLocation("old village", "sub center", "phc").withDetails(oldDetails);
+        EligibleCouple oldEC = new EligibleCouple("entity id 1", "ec 123")
+                .withCouple("old wife name", "old husband name").withLocation("old village", "sub center", "phc").withDetails(oldDetails);
         eligibleCouples.register(oldEC);
 
         String entityId = repository.saveEntity("eligible_couple", fieldsJSON);
@@ -114,7 +147,8 @@ public class FormDataRepositoryIntegrationTest {
                 .put("isHighPriority", "no")
                 .put("bloodGroup", "o-ve")
                 .map();
-        EligibleCouple expectedEligibleCouple = new EligibleCouple("entity id 1", "ec 123").withCouple("asha", "raja").withLocation("", "sub center", "phc").withDetails(expectedDetails);
+        EligibleCouple expectedEligibleCouple = new EligibleCouple("entity id 1", "ec 123")
+                .withCouple("asha", "raja").withLocation("", "sub center", "phc").withDetails(expectedDetails);
         assertEquals(expectedEligibleCouple, savedEC);
     }
 
