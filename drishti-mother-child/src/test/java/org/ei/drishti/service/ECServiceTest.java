@@ -58,15 +58,20 @@ public class ECServiceTest {
     public void shouldRegisterEligibleCouple() throws Exception {
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("ec_registration")
+                .withANMId("ANM X")
+                .withEntityId("entity id 1")
                 .addFormField("someKey", "someValue")
                 .addFormField(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME, "some method")
                 .addFormField(HIGH_PRIORITY_COMMCARE_FIELD_NAME, "yes")
                 .addFormField(SUBMISSION_DATE_COMMCARE_FIELD_NAME, "2011-01-01")
                 .build();
+        EligibleCouple eligibleCouple = new EligibleCouple("entity id 1", "0").withCouple("Wife 1", "Husband 1");
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(eligibleCouple);
         when(reportFieldsDefinition.get("ec_registration")).thenReturn(asList("someKey"));
 
         ecService.registerEligibleCouple(submission);
 
+        verify(allEligibleCouples).update(eligibleCouple.withANMIdentifier("ANM X"));
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
         verify(schedulingService).enrollToFPComplications("entity id 1", "some method", "yes", "2011-01-01");
     }

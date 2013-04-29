@@ -1,6 +1,8 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.*;
+import org.ei.drishti.contract.EligibleCoupleCloseRequest;
+import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
+import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -48,6 +50,9 @@ public class ECService {
     }
 
     public void registerEligibleCouple(FormSubmission submission) {
+        EligibleCouple eligibleCouple = allEligibleCouples.findByCaseId(submission.entityId());
+        allEligibleCouples.update(eligibleCouple.withANMIdentifier(submission.anmId()));
+
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.registerEC(new SafeMap(submission.getFields(reportFields)));
         schedulingService.enrollToFPComplications(submission.entityId(),
