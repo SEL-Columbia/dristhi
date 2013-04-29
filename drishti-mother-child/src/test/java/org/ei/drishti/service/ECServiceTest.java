@@ -158,27 +158,27 @@ public class ECServiceTest {
     }
 
     @Test
-    public void shouldSendDataToReportingServiceDuringReportFPComplications() throws Exception {
+    public void shouldSendDataToReportingServiceDuringReportFPChange() throws Exception {
         EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
-                .withFormName("fp_complications")
+                .withFormName("fp_change")
                 .addFormField("someKey", "someValue")
                 .build();
-        when(reportFieldsDefinition.get("fp_complications")).thenReturn(asList("someKey"));
+        when(reportFieldsDefinition.get("fp_change")).thenReturn(asList("someKey"));
 
-        ecService.reportFPComplications(submission);
+        ecService.reportFPChange(submission);
 
         verify(allEligibleCouples).findByCaseId("entity id 1");
-        verify(reportingService).fpComplications(new SafeMap(mapOf("someKey", "someValue")));
+        verify(reportingService).fpChange(new SafeMap(mapOf("someKey", "someValue")));
     }
 
     @Test
-    public void shouldNotSendDataToReportingServiceDuringReportFPComplicationsIfNoECIsFound() throws Exception {
+    public void shouldNotSendDataToReportingServiceDuringReportFPChangeIfNoECIsFound() throws Exception {
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(null);
         FormSubmission submission = FormSubmissionBuilder.create().build();
 
-        ecService.reportFPComplications(submission);
+        ecService.reportFPChange(submission);
 
         verify(allEligibleCouples).findByCaseId("entity id 1");
         verifyZeroInteractions(reportingService);

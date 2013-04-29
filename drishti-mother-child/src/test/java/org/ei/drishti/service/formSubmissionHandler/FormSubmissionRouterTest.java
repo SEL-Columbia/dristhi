@@ -17,13 +17,15 @@ public class FormSubmissionRouterTest {
     private ECRegistrationHandler ecRegistrationHandler;
     @Mock
     private FPComplicationsHandler fpComplicationsHandler;
+    @Mock
+    private FPChangeHandler fpChangeHandler;
 
     private FormSubmissionRouter router;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        router = new FormSubmissionRouter(formSubmissionsRepository, ecRegistrationHandler, fpComplicationsHandler);
+        router = new FormSubmissionRouter(formSubmissionsRepository, ecRegistrationHandler, fpComplicationsHandler, fpChangeHandler);
     }
 
     @Test

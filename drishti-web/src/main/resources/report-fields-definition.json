@@ -1,13 +1,18 @@
 {
     "ec_registration": [
         "id",
-        "case_familyplanning_method",
-        "date_familyplanningstart"
+        "currentMethod",
+        "familyPlanningMethodChangeDate"
     ],
     "fp_complications": [
         "id",
-        "case_familyplanning_method",
+        "currentMethod",
         "date_familyplanningstart",
         "method_still_the_same"
+    ],
+    "fp_change": [
+        "id",
+        "currentMethod",
+        "familyPlanningMethodChangeDate"
     ]
 }

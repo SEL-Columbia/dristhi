@@ -100,13 +100,16 @@ public class ECService {
     }
 
     public void reportFPComplications(FormSubmission submission) {
+    }
+
+    public void reportFPChange(FormSubmission submission) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(submission.entityId());
         if (couple == null) {
-            logger.warn("Tried to report FP Complications of a non-existing EC, with submission: " + submission);
+            logger.warn("Tried to report FP Change of a non-existing EC, with submission: " + submission);
             return;
         }
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
-        reportingService.fpComplications(new SafeMap(submission.getFields(reportFields)));
+        reportingService.fpChange(new SafeMap(submission.getFields(reportFields)));
     }
 }

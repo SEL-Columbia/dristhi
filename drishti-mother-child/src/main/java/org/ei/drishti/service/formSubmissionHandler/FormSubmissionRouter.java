@@ -12,6 +12,7 @@ import java.util.Map;
 
 import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.Form.EC_REGISTRATION;
+import static org.ei.drishti.common.AllConstants.Form.FP_CHANGE;
 import static org.ei.drishti.common.AllConstants.Form.FP_COMPLICATIONS;
 
 @Component
@@ -21,10 +22,14 @@ public class FormSubmissionRouter {
     private final Map<String, FormSubmissionHandler> handlerMap;
 
     @Autowired
-    public FormSubmissionRouter(AllFormSubmissions formSubmissionsRepository, ECRegistrationHandler ecRegistrationHandler, FPComplicationsHandler fpComplicationsHandler) {
+    public FormSubmissionRouter(AllFormSubmissions formSubmissionsRepository,
+                                ECRegistrationHandler ecRegistrationHandler,
+                                FPComplicationsHandler fpComplicationsHandler,
+                                FPChangeHandler fpChangeHandler) {
         this.formSubmissionsRepository = formSubmissionsRepository;
         handlerMap = EasyMap.create(EC_REGISTRATION, (FormSubmissionHandler) ecRegistrationHandler)
                 .put(FP_COMPLICATIONS, fpComplicationsHandler)
+                .put(FP_CHANGE, fpChangeHandler)
                 .map();
     }
 

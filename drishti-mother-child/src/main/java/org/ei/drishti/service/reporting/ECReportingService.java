@@ -38,12 +38,9 @@ public class ECReportingService {
         reportFPMethod(reportData, couple);
     }
 
-    public void fpComplications(SafeMap reportData) {
+    public void fpChange(SafeMap reportData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
-
-        if ("no".equals(reportData.get(METHOD_STILL_THE_SAME))) {
-            reportFPMethod(reportData, couple);
-        }
+        reportFPMethod(reportData, couple);
     }
 
     private void reportFPMethod(SafeMap reportData, EligibleCouple ec) {
