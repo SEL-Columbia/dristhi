@@ -1,22 +1,31 @@
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-             xmlns:beans="http://www.springframework.org/schema/beans"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-	http://www.springframework.org/schema/security
-	http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-    <http auto-config="true" realm="Dristhi" create-session="stateless">
-        <intercept-url pattern="/**" access="ROLE_USER"/>
-        <http-basic/>
-    </http>
+    <security:http auto-config="true" realm="Dristhi" create-session="stateless">
+        <security:intercept-url pattern="/**" access="ROLE_USER"/>
+        <security:http-basic/>
+    </security:http>
 
-    <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="c" password="1" authorities="ROLE_USER"/>
-            </user-service>
-        </authentication-provider>
-    </authentication-manager>
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
 
-</beans:beans>
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:jdbc-user-service data-source-ref="dataSource"
+                                        users-by-username-query="select username,password, enabled from anm_report.users where username=?"
+                                        authorities-by-username-query="select username, authority from anm_report.authorities where username =?"
+                />
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+</beans>
