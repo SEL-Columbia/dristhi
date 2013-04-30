@@ -7,13 +7,13 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-  <import resource="classpath:applicationContext-drishti.xml"/>
-  <import resource="securityContext.xml"/>
+    <import resource="classpath:applicationContext-drishti.xml"/>
+    <import resource="securityContext.xml"/>
 
-  <mvc:default-servlet-handler/>
+    <mvc:default-servlet-handler/>
 
-  <context:annotation-config/>
-  <context:component-scan base-package="org.ei.drishti.web"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="org.ei.drishti.web"/>
 
-  <mvc:annotation-driven/>
+    <mvc:annotation-driven/>
 </beans>

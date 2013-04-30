@@ -12,19 +12,10 @@
         <security:http-basic/>
     </security:http>
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${jdbc.driverClassName}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-    </bean>
+    <bean id="drishtiAuthenticationProvider" class="org.ei.drishti.web.security.DrishtiAuthenticationProvider"/>
 
     <security:authentication-manager>
-        <security:authentication-provider>
-            <security:jdbc-user-service data-source-ref="dataSource"
-                                        users-by-username-query="select username,password, enabled from anm_report.users where username=?"
-                                        authorities-by-username-query="select username, authority from anm_report.authorities where username =?"
-                />
+        <security:authentication-provider ref="drishtiAuthenticationProvider">
         </security:authentication-provider>
     </security:authentication-manager>
 
