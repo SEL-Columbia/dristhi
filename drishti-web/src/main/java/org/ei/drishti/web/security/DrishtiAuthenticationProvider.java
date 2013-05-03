@@ -7,9 +7,11 @@ import org.ei.drishti.repository.AllDrishtiUsers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,23 +29,27 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
     public static final String INTERNAL_ERROR = "Failed to authenticate user due to internal server error.";
 
     private AllDrishtiUsers allDrishtiUsers;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public DrishtiAuthenticationProvider(AllDrishtiUsers allDrishtiUsers) {
+    public DrishtiAuthenticationProvider(AllDrishtiUsers allDrishtiUsers, @Qualifier("shaPasswordEncoder") PasswordEncoder passwordEncoder) {
         this.allDrishtiUsers = allDrishtiUsers;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         DrishtiUser user = getDrishtiUser(authentication);
-        if (user == null || !user.getPassword().equals(authentication.getCredentials())) {
+        String credentials = (String) authentication.getCredentials();
+        String hashedCredentials = passwordEncoder.encodePassword(credentials, null);
+        if (user == null || !user.getPassword().equals(hashedCredentials)) {
             throw new BadCredentialsException(USER_NOT_FOUND);
         }
 
         if (!user.isActive()) {
             throw new BadCredentialsException(USER_NOT_ACTIVATED);
         }
-        return new UsernamePasswordAuthenticationToken(authentication.getName(), authentication.getCredentials(), getRolesAsAuthorities(user));
+        return new UsernamePasswordAuthenticationToken(authentication.getName(), credentials, getRolesAsAuthorities(user));
     }
 
     @Override

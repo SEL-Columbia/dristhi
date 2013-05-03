@@ -9,6 +9,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -20,6 +21,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class DrishtiAuthenticationProviderTest {
     @Mock
     private AllDrishtiUsers allDrishtiUsers;
+    @Mock
+    private ShaPasswordEncoder passwordEncoder;
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -28,12 +31,13 @@ public class DrishtiAuthenticationProviderTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        authenticationProvider = new DrishtiAuthenticationProvider(allDrishtiUsers);
+        authenticationProvider = new DrishtiAuthenticationProvider(allDrishtiUsers, passwordEncoder);
     }
 
     @Test
     public void shouldAuthenticateValidUser() throws Exception {
-        when(allDrishtiUsers.findByUsername("user 1")).thenReturn(new DrishtiUser("user 1", "password 1", asList("ROLE_USER", "ROLE_ADMIN"), true));
+        when(passwordEncoder.encodePassword("password 1", null)).thenReturn("hashed password 1");
+        when(allDrishtiUsers.findByUsername("user 1")).thenReturn(new DrishtiUser("user 1", "hashed password 1", asList("ROLE_USER", "ROLE_ADMIN"), true));
 
         Authentication authentication = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken("user 1", "password 1"));
 
@@ -60,7 +64,8 @@ public class DrishtiAuthenticationProviderTest {
 
     @Test
     public void shouldNotAuthenticateInactiveUser() throws Exception {
-        when(allDrishtiUsers.findByUsername("user 1")).thenReturn(new DrishtiUser("user 1", "password 1", asList("ROLE_USER"), false));
+        when(passwordEncoder.encodePassword("password 1", null)).thenReturn("hashed password 1");
+        when(allDrishtiUsers.findByUsername("user 1")).thenReturn(new DrishtiUser("user 1", "hashed password 1", asList("ROLE_USER"), false));
         exception.expect(BadCredentialsException.class);
         exception.expectMessage("The user has been registered but not activated. Please contact your local administrator.");
 
