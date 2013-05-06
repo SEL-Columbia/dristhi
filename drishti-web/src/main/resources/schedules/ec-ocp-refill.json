@@ -1,0 +1,29 @@
+{
+    "name": "OCP Refill",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "OCP Refill",
+            "scheduleWindows": {
+                "earliest": ["0 Weeks"],
+                "due": ["1 Weeks"],
+                "late": ["1 Year"],
+                "max": [""]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["0 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "1"
+                },
+                {
+                    "window": "late",
+                    "offset": ["1 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "100"
+                }
+            ]
+        }
+    ]
+}

@@ -387,6 +387,18 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("ec-dmpa-injectable-refill.html", 1);
     }
 
+    @Test
+    public void shouldProvideAlertsForOCPRefillAtTheRightTimes() throws Exception {
+        schedule.enrollFor("OCP Refill", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("OCP Refill", earliest);
+        schedule.assertAlerts("OCP Refill", due, dateWithYear(1, JANUARY, 2012));
+        schedule.assertAlertsStartWith("OCP Refill", late, dateWithYear(8, JANUARY, 2012), dateWithYear(15, JANUARY, 2012), dateWithYear(22, JANUARY, 2012), dateWithYear(29, JANUARY, 2012));
+        schedule.assertNoAlerts("OCP Refill", max);
+
+        visualization.outputTo("ec-ocp-refill.html", 1);
+    }
+
     @Before
     public void setUp() throws Exception {
         FakeSchedule fakeSchedule = new FakeSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {

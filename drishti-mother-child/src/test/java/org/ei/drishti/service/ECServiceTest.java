@@ -63,6 +63,7 @@ public class ECServiceTest {
                 .addFormField("submissionDate", "2011-01-01")
                 .addFormField("numberOfOCPDelivered", "1")
                 .addFormField("dmpaInjectionDate", "2010-12-20")
+                .addFormField("ocpRefillDate", "2010-12-25")
                 .build();
         EligibleCouple eligibleCouple = new EligibleCouple("entity id 1", "0").withCouple("Wife 1", "Husband 1");
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(eligibleCouple);
@@ -73,7 +74,7 @@ public class ECServiceTest {
         verify(allEligibleCouples).update(eligibleCouple.withANMIdentifier("ANM X"));
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
         verify(schedulingService).enrollToFPComplications("entity id 1", "some method", "yes", "2011-01-01");
-        verify(schedulingService).enrollToRenewFPProducts("entity id 1", "some method", "2010-12-20");
+        verify(schedulingService).enrollToRenewFPProducts("entity id 1", "some method", "2010-12-20", "1", "2010-12-25");
     }
 
     @Test

@@ -23,9 +23,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
-import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.DMPA_INJECTION_DATE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.NO_FP_METHOD_COMMCARE_FIELD_VALUE;
+import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
 
@@ -62,7 +60,9 @@ public class ECService {
                 submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
         schedulingService.enrollToRenewFPProducts(submission.entityId(),
                 submission.getField(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME),
-                submission.getField(DMPA_INJECTION_DATE_FIELD_NAME));
+                submission.getField(DMPA_INJECTION_DATE_FIELD_NAME),
+                submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
+                submission.getField(OCP_REFILL_DATE_FIELD_NAME));
     }
 
     public EligibleCouple registerEligibleCoupleForOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {

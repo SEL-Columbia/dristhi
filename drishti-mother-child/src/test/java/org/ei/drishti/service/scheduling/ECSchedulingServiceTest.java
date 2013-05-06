@@ -1,5 +1,6 @@
 package org.ei.drishti.service.scheduling;
 
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -206,24 +207,37 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldEnrollECIntoDMPAInjectableRefillScheduleWhenECIsRegisteredAndUsesDMPAInjectableFPMethod() {
-        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "dmpa_injectable", "2012-01-01");
+        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "dmpa_injectable", "2012-01-01", null, null);
 
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "DMPA Injectable Refill", parse("2012-01-01")));
     }
 
     @Test
     public void shouldNotEnrollECIntoDMPAInjectableRefillScheduleWhenECIsRegisteredAndDoesNotUseDMPAInjectableFPMethod() {
-        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "not dmpa", "2012-01-01");
+        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "not dmpa", "2012-01-01", null, null);
 
         verify(scheduleTrackingService, times(0)).enroll(enrollmentFor("entity id 1", "DMPA Injectable Refill", parse("2012-01-01")));
     }
 
-    private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate lmp) {
+    @Test
+    public void shouldEnrollECIntoOCPRefillScheduleWhenECIsRegisteredAndUsesOCPFPMethod() {
+        DateUtil.fakeIt(parse("2012-02-01"));
+        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "ocp", null, "1", "2012-01-01");
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-01-15")));
+
+        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "ocp", null, "2", "2012-01-01");
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-02-12")));
+
+        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "ocp", null, "0", "2012-01-01");
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-02-01")));
+    }
+
+    private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {
         return argThat(new ArgumentMatcher<EnrollmentRequest>() {
             @Override
             public boolean matches(Object o) {
                 EnrollmentRequest request = (EnrollmentRequest) o;
-                return caseId.equals(request.getExternalId()) && lmp.equals(request.getReferenceDate())
+                return caseId.equals(request.getExternalId()) && referenceDate.equals(request.getReferenceDate())
                         && scheduleName.equals(request.getScheduleName());
             }
         });
