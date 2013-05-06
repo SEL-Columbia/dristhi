@@ -43,6 +43,8 @@ public class DrishtiScheduleConstants {
         public static final String EC_SCHEDULE_DMPA_INJECTABLE_REFILL_MILESTONE = "DMPA Injectable Refill";
         public static final String EC_SCHEDULE_OCP_REFILL = "OCP Refill";
         public static final String EC_SCHEDULE_OCP_REFILL_MILESTONE = "OCP Refill";
+        public static final String EC_SCHEDULE_CONDOM_REFILL = "Condom Refill";
+        public static final String EC_SCHEDULE_CONDOM_REFILL_MILESTONE = "Condom Refill";
     }
 
 

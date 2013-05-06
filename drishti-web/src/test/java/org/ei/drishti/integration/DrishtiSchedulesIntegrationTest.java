@@ -399,6 +399,18 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("ec-ocp-refill.html", 1);
     }
 
+    @Test
+    public void shouldProvideAlertsForCondomRefillAtTheRightTimes() throws Exception {
+        schedule.enrollFor("Condom Refill", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("Condom Refill", earliest);
+        schedule.assertAlerts("Condom Refill", due, dateWithYear(1, JANUARY, 2012));
+        schedule.assertAlertsStartWith("Condom Refill", late, dateWithYear(8, JANUARY, 2012), dateWithYear(15, JANUARY, 2012), dateWithYear(22, JANUARY, 2012), dateWithYear(29, JANUARY, 2012));
+        schedule.assertNoAlerts("Condom Refill", max);
+
+        visualization.outputTo("ec-condom-refill.html", 1);
+    }
+
     @Before
     public void setUp() throws Exception {
         FakeSchedule fakeSchedule = new FakeSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {

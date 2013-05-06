@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_DMPA_INJECTABLE_REFILL;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_OCP_REFILL;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.ei.drishti.scheduler.router.Matcher.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.*;
@@ -54,7 +52,7 @@ public class AlertController {
     }
 
     private Matcher ecSchedules() {
-        return anyOf(EC_SCHEDULE_FP_COMPLICATION, EC_SCHEDULE_DMPA_INJECTABLE_REFILL, EC_SCHEDULE_OCP_REFILL);
+        return anyOf(EC_SCHEDULE_FP_COMPLICATION, EC_SCHEDULE_DMPA_INJECTABLE_REFILL, EC_SCHEDULE_OCP_REFILL, EC_SCHEDULE_CONDOM_REFILL);
     }
 
 }

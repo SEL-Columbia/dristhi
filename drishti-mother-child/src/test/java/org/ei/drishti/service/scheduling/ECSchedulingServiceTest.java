@@ -1,6 +1,5 @@
 package org.ei.drishti.service.scheduling;
 
-import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -14,6 +13,7 @@ import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.util.DateUtil.fakeIt;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.joda.time.LocalDate.parse;
@@ -213,15 +213,8 @@ public class ECSchedulingServiceTest {
     }
 
     @Test
-    public void shouldNotEnrollECIntoDMPAInjectableRefillScheduleWhenECIsRegisteredAndDoesNotUseDMPAInjectableFPMethod() {
-        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "not dmpa", "2012-01-01", null, null);
-
-        verify(scheduleTrackingService, times(0)).enroll(enrollmentFor("entity id 1", "DMPA Injectable Refill", parse("2012-01-01")));
-    }
-
-    @Test
     public void shouldEnrollECIntoOCPRefillScheduleWhenECIsRegisteredAndUsesOCPFPMethod() {
-        DateUtil.fakeIt(parse("2012-02-01"));
+        fakeIt(parse("2012-02-01"));
         ecSchedulingService.enrollToRenewFPProducts("entity id 1", "ocp", null, "1", "2012-01-01");
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-01-15")));
 
@@ -230,6 +223,26 @@ public class ECSchedulingServiceTest {
 
         ecSchedulingService.enrollToRenewFPProducts("entity id 1", "ocp", null, "0", "2012-01-01");
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-02-01")));
+    }
+
+    @Test
+    public void shouldEnrollECIntoCondomRefillScheduleWhenECIsRegisteredAndUsesCondomFPMethod() {
+        fakeIt(parse("2012-01-15"));
+        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "condom", "2012-01-15", null, null);
+
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2012-02-01")));
+
+        fakeIt(parse("2012-12-01"));
+        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "condom", "2012-12-01", null, null);
+
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2013-01-01")));
+    }
+
+    @Test
+    public void shouldNotEnrollECIntoDMPAInjectableRefillScheduleWhenECIsRegisteredAndDoesNotUseDMPAInjectableFPMethod() {
+        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "not dmpa", "2012-01-01", null, null);
+
+        verifyZeroInteractions(scheduleTrackingService);
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {

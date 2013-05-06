@@ -71,6 +71,8 @@ public class AlertControllerRoutesTest {
         Event.of(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, "DMPA Injectable Refill", WindowName.late).shouldRouteToAlertCreationActionForEC();
         Event.of(EC_SCHEDULE_OCP_REFILL, "OCP Refill", WindowName.due).shouldRouteToAlertCreationActionForEC();
         Event.of(EC_SCHEDULE_OCP_REFILL, "OCP Refill", WindowName.late).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_CONDOM_REFILL, "Condom Refill", WindowName.due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_CONDOM_REFILL, "Condom Refill", WindowName.late).shouldRouteToAlertCreationActionForEC();
     }
 
     @Test

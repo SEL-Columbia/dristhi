@@ -122,6 +122,7 @@ public class AllConstants {
         public static final String OCP_REFILL_DATE_FIELD_NAME = "ocpRefillDate";
         public static final String NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME = "numberOfOCPDelivered";
         public static final String OCP_FP_METHOD_VALUE = "ocp";
+        public static final String CONDOM_FP_METHOD_VALUE = "condom";
     }
 
     public static class ChildImmunizationCommCareFields {
