@@ -22,7 +22,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
@@ -363,9 +365,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
     @Test
     public void shouldProvideAlertsForPNCCloseAtTheRightTimes() throws Exception {
-        LocalDate referenceDate = newDate(2012, 1, 1);
-
-        schedule.enrollFor("Auto Close PNC", referenceDate, new Time(14, 0));
+        schedule.enrollFor("Auto Close PNC", newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("Auto Close PNC", earliest);
         schedule.assertAlertsStartWith("Auto Close PNC", due, dateWithYear(26, FEBRUARY, 2012), dateWithYear(29, FEBRUARY, 2012));
@@ -375,6 +375,17 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("mother-auto-close-pnc.html", 1);
     }
 
+    @Test
+    public void shouldProvideAlertsForDMPAInjectableRefillAtTheRightTimes() throws Exception {
+        schedule.enrollFor("DMPA Injectable Refill", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("DMPA Injectable Refill", earliest);
+        schedule.assertAlerts("DMPA Injectable Refill", due, dateWithYear(25, MARCH, 2012));
+        schedule.assertAlertsStartWith("DMPA Injectable Refill", late, dateWithYear(1, APRIL, 2012), dateWithYear(8, APRIL, 2012), dateWithYear(15, APRIL, 2012), dateWithYear(22, APRIL, 2012));
+        schedule.assertNoAlerts("DMPA Injectable Refill", max);
+
+        visualization.outputTo("ec-dmpa-injectable-refill.html", 1);
+    }
 
     @Before
     public void setUp() throws Exception {

@@ -117,6 +117,8 @@ public class AllConstants {
         public static final String FP_UPDATE_COMMCARE_FIELD_NAME = "fpUpdate";
         public static final String IS_FP_METHOD_SAME_COMMCARE_FIELD_NAME = "isMethodSame";
         public static final String FP_METHOD_CHANGED_COMMCARE_FIELD_VALUE = "change_fp_product";
+        public static final String DMPA_INJECTION_DATE_FIELD_NAME = "dmpaInjectionDate";
+        public static final String DMPA_INJECTABLE_FP_METHOD_VALUE = "dmpa_injectable";
     }
 
     public static class ChildImmunizationCommCareFields {

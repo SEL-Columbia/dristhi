@@ -204,6 +204,20 @@ public class ECSchedulingServiceTest {
         verify(scheduleTrackingService, times(0)).enroll(any(EnrollmentRequest.class));
     }
 
+    @Test
+    public void shouldEnrollECIntoDMPAInjectableRefillScheduleWhenECIsRegisteredAndUsesDMPAInjectableFPMethod() {
+        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "dmpa_injectable", "2012-01-01");
+
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "DMPA Injectable Refill", parse("2012-01-01")));
+    }
+
+    @Test
+    public void shouldNotEnrollECIntoDMPAInjectableRefillScheduleWhenECIsRegisteredAndDoesNotUseDMPAInjectableFPMethod() {
+        ecSchedulingService.enrollToRenewFPProducts("entity id 1", "not dmpa", "2012-01-01");
+
+        verify(scheduleTrackingService, times(0)).enroll(enrollmentFor("entity id 1", "DMPA Injectable Refill", parse("2012-01-01")));
+    }
+
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate lmp) {
         return argThat(new ArgumentMatcher<EnrollmentRequest>() {
             @Override

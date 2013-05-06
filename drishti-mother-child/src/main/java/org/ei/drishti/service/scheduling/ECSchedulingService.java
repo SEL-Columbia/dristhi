@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.BOOLEAN_TRUE_COMMCARE_VALUE;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
 
@@ -23,6 +23,7 @@ public class ECSchedulingService {
     private final ScheduleTrackingService scheduleTrackingService;
 
     private final Schedule fpComplicationSchedule = new Schedule(EC_SCHEDULE_FP_COMPLICATION, asList(EC_SCHEDULE_FP_COMPLICATION_MILESTONE));
+    private final Schedule dmpaInjectableRefillSchedule = new Schedule(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, asList(EC_SCHEDULE_DMPA_INJECTABLE_REFILL_MILESTONE));
 
     @Autowired
     public ECSchedulingService(ScheduleTrackingService scheduleTrackingService) {
@@ -60,5 +61,12 @@ public class ECSchedulingService {
 
     private boolean isEnrolledToSchedule(String caseId, String scheduleName) {
         return scheduleTrackingService.getEnrollment(caseId, scheduleName) != null;
+    }
+
+    public void enrollToRenewFPProducts(String entityId, String currentFPMethod, String dmpaInjectionDate) {
+        if (DMPA_INJECTABLE_FP_METHOD_VALUE.equals(currentFPMethod)) {
+            scheduleTrackingService.enroll(new EnrollmentRequest(entityId, dmpaInjectableRefillSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
+                    parse(dmpaInjectionDate), null, null, null, null, null));
+        }
     }
 }

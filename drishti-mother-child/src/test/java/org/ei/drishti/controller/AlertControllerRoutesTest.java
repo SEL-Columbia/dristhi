@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.mockito.Mockito.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.max;
@@ -67,6 +67,8 @@ public class AlertControllerRoutesTest {
     @Test
     public void shouldSendDueRemindersOfAllEcsToCaptureRemindersAction() throws Exception {
         Event.of(EC_SCHEDULE_FP_COMPLICATION, "FP Complications", WindowName.late).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, "DMPA Injectable Refill", WindowName.due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, "DMPA Injectable Refill", WindowName.late).shouldRouteToAlertCreationActionForEC();
     }
 
     @Test

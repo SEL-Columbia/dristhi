@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_DMPA_INJECTABLE_REFILL;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.ei.drishti.scheduler.router.Matcher.*;
@@ -26,7 +27,7 @@ public class AlertController {
         router.addRoute(eq(SCHEDULE_AUTO_CLOSE_PNC), any(), any(), autoClosePNCAction);
         router.addRoute(motherSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "mother");
         router.addRoute(childSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "child");
-        router.addRoute(ecSchedules(), any(), anyOf(late.toString()), alertCreation).addExtraData("beneficiaryType", "ec");
+        router.addRoute(ecSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "ec");
         router.addRoute(any(), any(), any(), anmGroupSMS);
     }
 
@@ -52,7 +53,7 @@ public class AlertController {
     }
 
     private Matcher ecSchedules() {
-        return anyOf(EC_SCHEDULE_FP_COMPLICATION);
+        return anyOf(EC_SCHEDULE_FP_COMPLICATION, EC_SCHEDULE_DMPA_INJECTABLE_REFILL);
     }
 
 }

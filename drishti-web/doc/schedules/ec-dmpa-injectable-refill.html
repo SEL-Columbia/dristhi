@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(1).draw();
+schedule.addAlerts("DMPA Injectable Refill", "DMPA Injectable Refill - due", [new Date("Mar 25, 2012"), ]);
+schedule.addAlertsStartingWith("DMPA Injectable Refill", "DMPA Injectable Refill - late (Will continue till service is delivered)", [new Date("Apr 01, 2012"), new Date("Apr 08, 2012"), new Date("Apr 15, 2012"), new Date("Apr 22, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>DMPA Injectable Refill</center></body></html>

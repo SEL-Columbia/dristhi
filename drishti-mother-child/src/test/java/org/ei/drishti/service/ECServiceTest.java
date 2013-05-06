@@ -22,9 +22,6 @@ import java.util.UUID;
 
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.CURRENT_FP_METHOD_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
 import static org.ei.drishti.util.EasyMap.create;
@@ -61,9 +58,11 @@ public class ECServiceTest {
                 .withANMId("ANM X")
                 .withEntityId("entity id 1")
                 .addFormField("someKey", "someValue")
-                .addFormField(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME, "some method")
-                .addFormField(HIGH_PRIORITY_COMMCARE_FIELD_NAME, "yes")
-                .addFormField(SUBMISSION_DATE_COMMCARE_FIELD_NAME, "2011-01-01")
+                .addFormField("currentMethod", "some method")
+                .addFormField("isHighPriority", "yes")
+                .addFormField("submissionDate", "2011-01-01")
+                .addFormField("numberOfOCPDelivered", "1")
+                .addFormField("dmpaInjectionDate", "2010-12-20")
                 .build();
         EligibleCouple eligibleCouple = new EligibleCouple("entity id 1", "0").withCouple("Wife 1", "Husband 1");
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(eligibleCouple);
@@ -74,6 +73,7 @@ public class ECServiceTest {
         verify(allEligibleCouples).update(eligibleCouple.withANMIdentifier("ANM X"));
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
         verify(schedulingService).enrollToFPComplications("entity id 1", "some method", "yes", "2011-01-01");
+        verify(schedulingService).enrollToRenewFPProducts("entity id 1", "some method", "2010-12-20");
     }
 
     @Test
