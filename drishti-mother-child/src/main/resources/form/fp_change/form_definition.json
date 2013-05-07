@@ -40,11 +40,11 @@
             },
             {
                 "name": "numberOfCondomsDelivered",
-                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/num_condomsdelivered"
+                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/num_condoms"
             },
             {
                 "name": "numberOfOCPDelivered",
-                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/num_ocpdelivered"
+                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/num_ocp_strips"
             },
             {
                 "name": "numberOfCentchromanPillsDelivered",
@@ -52,7 +52,27 @@
             },
             {
                 "name": "submissionDate",
-                "bind": "/model/instance/EC_Registration_EngKan/today"
+                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/today"
+            },
+            {
+                "name": "lmpDate",
+                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/lmp_date"
+            },
+            {
+                "name": "uptResult",
+                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/upt_result"
+            },
+            {
+                "name": "sterilizationDoctorName",
+                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/sterilization_doctor_name"
+            },
+            {
+                "name": "maleSterilizationType",
+                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/male_sterilization_type"
+            },
+            {
+                "name": "femaleSterilizationType",
+                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/female_sterilization_type"
             }
         ]
     }
