@@ -245,6 +245,39 @@ public class ECSchedulingServiceTest {
         verifyZeroInteractions(scheduleTrackingService);
     }
 
+    @Test
+    public void shouldUnEnrollECFromPreviousRefillScheduleWhenFPMethodIsChanged() {
+        ecSchedulingService.fpChange("entity id 1", "ocp", "condom", "2012-01-01", "1", "2012-01-02");
+        verify(scheduleTrackingService).unenroll("entity id 1", asList("OCP Refill"));
+
+        ecSchedulingService.fpChange("entity id 1", "dmpa_injectable", "condom", "2012-01-01", "1", "2012-01-02");
+        verify(scheduleTrackingService).unenroll("entity id 1", asList("DMPA Injectable Refill"));
+
+        ecSchedulingService.fpChange("entity id 1", "condom", "ocp", "2012-01-01", "1", "2012-01-02");
+        verify(scheduleTrackingService).unenroll("entity id 1", asList("Condom Refill"));
+    }
+
+    @Test
+    public void shouldEnrollECIntoDMPAInjectableRefillScheduleWhenFPMethodIsChangedToDMPAInjectable() {
+        ecSchedulingService.fpChange("entity id 1", "condom", "dmpa_injectable", "2012-01-01", "1", "2012-01-02");
+
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "DMPA Injectable Refill", parse("2012-01-01")));
+    }
+
+    @Test
+    public void shouldEnrollECIntoOCPRefillScheduleWhenFPMethodIsChangedToOCP() {
+        fakeIt(parse("2012-02-01"));
+        ecSchedulingService.fpChange("entity id 1", "condom", "ocp", "2012-01-01", "1", "2012-01-01");
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-01-15")));
+    }
+
+    @Test
+    public void shouldEnrollECIntoCondomRefillScheduleWhenFPMethodIsChangedToCondom() {
+        fakeIt(parse("2012-01-15"));
+        ecSchedulingService.fpChange("entity id 1", "ocp", "condom", "2012-01-01", "1", "2012-01-02");
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2012-02-01")));
+    }
+
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {
         return argThat(new ArgumentMatcher<EnrollmentRequest>() {
             @Override

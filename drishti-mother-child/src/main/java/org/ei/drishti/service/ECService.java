@@ -123,7 +123,8 @@ public class ECService {
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
 
         reportingService.fpChange(new SafeMap(submission.getFields(reportFields)));
-        schedulingService.fpChange(submission.getField(PREVIOUS_FP_METHOD_FIELD_NAME),
+        schedulingService.fpChange(submission.entityId(),
+                submission.getField(PREVIOUS_FP_METHOD_FIELD_NAME),
                 submission.getField(NEW_FP_METHOD_FIELD_NAME),
                 submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),

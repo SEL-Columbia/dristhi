@@ -206,7 +206,7 @@ public class ECServiceTest {
 
         ecService.reportFPChange(submission);
 
-        verify(schedulingService).fpChange("previous method", "new method", "2011-01-02", "1", "2011-01-02");
+        verify(schedulingService).fpChange("entity id 1", "previous method", "new method", "2011-01-02", "1", "2011-01-02");
     }
 
     @Test
