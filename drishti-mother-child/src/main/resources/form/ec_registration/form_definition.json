@@ -28,7 +28,7 @@
             },
             {
                 "name": "headOfHousehold",
-                "bind": "/model/instance/EC_Registration_EngKan/headofhousehold"
+                "bind": "/model/instance/EC_Registration_EngKan/hh_head"
             },
             {
                 "name": "ecNumber",
@@ -90,7 +90,7 @@
             },
             {
                 "name": "educationalLevel",
-                "bind": "/model/instance/EC_Registration_EngKan/educational_level"
+                "bind": "/model/instance/EC_Registration_EngKan/woman_education_level"
             },
             {
                 "name": "numberOfPregnancies",
@@ -170,7 +170,7 @@
             },
             {
                 "name": "numberOfOCPDelivered",
-                "bind": "/model/instance/EC_Registration_EngKan/num_ocp_cycles"
+                "bind": "/model/instance/EC_Registration_EngKan/num_ocp_strips"
             },
             {
                 "name": "numberOfCentchromanPillsDelivered",
@@ -199,6 +199,42 @@
             {
                 "name": "parity",
                 "bind": "/model/instance/EC_Registration_EngKan/parity"
+            },
+            {
+                "name": "dmpaInjectionDate",
+                "bind": "/model/instance/EC_Registration_EngKan/injectable_date"
+            },
+            {
+                "name": "ocpRefillDate",
+                "bind": "/model/instance/EC_Registration_EngKan/refill_date"
+            },
+            {
+                "name": "husbandAge",
+                "bind": "/model/instance/EC_Registration_EngKan/husband_age"
+            },
+            {
+                "name": "husbandEducationLevel",
+                "bind": "/model/instance/EC_Registration_EngKan/husband_education_level"
+            },
+            {
+                "name": "lmpDate",
+                "bind": "/model/instance/EC_Registration_EngKan/lmp_date"
+            },
+            {
+                "name": "uptResult",
+                "bind": "/model/instance/EC_Registration_EngKan/upt_result"
+            },
+            {
+                "name": "sterilizationDoctorName",
+                "bind": "/model/instance/EC_Registration_EngKan/sterilization_doctor_name"
+            },
+            {
+                "name": "maleSterilizationType",
+                "bind": "/model/instance/EC_Registration_EngKan/male_sterilization_type"
+            },
+            {
+                "name": "femaleSterilizationType",
+                "bind": "/model/instance/EC_Registration_EngKan/female_sterilization_type"
             }
         ]
     }
