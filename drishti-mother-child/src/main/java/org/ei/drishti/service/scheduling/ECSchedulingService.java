@@ -106,4 +106,8 @@ public class ECSchedulingService {
                 .plusDays(parseInt(numberOfOCPStripsSupplied) * NUMBER_OF_PILLS_IN_ONE_OCP_STRIP)
                 .minusDays(2 * DAYS_PER_WEEK);
     }
+
+    public void fpChange(String previousFPMethod, String newFPMethod, String dmpaInjectionDate, String numberOfOCPStripsSupplied, String ocpRefillDate) {
+
+    }
 }

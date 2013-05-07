@@ -14,8 +14,6 @@ public class AllConstants {
         public static final String FP_COMPLICATIONS = "fp_complications";
         public static final String FP_CHANGE = "fp_change";
         public static final String METHOD_STILL_THE_SAME = "method_still_the_same";
-        public static final String DATE_FAMILY_PLANNING_START = "familyPlanningMethodChangeDate";
-        public static final String CURRENT_FAMILY_PLANNING_METHOD = "currentMethod";
     }
 
     public static class Report {
@@ -111,8 +109,8 @@ public class AllConstants {
     }
 
     public static class FamilyPlanningCommCareFields {
-        public static final String CURRENT_FP_METHOD_COMMCARE_FIELD_NAME = "currentMethod";
-        public static final String CURRENT_FP_METHOD_CHANGE_DATE_COMMCARE_FIELD_NAME = "familyPlanningMethodChangeDate";
+        public static final String CURRENT_FP_METHOD_FIELD_NAME = "currentMethod";
+        public static final String FP_METHOD_CHANGE_DATE_FIELD_NAME = "familyPlanningMethodChangeDate";
         public static final String NO_FP_METHOD_COMMCARE_FIELD_VALUE = "none";
         public static final String FP_UPDATE_COMMCARE_FIELD_NAME = "fpUpdate";
         public static final String IS_FP_METHOD_SAME_COMMCARE_FIELD_NAME = "isMethodSame";
@@ -123,6 +121,11 @@ public class AllConstants {
         public static final String NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME = "numberOfOCPDelivered";
         public static final String OCP_FP_METHOD_VALUE = "ocp";
         public static final String CONDOM_FP_METHOD_VALUE = "condom";
+    }
+
+    public static class ChangeFamilyPlanningMethodCommCareFields {
+        public static final String PREVIOUS_FP_METHOD_FIELD_NAME = "currentMethod";
+        public static final String NEW_FP_METHOD_FIELD_NAME = "newMethod";
     }
 
     public static class ChildImmunizationCommCareFields {

@@ -61,8 +61,8 @@ public class ECServiceTest {
                 .addFormField("currentMethod", "some method")
                 .addFormField("isHighPriority", "yes")
                 .addFormField("submissionDate", "2011-01-01")
-                .addFormField("numberOfOCPDelivered", "1")
                 .addFormField("dmpaInjectionDate", "2010-12-20")
+                .addFormField("numberOfOCPDelivered", "1")
                 .addFormField("ocpRefillDate", "2010-12-25")
                 .build();
         EligibleCouple eligibleCouple = new EligibleCouple("entity id 1", "0").withCouple("Wife 1", "Husband 1");
@@ -188,6 +188,25 @@ public class ECServiceTest {
 
         verify(allEligibleCouples).findByCaseId("entity id 1");
         verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldUpdateECsRefillScheduleWhenTheirFPMethodIsChanged() throws Exception {
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("fp_change")
+                .addFormField("currentMethod", "previous method")
+                .addFormField("newMethod", "new method")
+                .addFormField("submissionDate", "2011-01-01")
+                .addFormField("familyPlanningMethodChangeDate", "2011-01-02")
+                .addFormField("numberOfOCPDelivered", "1")
+                .build();
+        when(reportFieldsDefinition.get("fp_change")).thenReturn(asList("someKey"));
+
+        ecService.reportFPChange(submission);
+
+        verify(schedulingService).fpChange("previous method", "new method", "2011-01-02", "1", "2011-01-02");
     }
 
     @Test

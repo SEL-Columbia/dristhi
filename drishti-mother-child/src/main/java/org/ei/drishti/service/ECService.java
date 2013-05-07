@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.ei.drishti.common.AllConstants.ChangeFamilyPlanningMethodCommCareFields.NEW_FP_METHOD_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChangeFamilyPlanningMethodCommCareFields.PREVIOUS_FP_METHOD_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
@@ -55,11 +57,11 @@ public class ECService {
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.registerEC(new SafeMap(submission.getFields(reportFields)));
         schedulingService.enrollToFPComplications(submission.entityId(),
-                submission.getField(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME),
+                submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
                 submission.getField(HIGH_PRIORITY_COMMCARE_FIELD_NAME),
                 submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
         schedulingService.enrollToRenewFPProducts(submission.entityId(),
-                submission.getField(CURRENT_FP_METHOD_COMMCARE_FIELD_NAME),
+                submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
                 submission.getField(DMPA_INJECTION_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
                 submission.getField(OCP_REFILL_DATE_FIELD_NAME));
@@ -119,6 +121,12 @@ public class ECService {
         }
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+
         reportingService.fpChange(new SafeMap(submission.getFields(reportFields)));
+        schedulingService.fpChange(submission.getField(PREVIOUS_FP_METHOD_FIELD_NAME),
+                submission.getField(NEW_FP_METHOD_FIELD_NAME),
+                submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME),
+                submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
+                submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME));
     }
 }
