@@ -18,8 +18,18 @@
     </properties>
     <dependencies>
         <dependency>
+            <artifactId>motech-platform-server-api</artifactId>
+            <groupId>org.motechproject</groupId>
+            <version>${motech.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.ei.drishti</groupId>
             <artifactId>drishti-common</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ei.drishti</groupId>
+            <artifactId>drishti-interface</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

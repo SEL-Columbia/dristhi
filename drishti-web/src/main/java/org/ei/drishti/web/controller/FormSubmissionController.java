@@ -60,14 +60,7 @@ public class FormSubmissionController {
                 return new ResponseEntity<>(BAD_REQUEST);
             }
 
-            List<org.ei.drishti.domain.form.FormSubmission> submissions = with(getSubmissionsInProperFormat(formSubmissionsDTO))
-                    .convert(new Converter<FormSubmissionDTO, org.ei.drishti.domain.form.FormSubmission>() {
-                        @Override
-                        public org.ei.drishti.domain.form.FormSubmission convert(FormSubmissionDTO submission) {
-                            return FormSubmissionConvertor.toFormSubmission(submission);
-                        }
-                    });
-            gateway.sendEventMessage(new FormSubmissionEvent(submissions).toEvent());
+            gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO).toEvent());
             logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
         } catch (Exception e) {
             logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e, formSubmissionsDTO));

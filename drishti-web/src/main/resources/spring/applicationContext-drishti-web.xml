@@ -8,6 +8,7 @@
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <import resource="classpath:applicationContext-drishti.xml"/>
+    <import resource="classpath:applicationContext-drishti-form.xml"/>
     <import resource="securityContext.xml"/>
 
     <mvc:default-servlet-handler/>

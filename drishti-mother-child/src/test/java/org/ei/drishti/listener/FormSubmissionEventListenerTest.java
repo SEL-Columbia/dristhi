@@ -1,9 +1,9 @@
 package org.ei.drishti.listener;
 
 import com.google.gson.Gson;
-import org.ei.drishti.domain.form.FormSubmission;
+import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
-import org.ei.drishti.service.FormSubmissionService;
+import org.ei.drishti.form.service.SubmissionService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -18,7 +18,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class FormSubmissionEventListenerTest {
     @Mock
-    private FormSubmissionService formSubmissionService;
+    private SubmissionService formSubmissionService;
 
     private FormSubmissionEventListener listener;
 
@@ -30,8 +30,8 @@ public class FormSubmissionEventListenerTest {
 
     @Test
     public void shouldDelegateToFormSubmissionService() throws Exception {
-        List<FormSubmission> formSubmissions = asList(new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", null, 0L),
-                new FormSubmission("anm id 2", "instance id 2", "form name", "entity id 2" , null, 0L));
+        List<FormSubmissionDTO> formSubmissions = asList(new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name", null, "0"),
+                new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name", null, "0"));
 
         listener.submitForms(new MotechEvent(FormSubmissionEvent.SUBJECT, mapOf("data", (Object) new Gson().toJson(formSubmissions))));
 
