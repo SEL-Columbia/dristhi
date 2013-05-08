@@ -18,6 +18,9 @@ public class DrishtiUser extends MotechBaseDataObject {
     private String password;
 
     @JsonProperty
+    private String salt;
+
+    @JsonProperty
     private List<String> roles;
 
     @JsonProperty
@@ -26,9 +29,10 @@ public class DrishtiUser extends MotechBaseDataObject {
     protected DrishtiUser() {
     }
 
-    public DrishtiUser(String username, String password, List<String> roles, boolean active) {
+    public DrishtiUser(String username, String password, String salt, List<String> roles, boolean active) {
         this.username = username;
         this.password = password;
+        this.salt = salt;
         this.roles = roles;
         this.active = active;
     }
@@ -39,6 +43,10 @@ public class DrishtiUser extends MotechBaseDataObject {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getSalt() {
+        return salt;
     }
 
     public List<String> getRoles() {

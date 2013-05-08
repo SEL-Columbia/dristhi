@@ -40,9 +40,13 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         DrishtiUser user = getDrishtiUser(authentication);
+        if (user == null) {
+            throw new BadCredentialsException(USER_NOT_FOUND);
+        }
+
         String credentials = (String) authentication.getCredentials();
-        String hashedCredentials = passwordEncoder.encodePassword(credentials, null);
-        if (user == null || !user.getPassword().equals(hashedCredentials)) {
+        String hashedCredentials = passwordEncoder.encodePassword(credentials, user.getSalt());
+        if (!user.getPassword().equals(hashedCredentials)) {
             throw new BadCredentialsException(USER_NOT_FOUND);
         }
 

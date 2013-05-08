@@ -26,8 +26,8 @@ public class AllDrishtiUsersIntegrationTest {
 
     @Test
     public void shouldFetchUserByUsername() {
-        DrishtiUser firstUser = new DrishtiUser("user 1", "password 1", asList("ROLE_USER"), true);
-        DrishtiUser secondUser = new DrishtiUser("user 2", "password 2", asList("ROLE_USER"), true);
+        DrishtiUser firstUser = new DrishtiUser("user 1", "password 1", "salt", asList("ROLE_USER"), true);
+        DrishtiUser secondUser = new DrishtiUser("user 2", "password 2", "salt", asList("ROLE_USER"), true);
         users.add(firstUser);
         users.add(secondUser);
 
@@ -40,8 +40,8 @@ public class AllDrishtiUsersIntegrationTest {
 
     @Test
     public void shouldReturnNullWhenUsernameIsNull() {
-        DrishtiUser firstUser = new DrishtiUser("user 1", "password 1", asList("ROLE_USER"), true);
-        DrishtiUser secondUser = new DrishtiUser("user 2", "password 2", asList("ROLE_USER"), true);
+        DrishtiUser firstUser = new DrishtiUser("user 1", "password 1", "salt", asList("ROLE_USER"), true);
+        DrishtiUser secondUser = new DrishtiUser("user 2", "password 2", "salt", asList("ROLE_USER"), true);
         users.add(firstUser);
         users.add(secondUser);
 
