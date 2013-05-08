@@ -17,7 +17,7 @@
         <module>drishti-common</module>
         <module>drishti-reporting</module>
         <module>drishti-interface</module>
-        <module>dristhi-form</module>
+        <module>drishti-form</module>
     </modules>
 
     <properties>
