@@ -13,6 +13,7 @@ public class AllConstants {
         public static final String EC_REGISTRATION = "ec_registration";
         public static final String FP_COMPLICATIONS = "fp_complications";
         public static final String FP_CHANGE = "fp_change";
+        public static final String RENEW_FP_PRODUCT = "renew_fp_product";
         public static final String METHOD_STILL_THE_SAME = "method_still_the_same";
     }
 
@@ -119,6 +120,7 @@ public class AllConstants {
         public static final String DMPA_INJECTABLE_FP_METHOD_VALUE = "dmpa_injectable";
         public static final String OCP_REFILL_DATE_FIELD_NAME = "ocpRefillDate";
         public static final String NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME = "numberOfOCPDelivered";
+        public static final String NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME = "numberOfCondomsSupplied";
         public static final String OCP_FP_METHOD_VALUE = "ocp";
         public static final String CONDOM_FP_METHOD_VALUE = "condom";
     }

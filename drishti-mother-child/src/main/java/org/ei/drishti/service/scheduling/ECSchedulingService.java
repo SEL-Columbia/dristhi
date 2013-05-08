@@ -3,6 +3,7 @@ package org.ei.drishti.service.scheduling;
 import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.contract.Schedule;
 import org.ei.drishti.domain.EligibleCouple;
+import org.ei.drishti.service.ActionService;
 import org.joda.time.LocalDate;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
@@ -20,6 +21,8 @@ import static org.ei.drishti.common.AllConstants.CommonCommCareFields.BOOLEAN_TR
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
 import static org.ei.drishti.common.util.DateUtil.today;
+import static org.ei.drishti.common.util.DateUtil.tryParse;
+import static org.ei.drishti.common.util.IntegerUtil.tryParse;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.DateTimeConstants.DAYS_PER_WEEK;
@@ -31,6 +34,7 @@ public class ECSchedulingService {
 
     public static final int NUMBER_OF_PILLS_IN_ONE_OCP_STRIP = 28;
     private final ScheduleTrackingService scheduleTrackingService;
+    private final ActionService actionService;
 
     private final Schedule fpComplicationSchedule = new Schedule(EC_SCHEDULE_FP_COMPLICATION, asList(EC_SCHEDULE_FP_COMPLICATION_MILESTONE));
     private final Schedule dmpaInjectableRefillSchedule = new Schedule(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, asList(EC_SCHEDULE_DMPA_INJECTABLE_REFILL_MILESTONE));
@@ -38,8 +42,9 @@ public class ECSchedulingService {
     private final Schedule condomRefillSchedule = new Schedule(EC_SCHEDULE_CONDOM_REFILL, asList(EC_SCHEDULE_CONDOM_REFILL_MILESTONE));
 
     @Autowired
-    public ECSchedulingService(ScheduleTrackingService scheduleTrackingService) {
+    public ECSchedulingService(ScheduleTrackingService scheduleTrackingService, ActionService actionService) {
         this.scheduleTrackingService = scheduleTrackingService;
+        this.actionService = actionService;
     }
 
     public void enrollToFPComplications(String entityId, String currentFPMethod, String isHighPriority, String submissionDate) {
@@ -63,6 +68,68 @@ public class ECSchedulingService {
         }
     }
 
+    public void enrollToRenewFPProducts(String entityId, String currentFPMethod, String dmpaInjectionDate, String numberOfOCPStripsSupplied, String ocpRefillDate) {
+        if (DMPA_INJECTABLE_FP_METHOD_VALUE.equalsIgnoreCase(currentFPMethod)) {
+            enrollECToDMPAInjectableSchedule(entityId, dmpaInjectionDate);
+            return;
+        }
+        if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(currentFPMethod)) {
+            enrollECToOCPRefillSchedule(entityId, numberOfOCPStripsSupplied, ocpRefillDate);
+            return;
+        }
+        if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(currentFPMethod)) {
+            enrollECToCondomRefillSchedule(entityId);
+            return;
+        }
+    }
+
+    public void fpChange(String entityId, String anmId, String previousFPMethod, String newFPMethod, String fpMethodChangeDate, String numberOfOCPStripsSupplied) {
+        unEnrollECFromPreviousRefillSchedule(anmId, entityId, previousFPMethod, newFPMethod, fpMethodChangeDate);
+        enrollToRenewFPProducts(entityId, newFPMethod, fpMethodChangeDate, numberOfOCPStripsSupplied, fpMethodChangeDate);
+    }
+
+    public void renewFPProduct(String anmId, String entityId, String currentMethod, String dmpaInjectionDate, String numberOfOCPStripsSupplied, String ocpRefillDate, String numberOfCondomsSupplied, String submissionDate) {
+        if (DMPA_INJECTABLE_FP_METHOD_VALUE.equalsIgnoreCase(currentMethod) && tryParse(dmpaInjectionDate, null) != null) {
+            logger.info(format("Un-enrolling EC from DMPA Injectable Refill schedule as FP product was renewed. entityId: {0}, DMPA injection date: {1}", entityId, dmpaInjectionDate));
+            unEnrollECFromDMPAInjectableSchedule(entityId, anmId, dmpaInjectionDate);
+            enrollECToDMPAInjectableSchedule(entityId, dmpaInjectionDate);
+            return;
+        }
+        if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(currentMethod) && tryParse(numberOfOCPStripsSupplied, 0) > 0) {
+            logger.info(format("Un-enrolling EC from OCP Refill schedule as FP product was renewed. entityId: {0}, ocpRefillDate: {1}, numberOfOCPStripsSupplied: {2}", entityId, ocpRefillDate, numberOfOCPStripsSupplied));
+            unEnrollECFromOCPRefillSchedule(entityId, anmId, ocpRefillDate);
+            enrollECToOCPRefillSchedule(entityId, numberOfOCPStripsSupplied, ocpRefillDate);
+            return;
+        }
+        if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(currentMethod) && tryParse(numberOfCondomsSupplied, 0) > 0) {
+            logger.info(format("Un-enrolling EC from Condom Refill schedule as FP product was renewed. entityId: {0}, condomRefillDate: {1}, numberOfCondomsSupplied: {2}", entityId, submissionDate, numberOfCondomsSupplied));
+            unEnrollECFromCondomRefillSchedule(entityId, anmId, submissionDate);
+            enrollECToCondomRefillSchedule(entityId);
+            return;
+        }
+    }
+
+    private void unEnrollECFromPreviousRefillSchedule(String anmId, String entityId, String previousFPMethod, String newFPMethod, String fpMethodChangeDate) {
+        if (DMPA_INJECTABLE_FP_METHOD_VALUE.equalsIgnoreCase(previousFPMethod)) {
+            logger.info(format("Un-enrolling EC from DMPA Injectable Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", entityId, newFPMethod));
+
+            unEnrollECFromDMPAInjectableSchedule(entityId, anmId, fpMethodChangeDate);
+            return;
+        }
+        if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(previousFPMethod)) {
+            logger.info(format("Un-enrolling EC from OCP Refill schedule. entityId: {0}, new fp method: {1}", entityId, newFPMethod));
+
+            unEnrollECFromOCPRefillSchedule(entityId, anmId, fpMethodChangeDate);
+            return;
+        }
+        if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(previousFPMethod)) {
+            logger.info(format("Un-enrolling EC from Condom Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", entityId, newFPMethod));
+
+            unEnrollECFromCondomRefillSchedule(entityId, anmId, fpMethodChangeDate);
+            return;
+        }
+    }
+
     private boolean isCoupleHighPriority(String isHighPriorityField) {
         return BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(isHighPriorityField);
     }
@@ -75,26 +142,38 @@ public class ECSchedulingService {
         return scheduleTrackingService.getEnrollment(caseId, scheduleName) != null;
     }
 
-    public void enrollToRenewFPProducts(String entityId, String currentFPMethod, String dmpaInjectionDate, String numberOfOCPStripsSupplied, String ocpRefillDate) {
-        if (DMPA_INJECTABLE_FP_METHOD_VALUE.equalsIgnoreCase(currentFPMethod)) {
-            logger.info(format("Enrolling EC to DMPA Injectable Refill schedule. entityId: {0}, Injection date: {1}", entityId, dmpaInjectionDate));
-            scheduleTrackingService.enroll(new EnrollmentRequest(entityId, dmpaInjectableRefillSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
-                    parse(dmpaInjectionDate), null, null, null, null, null));
-            return;
-        }
-        if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(currentFPMethod)) {
-            LocalDate scheduleStartDate = (parseInt(numberOfOCPStripsSupplied) == 0) ? today() : twoWeeksBeforeOCPPillsRunOut(numberOfOCPStripsSupplied, ocpRefillDate);
-            logger.info(format("Enrolling EC to OCP Refill schedule. entityId: {0}, Refill date: {1}, Ref date: {2}, Number of OCP Strips : {3}", entityId, ocpRefillDate, scheduleStartDate, numberOfOCPStripsSupplied));
-            scheduleTrackingService.enroll(new EnrollmentRequest(entityId, ocpRefillSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
-                    scheduleStartDate, null, null, null, null, null));
-            return;
-        }
-        if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(currentFPMethod)) {
-            logger.info(format("Enrolling EC to Condom Refill schedule. entityId: {0}, Ref date: {1}", entityId, firstDayOfNextMonth()));
-            scheduleTrackingService.enroll(new EnrollmentRequest(entityId, condomRefillSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
-                    firstDayOfNextMonth(), null, null, null, null, null));
-            return;
-        }
+    private void enrollECToCondomRefillSchedule(String entityId) {
+        logger.info(format("Enrolling EC to Condom Refill schedule. entityId: {0}, Ref date: {1}", entityId, firstDayOfNextMonth()));
+        scheduleTrackingService.enroll(new EnrollmentRequest(entityId, condomRefillSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
+                firstDayOfNextMonth(), null, null, null, null, null));
+    }
+
+    private void enrollECToDMPAInjectableSchedule(String entityId, String dmpaInjectionDate) {
+        logger.info(format("Enrolling EC to DMPA Injectable Refill schedule. entityId: {0}, Injection date: {1}", entityId, dmpaInjectionDate));
+        scheduleTrackingService.enroll(new EnrollmentRequest(entityId, dmpaInjectableRefillSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
+                parse(dmpaInjectionDate), null, null, null, null, null));
+    }
+
+    private void enrollECToOCPRefillSchedule(String entityId, String numberOfOCPStripsSupplied, String ocpRefillDate) {
+        LocalDate scheduleStartDate = (tryParse(numberOfOCPStripsSupplied, 0) == 0) ? today() : twoWeeksBeforeOCPPillsRunOut(numberOfOCPStripsSupplied, ocpRefillDate);
+        logger.info(format("Enrolling EC to OCP Refill schedule. entityId: {0}, Refill date: {1}, Ref date: {2}, Number of OCP Strips : {3}", entityId, ocpRefillDate, scheduleStartDate, numberOfOCPStripsSupplied));
+        scheduleTrackingService.enroll(new EnrollmentRequest(entityId, ocpRefillSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
+                scheduleStartDate, null, null, null, null, null));
+    }
+
+    private void unEnrollECFromDMPAInjectableSchedule(String entityId, String anmId, String dmpaInjectionDate) {
+        scheduleTrackingService.unenroll(entityId, asList(dmpaInjectableRefillSchedule.name()));
+        actionService.markAlertAsClosed(entityId, anmId, dmpaInjectableRefillSchedule.name(), dmpaInjectionDate);
+    }
+
+    private void unEnrollECFromOCPRefillSchedule(String entityId, String anmId, String ocpRefillDate) {
+        scheduleTrackingService.unenroll(entityId, asList(ocpRefillSchedule.name()));
+        actionService.markAlertAsClosed(entityId, anmId, ocpRefillSchedule.name(), ocpRefillDate);
+    }
+
+    private void unEnrollECFromCondomRefillSchedule(String entityId, String anmId, String submissionDate) {
+        scheduleTrackingService.unenroll(entityId, asList(condomRefillSchedule.name()));
+        actionService.markAlertAsClosed(entityId, anmId, condomRefillSchedule.name(), submissionDate);
     }
 
     private LocalDate firstDayOfNextMonth() {
@@ -105,23 +184,5 @@ public class ECSchedulingService {
         return parse(ocpRefillDate)
                 .plusDays(parseInt(numberOfOCPStripsSupplied) * NUMBER_OF_PILLS_IN_ONE_OCP_STRIP)
                 .minusDays(2 * DAYS_PER_WEEK);
-    }
-
-    public void fpChange(String entityId, String previousFPMethod, String newFPMethod, String dmpaInjectionDate, String numberOfOCPStripsSupplied, String ocpRefillDate) {
-        unEnrollECFromPreviousRefillSchedule(entityId, previousFPMethod, newFPMethod);
-        enrollToRenewFPProducts(entityId, newFPMethod, dmpaInjectionDate, numberOfOCPStripsSupplied, ocpRefillDate);
-    }
-
-    private void unEnrollECFromPreviousRefillSchedule(String entityId, String previousFPMethod, String newFPMethod) {
-        if (DMPA_INJECTABLE_FP_METHOD_VALUE.equalsIgnoreCase(previousFPMethod)) {
-            logger.info(format("Un-enrolling EC from DMPA Injectable Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", entityId, newFPMethod));
-            scheduleTrackingService.unenroll(entityId, asList(dmpaInjectableRefillSchedule.name()));
-        } else if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(previousFPMethod)) {
-            logger.info(format("Un-enrolling EC from OCP Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", entityId, newFPMethod));
-            scheduleTrackingService.unenroll(entityId, asList(ocpRefillSchedule.name()));
-        } else if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(previousFPMethod)) {
-            logger.info(format("Un-enrolling EC from Condom Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", entityId, newFPMethod));
-            scheduleTrackingService.unenroll(entityId, asList(condomRefillSchedule.name()));
-        }
     }
 }

@@ -1,0 +1,47 @@
+{
+    "form": {
+        "bind_type": "eligible_couple",
+        "default_bind_path": "/model/instance/Family_Planning_Renew_Method_EngKan/",
+        "fields": [
+            {
+                "name": "id"
+            },
+            {
+                "name": "currentMethod",
+                "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/case_familyplanning_method"
+            },
+            {
+                "name": "wasFPMethodRenewed",
+                "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/able_to_renew_method"
+            },
+            {
+                "name": "dmpaInjectionDate",
+                "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/renewed_method_group/injectable_date"
+            },
+            {
+                "name": "numberOfCondomsSupplied",
+                "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/renewed_method_group/num_condoms"
+            },
+            {
+                "name": "numberOfOCPDelivered",
+                "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/renewed_method_group/num_ocp_strips"
+            },
+            {
+                "name": "numberOfCentchromanPillsSupplied",
+                "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/renewed_method_group/num_centchroman_pills"
+            },
+            {
+                "name": "ocpRefillDate",
+                "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/renewed_method_group/refill_date"
+            },
+            {
+                "name": "reasonForNotRenewalOfFPProduct",
+                "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/didnt_renew_method_group/didnt_renew_method_reason"
+            },
+            {
+                "name": "reasonForCoupleToRefuseRenewalOfFPProduct",
+                "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/didnt_renew_method_group/didnt_renew_method_couple_refused_reason"
+            }
+        ]
+    }
+}

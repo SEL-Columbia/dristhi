@@ -25,6 +25,14 @@ public class DateUtil {
     private static DateTime toTime(LocalDate referenceDateForSchedule) {
         return referenceDateForSchedule.toDateTime(new LocalTime(0, 0));
     }
+
+    public static LocalDate tryParse(String value, LocalDate defaultValue) {
+        try {
+            return LocalDate.parse(value);
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
 }
 
 interface DateUtility {

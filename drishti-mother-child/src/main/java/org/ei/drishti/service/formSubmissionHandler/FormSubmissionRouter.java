@@ -11,9 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
-import static org.ei.drishti.common.AllConstants.Form.EC_REGISTRATION;
-import static org.ei.drishti.common.AllConstants.Form.FP_CHANGE;
-import static org.ei.drishti.common.AllConstants.Form.FP_COMPLICATIONS;
+import static org.ei.drishti.common.AllConstants.Form.*;
 
 @Component
 public class FormSubmissionRouter {
@@ -25,11 +23,12 @@ public class FormSubmissionRouter {
     public FormSubmissionRouter(AllFormSubmissions formSubmissionsRepository,
                                 ECRegistrationHandler ecRegistrationHandler,
                                 FPComplicationsHandler fpComplicationsHandler,
-                                FPChangeHandler fpChangeHandler) {
+                                FPChangeHandler fpChangeHandler, RenewFPProductHandler renewFPProductHandler) {
         this.formSubmissionsRepository = formSubmissionsRepository;
         handlerMap = EasyMap.create(EC_REGISTRATION, (FormSubmissionHandler) ecRegistrationHandler)
                 .put(FP_COMPLICATIONS, fpComplicationsHandler)
                 .put(FP_CHANGE, fpChangeHandler)
+                .put(RENEW_FP_PRODUCT, renewFPProductHandler)
                 .map();
     }
 

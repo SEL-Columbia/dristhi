@@ -123,11 +123,26 @@ public class ECService {
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
 
         reportingService.fpChange(new SafeMap(submission.getFields(reportFields)));
-        schedulingService.fpChange(submission.entityId(),
+        schedulingService.fpChange(
+                submission.entityId(), submission.anmId(),
                 submission.getField(PREVIOUS_FP_METHOD_FIELD_NAME),
                 submission.getField(NEW_FP_METHOD_FIELD_NAME),
                 submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME),
+                submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME)
+        );
+    }
+
+    public void renewFPProduct(FormSubmission submission) {
+        EligibleCouple couple = allEligibleCouples.findByCaseId(submission.entityId());
+        if (couple == null) {
+            logger.warn("Tried to report FP Change of a non-existing EC, with submission: " + submission);
+            return;
+        }
+
+        schedulingService.renewFPProduct(submission.anmId(), submission.entityId(),
+                submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
+                submission.getField(DMPA_INJECTION_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
-                submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME));
+                submission.getField(OCP_REFILL_DATE_FIELD_NAME), submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME), submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
     }
 }

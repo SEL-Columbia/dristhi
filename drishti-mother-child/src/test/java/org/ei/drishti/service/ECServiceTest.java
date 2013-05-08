@@ -161,6 +161,8 @@ public class ECServiceTest {
         verify(allEligibleCouples).findByCaseId("CASE X");
         verifyNoMoreInteractions(allEligibleCouples);
         verifyZeroInteractions(actionService);
+        verifyZeroInteractions(reportingService);
+        verifyZeroInteractions(schedulingService);
     }
 
     @Test
@@ -180,7 +182,7 @@ public class ECServiceTest {
     }
 
     @Test
-    public void shouldNotSendDataToReportingServiceDuringReportFPChangeIfNoECIsFound() throws Exception {
+    public void shouldNotDoAnythingDuringReportFPChangeIfNoECIsFound() throws Exception {
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(null);
         FormSubmission submission = FormSubmissionBuilder.create().build();
 
@@ -188,14 +190,16 @@ public class ECServiceTest {
 
         verify(allEligibleCouples).findByCaseId("entity id 1");
         verifyZeroInteractions(reportingService);
+        verifyZeroInteractions(schedulingService);
     }
 
     @Test
-    public void shouldUpdateECsRefillScheduleWhenTheirFPMethodIsChanged() throws Exception {
+    public void shouldUpdateECSchedulesWhenFPMethodIsChanged() throws Exception {
         EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("fp_change")
+                .withANMId("anm 1")
                 .addFormField("currentMethod", "previous method")
                 .addFormField("newMethod", "new method")
                 .addFormField("submissionDate", "2011-01-01")
@@ -206,7 +210,40 @@ public class ECServiceTest {
 
         ecService.reportFPChange(submission);
 
-        verify(schedulingService).fpChange("entity id 1", "previous method", "new method", "2011-01-02", "1", "2011-01-02");
+        verify(schedulingService).fpChange("entity id 1", "anm 1", "previous method", "new method", "2011-01-02", "1");
+    }
+
+    @Test
+    public void shouldUpdateECSchedulesWhenFPProductIsRenewed() throws Exception {
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("renew_fp_product")
+                .withANMId("anm id 1")
+                .addFormField("currentMethod", "fp method")
+                .addFormField("submissionDate", "2011-01-01")
+                .addFormField("numberOfOCPDelivered", "1")
+                .addFormField("numberOfCondomsSupplied", "2")
+                .addFormField("ocpRefillDate", "2010-12-25")
+                .addFormField("dmpaInjectionDate", "2010-12-20")
+                .addFormField("numberOfCondomsSupplied", "20")
+                .build();
+
+        ecService.renewFPProduct(submission);
+
+        verify(schedulingService).renewFPProduct("anm id 1", "entity id 1", "fp method", "2010-12-20", "1", "2010-12-25", "20", "2011-01-01");
+    }
+
+    @Test
+    public void shouldNotDoAnythingDuringRenewFPProductWhenNoECIsFound() throws Exception {
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(null);
+        FormSubmission submission = FormSubmissionBuilder.create().build();
+
+        ecService.renewFPProduct(submission);
+
+        verify(allEligibleCouples).findByCaseId("entity id 1");
+        verifyZeroInteractions(reportingService);
+        verifyZeroInteractions(schedulingService);
     }
 
     @Test
