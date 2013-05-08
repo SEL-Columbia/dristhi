@@ -1,0 +1,22 @@
+{
+    "docs": [
+        {
+            "type": "DrishtiUser",
+            "username": "c",
+            "password": "356a192b7913b04c54574d18c28d46e6395428ab",
+            "active": true,
+            "roles": [
+                "ROLE_USER"
+            ]
+        },
+        {
+            "type": "DrishtiUser",
+            "username": "demo1",
+            "password": "356a192b7913b04c54574d18c28d46e6395428ab",
+            "active": true,
+            "roles": [
+                "ROLE_USER"
+            ]
+        }
+    ]
+}
