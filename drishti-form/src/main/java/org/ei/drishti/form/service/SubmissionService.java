@@ -1,6 +1,7 @@
 package org.ei.drishti.form.service;
 
 import ch.lambdaj.function.convert.Converter;
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.repository.AllSubmissions;
@@ -52,6 +53,7 @@ public class SubmissionService {
             }
             logger.info(format("Saving form with instance Id: {0} and for entity Id: {1}",
                     submission.instanceId(), submission.entityId()));
+            submission.setServerVersion(DateUtil.millis());
             allSubmissions.add(submission);
         }
     }
