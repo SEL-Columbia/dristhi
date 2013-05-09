@@ -83,9 +83,11 @@ public class ECSchedulingService {
         }
     }
 
-    public void fpChange(String entityId, String anmId, String previousFPMethod, String newFPMethod, String fpMethodChangeDate, String numberOfOCPStripsSupplied) {
-        unEnrollECFromPreviousRefillSchedule(anmId, entityId, previousFPMethod, newFPMethod, fpMethodChangeDate);
-        enrollToRenewFPProducts(entityId, newFPMethod, fpMethodChangeDate, numberOfOCPStripsSupplied, fpMethodChangeDate);
+    public void fpChange(FPProductInformation fpInfo) {
+        unEnrollECFromPreviousRefillSchedule(fpInfo.anmId(), fpInfo.entityId(), fpInfo.previousFPMethod(), fpInfo.currentFPMethod()
+                , fpInfo.fpMethodChangeDate());
+        enrollToRenewFPProducts(fpInfo.entityId(), fpInfo.currentFPMethod()
+                , fpInfo.fpMethodChangeDate(), fpInfo.numberOfOCPStripsSupplied(), fpInfo.fpMethodChangeDate());
     }
 
     public void renewFPProduct(FPProductInformation fpProductInformation) {

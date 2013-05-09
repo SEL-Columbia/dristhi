@@ -4,12 +4,12 @@ import org.ei.drishti.contract.EligibleCoupleCloseRequest;
 import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
+import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.service.scheduling.ECSchedulingService;
-import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.util.FormSubmissionBuilder;
 import org.ei.drishti.util.IdGenerator;
 import org.ei.drishti.util.SafeMap;
@@ -200,18 +200,21 @@ public class ECServiceTest {
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("fp_change")
-                .withANMId("anm 1")
+                .withANMId("anm id 1")
                 .addFormField("currentMethod", "previous method")
                 .addFormField("newMethod", "new method")
                 .addFormField("submissionDate", "2011-01-01")
                 .addFormField("familyPlanningMethodChangeDate", "2011-01-02")
                 .addFormField("numberOfOCPDelivered", "1")
+                .addFormField("numberOfCondomsSupplied", "20")
                 .build();
         when(reportFieldsDefinition.get("fp_change")).thenReturn(asList("someKey"));
 
         ecService.reportFPChange(submission);
 
-        verify(schedulingService).fpChange("entity id 1", "anm 1", "previous method", "new method", "2011-01-02", "1");
+        verify(schedulingService).fpChange(
+                new FPProductInformation("entity id 1", "anm id 1", "new method",
+                        null, "1", null, "20", "2011-01-01", "previous method", "2011-01-02"));
     }
 
     @Test
@@ -231,7 +234,7 @@ public class ECServiceTest {
 
         ecService.renewFPProduct(submission);
 
-        verify(schedulingService).renewFPProduct(new FPProductInformation("anm id 1", "entity id 1", "fp method", "2010-12-20", "1", "2010-12-25", "20", "2011-01-01"));
+        verify(schedulingService).renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "fp method", "2010-12-20", "1", "2010-12-25", "20", "2011-01-01", null, ""));
     }
 
     @Test

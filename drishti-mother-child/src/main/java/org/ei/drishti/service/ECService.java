@@ -4,12 +4,12 @@ import org.ei.drishti.contract.EligibleCoupleCloseRequest;
 import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
+import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.service.scheduling.ECSchedulingService;
-import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.util.IdGenerator;
 import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
@@ -124,13 +124,18 @@ public class ECService {
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
 
         reportingService.fpChange(new SafeMap(submission.getFields(reportFields)));
-        schedulingService.fpChange(
+        FPProductInformation fpProductInformation = new FPProductInformation(
                 submission.entityId(), submission.anmId(),
-                submission.getField(PREVIOUS_FP_METHOD_FIELD_NAME),
                 submission.getField(NEW_FP_METHOD_FIELD_NAME),
-                submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME),
-                submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME)
+                null,
+                submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
+                null,
+                submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
+                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME),
+                submission.getField(PREVIOUS_FP_METHOD_FIELD_NAME),
+                submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME)
         );
+        schedulingService.fpChange(fpProductInformation);
     }
 
     public void renewFPProduct(FormSubmission submission) {
@@ -141,14 +146,13 @@ public class ECService {
         }
 
         FPProductInformation fpProductInformation = new FPProductInformation(
-                submission.anmId(),
-                submission.entityId(),
+                submission.entityId(), submission.anmId(),
                 submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
                 submission.getField(DMPA_INJECTION_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
                 submission.getField(OCP_REFILL_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
-                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
+                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null, null);
         schedulingService.renewFPProduct(fpProductInformation);
     }
 }
