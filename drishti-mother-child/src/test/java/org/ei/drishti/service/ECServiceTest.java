@@ -56,7 +56,7 @@ public class ECServiceTest {
     public void shouldRegisterEligibleCouple() throws Exception {
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("ec_registration")
-                .withANMId("ANM X")
+                .withANMId("anm id 1")
                 .withEntityId("entity id 1")
                 .addFormField("someKey", "someValue")
                 .addFormField("currentMethod", "some method")
@@ -65,6 +65,7 @@ public class ECServiceTest {
                 .addFormField("dmpaInjectionDate", "2010-12-20")
                 .addFormField("numberOfOCPDelivered", "1")
                 .addFormField("ocpRefillDate", "2010-12-25")
+                .addFormField("numberOfCondomsSupplied", "20")
                 .build();
         EligibleCouple eligibleCouple = new EligibleCouple("entity id 1", "0").withCouple("Wife 1", "Husband 1");
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(eligibleCouple);
@@ -75,7 +76,8 @@ public class ECServiceTest {
         verify(allEligibleCouples).update(eligibleCouple.withANMIdentifier("ANM X"));
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
         verify(schedulingService).enrollToFPComplications("entity id 1", "some method", "yes", "2011-01-01");
-        verify(schedulingService).enrollToRenewFPProducts("entity id 1", "some method", "2010-12-20", "1", "2010-12-25");
+        verify(schedulingService).registerEC(new FPProductInformation("entity id 1", "anm id 1", "some method", null, "2010-12-20", "1", "2010-12-25"
+                , "20", "2011-01-01", null));
     }
 
     @Test
@@ -214,7 +216,7 @@ public class ECServiceTest {
 
         verify(schedulingService).fpChange(
                 new FPProductInformation("entity id 1", "anm id 1", "new method",
-                        null, "1", null, "20", "2011-01-01", "previous method", "2011-01-02"));
+                        "previous method", null, "1", null, "20", "2011-01-01", "2011-01-02"));
     }
 
     @Test
@@ -234,7 +236,7 @@ public class ECServiceTest {
 
         ecService.renewFPProduct(submission);
 
-        verify(schedulingService).renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "fp method", "2010-12-20", "1", "2010-12-25", "20", "2011-01-01", null, ""));
+        verify(schedulingService).renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "fp method", null, "2010-12-20", "1", "2010-12-25", "20", "2011-01-01", null));
     }
 
     @Test

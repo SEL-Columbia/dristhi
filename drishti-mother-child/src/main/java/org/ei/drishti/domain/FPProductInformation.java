@@ -16,18 +16,18 @@ public class FPProductInformation {
     private final String previousFPMethod;
     private final String fpMethodChangeDate;
 
-    public FPProductInformation(String entityId, String anmId, String currentMethod, String dmpaInjectionDate,
+    public FPProductInformation(String entityId, String anmId, String currentMethod, String previousFPMethod, String dmpaInjectionDate,
                                 String numberOfOCPStripsSupplied, String ocpRefillDate, String numberOfCondomsSupplied,
-                                String submissionDate, String previousFPMethod, String fpMethodChangeDate) {
+                                String submissionDate, String fpMethodChangeDate) {
         this.anmId = anmId;
         this.entityId = entityId;
         this.currentMethod = currentMethod;
+        this.previousFPMethod = previousFPMethod;
         this.dmpaInjectionDate = dmpaInjectionDate;
         this.numberOfOCPStripsSupplied = numberOfOCPStripsSupplied;
         this.ocpRefillDate = ocpRefillDate;
         this.numberOfCondomsSupplied = numberOfCondomsSupplied;
         this.submissionDate = submissionDate;
-        this.previousFPMethod = previousFPMethod;
         this.fpMethodChangeDate = fpMethodChangeDate;
     }
 

@@ -61,11 +61,17 @@ public class ECService {
                 submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
                 submission.getField(HIGH_PRIORITY_COMMCARE_FIELD_NAME),
                 submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
-        schedulingService.enrollToRenewFPProducts(submission.entityId(),
+
+        FPProductInformation fpProductInformation = new FPProductInformation(
+                submission.entityId(), submission.anmId(),
                 submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
-                submission.getField(DMPA_INJECTION_DATE_FIELD_NAME),
+                null, submission.getField(DMPA_INJECTION_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
-                submission.getField(OCP_REFILL_DATE_FIELD_NAME));
+                submission.getField(OCP_REFILL_DATE_FIELD_NAME),
+                submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
+                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null);
+
+        schedulingService.registerEC(fpProductInformation);
     }
 
     public EligibleCouple registerEligibleCoupleForOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
@@ -127,12 +133,11 @@ public class ECService {
         FPProductInformation fpProductInformation = new FPProductInformation(
                 submission.entityId(), submission.anmId(),
                 submission.getField(NEW_FP_METHOD_FIELD_NAME),
-                null,
+                submission.getField(PREVIOUS_FP_METHOD_FIELD_NAME), null,
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
                 null,
                 submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
                 submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME),
-                submission.getField(PREVIOUS_FP_METHOD_FIELD_NAME),
                 submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME)
         );
         schedulingService.fpChange(fpProductInformation);
@@ -148,11 +153,11 @@ public class ECService {
         FPProductInformation fpProductInformation = new FPProductInformation(
                 submission.entityId(), submission.anmId(),
                 submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
-                submission.getField(DMPA_INJECTION_DATE_FIELD_NAME),
+                null, submission.getField(DMPA_INJECTION_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
                 submission.getField(OCP_REFILL_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
-                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null, null);
+                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null);
         schedulingService.renewFPProduct(fpProductInformation);
     }
 }

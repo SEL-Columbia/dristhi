@@ -69,25 +69,27 @@ public class ECSchedulingService {
         }
     }
 
-    public void enrollToRenewFPProducts(String entityId, String currentFPMethod, String dmpaInjectionDate, String numberOfOCPStripsSupplied, String ocpRefillDate) {
-        if (DMPA_INJECTABLE_FP_METHOD_VALUE.equalsIgnoreCase(currentFPMethod)) {
-            enrollECToDMPAInjectableSchedule(entityId, dmpaInjectionDate);
+    public void registerEC(FPProductInformation fpInfo) {
+        if (DMPA_INJECTABLE_FP_METHOD_VALUE.equalsIgnoreCase(fpInfo.currentFPMethod())) {
+            enrollECToDMPAInjectableSchedule(fpInfo.entityId(), fpInfo.dmpaInjectionDate());
             return;
         }
-        if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(currentFPMethod)) {
-            enrollECToOCPRefillSchedule(entityId, numberOfOCPStripsSupplied, ocpRefillDate);
+        if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(fpInfo.currentFPMethod())) {
+            enrollECToOCPRefillSchedule(fpInfo.entityId(), fpInfo.numberOfOCPStripsSupplied(), fpInfo.ocpRefillDate());
             return;
         }
-        if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(currentFPMethod)) {
-            enrollECToCondomRefillSchedule(entityId);
+        if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(fpInfo.currentFPMethod())) {
+            enrollECToCondomRefillSchedule(fpInfo.entityId());
         }
     }
 
     public void fpChange(FPProductInformation fpInfo) {
-        unEnrollECFromPreviousRefillSchedule(fpInfo.anmId(), fpInfo.entityId(), fpInfo.previousFPMethod(), fpInfo.currentFPMethod()
-                , fpInfo.fpMethodChangeDate());
-        enrollToRenewFPProducts(fpInfo.entityId(), fpInfo.currentFPMethod()
-                , fpInfo.fpMethodChangeDate(), fpInfo.numberOfOCPStripsSupplied(), fpInfo.fpMethodChangeDate());
+        unEnrollECFromPreviousRefillSchedule(fpInfo.anmId(), fpInfo.entityId(),
+                fpInfo.previousFPMethod(), fpInfo.currentFPMethod(), fpInfo.fpMethodChangeDate());
+        registerEC(new FPProductInformation(fpInfo.entityId(), fpInfo.anmId(),
+                fpInfo.currentFPMethod(), fpInfo.previousFPMethod(), fpInfo.fpMethodChangeDate(), fpInfo.numberOfOCPStripsSupplied(),
+                fpInfo.fpMethodChangeDate(), fpInfo.numberOfCondomsSupplied(), fpInfo.submissionDate(),
+                fpInfo.fpMethodChangeDate()));
     }
 
     public void renewFPProduct(FPProductInformation fpProductInformation) {
