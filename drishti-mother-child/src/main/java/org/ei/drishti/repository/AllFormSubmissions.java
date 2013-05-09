@@ -19,11 +19,11 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         super(FormSubmission.class, db);
     }
 
-    @View(name = "formSubmission_by_anm_and_time", map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.timestamp], null); } }")
-    public List<FormSubmission> findByANMIDAndTimeStamp(String anmId, long timestamp) {
-        ComplexKey startKey = ComplexKey.of(anmId, timestamp + 1);
+    @View(name = "formSubmission_by_anm_and_server_version", map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.serverVersion], null); } }")
+    public List<FormSubmission> findByANMIDAndServerVersion(String anmId, long version) {
+        ComplexKey startKey = ComplexKey.of(anmId, version + 1);
         ComplexKey endKey = ComplexKey.of(anmId, Long.MAX_VALUE);
-        return db.queryView(createQuery("formSubmission_by_anm_and_time").startKey(startKey).endKey(endKey).includeDocs(true), FormSubmission.class);
+        return db.queryView(createQuery("formSubmission_by_anm_and_server_version").startKey(startKey).endKey(endKey).includeDocs(true), FormSubmission.class);
     }
 
     public boolean exists(String instanceId) {

@@ -69,8 +69,8 @@ public class FormSubmissionService {
         };
     }
 
-    public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long timeStamp) {
-        return allFormSubmissions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
+    public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version) {
+        return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version);
     }
 }
 

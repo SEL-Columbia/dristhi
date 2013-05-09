@@ -87,6 +87,6 @@ public class FormSubmissionServiceTest {
     public void shouldFetchNewSubmissionsForANM() throws Exception {
         submissionService.getNewSubmissionsForANM("anm x", 0L);
 
-        verify(allFormSubmissions).findByANMIDAndTimeStamp("anm x", 0L);
+        verify(allFormSubmissions).findByANMIDAndServerVersion("anm x", 0L);
     }
 }
