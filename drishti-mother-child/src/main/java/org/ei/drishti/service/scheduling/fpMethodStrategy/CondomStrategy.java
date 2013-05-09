@@ -1,0 +1,75 @@
+package org.ei.drishti.service.scheduling.fpMethodStrategy;
+
+import org.ei.drishti.contract.Schedule;
+import org.ei.drishti.domain.FPProductInformation;
+import org.ei.drishti.service.ActionService;
+import org.joda.time.LocalDate;
+import org.motechproject.model.Time;
+import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
+import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static java.text.MessageFormat.format;
+import static java.util.Arrays.asList;
+import static org.ei.drishti.common.util.DateUtil.today;
+import static org.ei.drishti.common.util.IntegerUtil.tryParse;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_CONDOM_REFILL;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_CONDOM_REFILL_MILESTONE;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
+
+public class CondomStrategy implements FPMethodStrategy {
+    private static Logger logger = LoggerFactory.getLogger(CondomStrategy.class.toString());
+
+    private final ScheduleTrackingService scheduleTrackingService;
+    private final ActionService actionService;
+    private final Schedule condomRefillSchedule = new Schedule(EC_SCHEDULE_CONDOM_REFILL, asList(EC_SCHEDULE_CONDOM_REFILL_MILESTONE));
+
+
+    public CondomStrategy(ScheduleTrackingService scheduleTrackingService, ActionService actionService) {
+        this.scheduleTrackingService = scheduleTrackingService;
+        this.actionService = actionService;
+    }
+
+    @Override
+    public void registerEC(FPProductInformation fpInfo) {
+        enrollECToCondomRefillSchedule(fpInfo.entityId());
+    }
+
+    @Override
+    public void unEnrollFromRefillScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
+        logger.info(format("Un-enrolling EC from Condom Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", fpInfo.entityId(), fpInfo.currentFPMethod()));
+        unEnrollECFromCondomRefillSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.fpMethodChangeDate());
+    }
+
+    @Override
+    public void enrollToRefillScheduleForNewFPMethod(FPProductInformation fpInfo) {
+        enrollECToCondomRefillSchedule(fpInfo.entityId());
+    }
+
+    @Override
+    public void renewFPProduct(FPProductInformation fpInfo) {
+        if (tryParse(fpInfo.numberOfCondomsSupplied(), 0) <= 0) {
+            return;
+        }
+
+        logger.info(format("Un-enrolling EC from Condom Refill schedule as FP product was renewed. entityId: {0}, condomRefillDate: {1}, numberOfCondomsSupplied: {2}", fpInfo.entityId(), fpInfo.submissionDate(), fpInfo.numberOfCondomsSupplied()));
+        unEnrollECFromCondomRefillSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.submissionDate());
+        enrollECToCondomRefillSchedule(fpInfo.entityId());
+    }
+
+    private void enrollECToCondomRefillSchedule(String entityId) {
+        logger.info(format("Enrolling EC to Condom Refill schedule. entityId: {0}, Ref date: {1}", entityId, firstDayOfNextMonth()));
+        scheduleTrackingService.enroll(new EnrollmentRequest(entityId, condomRefillSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
+                firstDayOfNextMonth(), null, null, null, null, null));
+    }
+
+    private LocalDate firstDayOfNextMonth() {
+        return today().plusMonths(1).withDayOfMonth(1);
+    }
+
+    private void unEnrollECFromCondomRefillSchedule(String entityId, String anmId, String submissionDate) {
+        scheduleTrackingService.unenroll(entityId, asList(condomRefillSchedule.name()));
+        actionService.markAlertAsClosed(entityId, anmId, condomRefillSchedule.name(), submissionDate);
+    }
+}
