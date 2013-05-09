@@ -25,7 +25,7 @@ public class FormSubmissionBuilder {
     }
 
     public FormSubmission build() {
-        return new FormSubmission(anmId, instanceId, formName, entityId, formInstance, timestamp).withServerVersion(serverVersion);
+        return new FormSubmission(anmId, instanceId, formName, entityId, formInstance, timestamp, serverVersion);
     }
 
     public FormSubmissionBuilder addFormField(String name, String value) {

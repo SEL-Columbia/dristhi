@@ -62,8 +62,8 @@ public class FormDataRepository {
         Map<String, String> params = getStringMapFromJSON(paramsJSON);
 
         allFormSubmissions.add(new FormSubmission(params.get(ANM_ID), params.get(INSTANCE_ID), params.get(FORM_NAME),
-                params.get(ENTITY_ID), new Gson().fromJson(data, FormInstance.class), parseLong(params.get(TIME_STAMP)))
-                .withServerVersion(parseLong(params.get(SERVER_VERSION))));
+                params.get(ENTITY_ID), new Gson().fromJson(data, FormInstance.class), parseLong(params.get(TIME_STAMP)),
+                parseLong(params.get(SERVER_VERSION))));
 
         return params.get(INSTANCE_ID);
     }

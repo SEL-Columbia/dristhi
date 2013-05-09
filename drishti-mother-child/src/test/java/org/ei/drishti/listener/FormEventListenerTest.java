@@ -58,8 +58,8 @@ public class FormEventListenerTest {
 
         listener.fetchForms(new MotechEvent("SUBJECT", null));
 
-        verify(formSubmissionService).processSubmissions(asList(new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", null, 0L),
-                new FormSubmission("anm id 2", "instance id 2", "form name", "entity id 2", null, 0L)));
+        verify(formSubmissionService).processSubmissions(asList(new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", null, 0L, 0L),
+                new FormSubmission("anm id 2", "instance id 2", "form name", "entity id 2", null, 0L, 0L)));
     }
 
     @Test

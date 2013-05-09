@@ -16,7 +16,7 @@ public class FormSubmissionConvertor {
 
     public static org.ei.drishti.domain.form.FormSubmission toFormSubmission(FormSubmissionDTO formSubmissionDTO) {
         return new org.ei.drishti.domain.form.FormSubmission(formSubmissionDTO.anmId(), formSubmissionDTO.instanceId(), formSubmissionDTO.formName(),
-                formSubmissionDTO.entityId(), new Gson().fromJson(formSubmissionDTO.instance(), FormInstance.class), parseLong(formSubmissionDTO.timeStamp()))
-                .withServerVersion(parseLong(formSubmissionDTO.serverVersion()));
+                formSubmissionDTO.entityId(), new Gson().fromJson(formSubmissionDTO.instance(), FormInstance.class), parseLong(formSubmissionDTO.timeStamp()),
+                parseLong(formSubmissionDTO.serverVersion()));
     }
 }

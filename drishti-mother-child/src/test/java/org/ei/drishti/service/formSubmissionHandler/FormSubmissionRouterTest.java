@@ -32,14 +32,14 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateFormSubmissionHandlingToHandlerBasedOnFormName() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ec_registration", "entity id 1", null, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ec_registration", "entity id 1", null, 0L, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
 
         verify(ecRegistrationHandler).handle(formSubmission);
 
-        formSubmission = new FormSubmission("anm id 1", "instance id 2", "fp_complications", "entity id 2", null, 0L);
+        formSubmission = new FormSubmission("anm id 1", "instance id 2", "fp_complications", "entity id 2", null, 0L, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 2")).thenReturn(formSubmission);
 
         router.route("instance id 2");
@@ -49,7 +49,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateRenewFPProductFormSubmissionHandlingToRenewFPProductHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "renew_fp_product", "entity id 1", null, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "renew_fp_product", "entity id 1", null, 0L, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");

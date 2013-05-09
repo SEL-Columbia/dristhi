@@ -31,18 +31,14 @@ public class FormSubmission extends MotechBaseDataObject {
     public FormSubmission() {
     }
 
-    public FormSubmission(String anmId, String instanceId, String formName, String entityId, FormInstance formInstance, long timestamp) {
+    public FormSubmission(String anmId, String instanceId, String formName, String entityId, FormInstance formInstance, long timestamp, long serverVersion) {
         this.instanceId = instanceId;
         this.formName = formName;
         this.anmId = anmId;
         this.timestamp = timestamp;
         this.entityId = entityId;
         this.formInstance = formInstance;
-    }
-
-    public FormSubmission withServerVersion(long version) {
-        this.serverVersion = version;
-        return this;
+        this.serverVersion = serverVersion;
     }
 
     public String anmId() {
@@ -69,6 +65,10 @@ public class FormSubmission extends MotechBaseDataObject {
         return this.timestamp;
     }
 
+    public long serverVersion() {
+        return serverVersion;
+    }
+
     public List<FormField> fields() {
         return formInstance.form().fields();
     }
@@ -79,10 +79,6 @@ public class FormSubmission extends MotechBaseDataObject {
 
     public String getInstanceId() {
         return instanceId;
-    }
-
-    public long serverVersion() {
-        return serverVersion;
     }
 
     public Map<String, String> getFields(List<String> fieldNames) {

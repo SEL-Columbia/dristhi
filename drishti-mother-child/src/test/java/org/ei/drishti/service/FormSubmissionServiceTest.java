@@ -70,8 +70,8 @@ public class FormSubmissionServiceTest {
         long baseTimeStamp = DateUtil.now().getMillis();
         String paramsForFirstFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 1").put(INSTANCE_ID, "instance id 1").put(ENTITY_ID, "entity id 1").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp)).put(SERVER_VERSION, String.valueOf(1L)).map());
         String paramsForSecondFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 2").put(INSTANCE_ID, "instance id 2").put(ENTITY_ID, "entity id 2").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp + 1)).put(SERVER_VERSION, String.valueOf(2L)).map());
-        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, baseTimeStamp).withServerVersion(1L);
-        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1).withServerVersion(2L);
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, baseTimeStamp, 1L);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1, 2L);
         when(allFormExportTokens.getAll()).thenReturn(asList(new FormExportToken(0L)));
         when(allFormSubmissions.exists("instance id 1")).thenReturn(true);
         when(allFormSubmissions.exists("instance id 2")).thenReturn(false);
