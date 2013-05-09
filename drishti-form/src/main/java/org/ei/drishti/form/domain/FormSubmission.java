@@ -7,8 +7,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
-import java.util.List;
-
 @TypeDiscriminator("doc.type === 'FormSubmission'")
 public class FormSubmission extends MotechBaseDataObject {
     @JsonProperty
@@ -29,18 +27,14 @@ public class FormSubmission extends MotechBaseDataObject {
     public FormSubmission() {
     }
 
-    public FormSubmission(String anmId, String instanceId, String formName, String entityId, FormInstance formInstance, long timestamp) {
+    public FormSubmission(String anmId, String instanceId, String formName, String entityId, FormInstance formInstance, long timestamp, long serverVersion) {
         this.instanceId = instanceId;
         this.formName = formName;
         this.anmId = anmId;
         this.timestamp = timestamp;
         this.entityId = entityId;
         this.formInstance = formInstance;
-    }
-
-    public FormSubmission withServerVersion(long version) {
-        this.serverVersion = version;
-        return this;
+        this.serverVersion = serverVersion;
     }
 
     public String anmId() {
@@ -65,10 +59,6 @@ public class FormSubmission extends MotechBaseDataObject {
 
     public long timestamp() {
         return this.timestamp;
-    }
-
-    public List<FormField> fields() {
-        return formInstance.form().fields();
     }
 
     public long serverVersion() {

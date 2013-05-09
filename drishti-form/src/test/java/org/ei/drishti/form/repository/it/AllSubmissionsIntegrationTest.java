@@ -26,7 +26,7 @@ public class AllSubmissionsIntegrationTest {
 
     @Test
     public void shouldCheckIfFormSubmissionExistsByInstanceId() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, 1L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, 1L, 0L);
         formSubmissions.add(formSubmission);
 
         assertTrue(formSubmissions.exists("instance id 1"));
@@ -37,13 +37,13 @@ public class AllSubmissionsIntegrationTest {
     public void shouldFetchAllFormSubmissionsAfterServerVersion() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
 
-        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, 0L).withServerVersion(baseTimeStamp);
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, 0L, baseTimeStamp);
         formSubmissions.add(firstFormSubmission);
 
-        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, 1L).withServerVersion(baseTimeStamp + 1);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, 1L, baseTimeStamp + 1);
         formSubmissions.add(secondFormSubmission);
 
-        FormSubmission thirdFormSubmission = new FormSubmission("anm id 3", "instance id 3", "form name 1", "entity id 3", null, 2L).withServerVersion(baseTimeStamp + 2);
+        FormSubmission thirdFormSubmission = new FormSubmission("anm id 3", "instance id 3", "form name 1", "entity id 3", null, 2L, baseTimeStamp + 2);
         formSubmissions.add(thirdFormSubmission);
 
         assertEquals(asList(firstFormSubmission, secondFormSubmission, thirdFormSubmission), formSubmissions.findByServerVersion(0L));

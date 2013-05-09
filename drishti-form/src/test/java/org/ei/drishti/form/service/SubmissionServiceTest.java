@@ -41,9 +41,9 @@ public class SubmissionServiceTest {
         FormSubmissionDTO earlierFormSubmissionDTO = new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name 1", null, valueOf(baseTimeStamp));
         FormSubmissionDTO laterFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name 1", null, valueOf(baseTimeStamp + 1));
         FormSubmissionDTO veryLateFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 3", "entity id 3", "form name 1", null, valueOf(baseTimeStamp + 2));
-        FormSubmission earlierFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, baseTimeStamp);
-        FormSubmission laterFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1);
-        FormSubmission veryLateFormSubmission = new FormSubmission("anm id 2", "instance id 3", "form name 1", "entity id 3", null, baseTimeStamp + 2);
+        FormSubmission earlierFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, baseTimeStamp, serverVersion);
+        FormSubmission laterFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1, serverVersion);
+        FormSubmission veryLateFormSubmission = new FormSubmission("anm id 2", "instance id 3", "form name 1", "entity id 3", null, baseTimeStamp + 2, serverVersion);
         List<FormSubmissionDTO> formSubmissionsDTO = asList(laterFormSubmissionDTO, earlierFormSubmissionDTO, veryLateFormSubmissionDTO);
         when(allSubmissions.exists(anyString())).thenReturn(false);
 
@@ -51,11 +51,11 @@ public class SubmissionServiceTest {
 
         InOrder inOrder = inOrder(allSubmissions);
         inOrder.verify(allSubmissions).exists("instance id 1");
-        inOrder.verify(allSubmissions).add(earlierFormSubmission.withServerVersion(serverVersion));
+        inOrder.verify(allSubmissions).add(earlierFormSubmission);
         inOrder.verify(allSubmissions).exists("instance id 2");
-        inOrder.verify(allSubmissions).add(laterFormSubmission.withServerVersion(serverVersion));
+        inOrder.verify(allSubmissions).add(laterFormSubmission);
         inOrder.verify(allSubmissions).exists("instance id 3");
-        inOrder.verify(allSubmissions).add(veryLateFormSubmission.withServerVersion(serverVersion));
+        inOrder.verify(allSubmissions).add(veryLateFormSubmission);
         verifyNoMoreInteractions(allSubmissions);
     }
 
@@ -64,8 +64,8 @@ public class SubmissionServiceTest {
         long baseTimeStamp = DateUtil.now().getMillis();
         FormSubmissionDTO firstFormSubmissionDTO = new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name 1", null, valueOf(baseTimeStamp));
         FormSubmissionDTO secondFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name 1", null, valueOf(baseTimeStamp + 1));
-        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, baseTimeStamp);
-        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1);
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, baseTimeStamp, serverVersion);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1, serverVersion);
         when(allSubmissions.exists("instance id 1")).thenReturn(true);
         when(allSubmissions.exists("instance id 2")).thenReturn(false);
 
@@ -73,9 +73,9 @@ public class SubmissionServiceTest {
 
         InOrder inOrder = inOrder(allSubmissions);
         inOrder.verify(allSubmissions).exists("instance id 1");
-        inOrder.verify(allSubmissions, times(0)).add(firstFormSubmission.withServerVersion(serverVersion));
+        inOrder.verify(allSubmissions, times(0)).add(firstFormSubmission);
         inOrder.verify(allSubmissions).exists("instance id 2");
-        inOrder.verify(allSubmissions).add(secondFormSubmission.withServerVersion(serverVersion));
+        inOrder.verify(allSubmissions).add(secondFormSubmission);
         verifyNoMoreInteractions(allSubmissions);
     }
 
@@ -84,8 +84,8 @@ public class SubmissionServiceTest {
         long baseTimeStamp = DateUtil.now().getMillis();
         FormSubmissionDTO firstFormSubmissionDTO = new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name 1", "", valueOf(baseTimeStamp)).withServerVersion("0");
         FormSubmissionDTO secondFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name 1", "", valueOf(baseTimeStamp + 1)).withServerVersion("1");
-        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, baseTimeStamp).withServerVersion(0L);
-        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1).withServerVersion(1L);
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, baseTimeStamp, 0L);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1, 1L);
         when(allSubmissions.findByServerVersion(0L)).thenReturn(asList(firstFormSubmission, secondFormSubmission));
 
         List<FormSubmissionDTO> formSubmissionDTOs = submissionService.fetchSubmission(0L);

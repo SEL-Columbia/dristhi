@@ -1,6 +1,7 @@
 package org.ei.drishti.form.service;
 
 import com.google.gson.Gson;
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.form.domain.FormInstance;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -17,7 +18,7 @@ public class FormSubmissionConvertor {
 
     public static FormSubmission toFormSubmission(FormSubmissionDTO formSubmissionDTO) {
         return new FormSubmission(formSubmissionDTO.anmId(), formSubmissionDTO.instanceId(), formSubmissionDTO.formName(),
-                formSubmissionDTO.entityId(), new Gson().fromJson(formSubmissionDTO.instance(), FormInstance.class), parseLong(formSubmissionDTO.timeStamp())
-        );
+                formSubmissionDTO.entityId(), new Gson().fromJson(formSubmissionDTO.instance(), FormInstance.class), parseLong(formSubmissionDTO.timeStamp()),
+                DateUtil.millis());
     }
 }
