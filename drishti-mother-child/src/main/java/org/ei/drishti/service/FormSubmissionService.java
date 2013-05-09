@@ -1,7 +1,9 @@
 package org.ei.drishti.service;
 
 import com.google.gson.Gson;
+import org.ei.drishti.domain.form.FormExportToken;
 import org.ei.drishti.domain.form.FormSubmission;
+import org.ei.drishti.repository.AllFormExportTokens;
 import org.ei.drishti.repository.AllFormSubmissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,15 +23,18 @@ public class FormSubmissionService {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionService.class.toString());
     private ZiggyService ziggyService;
     private AllFormSubmissions allFormSubmissions;
+    private AllFormExportTokens allFormExportTokens;
 
     @Autowired
-    public FormSubmissionService(ZiggyService ziggyService, AllFormSubmissions allFormSubmissions) {
+    public FormSubmissionService(ZiggyService ziggyService, AllFormSubmissions allFormSubmissions, AllFormExportTokens allFormExportTokens) {
         this.ziggyService = ziggyService;
         this.allFormSubmissions = allFormSubmissions;
+        this.allFormExportTokens = allFormExportTokens;
     }
 
     public void processSubmissions(List<FormSubmission> formSubmissions) {
         sort(formSubmissions, timeStampComparator());
+        FormExportToken exportToken = allFormExportTokens.getAll().get(0);
         for (FormSubmission submission : formSubmissions) {
             if (allFormSubmissions.exists(submission.instanceId())) {
                 logger.warn(format("Received form submission that already exists. Skipping. Submission: {0}", submission));
@@ -39,6 +44,7 @@ public class FormSubmissionService {
             logger.info(format("Invoking save for form with instance Id: {0} and for entity Id: {1}",
                     submission.instanceId(), submission.entityId()));
             ziggyService.saveForm(params, new Gson().toJson(submission.instance()));
+            allFormExportTokens.update(exportToken.withVersion(submission.serverVersion()));
         }
     }
 

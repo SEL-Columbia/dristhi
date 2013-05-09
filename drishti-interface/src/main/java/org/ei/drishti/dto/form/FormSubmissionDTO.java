@@ -18,6 +18,8 @@ public class FormSubmissionDTO {
     private String formInstance;
     @JsonProperty
     private String timeStamp;
+    @JsonProperty
+    private String serverVersion;
 
     public FormSubmissionDTO(String anmId, String instanceId, String entityId, String formName, String formInstance, String timeStamp) {
         this.anmId = anmId;
@@ -26,6 +28,11 @@ public class FormSubmissionDTO {
         this.formName = formName;
         this.formInstance = formInstance;
         this.timeStamp = timeStamp;
+    }
+
+    public FormSubmissionDTO withServerVersion(String version) {
+        this.serverVersion = version;
+        return this;
     }
 
     public String anmId() {
@@ -50,6 +57,10 @@ public class FormSubmissionDTO {
 
     public String timeStamp() {
         return this.timeStamp;
+    }
+
+    public String serverVersion() {
+        return serverVersion;
     }
 
     @Override

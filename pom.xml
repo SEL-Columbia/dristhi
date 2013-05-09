@@ -24,6 +24,7 @@
         <db.server>localhost</db.server>
         <db.port>5984</db.port>
         <db.name.drishti>drishti</db.name.drishti>
+        <db.name.drishti-form>drishti-form</db.name.drishti-form>
         <db.name.commcare-api>commcare</db.name.commcare-api>
         <db.name.motech-scheduletracking>motech-scheduletracking</db.name.motech-scheduletracking>
         <main.basedir>${project.basedir}</main.basedir>
@@ -164,6 +165,7 @@
                                     <arg value="-X"/>
                                     <arg value="DELETE"/>
                                     <arg value="http://${db.server}:${db.port}/${db.name.drishti}"/>
+                                    <arg value="http://${db.server}:${db.port}/${db.name.drishti-form}"/>
                                     <arg value="http://${db.server}:${db.port}/${db.name.motech-scheduletracking}"/>
                                     <arg value="http://${db.server}:${db.port}/${db.name.commcare-api}"/>
                                 </exec>

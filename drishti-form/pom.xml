@@ -12,6 +12,7 @@
     <artifactId>drishti-form</artifactId>
     <packaging>jar</packaging>
     <name>drishti-form</name>
+    <url>http://github.com/modilabs/dristhi</url>
 
     <properties>
         <main.basedir>${project.basedir}/..</main.basedir>

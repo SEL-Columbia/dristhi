@@ -1,8 +1,7 @@
 package org.ei.drishti.form.service;
 
 import ch.lambdaj.function.convert.Converter;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.repository.AllSubmissions;
@@ -28,8 +27,17 @@ public class SubmissionService {
         this.allSubmissions = allSubmissions;
     }
 
+    public List<FormSubmissionDTO> fetchSubmission(long formFetchToken) {
+        return with(allSubmissions.findByServerVersion(formFetchToken)).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
+            @Override
+            public FormSubmissionDTO convert(FormSubmission submission) {
+                return FormSubmissionConvertor.from(submission);
+            }
+        });
+    }
+
     public void processSubmissions(List<FormSubmissionDTO> formSubmissionsDTO) {
-        List<FormSubmission> formSubmissions = with(getSubmissionsInProperFormat(formSubmissionsDTO))
+        List<FormSubmission> formSubmissions = with(formSubmissionsDTO)
                 .convert(new Converter<FormSubmissionDTO, FormSubmission>() {
                     @Override
                     public FormSubmission convert(FormSubmissionDTO submission) {
@@ -45,7 +53,7 @@ public class SubmissionService {
             }
             logger.info(format("Saving form with instance Id: {0} and for entity Id: {1}",
                     submission.instanceId(), submission.entityId()));
-            allSubmissions.add(submission);
+            allSubmissions.add(submission.withServerVersion(DateUtil.millis()));
         }
     }
 
@@ -57,10 +65,5 @@ public class SubmissionService {
                 return firstTimestamp == secondTimestamp ? 0 : firstTimestamp < secondTimestamp ? -1 : 1;
             }
         };
-    }
-
-    private List<FormSubmissionDTO> getSubmissionsInProperFormat(List<FormSubmissionDTO> formSubmissionsDTO) {
-        return new Gson().fromJson(new Gson().toJson(formSubmissionsDTO), new TypeToken<List<FormSubmissionDTO>>() {
-        }.getType());
     }
 }

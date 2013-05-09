@@ -18,13 +18,14 @@ public class FormSubmissionBuilder {
     private List<FormField> fields = new ArrayList<>();
     private FormInstance formInstance = new FormInstance(new FormData(bind_type, default_bind_path, fields));
     private Long timestamp = 0L;
+    private long serverVersion = 0L;
 
     public static FormSubmissionBuilder create() {
         return new FormSubmissionBuilder();
     }
 
     public FormSubmission build() {
-        return new FormSubmission(anmId, instanceId, formName, entityId, formInstance, timestamp);
+        return new FormSubmission(anmId, instanceId, formName, entityId, formInstance, timestamp).withServerVersion(serverVersion);
     }
 
     public FormSubmissionBuilder addFormField(String name, String value) {
@@ -54,6 +55,11 @@ public class FormSubmissionBuilder {
 
     public FormSubmissionBuilder withFormName(String formName) {
         this.formName = formName;
+        return this;
+    }
+
+    public FormSubmissionBuilder withServerVersion(long serverVersion) {
+        this.serverVersion = serverVersion;
         return this;
     }
 }

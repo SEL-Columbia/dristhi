@@ -1,7 +1,9 @@
 package org.ei.drishti.service;
 
 import com.google.gson.Gson;
+import org.ei.drishti.domain.form.FormExportToken;
 import org.ei.drishti.domain.form.FormSubmission;
+import org.ei.drishti.repository.AllFormExportTokens;
 import org.ei.drishti.repository.AllFormSubmissions;
 import org.ei.drishti.service.formSubmissionHandler.FormSubmissionRouter;
 import org.ei.drishti.util.FormSubmissionBuilder;
@@ -26,13 +28,15 @@ public class FormSubmissionServiceTest {
     private FormSubmissionRouter formSubmissionRouter;
     @Mock
     private AllFormSubmissions allFormSubmissions;
+    @Mock
+    private AllFormExportTokens allFormExportTokens;
 
     private FormSubmissionService submissionService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        submissionService = new FormSubmissionService(ziggyService, allFormSubmissions);
+        submissionService = new FormSubmissionService(ziggyService, allFormSubmissions, allFormExportTokens);
     }
 
     @Test
@@ -41,18 +45,23 @@ public class FormSubmissionServiceTest {
         String paramsForEarlierFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 1").put(INSTANCE_ID, "instance id 1").put(ENTITY_ID, "entity id 1").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp)).map());
         String paramsForLaterFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 2").put(INSTANCE_ID, "instance id 2").put(ENTITY_ID, "entity id 2").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp + 1)).map());
         String paramsForVeryLateFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 2").put(INSTANCE_ID, "instance id 3").put(ENTITY_ID, "entity id 3").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp + 2)).map());
-        FormSubmission earlierFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 1").addFormField("field 1", "value 1").withTimeStamp(baseTimeStamp).build();
-        FormSubmission laterFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 2").withInstanceId("instance id 2").withEntityId("entity id 2").addFormField("field 1", "value 2").withTimeStamp(baseTimeStamp + 1).build();
-        FormSubmission veryLateFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 2").withInstanceId("instance id 3").withEntityId("entity id 3").addFormField("field 1", "value 3").withTimeStamp(baseTimeStamp + 2).build();
+        FormSubmission earlierFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 1").addFormField("field 1", "value 1").withTimeStamp(baseTimeStamp).withServerVersion(1L).build();
+        FormSubmission laterFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 2").withInstanceId("instance id 2").withEntityId("entity id 2").addFormField("field 1", "value 2").withTimeStamp(baseTimeStamp + 1).withServerVersion(2L).build();
+        FormSubmission veryLateFormSubmission = FormSubmissionBuilder.create().withANMId("anm id 2").withInstanceId("instance id 3").withEntityId("entity id 3").addFormField("field 1", "value 3").withTimeStamp(baseTimeStamp + 2).withServerVersion(3L).build();
         List<FormSubmission> formSubmissions = asList(laterFormSubmission, earlierFormSubmission, veryLateFormSubmission);
         when(allFormSubmissions.exists(anyString())).thenReturn(false);
+        FormExportToken formExportToken = new FormExportToken(0L);
+        when(allFormExportTokens.getAll()).thenReturn(asList(formExportToken));
 
         submissionService.processSubmissions(formSubmissions);
 
-        InOrder inOrder = inOrder(ziggyService);
+        InOrder inOrder = inOrder(ziggyService, allFormExportTokens);
         inOrder.verify(ziggyService).saveForm(paramsForEarlierFormSubmission, new Gson().toJson(earlierFormSubmission.instance()));
+        inOrder.verify(allFormExportTokens).update(formExportToken.withVersion(1L));
         inOrder.verify(ziggyService).saveForm(paramsForLaterFormSubmission, new Gson().toJson(laterFormSubmission.instance()));
+        inOrder.verify(allFormExportTokens).update(formExportToken.withVersion(2L));
         inOrder.verify(ziggyService).saveForm(paramsForVeryLateFormSubmission, new Gson().toJson(veryLateFormSubmission.instance()));
+        inOrder.verify(allFormExportTokens).update(formExportToken.withVersion(3L));
         verifyNoMoreInteractions(ziggyService);
     }
 
@@ -63,6 +72,7 @@ public class FormSubmissionServiceTest {
         String paramsForSecondFormSubmission = new Gson().toJson(create(ANM_ID, "anm id 2").put(INSTANCE_ID, "instance id 2").put(ENTITY_ID, "entity id 2").put(FORM_NAME, "form name 1").put(TIME_STAMP, String.valueOf(baseTimeStamp + 1)).map());
         FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", null, baseTimeStamp);
         FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1);
+        when(allFormExportTokens.getAll()).thenReturn(asList(new FormExportToken(0L)));
         when(allFormSubmissions.exists("instance id 1")).thenReturn(true);
         when(allFormSubmissions.exists("instance id 2")).thenReturn(false);
 

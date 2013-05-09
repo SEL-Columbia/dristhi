@@ -25,6 +25,8 @@ public class FormSubmission extends MotechBaseDataObject {
     private String entityId;
     @JsonProperty
     private FormInstance formInstance;
+    @JsonProperty
+    private long serverVersion;
 
     public FormSubmission() {
     }
@@ -36,6 +38,11 @@ public class FormSubmission extends MotechBaseDataObject {
         this.timestamp = timestamp;
         this.entityId = entityId;
         this.formInstance = formInstance;
+    }
+
+    public FormSubmission withServerVersion(long version) {
+        this.serverVersion = version;
+        return this;
     }
 
     public String anmId() {
@@ -72,6 +79,10 @@ public class FormSubmission extends MotechBaseDataObject {
 
     public String getInstanceId() {
         return instanceId;
+    }
+
+    public long serverVersion() {
+        return serverVersion;
     }
 
     public Map<String, String> getFields(List<String> fieldNames) {

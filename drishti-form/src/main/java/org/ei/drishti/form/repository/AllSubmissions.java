@@ -1,8 +1,10 @@
 package org.ei.drishti.form.repository;
 
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
+import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,4 +32,10 @@ public class AllSubmissions extends MotechBaseRepository<FormSubmission> {
         return submissions.get(0);
     }
 
+    @View(name = "formSubmission_by_server_version", map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.serverVersion], null); } }")
+    public List<FormSubmission> findByServerVersion(long serverVersion) {
+        ComplexKey startKey = ComplexKey.of(serverVersion + 1);
+        ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
+        return db.queryView(createQuery("formSubmission_by_server_version").startKey(startKey).endKey(endKey).includeDocs(true), FormSubmission.class);
+    }
 }

@@ -18,6 +18,10 @@ public class DateUtil {
         return dateUtility.today();
     }
 
+    public static long millis() {
+        return dateUtility.millis();
+    }
+
     public static boolean isDateWithinGivenPeriodBeforeToday(LocalDate referenceDateForSchedule, Period period) {
         return inRange(toTime(referenceDateForSchedule), toTime(org.motechproject.util.DateUtil.today().minus(period)), toTime(today()));
     }
@@ -37,6 +41,8 @@ public class DateUtil {
 
 interface DateUtility {
     LocalDate today();
+
+    long millis();
 }
 
 class RealDate implements DateUtility {
@@ -44,18 +50,28 @@ class RealDate implements DateUtility {
     public LocalDate today() {
         return LocalDate.now();
     }
+
+    @Override
+    public long millis() {
+        return DateTime.now().getMillis();
+    }
 }
 
 class MockDate implements DateUtility {
-    private LocalDate fakeDay;
+    private DateTime fakeDay;
 
     MockDate(LocalDate fakeDay) {
-        this.fakeDay = fakeDay;
+        this.fakeDay = fakeDay.toDateTimeAtStartOfDay();
     }
 
     @Override
     public LocalDate today() {
-        return fakeDay;
+        return fakeDay.toLocalDate();
+    }
+
+    @Override
+    public long millis() {
+        return fakeDay.getMillis();
     }
 }
 
