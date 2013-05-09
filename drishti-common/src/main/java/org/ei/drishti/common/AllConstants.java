@@ -10,6 +10,7 @@ public class AllConstants {
         public static final String FORM_NAME = "formName";
         public static final String INSTANCE_ID = "instanceId";
         public static final String TIME_STAMP = "timeStamp";
+        public static final String SERVER_VERSION = "serverVersion";
         public static final String EC_REGISTRATION = "ec_registration";
         public static final String FP_COMPLICATIONS = "fp_complications";
         public static final String FP_CHANGE = "fp_change";

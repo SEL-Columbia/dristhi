@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Long.parseLong;
 import static java.util.UUID.randomUUID;
 import static org.ei.drishti.common.AllConstants.Form.*;
 
@@ -61,7 +62,8 @@ public class FormDataRepository {
         Map<String, String> params = getStringMapFromJSON(paramsJSON);
 
         allFormSubmissions.add(new FormSubmission(params.get(ANM_ID), params.get(INSTANCE_ID), params.get(FORM_NAME),
-                params.get(ENTITY_ID), new Gson().fromJson(data, FormInstance.class), Long.parseLong(params.get(TIME_STAMP))));
+                params.get(ENTITY_ID), new Gson().fromJson(data, FormInstance.class), parseLong(params.get(TIME_STAMP)))
+                .withServerVersion(parseLong(params.get(SERVER_VERSION))));
 
         return params.get(INSTANCE_ID);
     }

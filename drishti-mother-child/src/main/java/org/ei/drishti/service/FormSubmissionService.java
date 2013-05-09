@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.lang.String.valueOf;
 import static java.text.MessageFormat.format;
 import static java.util.Collections.sort;
 import static org.ei.drishti.common.AllConstants.Form.*;
@@ -53,7 +54,8 @@ public class FormSubmissionService {
                 .put(INSTANCE_ID, formSubmission.instanceId())
                 .put(ENTITY_ID, formSubmission.entityId())
                 .put(FORM_NAME, formSubmission.formName())
-                .put(TIME_STAMP, String.valueOf(formSubmission.timestamp()))
+                .put(TIME_STAMP, valueOf(formSubmission.timestamp()))
+                .put(SERVER_VERSION, valueOf(formSubmission.serverVersion()))
                 .map());
     }
 

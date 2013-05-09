@@ -75,10 +75,6 @@ public class FormSubmission extends MotechBaseDataObject {
         return serverVersion;
     }
 
-    public String getField(String name) {
-        return formInstance.getField(name);
-    }
-
     public String getInstanceId() {
         return instanceId;
     }

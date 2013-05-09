@@ -51,10 +51,11 @@ public class FormDataRepositoryIntegrationTest {
                 .put("anmId", "anm 1")
                 .put("timeStamp", "0")
                 .put("entityId", "entity id 1")
+                .put("serverVersion", "1")
                 .map();
         String formInstanceJSON = "{form:{bind_type: 'ec'}}";
         String paramsJSON = new Gson().toJson(params);
-        FormSubmission submission = new FormSubmission("anm 1", "id 1", "form name", "entity id 1", new Gson().fromJson(formInstanceJSON, FormInstance.class), 0L);
+        FormSubmission submission = new FormSubmission("anm 1", "id 1", "form name", "entity id 1", new Gson().fromJson(formInstanceJSON, FormInstance.class), 0L).withServerVersion(1L);
 
         String instanceId = repository.saveFormSubmission(paramsJSON, formInstanceJSON);
 
