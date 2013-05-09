@@ -2,6 +2,7 @@ package org.ei.drishti.service.scheduling;
 
 import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.domain.EligibleCouple;
+import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.ActionService;
 import org.joda.time.LocalDate;
@@ -291,7 +292,7 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldUpdateOCPRefillScheduleWhenOCPPillsAreResupplied() {
-        ecSchedulingService.renewFPProduct("anm id 1", "entity id 1", "ocp", null, "1", "2012-01-01", null, "2011-01-12");
+        ecSchedulingService.renewFPProduct(new FPProductInformation("anm id 1", "entity id 1", "ocp", null, "1", "2012-01-01", null, "2011-01-12"));
 
         InOrder inOrder = inOrder(scheduleTrackingService, actionService);
         inOrder.verify(scheduleTrackingService).unenroll("entity id 1", asList("OCP Refill"));
@@ -301,7 +302,7 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldDoNothingWhenZeroOCPPillsAreResupplied() {
-        ecSchedulingService.renewFPProduct("anm id 1", "entity id 1", "ocp", null, "0", "2012-01-02", null, "2011-01-12");
+        ecSchedulingService.renewFPProduct(new FPProductInformation("anm id 1", "entity id 1", "ocp", null, "0", "2012-01-02", null, "2011-01-12"));
 
         verifyZeroInteractions(scheduleTrackingService);
         verifyZeroInteractions(actionService);
@@ -309,7 +310,7 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldDoNothingWhenOCPPillsAreNotResupplied() {
-        ecSchedulingService.renewFPProduct("anm id 1", "entity id 1", "ocp", null, "", "2012-01-02", null, "2011-01-12");
+        ecSchedulingService.renewFPProduct(new FPProductInformation("anm id 1", "entity id 1", "ocp", null, "", "2012-01-02", null, "2011-01-12"));
 
         verifyZeroInteractions(scheduleTrackingService);
         verifyZeroInteractions(actionService);
@@ -317,7 +318,7 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldUpdateDMPAInjectableRefillScheduleWhenDMPAIsReinjected() {
-        ecSchedulingService.renewFPProduct("anm id 1", "entity id 1", "dmpa_injectable", "2012-01-01", null, null, null, "2011-01-12");
+        ecSchedulingService.renewFPProduct(new FPProductInformation("anm id 1", "entity id 1", "dmpa_injectable", "2012-01-01", null, null, null, "2011-01-12"));
 
         InOrder inOrder = inOrder(scheduleTrackingService, actionService);
         inOrder.verify(scheduleTrackingService).unenroll("entity id 1", asList("DMPA Injectable Refill"));
@@ -327,12 +328,12 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldDoNothingWhenDMPANotInjected() {
-        ecSchedulingService.renewFPProduct("anm id 1", "entity id 1", "dmpa_injectable", "", null, null, null, "2011-01-12");
+        ecSchedulingService.renewFPProduct(new FPProductInformation("anm id 1", "entity id 1", "dmpa_injectable", "", null, null, null, "2011-01-12"));
 
         verifyZeroInteractions(scheduleTrackingService);
         verifyZeroInteractions(actionService);
 
-        ecSchedulingService.renewFPProduct("anm id 1", "entity id 1", "dmpa_injectable", null, null, null, null, "2011-01-12");
+        ecSchedulingService.renewFPProduct(new FPProductInformation("anm id 1", "entity id 1", "dmpa_injectable", null, null, null, null, "2011-01-12"));
 
         verifyZeroInteractions(scheduleTrackingService);
         verifyZeroInteractions(actionService);
@@ -342,7 +343,7 @@ public class ECSchedulingServiceTest {
     public void shouldUpdateECFromCondomRefillScheduleWhenCondomsAreResupplied() {
         fakeIt(parse("2011-01-15"));
 
-        ecSchedulingService.renewFPProduct("anm id 1", "entity id 1", "condom", null, null, null, "20", "2011-01-12");
+        ecSchedulingService.renewFPProduct(new FPProductInformation("anm id 1", "entity id 1", "condom", null, null, null, "20", "2011-01-12"));
 
         InOrder inOrder = inOrder(scheduleTrackingService, actionService);
         inOrder.verify(scheduleTrackingService).unenroll("entity id 1", asList("Condom Refill"));
@@ -352,7 +353,7 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldDoNothingWhenCondomsAreNotResupplied() {
-        ecSchedulingService.renewFPProduct("anm id 1", "entity id 1", "condom", null, null, null, "", "2011-01-012");
+        ecSchedulingService.renewFPProduct(new FPProductInformation("anm id 1", "entity id 1", "condom", null, null, null, "", "2011-01-012"));
 
         verifyZeroInteractions(scheduleTrackingService);
         verifyZeroInteractions(actionService);

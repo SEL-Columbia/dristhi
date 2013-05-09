@@ -9,6 +9,7 @@ import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.service.scheduling.ECSchedulingService;
+import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.util.FormSubmissionBuilder;
 import org.ei.drishti.util.IdGenerator;
 import org.ei.drishti.util.SafeMap;
@@ -223,7 +224,6 @@ public class ECServiceTest {
                 .addFormField("currentMethod", "fp method")
                 .addFormField("submissionDate", "2011-01-01")
                 .addFormField("numberOfOCPDelivered", "1")
-                .addFormField("numberOfCondomsSupplied", "2")
                 .addFormField("ocpRefillDate", "2010-12-25")
                 .addFormField("dmpaInjectionDate", "2010-12-20")
                 .addFormField("numberOfCondomsSupplied", "20")
@@ -231,7 +231,7 @@ public class ECServiceTest {
 
         ecService.renewFPProduct(submission);
 
-        verify(schedulingService).renewFPProduct("anm id 1", "entity id 1", "fp method", "2010-12-20", "1", "2010-12-25", "20", "2011-01-01");
+        verify(schedulingService).renewFPProduct(new FPProductInformation("anm id 1", "entity id 1", "fp method", "2010-12-20", "1", "2010-12-25", "20", "2011-01-01"));
     }
 
     @Test

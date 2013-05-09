@@ -9,6 +9,7 @@ import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.service.scheduling.ECSchedulingService;
+import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.util.IdGenerator;
 import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
@@ -139,10 +140,15 @@ public class ECService {
             return;
         }
 
-        schedulingService.renewFPProduct(submission.anmId(), submission.entityId(),
+        FPProductInformation fpProductInformation = new FPProductInformation(
+                submission.anmId(),
+                submission.entityId(),
                 submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
                 submission.getField(DMPA_INJECTION_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
-                submission.getField(OCP_REFILL_DATE_FIELD_NAME), submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME), submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
+                submission.getField(OCP_REFILL_DATE_FIELD_NAME),
+                submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
+                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
+        schedulingService.renewFPProduct(fpProductInformation);
     }
 }

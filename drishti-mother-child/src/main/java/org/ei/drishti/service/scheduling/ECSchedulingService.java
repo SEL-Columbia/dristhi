@@ -3,6 +3,7 @@ package org.ei.drishti.service.scheduling;
 import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.contract.Schedule;
 import org.ei.drishti.domain.EligibleCouple;
+import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.service.ActionService;
 import org.joda.time.LocalDate;
 import org.motechproject.model.Time;
@@ -79,7 +80,6 @@ public class ECSchedulingService {
         }
         if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(currentFPMethod)) {
             enrollECToCondomRefillSchedule(entityId);
-            return;
         }
     }
 
@@ -88,24 +88,23 @@ public class ECSchedulingService {
         enrollToRenewFPProducts(entityId, newFPMethod, fpMethodChangeDate, numberOfOCPStripsSupplied, fpMethodChangeDate);
     }
 
-    public void renewFPProduct(String anmId, String entityId, String currentMethod, String dmpaInjectionDate, String numberOfOCPStripsSupplied, String ocpRefillDate, String numberOfCondomsSupplied, String submissionDate) {
-        if (DMPA_INJECTABLE_FP_METHOD_VALUE.equalsIgnoreCase(currentMethod) && tryParse(dmpaInjectionDate, null) != null) {
-            logger.info(format("Un-enrolling EC from DMPA Injectable Refill schedule as FP product was renewed. entityId: {0}, DMPA injection date: {1}", entityId, dmpaInjectionDate));
-            unEnrollECFromDMPAInjectableSchedule(entityId, anmId, dmpaInjectionDate);
-            enrollECToDMPAInjectableSchedule(entityId, dmpaInjectionDate);
+    public void renewFPProduct(FPProductInformation fpProductInformation) {
+        if (DMPA_INJECTABLE_FP_METHOD_VALUE.equalsIgnoreCase(fpProductInformation.currentFPMethod()) && tryParse(fpProductInformation.dmpaInjectionDate(), null) != null) {
+            logger.info(format("Un-enrolling EC from DMPA Injectable Refill schedule as FP product was renewed. entityId: {0}, DMPA injection date: {1}", fpProductInformation.entityId(), fpProductInformation.dmpaInjectionDate()));
+            unEnrollECFromDMPAInjectableSchedule(fpProductInformation.entityId(), fpProductInformation.anmId(), fpProductInformation.dmpaInjectionDate());
+            enrollECToDMPAInjectableSchedule(fpProductInformation.entityId(), fpProductInformation.dmpaInjectionDate());
             return;
         }
-        if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(currentMethod) && tryParse(numberOfOCPStripsSupplied, 0) > 0) {
-            logger.info(format("Un-enrolling EC from OCP Refill schedule as FP product was renewed. entityId: {0}, ocpRefillDate: {1}, numberOfOCPStripsSupplied: {2}", entityId, ocpRefillDate, numberOfOCPStripsSupplied));
-            unEnrollECFromOCPRefillSchedule(entityId, anmId, ocpRefillDate);
-            enrollECToOCPRefillSchedule(entityId, numberOfOCPStripsSupplied, ocpRefillDate);
+        if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(fpProductInformation.currentFPMethod()) && tryParse(fpProductInformation.numberOfOCPStripsSupplied(), 0) > 0) {
+            logger.info(format("Un-enrolling EC from OCP Refill schedule as FP product was renewed. entityId: {0}, ocpRefillDate: {1}, numberOfOCPStripsSupplied: {2}", fpProductInformation.entityId(), fpProductInformation.ocpRefillDate(), fpProductInformation.numberOfOCPStripsSupplied()));
+            unEnrollECFromOCPRefillSchedule(fpProductInformation.entityId(), fpProductInformation.anmId(), fpProductInformation.ocpRefillDate());
+            enrollECToOCPRefillSchedule(fpProductInformation.entityId(), fpProductInformation.numberOfOCPStripsSupplied(), fpProductInformation.ocpRefillDate());
             return;
         }
-        if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(currentMethod) && tryParse(numberOfCondomsSupplied, 0) > 0) {
-            logger.info(format("Un-enrolling EC from Condom Refill schedule as FP product was renewed. entityId: {0}, condomRefillDate: {1}, numberOfCondomsSupplied: {2}", entityId, submissionDate, numberOfCondomsSupplied));
-            unEnrollECFromCondomRefillSchedule(entityId, anmId, submissionDate);
-            enrollECToCondomRefillSchedule(entityId);
-            return;
+        if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(fpProductInformation.currentFPMethod()) && tryParse(fpProductInformation.numberOfCondomsSupplied(), 0) > 0) {
+            logger.info(format("Un-enrolling EC from Condom Refill schedule as FP product was renewed. entityId: {0}, condomRefillDate: {1}, numberOfCondomsSupplied: {2}", fpProductInformation.entityId(), fpProductInformation.submissionDate(), fpProductInformation.numberOfCondomsSupplied()));
+            unEnrollECFromCondomRefillSchedule(fpProductInformation.entityId(), fpProductInformation.anmId(), fpProductInformation.submissionDate());
+            enrollECToCondomRefillSchedule(fpProductInformation.entityId());
         }
     }
 
@@ -126,7 +125,6 @@ public class ECSchedulingService {
             logger.info(format("Un-enrolling EC from Condom Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", entityId, newFPMethod));
 
             unEnrollECFromCondomRefillSchedule(entityId, anmId, fpMethodChangeDate);
-            return;
         }
     }
 
