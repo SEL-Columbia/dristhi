@@ -13,9 +13,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class AllSubmissions extends MotechBaseRepository<FormSubmission> {
+public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
     @Autowired
-    protected AllSubmissions(@Qualifier("drishtiFormDatabaseConnector") CouchDbConnector db) {
+    protected AllFormSubmissions(@Qualifier("drishtiFormDatabaseConnector") CouchDbConnector db) {
         super(FormSubmission.class, db);
     }
 

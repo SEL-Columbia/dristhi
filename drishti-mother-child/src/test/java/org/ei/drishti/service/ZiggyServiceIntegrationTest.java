@@ -1,6 +1,6 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.form.repository.AllSubmissions;
+import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.ei.drishti.repository.FormDataRepository;
 import org.ei.drishti.service.formSubmissionHandler.*;
 import org.junit.Before;
@@ -29,7 +29,7 @@ public class ZiggyServiceIntegrationTest {
     private String jsDirectoryName;
 
     @Autowired
-    private AllSubmissions formSubmissionsRepository;
+    private AllFormSubmissions formSubmissionsRepository;
 
     @Mock
     private ECRegistrationHandler ecRegistrationHandler;

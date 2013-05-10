@@ -4,7 +4,7 @@ import ch.lambdaj.function.convert.Converter;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.form.domain.FormSubmission;
-import org.ei.drishti.form.repository.AllSubmissions;
+import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +20,24 @@ import static java.util.Collections.sort;
 @Service
 public class FormSubmissionService {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionService.class.toString());
-    private AllSubmissions allSubmissions;
+    private AllFormSubmissions allFormSubmissions;
 
     @Autowired
-    public FormSubmissionService(AllSubmissions allSubmissions) {
-        this.allSubmissions = allSubmissions;
+    public FormSubmissionService(AllFormSubmissions allFormSubmissions) {
+        this.allFormSubmissions = allFormSubmissions;
     }
 
     public List<FormSubmissionDTO> fetch(long formFetchToken) {
-        return with(allSubmissions.findByServerVersion(formFetchToken)).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
+        return with(allFormSubmissions.findByServerVersion(formFetchToken)).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
                 return FormSubmissionConvertor.from(submission);
             }
         });
+    }
+
+    public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version) {
+        return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version);
     }
 
     public void submit(List<FormSubmissionDTO> formSubmissionsDTO) {
@@ -46,19 +50,15 @@ public class FormSubmissionService {
 
         sort(formSubmissions, timeStampComparator());
         for (FormSubmission submission : formSubmissions) {
-            if (allSubmissions.exists(submission.instanceId())) {
+            if (allFormSubmissions.exists(submission.instanceId())) {
                 logger.warn(format("Received form submission that already exists. Skipping. Submission: {0}", submission));
                 continue;
             }
             logger.info(format("Saving form with instance Id: {0} and for entity Id: {1}",
                     submission.instanceId(), submission.entityId()));
             submission.setServerVersion(DateUtil.millis());
-            allSubmissions.add(submission);
+            allFormSubmissions.add(submission);
         }
-    }
-
-    public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version) {
-        return allSubmissions.findByANMIDAndServerVersion(anmIdentifier, version);
     }
 
     private Comparator<FormSubmission> timeStampComparator() {

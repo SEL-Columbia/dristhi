@@ -1,7 +1,7 @@
 package org.ei.drishti.service.formSubmissionHandler;
 
 import org.ei.drishti.form.domain.FormSubmission;
-import org.ei.drishti.form.repository.AllSubmissions;
+import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -12,7 +12,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class FormSubmissionRouterTest {
     @Mock
-    private AllSubmissions formSubmissionsRepository;
+    private AllFormSubmissions formSubmissionsRepository;
     @Mock
     private ECRegistrationHandler ecRegistrationHandler;
     @Mock

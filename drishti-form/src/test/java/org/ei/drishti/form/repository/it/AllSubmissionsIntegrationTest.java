@@ -1,7 +1,7 @@
 package org.ei.drishti.form.repository.it;
 
 import org.ei.drishti.form.domain.FormSubmission;
-import org.ei.drishti.form.repository.AllSubmissions;
+import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ import static junit.framework.Assert.*;
 @ContextConfiguration("classpath:applicationContext-drishti-form.xml")
 public class AllSubmissionsIntegrationTest {
     @Autowired
-    private AllSubmissions formSubmissions;
+    private AllFormSubmissions formSubmissions;
 
     @Before
     public void setUp() throws Exception {
