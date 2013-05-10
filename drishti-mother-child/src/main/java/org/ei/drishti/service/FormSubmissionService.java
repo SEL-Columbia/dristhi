@@ -34,7 +34,7 @@ public class FormSubmissionService {
     }
 
     public void processSubmissions(List<FormSubmission> formSubmissions) {
-        sort(formSubmissions, timeStampComparator());
+        sort(formSubmissions, serverVersionComparator());
         FormExportToken exportToken = allFormExportTokens.getAll().get(0);
         for (FormSubmission submission : formSubmissions) {
             if (allFormSubmissions.exists(submission.instanceId())) {
@@ -59,11 +59,11 @@ public class FormSubmissionService {
                 .map());
     }
 
-    private Comparator<FormSubmission> timeStampComparator() {
+    private Comparator<FormSubmission> serverVersionComparator() {
         return new Comparator<FormSubmission>() {
             public int compare(FormSubmission firstSubmission, FormSubmission secondSubmission) {
-                long firstTimestamp = firstSubmission.timestamp();
-                long secondTimestamp = secondSubmission.timestamp();
+                long firstTimestamp = firstSubmission.serverVersion();
+                long secondTimestamp = secondSubmission.serverVersion();
                 return firstTimestamp == secondTimestamp ? 0 : firstTimestamp < secondTimestamp ? -1 : 1;
             }
         };
@@ -73,4 +73,3 @@ public class FormSubmissionService {
         return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version);
     }
 }
-
