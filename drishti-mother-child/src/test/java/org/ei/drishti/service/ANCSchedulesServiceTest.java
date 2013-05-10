@@ -188,6 +188,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         setUp();
         LocalDate lmp = new LocalDate(2012, 1, 1);
         mockCurrentDate(enrollmentDate);
+        org.ei.drishti.common.util.DateUtil.fakeIt(enrollmentDate);
 
         schedulesService.enrollMother("Case X", lmp, new Time(15, 0), new Time(14, 0));
 
