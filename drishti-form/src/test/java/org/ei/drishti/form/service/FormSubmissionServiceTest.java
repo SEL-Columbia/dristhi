@@ -19,17 +19,17 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class SubmissionServiceTest {
+public class FormSubmissionServiceTest {
     @Mock
     private AllSubmissions allSubmissions;
 
-    private SubmissionService submissionService;
+    private FormSubmissionService formSubmissionService;
     private long serverVersion;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        submissionService = new SubmissionService(allSubmissions);
+        formSubmissionService = new FormSubmissionService(allSubmissions);
         LocalDate fakeDate = new LocalDate("2012-01-01");
         org.ei.drishti.common.util.DateUtil.fakeIt(fakeDate);
         serverVersion = fakeDate.toDateTimeAtStartOfDay().getMillis();
@@ -47,7 +47,7 @@ public class SubmissionServiceTest {
         List<FormSubmissionDTO> formSubmissionsDTO = asList(laterFormSubmissionDTO, earlierFormSubmissionDTO, veryLateFormSubmissionDTO);
         when(allSubmissions.exists(anyString())).thenReturn(false);
 
-        submissionService.submit(formSubmissionsDTO);
+        formSubmissionService.submit(formSubmissionsDTO);
 
         InOrder inOrder = inOrder(allSubmissions);
         inOrder.verify(allSubmissions).exists("instance id 1");
@@ -69,7 +69,7 @@ public class SubmissionServiceTest {
         when(allSubmissions.exists("instance id 1")).thenReturn(true);
         when(allSubmissions.exists("instance id 2")).thenReturn(false);
 
-        submissionService.submit(asList(firstFormSubmissionDTO, secondFormSubmissionDTO));
+        formSubmissionService.submit(asList(firstFormSubmissionDTO, secondFormSubmissionDTO));
 
         InOrder inOrder = inOrder(allSubmissions);
         inOrder.verify(allSubmissions).exists("instance id 1");
@@ -88,7 +88,7 @@ public class SubmissionServiceTest {
         FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1, 1L);
         when(allSubmissions.findByServerVersion(0L)).thenReturn(asList(firstFormSubmission, secondFormSubmission));
 
-        List<FormSubmissionDTO> formSubmissionDTOs = submissionService.fetch(0L);
+        List<FormSubmissionDTO> formSubmissionDTOs = formSubmissionService.fetch(0L);
 
         assertEquals(asList(firstFormSubmissionDTO, secondFormSubmissionDTO), formSubmissionDTOs);
     }

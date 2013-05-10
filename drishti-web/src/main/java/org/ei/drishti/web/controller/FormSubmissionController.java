@@ -5,7 +5,7 @@ import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.service.FormSubmissionConvertor;
-import org.ei.drishti.form.service.SubmissionService;
+import org.ei.drishti.form.service.FormSubmissionService;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +30,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping(value = "/form-submissions")
 public class FormSubmissionController {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionController.class.toString());
-    private SubmissionService formSubmissionService;
+    private FormSubmissionService formSubmissionService;
     private OutboundEventGateway gateway;
 
     @Autowired
-    public FormSubmissionController(SubmissionService submissionService, OutboundEventGateway gateway) {
-        this.formSubmissionService = submissionService;
+    public FormSubmissionController(FormSubmissionService formSubmissionService, OutboundEventGateway gateway) {
+        this.formSubmissionService = formSubmissionService;
         this.gateway = gateway;
     }
 

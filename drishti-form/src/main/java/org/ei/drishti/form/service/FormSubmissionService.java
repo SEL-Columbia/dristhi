@@ -18,12 +18,12 @@ import static java.text.MessageFormat.format;
 import static java.util.Collections.sort;
 
 @Service
-public class SubmissionService {
-    private static Logger logger = LoggerFactory.getLogger(SubmissionService.class.toString());
+public class FormSubmissionService {
+    private static Logger logger = LoggerFactory.getLogger(FormSubmissionService.class.toString());
     private AllSubmissions allSubmissions;
 
     @Autowired
-    public SubmissionService(AllSubmissions allSubmissions) {
+    public FormSubmissionService(AllSubmissions allSubmissions) {
         this.allSubmissions = allSubmissions;
     }
 

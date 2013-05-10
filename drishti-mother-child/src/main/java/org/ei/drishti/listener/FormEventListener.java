@@ -8,7 +8,7 @@ import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.service.FormSubmissionConvertor;
-import org.ei.drishti.form.service.SubmissionService;
+import org.ei.drishti.form.service.FormSubmissionService;
 import org.ei.drishti.repository.AllFormExportTokens;
 import org.ei.drishti.scheduler.DrishtiFormScheduler;
 import org.ei.drishti.service.FormEntityService;
@@ -27,13 +27,13 @@ import static java.text.MessageFormat.format;
 @Component
 public class FormEventListener {
     private static Logger logger = LoggerFactory.getLogger(FormEventListener.class.toString());
-    private SubmissionService submissionService;
+    private FormSubmissionService formSubmissionService;
     private FormEntityService formEntityService;
     private AllFormExportTokens allFormExportTokens;
 
     @Autowired
-    public FormEventListener(SubmissionService submissionService, FormEntityService formEntityService, AllFormExportTokens allFormExportTokens) {
-        this.submissionService = submissionService;
+    public FormEventListener(FormSubmissionService formSubmissionService, FormEntityService formEntityService, AllFormExportTokens allFormExportTokens) {
+        this.formSubmissionService = formSubmissionService;
         this.formEntityService = formEntityService;
         this.allFormExportTokens = allFormExportTokens;
     }
@@ -42,7 +42,7 @@ public class FormEventListener {
     public void submitForms(MotechEvent event) {
         List<FormSubmissionDTO> formSubmissions = new Gson().fromJson((String) event.getParameters().get("data"), new TypeToken<List<FormSubmissionDTO>>() {
         }.getType());
-        submissionService.submit(formSubmissions);
+        formSubmissionService.submit(formSubmissions);
     }
 
     @MotechListener(subjects = DrishtiFormScheduler.SUBJECT)
@@ -50,7 +50,7 @@ public class FormEventListener {
         logger.info("Fetching Forms");
         long version = getVersion();
 
-        List<FormSubmissionDTO> formSubmissionDTOs = submissionService.fetch(version);
+        List<FormSubmissionDTO> formSubmissionDTOs = formSubmissionService.fetch(version);
         if (formSubmissionDTOs.isEmpty()) {
             logger.info("No new forms found. Export token: " + version);
             return;
