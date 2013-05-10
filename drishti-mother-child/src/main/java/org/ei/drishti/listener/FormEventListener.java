@@ -3,15 +3,15 @@ package org.ei.drishti.listener;
 import ch.lambdaj.function.convert.Converter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.ei.drishti.domain.form.FormExportToken;
-import org.ei.drishti.domain.form.FormSubmission;
+import org.ei.drishti.domain.FormExportToken;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
+import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.service.FormSubmissionConvertor;
 import org.ei.drishti.form.service.SubmissionService;
 import org.ei.drishti.repository.AllFormExportTokens;
 import org.ei.drishti.scheduler.DrishtiFormScheduler;
-import org.ei.drishti.service.FormSubmissionService;
-import org.ei.drishti.util.FormSubmissionConvertor;
+import org.ei.drishti.service.FormEntityService;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.slf4j.Logger;
@@ -28,13 +28,13 @@ import static java.text.MessageFormat.format;
 public class FormEventListener {
     private static Logger logger = LoggerFactory.getLogger(FormEventListener.class.toString());
     private SubmissionService submissionService;
-    private FormSubmissionService formSubmissionService;
+    private FormEntityService formEntityService;
     private AllFormExportTokens allFormExportTokens;
 
     @Autowired
-    public FormEventListener(SubmissionService submissionService, FormSubmissionService formSubmissionService, AllFormExportTokens allFormExportTokens) {
+    public FormEventListener(SubmissionService submissionService, FormEntityService formEntityService, AllFormExportTokens allFormExportTokens) {
         this.submissionService = submissionService;
-        this.formSubmissionService = formSubmissionService;
+        this.formEntityService = formEntityService;
         this.allFormExportTokens = allFormExportTokens;
     }
 
@@ -61,10 +61,10 @@ public class FormEventListener {
                 .convert(new Converter<FormSubmissionDTO, FormSubmission>() {
                     @Override
                     public FormSubmission convert(FormSubmissionDTO submission) {
-                        return FormSubmissionConvertor.toFormSubmission(submission);
+                        return FormSubmissionConvertor.toFormSubmissionWithVersion(submission);
                     }
                 });
-        formSubmissionService.process(formSubmissions);
+        formEntityService.process(formSubmissions);
     }
 
     private long getVersion() {

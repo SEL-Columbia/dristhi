@@ -51,4 +51,23 @@ public class AllSubmissionsIntegrationTest {
         assertEquals(asList(thirdFormSubmission), formSubmissions.findByServerVersion(secondFormSubmission.serverVersion()));
         assertEquals(0, formSubmissions.findByServerVersion(thirdFormSubmission.serverVersion()).size());
     }
+
+    @Test
+    public void shouldFetchFormSubmissionsBasedOnANMIDAndTimeStamp() throws Exception {
+        long baseTimeStamp = DateUtil.now().getMillis();
+        FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "instance id 1", "form name 1", "entity id 1", null, 0L, baseTimeStamp);
+        formSubmissions.add(firstFormSubmission);
+
+        FormSubmission secondFormSubmission = new FormSubmission("ANM 1", "instance id 2", "form name 1", "entity id 2", null, 1L, baseTimeStamp + 1);
+        formSubmissions.add(secondFormSubmission);
+
+        FormSubmission thirdFormSubmission = new FormSubmission("ANM 1", "instance id 3", "form name 1", "entity id 3", null, 2L, baseTimeStamp + 2);
+        formSubmissions.add(thirdFormSubmission);
+
+        assertEquals(asList(firstFormSubmission, secondFormSubmission, thirdFormSubmission), formSubmissions.findByANMIDAndServerVersion("ANM 1", 0L));
+        assertEquals(asList(secondFormSubmission, thirdFormSubmission), formSubmissions.findByANMIDAndServerVersion("ANM 1", firstFormSubmission.serverVersion()));
+        assertEquals(asList(thirdFormSubmission), formSubmissions.findByANMIDAndServerVersion("ANM 1", secondFormSubmission.serverVersion()));
+
+        assertEquals(0, formSubmissions.findByANMIDAndServerVersion("ANM 1", thirdFormSubmission.serverVersion()).size());
+    }
 }

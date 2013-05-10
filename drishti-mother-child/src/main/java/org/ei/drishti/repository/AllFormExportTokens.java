@@ -1,6 +1,6 @@
 package org.ei.drishti.repository;
 
-import org.ei.drishti.domain.form.FormExportToken;
+import org.ei.drishti.domain.FormExportToken;
 import org.ektorp.CouchDbConnector;
 import org.motechproject.dao.MotechBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package org.ei.drishti.service.formSubmissionHandler;
 
-import org.ei.drishti.domain.form.FormSubmission;
+import org.ei.drishti.form.domain.FormSubmission;
 
 public interface FormSubmissionHandler {
     public void handle(FormSubmission submission);

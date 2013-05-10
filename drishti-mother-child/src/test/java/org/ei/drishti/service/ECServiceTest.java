@@ -5,7 +5,7 @@ import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
-import org.ei.drishti.domain.form.FormSubmission;
+import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;

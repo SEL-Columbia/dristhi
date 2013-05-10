@@ -1,13 +1,13 @@
 package org.ei.drishti.listener;
 
 import com.google.gson.Gson;
-import org.ei.drishti.domain.form.FormExportToken;
-import org.ei.drishti.domain.form.FormSubmission;
+import org.ei.drishti.domain.FormExportToken;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
+import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.service.SubmissionService;
 import org.ei.drishti.repository.AllFormExportTokens;
-import org.ei.drishti.service.FormSubmissionService;
+import org.ei.drishti.service.FormEntityService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -18,16 +18,14 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.util.EasyMap.mapOf;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class FormEventListenerTest {
     @Mock
     private SubmissionService submissionService;
     @Mock
-    private FormSubmissionService formSubmissionService;
+    private FormEntityService formEntityService;
     @Mock
     private AllFormExportTokens formExportTokens;
 
@@ -36,7 +34,7 @@ public class FormEventListenerTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        listener = new FormEventListener(submissionService, formSubmissionService, formExportTokens);
+        listener = new FormEventListener(submissionService, formEntityService, formExportTokens);
     }
 
     @Test
@@ -58,7 +56,7 @@ public class FormEventListenerTest {
 
         listener.fetchForms(new MotechEvent("SUBJECT", null));
 
-        verify(formSubmissionService).process(asList(new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", null, 0L, 0L),
+        verify(formEntityService).process(asList(new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", null, 0L, 0L),
                 new FormSubmission("anm id 2", "instance id 2", "form name", "entity id 2", null, 0L, 0L)));
     }
 
@@ -81,6 +79,6 @@ public class FormEventListenerTest {
 
         listener.fetchForms(new MotechEvent("SUBJECT", null));
 
-        verifyZeroInteractions(formSubmissionService);
+        verifyZeroInteractions(formEntityService);
     }
 }

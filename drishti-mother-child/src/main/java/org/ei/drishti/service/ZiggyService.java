@@ -19,7 +19,7 @@ import static javax.script.ScriptContext.ENGINE_SCOPE;
 public class ZiggyService {
     public static final String JAVA_SCRIPT = "JavaScript";
     private static Logger logger = LoggerFactory.getLogger(ZiggyService.class.toString());
-    private static final String SAVE_METHOD_NAME = "save";
+    private static final String SAVE_METHOD_NAME = "createOrUpdateEntity";
     private static final String JS_INIT_SCRIPT = "var formDataRepository = new enketo.FormDataRepository();\n" +
             "    var controller = new enketo.FormDataController(\n" +
             "        new enketo.EntityRelationshipLoader(),\n" +

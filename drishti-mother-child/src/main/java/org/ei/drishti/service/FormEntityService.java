@@ -1,10 +1,9 @@
 package org.ei.drishti.service;
 
 import com.google.gson.Gson;
-import org.ei.drishti.domain.form.FormExportToken;
-import org.ei.drishti.domain.form.FormSubmission;
+import org.ei.drishti.domain.FormExportToken;
+import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllFormExportTokens;
-import org.ei.drishti.repository.AllFormSubmissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +19,14 @@ import static org.ei.drishti.common.AllConstants.Form.*;
 import static org.ei.drishti.util.EasyMap.create;
 
 @Service
-public class FormSubmissionService {
-    private static Logger logger = LoggerFactory.getLogger(FormSubmissionService.class.toString());
+public class FormEntityService {
+    private static Logger logger = LoggerFactory.getLogger(FormEntityService.class.toString());
     private ZiggyService ziggyService;
-    private AllFormSubmissions allFormSubmissions;
     private AllFormExportTokens allFormExportTokens;
 
     @Autowired
-    public FormSubmissionService(ZiggyService ziggyService, AllFormSubmissions allFormSubmissions, AllFormExportTokens allFormExportTokens) {
+    public FormEntityService(ZiggyService ziggyService, AllFormExportTokens allFormExportTokens) {
         this.ziggyService = ziggyService;
-        this.allFormSubmissions = allFormSubmissions;
         this.allFormExportTokens = allFormExportTokens;
     }
 
@@ -37,20 +34,12 @@ public class FormSubmissionService {
         sort(formSubmissions, serverVersionComparator());
         FormExportToken exportToken = allFormExportTokens.getAll().get(0);
         for (FormSubmission submission : formSubmissions) {
-            if (allFormSubmissions.exists(submission.instanceId())) {
-                logger.warn(format("Received form submission that already exists. Skipping. Submission: {0}", submission));
-                continue;
-            }
             String params = getParams(submission);
             logger.info(format("Invoking save for form with instance Id: {0} and for entity Id: {1}",
                     submission.instanceId(), submission.entityId()));
             ziggyService.saveForm(params, new Gson().toJson(submission.instance()));
             allFormExportTokens.update(exportToken.withVersion(submission.serverVersion()));
         }
-    }
-
-    public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version) {
-        return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version);
     }
 
     private String getParams(FormSubmission formSubmission) {

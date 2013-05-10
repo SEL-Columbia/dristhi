@@ -7,8 +7,6 @@ import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.EligibleCouple;
-import org.ei.drishti.domain.form.FormInstance;
-import org.ei.drishti.domain.form.FormSubmission;
 import org.ei.drishti.domain.Mother;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
@@ -23,9 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Long.parseLong;
 import static java.util.UUID.randomUUID;
-import static org.ei.drishti.common.AllConstants.Form.*;
 
 @Repository
 public class FormDataRepository {
@@ -35,16 +31,13 @@ public class FormDataRepository {
     private static final String ID_FIELD_ON_ENTITY = "caseId";
     private static final String CASE_ID_VIEW_NAME = "by_caseId";
     private Map<String, Field[]> fieldSetMap;
-    private AllFormSubmissions allFormSubmissions;
     private CouchDbConnector db;
     private Map<String, String> designDocMap;
 
     @Autowired
-    public FormDataRepository(AllFormSubmissions allFormSubmissions, @Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
-        this.allFormSubmissions = allFormSubmissions;
+    public FormDataRepository(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
         this.db = db;
         initMaps();
-
     }
 
     private void initMaps() {
@@ -56,16 +49,6 @@ public class FormDataRepository {
         fieldSetMap.put("eligible_couple", EligibleCouple.class.getDeclaredFields());
         fieldSetMap.put("mother", Mother.class.getDeclaredFields());
         fieldSetMap.put("child", Child.class.getDeclaredFields());
-    }
-
-    public String saveFormSubmission(String paramsJSON, String data) {
-        Map<String, String> params = getStringMapFromJSON(paramsJSON);
-
-        allFormSubmissions.add(new FormSubmission(params.get(ANM_ID), params.get(INSTANCE_ID), params.get(FORM_NAME),
-                params.get(ENTITY_ID), new Gson().fromJson(data, FormInstance.class), parseLong(params.get(TIME_STAMP)),
-                parseLong(params.get(SERVER_VERSION))));
-
-        return params.get(INSTANCE_ID);
     }
 
     public String saveEntity(String entityType, String fields) {

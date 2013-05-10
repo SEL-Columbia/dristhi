@@ -7,6 +7,10 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @TypeDiscriminator("doc.type === 'FormSubmission'")
 public class FormSubmission extends MotechBaseDataObject {
     @JsonProperty
@@ -76,6 +80,18 @@ public class FormSubmission extends MotechBaseDataObject {
 
     public void setServerVersion(long serverVersion) {
         this.serverVersion = serverVersion;
+    }
+
+    public String getField(String name) {
+        return formInstance.getField(name);
+    }
+
+    public Map<String, String> getFields(List<String> fieldNames) {
+        Map<String, String> fieldsMap = new HashMap<>();
+        for (String fieldName : fieldNames) {
+            fieldsMap.put(fieldName, getField(fieldName));
+        }
+        return fieldsMap;
     }
 
     public String getInstanceId() {

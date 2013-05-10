@@ -1,7 +1,7 @@
 package org.ei.drishti.service.formSubmissionHandler;
 
-import org.ei.drishti.domain.form.FormSubmission;
-import org.ei.drishti.repository.AllFormSubmissions;
+import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.repository.AllSubmissions;
 import org.ei.drishti.util.EasyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +16,11 @@ import static org.ei.drishti.common.AllConstants.Form.*;
 @Component
 public class FormSubmissionRouter {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionRouter.class.toString());
-    private AllFormSubmissions formSubmissionsRepository;
+    private AllSubmissions formSubmissionsRepository;
     private final Map<String, FormSubmissionHandler> handlerMap;
 
     @Autowired
-    public FormSubmissionRouter(AllFormSubmissions formSubmissionsRepository,
+    public FormSubmissionRouter(AllSubmissions formSubmissionsRepository,
                                 ECRegistrationHandler ecRegistrationHandler,
                                 FPComplicationsHandler fpComplicationsHandler,
                                 FPChangeHandler fpChangeHandler, RenewFPProductHandler renewFPProductHandler) {

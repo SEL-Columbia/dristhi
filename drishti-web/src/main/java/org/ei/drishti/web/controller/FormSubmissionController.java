@@ -3,8 +3,9 @@ package org.ei.drishti.web.controller;
 import ch.lambdaj.function.convert.Converter;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
-import org.ei.drishti.service.FormSubmissionService;
-import org.ei.drishti.util.FormSubmissionConvertor;
+import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.service.FormSubmissionConvertor;
+import org.ei.drishti.form.service.SubmissionService;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,22 +30,22 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping(value = "/form-submissions")
 public class FormSubmissionController {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionController.class.toString());
-    private FormSubmissionService formSubmissionService;
+    private SubmissionService formSubmissionService;
     private OutboundEventGateway gateway;
 
     @Autowired
-    public FormSubmissionController(FormSubmissionService formSubmissionService, OutboundEventGateway gateway) {
-        this.formSubmissionService = formSubmissionService;
+    public FormSubmissionController(SubmissionService submissionService, OutboundEventGateway gateway) {
+        this.formSubmissionService = submissionService;
         this.gateway = gateway;
     }
 
     @RequestMapping(method = GET)
     @ResponseBody
     private List<FormSubmissionDTO> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier, @RequestParam("timestamp") Long timeStamp) {
-        List<org.ei.drishti.domain.form.FormSubmission> newSubmissionsForANM = formSubmissionService.getNewSubmissionsForANM(anmIdentifier, timeStamp);
-        return with(newSubmissionsForANM).convert(new Converter<org.ei.drishti.domain.form.FormSubmission, FormSubmissionDTO>() {
+        List<FormSubmission> newSubmissionsForANM = formSubmissionService.getNewSubmissionsForANM(anmIdentifier, timeStamp);
+        return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
-            public FormSubmissionDTO convert(org.ei.drishti.domain.form.FormSubmission submission) {
+            public FormSubmissionDTO convert(FormSubmission submission) {
                 return FormSubmissionConvertor.from(submission);
             }
         });

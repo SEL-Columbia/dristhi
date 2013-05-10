@@ -1,6 +1,6 @@
 package org.ei.drishti.service.formSubmissionHandler;
 
-import org.ei.drishti.domain.form.FormSubmission;
+import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.service.ECService;
 import org.junit.Before;
 import org.junit.Test;

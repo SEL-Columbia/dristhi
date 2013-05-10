@@ -19,4 +19,10 @@ public class FormSubmissionConvertor {
         return new FormSubmission(formSubmissionDTO.anmId(), formSubmissionDTO.instanceId(), formSubmissionDTO.formName(), formSubmissionDTO.entityId(),
                 new Gson().fromJson(formSubmissionDTO.instance(), FormInstance.class), parseLong(formSubmissionDTO.timeStamp()));
     }
+
+    public static FormSubmission toFormSubmissionWithVersion(FormSubmissionDTO formSubmissionDTO) {
+        return new FormSubmission(formSubmissionDTO.anmId(), formSubmissionDTO.instanceId(), formSubmissionDTO.formName(),
+                formSubmissionDTO.entityId(), new Gson().fromJson(formSubmissionDTO.instance(), FormInstance.class), parseLong(formSubmissionDTO.timeStamp()),
+                parseLong(formSubmissionDTO.serverVersion()));
+    }
 }

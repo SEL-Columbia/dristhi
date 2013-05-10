@@ -38,11 +38,11 @@ public class SubmissionService {
 
     public void submit(List<FormSubmissionDTO> formSubmissionsDTO) {
         List<FormSubmission> formSubmissions = with(formSubmissionsDTO).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
-                    @Override
-                    public FormSubmission convert(FormSubmissionDTO submission) {
-                        return FormSubmissionConvertor.toFormSubmission(submission);
-                    }
-                });
+            @Override
+            public FormSubmission convert(FormSubmissionDTO submission) {
+                return FormSubmissionConvertor.toFormSubmission(submission);
+            }
+        });
 
         sort(formSubmissions, timeStampComparator());
         for (FormSubmission submission : formSubmissions) {
@@ -55,6 +55,10 @@ public class SubmissionService {
             submission.setServerVersion(DateUtil.millis());
             allSubmissions.add(submission);
         }
+    }
+
+    public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version) {
+        return allSubmissions.findByANMIDAndServerVersion(anmIdentifier, version);
     }
 
     private Comparator<FormSubmission> timeStampComparator() {

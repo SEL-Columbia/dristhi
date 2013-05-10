@@ -1,9 +1,9 @@
 package org.ei.drishti.util;
 
-import org.ei.drishti.domain.form.FormData;
-import org.ei.drishti.domain.form.FormField;
-import org.ei.drishti.domain.form.FormInstance;
-import org.ei.drishti.domain.form.FormSubmission;
+import org.ei.drishti.form.domain.FormData;
+import org.ei.drishti.form.domain.FormField;
+import org.ei.drishti.form.domain.FormInstance;
+import org.ei.drishti.form.domain.FormSubmission;
 
 import java.util.ArrayList;
 import java.util.List;
