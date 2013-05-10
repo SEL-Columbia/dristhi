@@ -7,7 +7,6 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.motechproject.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -17,9 +16,10 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
-import static org.ei.drishti.dto.BeneficiaryType.mother;
+import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.dto.AlertPriority.urgent;
+import static org.ei.drishti.dto.BeneficiaryType.mother;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
@@ -113,7 +113,7 @@ public class AllActionsIntegrationTest {
         Action firstAlertAction = new Action("Case X", "ANM 1", alert());
         Action secondAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert(mother, "ANC 2", urgent, DateTime.now(), DateTime.now().plusDays(3)));
         Action thirdAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert(mother, "ANC 3", normal, DateTime.now(), DateTime.now().plusDays(3)));
-        Action fourthNonAlertActionForSameMother = new Action("Case X", "ANM 1", ActionData.registerPregnancy("EC Case 1", "Thaayi 1", DateUtil.today(), new HashMap<String, String>()));
+        Action fourthNonAlertActionForSameMother = new Action("Case X", "ANM 1", ActionData.registerPregnancy("EC Case 1", "Thaayi 1", today(), new HashMap<String, String>()));
         Action actionOfSameANMForAnotherMother = new Action("Case ABC", "ANM 1", ActionData.createAlert(mother, "ANC 3", normal, DateTime.now(), DateTime.now().plusDays(3)));
         Action actionOfAnotherANM = new Action("Case Y", "ANM 2", alert());
         allActions.add(firstAlertAction);
@@ -134,7 +134,7 @@ public class AllActionsIntegrationTest {
     public void shouldRemoveAllExistingActionsByTarget() {
         Action firstAlertAction = new Action("Case X", "ANM 1", alert());
         Action secondAlertAction = new Action("Case Y", "ANM 1", alert());
-        Action anotherAction = new Action("Case Z", "ANM 1", ActionData.registerPregnancy("EC Case 1", "Thaayi 1", DateUtil.today(), new HashMap<String, String>()));
+        Action anotherAction = new Action("Case Z", "ANM 1", ActionData.registerPregnancy("EC Case 1", "Thaayi 1", today(), new HashMap<String, String>()));
         allActions.add(firstAlertAction);
         allActions.add(secondAlertAction);
         allActions.add(anotherAction);

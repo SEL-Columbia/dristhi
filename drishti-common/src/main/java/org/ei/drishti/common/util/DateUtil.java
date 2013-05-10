@@ -23,7 +23,7 @@ public class DateUtil {
     }
 
     public static boolean isDateWithinGivenPeriodBeforeToday(LocalDate referenceDateForSchedule, Period period) {
-        return inRange(toTime(referenceDateForSchedule), toTime(org.motechproject.util.DateUtil.today().minus(period)), toTime(today()));
+        return inRange(toTime(referenceDateForSchedule), toTime(today().minus(period)), toTime(today()));
     }
 
     private static DateTime toTime(LocalDate referenceDateForSchedule) {

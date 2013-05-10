@@ -10,7 +10,6 @@ import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.motechproject.model.Time;
-import org.motechproject.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,11 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
-import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.DEATH_OF_WOMAN_COMMCARE_VALUE;
+import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.PERMANENT_RELOCATION_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
+import static org.ei.drishti.common.util.DateUtil.*;
 import static org.joda.time.LocalTime.now;
 
 @Service
@@ -67,7 +68,7 @@ public class ANCService {
 
     private void enrollMotherIntoSchedules(String caseId, LocalDate lmpDate) {
         Time preferredAlertTime = new Time(new LocalTime(14, 0));
-        LocalDate referenceDate = lmpDate != null ? lmpDate : DateUtil.today();
+        LocalDate referenceDate = lmpDate != null ? lmpDate : today();
 
         ancSchedulesService.enrollMother(caseId, referenceDate, new Time(now()), preferredAlertTime);
     }

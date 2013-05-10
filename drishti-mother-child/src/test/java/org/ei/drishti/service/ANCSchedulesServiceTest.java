@@ -17,19 +17,19 @@ import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.testing.utils.BaseUnitTest;
-import org.motechproject.util.DateUtil;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static org.ei.drishti.common.util.DateUtil.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
+import static org.joda.time.LocalDate.parse;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
-import static org.motechproject.util.DateUtil.today;
 import static org.powermock.api.mockito.PowerMockito.verifyZeroInteractions;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -48,8 +48,8 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldEnrollMotherIntoSchedules() {
-        mockCurrentDate(LocalDate.parse("2012-01-01"));
-        LocalDate lmp = DateUtil.today().minusDays(3);
+        fakeIt(parse("2012-01-01"));
+        LocalDate lmp = today().minusDays(3);
 
         schedulesService.enrollMother("Case X", lmp, new Time(15, 0), new Time(14, 0));
 
@@ -94,6 +94,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldFulfillANCScheduleWhenTheExpectedANCVisitHappens() {
+        fakeIt(parse("2012-01-01"));
         new FastForwardScheduleTestBase().forANCSchedule().whenExpecting("ANC 1").providedWithVisitNumber(1).willFulfillFor("ANC 1");
     }
 
@@ -156,6 +157,8 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldFulfillCurrentMilestoneForGivenExternalIdWhenVisitHasBeenMissed() {
+        fakeIt(parse("2012-01-01"));
+
         schedulesService.forceFulfillMilestone("Case X", "Schedule 1");
 
         verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("Schedule 1"), eq(today()), any(Time.class));
@@ -187,8 +190,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     private void assertEnrollmentIntoMilestoneBasedOnDate(LocalDate enrollmentDate, String expectedMilestone, int wantedNumberOfInvocations) throws Exception {
         setUp();
         LocalDate lmp = new LocalDate(2012, 1, 1);
-        mockCurrentDate(enrollmentDate);
-        org.ei.drishti.common.util.DateUtil.fakeIt(enrollmentDate);
+        fakeIt(enrollmentDate);
 
         schedulesService.enrollMother("Case X", lmp, new Time(15, 0), new Time(14, 0));
 

@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
@@ -19,14 +20,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
+import static org.ei.drishti.common.util.DateUtil.fakeIt;
+import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
+import static org.joda.time.LocalDate.parse;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.motechproject.util.DateUtil.today;
 
 public class ANCServiceTest {
     @Mock
@@ -124,6 +127,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldEnrollAMotherUsingCurrentDateIfLMPDateIsNotFound() {
+        fakeIt(parse("2012-01-01"));
         final String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
         String motherName = "Theresa";
         AnteNatalCareEnrollmentInformation enrollmentInfo = new AnteNatalCareEnrollmentInformation("CASE-1", "EC-CASE-1", thaayiCardNumber, "12345", "ANM ID 1", null);

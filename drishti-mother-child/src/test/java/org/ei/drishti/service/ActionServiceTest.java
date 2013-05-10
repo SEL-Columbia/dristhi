@@ -16,7 +16,6 @@ import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.util.DateUtil;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
+import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.dto.AlertPriority.normal;
 import static org.ei.drishti.dto.AlertPriority.urgent;
 import static org.ei.drishti.dto.BeneficiaryType.*;
@@ -167,9 +167,9 @@ public class ActionServiceTest {
         HashMap<String, String> details = new HashMap<>();
         details.put("some_field", "some_value");
 
-        service.registerPregnancy("Case X", "Case EC 1", "Thaayi 1", "ANM X", DateUtil.today(), details);
+        service.registerPregnancy("Case X", "Case EC 1", "Thaayi 1", "ANM X", today(), details);
 
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.registerPregnancy("Case EC 1", "Thaayi 1", DateUtil.today(), details)));
+        verify(allActions).add(new Action("Case X", "ANM X", ActionData.registerPregnancy("Case EC 1", "Thaayi 1", today(), details)));
     }
 
     @Test
@@ -190,9 +190,9 @@ public class ActionServiceTest {
     public void shouldRegisterChildBirth() throws Exception {
         when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "MotherThaayiCard 1", "Theresa"));
 
-        service.registerChildBirth("ChildCase Y", "ANM X", "MOTHER-CASE-1", "MotherThaayiCard 1", DateUtil.today(), "female", EXTRA_DETAILS);
+        service.registerChildBirth("ChildCase Y", "ANM X", "MOTHER-CASE-1", "MotherThaayiCard 1", today(), "female", EXTRA_DETAILS);
 
-        verify(allActions).add(new Action("ChildCase Y", "ANM X", ActionData.registerChildBirth("MOTHER-CASE-1", "MotherThaayiCard 1", DateUtil.today(), "female", EXTRA_DETAILS)));
+        verify(allActions).add(new Action("ChildCase Y", "ANM X", ActionData.registerChildBirth("MOTHER-CASE-1", "MotherThaayiCard 1", today(), "female", EXTRA_DETAILS)));
     }
 
     @Test

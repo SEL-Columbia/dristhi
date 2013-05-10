@@ -32,7 +32,6 @@ public class PNCSchedulesServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldEnrollMotherIntoSchedules() {
-        mockCurrentDate(parse("2012-01-01"));
         AnteNatalCareOutcomeInformation outcomeInformation = new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0");
 
         schedulesService.enrollMother(outcomeInformation);

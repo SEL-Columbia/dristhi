@@ -2,6 +2,7 @@ package org.ei.drishti.integration;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.ei.drishti.common.util.DateUtil;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -22,11 +23,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
+import static org.ei.drishti.common.util.DateUtil.fakeIt;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
@@ -417,6 +417,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
             @Override
             public void setTheDateTo(LocalDate date) {
                 mockCurrentDate(date);
+                fakeIt(date);
             }
         });
 

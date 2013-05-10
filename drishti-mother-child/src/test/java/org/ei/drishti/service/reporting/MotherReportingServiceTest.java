@@ -96,7 +96,6 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldNotReportIfReasonIsNotDeath() throws Exception {
-        mockCurrentDate(new LocalDate(2012, 1, 1));
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
         service.closeANC(reportDataForANCClose("greater_12wks", null, null));
@@ -106,7 +105,6 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldReportIfReasonIsSpontaneousAbortion() throws Exception {
-        mockCurrentDate(new LocalDate(2012, 1, 1));
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
         service.closeANC(reportDataForANCClose("", "spontaneous_abortion", null));

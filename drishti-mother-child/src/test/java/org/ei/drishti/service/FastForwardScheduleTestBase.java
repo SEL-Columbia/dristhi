@@ -5,11 +5,11 @@ import org.joda.time.LocalDate;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
-import org.motechproject.util.DateUtil;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.mockito.Mockito.*;
 
@@ -76,7 +76,7 @@ public class FastForwardScheduleTestBase {
 
         when(scheduleTrackingService.getEnrollment("Case X", scheduleName)).thenReturn(recordForNextMilestone);
 
-        LocalDate visitDate = DateUtil.today();
+        LocalDate visitDate = today();
 
         serviceCall.make("Case X", visitNumberToTryAndFulfill, visitDate);
 
@@ -94,7 +94,7 @@ public class FastForwardScheduleTestBase {
             verifyZeroInteractions(actionService);
         }
         for (String visitCode : expectedVisitCodes) {
-            verify(actionService).markAlertAsClosed("Case X", "ANM 1", visitCode, LocalDate.now().toString());
+            verify(actionService).markAlertAsClosed("Case X", "ANM 1", visitCode, today().toString());
         }
         verifyNoMoreInteractions(actionService);
     }
