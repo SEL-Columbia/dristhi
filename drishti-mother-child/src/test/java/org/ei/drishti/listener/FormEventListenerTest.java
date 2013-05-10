@@ -46,7 +46,7 @@ public class FormEventListenerTest {
 
         listener.submitForms(new MotechEvent(FormSubmissionEvent.SUBJECT, mapOf("data", (Object) new Gson().toJson(formSubmissions))));
 
-        verify(submissionService).processSubmissions(formSubmissions);
+        verify(submissionService).submit(formSubmissions);
     }
 
     @Test
@@ -54,11 +54,11 @@ public class FormEventListenerTest {
         List<FormSubmissionDTO> formSubmissions = asList(new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name", null, "0").withServerVersion("0"),
                 new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name", null, "0").withServerVersion("0"));
         when(formExportTokens.getAll()).thenReturn(asList(new FormExportToken(1L)));
-        when(submissionService.fetchSubmission(1L)).thenReturn(formSubmissions);
+        when(submissionService.fetch(1L)).thenReturn(formSubmissions);
 
         listener.fetchForms(new MotechEvent("SUBJECT", null));
 
-        verify(formSubmissionService).processSubmissions(asList(new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", null, 0L, 0L),
+        verify(formSubmissionService).process(asList(new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", null, 0L, 0L),
                 new FormSubmission("anm id 2", "instance id 2", "form name", "entity id 2", null, 0L, 0L)));
     }
 
@@ -67,7 +67,7 @@ public class FormEventListenerTest {
         List<FormSubmissionDTO> formSubmissions = asList(new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name", null, "0").withServerVersion("0"),
                 new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name", null, "0").withServerVersion("0"));
         when(formExportTokens.getAll()).thenReturn(Collections.EMPTY_LIST);
-        when(submissionService.fetchSubmission(1L)).thenReturn(formSubmissions);
+        when(submissionService.fetch(1L)).thenReturn(formSubmissions);
 
         listener.fetchForms(new MotechEvent("SUBJECT", null));
 
@@ -77,7 +77,7 @@ public class FormEventListenerTest {
     @Test
     public void shouldNotDoAnythingIfFetchFromSubmissionServiceReturnsEmptyList() throws Exception {
         when(formExportTokens.getAll()).thenReturn(asList(new FormExportToken(1L)));
-        when(submissionService.fetchSubmission(1L)).thenReturn(Collections.EMPTY_LIST);
+        when(submissionService.fetch(1L)).thenReturn(Collections.EMPTY_LIST);
 
         listener.fetchForms(new MotechEvent("SUBJECT", null));
 

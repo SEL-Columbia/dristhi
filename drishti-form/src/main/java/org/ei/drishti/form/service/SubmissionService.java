@@ -27,7 +27,7 @@ public class SubmissionService {
         this.allSubmissions = allSubmissions;
     }
 
-    public List<FormSubmissionDTO> fetchSubmission(long formFetchToken) {
+    public List<FormSubmissionDTO> fetch(long formFetchToken) {
         return with(allSubmissions.findByServerVersion(formFetchToken)).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
@@ -36,9 +36,8 @@ public class SubmissionService {
         });
     }
 
-    public void processSubmissions(List<FormSubmissionDTO> formSubmissionsDTO) {
-        List<FormSubmission> formSubmissions = with(formSubmissionsDTO)
-                .convert(new Converter<FormSubmissionDTO, FormSubmission>() {
+    public void submit(List<FormSubmissionDTO> formSubmissionsDTO) {
+        List<FormSubmission> formSubmissions = with(formSubmissionsDTO).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
                     @Override
                     public FormSubmission convert(FormSubmissionDTO submission) {
                         return FormSubmissionConvertor.toFormSubmission(submission);

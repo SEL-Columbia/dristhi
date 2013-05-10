@@ -33,7 +33,7 @@ public class FormSubmissionService {
         this.allFormExportTokens = allFormExportTokens;
     }
 
-    public void processSubmissions(List<FormSubmission> formSubmissions) {
+    public void process(List<FormSubmission> formSubmissions) {
         sort(formSubmissions, serverVersionComparator());
         FormExportToken exportToken = allFormExportTokens.getAll().get(0);
         for (FormSubmission submission : formSubmissions) {
@@ -47,6 +47,10 @@ public class FormSubmissionService {
             ziggyService.saveForm(params, new Gson().toJson(submission.instance()));
             allFormExportTokens.update(exportToken.withVersion(submission.serverVersion()));
         }
+    }
+
+    public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version) {
+        return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version);
     }
 
     private String getParams(FormSubmission formSubmission) {
@@ -67,9 +71,5 @@ public class FormSubmissionService {
                 return firstTimestamp == secondTimestamp ? 0 : firstTimestamp < secondTimestamp ? -1 : 1;
             }
         };
-    }
-
-    public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version) {
-        return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version);
     }
 }

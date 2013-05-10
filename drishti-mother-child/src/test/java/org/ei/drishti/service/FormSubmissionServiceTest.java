@@ -53,7 +53,7 @@ public class FormSubmissionServiceTest {
         FormExportToken formExportToken = new FormExportToken(0L);
         when(allFormExportTokens.getAll()).thenReturn(asList(formExportToken));
 
-        submissionService.processSubmissions(formSubmissions);
+        submissionService.process(formSubmissions);
 
         InOrder inOrder = inOrder(ziggyService, allFormExportTokens);
         inOrder.verify(ziggyService).saveForm(paramsForEarlierFormSubmission, new Gson().toJson(earlierFormSubmission.instance()));
@@ -76,7 +76,7 @@ public class FormSubmissionServiceTest {
         when(allFormSubmissions.exists("instance id 1")).thenReturn(true);
         when(allFormSubmissions.exists("instance id 2")).thenReturn(false);
 
-        submissionService.processSubmissions(asList(firstFormSubmission, secondFormSubmission));
+        submissionService.process(asList(firstFormSubmission, secondFormSubmission));
 
         InOrder inOrder = inOrder(ziggyService, formSubmissionRouter);
         inOrder.verify(ziggyService, times(0)).saveForm(paramsForFirstFormSubmission, "");

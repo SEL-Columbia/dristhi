@@ -26,10 +26,10 @@ import static java.text.MessageFormat.format;
 
 @Component
 public class FormEventListener {
+    private static Logger logger = LoggerFactory.getLogger(FormEventListener.class.toString());
     private SubmissionService submissionService;
     private FormSubmissionService formSubmissionService;
     private AllFormExportTokens allFormExportTokens;
-    private static Logger logger = LoggerFactory.getLogger(FormEventListener.class.toString());
 
     @Autowired
     public FormEventListener(SubmissionService submissionService, FormSubmissionService formSubmissionService, AllFormExportTokens allFormExportTokens) {
@@ -42,7 +42,7 @@ public class FormEventListener {
     public void submitForms(MotechEvent event) {
         List<FormSubmissionDTO> formSubmissions = new Gson().fromJson((String) event.getParameters().get("data"), new TypeToken<List<FormSubmissionDTO>>() {
         }.getType());
-        submissionService.processSubmissions(formSubmissions);
+        submissionService.submit(formSubmissions);
     }
 
     @MotechListener(subjects = DrishtiFormScheduler.SUBJECT)
@@ -50,7 +50,7 @@ public class FormEventListener {
         logger.info("Fetching Forms");
         long version = getVersion();
 
-        List<FormSubmissionDTO> formSubmissionDTOs = submissionService.fetchSubmission(version);
+        List<FormSubmissionDTO> formSubmissionDTOs = submissionService.fetch(version);
         if (formSubmissionDTOs.isEmpty()) {
             logger.info("No new forms found. Export token: " + version);
             return;
@@ -64,7 +64,7 @@ public class FormEventListener {
                         return FormSubmissionConvertor.toFormSubmission(submission);
                     }
                 });
-        formSubmissionService.processSubmissions(formSubmissions);
+        formSubmissionService.process(formSubmissions);
     }
 
     private long getVersion() {

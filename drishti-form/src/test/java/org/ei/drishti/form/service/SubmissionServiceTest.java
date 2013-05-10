@@ -47,7 +47,7 @@ public class SubmissionServiceTest {
         List<FormSubmissionDTO> formSubmissionsDTO = asList(laterFormSubmissionDTO, earlierFormSubmissionDTO, veryLateFormSubmissionDTO);
         when(allSubmissions.exists(anyString())).thenReturn(false);
 
-        submissionService.processSubmissions(formSubmissionsDTO);
+        submissionService.submit(formSubmissionsDTO);
 
         InOrder inOrder = inOrder(allSubmissions);
         inOrder.verify(allSubmissions).exists("instance id 1");
@@ -69,7 +69,7 @@ public class SubmissionServiceTest {
         when(allSubmissions.exists("instance id 1")).thenReturn(true);
         when(allSubmissions.exists("instance id 2")).thenReturn(false);
 
-        submissionService.processSubmissions(asList(firstFormSubmissionDTO, secondFormSubmissionDTO));
+        submissionService.submit(asList(firstFormSubmissionDTO, secondFormSubmissionDTO));
 
         InOrder inOrder = inOrder(allSubmissions);
         inOrder.verify(allSubmissions).exists("instance id 1");
@@ -88,7 +88,7 @@ public class SubmissionServiceTest {
         FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", null, baseTimeStamp + 1, 1L);
         when(allSubmissions.findByServerVersion(0L)).thenReturn(asList(firstFormSubmission, secondFormSubmission));
 
-        List<FormSubmissionDTO> formSubmissionDTOs = submissionService.fetchSubmission(0L);
+        List<FormSubmissionDTO> formSubmissionDTOs = submissionService.fetch(0L);
 
         assertEquals(asList(firstFormSubmissionDTO, secondFormSubmissionDTO), formSubmissionDTOs);
     }
