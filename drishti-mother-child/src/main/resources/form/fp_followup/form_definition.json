@@ -1,0 +1,91 @@
+{
+    "form": {
+        "bind_type": "eligible_couple",
+        "default_bind_path": "/model/instance/Family_Planning_Followup_EngKan/",
+        "fields": [
+            {
+                "name": "id"
+            },
+            {
+                "name": "needsFollowup",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/case_needs_followup"
+            },
+            {
+                "name": "currentMethod",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/case_familyplanning_method"
+            },
+            {
+                "name": "currentMethodNote",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/case_familyplanning_method_note"
+            },
+            {
+                "name": "fpFollowupDate",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/fp_method_followup_date"
+            },
+            {
+                "name": "isSterilizationFailure",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/sterilization_failure"
+            },
+            {
+                "name": "condomSideEffect",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/condom_sideeffectt"
+            },
+            {
+                "name": "iudSidEffect",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/iud_sideeffect"
+            },
+            {
+                "name": "ocpSideEffect",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/ocp_sideeffect"
+            },
+            {
+                "name": "sterilizationSideEffect",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/sterilization_sideeffect"
+            },
+            {
+                "name": "injectableSideEffect",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/injectableSideEffect"
+            },
+            {
+                "name": "otherSideEffect",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/other_sideeffect"
+            },
+            {
+                "name": "sideEffect",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/side_effects"
+            },
+            {
+                "name": "isFPMethodComplicationResolved",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/fp_method_complication_resolved"
+            },
+            {
+                "name": "referCoupleFPMethodComplication",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/refer_couple_fp_method_complication"
+            },
+            {
+                "name": "referCoupleFPMethodComplicationPlace",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/refer_couple_fp_method_complication_place"
+            },
+            {
+                "name": "referCoupleFPMethodComplicationPlaceOther",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/refer_couple_fp_method_complication_place_other"
+            },
+            {
+                "name": "needsReferralFollowup",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/needs_referral_followup"
+            },
+            {
+                "name": "fpMethodComplicationTreatmentPlan",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/fp_method_complication_treatment_plan"
+            },
+            {
+                "name": "fpMethodComplicationTreatmentPlanOther",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/fp_method_complication_treatment_plan_other"
+            },
+            {
+                "name": "submissionDate",
+                "bind": "/model/instance/Family_Planning_Followup_EngKan/today"
+            }
+        ]
+    }
+}

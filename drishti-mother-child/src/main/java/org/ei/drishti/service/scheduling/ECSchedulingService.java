@@ -65,17 +65,23 @@ public class ECSchedulingService {
     public void fpChange(FPProductInformation fpInfo) {
         FPMethodStrategyFactory
                 .create(scheduleTrackingService, actionService, fpInfo.previousFPMethod())
-                .unEnrollFromRefillScheduleAsFPMethodChanged(fpInfo);
+                .unEnrollFromPreviousScheduleAsFPMethodChanged(fpInfo);
 
         FPMethodStrategyFactory
                 .create(scheduleTrackingService, actionService, fpInfo.currentFPMethod())
-                .enrollToRefillScheduleForNewFPMethod(fpInfo);
+                .enrollToNewScheduleForNewFPMethod(fpInfo);
     }
 
     public void renewFPProduct(FPProductInformation fpInfo) {
         FPMethodStrategyFactory
                 .create(scheduleTrackingService, actionService, fpInfo.currentFPMethod())
                 .renewFPProduct(fpInfo);
+    }
+
+    public void fpFollowup(FPProductInformation fpInfo) {
+        FPMethodStrategyFactory
+                .create(scheduleTrackingService, actionService, fpInfo.currentFPMethod())
+                .fpFollowup(fpInfo);
     }
 
     private boolean isCoupleHighPriority(String isHighPriorityField) {

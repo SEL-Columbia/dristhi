@@ -15,10 +15,11 @@ public class FPProductInformation {
     private final String submissionDate;
     private final String previousFPMethod;
     private final String fpMethodChangeDate;
+    private String fpFollowupDate;
 
     public FPProductInformation(String entityId, String anmId, String currentMethod, String previousFPMethod, String dmpaInjectionDate,
                                 String numberOfOCPStripsSupplied, String ocpRefillDate, String numberOfCondomsSupplied,
-                                String submissionDate, String fpMethodChangeDate) {
+                                String submissionDate, String fpMethodChangeDate, String fpFollowupDate) {
         this.anmId = anmId;
         this.entityId = entityId;
         this.currentMethod = currentMethod;
@@ -29,6 +30,7 @@ public class FPProductInformation {
         this.numberOfCondomsSupplied = numberOfCondomsSupplied;
         this.submissionDate = submissionDate;
         this.fpMethodChangeDate = fpMethodChangeDate;
+        this.fpFollowupDate = fpFollowupDate;
     }
 
     public String anmId() {
@@ -69,6 +71,10 @@ public class FPProductInformation {
 
     public String fpMethodChangeDate() {
         return fpMethodChangeDate;
+    }
+
+    public String fpFollowupDate() {
+        return fpFollowupDate;
     }
 
     @Override

@@ -23,12 +23,15 @@ public class FormSubmissionRouter {
     public FormSubmissionRouter(AllFormSubmissions formSubmissionsRepository,
                                 ECRegistrationHandler ecRegistrationHandler,
                                 FPComplicationsHandler fpComplicationsHandler,
-                                FPChangeHandler fpChangeHandler, RenewFPProductHandler renewFPProductHandler) {
+                                FPChangeHandler fpChangeHandler,
+                                RenewFPProductHandler renewFPProductHandler,
+                                FPFollowupHandler fpFollowupHandler) {
         this.formSubmissionsRepository = formSubmissionsRepository;
         handlerMap = EasyMap.create(EC_REGISTRATION, (FormSubmissionHandler) ecRegistrationHandler)
                 .put(FP_COMPLICATIONS, fpComplicationsHandler)
                 .put(FP_CHANGE, fpChangeHandler)
                 .put(RENEW_FP_PRODUCT, renewFPProductHandler)
+                .put(FP_FOLLOWUP_PRODUCT, fpFollowupHandler)
                 .map();
     }
 

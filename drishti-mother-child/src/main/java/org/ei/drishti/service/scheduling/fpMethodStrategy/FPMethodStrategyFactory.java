@@ -12,14 +12,14 @@ public class FPMethodStrategyFactory {
         }
         if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
             return new OCPStrategy(scheduleTrackingService, actionService);
-
         }
         if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
             return new CondomStrategy(scheduleTrackingService, actionService);
         }
+        if (FEMALE_STERILIZATION_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
+            return new FemaleSterilizationStrategy(scheduleTrackingService, actionService);
+        }
         return new DefaultFPMethodStrategy();
     }
-
-
 }
 

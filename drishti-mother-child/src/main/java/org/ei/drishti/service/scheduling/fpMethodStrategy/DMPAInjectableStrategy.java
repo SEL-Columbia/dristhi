@@ -35,13 +35,13 @@ public class DMPAInjectableStrategy implements FPMethodStrategy {
     }
 
     @Override
-    public void unEnrollFromRefillScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
+    public void unEnrollFromPreviousScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
         logger.info(format("Un-enrolling EC from DMPA Injectable Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", fpInfo.entityId(), fpInfo.currentFPMethod()));
         unEnrollECFromDMPAInjectableSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.fpMethodChangeDate());
     }
 
     @Override
-    public void enrollToRefillScheduleForNewFPMethod(FPProductInformation fpInfo) {
+    public void enrollToNewScheduleForNewFPMethod(FPProductInformation fpInfo) {
         enrollECToDMPAInjectableSchedule(fpInfo.entityId(), fpInfo.fpMethodChangeDate());
     }
 
@@ -54,6 +54,10 @@ public class DMPAInjectableStrategy implements FPMethodStrategy {
         logger.info(format("Un-enrolling EC from DMPA Injectable Refill schedule as FP product was renewed. entityId: {0}, DMPA injection date: {1}", fpInfo.entityId(), fpInfo.dmpaInjectionDate()));
         unEnrollECFromDMPAInjectableSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.dmpaInjectionDate());
         enrollECToDMPAInjectableSchedule(fpInfo.entityId(), fpInfo.dmpaInjectionDate());
+    }
+
+    @Override
+    public void fpFollowup(FPProductInformation fpInfo) {
     }
 
     private void enrollECToDMPAInjectableSchedule(String entityId, String dmpaInjectionDate) {

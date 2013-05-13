@@ -45,6 +45,10 @@ public class DrishtiScheduleConstants {
         public static final String EC_SCHEDULE_OCP_REFILL_MILESTONE = "OCP Refill";
         public static final String EC_SCHEDULE_CONDOM_REFILL = "Condom Refill";
         public static final String EC_SCHEDULE_CONDOM_REFILL_MILESTONE = "Condom Refill";
+        public static final String EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP = "Female sterilization followup";
+        public static final String EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP_MILESTONE_1 = "Female sterilization followup 1";
+        public static final String EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP_MILESTONE_2 = "Female sterilization followup 2";
+        public static final String EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP_MILESTONE_3 = "Female sterilization followup 3";
     }
 
 

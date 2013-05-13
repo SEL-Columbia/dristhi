@@ -8,15 +8,19 @@ public class DefaultFPMethodStrategy implements FPMethodStrategy {
     }
 
     @Override
-    public void unEnrollFromRefillScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
+    public void unEnrollFromPreviousScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
     }
 
     @Override
-    public void enrollToRefillScheduleForNewFPMethod(FPProductInformation fpInfo) {
+    public void enrollToNewScheduleForNewFPMethod(FPProductInformation fpInfo) {
 
     }
 
     @Override
     public void renewFPProduct(FPProductInformation fpInfo) {
+    }
+
+    @Override
+    public void fpFollowup(FPProductInformation fpInfo) {
     }
 }

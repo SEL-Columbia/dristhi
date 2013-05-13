@@ -37,13 +37,13 @@ public class CondomStrategy implements FPMethodStrategy {
     }
 
     @Override
-    public void unEnrollFromRefillScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
+    public void unEnrollFromPreviousScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
         logger.info(format("Un-enrolling EC from Condom Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", fpInfo.entityId(), fpInfo.currentFPMethod()));
         unEnrollECFromCondomRefillSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.fpMethodChangeDate());
     }
 
     @Override
-    public void enrollToRefillScheduleForNewFPMethod(FPProductInformation fpInfo) {
+    public void enrollToNewScheduleForNewFPMethod(FPProductInformation fpInfo) {
         enrollECToCondomRefillSchedule(fpInfo.entityId());
     }
 
@@ -56,6 +56,10 @@ public class CondomStrategy implements FPMethodStrategy {
         logger.info(format("Un-enrolling EC from Condom Refill schedule as FP product was renewed. entityId: {0}, condomRefillDate: {1}, numberOfCondomsSupplied: {2}", fpInfo.entityId(), fpInfo.submissionDate(), fpInfo.numberOfCondomsSupplied()));
         unEnrollECFromCondomRefillSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.submissionDate());
         enrollECToCondomRefillSchedule(fpInfo.entityId());
+    }
+
+    @Override
+    public void fpFollowup(FPProductInformation fpInfo) {
     }
 
     private void enrollECToCondomRefillSchedule(String entityId) {

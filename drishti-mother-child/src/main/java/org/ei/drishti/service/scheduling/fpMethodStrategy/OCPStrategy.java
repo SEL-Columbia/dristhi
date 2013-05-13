@@ -41,14 +41,14 @@ public class OCPStrategy implements FPMethodStrategy {
     }
 
     @Override
-    public void unEnrollFromRefillScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
+    public void unEnrollFromPreviousScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
         logger.info(format("Un-enrolling EC from OCP Refill schedule. entityId: {0}, new fp method: {1}", fpInfo.entityId(), fpInfo.currentFPMethod()));
 
         unEnrollECFromOCPRefillSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.fpMethodChangeDate());
     }
 
     @Override
-    public void enrollToRefillScheduleForNewFPMethod(FPProductInformation fpInfo) {
+    public void enrollToNewScheduleForNewFPMethod(FPProductInformation fpInfo) {
         enrollECToOCPRefillSchedule(fpInfo.entityId(), fpInfo.numberOfOCPStripsSupplied(), fpInfo.fpMethodChangeDate());
     }
 
@@ -61,6 +61,10 @@ public class OCPStrategy implements FPMethodStrategy {
         logger.info(format("Un-enrolling EC from OCP Refill schedule as FP product was renewed. entityId: {0}, ocpRefillDate: {1}, numberOfOCPStripsSupplied: {2}", fpInfo.entityId(), fpInfo.ocpRefillDate(), fpInfo.numberOfOCPStripsSupplied()));
         unEnrollECFromOCPRefillSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.ocpRefillDate());
         enrollECToOCPRefillSchedule(fpInfo.entityId(), fpInfo.numberOfOCPStripsSupplied(), fpInfo.ocpRefillDate());
+    }
+
+    @Override
+    public void fpFollowup(FPProductInformation fpInfo) {
     }
 
     private void enrollECToOCPRefillSchedule(String entityId, String numberOfOCPStripsSupplied, String ocpRefillDate) {

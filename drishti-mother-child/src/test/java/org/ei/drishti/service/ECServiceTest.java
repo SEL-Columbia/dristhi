@@ -77,7 +77,7 @@ public class ECServiceTest {
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
         verify(schedulingService).enrollToFPComplications("entity id 1", "some method", "yes", "2011-01-01");
         verify(schedulingService).registerEC(new FPProductInformation("entity id 1", "anm id 1", "some method", null, "2010-12-20", "1", "2010-12-25"
-                , "20", "2011-01-01", null));
+                , "20", "2011-01-01", null, null));
     }
 
     @Test
@@ -216,7 +216,7 @@ public class ECServiceTest {
 
         verify(schedulingService).fpChange(
                 new FPProductInformation("entity id 1", "anm id 1", "new method",
-                        "previous method", null, "1", null, "20", "2011-01-01", "2011-01-02"));
+                        "previous method", null, "1", null, "20", "2011-01-01", "2011-01-02", null));
     }
 
     @Test
@@ -236,7 +236,7 @@ public class ECServiceTest {
 
         ecService.renewFPProduct(submission);
 
-        verify(schedulingService).renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "fp method", null, "2010-12-20", "1", "2010-12-25", "20", "2011-01-01", null));
+        verify(schedulingService).renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "fp method", null, "2010-12-20", "1", "2010-12-25", "20", "2011-01-01", null, null));
     }
 
     @Test
@@ -245,6 +245,35 @@ public class ECServiceTest {
         FormSubmission submission = FormSubmissionBuilder.create().build();
 
         ecService.renewFPProduct(submission);
+
+        verify(allEligibleCouples).findByCaseId("entity id 1");
+        verifyZeroInteractions(reportingService);
+        verifyZeroInteractions(schedulingService);
+    }
+
+    @Test
+    public void shouldUpdateECSchedulesWhenFPFollowupOccurs() throws Exception {
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("fp_followup")
+                .withANMId("anm id 1")
+                .addFormField("currentMethod", "fp method")
+                .addFormField("submissionDate", "2011-01-01")
+                .addFormField("fpFollowupDate", "2010-12-20")
+                .build();
+
+        ecService.reportFPFollowup(submission);
+
+        verify(schedulingService).fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp method", null, null, null, null, null, "2011-01-01", null, "2010-12-20"));
+    }
+
+    @Test
+    public void shouldNotDoAnythingDuringFPFollowupWhenNoECIsFound() throws Exception {
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(null);
+        FormSubmission submission = FormSubmissionBuilder.create().build();
+
+        ecService.reportFPFollowup(submission);
 
         verify(allEligibleCouples).findByCaseId("entity id 1");
         verifyZeroInteractions(reportingService);
