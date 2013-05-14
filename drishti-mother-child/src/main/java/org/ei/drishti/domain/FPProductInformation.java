@@ -16,10 +16,11 @@ public class FPProductInformation {
     private final String previousFPMethod;
     private final String fpMethodChangeDate;
     private String fpFollowupDate;
+    private final String needsFollowup;
 
     public FPProductInformation(String entityId, String anmId, String currentMethod, String previousFPMethod, String dmpaInjectionDate,
                                 String numberOfOCPStripsSupplied, String ocpRefillDate, String numberOfCondomsSupplied,
-                                String submissionDate, String fpMethodChangeDate, String fpFollowupDate) {
+                                String submissionDate, String fpMethodChangeDate, String fpFollowupDate, String needsFollowup) {
         this.anmId = anmId;
         this.entityId = entityId;
         this.currentMethod = currentMethod;
@@ -31,6 +32,7 @@ public class FPProductInformation {
         this.submissionDate = submissionDate;
         this.fpMethodChangeDate = fpMethodChangeDate;
         this.fpFollowupDate = fpFollowupDate;
+        this.needsFollowup = needsFollowup;
     }
 
     public String anmId() {
@@ -90,5 +92,9 @@ public class FPProductInformation {
     @Override
     public String toString() {
         return reflectionToString(this);
+    }
+
+    public String needsFollowup() {
+        return needsFollowup;
     }
 }

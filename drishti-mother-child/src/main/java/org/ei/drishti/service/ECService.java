@@ -69,7 +69,7 @@ public class ECService {
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
                 submission.getField(OCP_REFILL_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
-                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null, null);
+                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null, null, null);
 
         schedulingService.registerEC(fpProductInformation);
     }
@@ -118,6 +118,17 @@ public class ECService {
     }
 
     public void reportFPComplications(FormSubmission submission) {
+        EligibleCouple couple = allEligibleCouples.findByCaseId(submission.entityId());
+        if (couple == null) {
+            logger.warn("Tried to report FP Complications of a non-existing EC, with submission: " + submission);
+            return;
+        }
+
+        FPProductInformation fpProductInformation = new FPProductInformation(
+                submission.entityId(), submission.anmId(),
+                null, null, null, null, null, null, null, null,
+                submission.getField(COMPLICATION_DATE_FIELD_NAME), submission.getField(NEEDS_FOLLOWUP_FIELD_NAME));
+        schedulingService.reportFPComplications(fpProductInformation);
     }
 
     public void reportFPChange(FormSubmission submission) {
@@ -139,7 +150,7 @@ public class ECService {
                 submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
                 submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME),
                 submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME),
-                null);
+                null, null);
         schedulingService.fpChange(fpProductInformation);
     }
 
@@ -157,7 +168,7 @@ public class ECService {
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
                 submission.getField(OCP_REFILL_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
-                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null, null);
+                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null, null, null);
         schedulingService.renewFPProduct(fpProductInformation);
     }
 
@@ -173,7 +184,7 @@ public class ECService {
                 submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
                 null, null, null, null, null,
                 submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME),
-                null, submission.getField(FP_FOLLOWUP_DATE_FIELD_NAME));
+                null, submission.getField(FP_FOLLOWUP_DATE_FIELD_NAME), null);
         schedulingService.fpFollowup(fpProductInformation);
     }
 }

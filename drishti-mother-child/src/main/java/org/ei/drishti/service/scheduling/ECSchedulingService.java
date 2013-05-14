@@ -18,8 +18,7 @@ import static org.ei.drishti.common.AllConstants.CommonCommCareFields.BOOLEAN_TR
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.FP_METHOD_CHANGED_COMMCARE_FIELD_VALUE;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.NO_FP_METHOD_COMMCARE_FIELD_VALUE;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
 
@@ -28,6 +27,7 @@ public class ECSchedulingService {
     private final ScheduleTrackingService scheduleTrackingService;
     private final ActionService actionService;
     private final Schedule fpComplicationSchedule = new Schedule(EC_SCHEDULE_FP_COMPLICATION, asList(EC_SCHEDULE_FP_COMPLICATION_MILESTONE));
+    private final Schedule fpFollowupSchedule = new Schedule(EC_SCHEDULE_FP_FOLLOWUP, asList(EC_SCHEDULE_FP_FOLLOWUP_MILESTONE));
 
     @Autowired
     public ECSchedulingService(ScheduleTrackingService scheduleTrackingService, ActionService actionService) {
@@ -94,5 +94,12 @@ public class ECSchedulingService {
 
     private boolean isEnrolledToSchedule(String caseId, String scheduleName) {
         return scheduleTrackingService.getEnrollment(caseId, scheduleName) != null;
+    }
+
+    public void reportFPComplications(FPProductInformation fpInfo) {
+        if (BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(fpInfo.needsFollowup())) {
+            scheduleTrackingService.enroll(new EnrollmentRequest(fpInfo.entityId(), fpFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
+                    parse(fpInfo.fpFollowupDate()), null, null, null, null, null));
+        }
     }
 }
