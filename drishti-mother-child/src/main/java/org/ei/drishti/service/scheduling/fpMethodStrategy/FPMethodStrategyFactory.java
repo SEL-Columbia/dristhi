@@ -1,31 +1,56 @@
 package org.ei.drishti.service.scheduling.fpMethodStrategy;
 
-import org.ei.drishti.service.ActionService;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
 
+@Component
 public class FPMethodStrategyFactory {
-    public static FPMethodStrategy create(ScheduleTrackingService scheduleTrackingService, ActionService actionService, String fpMethod) {
+    private final DMPAInjectableStrategy dmpaInjectableStrategy;
+    private final OCPStrategy ocpStrategy;
+    private final CondomStrategy condomStrategy;
+    private final FemaleSterilizationStrategy femaleSterilizationStrategy;
+    private final MaleSterilizationStrategy maleSterilizationStrategy;
+    private final IUDStrategy iudStrategy;
+    private final DefaultFPMethodStrategy defaultFPMethodStrategy;
+
+    @Autowired
+    public FPMethodStrategyFactory(DMPAInjectableStrategy dmpaInjectableStrategy,
+                                   OCPStrategy ocpStrategy,
+                                   CondomStrategy condomStrategy,
+                                   FemaleSterilizationStrategy femaleSterilizationStrategy,
+                                   MaleSterilizationStrategy maleSterilizationStrategy,
+                                   IUDStrategy iudStrategy,
+                                   DefaultFPMethodStrategy defaultFPMethodStrategy) {
+        this.dmpaInjectableStrategy = dmpaInjectableStrategy;
+        this.ocpStrategy = ocpStrategy;
+        this.condomStrategy = condomStrategy;
+        this.femaleSterilizationStrategy = femaleSterilizationStrategy;
+        this.maleSterilizationStrategy = maleSterilizationStrategy;
+        this.iudStrategy = iudStrategy;
+        this.defaultFPMethodStrategy = defaultFPMethodStrategy;
+    }
+
+    public FPMethodStrategy getStrategyFor(String fpMethod) {
         if (DMPA_INJECTABLE_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
-            return new DMPAInjectableStrategy(scheduleTrackingService, actionService);
+            return dmpaInjectableStrategy;
         }
         if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
-            return new OCPStrategy(scheduleTrackingService, actionService);
+            return ocpStrategy;
         }
         if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
-            return new CondomStrategy(scheduleTrackingService, actionService);
+            return condomStrategy;
         }
         if (FEMALE_STERILIZATION_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
-            return new FemaleSterilizationStrategy(scheduleTrackingService, actionService);
+            return femaleSterilizationStrategy;
         }
         if (MALE_STERILIZATION_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
-            return new MaleSterilizationStrategy(scheduleTrackingService, actionService);
+            return maleSterilizationStrategy;
         }
         if (IUD_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
-            return new IUDStrategy(scheduleTrackingService, actionService);
+            return iudStrategy;
         }
-        return new DefaultFPMethodStrategy();
+        return defaultFPMethodStrategy;
     }
 }
-

@@ -8,6 +8,8 @@ import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
@@ -17,6 +19,7 @@ import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConst
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
 
+@Component
 public class DMPAInjectableStrategy implements FPMethodStrategy {
     private static Logger logger = LoggerFactory.getLogger(DMPAInjectableStrategy.class.toString());
 
@@ -24,6 +27,7 @@ public class DMPAInjectableStrategy implements FPMethodStrategy {
     private final ActionService actionService;
     private final Schedule dmpaInjectableRefillSchedule = new Schedule(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, asList(EC_SCHEDULE_DMPA_INJECTABLE_REFILL_MILESTONE));
 
+    @Autowired
     public DMPAInjectableStrategy(ScheduleTrackingService scheduleTrackingService, ActionService actionService) {
         this.scheduleTrackingService = scheduleTrackingService;
         this.actionService = actionService;

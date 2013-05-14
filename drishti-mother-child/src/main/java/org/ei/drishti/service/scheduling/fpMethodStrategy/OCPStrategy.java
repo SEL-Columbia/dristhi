@@ -9,6 +9,8 @@ import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import static java.lang.Integer.parseInt;
 import static java.text.MessageFormat.format;
@@ -21,6 +23,7 @@ import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FO
 import static org.joda.time.DateTimeConstants.DAYS_PER_WEEK;
 import static org.joda.time.LocalDate.parse;
 
+@Component
 public class OCPStrategy implements FPMethodStrategy {
     public static final int NUMBER_OF_PILLS_IN_ONE_OCP_STRIP = 28;
 
@@ -30,6 +33,7 @@ public class OCPStrategy implements FPMethodStrategy {
     private final ActionService actionService;
     private final Schedule ocpRefillSchedule = new Schedule(EC_SCHEDULE_OCP_REFILL, asList(EC_SCHEDULE_OCP_REFILL_MILESTONE));
 
+    @Autowired
     public OCPStrategy(ScheduleTrackingService scheduleTrackingService, ActionService actionService) {
         this.scheduleTrackingService = scheduleTrackingService;
         this.actionService = actionService;

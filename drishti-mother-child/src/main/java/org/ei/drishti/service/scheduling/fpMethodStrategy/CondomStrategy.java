@@ -9,6 +9,8 @@ import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
@@ -18,6 +20,7 @@ import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConst
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_CONDOM_REFILL_MILESTONE;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 
+@Component
 public class CondomStrategy implements FPMethodStrategy {
     private static Logger logger = LoggerFactory.getLogger(CondomStrategy.class.toString());
 
@@ -25,7 +28,7 @@ public class CondomStrategy implements FPMethodStrategy {
     private final ActionService actionService;
     private final Schedule condomRefillSchedule = new Schedule(EC_SCHEDULE_CONDOM_REFILL, asList(EC_SCHEDULE_CONDOM_REFILL_MILESTONE));
 
-
+    @Autowired
     public CondomStrategy(ScheduleTrackingService scheduleTrackingService, ActionService actionService) {
         this.scheduleTrackingService = scheduleTrackingService;
         this.actionService = actionService;

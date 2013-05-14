@@ -8,6 +8,8 @@ import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
@@ -15,6 +17,7 @@ import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConst
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
 
+@Component
 public class MaleSterilizationStrategy implements FPMethodStrategy {
     private static Logger logger = LoggerFactory.getLogger(MaleSterilizationStrategy.class.toString());
     private final ScheduleTrackingService scheduleTrackingService;
@@ -23,6 +26,7 @@ public class MaleSterilizationStrategy implements FPMethodStrategy {
             asList(EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP_MILESTONE_1,
                     EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP_MILESTONE_2));
 
+    @Autowired
     public MaleSterilizationStrategy(ScheduleTrackingService scheduleTrackingService, ActionService actionService) {
         this.scheduleTrackingService = scheduleTrackingService;
         this.actionService = actionService;

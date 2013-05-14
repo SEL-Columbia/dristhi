@@ -4,7 +4,6 @@ import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.contract.Schedule;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
-import org.ei.drishti.service.ActionService;
 import org.ei.drishti.service.scheduling.fpMethodStrategy.FPMethodStrategyFactory;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
@@ -24,15 +23,15 @@ import static org.joda.time.LocalDate.parse;
 
 @Service
 public class ECSchedulingService {
+    private FPMethodStrategyFactory fpMethodStrategyFactory;
     private final ScheduleTrackingService scheduleTrackingService;
-    private final ActionService actionService;
     private final Schedule fpComplicationSchedule = new Schedule(EC_SCHEDULE_FP_COMPLICATION, asList(EC_SCHEDULE_FP_COMPLICATION_MILESTONE));
     private final Schedule fpFollowupSchedule = new Schedule(EC_SCHEDULE_FP_FOLLOWUP, asList(EC_SCHEDULE_FP_FOLLOWUP_MILESTONE));
 
     @Autowired
-    public ECSchedulingService(ScheduleTrackingService scheduleTrackingService, ActionService actionService) {
+    public ECSchedulingService(FPMethodStrategyFactory fpMethodStrategyFactory, ScheduleTrackingService scheduleTrackingService) {
+        this.fpMethodStrategyFactory = fpMethodStrategyFactory;
         this.scheduleTrackingService = scheduleTrackingService;
-        this.actionService = actionService;
     }
 
     public void enrollToFPComplications(String entityId, String currentFPMethod, String isHighPriority, String submissionDate) {
@@ -57,31 +56,21 @@ public class ECSchedulingService {
     }
 
     public void registerEC(FPProductInformation fpInfo) {
-        FPMethodStrategyFactory
-                .create(scheduleTrackingService, actionService, fpInfo.currentFPMethod())
-                .registerEC(fpInfo);
+        fpMethodStrategyFactory.getStrategyFor(fpInfo.currentFPMethod()).registerEC(fpInfo);
     }
 
     public void fpChange(FPProductInformation fpInfo) {
-        FPMethodStrategyFactory
-                .create(scheduleTrackingService, actionService, fpInfo.previousFPMethod())
-                .unEnrollFromPreviousScheduleAsFPMethodChanged(fpInfo);
+        fpMethodStrategyFactory.getStrategyFor(fpInfo.previousFPMethod()).unEnrollFromPreviousScheduleAsFPMethodChanged(fpInfo);
 
-        FPMethodStrategyFactory
-                .create(scheduleTrackingService, actionService, fpInfo.currentFPMethod())
-                .enrollToNewScheduleForNewFPMethod(fpInfo);
+        fpMethodStrategyFactory.getStrategyFor(fpInfo.currentFPMethod()).enrollToNewScheduleForNewFPMethod(fpInfo);
     }
 
     public void renewFPProduct(FPProductInformation fpInfo) {
-        FPMethodStrategyFactory
-                .create(scheduleTrackingService, actionService, fpInfo.currentFPMethod())
-                .renewFPProduct(fpInfo);
+        fpMethodStrategyFactory.getStrategyFor(fpInfo.currentFPMethod()).renewFPProduct(fpInfo);
     }
 
     public void fpFollowup(FPProductInformation fpInfo) {
-        FPMethodStrategyFactory
-                .create(scheduleTrackingService, actionService, fpInfo.currentFPMethod())
-                .fpFollowup(fpInfo);
+        fpMethodStrategyFactory.getStrategyFor(fpInfo.currentFPMethod()).fpFollowup(fpInfo);
     }
 
     private boolean isCoupleHighPriority(String isHighPriorityField) {

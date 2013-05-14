@@ -2,13 +2,10 @@ package org.ei.drishti.service.scheduling;
 
 import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.domain.EligibleCouple;
-import org.ei.drishti.domain.FPProductInformation;
-import org.ei.drishti.repository.AllEligibleCouples;
-import org.ei.drishti.service.ActionService;
+import org.ei.drishti.service.scheduling.fpMethodStrategy.FPMethodStrategyFactory;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
@@ -16,7 +13,6 @@ import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.util.DateUtil.fakeIt;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.joda.time.LocalDate.parse;
@@ -26,18 +22,15 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ECSchedulingServiceTest {
     @Mock
+    private FPMethodStrategyFactory fpMethodStrategyFactory;
+    @Mock
     private ScheduleTrackingService scheduleTrackingService;
-
-    @Mock
-    private AllEligibleCouples allEligibleCouples;
-    @Mock
-    private ActionService actionService;
 
     private ECSchedulingService ecSchedulingService;
 
     public ECSchedulingServiceTest() {
         initMocks(this);
-        ecSchedulingService = new ECSchedulingService(scheduleTrackingService, actionService);
+        ecSchedulingService = new ECSchedulingService(fpMethodStrategyFactory, scheduleTrackingService);
     }
 
     @Test
@@ -208,191 +201,6 @@ public class ECSchedulingServiceTest {
         ecSchedulingService.updateFPComplications(request, couple);
 
         verify(scheduleTrackingService, times(0)).enroll(any(EnrollmentRequest.class));
-    }
-
-    @Test
-    public void shouldEnrollECIntoDMPAInjectableRefillScheduleWhenECIsRegisteredAndUsesDMPAInjectableFPMethod() {
-        ecSchedulingService.registerEC(new FPProductInformation("entity id 1", "anm id 1", "dmpa_injectable", null, "2012-01-01", null, null
-                , "20", "2012-03-01", null, null, null));
-
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "DMPA Injectable Refill", parse("2012-01-01")));
-    }
-
-    @Test
-    public void shouldEnrollECIntoOCPRefillScheduleWhenECIsRegisteredAndUsesOCPFPMethod() {
-        fakeIt(parse("2012-02-01"));
-        ecSchedulingService.registerEC(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "1", "2012-01-01"
-                , "20", "2012-03-01", null, null, null));
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-01-15")));
-
-        ecSchedulingService.registerEC(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "2", "2012-01-01"
-                , "20", "2012-03-01", null, null, null));
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-02-12")));
-
-        ecSchedulingService.registerEC(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "0", "2012-01-01"
-                , "20", "2012-03-01", null, null, null));
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-02-01")));
-    }
-
-    @Test
-    public void shouldEnrollECIntoCondomRefillScheduleWhenECIsRegisteredAndUsesCondomFPMethod() {
-        fakeIt(parse("2012-01-15"));
-        ecSchedulingService.registerEC(new FPProductInformation("entity id 1", "anm id 1", "condom", null, "2012-01-15", null, null
-                , "20", "2012-03-01", null, null, null));
-
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2012-02-01")));
-
-        fakeIt(parse("2012-12-01"));
-        ecSchedulingService.registerEC(new FPProductInformation("entity id 1", "anm id 1", "condom", null, "2012-12-01", null, null
-                , "20", "2012-03-01", null, null, null));
-
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2013-01-01")));
-    }
-
-    @Test
-    public void shouldNotEnrollECIntoDMPAInjectableRefillScheduleWhenECIsRegisteredAndDoesNotUseDMPAInjectableFPMethod() {
-        ecSchedulingService.registerEC(new FPProductInformation("entity id 1", "anm id 1", "not dmpa", null, "2012-01-01", null, null
-                , "20", "2012-03-01", null, null, null));
-
-        verifyZeroInteractions(scheduleTrackingService);
-    }
-
-    @Test
-    public void shouldUnEnrollECFromPreviousRefillScheduleWhenFPMethodIsChanged() {
-        ecSchedulingService.fpChange(new FPProductInformation("entity id 1", "anm id 1", "condom", "ocp", null, null, null, null, null, "2012-01-01", null, null));
-        verify(scheduleTrackingService).unenroll("entity id 1", asList("OCP Refill"));
-        verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "OCP Refill", "2012-01-01");
-
-        ecSchedulingService.fpChange(new FPProductInformation("entity id 1", "anm id 1", "condom", "dmpa_injectable", null, null, null, null, null, "2012-01-01", null, null));
-        verify(scheduleTrackingService).unenroll("entity id 1", asList("DMPA Injectable Refill"));
-        verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "DMPA Injectable Refill", "2012-01-01");
-
-        ecSchedulingService.fpChange(new FPProductInformation("entity id 1", "anm id 1", "ocp", "condom", null, "1", null, null, null, "2012-01-01", null, null));
-        verify(scheduleTrackingService).unenroll("entity id 1", asList("Condom Refill"));
-        verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "Condom Refill", "2012-01-01");
-    }
-
-    @Test
-    public void shouldEnrollECIntoDMPAInjectableRefillScheduleWhenFPMethodIsChangedToDMPAInjectable() {
-        ecSchedulingService.fpChange(new FPProductInformation("entity id 1", "anm id 1", "dmpa_injectable", "condom", null, null, null, null, null, "2012-01-01", null, null));
-
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "DMPA Injectable Refill", parse("2012-01-01")));
-    }
-
-    @Test
-    public void shouldEnrollECIntoOCPRefillScheduleWhenFPMethodIsChangedToOCP() {
-        fakeIt(parse("2012-02-01"));
-
-        ecSchedulingService.fpChange(new FPProductInformation("entity id 1", "anm id 1", "ocp", "condom", null, "1", null, null, null, "2012-01-01", null, null));
-
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-01-15")));
-    }
-
-    @Test
-    public void shouldEnrollECIntoCondomRefillScheduleWhenFPMethodIsChangedToCondom() {
-        fakeIt(parse("2012-01-15"));
-
-        ecSchedulingService.fpChange(new FPProductInformation("entity id 1", "anm id 1", "condom", "ocp", null, null, null, null, null, "2012-01-01", null, null));
-
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2012-02-01")));
-    }
-
-    @Test
-    public void shouldUpdateOCPRefillScheduleWhenOCPPillsAreResupplied() {
-        ecSchedulingService.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "1", "2012-01-01", null, "2011-01-12", null, null, null));
-
-        InOrder inOrder = inOrder(scheduleTrackingService, actionService);
-        inOrder.verify(scheduleTrackingService).unenroll("entity id 1", asList("OCP Refill"));
-        inOrder.verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "OCP Refill", "2012-01-01");
-        inOrder.verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-01-15")));
-    }
-
-    @Test
-    public void shouldDoNothingWhenZeroOCPPillsAreResupplied() {
-        ecSchedulingService.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "0", "2012-01-02", null, "2011-01-12", null, null, null));
-
-        verifyZeroInteractions(scheduleTrackingService);
-        verifyZeroInteractions(actionService);
-    }
-
-    @Test
-    public void shouldDoNothingWhenOCPPillsAreNotResupplied() {
-        ecSchedulingService.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "", "2012-01-02", null, "2011-01-12", null, null, null));
-
-        verifyZeroInteractions(scheduleTrackingService);
-        verifyZeroInteractions(actionService);
-    }
-
-    @Test
-    public void shouldUpdateDMPAInjectableRefillScheduleWhenDMPAIsReinjected() {
-        ecSchedulingService.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "dmpa_injectable", null, "2012-01-01", null, null, null, "2011-01-12", "", null, null));
-
-        InOrder inOrder = inOrder(scheduleTrackingService, actionService);
-        inOrder.verify(scheduleTrackingService).unenroll("entity id 1", asList("DMPA Injectable Refill"));
-        inOrder.verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "DMPA Injectable Refill", "2012-01-01");
-        inOrder.verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "DMPA Injectable Refill", parse("2012-01-01")));
-    }
-
-    @Test
-    public void shouldDoNothingWhenDMPANotInjected() {
-        ecSchedulingService.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "dmpa_injectable", null, "", null, null, null, "2011-01-12", "", null, null));
-
-        verifyZeroInteractions(scheduleTrackingService);
-        verifyZeroInteractions(actionService);
-
-        ecSchedulingService.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "dmpa_injectable", null, null, null, null, null, "2011-01-12", "", null, null));
-
-        verifyZeroInteractions(scheduleTrackingService);
-        verifyZeroInteractions(actionService);
-    }
-
-    @Test
-    public void shouldUpdateECFromCondomRefillScheduleWhenCondomsAreResupplied() {
-        fakeIt(parse("2011-01-15"));
-
-        ecSchedulingService.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "condom", null, null, null, null, "20", "2011-01-12", "", null, null));
-
-        InOrder inOrder = inOrder(scheduleTrackingService, actionService);
-        inOrder.verify(scheduleTrackingService).unenroll("entity id 1", asList("Condom Refill"));
-        inOrder.verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "Condom Refill", "2011-01-12");
-        inOrder.verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2011-02-01")));
-    }
-
-    @Test
-    public void shouldDoNothingWhenCondomsAreNotResupplied() {
-        ecSchedulingService.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "condom", null, null, null, null, "", "2011-01-012", "", null, null));
-
-        verifyZeroInteractions(scheduleTrackingService);
-        verifyZeroInteractions(actionService);
-    }
-
-    @Test
-    public void shouldFastForwardFemaleSterilizationFollowupScheduleOnFPFollowup() throws Exception {
-        when(scheduleTrackingService.getEnrollment("entity id 1", "Female sterilization followup")).thenReturn(new EnrollmentRecord(
-                "entity id 1", "Female sterilization followup", "Female sterilization followup 2", null, null, null, null, null, null, null
-        ));
-        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm x", "female_sterilization", null,
-                null, null, null, null, "2012-03-01", null, "2012-02-01", null));
-
-        verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "Female sterilization followup", LocalDate.parse("2012-02-01"));
-        verify(actionService).markAlertAsClosed("entity id 1", "anm x", "Female sterilization followup 2", "2012-02-01");
-    }
-
-    @Test
-    public void shouldDoNothingWhenECDoesNotNeedFollowup() {
-        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2011-01-012", "no"));
-        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2011-01-012", null));
-        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2011-01-012", ""));
-
-        verifyZeroInteractions(scheduleTrackingService);
-        verifyZeroInteractions(actionService);
-    }
-
-    @Test
-    public void shouldEnrollECToFollowupScheduleWhenTheyNeedFollowup() {
-        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2011-01-12", "yes"));
-
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "FP Followup", parse("2011-01-12")));
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {
