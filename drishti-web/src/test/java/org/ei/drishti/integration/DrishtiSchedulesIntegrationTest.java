@@ -452,6 +452,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("ec-iud-followup.html", 1);
     }
 
+    @Test
     public void shouldProvideAlertsForFPFollowupAtTheRightTimes() throws Exception {
         schedule.enrollFor("FP Followup", newDate(2012, JANUARY, 1), new Time(14, 0));
 
@@ -461,6 +462,18 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts("FP Followup", max);
 
         visualization.outputTo("ec-fp-followup.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForFPReferralFollowupAtTheRightTimes() throws Exception {
+        schedule.enrollFor("FP Referral Followup", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("FP Referral Followup", earliest);
+        schedule.assertAlerts("FP Referral Followup", due, dateWithYear(2, JANUARY, 2012));
+        schedule.assertAlertsStartWith("FP Referral Followup", late, dateWithYear(3, JANUARY, 2012), dateWithYear(10, JANUARY, 2012), dateWithYear(17, JANUARY, 2012), dateWithYear(24, JANUARY, 2012));
+        schedule.assertNoAlerts("FP Referral Followup", max);
+
+        visualization.outputTo("ec-fp-referral-followup.html", 1);
     }
 
     @Before
