@@ -16,5 +16,6 @@ public class FPReferralFollowupHandler implements FormSubmissionHandler {
 
     @Override
     public void handle(FormSubmission submission) {
+        ecService.reportReferralFollowup(submission);
     }
 }

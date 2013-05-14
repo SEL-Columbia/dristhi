@@ -46,6 +46,14 @@ public class ECSchedulingService {
     }
 
     public void reportFPComplications(FPProductInformation fpInfo) {
+        enrollToFPFollowupSchedule(fpInfo);
+    }
+
+    public void reportReferralFollowup(FPProductInformation fpInfo) {
+        enrollToFPFollowupSchedule(fpInfo);
+    }
+
+    private void enrollToFPFollowupSchedule(FPProductInformation fpInfo) {
         if (BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(fpInfo.needsFollowup())) {
             scheduleTrackingService.enroll(new EnrollmentRequest(fpInfo.entityId(), fpFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
                     parse(fpInfo.fpFollowupDate()), null, null, null, null, null));

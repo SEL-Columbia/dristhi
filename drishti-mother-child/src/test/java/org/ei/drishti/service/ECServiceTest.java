@@ -221,9 +221,9 @@ public class ECServiceTest {
     }
 
     @Test
-    public void shouldNotDoAnythingDuringFPReferralFollowupWhenNoECIsFound() throws Exception {
+    public void shouldNotDoAnythingWhenFPComplicationIsReportedAndECIsNotFound() throws Exception {
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(null);
-        FormSubmission submission = FormSubmissionBuilder.create().build();
+        FormSubmission submission = FormSubmissionBuilder.create().withFormName("fp_complications").build();
 
         ecService.reportFPComplications(submission);
 
@@ -233,11 +233,11 @@ public class ECServiceTest {
     }
 
     @Test
-    public void shouldUpdateECSchedulesWhenFPReferralFollowupIsFilled() throws Exception {
+    public void shouldUpdateECSchedulesWhenFPComplicationsIsReported() throws Exception {
         EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
-                .withFormName("fp_referral_followup")
+                .withFormName("fp_complications")
                 .withANMId("anm id 1")
                 .addFormField("currentMethod", "fp method")
                 .addFormField("complicationDate", "2010-12-25")
@@ -247,5 +247,33 @@ public class ECServiceTest {
         ecService.reportFPComplications(submission);
 
         verify(schedulingService).reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2010-12-25", "yes"));
+    }
+
+    @Test
+    public void shouldNotDoAnythingWhenFPReferralFollowupIsReportedAndECIsNotFound() throws Exception {
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(null);
+        FormSubmission submission = FormSubmissionBuilder.create().withFormName("fp_referral_followup").build();
+
+        ecService.reportReferralFollowup(submission);
+
+        verify(allEligibleCouples).findByCaseId("entity id 1");
+        verifyZeroInteractions(reportingService);
+        verifyZeroInteractions(schedulingService);
+    }
+
+    @Test
+    public void shouldUpdateECSchedulesWhenFPReferralFollowupIsReported() throws Exception {
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("fp_referral_followup")
+                .withANMId("anm id 1")
+                .addFormField("referralFollowupDate", "2010-12-25")
+                .addFormField("needsFollowup", "yes")
+                .build();
+
+        ecService.reportReferralFollowup(submission);
+
+        verify(schedulingService).reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2010-12-25", "yes"));
     }
 }

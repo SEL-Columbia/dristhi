@@ -132,6 +132,7 @@ public class AllConstants {
         public static final String COMPLICATION_DATE_FIELD_NAME = "complicationDate";
         public static final String NEEDS_FOLLOWUP_FIELD_NAME = "needsFollowup";
         public static final String IUD_FP_METHOD_VALUE = "iud";
+        public static final String REFERRAL_FOLLOW_UP_DATE_FIELD_NAME = "referralFollowupDate";
     }
 
     public static class ChangeFamilyPlanningMethodCommCareFields {

@@ -136,6 +136,20 @@ public class ECService {
         schedulingService.fpFollowup(fpProductInformation);
     }
 
+    public void reportReferralFollowup(FormSubmission submission) {
+        EligibleCouple couple = allEligibleCouples.findByCaseId(submission.entityId());
+        if (couple == null) {
+            logger.warn("Tried to report FP Referral follow-up of a non-existing EC, with submission: " + submission);
+            return;
+        }
+
+        FPProductInformation fpProductInformation = new FPProductInformation(
+                submission.entityId(), submission.anmId(),
+                null, null, null, null, null, null, null, null,
+                submission.getField(REFERRAL_FOLLOW_UP_DATE_FIELD_NAME), submission.getField(NEEDS_FOLLOWUP_FIELD_NAME));
+        schedulingService.reportReferralFollowup(fpProductInformation);
+    }
+
     public EligibleCouple registerEligibleCoupleForOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
         EligibleCouple couple = new EligibleCouple(idGenerator.generateUUID().toString(), "0")
                 .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
