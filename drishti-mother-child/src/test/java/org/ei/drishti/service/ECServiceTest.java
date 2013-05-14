@@ -181,11 +181,12 @@ public class ECServiceTest {
                 .addFormField("currentMethod", "fp method")
                 .addFormField("submissionDate", "2011-01-01")
                 .addFormField("fpFollowupDate", "2010-12-20")
+                .addFormField("needsFollowup", "yes")
                 .build();
 
         ecService.reportFPFollowup(submission);
 
-        verify(schedulingService).fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp method", null, null, null, null, null, "2011-01-01", null, "2010-12-20", null));
+        verify(schedulingService).fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp method", null, null, null, null, null, "2011-01-01", null, "2010-12-20", "yes"));
     }
 
     @Test

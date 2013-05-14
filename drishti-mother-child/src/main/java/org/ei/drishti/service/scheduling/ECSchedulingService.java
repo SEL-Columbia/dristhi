@@ -43,17 +43,18 @@ public class ECSchedulingService {
 
     public void fpFollowup(FPProductInformation fpInfo) {
         fpMethodStrategyFactory.getStrategyFor(fpInfo.currentFPMethod()).fpFollowup(fpInfo);
+        enrollToFPFollowupScheduleIfECNeedsFollowup(fpInfo);
     }
 
     public void reportFPComplications(FPProductInformation fpInfo) {
-        enrollToFPFollowupSchedule(fpInfo);
+        enrollToFPFollowupScheduleIfECNeedsFollowup(fpInfo);
     }
 
     public void reportReferralFollowup(FPProductInformation fpInfo) {
-        enrollToFPFollowupSchedule(fpInfo);
+        enrollToFPFollowupScheduleIfECNeedsFollowup(fpInfo);
     }
 
-    private void enrollToFPFollowupSchedule(FPProductInformation fpInfo) {
+    private void enrollToFPFollowupScheduleIfECNeedsFollowup(FPProductInformation fpInfo) {
         if (BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(fpInfo.needsFollowup())) {
             scheduleTrackingService.enroll(new EnrollmentRequest(fpInfo.entityId(), fpFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
                     parse(fpInfo.fpFollowupDate()), null, null, null, null, null));

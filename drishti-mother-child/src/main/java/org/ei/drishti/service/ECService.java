@@ -132,7 +132,7 @@ public class ECService {
                 submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
                 null, null, null, null, null,
                 submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME),
-                null, submission.getField(FP_FOLLOWUP_DATE_FIELD_NAME), null);
+                null, submission.getField(FP_FOLLOWUP_DATE_FIELD_NAME), submission.getField(NEEDS_FOLLOWUP_FIELD_NAME));
         schedulingService.fpFollowup(fpProductInformation);
     }
 
