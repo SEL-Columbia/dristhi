@@ -23,13 +23,15 @@ public class FormSubmissionRouterTest {
     private RenewFPProductHandler renewFPProductHandler;
     @Mock
     private FPFollowupHandler fpFollowupHandler;
+    @Mock
+    private FPReferralFollowupHandler fpReferralFollowupHandler;
 
     private FormSubmissionRouter router;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        router = new FormSubmissionRouter(formSubmissionsRepository, ecRegistrationHandler, fpComplicationsHandler, fpChangeHandler, renewFPProductHandler, fpFollowupHandler);
+        router = new FormSubmissionRouter(formSubmissionsRepository, ecRegistrationHandler, fpComplicationsHandler, fpChangeHandler, renewFPProductHandler, fpFollowupHandler, fpReferralFollowupHandler);
     }
 
     @Test
@@ -58,5 +60,16 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(renewFPProductHandler).handle(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateFPReferralFollowupFormSubmissionHandlingToFPReferralFollowupHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "fp_referral_followup", "entity id 1", null, 0L, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(fpReferralFollowupHandler).handle(formSubmission);
     }
 }
