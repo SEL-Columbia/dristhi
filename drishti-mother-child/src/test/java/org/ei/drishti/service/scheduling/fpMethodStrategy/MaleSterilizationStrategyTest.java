@@ -32,14 +32,14 @@ public class MaleSterilizationStrategyTest {
     }
 
     @Test
-    public void shouldEnrollInFemaleSterilizationFollowupScheduleOnECRegistration() throws Exception {
+    public void shouldEnrollInMaleSterilizationFollowupScheduleOnECRegistration() throws Exception {
         strategy.registerEC(new FPProductInformation("entity id 1", null, null, null, null, null, null, null, "2012-03-01", "2012-02-01", null, null));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Male sterilization followup", LocalDate.parse("2012-02-01")));
     }
 
     @Test
-    public void shouldEnrollInFemaleSterilizationFollowupScheduleOnFPChange() throws Exception {
+    public void shouldEnrollInMaleSterilizationFollowupScheduleOnFPChange() throws Exception {
         strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", null, "Male sterilization followup", "condom",
                 null, null, null, null, "2012-03-01", "2012-02-01", null, null));
 

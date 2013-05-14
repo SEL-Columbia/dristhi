@@ -1,0 +1,52 @@
+{
+    "name": "IUD followup",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "IUD followup 1",
+            "scheduleWindows": {
+                "earliest": ["0 Weeks"],
+                "due": ["1 Month", "1 Week"],
+                "late": ["4 Months"],
+                "max": ["4 Months"]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["1 Month"],
+                    "interval": ["1 Day"],
+                    "count": "7"
+                },
+                {
+                    "window": "late",
+                    "offset": ["1 Month", "1 Week"],
+                    "interval": ["1 Week"],
+                    "count": "15"
+                }
+            ]
+        },
+        {
+            "name": "IUD followup 2",
+            "scheduleWindows": {
+                "earliest": ["0 Weeks"],
+                "due": ["4 Months", "1 Week"],
+                "late": ["100 Weeks"],
+                "max": [""]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["4 Months"],
+                    "interval": ["1 Day"],
+                    "count": "7"
+                },
+                {
+                    "window": "late",
+                    "offset": ["4 Months", "1 Week"],
+                    "interval": ["1 Week"],
+                    "count": "83"
+                }
+            ]
+        }
+    ]
+}
