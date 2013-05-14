@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(1).draw();
+schedule.addAlertsStartingWith("IUD followup 1", "IUD followup 1 - due (Will continue till service is delivered)", [new Date("Feb 01, 2012"), new Date("Feb 02, 2012"), new Date("Feb 03, 2012"), ]);
+schedule.addAlertsStartingWith("IUD followup 1", "IUD followup 1 - late (Will continue till service is delivered)", [new Date("Feb 08, 2012"), new Date("Feb 15, 2012"), new Date("Feb 22, 2012"), ]);
+schedule.addAlertsStartingWith("IUD followup 2", "IUD followup 2 - due (Will continue till service is delivered)", [new Date("May 01, 2012"), new Date("May 02, 2012"), new Date("May 03, 2012"), ]);
+schedule.addAlertsStartingWith("IUD followup 2", "IUD followup 2 - late (Will continue till service is delivered)", [new Date("May 08, 2012"), new Date("May 15, 2012"), new Date("May 22, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>IUD followup</center></body></html>

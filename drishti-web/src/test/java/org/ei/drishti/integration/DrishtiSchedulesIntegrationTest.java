@@ -435,6 +435,23 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("ec-male-sterilization-followup.html", 1);
     }
 
+    @Test
+    public void shouldProvideAlertsForIUDFollowupAtTheRightTimes() throws Exception {
+        schedule.enrollFor("IUD followup", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("IUD followup 1", earliest);
+        schedule.assertAlertsStartWith("IUD followup 1", due, dateWithYear(1, FEBRUARY, 2012), dateWithYear(2, FEBRUARY, 2012), dateWithYear(3, FEBRUARY, 2012));
+        schedule.assertAlertsStartWith("IUD followup 1", late, dateWithYear(8, FEBRUARY, 2012), dateWithYear(15, FEBRUARY, 2012), dateWithYear(22, FEBRUARY, 2012));
+        schedule.assertNoAlerts("IUD followup 1", max);
+
+        schedule.assertNoAlerts("IUD followup 2", earliest);
+        schedule.assertAlertsStartWith("IUD followup 2", due, dateWithYear(1, MAY, 2012), dateWithYear(2, MAY, 2012), dateWithYear(3, MAY, 2012));
+        schedule.assertAlertsStartWith("IUD followup 2", late, dateWithYear(8, MAY, 2012), dateWithYear(15, MAY, 2012), dateWithYear(22, MAY, 2012));
+        schedule.assertNoAlerts("IUD followup 2", max);
+
+        visualization.outputTo("ec-iud-followup.html", 1);
+    }
+
     @Before
     public void setUp() throws Exception {
         FakeSchedule fakeSchedule = new FakeSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {
