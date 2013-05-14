@@ -127,6 +127,7 @@ public class AllConstants {
         public static final String OCP_FP_METHOD_VALUE = "ocp";
         public static final String CONDOM_FP_METHOD_VALUE = "condom";
         public static final String FEMALE_STERILIZATION_FP_METHOD_VALUE = "female_sterilization";
+        public static final String MALE_STERILIZATION_FP_METHOD_VALUE = "male_sterilization";
     }
 
     public static class ChangeFamilyPlanningMethodCommCareFields {

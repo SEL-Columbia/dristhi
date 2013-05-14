@@ -19,6 +19,9 @@ public class FPMethodStrategyFactory {
         if (FEMALE_STERILIZATION_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
             return new FemaleSterilizationStrategy(scheduleTrackingService, actionService);
         }
+        if (MALE_STERILIZATION_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
+            return new MaleSterilizationStrategy(scheduleTrackingService, actionService);
+        }
         return new DefaultFPMethodStrategy();
     }
 }

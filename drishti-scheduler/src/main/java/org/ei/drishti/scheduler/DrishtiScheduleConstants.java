@@ -49,6 +49,9 @@ public class DrishtiScheduleConstants {
         public static final String EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP_MILESTONE_1 = "Female sterilization followup 1";
         public static final String EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP_MILESTONE_2 = "Female sterilization followup 2";
         public static final String EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP_MILESTONE_3 = "Female sterilization followup 3";
+        public static final String EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP = "Male sterilization followup";
+        public static final String EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP_MILESTONE_1 = "Male sterilization followup 1";
+        public static final String EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP_MILESTONE_2 = "Male sterilization followup 2";
     }
 
 
