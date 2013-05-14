@@ -31,12 +31,12 @@ public class ECSchedulingServiceTest {
     }
 
     @Test
-    public void shouldDoNothingWhenComplicationIsReportedAndECDoesNotNeedFollowup() {
-        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2011-01-012", "no"));
-        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2011-01-012", null));
-        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2011-01-012", ""));
+    public void shouldFulfillFollowupScheduleWhenComplicationIsReportedAndECDoesNotNeedFollowup() {
+        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null));
+        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, ""));
+        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no"));
 
-        verifyZeroInteractions(scheduleTrackingService);
+        verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
     }
 
     @Test
@@ -47,12 +47,12 @@ public class ECSchedulingServiceTest {
     }
 
     @Test
-    public void shouldDoNothingWhenReferralFollowupIsReportedAndECDoesNotNeedFollowup() {
-        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2011-01-012", "no"));
-        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2011-01-012", null));
-        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2011-01-012", ""));
+    public void shouldFulfillFollowupScheduleWhenReferralFollowupIsReportedAndECDoesNotNeedFollowup() {
+        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null));
+        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, ""));
+        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no"));
 
-        verifyZeroInteractions(scheduleTrackingService);
+        verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
     }
 
     @Test
@@ -63,14 +63,14 @@ public class ECSchedulingServiceTest {
     }
 
     @Test
-    public void shouldDoNothingWhenFollowupIsReportedAndECDoesNotNeedFollowup() {
+    public void shouldFulfillFollowupScheduleWhenFollowupIsReportedAndECDoesNotNeedFollowup() {
         when(fpMethodStrategyFactory.getStrategyFor("fp_method")).thenReturn(fpMethodStrategy);
 
-        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, null, null, "2011-01-012", "no"));
-        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, null, null, "2011-01-012", null));
-        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, null, null, "2011-01-012", ""));
+        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null));
+        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, ""));
+        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no"));
 
-        verifyZeroInteractions(scheduleTrackingService);
+        verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
     }
 
     @Test

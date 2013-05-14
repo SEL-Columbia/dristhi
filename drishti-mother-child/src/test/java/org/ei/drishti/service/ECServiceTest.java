@@ -242,12 +242,13 @@ public class ECServiceTest {
                 .withANMId("anm id 1")
                 .addFormField("currentMethod", "fp method")
                 .addFormField("complicationDate", "2010-12-25")
+                .addFormField("submissionDate", "2010-12-24")
                 .addFormField("needsFollowup", "yes")
                 .build();
 
         ecService.reportFPComplications(submission);
 
-        verify(schedulingService).reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2010-12-25", "yes"));
+        verify(schedulingService).reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2010-12-24", null, "2010-12-25", "yes"));
     }
 
     @Test
@@ -271,10 +272,11 @@ public class ECServiceTest {
                 .withANMId("anm id 1")
                 .addFormField("referralFollowupDate", "2010-12-25")
                 .addFormField("needsFollowup", "yes")
+                .addFormField("submissionDate", "2010-12-24")
                 .build();
 
         ecService.reportReferralFollowup(submission);
 
-        verify(schedulingService).reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, null, null, "2010-12-25", "yes"));
+        verify(schedulingService).reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2010-12-24", null, "2010-12-25", "yes"));
     }
 }

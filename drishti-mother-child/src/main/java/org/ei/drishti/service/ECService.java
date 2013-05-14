@@ -74,7 +74,7 @@ public class ECService {
 
         FPProductInformation fpProductInformation = new FPProductInformation(
                 submission.entityId(), submission.anmId(),
-                null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null,
                 submission.getField(COMPLICATION_DATE_FIELD_NAME), submission.getField(NEEDS_FOLLOWUP_FIELD_NAME));
         schedulingService.reportFPComplications(fpProductInformation);
     }
@@ -145,7 +145,7 @@ public class ECService {
 
         FPProductInformation fpProductInformation = new FPProductInformation(
                 submission.entityId(), submission.anmId(),
-                null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null,
                 submission.getField(REFERRAL_FOLLOW_UP_DATE_FIELD_NAME), submission.getField(NEEDS_FOLLOWUP_FIELD_NAME));
         schedulingService.reportReferralFollowup(fpProductInformation);
     }
