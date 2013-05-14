@@ -55,5 +55,7 @@ public class DrishtiScheduleConstants {
         public static final String EC_SCHEDULE_IUD_FOLLOWUP = "IUD followup";
         public static final String EC_SCHEDULE_IUD_FOLLOWUP_MILESTONE_1 = "IUD followup 1";
         public static final String EC_SCHEDULE_IUD_FOLLOWUP_MILESTONE_2 = "IUD followup 2";
+        public static final String EC_SCHEDULE_FP_REFERRAL_FOLLOWUP = "FP Referral Followup";
+        public static final String EC_SCHEDULE_FP_REFERRAL_FOLLOWUP_MILESTONE = "FP Referral Followup";
     }
 }

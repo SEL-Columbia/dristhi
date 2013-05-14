@@ -33,7 +33,7 @@ public class MaleSterilizationStrategyTest {
 
     @Test
     public void shouldEnrollInMaleSterilizationFollowupScheduleOnECRegistration() throws Exception {
-        strategy.registerEC(new FPProductInformation("entity id 1", null, null, null, null, null, null, null, "2012-03-01", "2012-02-01", null, null));
+        strategy.registerEC(new FPProductInformation("entity id 1", null, null, null, null, null, null, null, "2012-03-01", "2012-02-01", null, null, null));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Male sterilization followup", LocalDate.parse("2012-02-01")));
     }
@@ -41,7 +41,7 @@ public class MaleSterilizationStrategyTest {
     @Test
     public void shouldEnrollInMaleSterilizationFollowupScheduleOnFPChange() throws Exception {
         strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", null, "Male sterilization followup", "condom",
-                null, null, null, null, "2012-03-01", "2012-02-01", null, null));
+                null, null, null, null, "2012-03-01", "2012-02-01", null, null, null));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Male sterilization followup", LocalDate.parse("2012-02-01")));
     }
@@ -49,7 +49,7 @@ public class MaleSterilizationStrategyTest {
     @Test
     public void shouldUnEnrollFromMaleSterilizationFollowupScheduleOnFPMethodChange() throws Exception {
         strategy.unEnrollFromPreviousScheduleAsFPMethodChanged(
-                new FPProductInformation("entity id 1", "anm x", "condom", "male_sterilization", null, null, null, "20", "2012-03-01", "2012-03-10", null, null));
+                new FPProductInformation("entity id 1", "anm x", "condom", "male_sterilization", null, null, null, "20", "2012-03-01", "2012-03-10", null, null, null));
 
         verify(scheduleTrackingService).unenroll("entity id 1", asList("Male sterilization followup"));
         verify(actionService).markAlertAsClosed("entity id 1", "anm x", "Male sterilization followup", "2012-03-10");
@@ -61,7 +61,7 @@ public class MaleSterilizationStrategyTest {
                 "entity id 1", "Male sterilization followup", "Male sterilization followup 2", null, null, null, null, null, null, null
         ));
         strategy.fpFollowup(new FPProductInformation("entity id 1", "anm x", "male_sterilization", null,
-                null, null, null, null, "2012-03-01", null, "2012-02-01", null));
+                null, null, null, null, "2012-03-01", null, "2012-02-01", null, null));
 
         verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "Male sterilization followup", LocalDate.parse("2012-02-01"));
         verify(actionService).markAlertAsClosed("entity id 1", "anm x", "Male sterilization followup 2", "2012-02-01");

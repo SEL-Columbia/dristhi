@@ -33,7 +33,7 @@ public class IUDStrategyTest {
 
     @Test
     public void shouldEnrollInIUDFollowupScheduleOnECRegistration() throws Exception {
-        strategy.registerEC(new FPProductInformation("entity id 1", null, null, null, null, null, null, null, "2012-03-01", "2012-02-01", null, null));
+        strategy.registerEC(new FPProductInformation("entity id 1", null, null, null, null, null, null, null, "2012-03-01", "2012-02-01", null, null, null));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "IUD followup", LocalDate.parse("2012-02-01")));
     }
@@ -41,7 +41,7 @@ public class IUDStrategyTest {
     @Test
     public void shouldEnrollInIUDFollowupScheduleOnFPChange() throws Exception {
         strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", null, "IUD followup", "condom",
-                null, null, null, null, "2012-03-01", "2012-02-01", null, null));
+                null, null, null, null, "2012-03-01", "2012-02-01", null, null, null));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "IUD followup", LocalDate.parse("2012-02-01")));
     }
@@ -49,7 +49,7 @@ public class IUDStrategyTest {
     @Test
     public void shouldUnEnrollFromIUDFollowupScheduleOnFPMethodChange() throws Exception {
         strategy.unEnrollFromPreviousScheduleAsFPMethodChanged(
-                new FPProductInformation("entity id 1", "anm x", "condom", "iud", null, null, null, "20", "2012-03-01", "2012-03-10", null, null));
+                new FPProductInformation("entity id 1", "anm x", "condom", "iud", null, null, null, "20", "2012-03-01", "2012-03-10", null, null, null));
 
         verify(scheduleTrackingService).unenroll("entity id 1", asList("IUD followup"));
         verify(actionService).markAlertAsClosed("entity id 1", "anm x", "IUD followup", "2012-03-10");
@@ -61,7 +61,7 @@ public class IUDStrategyTest {
                 "entity id 1", "IUD followup", "IUD followup 2", null, null, null, null, null, null, null
         ));
         strategy.fpFollowup(new FPProductInformation("entity id 1", "anm x", "iud", null,
-                null, null, null, null, "2012-03-01", null, "2012-02-01", null));
+                null, null, null, null, "2012-03-01", null, "2012-02-01", null, null));
 
         verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "IUD followup", LocalDate.parse("2012-02-01"));
         verify(actionService).markAlertAsClosed("entity id 1", "anm x", "IUD followup 2", "2012-02-01");

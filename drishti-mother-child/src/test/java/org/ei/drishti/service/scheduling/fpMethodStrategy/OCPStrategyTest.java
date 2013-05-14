@@ -38,21 +38,21 @@ public class OCPStrategyTest {
     public void shouldEnrollInOCPScheduleOnECRegistration() throws Exception {
         fakeIt(parse("2012-02-01"));
         strategy.registerEC(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "1", "2012-01-01"
-                , "20", "2012-03-01", null, null, null));
+                , "20", "2012-03-01", null, null, null, null));
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-01-15")));
 
         strategy.registerEC(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "2", "2012-01-01"
-                , "20", "2012-03-01", null, null, null));
+                , "20", "2012-03-01", null, null, null, null));
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-02-12")));
 
         strategy.registerEC(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "0", "2012-01-01"
-                , "20", "2012-03-01", null, null, null));
+                , "20", "2012-03-01", null, null, null, null));
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-02-01")));
     }
 
     @Test
     public void shouldUnEnrollECFromPreviousRefillSchedule() {
-        strategy.unEnrollFromPreviousScheduleAsFPMethodChanged(new FPProductInformation("entity id 1", "anm id 1", "condom", "ocp", null, null, null, null, null, "2012-01-01", null, null));
+        strategy.unEnrollFromPreviousScheduleAsFPMethodChanged(new FPProductInformation("entity id 1", "anm id 1", "condom", "ocp", null, null, null, null, null, "2012-01-01", null, null, null));
 
         verify(scheduleTrackingService).unenroll("entity id 1", asList("OCP Refill"));
         verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "OCP Refill", "2012-01-01");
@@ -62,14 +62,14 @@ public class OCPStrategyTest {
     public void shouldEnrollECIntoOCPRefillScheduleWhenFPMethodIsChanged() {
         fakeIt(parse("2012-02-01"));
 
-        strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", "anm id 1", "ocp", "condom", null, "1", null, null, null, "2012-01-01", null, null));
+        strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", "anm id 1", "ocp", "condom", null, "1", null, null, null, "2012-01-01", null, null, null));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-01-15")));
     }
 
     @Test
     public void shouldUpdateOCPRefillScheduleWhenOCPPillsAreResupplied() {
-        strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "1", "2012-01-01", null, "2011-01-12", null, null, null));
+        strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "1", "2012-01-01", null, "2011-01-12", null, null, null, null));
 
         InOrder inOrder = inOrder(scheduleTrackingService, actionService);
         inOrder.verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "OCP Refill", parse("2011-01-12"));
@@ -79,7 +79,7 @@ public class OCPStrategyTest {
 
     @Test
     public void shouldDoNothingWhenZeroOCPPillsAreResupplied() {
-        strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "0", "2012-01-02", null, "2011-01-12", null, null, null));
+        strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "0", "2012-01-02", null, "2011-01-12", null, null, null, null));
 
         verifyZeroInteractions(scheduleTrackingService);
         verifyZeroInteractions(actionService);

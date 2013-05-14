@@ -17,10 +17,11 @@ public class FPProductInformation {
     private final String fpMethodChangeDate;
     private String fpFollowupDate;
     private final String needsFollowup;
+    private final String needsReferralFollowup;
 
     public FPProductInformation(String entityId, String anmId, String currentMethod, String previousFPMethod, String dmpaInjectionDate,
                                 String numberOfOCPStripsSupplied, String ocpRefillDate, String numberOfCondomsSupplied,
-                                String submissionDate, String fpMethodChangeDate, String fpFollowupDate, String needsFollowup) {
+                                String submissionDate, String fpMethodChangeDate, String fpFollowupDate, String needsFollowup, String needsReferralFollowup) {
         this.anmId = anmId;
         this.entityId = entityId;
         this.currentMethod = currentMethod;
@@ -33,6 +34,7 @@ public class FPProductInformation {
         this.fpMethodChangeDate = fpMethodChangeDate;
         this.fpFollowupDate = fpFollowupDate;
         this.needsFollowup = needsFollowup;
+        this.needsReferralFollowup = needsReferralFollowup;
     }
 
     public String anmId() {
@@ -79,6 +81,14 @@ public class FPProductInformation {
         return fpFollowupDate;
     }
 
+    public String needsFollowup() {
+        return needsFollowup;
+    }
+
+    public String needsReferralFollowup() {
+        return needsReferralFollowup;
+    }
+
     @Override
     public boolean equals(Object o) {
         return reflectionEquals(o, this);
@@ -92,9 +102,5 @@ public class FPProductInformation {
     @Override
     public String toString() {
         return reflectionToString(this);
-    }
-
-    public String needsFollowup() {
-        return needsFollowup;
     }
 }

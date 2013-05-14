@@ -38,20 +38,20 @@ public class CondomStrategyTest {
     public void shouldEnrollInCondomScheduleOnECRegistration() throws Exception {
         fakeIt(parse("2012-01-15"));
         strategy.registerEC(new FPProductInformation("entity id 1", "anm id 1", "condom", null, "2012-01-15", null, null
-                , "20", "2012-03-01", null, null, null));
+                , "20", "2012-03-01", null, null, null, null));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2012-02-01")));
 
         fakeIt(parse("2012-12-01"));
         strategy.registerEC(new FPProductInformation("entity id 1", "anm id 1", "condom", null, "2012-12-01", null, null
-                , "20", "2012-03-01", null, null, null));
+                , "20", "2012-03-01", null, null, null, null));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2013-01-01")));
     }
 
     @Test
     public void shouldUnEnrollECFromPreviousRefillSchedule() {
-        strategy.unEnrollFromPreviousScheduleAsFPMethodChanged(new FPProductInformation("entity id 1", "anm id 1", "ocp", "condom", null, "1", null, null, null, "2012-01-01", null, null));
+        strategy.unEnrollFromPreviousScheduleAsFPMethodChanged(new FPProductInformation("entity id 1", "anm id 1", "ocp", "condom", null, "1", null, null, null, "2012-01-01", null, null, null));
 
         verify(scheduleTrackingService).unenroll("entity id 1", asList("Condom Refill"));
         verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "Condom Refill", "2012-01-01");
@@ -61,7 +61,7 @@ public class CondomStrategyTest {
     public void shouldEnrollECIntoCondomRefillScheduleWhenFPMethodIsChanged() {
         fakeIt(parse("2012-01-15"));
 
-        strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", "anm id 1", "condom", "ocp", null, null, null, null, null, "2012-01-01", null, null));
+        strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", "anm id 1", "condom", "ocp", null, null, null, null, null, "2012-01-01", null, null, null));
 
         verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2012-02-01")));
     }
@@ -70,7 +70,7 @@ public class CondomStrategyTest {
     public void shouldUpdateECFromCondomRefillScheduleWhenCondomsAreResupplied() {
         fakeIt(parse("2011-01-15"));
 
-        strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "condom", null, null, null, null, "20", "2011-01-12", "", null, null));
+        strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "condom", null, null, null, null, "20", "2011-01-12", "", null, null, null));
 
         InOrder inOrder = inOrder(scheduleTrackingService, actionService);
         inOrder.verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "Condom Refill", parse("2011-01-12"));
@@ -80,7 +80,7 @@ public class CondomStrategyTest {
 
     @Test
     public void shouldDoNothingWhenCondomsAreNotResupplied() {
-        strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "condom", null, null, null, null, "", "2011-01-012", "", null, null));
+        strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "condom", null, null, null, null, "", "2011-01-012", "", null, null, null));
 
         verifyZeroInteractions(scheduleTrackingService);
         verifyZeroInteractions(actionService);

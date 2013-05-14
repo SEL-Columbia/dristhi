@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.BOOLEAN_TRUE_COMMCARE_VALUE;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_FOLLOWUP;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_FOLLOWUP_MILESTONE;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
 
@@ -21,6 +20,7 @@ public class ECSchedulingService {
     private FPMethodStrategyFactory fpMethodStrategyFactory;
     private final ScheduleTrackingService scheduleTrackingService;
     private final Schedule fpFollowupSchedule = new Schedule(EC_SCHEDULE_FP_FOLLOWUP, asList(EC_SCHEDULE_FP_FOLLOWUP_MILESTONE));
+    private final Schedule fpReferralFollowupSchedule = new Schedule(EC_SCHEDULE_FP_REFERRAL_FOLLOWUP, asList(EC_SCHEDULE_FP_REFERRAL_FOLLOWUP_MILESTONE));
 
     @Autowired
     public ECSchedulingService(FPMethodStrategyFactory fpMethodStrategyFactory, ScheduleTrackingService scheduleTrackingService) {
@@ -44,23 +44,35 @@ public class ECSchedulingService {
 
     public void fpFollowup(FPProductInformation fpInfo) {
         fpMethodStrategyFactory.getStrategyFor(fpInfo.currentFPMethod()).fpFollowup(fpInfo);
-        enrollToFPFollowupScheduleIfECNeedsFollowup(fpInfo);
+        updateFPFollowupSchedule(fpInfo);
+        updateFPReferralFollowupSchedule(fpInfo);
     }
 
     public void reportFPComplications(FPProductInformation fpInfo) {
-        enrollToFPFollowupScheduleIfECNeedsFollowup(fpInfo);
+        updateFPFollowupSchedule(fpInfo);
+        updateFPReferralFollowupSchedule(fpInfo);
     }
 
     public void reportReferralFollowup(FPProductInformation fpInfo) {
-        enrollToFPFollowupScheduleIfECNeedsFollowup(fpInfo);
+        updateFPFollowupSchedule(fpInfo);
+        updateFPReferralFollowupSchedule(fpInfo);
     }
 
-    private void enrollToFPFollowupScheduleIfECNeedsFollowup(FPProductInformation fpInfo) {
+    private void updateFPFollowupSchedule(FPProductInformation fpInfo) {
         if (BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(fpInfo.needsFollowup())) {
             scheduleTrackingService.enroll(new EnrollmentRequest(fpInfo.entityId(), fpFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
                     parse(fpInfo.fpFollowupDate()), null, null, null, null, null));
         } else {
             scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), fpFollowupSchedule.name(), parse(fpInfo.submissionDate()));
+        }
+    }
+
+    private void updateFPReferralFollowupSchedule(FPProductInformation fpInfo) {
+        if (BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(fpInfo.needsReferralFollowup())) {
+            scheduleTrackingService.enroll(new EnrollmentRequest(fpInfo.entityId(), fpReferralFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
+                    parse(fpInfo.fpFollowupDate()), null, null, null, null, null));
+        } else {
+            scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), fpReferralFollowupSchedule.name(), parse(fpInfo.submissionDate()));
         }
     }
 }

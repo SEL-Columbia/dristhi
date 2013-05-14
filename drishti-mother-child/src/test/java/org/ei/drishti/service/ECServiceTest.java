@@ -72,7 +72,7 @@ public class ECServiceTest {
         verify(allEligibleCouples).update(eligibleCouple.withANMIdentifier("ANM X"));
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
         verify(schedulingService).registerEC(new FPProductInformation("entity id 1", "anm id 1", "some method", null, "2010-12-20", "1", "2010-12-25"
-                , "20", "2011-01-01", null, null, null));
+                , "20", "2011-01-01", null, null, null, null));
     }
 
     @Test
@@ -136,7 +136,7 @@ public class ECServiceTest {
 
         verify(schedulingService).fpChange(
                 new FPProductInformation("entity id 1", "anm id 1", "new method",
-                        "previous method", null, "1", null, "20", "2011-01-01", "2011-01-02", null, null));
+                        "previous method", null, "1", null, "20", "2011-01-01", "2011-01-02", null, null, null));
     }
 
     @Test
@@ -156,7 +156,7 @@ public class ECServiceTest {
 
         ecService.renewFPProduct(submission);
 
-        verify(schedulingService).renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "fp method", null, "2010-12-20", "1", "2010-12-25", "20", "2011-01-01", null, null, null));
+        verify(schedulingService).renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "fp method", null, "2010-12-20", "1", "2010-12-25", "20", "2011-01-01", null, null, null, null));
     }
 
     @Test
@@ -182,11 +182,12 @@ public class ECServiceTest {
                 .addFormField("submissionDate", "2011-01-01")
                 .addFormField("fpFollowupDate", "2010-12-20")
                 .addFormField("needsFollowup", "yes")
+                .addFormField("needsReferralFollowup", "no")
                 .build();
 
         ecService.reportFPFollowup(submission);
 
-        verify(schedulingService).fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp method", null, null, null, null, null, "2011-01-01", null, "2010-12-20", "yes"));
+        verify(schedulingService).fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp method", null, null, null, null, null, "2011-01-01", null, "2010-12-20", "yes", "no"));
     }
 
     @Test
@@ -244,11 +245,12 @@ public class ECServiceTest {
                 .addFormField("complicationDate", "2010-12-25")
                 .addFormField("submissionDate", "2010-12-24")
                 .addFormField("needsFollowup", "yes")
+                .addFormField("needsReferralFollowup", "no")
                 .build();
 
         ecService.reportFPComplications(submission);
 
-        verify(schedulingService).reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2010-12-24", null, "2010-12-25", "yes"));
+        verify(schedulingService).reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2010-12-24", null, "2010-12-25", "yes", "no"));
     }
 
     @Test
@@ -271,12 +273,13 @@ public class ECServiceTest {
                 .withFormName("fp_referral_followup")
                 .withANMId("anm id 1")
                 .addFormField("referralFollowupDate", "2010-12-25")
-                .addFormField("needsFollowup", "yes")
                 .addFormField("submissionDate", "2010-12-24")
+                .addFormField("needsFollowup", "yes")
+                .addFormField("needsReferralFollowup", "no")
                 .build();
 
         ecService.reportReferralFollowup(submission);
 
-        verify(schedulingService).reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2010-12-24", null, "2010-12-25", "yes"));
+        verify(schedulingService).reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2010-12-24", null, "2010-12-25", "yes", "no"));
     }
 }
