@@ -1,16 +1,16 @@
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya-a', 'ardha_bherya');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya-a', 'basavanapura');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya-a', 'geradada');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya-a', 'sambaravalli');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya-a', 'somanahalli colony');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya_a', 'ardha_bherya');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya_a', 'basavanapura');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya_a', 'geradada');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya_a', 'sambaravalli');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya_a', 'somanahalli_colony');
 
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya-b', 'battiganahalli');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya-b', 'half_bherya');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya-b', 'sugganahalli');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya_b', 'battiganahalli');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya_b', 'half_bherya');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'bherya_b', 'sugganahalli');
 
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'g.a.guppe', 'arakere');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'g.a.guppe', 'g.a.guppe');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'g.a.guppe', 'udayagiri');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'g_a_guppe', 'arakere');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'g_a_guppe', 'g_a_guppe');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'g_a_guppe', 'udayagiri');
 
 INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'hosa_agrahara', 'boregowdanakoppalu');
 INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'hosa_agrahara', 'harambanahalli');
@@ -22,14 +22,14 @@ INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village
 INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'munjanahalli', 'kavalu_hosur');
 INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'K.R. Nagar', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='bherya'), 'munjanahalli', 'munjanahalli');
 
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura-a', 'inam_uttanahalli');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura-a', 'keelanapura');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura-a', 'm.c._hundi');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura_a', 'inam_uttanahalli');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura_a', 'keelanapura');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura_a', 'm_c_hundi');
 
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura-b', 'gurukarapura');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura-b', 'hosahalli');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura-b', 'madhavagere');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura-b', 'megalapura');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura_b', 'gurukarapura');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura_b', 'hosahalli');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura_b', 'madhavagere');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'keelanapura_b', 'megalapura');
 
 INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'puttegowdanahundi', 'chattanahallipalya');
 INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Mysore', 'Mysore', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'), 'puttegowdanahundi', 'chattanahalli');
