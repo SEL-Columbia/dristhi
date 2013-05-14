@@ -41,7 +41,8 @@ public class DMPAInjectableStrategy implements FPMethodStrategy {
     @Override
     public void unEnrollFromPreviousScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
         logger.info(format("Un-enrolling EC from DMPA Injectable Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", fpInfo.entityId(), fpInfo.currentFPMethod()));
-        unEnrollECFromDMPAInjectableSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.fpMethodChangeDate());
+        scheduleTrackingService.unenroll(fpInfo.entityId(), asList(dmpaInjectableRefillSchedule.name()));
+        actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), dmpaInjectableRefillSchedule.name(), fpInfo.fpMethodChangeDate());
     }
 
     @Override
@@ -56,7 +57,8 @@ public class DMPAInjectableStrategy implements FPMethodStrategy {
         }
 
         logger.info(format("Un-enrolling EC from DMPA Injectable Refill schedule as FP product was renewed. entityId: {0}, DMPA injection date: {1}", fpInfo.entityId(), fpInfo.dmpaInjectionDate()));
-        unEnrollECFromDMPAInjectableSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.dmpaInjectionDate());
+        scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), dmpaInjectableRefillSchedule.name(), parse(fpInfo.submissionDate()));
+        actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), dmpaInjectableRefillSchedule.name(), fpInfo.dmpaInjectionDate());
         enrollECToDMPAInjectableSchedule(fpInfo.entityId(), fpInfo.dmpaInjectionDate());
     }
 
@@ -70,8 +72,4 @@ public class DMPAInjectableStrategy implements FPMethodStrategy {
                 parse(dmpaInjectionDate), null, null, null, null, null));
     }
 
-    private void unEnrollECFromDMPAInjectableSchedule(String entityId, String anmId, String dmpaInjectionDate) {
-        scheduleTrackingService.unenroll(entityId, asList(dmpaInjectableRefillSchedule.name()));
-        actionService.markAlertAsClosed(entityId, anmId, dmpaInjectableRefillSchedule.name(), dmpaInjectionDate);
-    }
 }

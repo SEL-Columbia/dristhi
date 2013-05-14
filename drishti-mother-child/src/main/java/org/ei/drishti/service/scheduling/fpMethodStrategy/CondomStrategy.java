@@ -19,6 +19,7 @@ import static org.ei.drishti.common.util.IntegerUtil.tryParse;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_CONDOM_REFILL;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_CONDOM_REFILL_MILESTONE;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
+import static org.joda.time.LocalDate.parse;
 
 @Component
 public class CondomStrategy implements FPMethodStrategy {
@@ -42,7 +43,8 @@ public class CondomStrategy implements FPMethodStrategy {
     @Override
     public void unEnrollFromPreviousScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
         logger.info(format("Un-enrolling EC from Condom Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", fpInfo.entityId(), fpInfo.currentFPMethod()));
-        unEnrollECFromCondomRefillSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.fpMethodChangeDate());
+        scheduleTrackingService.unenroll(fpInfo.entityId(), asList(condomRefillSchedule.name()));
+        actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), condomRefillSchedule.name(), fpInfo.fpMethodChangeDate());
     }
 
     @Override
@@ -57,7 +59,8 @@ public class CondomStrategy implements FPMethodStrategy {
         }
 
         logger.info(format("Un-enrolling EC from Condom Refill schedule as FP product was renewed. entityId: {0}, condomRefillDate: {1}, numberOfCondomsSupplied: {2}", fpInfo.entityId(), fpInfo.submissionDate(), fpInfo.numberOfCondomsSupplied()));
-        unEnrollECFromCondomRefillSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.submissionDate());
+        scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), condomRefillSchedule.name(), parse(fpInfo.submissionDate()));
+        actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), condomRefillSchedule.name(), fpInfo.submissionDate());
         enrollECToCondomRefillSchedule(fpInfo.entityId());
     }
 
@@ -75,8 +78,4 @@ public class CondomStrategy implements FPMethodStrategy {
         return today().plusMonths(1).withDayOfMonth(1);
     }
 
-    private void unEnrollECFromCondomRefillSchedule(String entityId, String anmId, String submissionDate) {
-        scheduleTrackingService.unenroll(entityId, asList(condomRefillSchedule.name()));
-        actionService.markAlertAsClosed(entityId, anmId, condomRefillSchedule.name(), submissionDate);
-    }
 }

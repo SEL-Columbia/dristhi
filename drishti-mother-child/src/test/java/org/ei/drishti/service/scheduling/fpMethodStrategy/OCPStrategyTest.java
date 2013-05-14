@@ -72,7 +72,7 @@ public class OCPStrategyTest {
         strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "1", "2012-01-01", null, "2011-01-12", null, null, null));
 
         InOrder inOrder = inOrder(scheduleTrackingService, actionService);
-        inOrder.verify(scheduleTrackingService).unenroll("entity id 1", asList("OCP Refill"));
+        inOrder.verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "OCP Refill", parse("2011-01-12"));
         inOrder.verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "OCP Refill", "2012-01-01");
         inOrder.verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "OCP Refill", parse("2012-01-15")));
     }

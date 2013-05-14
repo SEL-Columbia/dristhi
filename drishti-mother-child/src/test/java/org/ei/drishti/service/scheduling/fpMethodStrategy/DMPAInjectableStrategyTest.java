@@ -61,7 +61,7 @@ public class DMPAInjectableStrategyTest {
         strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "dmpa_injectable", null, "2012-01-01", null, null, null, "2011-01-12", "", null, null));
 
         InOrder inOrder = inOrder(scheduleTrackingService, actionService);
-        inOrder.verify(scheduleTrackingService).unenroll("entity id 1", asList("DMPA Injectable Refill"));
+        inOrder.verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "DMPA Injectable Refill", parse("2011-01-12"));
         inOrder.verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "DMPA Injectable Refill", "2012-01-01");
         inOrder.verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "DMPA Injectable Refill", parse("2012-01-01")));
     }
