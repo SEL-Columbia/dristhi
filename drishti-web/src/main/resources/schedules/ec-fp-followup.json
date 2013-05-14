@@ -1,0 +1,29 @@
+{
+    "name": "FP Followup",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "FP Followup",
+            "scheduleWindows": {
+                "earliest": ["3 Days"],
+                "due": ["7 Days"],
+                "late": ["100 Weeks"],
+                "max": [""]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["3 Days"],
+                    "interval": ["1 Day"],
+                    "count": "4"
+                },
+                {
+                    "window": "late",
+                    "offset": ["7 Days"],
+                    "interval": ["1 Week"],
+                    "count": "100"
+                }
+            ]
+        }
+    ]
+}
