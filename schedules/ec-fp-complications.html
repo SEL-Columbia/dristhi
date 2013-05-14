@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(1).draw();
+schedule.addAlertsStartingWith("FP Complications", "FP Complications - late (Will continue till service is delivered)", [new Date("Jan 01, 2012"), new Date("Jan 04, 2012"), new Date("Jan 08, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>EC Family Planning Complications</center></body></html>
