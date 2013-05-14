@@ -60,7 +60,8 @@ public class ECService {
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
                 submission.getField(OCP_REFILL_DATE_FIELD_NAME),
                 submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
-                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null, null, null, null);
+                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME),
+                submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME), null, null, null);
 
         schedulingService.registerEC(fpProductInformation);
     }
