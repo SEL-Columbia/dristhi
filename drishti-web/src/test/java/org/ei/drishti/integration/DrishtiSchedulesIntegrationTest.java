@@ -396,6 +396,28 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("ec-condom-refill.html", 1);
     }
 
+    @Test
+    public void shouldProvideAlertsForFemaleSterilizationFollowupAtTheRightTimes() throws Exception {
+        schedule.enrollFor("Female sterilization followup", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("Female sterilization followup 1", earliest);
+        schedule.assertAlerts("Female sterilization followup 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012));
+        schedule.assertAlerts("Female sterilization followup 1", late, dateWithYear(3, JANUARY, 2012), dateWithYear(4, JANUARY, 2012), dateWithYear(5, JANUARY, 2012), dateWithYear(6, JANUARY, 2012), dateWithYear(7, JANUARY, 2012));
+        schedule.assertNoAlerts("Female sterilization followup 1", max);
+
+        schedule.assertNoAlerts("Female sterilization followup 2", earliest);
+        schedule.assertAlerts("Female sterilization followup 2", due, dateWithYear(8, JANUARY, 2012), dateWithYear(9, JANUARY, 2012));
+        schedule.assertAlertsStartWith("Female sterilization followup 2", late, dateWithYear(10, JANUARY, 2012), dateWithYear(13, JANUARY, 2012), dateWithYear(16, JANUARY, 2012));
+        schedule.assertNoAlerts("Female sterilization followup 2", max);
+
+        schedule.assertNoAlerts("Female sterilization followup 3", earliest);
+        schedule.assertAlertsStartWith("Female sterilization followup 3", due, dateWithYear(1, FEBRUARY, 2012), dateWithYear(2, FEBRUARY, 2012));
+        schedule.assertAlertsStartWith("Female sterilization followup 3", late, dateWithYear(8, FEBRUARY, 2012), dateWithYear(15, FEBRUARY, 2012), dateWithYear(22, FEBRUARY, 2012));
+        schedule.assertNoAlerts("Female sterilization followup 3", max);
+
+        visualization.outputTo("ec-female-sterilization-followup.html", 1);
+    }
+
     @Before
     public void setUp() throws Exception {
         FakeSchedule fakeSchedule = new FakeSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {

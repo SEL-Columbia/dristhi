@@ -52,7 +52,7 @@
             "name": "Female sterilization followup 3",
             "scheduleWindows": {
                 "earliest": ["0 Weeks"],
-                "due": ["1 Month, 1 Week"],
+                "due": ["1 Month", "1 Week"],
                 "late": ["100 Weeks"],
                 "max": [""]
             },
@@ -65,7 +65,7 @@
                 },
                 {
                     "window": "late",
-                    "offset": ["1 Month, 1 Week"],
+                    "offset": ["1 Month", "1 Week"],
                     "interval": ["1 Week"],
                     "count": "100"
                 }
