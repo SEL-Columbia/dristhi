@@ -66,13 +66,18 @@ public class AlertControllerRoutesTest {
 
     @Test
     public void shouldSendDueRemindersOfAllEcsToCaptureRemindersAction() throws Exception {
-        Event.of(EC_SCHEDULE_FP_COMPLICATION, "FP Complications", WindowName.late).shouldRouteToAlertCreationActionForEC();
         Event.of(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, "DMPA Injectable Refill", WindowName.due).shouldRouteToAlertCreationActionForEC();
         Event.of(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, "DMPA Injectable Refill", WindowName.late).shouldRouteToAlertCreationActionForEC();
         Event.of(EC_SCHEDULE_OCP_REFILL, "OCP Refill", WindowName.due).shouldRouteToAlertCreationActionForEC();
         Event.of(EC_SCHEDULE_OCP_REFILL, "OCP Refill", WindowName.late).shouldRouteToAlertCreationActionForEC();
         Event.of(EC_SCHEDULE_CONDOM_REFILL, "Condom Refill", WindowName.due).shouldRouteToAlertCreationActionForEC();
         Event.of(EC_SCHEDULE_CONDOM_REFILL, "Condom Refill", WindowName.late).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP, "Female sterilization followup", WindowName.due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP, "Female sterilization followup", WindowName.late).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP, "Male sterilization followup", WindowName.due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP, "Male sterilization followup", WindowName.late).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_IUD_FOLLOWUP, "IUD followup", WindowName.due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_IUD_FOLLOWUP, "IUD followup", WindowName.late).shouldRouteToAlertCreationActionForEC();
     }
 
     @Test

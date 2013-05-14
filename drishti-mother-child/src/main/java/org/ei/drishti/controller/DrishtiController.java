@@ -39,12 +39,6 @@ public class DrishtiController {
         this.childMapper = childMapper;
     }
 
-    public void updateFamilyPlanningMethod(FamilyPlanningUpdateRequest familyPlanningUpdateRequest, Map<String, Map<String, String>> extraData) {
-        logger.info("Eligible couple change FP: " + familyPlanningUpdateRequest + ". Extra data: " + extraData);
-
-        ecService.updateFamilyPlanningMethod(familyPlanningUpdateRequest, extraData);
-    }
-
     public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
         logger.info("Register Out of Area ANC: " + request + ". Extra data: " + extraData);
 

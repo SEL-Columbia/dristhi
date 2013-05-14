@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.EligibleCoupleCloseRequest;
-import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
@@ -23,9 +22,6 @@ import java.util.UUID;
 
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
-import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
-import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -75,7 +71,6 @@ public class ECServiceTest {
 
         verify(allEligibleCouples).update(eligibleCouple.withANMIdentifier("ANM X"));
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
-        verify(schedulingService).enrollToFPComplications("entity id 1", "some method", "yes", "2011-01-01");
         verify(schedulingService).registerEC(new FPProductInformation("entity id 1", "anm id 1", "some method", null, "2010-12-20", "1", "2010-12-25"
                 , "20", "2011-01-01", null, null, null));
     }
@@ -91,81 +86,6 @@ public class ECServiceTest {
         EligibleCouple couple = new EligibleCouple(ecCaseId.toString(), "0").withCouple("Wife 1", "Husband 1")
                 .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(extraData.get("details")).asOutOfArea();
         verify(allEligibleCouples).register(couple);
-    }
-
-    @Test
-    public void shouldUpdateExistingDetailsBlobInECAndCreateAnActionForFPMethodUpdate() throws Exception {
-        Map<String, String> existingDetails = mapOf("existingThing", "existingValue");
-        EligibleCouple existingCoupleBeforeUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(existingDetails);
-
-        Map<String, String> updatedDetails = create("currentMethod", "CONDOM").put("existingThing", "existingValue").map();
-        EligibleCouple existingCoupleAfterUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(updatedDetails);
-
-        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(existingCoupleBeforeUpdate);
-        when(allEligibleCouples.updateDetails("CASE X", mapOf("currentMethod", "CONDOM"))).thenReturn(existingCoupleAfterUpdate);
-
-        ecService.updateFamilyPlanningMethod(new FamilyPlanningUpdateRequest("CASE X", "ANM X"), mapOf("details", mapOf("currentMethod", "CONDOM")));
-
-        verify(allEligibleCouples).updateDetails("CASE X", mapOf("currentMethod", "CONDOM"));
-        verify(allEligibleCouples).findByCaseId("CASE X");
-        verify(actionService).updateEligibleCoupleDetails("CASE X", "ANM X", updatedDetails);
-    }
-
-    @Test
-    public void shouldReportFPMethodChangeWhenFPMethodIsUpdated() throws Exception {
-        Map<String, String> existingDetails = mapOf("existingThing", "existingValue");
-        EligibleCouple existingCoupleBeforeUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(existingDetails);
-        Map<String, String> updatedDetails = create("currentMethod", "CONDOM").put("existingThing", "existingValue").map();
-        EligibleCouple existingCoupleAfterUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(updatedDetails);
-        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(existingCoupleBeforeUpdate);
-        when(allEligibleCouples.updateDetails("CASE X", mapOf("currentMethod", "CONDOM"))).thenReturn(existingCoupleAfterUpdate);
-
-        ecService.updateFamilyPlanningMethod(new FamilyPlanningUpdateRequest("CASE X", "ANM X"), create("details", mapOf("currentMethod", "CONDOM")).put(REPORT_EXTRA_DATA_KEY_NAME, mapOf("currentMethod", "CONDOM")).map());
-
-        verify(reportingService).updateFamilyPlanningMethod(new SafeMap(mapOf("currentMethod", "CONDOM")));
-    }
-
-    @Test
-    public void shouldUpdateFPComplicationsScheduleAndCloseAlertsWhenFPMethodIsUpdated() throws Exception {
-        Map<String, String> existingDetails = mapOf("existingThing", "existingValue");
-        EligibleCouple existingCoupleBeforeUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(existingDetails);
-        Map<String, String> updatedDetails = create("currentMethod", "CONDOM").put("existingThing", "existingValue").map();
-        EligibleCouple existingCoupleAfterUpdate = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(updatedDetails);
-        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(existingCoupleBeforeUpdate);
-        when(allEligibleCouples.updateDetails("CASE X", mapOf("currentMethod", "CONDOM"))).thenReturn(existingCoupleAfterUpdate);
-        Map<String, Map<String, String>> extraDetails = create("details", mapOf("currentMethod", "CONDOM")).put(REPORT_EXTRA_DATA_KEY_NAME, mapOf("currentMethod", "CONDOM")).map();
-        FamilyPlanningUpdateRequest request = new FamilyPlanningUpdateRequest("CASE X", "ANM X").withCurrentMethod("CONDOM");
-
-        ecService.updateFamilyPlanningMethod(request, extraDetails);
-
-        verify(schedulingService).updateFPComplications(request, existingCoupleAfterUpdate);
-    }
-
-    @Test
-    public void shouldCloseFPScheduleAlertsWhenCoupleStartedUsingFPMethod() throws Exception {
-        Map<String, String> details = mapOf("existingThing", "existingValue");
-        EligibleCouple ec = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(details);
-        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(ec);
-        when(allEligibleCouples.updateDetails("CASE X", mapOf("currentMethod", "CONDOM"))).thenReturn(ec);
-        Map<String, Map<String, String>> extraDetails = create("details", mapOf("currentMethod", "CONDOM")).put(REPORT_EXTRA_DATA_KEY_NAME, mapOf("currentMethod", "CONDOM")).map();
-        FamilyPlanningUpdateRequest request = new FamilyPlanningUpdateRequest("CASE X", "ANM X").withCurrentMethod("CONDOM").withFPStartDate("2012-01-01");
-
-        ecService.updateFamilyPlanningMethod(request, extraDetails);
-
-        verify(actionService).markAlertAsClosed("CASE X", "ANM X", EC_SCHEDULE_FP_COMPLICATION_MILESTONE, "2012-01-01");
-    }
-
-    @Test
-    public void shouldNotUpdateDetailsIfECIsNotFoundWhenFPMethodIsUpdated() throws Exception {
-        when(allEligibleCouples.findByCaseId("CASE X")).thenReturn(null);
-
-        ecService.updateFamilyPlanningMethod(new FamilyPlanningUpdateRequest("CASE X", "ANM X"), mapOf("details", mapOf("currentMethod", "CONDOM")));
-
-        verify(allEligibleCouples).findByCaseId("CASE X");
-        verifyNoMoreInteractions(allEligibleCouples);
-        verifyZeroInteractions(actionService);
-        verifyZeroInteractions(reportingService);
-        verifyZeroInteractions(schedulingService);
     }
 
     @Test

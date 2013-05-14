@@ -37,8 +37,6 @@ public class DrishtiScheduleConstants {
     }
 
     public static class ECSchedulesConstants {
-        public static final String EC_SCHEDULE_FP_COMPLICATION = "EC Family Planning Complications";
-        public static final String EC_SCHEDULE_FP_COMPLICATION_MILESTONE = "FP Complications";
         public static final String EC_SCHEDULE_DMPA_INJECTABLE_REFILL = "DMPA Injectable Refill";
         public static final String EC_SCHEDULE_DMPA_INJECTABLE_REFILL_MILESTONE = "DMPA Injectable Refill";
         public static final String EC_SCHEDULE_OCP_REFILL = "OCP Refill";

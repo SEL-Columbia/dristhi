@@ -6,37 +6,6 @@
         {
             "forms": [
                 {
-                    "name": "updateFamilyPlanningMethod",
-                    "url": {
-                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/FAFC2782-36EC-4E25-BBE8-D0C500332A0F"
-                        }
-                    },
-                    "mappings": {
-                        "form|case|@case_id": "caseId",
-                        "form|meta|username": "anmIdentifier",
-                        "form|fp_update": "fpUpdate",
-                        "form|familyplanning_method": "currentMethod",
-                        "form|date_familyplanningstart": "familyPlanningMethodChangeDate"
-                    },
-                    "extraMappings": {
-                        "reporting": {
-                            "form|case|@case_id": "caseId",
-                            "form|familyplanning_method": "currentMethod",
-                            "form|fp_update": "fpUpdate",
-                            "form|date_familyplanningstart": "familyPlanningMethodChangeDate"
-                        },
-                        "details": {
-                            "form|familyplanning_method": "currentMethod",
-                            "form|fp_update": "fpUpdate",
-                            "form|num_ocpdelivered": "numberOfOCPDelivered",
-                            "form|num_condomsdelivered": "numberOfCondomsDelivered",
-                            "form|date_familyplanningstart": "familyPlanningMethodChangeDate"
-                        }
-                    }
-                },
-                {
                     "name": "registerMother",
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",

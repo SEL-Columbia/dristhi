@@ -32,7 +32,6 @@ public class CommCareImportFormDefinitionsJSONTest {
     public void everyFormInTheJSONShouldHaveAllTheCorrectMappings() {
         Map<String, Class<?>> classEveryFormMappingConvertsTo = new HashMap<>();
 
-        classEveryFormMappingConvertsTo.put("updateFamilyPlanningMethod", FamilyPlanningUpdateRequest.class);
         classEveryFormMappingConvertsTo.put("registerOutOfAreaANC", OutOfAreaANCRegistrationRequest.class);
         classEveryFormMappingConvertsTo.put("registerMother", AnteNatalCareEnrollmentInformation.class);
         classEveryFormMappingConvertsTo.put("updateANCCareInformation", AnteNatalCareInformation.class);

@@ -2,7 +2,6 @@ package org.ei.drishti.integration;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.ei.drishti.common.util.DateUtil;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -28,8 +27,6 @@ import java.util.Date;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
 import static org.ei.drishti.common.util.DateUtil.fakeIt;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
 import static org.motechproject.scheduletracking.api.domain.WindowName.*;
 import static org.motechproject.util.DateUtil.newDate;
 
@@ -337,18 +334,6 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts(DPT_BOOSTER_2_COMMCARE_VALUE, max);
 
         visualization.outputTo("child-dpt-booster2.html", 4);
-    }
-
-    @Test
-    public void shouldProvideAlertForECFamilyPlanningComplications() throws Exception {
-        schedule.enrollFor(EC_SCHEDULE_FP_COMPLICATION, newDate(2012, 1, 1), new Time(14, 0));
-
-        schedule.assertNoAlerts(EC_SCHEDULE_FP_COMPLICATION_MILESTONE, due);
-        schedule.assertNoAlerts(EC_SCHEDULE_FP_COMPLICATION_MILESTONE, earliest);
-        schedule.assertAlertsStartWith(EC_SCHEDULE_FP_COMPLICATION_MILESTONE, late, date(1, JANUARY), date(4, JANUARY), date(8, JANUARY));
-        schedule.assertNoAlerts(EC_SCHEDULE_FP_COMPLICATION_MILESTONE, max);
-
-        visualization.outputTo("ec-fp-complications.html", 1);
     }
 
     @Test

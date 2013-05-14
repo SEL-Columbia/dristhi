@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.EligibleCoupleCloseRequest;
-import org.ei.drishti.contract.FamilyPlanningUpdateRequest;
 import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
@@ -20,15 +19,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.ChangeFamilyPlanningMethodCommCareFields.NEW_FP_METHOD_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChangeFamilyPlanningMethodCommCareFields.PREVIOUS_FP_METHOD_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.HIGH_PRIORITY_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
-import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_COMPLICATION_MILESTONE;
 
 @Service
 public class ECService {
@@ -57,10 +52,6 @@ public class ECService {
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.registerEC(new SafeMap(submission.getFields(reportFields)));
-        schedulingService.enrollToFPComplications(submission.entityId(),
-                submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
-                submission.getField(HIGH_PRIORITY_COMMCARE_FIELD_NAME),
-                submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME));
 
         FPProductInformation fpProductInformation = new FPProductInformation(
                 submission.entityId(), submission.anmId(),
@@ -72,49 +63,6 @@ public class ECService {
                 submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null, null, null);
 
         schedulingService.registerEC(fpProductInformation);
-    }
-
-    public EligibleCouple registerEligibleCoupleForOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
-        EligibleCouple couple = new EligibleCouple(idGenerator.generateUUID().toString(), "0")
-                .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
-                .withLocation(request.village(), request.subCenter(), request.phc()).withDetails(extraData.get(DETAILS_EXTRA_DATA_KEY_NAME))
-                .asOutOfArea();
-
-        allEligibleCouples.register(couple);
-        return couple;
-    }
-
-    public void closeEligibleCouple(EligibleCoupleCloseRequest request) {
-        if (!allEligibleCouples.exists(request.caseId())) {
-            logger.warn("Cannot close EC as it does not exist! Details: " + request);
-            return;
-        }
-        logger.info("Closing EC : " + request);
-
-        allEligibleCouples.close(request.caseId());
-        actionService.closeEligibleCouple(request.caseId(), request.anmIdentifier());
-    }
-
-    public void updateFamilyPlanningMethod(FamilyPlanningUpdateRequest request, Map<String, Map<String, String>> extraData) {
-        EligibleCouple couple = allEligibleCouples.findByCaseId(request.caseId());
-        if (couple == null) {
-            logger.warn("Tried to update details of a non-existing EC: " + request + ". Extra details: " + extraData);
-            return;
-        }
-
-        EligibleCouple updatedCouple = allEligibleCouples.updateDetails(request.caseId(), extraData.get("details"));
-        reportingService.updateFamilyPlanningMethod(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-        actionService.updateEligibleCoupleDetails(request.caseId(), request.anmIdentifier(), updatedCouple.details());
-
-        schedulingService.updateFPComplications(request, updatedCouple);
-
-        closeAlertsForFPComplicationSchedule(request);
-    }
-
-    private void closeAlertsForFPComplicationSchedule(FamilyPlanningUpdateRequest request) {
-        if (!(isBlank(request.currentMethod()) || NO_FP_METHOD_COMMCARE_FIELD_VALUE.equalsIgnoreCase(request.currentMethod()))) {
-            actionService.markAlertAsClosed(request.caseId(), request.anmIdentifier(), EC_SCHEDULE_FP_COMPLICATION_MILESTONE, request.familyPlanningMethodChangeDate());
-        }
     }
 
     public void reportFPComplications(FormSubmission submission) {
@@ -186,5 +134,26 @@ public class ECService {
                 submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME),
                 null, submission.getField(FP_FOLLOWUP_DATE_FIELD_NAME), null);
         schedulingService.fpFollowup(fpProductInformation);
+    }
+
+    public EligibleCouple registerEligibleCoupleForOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
+        EligibleCouple couple = new EligibleCouple(idGenerator.generateUUID().toString(), "0")
+                .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
+                .withLocation(request.village(), request.subCenter(), request.phc()).withDetails(extraData.get(DETAILS_EXTRA_DATA_KEY_NAME))
+                .asOutOfArea();
+
+        allEligibleCouples.register(couple);
+        return couple;
+    }
+
+    public void closeEligibleCouple(EligibleCoupleCloseRequest request) {
+        if (!allEligibleCouples.exists(request.caseId())) {
+            logger.warn("Cannot close EC as it does not exist! Details: " + request);
+            return;
+        }
+        logger.info("Closing EC : " + request);
+
+        allEligibleCouples.close(request.caseId());
+        actionService.closeEligibleCouple(request.caseId(), request.anmIdentifier());
     }
 }

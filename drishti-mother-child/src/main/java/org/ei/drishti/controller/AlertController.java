@@ -52,7 +52,11 @@ public class AlertController {
     }
 
     private Matcher ecSchedules() {
-        return anyOf(EC_SCHEDULE_FP_COMPLICATION, EC_SCHEDULE_DMPA_INJECTABLE_REFILL, EC_SCHEDULE_OCP_REFILL, EC_SCHEDULE_CONDOM_REFILL);
+        return anyOf(EC_SCHEDULE_DMPA_INJECTABLE_REFILL,
+                EC_SCHEDULE_OCP_REFILL,
+                EC_SCHEDULE_CONDOM_REFILL,
+                EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP,
+                EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP,
+                EC_SCHEDULE_IUD_FOLLOWUP);
     }
-
 }
