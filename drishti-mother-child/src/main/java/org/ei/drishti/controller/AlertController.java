@@ -26,7 +26,7 @@ public class AlertController {
         router.addRoute(eq(SCHEDULE_AUTO_CLOSE_PNC), any(), any(), autoClosePNCAction);
         router.addRoute(motherSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "mother");
         router.addRoute(childSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "child");
-        router.addRoute(ecSchedules(), any(), anyOf(due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "ec");
+        router.addRoute(ecSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "ec");
         router.addRoute(any(), any(), any(), anmGroupSMS);
     }
 

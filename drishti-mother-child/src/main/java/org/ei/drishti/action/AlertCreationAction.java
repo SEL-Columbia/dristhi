@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 import static org.ei.drishti.dto.AlertPriority.normal;
+import static org.ei.drishti.dto.AlertPriority.upcoming;
 import static org.ei.drishti.dto.AlertPriority.urgent;
 
 @Component
@@ -30,6 +31,8 @@ public class AlertCreationAction implements Action {
 
         if (WindowName.late.toString().equals(event.windowName())) {
             actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), urgent, event.startOfLateWindow(), event.startOfMaxWindow());
+        } else if (WindowName.earliest.toString().equals(event.windowName())) {
+            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), upcoming, event.startOfDueWindow(), event.startOfLateWindow());
         } else {
             actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), normal, event.startOfDueWindow(), event.startOfLateWindow());
         }

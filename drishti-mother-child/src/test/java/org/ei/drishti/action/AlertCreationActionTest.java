@@ -11,6 +11,7 @@ import org.motechproject.scheduletracking.api.domain.WindowName;
 
 import java.util.HashMap;
 
+import static org.ei.drishti.dto.AlertPriority.upcoming;
 import static org.ei.drishti.dto.BeneficiaryType.child;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 import static org.ei.drishti.dto.AlertPriority.normal;
@@ -36,6 +37,15 @@ public class AlertCreationActionTest {
         dueWindowStart = DateTime.now();
         lateWindowStart = DateTime.now().plusDays(10);
         maxWindowStart = DateTime.now().plusDays(20);
+    }
+
+    @Test
+    public void shouldRaiseUpcomingAlertActionsForDueWindowAlerts() throws Exception {
+        HashMap<String, String> extraData = new HashMap<>();
+        extraData.put("beneficiaryType", "mother");
+        reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.earliest, dueWindowStart, lateWindowStart, maxWindowStart), extraData);
+
+        verify(actionService).alertForBeneficiary(mother, "Case 1", "Milestone 1", upcoming, dueWindowStart, lateWindowStart);
     }
 
     @Test

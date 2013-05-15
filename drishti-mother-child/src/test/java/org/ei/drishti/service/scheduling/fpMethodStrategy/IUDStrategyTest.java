@@ -35,15 +35,15 @@ public class IUDStrategyTest {
     public void shouldEnrollInIUDFollowupScheduleOnECRegistration() throws Exception {
         strategy.registerEC(new FPProductInformation("entity id 1", null, null, null, null, null, null, null, "2012-03-01", "2012-02-01", null, null, null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "IUD followup", LocalDate.parse("2012-02-01")));
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "IUD Followup", LocalDate.parse("2012-02-01")));
     }
 
     @Test
     public void shouldEnrollInIUDFollowupScheduleOnFPChange() throws Exception {
-        strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", null, "IUD followup", "condom",
+        strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", null, "IUD Followup", "condom",
                 null, null, null, null, "2012-03-01", "2012-02-01", null, null, null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "IUD followup", LocalDate.parse("2012-02-01")));
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "IUD Followup", LocalDate.parse("2012-02-01")));
     }
 
     @Test
@@ -51,20 +51,20 @@ public class IUDStrategyTest {
         strategy.unEnrollFromPreviousScheduleAsFPMethodChanged(
                 new FPProductInformation("entity id 1", "anm x", "condom", "iud", null, null, null, "20", "2012-03-01", "2012-03-10", null, null, null));
 
-        verify(scheduleTrackingService).unenroll("entity id 1", asList("IUD followup"));
-        verify(actionService).markAlertAsClosed("entity id 1", "anm x", "IUD followup", "2012-03-10");
+        verify(scheduleTrackingService).unenroll("entity id 1", asList("IUD Followup"));
+        verify(actionService).markAlertAsClosed("entity id 1", "anm x", "IUD Followup", "2012-03-10");
     }
 
     @Test
     public void shouldFastForwardIUDFollowupScheduleOnFPFollowup() throws Exception {
-        when(scheduleTrackingService.getEnrollment("entity id 1", "IUD followup")).thenReturn(new EnrollmentRecord(
-                "entity id 1", "IUD followup", "IUD followup 2", null, null, null, null, null, null, null
+        when(scheduleTrackingService.getEnrollment("entity id 1", "IUD Followup")).thenReturn(new EnrollmentRecord(
+                "entity id 1", "IUD Followup", "IUD Followup 2", null, null, null, null, null, null, null
         ));
         strategy.fpFollowup(new FPProductInformation("entity id 1", "anm x", "iud", null,
                 null, null, null, null, "2012-03-01", null, "2012-02-01", null, null));
 
-        verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "IUD followup", LocalDate.parse("2012-02-01"));
-        verify(actionService).markAlertAsClosed("entity id 1", "anm x", "IUD followup 2", "2012-02-01");
+        verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "IUD Followup", LocalDate.parse("2012-02-01"));
+        verify(actionService).markAlertAsClosed("entity id 1", "anm x", "IUD Followup 2", "2012-02-01");
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {

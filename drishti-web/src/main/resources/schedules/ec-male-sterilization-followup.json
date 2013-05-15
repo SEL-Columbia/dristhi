@@ -1,9 +1,9 @@
 {
-    "name": "Male sterilization followup",
+    "name": "Male sterilization Followup",
     "absolute": true,
     "milestones": [
         {
-            "name": "Male sterilization followup 1",
+            "name": "Male sterilization Followup 1",
             "scheduleWindows": {
                 "earliest": ["0 Weeks"],
                 "due": ["2 Days"],
@@ -26,7 +26,7 @@
             ]
         },
         {
-            "name": "Male sterilization followup 2",
+            "name": "Male sterilization Followup 2",
             "scheduleWindows": {
                 "earliest": ["0 Weeks"],
                 "due": ["3 Months", "1 Week"],

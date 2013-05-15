@@ -35,15 +35,15 @@ public class MaleSterilizationStrategyTest {
     public void shouldEnrollInMaleSterilizationFollowupScheduleOnECRegistration() throws Exception {
         strategy.registerEC(new FPProductInformation("entity id 1", null, null, null, null, null, null, null, "2012-03-01", "2012-02-01", null, null, null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Male sterilization followup", LocalDate.parse("2012-02-01")));
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Male sterilization Followup", LocalDate.parse("2012-02-01")));
     }
 
     @Test
     public void shouldEnrollInMaleSterilizationFollowupScheduleOnFPChange() throws Exception {
-        strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", null, "Male sterilization followup", "condom",
+        strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", null, "Male sterilization Followup", "condom",
                 null, null, null, null, "2012-03-01", "2012-02-01", null, null, null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Male sterilization followup", LocalDate.parse("2012-02-01")));
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Male sterilization Followup", LocalDate.parse("2012-02-01")));
     }
 
     @Test
@@ -51,20 +51,20 @@ public class MaleSterilizationStrategyTest {
         strategy.unEnrollFromPreviousScheduleAsFPMethodChanged(
                 new FPProductInformation("entity id 1", "anm x", "condom", "male_sterilization", null, null, null, "20", "2012-03-01", "2012-03-10", null, null, null));
 
-        verify(scheduleTrackingService).unenroll("entity id 1", asList("Male sterilization followup"));
-        verify(actionService).markAlertAsClosed("entity id 1", "anm x", "Male sterilization followup", "2012-03-10");
+        verify(scheduleTrackingService).unenroll("entity id 1", asList("Male sterilization Followup"));
+        verify(actionService).markAlertAsClosed("entity id 1", "anm x", "Male sterilization Followup", "2012-03-10");
     }
 
     @Test
     public void shouldFastForwardMaleSterilizationFollowupScheduleOnFPFollowup() throws Exception {
-        when(scheduleTrackingService.getEnrollment("entity id 1", "Male sterilization followup")).thenReturn(new EnrollmentRecord(
-                "entity id 1", "Male sterilization followup", "Male sterilization followup 2", null, null, null, null, null, null, null
+        when(scheduleTrackingService.getEnrollment("entity id 1", "Male sterilization Followup")).thenReturn(new EnrollmentRecord(
+                "entity id 1", "Male sterilization Followup", "Male sterilization Followup 2", null, null, null, null, null, null, null
         ));
         strategy.fpFollowup(new FPProductInformation("entity id 1", "anm x", "male_sterilization", null,
                 null, null, null, null, "2012-03-01", null, "2012-02-01", null, null));
 
-        verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "Male sterilization followup", LocalDate.parse("2012-02-01"));
-        verify(actionService).markAlertAsClosed("entity id 1", "anm x", "Male sterilization followup 2", "2012-02-01");
+        verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "Male sterilization Followup", LocalDate.parse("2012-02-01"));
+        verify(actionService).markAlertAsClosed("entity id 1", "anm x", "Male sterilization Followup 2", "2012-02-01");
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {

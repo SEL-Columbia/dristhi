@@ -1,8 +1,8 @@
 package org.ei.drishti.dto;
 
 public enum AlertPriority {
-    urgent("urgent"),
-    normal("normal");
+    upcoming("upcoming"), normal("normal"), urgent("urgent");
+
     private String value;
 
     AlertPriority(String value) {

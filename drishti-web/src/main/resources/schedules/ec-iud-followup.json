@@ -1,16 +1,22 @@
 {
-    "name": "IUD followup",
+    "name": "IUD Followup",
     "absolute": true,
     "milestones": [
         {
-            "name": "IUD followup 1",
+            "name": "IUD Followup 1",
             "scheduleWindows": {
-                "earliest": ["0 Weeks"],
+                "earliest": ["1 Month"],
                 "due": ["1 Month", "1 Week"],
                 "late": ["4 Months"],
                 "max": ["4 Months"]
             },
             "alerts": [
+                {
+                    "window": "earliest",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "30"
+                },
                 {
                     "window": "due",
                     "offset": ["1 Month"],
@@ -26,7 +32,7 @@
             ]
         },
         {
-            "name": "IUD followup 2",
+            "name": "IUD Followup 2",
             "scheduleWindows": {
                 "earliest": ["0 Weeks"],
                 "due": ["4 Months", "1 Week"],

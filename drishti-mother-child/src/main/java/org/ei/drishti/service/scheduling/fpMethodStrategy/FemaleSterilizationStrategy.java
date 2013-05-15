@@ -40,7 +40,7 @@ public class FemaleSterilizationStrategy implements FPMethodStrategy {
 
     @Override
     public void unEnrollFromPreviousScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
-        logger.info(format("Un-enrolling EC from Female sterilization followup schedule as FP method changed. entityId: {0}, new fp method: {1}",
+        logger.info(format("Un-enrolling EC from Female sterilization Followup schedule as FP method changed. entityId: {0}, new fp method: {1}",
                 fpInfo.entityId(), fpInfo.currentFPMethod()));
         unEnrollECFromFemaleSterilizationSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.fpMethodChangeDate());
     }
@@ -56,14 +56,14 @@ public class FemaleSterilizationStrategy implements FPMethodStrategy {
 
     @Override
     public void fpFollowup(FPProductInformation fpInfo) {
-        logger.info(format("Fulfilling current milestone for Female sterilization followup schedule. entityId: {0}, Ref date: {1}",
+        logger.info(format("Fulfilling current milestone For Female sterilization Followup schedule. entityId: {0}, Ref date: {1}",
                 fpInfo.entityId(), fpInfo.submissionDate()));
         scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), femaleSterilizationFollowupSchedule.name(), parse(fpInfo.fpFollowupDate()));
         actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), getCurrentMilestone(fpInfo), fpInfo.fpFollowupDate());
     }
 
     private void enrollECToFemaleSterilizationSchedule(String entityId, String referenceDate) {
-        logger.info(format("Enrolling EC to Female sterilization followup schedule. entityId: {0}, Ref date: {1}", entityId, referenceDate));
+        logger.info(format("Enrolling EC to Female sterilization Followup schedule. entityId: {0}, Ref date: {1}", entityId, referenceDate));
         scheduleTrackingService.enroll(new EnrollmentRequest(entityId, femaleSterilizationFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
                 parse(referenceDate), null, null, null, null, null));
     }

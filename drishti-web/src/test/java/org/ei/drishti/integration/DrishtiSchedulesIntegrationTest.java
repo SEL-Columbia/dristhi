@@ -398,56 +398,56 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
     @Test
     public void shouldProvideAlertsForFemaleSterilizationFollowupAtTheRightTimes() throws Exception {
-        schedule.enrollFor("Female sterilization followup", newDate(2012, JANUARY, 1), new Time(14, 0));
+        schedule.enrollFor("Female sterilization Followup", newDate(2012, JANUARY, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("Female sterilization followup 1", earliest);
-        schedule.assertAlerts("Female sterilization followup 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012));
-        schedule.assertAlerts("Female sterilization followup 1", late, dateWithYear(3, JANUARY, 2012), dateWithYear(4, JANUARY, 2012), dateWithYear(5, JANUARY, 2012), dateWithYear(6, JANUARY, 2012), dateWithYear(7, JANUARY, 2012));
-        schedule.assertNoAlerts("Female sterilization followup 1", max);
+        schedule.assertNoAlerts("Female sterilization Followup 1", earliest);
+        schedule.assertAlerts("Female sterilization Followup 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012));
+        schedule.assertAlerts("Female sterilization Followup 1", late, dateWithYear(3, JANUARY, 2012), dateWithYear(4, JANUARY, 2012), dateWithYear(5, JANUARY, 2012), dateWithYear(6, JANUARY, 2012), dateWithYear(7, JANUARY, 2012));
+        schedule.assertNoAlerts("Female sterilization Followup 1", max);
 
-        schedule.assertNoAlerts("Female sterilization followup 2", earliest);
-        schedule.assertAlerts("Female sterilization followup 2", due, dateWithYear(8, JANUARY, 2012), dateWithYear(9, JANUARY, 2012));
-        schedule.assertAlertsStartWith("Female sterilization followup 2", late, dateWithYear(10, JANUARY, 2012), dateWithYear(13, JANUARY, 2012), dateWithYear(16, JANUARY, 2012));
-        schedule.assertNoAlerts("Female sterilization followup 2", max);
+        schedule.assertNoAlerts("Female sterilization Followup 2", earliest);
+        schedule.assertAlerts("Female sterilization Followup 2", due, dateWithYear(8, JANUARY, 2012), dateWithYear(9, JANUARY, 2012));
+        schedule.assertAlertsStartWith("Female sterilization Followup 2", late, dateWithYear(10, JANUARY, 2012), dateWithYear(13, JANUARY, 2012), dateWithYear(16, JANUARY, 2012));
+        schedule.assertNoAlerts("Female sterilization Followup 2", max);
 
-        schedule.assertNoAlerts("Female sterilization followup 3", earliest);
-        schedule.assertAlertsStartWith("Female sterilization followup 3", due, dateWithYear(1, FEBRUARY, 2012), dateWithYear(2, FEBRUARY, 2012));
-        schedule.assertAlertsStartWith("Female sterilization followup 3", late, dateWithYear(8, FEBRUARY, 2012), dateWithYear(15, FEBRUARY, 2012), dateWithYear(22, FEBRUARY, 2012));
-        schedule.assertNoAlerts("Female sterilization followup 3", max);
+        schedule.assertNoAlerts("Female sterilization Followup 3", earliest);
+        schedule.assertAlertsStartWith("Female sterilization Followup 3", due, dateWithYear(1, FEBRUARY, 2012), dateWithYear(2, FEBRUARY, 2012));
+        schedule.assertAlertsStartWith("Female sterilization Followup 3", late, dateWithYear(8, FEBRUARY, 2012), dateWithYear(15, FEBRUARY, 2012), dateWithYear(22, FEBRUARY, 2012));
+        schedule.assertNoAlerts("Female sterilization Followup 3", max);
 
         visualization.outputTo("ec-female-sterilization-followup.html", 1);
     }
 
     @Test
     public void shouldProvideAlertsForMaleSterilizationFollowupAtTheRightTimes() throws Exception {
-        schedule.enrollFor("Male sterilization followup", newDate(2012, JANUARY, 1), new Time(14, 0));
+        schedule.enrollFor("Male sterilization Followup", newDate(2012, JANUARY, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("Male sterilization followup 1", earliest);
-        schedule.assertAlerts("Male sterilization followup 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012));
-        schedule.assertAlertsStartWith("Male sterilization followup 1", late, dateWithYear(3, JANUARY, 2012), dateWithYear(14, JANUARY, 2012), dateWithYear(25, JANUARY, 2012));
-        schedule.assertNoAlerts("Male sterilization followup 1", max);
+        schedule.assertNoAlerts("Male sterilization Followup 1", earliest);
+        schedule.assertAlerts("Male sterilization Followup 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012));
+        schedule.assertAlertsStartWith("Male sterilization Followup 1", late, dateWithYear(3, JANUARY, 2012), dateWithYear(14, JANUARY, 2012), dateWithYear(25, JANUARY, 2012));
+        schedule.assertNoAlerts("Male sterilization Followup 1", max);
 
-        schedule.assertNoAlerts("Male sterilization followup 2", earliest);
-        schedule.assertAlertsStartWith("Male sterilization followup 2", due, dateWithYear(1, APRIL, 2012), dateWithYear(2, APRIL, 2012), dateWithYear(3, APRIL, 2012));
-        schedule.assertAlertsStartWith("Male sterilization followup 2", late, dateWithYear(8, APRIL, 2012), dateWithYear(15, APRIL, 2012), dateWithYear(22, APRIL, 2012));
-        schedule.assertNoAlerts("Male sterilization followup 2", max);
+        schedule.assertNoAlerts("Male sterilization Followup 2", earliest);
+        schedule.assertAlertsStartWith("Male sterilization Followup 2", due, dateWithYear(1, APRIL, 2012), dateWithYear(2, APRIL, 2012), dateWithYear(3, APRIL, 2012));
+        schedule.assertAlertsStartWith("Male sterilization Followup 2", late, dateWithYear(8, APRIL, 2012), dateWithYear(15, APRIL, 2012), dateWithYear(22, APRIL, 2012));
+        schedule.assertNoAlerts("Male sterilization Followup 2", max);
 
         visualization.outputTo("ec-male-sterilization-followup.html", 1);
     }
 
     @Test
     public void shouldProvideAlertsForIUDFollowupAtTheRightTimes() throws Exception {
-        schedule.enrollFor("IUD followup", newDate(2012, JANUARY, 1), new Time(14, 0));
+        schedule.enrollFor("IUD Followup", newDate(2012, JANUARY, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("IUD followup 1", earliest);
-        schedule.assertAlertsStartWith("IUD followup 1", due, dateWithYear(1, FEBRUARY, 2012), dateWithYear(2, FEBRUARY, 2012), dateWithYear(3, FEBRUARY, 2012));
-        schedule.assertAlertsStartWith("IUD followup 1", late, dateWithYear(8, FEBRUARY, 2012), dateWithYear(15, FEBRUARY, 2012), dateWithYear(22, FEBRUARY, 2012));
-        schedule.assertNoAlerts("IUD followup 1", max);
+        schedule.assertAlertsStartWith("IUD Followup 1", earliest, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012), dateWithYear(3, JANUARY, 2012));
+        schedule.assertAlertsStartWith("IUD Followup 1", due, dateWithYear(1, FEBRUARY, 2012), dateWithYear(2, FEBRUARY, 2012), dateWithYear(3, FEBRUARY, 2012));
+        schedule.assertAlertsStartWith("IUD Followup 1", late, dateWithYear(8, FEBRUARY, 2012), dateWithYear(15, FEBRUARY, 2012), dateWithYear(22, FEBRUARY, 2012));
+        schedule.assertNoAlerts("IUD Followup 1", max);
 
-        schedule.assertNoAlerts("IUD followup 2", earliest);
-        schedule.assertAlertsStartWith("IUD followup 2", due, dateWithYear(1, MAY, 2012), dateWithYear(2, MAY, 2012), dateWithYear(3, MAY, 2012));
-        schedule.assertAlertsStartWith("IUD followup 2", late, dateWithYear(8, MAY, 2012), dateWithYear(15, MAY, 2012), dateWithYear(22, MAY, 2012));
-        schedule.assertNoAlerts("IUD followup 2", max);
+        schedule.assertNoAlerts("IUD Followup 2", earliest);
+        schedule.assertAlertsStartWith("IUD Followup 2", due, dateWithYear(1, MAY, 2012), dateWithYear(2, MAY, 2012), dateWithYear(3, MAY, 2012));
+        schedule.assertAlertsStartWith("IUD Followup 2", late, dateWithYear(8, MAY, 2012), dateWithYear(15, MAY, 2012), dateWithYear(22, MAY, 2012));
+        schedule.assertNoAlerts("IUD Followup 2", max);
 
         visualization.outputTo("ec-iud-followup.html", 1);
     }

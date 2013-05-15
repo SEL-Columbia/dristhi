@@ -39,7 +39,7 @@ public class MaleSterilizationStrategy implements FPMethodStrategy {
 
     @Override
     public void unEnrollFromPreviousScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
-        logger.info(format("Un-enrolling EC from Male sterilization followup schedule as FP method changed. entityId: {0}, new fp method: {1}",
+        logger.info(format("Un-enrolling EC from Male sterilization Followup schedule as FP method changed. entityId: {0}, new fp method: {1}",
                 fpInfo.entityId(), fpInfo.currentFPMethod()));
         unEnrollECFromMaleSterilizationSchedule(fpInfo.entityId(), fpInfo.anmId(), fpInfo.fpMethodChangeDate());
     }
@@ -55,14 +55,14 @@ public class MaleSterilizationStrategy implements FPMethodStrategy {
 
     @Override
     public void fpFollowup(FPProductInformation fpInfo) {
-        logger.info(format("Fulfilling current milestone for Male sterilization followup schedule. entityId: {0}, Ref date: {1}",
+        logger.info(format("Fulfilling current milestone For Male sterilization Followup schedule. entityId: {0}, Ref date: {1}",
                 fpInfo.entityId(), fpInfo.submissionDate()));
         scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), maleSterilizationFollowupSchedule.name(), parse(fpInfo.fpFollowupDate()));
         actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), getCurrentMilestone(fpInfo), fpInfo.fpFollowupDate());
     }
 
     private void enrollECToMaleSterilizationSchedule(String entityId, String referenceDate) {
-        logger.info(format("Enrolling EC to Male sterilization followup schedule. entityId: {0}, Ref date: {1}", entityId, referenceDate));
+        logger.info(format("Enrolling EC to Male sterilization Followup schedule. entityId: {0}, Ref date: {1}", entityId, referenceDate));
         scheduleTrackingService.enroll(new EnrollmentRequest(entityId, maleSterilizationFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
                 parse(referenceDate), null, null, null, null, null));
     }
