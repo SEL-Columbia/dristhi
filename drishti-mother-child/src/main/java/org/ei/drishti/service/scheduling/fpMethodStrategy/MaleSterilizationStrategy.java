@@ -55,10 +55,11 @@ public class MaleSterilizationStrategy implements FPMethodStrategy {
 
     @Override
     public void fpFollowup(FPProductInformation fpInfo) {
-        logger.info(format("Fulfilling current milestone For Male sterilization Followup schedule. entityId: {0}, Ref date: {1}",
-                fpInfo.entityId(), fpInfo.submissionDate()));
+        String currentMilestone = getCurrentMilestone(fpInfo);
+        logger.info(format("Fulfilling current milestone For Male sterilization Followup schedule. entityId: {0}, Ref date: {1}, currentMilestone: {2}",
+                fpInfo.entityId(), fpInfo.submissionDate(), currentMilestone));
         scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), maleSterilizationFollowupSchedule.name(), parse(fpInfo.fpFollowupDate()));
-        actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), getCurrentMilestone(fpInfo), fpInfo.fpFollowupDate());
+        actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), currentMilestone, fpInfo.fpFollowupDate());
     }
 
     private void enrollECToMaleSterilizationSchedule(String entityId, String referenceDate) {
