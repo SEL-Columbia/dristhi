@@ -8,9 +8,12 @@ import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.BOOLEAN_TRUE_COMMCARE_VALUE;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
@@ -19,6 +22,8 @@ import static org.joda.time.LocalDate.parse;
 
 @Service
 public class ECSchedulingService {
+    private static Logger logger = LoggerFactory.getLogger(ECSchedulingService.class.toString());
+
     private FPMethodStrategyFactory fpMethodStrategyFactory;
     private final ScheduleTrackingService scheduleTrackingService;
     private final ActionService actionService;
@@ -64,6 +69,7 @@ public class ECSchedulingService {
 
     private void updateFPFollowupSchedule(FPProductInformation fpInfo) {
         if (BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(fpInfo.needsFollowup())) {
+            logger.info(format("Enrolling EC to FP Followup schedule. entityId: {0}, Ref date: {1}", fpInfo.entityId(), fpInfo.fpFollowupDate()));
             scheduleTrackingService.enroll(new EnrollmentRequest(fpInfo.entityId(), fpFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
                     parse(fpInfo.fpFollowupDate()), null, null, null, null, null));
         } else {
@@ -72,6 +78,7 @@ public class ECSchedulingService {
                 return;
             }
 
+            logger.info(format("Fulfilling FP Followup schedule. entityId: {0}, completionDate: {1}", fpInfo.entityId(), fpInfo.submissionDate()));
             scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), fpFollowupSchedule.name(), parse(fpInfo.submissionDate()));
             actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), fpFollowupSchedule.name(), fpInfo.submissionDate());
         }
@@ -79,6 +86,7 @@ public class ECSchedulingService {
 
     private void updateFPReferralFollowupSchedule(FPProductInformation fpInfo) {
         if (BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(fpInfo.needsReferralFollowup())) {
+            logger.info(format("Enrolling EC to FP Referral Followup schedule. entityId: {0}, Ref date: {1}", fpInfo.entityId(), fpInfo.fpFollowupDate()));
             scheduleTrackingService.enroll(new EnrollmentRequest(fpInfo.entityId(), fpReferralFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
                     parse(fpInfo.fpFollowupDate()), null, null, null, null, null));
         } else {
@@ -87,6 +95,7 @@ public class ECSchedulingService {
                 return;
             }
 
+            logger.info(format("Fulfilling FP Referral Followup schedule. entityId: {0}, completionDate: {1}", fpInfo.entityId(), fpInfo.submissionDate()));
             scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), fpReferralFollowupSchedule.name(), parse(fpInfo.submissionDate()));
             actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), fpReferralFollowupSchedule.name(), fpInfo.submissionDate());
         }
