@@ -56,7 +56,7 @@ public class DMPAInjectableStrategy implements FPMethodStrategy {
             return;
         }
 
-        logger.info(format("Un-enrolling EC from DMPA Injectable Refill schedule as FP product was renewed. entityId: {0}, DMPA injection date: {1}", fpInfo.entityId(), fpInfo.dmpaInjectionDate()));
+        logger.info(format("Fulfilling DMPA Injectable Refill schedule as FP product was renewed. entityId: {0}, DMPA injection date: {1}", fpInfo.entityId(), fpInfo.dmpaInjectionDate()));
         scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), dmpaInjectableRefillSchedule.name(), parse(fpInfo.submissionDate()));
         actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), dmpaInjectableRefillSchedule.name(), fpInfo.dmpaInjectionDate());
         enrollECToDMPAInjectableSchedule(fpInfo.entityId(), fpInfo.dmpaInjectionDate());

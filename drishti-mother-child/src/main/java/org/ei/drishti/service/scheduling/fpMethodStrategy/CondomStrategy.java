@@ -58,7 +58,7 @@ public class CondomStrategy implements FPMethodStrategy {
             return;
         }
 
-        logger.info(format("Un-enrolling EC from Condom Refill schedule as FP product was renewed. entityId: {0}, condomRefillDate: {1}, numberOfCondomsSupplied: {2}", fpInfo.entityId(), fpInfo.submissionDate(), fpInfo.numberOfCondomsSupplied()));
+        logger.info(format("Fulfilling Condom Refill schedule as FP product was renewed. entityId: {0}, condomRefillDate: {1}, numberOfCondomsSupplied: {2}", fpInfo.entityId(), fpInfo.submissionDate(), fpInfo.numberOfCondomsSupplied()));
         scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), condomRefillSchedule.name(), parse(fpInfo.submissionDate()));
         actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), condomRefillSchedule.name(), fpInfo.submissionDate());
         enrollECToCondomRefillSchedule(fpInfo.entityId());

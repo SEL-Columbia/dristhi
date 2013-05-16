@@ -5,6 +5,7 @@ import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.service.ActionService;
 import org.ei.drishti.service.scheduling.fpMethodStrategy.FPMethodStrategyFactory;
 import org.motechproject.model.Time;
+import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,11 @@ public class ECSchedulingService {
             scheduleTrackingService.enroll(new EnrollmentRequest(fpInfo.entityId(), fpFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
                     parse(fpInfo.fpFollowupDate()), null, null, null, null, null));
         } else {
+            EnrollmentRecord enrollment = scheduleTrackingService.getEnrollment(fpInfo.entityId(), fpFollowupSchedule.name());
+            if (enrollment == null) {
+                return;
+            }
+
             scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), fpFollowupSchedule.name(), parse(fpInfo.submissionDate()));
             actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), fpFollowupSchedule.name(), fpInfo.submissionDate());
         }
@@ -76,6 +82,11 @@ public class ECSchedulingService {
             scheduleTrackingService.enroll(new EnrollmentRequest(fpInfo.entityId(), fpReferralFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
                     parse(fpInfo.fpFollowupDate()), null, null, null, null, null));
         } else {
+            EnrollmentRecord enrollment = scheduleTrackingService.getEnrollment(fpInfo.entityId(), fpReferralFollowupSchedule.name());
+            if (enrollment == null) {
+                return;
+            }
+
             scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), fpReferralFollowupSchedule.name(), parse(fpInfo.submissionDate()));
             actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), fpReferralFollowupSchedule.name(), fpInfo.submissionDate());
         }

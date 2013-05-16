@@ -8,6 +8,7 @@ import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
+import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 
@@ -25,6 +26,8 @@ public class ECSchedulingServiceTest {
     private FPMethodStrategy fpMethodStrategy;
     @Mock
     private ActionService actionService;
+    @Mock
+    private EnrollmentRecord enrollmentRecord;
 
     private ECSchedulingService ecSchedulingService;
 
@@ -35,12 +38,28 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldFulfillFollowupScheduleWhenComplicationIsReportedAndECDoesNotNeedFollowup() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Followup")).thenReturn(enrollmentRecord);
+
         ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, null));
         ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, "", null));
         ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no", null));
 
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Followup");
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
         verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Followup", "2011-01-12");
+    }
+
+    @Test
+    public void shouldNotFulfillFollowupScheduleWhenComplicationIsReportedAndECDoesNotEnrolledIntoSchedule() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Followup")).thenReturn(null);
+
+        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, null));
+        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, "", null));
+        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no", null));
+
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Followup");
+        verify(scheduleTrackingService, times(0)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
+        verify(actionService, times(0)).markAlertAsClosed("entity id 1", "anm id 1", "FP Followup", "2011-01-12");
     }
 
     @Test
@@ -52,12 +71,28 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldFulfillReferralFollowupScheduleWhenComplicationIsReportedAndECDoesNotNeedReferralFollowup() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Referral Followup")).thenReturn(enrollmentRecord);
+
         ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, null));
         ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, ""));
         ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, "no"));
 
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Referral Followup");
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Referral Followup", parse("2011-01-12"));
         verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Referral Followup", "2011-01-12");
+    }
+
+    @Test
+    public void shouldNotFulfillReferralFollowupScheduleWhenComplicationIsReportedAndECIsNotEnrolledToSchedule() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Referral Followup")).thenReturn(null);
+
+        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, null));
+        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, ""));
+        ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, "no"));
+
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Referral Followup");
+        verify(scheduleTrackingService, times(0)).fulfillCurrentMilestone("entity id 1", "FP Referral Followup", parse("2011-01-12"));
+        verify(actionService, times(0)).markAlertAsClosed("entity id 1", "anm id 1", "FP Referral Followup", "2011-01-12");
     }
 
     @Test
@@ -69,12 +104,28 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldFulfillFollowupScheduleWhenReferralFollowupIsReportedAndECDoesNotNeedFollowup() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Followup")).thenReturn(enrollmentRecord);
+
         ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, null));
         ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, "", null));
         ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no", null));
 
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Followup");
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
         verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Followup", "2011-01-12");
+    }
+
+    @Test
+    public void shouldNotFulfillFollowupScheduleWhenReferralFollowupIsReportedAndECIsNotEnrolledToSchedule() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Followup")).thenReturn(null);
+
+        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, null));
+        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, "", null));
+        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no", null));
+
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Followup");
+        verify(scheduleTrackingService, times(0)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
+        verify(actionService, times(0)).markAlertAsClosed("entity id 1", "anm id 1", "FP Followup", "2011-01-12");
     }
 
     @Test
@@ -86,12 +137,28 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldFulfillReferralFollowupScheduleWhenReferralFollowupIsReportedAndECDoesNotNeedReferralFollowup() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Referral Followup")).thenReturn(enrollmentRecord);
+
         ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, null));
         ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, ""));
         ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, "no"));
 
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Referral Followup");
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Referral Followup", parse("2011-01-12"));
         verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Referral Followup", "2011-01-12");
+    }
+
+    @Test
+    public void shouldNotFulfillReferralFollowupScheduleWhenReferralFollowupIsReportedAndECIsNotEnrolledIntoScheduled() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Referral Followup")).thenReturn(null);
+
+        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, null));
+        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-12", null, null, null, ""));
+        ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, "no"));
+
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Referral Followup");
+        verify(scheduleTrackingService, times(0)).fulfillCurrentMilestone("entity id 1", "FP Referral Followup", parse("2011-01-12"));
+        verify(actionService, times(0)).markAlertAsClosed("entity id 1", "anm id 1", "FP Referral Followup", "2011-01-12");
     }
 
     @Test
@@ -103,14 +170,30 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldFulfillFollowupScheduleWhenFollowupIsReportedAndECDoesNotNeedFollowup() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Followup")).thenReturn(enrollmentRecord);
         when(fpMethodStrategyFactory.getStrategyFor("fp_method")).thenReturn(fpMethodStrategy);
 
         ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, null));
         ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "", null));
         ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no", null));
 
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Followup");
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
         verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Followup", "2011-01-12");
+    }
+
+    @Test
+    public void shouldNotFulfillFollowupScheduleWhenFollowupIsReportedAndECIsNotEnrolledIntoSchedule() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Followup")).thenReturn(null);
+        when(fpMethodStrategyFactory.getStrategyFor("fp_method")).thenReturn(fpMethodStrategy);
+
+        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, null));
+        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "", null));
+        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no", null));
+
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Followup");
+        verify(scheduleTrackingService, times(0)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
+        verify(actionService, times(0)).markAlertAsClosed("entity id 1", "anm id 1", "FP Followup", "2011-01-12");
     }
 
     @Test
@@ -124,14 +207,30 @@ public class ECSchedulingServiceTest {
 
     @Test
     public void shouldFulfillReferralFollowupScheduleWhenFollowupIsReportedAndECDoesNotNeedReferralFollowup() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Referral Followup")).thenReturn(enrollmentRecord);
         when(fpMethodStrategyFactory.getStrategyFor("fp_method")).thenReturn(fpMethodStrategy);
 
         ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, null));
         ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, ""));
         ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, "no"));
 
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Referral Followup");
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Referral Followup", parse("2011-01-12"));
         verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Referral Followup", "2011-01-12");
+    }
+
+    @Test
+    public void shouldNotFulfillReferralFollowupScheduleWhenFollowupIsReportedAndECIsNotEnrolledIntoSchedule() {
+        when(scheduleTrackingService.getEnrollment("entity id 1", "FP Referral Followup")).thenReturn(null);
+        when(fpMethodStrategyFactory.getStrategyFor("fp_method")).thenReturn(fpMethodStrategy);
+
+        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, null));
+        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, ""));
+        ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, "no"));
+
+        verify(scheduleTrackingService, times(3)).getEnrollment("entity id 1", "FP Referral Followup");
+        verify(scheduleTrackingService, times(0)).fulfillCurrentMilestone("entity id 1", "FP Referral Followup", parse("2011-01-12"));
+        verify(actionService, times(0)).markAlertAsClosed("entity id 1", "anm id 1", "FP Referral Followup", "2011-01-12");
     }
 
     @Test

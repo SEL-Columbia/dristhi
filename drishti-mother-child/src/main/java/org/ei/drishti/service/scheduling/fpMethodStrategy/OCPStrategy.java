@@ -62,7 +62,7 @@ public class OCPStrategy implements FPMethodStrategy {
             return;
         }
 
-        logger.info(format("Un-enrolling EC from OCP Refill schedule as FP product was renewed. entityId: {0}, ocpRefillDate: {1}, numberOfOCPStripsSupplied: {2}", fpInfo.entityId(), fpInfo.ocpRefillDate(), fpInfo.numberOfOCPStripsSupplied()));
+        logger.info(format("Fulfilling OCP Refill schedule as FP product was renewed. entityId: {0}, ocpRefillDate: {1}, numberOfOCPStripsSupplied: {2}", fpInfo.entityId(), fpInfo.ocpRefillDate(), fpInfo.numberOfOCPStripsSupplied()));
         scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), ocpRefillSchedule.name(), parse(fpInfo.submissionDate()));
         actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), ocpRefillSchedule.name(), fpInfo.ocpRefillDate());
         enrollECToOCPRefillSchedule(fpInfo.entityId(), fpInfo.numberOfOCPStripsSupplied(), fpInfo.ocpRefillDate());
