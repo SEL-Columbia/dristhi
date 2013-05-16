@@ -2,6 +2,7 @@ package org.ei.drishti.service.scheduling;
 
 import org.ei.drishti.contract.Schedule;
 import org.ei.drishti.domain.FPProductInformation;
+import org.ei.drishti.service.ActionService;
 import org.ei.drishti.service.scheduling.fpMethodStrategy.FPMethodStrategyFactory;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
@@ -19,13 +20,15 @@ import static org.joda.time.LocalDate.parse;
 public class ECSchedulingService {
     private FPMethodStrategyFactory fpMethodStrategyFactory;
     private final ScheduleTrackingService scheduleTrackingService;
+    private final ActionService actionService;
     private final Schedule fpFollowupSchedule = new Schedule(EC_SCHEDULE_FP_FOLLOWUP, asList(EC_SCHEDULE_FP_FOLLOWUP_MILESTONE));
     private final Schedule fpReferralFollowupSchedule = new Schedule(EC_SCHEDULE_FP_REFERRAL_FOLLOWUP, asList(EC_SCHEDULE_FP_REFERRAL_FOLLOWUP_MILESTONE));
 
     @Autowired
-    public ECSchedulingService(FPMethodStrategyFactory fpMethodStrategyFactory, ScheduleTrackingService scheduleTrackingService) {
+    public ECSchedulingService(FPMethodStrategyFactory fpMethodStrategyFactory, ScheduleTrackingService scheduleTrackingService, ActionService actionService) {
         this.fpMethodStrategyFactory = fpMethodStrategyFactory;
         this.scheduleTrackingService = scheduleTrackingService;
+        this.actionService = actionService;
     }
 
     public void registerEC(FPProductInformation fpInfo) {
@@ -64,6 +67,7 @@ public class ECSchedulingService {
                     parse(fpInfo.fpFollowupDate()), null, null, null, null, null));
         } else {
             scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), fpFollowupSchedule.name(), parse(fpInfo.submissionDate()));
+            actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), fpFollowupSchedule.name(), fpInfo.submissionDate());
         }
     }
 
@@ -73,6 +77,7 @@ public class ECSchedulingService {
                     parse(fpInfo.fpFollowupDate()), null, null, null, null, null));
         } else {
             scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), fpReferralFollowupSchedule.name(), parse(fpInfo.submissionDate()));
+            actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), fpReferralFollowupSchedule.name(), fpInfo.submissionDate());
         }
     }
 }

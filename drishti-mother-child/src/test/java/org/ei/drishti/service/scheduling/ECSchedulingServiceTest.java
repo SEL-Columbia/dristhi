@@ -1,6 +1,7 @@
 package org.ei.drishti.service.scheduling;
 
 import org.ei.drishti.domain.FPProductInformation;
+import org.ei.drishti.service.ActionService;
 import org.ei.drishti.service.scheduling.fpMethodStrategy.FPMethodStrategy;
 import org.ei.drishti.service.scheduling.fpMethodStrategy.FPMethodStrategyFactory;
 import org.joda.time.LocalDate;
@@ -22,12 +23,14 @@ public class ECSchedulingServiceTest {
     private ScheduleTrackingService scheduleTrackingService;
     @Mock
     private FPMethodStrategy fpMethodStrategy;
+    @Mock
+    private ActionService actionService;
 
     private ECSchedulingService ecSchedulingService;
 
     public ECSchedulingServiceTest() {
         initMocks(this);
-        ecSchedulingService = new ECSchedulingService(fpMethodStrategyFactory, scheduleTrackingService);
+        ecSchedulingService = new ECSchedulingService(fpMethodStrategyFactory, scheduleTrackingService, actionService);
     }
 
     @Test
@@ -37,6 +40,7 @@ public class ECSchedulingServiceTest {
         ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no", null));
 
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
+        verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Followup", "2011-01-12");
     }
 
     @Test
@@ -53,6 +57,7 @@ public class ECSchedulingServiceTest {
         ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, "no"));
 
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Referral Followup", parse("2011-01-12"));
+        verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Referral Followup", "2011-01-12");
     }
 
     @Test
@@ -69,6 +74,7 @@ public class ECSchedulingServiceTest {
         ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no", null));
 
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
+        verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Followup", "2011-01-12");
     }
 
     @Test
@@ -85,6 +91,7 @@ public class ECSchedulingServiceTest {
         ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, "no"));
 
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Referral Followup", parse("2011-01-12"));
+        verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Referral Followup", "2011-01-12");
     }
 
     @Test
@@ -103,6 +110,7 @@ public class ECSchedulingServiceTest {
         ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, "no", null));
 
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Followup", parse("2011-01-12"));
+        verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Followup", "2011-01-12");
     }
 
     @Test
@@ -123,6 +131,7 @@ public class ECSchedulingServiceTest {
         ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-12", null, null, null, "no"));
 
         verify(scheduleTrackingService, times(3)).fulfillCurrentMilestone("entity id 1", "FP Referral Followup", parse("2011-01-12"));
+        verify(actionService, times(3)).markAlertAsClosed("entity id 1", "anm id 1", "FP Referral Followup", "2011-01-12");
     }
 
     @Test
