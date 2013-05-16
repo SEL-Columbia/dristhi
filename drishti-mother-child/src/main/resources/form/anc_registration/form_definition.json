@@ -1,0 +1,134 @@
+{
+    "form": {
+        "bind_type": "mother",
+        "default_bind_path": "/model/instance/ANC_Registration_EngKan/",
+        "fields": [
+            {
+                "name": "id"
+            },
+            {
+                "name": "registrationDate",
+                "bind": "/model/instance/ANC_Registration_EngKan/reg_date"
+            },
+            {
+                "name": "registrationPlace",
+                "bind": "/model/instance/ANC_Registration_EngKan/reg_place"
+            },
+            {
+                "name": "phoneNumber",
+                "source": "eligible_couple.phoneNumber",
+                "bind": "/model/instance/ANC_Registration_EngKan/case_ec_phone_no"
+            },
+            {
+                "name": "wifeName",
+                "source": "eligible_couple.wifeName",
+                "bind": "/model/instance/ANC_Registration_EngKan/case_woman_name"
+            },
+            {
+                "name": "wifeName",
+                "source": "eligible_couple.wifeName",
+                "bind": "/model/instance/ANC_Registration_EngKan/woman_name"
+            },
+            {
+                "name": "numberOfPregnancies",
+                "source": "eligible_couple.numberOfPregnancies",
+                "bind": "/model/instance/ANC_Registration_EngKan/case_num_pregnancies"
+            },
+            {
+                "name": "numberOfPregnancies",
+                "source": "eligible_couple.numberOfPregnancies",
+                "bind": "/model/instance/ANC_Registration_EngKan/num_pregnancies"
+            },
+            {
+                "name": "thayiCardNumber",
+                "bind": "/model/instance/ANC_Registration_EngKan/thayi_no"
+            },
+            {
+                "name": "ancNumber",
+                "bind": "/model/instance/ANC_Registration_EngKan/anc_number"
+            },
+            {
+                "name": "isJSYBeneficiary",
+                "bind": "/model/instance/ANC_Registration_EngKan/jsy_beneficiary"
+            },
+            {
+                "name": "ashaName",
+                "bind": "/model/instance/ANC_Registration_EngKan/asha_name"
+            },
+            {
+                "name": "ashaPhoneNumber",
+                "bind": "/model/instance/ANC_Registration_EngKan/asha_phone_number"
+            },
+            {
+                "name": "lmpDate",
+                "bind": "/model/instance/ANC_Registration_EngKan/lmp_date"
+            },
+            {
+                "name": "edd"
+            },
+            {
+                "name": "linkedFacilityForDelivery",
+                "bind": "/model/instance/ANC_Registration_EngKan/linked_facility_delivery"
+            },
+            {
+                "name": "complications",
+                "bind": "/model/instance/ANC_Registration_EngKan/complication"
+            },
+            {
+                "name": "otherComplication",
+                "bind": "/model/instance/ANC_Registration_EngKan/phone_owner"
+            },
+            {
+                "name": "medicalHistory",
+                "bind": "/model/instance/ANC_Registration_EngKan/medical_histories"
+            },
+            {
+                "name": "otherMedicalHistory",
+                "bind": "/model/instance/ANC_Registration_EngKan/other_medical_histories"
+            },
+            {
+                "name": "bloodGroup",
+                "bind": "/model/instance/ANC_Registration_EngKan/w_blood_group"
+            },
+            {
+                "name": "isRHNegative",
+                "bind": "/model/instance/ANC_Registration_EngKan/w_rh_negative"
+            },
+            {
+                "name": "husbandBloodGroup",
+                "bind": "/model/instance/ANC_Registration_EngKan/h_blood_group"
+            },
+            {
+                "name": "isRHIncompatibleCouple",
+                "bind": "/model/instance/ANC_Registration_EngKan/rh_incompatible_couple"
+            },
+            {
+                "name": "height"
+            },
+            {
+                "name": "weightAtStartOfPregnancy",
+                "bind": "/model/instance/ANC_Registration_EngKan/weight_startofpregnancy"
+            },
+            {
+                "name": "isTobaccoUsed",
+                "bind": "/model/instance/ANC_Registration_EngKan/tobacco_use"
+            },
+            {
+                "name": "tobaccoUser",
+                "bind": "/model/instance/ANC_Registration_EngKan/tobacco_user"
+            },
+            {
+                "name": "highRiskReason",
+                "bind": "/model/instance/ANC_Registration_EngKan/high_risk_reason"
+            },
+            {
+                "name": "isHighRisk",
+                "bind": "/model/instance/ANC_Registration_EngKan/is_high_risk"
+            },
+            {
+                "name": "submissionDate",
+                "bind": "/model/instance/ANC_Registration_EngKan/today"
+            }
+        ]
+    }
+}
