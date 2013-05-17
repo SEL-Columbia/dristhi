@@ -39,7 +39,7 @@
                 "bind": "/model/instance/Family_Planning_Change_Method_EngKan/male_sterilizaton_group/male_sterilization_message"
             },
             {
-                "name": "numberOfCondomsDelivered",
+                "name": "numberOfCondomsSupplied",
                 "bind": "/model/instance/Family_Planning_Change_Method_EngKan/num_condoms"
             },
             {
