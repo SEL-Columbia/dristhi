@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(1).draw();
+schedule.addAlerts("FP Referral Followup", "FP Referral Followup - earliest", [new Date("Jan 01, 2012"), ]);
+schedule.addAlerts("FP Referral Followup", "FP Referral Followup - due", [new Date("Jan 02, 2012"), ]);
+schedule.addAlertsStartingWith("FP Referral Followup", "FP Referral Followup - late (Will continue till service is delivered)", [new Date("Jan 03, 2012"), new Date("Jan 10, 2012"), new Date("Jan 17, 2012"), new Date("Jan 24, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>FP Referral Followup</center></body></html>
