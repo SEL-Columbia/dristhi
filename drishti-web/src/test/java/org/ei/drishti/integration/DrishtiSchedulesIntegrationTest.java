@@ -364,7 +364,8 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertsForDMPAInjectableRefillAtTheRightTimes() throws Exception {
         schedule.enrollFor("DMPA Injectable Refill", newDate(2012, JANUARY, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("DMPA Injectable Refill", earliest);
+        schedule.assertAlertsStartWith("DMPA Injectable Refill", earliest,
+                dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012), dateWithYear(3, JANUARY, 2012), dateWithYear(4, JANUARY, 2012));
         schedule.assertAlerts("DMPA Injectable Refill", due, dateWithYear(25, MARCH, 2012));
         schedule.assertAlertsStartWith("DMPA Injectable Refill", late, dateWithYear(1, APRIL, 2012), dateWithYear(8, APRIL, 2012), dateWithYear(15, APRIL, 2012), dateWithYear(22, APRIL, 2012));
         schedule.assertNoAlerts("DMPA Injectable Refill", max);
@@ -456,7 +457,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertsForFPFollowupAtTheRightTimes() throws Exception {
         schedule.enrollFor("FP Followup", newDate(2012, JANUARY, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("FP Followup", earliest);
+        schedule.assertAlerts("FP Followup", earliest, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012), dateWithYear(3, JANUARY, 2012));
         schedule.assertAlerts("FP Followup", due, dateWithYear(4, JANUARY, 2012), dateWithYear(5, JANUARY, 2012), dateWithYear(6, JANUARY, 2012), dateWithYear(7, JANUARY, 2012));
         schedule.assertAlertsStartWith("FP Followup", late, dateWithYear(8, JANUARY, 2012), dateWithYear(15, JANUARY, 2012), dateWithYear(22, JANUARY, 2012), dateWithYear(29, JANUARY, 2012));
         schedule.assertNoAlerts("FP Followup", max);
@@ -468,7 +469,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertsForFPReferralFollowupAtTheRightTimes() throws Exception {
         schedule.enrollFor("FP Referral Followup", newDate(2012, JANUARY, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("FP Referral Followup", earliest);
+        schedule.assertAlerts("FP Referral Followup", earliest, dateWithYear(1, JANUARY, 2012));
         schedule.assertAlerts("FP Referral Followup", due, dateWithYear(2, JANUARY, 2012));
         schedule.assertAlertsStartWith("FP Referral Followup", late, dateWithYear(3, JANUARY, 2012), dateWithYear(10, JANUARY, 2012), dateWithYear(17, JANUARY, 2012), dateWithYear(24, JANUARY, 2012));
         schedule.assertNoAlerts("FP Referral Followup", max);

@@ -12,6 +12,12 @@
             },
             "alerts": [
                 {
+                    "window": "earliest",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                },
+                {
                     "window": "due",
                     "offset": ["1 Day"],
                     "interval": ["1 Day"],
