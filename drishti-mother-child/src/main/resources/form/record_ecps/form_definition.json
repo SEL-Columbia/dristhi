@@ -1,0 +1,23 @@
+{
+    "form": {
+        "bind_type": "eligible_couple",
+        "default_bind_path": "/model/instance/Family_Planning_ECPs/",
+        "fields": [
+            {
+                "name": "id"
+            },
+            {
+                "name": "numberOfECPsGiven",
+                "bind": "/model/instance/Family_Planning_ECPs/ecp_given"
+            },
+            {
+                "name": "ecpDate",
+                "bind": "/model/instance/Family_Planning_ECPs/ecp_date"
+            },
+            {
+                "name": "submissionDate",
+                "bind": "/model/instance/Family_Planning_ECPs/today"
+            }
+        ]
+    }
+}
