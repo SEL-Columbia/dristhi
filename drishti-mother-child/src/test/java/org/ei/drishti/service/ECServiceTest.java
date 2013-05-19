@@ -282,4 +282,45 @@ public class ECServiceTest {
 
         verify(schedulingService).reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2010-12-24", null, "2010-12-25", "yes", "no"));
     }
+
+    @Test
+    public void shouldCloseEC() throws Exception {
+        when(allEligibleCouples.exists("entity id 1")).thenReturn(true);
+
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("ec_close")
+                .addFormField("isECCloseConfirmed", "yes")
+                .build();
+        ecService.closeEligibleCouple(submission);
+
+        verify(allEligibleCouples).close("entity id 1");
+        verify(actionService).closeEligibleCouple("entity id 1", "anmId");
+    }
+
+    @Test
+    public void shouldNotCloseECWhenANMDoesNotConfirmClose() throws Exception {
+        when(allEligibleCouples.exists("entity id 1")).thenReturn(true);
+
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("ec_close")
+                .addFormField("isECCloseConfirmed", "no")
+                .build();
+        ecService.closeEligibleCouple(submission);
+
+        verify(allEligibleCouples, times(0)).close("entity id 1");
+        verifyZeroInteractions(actionService);
+    }
+
+    @Test
+    public void shouldNotCloseECWhenECDoesNotExist() throws Exception {
+        when(allEligibleCouples.exists("entity id 1")).thenReturn(false);
+
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("ec_close")
+                .build();
+        ecService.closeEligibleCouple(submission);
+
+        verify(allEligibleCouples, times(0)).close("entity id 1");
+        verifyZeroInteractions(actionService);
+    }
 }

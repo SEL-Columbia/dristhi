@@ -17,6 +17,7 @@ public class AllConstants {
         public static final String RENEW_FP_PRODUCT = "renew_fp_product";
         public static final String FP_FOLLOWUP_PRODUCT = "fp_followup";
         public static final String FP_REFERRAL_FOLLOWUP = "fp_referral_followup";
+        public static final String EC_CLOSE = "ec_close";
         public static final String METHOD_STILL_THE_SAME = "method_still_the_same";
     }
 
@@ -104,6 +105,10 @@ public class AllConstants {
         public static final String DEATH_OF_WOMAN_COMMCARE_VALUE = "death_of_woman";
         public static final String PERMANENT_RELOCATION_COMMCARE_VALUE = "relocation_permanent";
         public static final String SPONTANEOUS_ABORTION_COMMCARE_VALUE = "spontaneous_abortion";
+    }
+
+    public static class ECCloseFields {
+        public static final String IS_EC_CLOSE_CONFIRMED_FIELD_NAME = "isECCloseConfirmed";
     }
 
     public static class PNCCloseCommCareFields {

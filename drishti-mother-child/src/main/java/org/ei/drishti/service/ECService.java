@@ -21,8 +21,10 @@ import java.util.Map;
 
 import static org.ei.drishti.common.AllConstants.ChangeFamilyPlanningMethodCommCareFields.NEW_FP_METHOD_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChangeFamilyPlanningMethodCommCareFields.PREVIOUS_FP_METHOD_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.CommonCommCareFields.BOOLEAN_TRUE_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
+import static org.ei.drishti.common.AllConstants.ECCloseFields.IS_EC_CLOSE_CONFIRMED_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
 
 @Service
@@ -170,5 +172,21 @@ public class ECService {
 
         allEligibleCouples.close(request.caseId());
         actionService.closeEligibleCouple(request.caseId(), request.anmIdentifier());
+    }
+
+    public void closeEligibleCouple(FormSubmission submission) {
+        if (!BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(submission.getField(IS_EC_CLOSE_CONFIRMED_FIELD_NAME))) {
+            logger.warn("ANM has not confirmed the close so not closing EC! Form Submission: " + submission);
+            return;
+        }
+        if (!allEligibleCouples.exists(submission.entityId())) {
+            logger.warn("Cannot close EC as it does not exist! Form Submission: " + submission);
+            return;
+        }
+
+        logger.info("Closing EC : " + submission);
+
+        allEligibleCouples.close(submission.entityId());
+        actionService.closeEligibleCouple(submission.entityId(), submission.anmId());
     }
 }

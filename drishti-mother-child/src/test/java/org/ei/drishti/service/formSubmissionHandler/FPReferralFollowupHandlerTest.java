@@ -28,6 +28,5 @@ public class FPReferralFollowupHandlerTest {
         handler.handle(submission);
 
         verify(ecService).reportReferralFollowup(submission);
-
     }
 }

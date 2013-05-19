@@ -25,13 +25,16 @@ public class FormSubmissionRouterTest {
     private FPFollowupHandler fpFollowupHandler;
     @Mock
     private FPReferralFollowupHandler fpReferralFollowupHandler;
+    @Mock
+    private ECCloseHandler ecCloseHandler;
 
     private FormSubmissionRouter router;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        router = new FormSubmissionRouter(formSubmissionsRepository, ecRegistrationHandler, fpComplicationsHandler, fpChangeHandler, renewFPProductHandler, fpFollowupHandler, fpReferralFollowupHandler);
+        router = new FormSubmissionRouter(formSubmissionsRepository, ecRegistrationHandler, fpComplicationsHandler,
+                fpChangeHandler, renewFPProductHandler, fpFollowupHandler, fpReferralFollowupHandler, ecCloseHandler);
     }
 
     @Test
@@ -71,5 +74,16 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(fpReferralFollowupHandler).handle(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateECCloseFormSubmissionHandlingToECCloseHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ec_close", "entity id 1", null, 0L, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(ecCloseHandler).handle(formSubmission);
     }
 }
