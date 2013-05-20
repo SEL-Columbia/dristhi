@@ -2,8 +2,10 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
@@ -26,6 +28,8 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     private ReportingService reportingService;
     @Mock
     private AllMothers allMothers;
+    @Mock
+    private AllEligibleCouples allEligibleCouples;
 
     private MotherReportingService service;
 
@@ -37,7 +41,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new MotherReportingService(reportingService, allMothers);
+        service = new MotherReportingService(reportingService, allMothers, allEligibleCouples);
     }
 
     @Test
@@ -59,6 +63,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("motherId", "CASE-1");
         reportData.put("registrationDate", "2012-01-01");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.registerANC(reportData);
 
@@ -515,7 +520,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     private void testPlaceOfDeliveryIsReported(String placeOfDelivery, Indicator expectedIndicator) {
         ReportingService reportingService = mock(ReportingService.class);
-        MotherReportingService service = new MotherReportingService(reportingService, allMothers);
+        MotherReportingService service = new MotherReportingService(reportingService, allMothers, allEligibleCouples);
 
         service.updatePregnancyOutcome(reportDataForPlaceOfDelivery(placeOfDelivery));
 
@@ -529,9 +534,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("motherId", "CASE-1");
         reportData.put("registrationDate", "2012-01-01");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         ReportingService fakeReportingService = mock(ReportingService.class);
-        MotherReportingService motherReportingService = new MotherReportingService(fakeReportingService, allMothers);
+        MotherReportingService motherReportingService = new MotherReportingService(fakeReportingService, allMothers, allEligibleCouples);
 
         motherReportingService.registerANC(reportData);
 

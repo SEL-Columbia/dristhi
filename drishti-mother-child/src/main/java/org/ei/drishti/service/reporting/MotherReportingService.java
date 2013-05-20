@@ -2,8 +2,10 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
 import org.slf4j.LoggerFactory;
@@ -34,13 +36,15 @@ public class MotherReportingService {
     public static final int NUMBER_OF_DAYS_IN_PNC_PERIOD = 42;
     private ReportingService reportingService;
     private AllMothers allMothers;
+    private AllEligibleCouples allEligibleCouples;
     private final Map<String, Indicator> placeOfDeliveryToIndicator;
 
 
     @Autowired
-    public MotherReportingService(ReportingService reportingService, AllMothers allMothers) {
+    public MotherReportingService(ReportingService reportingService, AllMothers allMothers, AllEligibleCouples allEligibleCouples) {
         this.reportingService = reportingService;
         this.allMothers = allMothers;
+        this.allEligibleCouples = allEligibleCouples;
 
         placeOfDeliveryToIndicator = new HashMap<>();
         placeOfDeliveryToIndicator.put(HOME_COMMCARE_FIELD_VALUE, D_HOM);
@@ -55,12 +59,14 @@ public class MotherReportingService {
 
     public void registerANC(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(MOTHER_ID));
-        reportToBoth(mother, ANC, reportData.get(REGISTRATION_DATE));
+        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+        reportToBoth(mother, ANC, reportData.get(REGISTRATION_DATE), location);
 
         boolean isRegisteredWithinTwelveWeeks = !(parse(reportData.get(REGISTRATION_DATE)).minusDays(NUMBER_OF_DAYS_IN_12_WEEKS)
                 .isAfter(parse(reportData.get(REFERENCE_DATE))));
         if (isRegisteredWithinTwelveWeeks) {
-            reportToBoth(mother, ANC_BEFORE_12_WEEKS, reportData.get(REGISTRATION_DATE));
+            reportToBoth(mother, ANC_BEFORE_12_WEEKS, reportData.get(REGISTRATION_DATE), location);
         }
     }
 
@@ -195,6 +201,14 @@ public class MotherReportingService {
     private void reportToBoth(Mother mother, Indicator indicator, String date) {
         ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thaayiCardNo(), indicator, date,
                 new Location(mother.village(), mother.subCenter(), mother.phc()));
+        reportingService.sendReportData(serviceProvided);
+
+        ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);
+        reportingService.sendReportData(anmReportData);
+    }
+
+    private void reportToBoth(Mother mother, Indicator indicator, String date, Location location) {
+        ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thaayiCardNo(), indicator, date, location);
         reportingService.sendReportData(serviceProvided);
 
         ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);
