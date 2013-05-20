@@ -40,6 +40,15 @@ public class AllMothers extends MotechBaseRepository<Mother> {
         return mothers.get(0);
     }
 
+    @GenerateView
+    public List<Mother> findByEcCaseId(String ecId) {
+        List<Mother> mothers = queryView("by_ecCaseId", ecId);
+        if (mothers == null || mothers.isEmpty()) {
+            return null;
+        }
+        return mothers;
+    }
+
     public boolean motherExists(String caseId) {
         return findByCaseId(caseId) != null;
     }
@@ -63,5 +72,17 @@ public class AllMothers extends MotechBaseRepository<Mother> {
     public void close(String caseId) {
         Mother mother = findByCaseId(caseId);
         update(mother.setIsClosed(true));
+    }
+
+    public void closeAllMothersForEC(String ecId) {
+        List<Mother> mothers = findByEcCaseId(ecId);
+        if (mothers == null || mothers.isEmpty()) {
+            return;
+        }
+
+        for (Mother mother : mothers) {
+            mother.setIsClosed(true);
+            update(mother);
+        }
     }
 }

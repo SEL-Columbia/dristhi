@@ -16,10 +16,12 @@ import java.util.Map;
 @Repository
 public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
     private static Logger logger = LoggerFactory.getLogger(AllEligibleCouples.class);
+    private final AllMothers allMothers;
 
     @Autowired
-    public AllEligibleCouples(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
+    public AllEligibleCouples(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db, AllMothers allMothers) {
         super(EligibleCouple.class, db);
+        this.allMothers = allMothers;
     }
 
     public void register(EligibleCouple couple) {
@@ -42,6 +44,7 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
             return;
         }
         update(couple.setIsClosed(true));
+        allMothers.closeAllMothersForEC(caseId);
     }
 
     public EligibleCouple updateDetails(String caseId, Map<String, String> details) {

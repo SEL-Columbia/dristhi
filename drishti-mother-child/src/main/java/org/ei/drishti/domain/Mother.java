@@ -126,6 +126,10 @@ public class Mother extends MotechBaseDataObject {
         return thaayiCardNumber;
     }
 
+    private String getEcCaseId() {
+        return ecCaseId;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
