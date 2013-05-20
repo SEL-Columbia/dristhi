@@ -15,11 +15,10 @@ import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.*;
-import static org.ei.drishti.common.AllConstants.CommonCommRegisterMotherFields.LMP;
-import static org.ei.drishti.common.AllConstants.CommonCommRegisterMotherFields.REGISTRATION_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.DEATH_OF_MOTHER_COMMCARE_VALUE;
 import static org.ei.drishti.common.domain.Indicator.*;
@@ -55,12 +54,13 @@ public class MotherReportingService {
     }
 
     public void registerANC(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
-        reportToBoth(mother, ANC, reportData.get(REGISTRATION_COMMCARE_FIELD_NAME));
+        Mother mother = allMothers.findByCaseId(reportData.get(MOTHER_ID));
+        reportToBoth(mother, ANC, reportData.get(REGISTRATION_DATE));
 
-        boolean isRegisteredWithinTwelveWeeks = !(parse(reportData.get(REGISTRATION_COMMCARE_FIELD_NAME)).minusDays(NUMBER_OF_DAYS_IN_12_WEEKS).isAfter(parse(reportData.get(LMP))));
+        boolean isRegisteredWithinTwelveWeeks = !(parse(reportData.get(REGISTRATION_DATE)).minusDays(NUMBER_OF_DAYS_IN_12_WEEKS)
+                .isAfter(parse(reportData.get(REFERENCE_DATE))));
         if (isRegisteredWithinTwelveWeeks) {
-            reportToBoth(mother, ANC_BEFORE_12_WEEKS, reportData.get(REGISTRATION_COMMCARE_FIELD_NAME));
+            reportToBoth(mother, ANC_BEFORE_12_WEEKS, reportData.get(REGISTRATION_DATE));
         }
     }
 

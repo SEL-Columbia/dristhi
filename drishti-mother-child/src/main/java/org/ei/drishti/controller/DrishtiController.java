@@ -46,13 +46,6 @@ public class DrishtiController {
         ancService.registerOutOfAreaANC(request, couple, extraData);
     }
 
-    public void registerMother(AnteNatalCareEnrollmentInformation enrollmentInformation, Map<String, Map<String, String>> extraData) {
-        logger.info("Mother registration: " + enrollmentInformation + ". Extra data: " + extraData);
-
-        ancService.registerANCCase(enrollmentInformation, extraData);
-        mctsService.registerANCCase(enrollmentInformation);
-    }
-
     public void updateANCCareInformation(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {
         logger.info("ANC care: " + ancInformation + ". Extra data: " + extraData);
 

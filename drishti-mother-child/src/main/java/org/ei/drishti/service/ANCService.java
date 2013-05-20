@@ -3,8 +3,10 @@ package org.ei.drishti.service;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
@@ -15,69 +17,72 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.DEATH_OF_WOMAN_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.PERMANENT_RELOCATION_COMMCARE_VALUE;
+import static org.ei.drishti.common.AllConstants.ANCFormFields.MOTHER_ID;
+import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
-import static org.ei.drishti.common.util.DateUtil.*;
+import static org.ei.drishti.common.util.DateUtil.today;
+import static org.joda.time.LocalDate.parse;
 import static org.joda.time.LocalTime.now;
 
 @Service
 public class ANCService {
     private static Logger logger = LoggerFactory.getLogger(ANCService.class.toString());
 
-    private final AllMothers allMothers;
+    private AllMothers allMothers;
     private AllEligibleCouples eligibleCouples;
     private ANCSchedulesService ancSchedulesService;
     private ActionService actionService;
     private MotherReportingService reportingService;
+    private ReportFieldsDefinition reportFieldsDefinition;
     private ECService ecService;
 
     @Autowired
-    public ANCService(ECService ecService, AllMothers allMothers, AllEligibleCouples eligibleCouples, ANCSchedulesService ancSchedulesService, ActionService actionService, MotherReportingService reportingService) {
+    public ANCService(ECService ecService,
+                      AllMothers allMothers,
+                      AllEligibleCouples eligibleCouples,
+                      ANCSchedulesService ancSchedulesService,
+                      ActionService actionService,
+                      MotherReportingService reportingService,
+                      ReportFieldsDefinition reportFieldsDefinition) {
         this.ecService = ecService;
         this.allMothers = allMothers;
         this.eligibleCouples = eligibleCouples;
         this.ancSchedulesService = ancSchedulesService;
         this.actionService = actionService;
         this.reportingService = reportingService;
+        this.reportFieldsDefinition = reportFieldsDefinition;
     }
 
-    public void registerANCCase(AnteNatalCareEnrollmentInformation info, Map<String, Map<String, String>> extraData) {
-        Map<String, String> details = extraData.get("details");
+    public void registerANC(FormSubmission submission) {
+        String motherId = submission.getField(MOTHER_ID);
 
-        EligibleCouple couple = eligibleCouples.findByCaseId(info.ecCaseId());
-        if (couple == null) {
-            logger.warn(format("Found pregnancy without registered eligible couple. Ignoring case: {0} for mother with case: {1} for ANM: {2}",
-                    info.ecCaseId(), info.caseId(), info.anmIdentifier()));
+        if (!eligibleCouples.exists(submission.entityId())) {
+            logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}",
+                    submission.entityId(), motherId, submission.anmId()));
             return;
         }
 
-        Mother mother = new Mother(info.caseId(), couple.caseId(), info.thaayiCardNumber(), couple.wife()).withAnm(info.anmIdentifier(), info.anmPhoneNumber())
-                .withLMP(info.lmpDate()).withLocation(couple.village(), couple.subCenter(), couple.phc())
-                .withDetails(details);
-        allMothers.register(mother);
-        actionService.registerPregnancy(info.caseId(), couple.caseId(), info.thaayiCardNumber(), info.anmIdentifier(), info.lmpDate(), details);
-        reportingService.registerANC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
+        Mother mother = allMothers.findByCaseId(motherId);
+        allMothers.update(mother.withAnm(submission.anmId()));
 
-        enrollMotherIntoSchedules(info.caseId(), info.lmpDate());
-    }
+        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+        reportingService.registerANC(new SafeMap(submission.getFields(reportFields)));
 
-    private void enrollMotherIntoSchedules(String caseId, LocalDate lmpDate) {
-        Time preferredAlertTime = new Time(new LocalTime(14, 0));
-        LocalDate referenceDate = lmpDate != null ? lmpDate : today();
-
-        ancSchedulesService.enrollMother(caseId, referenceDate, new Time(now()), preferredAlertTime);
+        enrollMotherIntoSchedules(motherId, parse(submission.getField(REFERENCE_DATE)));
     }
 
     public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, EligibleCouple couple, Map<String, Map<String, String>> extraData) {
         Map<String, String> details = extraData.get("details");
 
-        Mother mother = new Mother(request.caseId(), couple.caseId(), request.thaayiCardNumber(), request.wife())
-                .withAnm(request.anmIdentifier(), request.anmPhoneNumber())
+        Mother mother = new Mother(request.caseId(), couple.caseId(), request.thaayiCardNumber())
+                .withAnm(request.anmIdentifier())
                 .withLMP(request.lmpDate()).withLocation(request.village(), request.subCenter(), request.phc())
                 .withDetails(details);
         allMothers.register(mother);
@@ -159,5 +164,12 @@ public class ANCService {
         }
 
         reportingService.subsetOfANCHasBeenProvided(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
+    }
+
+    private void enrollMotherIntoSchedules(String caseId, LocalDate lmpDate) {
+        Time preferredAlertTime = new Time(new LocalTime(14, 0));
+        LocalDate referenceDate = lmpDate != null ? lmpDate : today();
+
+        ancSchedulesService.enrollMother(caseId, referenceDate, new Time(now()), preferredAlertTime);
     }
 }

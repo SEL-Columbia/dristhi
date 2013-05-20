@@ -20,11 +20,7 @@ public class Mother extends MotechBaseDataObject {
     @JsonProperty
     private String thaayiCardNumber;
     @JsonProperty
-    private String name;
-    @JsonProperty
     private String anmIdentifier;
-    @JsonProperty
-    private String anmPhoneNumber;
     @JsonProperty
     private LocalDate lmp;
     @JsonProperty
@@ -43,21 +39,15 @@ public class Mother extends MotechBaseDataObject {
     private Mother() {
     }
 
-    public Mother(String caseId, String ecCaseId, String thaayiCardNumber, String name) {
+    public Mother(String caseId, String ecCaseId, String thaayiCardNumber) {
         this.caseId = caseId;
         this.ecCaseId = ecCaseId;
         this.thaayiCardNumber = thaayiCardNumber;
-        this.name = name;
         this.details = new HashMap<>();
     }
 
-    public String name() {
-        return name;
-    }
-
-    public Mother withAnm(String identifier, String phoneNumber) {
+    public Mother withAnm(String identifier) {
         anmIdentifier = identifier;
-        this.anmPhoneNumber = phoneNumber;
         return this;
     }
 

@@ -6,41 +6,6 @@
         {
             "forms": [
                 {
-                    "name": "registerMother",
-                    "url": {
-                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/10825054-464A-46F9-A761-F1CF88194E9C"
-                        }
-                    },
-                    "mappings": {
-                        "form|case|@case_id": "ecCaseId",
-                        "form|subcase_0|case|@case_id": "caseId",
-                        "form|thayi_no": "thaayiCardNumber",
-                        "form|lmp_date": "lmp",
-                        "form|anm_phone_number": "anmPhoneNumber",
-                        "form|meta|username": "anmIdentifier"
-                    },
-                    "extraMappings": {
-                        "reporting": {
-                            "form|case_phc": "phc",
-                            "form|subcase_0|case|@case_id": "caseId",
-                            "form|lmp_date": "lmp",
-                            "form|meta|username": "anmIdentifier",
-                            "form|thayi_no": "thaayiCardNumber",
-                            "form|reg_date": "registrationDate"
-
-                        },
-                        "details": {
-                            "form|is_high_risk": "isHighRisk",
-                            "form|high_risk_reason": "highRiskReason",
-                            "form|name_deliveryfacility": "deliveryPlace",
-                            "form|asha_name": "ashaName",
-                            "form|asha_phone_number": "ashaPhoneNumber"
-                        }
-                    }
-                },
-                {
                     "name": "registerOutOfAreaANC",
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",

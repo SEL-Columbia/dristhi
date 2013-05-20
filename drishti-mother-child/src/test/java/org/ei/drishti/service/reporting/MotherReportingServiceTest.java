@@ -6,7 +6,6 @@ import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -30,8 +29,8 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     private MotherReportingService service;
 
-    private final Mother MOTHER = new Mother("CASE-1", "EC-CASE-1", "TC 1", "Theresa")
-            .withAnm("ANM X", "12345")
+    private final Mother MOTHER = new Mother("CASE-1", "EC-CASE-1", "TC 1")
+            .withAnm("ANM X")
             .withLocation("bherya", "Sub Center", "PHC X")
             .withLMP(parse("2012-01-01"));
 
@@ -56,8 +55,8 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotReportANCRegistrationWhichHasBeenDoneAfterTwelveWeeksLMPAsEarlyRegistration() throws Exception {
         SafeMap reportData = new SafeMap();
-        reportData.put("lmp", "2011-10-08");
-        reportData.put("caseId", "CASE-1");
+        reportData.put("referenceDate", "2011-10-08");
+        reportData.put("motherId", "CASE-1");
         reportData.put("registrationDate", "2012-01-01");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
@@ -526,8 +525,8 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     private void assertThatIndicatorIsSetBasedOnLMP(String lmp, Indicator indicator) {
         SafeMap reportData = new SafeMap();
-        reportData.put("lmp", lmp);
-        reportData.put("caseId", "CASE-1");
+        reportData.put("referenceDate", lmp);
+        reportData.put("motherId", "CASE-1");
         reportData.put("registrationDate", "2012-01-01");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 

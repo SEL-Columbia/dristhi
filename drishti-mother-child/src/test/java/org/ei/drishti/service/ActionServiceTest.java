@@ -55,7 +55,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thaayi 1", "Theresa").withAnm("ANM ID M", "ANM phone no"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thaayi 1").withAnm("ANM ID M"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
@@ -100,7 +100,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateACloseActionForAVisitOfAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thaayi 1").withAnm("ANM ID 1").withLocation("bherya", "Sub Center", "PHC X"));
 
         service.markAlertAsClosed("Case X", "ANM ID 1", "ANC 1", "2012-12-12");
 
@@ -109,7 +109,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateADeleteAllActionForAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thaayi 1", "Theresa").withAnm("ANM ID 1", "ANM phone no").withLocation("bherya", "Sub Center", "PHC X"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thaayi 1").withAnm("ANM ID 1").withLocation("bherya", "Sub Center", "PHC X"));
 
         service.deleteAllAlertsForMother("Case X");
 
@@ -188,7 +188,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldRegisterChildBirth() throws Exception {
-        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "MotherThaayiCard 1", "Theresa"));
+        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "MotherThaayiCard 1"));
 
         service.registerChildBirth("ChildCase Y", "ANM X", "MOTHER-CASE-1", "MotherThaayiCard 1", today(), "female", EXTRA_DETAILS);
 

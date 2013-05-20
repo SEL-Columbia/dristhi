@@ -18,6 +18,7 @@ public class AllConstants {
         public static final String FP_FOLLOWUP_PRODUCT = "fp_followup";
         public static final String FP_REFERRAL_FOLLOWUP = "fp_referral_followup";
         public static final String EC_CLOSE = "ec_close";
+        public static final String ANC_REGISTRATION = "anc_registration";
         public static final String METHOD_STILL_THE_SAME = "method_still_the_same";
     }
 
@@ -51,6 +52,12 @@ public class AllConstants {
         public static final String PRIVATE_FACILITY_COMMCARE_FIELD_VALUE = "private_facility";
         public static final String PRIVATE_FACILITY2_COMMCARE_FIELD_VALUE = "private_facility2";
 
+    }
+
+    public static class ANCFormFields {
+        public static final String MOTHER_ID = "motherId";
+        public static final String REGISTRATION_DATE = "registrationDate";
+        public static final String REFERENCE_DATE = "referenceDate";
     }
 
     public static class ANCVisitCommCareFields {

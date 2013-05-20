@@ -30,7 +30,7 @@ public class DrishtiMCTSServiceTest {
     @Test
     public void shouldSendMCTSSMSWhenPNCVisitHappensAndMotherExists() throws Exception {
         when(mothers.motherExists("CASE X")).thenReturn(true);
-        when(mothers.findByCaseId("CASE X")).thenReturn(new Mother("CASE X", "EC CASE X", "123", "theresa"));
+        when(mothers.findByCaseId("CASE X")).thenReturn(new Mother("CASE X", "EC CASE X", "123"));
 
         service.pncProvided(new PostNatalCareInformation("CASE X", "ANM X", "1", "20", "2013-01-01"));
 

@@ -33,7 +33,6 @@ public class CommCareImportFormDefinitionsJSONTest {
         Map<String, Class<?>> classEveryFormMappingConvertsTo = new HashMap<>();
 
         classEveryFormMappingConvertsTo.put("registerOutOfAreaANC", OutOfAreaANCRegistrationRequest.class);
-        classEveryFormMappingConvertsTo.put("registerMother", AnteNatalCareEnrollmentInformation.class);
         classEveryFormMappingConvertsTo.put("updateANCCareInformation", AnteNatalCareInformation.class);
         classEveryFormMappingConvertsTo.put("updateSubsetOfANCInformation", AnteNatalCareInformationSubset.class);
         classEveryFormMappingConvertsTo.put("updateOutcomeOfANC", AnteNatalCareOutcomeInformation.class);

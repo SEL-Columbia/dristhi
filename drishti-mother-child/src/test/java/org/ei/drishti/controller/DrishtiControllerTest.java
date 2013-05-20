@@ -47,16 +47,6 @@ public class DrishtiControllerTest {
     }
 
     @Test
-    public void shouldDelegateToBothANCServiceAndMCTSDuringMotherRegistrationAndReportItAsWell() {
-        AnteNatalCareEnrollmentInformation ancEnrollInfo = mock(AnteNatalCareEnrollmentInformation.class);
-
-        controller.registerMother(ancEnrollInfo, EXTRA_DATA);
-
-        verify(ancService).registerANCCase(ancEnrollInfo, EXTRA_DATA);
-        verify(mctsService).registerANCCase(ancEnrollInfo);
-    }
-
-    @Test
     public void shouldDelegateToBothANCServiceAndMCTSDuringANCCareProvision() throws Exception {
         AnteNatalCareInformation ancInformation = mock(AnteNatalCareInformation.class);
 

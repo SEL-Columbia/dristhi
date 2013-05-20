@@ -10,5 +10,10 @@
         "id",
         "currentMethod",
         "familyPlanningMethodChangeDate"
+    ],
+    "anc_registration": [
+        "motherId",
+        "referenceDate",
+        "registrationDate"
     ]
 }
