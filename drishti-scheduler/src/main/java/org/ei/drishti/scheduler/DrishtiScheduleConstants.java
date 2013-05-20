@@ -3,7 +3,7 @@ package org.ei.drishti.scheduler;
 import org.joda.time.LocalTime;
 
 public class DrishtiScheduleConstants {
-    public static final LocalTime PREFERED_TIME_FOR_SCHEDULES = new LocalTime(14, 00);
+    public static final LocalTime PREFERED_TIME_FOR_SCHEDULES = new LocalTime(14, 0);
 
     public static class ChildScheduleConstants {
         public static final String CHILD_SCHEDULE_BCG = "BCG";

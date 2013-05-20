@@ -10,7 +10,6 @@ import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import org.motechproject.model.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +27,7 @@ import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.util.DateUtil.today;
+import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
 import static org.joda.time.LocalTime.now;
 
@@ -167,7 +167,7 @@ public class ANCService {
     }
 
     private void enrollMotherIntoSchedules(String caseId, LocalDate lmpDate) {
-        Time preferredAlertTime = new Time(new LocalTime(14, 0));
+        Time preferredAlertTime = new Time(PREFERED_TIME_FOR_SCHEDULES);
         LocalDate referenceDate = lmpDate != null ? lmpDate : today();
 
         ancSchedulesService.enrollMother(caseId, referenceDate, new Time(now()), preferredAlertTime);
