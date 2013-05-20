@@ -59,9 +59,9 @@ public class ActionServiceTest {
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(mother, "Case X", "ANC 1", normal, dueDate, expiryDate);
+        service.alertForBeneficiary(mother, "Case X", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
 
-        verify(allActions).add(new Action("Case X", "ANM ID M", ActionData.createAlert(mother, "ANC 1", normal, dueDate, expiryDate)));
+        verify(allActions).add(new Action("Case X", "ANM ID M", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate)));
     }
 
     @Test
@@ -70,9 +70,9 @@ public class ActionServiceTest {
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(child, "Case X", "OPV", normal, dueDate, expiryDate);
+        service.alertForBeneficiary(child, "Case X", "OPV", "OPV", normal, dueDate, expiryDate);
 
-        verify(allActions).add(new Action("Case X", "ANM ID C", ActionData.createAlert(child, "OPV", normal, dueDate, expiryDate)));
+        verify(allActions).add(new Action("Case X", "ANM ID C", ActionData.createAlert(child, "OPV", "OPV", normal, dueDate, expiryDate)));
     }
 
     @Test
@@ -81,14 +81,14 @@ public class ActionServiceTest {
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(ec, "Case X", "FP Complications", urgent, dueDate, expiryDate);
+        service.alertForBeneficiary(ec, "Case X", "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate);
 
-        verify(allActions).add(new Action("Case X", "ANM ID C", ActionData.createAlert(ec, "FP Complications", urgent, dueDate, expiryDate)));
+        verify(allActions).add(new Action("Case X", "ANM ID C", ActionData.createAlert(ec, "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate)));
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void shouldThrowExceptionIfBenefiicaryTypeIsUnknown() throws Exception {
-        service.alertForBeneficiary(null, "Case X", "FP Complications", urgent, null, null);
+        service.alertForBeneficiary(null, "Case X", "Schedule name", "FP Complications", urgent, null, null);
     }
 
     @Test
@@ -118,7 +118,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
-        List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert(mother, "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3))));
+        List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3))));
         when(allActions.findByANMIDAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
 
         List<Action> alerts = service.getNewAlertsForANM("ANM 1", 1010101);

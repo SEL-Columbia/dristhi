@@ -38,7 +38,7 @@ public class ActionService {
         return allActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
     }
 
-    public void alertForBeneficiary(BeneficiaryType beneficiaryType, String caseID, String visitCode, AlertPriority alertPriority, DateTime startDate, DateTime expiryDate) {
+    public void alertForBeneficiary(BeneficiaryType beneficiaryType, String caseID, String scheduleName, String visitCode, AlertPriority alertPriority, DateTime startDate, DateTime expiryDate) {
         // TODO: Get rid of this horrible if-else after Motech-Platform fixes the bug related to metadata in motech-schedule-tracking.
         String anmIdentifier;
         if (mother.equals(beneficiaryType)) {
@@ -51,7 +51,7 @@ public class ActionService {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
 
-        allActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, visitCode, alertPriority, startDate, expiryDate)));
+        allActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertPriority, startDate, expiryDate)));
     }
 
     public void deleteAllAlertsForMother(String caseID) {

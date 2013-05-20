@@ -15,9 +15,11 @@ public class ActionData {
     private String type;
     private Map<String, String> details;
 
-    public static ActionData createAlert(BeneficiaryType beneficiaryType, String visitCode, AlertPriority alertPriority, DateTime startDate, DateTime expiryDate) {
+    public static ActionData createAlert(BeneficiaryType beneficiaryType, String scheduleName, String visitCode,
+                                         AlertPriority alertPriority, DateTime startDate, DateTime expiryDate) {
         return new ActionData("alert", "createAlert")
                 .with("beneficiaryType", beneficiaryType.value())
+                .with("scheduleName", scheduleName)
                 .with("visitCode", visitCode)
                 .with("alertPriority", alertPriority.value())
                 .with("startDate", startDate.toLocalDate().toString())
@@ -34,7 +36,8 @@ public class ActionData {
         return new ActionData("alert", "deleteAllAlerts");
     }
 
-    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String village, String subCenter, String phc, Map<String, String> details) {
+    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String village,
+                                                  String subCenter, String phc, Map<String, String> details) {
         return new ActionData("eligibleCouple", "createEC")
                 .with("wife", wife)
                 .with("husband", husband)

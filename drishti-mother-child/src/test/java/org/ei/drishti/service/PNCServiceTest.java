@@ -19,6 +19,8 @@ import org.motechproject.testing.utils.BaseUnitTest;
 import org.motechproject.util.DateUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
@@ -66,9 +68,9 @@ public class PNCServiceTest extends BaseUnitTest {
 
         service.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), "", "4", "yes", EXTRA_DATA));
 
-        verify(actionService).alertForBeneficiary(child, "Case X", "OPV 0", normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
-        verify(actionService).alertForBeneficiary(child, "Case X", "BCG", normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
-        verify(actionService).alertForBeneficiary(child, "Case X", "HEP B0", normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
+        verify(actionService).alertForBeneficiary(child, "Case X", "OPV", "OPV 0", normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
+        verify(actionService).alertForBeneficiary(child, "Case X", "BCG", "BCG", normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
+        verify(actionService).alertForBeneficiary(child, "Case X", "Hepatitis", "HEP B0", normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
     }
 
     @Test
@@ -157,14 +159,19 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldAddAlertsOnlyForMissingVaccinations() {
-        assertMissingAlertsAdded("", "BCG", "OPV 0", "HEP B0");
-        assertMissingAlertsAdded("bcg", "OPV 0", "HEP B0");
-        assertMissingAlertsAdded("bcg opv_0", "HEP B0");
-        assertMissingAlertsAdded("bcg opv_0 hepb_0");
+        assertMissingAlertsAdded("",
+                asList(create("scheduleName", "BCG").put("visitCode", "BCG").map(),
+                        create("scheduleName", "OPV").put("visitCode", "OPV 0").map(),
+                        create("scheduleName", "Hepatitis").put("visitCode", "HEP B0").map()));
+        assertMissingAlertsAdded("bcg", asList(create("scheduleName", "OPV").put("visitCode", "OPV 0").map(),
+                create("scheduleName", "Hepatitis").put("visitCode", "HEP B0").map()));
+        assertMissingAlertsAdded("bcg opv_0", asList(create("scheduleName", "Hepatitis").put("visitCode", "HEP B0").map()));
+        assertMissingAlertsAdded("bcg opv_0 hepb_0", Collections.<Map<String, String>>emptyList());
 
-        assertMissingAlertsAdded("opv_0 bcg hepb_0");
-        assertMissingAlertsAdded("opv_0 bcg", "HEP B0");
-        assertMissingAlertsAdded("opv_0 bcg_1", "BCG", "HEP B0");
+        assertMissingAlertsAdded("opv_0 bcg hepb_0", Collections.<Map<String, String>>emptyList());
+        assertMissingAlertsAdded("opv_0 bcg", asList(create("scheduleName", "Hepatitis").put("visitCode", "HEP B0").map()));
+        assertMissingAlertsAdded("opv_0 bcg_1", asList(create("scheduleName", "BCG").put("visitCode", "BCG").map(),
+                create("scheduleName", "Hepatitis").put("visitCode", "HEP B0").map()));
     }
 
     @Test
@@ -466,7 +473,7 @@ public class PNCServiceTest extends BaseUnitTest {
         verifyZeroInteractions(actionService);
     }
 
-    private void assertMissingAlertsAdded(String providedImmunizations, String... expectedAlertsRaised) {
+    private void assertMissingAlertsAdded(String providedImmunizations, List<Map<String, String>> expectedAlertsRaised) {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         ActionService actionService = mock(ActionService.class);
@@ -475,8 +482,8 @@ public class PNCServiceTest extends BaseUnitTest {
 
         pncService.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), providedImmunizations, "4", "yes", EXTRA_DATA));
 
-        for (String expectedAlert : expectedAlertsRaised) {
-            verify(actionService).alertForBeneficiary(child, "Case X", expectedAlert, normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
+        for (Map<String, String> expectedAlert : expectedAlertsRaised) {
+            verify(actionService).alertForBeneficiary(child, "Case X", expectedAlert.get("scheduleName"), expectedAlert.get("visitCode"), normal, currentTime.plusDays(2), currentTime.plusDays(2).plusWeeks(1));
         }
         verify(actionService, times(1)).registerChildBirth(any(String.class), any(String.class), any(String.class), any(String.class), any(LocalDate.class), any(String.class), eq(EXTRA_DATA.get("details")));
         verifyNoMoreInteractions(actionService);

@@ -140,9 +140,9 @@ public class PNCService {
         reportingData.put(BF_POSTBIRTH_COMMCARE_FIELD_NAME, information.bfPostBirth());
         childReportingService.registerChild(reportingData);
 
-        alertForMissingImmunization(information, "opv_0", "OPV 0");
-        alertForMissingImmunization(information, "bcg", "BCG");
-        alertForMissingImmunization(information, "hepb_0", "HEP B0");
+        alertForMissingImmunization(information, "opv_0", "OPV", "OPV 0");
+        alertForMissingImmunization(information, "bcg", "BCG", "BCG");
+        alertForMissingImmunization(information, "hepb_0", "Hepatitis", "HEP B0");
 
         childSchedulesService.enrollChild(information);
     }
@@ -183,7 +183,7 @@ public class PNCService {
         }
     }
 
-    private void alertForMissingImmunization(ChildInformation information, String checkForThisImmunization, String visitCodeIfNotProvided) {
+    private void alertForMissingImmunization(ChildInformation information, String checkForThisImmunization, String scheduleName, String visitCodeIfNotProvided) {
         if (information.isImmunizationProvided(checkForThisImmunization)) {
             return;
         }
@@ -191,6 +191,6 @@ public class PNCService {
         LocalDate dueDateLocal = information.dateOfBirth().plusDays(2);
         LocalTime currentTime = DateUtil.now().toLocalTime();
         DateTime dueDate = dueDateLocal.toDateTime(currentTime);
-        actionService.alertForBeneficiary(child, information.caseId(), visitCodeIfNotProvided, normal, dueDate, dueDateLocal.plusWeeks(1).toDateTime(currentTime));
+        actionService.alertForBeneficiary(child, information.caseId(), scheduleName, visitCodeIfNotProvided, normal, dueDate, dueDateLocal.plusWeeks(1).toDateTime(currentTime));
     }
 }

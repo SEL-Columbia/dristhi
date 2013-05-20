@@ -45,7 +45,7 @@ public class AlertCreationActionTest {
         extraData.put("beneficiaryType", "mother");
         reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.earliest, dueWindowStart, lateWindowStart, maxWindowStart), extraData);
 
-        verify(actionService).alertForBeneficiary(mother, "Case 1", "Milestone 1", upcoming, dueWindowStart, lateWindowStart);
+        verify(actionService).alertForBeneficiary(mother, "Case 1", "Schedule 1", "Milestone 1", upcoming, dueWindowStart, lateWindowStart);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class AlertCreationActionTest {
         extraData.put("beneficiaryType", "mother");
         reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.due, dueWindowStart, lateWindowStart, maxWindowStart), extraData);
 
-        verify(actionService).alertForBeneficiary(mother, "Case 1", "Milestone 1", normal, dueWindowStart, lateWindowStart);
+        verify(actionService).alertForBeneficiary(mother, "Case 1", "Schedule 1", "Milestone 1", normal, dueWindowStart, lateWindowStart);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class AlertCreationActionTest {
         extraData.put("beneficiaryType", "child");
         reminderAction.invoke(event("Case 1", "Schedule 1", "Milestone 1", WindowName.late, dueWindowStart, lateWindowStart, maxWindowStart), extraData);
 
-        verify(actionService).alertForBeneficiary(child, "Case 1", "Milestone 1", urgent, lateWindowStart, maxWindowStart);
+        verify(actionService).alertForBeneficiary(child, "Case 1", "Schedule 1", "Milestone 1", urgent, lateWindowStart, maxWindowStart);
     }
 
     private MilestoneEvent event(String externalID, String scheduleName, String milestone, WindowName window, DateTime dueWindowStart, DateTime lateWindowStart, DateTime maxWindowStart) {

@@ -5,7 +5,6 @@ import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.scheduler.DrishtiScheduleConstants;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import org.joda.time.Weeks;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
@@ -91,7 +90,7 @@ public class ANCSchedulesService {
         }
 
         trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, milestone, null));
-        actionService.alertForBeneficiary(BeneficiaryType.mother, caseId, milestone, normal, referenceDateForSchedule.toDateTime(PREFERED_TIME_FOR_SCHEDULES), referenceDateForSchedule.plusWeeks(12).toDateTime(PREFERED_TIME_FOR_SCHEDULES));
+        actionService.alertForBeneficiary(BeneficiaryType.mother, caseId, SCHEDULE_ANC, milestone, normal, referenceDateForSchedule.toDateTime(PREFERED_TIME_FOR_SCHEDULES), referenceDateForSchedule.plusWeeks(12).toDateTime(PREFERED_TIME_FOR_SCHEDULES));
     }
 
     private void fulfillCurrentMilestone(AnteNatalCareInformation ancInformation, String scheduleName, String milestonePrefix) {

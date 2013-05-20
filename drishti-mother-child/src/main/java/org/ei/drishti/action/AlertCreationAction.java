@@ -30,11 +30,11 @@ public class AlertCreationAction implements Action {
         BeneficiaryType beneficiaryType = BeneficiaryType.from(extraData.get("beneficiaryType"));
 
         if (WindowName.late.toString().equals(event.windowName())) {
-            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), urgent, event.startOfLateWindow(), event.startOfMaxWindow());
+            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.scheduleName(), event.milestoneName(), urgent, event.startOfLateWindow(), event.startOfMaxWindow());
         } else if (WindowName.earliest.toString().equals(event.windowName())) {
-            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), upcoming, event.startOfDueWindow(), event.startOfLateWindow());
+            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.scheduleName(), event.milestoneName(), upcoming, event.startOfDueWindow(), event.startOfLateWindow());
         } else {
-            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.milestoneName(), normal, event.startOfDueWindow(), event.startOfLateWindow());
+            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.scheduleName(), event.milestoneName(), normal, event.startOfDueWindow(), event.startOfLateWindow());
         }
     }
 }

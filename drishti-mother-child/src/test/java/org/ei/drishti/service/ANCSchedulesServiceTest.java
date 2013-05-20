@@ -196,7 +196,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
         verifyNonANCScheduleEnrollments(lmp);
         verify(scheduleTrackingService, times(wantedNumberOfInvocations)).enroll(ancEnrollmentFor("Case X", SCHEDULE_ANC, lmp, expectedMilestone));
-        verify(actionService, times(wantedNumberOfInvocations)).alertForBeneficiary(BeneficiaryType.mother, "Case X", expectedMilestone, AlertPriority.normal, lmp.toDateTime(new LocalTime(14, 0)), lmp.plusWeeks(12).toDateTime(new LocalTime(14, 0)));
+        verify(actionService, times(wantedNumberOfInvocations)).alertForBeneficiary(BeneficiaryType.mother, "Case X", "Ante Natal Care - Normal", expectedMilestone, AlertPriority.normal, lmp.toDateTime(new LocalTime(14, 0)), lmp.plusWeeks(12).toDateTime(new LocalTime(14, 0)));
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate lmp) {
