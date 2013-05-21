@@ -2,7 +2,7 @@ package org.ei.drishti.service;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.ei.drishti.contract.AnteNatalCareInformation;
-import org.ei.drishti.dto.AlertPriority;
+import org.ei.drishti.dto.AlertStatus;
 import org.ei.drishti.dto.BeneficiaryType;
 import org.hamcrest.Description;
 import org.joda.time.LocalDate;
@@ -196,7 +196,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
         verifyNonANCScheduleEnrollments(lmp);
         verify(scheduleTrackingService, times(wantedNumberOfInvocations)).enroll(ancEnrollmentFor("Case X", SCHEDULE_ANC, lmp, expectedMilestone));
-        verify(actionService, times(wantedNumberOfInvocations)).alertForBeneficiary(BeneficiaryType.mother, "Case X", "Ante Natal Care - Normal", expectedMilestone, AlertPriority.normal, lmp.toDateTime(new LocalTime(14, 0)), lmp.plusWeeks(12).toDateTime(new LocalTime(14, 0)));
+        verify(actionService, times(wantedNumberOfInvocations)).alertForBeneficiary(BeneficiaryType.mother, "Case X", "Ante Natal Care - Normal", expectedMilestone, AlertStatus.normal, lmp.toDateTime(new LocalTime(14, 0)), lmp.plusWeeks(12).toDateTime(new LocalTime(14, 0)));
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate lmp) {

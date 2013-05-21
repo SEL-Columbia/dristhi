@@ -11,11 +11,11 @@ import org.motechproject.scheduletracking.api.domain.WindowName;
 
 import java.util.HashMap;
 
-import static org.ei.drishti.dto.AlertPriority.upcoming;
+import static org.ei.drishti.dto.AlertStatus.upcoming;
 import static org.ei.drishti.dto.BeneficiaryType.child;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
-import static org.ei.drishti.dto.AlertPriority.normal;
-import static org.ei.drishti.dto.AlertPriority.urgent;
+import static org.ei.drishti.dto.AlertStatus.normal;
+import static org.ei.drishti.dto.AlertStatus.urgent;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 

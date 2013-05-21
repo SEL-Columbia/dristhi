@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.dto.AlertPriority.normal;
+import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 import static org.ei.drishti.util.EasyMap.create;

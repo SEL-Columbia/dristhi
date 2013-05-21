@@ -1,16 +1,16 @@
 package org.ei.drishti.dto;
 
-public enum AlertPriority {
+public enum AlertStatus {
     upcoming("upcoming"), normal("normal"), urgent("urgent"), inProcess("inProcess"), complete("complete");
 
     private String value;
 
-    AlertPriority(String value) {
+    AlertStatus(String value) {
         this.value = value;
     }
 
-    public static AlertPriority from(String alertPriority) {
-        return valueOf(alertPriority);
+    public static AlertStatus from(String alertStatus) {
+        return valueOf(alertStatus);
     }
 
     public String value() {

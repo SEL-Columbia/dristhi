@@ -29,7 +29,7 @@ import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
-import static org.ei.drishti.dto.AlertPriority.normal;
+import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 

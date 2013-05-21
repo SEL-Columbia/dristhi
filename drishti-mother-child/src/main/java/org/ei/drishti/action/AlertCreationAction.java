@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static org.ei.drishti.dto.AlertPriority.normal;
-import static org.ei.drishti.dto.AlertPriority.upcoming;
-import static org.ei.drishti.dto.AlertPriority.urgent;
+import static org.ei.drishti.dto.AlertStatus.normal;
+import static org.ei.drishti.dto.AlertStatus.upcoming;
+import static org.ei.drishti.dto.AlertStatus.urgent;
 
 @Component
 @Qualifier("AlertCreationAction")

@@ -3,7 +3,6 @@ package org.ei.drishti.service;
 import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.common.util.DateUtil;
-import org.ei.drishti.scheduler.DrishtiScheduleConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.Weeks;
 import org.motechproject.model.Time;
@@ -21,7 +20,7 @@ import java.util.List;
 
 import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.util.DateUtil.today;
-import static org.ei.drishti.dto.AlertPriority.normal;
+import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalTime.now;

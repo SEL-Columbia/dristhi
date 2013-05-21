@@ -17,8 +17,8 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static org.ei.drishti.common.util.DateUtil.today;
-import static org.ei.drishti.dto.AlertPriority.normal;
-import static org.ei.drishti.dto.AlertPriority.urgent;
+import static org.ei.drishti.dto.AlertStatus.normal;
+import static org.ei.drishti.dto.AlertStatus.urgent;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 
 @RunWith(SpringJUnit4ClassRunner.class)

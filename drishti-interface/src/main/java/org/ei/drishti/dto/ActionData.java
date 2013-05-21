@@ -16,12 +16,12 @@ public class ActionData {
     private Map<String, String> details;
 
     public static ActionData createAlert(BeneficiaryType beneficiaryType, String scheduleName, String visitCode,
-                                         AlertPriority alertPriority, DateTime startDate, DateTime expiryDate) {
+                                         AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
         return new ActionData("alert", "createAlert")
                 .with("beneficiaryType", beneficiaryType.value())
                 .with("scheduleName", scheduleName)
                 .with("visitCode", visitCode)
-                .with("alertPriority", alertPriority.value())
+                .with("alertStatus", alertStatus.value())
                 .with("startDate", startDate.toLocalDate().toString())
                 .with("expiryDate", expiryDate.toLocalDate().toString());
     }

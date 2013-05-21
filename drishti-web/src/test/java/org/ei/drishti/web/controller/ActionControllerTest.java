@@ -10,7 +10,7 @@ import org.mockito.Mock;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
-import static org.ei.drishti.dto.AlertPriority.normal;
+import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
