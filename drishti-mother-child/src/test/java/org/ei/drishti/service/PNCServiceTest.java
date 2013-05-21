@@ -5,6 +5,7 @@ import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.reporting.MotherReportingService;
@@ -39,6 +40,8 @@ public class PNCServiceTest extends BaseUnitTest {
     @Mock
     private ChildSchedulesService childSchedulesService;
     @Mock
+    private AllEligibleCouples allEligibleCouples;
+    @Mock
     private AllMothers mothers;
     @Mock
     private AllChildren children;
@@ -57,7 +60,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new PNCService(ecService, actionService, childSchedulesService, pncSchedulesService, mothers, children, motherReportingService, childReportingService);
+        service = new PNCService(ecService, actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, mothers, children, motherReportingService, childReportingService);
     }
 
     @Test
@@ -333,7 +336,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
         service.closePNCCase(new PostNatalCareCloseInformation("CASE-X", "ANM X", "death_of_mother"), EXTRA_DATA);
 
-        verify(ecService).closeEligibleCouple(new EligibleCoupleCloseRequest("CASE-X", "ANM X"));
+        verify(allEligibleCouples).close("CASE-X");
     }
 
     @Test
@@ -342,7 +345,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
         service.closePNCCase(new PostNatalCareCloseInformation("CASE-X", "ANM X", "permanent_relocation"), EXTRA_DATA);
 
-        verify(ecService).closeEligibleCouple(new EligibleCoupleCloseRequest("CASE-X", "ANM X"));
+        verify(allEligibleCouples).close("CASE-X");
     }
 
     @Test
@@ -477,7 +480,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         ActionService actionService = mock(ActionService.class);
-        PNCService pncService = new PNCService(ecService, actionService, childSchedulesService, pncSchedulesService, mothers, children, motherReportingService, childReportingService);
+        PNCService pncService = new PNCService(ecService, actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, mothers, children, motherReportingService, childReportingService);
         when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1"));
 
         pncService.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), providedImmunizations, "4", "yes", EXTRA_DATA));

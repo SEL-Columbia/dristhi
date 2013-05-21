@@ -64,11 +64,6 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
     }
 
-    public void closeEligibleCouple(String caseId, String anmIdentifier) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()));
-        allActions.markAllAsInActiveFor(caseId);
-    }
-
     public void closeMother(String caseId, String anmIdentifier, String reasonForClose) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.closeMother(reasonForClose)));
         allActions.markAllAsInActiveFor(caseId);

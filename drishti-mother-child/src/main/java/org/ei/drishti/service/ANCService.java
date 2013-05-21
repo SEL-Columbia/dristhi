@@ -142,7 +142,7 @@ public class ANCService {
         if (DEATH_OF_WOMAN_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.reason())
                 || PERMANENT_RELOCATION_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.reason())) {
             logger.info("Closing EC case along with ANC case. Details: " + closeInformation);
-            ecService.closeEligibleCouple(new EligibleCoupleCloseRequest(closeInformation.caseId(), closeInformation.anmIdentifier()));
+            eligibleCouples.close(closeInformation.caseId());
         }
     }
 

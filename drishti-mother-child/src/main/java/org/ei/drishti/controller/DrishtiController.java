@@ -95,12 +95,6 @@ public class DrishtiController {
         mctsService.closeChildCase(childCloseRequest);
     }
 
-    public void closeEligibleCouple(EligibleCoupleCloseRequest eligibleCoupleCloseRequest) {
-        logger.info("Eligible couple close: " + eligibleCoupleCloseRequest);
-
-        ecService.closeEligibleCouple(eligibleCoupleCloseRequest);
-    }
-
     public void updateBirthPlanning(BirthPlanningRequest request, Map<String, Map<String, String>> extraData) {
         logger.info("Birth planning: " + request + ". Extra data: " + extraData);
 

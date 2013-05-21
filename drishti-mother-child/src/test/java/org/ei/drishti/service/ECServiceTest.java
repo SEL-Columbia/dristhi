@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.EligibleCoupleCloseRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -184,26 +183,6 @@ public class ECServiceTest {
     }
 
     @Test
-    public void shouldCloseEligibleCouple() throws Exception {
-        when(allEligibleCouples.exists("CASE X")).thenReturn(true);
-
-        ecService.closeEligibleCouple(new EligibleCoupleCloseRequest("CASE X", "ANM X"));
-
-        verify(allEligibleCouples).close("CASE X");
-        verify(actionService).closeEligibleCouple("CASE X", "ANM X");
-    }
-
-    @Test
-    public void shouldNotCloseEligibleCoupleWhenECDoesNotExist() throws Exception {
-        when(allEligibleCouples.exists("CASE X")).thenReturn(false);
-
-        ecService.closeEligibleCouple(new EligibleCoupleCloseRequest("CASE X", "ANM X"));
-
-        verify(allEligibleCouples, times(0)).close("CASE X");
-        verifyZeroInteractions(actionService);
-    }
-
-    @Test
     public void shouldNotDoAnythingWhenFPComplicationIsReportedAndECIsNotFound() throws Exception {
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(null);
         FormSubmission submission = FormSubmissionBuilder.create().withFormName("fp_complications").build();
@@ -275,7 +254,6 @@ public class ECServiceTest {
         ecService.closeEligibleCouple(submission);
 
         verify(allEligibleCouples).close("entity id 1");
-        verify(actionService).closeEligibleCouple("entity id 1", "anmId");
     }
 
     @Test

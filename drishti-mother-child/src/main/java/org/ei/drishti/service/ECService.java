@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.EligibleCoupleCloseRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -150,17 +149,6 @@ public class ECService {
         schedulingService.reportReferralFollowup(fpProductInformation);
     }
 
-    public void closeEligibleCouple(EligibleCoupleCloseRequest request) {
-        if (!allEligibleCouples.exists(request.caseId())) {
-            logger.warn("Cannot close EC as it does not exist! Details: " + request);
-            return;
-        }
-        logger.info("Closing EC : " + request);
-
-        allEligibleCouples.close(request.caseId());
-        actionService.closeEligibleCouple(request.caseId(), request.anmIdentifier());
-    }
-
     public void closeEligibleCouple(FormSubmission submission) {
         if (!BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(submission.getField(IS_EC_CLOSE_CONFIRMED_FIELD_NAME))) {
             logger.warn("ANM has not confirmed the close so not closing EC! Form Submission: " + submission);
@@ -174,6 +162,5 @@ public class ECService {
         logger.info("Closing EC : " + submission);
 
         allEligibleCouples.close(submission.entityId());
-        actionService.closeEligibleCouple(submission.entityId(), submission.anmId());
     }
 }

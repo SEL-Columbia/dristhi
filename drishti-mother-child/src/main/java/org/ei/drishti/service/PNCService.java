@@ -5,6 +5,7 @@ import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.reporting.MotherReportingService;
@@ -39,6 +40,7 @@ public class PNCService {
     private ActionService actionService;
     private ChildSchedulesService childSchedulesService;
     private PNCSchedulesService pncSchedulesService;
+    private AllEligibleCouples allEligibleCouples;
     private AllMothers allMothers;
     private AllChildren allChildren;
     private MotherReportingService motherReportingService;
@@ -46,12 +48,13 @@ public class PNCService {
     private ECService ecService;
 
     @Autowired
-    public PNCService(ECService ecService, ActionService actionService, ChildSchedulesService childSchedulesService, PNCSchedulesService pncSchedulesService, AllMothers allMothers,
+    public PNCService(ECService ecService, ActionService actionService, ChildSchedulesService childSchedulesService, PNCSchedulesService pncSchedulesService, AllEligibleCouples allEligibleCouples, AllMothers allMothers,
                       AllChildren allChildren, MotherReportingService motherReportingService, ChildReportingService childReportingService) {
         this.ecService = ecService;
         this.actionService = actionService;
         this.childSchedulesService = childSchedulesService;
         this.pncSchedulesService = pncSchedulesService;
+        this.allEligibleCouples = allEligibleCouples;
         this.allMothers = allMothers;
         this.allChildren = allChildren;
         this.motherReportingService = motherReportingService;
@@ -91,7 +94,7 @@ public class PNCService {
         if (DEATH_OF_MOTHER_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.closeReason())
                 || PERMANENT_RELOCATION_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.closeReason())) {
             logger.info("Closing EC case along with PNC case. Details: " + closeInformation);
-            ecService.closeEligibleCouple(new EligibleCoupleCloseRequest(closeInformation.caseId(), closeInformation.anmIdentifier()));
+            allEligibleCouples.close(closeInformation.caseId());
         }
     }
 

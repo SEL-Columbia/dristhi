@@ -294,7 +294,7 @@ public class ANCServiceTest {
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "death_of_woman"), new SafeMap());
 
-        verify(ecService).closeEligibleCouple(new EligibleCoupleCloseRequest("CASE-X", "ANM X"));
+        verify(eligibleCouples).close("CASE-X");
     }
 
     @Test
@@ -303,7 +303,7 @@ public class ANCServiceTest {
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "relocation_permanent"), new SafeMap());
 
-        verify(ecService).closeEligibleCouple(new EligibleCoupleCloseRequest("CASE-X", "ANM X"));
+        verify(eligibleCouples).close("CASE-X");
     }
 
     @Test

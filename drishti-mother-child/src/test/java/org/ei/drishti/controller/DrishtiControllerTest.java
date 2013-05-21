@@ -122,15 +122,6 @@ public class DrishtiControllerTest {
     }
 
     @Test
-    public void shouldDelegateToECServiceDuringEligibleCoupleClose() {
-        EligibleCoupleCloseRequest eligibleCoupleCloseRequest = mock(EligibleCoupleCloseRequest.class);
-
-        controller.closeEligibleCouple(eligibleCoupleCloseRequest);
-
-        verify(ecService).closeEligibleCouple(eligibleCoupleCloseRequest);
-    }
-
-    @Test
     public void shouldDelegateToPNCServiceDuringPNCAndChildCareUpdate() throws Exception {
         PostNatalCareInformation request = mock(PostNatalCareInformation.class);
 

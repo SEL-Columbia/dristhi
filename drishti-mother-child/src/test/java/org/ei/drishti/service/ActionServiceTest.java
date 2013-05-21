@@ -127,20 +127,6 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldAddDeleteActionForEligibleCoupleClose() throws Exception {
-        service.closeEligibleCouple("Case X", "ANM X");
-
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.deleteEligibleCouple()));
-    }
-
-    @Test
-    public void shouldMarkAsInActiveActionForEligibleCoupleClose() throws Exception {
-        service.closeEligibleCouple("Case X", "ANM X");
-
-        verify(allActions).markAllAsInActiveFor("Case X");
-    }
-
-    @Test
     public void shouldAddDeleteActionForChildClose() throws Exception {
         service.closeChild("Case X", "ANM X");
 
