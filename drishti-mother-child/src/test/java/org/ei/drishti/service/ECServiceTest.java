@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.EligibleCoupleCloseRequest;
-import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -16,12 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.UUID;
-
 import static java.util.Arrays.asList;
-import static java.util.UUID.randomUUID;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -73,19 +67,6 @@ public class ECServiceTest {
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
         verify(schedulingService).registerEC(new FPProductInformation("entity id 1", "anm id 1", "some method", null, "2010-12-20", "1", "2010-12-25"
                 , "20", "2011-01-01", null, null, null, null));
-    }
-
-    @Test
-    public void shouldRegisterEligibleCoupleForOutOfAreaANC() throws Exception {
-        Map<String, Map<String, String>> extraData = mapOf("details", Collections.<String, String>emptyMap());
-        UUID ecCaseId = randomUUID();
-        when(idGenerator.generateUUID()).thenReturn(ecCaseId);
-
-        ecService.registerEligibleCoupleForOutOfAreaANC(new OutOfAreaANCRegistrationRequest("CASE X", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "TC 1", "2012-05-05", "9876543210"), extraData);
-
-        EligibleCouple couple = new EligibleCouple(ecCaseId.toString(), "0").withCouple("Wife 1", "Husband 1")
-                .withANMIdentifier("ANM X").withLocation("Village X", "SubCenter X", "PHC X").withDetails(extraData.get("details")).asOutOfArea();
-        verify(allEligibleCouples).register(couple);
     }
 
     @Test

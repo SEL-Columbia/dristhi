@@ -2,7 +2,6 @@ package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
-import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
 import org.ei.drishti.service.ECService;
@@ -18,8 +17,6 @@ import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -131,16 +128,6 @@ public class DrishtiControllerTest {
         controller.closeEligibleCouple(eligibleCoupleCloseRequest);
 
         verify(ecService).closeEligibleCouple(eligibleCoupleCloseRequest);
-    }
-
-    @Test
-    public void shouldDelegateToECServiceAndANCServiceDuringOutOfAreaRegistration() {
-        OutOfAreaANCRegistrationRequest request = mock(OutOfAreaANCRegistrationRequest.class);
-
-        controller.registerOutOfAreaANC(request, EXTRA_DATA);
-
-        verify(ecService).registerEligibleCoupleForOutOfAreaANC(request, EXTRA_DATA);
-        verify(ancService).registerOutOfAreaANC(eq(request), any(EligibleCouple.class), eq(EXTRA_DATA));
     }
 
     @Test

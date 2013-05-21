@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.EligibleCoupleCloseRequest;
-import org.ei.drishti.contract.OutOfAreaANCRegistrationRequest;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -17,13 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.ei.drishti.common.AllConstants.ChangeFamilyPlanningMethodCommCareFields.NEW_FP_METHOD_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChangeFamilyPlanningMethodCommCareFields.PREVIOUS_FP_METHOD_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.BOOLEAN_TRUE_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.ECCloseFields.IS_EC_CLOSE_CONFIRMED_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
 
@@ -151,16 +148,6 @@ public class ECService {
                 null, null, null, null, null, null, submission.getField(SUBMISSION_DATE_COMMCARE_FIELD_NAME), null,
                 submission.getField(REFERRAL_FOLLOW_UP_DATE_FIELD_NAME), submission.getField(NEEDS_FOLLOWUP_FIELD_NAME), submission.getField(NEEDS_REFERRAL_FOLLOWUP_FIELD_NAME));
         schedulingService.reportReferralFollowup(fpProductInformation);
-    }
-
-    public EligibleCouple registerEligibleCoupleForOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
-        EligibleCouple couple = new EligibleCouple(idGenerator.generateUUID().toString(), "0")
-                .withCouple(request.wife(), request.husband()).withANMIdentifier(request.anmIdentifier())
-                .withLocation(request.village(), request.subCenter(), request.phc()).withDetails(extraData.get(DETAILS_EXTRA_DATA_KEY_NAME))
-                .asOutOfArea();
-
-        allEligibleCouples.register(couple);
-        return couple;
     }
 
     public void closeEligibleCouple(EligibleCoupleCloseRequest request) {

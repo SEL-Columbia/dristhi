@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.*;
-import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -16,16 +15,13 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.model.Time;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
-import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -121,27 +117,6 @@ public class ANCServiceTest {
         service.registerANC(submission);
 
         verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp), any(Time.class), any(Time.class));
-    }
-
-    @Test
-    public void shouldRegisterAOutOfAreaMother() {
-        LocalDate lmp = today();
-
-        String thaayiCardNumber = "THAAYI-CARD-NUMBER-1";
-        String motherName = "Theresa";
-        OutOfAreaANCRegistrationRequest request = new OutOfAreaANCRegistrationRequest("CASE X", motherName, "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", thaayiCardNumber, lmp.toString(), "9876543210");
-        Map<String, Map<String, String>> extraData = create("details", mapOf("some_field", "some_value")).put(REPORT_EXTRA_DATA_KEY_NAME, Collections.<String, String>emptyMap()).map();
-        EligibleCouple couple = new EligibleCouple("EC-CASE-1", "EC Number 1").withANMIdentifier("ANM ID 1").withCouple(motherName, "Husband 1").withLocation("bherya", "Sub Center", "PHC X").asOutOfArea();
-
-        service.registerOutOfAreaANC(request, couple, extraData);
-        Map<String, String> details = extraData.get("details");
-
-        verify(mothers).register(objectWithSameFieldsAs(new Mother("CASE X", "EC-CASE-1", thaayiCardNumber)
-                .withAnm(request.anmIdentifier()).withLMP(lmp)
-                .withLocation("Village X", "SubCenter X", "PHC X").withDetails(details)));
-        verify(ancSchedulesService).enrollMother(eq("CASE X"), eq(lmp), any(Time.class), any(Time.class));
-        verify(actionService).registerOutOfAreaANC(request.caseId(), couple.caseId(), request.wife(), request.husband(), request.anmIdentifier(), request.village(), request.subCenter(),
-                request.phc(), request.thaayiCardNumber(), request.lmpDate(), details);
     }
 
     @Test

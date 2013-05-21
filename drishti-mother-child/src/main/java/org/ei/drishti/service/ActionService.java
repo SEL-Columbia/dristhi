@@ -64,17 +64,9 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
     }
 
-    public void registerEligibleCouple(String caseId, String ecNumber, String wife, String husband, String anmIdentifier, String village, String subCenter, String phc, Map<String, String> details) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.createEligibleCouple(wife, husband, ecNumber, village, subCenter, phc, details)));
-    }
-
     public void closeEligibleCouple(String caseId, String anmIdentifier) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.deleteEligibleCouple()));
         allActions.markAllAsInActiveFor(caseId);
-    }
-
-    public void registerPregnancy(String caseId, String ecCaseId, String thaayiCardNumber, String anmIdentifier, LocalDate lmpDate, Map<String, String> details) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerPregnancy(ecCaseId, thaayiCardNumber, lmpDate, details)));
     }
 
     public void closeMother(String caseId, String anmIdentifier, String reasonForClose) {
@@ -86,22 +78,12 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.registerChildBirth(motherCaseId, thaayiCardNumber, dateOfBirth, gender, details)));
     }
 
-    public void updateEligibleCoupleDetails(String caseId, String anmIdentifier, Map<String, String> details) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.updateEligibleCoupleDetails(details)));
-    }
-
     public void updateMotherDetails(String caseId, String anmIdentifier, Map<String, String> details) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.updateMotherDetails(details)));
     }
 
     public void ancCareProvided(String caseId, String anmIdentifier, int visitNumber, LocalDate visitDate, int numberOfIFATabletsGiven, String ttDose, Map<String, String> details) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.ancCareProvided(visitNumber, visitDate, numberOfIFATabletsGiven, ttDose, details)));
-    }
-
-    public void registerOutOfAreaANC(String caseId, String ecCaseId, String wifeName, String husbandName, String anmIdentifier, String village, String subCenter, String phc, String thaayiCardNumber,
-                                     LocalDate lmp, Map<String, String> details) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerOutOfAreaANC(ecCaseId, wifeName, husbandName, village, subCenter, phc,
-                thaayiCardNumber, lmp, details)));
     }
 
     public void updateANCOutcome(String caseId, String anmIdentifier, Map<String, String> details) {

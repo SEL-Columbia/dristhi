@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -128,13 +127,6 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldAddCreateActionForEligibleCoupleRegistration() throws Exception {
-        service.registerEligibleCouple("Case X", "EC Number 1", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", new HashMap<String, String>());
-
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.createEligibleCouple("Wife 1", "Husband 1", "EC Number 1", "Village X", "SubCenter X", "PHC X", new HashMap<String, String>())));
-    }
-
-    @Test
     public void shouldAddDeleteActionForEligibleCoupleClose() throws Exception {
         service.closeEligibleCouple("Case X", "ANM X");
 
@@ -163,16 +155,6 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldAddActionForBeneficiaryRegistration() throws Exception {
-        HashMap<String, String> details = new HashMap<>();
-        details.put("some_field", "some_value");
-
-        service.registerPregnancy("Case X", "Case EC 1", "Thaayi 1", "ANM X", today(), details);
-
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.registerPregnancy("Case EC 1", "Thaayi 1", today(), details)));
-    }
-
-    @Test
     public void shouldCloseANCCase() throws Exception {
         service.closeMother("Case X", "ANM X", "delivery");
 
@@ -196,13 +178,6 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldSendAnUpdateECDetailsAction() throws Exception {
-        service.updateEligibleCoupleDetails("CASE X", "ANM X", mapOf("someKey", "someValue"));
-
-        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateEligibleCoupleDetails(mapOf("someKey", "someValue"))));
-    }
-
-    @Test
     public void shouldSendAnUpdateMotherDetailsAction() throws Exception {
         service.updateMotherDetails("CASE X", "ANM X", mapOf("someKey", "someValue"));
 
@@ -214,17 +189,6 @@ public class ActionServiceTest {
         service.ancCareProvided("CASE X", "ANM X", 1, LocalDate.parse("2012-01-01"), 20, "TT DOSE", mapOf("someKey", "someValue"));
 
         verify(allActions).add(new Action("CASE X", "ANM X", ActionData.ancCareProvided(1, LocalDate.parse("2012-01-01"), 20, "TT DOSE", mapOf("someKey", "someValue"))));
-    }
-
-    @Test
-    public void shouldAddCreateActionForOutOfAreaANCRegistration() throws Exception {
-        Map<String, String> extraData = mapOf("someKey", "someValue");
-        LocalDate lmp = LocalDate.parse("2012-05-05");
-
-        service.registerOutOfAreaANC("CASE X", "ecCaseId", "Wife 1", "Husband 1", "ANM X", "Village X", "SubCenter X", "PHC X", "TC 1", lmp, extraData);
-
-        verify(allActions).add(new Action("CASE X", "ANM X",
-                ActionData.registerOutOfAreaANC("ecCaseId", "Wife 1", "Husband 1", "Village X", "SubCenter X", "PHC X", "TC 1", lmp, extraData)));
     }
 
     @Test

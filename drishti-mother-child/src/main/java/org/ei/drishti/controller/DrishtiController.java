@@ -2,7 +2,6 @@ package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
-import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
 import org.ei.drishti.service.ECService;
@@ -37,13 +36,6 @@ public class DrishtiController {
         this.ecService = ecService;
         this.mctsService = drishtiMctsService;
         this.childMapper = childMapper;
-    }
-
-    public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, Map<String, Map<String, String>> extraData) {
-        logger.info("Register Out of Area ANC: " + request + ". Extra data: " + extraData);
-
-        EligibleCouple couple = ecService.registerEligibleCoupleForOutOfAreaANC(request, extraData);
-        ancService.registerOutOfAreaANC(request, couple, extraData);
     }
 
     public void updateANCCareInformation(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {

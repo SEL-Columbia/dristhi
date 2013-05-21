@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.*;
-import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -91,21 +90,6 @@ public class ANCService {
         allMothers.update(mother.withAnm(submission.anmId()));
 
         enrollMotherIntoSchedules(motherId, parse(submission.getField(REFERENCE_DATE)));
-    }
-
-    public void registerOutOfAreaANC(OutOfAreaANCRegistrationRequest request, EligibleCouple couple, Map<String, Map<String, String>> extraData) {
-        Map<String, String> details = extraData.get("details");
-
-        Mother mother = new Mother(request.caseId(), couple.caseId(), request.thaayiCardNumber())
-                .withAnm(request.anmIdentifier())
-                .withLMP(request.lmpDate()).withLocation(request.village(), request.subCenter(), request.phc())
-                .withDetails(details);
-        allMothers.register(mother);
-
-        actionService.registerOutOfAreaANC(request.caseId(), couple.caseId(), request.wife(), request.husband(), request.anmIdentifier(),
-                request.village(), request.subCenter(), request.phc(), request.thaayiCardNumber(), request.lmpDate(), details);
-
-        enrollMotherIntoSchedules(request.caseId(), request.lmpDate());
     }
 
     public void ancHasBeenProvided(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {

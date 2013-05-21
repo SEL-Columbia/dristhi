@@ -6,41 +6,6 @@
         {
             "forms": [
                 {
-                    "name": "registerOutOfAreaANC",
-                    "url": {
-                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/2170BD49-93E5-4F6B-8AE4-6E7886BC0361"
-                        }
-                    },
-                    "mappings": {
-                        "form|woman_name": "wifeName",
-                        "form|husband_name": "husbandName",
-                        "form|case|@case_id": "caseId",
-                        "form|meta|username": "anmIdentifier",
-                        "form|ec_village": "village",
-                        "form|ec_village_subcenter": "subCenter",
-                        "form|ec_village_phc": "phc",
-                        "form|thayi_no": "thaayiCardNumber",
-                        "form|lmp_date": "lmp",
-                        "form|anm_phone_number": "anmPhoneNumber"
-                    },
-                    "extraMappings": {
-                        "details": {
-                            "form|headofhousehold": "headOfHousehold",
-                            "form|is_high_risk": "isHighRisk",
-                            "form|high_risk_reason": "highRiskReason",
-                            "form|name_deliveryfacility": "deliveryPlace",
-                            "form|asha_name": "ashaName",
-                            "form|asha_phone_number": "ashaPhoneNumber",
-                            "form|today": "submissionDate",
-                            "form|economic_status": "economicStatus",
-                            "form|caste": "caste",
-                            "form|woman_age": "wifeAge"
-                        }
-                    }
-                },
-                {
                     "name": "updateANCCareInformation",
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
