@@ -29,6 +29,8 @@ public class FormSubmissionRouterTest {
     private ECCloseHandler ecCloseHandler;
     @Mock
     private ANCRegistrationHandler ancRegistrationHandler;
+    @Mock
+    private ANCRegistrationOAHandler ancRegistrationOAHandler;
 
     private FormSubmissionRouter router;
 
@@ -43,7 +45,8 @@ public class FormSubmissionRouterTest {
                 fpFollowupHandler,
                 fpReferralFollowupHandler,
                 ecCloseHandler,
-                ancRegistrationHandler);
+                ancRegistrationHandler,
+                ancRegistrationOAHandler);
     }
 
     @Test
@@ -105,5 +108,16 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ancRegistrationHandler).handle(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateANCRegistrationOAFormSubmissionHandlingToANCRegistrationOAHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "anc_registration_oa", "entity id 1", null, 0L, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(ancRegistrationOAHandler).handle(formSubmission);
     }
 }

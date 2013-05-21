@@ -19,6 +19,7 @@ public class AllConstants {
         public static final String FP_REFERRAL_FOLLOWUP = "fp_referral_followup";
         public static final String EC_CLOSE = "ec_close";
         public static final String ANC_REGISTRATION = "anc_registration";
+        public static final String ANC_REGISTRATION_OA = "anc_registration_oa";
         public static final String METHOD_STILL_THE_SAME = "method_still_the_same";
     }
 

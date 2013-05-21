@@ -72,8 +72,23 @@ public class ANCService {
         Mother mother = allMothers.findByCaseId(motherId);
         allMothers.update(mother.withAnm(submission.anmId()));
 
+        enrollMotherIntoSchedules(motherId, parse(submission.getField(REFERENCE_DATE)));
+
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.registerANC(new SafeMap(submission.getFields(reportFields)));
+    }
+
+    public void registerOutOfAreaANC(FormSubmission submission) {
+        String motherId = submission.getField(MOTHER_ID);
+
+        if (!eligibleCouples.exists(submission.entityId())) {
+            logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}",
+                    submission.entityId(), motherId, submission.anmId()));
+            return;
+        }
+
+        Mother mother = allMothers.findByCaseId(motherId);
+        allMothers.update(mother.withAnm(submission.anmId()));
 
         enrollMotherIntoSchedules(motherId, parse(submission.getField(REFERENCE_DATE)));
     }

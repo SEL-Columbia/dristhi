@@ -84,7 +84,7 @@ public class ANCServiceTest {
     }
 
     @Test
-    public void shouldNotRegisterANCIfTheECIsNotFound() {
+    public void shouldNotRegisterANCIfECIsNotFound() {
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("anc_registration")
                 .withANMId("anm id 1")
@@ -97,7 +97,7 @@ public class ANCServiceTest {
 
         verifyZeroInteractions(mothers);
         verifyZeroInteractions(ancSchedulesService);
-        verifyZeroInteractions(actionService);
+        verifyZeroInteractions(motherReportingService);
     }
 
     @Test
@@ -142,6 +142,47 @@ public class ANCServiceTest {
         verify(ancSchedulesService).enrollMother(eq("CASE X"), eq(lmp), any(Time.class), any(Time.class));
         verify(actionService).registerOutOfAreaANC(request.caseId(), couple.caseId(), request.wife(), request.husband(), request.anmIdentifier(), request.village(), request.subCenter(),
                 request.phc(), request.thaayiCardNumber(), request.lmpDate(), details);
+    }
+
+    @Test
+    public void shouldRegisterOutOfAreaANC() {
+        LocalDate lmp = today();
+
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("anc_registration_oa")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("motherId", "Mother 1")
+                .addFormField("thayiCardNumber", "thayi 1")
+                .addFormField("referenceDate", lmp.toString())
+                .addFormField("someKey", "someValue")
+                .addFormField("isOutOfArea", "true")
+                .build();
+
+        Mother mother = new Mother("Mother 1", "ec id 1", "thayi 1").withLMP(lmp);
+        when(eligibleCouples.exists("ec id 1")).thenReturn(true);
+        when(mothers.findByCaseId("Mother 1")).thenReturn(mother);
+
+        service.registerOutOfAreaANC(submission);
+
+        verify(mothers).update(mother.withAnm("anm id 1"));
+        verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp), any(Time.class), any(Time.class));
+    }
+
+    @Test
+    public void shouldNotRegisterOutOfAreaANCIfECIsNotFound() {
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("anc_registration_oa")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .build();
+
+        when(eligibleCouples.exists("ec id 1")).thenReturn(false);
+
+        service.registerOutOfAreaANC(submission);
+
+        verifyZeroInteractions(mothers);
+        verifyZeroInteractions(ancSchedulesService);
     }
 
     @Test

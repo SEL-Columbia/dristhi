@@ -28,7 +28,8 @@ public class FormSubmissionRouter {
                                 FPFollowupHandler fpFollowupHandler,
                                 FPReferralFollowupHandler fpReferralFollowupHandler,
                                 ECCloseHandler ecCloseHandler,
-                                ANCRegistrationHandler ancRegistrationHandler) {
+                                ANCRegistrationHandler ancRegistrationHandler,
+                                ANCRegistrationOAHandler ancRegistrationOAHandler) {
         this.formSubmissionsRepository = formSubmissionsRepository;
         handlerMap = EasyMap.create(EC_REGISTRATION, (FormSubmissionHandler) ecRegistrationHandler)
                 .put(FP_COMPLICATIONS, fpComplicationsHandler)
@@ -38,6 +39,7 @@ public class FormSubmissionRouter {
                 .put(FP_REFERRAL_FOLLOWUP, fpReferralFollowupHandler)
                 .put(EC_CLOSE, ecCloseHandler)
                 .put(ANC_REGISTRATION, ancRegistrationHandler)
+                .put(ANC_REGISTRATION_OA, ancRegistrationOAHandler)
                 .map();
     }
 
