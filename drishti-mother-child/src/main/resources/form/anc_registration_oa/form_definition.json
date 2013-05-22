@@ -177,9 +177,9 @@
                 "source": "eligible_couple.mother.height"
             },
             {
-                "name": "weightAtStartOfPregnancy",
+                "name": "weight",
                 "bind": "/model/instance/ANC_Registration_OA_EngKan/weight_startofpregnancy",
-                "source": "eligible_couple.mother.weightAtStartOfPregnancy"
+                "source": "eligible_couple.mother.weight"
             },
             {
                 "name": "isTobaccoUsed",
@@ -207,9 +207,9 @@
                 "source": "eligible_couple.mother.isHighRiskTillPNCClose"
             },
             {
-                "name": "highRiskTillPNCClose",
+                "name": "highRiskTillPNCCloseReason",
                 "bind": "/model/instance/ANC_Registration_OA_EngKan/is_high_risk_till_pnc_close_reason",
-                "source": "eligible_couple.mother.highRiskTillPNCClose"
+                "source": "eligible_couple.mother.highRiskTillPNCCloseReason"
             },
             {
                 "name": "highRiskReason",
@@ -222,6 +222,10 @@
                 "source": "eligible_couple.mother.isHighRisk"
             },
             {
+                "name": "isBirthPlanningDone",
+                "bind": "/model/instance/ANC_Registration_OA_EngKan/case_birth_planning"
+            },
+            {
                 "name": "submissionDate",
                 "bind": "/model/instance/ANC_Registration_OA_EngKan/today",
                 "source": "eligible_couple.mother.submissionDate"
@@ -230,6 +234,10 @@
                 "name": "type",
                 "value": "ANC",
                 "source": "eligible_couple.mother.type"
+            },
+            {
+                "name": "isClosed",
+                "value": "false"
             },
             {
                 "name": "isClosed",

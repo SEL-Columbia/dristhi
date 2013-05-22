@@ -25,16 +25,8 @@
                 "bind": "/model/instance/ANC_Registration_EngKan/case_woman_name"
             },
             {
-                "name": "wifeName",
-                "bind": "/model/instance/ANC_Registration_EngKan/woman_name"
-            },
-            {
                 "name": "numberOfPregnancies",
                 "bind": "/model/instance/ANC_Registration_EngKan/case_num_pregnancies"
-            },
-            {
-                "name": "numberOfPregnancies",
-                "bind": "/model/instance/ANC_Registration_EngKan/num_pregnancies"
             },
             {
                 "name": "thayiCardNumber",
@@ -125,9 +117,9 @@
                 "source": "eligible_couple.mother.height"
             },
             {
-                "name": "weightAtStartOfPregnancy",
+                "name": "weight",
                 "bind": "/model/instance/ANC_Registration_EngKan/weight_startofpregnancy",
-                "source": "eligible_couple.mother.weightAtStartOfPregnancy"
+                "source": "eligible_couple.mother.weight"
             },
             {
                 "name": "isTobaccoUsed",
@@ -155,9 +147,9 @@
                 "source": "eligible_couple.mother.isHighRiskTillPNCClose"
             },
             {
-                "name": "highRiskTillPNCClose",
+                "name": "highRiskTillPNCCloseReason",
                 "bind": "/model/instance/ANC_Registration_EngKan/is_high_risk_till_pnc_close_reason",
-                "source": "eligible_couple.mother.highRiskTillPNCClose"
+                "source": "eligible_couple.mother.highRiskTillPNCCloseReason"
             },
             {
                 "name": "highRiskReason",
