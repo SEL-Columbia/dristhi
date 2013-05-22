@@ -60,7 +60,7 @@ public class AllActionsIntegrationTest {
         allActions.add(thirdAction);
 
         assertEquals(asList(firstAction, secondAction, thirdAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
-        assertEquals(asList(secondAction,thirdAction), allActions.findByANMIDAndTimeStamp("ANM 1", firstAction.timestamp()));
+        assertEquals(asList(secondAction, thirdAction), allActions.findByANMIDAndTimeStamp("ANM 1", firstAction.timestamp()));
         assertEquals(asList(thirdAction), allActions.findByANMIDAndTimeStamp("ANM 1", secondAction.timestamp()));
 
         assertEquals(0, allActions.findByANMIDAndTimeStamp("ANM 1", thirdAction.timestamp()).size());
@@ -126,7 +126,8 @@ public class AllActionsIntegrationTest {
         Action deleteAllAction = new Action("Case X", "ANM 1", ActionData.deleteAllAlerts());
         allActions.addWithDeleteByTarget(deleteAllAction, "alert");
 
-        assertEquals(asList(fourthNonAlertActionForSameMother, actionOfSameANMForAnotherMother, deleteAllAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
+        assertEquals(asList(firstAlertAction.markAsInActive(), secondAlertAction.markAsInActive(), thirdAlertAction.markAsInActive(),
+                fourthNonAlertActionForSameMother, actionOfSameANMForAnotherMother, deleteAllAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
         assertEquals(asList(actionOfAnotherANM), allActions.findByANMIDAndTimeStamp("ANM 2", 0));
     }
 
