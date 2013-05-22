@@ -18,11 +18,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Integer.parseInt;
 import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.DEATH_OF_WOMAN_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.PERMANENT_RELOCATION_COMMCARE_VALUE;
-import static org.ei.drishti.common.AllConstants.ANCFormFields.MOTHER_ID;
-import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
+import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.util.DateUtil.today;
@@ -40,17 +40,14 @@ public class ANCService {
     private ActionService actionService;
     private MotherReportingService reportingService;
     private ReportFieldsDefinition reportFieldsDefinition;
-    private ECService ecService;
 
     @Autowired
-    public ANCService(ECService ecService,
-                      AllMothers allMothers,
+    public ANCService(AllMothers allMothers,
                       AllEligibleCouples eligibleCouples,
                       ANCSchedulesService ancSchedulesService,
                       ActionService actionService,
                       MotherReportingService reportingService,
                       ReportFieldsDefinition reportFieldsDefinition) {
-        this.ecService = ecService;
         this.allMothers = allMothers;
         this.eligibleCouples = eligibleCouples;
         this.ancSchedulesService = ancSchedulesService;
@@ -92,8 +89,21 @@ public class ANCService {
         enrollMotherIntoSchedules(motherId, parse(submission.getField(REFERENCE_DATE)));
     }
 
+    public void ancVisit(FormSubmission submission) {
+        if (!allMothers.exists(submission.entityId())) {
+            logger.warn("Found ANC visit without registered mother for Entity ID: " + submission.entityId());
+            return;
+        }
+
+        ancSchedulesService.ancVisitHasHappened(submission.entityId(), submission.anmId(),
+                parseInt(submission.getField(ANC_VISIT_NUMBER_FIELD)), submission.getField(ANC_VISIT_DATE_FIELD));
+
+        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+        reportingService.ancVisit(new SafeMap(submission.getFields(reportFields)));
+    }
+
     public void ancHasBeenProvided(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {
-        if (!allMothers.motherExists(ancInformation.caseId())) {
+        if (!allMothers.exists(ancInformation.caseId())) {
             logger.warn("Found care provided without registered mother for case ID: " + ancInformation.caseId());
             return;
         }
@@ -117,7 +127,7 @@ public class ANCService {
 
     public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
         String caseId = outcomeInformation.motherCaseId();
-        if (!allMothers.motherExists(caseId)) {
+        if (!allMothers.exists(caseId)) {
             logger.warn("Failed to update delivery outcome as there is no mother registered: " + outcomeInformation);
             return;
         }
@@ -129,7 +139,7 @@ public class ANCService {
     }
 
     public void closeANCCase(AnteNatalCareCloseInformation closeInformation, SafeMap data) {
-        if (!allMothers.motherExists(closeInformation.caseId())) {
+        if (!allMothers.exists(closeInformation.caseId())) {
             logger.warn("Tried to close case without registered mother for case ID: " + closeInformation.caseId());
             return;
         }
@@ -147,7 +157,7 @@ public class ANCService {
     }
 
     public void updateBirthPlanning(BirthPlanningRequest request, Map<String, Map<String, String>> extraData) {
-        if (!allMothers.motherExists(request.caseId())) {
+        if (!allMothers.exists(request.caseId())) {
             logger.warn("Tried to update birth planning without registered mother: " + request);
             return;
         }
@@ -157,7 +167,7 @@ public class ANCService {
     }
 
     public void updateSubsetOfANCInformation(AnteNatalCareInformationSubset request, Map<String, Map<String, String>> extraData) {
-        if (!allMothers.motherExists(request.caseId())) {
+        if (!allMothers.exists(request.caseId())) {
             logger.warn("Tried to update subset of ANC information without registered mother: " + request);
             return;
         }

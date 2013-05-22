@@ -33,7 +33,7 @@ public class FastForwardScheduleTestBase {
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
-                schedulesService.ancVisitHasHappened(new AnteNatalCareInformation(caseId, "ANM 1", visitNumber, visitDate.toString()));
+                schedulesService.ancVisitHasHappened(caseId, "ANM 1", visitNumber, visitDate.toString());
             }
         };
         return this;

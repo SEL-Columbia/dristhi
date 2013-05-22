@@ -20,6 +20,7 @@ public class AllConstants {
         public static final String EC_CLOSE = "ec_close";
         public static final String ANC_REGISTRATION = "anc_registration";
         public static final String ANC_REGISTRATION_OA = "anc_registration_oa";
+        public static final String ANC_VISIT = "anc_visit";
         public static final String METHOD_STILL_THE_SAME = "method_still_the_same";
     }
 
@@ -59,6 +60,8 @@ public class AllConstants {
         public static final String MOTHER_ID = "motherId";
         public static final String REGISTRATION_DATE = "registrationDate";
         public static final String REFERENCE_DATE = "referenceDate";
+        public static final String ANC_VISIT_DATE_FIELD = "ancVisitDate";
+        public static final String ANC_VISIT_NUMBER_FIELD = "ancVisitNumber";
     }
 
     public static class ANCVisitCommCareFields {

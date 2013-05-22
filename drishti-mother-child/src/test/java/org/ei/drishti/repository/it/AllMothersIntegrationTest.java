@@ -74,8 +74,8 @@ public class AllMothersIntegrationTest {
         Mother motherToRegister = new Mother("CASE-1", "EC-CASE-1", "THAAYI-CARD-1");
         mothers.register(motherToRegister);
 
-        assertTrue(mothers.motherExists("CASE-1"));
-        assertFalse(mothers.motherExists("CASE-NOT-KNOWN"));
+        assertTrue(mothers.exists("CASE-1"));
+        assertFalse(mothers.exists("CASE-NOT-KNOWN"));
     }
 
     @Test

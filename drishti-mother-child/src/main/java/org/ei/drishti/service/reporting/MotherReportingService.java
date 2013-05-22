@@ -22,6 +22,7 @@ import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.Form.ENTITY_ID;
 import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.DEATH_OF_MOTHER_COMMCARE_VALUE;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
@@ -68,6 +69,13 @@ public class MotherReportingService {
         if (isRegisteredWithinTwelveWeeks) {
             reportToBoth(mother, ANC_BEFORE_12_WEEKS, reportData.get(REGISTRATION_DATE), location);
         }
+    }
+
+    public void ancVisit(SafeMap reportData) {
+        Mother mother = allMothers.findByCaseId(reportData.get(ENTITY_ID));
+        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+        reportANC4Visit(reportData, mother, location);
     }
 
     public void ancHasBeenProvided(SafeMap reportData) {
@@ -170,6 +178,19 @@ public class MotherReportingService {
         }
         if (MTP_LESS_THAN_12_WEEKS_FIELD_NAME.equals(reportData.get(CLOSE_MTP_TIME_COMMCARE_FIELD_NAME))) {
             reportToBoth(mother, MTP_LESS_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_COMMCARE_FIELD_NAME));
+        }
+    }
+
+    private void reportANC4Visit(SafeMap reportData, Mother mother, Location location) {
+        try {
+            int visitNumber = parseInt(reportData.get(ANC_VISIT_NUMBER_FIELD));
+            if ((visitNumber == 4)
+                    && (!parse(reportData.get(ANC_VISIT_DATE_FIELD)).minusWeeks(36).isBefore(mother.lmp()))) {
+                reportToBoth(mother, ANC4, reportData.get(ANC_VISIT_DATE_FIELD), location);
+            }
+        } catch (NumberFormatException e) {
+            logger.warn("Not reporting ANC visit for mother: " + mother.ecCaseId() + " a" +
+                    "s visit number is invalid, visit number:" + reportData.get(ANC_VISIT_NUMBER_FIELD));
         }
     }
 

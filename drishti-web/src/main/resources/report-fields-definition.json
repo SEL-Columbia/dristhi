@@ -15,5 +15,10 @@
         "motherId",
         "referenceDate",
         "registrationDate"
+    ],
+    "anc_visit": [
+        "id",
+        "ancVisitDate",
+        "ancVisitNumber"
     ]
 }

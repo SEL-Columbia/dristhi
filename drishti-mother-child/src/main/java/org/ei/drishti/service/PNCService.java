@@ -62,7 +62,7 @@ public class PNCService {
     }
 
     public void pncVisitHappened(PostNatalCareInformation info, Map<String, Map<String, String>> extraData) {
-        if (!allMothers.motherExists(info.caseId())) {
+        if (!allMothers.exists(info.caseId())) {
             logger.warn("Found PNC visit without registered mother for case ID: " + info.caseId());
             return;
         }
@@ -81,7 +81,7 @@ public class PNCService {
     }
 
     public void closePNCCase(PostNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
-        if (!allMothers.motherExists(closeInformation.caseId())) {
+        if (!allMothers.exists(closeInformation.caseId())) {
             logger.warn("Found PNC Close visit without registered mother for it: " + closeInformation.caseId());
             return;
         }
@@ -111,7 +111,7 @@ public class PNCService {
     }
 
     public void registerPNC(AnteNatalCareOutcomeInformation outcomeInformation) {
-        if (!allMothers.motherExists(outcomeInformation.motherCaseId())) {
+        if (!allMothers.exists(outcomeInformation.motherCaseId())) {
             logger.warn("Failed to register PNC as there is no mother registered: " + outcomeInformation);
             return;
         }

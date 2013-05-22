@@ -51,7 +51,7 @@ public class ANCServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ANCService(ecService, mothers, eligibleCouples, ancSchedulesService, actionService, motherReportingService, reportFieldsDefinition);
+        service = new ANCService(mothers, eligibleCouples, ancSchedulesService, actionService, motherReportingService, reportFieldsDefinition);
     }
 
     @Test
@@ -161,8 +161,46 @@ public class ANCServiceTest {
     }
 
     @Test
+    public void shouldHandleANCVisit() {
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("anc_visit")
+                .withANMId("anm id 1")
+                .withEntityId("entity id 1")
+                .addFormField("ancVisitDate", "2013-01-01")
+                .addFormField("ancVisitNumber", "2")
+                .addFormField("someKey", "someValue")
+                .build();
+
+        when(mothers.exists("entity id 1")).thenReturn(true);
+        when(reportFieldsDefinition.get("anc_visit")).thenReturn(asList("someKey"));
+
+        service.ancVisit(submission);
+
+        verify(ancSchedulesService).ancVisitHasHappened("entity id 1", "anm id 1", 2, "2013-01-01");
+        verify(motherReportingService).ancVisit(new SafeMap(mapOf("someKey", "someValue")));
+        verifyZeroInteractions(motherReportingService);
+    }
+
+    @Test
+    public void shouldNotHandleANCVisitIfMotherIsNotFound() {
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("anc_visit")
+                .withANMId("anm id 1")
+                .withEntityId("entity id 1")
+                .build();
+
+        when(mothers.exists("entity id 1")).thenReturn(false);
+
+        service.ancVisit(submission);
+
+        verifyZeroInteractions(reportFieldsDefinition);
+        verifyZeroInteractions(ancSchedulesService);
+        verifyZeroInteractions(motherReportingService);
+    }
+
+    @Test
     public void shouldTellANCSchedulesServiceWhenANCCareHasBeenProvided() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
 
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 2, "2012-01-23");
@@ -173,7 +211,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotConsiderAVisitAsANCWhenVisitNumberIsZero() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
 
         service.ancHasBeenProvided(new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23"), EXTRA_DATA_EMPTY);
@@ -183,7 +221,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldTellANCSchedulesServiceThatIFAIsProvidedOnlyWhenNumberOfIFATabletsProvidedIsMoreThanZero() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
 
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
@@ -194,7 +232,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldTellANCSchedulesServiceWhatTTDoseWasProvidedOnlyWhenTTDoseWasProvided() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
 
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10").withTTDose("TT 2");
@@ -205,7 +243,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotTellANCSchedulesServiceWhatTTDoseWasProvidedWhenTTDoseWasNotProvided() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
 
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
@@ -217,7 +255,7 @@ public class ANCServiceTest {
     @Test
     public void shouldReportANCVisit() {
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10").withTTDose("TT 2");
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
 
         service.ancHasBeenProvided(ancInformation, EXTRA_DATA);
@@ -227,7 +265,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotTellANCSchedulesServiceThatIFAIsProvidedWhenNumberOfIFATabletsProvidedIsEmpty() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
 
         AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("");
@@ -238,7 +276,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotTryAndFulfillMilestoneWhenANCCareIsProvidedToAMotherWhoIsNotRegisteredInTheSystem() {
-        when(mothers.motherExists("CASE-UNKNOWN-MOM")).thenReturn(false);
+        when(mothers.exists("CASE-UNKNOWN-MOM")).thenReturn(false);
 
         service.ancHasBeenProvided(new AnteNatalCareInformation("CASE-UNKNOWN-MOM", "ANM 1", 0, "2012-01-23"), EXTRA_DATA_EMPTY);
 
@@ -250,7 +288,7 @@ public class ANCServiceTest {
         Map<String, String> detailsBeforeUpdate = EXTRA_DATA.get("details");
         Map<String, String> updatedDetails = mapOf("someNewKey", "someNewValue");
 
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
         when(mothers.updateDetails("CASE-X", detailsBeforeUpdate)).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1").withAnm("ANM X").withDetails(updatedDetails));
 
         service.ancHasBeenProvided(new AnteNatalCareInformation("CASE-X", "ANM X", 1, today().toString()).withNumberOfIFATabletsProvided("10").withTTDose("TT DOSE"), EXTRA_DATA);
@@ -262,7 +300,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "Abort"), new SafeMap());
 
@@ -272,7 +310,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldCloseAMotherWhenANCCaseIsClosed() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "Abort"), new SafeMap());
 
@@ -281,7 +319,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotUnEnrollAMotherFromScheduleWhenSheIsNotRegistered() {
-        when(mothers.motherExists("CASE-UNKNOWN-MOM")).thenReturn(false);
+        when(mothers.exists("CASE-UNKNOWN-MOM")).thenReturn(false);
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM", "ANM X", null), new SafeMap());
 
@@ -290,7 +328,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldCloseECCaseAlsoWhenPNCCaseIsClosedAndReasonIsDeath() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "death_of_woman"), new SafeMap());
 
@@ -299,7 +337,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldCloseECCaseAlsoWhenPNCCaseIsClosedAndReasonIsPermanentRelocation() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "relocation_permanent"), new SafeMap());
 
@@ -308,7 +346,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotCloseECCaseWhenPNCCaseIsClosedAndReasonIsNeitherDeathOrPermanentRelocation() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
 
         service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "other_reason"), new SafeMap());
 
@@ -317,7 +355,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldUnEnrollMotherFromANCSchedulesWhenDeliveryOutcomeFormIsFilled() throws Exception {
-        when(mothers.motherExists("MOTHER-CASE-1")).thenReturn(true);
+        when(mothers.exists("MOTHER-CASE-1")).thenReturn(true);
         when(mothers.updateDetails("MOTHER-CASE-1", EXTRA_DATA.get("details"))).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1").withDetails(EXTRA_DATA.get("details")));
 
         service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0"), EXTRA_DATA);
@@ -327,7 +365,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldUpdateMotherDetailsWhenDeliveryOutcomeFormIsFilled() throws Exception {
-        when(mothers.motherExists("MOTHER-CASE-1")).thenReturn(true);
+        when(mothers.exists("MOTHER-CASE-1")).thenReturn(true);
         when(mothers.updateDetails("MOTHER-CASE-1", EXTRA_DATA.get("details"))).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1").withDetails(EXTRA_DATA.get("details")));
 
         service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0"), EXTRA_DATA);
@@ -337,7 +375,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldUpdateMotherDeliveryDetailsWhenDeliveryOutcomeFormIsFilled() throws Exception {
-        when(mothers.motherExists("MOTHER-CASE-1")).thenReturn(true);
+        when(mothers.exists("MOTHER-CASE-1")).thenReturn(true);
         when(mothers.updateDetails("MOTHER-CASE-1", EXTRA_DATA.get("details"))).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1").withDetails(EXTRA_DATA.get("details")));
 
         service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0"), EXTRA_DATA);
@@ -347,7 +385,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldReportWhenDeliveryOutcomeFormIsFilled() throws Exception {
-        when(mothers.motherExists("MOTHER-CASE-1")).thenReturn(true);
+        when(mothers.exists("MOTHER-CASE-1")).thenReturn(true);
         when(mothers.updateDetails("MOTHER-CASE-1", EXTRA_DATA.get("details"))).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1").withDetails(EXTRA_DATA.get("details")));
 
         service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0"), EXTRA_DATA);
@@ -357,7 +395,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldIgnoreDeliveryOutcomeUploadIfThereIsNoCorrespondingMotherInRepo() throws Exception {
-        when(mothers.motherExists("CASE-X")).thenReturn(false);
+        when(mothers.exists("CASE-X")).thenReturn(false);
 
         service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0"), EXTRA_DATA);
 
@@ -367,7 +405,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldUpdateMotherDetailsAndSendAnActionWhenBirthPlanningDetailsAreUpdateAndMotherExists() throws Exception {
-        when(mothers.motherExists("CASE X")).thenReturn(true);
+        when(mothers.exists("CASE X")).thenReturn(true);
         Map<String, String> updatedDetails = mapOf("aNewKey", "aNewValue");
         when(mothers.updateDetails("CASE X", EXTRA_DATA.get("details"))).thenReturn(new Mother("CASE X", "EC-CASE-1", "TC X").withDetails(updatedDetails));
 
@@ -379,7 +417,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotSendBirthPlanningUpdatesAsActionWhenMotherNotFoundInDrishti() throws Exception {
-        when(mothers.motherExists("CASE X")).thenReturn(false);
+        when(mothers.exists("CASE X")).thenReturn(false);
 
         service.updateBirthPlanning(new BirthPlanningRequest("CASE X", "ANM X"), EXTRA_DATA);
 
@@ -389,7 +427,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldReportSubsetOfANCUpdate() throws Exception {
-        when(mothers.motherExists("CASE X")).thenReturn(true);
+        when(mothers.exists("CASE X")).thenReturn(true);
 
         service.updateSubsetOfANCInformation(new AnteNatalCareInformationSubset("CASE X", "ANM X"), EXTRA_DATA);
 
@@ -398,7 +436,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotReportSubsetOfANCUpdateWhenMotherNotFoundInDrishti() throws Exception {
-        when(mothers.motherExists("CASE X")).thenReturn(false);
+        when(mothers.exists("CASE X")).thenReturn(false);
 
         service.updateSubsetOfANCInformation(new AnteNatalCareInformationSubset("CASE X", "ANM X"), EXTRA_DATA);
 

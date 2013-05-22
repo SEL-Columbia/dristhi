@@ -23,6 +23,7 @@ import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
+import static org.joda.time.LocalDate.parse;
 import static org.joda.time.LocalTime.now;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
 
@@ -49,6 +50,10 @@ public class ANCSchedulesService {
 
     public void ancVisitHasHappened(AnteNatalCareInformation ancInformation) {
         fastForwardSchedule(ancInformation, ancInformation.visitNumber(), SCHEDULE_ANC, "ANC");
+    }
+
+    public void ancVisitHasHappened(String entityId, String anmId, int visitNumberToFulfill, String visitDate) {
+        fastForwardSchedule(entityId, anmId, SCHEDULE_ANC, "ANC", visitNumberToFulfill, parse(visitDate));
     }
 
     public void ttVisitHasHappened(AnteNatalCareInformation ancInformation) {
@@ -114,6 +119,23 @@ public class ANCSchedulesService {
 
         trackingService.fulfillCurrentMilestone(caseId, scheduleName, ancInformation.visitDate(), new Time(now()));
         actionService.markAlertAsClosed(caseId, ancInformation.anmIdentifier(), milestonePrefix + " " + visitNumber, ancInformation.visitDate().toString());
+    }
+
+    private void fastForwardSchedule(String entityId, String anmId, String scheduleName, String milestonePrefix, int visitNumberToFulfill, LocalDate visitDate) {
+        int currentMilestoneNumber = currentMilestoneNumber(entityId, scheduleName, milestonePrefix);
+        for (int i = currentMilestoneNumber; i <= visitNumberToFulfill; i++) {
+            fulfillMilestoneIfPossible(entityId, anmId, scheduleName, milestonePrefix, i, visitDate);
+        }
+    }
+
+    private void fulfillMilestoneIfPossible(String entityId, String anmId, String scheduleName, String milestonePrefix, int visitNumber, LocalDate visitDate) {
+        if (isNotEnrolled(entityId, scheduleName)) {
+            logger.warn(format("Tried to fulfill milestone {0} of {1} {2} for visit: {3}", milestonePrefix, scheduleName, entityId, visitNumber));
+            return;
+        }
+
+        trackingService.fulfillCurrentMilestone(entityId, scheduleName, visitDate, new Time(now()));
+        actionService.markAlertAsClosed(entityId, anmId, milestonePrefix + " " + visitNumber, visitDate.toString());
     }
 
     private int currentMilestoneNumber(String caseId, String scheduleName, String milestonePrefix) {

@@ -121,7 +121,7 @@ public class PNCServiceTest extends BaseUnitTest {
         Mother mother = new Mother(motherCaseId, "EC-CASE-1", "TC 1");
         Child child = new Child(childCaseId, "EC-CASE-1", motherCaseId, "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female");
 
-        when(mothers.motherExists(motherCaseId)).thenReturn(true);
+        when(mothers.exists(motherCaseId)).thenReturn(true);
         when(children.findByMotherCaseId(motherCaseId)).thenReturn(child);
         when(children.update(childCaseId, newDetails)).thenReturn(child.withDetails(childUpdatedDetails));
         when(mothers.updateDetails(motherCaseId, newDetails)).thenReturn(mother.withDetails(motherUpdatedDetails));
@@ -135,7 +135,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldUpdateMotherButNotChildDetailsWhenChildIsNotFoundDuringPNCVisit() throws Exception {
         String motherCaseId = "MOTHER-CASE-1";
-        when(mothers.motherExists(motherCaseId)).thenReturn(true);
+        when(mothers.exists(motherCaseId)).thenReturn(true);
         when(children.findByMotherCaseId(motherCaseId)).thenReturn(null);
         Map<String, String> expectedDetails = create("key", "value").put("someKey", "someValue").map();
         Map<String, String> details = mapOf("someKey", "someValue");
@@ -150,11 +150,11 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotDoAnythingIfMotherIsNotFoundDuringPNCVisit() throws Exception {
         String motherCaseId = "MOTHER-CASE-1";
-        when(mothers.motherExists(motherCaseId)).thenReturn(false);
+        when(mothers.exists(motherCaseId)).thenReturn(false);
 
         service.pncVisitHappened(new PostNatalCareInformation(motherCaseId, "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
 
-        verify(mothers).motherExists("MOTHER-CASE-1");
+        verify(mothers).exists("MOTHER-CASE-1");
         verifyNoMoreInteractions(mothers);
         verifyZeroInteractions(children);
         verifyZeroInteractions(actionService);
@@ -305,7 +305,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldReportWhenPNCCaseIsClosed() {
-        when(mothers.motherExists("Case X")).thenReturn(true);
+        when(mothers.exists("Case X")).thenReturn(true);
 
         service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
 
@@ -314,7 +314,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldCreateActionsWhenPNCCaseIsClosed() {
-        when(mothers.motherExists("Case X")).thenReturn(true);
+        when(mothers.exists("Case X")).thenReturn(true);
 
         service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
 
@@ -323,7 +323,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldCloseMotherWhenPNCCaseIsClosed() {
-        when(mothers.motherExists("Case X")).thenReturn(true);
+        when(mothers.exists("Case X")).thenReturn(true);
 
         service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
 
@@ -332,7 +332,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldCloseECCaseAlsoWhenPNCCaseIsClosedAndReasonIsDeath() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
 
         service.closePNCCase(new PostNatalCareCloseInformation("CASE-X", "ANM X", "death_of_mother"), EXTRA_DATA);
 
@@ -341,7 +341,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldCloseECCaseAlsoWhenPNCCaseIsClosedAndReasonIsPermanentRelocation() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
 
         service.closePNCCase(new PostNatalCareCloseInformation("CASE-X", "ANM X", "permanent_relocation"), EXTRA_DATA);
 
@@ -350,7 +350,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldNotCloseECCaseWhenPNCCaseIsClosedAndReasonIsNeitherDeathOrPermanentRelocation() {
-        when(mothers.motherExists("CASE-X")).thenReturn(true);
+        when(mothers.exists("CASE-X")).thenReturn(true);
 
         service.closePNCCase(new PostNatalCareCloseInformation("CASE-X", "ANM X", "end_of_pp_period"), EXTRA_DATA);
 
@@ -359,7 +359,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldReportWhenPNCVisitForMotherHappens() {
-        when(mothers.motherExists("Case X")).thenReturn(true);
+        when(mothers.exists("Case X")).thenReturn(true);
         when(mothers.updateDetails("Case X", EXTRA_DATA.get("details"))).thenReturn(new Mother("Case X", "EC-CASE-1", "TC 1"));
 
         service.pncVisitHappened(new PostNatalCareInformation("Case X", "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
@@ -369,7 +369,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldNotReportPNCVisitForMotherWhenThereIsNoMotherInDrishti() {
-        when(mothers.motherExists("Case X")).thenReturn(false);
+        when(mothers.exists("Case X")).thenReturn(false);
 
         service.pncVisitHappened(new PostNatalCareInformation("Case X", "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
 
@@ -378,11 +378,11 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldNotDoAnythingIfMotherDoesNotExistsDuringClose() {
-        when(mothers.motherExists("Case X")).thenReturn(false);
+        when(mothers.exists("Case X")).thenReturn(false);
 
         service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
 
-        verify(mothers).motherExists("Case X");
+        verify(mothers).exists("Case X");
         verifyZeroInteractions(actionService);
         verifyZeroInteractions(motherReportingService);
         verifyNoMoreInteractions(mothers);
@@ -431,7 +431,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldEnrollPNCIntoSchedulesDuringRegistration() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.motherExists("MOTHER-CASE-1")).thenReturn(true);
+        when(mothers.exists("MOTHER-CASE-1")).thenReturn(true);
 
         AnteNatalCareOutcomeInformation outcomeInformation = new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0");
         service.registerPNC(outcomeInformation);
@@ -443,7 +443,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldNotEnrollPNCIntoSchedulesWhenMotherDoesNotExist() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.motherExists("MOTHER-CASE-1")).thenReturn(false);
+        when(mothers.exists("MOTHER-CASE-1")).thenReturn(false);
 
         AnteNatalCareOutcomeInformation outcomeInformation = new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0");
         service.registerPNC(outcomeInformation);

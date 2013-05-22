@@ -45,7 +45,7 @@ public class DrishtiMCTSService {
     }
 
     public void pncProvided(PostNatalCareInformation request) {
-        if (!mothers.motherExists(request.caseId())) {
+        if (!mothers.exists(request.caseId())) {
             logger.warn("Found PNC provided without registered mother. Request: " + request);
             return;
         }

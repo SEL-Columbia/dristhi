@@ -145,12 +145,23 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldNotFulfillANCIfANCScheduleIsAlreadyOver() throws Exception {
+    public void shouldNotFulfillANCIfANCScheduleIsAlreadyOver_old() throws Exception {
         when(scheduleTrackingService.getEnrollment("Case X", SCHEDULE_ANC)).thenReturn(null);
 
         schedulesService.ancVisitHasHappened(new AnteNatalCareInformation("Case X", "ANM 1", 2, "2012-01-23"));
 
         verify(scheduleTrackingService).getEnrollment("Case X", SCHEDULE_ANC);
+        verifyNoMoreInteractions(scheduleTrackingService);
+        verifyZeroInteractions(actionService);
+    }
+
+    @Test
+    public void shouldNotFulfillANCIfANCScheduleIsAlreadyOver() throws Exception {
+        when(scheduleTrackingService.getEnrollment("Entity X", SCHEDULE_ANC)).thenReturn(null);
+
+        schedulesService.ancVisitHasHappened("Entity X", "ANM 1", 2, "2012-01-23");
+
+        verify(scheduleTrackingService).getEnrollment("Entity X", SCHEDULE_ANC);
         verifyNoMoreInteractions(scheduleTrackingService);
         verifyZeroInteractions(actionService);
     }

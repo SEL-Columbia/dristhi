@@ -49,7 +49,7 @@ public class AllMothers extends MotechBaseRepository<Mother> {
         return mothers;
     }
 
-    public boolean motherExists(String caseId) {
+    public boolean exists(String caseId) {
         return findByCaseId(caseId) != null;
     }
 

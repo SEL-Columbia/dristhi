@@ -289,6 +289,66 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldReportANC4ProvidedWhenANCVisitIsAfter36Weeks() {
+        String visitDate = parse("2012-01-01").plusWeeks(36).toString();
+        SafeMap reportData = new SafeMap();
+        reportData.put("entityId", "entity id 1");
+        reportData.put("ancVisitDate", visitDate);
+        reportData.put("ancVisitNumber", "4");
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.ancVisit(reportData);
+
+        verifyBothReportingCalls(ANC4, visitDate);
+    }
+
+    @Test
+    public void shouldNotReportANC4WhenANCVisitIsNotFourthVisit() {
+        String visitDate = parse("2012-01-01").plusWeeks(36).toString();
+        SafeMap reportData = new SafeMap();
+        reportData.put("entityId", "entity id 1");
+        reportData.put("ancVisitDate", visitDate);
+        reportData.put("ancVisitNumber", "3");
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.ancVisit(reportData);
+
+        verifyNoReportingCalls(ANC4, visitDate);
+    }
+
+    @Test
+    public void shouldNotReportANC4WhenANCVisitIsBefore36Weeks() {
+        String visitDate = parse("2012-01-01").plusWeeks(36).minusDays(1).toString();
+        SafeMap reportData = new SafeMap();
+        reportData.put("entityId", "entity id 1");
+        reportData.put("ancVisitDate", visitDate);
+        reportData.put("ancVisitNumber", "4");
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.ancVisit(reportData);
+
+        verifyNoReportingCalls(ANC4, visitDate);
+    }
+
+    @Test
+    public void shouldNotReportANC4WhenVisitNumberIsInvalid() {
+        String visitDate = parse("2012-01-01").plusWeeks(36).toString();
+        SafeMap reportData = new SafeMap();
+        reportData.put("entityId", "entity id 1");
+        reportData.put("ancVisitDate", visitDate);
+        reportData.put("ancVisitNumber", "");
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.ancVisit(reportData);
+
+        verifyNoReportingCalls(ANC4, visitDate);
+    }
+
+    @Test
     public void shouldReportDeliveryWhenDeliveryOutcomeIsUpdatedWithOutcome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
 
