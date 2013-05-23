@@ -18,7 +18,6 @@ import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.dto.AlertStatus.normal;
-import static org.ei.drishti.dto.AlertStatus.urgent;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -106,29 +105,6 @@ public class AllActionsIntegrationTest {
         allActions.add(earlierAction);
 
         assertEquals(asList(earlierAction, laterAction, latestAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
-    }
-
-    @Test
-    public void shouldRemoveAllExistingAlertsForTheCaseFromRepositoryBeforeInsertingADeleteAllAlert() {
-        Action firstAlertAction = new Action("Case X", "ANM 1", alert());
-        Action secondAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 2", urgent, DateTime.now(), DateTime.now().plusDays(3)));
-        Action thirdAlertAction = new Action("Case X", "ANM 1", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 3", normal, DateTime.now(), DateTime.now().plusDays(3)));
-        Action fourthNonAlertActionForSameMother = new Action("Case X", "ANM 1", ActionData.registerPregnancy("EC Case 1", "Thaayi 1", today(), new HashMap<String, String>()));
-        Action actionOfSameANMForAnotherMother = new Action("Case ABC", "ANM 1", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 3", normal, DateTime.now(), DateTime.now().plusDays(3)));
-        Action actionOfAnotherANM = new Action("Case Y", "ANM 2", alert());
-        allActions.add(firstAlertAction);
-        allActions.add(secondAlertAction);
-        allActions.add(thirdAlertAction);
-        allActions.add(fourthNonAlertActionForSameMother);
-        allActions.add(actionOfAnotherANM);
-        allActions.add(actionOfSameANMForAnotherMother);
-
-        Action deleteAllAction = new Action("Case X", "ANM 1", ActionData.deleteAllAlerts());
-        allActions.addWithDeleteByTarget(deleteAllAction, "alert");
-
-        assertEquals(asList(firstAlertAction.markAsInActive(), secondAlertAction.markAsInActive(), thirdAlertAction.markAsInActive(),
-                fourthNonAlertActionForSameMother, actionOfSameANMForAnotherMother, deleteAllAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
-        assertEquals(asList(actionOfAnotherANM), allActions.findByANMIDAndTimeStamp("ANM 2", 0));
     }
 
     @Test

@@ -318,7 +318,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
         service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
 
-        verify(actionService).closeMother("Case X", "ANM Y", "Permanent Transfer");
+        verify(actionService).markAllAlertsAsInactive("Case X");
     }
 
     @Test
@@ -460,7 +460,7 @@ public class PNCServiceTest extends BaseUnitTest {
         service.autoClosePNCCase("MOTHER-CASE-1");
 
         verify(mothers).close("MOTHER-CASE-1");
-        verify(actionService).closeMother("MOTHER-CASE-1", "ANM 1", "end_of_pp_period");
+        verify(actionService).markAllAlertsAsInactive("MOTHER-CASE-1");
         verifyZeroInteractions(motherReportingService);
     }
 

@@ -108,11 +108,9 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateADeleteAllActionForAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thaayi 1").withAnm("ANM ID 1").withLocation("bherya", "Sub Center", "PHC X"));
+        service.markAllAlertsAsInactive("Case X");
 
-        service.deleteAllAlertsForMother("Case X");
-
-        verify(allActions).addWithDeleteByTarget(new Action("Case X", "ANM ID 1", ActionData.deleteAllAlerts()), "alert");
+        verify(allActions).markAllAsInActiveFor("Case X");
     }
 
     @Test
@@ -136,20 +134,6 @@ public class ActionServiceTest {
     @Test
     public void shouldMarkInActiveForChildClose() throws Exception {
         service.closeChild("Case X", "ANM X");
-
-        verify(allActions).markAllAsInActiveFor("Case X");
-    }
-
-    @Test
-    public void shouldCloseANCCase() throws Exception {
-        service.closeMother("Case X", "ANM X", "delivery");
-
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.closeMother("delivery")));
-    }
-
-    @Test
-    public void shouldMarkMotherAsInActiveDuringCloseANCCase() throws Exception {
-        service.closeMother("Case X", "ANM X", "delivery");
 
         verify(allActions).markAllAsInActiveFor("Case X");
     }

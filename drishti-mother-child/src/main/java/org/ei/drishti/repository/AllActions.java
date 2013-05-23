@@ -25,15 +25,6 @@ public class AllActions extends MotechBaseRepository<Action> {
         super.add(action);
     }
 
-    public void addWithDeleteByTarget(Action actionToAdd, String actionTarget) {
-        List<Action> actions = findByActionTargetAndCaseId(actionTarget, actionToAdd.caseId());
-        for (Action action : actions) {
-            action.markAsInActive();
-        }
-        db.executeBulk(actions);
-        super.add(actionToAdd);
-    }
-
     public void deleteAllByTarget(String target) {
         deleteAll(findByActionTarget(target));
     }

@@ -33,6 +33,8 @@ public class FormSubmissionRouterTest {
     private ANCRegistrationOAHandler ancRegistrationOAHandler;
     @Mock
     private ANCVisitHandler ancVisitHandler;
+    @Mock
+    private ANCCloseHandler ancCloseHandler;
 
     private FormSubmissionRouter router;
 
@@ -49,7 +51,8 @@ public class FormSubmissionRouterTest {
                 ecCloseHandler,
                 ancRegistrationHandler,
                 ancRegistrationOAHandler,
-                ancVisitHandler);
+                ancVisitHandler,
+                ancCloseHandler);
     }
 
     @Test
@@ -133,5 +136,16 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ancVisitHandler).handle(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateANCCloseFormSubmissionHandlingToANCCloseHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "anc_close", "entity id 1", null, 0L, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(ancCloseHandler).handle(formSubmission);
     }
 }

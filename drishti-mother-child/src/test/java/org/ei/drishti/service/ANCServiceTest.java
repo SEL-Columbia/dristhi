@@ -1,6 +1,9 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.*;
+import org.ei.drishti.contract.AnteNatalCareInformation;
+import org.ei.drishti.contract.AnteNatalCareInformationSubset;
+import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
+import org.ei.drishti.contract.BirthPlanningRequest;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -22,6 +25,7 @@ import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
+import static org.ei.drishti.util.FormSubmissionBuilder.create;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -58,7 +62,7 @@ public class ANCServiceTest {
     public void shouldRegisterANC() {
         LocalDate lmp = today();
 
-        FormSubmission submission = FormSubmissionBuilder.create()
+        FormSubmission submission = create()
                 .withFormName("anc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
@@ -81,7 +85,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotRegisterANCIfECIsNotFound() {
-        FormSubmission submission = FormSubmissionBuilder.create()
+        FormSubmission submission = create()
                 .withFormName("anc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
@@ -100,7 +104,7 @@ public class ANCServiceTest {
     public void shouldEnrollMotherIntoDefaultScheduleDuringEnrollmentBasedOnLMP() {
         LocalDate lmp = today().minusDays(2);
 
-        FormSubmission submission = FormSubmissionBuilder.create()
+        FormSubmission submission = create()
                 .withFormName("anc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
@@ -123,7 +127,7 @@ public class ANCServiceTest {
     public void shouldRegisterOutOfAreaANC() {
         LocalDate lmp = today();
 
-        FormSubmission submission = FormSubmissionBuilder.create()
+        FormSubmission submission = create()
                 .withFormName("anc_registration_oa")
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
@@ -146,7 +150,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotRegisterOutOfAreaANCIfECIsNotFound() {
-        FormSubmission submission = FormSubmissionBuilder.create()
+        FormSubmission submission = create()
                 .withFormName("anc_registration_oa")
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
@@ -162,7 +166,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldHandleANCVisit() {
-        FormSubmission submission = FormSubmissionBuilder.create()
+        FormSubmission submission = create()
                 .withFormName("anc_visit")
                 .withANMId("anm id 1")
                 .withEntityId("entity id 1")
@@ -183,7 +187,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotHandleANCVisitIfMotherIsNotFound() {
-        FormSubmission submission = FormSubmissionBuilder.create()
+        FormSubmission submission = create()
                 .withFormName("anc_visit")
                 .withANMId("anm id 1")
                 .withEntityId("entity id 1")
@@ -300,57 +304,65 @@ public class ANCServiceTest {
 
     @Test
     public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "Abort"), new SafeMap());
+        service.closeANCCase(create().build());
 
-        verify(ancSchedulesService).unEnrollFromSchedules("CASE-X");
-        verify(actionService).closeMother("CASE-X", "ANM X", "Abort");
+        verify(ancSchedulesService).unEnrollFromSchedules("entity id 1");
     }
 
     @Test
     public void shouldCloseAMotherWhenANCCaseIsClosed() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "Abort"), new SafeMap());
+        service.closeANCCase(create().build());
 
-        verify(mothers).close("CASE-X");
+        verify(mothers).close("entity id 1");
     }
 
     @Test
     public void shouldNotUnEnrollAMotherFromScheduleWhenSheIsNotRegistered() {
-        when(mothers.exists("CASE-UNKNOWN-MOM")).thenReturn(false);
+        when(mothers.findByCaseId("entity id 1")).thenReturn(null);
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-UNKNOWN-MOM", "ANM X", null), new SafeMap());
+        service.closeANCCase(create().build());
 
         verifyZeroInteractions(ancSchedulesService);
     }
 
     @Test
     public void shouldCloseECCaseAlsoWhenPNCCaseIsClosedAndReasonIsDeath() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "death_of_woman"), new SafeMap());
+        service.closeANCCase(create().addFormField("closeReason", "death_of_woman").build());
 
-        verify(eligibleCouples).close("CASE-X");
+        verify(eligibleCouples).close("ec entity id 1");
     }
 
     @Test
-    public void shouldCloseECCaseAlsoWhenPNCCaseIsClosedAndReasonIsPermanentRelocation() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
+    public void shouldCloseECCaseAlsoWhenANCCaseIsClosedAndReasonIsPermanentRelocation() {
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "relocation_permanent"), new SafeMap());
+        service.closeANCCase(create().addFormField("closeReason", "relocation_permanent").build());
 
-        verify(eligibleCouples).close("CASE-X");
+        verify(eligibleCouples).close("ec entity id 1");
     }
 
     @Test
     public void shouldNotCloseECCaseWhenPNCCaseIsClosedAndReasonIsNeitherDeathOrPermanentRelocation() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.closeANCCase(new AnteNatalCareCloseInformation("CASE-X", "ANM X", "other_reason"), new SafeMap());
+        service.closeANCCase(create().addFormField("closeReason", "other_reason").build());
 
         verifyZeroInteractions(ecService);
+    }
+
+    @Test
+    public void shouldMarkAllActionsAsInactiveWhenANCIsClosed() {
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+
+        service.closeANCCase(create().build());
+
+        verify(actionService).markAllAlertsAsInactive("entity id 1");
     }
 
     @Test

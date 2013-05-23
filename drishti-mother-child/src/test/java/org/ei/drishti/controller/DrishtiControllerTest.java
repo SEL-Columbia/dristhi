@@ -6,7 +6,6 @@ import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
 import org.ei.drishti.service.ECService;
 import org.ei.drishti.service.PNCService;
-import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -69,16 +68,6 @@ public class DrishtiControllerTest {
         verify(childMapper).mapDeliveryOutcomeInformationToChildren(outcomeInformation, EXTRA_DATA);
         verify(pncService).registerChild(firstChildInformation);
         verify(pncService).registerChild(secondChildInformation);
-    }
-
-    @Test
-    public void shouldDelegateToBothANCServiceAndMCTSDuringANCClose() throws Exception {
-        AnteNatalCareCloseInformation closeInformation = mock(AnteNatalCareCloseInformation.class);
-
-        controller.closeANCCase(closeInformation, EXTRA_DATA);
-
-        verify(ancService).closeANCCase(closeInformation, new SafeMap(EXTRA_DATA.get(REPORT_EXTRA_DATA_KEY_NAME)));
-        verify(mctsService).closeANCCase(closeInformation);
     }
 
     @Test

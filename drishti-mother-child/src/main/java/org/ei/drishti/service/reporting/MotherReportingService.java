@@ -147,7 +147,7 @@ public class MotherReportingService {
 
         if (DEATH_OF_WOMAN_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME)) &&
                 BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(reportData.get(IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME))) {
-            reportDeath(mother, MMA, reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME));
+            reportDeath(mother, MMA, reportData.get(ANC_DEATH_DATE_FIELD_NAME));
         } else {
             reportAbortion(reportData, mother);
         }

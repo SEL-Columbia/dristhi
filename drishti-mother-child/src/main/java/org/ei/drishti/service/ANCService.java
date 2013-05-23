@@ -1,6 +1,9 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.*;
+import org.ei.drishti.contract.AnteNatalCareInformation;
+import org.ei.drishti.contract.AnteNatalCareInformationSubset;
+import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
+import org.ei.drishti.contract.BirthPlanningRequest;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -23,6 +26,7 @@ import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.DEATH_OF_WOMAN_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.PERMANENT_RELOCATION_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
+import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.CLOSE_REASON_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.util.DateUtil.today;
@@ -138,21 +142,24 @@ public class ANCService {
         actionService.updateANCOutcome(caseId, outcomeInformation.anmIdentifier(), updatedMother.details());
     }
 
-    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, SafeMap data) {
-        if (!allMothers.exists(closeInformation.caseId())) {
-            logger.warn("Tried to close case without registered mother for case ID: " + closeInformation.caseId());
+    public void closeANCCase(FormSubmission submission) {
+        Mother mother = allMothers.findByCaseId(submission.entityId());
+        if (mother == null) {
+            logger.warn("Tried to close case without registered mother for case ID: " + submission.entityId());
             return;
         }
 
-        allMothers.close(closeInformation.caseId());
-        reportingService.closeANC(data);
-        ancSchedulesService.unEnrollFromSchedules(closeInformation.caseId());
-        actionService.closeMother(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.reason());
+        allMothers.close(submission.entityId());
+        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+        reportingService.closeANC(new SafeMap(submission.getFields(reportFields)));
 
-        if (DEATH_OF_WOMAN_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.reason())
-                || PERMANENT_RELOCATION_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.reason())) {
-            logger.info("Closing EC case along with ANC case. Details: " + closeInformation);
-            eligibleCouples.close(closeInformation.caseId());
+        ancSchedulesService.unEnrollFromSchedules(submission.entityId());
+        actionService.markAllAlertsAsInactive(submission.entityId());
+
+        if (DEATH_OF_WOMAN_COMMCARE_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_COMMCARE_FIELD_NAME))
+                || PERMANENT_RELOCATION_COMMCARE_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
+            logger.info("Closing EC case along with ANC case. Submission: " + submission);
+            eligibleCouples.close(mother.ecCaseId());
         }
     }
 

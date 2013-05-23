@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.domain.Action;
-import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.ActionData;
 import org.ei.drishti.dto.AlertStatus;
 import org.ei.drishti.dto.BeneficiaryType;
@@ -54,19 +53,12 @@ public class ActionService {
         allActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
     }
 
-    public void deleteAllAlertsForMother(String caseID) {
-        Mother mother = allMothers.findByCaseId(caseID);
-
-        allActions.addWithDeleteByTarget(new Action(caseID, mother.anmIdentifier(), ActionData.deleteAllAlerts()), "alert");
+    public void markAllAlertsAsInactive(String entityId) {
+        allActions.markAllAsInActiveFor(entityId);
     }
 
     public void markAlertAsClosed(String caseId, String anmIdentifier, String visitCode, String completionDate) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
-    }
-
-    public void closeMother(String caseId, String anmIdentifier, String reasonForClose) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.closeMother(reasonForClose)));
-        allActions.markAllAsInActiveFor(caseId);
     }
 
     public void registerChildBirth(String caseId, String anmIdentifier, String motherCaseId, String thaayiCardNumber, LocalDate dateOfBirth, String gender, Map<String, String> details) {

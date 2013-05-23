@@ -5,7 +5,6 @@ import org.ei.drishti.contract.*;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
 import org.ei.drishti.service.PNCService;
-import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-
-import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 
 @Component
 public class DrishtiController {
@@ -62,13 +59,6 @@ public class DrishtiController {
 
         pncService.updateChildImmunization(request, extraData);
         mctsService.updateChildImmunization(request);
-    }
-
-    public void closeANCCase(AnteNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
-        logger.info("ANC close: " + closeInformation + ". Extra data: " + extraData);
-
-        ancService.closeANCCase(closeInformation, new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-        mctsService.closeANCCase(closeInformation);
     }
 
     public void closePNCCase(PostNatalCareCloseInformation request, Map<String, Map<String, String>> extraData) {

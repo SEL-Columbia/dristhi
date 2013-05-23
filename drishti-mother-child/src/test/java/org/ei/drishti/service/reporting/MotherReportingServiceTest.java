@@ -627,12 +627,12 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     private SafeMap reportDataForANCClose(String mtpTime, String closeReason, String isMaternalDeath) {
         SafeMap reportData = new SafeMap();
         reportData.put("caseId", "CASE-1");
-        reportData.put("mtpTime", mtpTime);
+        reportData.put("timeOfInducedAbortion", mtpTime);
         reportData.put("closeReason", closeReason);
-        reportData.put("dateSpontaneous", "2012-12-12");
-        reportData.put("dateInduced", "2012-12-12");
+        reportData.put("dateOfSpontaneousAbortion", "2012-12-12");
+        reportData.put("dateOfInducedAbortion", "2012-12-12");
         reportData.put("isMaternalDeath", isMaternalDeath);
-        reportData.put("diedOn", "2012-12-12");
+        reportData.put("maternalDeathDate", "2012-12-12");
         return reportData;
     }
 }

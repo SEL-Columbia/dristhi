@@ -187,7 +187,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
         verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 1"));
         verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 2"));
-        verify(actionService).deleteAllAlertsForMother("Case X");
+        verify(actionService).markAllAlertsAsInactive("Case X");
     }
 
     private void assertEnrollmentIntoMilestoneBasedOnDate(LocalDate enrollmentDate, String expectedMilestone) throws Exception {

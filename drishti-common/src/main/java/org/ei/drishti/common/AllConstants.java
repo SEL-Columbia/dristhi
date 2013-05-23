@@ -21,6 +21,7 @@ public class AllConstants {
         public static final String ANC_REGISTRATION = "anc_registration";
         public static final String ANC_REGISTRATION_OA = "anc_registration_oa";
         public static final String ANC_VISIT = "anc_visit";
+        public static final String ANC_CLOSE = "anc_close";
         public static final String METHOD_STILL_THE_SAME = "method_still_the_same";
     }
 
@@ -104,13 +105,14 @@ public class AllConstants {
     public static class CaseCloseCommCareFields {
         public static final String CLOSE_REASON_COMMCARE_FIELD_NAME = "closeReason";
         public static final String DEATH_DATE_COMMCARE_FIELD_NAME = "diedOn";
+        public static final String ANC_DEATH_DATE_FIELD_NAME = "maternalDeathDate";
         public static final String IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME = "isMaternalDeath";
     }
 
     public static class ANCCloseCommCareFields {
-        public static final String CLOSE_MTP_DATE_COMMCARE_FIELD_NAME = "dateInduced";
-        public static final String CLOSE_SPONTANEOUS_ABORTION_DATE_COMMCARE_FIELD_NAME = "dateSpontaneous";
-        public static final String CLOSE_MTP_TIME_COMMCARE_FIELD_NAME = "mtpTime";
+        public static final String CLOSE_MTP_DATE_COMMCARE_FIELD_NAME = "dateOfInducedAbortion";
+        public static final String CLOSE_SPONTANEOUS_ABORTION_DATE_COMMCARE_FIELD_NAME = "dateOfSpontaneousAbortion";
+        public static final String CLOSE_MTP_TIME_COMMCARE_FIELD_NAME = "timeOfInducedAbortion";
         public static final String MTP_GREATER_THAN_12_WEEKS_FIELD_NAME = "greater_12wks";
         public static final String MTP_LESS_THAN_12_WEEKS_FIELD_NAME = "less_12wks";
         public static final String DEATH_OF_WOMAN_COMMCARE_VALUE = "death_of_woman";

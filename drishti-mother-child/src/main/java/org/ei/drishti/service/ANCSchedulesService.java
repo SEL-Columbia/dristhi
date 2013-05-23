@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static java.text.MessageFormat.format;
+import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
@@ -72,9 +72,9 @@ public class ANCSchedulesService {
         List<EnrollmentRecord> openEnrollments = trackingService.search(new EnrollmentsQuery().havingExternalId(caseId).havingState(ACTIVE));
 
         for (EnrollmentRecord enrollment : openEnrollments) {
-            trackingService.unenroll(caseId, Arrays.asList(enrollment.getScheduleName()));
+            trackingService.unenroll(caseId, asList(enrollment.getScheduleName()));
         }
-        actionService.deleteAllAlertsForMother(caseId);
+        actionService.markAllAlertsAsInactive(caseId);
     }
 
     private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule, Time preferredAlertTime, Time referenceTime) {

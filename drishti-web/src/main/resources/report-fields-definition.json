@@ -20,5 +20,14 @@
         "id",
         "ancVisitDate",
         "ancVisitNumber"
+    ],
+    "anc_close": [
+        "id",
+        "timeOfInducedAbortion",
+        "dateOfInducedAbortion",
+        "closeReason",
+        "dateOfSpontaneousAbortion",
+        "isMaternalDeath",
+        "maternalDeathDate"
     ]
 }

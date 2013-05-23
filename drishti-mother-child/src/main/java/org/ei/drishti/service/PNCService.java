@@ -89,7 +89,7 @@ public class PNCService {
         logger.info("Closing PNC case. Details: " + closeInformation);
         allMothers.close(closeInformation.caseId());
         motherReportingService.closePNC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-        actionService.closeMother(closeInformation.caseId(), closeInformation.anmIdentifier(), closeInformation.closeReason());
+        actionService.markAllAlertsAsInactive(closeInformation.caseId());
 
         if (DEATH_OF_MOTHER_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.closeReason())
                 || PERMANENT_RELOCATION_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.closeReason())) {
@@ -107,7 +107,7 @@ public class PNCService {
 
         logger.info("Auto closing mother case with case id {0} as the Post-pregnancy period has elapsed.");
         allMothers.close(caseId);
-        actionService.closeMother(caseId, mother.anmIdentifier(), END_OF_PP_PERIOD_COMMCARE_VALUE);
+        actionService.markAllAlertsAsInactive(caseId);
     }
 
     public void registerPNC(AnteNatalCareOutcomeInformation outcomeInformation) {
