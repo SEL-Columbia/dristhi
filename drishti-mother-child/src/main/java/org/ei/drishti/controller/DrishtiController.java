@@ -4,7 +4,6 @@ import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
-import org.ei.drishti.service.ECService;
 import org.ei.drishti.service.PNCService;
 import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
@@ -24,25 +23,16 @@ public class DrishtiController {
     private final ANCService ancService;
     private final PNCService pncService;
     private DrishtiMCTSService mctsService;
-    private ECService ecService;
     private ChildMapper childMapper;
 
     @Autowired
     public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, PNCService pncService,
-                             ECService ecService, DrishtiMCTSService drishtiMctsService, ChildMapper childMapper) {
+                             DrishtiMCTSService drishtiMctsService, ChildMapper childMapper) {
         router.registerForDispatch(this);
         this.ancService = ancService;
         this.pncService = pncService;
-        this.ecService = ecService;
         this.mctsService = drishtiMctsService;
         this.childMapper = childMapper;
-    }
-
-    public void updateANCCareInformation(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {
-        logger.info("ANC care: " + ancInformation + ". Extra data: " + extraData);
-
-        ancService.ancHasBeenProvided(ancInformation, extraData);
-        mctsService.ancCareHasBeenProvided(ancInformation);
     }
 
     public void updateSubsetOfANCInformation(AnteNatalCareInformationSubset request, Map<String, Map<String, String>> extraData) {

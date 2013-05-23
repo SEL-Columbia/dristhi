@@ -6,44 +6,6 @@
         {
             "forms": [
                 {
-                    "name": "updateANCCareInformation",
-                    "url": {
-                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/3F652C11-48EE-4F12-836D-77528C312A67"
-                        }
-                    },
-                    "mappings": {
-                        "form|case|@case_id": "caseId",
-                        "form|meta|username": "anmIdentifier",
-                        "form|this_anc_number": "visitNumber",
-                        "form|ifa_tablets_given": "numberOfIFATabletsGiven",
-                        "form|anc_visit_date": "visitDate",
-                        "form|tt_dose": "ttDose"
-                    },
-                    "extraMappings": {
-                        "details": {
-                            "form|is_high_risk": "isHighRisk",
-                            "form|high_risk_reason": "highRiskReason",
-                            "form|ifa_tablets_given": "numberOfIFATabletsGiven",
-                            "form|risk_observed": "riskObserved",
-                            "form|bp_diastolic": "bpDiastolic",
-                            "form|bp_systolic": "bpSystolic",
-                            "form|pulse_rate": "pulseRate",
-                            "form|temperature": "temperature",
-                            "form|weight": "weight",
-                            "form|vitals_taken": "vitalsTaken",
-                            "form|test_results|hb": "hbLevel"
-                        },
-                        "reporting": {
-                            "form|case|@case_id": "caseId",
-                            "form|anc_visit_date": "visitDate",
-                            "form|this_anc_number": "visitNumber",
-                            "form|tt_dose": "ttDose"
-                        }
-                    }
-                },
-                {
                     "name": "updateSubsetOfANCInformation",
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",

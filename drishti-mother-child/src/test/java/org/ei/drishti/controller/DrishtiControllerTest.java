@@ -40,17 +40,7 @@ public class DrishtiControllerTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new DrishtiController(dispatcher, ancService, pncService, ecService, mctsService, childMapper);
-    }
-
-    @Test
-    public void shouldDelegateToBothANCServiceAndMCTSDuringANCCareProvision() throws Exception {
-        AnteNatalCareInformation ancInformation = mock(AnteNatalCareInformation.class);
-
-        controller.updateANCCareInformation(ancInformation, EXTRA_DATA);
-
-        verify(ancService).ancHasBeenProvided(ancInformation, EXTRA_DATA);
-        verify(mctsService).ancCareHasBeenProvided(ancInformation);
+        controller = new DrishtiController(dispatcher, ancService, pncService, mctsService, childMapper);
     }
 
     @Test
