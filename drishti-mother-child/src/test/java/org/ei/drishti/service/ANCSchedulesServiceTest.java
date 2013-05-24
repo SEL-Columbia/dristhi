@@ -25,13 +25,14 @@ import static org.ei.drishti.common.util.DateUtil.fakeIt;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.joda.time.LocalDate.parse;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
-import static org.powermock.api.mockito.PowerMockito.*;
+import static org.powermock.api.mockito.PowerMockito.verifyNoMoreInteractions;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 public class ANCSchedulesServiceTest extends BaseUnitTest {
     @Mock
@@ -119,13 +120,33 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldFulfillIFA1MilestoneWhenIFA1IsExpectedAndIFATabletsGiven() {
+        new FastForwardScheduleTestBase().forIFA1Schedule().providedWithNumberOfIFATablets("100").whenExpecting("IFA 1").willFulfillFor("IFA 1");
+    }
+
+    @Test
+    public void shouldFulfillIFA2MilestoneWhenIFA2IsExpectedAndIFATabletsGiven() {
+        new FastForwardScheduleTestBase().forIFA2Schedule().providedWithNumberOfIFATablets("100").whenExpecting("IFA 2").willFulfillFor("IFA 2");
+    }
+
+    @Test
+    public void shouldFulfillIFA3MilestoneWhenIFA3IsExpectedAndIFATabletsGiven() {
+        new FastForwardScheduleTestBase().forIFA3Schedule().providedWithNumberOfIFATablets("100").whenExpecting("IFA 3").willFulfillFor("IFA 3");
+    }
+
+    @Test
+    public void shouldDoNothingWhenIFATabletsNotGiven() {
+        new FastForwardScheduleTestBase().forIFA1Schedule().providedWithNumberOfIFATablets("0").whenExpecting("IFA 1").willNotFulfillAnything();
+    }
+
+    @Test
     public void shouldFulfillIFA1IfItIsTheCurrentMilestoneWhenIFAIsProvided() {
-        new FastForwardScheduleTestBase().forIFASchedule().whenExpecting("IFA 1").willFulfillFor("IFA 1");
+        new FastForwardScheduleTestBase().forIFASchedule_old().whenExpecting("IFA 1").willFulfillFor("IFA 1");
     }
 
     @Test
     public void shouldFulfillIFA2IfItIsTheCurrentMilestoneWhenIFAIsProvided() {
-        new FastForwardScheduleTestBase().forIFASchedule().whenExpecting("IFA 2").willFulfillFor("IFA 2");
+        new FastForwardScheduleTestBase().forIFASchedule_old().whenExpecting("IFA 2").willFulfillFor("IFA 2");
     }
 
     @Test
@@ -261,5 +282,6 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_IFA, lmp));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_LAB, lmp));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_TT_1, lmp));
+        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_IFA_1, lmp));
     }
 }

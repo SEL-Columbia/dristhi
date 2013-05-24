@@ -21,6 +21,7 @@ import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.util.DateUtil.today;
+import static org.ei.drishti.common.util.IntegerUtil.tryParse;
 import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
@@ -33,7 +34,7 @@ public class ANCSchedulesService {
     private static Logger logger = LoggerFactory.getLogger(ANCSchedulesService.class.toString());
 
     private final ScheduleTrackingService trackingService;
-    private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_IFA, SCHEDULE_LAB, SCHEDULE_TT_1};
+    private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_IFA, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1};
     private ActionService actionService;
 
     @Autowired
@@ -61,6 +62,28 @@ public class ANCSchedulesService {
         } else if (TT2_DOSE_VALUE.equals(ttDose)) {
             fulfillMilestoneIfPossible(entityId, anmId, "TT 2", "TT 2", parse(ttDate));
         }
+    }
+
+    public void ifaTabletsGiven(String entityId, String anmId, String numberOfIFATabletsGiven, String ifaGivenDate) {
+        if (tryParse(numberOfIFATabletsGiven, 0) <= 0) {
+            logger.info("Number of IFA tablets given is zero so not updating schedules for entity: " + entityId);
+            return;
+        }
+        if (fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_IFA_1, SCHEDULE_IFA_1, parse(ifaGivenDate))) {
+            logger.info("Enrolling ANC to IFA 2 schedule. Entity id: " + entityId);
+
+            trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_IFA_2, new Time(PREFERED_TIME_FOR_SCHEDULES),
+                    parse(ifaGivenDate), null, null, null, null, null));
+            return;
+        }
+        if (fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_IFA_2, SCHEDULE_IFA_2, parse(ifaGivenDate))) {
+            logger.info("Enrolling ANC to IFA 3 schedule. Entity id: " + entityId);
+
+            trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_IFA_3, new Time(PREFERED_TIME_FOR_SCHEDULES),
+                    parse(ifaGivenDate), null, null, null, null, null));
+            return;
+        }
+        fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_IFA_3, SCHEDULE_IFA_3, parse(ifaGivenDate));
     }
 
     public void ifaVisitHasHappened(AnteNatalCareInformation ancInformation) {
@@ -105,13 +128,6 @@ public class ANCSchedulesService {
         fulfillMilestoneIfPossible(ancInformation, scheduleName, milestonePrefix, expectedMilestoneNumber);
     }
 
-    private void fastForwardSchedule(AnteNatalCareInformation ancInformation, int visitNumberToFulfill, String scheduleName, String milestonePrefix) {
-        int currentMilestoneNumber = currentMilestoneNumber(ancInformation.caseId(), scheduleName, milestonePrefix);
-        for (int i = currentMilestoneNumber; i <= visitNumberToFulfill; i++) {
-            fulfillMilestoneIfPossible(ancInformation, scheduleName, milestonePrefix, i);
-        }
-    }
-
     private void fulfillMilestoneIfPossible(AnteNatalCareInformation ancInformation, String scheduleName, String milestonePrefix, int visitNumber) {
         String caseId = ancInformation.caseId();
 
@@ -131,14 +147,16 @@ public class ANCSchedulesService {
         }
     }
 
-    private void fulfillMilestoneIfPossible(String entityId, String anmId, String scheduleName, String milestone, LocalDate fulfillmentDate) {
+    private boolean fulfillMilestoneIfPossible(String entityId, String anmId, String scheduleName, String milestone, LocalDate fulfillmentDate) {
         if (isNotEnrolled(entityId, scheduleName)) {
-            logger.warn(format("Tried to fulfill milestone {0} of {1} for visit: {2}", milestone, scheduleName, entityId));
-            return;
+            logger.warn(format("Tried to fulfill milestone {0} of {1} for entity id: {2}", milestone, scheduleName, entityId));
+            return false;
         }
 
+        logger.warn(format("Fulfilling milestone {0} of {1} for entity id: {2}", milestone, scheduleName, entityId));
         trackingService.fulfillCurrentMilestone(entityId, scheduleName, fulfillmentDate, new Time(now()));
         actionService.markAlertAsClosed(entityId, anmId, milestone, fulfillmentDate.toString());
+        return true;
     }
 
     private int currentMilestoneNumber(String caseId, String scheduleName, String milestonePrefix) {

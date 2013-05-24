@@ -352,4 +352,32 @@ public class ANCServiceTest {
         verifyZeroInteractions(actionService);
         verify(mothers, times(0)).updateDetails(any(String.class), any(Map.class));
     }
+
+    @Test
+    public void shouldUpdateIFASchedulesWhenNumberOfIFATabletsGivenIsMoreThanZero() {
+        when(mothers.exists("entity id 1")).thenReturn(true);
+
+        FormSubmission submission = create()
+                .withFormName("ifa")
+                .addFormField("numberOfIFATabletsGiven", "100")
+                .addFormField("ifaTabletsDate", "2013-05-24")
+                .build();
+        service.ifaTabletsGiven(submission);
+
+        verify(ancSchedulesService).ifaTabletsGiven("entity id 1", "anmId", "100", "2013-05-24");
+    }
+
+    @Test
+    public void shouldNotDoAnythingWhenIFATabletsAreGivenForNonExistentEC() {
+        when(mothers.exists("entity id 1")).thenReturn(false);
+
+        FormSubmission submission = create()
+                .withFormName("ifa")
+                .withEntityId("entity id 1")
+                .addFormField("numberOfIFATabletsGiven", "0")
+                .build();
+        service.ifaTabletsGiven(submission);
+
+        verifyZeroInteractions(ancSchedulesService);
+    }
 }

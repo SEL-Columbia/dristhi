@@ -35,6 +35,9 @@ public class DrishtiScheduleConstants {
         public static final String SCHEDULE_TT_1 = "TT 1";
         public static final String SCHEDULE_TT_2 = "TT 2";
         public static final String SCHEDULE_AUTO_CLOSE_PNC = "Auto Close PNC";
+        public static final String SCHEDULE_IFA_1 = "IFA 1";
+        public static final String SCHEDULE_IFA_2 = "IFA 2";
+        public static final String SCHEDULE_IFA_3 = "IFA 3";
     }
 
     public static class ECSchedulesConstants {

@@ -26,6 +26,8 @@ import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.PERMANEN
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.CLOSE_REASON_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
+import static org.ei.drishti.common.AllConstants.IFAFields.IFA_TABLETS_DATE;
+import static org.ei.drishti.common.AllConstants.IFAFields.NUMBER_OF_IFA_TABLETS_GIVEN;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
@@ -162,7 +164,16 @@ public class ANCService {
         ancSchedulesService.enrollMother(caseId, referenceDate, new Time(now()), preferredAlertTime);
     }
 
-    public void ifaProvided(FormSubmission submission) {
+    public void ifaTabletsGiven(FormSubmission submission) {
+        if (!allMothers.exists(submission.entityId())) {
+            logger.warn("Tried to handle ifa tablets given without registered mother. Submission: " + submission);
+            return;
+        }
 
+        ancSchedulesService.ifaTabletsGiven(
+                submission.entityId(),
+                submission.anmId(),
+                submission.getField(NUMBER_OF_IFA_TABLETS_GIVEN),
+                submission.getField(IFA_TABLETS_DATE));
     }
 }

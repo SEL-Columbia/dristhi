@@ -16,6 +16,6 @@ public class IFAHandler implements FormSubmissionHandler {
 
     @Override
     public void handle(FormSubmission submission) {
-        ancService.ifaProvided(submission);
+        ancService.ifaTabletsGiven(submission);
     }
 }

@@ -194,4 +194,9 @@ public class AllConstants {
         public static final String OPV_3_COMMCARE_VALUE = "opv_3";
         public static final String OPV_BOOSTER_COMMCARE_VALUE = "opvbooster";
     }
+
+    public static class IFAFields {
+        public static final String NUMBER_OF_IFA_TABLETS_GIVEN = "numberOfIFATabletsGiven";
+        public static final String IFA_TABLETS_DATE = "ifaTabletsDate";
+    }
 }

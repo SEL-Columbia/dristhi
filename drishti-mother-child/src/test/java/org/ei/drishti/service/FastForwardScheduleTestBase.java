@@ -21,6 +21,7 @@ public class FastForwardScheduleTestBase {
     private ANCSchedulesService schedulesService;
     private Action serviceCall;
     private ActionService actionService;
+    private String numberOfIFATabletsGiven;
 
     public FastForwardScheduleTestBase() {
         this.scheduleTrackingService = mock(ScheduleTrackingService.class);
@@ -61,7 +62,30 @@ public class FastForwardScheduleTestBase {
         return this;
     }
 
-    public FastForwardScheduleTestBase forIFASchedule() {
+    public FastForwardScheduleTestBase forIFA1Schedule() {
+        return forIFASchedule(SCHEDULE_IFA_1);
+    }
+
+    public FastForwardScheduleTestBase forIFA2Schedule() {
+        return forIFASchedule(SCHEDULE_IFA_2);
+    }
+
+    public FastForwardScheduleTestBase forIFA3Schedule() {
+        return forIFASchedule(SCHEDULE_IFA_3);
+    }
+
+    private FastForwardScheduleTestBase forIFASchedule(String scheduleName) {
+        this.scheduleName = scheduleName;
+        this.serviceCall = new Action() {
+            @Override
+            public void make(String caseId, int visitNumber, LocalDate visitDate) {
+                schedulesService.ifaTabletsGiven(caseId, "ANM 1", numberOfIFATabletsGiven, visitDate.toString());
+            }
+        };
+        return this;
+    }
+
+    public FastForwardScheduleTestBase forIFASchedule_old() {
         this.scheduleName = SCHEDULE_IFA;
         this.serviceCall = new Action() {
             @Override
@@ -79,6 +103,11 @@ public class FastForwardScheduleTestBase {
 
     public FastForwardScheduleTestBase providedWithVisitNumber(int visitNumberToTryAndFulfill) {
         this.visitNumberToTryAndFulfill = visitNumberToTryAndFulfill;
+        return this;
+    }
+
+    public FastForwardScheduleTestBase providedWithNumberOfIFATablets(String numberOfIFATabletsGiven) {
+        this.numberOfIFATabletsGiven = numberOfIFATabletsGiven;
         return this;
     }
 
