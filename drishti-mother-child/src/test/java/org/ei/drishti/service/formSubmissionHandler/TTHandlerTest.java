@@ -9,24 +9,24 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class ANCVisitHandlerTest {
+public class TTHandlerTest {
     @Mock
     private ANCService ancService;
 
-    private ANCVisitHandler handler;
+    private TTHandler handler;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        handler = new ANCVisitHandler(ancService);
+        handler = new TTHandler(ancService);
     }
 
     @Test
     public void shouldDelegateFormSubmissionHandlingToANCService() throws Exception {
-        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "anc_visit", "entity id 1", null, 0L, 0L);
+        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "tt_booster", "entity id 1", null, 0L, 0L);
 
         handler.handle(submission);
 
-        verify(ancService).ancVisit(submission);
+        verify(ancService).ttProvided(submission);
     }
 }

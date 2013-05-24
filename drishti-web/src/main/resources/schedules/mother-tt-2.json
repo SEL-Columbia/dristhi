@@ -1,0 +1,29 @@
+{
+    "name": "TT 2",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "TT 2",
+            "scheduleWindows": {
+                "earliest": ["0 Weeks"],
+                "due": ["6 Weeks"],
+                "late": ["1 Year"],
+                "max": [""]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["4 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "2"
+                },
+                {
+                    "window": "late",
+                    "offset": ["6 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "100"
+                }
+            ]
+        }
+    ]
+}

@@ -40,8 +40,8 @@ public class AlertControllerRoutesTest {
         Event.of(SCHEDULE_EDD, "Reminder", WindowName.late).shouldRouteToAlertCreationActionForMother();
         Event.of(SCHEDULE_IFA, "IFA 1", WindowName.due).shouldRouteToAlertCreationActionForMother();
         Event.of(SCHEDULE_IFA, "IFA 2", WindowName.late).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_TT, "SomeMilestone", WindowName.due).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_TT, "SomeOtherMilestone", WindowName.late).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_TT_1, "SomeMilestone", WindowName.due).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_TT_1, "SomeOtherMilestone", WindowName.late).shouldRouteToAlertCreationActionForMother();
     }
 
     @Test

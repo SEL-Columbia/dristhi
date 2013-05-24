@@ -39,12 +39,23 @@ public class FastForwardScheduleTestBase {
         return this;
     }
 
-    public FastForwardScheduleTestBase forTTSchedule() {
-        this.scheduleName = SCHEDULE_TT;
+    public FastForwardScheduleTestBase forTT1Schedule() {
+        this.scheduleName = SCHEDULE_TT_1;
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
-                schedulesService.ttVisitHasHappened(new AnteNatalCareInformation(caseId, "ANM 1", visitNumber, visitDate.toString()).withTTDose("TT 1"));
+                schedulesService.ttVisitHasHappened(caseId, "ANM 1", "tt1", visitDate.toString());
+            }
+        };
+        return this;
+    }
+
+    public FastForwardScheduleTestBase forTT2Schedule() {
+        this.scheduleName = SCHEDULE_TT_2;
+        this.serviceCall = new Action() {
+            @Override
+            public void make(String caseId, int visitNumber, LocalDate visitDate) {
+                schedulesService.ttVisitHasHappened(caseId, "ANM 1", "tt2", visitDate.toString());
             }
         };
         return this;

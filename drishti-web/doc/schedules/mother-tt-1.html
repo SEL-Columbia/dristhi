@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(1).draw();
+schedule.addAlertsStartingWith("TT 1", "TT 1 - due (Will continue till service is delivered)", [new Date("Jan 01, 2012"), new Date("Jan 08, 2012"), new Date("Jan 15, 2012"), ]);
+schedule.addAlertsStartingWith("TT 1", "TT 1 - late (Will continue till service is delivered)", [new Date("Mar 25, 2012"), new Date("Apr 01, 2012"), new Date("Apr 08, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>TT 1</center></body></html>

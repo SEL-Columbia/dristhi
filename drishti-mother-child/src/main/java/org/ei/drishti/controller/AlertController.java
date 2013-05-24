@@ -48,7 +48,7 @@ public class AlertController {
     }
 
     private Matcher motherSchedules() {
-        return anyOf(SCHEDULE_ANC, SCHEDULE_TT, SCHEDULE_IFA, SCHEDULE_LAB, SCHEDULE_EDD);
+        return anyOf(SCHEDULE_ANC, SCHEDULE_TT_1, SCHEDULE_IFA, SCHEDULE_LAB, SCHEDULE_EDD);
     }
 
     private Matcher ecSchedules() {

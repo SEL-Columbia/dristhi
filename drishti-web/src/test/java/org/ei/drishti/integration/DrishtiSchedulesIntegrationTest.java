@@ -84,24 +84,6 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldProvideAlertsForTetanusToxoidVaccinationAtTheRightTimes() throws Exception {
-        schedule.withFulfillmentDates(date(27, MAY)).enrollFor("Tetatnus Toxoid Vaccination", newDate(2012, 1, 1), new Time(14, 0));
-
-        schedule.assertNoAlerts("TT 1", earliest);
-        schedule.assertAlertsStartWith("TT 1", due, date(8, JANUARY), date(15, JANUARY), date(22, JANUARY), date(29, JANUARY), date(5, FEBRUARY), date(12, FEBRUARY), date(19, FEBRUARY),
-                date(26, FEBRUARY), date(4, MARCH), date(11, MARCH), date(18, MARCH));
-        schedule.assertNoAlerts("TT 1", late);
-        schedule.assertNoAlerts("TT 1", max);
-
-        schedule.assertNoAlerts("TT 2", earliest);
-        schedule.assertAlerts("TT 2", due, date(24, JUNE));
-        schedule.assertAlertsStartWith("TT 2", late, date(1, JULY), date(8, JULY), date(15, JULY), date(22, JULY), date(29, JULY));
-        schedule.assertNoAlerts("TT 2", max);
-
-        visualization.outputTo("mother-tetanus-toxoid-vaccination.html", 2);
-    }
-
-    @Test
     public void shouldProvideAlertsForLabRemindersATheRightTimes() throws Exception {
         schedule.enrollFor("Lab Reminders", newDate(2012, 1, 1), new Time(14, 0));
 
@@ -475,6 +457,30 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts("FP Referral Followup", max);
 
         visualization.outputTo("ec-fp-referral-followup.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForTT1AtTheRightTimes() throws Exception {
+        schedule.enrollFor("TT 1", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("TT 1", earliest);
+        schedule.assertAlertsStartWith("TT 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(8, JANUARY, 2012), dateWithYear(15, JANUARY, 2012));
+        schedule.assertAlertsStartWith("TT 1", late, dateWithYear(25, MARCH, 2012), dateWithYear(1, APRIL, 2012), dateWithYear(8, APRIL, 2012));
+        schedule.assertNoAlerts("TT 1", max);
+
+        visualization.outputTo("mother-tt-1.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForTT2AtTheRightTimes() throws Exception {
+        schedule.enrollFor("TT 2", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("TT 2", earliest);
+        schedule.assertAlerts("TT 2", due, dateWithYear(29, JANUARY, 2012), dateWithYear(5, FEBRUARY, 2012));
+        schedule.assertAlertsStartWith("TT 2", late, dateWithYear(12, FEBRUARY, 2012), dateWithYear(19, FEBRUARY, 2012), dateWithYear(26, FEBRUARY, 2012));
+        schedule.assertNoAlerts("TT 2", max);
+
+        visualization.outputTo("mother-tt-2.html", 1);
     }
 
     @Before

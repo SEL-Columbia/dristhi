@@ -21,17 +21,17 @@ import org.motechproject.testing.utils.BaseUnitTest;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.ei.drishti.common.util.DateUtil.*;
+import static org.ei.drishti.common.util.DateUtil.fakeIt;
+import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.joda.time.LocalDate.parse;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
-import static org.powermock.api.mockito.PowerMockito.verifyZeroInteractions;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 public class ANCSchedulesServiceTest extends BaseUnitTest {
     @Mock
@@ -110,17 +110,12 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldFulfillTT1MilestoneWhenTT1IsExpectedDuringANCCare() {
-        new FastForwardScheduleTestBase().forTTSchedule().whenExpecting("TT 1").providedWithVisitNumber(1).willFulfillFor("TT 1");
+        new FastForwardScheduleTestBase().forTT1Schedule().whenExpecting("TT 1").providedWithVisitNumber(1).willFulfillFor("TT 1");
     }
 
     @Test
     public void shouldFulfillTT2MilestoneWhenTT2IsExpectedDuringANCCare() {
-        new FastForwardScheduleTestBase().forTTSchedule().whenExpecting("TT 2").providedWithVisitNumber(2).willFulfillFor("TT 2");
-    }
-
-    @Test
-    public void shouldFulfillBothTT1AndTT2MilestoneWhenTT1IsExpectedDuringANCCareAndTT2IsProvided() {
-        new FastForwardScheduleTestBase().forTTSchedule().whenExpecting("TT 1").providedWithVisitNumber(2).willFulfillFor("TT 1", "TT 2");
+        new FastForwardScheduleTestBase().forTT2Schedule().whenExpecting("TT 2").providedWithVisitNumber(2).willFulfillFor("TT 2");
     }
 
     @Test
@@ -131,6 +126,27 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     @Test
     public void shouldFulfillIFA2IfItIsTheCurrentMilestoneWhenIFAIsProvided() {
         new FastForwardScheduleTestBase().forIFASchedule().whenExpecting("IFA 2").willFulfillFor("IFA 2");
+    }
+
+    @Test
+    public void shouldEnrollMotherInTT2ScheduleIfTT1IsProvided() throws Exception {
+        schedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "tt1", "2012-01-01");
+
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "TT 2", LocalDate.parse("2012-01-01")));
+    }
+
+    @Test
+    public void shouldEnrollMotherInTT2ScheduleIfTTBoosterIsProvided() throws Exception {
+        schedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "ttbooster", "2012-01-01");
+
+        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "TT 2", LocalDate.parse("2012-01-01")));
+    }
+
+    @Test
+    public void shouldNotEnrollMotherInTT2ScheduleIfSomeOtherThingIsProvided() throws Exception {
+        schedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "some other", "2012-01-01");
+
+        verifyZeroInteractions(scheduleTrackingService);
     }
 
     @Test
@@ -255,6 +271,6 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_EDD, lmp));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_IFA, lmp));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_LAB, lmp));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_TT, lmp));
+        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_TT_1, lmp));
     }
 }

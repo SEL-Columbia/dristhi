@@ -37,6 +37,8 @@ public class FormSubmissionRouterTest {
     private ANCCloseHandler ancCloseHandler;
     @Mock
     private IFAHandler ifaHandler;
+    @Mock
+    private TTHandler ttHandler;
 
     private FormSubmissionRouter router;
 
@@ -55,6 +57,7 @@ public class FormSubmissionRouterTest {
                 ancRegistrationOAHandler,
                 ancVisitHandler,
                 ancCloseHandler,
+                ttHandler,
                 ifaHandler);
     }
 
@@ -151,6 +154,40 @@ public class FormSubmissionRouterTest {
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ancCloseHandler).handle(formSubmission);
     }
+
+    @Test
+    public void shouldDelegateTTBoosterFormSubmissionHandlingToTTHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "tt_booster", "entity id 1", null, 0L, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(ttHandler).handle(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateTT1FormSubmissionHandlingToTTHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "tt_1", "entity id 1", null, 0L, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(ttHandler).handle(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateTT2FormSubmissionHandlingToTTHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "tt_2", "entity id 1", null, 0L, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(ttHandler).handle(formSubmission);
+    }
+
 
     @Test
     public void shouldDelegateIFAFormSubmissionHandlingToIFAHandler() throws Exception {
