@@ -23,14 +23,11 @@ public class DrishtiScheduleConstants {
         public static final String CHILD_SCHEDULE_MEASLES_BOOSTER = "Measles Booster";
 
         public static final String CHILD_SCHEDULE_OPV = "OPV";
-
-
     }
 
     public static class MotherScheduleConstants {
         public static final String SCHEDULE_ANC = "Ante Natal Care - Normal";
         public static final String SCHEDULE_EDD = "Expected Date Of Delivery";
-        public static final String SCHEDULE_IFA = "Iron Folic Acid Supplements";
         public static final String SCHEDULE_LAB = "Lab Reminders";
         public static final String SCHEDULE_TT_1 = "TT 1";
         public static final String SCHEDULE_TT_2 = "TT 2";

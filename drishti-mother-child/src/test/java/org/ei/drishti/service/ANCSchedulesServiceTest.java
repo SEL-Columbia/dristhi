@@ -257,7 +257,6 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
     private void verifyNonANCScheduleEnrollments(LocalDate lmp) {
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_EDD, lmp));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_IFA, lmp));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_LAB, lmp));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_TT_1, lmp));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_IFA_1, lmp));
