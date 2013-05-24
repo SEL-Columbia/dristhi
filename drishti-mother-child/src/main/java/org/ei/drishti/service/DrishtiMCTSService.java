@@ -29,9 +29,6 @@ public class DrishtiMCTSService {
     public void updateANCOutcome(AnteNatalCareOutcomeInformation careOutcomeInformation) {
     }
 
-    public void closeANCCase(AnteNatalCareCloseInformation closeInformation) {
-    }
-
     public void registerChild(AnteNatalCareOutcomeInformation outcomeInformation) {
     }
 

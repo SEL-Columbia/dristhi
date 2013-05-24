@@ -114,13 +114,4 @@ public class DrishtiControllerTest {
 
         verify(ancService).updateBirthPlanning(request, EXTRA_DATA);
     }
-
-    @Test
-    public void shouldDelegateToANCServiceDuringANCSubsetUpdate() throws Exception {
-        AnteNatalCareInformationSubset request = mock(AnteNatalCareInformationSubset.class);
-
-        controller.updateSubsetOfANCInformation(request, EXTRA_DATA);
-
-        verify(ancService).updateSubsetOfANCInformation(request, EXTRA_DATA);
-    }
 }

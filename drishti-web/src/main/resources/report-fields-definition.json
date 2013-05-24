@@ -29,5 +29,23 @@
         "dateOfSpontaneousAbortion",
         "isMaternalDeath",
         "maternalDeathDate"
+    ],
+    "tt_1": [
+        "id",
+        "ttDose",
+        "ttInjectionPlace",
+        "ttDate"
+    ],
+    "tt_2": [
+        "id",
+        "ttDose",
+        "ttInjectionPlace",
+        "ttDate"
+    ],
+    "tt_booster": [
+        "id",
+        "ttDose",
+        "ttInjectionPlace",
+        "ttDate"
     ]
 }

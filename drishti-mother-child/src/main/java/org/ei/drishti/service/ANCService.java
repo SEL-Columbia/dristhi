@@ -1,7 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareInformation;
-import org.ei.drishti.contract.AnteNatalCareInformationSubset;
 import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.contract.BirthPlanningRequest;
 import org.ei.drishti.domain.Mother;
@@ -128,31 +126,10 @@ public class ANCService {
     }
 
     public void ttProvided(FormSubmission submission) {
-        ancSchedulesService.ttVisitHasHappened(submission.entityId(), submission.anmId(), submission.getField("ttDose"), submission.getField("ttDate"));
-    }
+        ancSchedulesService.ttVisitHasHappened(submission.entityId(), submission.anmId(), submission.getField(TT_DOSE_FIELD), submission.getField(TT_DATE_FIELD));
 
-    @Deprecated
-    public void ancHasBeenProvided(AnteNatalCareInformation ancInformation, Map<String, Map<String, String>> extraData) {
-        if (!allMothers.exists(ancInformation.caseId())) {
-            logger.warn("Found care provided without registered mother for case ID: " + ancInformation.caseId());
-            return;
-        }
-
-        if (ancInformation.visitNumber() > 0) {
-            ancSchedulesService.ancVisitHasHappened(ancInformation);
-        }
-        if (ancInformation.ifaTablesHaveBeenProvided()) {
-            ancSchedulesService.ifaVisitHasHappened(ancInformation);
-        }
-        if (ancInformation.wasTTShotProvided()) {
-            ancSchedulesService.ttVisitHasHappened(ancInformation);
-        }
-
-        reportingService.ancHasBeenProvided(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-
-        Mother motherWithUpdatedDetails = allMothers.updateDetails(ancInformation.caseId(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
-        actionService.updateMotherDetails(motherWithUpdatedDetails.caseId(), motherWithUpdatedDetails.anmIdentifier(), motherWithUpdatedDetails.details());
-        actionService.ancCareProvided(motherWithUpdatedDetails.caseId(), motherWithUpdatedDetails.anmIdentifier(), ancInformation.visitNumber(), ancInformation.visitDate(), ancInformation.numberOfIFATabletsProvided(), ancInformation.ttDose(), extraData.get("details"));
+        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+        reportingService.ttProvided(new SafeMap(submission.getFields(reportFields)));
     }
 
     public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
@@ -176,15 +153,6 @@ public class ANCService {
 
         Mother motherWithUpdatedDetails = allMothers.updateDetails(request.caseId(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
         actionService.updateBirthPlanning(request.caseId(), request.anmIdentifier(), motherWithUpdatedDetails.details());
-    }
-
-    public void updateSubsetOfANCInformation(AnteNatalCareInformationSubset request, Map<String, Map<String, String>> extraData) {
-        if (!allMothers.exists(request.caseId())) {
-            logger.warn("Tried to update subset of ANC information without registered mother: " + request);
-            return;
-        }
-
-        reportingService.subsetOfANCHasBeenProvided(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
     }
 
     private void enrollMotherIntoSchedules(String caseId, LocalDate lmpDate) {

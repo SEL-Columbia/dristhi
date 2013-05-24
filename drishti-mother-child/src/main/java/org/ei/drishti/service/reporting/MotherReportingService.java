@@ -78,17 +78,11 @@ public class MotherReportingService {
         reportANC4Visit(reportData, mother, location);
     }
 
-    public void ancHasBeenProvided(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
-
-        reportTTVisit(reportData.get(TT_DOSE_COMMCARE_FIELD), reportData.get(VISIT_DATE_COMMCARE_FIELD), mother);
-        reportANC4Visit(reportData, mother);
-    }
-
-    public void subsetOfANCHasBeenProvided(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
-
-        reportTTVisit(reportData.get(TT_DOSE_COMMCARE_FIELD), reportData.get(TT_DATE_COMMCARE_FIELD), mother);
+    public void ttProvided(SafeMap reportData) {
+        Mother mother = allMothers.findByCaseId(reportData.get(ENTITY_ID));
+        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+        reportTTVisit(reportData.get(TT_DOSE_FIELD), reportData.get(TT_DATE_FIELD), mother, location);
     }
 
     public void pncVisitHappened(SafeMap reportData) {
@@ -194,28 +188,15 @@ public class MotherReportingService {
         }
     }
 
-    private void reportANC4Visit(SafeMap reportData, Mother mother) {
-        int visitNumber;
-        try {
-            visitNumber = parseInt(reportData.get(VISIT_NUMBER_COMMCARE_FIELD));
-            if ((visitNumber == ANC4_VISIT_NUMBER_COMMCARE_VALUE)
-                    && (!parse(reportData.get(VISIT_DATE_COMMCARE_FIELD)).minusWeeks(36).isBefore(mother.lmp()))) {
-                reportToBoth(mother, ANC4, reportData.get(VISIT_DATE_COMMCARE_FIELD));
-            }
-        } catch (NumberFormatException e) {
-            logger.warn("Not reporting ANC visit for mother: " + mother.caseId() + " as visit number is invalid, visit number:" + reportData.get(VISIT_NUMBER_COMMCARE_FIELD));
-        }
-    }
-
-    private void reportTTVisit(String ttDose, String ttDate, Mother mother) {
+    private void reportTTVisit(String ttDose, String ttDate, Mother mother, Location location) {
         if (TT1_DOSE_COMMCARE_VALUE.equalsIgnoreCase(ttDose)) {
-            reportToBoth(mother, TT1, ttDate);
+            reportToBoth(mother, TT1, ttDate, location);
         } else if (TT2_DOSE_COMMCARE_VALUE.equalsIgnoreCase(ttDose)) {
-            reportToBoth(mother, TT2, ttDate);
-            reportToBoth(mother, SUB_TT, ttDate);
+            reportToBoth(mother, TT2, ttDate, location);
+            reportToBoth(mother, SUB_TT, ttDate, location);
         } else if (TT_BOOSTER_DOSE_COMMCARE_VALUE.equalsIgnoreCase(ttDose)) {
-            reportToBoth(mother, TTB, ttDate);
-            reportToBoth(mother, SUB_TT, ttDate);
+            reportToBoth(mother, TTB, ttDate, location);
+            reportToBoth(mother, SUB_TT, ttDate, location);
         }
     }
 

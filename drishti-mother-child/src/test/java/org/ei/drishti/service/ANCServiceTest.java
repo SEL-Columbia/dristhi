@@ -1,7 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareInformation;
-import org.ei.drishti.contract.AnteNatalCareInformationSubset;
 import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.contract.BirthPlanningRequest;
 import org.ei.drishti.domain.Mother;
@@ -10,7 +8,6 @@ import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.MotherReportingService;
-import org.ei.drishti.util.FormSubmissionBuilder;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -182,7 +179,6 @@ public class ANCServiceTest {
 
         verify(ancSchedulesService).ancVisitHasHappened("entity id 1", "anm id 1", 2, "2013-01-01");
         verify(motherReportingService).ancVisit(new SafeMap(mapOf("someKey", "someValue")));
-        verifyZeroInteractions(motherReportingService);
     }
 
     @Test
@@ -203,103 +199,23 @@ public class ANCServiceTest {
     }
 
     @Test
-    public void shouldTellANCSchedulesServiceWhenANCCareHasBeenProvided() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
-        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
+    public void shouldHandleTTProvided() {
+        FormSubmission submission = create()
+                .withFormName("tt_1")
+                .withANMId("anm id 1")
+                .withEntityId("entity id 1")
+                .addFormField("ttDate", "2013-01-01")
+                .addFormField("ttDose", "tt1")
+                .addFormField("someKey", "someValue")
+                .build();
 
-        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 2, "2012-01-23");
-        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
+        when(mothers.exists("entity id 1")).thenReturn(true);
+        when(reportFieldsDefinition.get("tt_1")).thenReturn(asList("someKey"));
 
-        verify(ancSchedulesService).ancVisitHasHappened(ancInformation);
-    }
+        service.ttProvided(submission);
 
-    @Test
-    public void shouldNotConsiderAVisitAsANCWhenVisitNumberIsZero() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
-        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
-
-        service.ancHasBeenProvided(new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23"), EXTRA_DATA_EMPTY);
-
-        verifyZeroInteractions(ancSchedulesService);
-    }
-
-    @Test
-    public void shouldTellANCSchedulesServiceThatIFAIsProvidedOnlyWhenNumberOfIFATabletsProvidedIsMoreThanZero() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
-        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
-
-        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
-        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
-
-        verify(ancSchedulesService).ifaVisitHasHappened(ancInformation);
-    }
-
-    @Test
-    public void shouldTellANCSchedulesServiceWhatTTDoseWasProvidedOnlyWhenTTDoseWasProvided() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
-        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
-
-        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10").withTTDose("TT 2");
-        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
-
-        verify(ancSchedulesService).ttVisitHasHappened(ancInformation);
-    }
-
-    @Test
-    public void shouldNotTellANCSchedulesServiceWhatTTDoseWasProvidedWhenTTDoseWasNotProvided() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
-        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
-
-        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10");
-        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
-
-        verify(ancSchedulesService, times(0)).ttVisitHasHappened(ancInformation);
-    }
-
-    @Test
-    public void shouldReportANCVisit() {
-        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("10").withTTDose("TT 2");
-        when(mothers.exists("CASE-X")).thenReturn(true);
-        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
-
-        service.ancHasBeenProvided(ancInformation, EXTRA_DATA);
-
-        verify(motherReportingService).ancHasBeenProvided(new SafeMap(EXTRA_DATA.get("reporting")));
-    }
-
-    @Test
-    public void shouldNotTellANCSchedulesServiceThatIFAIsProvidedWhenNumberOfIFATabletsProvidedIsEmpty() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
-        when(mothers.updateDetails(eq("CASE-X"), any(Map.class))).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1"));
-
-        AnteNatalCareInformation ancInformation = new AnteNatalCareInformation("CASE-X", "ANM 1", 0, "2012-01-23").withNumberOfIFATabletsProvided("");
-        service.ancHasBeenProvided(ancInformation, EXTRA_DATA_EMPTY);
-
-        verify(ancSchedulesService, times(0)).ifaVisitHasHappened(ancInformation);
-    }
-
-    @Test
-    public void shouldNotTryAndFulfillMilestoneWhenANCCareIsProvidedToAMotherWhoIsNotRegisteredInTheSystem() {
-        when(mothers.exists("CASE-UNKNOWN-MOM")).thenReturn(false);
-
-        service.ancHasBeenProvided(new AnteNatalCareInformation("CASE-UNKNOWN-MOM", "ANM 1", 0, "2012-01-23"), EXTRA_DATA_EMPTY);
-
-        verifyZeroInteractions(ancSchedulesService);
-    }
-
-    @Test
-    public void shouldUpdateDetailsAndSendTheUpdatedDetailsAsAnAction() throws Exception {
-        Map<String, String> detailsBeforeUpdate = EXTRA_DATA.get("details");
-        Map<String, String> updatedDetails = mapOf("someNewKey", "someNewValue");
-
-        when(mothers.exists("CASE-X")).thenReturn(true);
-        when(mothers.updateDetails("CASE-X", detailsBeforeUpdate)).thenReturn(new Mother("CASE-X", "EC-CASE-1", "TC 1").withAnm("ANM X").withDetails(updatedDetails));
-
-        service.ancHasBeenProvided(new AnteNatalCareInformation("CASE-X", "ANM X", 1, today().toString()).withNumberOfIFATabletsProvided("10").withTTDose("TT DOSE"), EXTRA_DATA);
-
-        verify(mothers).updateDetails("CASE-X", detailsBeforeUpdate);
-        verify(actionService).updateMotherDetails("CASE-X", "ANM X", updatedDetails);
-        verify(actionService).ancCareProvided("CASE-X", "ANM X", 1, today(), 10, "TT DOSE", detailsBeforeUpdate);
+        verify(ancSchedulesService).ttVisitHasHappened("entity id 1", "anm id 1", "tt1", "2013-01-01");
+        verify(motherReportingService).ttProvided(new SafeMap(mapOf("someKey", "someValue")));
     }
 
     @Test
@@ -435,23 +351,5 @@ public class ANCServiceTest {
 
         verifyZeroInteractions(actionService);
         verify(mothers, times(0)).updateDetails(any(String.class), any(Map.class));
-    }
-
-    @Test
-    public void shouldReportSubsetOfANCUpdate() throws Exception {
-        when(mothers.exists("CASE X")).thenReturn(true);
-
-        service.updateSubsetOfANCInformation(new AnteNatalCareInformationSubset("CASE X", "ANM X"), EXTRA_DATA);
-
-        verify(motherReportingService).subsetOfANCHasBeenProvided(new SafeMap(EXTRA_DATA.get("reporting")));
-    }
-
-    @Test
-    public void shouldNotReportSubsetOfANCUpdateWhenMotherNotFoundInDrishti() throws Exception {
-        when(mothers.exists("CASE X")).thenReturn(false);
-
-        service.updateSubsetOfANCInformation(new AnteNatalCareInformationSubset("CASE X", "ANM X"), EXTRA_DATA);
-
-        verifyZeroInteractions(motherReportingService);
     }
 }

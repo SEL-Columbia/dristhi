@@ -67,7 +67,9 @@ public class AllConstants {
         public static final String REFERENCE_DATE = "referenceDate";
         public static final String ANC_VISIT_DATE_FIELD = "ancVisitDate";
         public static final String ANC_VISIT_NUMBER_FIELD = "ancVisitNumber";
-        public static final String  TT1_DOSE_VALUE = "tt1";
+        public static final String TT_DOSE_FIELD = "ttDose";
+        public static final String TT_DATE_FIELD = "ttDate";
+        public static final String TT1_DOSE_VALUE = "tt1";
         public static final String TT2_DOSE_VALUE = "tt2";
         public static final String TT_BOOSTER__VALUE = "ttbooster";
     }

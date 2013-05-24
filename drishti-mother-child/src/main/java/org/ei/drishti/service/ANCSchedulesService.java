@@ -63,16 +63,6 @@ public class ANCSchedulesService {
         }
     }
 
-    @Deprecated
-    public void ancVisitHasHappened(AnteNatalCareInformation ancInformation) {
-        fastForwardSchedule(ancInformation, ancInformation.visitNumber(), SCHEDULE_ANC, "ANC");
-    }
-
-    @Deprecated
-    public void ttVisitHasHappened(AnteNatalCareInformation ancInformation) {
-        fastForwardSchedule(ancInformation, ancInformation.visitNumber(), SCHEDULE_TT_1, "TT");
-    }
-
     public void ifaVisitHasHappened(AnteNatalCareInformation ancInformation) {
         fulfillCurrentMilestone(ancInformation, SCHEDULE_IFA, "IFA");
     }
