@@ -31,7 +31,8 @@ public class FormSubmissionRouter {
                                 ANCRegistrationHandler ancRegistrationHandler,
                                 ANCRegistrationOAHandler ancRegistrationOAHandler,
                                 ANCVisitHandler ancVisitHandler,
-                                ANCCloseHandler ancCloseHandler) {
+                                ANCCloseHandler ancCloseHandler,
+                                IFAHandler ifaHandler) {
         this.formSubmissionsRepository = formSubmissionsRepository;
         handlerMap = EasyMap.create(EC_REGISTRATION, (FormSubmissionHandler) ecRegistrationHandler)
                 .put(FP_COMPLICATIONS, fpComplicationsHandler)
@@ -44,6 +45,7 @@ public class FormSubmissionRouter {
                 .put(ANC_REGISTRATION_OA, ancRegistrationOAHandler)
                 .put(ANC_VISIT, ancVisitHandler)
                 .put(ANC_CLOSE, ancCloseHandler)
+                .put(IFA, ifaHandler)
                 .map();
     }
 

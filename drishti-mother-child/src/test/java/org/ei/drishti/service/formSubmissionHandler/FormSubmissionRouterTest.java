@@ -35,6 +35,8 @@ public class FormSubmissionRouterTest {
     private ANCVisitHandler ancVisitHandler;
     @Mock
     private ANCCloseHandler ancCloseHandler;
+    @Mock
+    private IFAHandler ifaHandler;
 
     private FormSubmissionRouter router;
 
@@ -52,7 +54,8 @@ public class FormSubmissionRouterTest {
                 ancRegistrationHandler,
                 ancRegistrationOAHandler,
                 ancVisitHandler,
-                ancCloseHandler);
+                ancCloseHandler,
+                ifaHandler);
     }
 
     @Test
@@ -147,5 +150,16 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ancCloseHandler).handle(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateIFAFormSubmissionHandlingToIFAHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ifa", "entity id 1", null, 0L, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(ifaHandler).handle(formSubmission);
     }
 }

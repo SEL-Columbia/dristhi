@@ -188,4 +188,8 @@ public class ANCService {
 
         ancSchedulesService.enrollMother(caseId, referenceDate, new Time(now()), preferredAlertTime);
     }
+
+    public void ifaProvided(FormSubmission submission) {
+
+    }
 }

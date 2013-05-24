@@ -22,6 +22,7 @@ public class AllConstants {
         public static final String ANC_REGISTRATION_OA = "anc_registration_oa";
         public static final String ANC_VISIT = "anc_visit";
         public static final String ANC_CLOSE = "anc_close";
+        public static final String IFA = "ifa";
         public static final String METHOD_STILL_THE_SAME = "method_still_the_same";
     }
 
