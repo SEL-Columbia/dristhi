@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.dto.AlertStatus;
 import org.ei.drishti.dto.BeneficiaryType;
 import org.hamcrest.Description;
@@ -140,16 +139,6 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldFulfillIFA1IfItIsTheCurrentMilestoneWhenIFAIsProvided() {
-        new FastForwardScheduleTestBase().forIFASchedule_old().whenExpecting("IFA 1").willFulfillFor("IFA 1");
-    }
-
-    @Test
-    public void shouldFulfillIFA2IfItIsTheCurrentMilestoneWhenIFAIsProvided() {
-        new FastForwardScheduleTestBase().forIFASchedule_old().whenExpecting("IFA 2").willFulfillFor("IFA 2");
-    }
-
-    @Test
     public void shouldEnrollMotherInTT2ScheduleIfTT1IsProvided() throws Exception {
         schedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "tt1", "2012-01-01");
 
@@ -168,17 +157,6 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         schedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "some other", "2012-01-01");
 
         verifyZeroInteractions(scheduleTrackingService);
-    }
-
-    @Test
-    public void shouldNotFulfillIFAIfIFAScheduleIsAlreadyOver() throws Exception {
-        when(scheduleTrackingService.getEnrollment("Case X", SCHEDULE_IFA)).thenReturn(null);
-
-        schedulesService.ifaVisitHasHappened(new AnteNatalCareInformation("Case X", "ANM 1", 0, "2012-01-23"));
-
-        verify(scheduleTrackingService, times(2)).getEnrollment("Case X", SCHEDULE_IFA);
-        verifyNoMoreInteractions(scheduleTrackingService);
-        verifyZeroInteractions(actionService);
     }
 
     @Test

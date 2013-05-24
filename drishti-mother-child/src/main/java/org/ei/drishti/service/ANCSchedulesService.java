@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.common.util.DateUtil;
-import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.ei.drishti.dto.BeneficiaryType;
 import org.joda.time.LocalDate;
 import org.joda.time.Weeks;
@@ -86,10 +85,6 @@ public class ANCSchedulesService {
         fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_IFA_3, SCHEDULE_IFA_3, parse(ifaGivenDate));
     }
 
-    public void ifaVisitHasHappened(AnteNatalCareInformation ancInformation) {
-        fulfillCurrentMilestone(ancInformation, SCHEDULE_IFA, "IFA");
-    }
-
     public void forceFulfillMilestone(String externalId, String scheduleName) {
         trackingService.fulfillCurrentMilestone(externalId, scheduleName, today(), new Time(now()));
     }
@@ -121,23 +116,6 @@ public class ANCSchedulesService {
 
         trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, milestone, null));
         actionService.alertForBeneficiary(BeneficiaryType.mother, caseId, SCHEDULE_ANC, milestone, normal, referenceDateForSchedule.toDateTime(PREFERED_TIME_FOR_SCHEDULES), referenceDateForSchedule.plusWeeks(12).toDateTime(PREFERED_TIME_FOR_SCHEDULES));
-    }
-
-    private void fulfillCurrentMilestone(AnteNatalCareInformation ancInformation, String scheduleName, String milestonePrefix) {
-        int expectedMilestoneNumber = currentMilestoneNumber(ancInformation.caseId(), scheduleName, milestonePrefix);
-        fulfillMilestoneIfPossible(ancInformation, scheduleName, milestonePrefix, expectedMilestoneNumber);
-    }
-
-    private void fulfillMilestoneIfPossible(AnteNatalCareInformation ancInformation, String scheduleName, String milestonePrefix, int visitNumber) {
-        String caseId = ancInformation.caseId();
-
-        if (isNotEnrolled(caseId, scheduleName)) {
-            logger.warn(format("Tried to fulfill milestone {0} of {1} {2} for visit: {3}", milestonePrefix, scheduleName, ancInformation.caseId(), ancInformation.visitNumber()));
-            return;
-        }
-
-        trackingService.fulfillCurrentMilestone(caseId, scheduleName, ancInformation.visitDate(), new Time(now()));
-        actionService.markAlertAsClosed(caseId, ancInformation.anmIdentifier(), milestonePrefix + " " + visitNumber, ancInformation.visitDate().toString());
     }
 
     private void fastForwardSchedule(String entityId, String anmId, String scheduleName, String milestonePrefix, int visitNumberToFulfill, LocalDate visitDate) {

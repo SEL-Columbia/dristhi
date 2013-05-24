@@ -23,9 +23,6 @@ public class DrishtiMCTSService {
         this.mothers = mothers;
     }
 
-    public void ancCareHasBeenProvided(AnteNatalCareInformation ancInformation) {
-    }
-
     public void updateANCOutcome(AnteNatalCareOutcomeInformation careOutcomeInformation) {
     }
 

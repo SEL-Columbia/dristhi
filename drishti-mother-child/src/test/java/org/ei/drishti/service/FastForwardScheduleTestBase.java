@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareInformation;
 import org.joda.time.LocalDate;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
@@ -80,17 +79,6 @@ public class FastForwardScheduleTestBase {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
                 schedulesService.ifaTabletsGiven(caseId, "ANM 1", numberOfIFATabletsGiven, visitDate.toString());
-            }
-        };
-        return this;
-    }
-
-    public FastForwardScheduleTestBase forIFASchedule_old() {
-        this.scheduleName = SCHEDULE_IFA;
-        this.serviceCall = new Action() {
-            @Override
-            public void make(String caseId, int visitNumber, LocalDate visitDate) {
-                schedulesService.ifaVisitHasHappened(new AnteNatalCareInformation(caseId, "ANM 1", 0, visitDate.toString()));
             }
         };
         return this;
