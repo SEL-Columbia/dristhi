@@ -109,23 +109,6 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldProvideAlertsForIFA() throws Exception {
-        schedule.enrollFor("Iron Folic Acid Supplements", newDate(2012, 1, 1), new Time(14, 0));
-
-        schedule.assertNoAlerts("IFA 1", earliest);
-        schedule.assertNoAlerts("IFA 1", due);
-        schedule.assertAlertsStartWith("IFA 1", late, date(1, APRIL), date(4, APRIL), date(8, APRIL), date(11, APRIL), date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL));
-        schedule.assertNoAlerts("IFA 1", max);
-
-        schedule.assertNoAlerts("IFA 2", earliest);
-        schedule.assertNoAlerts("IFA 2", due);
-        schedule.assertAlerts("IFA 2", late, date(17, JUNE), date(15, JULY), date(12, AUGUST), date(9, SEPTEMBER), date(7, OCTOBER));
-        schedule.assertNoAlerts("IFA 2", max);
-
-        visualization.outputTo("mother-ifa-supplements.html", 3);
-    }
-
-    @Test
     public void shouldProvideAlertsForBCG() throws Exception {
         schedule.enrollFor(CHILD_SCHEDULE_BCG, newDate(2012, 1, 1), new Time(14, 0));
 
@@ -481,6 +464,18 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts("TT 2", max);
 
         visualization.outputTo("mother-tt-2.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForIFA1() throws Exception {
+        schedule.enrollFor("IFA 1", newDate(2012, 1, 1), new Time(14, 0));
+
+        schedule.assertAlertsStartWith("IFA 1", earliest, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY));
+        schedule.assertAlertsStartWith("IFA 1", due, date(1, APRIL), date(2, APRIL), date(3, APRIL), date(4, APRIL));
+        schedule.assertAlertsStartWith("IFA 1", late, date(15, APRIL), date(18, APRIL), date(21, APRIL), date(24, APRIL));
+        schedule.assertNoAlerts("IFA 1", max);
+
+        visualization.outputTo("mother-ifa-1.html", 1);
     }
 
     @Before
