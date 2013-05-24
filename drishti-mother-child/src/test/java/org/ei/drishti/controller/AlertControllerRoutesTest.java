@@ -44,6 +44,8 @@ public class AlertControllerRoutesTest {
         Event.of(SCHEDULE_IFA_1, "IFA 2", WindowName.late).shouldRouteToAlertCreationActionForMother();
         Event.of(SCHEDULE_TT_1, "SomeMilestone", WindowName.due).shouldRouteToAlertCreationActionForMother();
         Event.of(SCHEDULE_TT_1, "SomeOtherMilestone", WindowName.late).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_TT_2, "TT 2", WindowName.due).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_TT_2, "TT 2", WindowName.late).shouldRouteToAlertCreationActionForMother();
     }
 
     @Test
