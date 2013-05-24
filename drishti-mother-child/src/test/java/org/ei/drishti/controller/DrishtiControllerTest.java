@@ -4,7 +4,6 @@ import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.DrishtiMCTSService;
-import org.ei.drishti.service.ECService;
 import org.ei.drishti.service.PNCService;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,8 +24,6 @@ public class DrishtiControllerTest {
     private CommCareFormSubmissionRouter dispatcher;
     @Mock
     private ANCService ancService;
-    @Mock
-    private ECService ecService;
     @Mock
     private DrishtiMCTSService mctsService;
     @Mock
