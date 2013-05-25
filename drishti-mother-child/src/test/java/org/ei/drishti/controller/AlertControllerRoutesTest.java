@@ -14,7 +14,7 @@ import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleCon
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.mockito.Mockito.*;
-import static org.motechproject.scheduletracking.api.domain.WindowName.max;
+import static org.motechproject.scheduletracking.api.domain.WindowName.*;
 
 public class AlertControllerRoutesTest {
     @Test
@@ -32,61 +32,100 @@ public class AlertControllerRoutesTest {
 
     @Test
     public void shouldSendDueRemindersOfAllMotherSchedulesToCaptureRemindersAction() throws Exception {
-        Event.of(SCHEDULE_ANC, "ANC 1", WindowName.due).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_ANC, "ANC 1", WindowName.late).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_LAB, "Reminder", WindowName.due).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_LAB, "Reminder", WindowName.late).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_EDD, "Reminder", WindowName.due).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_EDD, "Reminder", WindowName.late).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_IFA_1, "IFA 1", WindowName.due).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_IFA_1, "IFA 1", WindowName.late).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_IFA_1, "IFA 2", WindowName.due).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_IFA_1, "IFA 2", WindowName.late).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_TT_1, "SomeMilestone", WindowName.due).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_TT_1, "SomeOtherMilestone", WindowName.late).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_TT_2, "TT 2", WindowName.due).shouldRouteToAlertCreationActionForMother();
-        Event.of(SCHEDULE_TT_2, "TT 2", WindowName.late).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_ANC, "ANC 1", due).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_ANC, "ANC 1", late).shouldRouteToAlertCreationActionForMother();
+
+        Event.of(SCHEDULE_LAB, "Reminder", due).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_LAB, "Reminder", late).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_EDD, "Reminder", due).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_EDD, "Reminder", late).shouldRouteToAlertCreationActionForMother();
+
+        Event.of(SCHEDULE_IFA_1, "IFA 1", earliest).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_IFA_1, "IFA 1", due).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_IFA_1, "IFA 1", late).shouldRouteToAlertCreationActionForMother();
+
+        Event.of(SCHEDULE_IFA_1, "IFA 2", earliest).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_IFA_1, "IFA 2", due).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_IFA_1, "IFA 2", late).shouldRouteToAlertCreationActionForMother();
+
+        Event.of(SCHEDULE_IFA_1, "IFA 3", earliest).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_IFA_1, "IFA 3", due).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_IFA_1, "IFA 3", late).shouldRouteToAlertCreationActionForMother();
+
+        Event.of(SCHEDULE_TT_1, "TT 1", earliest).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_TT_1, "TT 1", due).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_TT_1, "TT 1", late).shouldRouteToAlertCreationActionForMother();
+
+        Event.of(SCHEDULE_TT_2, "TT 2", earliest).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_TT_2, "TT 2", due).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_TT_2, "TT 2", late).shouldRouteToAlertCreationActionForMother();
     }
 
     @Test
     public void shouldSendReminderForAllChildSchedulesToCaptureRemindersAction() throws Exception {
-        Event.of(CHILD_SCHEDULE_BCG, "BCG", WindowName.due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_BCG, "BCG", WindowName.late).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", WindowName.due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", WindowName.late).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT2, "DPT 2", WindowName.due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT2, "DPT 2", WindowName.late).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT2, "DPT 3", WindowName.due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT2, "DPT 3", WindowName.late).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", WindowName.late).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_MEASLES, "Measles", WindowName.due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_MEASLES, "Measles", WindowName.late).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", WindowName.due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", WindowName.late).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", WindowName.late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_BCG, "BCG", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_BCG, "BCG", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_BCG, "BCG", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_DPT2, "DPT 2", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT2, "DPT 2", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT2, "DPT 2", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_DPT2, "DPT 3", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT2, "DPT 3", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT2, "DPT 3", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_MEASLES, "Measles", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_MEASLES, "Measles", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_MEASLES, "Measles", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", late).shouldRouteToAlertCreationActionForChild();
     }
 
     @Test
     public void shouldSendDueRemindersOfAllEcsToCaptureRemindersAction() throws Exception {
-        Event.of(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, "DMPA Injectable Refill", WindowName.due).shouldRouteToAlertCreationActionForEC();
-        Event.of(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, "DMPA Injectable Refill", WindowName.late).shouldRouteToAlertCreationActionForEC();
-        Event.of(EC_SCHEDULE_OCP_REFILL, "OCP Refill", WindowName.due).shouldRouteToAlertCreationActionForEC();
-        Event.of(EC_SCHEDULE_OCP_REFILL, "OCP Refill", WindowName.late).shouldRouteToAlertCreationActionForEC();
-        Event.of(EC_SCHEDULE_CONDOM_REFILL, "Condom Refill", WindowName.due).shouldRouteToAlertCreationActionForEC();
-        Event.of(EC_SCHEDULE_CONDOM_REFILL, "Condom Refill", WindowName.late).shouldRouteToAlertCreationActionForEC();
-        Event.of(EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP, "Female sterilization followup", WindowName.due).shouldRouteToAlertCreationActionForEC();
-        Event.of(EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP, "Female sterilization followup", WindowName.late).shouldRouteToAlertCreationActionForEC();
-        Event.of(EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP, "Male sterilization followup", WindowName.due).shouldRouteToAlertCreationActionForEC();
-        Event.of(EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP, "Male sterilization followup", WindowName.late).shouldRouteToAlertCreationActionForEC();
-        Event.of(EC_SCHEDULE_IUD_FOLLOWUP, "IUD followup", WindowName.due).shouldRouteToAlertCreationActionForEC();
-        Event.of(EC_SCHEDULE_IUD_FOLLOWUP, "IUD followup", WindowName.late).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, "DMPA Injectable Refill", earliest).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, "DMPA Injectable Refill", due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, "DMPA Injectable Refill", late).shouldRouteToAlertCreationActionForEC();
+
+        Event.of(EC_SCHEDULE_OCP_REFILL, "OCP Refill", earliest).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_OCP_REFILL, "OCP Refill", due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_OCP_REFILL, "OCP Refill", late).shouldRouteToAlertCreationActionForEC();
+
+        Event.of(EC_SCHEDULE_CONDOM_REFILL, "Condom Refill", earliest).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_CONDOM_REFILL, "Condom Refill", due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_CONDOM_REFILL, "Condom Refill", late).shouldRouteToAlertCreationActionForEC();
+
+        Event.of(EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP, "Female sterilization followup", earliest).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP, "Female sterilization followup", due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP, "Female sterilization followup", late).shouldRouteToAlertCreationActionForEC();
+
+        Event.of(EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP, "Male sterilization followup", earliest).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP, "Male sterilization followup", due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP, "Male sterilization followup", late).shouldRouteToAlertCreationActionForEC();
+
+        Event.of(EC_SCHEDULE_IUD_FOLLOWUP, "IUD followup", earliest).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_IUD_FOLLOWUP, "IUD followup", due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_IUD_FOLLOWUP, "IUD followup", late).shouldRouteToAlertCreationActionForEC();
     }
 
     @Test
     public void shouldSendDueRemindersOfPNCCloseToAutoClosePNCAction() throws Exception {
-        Event.of(SCHEDULE_AUTO_CLOSE_PNC, "PNC Close", WindowName.due).shouldRouteToAutoClosePNCAction();
+        Event.of(SCHEDULE_AUTO_CLOSE_PNC, "PNC Close", due).shouldRouteToAutoClosePNCAction();
     }
 
     private static class Event {
