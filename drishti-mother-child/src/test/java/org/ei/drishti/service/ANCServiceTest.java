@@ -13,7 +13,6 @@ import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.model.Time;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -117,7 +116,7 @@ public class ANCServiceTest {
 
         service.registerANC(submission);
 
-        verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp), any(Time.class));
+        verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp));
     }
 
     @Test
@@ -142,7 +141,7 @@ public class ANCServiceTest {
         service.registerOutOfAreaANC(submission);
 
         verify(mothers).update(mother.withAnm("anm id 1"));
-        verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp), any(Time.class));
+        verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp));
     }
 
     @Test

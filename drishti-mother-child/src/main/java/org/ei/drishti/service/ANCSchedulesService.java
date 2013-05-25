@@ -42,11 +42,11 @@ public class ANCSchedulesService {
         this.actionService = actionService;
     }
 
-    public void enrollMother(String caseId, LocalDate referenceDateForSchedule, Time preferredAlertTime) {
+    public void enrollMother(String caseId, LocalDate referenceDateForSchedule) {
         for (String schedule : NON_ANC_SCHEDULES) {
-            trackingService.enroll(new EnrollmentRequest(caseId, schedule, preferredAlertTime, referenceDateForSchedule, null, null, null, null, null));
+            trackingService.enroll(new EnrollmentRequest(caseId, schedule, new Time(PREFERED_TIME_FOR_SCHEDULES), referenceDateForSchedule, null, null, null, null, null));
         }
-        enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule, preferredAlertTime);
+        enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule);
     }
 
     public void ancVisitHasHappened(String entityId, String anmId, int visitNumberToFulfill, String visitDate) {
@@ -98,7 +98,7 @@ public class ANCSchedulesService {
         actionService.markAllAlertsAsInactive(caseId);
     }
 
-    private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule, Time preferredAlertTime) {
+    private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule) {
         String milestone;
 
         if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(16).toPeriod().minusDays(1))) {
@@ -114,7 +114,7 @@ public class ANCSchedulesService {
             return;
         }
 
-        trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, null, null, null, milestone, null));
+        trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, new Time(PREFERED_TIME_FOR_SCHEDULES), referenceDateForSchedule, null, null, null, milestone, null));
         actionService.alertForBeneficiary(BeneficiaryType.mother, caseId, SCHEDULE_ANC, milestone, normal, referenceDateForSchedule.toDateTime(PREFERED_TIME_FOR_SCHEDULES),
                 referenceDateForSchedule.plusWeeks(12).toDateTime(PREFERED_TIME_FOR_SCHEDULES));
     }

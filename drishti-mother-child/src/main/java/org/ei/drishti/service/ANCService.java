@@ -9,8 +9,6 @@ import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.util.SafeMap;
-import org.joda.time.LocalDate;
-import org.motechproject.model.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +27,7 @@ import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.IFAFields.IFA_TABLETS_DATE;
 import static org.ei.drishti.common.AllConstants.IFAFields.NUMBER_OF_IFA_TABLETS_GIVEN;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
-import static org.ei.drishti.common.util.DateUtil.today;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
-import static org.joda.time.LocalTime.now;
 
 @Service
 public class ANCService {
@@ -72,7 +67,7 @@ public class ANCService {
         Mother mother = allMothers.findByCaseId(motherId);
         allMothers.update(mother.withAnm(submission.anmId()));
 
-        enrollMotherIntoSchedules(motherId, parse(submission.getField(REFERENCE_DATE)));
+        ancSchedulesService.enrollMother(motherId, parse(submission.getField(REFERENCE_DATE)));
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.registerANC(new SafeMap(submission.getFields(reportFields)));
@@ -90,7 +85,7 @@ public class ANCService {
         Mother mother = allMothers.findByCaseId(motherId);
         allMothers.update(mother.withAnm(submission.anmId()));
 
-        enrollMotherIntoSchedules(motherId, parse(submission.getField(REFERENCE_DATE)));
+        ancSchedulesService.enrollMother(motherId, parse(submission.getField(REFERENCE_DATE)));
     }
 
     public void ancVisit(FormSubmission submission) {
@@ -170,12 +165,5 @@ public class ANCService {
 
         Mother motherWithUpdatedDetails = allMothers.updateDetails(request.caseId(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
         actionService.updateBirthPlanning(request.caseId(), request.anmIdentifier(), motherWithUpdatedDetails.details());
-    }
-
-    private void enrollMotherIntoSchedules(String caseId, LocalDate lmpDate) {
-        Time preferredAlertTime = new Time(PREFERED_TIME_FOR_SCHEDULES);
-        LocalDate referenceDate = lmpDate != null ? lmpDate : today();
-
-        ancSchedulesService.enrollMother(caseId, referenceDate, preferredAlertTime);
     }
 }
