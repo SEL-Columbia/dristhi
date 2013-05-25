@@ -176,6 +176,6 @@ public class ANCService {
         Time preferredAlertTime = new Time(PREFERED_TIME_FOR_SCHEDULES);
         LocalDate referenceDate = lmpDate != null ? lmpDate : today();
 
-        ancSchedulesService.enrollMother(caseId, referenceDate, new Time(now()), preferredAlertTime);
+        ancSchedulesService.enrollMother(caseId, referenceDate, preferredAlertTime);
     }
 }

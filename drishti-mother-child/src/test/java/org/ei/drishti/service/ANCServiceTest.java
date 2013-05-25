@@ -117,7 +117,7 @@ public class ANCServiceTest {
 
         service.registerANC(submission);
 
-        verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp), any(Time.class), any(Time.class));
+        verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp), any(Time.class));
     }
 
     @Test
@@ -142,7 +142,7 @@ public class ANCServiceTest {
         service.registerOutOfAreaANC(submission);
 
         verify(mothers).update(mother.withAnm("anm id 1"));
-        verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp), any(Time.class), any(Time.class));
+        verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp), any(Time.class));
     }
 
     @Test

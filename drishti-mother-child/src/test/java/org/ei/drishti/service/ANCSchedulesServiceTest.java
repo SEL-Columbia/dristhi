@@ -51,7 +51,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         fakeIt(parse("2012-01-01"));
         LocalDate lmp = today().minusDays(3);
 
-        schedulesService.enrollMother("Case X", lmp, new Time(15, 0), new Time(14, 0));
+        schedulesService.enrollMother("Case X", lmp, new Time(14, 0));
 
         verify(scheduleTrackingService).enroll(ancEnrollmentFor("Case X", SCHEDULE_ANC, lmp, "ANC 1"));
         verifyNonANCScheduleEnrollments(lmp);
@@ -207,7 +207,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         LocalDate lmp = new LocalDate(2012, 1, 1);
         fakeIt(enrollmentDate);
 
-        schedulesService.enrollMother("Case X", lmp, new Time(15, 0), new Time(14, 0));
+        schedulesService.enrollMother("Case X", lmp, new Time(14, 0));
 
         verifyNonANCScheduleEnrollments(lmp);
         verify(scheduleTrackingService, times(wantedNumberOfInvocations)).enroll(ancEnrollmentFor("Case X", SCHEDULE_ANC, lmp, expectedMilestone));
@@ -234,8 +234,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
                         && lmp.equals(request.getReferenceDate())
                         && scheduleName.equals(request.getScheduleName())
                         && expectedMilestoneThePersonWillBeEnrolledInto.equals(request.getStartingMilestoneName())
-                        && new Time(14, 0).equals(request.getPreferredAlertTime())
-                        && new Time(15, 0).equals(request.getReferenceTime());
+                        && new Time(14, 0).equals(request.getPreferredAlertTime());
             }
 
             @Override
