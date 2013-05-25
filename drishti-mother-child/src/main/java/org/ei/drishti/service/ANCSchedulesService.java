@@ -50,16 +50,16 @@ public class ANCSchedulesService {
     }
 
     public void ancVisitHasHappened(String entityId, String anmId, int visitNumberToFulfill, String visitDate) {
-        fastForwardSchedule(entityId, anmId, SCHEDULE_ANC, "ANC", visitNumberToFulfill, parse(visitDate));
+        fastForwardSchedule(entityId, anmId, SCHEDULE_ANC, SCHEDULE_ANC_MILESTONE_PREFIX, visitNumberToFulfill, parse(visitDate));
     }
 
     public void ttVisitHasHappened(String entityId, String anmId, String ttDose, String ttDate) {
         if (TT1_DOSE_VALUE.equals(ttDose) || TT_BOOSTER__VALUE.equals(ttDose)) {
-            fulfillMilestoneIfPossible(entityId, anmId, "TT 1", "TT 1", parse(ttDate));
-            trackingService.enroll(new EnrollmentRequest(entityId, "TT 2", new Time(PREFERED_TIME_FOR_SCHEDULES),
+            fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_1, SCHEDULE_TT_1, parse(ttDate));
+            trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_TT_2, new Time(PREFERED_TIME_FOR_SCHEDULES),
                     parse(ttDate), new Time(now()), null, null, null, null));
         } else if (TT2_DOSE_VALUE.equals(ttDose)) {
-            fulfillMilestoneIfPossible(entityId, anmId, "TT 2", "TT 2", parse(ttDate));
+            fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_2, SCHEDULE_TT_2, parse(ttDate));
         }
     }
 
@@ -102,20 +102,21 @@ public class ANCSchedulesService {
         String milestone;
 
         if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(16).toPeriod().minusDays(1))) {
-            milestone = "ANC 1";
+            milestone = SCHEDULE_ANC_1;
         } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(28).toPeriod().minusDays(1))) {
-            milestone = "ANC 2";
+            milestone = SCHEDULE_ANC_2;
         } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(34).toPeriod().minusDays(1))) {
-            milestone = "ANC 3";
+            milestone = SCHEDULE_ANC_3;
         } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(40).toPeriod())) {
-            milestone = "ANC 4";
+            milestone = SCHEDULE_ANC_4;
         } else {
             logger.warn("Too late to enroll " + caseId + " into ANC schedule. Reference date is: " + referenceDateForSchedule);
             return;
         }
 
         trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, preferredAlertTime, referenceDateForSchedule, referenceTime, null, null, milestone, null));
-        actionService.alertForBeneficiary(BeneficiaryType.mother, caseId, SCHEDULE_ANC, milestone, normal, referenceDateForSchedule.toDateTime(PREFERED_TIME_FOR_SCHEDULES), referenceDateForSchedule.plusWeeks(12).toDateTime(PREFERED_TIME_FOR_SCHEDULES));
+        actionService.alertForBeneficiary(BeneficiaryType.mother, caseId, SCHEDULE_ANC, milestone, normal, referenceDateForSchedule.toDateTime(PREFERED_TIME_FOR_SCHEDULES),
+                referenceDateForSchedule.plusWeeks(12).toDateTime(PREFERED_TIME_FOR_SCHEDULES));
     }
 
     private void fastForwardSchedule(String entityId, String anmId, String scheduleName, String milestonePrefix, int visitNumberToFulfill, LocalDate visitDate) {

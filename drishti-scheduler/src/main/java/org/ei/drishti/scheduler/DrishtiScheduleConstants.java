@@ -27,6 +27,11 @@ public class DrishtiScheduleConstants {
 
     public static class MotherScheduleConstants {
         public static final String SCHEDULE_ANC = "Ante Natal Care - Normal";
+        public static final String SCHEDULE_ANC_MILESTONE_PREFIX = "ANC";
+        public static final String SCHEDULE_ANC_1 = "ANC 1";
+        public static final String SCHEDULE_ANC_2 = "ANC 2";
+        public static final String SCHEDULE_ANC_3 = "ANC 3";
+        public static final String SCHEDULE_ANC_4 = "ANC 4";
         public static final String SCHEDULE_EDD = "Expected Date Of Delivery";
         public static final String SCHEDULE_LAB = "Lab Reminders";
         public static final String SCHEDULE_TT_1 = "TT 1";

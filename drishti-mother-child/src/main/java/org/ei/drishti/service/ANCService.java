@@ -134,6 +134,20 @@ public class ANCService {
         reportingService.ttProvided(new SafeMap(submission.getFields(reportFields)));
     }
 
+    public void ifaTabletsGiven(FormSubmission submission) {
+        if (!allMothers.exists(submission.entityId())) {
+            logger.warn("Tried to handle ifa tablets given without registered mother. Submission: " + submission);
+            return;
+        }
+
+        ancSchedulesService.ifaTabletsGiven(
+                submission.entityId(),
+                submission.anmId(),
+                submission.getField(NUMBER_OF_IFA_TABLETS_GIVEN),
+                submission.getField(IFA_TABLETS_DATE));
+    }
+
+    @Deprecated
     public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
         String caseId = outcomeInformation.motherCaseId();
         if (!allMothers.exists(caseId)) {
@@ -147,6 +161,7 @@ public class ANCService {
         actionService.updateANCOutcome(caseId, outcomeInformation.anmIdentifier(), updatedMother.details());
     }
 
+    @Deprecated
     public void updateBirthPlanning(BirthPlanningRequest request, Map<String, Map<String, String>> extraData) {
         if (!allMothers.exists(request.caseId())) {
             logger.warn("Tried to update birth planning without registered mother: " + request);
@@ -162,18 +177,5 @@ public class ANCService {
         LocalDate referenceDate = lmpDate != null ? lmpDate : today();
 
         ancSchedulesService.enrollMother(caseId, referenceDate, new Time(now()), preferredAlertTime);
-    }
-
-    public void ifaTabletsGiven(FormSubmission submission) {
-        if (!allMothers.exists(submission.entityId())) {
-            logger.warn("Tried to handle ifa tablets given without registered mother. Submission: " + submission);
-            return;
-        }
-
-        ancSchedulesService.ifaTabletsGiven(
-                submission.entityId(),
-                submission.anmId(),
-                submission.getField(NUMBER_OF_IFA_TABLETS_GIVEN),
-                submission.getField(IFA_TABLETS_DATE));
     }
 }
