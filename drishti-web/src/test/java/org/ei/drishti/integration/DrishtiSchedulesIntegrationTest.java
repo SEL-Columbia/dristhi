@@ -490,6 +490,18 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("mother-ifa-2.html", 1);
     }
 
+    @Test
+    public void shouldProvideAlertsForIFA3() throws Exception {
+        schedule.enrollFor("IFA 3", newDate(2012, 1, 1), new Time(14, 0));
+
+        schedule.assertAlertsStartWith("IFA 3", earliest, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY));
+        schedule.assertAlertsStartWith("IFA 3", due, date(1, FEBRUARY), date(2, FEBRUARY), date(3, FEBRUARY), date(4, FEBRUARY));
+        schedule.assertAlertsStartWith("IFA 3", late, date(15, FEBRUARY), date(18, FEBRUARY), date(21, FEBRUARY), date(24, FEBRUARY));
+        schedule.assertNoAlerts("IFA 3", max);
+
+        visualization.outputTo("mother-ifa-3.html", 1);
+    }
+
     @Before
     public void setUp() throws Exception {
         FakeSchedule fakeSchedule = new FakeSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {
