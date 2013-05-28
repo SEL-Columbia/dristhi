@@ -471,8 +471,8 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.enrollFor("IFA 1", newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertAlertsStartWith("IFA 1", earliest, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY));
-        schedule.assertAlertsStartWith("IFA 1", due, date(1, APRIL), date(2, APRIL), date(3, APRIL), date(4, APRIL));
-        schedule.assertAlertsStartWith("IFA 1", late, date(15, APRIL), date(18, APRIL), date(21, APRIL), date(24, APRIL));
+        schedule.assertAlertsStartWith("IFA 1", due, date(8, APRIL), date(9, APRIL), date(10, APRIL), date(11, APRIL));
+        schedule.assertAlertsStartWith("IFA 1", late, date(22, APRIL), date(25, APRIL), date(28, APRIL), date(1, MAY));
         schedule.assertNoAlerts("IFA 1", max);
 
         visualization.outputTo("mother-ifa-1.html", 1);
