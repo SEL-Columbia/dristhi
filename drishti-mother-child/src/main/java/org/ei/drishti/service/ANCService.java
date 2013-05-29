@@ -142,6 +142,9 @@ public class ANCService {
                 submission.getField(IFA_TABLETS_DATE));
     }
 
+    public void hbTest(FormSubmission submission) {
+    }
+
     @Deprecated
     public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
         String caseId = outcomeInformation.motherCaseId();

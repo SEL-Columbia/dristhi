@@ -23,6 +23,7 @@ public class AllConstants {
         public static final String ANC_VISIT = "anc_visit";
         public static final String ANC_CLOSE = "anc_close";
         public static final String IFA = "ifa";
+        public static final String HB_TEST = "hb_test";
         public static final String TT_BOOSTER = "tt_booster";
         public static final String TT_1 = "tt_1";
         public static final String TT_2 = "tt_2";
