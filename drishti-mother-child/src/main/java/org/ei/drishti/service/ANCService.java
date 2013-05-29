@@ -101,27 +101,6 @@ public class ANCService {
         reportingService.ancVisit(new SafeMap(submission.getFields(reportFields)));
     }
 
-    public void closeANCCase(FormSubmission submission) {
-        Mother mother = allMothers.findByCaseId(submission.entityId());
-        if (mother == null) {
-            logger.warn("Tried to close case without registered mother for case ID: " + submission.entityId());
-            return;
-        }
-
-        allMothers.close(submission.entityId());
-        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
-        reportingService.closeANC(new SafeMap(submission.getFields(reportFields)));
-
-        ancSchedulesService.unEnrollFromSchedules(submission.entityId());
-        actionService.markAllAlertsAsInactive(submission.entityId());
-
-        if (DEATH_OF_WOMAN_COMMCARE_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_COMMCARE_FIELD_NAME))
-                || PERMANENT_RELOCATION_COMMCARE_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
-            logger.info("Closing EC case along with ANC case. Submission: " + submission);
-            eligibleCouples.close(mother.ecCaseId());
-        }
-    }
-
     public void ttProvided(FormSubmission submission) {
         ancSchedulesService.ttVisitHasHappened(submission.entityId(), submission.anmId(), submission.getField(TT_DOSE_FIELD), submission.getField(TT_DATE_FIELD));
 
@@ -143,6 +122,33 @@ public class ANCService {
     }
 
     public void hbTest(FormSubmission submission) {
+        if (!allMothers.exists(submission.entityId())) {
+            logger.warn("Tried to handle HB test given without registered mother. Submission: " + submission);
+            return;
+        }
+
+        ancSchedulesService.hbTestDone(submission.entityId(), submission.anmId(), submission.getField(HB_TEST_DATE_FIELD));
+    }
+
+    public void closeANCCase(FormSubmission submission) {
+        Mother mother = allMothers.findByCaseId(submission.entityId());
+        if (mother == null) {
+            logger.warn("Tried to close case without registered mother for case ID: " + submission.entityId());
+            return;
+        }
+
+        allMothers.close(submission.entityId());
+        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+        reportingService.closeANC(new SafeMap(submission.getFields(reportFields)));
+
+        ancSchedulesService.unEnrollFromSchedules(submission.entityId());
+        actionService.markAllAlertsAsInactive(submission.entityId());
+
+        if (DEATH_OF_WOMAN_COMMCARE_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_COMMCARE_FIELD_NAME))
+                || PERMANENT_RELOCATION_COMMCARE_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
+            logger.info("Closing EC case along with ANC case. Submission: " + submission);
+            eligibleCouples.close(mother.ecCaseId());
+        }
     }
 
     @Deprecated

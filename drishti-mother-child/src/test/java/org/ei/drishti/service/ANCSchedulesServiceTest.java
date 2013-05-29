@@ -194,6 +194,23 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         verify(actionService).markAllAlertsAsInactive("Case X");
     }
 
+    @Test
+    public void shouldUnenrollAMotherFromAOpenSchedule() {
+        schedulesService.unEnrollFromSchedule("Case X", "Schedule");
+
+        verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule"));
+    }
+
+    @Test
+    public void shouldFulfillCurrentMilestoneWhenHBTestIsDone() {
+        when(scheduleTrackingService.getEnrollment("Case X", "HB Test"))
+                .thenReturn(new EnrollmentRecord("Case X", "HB Test", "HB Test 1", null, null, null, null, null, null, null));
+
+        schedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01");
+
+        verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("HB Test"), eq(parse("2013-01-01")), any(Time.class));
+    }
+
     private void assertEnrollmentIntoMilestoneBasedOnDate(LocalDate enrollmentDate, String expectedMilestone) throws Exception {
         assertEnrollmentIntoMilestoneBasedOnDate(enrollmentDate, expectedMilestone, 1);
     }
@@ -259,5 +276,6 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_LAB, lmp));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_TT_1, lmp));
         verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_IFA_1, lmp));
+        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_HB_TEST, lmp));
     }
 }

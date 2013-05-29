@@ -218,6 +218,22 @@ public class ANCServiceTest {
     }
 
     @Test
+    public void shouldHandleHBTest() {
+        FormSubmission submission = create()
+                .withFormName("tt_1")
+                .withANMId("anm id 1")
+                .withEntityId("entity id 1")
+                .addFormField("hbTestDate", "2013-01-01")
+                .build();
+
+        when(mothers.exists("entity id 1")).thenReturn(true);
+
+        service.hbTest(submission);
+
+        verify(ancSchedulesService).hbTestDone("entity id 1", "anm id 1", "2013-01-01");
+    }
+
+    @Test
     public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
         when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 

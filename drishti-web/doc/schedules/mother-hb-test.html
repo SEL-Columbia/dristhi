@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(1).draw();
+schedule.addAlertsStartingWith("HB Test 1", "HB Test 1 - due (Will continue till service is delivered)", [new Date("Jan 01, 2012"), new Date("Jan 08, 2012"), new Date("Jan 15, 2012"), ]);
+schedule.addAlertsStartingWith("HB Test 1", "HB Test 1 - late (Will continue till service is delivered)", [new Date("Mar 25, 2012"), new Date("Apr 01, 2012"), new Date("Apr 08, 2012"), ]);
+schedule.addAlerts("HB Test 2", "HB Test 2 - due", [new Date("Jul 15, 2012"), new Date("Jul 22, 2012"), ]);
+schedule.addAlertsStartingWith("HB Test 2", "HB Test 2 - late (Will continue till service is delivered)", [new Date("Jul 29, 2012"), new Date("Aug 05, 2012"), new Date("Aug 12, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>HB Test</center></body></html>

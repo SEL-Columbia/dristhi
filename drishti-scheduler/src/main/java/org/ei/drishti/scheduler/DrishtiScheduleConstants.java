@@ -40,6 +40,7 @@ public class DrishtiScheduleConstants {
         public static final String SCHEDULE_IFA_1 = "IFA 1";
         public static final String SCHEDULE_IFA_2 = "IFA 2";
         public static final String SCHEDULE_IFA_3 = "IFA 3";
+        public static final String SCHEDULE_HB_TEST = "HB Test";
     }
 
     public static class ECSchedulesConstants {

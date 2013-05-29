@@ -33,7 +33,7 @@ public class ANCSchedulesService {
     private static Logger logger = LoggerFactory.getLogger(ANCSchedulesService.class.toString());
 
     private final ScheduleTrackingService trackingService;
-    private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1};
+    private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1, SCHEDULE_HB_TEST};
     private ActionService actionService;
 
     @Autowired
@@ -85,6 +85,11 @@ public class ANCSchedulesService {
         fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_IFA_3, SCHEDULE_IFA_3, parse(ifaGivenDate));
     }
 
+    public void hbTestDone(String entityId, String anmId, String date) {
+        EnrollmentRecord enrollment = trackingService.getEnrollment(entityId, SCHEDULE_HB_TEST);
+        fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_HB_TEST, enrollment.getCurrentMilestoneName(), parse(date));
+    }
+
     public void forceFulfillMilestone(String externalId, String scheduleName) {
         trackingService.fulfillCurrentMilestone(externalId, scheduleName, today(), new Time(now()));
     }
@@ -96,6 +101,10 @@ public class ANCSchedulesService {
             trackingService.unenroll(caseId, asList(enrollment.getScheduleName()));
         }
         actionService.markAllAlertsAsInactive(caseId);
+    }
+
+    public void unEnrollFromSchedule(String entityId, String scheduleName) {
+        trackingService.unenroll(entityId, asList(scheduleName));
     }
 
     private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule) {

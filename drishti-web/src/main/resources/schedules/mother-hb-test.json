@@ -1,0 +1,52 @@
+{
+    "name": "HB Test",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "HB Test 1",
+            "scheduleWindows": {
+                "earliest": ["0 Weeks"],
+                "due": ["12 Weeks"],
+                "late": ["28 Weeks"],
+                "max": [""]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["0 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "12"
+                },
+                {
+                    "window": "late",
+                    "offset": ["12 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "16"
+                }
+            ]
+        },
+        {
+            "name": "HB Test 2",
+            "scheduleWindows": {
+                "earliest": ["0 Weeks"],
+                "due": ["30 Weeks"],
+                "late": ["1 year"],
+                "max": [""]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["28 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "2"
+                },
+                {
+                    "window": "late",
+                    "offset": ["30 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "100"
+                }
+            ]
+        }
+    ]
+}
