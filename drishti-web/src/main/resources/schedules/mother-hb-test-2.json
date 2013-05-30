@@ -1,0 +1,29 @@
+{
+    "name": "Hb Test 2",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "Hb Test 2",
+            "scheduleWindows": {
+                "earliest": ["0 Weeks"],
+                "due": ["30 Weeks"],
+                "late": ["100 Weeks"],
+                "max": [""]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["28 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "2"
+                },
+                {
+                    "window": "late",
+                    "offset": ["30 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "100"
+                }
+            ]
+        }
+    ]
+}

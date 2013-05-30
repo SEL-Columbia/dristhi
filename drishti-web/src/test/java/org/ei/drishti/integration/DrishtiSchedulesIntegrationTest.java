@@ -503,20 +503,41 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldProvideAlertsForHbTestAtTheRightTimes() throws Exception {
-        schedule.enrollFor("Hb Test", newDate(2012, JANUARY, 1), new Time(14, 0));
+    public void shouldProvideAlertsForHbTest1AtTheRightTimes() throws Exception {
+        schedule.enrollFor("Hb Test 1", newDate(2012, JANUARY, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("Hb Test 1", earliest);
         schedule.assertAlertsStartWith("Hb Test 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(8, JANUARY, 2012), dateWithYear(15, JANUARY, 2012));
         schedule.assertAlertsStartWith("Hb Test 1", late, dateWithYear(25, MARCH, 2012), dateWithYear(1, APRIL, 2012), dateWithYear(8, APRIL, 2012));
         schedule.assertNoAlerts("Hb Test 1", max);
 
+        visualization.outputTo("mother-hb-test-1.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForHbFollowupTestAtTheRightTimes() throws Exception {
+        schedule.enrollFor("Hb Followup Test", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertAlerts("Hb Followup Test", earliest, dateWithYear(1, JANUARY, 2012), dateWithYear(8, JANUARY, 2012),
+                dateWithYear(15, JANUARY, 2012), dateWithYear(22, JANUARY, 2012));
+        schedule.assertAlerts("Hb Followup Test", due, dateWithYear(1, FEBRUARY, 2012), dateWithYear(4, FEBRUARY, 2012),
+                dateWithYear(7, FEBRUARY, 2012), dateWithYear(10, FEBRUARY, 2012));
+        schedule.assertAlertsStartWith("Hb Followup Test", late, dateWithYear(15, FEBRUARY, 2012), dateWithYear(22, FEBRUARY, 2012), dateWithYear(29, FEBRUARY, 2012));
+        schedule.assertNoAlerts("Hb Followup Test", max);
+
+        visualization.outputTo("mother-hb-followup-test.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForHbTest2AtTheRightTimes() throws Exception {
+        schedule.enrollFor("Hb Test 2", newDate(2012, JANUARY, 1), new Time(14, 0));
+
         schedule.assertNoAlerts("Hb Test 2", earliest);
         schedule.assertAlerts("Hb Test 2", due, dateWithYear(15, JULY, 2012), dateWithYear(22, JULY, 2012));
         schedule.assertAlertsStartWith("Hb Test 2", late, dateWithYear(29, JULY, 2012), dateWithYear(5, AUGUST, 2012), dateWithYear(12, AUGUST, 2012));
         schedule.assertNoAlerts("Hb Test 2", max);
 
-        visualization.outputTo("mother-hb-test.html", 1);
+        visualization.outputTo("mother-hb-test-2.html", 1);
     }
 
     @Before

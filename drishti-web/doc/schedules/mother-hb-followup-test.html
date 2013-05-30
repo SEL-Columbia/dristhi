@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(1).draw();
+schedule.addAlerts("Hb Followup Test", "Hb Followup Test - earliest", [new Date("Jan 01, 2012"), new Date("Jan 08, 2012"), new Date("Jan 15, 2012"), new Date("Jan 22, 2012"), ]);
+schedule.addAlerts("Hb Followup Test", "Hb Followup Test - due", [new Date("Feb 01, 2012"), new Date("Feb 04, 2012"), new Date("Feb 07, 2012"), new Date("Feb 10, 2012"), ]);
+schedule.addAlertsStartingWith("Hb Followup Test", "Hb Followup Test - late (Will continue till service is delivered)", [new Date("Feb 15, 2012"), new Date("Feb 22, 2012"), new Date("Feb 29, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>Hb Followup Test</center></body></html>

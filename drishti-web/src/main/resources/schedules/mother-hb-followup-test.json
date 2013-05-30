@@ -1,0 +1,35 @@
+{
+    "name": "Hb Followup Test",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "Hb Followup Test",
+            "scheduleWindows": {
+                "earliest": ["1 Month"],
+                "due": ["1 Month", "2 Weeks"],
+                "late": ["100 Weeks"],
+                "max": [""]
+            },
+            "alerts": [
+                {
+                    "window": "earliest",
+                    "offset": ["0 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "4"
+                },
+                {
+                    "window": "due",
+                    "offset": ["1 Month"],
+                    "interval": ["3 Days"],
+                    "count": "4"
+                },
+                {
+                    "window": "late",
+                    "offset": ["1 Month", "2 Weeks"],
+                    "interval": ["1 Week"],
+                    "count": "100"
+                }
+            ]
+        }
+    ]
+}
