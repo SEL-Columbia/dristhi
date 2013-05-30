@@ -218,7 +218,7 @@ public class ANCServiceTest {
     }
 
     @Test
-    public void shouldHandleHBTest() {
+    public void shouldHandleHbTest() {
         FormSubmission submission = create()
                 .withFormName("tt_1")
                 .withANMId("anm id 1")

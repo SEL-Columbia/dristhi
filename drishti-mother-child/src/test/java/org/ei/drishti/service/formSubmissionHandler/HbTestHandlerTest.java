@@ -9,16 +9,16 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class HBTestHandlerTest {
+public class HbTestHandlerTest {
     @Mock
     private ANCService ancService;
 
-    private HBTestHandler handler;
+    private HbTestHandler handler;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        handler = new HBTestHandler(ancService);
+        handler = new HbTestHandler(ancService);
     }
 
     @Test

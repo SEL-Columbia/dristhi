@@ -123,7 +123,7 @@ public class ANCService {
 
     public void hbTest(FormSubmission submission) {
         if (!allMothers.exists(submission.entityId())) {
-            logger.warn("Tried to handle HB test given without registered mother. Submission: " + submission);
+            logger.warn("Tried to handle Hb test given without registered mother. Submission: " + submission);
             return;
         }
 

@@ -40,7 +40,7 @@ public class FormSubmissionRouterTest {
     @Mock
     private IFAHandler ifaHandler;
     @Mock
-    private HBTestHandler hbTestHandler;
+    private HbTestHandler hbTestHandler;
 
     private FormSubmissionRouter router;
 
@@ -203,7 +203,7 @@ public class FormSubmissionRouterTest {
     }
 
     @Test
-    public void shouldDelegateHBTestFormSubmissionHandlingToHBTestHandler() throws Exception {
+    public void shouldDelegateHbTestFormSubmissionHandlingToHBTestHandler() throws Exception {
         FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "hb_test", "entity id 1", null, 0L, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 

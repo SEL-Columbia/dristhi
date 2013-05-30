@@ -1,9 +1,9 @@
 {
-    "name": "HB Test",
+    "name": "Hb Test",
     "absolute": true,
     "milestones": [
         {
-            "name": "HB Test 1",
+            "name": "Hb Test 1",
             "scheduleWindows": {
                 "earliest": ["0 Weeks"],
                 "due": ["12 Weeks"],
@@ -26,7 +26,7 @@
             ]
         },
         {
-            "name": "HB Test 2",
+            "name": "Hb Test 2",
             "scheduleWindows": {
                 "earliest": ["0 Weeks"],
                 "due": ["30 Weeks"],

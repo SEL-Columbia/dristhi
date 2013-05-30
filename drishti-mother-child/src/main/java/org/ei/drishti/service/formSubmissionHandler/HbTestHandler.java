@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HBTestHandler implements FormSubmissionHandler {
+public class HbTestHandler implements FormSubmissionHandler {
     private ANCService ancService;
 
     @Autowired
-    public HBTestHandler(ANCService ancService) {
+    public HbTestHandler(ANCService ancService) {
         this.ancService = ancService;
     }
 

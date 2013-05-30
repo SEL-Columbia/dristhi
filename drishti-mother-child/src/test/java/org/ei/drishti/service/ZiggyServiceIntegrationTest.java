@@ -59,7 +59,7 @@ public class ZiggyServiceIntegrationTest {
     @Mock
     private IFAHandler ifaHandler;
     @Mock
-    private HBTestHandler hbTestHandler;
+    private HbTestHandler hbTestHandler;
 
     private ZiggyFileLoader ziggyFileLoader;
 

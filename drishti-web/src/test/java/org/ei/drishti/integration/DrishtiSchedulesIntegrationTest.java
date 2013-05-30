@@ -503,18 +503,18 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldProvideAlertsForHBTestAtTheRightTimes() throws Exception {
-        schedule.enrollFor("HB Test", newDate(2012, JANUARY, 1), new Time(14, 0));
+    public void shouldProvideAlertsForHbTestAtTheRightTimes() throws Exception {
+        schedule.enrollFor("Hb Test", newDate(2012, JANUARY, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("HB Test 1", earliest);
-        schedule.assertAlertsStartWith("HB Test 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(8, JANUARY, 2012), dateWithYear(15, JANUARY, 2012));
-        schedule.assertAlertsStartWith("HB Test 1", late, dateWithYear(25, MARCH, 2012), dateWithYear(1, APRIL, 2012), dateWithYear(8, APRIL, 2012));
-        schedule.assertNoAlerts("HB Test 1", max);
+        schedule.assertNoAlerts("Hb Test 1", earliest);
+        schedule.assertAlertsStartWith("Hb Test 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(8, JANUARY, 2012), dateWithYear(15, JANUARY, 2012));
+        schedule.assertAlertsStartWith("Hb Test 1", late, dateWithYear(25, MARCH, 2012), dateWithYear(1, APRIL, 2012), dateWithYear(8, APRIL, 2012));
+        schedule.assertNoAlerts("Hb Test 1", max);
 
-        schedule.assertNoAlerts("HB Test 2", earliest);
-        schedule.assertAlerts("HB Test 2", due, dateWithYear(15, JULY, 2012), dateWithYear(22, JULY, 2012));
-        schedule.assertAlertsStartWith("HB Test 2", late, dateWithYear(29, JULY, 2012), dateWithYear(5, AUGUST, 2012), dateWithYear(12, AUGUST, 2012));
-        schedule.assertNoAlerts("HB Test 2", max);
+        schedule.assertNoAlerts("Hb Test 2", earliest);
+        schedule.assertAlerts("Hb Test 2", due, dateWithYear(15, JULY, 2012), dateWithYear(22, JULY, 2012));
+        schedule.assertAlertsStartWith("Hb Test 2", late, dateWithYear(29, JULY, 2012), dateWithYear(5, AUGUST, 2012), dateWithYear(12, AUGUST, 2012));
+        schedule.assertNoAlerts("Hb Test 2", max);
 
         visualization.outputTo("mother-hb-test.html", 1);
     }

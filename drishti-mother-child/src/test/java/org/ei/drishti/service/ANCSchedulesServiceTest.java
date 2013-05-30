@@ -202,13 +202,13 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldFulfillCurrentMilestoneWhenHBTestIsDone() {
-        when(scheduleTrackingService.getEnrollment("Case X", "HB Test"))
-                .thenReturn(new EnrollmentRecord("Case X", "HB Test", "HB Test 1", null, null, null, null, null, null, null));
+    public void shouldFulfillCurrentMilestoneWhenHbTestIsDone() {
+        when(scheduleTrackingService.getEnrollment("Case X", "Hb Test"))
+                .thenReturn(new EnrollmentRecord("Case X", "Hb Test", "HB Test 1", null, null, null, null, null, null, null));
 
         schedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01");
 
-        verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("HB Test"), eq(parse("2013-01-01")), any(Time.class));
+        verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("Hb Test"), eq(parse("2013-01-01")), any(Time.class));
     }
 
     private void assertEnrollmentIntoMilestoneBasedOnDate(LocalDate enrollmentDate, String expectedMilestone) throws Exception {
