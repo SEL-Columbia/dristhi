@@ -18,6 +18,7 @@ import java.util.List;
 
 import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.common.util.IntegerUtil.tryParse;
@@ -30,10 +31,11 @@ import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACT
 
 @Service
 public class ANCSchedulesService {
+    public static final int NUMBER_OF_WEEKS_BEFORE_HB_TEST_2_BECOMES_DUE = 28;
     private static Logger logger = LoggerFactory.getLogger(ANCSchedulesService.class.toString());
 
     private final ScheduleTrackingService trackingService;
-    private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1, SCHEDULE_HB_TEST};
+    private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1, SCHEDULE_HB_TEST_1};
     private ActionService actionService;
 
     @Autowired
@@ -85,9 +87,30 @@ public class ANCSchedulesService {
         fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_IFA_3, SCHEDULE_IFA_3, parse(ifaGivenDate));
     }
 
-    public void hbTestDone(String entityId, String anmId, String date) {
-        EnrollmentRecord enrollment = trackingService.getEnrollment(entityId, SCHEDULE_HB_TEST);
-        fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_HB_TEST, enrollment.getCurrentMilestoneName(), parse(date));
+    public void hbTestDone(String entityId, String anmId, String date, String anaemicStatus, LocalDate lmp) {
+        if (fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_HB_TEST_1, SCHEDULE_HB_TEST_1, parse(date))) {
+            if (isNotBlank(anaemicStatus)) {
+                logger.info(format("ANC is anaemic so enrolling her to Hb Followup Test schedule: Entity id:{0}, Anaemic status: {1}", entityId, anaemicStatus));
+                trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_HB_FOLLOWUP_TEST, new Time(PREFERED_TIME_FOR_SCHEDULES),
+                        parse(date), null, null, null, null, null));
+            } else {
+                enrollANCToHbTest2Schedule(entityId, lmp);
+            }
+        } else if (fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_HB_FOLLOWUP_TEST, SCHEDULE_HB_FOLLOWUP_TEST, parse(date))) {
+            if (parse(date).isAfter(lmp.plusWeeks(NUMBER_OF_WEEKS_BEFORE_HB_TEST_2_BECOMES_DUE))) {
+                fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_HB_TEST_2, SCHEDULE_HB_TEST_2, parse(date));
+            } else {
+                enrollANCToHbTest2Schedule(entityId, lmp);
+            }
+        } else {
+            fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_HB_TEST_2, SCHEDULE_HB_TEST_2, parse(date));
+        }
+    }
+
+    private void enrollANCToHbTest2Schedule(String entityId, LocalDate lmp) {
+        logger.info(format("Enrolling ANC to Hb Test 2 schedule: Entity id:{0}", entityId));
+        trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_HB_TEST_2, new Time(PREFERED_TIME_FOR_SCHEDULES),
+                lmp, null, null, null, null, null));
     }
 
     public void forceFulfillMilestone(String externalId, String scheduleName) {

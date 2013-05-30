@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
@@ -22,6 +21,7 @@ import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.ei.drishti.util.FormSubmissionBuilder.create;
+import static org.joda.time.LocalDate.parse;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -45,7 +45,6 @@ public class ANCServiceTest {
 
     private ANCService service;
 
-    private Map<String, Map<String, String>> EXTRA_DATA_EMPTY = new HashMap<>();
     private Map<String, Map<String, String>> EXTRA_DATA = create("details", mapOf("someKey", "someValue")).put("reporting", mapOf("someKey", "someValue")).map();
 
     @Before
@@ -224,13 +223,13 @@ public class ANCServiceTest {
                 .withANMId("anm id 1")
                 .withEntityId("entity id 1")
                 .addFormField("hbTestDate", "2013-01-01")
+                .addFormField("anaemicStatus", "Anaemic")
                 .build();
-
-        when(mothers.exists("entity id 1")).thenReturn(true);
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1").withLMP(parse("2012-01-01")));
 
         service.hbTest(submission);
 
-        verify(ancSchedulesService).hbTestDone("entity id 1", "anm id 1", "2013-01-01");
+        verify(ancSchedulesService).hbTestDone("entity id 1", "anm id 1", "2013-01-01", "Anaemic", parse("2012-01-01"));
     }
 
     @Test

@@ -59,6 +59,10 @@ public class AlertControllerRoutesTest {
         Event.of(SCHEDULE_TT_2, "TT 2", earliest).shouldRouteToAlertCreationActionForMother();
         Event.of(SCHEDULE_TT_2, "TT 2", due).shouldRouteToAlertCreationActionForMother();
         Event.of(SCHEDULE_TT_2, "TT 2", late).shouldRouteToAlertCreationActionForMother();
+
+        Event.of(SCHEDULE_HB_TEST_1, "Hb Test 1", earliest).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_HB_TEST_1, "Hb Test 1", due).shouldRouteToAlertCreationActionForMother();
+        Event.of(SCHEDULE_HB_TEST_1, "Hb Test 1", late).shouldRouteToAlertCreationActionForMother();
     }
 
     @Test

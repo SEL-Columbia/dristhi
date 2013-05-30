@@ -73,7 +73,11 @@ public class AllConstants {
         public static final String TT1_DOSE_VALUE = "tt1";
         public static final String TT2_DOSE_VALUE = "tt2";
         public static final String TT_BOOSTER__VALUE = "ttbooster";
+    }
+
+    public static class HbTestFormFields {
         public static final String HB_TEST_DATE_FIELD = "hbTestDate";
+        public static final String ANAEMIC_STATUS_FIELD = "anaemicStatus";
     }
 
     public static class ANCVisitCommCareFields {

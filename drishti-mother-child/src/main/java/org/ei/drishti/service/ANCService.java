@@ -24,6 +24,8 @@ import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.PERMANEN
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.CLOSE_REASON_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
+import static org.ei.drishti.common.AllConstants.HbTestFormFields.ANAEMIC_STATUS_FIELD;
+import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_TEST_DATE_FIELD;
 import static org.ei.drishti.common.AllConstants.IFAFields.IFA_TABLETS_DATE;
 import static org.ei.drishti.common.AllConstants.IFAFields.NUMBER_OF_IFA_TABLETS_GIVEN;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
@@ -122,12 +124,14 @@ public class ANCService {
     }
 
     public void hbTest(FormSubmission submission) {
-        if (!allMothers.exists(submission.entityId())) {
+        Mother mother = allMothers.findByCaseId(submission.entityId());
+        if (mother == null) {
             logger.warn("Tried to handle Hb test given without registered mother. Submission: " + submission);
             return;
         }
 
-        ancSchedulesService.hbTestDone(submission.entityId(), submission.anmId(), submission.getField(HB_TEST_DATE_FIELD));
+        ancSchedulesService.hbTestDone(submission.entityId(), submission.anmId(), submission.getField(HB_TEST_DATE_FIELD),
+                submission.getField(ANAEMIC_STATUS_FIELD), mother.lmp());
     }
 
     public void closeANCCase(FormSubmission submission) {

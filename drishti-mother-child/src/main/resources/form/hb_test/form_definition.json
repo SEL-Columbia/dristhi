@@ -19,7 +19,7 @@
                 "bind": "/model/instance/Hb_Test_EngKan/hb_level"
             },
             {
-                "name": "anemicStatus",
+                "name": "anaemicStatus",
                 "bind": "/model/instance/Hb_Test_EngKan/anaemic_status"
             },
             {
