@@ -122,21 +122,21 @@ public class AllConstants {
     }
 
     public static class CaseCloseCommCareFields {
-        public static final String CLOSE_REASON_COMMCARE_FIELD_NAME = "closeReason";
+        public static final String CLOSE_REASON_FIELD_NAME = "closeReason";
         public static final String DEATH_DATE_COMMCARE_FIELD_NAME = "diedOn";
         public static final String ANC_DEATH_DATE_FIELD_NAME = "maternalDeathDate";
-        public static final String IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME = "isMaternalDeath";
+        public static final String IS_MATERNAL_LEAVE_FIELD_NAME = "isMaternalDeath";
     }
 
-    public static class ANCCloseCommCareFields {
-        public static final String CLOSE_MTP_DATE_COMMCARE_FIELD_NAME = "dateOfInducedAbortion";
-        public static final String CLOSE_SPONTANEOUS_ABORTION_DATE_COMMCARE_FIELD_NAME = "dateOfSpontaneousAbortion";
-        public static final String CLOSE_MTP_TIME_COMMCARE_FIELD_NAME = "timeOfInducedAbortion";
+    public static class ANCCloseFields {
+        public static final String CLOSE_MTP_DATE_FIELD_NAME = "dateOfInducedAbortion";
+        public static final String CLOSE_SPONTANEOUS_ABORTION_DATE_FIELD_NAME = "dateOfSpontaneousAbortion";
+        public static final String CLOSE_MTP_TIME_FIELD_NAME = "timeOfInducedAbortion";
         public static final String MTP_GREATER_THAN_12_WEEKS_FIELD_NAME = "greater_12wks";
         public static final String MTP_LESS_THAN_12_WEEKS_FIELD_NAME = "less_12wks";
-        public static final String DEATH_OF_WOMAN_COMMCARE_VALUE = "death_of_woman";
-        public static final String PERMANENT_RELOCATION_COMMCARE_VALUE = "relocation_permanent";
-        public static final String SPONTANEOUS_ABORTION_COMMCARE_VALUE = "spontaneous_abortion";
+        public static final String DEATH_OF_WOMAN_VALUE = "death_of_woman";
+        public static final String PERMANENT_RELOCATION_VALUE = "relocation_permanent";
+        public static final String SPONTANEOUS_ABORTION_VALUE = "spontaneous_abortion";
     }
 
     public static class ECCloseFields {

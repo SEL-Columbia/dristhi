@@ -73,6 +73,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldReportMTPIndicatorBasedOnMTPTime() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeANC(reportDataForANCClose("greater_12wks", "spontaneous_abortion", null));
 
@@ -82,6 +83,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldReportMaternalDeath() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeANC(reportDataForANCClose("", "death_of_woman", "yes"));
 
@@ -92,6 +94,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotReportMaternalDeathIfItIsNot() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeANC(reportDataForANCClose("", "death_of_woman", "no"));
 
@@ -101,6 +104,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotReportIfReasonIsNotDeath() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeANC(reportDataForANCClose("greater_12wks", null, null));
 
@@ -110,6 +114,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldReportIfReasonIsSpontaneousAbortion() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeANC(reportDataForANCClose("", "spontaneous_abortion", null));
 
@@ -478,7 +483,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     private SafeMap reportDataForANCClose(String mtpTime, String closeReason, String isMaternalDeath) {
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE-1");
+        reportData.put("id", "CASE-1");
         reportData.put("timeOfInducedAbortion", mtpTime);
         reportData.put("closeReason", closeReason);
         reportData.put("dateOfSpontaneousAbortion", "2012-12-12");

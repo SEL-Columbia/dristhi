@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.Integer.parseInt;
-import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.ANCCloseFields.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.*;
@@ -111,21 +111,23 @@ public class MotherReportingService {
     }
 
     public void closeANC(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+        Mother mother = allMothers.findByCaseId(reportData.get(ID));
+        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
 
-        if (DEATH_OF_WOMAN_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME)) &&
-                BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(reportData.get(IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME))) {
-            reportDeath(mother, MMA, reportData.get(ANC_DEATH_DATE_FIELD_NAME));
+        if (DEATH_OF_WOMAN_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME)) &&
+                BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(reportData.get(IS_MATERNAL_LEAVE_FIELD_NAME))) {
+            reportDeath(mother, MMA, reportData.get(ANC_DEATH_DATE_FIELD_NAME), location);
         } else {
-            reportAbortion(reportData, mother);
+            reportAbortion(reportData, mother, location);
         }
     }
 
     public void closePNC(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
 
-        if (DEATH_OF_MOTHER_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))
-                && BOOLEAN_TRUE_COMMCARE_VALUE.equals(reportData.get(IS_MATERNAL_LEAVE_COMMCARE_FIELD_NAME))
+        if (DEATH_OF_MOTHER_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME))
+                && BOOLEAN_TRUE_COMMCARE_VALUE.equals(reportData.get(IS_MATERNAL_LEAVE_FIELD_NAME))
                 && mother.dateOfDelivery().plusDays(NUMBER_OF_DAYS_IN_PNC_PERIOD).isAfter(parse(reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME)))) {
             reportDeath(mother, MMP, reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME));
         }
@@ -168,16 +170,16 @@ public class MotherReportingService {
         reportToBoth(mother, MOTHER_MORTALITY, date, location);
     }
 
-    private void reportAbortion(SafeMap reportData, Mother mother) {
-        if (SPONTANEOUS_ABORTION_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
-            reportToBoth(mother, SPONTANEOUS_ABORTION, reportData.get(CLOSE_SPONTANEOUS_ABORTION_DATE_COMMCARE_FIELD_NAME));
+    private void reportAbortion(SafeMap reportData, Mother mother, Location location) {
+        if (SPONTANEOUS_ABORTION_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME))) {
+            reportToBoth(mother, SPONTANEOUS_ABORTION, reportData.get(CLOSE_SPONTANEOUS_ABORTION_DATE_FIELD_NAME), location);
         }
 
-        if (MTP_GREATER_THAN_12_WEEKS_FIELD_NAME.equals(reportData.get(CLOSE_MTP_TIME_COMMCARE_FIELD_NAME))) {
-            reportToBoth(mother, MTP_GREATER_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_COMMCARE_FIELD_NAME));
+        if (MTP_GREATER_THAN_12_WEEKS_FIELD_NAME.equals(reportData.get(CLOSE_MTP_TIME_FIELD_NAME))) {
+            reportToBoth(mother, MTP_GREATER_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_FIELD_NAME), location);
         }
-        if (MTP_LESS_THAN_12_WEEKS_FIELD_NAME.equals(reportData.get(CLOSE_MTP_TIME_COMMCARE_FIELD_NAME))) {
-            reportToBoth(mother, MTP_LESS_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_COMMCARE_FIELD_NAME));
+        if (MTP_LESS_THAN_12_WEEKS_FIELD_NAME.equals(reportData.get(CLOSE_MTP_TIME_FIELD_NAME))) {
+            reportToBoth(mother, MTP_LESS_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_FIELD_NAME), location);
         }
     }
 

@@ -18,10 +18,10 @@ import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 import static java.text.MessageFormat.format;
-import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.DEATH_OF_WOMAN_COMMCARE_VALUE;
-import static org.ei.drishti.common.AllConstants.ANCCloseCommCareFields.PERMANENT_RELOCATION_COMMCARE_VALUE;
+import static org.ei.drishti.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_VALUE;
+import static org.ei.drishti.common.AllConstants.ANCCloseFields.PERMANENT_RELOCATION_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
-import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.CLOSE_REASON_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.ANAEMIC_STATUS_FIELD;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_TEST_DATE_FIELD;
@@ -157,8 +157,8 @@ public class ANCService {
         ancSchedulesService.unEnrollFromSchedules(submission.entityId());
         actionService.markAllAlertsAsInactive(submission.entityId());
 
-        if (DEATH_OF_WOMAN_COMMCARE_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_COMMCARE_FIELD_NAME))
-                || PERMANENT_RELOCATION_COMMCARE_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
+        if (DEATH_OF_WOMAN_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_FIELD_NAME))
+                || PERMANENT_RELOCATION_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_FIELD_NAME))) {
             logger.info("Closing EC case along with ANC case. Submission: " + submission);
             eligibleCouples.close(mother.ecCaseId());
         }
