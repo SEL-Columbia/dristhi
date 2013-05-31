@@ -84,7 +84,6 @@ public class ANCServiceTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .build();
-
         when(eligibleCouples.exists("ec id 1")).thenReturn(false);
 
         service.registerANC(submission);
@@ -106,7 +105,6 @@ public class ANCServiceTest {
                 .addFormField("referenceDate", lmp.toString())
                 .addFormField("someKey", "someValue")
                 .build();
-
         Mother mother = new Mother("Mother 1", "ec id 1", "thayi 1").withLMP(lmp);
         when(eligibleCouples.exists("ec id 1")).thenReturn(true);
         when(mothers.findByCaseId("Mother 1")).thenReturn(mother);
@@ -131,7 +129,6 @@ public class ANCServiceTest {
                 .addFormField("someKey", "someValue")
                 .addFormField("isOutOfArea", "true")
                 .build();
-
         Mother mother = new Mother("Mother 1", "ec id 1", "thayi 1").withLMP(lmp);
         when(eligibleCouples.exists("ec id 1")).thenReturn(true);
         when(mothers.findByCaseId("Mother 1")).thenReturn(mother);
@@ -149,7 +146,6 @@ public class ANCServiceTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .build();
-
         when(eligibleCouples.exists("ec id 1")).thenReturn(false);
 
         service.registerOutOfAreaANC(submission);
@@ -168,7 +164,6 @@ public class ANCServiceTest {
                 .addFormField("ancVisitNumber", "2")
                 .addFormField("someKey", "someValue")
                 .build();
-
         when(mothers.exists("entity id 1")).thenReturn(true);
         when(reportFieldsDefinition.get("anc_visit")).thenReturn(asList("someKey"));
 

@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
@@ -9,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static java.text.MessageFormat.format;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
@@ -24,14 +24,14 @@ public class PNCSchedulesService {
         this.trackingService = trackingService;
     }
 
-    public void enrollMother(AnteNatalCareOutcomeInformation outcomeInformation) {
-        logger.info("Enrolling mother into Auto Close PNC schedule. Details: {0}", outcomeInformation);
+    public void deliveryOutcome(String entityId, String date) {
+        logger.info(format("Enrolling mother into Auto Close PNC schedule. Id: ", entityId));
 
         trackingService.enroll(
-                new EnrollmentRequest(outcomeInformation.motherCaseId(),
+                new EnrollmentRequest(entityId,
                         SCHEDULE_AUTO_CLOSE_PNC,
                         new Time(PREFERED_TIME_FOR_SCHEDULES),
-                        parse(outcomeInformation.deliveryOutcomeDate()),
+                        parse(date),
                         null, null, null, null, null));
     }
 }

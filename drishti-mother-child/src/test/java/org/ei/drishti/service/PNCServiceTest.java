@@ -4,6 +4,7 @@ import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.BeneficiaryType;
+import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
@@ -30,6 +31,7 @@ import static org.ei.drishti.dto.BeneficiaryType.child;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
+import static org.ei.drishti.util.FormSubmissionBuilder.create;
 import static org.ei.drishti.util.Matcher.objectWithSameFieldsAs;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -59,6 +61,56 @@ public class PNCServiceTest extends BaseUnitTest {
     public void setUp() throws Exception {
         initMocks(this);
         service = new PNCService(actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, mothers, children, motherReportingService, childReportingService);
+    }
+
+    @Test
+    public void shouldEnrollPNCIntoSchedulesDuringDeliveryOutcome() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(mothers.exists("mother id 1")).thenReturn(true);
+        FormSubmission submission = create()
+                .withFormName("delivery_outcome")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .build();
+        service.deliveryOutcome(submission);
+
+        verify(pncSchedulesService).deliveryOutcome("mother id 1", "2012-01-01");
+    }
+
+    @Test
+    public void shouldNotEnrollPNCIntoSchedulesDuringDeliveryOutcomeIfMotherDoesNotExists() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(mothers.exists("mother id 1")).thenReturn(false);
+        FormSubmission submission = create()
+                .withFormName("delivery_outcome")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .addFormField("didWomanSurvive", "no")
+                .build();
+        service.deliveryOutcome(submission);
+
+        verifyZeroInteractions(pncSchedulesService);
+    }
+
+    @Test
+    public void shouldNotEnrollPNCIntoSchedulesDuringDeliveryOutcomeIfWomanDied() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(mothers.exists("mother id 1")).thenReturn(true);
+        FormSubmission submission = create()
+                .withFormName("delivery_outcome")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .addFormField("didWomanSurvive", "no")
+                .build();
+        service.deliveryOutcome(submission);
+
+        verifyZeroInteractions(pncSchedulesService);
     }
 
     @Test
@@ -414,30 +466,6 @@ public class PNCServiceTest extends BaseUnitTest {
         service.registerChild(childInformation);
 
         verify(childReportingService).registerChild(reportData);
-    }
-
-    @Test
-    public void shouldEnrollPNCIntoSchedulesDuringRegistration() {
-        DateTime currentTime = DateUtil.now();
-        mockCurrentDate(currentTime);
-        when(mothers.exists("MOTHER-CASE-1")).thenReturn(true);
-
-        AnteNatalCareOutcomeInformation outcomeInformation = new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0");
-        service.registerPNC(outcomeInformation);
-
-        verify(pncSchedulesService).enrollMother(outcomeInformation);
-    }
-
-    @Test
-    public void shouldNotEnrollPNCIntoSchedulesWhenMotherDoesNotExist() {
-        DateTime currentTime = DateUtil.now();
-        mockCurrentDate(currentTime);
-        when(mothers.exists("MOTHER-CASE-1")).thenReturn(false);
-
-        AnteNatalCareOutcomeInformation outcomeInformation = new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0");
-        service.registerPNC(outcomeInformation);
-
-        verifyZeroInteractions(pncSchedulesService);
     }
 
     @Test

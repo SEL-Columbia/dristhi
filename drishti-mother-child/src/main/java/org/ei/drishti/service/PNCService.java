@@ -25,9 +25,12 @@ import java.util.List;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_WOMAN_SURVIVE;
+import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.DEATH_OF_MOTHER_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.PERMANENT_RELOCATION_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
@@ -62,17 +65,14 @@ public class PNCService {
     }
 
     public void deliveryOutcome(FormSubmission submission) {
-        throw new RuntimeException("Not implemented");
-    }
-
-    @Deprecated
-    public void registerPNC(AnteNatalCareOutcomeInformation outcomeInformation) {
-        if (!allMothers.exists(outcomeInformation.motherCaseId())) {
-            logger.warn("Failed to register PNC as there is no mother registered: " + outcomeInformation);
+        if (!allMothers.exists(submission.entityId())) {
+            logger.warn("Failed to handle delivery outcome as there is no mother registered wit id: " + submission.entityId());
             return;
         }
 
-        pncSchedulesService.enrollMother(outcomeInformation);
+        if(!BOOLEAN_FALSE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE))) {
+            pncSchedulesService.deliveryOutcome(submission.entityId(), submission.getField(REFERENCE_DATE));
+        }
     }
 
     @Deprecated

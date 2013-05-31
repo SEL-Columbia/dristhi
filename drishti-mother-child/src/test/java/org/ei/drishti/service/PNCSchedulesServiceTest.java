@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,12 +30,10 @@ public class PNCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldEnrollMotherIntoSchedules() {
-        AnteNatalCareOutcomeInformation outcomeInformation = new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0");
+    public void shouldEnrollMotherIntoSchedulesWhileDeliveryOutcome() {
+        schedulesService.deliveryOutcome("mother id 1", "2012-01-01");
 
-        schedulesService.enrollMother(outcomeInformation);
-
-        verify(scheduleTrackingService).enroll(enrollmentFor("MOTHER-CASE-1", SCHEDULE_AUTO_CLOSE_PNC, parse("2012-01-01")));
+        verify(scheduleTrackingService).enroll(enrollmentFor("mother id 1", SCHEDULE_AUTO_CLOSE_PNC, parse("2012-01-01")));
         verifyNoMoreInteractions(scheduleTrackingService);
     }
 
