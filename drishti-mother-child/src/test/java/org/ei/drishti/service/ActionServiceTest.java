@@ -23,7 +23,6 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
-import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.dto.AlertStatus.urgent;
 import static org.ei.drishti.dto.BeneficiaryType.*;
@@ -136,29 +135,6 @@ public class ActionServiceTest {
         service.closeChild("Case X", "ANM X");
 
         verify(allActions).markAllAsInActiveFor("Case X");
-    }
-
-    @Test
-    public void shouldRegisterChildBirth() throws Exception {
-        when(allMothers.findByThaayiCardNumber("MotherThaayiCard 1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "MotherThaayiCard 1"));
-
-        service.registerChildBirth("ChildCase Y", "ANM X", "MOTHER-CASE-1", "MotherThaayiCard 1", today(), "female", EXTRA_DETAILS);
-
-        verify(allActions).add(new Action("ChildCase Y", "ANM X", ActionData.registerChildBirth("MOTHER-CASE-1", "MotherThaayiCard 1", today(), "female", EXTRA_DETAILS)));
-    }
-
-    @Test
-    public void shouldSendAnUpdateMotherDetailsAction() throws Exception {
-        service.updateMotherDetails("CASE X", "ANM X", mapOf("someKey", "someValue"));
-
-        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateMotherDetails(mapOf("someKey", "someValue"))));
-    }
-
-    @Test
-    public void shouldSendAnANCCareProvidedAction() throws Exception {
-        service.ancCareProvided("CASE X", "ANM X", 1, LocalDate.parse("2012-01-01"), 20, "TT DOSE", mapOf("someKey", "someValue"));
-
-        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.ancCareProvided(1, LocalDate.parse("2012-01-01"), 20, "TT DOSE", mapOf("someKey", "someValue"))));
     }
 
     @Test

@@ -61,18 +61,6 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
     }
 
-    public void registerChildBirth(String caseId, String anmIdentifier, String motherCaseId, String thaayiCardNumber, LocalDate dateOfBirth, String gender, Map<String, String> details) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.registerChildBirth(motherCaseId, thaayiCardNumber, dateOfBirth, gender, details)));
-    }
-
-    public void updateMotherDetails(String caseId, String anmIdentifier, Map<String, String> details) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.updateMotherDetails(details)));
-    }
-
-    public void ancCareProvided(String caseId, String anmIdentifier, int visitNumber, LocalDate visitDate, int numberOfIFATabletsGiven, String ttDose, Map<String, String> details) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.ancCareProvided(visitNumber, visitDate, numberOfIFATabletsGiven, ttDose, details)));
-    }
-
     public void pncVisitHappened(BeneficiaryType beneficiaryType, String caseId, String anmIdentifier, LocalDate visitDate, int visitNumber, String numberOfIFATabletsProvided, Map<String, String> details) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.pncVisitHappened(beneficiaryType, visitDate, visitNumber, numberOfIFATabletsProvided, details)));
     }

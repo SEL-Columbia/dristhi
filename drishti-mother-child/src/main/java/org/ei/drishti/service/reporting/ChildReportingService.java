@@ -125,18 +125,6 @@ public class ChildReportingService {
         }
     }
 
-    private void reportBirthWeight(String weight, Child child) {
-        try {
-            double birthWeight = Double.parseDouble(weight);
-            if (birthWeight < LOW_BIRTH_WEIGHT_THRESHOLD) {
-                reportToBoth(child, LBW, child.dateOfBirth());
-            }
-            reportToBoth(child, WEIGHED_AT_BIRTH, child.dateOfBirth());
-        } catch (NumberFormatException e) {
-            logger.warn("Not reporting: Invalid value received for childWeight : " + weight + " for childCaseId : " + child.caseId());
-        }
-    }
-
     private void reportBirthWeight(Child child, Location location) {
         try {
             double birthWeight = Double.parseDouble(child.weight());
@@ -146,12 +134,6 @@ public class ChildReportingService {
             reportToBoth(child, WEIGHED_AT_BIRTH, child.dateOfBirth(), location);
         } catch (NumberFormatException e) {
             logger.warn("Not reporting: Invalid value received for childWeight : " + child.weight() + " for childId : " + child.caseId());
-        }
-    }
-
-    private void reportBFPostBirth(String bfPostBirth, Child child) {
-        if (BOOLEAN_TRUE_VALUE.equalsIgnoreCase(bfPostBirth)) {
-            reportToBoth(child, BF_POST_BIRTH, child.dateOfBirth());
         }
     }
 
