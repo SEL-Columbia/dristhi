@@ -51,8 +51,6 @@ public class PNCServiceTest extends BaseUnitTest {
     private ChildReportingService childReportingService;
     @Mock
     private PNCSchedulesService pncSchedulesService;
-    @Mock
-    private ECService ecService;
 
     private PNCService service;
     private Map<String, Map<String, String>> EXTRA_DATA = create("details", mapOf("someKey", "someValue")).put("reporting", mapOf("someKey", "someValue")).map();
@@ -60,7 +58,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new PNCService(ecService, actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, mothers, children, motherReportingService, childReportingService);
+        service = new PNCService(actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, mothers, children, motherReportingService, childReportingService);
     }
 
     @Test
@@ -349,15 +347,6 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldNotCloseECCaseWhenPNCCaseIsClosedAndReasonIsNeitherDeathOrPermanentRelocation() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
-
-        service.closePNCCase(new PostNatalCareCloseInformation("CASE-X", "ANM X", "end_of_pp_period"), EXTRA_DATA);
-
-        verifyZeroInteractions(ecService);
-    }
-
-    @Test
     public void shouldReportWhenPNCVisitForMotherHappens() {
         when(mothers.exists("Case X")).thenReturn(true);
         when(mothers.updateDetails("Case X", EXTRA_DATA.get("details"))).thenReturn(new Mother("Case X", "EC-CASE-1", "TC 1"));
@@ -480,7 +469,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         ActionService actionService = mock(ActionService.class);
-        PNCService pncService = new PNCService(ecService, actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, mothers, children, motherReportingService, childReportingService);
+        PNCService pncService = new PNCService(actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, mothers, children, motherReportingService, childReportingService);
         when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1"));
 
         pncService.registerChild(new ChildInformation("Case X", "MOTHER-CASE-1", "ANM X", "Child 1", "female", LocalDate.now().toString(), providedImmunizations, "4", "yes", EXTRA_DATA));

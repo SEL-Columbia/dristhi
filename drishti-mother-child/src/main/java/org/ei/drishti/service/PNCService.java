@@ -28,7 +28,8 @@ import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.DEATH_OF_MOTHER_COMMCARE_VALUE;
+import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.PERMANENT_RELOCATION_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.dto.BeneficiaryType.child;
@@ -46,12 +47,10 @@ public class PNCService {
     private AllChildren allChildren;
     private MotherReportingService motherReportingService;
     private ChildReportingService childReportingService;
-    private ECService ecService;
 
     @Autowired
-    public PNCService(ECService ecService, ActionService actionService, ChildSchedulesService childSchedulesService, PNCSchedulesService pncSchedulesService, AllEligibleCouples allEligibleCouples, AllMothers allMothers,
+    public PNCService(ActionService actionService, ChildSchedulesService childSchedulesService, PNCSchedulesService pncSchedulesService, AllEligibleCouples allEligibleCouples, AllMothers allMothers,
                       AllChildren allChildren, MotherReportingService motherReportingService, ChildReportingService childReportingService) {
-        this.ecService = ecService;
         this.actionService = actionService;
         this.childSchedulesService = childSchedulesService;
         this.pncSchedulesService = pncSchedulesService;
@@ -62,6 +61,21 @@ public class PNCService {
         this.childReportingService = childReportingService;
     }
 
+    public void deliveryOutcome(FormSubmission submission) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Deprecated
+    public void registerPNC(AnteNatalCareOutcomeInformation outcomeInformation) {
+        if (!allMothers.exists(outcomeInformation.motherCaseId())) {
+            logger.warn("Failed to register PNC as there is no mother registered: " + outcomeInformation);
+            return;
+        }
+
+        pncSchedulesService.enrollMother(outcomeInformation);
+    }
+
+    @Deprecated
     public void pncVisitHappened(PostNatalCareInformation info, Map<String, Map<String, String>> extraData) {
         if (!allMothers.exists(info.caseId())) {
             logger.warn("Found PNC visit without registered mother for case ID: " + info.caseId());
@@ -81,6 +95,7 @@ public class PNCService {
         }
     }
 
+    @Deprecated
     public void closePNCCase(PostNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
         if (!allMothers.exists(closeInformation.caseId())) {
             logger.warn("Found PNC Close visit without registered mother for it: " + closeInformation.caseId());
@@ -99,27 +114,19 @@ public class PNCService {
         }
     }
 
-    public void autoClosePNCCase(String caseId) {
-        Mother mother = allMothers.findByCaseId(caseId);
+    public void autoClosePNCCase(String entityId) {
+        Mother mother = allMothers.findByCaseId(entityId);
         if (mother == null) {
-            logger.warn(format("Failed to auto close PNC as there is no mother registered with case ID: {0}", caseId));
+            logger.warn(format("Failed to auto close PNC as there is no mother registered with ID: {0}", entityId));
             return;
         }
 
-        logger.info("Auto closing mother case with case id {0} as the Post-pregnancy period has elapsed.");
-        allMothers.close(caseId);
-        actionService.markAllAlertsAsInactive(caseId);
+        logger.info(format("Auto closing mother case with entity id {0} as the Post-pregnancy period has elapsed.", entityId));
+        allMothers.close(entityId);
+        actionService.markAllAlertsAsInactive(entityId);
     }
 
-    public void registerPNC(AnteNatalCareOutcomeInformation outcomeInformation) {
-        if (!allMothers.exists(outcomeInformation.motherCaseId())) {
-            logger.warn("Failed to register PNC as there is no mother registered: " + outcomeInformation);
-            return;
-        }
-
-        pncSchedulesService.enrollMother(outcomeInformation);
-    }
-
+    @Deprecated
     public void registerChild(ChildInformation information) {
         Mother mother = allMothers.findByCaseId(information.motherCaseId());
 
@@ -151,6 +158,7 @@ public class PNCService {
         childSchedulesService.enrollChild(information);
     }
 
+    @Deprecated
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {
         if (!allChildren.childExists(updationRequest.caseId())) {
             logger.warn("Found immunization update without registered child for case ID: " + updationRequest.caseId());
@@ -169,6 +177,7 @@ public class PNCService {
         closeAlertsForProvidedImmunizations(updationRequest);
     }
 
+    @Deprecated
     public void closeChildCase(ChildCloseRequest childCloseRequest, Map<String, Map<String, String>> extraData) {
         if (!allChildren.childExists(childCloseRequest.caseId())) {
             logger.warn("Found close child request without registered child for case ID: " + childCloseRequest.caseId());
@@ -196,9 +205,5 @@ public class PNCService {
         LocalTime currentTime = DateUtil.now().toLocalTime();
         DateTime dueDate = dueDateLocal.toDateTime(currentTime);
         actionService.alertForBeneficiary(child, information.caseId(), scheduleName, visitCodeIfNotProvided, normal, dueDate, dueDateLocal.plusWeeks(1).toDateTime(currentTime));
-    }
-
-    public void deliveryOutcome(FormSubmission submission) {
-        throw new RuntimeException("Not implemented");
     }
 }
