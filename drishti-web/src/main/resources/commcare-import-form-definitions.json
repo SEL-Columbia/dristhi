@@ -53,8 +53,6 @@
                     },
                     "extraMappings": {
                         "reporting": {
-                            "form|case|@case_id": "motherCaseId",
-                            "form|meta|username": "anmIdentifier",
                             "form|delivery_outcome": "pregnancyOutcome",
                             "form|date_outcome": "dateOfDelivery",
                             "form|place_delivery": "placeOfDelivery",

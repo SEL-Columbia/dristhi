@@ -60,6 +60,8 @@ public class ZiggyServiceIntegrationTest {
     private IFAHandler ifaHandler;
     @Mock
     private HbTestHandler hbTestHandler;
+    @Mock
+    private DeliveryOutcomeHandler deliveryOutcomeHandler;
 
     private ZiggyFileLoader ziggyFileLoader;
 
@@ -78,7 +80,7 @@ public class ZiggyServiceIntegrationTest {
                 new FormSubmissionRouter(formSubmissionsRepository, ecRegistrationHandler, fpComplicationsHandler,
                         fpChangeHandler, renewFPProductHandler, fpFollowupHandler, fpReferralFollowupHandler,
                         ecCloseHandler, ancRegistrationHandler, ancRegistrationOAHandler, ancVisitHandler,
-                        ancCloseHandler, ttHandler, ifaHandler, hbTestHandler));
+                        ancCloseHandler, ttHandler, ifaHandler, hbTestHandler, deliveryOutcomeHandler));
 
         service.saveForm(params, formInstance);
     }

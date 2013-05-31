@@ -24,6 +24,7 @@ public class AllConstants {
         public static final String ANC_CLOSE = "anc_close";
         public static final String IFA = "ifa";
         public static final String HB_TEST = "hb_test";
+        public static final String DELIVERY_OUTCOME = "delivery_outcome";
         public static final String TT_BOOSTER = "tt_booster";
         public static final String TT_1 = "tt_1";
         public static final String TT_2 = "tt_2";
@@ -50,15 +51,15 @@ public class AllConstants {
         public static final String PLACE_OF_DELIVERY_COMMCARE_FIELD_NAME = "placeOfDelivery";
         public static final String MOTHER_SURVIVED_COMMCARE_FIELD_NAME = "motherSurvived";
         public static final String WOMAN_SURVIVED_COMMCARE_FIELD_NAME = "womanSurvived";
-        public static final String LIVE_BIRTH_COMMCARE_FIELD_VALUE = "live_birth";
-        public static final String HOME_COMMCARE_FIELD_VALUE = "home";
-        public static final String SC_COMMCARE_FIELD_VALUE = "subcenter";
-        public static final String PHC_COMMCARE_FIELD_VALUE = "phc";
-        public static final String CHC_COMMCARE_FIELD_VALUE = "chc";
-        public static final String SDH_COMMCARE_FIELD_VALUE = "sdh";
-        public static final String DH_COMMCARE_FIELD_VALUE = "dh";
-        public static final String PRIVATE_FACILITY_COMMCARE_FIELD_VALUE = "private_facility";
-        public static final String PRIVATE_FACILITY2_COMMCARE_FIELD_VALUE = "private_facility2";
+        public static final String LIVE_BIRTH_FIELD_VALUE = "live_birth";
+        public static final String HOME_FIELD_VALUE = "home";
+        public static final String SC_FIELD_VALUE = "subcenter";
+        public static final String PHC_FIELD_VALUE = "phc";
+        public static final String CHC_FIELD_VALUE = "chc";
+        public static final String SDH_FIELD_VALUE = "sdh";
+        public static final String DH_FIELD_VALUE = "dh";
+        public static final String PRIVATE_FACILITY_FIELD_VALUE = "private_facility";
+        public static final String PRIVATE_FACILITY2_FIELD_VALUE = "private_facility2";
 
     }
 
@@ -68,6 +69,9 @@ public class AllConstants {
         public static final String REFERENCE_DATE = "referenceDate";
         public static final String ANC_VISIT_DATE_FIELD = "ancVisitDate";
         public static final String ANC_VISIT_NUMBER_FIELD = "ancVisitNumber";
+        public static final String DELIVERY_OUTCOME_FIELD = "deliveryOutcome";
+        public static final String DELIVERY_PLACE = "deliveryPlace";
+        public static final String DID_WOMAN_SURVIVE = "didWomanSurvive";
         public static final String TT_DOSE_FIELD = "ttDose";
         public static final String TT_DATE_FIELD = "ttDate";
         public static final String TT1_DOSE_VALUE = "tt1";
@@ -96,7 +100,7 @@ public class AllConstants {
         public static final String SUBMISSION_DATE_COMMCARE_FIELD_NAME = "submissionDate";
         public static final String HIGH_PRIORITY_COMMCARE_FIELD_NAME = "isHighPriority";
         public static final String BOOLEAN_TRUE_COMMCARE_VALUE = "yes";
-        public static final String BOOLEAN_FALSE_COMMCARE_VALUE = "no";
+        public static final String BOOLEAN_FALSE_VALUE = "no";
     }
 
     public static class ChildBirthCommCareFields {

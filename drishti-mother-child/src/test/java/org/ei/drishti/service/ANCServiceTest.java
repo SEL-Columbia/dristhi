@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.contract.BirthPlanningRequest;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -233,6 +232,34 @@ public class ANCServiceTest {
     }
 
     @Test
+    public void shouldHandleDeliveryOutcome() {
+        FormSubmission submission = create()
+                .withFormName("delivery_outcome")
+                .withANMId("anm id 1")
+                .withEntityId("entity id 1")
+                .addFormField("someKey", "someValue")
+                .build();
+        when(mothers.exists("entity id 1")).thenReturn(true);
+        when(reportFieldsDefinition.get("delivery_outcome")).thenReturn(asList("someKey"));
+
+        service.deliveryOutcome(submission);
+
+        verify(ancSchedulesService).unEnrollFromSchedules("entity id 1");
+        verify(motherReportingService).deliveryOutcome(new SafeMap(mapOf("someKey", "someValue")));
+    }
+
+    @Test
+    public void shouldDoNothingIfMotherIsNotRegisteredWhileDeliveryOutcome() {
+        when(mothers.exists("entity id 1")).thenReturn(false);
+
+        service.deliveryOutcome(create().build());
+
+        verifyZeroInteractions(ancSchedulesService);
+        verifyZeroInteractions(reportFieldsDefinition);
+        verifyZeroInteractions(motherReportingService);
+    }
+
+    @Test
     public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
         when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
@@ -293,56 +320,6 @@ public class ANCServiceTest {
         service.closeANCCase(create().build());
 
         verify(actionService).markAllAlertsAsInactive("entity id 1");
-    }
-
-    @Test
-    public void shouldUnEnrollMotherFromANCSchedulesWhenDeliveryOutcomeFormIsFilled() throws Exception {
-        when(mothers.exists("MOTHER-CASE-1")).thenReturn(true);
-        when(mothers.updateDetails("MOTHER-CASE-1", EXTRA_DATA.get("details"))).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1").withDetails(EXTRA_DATA.get("details")));
-
-        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0"), EXTRA_DATA);
-
-        verify(ancSchedulesService).unEnrollFromSchedules("MOTHER-CASE-1");
-    }
-
-    @Test
-    public void shouldUpdateMotherDetailsWhenDeliveryOutcomeFormIsFilled() throws Exception {
-        when(mothers.exists("MOTHER-CASE-1")).thenReturn(true);
-        when(mothers.updateDetails("MOTHER-CASE-1", EXTRA_DATA.get("details"))).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1").withDetails(EXTRA_DATA.get("details")));
-
-        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0"), EXTRA_DATA);
-
-        verify(mothers).updateDetails("MOTHER-CASE-1", EXTRA_DATA.get("details"));
-    }
-
-    @Test
-    public void shouldUpdateMotherDeliveryDetailsWhenDeliveryOutcomeFormIsFilled() throws Exception {
-        when(mothers.exists("MOTHER-CASE-1")).thenReturn(true);
-        when(mothers.updateDetails("MOTHER-CASE-1", EXTRA_DATA.get("details"))).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1").withDetails(EXTRA_DATA.get("details")));
-
-        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0"), EXTRA_DATA);
-
-        verify(mothers).updateDeliveryOutcomeFor("MOTHER-CASE-1", "2012-01-01");
-    }
-
-    @Test
-    public void shouldReportWhenDeliveryOutcomeFormIsFilled() throws Exception {
-        when(mothers.exists("MOTHER-CASE-1")).thenReturn(true);
-        when(mothers.updateDetails("MOTHER-CASE-1", EXTRA_DATA.get("details"))).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1").withDetails(EXTRA_DATA.get("details")));
-
-        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0"), EXTRA_DATA);
-
-        verify(motherReportingService).updatePregnancyOutcome(new SafeMap(EXTRA_DATA.get("reporting")));
-    }
-
-    @Test
-    public void shouldIgnoreDeliveryOutcomeUploadIfThereIsNoCorrespondingMotherInRepo() throws Exception {
-        when(mothers.exists("CASE-X")).thenReturn(false);
-
-        service.updatePregnancyOutcome(new AnteNatalCareOutcomeInformation("MOTHER-CASE-1", "ANM X", "live_birth", "2012-01-01", "yes", "0"), EXTRA_DATA);
-
-        verifyZeroInteractions(ancSchedulesService);
-        verifyZeroInteractions(actionService);
     }
 
     @Test

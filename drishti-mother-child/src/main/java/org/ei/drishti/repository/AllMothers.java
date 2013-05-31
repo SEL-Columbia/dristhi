@@ -61,14 +61,6 @@ public class AllMothers extends MotechBaseRepository<Mother> {
         return mother;
     }
 
-    public Mother updateDeliveryOutcomeFor(String caseId, String dateOfDelivery) {
-        Mother mother = findByCaseId(caseId);
-        mother.withDeliveryOutCome(dateOfDelivery);
-        update(mother);
-
-        return mother;
-    }
-
     public void close(String caseId) {
         Mother mother = findByCaseId(caseId);
         update(mother.setIsClosed(true));

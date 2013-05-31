@@ -35,7 +35,6 @@ public class DrishtiController {
     public void updateOutcomeOfANC(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
         logger.info("ANC outcome: " + outcomeInformation + ". Extra data: " + extraData);
 
-        ancService.updatePregnancyOutcome(outcomeInformation, extraData);
         pncService.registerPNC(outcomeInformation);
         mctsService.updateANCOutcome(outcomeInformation);
 

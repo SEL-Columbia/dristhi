@@ -4,6 +4,7 @@ import org.ei.drishti.contract.*;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.BeneficiaryType;
+import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
@@ -195,5 +196,9 @@ public class PNCService {
         LocalTime currentTime = DateUtil.now().toLocalTime();
         DateTime dueDate = dueDateLocal.toDateTime(currentTime);
         actionService.alertForBeneficiary(child, information.caseId(), scheduleName, visitCodeIfNotProvided, normal, dueDate, dueDateLocal.plusWeeks(1).toDateTime(currentTime));
+    }
+
+    public void deliveryOutcome(FormSubmission submission) {
+        throw new RuntimeException("Not implemented");
     }
 }

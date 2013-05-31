@@ -41,6 +41,8 @@ public class FormSubmissionRouterTest {
     private IFAHandler ifaHandler;
     @Mock
     private HbTestHandler hbTestHandler;
+    @Mock
+    private DeliveryOutcomeHandler deliveryOutcomeHandler;
 
     private FormSubmissionRouter router;
 
@@ -61,7 +63,8 @@ public class FormSubmissionRouterTest {
                 ancCloseHandler,
                 ttHandler,
                 ifaHandler,
-                hbTestHandler);
+                hbTestHandler,
+                deliveryOutcomeHandler);
     }
 
     @Test
@@ -211,5 +214,16 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(hbTestHandler).handle(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateDeliveryOutcomeTestFormSubmissionHandlingToDeliveryOutcomeHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "delivery_outcome", "entity id 1", null, 0L, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(deliveryOutcomeHandler).handle(formSubmission);
     }
 }

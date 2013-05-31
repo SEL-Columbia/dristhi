@@ -47,5 +47,11 @@
         "ttDose",
         "ttInjectionPlace",
         "ttDate"
+    ],
+    "delivery_outcome": [
+        "id",
+        "deliveryOutcome",
+        "deliveryPlace",
+        "didWomanSurvive"
     ]
 }

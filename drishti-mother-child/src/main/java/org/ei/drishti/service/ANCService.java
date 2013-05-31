@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.AnteNatalCareOutcomeInformation;
 import org.ei.drishti.contract.BirthPlanningRequest;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -28,7 +27,6 @@ import static org.ei.drishti.common.AllConstants.HbTestFormFields.ANAEMIC_STATUS
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_TEST_DATE_FIELD;
 import static org.ei.drishti.common.AllConstants.IFAFields.IFA_TABLETS_DATE;
 import static org.ei.drishti.common.AllConstants.IFAFields.NUMBER_OF_IFA_TABLETS_GIVEN;
-import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.joda.time.LocalDate.parse;
 
 @Service
@@ -134,6 +132,17 @@ public class ANCService {
                 submission.getField(ANAEMIC_STATUS_FIELD), mother.lmp());
     }
 
+    public void deliveryOutcome(FormSubmission submission) {
+        if (!allMothers.exists(submission.entityId())) {
+            logger.warn("Tried to handle delivery outcome without registered mother. Submission: " + submission);
+            return;
+        }
+
+        ancSchedulesService.unEnrollFromSchedules(submission.entityId());
+        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+        reportingService.deliveryOutcome(new SafeMap(submission.getFields(reportFields)));
+    }
+
     public void closeANCCase(FormSubmission submission) {
         Mother mother = allMothers.findByCaseId(submission.entityId());
         if (mother == null) {
@@ -153,20 +162,6 @@ public class ANCService {
             logger.info("Closing EC case along with ANC case. Submission: " + submission);
             eligibleCouples.close(mother.ecCaseId());
         }
-    }
-
-    @Deprecated
-    public void updatePregnancyOutcome(AnteNatalCareOutcomeInformation outcomeInformation, Map<String, Map<String, String>> extraData) {
-        String caseId = outcomeInformation.motherCaseId();
-        if (!allMothers.exists(caseId)) {
-            logger.warn("Failed to update delivery outcome as there is no mother registered: " + outcomeInformation);
-            return;
-        }
-        reportingService.updatePregnancyOutcome(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-        ancSchedulesService.unEnrollFromSchedules(caseId);
-        allMothers.updateDeliveryOutcomeFor(caseId, outcomeInformation.deliveryOutcomeDate());
-        Mother updatedMother = allMothers.updateDetails(caseId, extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
-        actionService.updateANCOutcome(caseId, outcomeInformation.anmIdentifier(), updatedMother.details());
     }
 
     @Deprecated

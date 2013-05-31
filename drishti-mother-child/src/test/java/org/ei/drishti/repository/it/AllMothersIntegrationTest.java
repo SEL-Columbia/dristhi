@@ -89,15 +89,6 @@ public class AllMothersIntegrationTest {
     }
 
     @Test
-    public void shouldUpdateDeliveryOutcomeForAMother() {
-        Mother motherToRegister = new Mother("CASE-1", "EC-CASE-1", "THAAYI-CARD-1");
-        mothers.register(motherToRegister);
-
-        mothers.updateDeliveryOutcomeFor("CASE-1", "2013-01-01");
-        assertThat(mothers.findByCaseId("CASE-1"), is(motherToRegister.withDeliveryOutCome("2013-01-01")));
-    }
-
-    @Test
     public void shouldMarkMotherAsClosedWhenMotherClose() {
         Mother motherToRegister = motherWithoutDetails();
         mothers.register(motherToRegister);

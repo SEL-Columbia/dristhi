@@ -22,7 +22,7 @@ import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeCommCareFields.*;
-import static org.ei.drishti.common.AllConstants.Form.ENTITY_ID;
+import static org.ei.drishti.common.AllConstants.Form.ID;
 import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.DEATH_OF_MOTHER_COMMCARE_VALUE;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
@@ -48,14 +48,14 @@ public class MotherReportingService {
         this.allEligibleCouples = allEligibleCouples;
 
         placeOfDeliveryToIndicator = new HashMap<>();
-        placeOfDeliveryToIndicator.put(HOME_COMMCARE_FIELD_VALUE, D_HOM);
-        placeOfDeliveryToIndicator.put(SC_COMMCARE_FIELD_VALUE, D_SC);
-        placeOfDeliveryToIndicator.put(PHC_COMMCARE_FIELD_VALUE, D_PHC);
-        placeOfDeliveryToIndicator.put(CHC_COMMCARE_FIELD_VALUE, D_CHC);
-        placeOfDeliveryToIndicator.put(SDH_COMMCARE_FIELD_VALUE, D_SDH);
-        placeOfDeliveryToIndicator.put(DH_COMMCARE_FIELD_VALUE, D_DH);
-        placeOfDeliveryToIndicator.put(PRIVATE_FACILITY_COMMCARE_FIELD_VALUE, D_PRI);
-        placeOfDeliveryToIndicator.put(PRIVATE_FACILITY2_COMMCARE_FIELD_VALUE, D_PRI);
+        placeOfDeliveryToIndicator.put(HOME_FIELD_VALUE, D_HOM);
+        placeOfDeliveryToIndicator.put(SC_FIELD_VALUE, D_SC);
+        placeOfDeliveryToIndicator.put(PHC_FIELD_VALUE, D_PHC);
+        placeOfDeliveryToIndicator.put(CHC_FIELD_VALUE, D_CHC);
+        placeOfDeliveryToIndicator.put(SDH_FIELD_VALUE, D_SDH);
+        placeOfDeliveryToIndicator.put(DH_FIELD_VALUE, D_DH);
+        placeOfDeliveryToIndicator.put(PRIVATE_FACILITY_FIELD_VALUE, D_PRI);
+        placeOfDeliveryToIndicator.put(PRIVATE_FACILITY2_FIELD_VALUE, D_PRI);
     }
 
     public void registerANC(SafeMap reportData) {
@@ -72,17 +72,28 @@ public class MotherReportingService {
     }
 
     public void ancVisit(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(ENTITY_ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(ID));
         EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
         Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
         reportANC4Visit(reportData, mother, location);
     }
 
     public void ttProvided(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(ENTITY_ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(ID));
         EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
         Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
         reportTTVisit(reportData.get(TT_DOSE_FIELD), reportData.get(TT_DATE_FIELD), mother, location);
+    }
+
+    public void deliveryOutcome(SafeMap reportData) {
+        Mother mother = allMothers.findByCaseId(reportData.get(ID));
+        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+        reportPregnancyOutcome(reportData, mother, location);
+        reportIfInstitutionalDelivery(reportData, mother, location);
+        reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), location);
+        reportMotherMortality(reportData, mother, location);
+        reportPlaceOfDelivery(reportData, mother, location);
     }
 
     public void pncVisitHappened(SafeMap reportData) {
@@ -97,43 +108,6 @@ public class MotherReportingService {
         } catch (Exception e) {
             logger.warn("Not reporting PNC visit for mother: " + mother.caseId() + " as visit number is invalid, visit number:" + reportData.get(VISIT_NUMBER_COMMCARE_FIELD));
         }
-    }
-
-    public void updatePregnancyOutcome(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(MOTHER_CASE_ID_COMMCARE_FIELD_NAME));
-        reportPregnancyOutcome(reportData, mother);
-        reportIfInstitutionalDelivery(reportData, mother);
-        reportToBoth(mother, DELIVERY, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
-        reportMotherMortality(reportData, mother);
-        reportPlaceOfDelivery(reportData, mother);
-    }
-
-    private void reportPlaceOfDelivery(SafeMap reportData, Mother mother) {
-        Indicator indicator = placeOfDeliveryToIndicator.get(reportData.get(PLACE_OF_DELIVERY_COMMCARE_FIELD_NAME));
-        if (indicator != null) {
-            reportToBoth(mother, indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
-        } else {
-            logger.warn("Not reporting: Invalid place of delivery: " + reportData.get(PLACE_OF_DELIVERY_COMMCARE_FIELD_NAME) + " for motherCaseId: " +
-                    mother.caseId());
-        }
-    }
-
-    private void reportMotherMortality(SafeMap reportData, Mother mother) {
-        if (BOOLEAN_FALSE_COMMCARE_VALUE.equals(reportData.get(MOTHER_SURVIVED_COMMCARE_FIELD_NAME)) ||
-                BOOLEAN_FALSE_COMMCARE_VALUE.equals(reportData.get(WOMAN_SURVIVED_COMMCARE_FIELD_NAME))) {
-            reportDeath(mother, MMD, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
-        }
-    }
-
-    private void reportIfInstitutionalDelivery(SafeMap reportData, Mother mother) {
-        if (!HOME_COMMCARE_FIELD_VALUE.equals(reportData.get(PLACE_OF_DELIVERY_COMMCARE_FIELD_NAME))) {
-            reportToBoth(mother, INSTITUTIONAL_DELIVERY, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
-        }
-    }
-
-    private void reportPregnancyOutcome(SafeMap reportData, Mother mother) {
-        Indicator indicator = LIVE_BIRTH_COMMCARE_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME_COMMCARE_FIELD_NAME)) ? LIVE_BIRTH : STILL_BIRTH;
-        reportToBoth(mother, indicator, reportData.get(DATE_OF_DELIVERY_COMMCARE_FIELD_NAME));
     }
 
     public void closeANC(SafeMap reportData) {
@@ -157,9 +131,41 @@ public class MotherReportingService {
         }
     }
 
+    private void reportIfInstitutionalDelivery(SafeMap reportData, Mother mother, Location location) {
+        if (!HOME_FIELD_VALUE.equals(reportData.get(DELIVERY_PLACE))) {
+            reportToBoth(mother, INSTITUTIONAL_DELIVERY, reportData.get(REFERENCE_DATE), location);
+        }
+    }
+
+    private void reportPregnancyOutcome(SafeMap reportData, Mother mother, Location location) {
+        Indicator indicator = LIVE_BIRTH_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME_FIELD)) ? LIVE_BIRTH : STILL_BIRTH;
+        reportToBoth(mother, indicator, reportData.get(REFERENCE_DATE), location);
+    }
+
+    private void reportMotherMortality(SafeMap reportData, Mother mother, Location location) {
+        if (BOOLEAN_FALSE_VALUE.equals(reportData.get(DID_WOMAN_SURVIVE))) {
+            reportDeath(mother, MMD, reportData.get(REFERENCE_DATE), location);
+        }
+    }
+
+    private void reportPlaceOfDelivery(SafeMap reportData, Mother mother, Location location) {
+        Indicator indicator = placeOfDeliveryToIndicator.get(reportData.get(DELIVERY_PLACE));
+        if (indicator != null) {
+            reportToBoth(mother, indicator, reportData.get(REFERENCE_DATE), location);
+        } else {
+            logger.warn("Not reporting: Invalid place of delivery: " + reportData.get(DELIVERY_PLACE) + " for mother: " +
+                    mother.caseId());
+        }
+    }
+
     private void reportDeath(Mother mother, Indicator indicator, String date) {
         reportToBoth(mother, indicator, date);
         reportToBoth(mother, MOTHER_MORTALITY, date);
+    }
+
+    private void reportDeath(Mother mother, Indicator indicator, String date, Location location) {
+        reportToBoth(mother, indicator, date, location);
+        reportToBoth(mother, MOTHER_MORTALITY, date, location);
     }
 
     private void reportAbortion(SafeMap reportData, Mother mother) {
