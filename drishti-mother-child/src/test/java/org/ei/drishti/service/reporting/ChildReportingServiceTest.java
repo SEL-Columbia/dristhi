@@ -3,8 +3,12 @@ package org.ei.drishti.service.reporting;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.Child;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
+import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.repository.AllEligibleCouples;
+import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,10 +27,14 @@ public class ChildReportingServiceTest {
     private ReportingService reportingService;
     @Mock
     private AllChildren allChildren;
+    @Mock
+    private AllMothers allMothers;
+    @Mock
+    private AllEligibleCouples allEligibleCouples;
 
     private ChildReportingService service;
 
-    private static final Child CHILD = new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female")
+    private static final Child CHILD = new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female")
             .withDateOfBirth("2012-01-01")
             .withLocation("bherya", "Sub Center", "PHC X")
             .withAnm("ANM X");
@@ -34,7 +42,7 @@ public class ChildReportingServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ChildReportingService(reportingService, allChildren);
+        service = new ChildReportingService(reportingService, allChildren, allMothers, allEligibleCouples);
     }
 
     @Test
@@ -64,7 +72,7 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldMakeAReportingCallForEachNewlyProvidedImmunization() throws Exception {
         SafeMap reportingData = reportDataForImmunization("dpt_1 bcg measles", "");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X"));
 
@@ -78,7 +86,7 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldReportFirstVitaminDoseDuringImmunizationProvided() throws Exception {
         SafeMap reportingData = reportDataForImmunization("", "1");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X"));
 
@@ -91,7 +99,7 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldReportSecondVitaminDoseDuringImmunizationProvided() throws Exception {
         SafeMap reportingData = reportDataForImmunization("", "2");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X"));
 
@@ -115,16 +123,17 @@ public class ChildReportingServiceTest {
     }
 
     @Test
-    public void shouldSendChildImmunizationDataWhenChildIsRegistered() throws Exception {
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "TC 1", "boo", asList("opv_0"), "female")
-                .withLocation("bherya", "Sub Center", "PHC X")
+    public void shouldReportChildImmunizationDataWhenChildIsRegistered() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
                 .withAnm("ANM X")
-                .withDateOfBirth("2012-01-01"));
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE X");
-        reportData.put("childWeight", "5");
-        reportData.put("bfPostBirth", "");
+        reportData.put("id", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
         verifyBothReportingCalls(OPV, "2012-01-01");
@@ -132,12 +141,16 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportLowWeightDuringChildRegistration() throws Exception {
-        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE X");
-        reportData.put("childWeight", "2.2");
-        reportData.put("bfPostBirth", "");
+        reportData.put("id", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
         verifyBothReportingCalls(LBW, "2012-01-01");
@@ -145,12 +158,16 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportIfBreastFeedingInitiatedDuringChildRegistration() throws Exception {
-        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE X");
-        reportData.put("childWeight", "2.2");
-        reportData.put("bfPostBirth", "yes");
+        reportData.put("id", "CASE X");
+        reportData.put("didBreastfeedingStart", "yes");
         service.registerChild(reportData);
 
         verifyBothReportingCalls(BF_POST_BIRTH, "2012-01-01");
@@ -158,12 +175,16 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportIfWeightIsMeasuredDuringChildRegistration() throws Exception {
-        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE X");
-        reportData.put("childWeight", "2.2");
-        reportData.put("bfPostBirth", "yes");
+        reportData.put("id", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
         verifyBothReportingCalls(WEIGHED_AT_BIRTH, "2012-01-01");
@@ -171,12 +192,16 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldNotReportIfWeightIsNotMeasuredDuringChildRegistration() throws Exception {
-        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE X");
-        reportData.put("childWeight", "---");
-        reportData.put("bfPostBirth", "");
+        reportData.put("id", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
         verifyNoReportingCalls(WEIGHED_AT_BIRTH, "2012-01-01");
@@ -184,12 +209,16 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldNotReportBreastFeedingIfNotInitiatedDuringChildRegistration() throws Exception {
-        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE X");
-        reportData.put("childWeight", "2.2");
-        reportData.put("bfPostBirth", "");
+        reportData.put("id", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
         verifyNoReportingCalls(BF_POST_BIRTH, "2012-01-01");
@@ -197,12 +226,16 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldNotReportNormalWeight() throws Exception {
-        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE X");
-        reportData.put("childWeight", "2.5");
-        reportData.put("bfPostBirth", "");
+        reportData.put("id", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
         verifyNoReportingCalls(LBW, "2012-01-01");
@@ -210,12 +243,16 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldNotReportInvalidWeightValue() throws Exception {
-        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "---", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE X");
-        reportData.put("childWeight", "");
-        reportData.put("bfPostBirth", "");
+        reportData.put("id", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
         verifyNoReportingCalls(LBW, "2012-01-01");
@@ -328,7 +365,7 @@ public class ChildReportingServiceTest {
 
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator... expectedIndicators) {
         ReportingService fakeReportingService = mock(ReportingService.class);
-        ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, allChildren);
+        ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, allChildren, allMothers, allEligibleCouples);
         SafeMap reportingData = reportDataForImmunization(immunizationProvided, "");
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
 

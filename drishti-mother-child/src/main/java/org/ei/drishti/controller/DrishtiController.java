@@ -40,7 +40,6 @@ public class DrishtiController {
         List<ChildInformation> childInformationList = childMapper.mapDeliveryOutcomeInformationToChildren(outcomeInformation, extraData);
 
         for (ChildInformation childInformation : childInformationList) {
-            pncService.registerChild(childInformation);
         }
 
         mctsService.registerChild(outcomeInformation);

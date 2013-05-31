@@ -7,6 +7,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -15,11 +17,7 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private String caseId;
     @JsonProperty
-    private String ecCaseId;
-    @JsonProperty
     private String motherCaseId;
-    @JsonProperty
-    private String thaayiCardNumber;
     @JsonProperty
     private String name;
     @JsonProperty
@@ -27,9 +25,15 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private List<String> immunizationsProvided;
     @JsonProperty
+    private String dateOfBirth;
+    @JsonProperty
+    private String weight;
+    @JsonProperty
     private String gender;
     @JsonProperty
-    private String dateOfBirth;
+    private String bloodGroup;
+    @JsonProperty
+    private String immunizationsGiven;
     @JsonProperty
     private String village;
     @JsonProperty
@@ -39,18 +43,27 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private boolean isClosed;
     @JsonProperty
+    private String thayiCard;
+    @JsonProperty
     private Map<String, String> details;
 
     private Child() {
     }
 
-    public Child(String caseId, String ecCaseId, String motherCaseId, String thaayiCardNumber, String name, List<String> immunizationsProvided, String gender) {
+    public Child(String caseId, String motherCaseId, String thaayiCardNumber, String name, List<String> immunizationsProvided, String gender) {
         this.caseId = caseId;
-        this.ecCaseId = ecCaseId;
         this.motherCaseId = motherCaseId;
-        this.thaayiCardNumber = thaayiCardNumber;
+        this.thayiCard = thaayiCardNumber;
         this.name = name;
         this.immunizationsProvided = immunizationsProvided;
+        this.gender = gender;
+    }
+
+    public Child(String id, String motherCaseId, String immunizationsGiven, String weight, String gender) {
+        this.caseId = id;
+        this.motherCaseId = motherCaseId;
+        this.immunizationsGiven = immunizationsGiven;
+        this.weight = weight;
         this.gender = gender;
     }
 
@@ -71,16 +84,21 @@ public class Child extends MotechBaseDataObject {
         return this;
     }
 
+    public Child withThayiCard(String thayiCard) {
+        this.thayiCard = thayiCard;
+        return this;
+    }
+
     public String caseId() {
         return caseId;
     }
 
-    public String ecCaseId() {
-        return ecCaseId;
+    public String motherCaseId() {
+        return motherCaseId;
     }
 
     public String thaayiCardNumber() {
-        return thaayiCardNumber;
+        return thayiCard;
     }
 
     public String name() {
@@ -93,6 +111,10 @@ public class Child extends MotechBaseDataObject {
 
     public List<String> immunizationsProvided() {
         return immunizationsProvided;
+    }
+
+    public List<String> immunizationsGiven() {
+        return new ArrayList<>(Arrays.asList(immunizationsGiven.split(" ")));
     }
 
     public Child withDetails(Map<String, String> details) {
@@ -108,9 +130,13 @@ public class Child extends MotechBaseDataObject {
         return dateOfBirth;
     }
 
-    public Child setImmunizationsProvided(List<String> immunizationsProvided){
+    public Child setImmunizationsProvided(List<String> immunizationsProvided) {
         this.immunizationsProvided = immunizationsProvided;
         return this;
+    }
+
+    public String weight() {
+        return weight;
     }
 
     public Location location() {

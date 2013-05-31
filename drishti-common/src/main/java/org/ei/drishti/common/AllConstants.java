@@ -50,6 +50,7 @@ public class AllConstants {
         public static final String DELIVERY_OUTCOME_FIELD = "deliveryOutcome";
         public static final String DELIVERY_PLACE = "deliveryPlace";
         public static final String DID_WOMAN_SURVIVE = "didWomanSurvive";
+        public static final String DID_BREAST_FEEDING_START = "didBreastfeedingStart";
         public static final String LIVE_BIRTH_FIELD_VALUE = "live_birth";
         public static final String HOME_FIELD_VALUE = "home";
         public static final String SC_FIELD_VALUE = "subcenter";
@@ -91,9 +92,10 @@ public class AllConstants {
     }
 
     public static class ChildBirthCommCareFields {
-        public static final String BIRTH_WEIGHT_COMMCARE_FIELD_NAME = "childWeight";
+        public static final String BIRTH_WEIGHT_FIELD_NAME = "weight";
+        public static final String DATE_OF_BIRTH_FIELD_NAME = "dateOfBirth";
         public static final String BLOOD_GROUP_COMMCARE_FIELD_NAME = "childBloodGroup";
-        public static final String BF_POSTBIRTH_COMMCARE_FIELD_NAME = "bfPostBirth";
+        public static final String BF_POSTBIRTH_FIELD_NAME = "didBreastfeedingStart";
     }
 
     public static class ChildCloseCommCareFields {

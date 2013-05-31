@@ -3,7 +3,12 @@ package org.ei.drishti.service.reporting;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.Child;
+import org.ei.drishti.domain.EligibleCouple;
+import org.ei.drishti.domain.Location;
+import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.repository.AllEligibleCouples;
+import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -14,12 +19,12 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
+import static org.ei.drishti.common.AllConstants.Form.ID;
 import static org.ei.drishti.common.AllConstants.Report.*;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.joda.time.LocalDate.parse;
@@ -28,13 +33,17 @@ import static org.joda.time.LocalDate.parse;
 public class ChildReportingService {
     private final ReportingService reportingService;
     private final AllChildren allChildren;
+    private final AllMothers allMothers;
+    private final AllEligibleCouples allEligibleCouples;
     private static Logger logger = LoggerFactory.getLogger(ChildReportingService.class.toString());
     private Map<String, List<Indicator>> immunizationToIndicator;
 
     @Autowired
-    public ChildReportingService(ReportingService reportingService, AllChildren allChildren) {
+    public ChildReportingService(ReportingService reportingService, AllChildren allChildren, AllMothers allMothers, AllEligibleCouples allEligibleCouples) {
         this.reportingService = reportingService;
         this.allChildren = allChildren;
+        this.allMothers = allMothers;
+        this.allEligibleCouples = allEligibleCouples;
         immunizationToIndicator = new HashMap<>();
 
         immunizationToIndicator.put(BCG_COMMCARE_VALUE, asList(BCG));
@@ -60,14 +69,17 @@ public class ChildReportingService {
     }
 
     public void registerChild(SafeMap reportData) {
-        String caseId = reportData.get(CASE_ID_COMMCARE_FIELD_NAME);
-        Child child = allChildren.findByCaseId(caseId);
+        String id = reportData.get(ID);
+        Child child = allChildren.findByCaseId(id);
+        Mother mother = allMothers.findByCaseId(child.motherCaseId());
+        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
 
-        List<String> immunizations = child.immunizationsProvided();
+        List<String> immunizations = child.immunizationsGiven();
 
-        reportImmunizations(caseId, child, immunizations, child.dateOfBirth());
-        reportBirthWeight(reportData.get(BIRTH_WEIGHT_COMMCARE_FIELD_NAME), child);
-        reportBFPostBirth(reportData.get(BF_POSTBIRTH_COMMCARE_FIELD_NAME), child);
+        reportImmunizations(child, immunizations, location);
+        reportBirthWeight(child, location);
+        reportBFPostBirth(reportData.get(BF_POSTBIRTH_FIELD_NAME), child, location);
     }
 
     public void immunizationProvided(SafeMap reportData, Collection<String> previousImmunizations) {
@@ -125,9 +137,27 @@ public class ChildReportingService {
         }
     }
 
+    private void reportBirthWeight(Child child, Location location) {
+        try {
+            double birthWeight = Double.parseDouble(child.weight());
+            if (birthWeight < LOW_BIRTH_WEIGHT_THRESHOLD) {
+                reportToBoth(child, LBW, child.dateOfBirth(), location);
+            }
+            reportToBoth(child, WEIGHED_AT_BIRTH, child.dateOfBirth(), location);
+        } catch (NumberFormatException e) {
+            logger.warn("Not reporting: Invalid value received for childWeight : " + child.weight() + " for childId : " + child.caseId());
+        }
+    }
+
     private void reportBFPostBirth(String bfPostBirth, Child child) {
         if (BOOLEAN_TRUE_VALUE.equalsIgnoreCase(bfPostBirth)) {
             reportToBoth(child, BF_POST_BIRTH, child.dateOfBirth());
+        }
+    }
+
+    private void reportBFPostBirth(String bfPostBirth, Child child, Location location) {
+        if (BOOLEAN_TRUE_VALUE.equalsIgnoreCase(bfPostBirth)) {
+            reportToBoth(child, BF_POST_BIRTH, child.dateOfBirth(), location);
         }
     }
 
@@ -146,8 +176,30 @@ public class ChildReportingService {
         }
     }
 
+    private void reportImmunizations(Child child, List<String> immunizations, Location location) {
+        for (String immunizationProvidedThisTime : immunizations) {
+            List<Indicator> indicators = immunizationToIndicator.get(immunizationProvidedThisTime);
+            if (indicators == null) {
+                logger.warn("Not reporting: Invalid immunization: " + immunizationProvidedThisTime + " for childCaseId: " +
+                        child.caseId() + " with immunizations provided: " + immunizations);
+                continue;
+            }
+
+            for (Indicator indicator : indicators) {
+                reportToBoth(child, indicator, child.dateOfBirth(), location);
+            }
+        }
+    }
+
     private void reportToBoth(Child child, Indicator indicator, String date) {
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thaayiCardNumber(), indicator, date, child.location());
+        reportingService.sendReportData(serviceProvidedData);
+        ReportingData anmReportData = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
+        reportingService.sendReportData(anmReportData);
+    }
+
+    private void reportToBoth(Child child, Indicator indicator, String date, Location location) {
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thaayiCardNumber(), indicator, date, location);
         reportingService.sendReportData(serviceProvidedData);
         ReportingData anmReportData = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);

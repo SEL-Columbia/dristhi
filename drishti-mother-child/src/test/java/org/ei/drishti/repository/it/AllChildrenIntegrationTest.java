@@ -9,17 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
@@ -34,7 +33,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldRegisterAChild() {
-        Child child = new Child("CASE-1", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07");
+        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07");
 
         children.register(child);
 
@@ -47,7 +46,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldFindChildByCaseId() {
-        Child child = new Child("CASE-1", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
         children.register(child);
 
         Child childFromDB = children.findByCaseId("CASE-1");
@@ -57,7 +56,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldCheckIfChildExists() {
-        Child child = new Child("CASE-1", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
         children.register(child);
 
         assertTrue(children.childExists("CASE-1"));
@@ -66,12 +65,28 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldFindChildByMotherCaseId() {
-        Child child = new Child("CASE-1", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
         children.register(child);
 
         Child childFromDB = children.findByMotherCaseId("MOTHER-CASE-1");
 
         assertThat(childFromDB, hasSameFieldsAs(child));
+    }
+
+    @Test
+    public void shouldFindChildrenByMotherCaseId() {
+        Child firstChild = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child secondChild = new Child("CASE-2", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child thirdChild = new Child("CASE-3", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child orphan = new Child("CASE-4", "MOTHER-CASE-2", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        children.register(firstChild);
+        children.register(secondChild);
+        children.register(thirdChild);
+        children.register(orphan);
+
+        List<Child> childrenFromDB = children.findByMotherId("MOTHER-CASE-1");
+
+        assertEquals(asList(firstChild, secondChild, thirdChild), childrenFromDB);
     }
 
     @Test
@@ -101,14 +116,14 @@ public class AllChildrenIntegrationTest {
 
         Child updatedChild = children.update("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, "dpt_1 hep measles").map());
 
-        Child exptectedChild = new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep", "dpt_1", "measles"), "male")
+        Child exptectedChild = new Child("CASE X", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep", "dpt_1", "measles"), "male")
                 .withAnm("ANM ID 1").withDetails(expectedUpdatedDetails);
         assertThat(children.findByCaseId("CASE X"), is(exptectedChild));
         assertThat(updatedChild, is(exptectedChild));
     }
 
     private Child childWithoutDetails() {
-        return new Child("CASE X", "EC-CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", Arrays.asList("bcg", "hep"), "male")
+        return new Child("CASE X", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male")
                 .withAnm("ANM ID 1");
     }
 }

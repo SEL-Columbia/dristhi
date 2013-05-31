@@ -21,5 +21,6 @@ public class DeliveryOutcomeHandler implements FormSubmissionHandler {
     public void handle(FormSubmission submission) {
         ancService.deliveryOutcome(submission);
         pncService.deliveryOutcome(submission);
+        pncService.registerChildren(submission);
     }
 }

@@ -61,8 +61,6 @@ public class DrishtiControllerTest {
         controller.updateOutcomeOfANC(outcomeInformation, EXTRA_DATA);
 
         verify(childMapper).mapDeliveryOutcomeInformationToChildren(outcomeInformation, EXTRA_DATA);
-        verify(pncService).registerChild(firstChildInformation);
-        verify(pncService).registerChild(secondChildInformation);
     }
 
     @Test

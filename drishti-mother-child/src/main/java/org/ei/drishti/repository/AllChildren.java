@@ -3,6 +3,7 @@ package org.ei.drishti.repository;
 import org.ei.drishti.domain.Child;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
+import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,6 +35,11 @@ public class AllChildren extends MotechBaseRepository<Child> {
     @GenerateView
     public Child findByMotherCaseId(String motherCaseId) {
         return findChild(motherCaseId, "by_motherCaseId");
+    }
+
+    @View(name = "children_by_mother_id", map = "function(doc) { if (doc.type === 'Child') { emit(doc.motherCaseId); } }")
+    public List<Child> findByMotherId(String entityId) {
+        return db.queryView(createQuery("children_by_mother_id").key(entityId).includeDocs(true), Child.class);
     }
 
     public Child update(String caseId, Map<String, String> details) {

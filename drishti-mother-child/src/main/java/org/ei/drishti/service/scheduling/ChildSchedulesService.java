@@ -1,9 +1,10 @@
 package org.ei.drishti.service.scheduling;
 
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.contract.ChildInformation;
 import org.ei.drishti.contract.Schedule;
+import org.ei.drishti.domain.Child;
 import org.ei.drishti.repository.AllChildren;
+import org.joda.time.LocalDate;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
@@ -36,9 +37,9 @@ public class ChildSchedulesService {
         initializeSchedules();
     }
 
-    public void enrollChild(ChildInformation information) {
-        enrollNonDependentModules(information);
-        updateEnrollments(new ChildImmunizationUpdationRequest(information.caseId(), information.anmIdentifier(), join(information.immunizationsProvidedList(), " "), information.dateOfBirth().toString()));
+    public void enrollChild(Child child) {
+        enrollNonDependentModules(child.caseId(), LocalDate.parse(child.dateOfBirth()));
+        updateEnrollments(new ChildImmunizationUpdationRequest(child.caseId(), child.anmIdentifier(), join(child.immunizationsGiven(), " "), child.dateOfBirth()));
     }
 
     public void updateEnrollments(ChildImmunizationUpdationRequest information) {
@@ -58,7 +59,7 @@ public class ChildSchedulesService {
         List<String> visitCodes = new ArrayList<>();
         for (Schedule schedule : childSchedules.values()) {
             for (String milestone : schedule.getMileStones()) {
-                if(immunizationsProvided.contains(milestone)){
+                if (immunizationsProvided.contains(milestone)) {
                     visitCodes.add(milestone);
                 }
             }
@@ -66,17 +67,19 @@ public class ChildSchedulesService {
         return visitCodes;
     }
 
-    private void enrollNonDependentModules(ChildInformation information) {
+    private void enrollNonDependentModules(String id, LocalDate dateOfBirth) {
         for (Schedule schedule : childSchedules.values()) {
             if (!schedule.hasDependency()) {
-                scheduleTrackingService.enroll(new EnrollmentRequest(information.caseId(), schedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES), information.dateOfBirth(), null, null, null, null, null));
+                scheduleTrackingService.enroll(
+                        new EnrollmentRequest(id, schedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
+                                dateOfBirth, null, null, null, null, null));
             }
         }
     }
 
     private void enrollDependentModulesIfRequired(ChildImmunizationUpdationRequest information) {
         for (Schedule schedule : childSchedules.values()) {
-            if (schedule.hasDependency() && !isImmunizationAlreadyProvided(information.caseId(),schedule)) {
+            if (schedule.hasDependency() && !isImmunizationAlreadyProvided(information.caseId(), schedule)) {
                 Schedule dependsOn = schedule.getDependencySchedule();
                 if (information.immunizationsProvidedList().contains(dependsOn.getLastMilestone())
                         && isNotEnrolled(information.caseId(), schedule.name())) {
@@ -90,7 +93,7 @@ public class ChildSchedulesService {
         List<String> alreadyProvidedImmunizations = allChildren.findByCaseId(caseid).immunizationsProvided();
         List<String> mileStones = schedule.getMileStones();
         for (String mileStone : mileStones) {
-            if(!alreadyProvidedImmunizations.contains(mileStone))
+            if (!alreadyProvidedImmunizations.contains(mileStone))
                 return false;
         }
         return true;

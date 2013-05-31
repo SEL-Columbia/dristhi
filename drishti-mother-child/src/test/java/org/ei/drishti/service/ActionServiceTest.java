@@ -65,7 +65,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForChild() throws Exception {
-        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "EC-CASE-1", "MOTHER-CASE-1", "Thaayi 1", "Kid", Arrays.<String>asList(), "female").withAnm("ANM ID C"));
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "Thaayi 1", "Kid", Arrays.<String>asList(), "female").withAnm("ANM ID C"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);

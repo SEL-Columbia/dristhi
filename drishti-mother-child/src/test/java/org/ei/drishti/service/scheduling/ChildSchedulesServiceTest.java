@@ -1,7 +1,6 @@
 package org.ei.drishti.service.scheduling;
 
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.contract.ChildInformation;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.repository.AllChildren;
 import org.joda.time.LocalDate;
@@ -59,7 +58,7 @@ public class ChildSchedulesServiceTest {
     }
 
     @Test
-    public void shouldEnrollChildIntoDependentModulesIfRequiredAndShouldUpdateEnrollments(){
+    public void shouldEnrollChildIntoDependentModulesIfRequiredAndShouldUpdateEnrollments() {
 
         new TestForChildEnrollmentAndUpdate()
                 .whenEnrolledWithImmunizationsProvided("bcg", "opv_0", "dpt_1", "opv_2", "measles")
@@ -85,7 +84,7 @@ public class ChildSchedulesServiceTest {
     }
 
     @Test
-    public void shouldNotEnrollDependentScheduleIfAlreadyEnrolled(){
+    public void shouldNotEnrollDependentScheduleIfAlreadyEnrolled() {
         new TestForChildEnrollmentAndUpdate()
                 .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES_BOOSTER, MEASLES_BOOSTER_COMMCARE_VALUE)
                 .whenProvidedWithImmunizations("measles")
@@ -246,13 +245,13 @@ public class ChildSchedulesServiceTest {
             return this;
         }
 
-        public TestForChildEnrollmentAndUpdate givenEnrollmentWillHappenIn(String schedule, String... milestoneNames){
+        public TestForChildEnrollmentAndUpdate givenEnrollmentWillHappenIn(String schedule, String... milestoneNames) {
             ArrayList<EnrollmentRecord> records = new ArrayList<>();
             for (String milestoneName : milestoneNames) {
                 records.add(new EnrollmentRecord(caseId, schedule, milestoneName, null, null, null, null, null, null, null));
             }
 
-            when(scheduleTrackingService.getEnrollment(caseId,schedule)).thenReturn(null, records.toArray(new EnrollmentRecord[0]));
+            when(scheduleTrackingService.getEnrollment(caseId, schedule)).thenReturn(null, records.toArray(new EnrollmentRecord[0]));
             allEnrollments.addAll(records);
 
             return this;
@@ -275,7 +274,7 @@ public class ChildSchedulesServiceTest {
         public TestForChildEnrollmentAndUpdate whenEnrolledWithImmunizationsProvided(String... immunizationsProvided) {
             setExpectationsForNonDependentSchedules();
 
-            childSchedulesService.enrollChild(new ChildInformation(caseId, null, null, name, null, dateOfBirth, join(asList(immunizationsProvided), " "), "4", "yes", null));
+            childSchedulesService.enrollChild(new Child(caseId, null, join(asList(immunizationsProvided), " "), "4", null).withDateOfBirth(dateOfBirth));
 
             return this;
         }
@@ -289,12 +288,12 @@ public class ChildSchedulesServiceTest {
         }
 
         public TestForChildEnrollmentAndUpdate shouldEnrollWithEnrollmentDateAsDateOfBirth(String... expectedEnrolledSchedules) {
-            shouldEnroll(expectedEnrolledSchedules,dateOfBirth);
+            shouldEnroll(expectedEnrolledSchedules, dateOfBirth);
             return this;
         }
 
         public TestForChildEnrollmentAndUpdate shouldEnrollWithEnrollmentDateAsImmunizationsProvidedDate(String... expectedEnrolledSchedules) {
-            shouldEnroll(expectedEnrolledSchedules,immunizationsDate);
+            shouldEnroll(expectedEnrolledSchedules, immunizationsDate);
             return this;
         }
 

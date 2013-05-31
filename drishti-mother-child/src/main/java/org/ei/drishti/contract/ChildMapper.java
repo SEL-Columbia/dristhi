@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BLOOD_GROUP_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.util.EasyMap.create;
@@ -19,7 +19,7 @@ public class ChildMapper {
 
         for (int i = 0; i < outcomeInformation.numberOfChildrenBorn(); i++) {
             String childNumber = "" + i;
-            Map<String, Map<String, String>> childData = mapOf(DETAILS_EXTRA_DATA_KEY_NAME, create(BIRTH_WEIGHT_COMMCARE_FIELD_NAME, outcomeInformation.childWeight(childNumber))
+            Map<String, Map<String, String>> childData = mapOf(DETAILS_EXTRA_DATA_KEY_NAME, create(BIRTH_WEIGHT_FIELD_NAME, outcomeInformation.childWeight(childNumber))
                     .put(BLOOD_GROUP_COMMCARE_FIELD_NAME, outcomeInformation.childBloodGroup(childNumber))
                     .putAll(extraData.get(DETAILS_EXTRA_DATA_KEY_NAME))
                     .map());
