@@ -5,12 +5,18 @@
         {
             "name": "TT 2",
             "scheduleWindows": {
-                "earliest": ["0 Weeks"],
+                "earliest": ["4 Weeks"],
                 "due": ["6 Weeks"],
                 "late": ["1 Year"],
                 "max": [""]
             },
             "alerts": [
+                {
+                    "window": "earliest",
+                    "offset": ["0 Weeks"],
+                    "interval": ["3 Days"],
+                    "count": "9"
+                },
                 {
                     "window": "due",
                     "offset": ["4 Weeks"],

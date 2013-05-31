@@ -458,7 +458,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertsForTT2AtTheRightTimes() throws Exception {
         schedule.enrollFor("TT 2", newDate(2012, JANUARY, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts("TT 2", earliest);
+        schedule.assertAlertsStartWith("TT 2", earliest, dateWithYear(1, JANUARY, 2012), dateWithYear(4, JANUARY, 2012), dateWithYear(7, JANUARY, 2012));
         schedule.assertAlerts("TT 2", due, dateWithYear(29, JANUARY, 2012), dateWithYear(5, FEBRUARY, 2012));
         schedule.assertAlertsStartWith("TT 2", late, dateWithYear(12, FEBRUARY, 2012), dateWithYear(19, FEBRUARY, 2012), dateWithYear(26, FEBRUARY, 2012));
         schedule.assertNoAlerts("TT 2", max);
