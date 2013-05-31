@@ -23,12 +23,6 @@ public class DrishtiMCTSService {
         this.mothers = mothers;
     }
 
-    public void updateANCOutcome(AnteNatalCareOutcomeInformation careOutcomeInformation) {
-    }
-
-    public void registerChild(AnteNatalCareOutcomeInformation outcomeInformation) {
-    }
-
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest) {
     }
 
