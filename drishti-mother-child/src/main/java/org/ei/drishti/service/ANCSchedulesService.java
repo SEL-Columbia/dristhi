@@ -19,7 +19,7 @@ import java.util.List;
 import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
+import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.common.util.IntegerUtil.tryParse;
 import static org.ei.drishti.dto.AlertStatus.normal;
@@ -56,7 +56,7 @@ public class ANCSchedulesService {
     }
 
     public void ttVisitHasHappened(String entityId, String anmId, String ttDose, String ttDate) {
-        if (TT1_DOSE_VALUE.equals(ttDose) || TT_BOOSTER__VALUE.equals(ttDose)) {
+        if (TT1_DOSE_VALUE.equals(ttDose) || TT_BOOSTER_DOSE_VALUE.equals(ttDose)) {
             fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_1, SCHEDULE_TT_1, parse(ttDate));
             trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_TT_2, new Time(PREFERED_TIME_FOR_SCHEDULES),
                     parse(ttDate), new Time(now()), null, null, null, null));

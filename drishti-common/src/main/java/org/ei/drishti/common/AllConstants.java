@@ -29,6 +29,8 @@ public class AllConstants {
         public static final String TT_1 = "tt_1";
         public static final String TT_2 = "tt_2";
         public static final String METHOD_STILL_THE_SAME = "method_still_the_same";
+        public static final String BOOLEAN_TRUE_VALUE = "yes";
+        public static final String BOOLEAN_FALSE_VALUE = "no";
     }
 
     public static class Report {
@@ -44,13 +46,10 @@ public class AllConstants {
         public static final int CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 28;
     }
 
-    public static class DeliveryOutcomeCommCareFields {
-        public static final String MOTHER_CASE_ID_COMMCARE_FIELD_NAME = "motherCaseId";
-        public static final String DATE_OF_DELIVERY_COMMCARE_FIELD_NAME = "dateOfDelivery";
-        public static final String DELIVERY_OUTCOME_COMMCARE_FIELD_NAME = "pregnancyOutcome";
-        public static final String PLACE_OF_DELIVERY_COMMCARE_FIELD_NAME = "placeOfDelivery";
-        public static final String MOTHER_SURVIVED_COMMCARE_FIELD_NAME = "motherSurvived";
-        public static final String WOMAN_SURVIVED_COMMCARE_FIELD_NAME = "womanSurvived";
+    public static class DeliveryOutcomeFields {
+        public static final String DELIVERY_OUTCOME_FIELD = "deliveryOutcome";
+        public static final String DELIVERY_PLACE = "deliveryPlace";
+        public static final String DID_WOMAN_SURVIVE = "didWomanSurvive";
         public static final String LIVE_BIRTH_FIELD_VALUE = "live_birth";
         public static final String HOME_FIELD_VALUE = "home";
         public static final String SC_FIELD_VALUE = "subcenter";
@@ -60,7 +59,6 @@ public class AllConstants {
         public static final String DH_FIELD_VALUE = "dh";
         public static final String PRIVATE_FACILITY_FIELD_VALUE = "private_facility";
         public static final String PRIVATE_FACILITY2_FIELD_VALUE = "private_facility2";
-
     }
 
     public static class ANCFormFields {
@@ -69,14 +67,6 @@ public class AllConstants {
         public static final String REFERENCE_DATE = "referenceDate";
         public static final String ANC_VISIT_DATE_FIELD = "ancVisitDate";
         public static final String ANC_VISIT_NUMBER_FIELD = "ancVisitNumber";
-        public static final String DELIVERY_OUTCOME_FIELD = "deliveryOutcome";
-        public static final String DELIVERY_PLACE = "deliveryPlace";
-        public static final String DID_WOMAN_SURVIVE = "didWomanSurvive";
-        public static final String TT_DOSE_FIELD = "ttDose";
-        public static final String TT_DATE_FIELD = "ttDate";
-        public static final String TT1_DOSE_VALUE = "tt1";
-        public static final String TT2_DOSE_VALUE = "tt2";
-        public static final String TT_BOOSTER__VALUE = "ttbooster";
     }
 
     public static class HbTestFormFields {
@@ -87,32 +77,23 @@ public class AllConstants {
     public static class ANCVisitCommCareFields {
         public static final String VISIT_DATE_COMMCARE_FIELD = "visitDate";
         public static final String VISIT_NUMBER_COMMCARE_FIELD = "visitNumber";
-        public static final int ANC4_VISIT_NUMBER_COMMCARE_VALUE = 4;
-        public static final String TT1_DOSE_COMMCARE_VALUE = "tt1";
-        public static final String TT2_DOSE_COMMCARE_VALUE = "tt2";
-        public static final String TT_BOOSTER_DOSE_COMMCARE_VALUE = "ttbooster";
-        public static final String TT_DOSE_COMMCARE_FIELD = "ttDose";
-        public static final String TT_DATE_COMMCARE_FIELD = "ttDate";
+        public static final String TT1_DOSE_VALUE = "tt1";
+        public static final String TT2_DOSE_VALUE = "tt2";
+        public static final String TT_BOOSTER_DOSE_VALUE = "ttbooster";
+        public static final String TT_DOSE_FIELD = "ttDose";
+        public static final String TT_DATE_FIELD = "ttDate";
     }
 
     public static class CommonCommCareFields {
         public static final String CASE_ID_COMMCARE_FIELD_NAME = "caseId";
         public static final String SUBMISSION_DATE_COMMCARE_FIELD_NAME = "submissionDate";
         public static final String HIGH_PRIORITY_COMMCARE_FIELD_NAME = "isHighPriority";
-        public static final String BOOLEAN_TRUE_COMMCARE_VALUE = "yes";
-        public static final String BOOLEAN_FALSE_VALUE = "no";
     }
 
     public static class ChildBirthCommCareFields {
         public static final String BIRTH_WEIGHT_COMMCARE_FIELD_NAME = "childWeight";
         public static final String BLOOD_GROUP_COMMCARE_FIELD_NAME = "childBloodGroup";
         public static final String BF_POSTBIRTH_COMMCARE_FIELD_NAME = "bfPostBirth";
-    }
-
-    public static class CommonCommRegisterMotherFields {
-        public static final String REGISTRATION_COMMCARE_FIELD_NAME = "registrationDate";
-        public static final String LMP = "lmp";
-        public static final String PHC = "phc";
     }
 
     public static class ChildCloseCommCareFields {

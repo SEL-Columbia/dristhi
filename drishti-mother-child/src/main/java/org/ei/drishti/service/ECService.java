@@ -18,10 +18,10 @@ import java.util.List;
 
 import static org.ei.drishti.common.AllConstants.ChangeFamilyPlanningMethodCommCareFields.NEW_FP_METHOD_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChangeFamilyPlanningMethodCommCareFields.PREVIOUS_FP_METHOD_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.BOOLEAN_TRUE_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.SUBMISSION_DATE_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ECCloseFields.IS_EC_CLOSE_CONFIRMED_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 
 @Service
 public class ECService {
@@ -150,7 +150,7 @@ public class ECService {
     }
 
     public void closeEligibleCouple(FormSubmission submission) {
-        if (!BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(submission.getField(IS_EC_CLOSE_CONFIRMED_FIELD_NAME))) {
+        if (!BOOLEAN_TRUE_VALUE.equalsIgnoreCase(submission.getField(IS_EC_CLOSE_CONFIRMED_FIELD_NAME))) {
             logger.warn("ANM has not confirmed the close so not closing EC! Form Submission: " + submission);
             return;
         }

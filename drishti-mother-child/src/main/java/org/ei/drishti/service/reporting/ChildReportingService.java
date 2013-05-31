@@ -14,11 +14,12 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BIRTH_WEIGHT_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.BOOLEAN_TRUE_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.Report.*;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.joda.time.LocalDate.parse;
@@ -125,7 +126,7 @@ public class ChildReportingService {
     }
 
     private void reportBFPostBirth(String bfPostBirth, Child child) {
-        if (BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(bfPostBirth)) {
+        if (BOOLEAN_TRUE_VALUE.equalsIgnoreCase(bfPostBirth)) {
             reportToBoth(child, BF_POST_BIRTH, child.dateOfBirth());
         }
     }

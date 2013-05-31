@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.BOOLEAN_TRUE_COMMCARE_VALUE;
+import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
@@ -68,7 +68,7 @@ public class ECSchedulingService {
     }
 
     private void updateFPFollowupSchedule(FPProductInformation fpInfo) {
-        if (BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(fpInfo.needsFollowup())) {
+        if (BOOLEAN_TRUE_VALUE.equalsIgnoreCase(fpInfo.needsFollowup())) {
             logger.info(format("Enrolling EC to FP Followup schedule. entityId: {0}, Ref date: {1}", fpInfo.entityId(), fpInfo.fpFollowupDate()));
             scheduleTrackingService.enroll(new EnrollmentRequest(fpInfo.entityId(), fpFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
                     parse(fpInfo.fpFollowupDate()), null, null, null, null, null));
@@ -85,7 +85,7 @@ public class ECSchedulingService {
     }
 
     private void updateFPReferralFollowupSchedule(FPProductInformation fpInfo) {
-        if (BOOLEAN_TRUE_COMMCARE_VALUE.equalsIgnoreCase(fpInfo.needsReferralFollowup())) {
+        if (BOOLEAN_TRUE_VALUE.equalsIgnoreCase(fpInfo.needsReferralFollowup())) {
             logger.info(format("Enrolling EC to FP Referral Followup schedule. entityId: {0}, Ref date: {1}", fpInfo.entityId(), fpInfo.fpFollowupDate()));
             scheduleTrackingService.enroll(new EnrollmentRequest(fpInfo.entityId(), fpReferralFollowupSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
                     parse(fpInfo.fpFollowupDate()), null, null, null, null, null));
