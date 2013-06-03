@@ -16,6 +16,8 @@ public class FormData {
     private String default_bind_path;
     @JsonProperty
     private List<FormField> fields;
+    @JsonProperty
+    private List<SubFormData> sub_forms;
 
     private Map<String, String> mapOfFieldsByName;
 
