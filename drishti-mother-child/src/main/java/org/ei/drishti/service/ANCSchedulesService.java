@@ -108,7 +108,7 @@ public class ANCSchedulesService {
     }
 
     private void enrollANCToHbTest2Schedule(String entityId, LocalDate lmp) {
-        logger.info(format("Enrolling ANC to Hb Test 2 schedule: Entity id:{0}", entityId));
+        logger.info(format("Enrolling ANC to Hb Test 2 schedule: {0} Entity id:{1}", SCHEDULE_HB_TEST_2, entityId));
         trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_HB_TEST_2, new Time(PREFERED_TIME_FOR_SCHEDULES),
                 lmp, null, null, null, null, null));
     }
@@ -117,17 +117,14 @@ public class ANCSchedulesService {
         trackingService.fulfillCurrentMilestone(externalId, scheduleName, today(), new Time(now()));
     }
 
-    public void unEnrollFromSchedules(String caseId) {
-        List<EnrollmentRecord> openEnrollments = trackingService.search(new EnrollmentsQuery().havingExternalId(caseId).havingState(ACTIVE));
+    public void unEnrollFromSchedules(String entityId) {
+        List<EnrollmentRecord> openEnrollments = trackingService.search(new EnrollmentsQuery().havingExternalId(entityId).havingState(ACTIVE));
 
         for (EnrollmentRecord enrollment : openEnrollments) {
-            trackingService.unenroll(caseId, asList(enrollment.getScheduleName()));
+            logger.info(format("Un-enrolling ANC with Entity id:{0} from schedule: {1} as Delivery happened.", entityId, enrollment.getScheduleName()));
+            trackingService.unenroll(entityId, asList(enrollment.getScheduleName()));
         }
-        actionService.markAllAlertsAsInactive(caseId);
-    }
-
-    public void unEnrollFromSchedule(String entityId, String scheduleName) {
-        trackingService.unenroll(entityId, asList(scheduleName));
+        actionService.markAllAlertsAsInactive(entityId);
     }
 
     private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule) {

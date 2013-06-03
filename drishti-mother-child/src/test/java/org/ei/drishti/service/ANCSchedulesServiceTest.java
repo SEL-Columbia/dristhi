@@ -195,13 +195,6 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldUnenrollAMotherFromAOpenSchedule() {
-        schedulesService.unEnrollFromSchedule("Case X", "Schedule");
-
-        verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule"));
-    }
-
-    @Test
     public void shouldFulfillHbTest1WhenHbTestIsDone() {
         when(scheduleTrackingService.getEnrollment("Case X", "Hb Test 1"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 1", "HB Test 1", null, null, null, null, null, null, null));
