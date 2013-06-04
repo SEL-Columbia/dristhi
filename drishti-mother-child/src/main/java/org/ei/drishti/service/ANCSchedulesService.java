@@ -130,17 +130,14 @@ public class ANCSchedulesService {
     private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule) {
         String milestone;
 
-        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(16).toPeriod().minusDays(1))) {
+        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(14).toPeriod().minusDays(1))) {
             milestone = SCHEDULE_ANC_1;
         } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(28).toPeriod().minusDays(1))) {
             milestone = SCHEDULE_ANC_2;
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(34).toPeriod().minusDays(1))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(1))) {
             milestone = SCHEDULE_ANC_3;
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(40).toPeriod())) {
-            milestone = SCHEDULE_ANC_4;
         } else {
-            logger.warn("Too late to enroll " + caseId + " into ANC schedule. Reference date is: " + referenceDateForSchedule);
-            return;
+            milestone = SCHEDULE_ANC_4;
         }
 
         trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, new Time(PREFERED_TIME_FOR_SCHEDULES), referenceDateForSchedule, null, null, null, milestone, null));

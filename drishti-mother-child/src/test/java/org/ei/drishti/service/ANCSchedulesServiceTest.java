@@ -59,15 +59,15 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldEnrollMotherIntoANC1WhenTheMotherIsEnrolledBefore16WeeksFromLMP() throws Exception {
+    public void shouldEnrollMotherIntoANC1WhenTheMotherIsEnrolledBefore14WeeksFromLMP() throws Exception {
         assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 1, 1), "ANC 1");
-        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 4, 20), "ANC 1");
-        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 4, 21), "ANC 1");
+        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 4, 6), "ANC 1");
+        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 4, 7), "ANC 1");
     }
 
     @Test
     public void shouldEnrollMotherIntoANC2WhenTheMotherIsEnrolledBetween16And28WeeksFromLMP() throws Exception {
-        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 4, 22), "ANC 2");
+        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 4, 8), "ANC 2");
         assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 7, 13), "ANC 2");
         assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 7, 14), "ANC 2");
     }
@@ -77,13 +77,15 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 7, 15), "ANC 3");
         assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 8, 24), "ANC 3");
         assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 8, 25), "ANC 3");
+        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 9, 8), "ANC 3");
     }
 
     @Test
     public void shouldEnrollMotherIntoANC3WhenTheMotherIsEnrolledAfter34WeeksFromLMP() throws Exception {
-        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 8, 26), "ANC 4");
+        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 9, 9), "ANC 4");
         assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 10, 6), "ANC 4");
         assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2012, 10, 7), "ANC 4");
+        assertEnrollmentIntoMilestoneBasedOnDate(new LocalDate(2013, 10, 7), "ANC 4");
     }
 
     @Test
