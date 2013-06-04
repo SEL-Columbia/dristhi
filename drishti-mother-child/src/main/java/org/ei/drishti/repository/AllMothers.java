@@ -32,8 +32,8 @@ public class AllMothers extends MotechBaseRepository<Mother> {
     }
 
     @GenerateView
-    public Mother findByThaayiCardNumber(String thaayiCardNumber) {
-        List<Mother> mothers = queryView("by_thaayiCardNumber", thaayiCardNumber);
+    public Mother findByThayiCardNumber(String thayiCardNumber) {
+        List<Mother> mothers = queryView("by_thayiCardNumber", thayiCardNumber);
         if (mothers == null || mothers.isEmpty()) {
             return null;
         }

@@ -131,19 +131,19 @@ public class FormDataRepositoryIntegrationTest {
     public void shouldUpdateMotherEntity() throws Exception {
         Map<String, String> fields =
                 create("id", "entity id 1")
-                        .put("thaayiCardNumber", "thaayi1")
+                        .put("thayiCardNumber", "thayi1")
                         .put("ecCaseId", "ec 123")
                         .put("isHighPriority", "no")
                         .map();
         String fieldsJSON = new Gson().toJson(fields);
-        Mother oldMother = new Mother("entity id 1", "ec 123", "thaayi2");
+        Mother oldMother = new Mother("entity id 1", "ec 123", "thayi2");
         mothers.add(oldMother);
 
         String entityId = repository.saveEntity("mother", fieldsJSON);
 
         Mother savedMother = mothers.findByCaseId(entityId);
         Map<String, String> expectedDetails = mapOf("isHighPriority", "no");
-        Mother expectedMother = new Mother("entity id 1", "ec 123", "thaayi1").withDetails(expectedDetails);
+        Mother expectedMother = new Mother("entity id 1", "ec 123", "thayi1").withDetails(expectedDetails);
         assertEquals(expectedMother, savedMother);
     }
 }

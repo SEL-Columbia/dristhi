@@ -65,8 +65,8 @@ public class AllMothersIntegrationTest {
         Mother motherToRegister = new Mother("CASE-1", "EC-CASE-1", thaayiCardNumber);
         mothers.register(motherToRegister);
 
-        assertThat(mothers.findByThaayiCardNumber(thaayiCardNumber), hasSameFieldsAs(motherToRegister));
-        assertThat(mothers.findByThaayiCardNumber("SOME OTHER ID"), is(nullValue()));
+        assertThat(mothers.findByThayiCardNumber(thaayiCardNumber), hasSameFieldsAs(motherToRegister));
+        assertThat(mothers.findByThayiCardNumber("SOME OTHER ID"), is(nullValue()));
     }
 
     @Test
