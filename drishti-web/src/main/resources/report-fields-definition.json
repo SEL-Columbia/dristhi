@@ -51,6 +51,7 @@
     "delivery_outcome": [
         "id",
         "deliveryOutcome",
+        "referenceDate",
         "deliveryPlace",
         "didWomanSurvive"
     ]
