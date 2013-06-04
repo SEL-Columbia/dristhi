@@ -27,24 +27,12 @@
                 "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/sterilization_failure"
             },
             {
-                "name": "condomSideEffect",
-                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/condom_sideeffectt"
-            },
-            {
                 "name": "iudSidEffect",
                 "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/iud_sideeffect"
             },
             {
-                "name": "ocpSideEffect",
-                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/ocp_sideeffect"
-            },
-            {
                 "name": "sterilizationSideEffect",
                 "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/sterilization_sideeffect"
-            },
-            {
-                "name": "injectableSideEffect",
-                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/injectableSideEffect"
             },
             {
                 "name": "otherSideEffect",

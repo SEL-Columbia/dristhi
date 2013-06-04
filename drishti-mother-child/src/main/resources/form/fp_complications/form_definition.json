@@ -40,7 +40,7 @@
             },
             {
                 "name": "injectableSideEffect",
-                "bind": "/model/instance/Family_Planning_Complications_EngKan/injectableSideEffect"
+                "bind": "/model/instance/Family_Planning_Complications_EngKan/injectable_sideeffect"
             },
             {
                 "name": "otherSideEffect",
