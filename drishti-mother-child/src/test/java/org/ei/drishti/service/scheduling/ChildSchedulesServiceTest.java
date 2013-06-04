@@ -227,7 +227,7 @@ public class ChildSchedulesServiceTest {
         private void initCommonExpectations() {
             Child child = mock(Child.class);
             when(allChildren.findByCaseId(caseId)).thenReturn(child);
-            when(child.immunizationsProvided()).thenReturn(asList(""));
+            when(child.immunizationsGiven()).thenReturn(asList(""));
         }
 
         public TestForChildEnrollmentAndUpdate givenEnrollmentIn(String schedule, String... milestoneNames) {
@@ -337,7 +337,7 @@ public class ChildSchedulesServiceTest {
         public TestForChildEnrollmentAndUpdate givenChildIsAlreadyProvidedWithImmunizations(String immunizationsAlreadyProvided) {
             Child child = mock(Child.class);
             when(allChildren.findByCaseId(caseId)).thenReturn(child);
-            when(child.immunizationsProvided()).thenReturn(asList(immunizationsAlreadyProvided.split(" ")));
+            when(child.immunizationsGiven()).thenReturn(asList(immunizationsAlreadyProvided.split(" ")));
             return this;
         }
 

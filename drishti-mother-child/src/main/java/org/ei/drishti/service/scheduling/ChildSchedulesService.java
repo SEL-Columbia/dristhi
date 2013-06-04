@@ -89,8 +89,8 @@ public class ChildSchedulesService {
         }
     }
 
-    private boolean isImmunizationAlreadyProvided(String caseid, Schedule schedule) {
-        List<String> alreadyProvidedImmunizations = allChildren.findByCaseId(caseid).immunizationsProvided();
+    private boolean isImmunizationAlreadyProvided(String caseId, Schedule schedule) {
+        List<String> alreadyProvidedImmunizations = allChildren.findByCaseId(caseId).immunizationsGiven();
         List<String> mileStones = schedule.getMileStones();
         for (String mileStone : mileStones) {
             if (!alreadyProvidedImmunizations.contains(mileStone))
