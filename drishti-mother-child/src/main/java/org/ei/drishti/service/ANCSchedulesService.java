@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.common.util.DateUtil;
-import org.ei.drishti.dto.BeneficiaryType;
 import org.joda.time.LocalDate;
 import org.joda.time.Weeks;
 import org.motechproject.model.Time;
@@ -22,7 +21,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.common.util.IntegerUtil.tryParse;
-import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
@@ -140,9 +138,8 @@ public class ANCSchedulesService {
             milestone = SCHEDULE_ANC_4;
         }
 
+        logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", caseId, milestone));
         trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, new Time(PREFERED_TIME_FOR_SCHEDULES), referenceDateForSchedule, null, null, null, milestone, null));
-        actionService.alertForBeneficiary(BeneficiaryType.mother, caseId, SCHEDULE_ANC, milestone, normal, referenceDateForSchedule.toDateTime(PREFERED_TIME_FOR_SCHEDULES),
-                referenceDateForSchedule.plusWeeks(12).toDateTime(PREFERED_TIME_FOR_SCHEDULES));
     }
 
     private void fastForwardSchedule(String entityId, String anmId, String scheduleName, String milestonePrefix, int visitNumberToFulfill, LocalDate visitDate) {
