@@ -3,7 +3,6 @@ require 'csv'
 require 'erb'
 require 'guid'
 require './lib/care_import_row.rb'
-require './lib/commcare.rb'
 require './lib/village.rb'
 
 class ECs
