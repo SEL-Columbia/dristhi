@@ -19,17 +19,17 @@ class Forms
     fill_anc_outcome_forms if has_anc? and has_services? and has_outcome?
   end
 
-  private
   def fill_ec_form
-    puts "EC: #{@ec['Wife Name']} - #{@ec['Husband Name']} - #{@ec['Case ID']}"
+    puts "EC: #{@ec['Wife Name']} - #{@ec['Husband Name']} - #{@ec['Entity ID']}"
 
+    form_instance_erb = ERB.new(File.read('templates/ec_form_instance.erb'))
     ec_registration_erb = ERB.new(File.read('templates/ec_registration.erb'))
 
     ec = @ec
-    user_id = @mobile_worker.user_id
     user_name = @mobile_worker.user_name
-    ec_registration_xml = ec_registration_erb.result(binding)
-    File.open("output/EC_#{ec['Case ID']}.xml", "w") do |f| f.puts ec_registration_xml end
+    form_instance = form_instance_erb.result(binding);
+    ec_registration_json = ec_registration_erb.result(binding)
+    File.open("output/EC_#{ec['Entity ID']}.json", "w") do |f| f.puts ec_registration_json end
   end
 
   def fill_out_of_area_anc_registration_forms

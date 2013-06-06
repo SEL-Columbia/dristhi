@@ -1,27 +1,16 @@
-require_relative 'lib/commcare.rb'
+require_relative 'lib/dristhi.rb'
 require 'fileutils'
 
-def upload_all filenames
+def upload_all(filenames, user, password)
   filenames.each_with_index do |filename, index|
     puts "Uploading #{index + 1} of #{filenames.size}: #{filename}"
 
-    CommCare.new.upload File.read filename
+    Dristhi.new.upload (File.read filename), user, password
     FileUtils.mv filename, 'output/DONE/'
-    sleep 0.5
+    sleep 1
   end
 end
 
-ec_forms = Dir['output/EC_*.xml']
-anc_registration_forms = Dir['output/ANC_*.xml'] + Dir['output/ANCOutOfArea_*.xml']
-anc_form_prefixes_to_upload_in_order = Dir['output/ANCVisit_*.xml'].collect {|filename| filename.gsub(/(output\/ANCVisit_\d+_).*/, '\1')}.sort.uniq
-anc_outcome_forms = Dir['output/ANCOutcome_*.xml']
+ec_forms = Dir['output/EC_*.json']
 
-upload_all ec_forms
-upload_all anc_registration_forms
-
-anc_form_prefixes_to_upload_in_order.each do |prefix|
-  upload_all Dir[prefix + "*"]
-  puts "Sleeping for 3 minutes so that Dristhi can pull in all the information for the old visits."; sleep 180
-end
-
-upload_all anc_outcome_forms
+upload_all ec_forms, ARGV[0].to_s, ARGV[1].to_s
