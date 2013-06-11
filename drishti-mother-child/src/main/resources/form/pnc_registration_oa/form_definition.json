@@ -41,7 +41,7 @@
             },
             {
                 "name": "thayiCardNumber",
-                "bind": "/model/instance/PNC_Registration_EngKan/thayi_card_number",
+                "bind": "/model/instance/PNC_Child_Registration_EngKan/thayi_card_number",
                 "source": "eligible_couple.mother.thayiCardNumber"
             },
             {
