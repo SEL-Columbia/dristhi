@@ -7,7 +7,6 @@ import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.service.scheduling.ECSchedulingService;
-import org.ei.drishti.util.IdGenerator;
 import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,19 +26,15 @@ import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 public class ECService {
     private static Logger logger = LoggerFactory.getLogger(ActionService.class.toString());
     private AllEligibleCouples allEligibleCouples;
-    private ActionService actionService;
     private ECReportingService reportingService;
     private ECSchedulingService schedulingService;
-    private IdGenerator idGenerator;
     private ReportFieldsDefinition reportFieldsDefinition;
 
     @Autowired
-    public ECService(AllEligibleCouples allEligibleCouples, ActionService actionService, ECReportingService reportingService,
-                     IdGenerator idGenerator, ECSchedulingService schedulingService, ReportFieldsDefinition reportFieldsDefinition) {
+    public ECService(AllEligibleCouples allEligibleCouples, ECSchedulingService schedulingService, ECReportingService reportingService,
+                     ReportFieldsDefinition reportFieldsDefinition) {
         this.allEligibleCouples = allEligibleCouples;
-        this.actionService = actionService;
         this.reportingService = reportingService;
-        this.idGenerator = idGenerator;
         this.schedulingService = schedulingService;
         this.reportFieldsDefinition = reportFieldsDefinition;
     }

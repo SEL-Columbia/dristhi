@@ -43,8 +43,6 @@ public class ActionServiceTest {
 
     private ActionService service;
 
-    private Map<String, String> EXTRA_DETAILS = mapOf("someKey", "someValue");
-
     @Before
     public void setUp() throws Exception {
         initMocks(this);
@@ -85,7 +83,7 @@ public class ActionServiceTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionIfBenefiicaryTypeIsUnknown() throws Exception {
+    public void shouldThrowExceptionIfBeneficiaryTypeIsUnknown() throws Exception {
         service.alertForBeneficiary(null, "Case X", "Schedule name", "FP Complications", urgent, null, null);
     }
 

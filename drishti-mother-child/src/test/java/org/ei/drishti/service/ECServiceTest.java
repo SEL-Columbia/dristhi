@@ -8,7 +8,6 @@ import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.service.scheduling.ECSchedulingService;
 import org.ei.drishti.util.FormSubmissionBuilder;
-import org.ei.drishti.util.IdGenerator;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,10 +22,6 @@ public class ECServiceTest {
     @Mock
     private AllEligibleCouples allEligibleCouples;
     @Mock
-    private ActionService actionService;
-    @Mock
-    private IdGenerator idGenerator;
-    @Mock
     private ECReportingService reportingService;
     @Mock
     private ECSchedulingService schedulingService;
@@ -38,7 +33,7 @@ public class ECServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        ecService = new ECService(allEligibleCouples, actionService, reportingService, idGenerator, schedulingService, reportFieldsDefinition);
+        ecService = new ECService(allEligibleCouples, schedulingService, reportingService, reportFieldsDefinition);
     }
 
     @Test
@@ -267,7 +262,6 @@ public class ECServiceTest {
         ecService.closeEligibleCouple(submission);
 
         verify(allEligibleCouples, times(0)).close("entity id 1");
-        verifyZeroInteractions(actionService);
     }
 
     @Test
@@ -280,6 +274,5 @@ public class ECServiceTest {
         ecService.closeEligibleCouple(submission);
 
         verify(allEligibleCouples, times(0)).close("entity id 1");
-        verifyZeroInteractions(actionService);
     }
 }
