@@ -40,7 +40,7 @@ public class AllMothersIntegrationTest {
         Mother mother = new Mother("CASE-1", "EC-CASE-1", "THAAYI-CARD-1").withAnm("ANM ID 1").withLMP(DateUtil.tomorrow())
                 .withLocation("bherya", "Sub Center", "PHC X").withDetails(details);
 
-        mothers.register(mother);
+        mothers.add(mother);
 
         List<Mother> allTheMothers = mothers.getAll();
         assertThat(allTheMothers.size(), is(1));
@@ -53,26 +53,16 @@ public class AllMothersIntegrationTest {
     public void shouldFindARegisteredMotherByCaseId() {
         String caseId = "CASE-1";
         Mother motherToRegister = new Mother(caseId, "EC-CASE-1", "THAAYI-CARD-1");
-        mothers.register(motherToRegister);
+        mothers.add(motherToRegister);
 
         assertThat(mothers.findByCaseId(caseId), hasSameFieldsAs(motherToRegister));
         assertThat(mothers.findByCaseId("SOME OTHER ID"), is(nullValue()));
     }
 
     @Test
-    public void shouldFindARegisteredMotherByThaayiCardNumber() {
-        String thaayiCardNumber = "THAAYI-CARD-1";
-        Mother motherToRegister = new Mother("CASE-1", "EC-CASE-1", thaayiCardNumber);
-        mothers.register(motherToRegister);
-
-        assertThat(mothers.findByThayiCardNumber(thaayiCardNumber), hasSameFieldsAs(motherToRegister));
-        assertThat(mothers.findByThayiCardNumber("SOME OTHER ID"), is(nullValue()));
-    }
-
-    @Test
     public void shouldSayThatAMotherDoesNotExistWhenTheMotherIsNotInTheDB() {
         Mother motherToRegister = new Mother("CASE-1", "EC-CASE-1", "THAAYI-CARD-1");
-        mothers.register(motherToRegister);
+        mothers.add(motherToRegister);
 
         assertTrue(mothers.exists("CASE-1"));
         assertFalse(mothers.exists("CASE-NOT-KNOWN"));
@@ -80,7 +70,7 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldUpdateDetailsOfAnExistingMother() throws Exception {
-        mothers.register(motherWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
+        mothers.add(motherWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
         Mother updatedMother = mothers.updateDetails("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map());
 
         Map<String, String> expectedUpdatedDetails = create("Key 1", "Value 1").put("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map();
@@ -91,7 +81,7 @@ public class AllMothersIntegrationTest {
     @Test
     public void shouldMarkMotherAsClosedWhenMotherClose() {
         Mother motherToRegister = motherWithoutDetails();
-        mothers.register(motherToRegister);
+        mothers.add(motherToRegister);
 
         mothers.close("CASE X");
 

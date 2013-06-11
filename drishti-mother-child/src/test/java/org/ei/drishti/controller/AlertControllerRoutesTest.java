@@ -21,13 +21,11 @@ public class AlertControllerRoutesTest {
     public void shouldSendMaxEventsOfANCNormalScheduleToForceFulfillAction() {
         Event.of(SCHEDULE_ANC, "ANC 1", max).shouldRouteToForceFulfillAction();
         Event.of(SCHEDULE_ANC, "ANC 3", max).shouldRouteToForceFulfillAction();
-        Event.of("Some Other Schedule", "Some milestone", max).shouldRouteToGroupSMSAction();
     }
 
     @Test
     public void shouldSendMaxEventsOfLabRemindersScheduleToForceFulfillAction() {
         Event.of(SCHEDULE_LAB, "EDD", max).shouldRouteToForceFulfillAction();
-        Event.of("Some Other Schedule", "Some milestone", max).shouldRouteToGroupSMSAction();
     }
 
     @Test
@@ -156,52 +154,46 @@ public class AlertControllerRoutesTest {
         }
 
         public void shouldRouteToForceFulfillAction() {
-            expectCalls(Expectation.of(1), Expectation.of(0), Expectation.of(0), Expectation.of(0));
-        }
-
-        public void shouldRouteToGroupSMSAction() {
-            expectCalls(Expectation.of(0), Expectation.of(1), Expectation.of(0), Expectation.of(0));
+            expectCalls(Expectation.of(1), Expectation.of(0), Expectation.of(0));
         }
 
         public void shouldRouteToAlertCreationActionForMother() {
             Map<String, String> extraData = new HashMap<>();
             extraData.put("beneficiaryType", "mother");
-            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData), Expectation.of(0));
+            expectCalls(Expectation.of(0), Expectation.of(1, extraData), Expectation.of(0));
         }
 
         public void shouldRouteToAlertCreationActionForChild() {
             Map<String, String> extraData = new HashMap<>();
             extraData.put("beneficiaryType", "child");
-            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData), Expectation.of(0));
+            expectCalls(Expectation.of(0), Expectation.of(1, extraData), Expectation.of(0));
         }
 
         public void shouldRouteToAlertCreationActionForEC() {
             Map<String, String> extraData = new HashMap<>();
             extraData.put("beneficiaryType", "ec");
-            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1, extraData), Expectation.of(0));
+            expectCalls(Expectation.of(0), Expectation.of(1, extraData), Expectation.of(0));
         }
 
         public void shouldRouteToAutoClosePNCAction() {
-            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(0), Expectation.of(1));
+            expectCalls(Expectation.of(0), Expectation.of(0), Expectation.of(1));
         }
 
-        private void expectCalls(Expectation fulfillActionCallsExpected, Expectation groupSMSActionCallsExpected, Expectation captureReminderActionCallsExpected, Expectation autoClosePNCActionCallsExpected) {
-            Action groupSMSAction = mock(Action.class);
+        private void expectCalls(Expectation fulfillActionCallsExpected, Expectation captureReminderActionCallsExpected, Expectation autoClosePNCActionCallsExpected) {
             Action forceFulfillAction = mock(Action.class);
             Action captureANCReminderAction = mock(Action.class);
             Action autoClosePNCAction = mock(Action.class);
 
-            MotechEvent event = routeEvent(groupSMSAction, forceFulfillAction, captureANCReminderAction, autoClosePNCAction);
+            MotechEvent event = routeEvent(forceFulfillAction, captureANCReminderAction, autoClosePNCAction);
 
             verify(forceFulfillAction, times(fulfillActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), fulfillActionCallsExpected.extraDataExpected);
-            verify(groupSMSAction, times(groupSMSActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), groupSMSActionCallsExpected.extraDataExpected);
             verify(captureANCReminderAction, times(captureReminderActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), captureReminderActionCallsExpected.extraDataExpected);
             verify(autoClosePNCAction, times(autoClosePNCActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), autoClosePNCActionCallsExpected.extraDataExpected);
         }
 
-        private MotechEvent routeEvent(Action groupSMSAction, Action ancMissedAction, Action captureANCReminderAction, Action autoClosePNCAction) {
+        private MotechEvent routeEvent(Action ancMissedAction, Action captureANCReminderAction, Action autoClosePNCAction) {
             AlertRouter router = new AlertRouter();
-            new AlertController(router, groupSMSAction, ancMissedAction, captureANCReminderAction, autoClosePNCAction);
+            new AlertController(router, ancMissedAction, captureANCReminderAction, autoClosePNCAction);
             MotechEvent event = org.ei.drishti.util.Event
                     .create()
                     .withMilestone(milestone)

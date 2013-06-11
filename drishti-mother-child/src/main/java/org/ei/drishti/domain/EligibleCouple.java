@@ -1,8 +1,8 @@
 package org.ei.drishti.domain;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
@@ -17,9 +17,9 @@ public class EligibleCouple extends MotechBaseDataObject {
     @JsonProperty
     private String ecNumber;
     @JsonProperty
-    private String wife;
+    private String wifeName;
     @JsonProperty
-    private String husband;
+    private String husbandName;
     @JsonProperty
     private String anmIdentifier;
     @JsonProperty
@@ -43,9 +43,9 @@ public class EligibleCouple extends MotechBaseDataObject {
         this.ecNumber = ecNumber;
     }
 
-    public EligibleCouple withCouple(String wife, String husband) {
-        this.wife = wife;
-        this.husband = husband;
+    public EligibleCouple withCouple(String wifeName, String husbandName) {
+        this.wifeName = wifeName;
+        this.husbandName = husbandName;
         return this;
     }
 
@@ -66,13 +66,8 @@ public class EligibleCouple extends MotechBaseDataObject {
         return this;
     }
 
-    public EligibleCouple asOutOfArea() {
-        this.isOutOfArea = true;
-        return this;
-    }
-
-    public String wife() {
-        return wife;
+    public String wifeName() {
+        return wifeName;
     }
 
     public String caseId() {
@@ -99,10 +94,6 @@ public class EligibleCouple extends MotechBaseDataObject {
         return new Location(village, subCenter, phc);
     }
 
-    private String getCaseId() {
-        return caseId;
-    }
-
     public String anmIdentifier() {
         return anmIdentifier;
     }
@@ -116,14 +107,18 @@ public class EligibleCouple extends MotechBaseDataObject {
         return this;
     }
 
+    private String getCaseId() {
+        return caseId;
+    }
+
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(o, this, false, getClass());
+        return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(17, 37, this, false, getClass());
+        return HashCodeBuilder.reflectionHashCode(this, "id", "revision");
     }
 
     @Override

@@ -18,10 +18,6 @@ public class AllMothers extends MotechBaseRepository<Mother> {
         super(Mother.class, db);
     }
 
-    public void register(Mother mother) {
-        add(mother);
-    }
-
     @GenerateView
     public Mother findByCaseId(String caseId) {
         List<Mother> mothers = queryView("by_caseId", caseId);
@@ -29,24 +25,6 @@ public class AllMothers extends MotechBaseRepository<Mother> {
             return null;
         }
         return mothers.get(0);
-    }
-
-    @GenerateView
-    public Mother findByThayiCardNumber(String thayiCardNumber) {
-        List<Mother> mothers = queryView("by_thayiCardNumber", thayiCardNumber);
-        if (mothers == null || mothers.isEmpty()) {
-            return null;
-        }
-        return mothers.get(0);
-    }
-
-    @GenerateView
-    public List<Mother> findByEcCaseId(String ecId) {
-        List<Mother> mothers = queryView("by_ecCaseId", ecId);
-        if (mothers == null || mothers.isEmpty()) {
-            return null;
-        }
-        return mothers;
     }
 
     public boolean exists(String caseId) {
@@ -76,5 +54,14 @@ public class AllMothers extends MotechBaseRepository<Mother> {
             mother.setIsClosed(true);
             update(mother);
         }
+    }
+
+    @GenerateView
+    private List<Mother> findByEcCaseId(String ecId) {
+        List<Mother> mothers = queryView("by_ecCaseId", ecId);
+        if (mothers == null || mothers.isEmpty()) {
+            return null;
+        }
+        return mothers;
     }
 }

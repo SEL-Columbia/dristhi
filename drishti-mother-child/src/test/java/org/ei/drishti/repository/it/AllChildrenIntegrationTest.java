@@ -35,7 +35,7 @@ public class AllChildrenIntegrationTest {
     public void shouldRegisterAChild() {
         Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07");
 
-        children.register(child);
+        children.add(child);
 
         List<Child> allTheChildren = children.getAll();
         assertThat(allTheChildren.size(), is(1));
@@ -47,7 +47,7 @@ public class AllChildrenIntegrationTest {
     @Test
     public void shouldFindChildByCaseId() {
         Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
-        children.register(child);
+        children.add(child);
 
         Child childFromDB = children.findByCaseId("CASE-1");
 
@@ -57,7 +57,7 @@ public class AllChildrenIntegrationTest {
     @Test
     public void shouldCheckIfChildExists() {
         Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
-        children.register(child);
+        children.add(child);
 
         assertTrue(children.childExists("CASE-1"));
         assertFalse(children.childExists("CASE-NON-EXISTENT"));
@@ -66,7 +66,7 @@ public class AllChildrenIntegrationTest {
     @Test
     public void shouldFindChildByMotherCaseId() {
         Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
-        children.register(child);
+        children.add(child);
 
         Child childFromDB = children.findByMotherCaseId("MOTHER-CASE-1");
 
@@ -79,10 +79,10 @@ public class AllChildrenIntegrationTest {
         Child secondChild = new Child("CASE-2", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
         Child thirdChild = new Child("CASE-3", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
         Child orphan = new Child("CASE-4", "MOTHER-CASE-2", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
-        children.register(firstChild);
-        children.register(secondChild);
-        children.register(thirdChild);
-        children.register(orphan);
+        children.add(firstChild);
+        children.add(secondChild);
+        children.add(thirdChild);
+        children.add(orphan);
 
         List<Child> childrenFromDB = children.findByMotherId("MOTHER-CASE-1");
 
@@ -92,7 +92,7 @@ public class AllChildrenIntegrationTest {
     @Test
     public void shouldMarkChildAsClosedOnClose() {
         Child child = childWithoutDetails();
-        children.register(child);
+        children.add(child);
 
         children.close(child.caseId());
 
@@ -101,7 +101,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldUpdateDetailsOfAnExistingChild() throws Exception {
-        children.register(childWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
+        children.add(childWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
         Child updatedChild = children.update("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map());
 
         Map<String, String> expectedUpdatedDetails = create("Key 1", "Value 1").put("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map();
@@ -111,7 +111,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldUpdateImmunizationDetailsOfAnExistingChildIfImmunizationProvided() throws Exception {
-        children.register(childWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
+        children.add(childWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
         Map<String, String> expectedUpdatedDetails = create("Key 1", "Value 1").put("Key 2", "Value 2 NEW").put("Key 3", "Value 3").put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, "bcg hep dpt_1 measles").map();
 
         Child updatedChild = children.update("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, "dpt_1 hep measles").map());

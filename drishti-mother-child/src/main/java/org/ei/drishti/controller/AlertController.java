@@ -17,7 +17,6 @@ import static org.motechproject.scheduletracking.api.domain.WindowName.*;
 public class AlertController {
     @Autowired
     public AlertController(AlertRouter router,
-                           @Qualifier("ANMGroupSMSAction") Action anmGroupSMS,
                            @Qualifier("ForceFulfillAction") Action forceFulfill,
                            @Qualifier("AlertCreationAction") Action alertCreation,
                            @Qualifier("AutoClosePNCAction") Action autoClosePNCAction) {
@@ -27,7 +26,6 @@ public class AlertController {
         router.addRoute(motherSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "mother");
         router.addRoute(childSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "child");
         router.addRoute(ecSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "ec");
-        router.addRoute(any(), any(), any(), anmGroupSMS);
     }
 
     private Matcher childSchedules() {

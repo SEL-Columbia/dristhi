@@ -32,86 +32,12 @@ public class ActionData {
                 .with("completionDate", completionDate);
     }
 
-    public static ActionData deleteAllAlerts() {
-        return new ActionData("alert", "deleteAllAlerts");
-    }
-
-    public static ActionData createEligibleCouple(String wife, String husband, String ecNumber, String village,
-                                                  String subCenter, String phc, Map<String, String> details) {
-        return new ActionData("eligibleCouple", "createEC")
-                .with("wife", wife)
-                .with("husband", husband)
-                .with("ecNumber", ecNumber)
-                .with("village", village)
-                .with("subcenter", subCenter)
-                .with("phc", phc)
-                .withDetails(details);
-    }
-
-    public static ActionData deleteEligibleCouple() {
-        return new ActionData("eligibleCouple", "deleteEC");
-    }
-
     public static ActionData registerPregnancy(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate, Map<String, String> details) {
         return new ActionData("mother", "registerPregnancy")
                 .with("ecCaseId", ecCaseId)
                 .with("thaayiCardNumber", thaayiCardNumber)
                 .with("status", "pregnant")
                 .with("referenceDate", lmpDate.toString())
-                .withDetails(details);
-    }
-
-    public static ActionData closeMother(String reasonForClose) {
-        return new ActionData("mother", "close")
-                .with("reasonForClose", reasonForClose);
-    }
-
-    public static ActionData registerChildBirth(String motherCaseId, String thaayiCardNumber, LocalDate dateOfBirth, String gender, Map<String, String> details) {
-        return new ActionData("child", "register")
-                .with("motherCaseId", motherCaseId)
-                .with("thaayiCardNumber", thaayiCardNumber)
-                .with("dateOfBirth", dateOfBirth.toString())
-                .with("gender", gender)
-                .withDetails(details);
-    }
-
-    public static ActionData updateEligibleCoupleDetails(Map<String, String> details) {
-        return new ActionData("eligibleCouple", "updateDetails").
-                withDetails(details);
-    }
-
-    public static ActionData updateMotherDetails(Map<String, String> details) {
-        return new ActionData("mother", "updateDetails").
-                withDetails(details);
-    }
-
-    public static ActionData ancCareProvided(int visitNumber, LocalDate visitDate, int numberOfIFATabletsProvided, String ttDose, Map<String, String> details) {
-        String ttDoseValue = ttDose == null ? "" : ttDose;
-        return new ActionData("mother", "ancCareProvided")
-                .with("visitNumber", String.valueOf(visitNumber))
-                .with("visitDate", visitDate.toString())
-                .with("numberOfIFATabletsProvided", String.valueOf(numberOfIFATabletsProvided))
-                .with("ttDose", ttDoseValue)
-                .withDetails(details);
-    }
-
-    public static ActionData registerOutOfAreaANC(String ecCaseId, String wife, String husband, String village, String subCenter, String phc,
-                                                  String thaayiCardNumber, LocalDate lmp, Map<String, String> details) {
-        return new ActionData("mother", "registerOutOfAreaANC")
-                .with("wife", wife)
-                .with("husband", husband)
-                .with("village", village)
-                .with("subcenter", subCenter)
-                .with("phc", phc)
-                .with("thaayiCardNumber", thaayiCardNumber)
-                .with("status", "pregnant")
-                .with("referenceDate", lmp.toString())
-                .with("ecCaseId", ecCaseId)
-                .withDetails(details);
-    }
-
-    public static ActionData updateANCOutcome(Map<String, String> details) {
-        return new ActionData("mother", "updateANCOutcome")
                 .withDetails(details);
     }
 

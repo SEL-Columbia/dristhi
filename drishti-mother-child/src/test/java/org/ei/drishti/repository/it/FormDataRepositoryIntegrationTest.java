@@ -41,9 +41,9 @@ public class FormDataRepositoryIntegrationTest {
     public void shouldSaveNewEntityAsEligibleCouple() throws Exception {
         Map<String, String> fields =
                 create("id", "entity id 1")
-                        .put("husband", "raja")
+                        .put("husbandName", "raja")
+                        .put("wifeName", "asha")
                         .put("ecNumber", "ec 123")
-                        .put("wife", "asha")
                         .put("village", "")
                         .put("phc", "phc")
                         .put("subCenter", "sub center")
@@ -70,9 +70,9 @@ public class FormDataRepositoryIntegrationTest {
         eligibleCouples.add(existingEligibleCouple);
         Map<String, String> fields =
                 create("id", "entity id 1")
-                        .put("husband", "raja")
+                        .put("husbandName", "raja")
+                        .put("wifeName", "asha")
                         .put("ecNumber", "ec 123")
-                        .put("wife", "asha")
                         .put("village", "")
                         .put("phc", "phc")
                         .put("subCenter", "sub center")
@@ -99,9 +99,9 @@ public class FormDataRepositoryIntegrationTest {
     public void shouldUpdateExistingEntityAsEligibleCouple() throws Exception {
         Map<String, String> fields =
                 create("id", "entity id 1")
-                        .put("husband", "raja")
+                        .put("husbandName", "raja")
                         .put("ecNumber", "ec 123")
-                        .put("wife", "asha").put("village", "")
+                        .put("wifeName", "asha").put("village", "")
                         .put("currentMethod", "ocp")
                         .put("isHighPriority", "no")
                         .map();
@@ -112,7 +112,7 @@ public class FormDataRepositoryIntegrationTest {
                 .map();
         EligibleCouple oldEC = new EligibleCouple("entity id 1", "ec 123")
                 .withCouple("old wife name", "old husband name").withLocation("old village", "sub center", "phc").withDetails(oldDetails);
-        eligibleCouples.register(oldEC);
+        eligibleCouples.add(oldEC);
 
         String entityId = repository.saveEntity("eligible_couple", fieldsJSON);
 

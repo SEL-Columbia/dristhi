@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
@@ -24,10 +23,6 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
         this.allMothers = allMothers;
     }
 
-    public void register(EligibleCouple couple) {
-        add(couple);
-    }
-
     @GenerateView
     public EligibleCouple findByCaseId(String caseId) {
         List<EligibleCouple> couples = queryView("by_caseId", caseId);
@@ -35,6 +30,10 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
             return null;
         }
         return couples.get(0);
+    }
+
+    public boolean exists(String caseId) {
+        return findByCaseId(caseId) != null;
     }
 
     public void close(String caseId) {
@@ -45,17 +44,5 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
         }
         update(couple.setIsClosed(true));
         allMothers.closeAllMothersForEC(caseId);
-    }
-
-    public EligibleCouple updateDetails(String caseId, Map<String, String> details) {
-        EligibleCouple couple = findByCaseId(caseId);
-        couple.details().putAll(details);
-        update(couple);
-
-        return couple;
-    }
-
-    public boolean exists(String caseId) {
-        return findByCaseId(caseId) != null;
     }
 }

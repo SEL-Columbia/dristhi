@@ -23,23 +23,19 @@ public class AllChildren extends MotechBaseRepository<Child> {
         super(Child.class, db);
     }
 
-    public void register(Child child) {
-        add(child);
-    }
-
     @GenerateView
     public Child findByCaseId(String caseId) {
         return findChild(caseId, "by_caseId");
     }
 
-    @GenerateView
-    public Child findByMotherCaseId(String motherCaseId) {
-        return findChild(motherCaseId, "by_motherCaseId");
-    }
-
     @View(name = "children_by_mother_id", map = "function(doc) { if (doc.type === 'Child') { emit(doc.motherCaseId); } }")
     public List<Child> findByMotherId(String entityId) {
         return db.queryView(createQuery("children_by_mother_id").key(entityId).includeDocs(true), Child.class);
+    }
+
+    @GenerateView
+    public Child findByMotherCaseId(String motherCaseId) {
+        return findChild(motherCaseId, "by_motherCaseId");
     }
 
     public Child update(String caseId, Map<String, String> details) {

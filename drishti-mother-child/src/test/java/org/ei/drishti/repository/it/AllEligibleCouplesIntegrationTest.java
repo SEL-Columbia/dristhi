@@ -12,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
-import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.util.EasyMap.create;
@@ -37,11 +36,11 @@ public class AllEligibleCouplesIntegrationTest {
     public void shouldRegisterEligibleCouple() throws Exception {
         EligibleCouple couple = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1").withANMIdentifier("ANM X").withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map());
 
-        eligibleCouples.register(couple);
+        eligibleCouples.add(couple);
 
         List<EligibleCouple> allCouplesInDB = eligibleCouples.getAll();
         assertThat(allCouplesInDB, is(asList(couple)));
-        assertThat(allCouplesInDB.get(0).wife(), is("Wife 1"));
+        assertThat(allCouplesInDB.get(0).wifeName(), is("Wife 1"));
     }
 
     @Test
@@ -51,11 +50,11 @@ public class AllEligibleCouplesIntegrationTest {
         EligibleCouple couple3 = new EligibleCouple("CASE Z", "EC Number 3");
         Mother mother1 = new Mother("CASE A", "CASE X", "Thayi 1").withAnm("ANM X").setIsClosed(false);
         Mother mother2 = new Mother("CASE B", "CASE Y", "Thayi 2").withAnm("ANM X").setIsClosed(false);
-        eligibleCouples.register(couple1);
-        eligibleCouples.register(couple2);
-        eligibleCouples.register(couple3);
-        allMothers.register(mother1);
-        allMothers.register(mother2);
+        eligibleCouples.add(couple1);
+        eligibleCouples.add(couple2);
+        eligibleCouples.add(couple3);
+        allMothers.add(mother1);
+        allMothers.add(mother2);
         assertThat(eligibleCouples.getAll(), is(asList(couple1, couple2, couple3)));
         assertThat(allMothers.getAll(), is(asList(mother1, mother2)));
 
@@ -69,25 +68,11 @@ public class AllEligibleCouplesIntegrationTest {
     @Test
     public void shouldNotTryAndCloseANonExistingCouple() {
         EligibleCouple couple = new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1").withANMIdentifier("ANM X");
-        eligibleCouples.register(couple);
+        eligibleCouples.add(couple);
         assertThat(eligibleCouples.getAll(), is(asList(couple)));
 
         eligibleCouples.close("THIS CASE DOES NOT EXIST");
 
         assertThat(eligibleCouples.getAll(), is(asList(couple)));
-    }
-
-    @Test
-    public void shouldUpdateDetails() throws Exception {
-        eligibleCouples.register(coupleWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
-        EligibleCouple updatedCouple = eligibleCouples.updateDetails("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map());
-
-        Map<String, String> expectedUpdatedDetails = create("Key 1", "Value 1").put("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map();
-        assertThat(eligibleCouples.findByCaseId("CASE X"), is(coupleWithoutDetails().withDetails(expectedUpdatedDetails)));
-        assertThat(updatedCouple, is(coupleWithoutDetails().withDetails(expectedUpdatedDetails)));
-    }
-
-    private EligibleCouple coupleWithoutDetails() {
-        return new EligibleCouple("CASE X", "EC Number 1").withCouple("Wife 1", "Husband 1").withANMIdentifier("ANM X").withLocation("Village 1", "SubCenter 1", "PHC 1");
     }
 }

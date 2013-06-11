@@ -1,9 +1,8 @@
 package org.ei.drishti.domain;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ei.drishti.dto.ActionData;
 import org.ektorp.support.TypeDiscriminator;
@@ -13,7 +12,6 @@ import org.motechproject.util.DateUtil;
 import java.util.Map;
 
 @TypeDiscriminator("doc.type === 'Action'")
-@JsonIgnoreProperties({"actionActive"})
 public class Action extends MotechBaseDataObject {
     @JsonProperty
     private String anmIdentifier;
@@ -35,9 +33,9 @@ public class Action extends MotechBaseDataObject {
     private Action() {
     }
 
-    public Action(String caseID, String anmIdentifier, ActionData actionData) {
+    public Action(String caseId, String anmIdentifier, ActionData actionData) {
         this.anmIdentifier = anmIdentifier;
-        this.caseID = caseID;
+        this.caseID = caseId;
         this.data = actionData.data();
         this.actionTarget = actionData.target();
         this.actionType = actionData.type();
@@ -75,7 +73,7 @@ public class Action extends MotechBaseDataObject {
         return this;
     }
 
-    public Boolean isActionActive() {
+    public Boolean getIsActionActive() {
         return isActionActive;
     }
 
@@ -93,12 +91,12 @@ public class Action extends MotechBaseDataObject {
 
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o, false, null, new String[]{"timeStamp", "revision"});
+        return EqualsBuilder.reflectionEquals(this, o, "timeStamp", "revision");
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return HashCodeBuilder.reflectionHashCode(this, "timeStamp", "revision");
     }
 
     @Override
