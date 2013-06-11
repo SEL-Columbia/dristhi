@@ -26,9 +26,8 @@ import java.util.Map;
 import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
-import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_WOMAN_SURVIVE;
-import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
+import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.Form.ID;
 import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.DEATH_OF_MOTHER_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.PERMANENT_RELOCATION_COMMCARE_VALUE;
@@ -73,7 +72,7 @@ public class PNCService {
             return;
         }
 
-        if (!BOOLEAN_FALSE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE))) {
+        if (BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE)) || BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_MOTHER_SURVIVE))) {
             pncSchedulesService.deliveryOutcome(submission.entityId(), submission.getField(REFERENCE_DATE));
         }
     }

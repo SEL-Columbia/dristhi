@@ -101,18 +101,13 @@
                 "bind": "/model/instance/Delivery_Outcome_EngKan/still_birth_group/woman_survived"
             },
             {
-                "name": "didWomanSurvive",
+                "name": "didMotherSurvive",
                 "bind": "/model/instance/Delivery_Outcome_EngKan/still_birth_group/mother_survived"
             },
             {
                 "name": "numberOFLivingChildren",
                 "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/num_livingchildren",
                 "source": "mother.eligible_couple.numberOFLivingChildren"
-            },
-            {
-                "name": "isYoungestChildUnderTwo",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/youngestchild_under2",
-                "source": "mother.eligible_couple.isYoungestChildUnderTwo"
             },
             {
                 "name": "numberOfLivingFemaleChild",
@@ -143,10 +138,6 @@
             {
                 "name": "otherMaternalDeathCause",
                 "bind": "/model/instance/Delivery_Outcome_EngKan/maternal_death_group/other_maternal_death_cause"
-            },
-            {
-                "name": "bloodGroup",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/woman_survived_group/case_w_blood_group"
             },
             {
                 "name": "isRHNegative",
@@ -236,10 +227,6 @@
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_pre_eclampsia"
             },
             {
-                "name": "eclampsia",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/case_eclampsia"
-            },
-            {
                 "name": "jaundice",
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_jaundice"
             },
@@ -289,7 +276,7 @@
                         "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/child_blood_group"
                     },
                     {
-                        "name": "immunizationsGivenAtBirth",
+                        "name": "immunizationsGiven",
                         "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/immunizations_atbirth"
                     }
                 ]

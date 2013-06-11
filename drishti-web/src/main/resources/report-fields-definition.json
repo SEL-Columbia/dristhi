@@ -53,6 +53,7 @@
         "deliveryOutcome",
         "referenceDate",
         "deliveryPlace",
-        "didWomanSurvive"
+        "didWomanSurvive",
+        "didMother  Survive"
     ]
 }

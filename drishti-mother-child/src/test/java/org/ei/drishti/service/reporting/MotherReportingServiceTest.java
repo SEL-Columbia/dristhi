@@ -232,6 +232,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         Map<String, String> reportData = create("id", "entity id 1")
                 .put("didWomanSurvive", "yes")
+                .put("didMotherSurvive", "yes")
                 .put("deliveryOutcome", "live_birth")
                 .put("referenceDate", "2012-01-01")
                 .put("deliveryPlace", "home").map();
@@ -247,6 +248,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         Map<String, String> reportData = create("id", "entity id 1")
                 .put("didWomanSurvive", "yes")
+                .put("didMotherSurvive", "yes")
                 .put("deliveryOutcome", "live_birth")
                 .put("referenceDate", "2012-01-01")
                 .put("deliveryPlace", "phc").map();
@@ -263,6 +265,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         Map<String, String> reportData = create("id", "entity id 1")
                 .put("didWomanSurvive", "yes")
                 .put("deliveryOutcome", "live_birth")
+                .put("didMotherSurvive", "yes")
                 .put("referenceDate", "2012-01-01")
                 .put("deliveryPlace", "home").map();
         service.deliveryOutcome(new SafeMap(reportData));
@@ -277,6 +280,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         Map<String, String> reportData = create("id", "entity id 1")
                 .put("didWomanSurvive", "yes")
+                .put("didMotherSurvive", "yes")
                 .put("deliveryOutcome", "live_birth")
                 .put("referenceDate", "2012-01-01")
                 .put("deliveryPlace", "phc").map();
@@ -292,6 +296,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         Map<String, String> reportData = create("id", "entity id 1")
                 .put("didWomanSurvive", "yes")
+                .put("didMotherSurvive", "yes")
                 .put("deliveryOutcome", "still_birth")
                 .put("referenceDate", "2012-01-01")
                 .put("deliveryPlace", "phc").map();
@@ -302,6 +307,23 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldReportMotherDeathDuringPregnancyOutcome() {
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        Map<String, String> reportData = create("id", "entity id 1")
+                .put("didMotherSurvive", "no")
+                .put("didWomanSurvive", "")
+                .put("deliveryOutcome", "live_birth")
+                .put("referenceDate", "2012-01-01")
+                .put("deliveryPlace", "home").map();
+        service.deliveryOutcome(new SafeMap(reportData));
+
+        verifyBothReportingCalls(MMD, "2012-01-01");
+        verifyBothReportingCalls(MOTHER_MORTALITY, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportWomanDeathDuringPregnancyOutcome() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 

@@ -50,6 +50,7 @@ public class AllConstants {
         public static final String DELIVERY_OUTCOME_FIELD = "deliveryOutcome";
         public static final String DELIVERY_PLACE = "deliveryPlace";
         public static final String DID_WOMAN_SURVIVE = "didWomanSurvive";
+        public static final String DID_MOTHER_SURVIVE = "didMotherSurvive";
         public static final String DID_BREAST_FEEDING_START = "didBreastfeedingStart";
         public static final String LIVE_BIRTH_FIELD_VALUE = "live_birth";
         public static final String HOME_FIELD_VALUE = "home";

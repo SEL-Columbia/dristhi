@@ -145,7 +145,7 @@ public class MotherReportingService {
     }
 
     private void reportMotherMortality(SafeMap reportData, Mother mother, Location location) {
-        if (BOOLEAN_FALSE_VALUE.equals(reportData.get(DID_WOMAN_SURVIVE))) {
+        if (BOOLEAN_FALSE_VALUE.equals(reportData.get(DID_WOMAN_SURVIVE)) || BOOLEAN_FALSE_VALUE.equals(reportData.get(DID_MOTHER_SURVIVE))) {
             reportDeath(mother, MMD, reportData.get(REFERENCE_DATE), location);
         }
     }

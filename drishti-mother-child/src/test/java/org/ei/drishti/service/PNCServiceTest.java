@@ -63,7 +63,7 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldEnrollPNCIntoSchedulesDuringDeliveryOutcome() {
+    public void shouldEnrollPNCIntoSchedulesDuringDeliveryOutcomeIfWomanOrMotherSurvives() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         when(mothers.exists("mother id 1")).thenReturn(true);
@@ -72,6 +72,8 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
+                .addFormField("didWomanSurvive", "yes")
+                .addFormField("didMotherSurvive", "")
                 .build();
         service.deliveryOutcome(submission);
 
@@ -106,6 +108,25 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didWomanSurvive", "no")
+                .addFormField("didMotherSurvive", "")
+                .build();
+        service.deliveryOutcome(submission);
+
+        verifyZeroInteractions(pncSchedulesService);
+    }
+
+    @Test
+    public void shouldNotEnrollPNCIntoSchedulesDuringDeliveryOutcomeIfMotherDied() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(mothers.exists("mother id 1")).thenReturn(true);
+        FormSubmission submission = create()
+                .withFormName("delivery_outcome")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .addFormField("didWomanSurvive", "")
+                .addFormField("didMotherSurvive", "no")
                 .build();
         service.deliveryOutcome(submission);
 
