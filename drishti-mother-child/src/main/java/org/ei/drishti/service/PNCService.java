@@ -99,6 +99,36 @@ public class PNCService {
         }
     }
 
+    public void pncRegistration(FormSubmission submission) {
+        List<Mother> mothers = allMothers.findByEcCaseId(submission.entityId());
+        if (mothers.size() <= 0) {
+            logger.warn("Failed to handle PNC registration as there is no mother registered with ec id: " + submission.entityId());
+            return;
+        }
+
+        Mother mother = mothers.get(0);
+        if (BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE))) {
+            pncSchedulesService.deliveryOutcome(mother.caseId(), submission.getField(REFERENCE_DATE));
+        }
+    }
+
+    public void pncOAChildRegistration(FormSubmission submission) {
+        List<Mother> mothers = allMothers.findByEcCaseId(submission.entityId());
+        if (mothers.size() <= 0) {
+            logger.warn("Failed to handle PNC OA children registration as there is no mother registered with id: " + submission.entityId());
+            return;
+        }
+        Mother mother = mothers.get(0);
+        List<Child> children = allChildren.findByMotherId(mother.caseId());
+
+        for (Child child : children) {
+            child = child.withAnm(submission.anmId()).withDateOfBirth(submission.getField(REFERENCE_DATE)).withThayiCard(mother.thaayiCardNo());
+            allChildren.update(child);
+
+            childSchedulesService.enrollChild(child);
+        }
+    }
+
     @Deprecated
     public void pncVisitHappened(PostNatalCareInformation info, Map<String, Map<String, String>> extraData) {
         if (!allMothers.exists(info.caseId())) {
