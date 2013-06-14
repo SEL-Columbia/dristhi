@@ -419,10 +419,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldReportPNCVisit3DuringPNCVisit() throws Exception {
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE-1");
-        reportData.put("visitDate", "2012-01-01");
-        reportData.put("visitNumber", "3");
-        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+        reportData.put("id", "entity id 1");
+        reportData.put("pncVisitDate", "2012-01-01");
+        reportData.put("pncVisitNumber", "3");
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
 
         service.pncVisitHappened(reportData);
 
@@ -432,10 +432,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotReportPNCVisit3IfPNCVisitNumberIsNot3() throws Exception {
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE-1");
-        reportData.put("visitDate", "2012-01-01");
-        reportData.put("visitNumber", "1");
-        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+        reportData.put("id", "entity id 1");
+        reportData.put("pncVisitDate", "2012-01-01");
+        reportData.put("pncVisitNumber", "1");
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
 
         service.pncVisitHappened(reportData);
 
@@ -445,10 +445,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotReportPNCVisit3IfPNCVisitNumberIsInvalid() throws Exception {
         SafeMap reportData = new SafeMap();
-        reportData.put("caseId", "CASE-1");
-        reportData.put("visitDate", "2012-01-01");
-        reportData.put("visitNumber", "");
-        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+        reportData.put("id", "entity id 1");
+        reportData.put("pncVisitDate", "2012-01-01");
+        reportData.put("pncVisitNumber", "");
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
 
         service.pncVisitHappened(reportData);
 

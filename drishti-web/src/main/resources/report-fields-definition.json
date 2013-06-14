@@ -61,5 +61,10 @@
         "closeReason",
         "isMaternalDeath",
         "deathDate"
+    ],
+    "pnc_visit": [
+        "id",
+        "pncVisitNumber",
+        "pncVisitDate"
     ]
 }

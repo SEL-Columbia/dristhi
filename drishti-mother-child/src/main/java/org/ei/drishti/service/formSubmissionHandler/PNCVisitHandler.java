@@ -16,5 +16,6 @@ public class PNCVisitHandler implements FormSubmissionHandler {
 
     @Override
     public void handle(FormSubmission submission) {
+        pncService.pncVisitHappened(submission);
     }
 }

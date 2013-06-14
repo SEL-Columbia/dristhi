@@ -1,5 +1,6 @@
 package org.ei.drishti.service.reporting;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.EligibleCouple;
@@ -20,7 +21,6 @@ import static org.ei.drishti.common.AllConstants.ANCCloseFields.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.*;
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
 import static org.ei.drishti.common.AllConstants.Form.*;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_DATE_FIELD_NAME;
@@ -28,6 +28,7 @@ import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_OF_MOTHER_
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
+import static org.ei.drishti.common.util.IntegerUtil.tryParse;
 import static org.joda.time.LocalDate.parse;
 
 @Service
@@ -98,16 +99,10 @@ public class MotherReportingService {
     }
 
     public void pncVisitHappened(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
-
-        String visitNumber;
-        try {
-            visitNumber = reportData.get(VISIT_NUMBER_COMMCARE_FIELD);
-            if (parseInt(visitNumber) == 3) {
-                reportToBoth(mother, PNC3, reportData.get(VISIT_DATE_COMMCARE_FIELD));
-            }
-        } catch (Exception e) {
-            logger.warn("Not reporting PNC visit for mother: " + mother.caseId() + " as visit number is invalid, visit number:" + reportData.get(VISIT_NUMBER_COMMCARE_FIELD));
+        Mother mother = allMothers.findByCaseId(reportData.get(ID));
+        String visitNumber = reportData.get(AllConstants.PNCVisitCommCareFields.PNC_VISIT_NUMBER_COMMCARE_FIELD);
+        if (tryParse(visitNumber, 0) == 3) {
+            reportToBoth(mother, PNC3, reportData.get(AllConstants.PNCVisitCommCareFields.PNC_VISIT_DATE_COMMCARE_FIELD));
         }
     }
 

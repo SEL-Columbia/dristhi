@@ -88,6 +88,11 @@ public class AllConstants {
         public static final String TT_DATE_FIELD = "ttDate";
     }
 
+    public static class PNCVisitCommCareFields {
+        public static final String PNC_VISIT_DATE_COMMCARE_FIELD = "pncVisitDate";
+        public static final String PNC_VISIT_NUMBER_COMMCARE_FIELD = "pncVisitNumber";
+    }
+
     public static class CommonCommCareFields {
         public static final String CASE_ID_COMMCARE_FIELD_NAME = "caseId";
         public static final String SUBMISSION_DATE_COMMCARE_FIELD_NAME = "submissionDate";

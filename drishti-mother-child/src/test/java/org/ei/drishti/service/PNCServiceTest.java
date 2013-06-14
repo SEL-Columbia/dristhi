@@ -5,7 +5,6 @@ import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.contract.PostNatalCareInformation;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
-import org.ei.drishti.dto.BeneficiaryType;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -29,7 +28,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.dto.BeneficiaryType.mother;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.ei.drishti.util.FormSubmissionBuilder.create;
@@ -401,53 +399,33 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldUpdateMotherAndChildDetailsWhenPNCVisitHappens() throws Exception {
-        Map<String, String> newDetails = EXTRA_DATA.get("details");
-        Map<String, String> motherUpdatedDetails = create("motherKey", "motherValue").put("someKey", "someValue").map();
-        Map<String, String> childUpdatedDetails = create("childKey", "childValue").put("someKey", "someValue").map();
-        String childCaseId = "Case X";
-        String motherCaseId = "MOTHER-CASE-1";
-
-        Mother mother = new Mother(motherCaseId, "EC-CASE-1", "TC 1");
-        Child child = new Child(childCaseId, motherCaseId, "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female");
-
-        when(mothers.exists(motherCaseId)).thenReturn(true);
-        when(children.findByMotherCaseId(motherCaseId)).thenReturn(child);
-        when(children.update(childCaseId, newDetails)).thenReturn(child.withDetails(childUpdatedDetails));
-        when(mothers.updateDetails(motherCaseId, newDetails)).thenReturn(mother.withDetails(motherUpdatedDetails));
-
-        service.pncVisitHappened(new PostNatalCareInformation(motherCaseId, "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
-
-        verify(actionService).pncVisitHappened(BeneficiaryType.mother, motherCaseId, "ANM X", LocalDate.parse("2012-12-12"), 1, "50", motherUpdatedDetails);
-        verify(actionService).pncVisitHappened(BeneficiaryType.child, childCaseId, "ANM X", LocalDate.parse("2012-12-12"), 1, "50", childUpdatedDetails);
-    }
-
-    @Test
-    public void shouldUpdateMotherButNotChildDetailsWhenChildIsNotFoundDuringPNCVisit() throws Exception {
-        String motherCaseId = "MOTHER-CASE-1";
-        when(mothers.exists(motherCaseId)).thenReturn(true);
-        when(children.findByMotherCaseId(motherCaseId)).thenReturn(null);
-        Map<String, String> expectedDetails = create("key", "value").put("someKey", "someValue").map();
-        Map<String, String> details = mapOf("someKey", "someValue");
-
-        when(mothers.updateDetails(motherCaseId, details)).thenReturn(new Mother(motherCaseId, "EC-CASE-1", "TC 1").withDetails(expectedDetails));
-
-        service.pncVisitHappened(new PostNatalCareInformation(motherCaseId, "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
-
-        verify(actionService).pncVisitHappened(mother, motherCaseId, "ANM X", LocalDate.parse("2012-12-12"), 1, "50", expectedDetails);
-    }
-
-    @Test
     public void shouldNotDoAnythingIfMotherIsNotFoundDuringPNCVisit() throws Exception {
-        String motherCaseId = "MOTHER-CASE-1";
-        when(mothers.exists(motherCaseId)).thenReturn(false);
+        FormSubmission submission = create()
+                .withFormName("pnc_visit")
+                .build();
 
-        service.pncVisitHappened(new PostNatalCareInformation(motherCaseId, "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
+        when(mothers.exists("entity id 1")).thenReturn(false);
 
-        verify(mothers).exists("MOTHER-CASE-1");
-        verifyNoMoreInteractions(mothers);
-        verifyZeroInteractions(children);
-        verifyZeroInteractions(actionService);
+        service.pncVisitHappened(submission);
+
+        verify(mothers).exists("entity id 1");
+        verifyZeroInteractions(motherReportingService);
+        verifyZeroInteractions(childReportingService);
+    }
+
+    @Test
+    public void shouldReportPNCVisit() throws Exception {
+        when(reportFieldsDefinition.get("pnc_visit")).thenReturn(asList("some-key"));
+        when(mothers.exists("entity id 1")).thenReturn(true);
+
+        FormSubmission submission = create()
+                .withFormName("pnc_visit")
+                .addFormField("some-key", "value")
+                .build();
+        service.pncVisitHappened(submission);
+
+        SafeMap reportFields = new SafeMap(mapOf("some-key", "value"));
+        verify(motherReportingService).pncVisitHappened(reportFields);
     }
 
     @Test

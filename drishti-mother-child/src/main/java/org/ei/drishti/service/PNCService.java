@@ -133,26 +133,6 @@ public class PNCService {
         }
     }
 
-    @Deprecated
-    public void pncVisitHappened(PostNatalCareInformation info, Map<String, Map<String, String>> extraData) {
-        if (!allMothers.exists(info.caseId())) {
-            logger.warn("Found PNC visit without registered mother for case ID: " + info.caseId());
-            return;
-        }
-
-        Map<String, String> details = extraData.get("details");
-
-        Mother updatedMother = allMothers.updateDetails(info.caseId(), details);
-        actionService.pncVisitHappened(mother, info.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedMother.details());
-        motherReportingService.pncVisitHappened(new SafeMap(extraData.get("reporting")));
-
-        Child child = allChildren.findByMotherCaseId(info.caseId());
-        if (child != null) {
-            Child updatedChild = allChildren.update(child.caseId(), details);
-            actionService.pncVisitHappened(BeneficiaryType.child, child.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedChild.details());
-        }
-    }
-
     public void close(FormSubmission submission) {
         Mother mother = allMothers.findByCaseId(submission.entityId());
         if (mother == null) {
@@ -184,6 +164,36 @@ public class PNCService {
         logger.info(format("Auto closing mother case with entity id {0} as the Post-pregnancy period has elapsed.", entityId));
         allMothers.close(entityId);
         actionService.markAllAlertsAsInactive(entityId);
+    }
+
+    public void pncVisitHappened(FormSubmission submission) {
+        if (!allMothers.exists(submission.entityId())) {
+            logger.warn("Found PNC visit without registered mother for entity ID: " + submission.entityId());
+            return;
+        }
+
+        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+        motherReportingService.pncVisitHappened(new SafeMap(submission.getFields(reportFields)));
+    }
+
+    @Deprecated
+    public void pncVisitHappened(PostNatalCareInformation info, Map<String, Map<String, String>> extraData) {
+        if (!allMothers.exists(info.caseId())) {
+            logger.warn("Found PNC visit without registered mother for case ID: " + info.caseId());
+            return;
+        }
+
+        Map<String, String> details = extraData.get("details");
+
+        Mother updatedMother = allMothers.updateDetails(info.caseId(), details);
+        actionService.pncVisitHappened(mother, info.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedMother.details());
+        motherReportingService.pncVisitHappened(new SafeMap(extraData.get("reporting")));
+
+        Child child = allChildren.findByMotherCaseId(info.caseId());
+        if (child != null) {
+            Child updatedChild = allChildren.update(child.caseId(), details);
+            actionService.pncVisitHappened(BeneficiaryType.child, child.caseId(), info.anmIdentifier(), info.visitDate(), info.visitNumber(), info.numberOfIFATabletsProvided(), updatedChild.details());
+        }
     }
 
     @Deprecated
