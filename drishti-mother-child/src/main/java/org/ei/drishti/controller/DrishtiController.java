@@ -36,13 +36,6 @@ public class DrishtiController {
         mctsService.updateChildImmunization(request);
     }
 
-    public void closePNCCase(PostNatalCareCloseInformation request, Map<String, Map<String, String>> extraData) {
-        logger.info("PNC close: " + request + ". Extra data: " + extraData);
-
-        pncService.closePNCCase(request, extraData);
-        mctsService.closePNCCase(request);
-    }
-
     public void closeChildCase(ChildCloseRequest childCloseRequest, Map<String, Map<String, String>> extraData) {
         logger.info("Child close: " + childCloseRequest);
 

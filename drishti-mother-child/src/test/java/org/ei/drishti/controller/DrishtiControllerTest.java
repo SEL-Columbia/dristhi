@@ -58,16 +58,6 @@ public class DrishtiControllerTest {
     }
 
     @Test
-    public void shouldDelegateToBothPNCServiceAndMCTSDuringPNCCaseClose() {
-        PostNatalCareCloseInformation closeInformation = mock(PostNatalCareCloseInformation.class);
-
-        controller.closePNCCase(closeInformation, EXTRA_DATA);
-
-        verify(pncService).closePNCCase(closeInformation, EXTRA_DATA);
-        verify(mctsService).closePNCCase(closeInformation);
-    }
-
-    @Test
     public void shouldDelegateToPNCServiceDuringPNCAndChildCareUpdate() throws Exception {
         PostNatalCareInformation request = mock(PostNatalCareInformation.class);
 

@@ -95,28 +95,6 @@
                     }
                 },
                 {
-                    "name": "closePNCCase",
-                    "url": {
-                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/3BA6C9C7-4A0D-4459-BDB5-A16A89808719"
-                        }
-                    },
-                    "mappings": {
-                        "form|meta|username": "anmIdentifier",
-                        "form|case|@case_id": "caseId",
-                        "form|pnc_close_reason": "closeReason"
-                    },
-                    "extraMappings": {
-                        "reporting": {
-                            "form|case|@case_id": "caseId",
-                            "form|pnc_close_reason": "closeReason",
-                            "form|death_mother_group|maternal_death": "isMaternalDeath",
-                            "form|death_mother_group|death_date": "diedOn"
-                        }
-                    }
-                },
-                {
                     "name": "closeChildCase",
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",

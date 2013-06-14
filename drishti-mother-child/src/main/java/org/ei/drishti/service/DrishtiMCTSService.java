@@ -29,9 +29,6 @@ public class DrishtiMCTSService {
     public void closeChildCase(ChildCloseRequest childCloseRequest) {
     }
 
-    public void closePNCCase(PostNatalCareCloseInformation closeInformation) {
-    }
-
     public void pncProvided(PostNatalCareInformation request) {
         if (!mothers.exists(request.caseId())) {
             logger.warn("Found PNC provided without registered mother. Request: " + request);

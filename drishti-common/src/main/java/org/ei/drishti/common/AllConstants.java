@@ -26,6 +26,7 @@ public class AllConstants {
         public static final String HB_TEST = "hb_test";
         public static final String DELIVERY_OUTCOME = "delivery_outcome";
         public static final String PNC_REGISTRATION_OA = "pnc_registration_oa";
+        public static final String PNC_CLOSE = "pnc_close";
         public static final String TT_BOOSTER = "tt_booster";
         public static final String TT_1 = "tt_1";
         public static final String TT_2 = "tt_2";
@@ -122,6 +123,11 @@ public class AllConstants {
         public static final String DEATH_OF_WOMAN_VALUE = "death_of_woman";
         public static final String PERMANENT_RELOCATION_VALUE = "relocation_permanent";
         public static final String SPONTANEOUS_ABORTION_VALUE = "spontaneous_abortion";
+    }
+
+    public static class PNCCloseFields {
+        public static final String DEATH_DATE_FIELD_NAME = "deathDate";
+        public static final String DEATH_OF_MOTHER_VALUE = "death_of_mother";
     }
 
     public static class ECCloseFields {

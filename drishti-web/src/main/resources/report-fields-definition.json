@@ -55,5 +55,11 @@
         "deliveryPlace",
         "didWomanSurvive",
         "didMotherSurvive"
+    ],
+    "pnc_close": [
+        "id",
+        "closeReason",
+        "isMaternalDeath",
+        "deathDate"
     ]
 }

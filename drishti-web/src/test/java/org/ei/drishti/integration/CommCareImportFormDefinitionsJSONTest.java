@@ -35,7 +35,6 @@ public class CommCareImportFormDefinitionsJSONTest {
         classEveryFormMappingConvertsTo.put("updateChildImmunization", ChildImmunizationUpdationRequest.class);
         classEveryFormMappingConvertsTo.put("updatePNCAndChildInformation", PostNatalCareInformation.class);
         classEveryFormMappingConvertsTo.put("updateBirthPlanning", BirthPlanningRequest.class);
-        classEveryFormMappingConvertsTo.put("closePNCCase", PostNatalCareCloseInformation.class);
         classEveryFormMappingConvertsTo.put("closeChildCase", ChildCloseRequest.class);
 
         assertEveryFormDefinitionInTheJSONHasBeenRepresentedInThisTest(classEveryFormMappingConvertsTo);

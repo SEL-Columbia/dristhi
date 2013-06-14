@@ -2,7 +2,6 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.contract.PostNatalCareCloseInformation;
 import org.ei.drishti.contract.PostNatalCareInformation;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
@@ -11,6 +10,7 @@ import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
@@ -24,13 +24,14 @@ import java.util.List;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.ei.drishti.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_VALUE;
+import static org.ei.drishti.common.AllConstants.ANCCloseFields.PERMANENT_RELOCATION_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
+import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.Form.ID;
-import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.DEATH_OF_MOTHER_COMMCARE_VALUE;
-import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.PERMANENT_RELOCATION_COMMCARE_VALUE;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 
@@ -46,6 +47,7 @@ public class PNCService {
     private AllChildren allChildren;
     private MotherReportingService motherReportingService;
     private ChildReportingService childReportingService;
+    private ReportFieldsDefinition reportFieldsDefinition;
 
     @Autowired
     public PNCService(ActionService actionService,
@@ -55,7 +57,8 @@ public class PNCService {
                       AllMothers allMothers,
                       AllChildren allChildren,
                       MotherReportingService motherReportingService,
-                      ChildReportingService childReportingService) {
+                      ChildReportingService childReportingService,
+                      ReportFieldsDefinition reportFieldsDefinition) {
         this.actionService = actionService;
         this.childSchedulesService = childSchedulesService;
         this.pncSchedulesService = pncSchedulesService;
@@ -64,6 +67,7 @@ public class PNCService {
         this.allChildren = allChildren;
         this.motherReportingService = motherReportingService;
         this.childReportingService = childReportingService;
+        this.reportFieldsDefinition = reportFieldsDefinition;
     }
 
     public void deliveryOutcome(FormSubmission submission) {
@@ -149,22 +153,24 @@ public class PNCService {
         }
     }
 
-    @Deprecated
-    public void closePNCCase(PostNatalCareCloseInformation closeInformation, Map<String, Map<String, String>> extraData) {
-        if (!allMothers.exists(closeInformation.caseId())) {
-            logger.warn("Found PNC Close visit without registered mother for it: " + closeInformation.caseId());
+    public void close(FormSubmission submission) {
+        Mother mother = allMothers.findByCaseId(submission.entityId());
+        if (mother == null) {
+            logger.warn(format("Failed to close PNC as there is no mother registered with ID: {0}", submission.entityId()));
             return;
         }
 
-        logger.info("Closing PNC case. Details: " + closeInformation);
-        allMothers.close(closeInformation.caseId());
-        motherReportingService.closePNC(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-        actionService.markAllAlertsAsInactive(closeInformation.caseId());
+        logger.info("Closing PNC case. Entity Id: " + submission.entityId());
+        allMothers.close(submission.entityId());
+        actionService.markAllAlertsAsInactive(submission.entityId());
+        pncSchedulesService.unEnrollFromSchedules(submission.entityId());
+        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+        motherReportingService.closePNC(new SafeMap(submission.getFields(reportFields)));
 
-        if (DEATH_OF_MOTHER_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.closeReason())
-                || PERMANENT_RELOCATION_COMMCARE_VALUE.equalsIgnoreCase(closeInformation.closeReason())) {
-            logger.info("Closing EC case along with PNC case. Details: " + closeInformation);
-            allEligibleCouples.close(closeInformation.caseId());
+        if (DEATH_OF_WOMAN_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_FIELD_NAME))
+                || PERMANENT_RELOCATION_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_FIELD_NAME))) {
+            logger.info("Closing EC case along with PNC case. Submission: " + submission);
+            allEligibleCouples.close(mother.ecCaseId());
         }
     }
 

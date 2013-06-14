@@ -2,7 +2,6 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.contract.PostNatalCareCloseInformation;
 import org.ei.drishti.contract.PostNatalCareInformation;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
@@ -11,6 +10,7 @@ import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
@@ -53,6 +53,8 @@ public class PNCServiceTest extends BaseUnitTest {
     private ChildReportingService childReportingService;
     @Mock
     private PNCSchedulesService pncSchedulesService;
+    @Mock
+    private ReportFieldsDefinition reportFieldsDefinition;
 
     private PNCService service;
     private Map<String, Map<String, String>> EXTRA_DATA = create("details", mapOf("someKey", "someValue")).put("reporting", mapOf("someKey", "someValue")).map();
@@ -60,7 +62,8 @@ public class PNCServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new PNCService(actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, mothers, children, motherReportingService, childReportingService);
+        service = new PNCService(actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, mothers, children,
+                motherReportingService, childReportingService, reportFieldsDefinition);
     }
 
     @Test
@@ -318,6 +321,86 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldUnEnrollAMotherFromScheduleWhenPNCCaseIsClosed() {
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+
+        service.close(create().build());
+
+        verify(pncSchedulesService).unEnrollFromSchedules("entity id 1");
+    }
+
+    @Test
+    public void shouldCloseAMotherWhenPNCIsClosed() {
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+
+        service.close(create().build());
+
+        verify(mothers).close("entity id 1");
+    }
+
+    @Test
+    public void shouldNotDoAnythingIfMotherIsNotRegistered() {
+        when(mothers.findByCaseId("entity id 1")).thenReturn(null);
+
+        service.close(create().build());
+
+        verifyZeroInteractions(pncSchedulesService);
+        verifyZeroInteractions(allEligibleCouples);
+        verifyZeroInteractions(motherReportingService);
+        verifyZeroInteractions(actionService);
+    }
+
+    @Test
+    public void shouldCloseECCaseAlsoWhenPNCIsClosedAndReasonIsDeath() {
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+
+        service.close(create().addFormField("closeReason", "death_of_woman").build());
+
+        verify(allEligibleCouples).close("ec entity id 1");
+    }
+
+    @Test
+    public void shouldCloseECCaseAlsoWhenPNCIsClosedAndReasonIsPermanentRelocation() {
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+
+        service.close(create().addFormField("closeReason", "relocation_permanent").build());
+
+        verify(allEligibleCouples).close("ec entity id 1");
+    }
+
+    @Test
+    public void shouldNotCloseECCaseWhenPNCIsClosedAndReasonIsNeitherDeathOrPermanentRelocation() {
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+
+        service.close(create().addFormField("closeReason", "other_reason").build());
+
+        verifyZeroInteractions(allEligibleCouples);
+    }
+
+    @Test
+    public void shouldMarkAllActionsAsInactiveWhenPNCIsClosed() {
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+
+        service.close(create().build());
+
+        verify(actionService).markAllAlertsAsInactive("entity id 1");
+    }
+
+    @Test
+    public void shouldDoReportingWhenPNCIsClosed() {
+        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(reportFieldsDefinition.get("pnc_close")).thenReturn(asList("some-key"));
+        FormSubmission submission = create()
+                .withFormName("pnc_close")
+                .addFormField("some-key", "some-value")
+                .build();
+
+        service.close(submission);
+
+        verify(motherReportingService).closePNC(new SafeMap(mapOf("some-key", "some-value")));
+    }
+
+    @Test
     public void shouldUpdateMotherAndChildDetailsWhenPNCVisitHappens() throws Exception {
         Map<String, String> newDetails = EXTRA_DATA.get("details");
         Map<String, String> motherUpdatedDetails = create("motherKey", "motherValue").put("someKey", "someValue").map();
@@ -494,51 +577,6 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldReportWhenPNCCaseIsClosed() {
-        when(mothers.exists("Case X")).thenReturn(true);
-
-        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
-
-        verify(motherReportingService).closePNC(new SafeMap(EXTRA_DATA.get("reporting")));
-    }
-
-    @Test
-    public void shouldCreateActionsWhenPNCCaseIsClosed() {
-        when(mothers.exists("Case X")).thenReturn(true);
-
-        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
-
-        verify(actionService).markAllAlertsAsInactive("Case X");
-    }
-
-    @Test
-    public void shouldCloseMotherWhenPNCCaseIsClosed() {
-        when(mothers.exists("Case X")).thenReturn(true);
-
-        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
-
-        verify(mothers).close("Case X");
-    }
-
-    @Test
-    public void shouldCloseECCaseAlsoWhenPNCCaseIsClosedAndReasonIsDeath() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
-
-        service.closePNCCase(new PostNatalCareCloseInformation("CASE-X", "ANM X", "death_of_mother"), EXTRA_DATA);
-
-        verify(allEligibleCouples).close("CASE-X");
-    }
-
-    @Test
-    public void shouldCloseECCaseAlsoWhenPNCCaseIsClosedAndReasonIsPermanentRelocation() {
-        when(mothers.exists("CASE-X")).thenReturn(true);
-
-        service.closePNCCase(new PostNatalCareCloseInformation("CASE-X", "ANM X", "permanent_relocation"), EXTRA_DATA);
-
-        verify(allEligibleCouples).close("CASE-X");
-    }
-
-    @Test
     public void shouldReportWhenPNCVisitForMotherHappens() {
         when(mothers.exists("Case X")).thenReturn(true);
         when(mothers.updateDetails("Case X", EXTRA_DATA.get("details"))).thenReturn(new Mother("Case X", "EC-CASE-1", "TC 1"));
@@ -555,18 +593,6 @@ public class PNCServiceTest extends BaseUnitTest {
         service.pncVisitHappened(new PostNatalCareInformation("Case X", "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
 
         verifyZeroInteractions(motherReportingService);
-    }
-
-    @Test
-    public void shouldNotDoAnythingIfMotherDoesNotExistsDuringClose() {
-        when(mothers.exists("Case X")).thenReturn(false);
-
-        service.closePNCCase(new PostNatalCareCloseInformation("Case X", "ANM Y", "Permanent Transfer"), EXTRA_DATA);
-
-        verify(mothers).exists("Case X");
-        verifyZeroInteractions(actionService);
-        verifyZeroInteractions(motherReportingService);
-        verifyNoMoreInteractions(mothers);
     }
 
     @Test

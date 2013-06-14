@@ -23,7 +23,8 @@ import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
 import static org.ei.drishti.common.AllConstants.Form.*;
-import static org.ei.drishti.common.AllConstants.PNCCloseCommCareFields.DEATH_OF_MOTHER_COMMCARE_VALUE;
+import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_DATE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_OF_MOTHER_VALUE;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
@@ -124,12 +125,15 @@ public class MotherReportingService {
     }
 
     public void closePNC(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+        Mother mother = allMothers.findByCaseId(reportData.get(ID));
+        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
 
-        if (DEATH_OF_MOTHER_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME))
+        if (DEATH_OF_MOTHER_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME))
                 && BOOLEAN_TRUE_VALUE.equals(reportData.get(IS_MATERNAL_LEAVE_FIELD_NAME))
-                && mother.dateOfDelivery().plusDays(NUMBER_OF_DAYS_IN_PNC_PERIOD).isAfter(parse(reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME)))) {
-            reportDeath(mother, MMP, reportData.get(DEATH_DATE_COMMCARE_FIELD_NAME));
+                && mother.dateOfDelivery().plusDays(NUMBER_OF_DAYS_IN_PNC_PERIOD)
+                .isAfter(parse(reportData.get(DEATH_DATE_FIELD_NAME)))) {
+            reportDeath(mother, MMP, reportData.get(DEATH_DATE_FIELD_NAME), location);
         }
     }
 

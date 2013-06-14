@@ -22,9 +22,7 @@ public class Mother extends MotechBaseDataObject {
     @JsonProperty
     private String anmIdentifier;
     @JsonProperty
-    private LocalDate lmp;
-    @JsonProperty
-    private String dateOfDelivery;
+    private String referenceDate;
     @JsonProperty
     private String village;
     @JsonProperty
@@ -52,7 +50,7 @@ public class Mother extends MotechBaseDataObject {
     }
 
     public Mother withLMP(LocalDate lmp) {
-        this.lmp = lmp;
+        this.referenceDate = lmp.toString();
         return this;
     }
 
@@ -64,7 +62,7 @@ public class Mother extends MotechBaseDataObject {
     }
 
     public Mother withDeliveryOutCome(String dateOfDelivery) {
-        this.dateOfDelivery = dateOfDelivery;
+        this.referenceDate = dateOfDelivery;
         return this;
     }
 
@@ -106,11 +104,11 @@ public class Mother extends MotechBaseDataObject {
     }
 
     public LocalDate dateOfDelivery() {
-        return LocalDate.parse(dateOfDelivery);
+        return LocalDate.parse(referenceDate);
     }
 
     public LocalDate lmp() {
-        return lmp;
+        return LocalDate.parse(referenceDate);
     }
 
     public Mother setIsClosed(boolean isClosed) {

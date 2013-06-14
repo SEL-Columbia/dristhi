@@ -1,13 +1,19 @@
 package org.ei.drishti.service;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
+import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
+import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.testing.utils.BaseUnitTest;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
 import static org.joda.time.LocalDate.parse;
@@ -15,6 +21,8 @@ import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 public class PNCSchedulesServiceTest extends BaseUnitTest {
     @Mock
@@ -37,6 +45,20 @@ public class PNCSchedulesServiceTest extends BaseUnitTest {
         verifyNoMoreInteractions(scheduleTrackingService);
     }
 
+    @Test
+    public void shouldUnenrollAMotherFromAllOpenSchedulesAndRaiseDeleteAllAlertActionDuringClose() {
+        EnrollmentRecord record1 = new EnrollmentRecord("Case X", "Schedule 1", null, null, null, null, null, null, null, null);
+        EnrollmentRecord record2 = new EnrollmentRecord("Case X", "Schedule 2", null, null, null, null, null, null, null, null);
+        List<EnrollmentRecord> records = Arrays.asList(record1, record2);
+
+        when(scheduleTrackingService.search(queryFor("Case X"))).thenReturn(records);
+
+        schedulesService.unEnrollFromSchedules("Case X");
+
+        verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 1"));
+        verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 2"));
+    }
+
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {
         return argThat(new ArgumentMatcher<EnrollmentRequest>() {
             @Override
@@ -44,6 +66,16 @@ public class PNCSchedulesServiceTest extends BaseUnitTest {
                 EnrollmentRequest request = (EnrollmentRequest) o;
                 return caseId.equals(request.getExternalId()) && referenceDate.equals(request.getReferenceDate())
                         && scheduleName.equals(request.getScheduleName());
+            }
+        });
+    }
+
+    private EnrollmentsQuery queryFor(final String externalId) {
+        return argThat(new ArgumentMatcher<EnrollmentsQuery>() {
+            @Override
+            public boolean matches(Object o) {
+                EnrollmentsQuery expectedQuery = new EnrollmentsQuery().havingExternalId(externalId).havingState(ACTIVE);
+                return EqualsBuilder.reflectionEquals(expectedQuery.getCriteria(), ((EnrollmentsQuery) o).getCriteria());
             }
         });
     }
