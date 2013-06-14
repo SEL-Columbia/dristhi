@@ -62,8 +62,7 @@ public class MotherReportingService {
 
     public void registerANC(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(MOTHER_ID));
-        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
-        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+        Location location = loadLocationFromEC(mother);
         reportToBoth(mother, ANC, reportData.get(REGISTRATION_DATE), location);
 
         boolean isRegisteredWithinTwelveWeeks = !(parse(reportData.get(REGISTRATION_DATE)).minusDays(NUMBER_OF_DAYS_IN_12_WEEKS)
@@ -75,22 +74,19 @@ public class MotherReportingService {
 
     public void ancVisit(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(ID));
-        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
-        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+        Location location = loadLocationFromEC(mother);
         reportANC4Visit(reportData, mother, location);
     }
 
     public void ttProvided(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(ID));
-        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
-        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+        Location location = loadLocationFromEC(mother);
         reportTTVisit(reportData.get(TT_DOSE_FIELD), reportData.get(TT_DATE_FIELD), mother, location);
     }
 
     public void deliveryOutcome(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(ID));
-        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
-        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+        Location location = loadLocationFromEC(mother);
         reportPregnancyOutcome(reportData, mother, location);
         reportIfInstitutionalDelivery(reportData, mother, location);
         reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), location);
@@ -100,8 +96,7 @@ public class MotherReportingService {
 
     public void pncVisitHappened(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(ID));
-        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
-        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+        Location location = loadLocationFromEC(mother);
         String visitNumber = reportData.get(AllConstants.PNCVisitCommCareFields.PNC_VISIT_NUMBER_COMMCARE_FIELD);
         if (tryParse(visitNumber, 0) == 3) {
             reportToBoth(mother, PNC3, reportData.get(AllConstants.PNCVisitCommCareFields.PNC_VISIT_DATE_COMMCARE_FIELD), location);
@@ -110,8 +105,7 @@ public class MotherReportingService {
 
     public void closeANC(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(ID));
-        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
-        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+        Location location = loadLocationFromEC(mother);
 
         if (DEATH_OF_WOMAN_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME)) &&
                 BOOLEAN_TRUE_VALUE.equalsIgnoreCase(reportData.get(IS_MATERNAL_LEAVE_FIELD_NAME))) {
@@ -123,8 +117,7 @@ public class MotherReportingService {
 
     public void closePNC(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(ID));
-        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
-        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+        Location location = loadLocationFromEC(mother);
 
         if (DEATH_OF_MOTHER_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME))
                 && BOOLEAN_TRUE_VALUE.equals(reportData.get(IS_MATERNAL_LEAVE_FIELD_NAME))
@@ -132,6 +125,11 @@ public class MotherReportingService {
                 .isAfter(parse(reportData.get(DEATH_DATE_FIELD_NAME)))) {
             reportDeath(mother, MMP, reportData.get(DEATH_DATE_FIELD_NAME), location);
         }
+    }
+
+    private Location loadLocationFromEC(Mother mother) {
+        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        return new Location(couple.village(), couple.subCenter(), couple.phc());
     }
 
     private void reportIfInstitutionalDelivery(SafeMap reportData, Mother mother, Location location) {
