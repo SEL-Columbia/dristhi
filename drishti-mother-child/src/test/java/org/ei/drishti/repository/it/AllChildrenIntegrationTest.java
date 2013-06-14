@@ -64,16 +64,6 @@ public class AllChildrenIntegrationTest {
     }
 
     @Test
-    public void shouldFindChildByMotherCaseId() {
-        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
-        children.add(child);
-
-        Child childFromDB = children.findByMotherCaseId("MOTHER-CASE-1");
-
-        assertThat(childFromDB, hasSameFieldsAs(child));
-    }
-
-    @Test
     public void shouldFindChildrenByMotherCaseId() {
         Child firstChild = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
         Child secondChild = new Child("CASE-2", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");

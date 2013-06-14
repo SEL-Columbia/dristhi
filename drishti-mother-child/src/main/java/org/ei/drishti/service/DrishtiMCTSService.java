@@ -28,14 +28,4 @@ public class DrishtiMCTSService {
 
     public void closeChildCase(ChildCloseRequest childCloseRequest) {
     }
-
-    public void pncProvided(PostNatalCareInformation request) {
-        if (!mothers.exists(request.caseId())) {
-            logger.warn("Found PNC provided without registered mother. Request: " + request);
-            return;
-        }
-
-        Mother mother = mothers.findByCaseId(request.caseId());
-        mctsSMSService.send(PNC_7_Days, mother.thaayiCardNo(), request.visitDate());
-    }
 }

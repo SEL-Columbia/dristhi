@@ -555,25 +555,6 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldReportWhenPNCVisitForMotherHappens() {
-        when(mothers.exists("Case X")).thenReturn(true);
-        when(mothers.updateDetails("Case X", EXTRA_DATA.get("details"))).thenReturn(new Mother("Case X", "EC-CASE-1", "TC 1"));
-
-        service.pncVisitHappened(new PostNatalCareInformation("Case X", "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
-
-        verify(motherReportingService).pncVisitHappened(new SafeMap(EXTRA_DATA.get("reporting")));
-    }
-
-    @Test
-    public void shouldNotReportPNCVisitForMotherWhenThereIsNoMotherInDrishti() {
-        when(mothers.exists("Case X")).thenReturn(false);
-
-        service.pncVisitHappened(new PostNatalCareInformation("Case X", "ANM X", "1", "50", "2012-12-12"), EXTRA_DATA);
-
-        verifyZeroInteractions(motherReportingService);
-    }
-
-    @Test
     public void shouldCloseAlertsForProvidedImmunizations() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);

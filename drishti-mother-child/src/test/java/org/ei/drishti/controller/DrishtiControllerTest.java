@@ -58,15 +58,6 @@ public class DrishtiControllerTest {
     }
 
     @Test
-    public void shouldDelegateToPNCServiceDuringPNCAndChildCareUpdate() throws Exception {
-        PostNatalCareInformation request = mock(PostNatalCareInformation.class);
-
-        controller.updatePNCAndChildInformation(request, EXTRA_DATA);
-
-        verify(pncService).pncVisitHappened(request, EXTRA_DATA);
-    }
-
-    @Test
     public void shouldDelegateToANCServiceDuringBirthPlanningUpdate() throws Exception {
         BirthPlanningRequest request = mock(BirthPlanningRequest.class);
 

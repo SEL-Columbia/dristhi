@@ -136,19 +136,6 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldSendPNCVisitHappenedAction() throws Exception {
-        Map<String, String> details = mapOf("someKey", "someValue");
-        LocalDate visitDate = LocalDate.parse("2012-01-01");
-        service.pncVisitHappened(mother, "MOTHER-CASE-1", "ANM X", visitDate, 1, "10", details);
-
-        verify(allActions).add(new Action("MOTHER-CASE-1", "ANM X", ActionData.pncVisitHappened(mother, visitDate, 1, "10", details)));
-
-        service.pncVisitHappened(child, "CHILD-CASE-1", "ANM X", visitDate, 1, "10", details);
-
-        verify(allActions).add(new Action("CHILD-CASE-1", "ANM X", ActionData.pncVisitHappened(child, visitDate, 1, "10", details)));
-    }
-
-    @Test
     public void shouldSendBirthPlanningUpdates() {
         Map<String, String> details = mapOf("aKey", "aValue");
 

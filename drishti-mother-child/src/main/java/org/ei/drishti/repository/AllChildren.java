@@ -33,11 +33,6 @@ public class AllChildren extends MotechBaseRepository<Child> {
         return db.queryView(createQuery("children_by_mother_id").key(entityId).includeDocs(true), Child.class);
     }
 
-    @GenerateView
-    public Child findByMotherCaseId(String motherCaseId) {
-        return findChild(motherCaseId, "by_motherCaseId");
-    }
-
     public Child update(String caseId, Map<String, String> details) {
         Child child = findByCaseId(caseId);
         child = updateChildImmunizationIfProvided(child, details);
