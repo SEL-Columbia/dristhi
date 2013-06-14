@@ -27,10 +27,10 @@ public class AllConstants {
         public static final String DELIVERY_OUTCOME = "delivery_outcome";
         public static final String PNC_REGISTRATION_OA = "pnc_registration_oa";
         public static final String PNC_CLOSE = "pnc_close";
+        public static final String PNC_VISIT = "pnc_visit";
         public static final String TT_BOOSTER = "tt_booster";
         public static final String TT_1 = "tt_1";
         public static final String TT_2 = "tt_2";
-        public static final String METHOD_STILL_THE_SAME = "method_still_the_same";
         public static final String BOOLEAN_TRUE_VALUE = "yes";
         public static final String BOOLEAN_FALSE_VALUE = "no";
     }
