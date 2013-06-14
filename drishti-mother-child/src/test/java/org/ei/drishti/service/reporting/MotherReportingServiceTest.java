@@ -35,7 +35,6 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     private final Mother MOTHER = new Mother("CASE-1", "EC-CASE-1", "TC 1")
             .withAnm("ANM X")
-            .withLocation("bherya", "Sub Center", "PHC X")
             .withLMP(parse("2012-01-01"));
 
     @Before
@@ -423,6 +422,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("pncVisitDate", "2012-01-01");
         reportData.put("pncVisitNumber", "3");
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.pncVisitHappened(reportData);
 
@@ -436,6 +436,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("pncVisitDate", "2012-01-01");
         reportData.put("pncVisitNumber", "1");
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.pncVisitHappened(reportData);
 
@@ -449,6 +450,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("pncVisitDate", "2012-01-01");
         reportData.put("pncVisitNumber", "");
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.pncVisitHappened(reportData);
 

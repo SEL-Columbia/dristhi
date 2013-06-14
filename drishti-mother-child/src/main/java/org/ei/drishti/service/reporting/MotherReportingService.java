@@ -100,9 +100,11 @@ public class MotherReportingService {
 
     public void pncVisitHappened(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(ID));
+        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
         String visitNumber = reportData.get(AllConstants.PNCVisitCommCareFields.PNC_VISIT_NUMBER_COMMCARE_FIELD);
         if (tryParse(visitNumber, 0) == 3) {
-            reportToBoth(mother, PNC3, reportData.get(AllConstants.PNCVisitCommCareFields.PNC_VISIT_DATE_COMMCARE_FIELD));
+            reportToBoth(mother, PNC3, reportData.get(AllConstants.PNCVisitCommCareFields.PNC_VISIT_DATE_COMMCARE_FIELD), location);
         }
     }
 
@@ -159,11 +161,6 @@ public class MotherReportingService {
         }
     }
 
-    private void reportDeath(Mother mother, Indicator indicator, String date) {
-        reportToBoth(mother, indicator, date);
-        reportToBoth(mother, MOTHER_MORTALITY, date);
-    }
-
     private void reportDeath(Mother mother, Indicator indicator, String date, Location location) {
         reportToBoth(mother, indicator, date, location);
         reportToBoth(mother, MOTHER_MORTALITY, date, location);
@@ -205,15 +202,6 @@ public class MotherReportingService {
             reportToBoth(mother, TTB, ttDate, location);
             reportToBoth(mother, SUB_TT, ttDate, location);
         }
-    }
-
-    private void reportToBoth(Mother mother, Indicator indicator, String date) {
-        ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thaayiCardNo(), indicator, date,
-                new Location(mother.village(), mother.subCenter(), mother.phc()));
-        reportingService.sendReportData(serviceProvided);
-
-        ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);
-        reportingService.sendReportData(anmReportData);
     }
 
     private void reportToBoth(Mother mother, Indicator indicator, String date, Location location) {
