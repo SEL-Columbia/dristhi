@@ -120,6 +120,8 @@ public class PNCService {
             return;
         }
         Mother mother = mothers.get(0);
+        allMothers.update(mother.withAnm(submission.anmId()));
+
         List<Child> children = allChildren.findByMotherId(mother.caseId());
 
         for (Child child : children) {

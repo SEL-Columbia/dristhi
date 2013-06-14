@@ -2,7 +2,6 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
-import org.ei.drishti.contract.PostNatalCareInformation;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -257,6 +256,25 @@ public class PNCServiceTest extends BaseUnitTest {
         verifyZeroInteractions(pncSchedulesService);
     }
 
+
+    @Test
+    public void shouldUpdateANMIdOnMotherWhenOAPNCIsRegistered() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        Mother mother = new Mother("mother id 1", "ec id 1", "TC1");
+        when(mothers.findByEcCaseId("ec id 1")).thenReturn(asList(mother));
+        when(children.findByMotherId("mother id 1")).thenReturn(Collections.<Child>emptyList());
+        FormSubmission submission = create()
+                .withFormName("pnc_registration_oa")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .build();
+
+        service.pncOAChildRegistration(submission);
+
+        verify(mothers).update(mother.withAnm("anm id 1"));
+    }
 
     @Test
     public void shouldEnrollEveryChildIntoSchedulesDuringPNCRegistration() {
