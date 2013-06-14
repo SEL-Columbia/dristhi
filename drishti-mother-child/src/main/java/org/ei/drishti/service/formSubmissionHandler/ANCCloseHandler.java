@@ -16,6 +16,6 @@ public class ANCCloseHandler implements FormSubmissionHandler {
 
     @Override
     public void handle(FormSubmission submission) {
-        ancService.closeANCCase(submission);
+        ancService.close(submission);
     }
 }

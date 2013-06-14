@@ -145,7 +145,7 @@ public class ANCService {
         reportingService.deliveryOutcome(new SafeMap(submission.getFields(reportFields)));
     }
 
-    public void closeANCCase(FormSubmission submission) {
+    public void close(FormSubmission submission) {
         Mother mother = allMothers.findByCaseId(submission.entityId());
         if (mother == null) {
             logger.warn("Tried to close case without registered mother for case ID: " + submission.entityId());

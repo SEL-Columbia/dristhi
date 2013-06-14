@@ -258,16 +258,16 @@ public class ANCServiceTest {
     public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
         when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.closeANCCase(create().build());
+        service.close(create().build());
 
         verify(ancSchedulesService).unEnrollFromSchedules("entity id 1");
     }
 
     @Test
-    public void shouldCloseAMotherWhenANCCaseIsClosed() {
+    public void shouldCloseAMotherWhenANCIsClosed() {
         when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.closeANCCase(create().build());
+        service.close(create().build());
 
         verify(mothers).close("entity id 1");
     }
@@ -276,34 +276,34 @@ public class ANCServiceTest {
     public void shouldNotUnEnrollAMotherFromScheduleWhenSheIsNotRegistered() {
         when(mothers.findByCaseId("entity id 1")).thenReturn(null);
 
-        service.closeANCCase(create().build());
+        service.close(create().build());
 
         verifyZeroInteractions(ancSchedulesService);
     }
 
     @Test
-    public void shouldCloseECCaseAlsoWhenPNCCaseIsClosedAndReasonIsDeath() {
+    public void shouldCloseECCaseAlsoWhenANCIsClosedAndReasonIsDeath() {
         when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.closeANCCase(create().addFormField("closeReason", "death_of_woman").build());
+        service.close(create().addFormField("closeReason", "death_of_woman").build());
 
         verify(eligibleCouples).close("ec entity id 1");
     }
 
     @Test
-    public void shouldCloseECCaseAlsoWhenANCCaseIsClosedAndReasonIsPermanentRelocation() {
+    public void shouldCloseECCaseAlsoWhenANCIsClosedAndReasonIsPermanentRelocation() {
         when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.closeANCCase(create().addFormField("closeReason", "relocation_permanent").build());
+        service.close(create().addFormField("closeReason", "relocation_permanent").build());
 
         verify(eligibleCouples).close("ec entity id 1");
     }
 
     @Test
-    public void shouldNotCloseECCaseWhenPNCCaseIsClosedAndReasonIsNeitherDeathOrPermanentRelocation() {
+    public void shouldNotCloseECCaseWhenANCIsClosedAndReasonIsNeitherDeathOrPermanentRelocation() {
         when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.closeANCCase(create().addFormField("closeReason", "other_reason").build());
+        service.close(create().addFormField("closeReason", "other_reason").build());
 
         verifyZeroInteractions(ecService);
     }
@@ -312,7 +312,7 @@ public class ANCServiceTest {
     public void shouldMarkAllActionsAsInactiveWhenANCIsClosed() {
         when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.closeANCCase(create().build());
+        service.close(create().build());
 
         verify(actionService).markAllAlertsAsInactive("entity id 1");
     }
