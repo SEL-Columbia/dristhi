@@ -28,12 +28,14 @@ public class ECSchedulingServiceTest {
     private ActionService actionService;
     @Mock
     private EnrollmentRecord enrollmentRecord;
+    @Mock
+    private ScheduleService scheduleService;
 
     private ECSchedulingService ecSchedulingService;
 
     public ECSchedulingServiceTest() {
         initMocks(this);
-        ecSchedulingService = new ECSchedulingService(fpMethodStrategyFactory, scheduleTrackingService, actionService);
+        ecSchedulingService = new ECSchedulingService(fpMethodStrategyFactory, scheduleTrackingService, actionService, scheduleService);
     }
 
     @Test
@@ -66,7 +68,7 @@ public class ECSchedulingServiceTest {
     public void shouldEnrollECToFollowupScheduleWhenComplicationIsReportedAndTheyNeedFollowup() {
         ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-13", null, "2011-01-12", "yes", null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "FP Followup", parse("2011-01-12")));
+        verify(scheduleService).enroll("entity id 1", "FP Followup", "2011-01-12");
     }
 
     @Test
@@ -99,7 +101,7 @@ public class ECSchedulingServiceTest {
     public void shouldEnrollECToReferralFollowupScheduleWhenComplicationIsReportedAndTheyNeedReferralFollowup() {
         ecSchedulingService.reportFPComplications(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-13", null, "2011-01-12", null, "yes"));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "FP Referral Followup", parse("2011-01-12")));
+        verify(scheduleService).enroll("entity id 1", "FP Referral Followup", "2011-01-12");
     }
 
     @Test
@@ -132,7 +134,7 @@ public class ECSchedulingServiceTest {
     public void shouldEnrollECToFollowupScheduleWhenReferralFollowupIsReportedAndTheyNeedFollowup() {
         ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-13", null, "2011-01-12", "yes", null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "FP Followup", parse("2011-01-12")));
+        verify(scheduleService).enroll("entity id 1", "FP Followup", "2011-01-12");
     }
 
     @Test
@@ -165,7 +167,7 @@ public class ECSchedulingServiceTest {
     public void shouldEnrollECToReferralFollowupScheduleWhenReferralFollowupIsReportedAndTheyNeedReferralFollowup() {
         ecSchedulingService.reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2011-01-13", null, "2011-01-12", null, "yes"));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "FP Referral Followup", parse("2011-01-12")));
+        verify(scheduleService).enroll("entity id 1", "FP Referral Followup", "2011-01-12");
     }
 
     @Test
@@ -202,7 +204,7 @@ public class ECSchedulingServiceTest {
 
         ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-13", null, "2011-01-12", "yes", null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "FP Followup", parse("2011-01-12")));
+        verify(scheduleService).enroll("entity id 1", "FP Followup", "2011-01-12");
     }
 
     @Test
@@ -239,7 +241,7 @@ public class ECSchedulingServiceTest {
 
         ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-13", null, "2011-01-12", null, "yes"));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "FP Referral Followup", parse("2011-01-12")));
+        verify(scheduleService).enroll("entity id 1", "FP Referral Followup", "2011-01-12");
     }
 
     private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {
