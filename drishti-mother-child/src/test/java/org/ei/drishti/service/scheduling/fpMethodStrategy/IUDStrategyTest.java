@@ -2,6 +2,7 @@ package org.ei.drishti.service.scheduling.fpMethodStrategy;
 
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.service.ActionService;
+import org.ei.drishti.service.scheduling.ScheduleService;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,20 +25,22 @@ public class IUDStrategyTest {
     private ScheduleTrackingService scheduleTrackingService;
     @Mock
     private ActionService actionService;
+    @Mock
+    private ScheduleService scheduleService;
 
     private IUDStrategy strategy;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        strategy = new IUDStrategy(scheduleTrackingService, actionService);
+        strategy = new IUDStrategy(scheduleTrackingService, actionService, scheduleService);
     }
 
     @Test
     public void shouldEnrollInIUDFollowupScheduleOnECRegistration() throws Exception {
         strategy.registerEC(new FPProductInformation("entity id 1", null, null, null, null, null, null, null, "2012-03-01", "2012-02-01", null, null, null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "IUD Followup", LocalDate.parse("2012-02-01")));
+        verify(scheduleService).enroll("entity id 1", "IUD Followup", "2012-02-01");
     }
 
     @Test
@@ -45,7 +48,7 @@ public class IUDStrategyTest {
         strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", null, "IUD Followup", "condom",
                 null, null, null, null, "2012-03-01", "2012-02-01", null, null, null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "IUD Followup", LocalDate.parse("2012-02-01")));
+        verify(scheduleService).enroll("entity id 1", "IUD Followup", "2012-02-01");
     }
 
     @Test
