@@ -209,17 +209,18 @@ public class ChildSchedulesServiceTest {
 
     private class TestForChildEnrollmentAndUpdate {
         private final String caseId = "Case X";
-        private final String name = "Asha";
         private final String dateOfBirth = "2012-01-01";
         private final String immunizationsDate = "2012-05-04";
 
         private final ScheduleTrackingService scheduleTrackingService;
+        private final ScheduleService scheduleService;
 
         private List<EnrollmentRecord> allEnrollments;
 
         public TestForChildEnrollmentAndUpdate() {
             scheduleTrackingService = mock(ScheduleTrackingService.class);
-            childSchedulesService = new ChildSchedulesService(scheduleTrackingService, allChildren);
+            scheduleService = mock(ScheduleService.class);
+            childSchedulesService = new ChildSchedulesService(scheduleTrackingService, allChildren, scheduleService);
             allEnrollments = new ArrayList<>();
             initCommonExpectations();
         }
@@ -299,7 +300,7 @@ public class ChildSchedulesServiceTest {
 
         private void shouldEnroll(String[] expectedEnrolledSchedules, String enrollmentDate) {
             for (String expectedEnrolledSchedule : expectedEnrolledSchedules) {
-                verify(scheduleTrackingService).enroll(enrollmentFor(caseId, expectedEnrolledSchedule, LocalDate.parse(enrollmentDate)));
+                verify(scheduleService).enroll(caseId, expectedEnrolledSchedule, enrollmentDate);
             }
         }
 

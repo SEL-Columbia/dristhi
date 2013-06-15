@@ -5,15 +5,16 @@ import org.ei.drishti.contract.Schedule;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.repository.AllChildren;
 import org.joda.time.LocalDate;
-import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
@@ -21,19 +22,20 @@ import static java.util.Collections.unmodifiableMap;
 import static org.apache.commons.lang.StringUtils.join;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
 
 @Service
 public class ChildSchedulesService {
     private final ScheduleTrackingService scheduleTrackingService;
     private final AllChildren allChildren;
+    private final ScheduleService scheduleService;
     private Map<String, Schedule> childSchedules;
 
     @Autowired
-    public ChildSchedulesService(ScheduleTrackingService scheduleTrackingService, AllChildren allChildren) {
+    public ChildSchedulesService(ScheduleTrackingService scheduleTrackingService, AllChildren allChildren, ScheduleService scheduleService) {
         this.scheduleTrackingService = scheduleTrackingService;
         this.allChildren = allChildren;
+        this.scheduleService = scheduleService;
         initializeSchedules();
     }
 
@@ -55,24 +57,10 @@ public class ChildSchedulesService {
         }
     }
 
-    public List<String> visitCodeForSchedules(List<String> immunizationsProvided) {
-        List<String> visitCodes = new ArrayList<>();
-        for (Schedule schedule : childSchedules.values()) {
-            for (String milestone : schedule.getMileStones()) {
-                if (immunizationsProvided.contains(milestone)) {
-                    visitCodes.add(milestone);
-                }
-            }
-        }
-        return visitCodes;
-    }
-
     private void enrollNonDependentModules(String id, LocalDate dateOfBirth) {
         for (Schedule schedule : childSchedules.values()) {
             if (!schedule.hasDependency()) {
-                scheduleTrackingService.enroll(
-                        new EnrollmentRequest(id, schedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
-                                dateOfBirth, null, null, null, null, null));
+                scheduleService.enroll(id, schedule.name(), dateOfBirth.toString());
             }
         }
     }
@@ -83,7 +71,7 @@ public class ChildSchedulesService {
                 Schedule dependsOn = schedule.getDependencySchedule();
                 if (information.immunizationsProvidedList().contains(dependsOn.getLastMilestone())
                         && isNotEnrolled(information.caseId(), schedule.name())) {
-                    scheduleTrackingService.enroll(new EnrollmentRequest(information.caseId(), schedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES), information.immunizationsProvidedDate(), null, null, null, null, null));
+                    scheduleService.enroll(information.caseId(), schedule.name(), information.immunizationsProvidedDate().toString());
                 }
             }
         }
