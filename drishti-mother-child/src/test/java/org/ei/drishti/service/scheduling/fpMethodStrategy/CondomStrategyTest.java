@@ -2,6 +2,7 @@ package org.ei.drishti.service.scheduling.fpMethodStrategy;
 
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.service.ActionService;
+import org.ei.drishti.service.scheduling.ScheduleService;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,13 +26,15 @@ public class CondomStrategyTest {
     private ScheduleTrackingService scheduleTrackingService;
     @Mock
     private ActionService actionService;
+    @Mock
+    private ScheduleService scheduleService;
 
     private CondomStrategy strategy;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        strategy = new CondomStrategy(scheduleTrackingService, actionService);
+        strategy = new CondomStrategy(scheduleTrackingService, actionService, scheduleService);
     }
 
     @Test
@@ -40,13 +43,13 @@ public class CondomStrategyTest {
         strategy.registerEC(new FPProductInformation("entity id 1", "anm id 1", "condom", null, "2012-01-15", null, null
                 , "20", "2012-03-01", null, null, null, null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2012-02-01")));
+        verify(scheduleService).enroll("entity id 1", "Condom Refill", "2012-02-01");
 
         fakeIt(parse("2012-12-01"));
         strategy.registerEC(new FPProductInformation("entity id 1", "anm id 1", "condom", null, "2012-12-01", null, null
                 , "20", "2012-03-01", null, null, null, null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2013-01-01")));
+        verify(scheduleService).enroll("entity id 1", "Condom Refill", "2013-01-01");
     }
 
     @Test
@@ -63,7 +66,7 @@ public class CondomStrategyTest {
 
         strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", "anm id 1", "condom", "ocp", null, null, null, null, null, "2012-01-01", null, null, null));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2012-02-01")));
+        verify(scheduleService).enroll("entity id 1", "Condom Refill", "2012-02-01");
     }
 
     @Test
@@ -72,10 +75,10 @@ public class CondomStrategyTest {
 
         strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "condom", null, null, null, null, "20", "2011-01-12", "", null, null, null));
 
-        InOrder inOrder = inOrder(scheduleTrackingService, actionService);
+        InOrder inOrder = inOrder(scheduleTrackingService, scheduleService, actionService);
         inOrder.verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "Condom Refill", parse("2011-01-12"));
         inOrder.verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "Condom Refill", "2011-01-12");
-        inOrder.verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "Condom Refill", parse("2011-02-01")));
+        inOrder.verify(scheduleService).enroll("entity id 1", "Condom Refill", "2011-02-01");
     }
 
     @Test

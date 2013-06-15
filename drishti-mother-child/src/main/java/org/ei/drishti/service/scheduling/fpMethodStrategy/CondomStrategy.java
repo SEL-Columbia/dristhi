@@ -3,9 +3,8 @@ package org.ei.drishti.service.scheduling.fpMethodStrategy;
 import org.ei.drishti.contract.Schedule;
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.service.ActionService;
+import org.ei.drishti.service.scheduling.ScheduleService;
 import org.joda.time.LocalDate;
-import org.motechproject.model.Time;
-import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,6 @@ import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.common.util.IntegerUtil.tryParse;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_CONDOM_REFILL;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_CONDOM_REFILL_MILESTONE;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
 
 @Component
@@ -27,12 +25,14 @@ public class CondomStrategy implements FPMethodStrategy {
 
     private final ScheduleTrackingService scheduleTrackingService;
     private final ActionService actionService;
+    private final ScheduleService scheduleService;
     private final Schedule condomRefillSchedule = new Schedule(EC_SCHEDULE_CONDOM_REFILL, asList(EC_SCHEDULE_CONDOM_REFILL_MILESTONE));
 
     @Autowired
-    public CondomStrategy(ScheduleTrackingService scheduleTrackingService, ActionService actionService) {
+    public CondomStrategy(ScheduleTrackingService scheduleTrackingService, ActionService actionService, ScheduleService scheduleService) {
         this.scheduleTrackingService = scheduleTrackingService;
         this.actionService = actionService;
+        this.scheduleService = scheduleService;
     }
 
     @Override
@@ -70,8 +70,7 @@ public class CondomStrategy implements FPMethodStrategy {
 
     private void enrollECToCondomRefillSchedule(String entityId) {
         logger.info(format("Enrolling EC to Condom Refill schedule. entityId: {0}, Ref date: {1}", entityId, firstDayOfNextMonth()));
-        scheduleTrackingService.enroll(new EnrollmentRequest(entityId, condomRefillSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
-                firstDayOfNextMonth(), null, null, null, null, null));
+        scheduleService.enroll(entityId, condomRefillSchedule.name(), firstDayOfNextMonth().toString());
     }
 
     private LocalDate firstDayOfNextMonth() {
