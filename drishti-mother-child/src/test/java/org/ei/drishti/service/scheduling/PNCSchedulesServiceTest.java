@@ -2,13 +2,11 @@ package org.ei.drishti.service.scheduling;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.ei.drishti.service.ActionService;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.testing.utils.BaseUnitTest;
@@ -17,7 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
-import static org.joda.time.LocalDate.parse;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -30,19 +27,22 @@ public class PNCSchedulesServiceTest extends BaseUnitTest {
     private ScheduleTrackingService scheduleTrackingService;
     @Mock
     private ActionService actionService;
+    @Mock
+    private ScheduleService scheduleService;
+
     private PNCSchedulesService schedulesService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        schedulesService = new PNCSchedulesService(scheduleTrackingService);
+        schedulesService = new PNCSchedulesService(scheduleTrackingService, scheduleService);
     }
 
     @Test
     public void shouldEnrollMotherIntoSchedulesWhileDeliveryOutcome() {
         schedulesService.deliveryOutcome("mother id 1", "2012-01-01");
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("mother id 1", SCHEDULE_AUTO_CLOSE_PNC, parse("2012-01-01")));
+        verify(scheduleService).enroll("mother id 1", SCHEDULE_AUTO_CLOSE_PNC, "2012-01-01");
         verifyNoMoreInteractions(scheduleTrackingService);
     }
 
@@ -58,17 +58,6 @@ public class PNCSchedulesServiceTest extends BaseUnitTest {
 
         verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 1"));
         verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 2"));
-    }
-
-    private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {
-        return argThat(new ArgumentMatcher<EnrollmentRequest>() {
-            @Override
-            public boolean matches(Object o) {
-                EnrollmentRequest request = (EnrollmentRequest) o;
-                return caseId.equals(request.getExternalId()) && referenceDate.equals(request.getReferenceDate())
-                        && scheduleName.equals(request.getScheduleName());
-            }
-        });
     }
 
     private EnrollmentsQuery queryFor(final String externalId) {

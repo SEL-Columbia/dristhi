@@ -343,15 +343,4 @@ public class ChildSchedulesServiceTest {
         }
 
     }
-
-    private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate lmp) {
-        return argThat(new ArgumentMatcher<EnrollmentRequest>() {
-            @Override
-            public boolean matches(Object o) {
-                EnrollmentRequest request = (EnrollmentRequest) o;
-                return caseId.equals(request.getExternalId()) && lmp.equals(request.getReferenceDate())
-                        && scheduleName.equals(request.getScheduleName());
-            }
-        });
-    }
 }
