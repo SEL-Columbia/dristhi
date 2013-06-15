@@ -1,6 +1,7 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.service.scheduling.ANCSchedulesService;
+import org.ei.drishti.service.scheduling.ScheduleService;
 import org.joda.time.LocalDate;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
@@ -15,6 +16,7 @@ import static org.mockito.Mockito.*;
 
 public class FastForwardScheduleTestBase {
     private final ScheduleTrackingService scheduleTrackingService;
+    private final ScheduleService scheduleService;
     private String scheduleName;
     private String expectedNextMilestone;
     private int visitNumberToTryAndFulfill;
@@ -26,7 +28,8 @@ public class FastForwardScheduleTestBase {
     public FastForwardScheduleTestBase() {
         this.scheduleTrackingService = mock(ScheduleTrackingService.class);
         this.actionService = mock(ActionService.class);
-        this.schedulesService = new ANCSchedulesService(scheduleTrackingService, actionService);
+        this.scheduleService = mock(ScheduleService.class);
+        this.schedulesService = new ANCSchedulesService(scheduleTrackingService, actionService, scheduleService);
     }
 
     public FastForwardScheduleTestBase forANCSchedule() {

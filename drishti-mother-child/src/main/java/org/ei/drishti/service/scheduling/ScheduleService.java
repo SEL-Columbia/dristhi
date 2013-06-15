@@ -23,4 +23,10 @@ public class ScheduleService {
                 parse(referenceDate), null, null, null, null, null);
         scheduleTrackingService.enroll(request);
     }
+
+    public void enroll(String entityId, String scheduleName, String milestone, String referenceDate) {
+        EnrollmentRequest request = new EnrollmentRequest(entityId, scheduleName,
+                new Time(PREFERED_TIME_FOR_SCHEDULES), parse(referenceDate), null, null, null, milestone, null);
+        scheduleTrackingService.enroll(request);
+    }
 }

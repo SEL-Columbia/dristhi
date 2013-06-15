@@ -6,7 +6,6 @@ import org.joda.time.LocalDate;
 import org.joda.time.Weeks;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.slf4j.Logger;
@@ -23,7 +22,6 @@ import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.common.util.IntegerUtil.tryParse;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.LocalDate.parse;
 import static org.joda.time.LocalTime.now;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
@@ -36,16 +34,18 @@ public class ANCSchedulesService {
     private final ScheduleTrackingService trackingService;
     private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1, SCHEDULE_HB_TEST_1};
     private ActionService actionService;
+    private final ScheduleService scheduleService;
 
     @Autowired
-    public ANCSchedulesService(ScheduleTrackingService trackingService, ActionService actionService) {
+    public ANCSchedulesService(ScheduleTrackingService trackingService, ActionService actionService, ScheduleService scheduleService) {
         this.trackingService = trackingService;
         this.actionService = actionService;
+        this.scheduleService = scheduleService;
     }
 
     public void enrollMother(String caseId, LocalDate referenceDateForSchedule) {
         for (String schedule : NON_ANC_SCHEDULES) {
-            trackingService.enroll(new EnrollmentRequest(caseId, schedule, new Time(PREFERED_TIME_FOR_SCHEDULES), referenceDateForSchedule, null, null, null, null, null));
+            scheduleService.enroll(caseId, schedule, referenceDateForSchedule.toString());
         }
         enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule);
     }
@@ -57,8 +57,7 @@ public class ANCSchedulesService {
     public void ttVisitHasHappened(String entityId, String anmId, String ttDose, String ttDate) {
         if (TT1_DOSE_VALUE.equals(ttDose) || TT_BOOSTER_DOSE_VALUE.equals(ttDose)) {
             fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_1, SCHEDULE_TT_1, parse(ttDate));
-            trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_TT_2, new Time(PREFERED_TIME_FOR_SCHEDULES),
-                    parse(ttDate), new Time(now()), null, null, null, null));
+            scheduleService.enroll(entityId, SCHEDULE_TT_2, ttDate);
         } else if (TT2_DOSE_VALUE.equals(ttDose)) {
             fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_2, SCHEDULE_TT_2, parse(ttDate));
         }
@@ -72,15 +71,13 @@ public class ANCSchedulesService {
         if (fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_IFA_1, SCHEDULE_IFA_1, parse(ifaGivenDate))) {
             logger.info("Enrolling ANC to IFA 2 schedule. Entity id: " + entityId);
 
-            trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_IFA_2, new Time(PREFERED_TIME_FOR_SCHEDULES),
-                    parse(ifaGivenDate), null, null, null, null, null));
+            scheduleService.enroll(entityId, SCHEDULE_IFA_2, ifaGivenDate);
             return;
         }
         if (fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_IFA_2, SCHEDULE_IFA_2, parse(ifaGivenDate))) {
             logger.info("Enrolling ANC to IFA 3 schedule. Entity id: " + entityId);
 
-            trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_IFA_3, new Time(PREFERED_TIME_FOR_SCHEDULES),
-                    parse(ifaGivenDate), null, null, null, null, null));
+            scheduleService.enroll(entityId, SCHEDULE_IFA_3, ifaGivenDate);
             return;
         }
         fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_IFA_3, SCHEDULE_IFA_3, parse(ifaGivenDate));
@@ -90,8 +87,7 @@ public class ANCSchedulesService {
         if (fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_HB_TEST_1, SCHEDULE_HB_TEST_1, parse(date))) {
             if (isNotBlank(anaemicStatus)) {
                 logger.info(format("ANC is anaemic so enrolling her to Hb Followup Test schedule: Entity id:{0}, Anaemic status: {1}", entityId, anaemicStatus));
-                trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_HB_FOLLOWUP_TEST, new Time(PREFERED_TIME_FOR_SCHEDULES),
-                        parse(date), null, null, null, null, null));
+                scheduleService.enroll(entityId, SCHEDULE_HB_FOLLOWUP_TEST, date);
             } else {
                 enrollANCToHbTest2Schedule(entityId, lmp);
             }
@@ -108,8 +104,7 @@ public class ANCSchedulesService {
 
     private void enrollANCToHbTest2Schedule(String entityId, LocalDate lmp) {
         logger.info(format("Enrolling ANC to Hb Test 2 schedule: {0} Entity id:{1}", SCHEDULE_HB_TEST_2, entityId));
-        trackingService.enroll(new EnrollmentRequest(entityId, SCHEDULE_HB_TEST_2, new Time(PREFERED_TIME_FOR_SCHEDULES),
-                lmp, null, null, null, null, null));
+        scheduleService.enroll(entityId, SCHEDULE_HB_TEST_2, lmp.toString());
     }
 
     public void forceFulfillMilestone(String externalId, String scheduleName) {
@@ -126,7 +121,7 @@ public class ANCSchedulesService {
         actionService.markAllAlertsAsInactive(entityId);
     }
 
-    private void enrollIntoCorrectMilestoneOfANCCare(String caseId, LocalDate referenceDateForSchedule) {
+    private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule) {
         String milestone;
 
         if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(14).toPeriod().minusDays(1))) {
@@ -139,8 +134,8 @@ public class ANCSchedulesService {
             milestone = SCHEDULE_ANC_4;
         }
 
-        logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", caseId, milestone));
-        trackingService.enroll(new EnrollmentRequest(caseId, SCHEDULE_ANC, new Time(PREFERED_TIME_FOR_SCHEDULES), referenceDateForSchedule, null, null, null, milestone, null));
+        logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
+        scheduleService.enroll(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
     }
 
     private void fastForwardSchedule(String entityId, String anmId, String scheduleName, String milestonePrefix, int visitNumberToFulfill, LocalDate visitDate) {

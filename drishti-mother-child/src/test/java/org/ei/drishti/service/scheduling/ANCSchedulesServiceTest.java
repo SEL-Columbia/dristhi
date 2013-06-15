@@ -3,7 +3,6 @@ package org.ei.drishti.service.scheduling;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.ei.drishti.service.ActionService;
 import org.ei.drishti.service.FastForwardScheduleTestBase;
-import org.hamcrest.Description;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +10,6 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.testing.utils.BaseUnitTest;
@@ -37,12 +35,15 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     private ScheduleTrackingService scheduleTrackingService;
     @Mock
     private ActionService actionService;
-    private ANCSchedulesService schedulesService;
+    @Mock
+    private ScheduleService scheduleService;
+
+    private ANCSchedulesService ancSchedulesService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        schedulesService = new ANCSchedulesService(scheduleTrackingService, actionService);
+        ancSchedulesService = new ANCSchedulesService(scheduleTrackingService, actionService, scheduleService);
     }
 
     @Test
@@ -50,9 +51,9 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         fakeIt(parse("2012-01-01"));
         LocalDate lmp = today().minusDays(3);
 
-        schedulesService.enrollMother("Case X", lmp);
+        ancSchedulesService.enrollMother("Case X", lmp);
 
-        verify(scheduleTrackingService).enroll(ancEnrollmentFor("Case X", SCHEDULE_ANC, lmp, "ANC 1"));
+        verify(scheduleService).enroll("Case X", SCHEDULE_ANC, "ANC 1", lmp.toString());
         verifyNonANCScheduleEnrollments(lmp);
         verifyNoMoreInteractions(scheduleTrackingService);
     }
@@ -141,21 +142,21 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldEnrollMotherInTT2ScheduleIfTT1IsProvided() throws Exception {
-        schedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "tt1", "2012-01-01");
+        ancSchedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "tt1", "2012-01-01");
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "TT 2", LocalDate.parse("2012-01-01")));
+        verify(scheduleService).enroll("entity id 1", "TT 2", "2012-01-01");
     }
 
     @Test
     public void shouldEnrollMotherInTT2ScheduleIfTTBoosterIsProvided() throws Exception {
-        schedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "ttbooster", "2012-01-01");
+        ancSchedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "ttbooster", "2012-01-01");
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("entity id 1", "TT 2", LocalDate.parse("2012-01-01")));
+        verify(scheduleService).enroll("entity id 1", "TT 2", "2012-01-01");
     }
 
     @Test
     public void shouldNotEnrollMotherInTT2ScheduleIfSomeOtherThingIsProvided() throws Exception {
-        schedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "some other", "2012-01-01");
+        ancSchedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "some other", "2012-01-01");
 
         verifyZeroInteractions(scheduleTrackingService);
     }
@@ -164,7 +165,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     public void shouldNotFulfillANCIfANCScheduleIsAlreadyOver() throws Exception {
         when(scheduleTrackingService.getEnrollment("Entity X", SCHEDULE_ANC)).thenReturn(null);
 
-        schedulesService.ancVisitHasHappened("Entity X", "ANM 1", 2, "2012-01-23");
+        ancSchedulesService.ancVisitHasHappened("Entity X", "ANM 1", 2, "2012-01-23");
 
         verify(scheduleTrackingService).getEnrollment("Entity X", SCHEDULE_ANC);
         verifyNoMoreInteractions(scheduleTrackingService);
@@ -175,7 +176,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     public void shouldFulfillCurrentMilestoneForGivenExternalIdWhenVisitHasBeenMissed() {
         fakeIt(parse("2012-01-01"));
 
-        schedulesService.forceFulfillMilestone("Case X", "Schedule 1");
+        ancSchedulesService.forceFulfillMilestone("Case X", "Schedule 1");
 
         verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("Schedule 1"), eq(today()), any(Time.class));
     }
@@ -188,7 +189,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
         when(scheduleTrackingService.search(queryFor("Case X"))).thenReturn(records);
 
-        schedulesService.unEnrollFromSchedules("Case X");
+        ancSchedulesService.unEnrollFromSchedules("Case X");
 
         verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 1"));
         verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 2"));
@@ -200,7 +201,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         when(scheduleTrackingService.getEnrollment("Case X", "Hb Test 1"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 1", "HB Test 1", null, null, null, null, null, null, null));
 
-        schedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", null, parse("2012-09-01"));
+        ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", null, parse("2012-09-01"));
 
         verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("Hb Test 1"), eq(parse("2013-01-01")), any(Time.class));
     }
@@ -210,9 +211,9 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         when(scheduleTrackingService.getEnrollment("Case X", "Hb Test 1"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 1", "HB Test 1", null, null, null, null, null, null, null));
 
-        schedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", "Anaemic", null);
+        ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", "Anaemic", null);
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", "Hb Followup Test", parse("2013-01-01")));
+        verify(scheduleService).enroll("Case X", "Hb Followup Test", "2013-01-01");
     }
 
     @Test
@@ -220,9 +221,9 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         when(scheduleTrackingService.getEnrollment("Case X", "Hb Test 1"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 1", "HB Test 1", null, null, null, null, null, null, null));
 
-        schedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", null, parse("2012-09-01"));
+        ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", null, parse("2012-09-01"));
 
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", "Hb Test 2", parse("2012-09-01")));
+        verify(scheduleService).enroll("Case X", "Hb Test 2", "2012-09-01");
     }
 
     @Test
@@ -231,7 +232,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         when(scheduleTrackingService.getEnrollment("Case X", "Hb Followup Test"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Followup Test", "Hb Followup Test", null, null, null, null, null, null, null));
 
-        schedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", "Anaemic", parse("2012-09-01"));
+        ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", "Anaemic", parse("2012-09-01"));
 
         verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("Hb Followup Test"), eq(parse("2013-01-01")), any(Time.class));
     }
@@ -244,7 +245,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         when(scheduleTrackingService.getEnrollment("Case X", "Hb Test 2"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 2", "Hb Test 2", null, null, null, null, null, null, null));
 
-        schedulesService.hbTestDone("Case X", "ANM 1", "2013-04-16", "Anaemic", parse("2012-09-01"));
+        ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-04-16", "Anaemic", parse("2012-09-01"));
 
         verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("Hb Test 2"), eq(parse("2013-04-16")), any(Time.class));
     }
@@ -257,10 +258,10 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         when(scheduleTrackingService.getEnrollment("Case X", "Hb Test 2"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 2", "Hb Test 2", null, null, null, null, null, null, null));
 
-        schedulesService.hbTestDone("Case X", "ANM 1", "2013-02-16", "Anaemic", parse("2012-09-01"));
+        ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-02-16", "Anaemic", parse("2012-09-01"));
 
         verify(scheduleTrackingService, times(0)).fulfillCurrentMilestone(eq("Case X"), eq("Hb Test 2"), eq(parse("2013-04-16")), any(Time.class));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", "Hb Test 2", parse("2012-09-01")));
+        verify(scheduleService).enroll("Case X", "Hb Test 2", "2012-09-01");
     }
 
     @Test
@@ -270,7 +271,7 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         when(scheduleTrackingService.getEnrollment("Case X", "Hb Test 2"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 2", "Hb Test 2", null, null, null, null, null, null, null));
 
-        schedulesService.hbTestDone("Case X", "ANM 1", "2013-04-16", "Anaemic", parse("2012-09-01"));
+        ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-04-16", "Anaemic", parse("2012-09-01"));
 
         verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("Hb Test 2"), eq(parse("2013-04-16")), any(Time.class));
     }
@@ -288,40 +289,10 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         LocalDate lmp = new LocalDate(2012, 1, 1);
         fakeIt(enrollmentDate);
 
-        schedulesService.enrollMother("Case X", lmp);
+        ancSchedulesService.enrollMother("Case X", lmp);
 
         verifyNonANCScheduleEnrollments(lmp);
-        verify(scheduleTrackingService, times(wantedNumberOfInvocations)).enroll(ancEnrollmentFor("Case X", SCHEDULE_ANC, lmp, expectedMilestone));
-    }
-
-    private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {
-        return argThat(new ArgumentMatcher<EnrollmentRequest>() {
-            @Override
-            public boolean matches(Object o) {
-                EnrollmentRequest request = (EnrollmentRequest) o;
-                return caseId.equals(request.getExternalId()) && referenceDate.equals(request.getReferenceDate())
-                        && scheduleName.equals(request.getScheduleName());
-            }
-        });
-    }
-
-    private EnrollmentRequest ancEnrollmentFor(final String caseId, final String scheduleName, final LocalDate lmp, final String expectedMilestoneThePersonWillBeEnrolledInto) {
-        return argThat(new ArgumentMatcher<EnrollmentRequest>() {
-            @Override
-            public boolean matches(Object o) {
-                EnrollmentRequest request = (EnrollmentRequest) o;
-                return caseId.equals(request.getExternalId())
-                        && lmp.equals(request.getReferenceDate())
-                        && scheduleName.equals(request.getScheduleName())
-                        && expectedMilestoneThePersonWillBeEnrolledInto.equals(request.getStartingMilestoneName())
-                        && new Time(14, 0).equals(request.getPreferredAlertTime());
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendValue("Case: " + caseId + ", Schedule: " + scheduleName + ", Milestone: " + expectedMilestoneThePersonWillBeEnrolledInto);
-            }
-        });
+        verify(scheduleService, times(wantedNumberOfInvocations)).enroll("Case X", SCHEDULE_ANC, expectedMilestone, lmp.toString());
     }
 
     private EnrollmentsQuery queryFor(final String externalId) {
@@ -335,10 +306,10 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     private void verifyNonANCScheduleEnrollments(LocalDate lmp) {
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_EDD, lmp));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_LAB, lmp));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_TT_1, lmp));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_IFA_1, lmp));
-        verify(scheduleTrackingService).enroll(enrollmentFor("Case X", SCHEDULE_HB_TEST_1, lmp));
+        verify(scheduleService).enroll("Case X", SCHEDULE_EDD, lmp.toString());
+        verify(scheduleService).enroll("Case X", SCHEDULE_LAB, lmp.toString());
+        verify(scheduleService).enroll("Case X", SCHEDULE_TT_1, lmp.toString());
+        verify(scheduleService).enroll("Case X", SCHEDULE_IFA_1, lmp.toString());
+        verify(scheduleService).enroll("Case X", SCHEDULE_HB_TEST_1, lmp.toString());
     }
 }
