@@ -7,7 +7,7 @@ import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.service.FormSubmissionService;
 import org.ei.drishti.repository.AllFormExportTokens;
-import org.ei.drishti.service.FormEntityService;
+import org.ei.drishti.service.formSubmission.FormEntityService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

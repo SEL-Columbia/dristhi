@@ -11,7 +11,7 @@ import org.ei.drishti.form.service.FormSubmissionConvertor;
 import org.ei.drishti.form.service.FormSubmissionService;
 import org.ei.drishti.repository.AllFormExportTokens;
 import org.ei.drishti.scheduler.DrishtiFormScheduler;
-import org.ei.drishti.service.FormEntityService;
+import org.ei.drishti.service.formSubmission.FormEntityService;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.slf4j.Logger;

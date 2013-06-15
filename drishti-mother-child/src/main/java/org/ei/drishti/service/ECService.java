@@ -4,7 +4,7 @@ import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
-import org.ei.drishti.service.formSubmissionHandler.ReportFieldsDefinition;
+import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.service.scheduling.ECSchedulingService;
 import org.ei.drishti.util.SafeMap;

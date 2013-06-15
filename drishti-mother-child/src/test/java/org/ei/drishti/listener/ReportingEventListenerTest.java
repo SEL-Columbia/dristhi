@@ -5,7 +5,7 @@ import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
-import org.ei.drishti.service.ANMReportingService;
+import org.ei.drishti.service.reporting.ANMReportingService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
