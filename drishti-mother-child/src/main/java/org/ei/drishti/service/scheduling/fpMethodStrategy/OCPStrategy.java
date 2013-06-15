@@ -3,9 +3,8 @@ package org.ei.drishti.service.scheduling.fpMethodStrategy;
 import org.ei.drishti.contract.Schedule;
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.service.ActionService;
+import org.ei.drishti.service.scheduling.ScheduleService;
 import org.joda.time.LocalDate;
-import org.motechproject.model.Time;
-import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,6 @@ import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.common.util.IntegerUtil.tryParse;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_OCP_REFILL;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_OCP_REFILL_MILESTONE;
-import static org.ei.drishti.scheduler.DrishtiScheduleConstants.PREFERED_TIME_FOR_SCHEDULES;
 import static org.joda.time.DateTimeConstants.DAYS_PER_WEEK;
 import static org.joda.time.LocalDate.parse;
 
@@ -31,12 +29,14 @@ public class OCPStrategy implements FPMethodStrategy {
 
     private final ScheduleTrackingService scheduleTrackingService;
     private final ActionService actionService;
+    private final ScheduleService scheduleService;
     private final Schedule ocpRefillSchedule = new Schedule(EC_SCHEDULE_OCP_REFILL, asList(EC_SCHEDULE_OCP_REFILL_MILESTONE));
 
     @Autowired
-    public OCPStrategy(ScheduleTrackingService scheduleTrackingService, ActionService actionService) {
+    public OCPStrategy(ScheduleTrackingService scheduleTrackingService, ActionService actionService, ScheduleService scheduleService) {
         this.scheduleTrackingService = scheduleTrackingService;
         this.actionService = actionService;
+        this.scheduleService = scheduleService;
     }
 
     @Override
@@ -75,8 +75,7 @@ public class OCPStrategy implements FPMethodStrategy {
     private void enrollECToOCPRefillSchedule(String entityId, String numberOfOCPStripsSupplied, String ocpRefillDate) {
         LocalDate scheduleStartDate = (tryParse(numberOfOCPStripsSupplied, 0) == 0) ? today() : twoWeeksBeforeOCPPillsRunOut(numberOfOCPStripsSupplied, ocpRefillDate);
         logger.info(format("Enrolling EC to OCP Refill schedule. entityId: {0}, Refill date: {1}, Ref date: {2}, Number of OCP Strips : {3}", entityId, ocpRefillDate, scheduleStartDate, numberOfOCPStripsSupplied));
-        scheduleTrackingService.enroll(new EnrollmentRequest(entityId, ocpRefillSchedule.name(), new Time(PREFERED_TIME_FOR_SCHEDULES),
-                scheduleStartDate, null, null, null, null, null));
+        scheduleService.enroll(entityId, ocpRefillSchedule.name(), scheduleStartDate.toString());
     }
 
     private LocalDate twoWeeksBeforeOCPPillsRunOut(String numberOfOCPStripsSupplied, String ocpRefillDate) {

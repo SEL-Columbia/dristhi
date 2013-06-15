@@ -6,18 +6,13 @@ import org.ei.drishti.service.scheduling.ScheduleService;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 
 import static java.util.Arrays.asList;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class IUDStrategyTest {
@@ -73,16 +68,5 @@ public class IUDStrategyTest {
         inOrder.verify(scheduleTrackingService).getEnrollment("entity id 1", "IUD Followup");
         inOrder.verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "IUD Followup", LocalDate.parse("2012-02-01"));
         inOrder.verify(actionService).markAlertAsClosed("entity id 1", "anm x", "IUD Followup 2", "2012-02-01");
-    }
-
-    private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {
-        return argThat(new ArgumentMatcher<EnrollmentRequest>() {
-            @Override
-            public boolean matches(Object o) {
-                EnrollmentRequest request = (EnrollmentRequest) o;
-                return caseId.equals(request.getExternalId()) && referenceDate.equals(request.getReferenceDate())
-                        && scheduleName.equals(request.getScheduleName());
-            }
-        });
     }
 }

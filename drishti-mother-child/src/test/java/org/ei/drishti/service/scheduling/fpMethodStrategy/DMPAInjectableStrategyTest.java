@@ -3,21 +3,15 @@ package org.ei.drishti.service.scheduling.fpMethodStrategy;
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.service.ActionService;
 import org.ei.drishti.service.scheduling.ScheduleService;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 
 import static java.util.Arrays.asList;
 import static org.joda.time.LocalDate.parse;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DMPAInjectableStrategyTest {
@@ -80,16 +74,5 @@ public class DMPAInjectableStrategyTest {
 
         verifyZeroInteractions(scheduleTrackingService);
         verifyZeroInteractions(actionService);
-    }
-
-    private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {
-        return argThat(new ArgumentMatcher<EnrollmentRequest>() {
-            @Override
-            public boolean matches(Object o) {
-                EnrollmentRequest request = (EnrollmentRequest) o;
-                return caseId.equals(request.getExternalId()) && referenceDate.equals(request.getReferenceDate())
-                        && scheduleName.equals(request.getScheduleName());
-            }
-        });
     }
 }

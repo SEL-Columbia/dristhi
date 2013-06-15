@@ -4,16 +4,12 @@ import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.service.ActionService;
 import org.ei.drishti.service.scheduling.fpMethodStrategy.FPMethodStrategy;
 import org.ei.drishti.service.scheduling.fpMethodStrategy.FPMethodStrategyFactory;
-import org.joda.time.LocalDate;
 import org.junit.Test;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 
 import static org.joda.time.LocalDate.parse;
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -242,16 +238,5 @@ public class ECSchedulingServiceTest {
         ecSchedulingService.fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp_method", null, null, null, null, null, "2011-01-13", null, "2011-01-12", null, "yes"));
 
         verify(scheduleService).enroll("entity id 1", "FP Referral Followup", "2011-01-12");
-    }
-
-    private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {
-        return argThat(new ArgumentMatcher<EnrollmentRequest>() {
-            @Override
-            public boolean matches(Object o) {
-                EnrollmentRequest request = (EnrollmentRequest) o;
-                return caseId.equals(request.getExternalId()) && referenceDate.equals(request.getReferenceDate())
-                        && scheduleName.equals(request.getScheduleName());
-            }
-        });
     }
 }

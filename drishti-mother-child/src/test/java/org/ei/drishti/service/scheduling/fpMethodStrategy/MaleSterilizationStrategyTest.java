@@ -74,15 +74,4 @@ public class MaleSterilizationStrategyTest {
         inOrder.verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "Male sterilization Followup", LocalDate.parse("2012-02-01"));
         inOrder.verify(actionService).markAlertAsClosed("entity id 1", "anm x", "Male sterilization Followup 2", "2012-02-01");
     }
-
-    private EnrollmentRequest enrollmentFor(final String caseId, final String scheduleName, final LocalDate referenceDate) {
-        return argThat(new ArgumentMatcher<EnrollmentRequest>() {
-            @Override
-            public boolean matches(Object o) {
-                EnrollmentRequest request = (EnrollmentRequest) o;
-                return caseId.equals(request.getExternalId()) && referenceDate.equals(request.getReferenceDate())
-                        && scheduleName.equals(request.getScheduleName());
-            }
-        });
-    }
 }
