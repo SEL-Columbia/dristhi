@@ -8,7 +8,7 @@
                 "earliest": ["1 Day"],
                 "due": ["2 Days"],
                 "late": ["100 Weeks"],
-                "max": [""]
+                "max": ["100 Weeks", "1 Day"]
             },
             "alerts": [
                 {

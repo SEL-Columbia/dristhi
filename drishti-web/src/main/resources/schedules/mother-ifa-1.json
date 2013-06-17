@@ -8,7 +8,7 @@
                 "earliest": ["14 Weeks"],
                 "due": ["16 Weeks"],
                 "late": ["100 Weeks"],
-                "max": [""]
+                "max": ["100 Weeks", "1 Day"]
             },
             "alerts": [
                 {
