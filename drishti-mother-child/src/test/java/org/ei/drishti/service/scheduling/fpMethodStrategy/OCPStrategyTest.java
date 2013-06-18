@@ -72,6 +72,8 @@ public class OCPStrategyTest {
         strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", "anm id 1", "ocp", "condom", null, "1", null, null, null, "2012-01-01", null, null, null));
 
         verify(scheduleService).enroll("entity id 1", "OCP Refill", "2012-01-15");
+        verify(actionService).alertForBeneficiary(ec, "entity id 1", "OCP Refill", "OCP Refill", upcoming, LocalDate.parse("2012-01-15").toDateTime(new LocalTime(14, 0)),
+                LocalDate.parse("2012-01-15").plusWeeks(1).toDateTime(new LocalTime(14, 0)));
     }
 
     @Test
@@ -82,6 +84,8 @@ public class OCPStrategyTest {
         inOrder.verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "OCP Refill", parse("2011-01-12"));
         inOrder.verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "OCP Refill", "2012-01-01");
         inOrder.verify(scheduleService).enroll("entity id 1", "OCP Refill", "2012-01-15");
+        inOrder.verify(actionService).alertForBeneficiary(ec, "entity id 1", "OCP Refill", "OCP Refill", upcoming, LocalDate.parse("2012-01-15").toDateTime(new LocalTime(14, 0)),
+                LocalDate.parse("2012-01-15").plusWeeks(1).toDateTime(new LocalTime(14, 0)));
     }
 
     @Test

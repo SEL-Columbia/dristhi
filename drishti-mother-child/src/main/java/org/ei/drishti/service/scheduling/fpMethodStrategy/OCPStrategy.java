@@ -49,9 +49,7 @@ public class OCPStrategy implements FPMethodStrategy {
 
     @Override
     public void registerEC(FPProductInformation fpInfo) {
-        LocalDate scheduleStartDate = enrollECToOCPRefillSchedule(fpInfo.entityId(), fpInfo.numberOfOCPStripsSupplied(), fpInfo.ocpRefillDate());
-        actionService.alertForBeneficiary(ec, fpInfo.entityId(), EC_SCHEDULE_OCP_REFILL, EC_SCHEDULE_OCP_REFILL_MILESTONE, upcoming,
-                scheduleStartDate.toDateTime(preferredTime), scheduleStartDate.plusWeeks(DUE_WINDOW_PERIOD_IN_WEEKS).toDateTime(preferredTime));
+        enrollECToOCPRefillSchedule(fpInfo.entityId(), fpInfo.numberOfOCPStripsSupplied(), fpInfo.ocpRefillDate());
     }
 
     @Override
@@ -82,11 +80,13 @@ public class OCPStrategy implements FPMethodStrategy {
     public void fpFollowup(FPProductInformation fpInfo) {
     }
 
-    private LocalDate enrollECToOCPRefillSchedule(String entityId, String numberOfOCPStripsSupplied, String ocpRefillDate) {
+    private void enrollECToOCPRefillSchedule(String entityId, String numberOfOCPStripsSupplied, String ocpRefillDate) {
         LocalDate scheduleStartDate = (tryParse(numberOfOCPStripsSupplied, 0) == 0) ? today() : twoWeeksBeforeOCPPillsRunOut(numberOfOCPStripsSupplied, ocpRefillDate);
         logger.info(format("Enrolling EC to OCP Refill schedule. entityId: {0}, Refill date: {1}, Ref date: {2}, Number of OCP Strips : {3}", entityId, ocpRefillDate, scheduleStartDate, numberOfOCPStripsSupplied));
         scheduleService.enroll(entityId, ocpRefillSchedule.name(), scheduleStartDate.toString());
-        return scheduleStartDate;
+        actionService.alertForBeneficiary(ec, entityId, EC_SCHEDULE_OCP_REFILL, EC_SCHEDULE_OCP_REFILL_MILESTONE, upcoming,
+                scheduleStartDate.toDateTime(preferredTime), scheduleStartDate.plusWeeks(DUE_WINDOW_PERIOD_IN_WEEKS).toDateTime(preferredTime));
+
     }
 
     private LocalDate twoWeeksBeforeOCPPillsRunOut(String numberOfOCPStripsSupplied, String ocpRefillDate) {
