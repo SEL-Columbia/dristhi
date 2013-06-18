@@ -525,8 +525,10 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.enrollFor("Hb Test 1", newDate(2012, JANUARY, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("Hb Test 1", earliest);
-        schedule.assertAlertsStartWith("Hb Test 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(8, JANUARY, 2012), dateWithYear(15, JANUARY, 2012));
-        schedule.assertAlertsStartWith("Hb Test 1", late, dateWithYear(25, MARCH, 2012), dateWithYear(1, APRIL, 2012), dateWithYear(8, APRIL, 2012));
+        schedule.assertAlertsStartWith("Hb Test 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012), dateWithYear(3, JANUARY, 2012),
+                dateWithYear(4, JANUARY, 2012), dateWithYear(5, JANUARY, 2012), dateWithYear(6, JANUARY, 2012));
+        schedule.assertAlertsStartWith("Hb Test 1", late, dateWithYear(25, MARCH, 2012), dateWithYear(26, MARCH, 2012), dateWithYear(27, MARCH, 2012),
+                dateWithYear(28, MARCH, 2012));
         schedule.assertNoAlerts("Hb Test 1", max);
 
         visualization.outputTo("mother-hb-test-1.html", 1);

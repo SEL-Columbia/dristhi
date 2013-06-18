@@ -14,14 +14,14 @@
                 {
                     "window": "due",
                     "offset": ["0 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "12"
+                    "interval": ["1 Day"],
+                    "count": "84"
                 },
                 {
                     "window": "late",
                     "offset": ["12 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "100"
+                    "interval": ["1 Day"],
+                    "count": "616"
                 }
             ]
         }
