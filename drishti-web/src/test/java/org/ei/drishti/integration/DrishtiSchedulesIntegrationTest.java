@@ -331,8 +331,10 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
         schedule.assertAlertsStartWith("DMPA Injectable Refill", earliest,
                 dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012), dateWithYear(3, JANUARY, 2012), dateWithYear(4, JANUARY, 2012));
-        schedule.assertAlerts("DMPA Injectable Refill", due, dateWithYear(25, MARCH, 2012));
-        schedule.assertAlertsStartWith("DMPA Injectable Refill", late, dateWithYear(1, APRIL, 2012), dateWithYear(8, APRIL, 2012), dateWithYear(15, APRIL, 2012), dateWithYear(22, APRIL, 2012));
+        schedule.assertAlerts("DMPA Injectable Refill", due, dateWithYear(25, MARCH, 2012), dateWithYear(26, MARCH, 2012), dateWithYear(27, MARCH, 2012),
+                dateWithYear(28, MARCH, 2012), dateWithYear(29, MARCH, 2012), dateWithYear(30, MARCH, 2012), dateWithYear(31, MARCH, 2012));
+        schedule.assertAlertsStartWith("DMPA Injectable Refill", late, dateWithYear(1, APRIL, 2012), dateWithYear(2, APRIL, 2012), dateWithYear(3, APRIL, 2012),
+                dateWithYear(4, APRIL, 2012), dateWithYear(5, APRIL, 2012), dateWithYear(6, APRIL, 2012), dateWithYear(7, APRIL, 2012));
         schedule.assertNoAlerts("DMPA Injectable Refill", max);
 
         visualization.outputTo("ec-dmpa-injectable-refill.html", 1);
