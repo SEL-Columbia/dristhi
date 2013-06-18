@@ -3,6 +3,8 @@ package org.ei.drishti.service.scheduling.fpMethodStrategy;
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.service.ActionService;
 import org.ei.drishti.service.scheduling.ScheduleService;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -11,6 +13,8 @@ import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.DateUtil.fakeIt;
+import static org.ei.drishti.dto.AlertStatus.upcoming;
+import static org.ei.drishti.dto.BeneficiaryType.ec;
 import static org.joda.time.LocalDate.parse;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -28,22 +32,28 @@ public class OCPStrategyTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        strategy = new OCPStrategy(scheduleTrackingService, actionService, scheduleService);
+        strategy = new OCPStrategy(scheduleTrackingService, actionService, scheduleService, 14);
     }
 
     @Test
-    public void shouldEnrollInOCPScheduleOnECRegistration() throws Exception {
+    public void shouldEnrollInOCPScheduleAndGenerateUpcomingAlertOnECRegistration() throws Exception {
         fakeIt(parse("2012-02-01"));
         strategy.registerEC(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "1", "2012-01-01"
                 , "20", "2012-03-01", null, null, null, null));
+        verify(actionService).alertForBeneficiary(ec, "entity id 1", "OCP Refill", "OCP Refill", upcoming, LocalDate.parse("2012-01-15").toDateTime(new LocalTime(14, 0)),
+                LocalDate.parse("2012-01-15").plusWeeks(1).toDateTime(new LocalTime(14, 0)));
         verify(scheduleService).enroll("entity id 1", "OCP Refill", "2012-01-15");
 
         strategy.registerEC(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "2", "2012-01-01"
                 , "20", "2012-03-01", null, null, null, null));
+        verify(actionService).alertForBeneficiary(ec, "entity id 1", "OCP Refill", "OCP Refill", upcoming, LocalDate.parse("2012-02-12").toDateTime(new LocalTime(14, 0)),
+                LocalDate.parse("2012-02-12").plusWeeks(1).toDateTime(new LocalTime(14, 0)));
         verify(scheduleService).enroll("entity id 1", "OCP Refill", "2012-02-12");
 
         strategy.registerEC(new FPProductInformation("entity id 1", "anm id 1", "ocp", null, null, "0", "2012-01-01"
                 , "20", "2012-03-01", null, null, null, null));
+        verify(actionService).alertForBeneficiary(ec, "entity id 1", "OCP Refill", "OCP Refill", upcoming, LocalDate.parse("2012-02-01").toDateTime(new LocalTime(14, 0)),
+                LocalDate.parse("2012-02-01").plusWeeks(1).toDateTime(new LocalTime(14, 0)));
         verify(scheduleService).enroll("entity id 1", "OCP Refill", "2012-02-01");
     }
 
