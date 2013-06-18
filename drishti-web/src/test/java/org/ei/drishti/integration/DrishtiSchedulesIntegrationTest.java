@@ -429,7 +429,8 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
         schedule.assertAlerts("FP Followup", earliest, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012), dateWithYear(3, JANUARY, 2012));
         schedule.assertAlerts("FP Followup", due, dateWithYear(4, JANUARY, 2012), dateWithYear(5, JANUARY, 2012), dateWithYear(6, JANUARY, 2012), dateWithYear(7, JANUARY, 2012));
-        schedule.assertAlertsStartWith("FP Followup", late, dateWithYear(8, JANUARY, 2012), dateWithYear(15, JANUARY, 2012), dateWithYear(22, JANUARY, 2012), dateWithYear(29, JANUARY, 2012));
+        schedule.assertAlertsStartWith("FP Followup", late, dateWithYear(8, JANUARY, 2012), dateWithYear(9, JANUARY, 2012), dateWithYear(10, JANUARY, 2012),
+                dateWithYear(11, JANUARY, 2012), dateWithYear(12, JANUARY, 2012), dateWithYear(13, JANUARY, 2012), dateWithYear(14, JANUARY, 2012));
         schedule.assertNoAlerts("FP Followup", max);
 
         visualization.outputTo("ec-fp-followup.html", 1);
