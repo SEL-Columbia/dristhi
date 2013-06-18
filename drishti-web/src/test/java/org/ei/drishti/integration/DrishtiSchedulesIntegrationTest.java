@@ -536,11 +536,11 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     public void shouldProvideAlertsForHbFollowupTestAtTheRightTimes() throws Exception {
         schedule.enrollFor("Hb Followup Test", newDate(2012, JANUARY, 1), new Time(14, 0));
 
-        schedule.assertAlerts("Hb Followup Test", earliest, dateWithYear(1, JANUARY, 2012), dateWithYear(8, JANUARY, 2012),
-                dateWithYear(15, JANUARY, 2012), dateWithYear(22, JANUARY, 2012));
-        schedule.assertAlerts("Hb Followup Test", due, dateWithYear(1, FEBRUARY, 2012), dateWithYear(4, FEBRUARY, 2012),
-                dateWithYear(7, FEBRUARY, 2012), dateWithYear(10, FEBRUARY, 2012));
-        schedule.assertAlertsStartWith("Hb Followup Test", late, dateWithYear(15, FEBRUARY, 2012), dateWithYear(22, FEBRUARY, 2012), dateWithYear(29, FEBRUARY, 2012));
+        schedule.assertAlertsStartWith("Hb Followup Test", earliest, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012),
+                dateWithYear(3, JANUARY, 2012), dateWithYear(4, JANUARY, 2012));
+        schedule.assertAlertsStartWith("Hb Followup Test", due, dateWithYear(1, FEBRUARY, 2012), dateWithYear(2, FEBRUARY, 2012),
+                dateWithYear(3, FEBRUARY, 2012), dateWithYear(4, FEBRUARY, 2012));
+        schedule.assertAlertsStartWith("Hb Followup Test", late, dateWithYear(15, FEBRUARY, 2012), dateWithYear(16, FEBRUARY, 2012), dateWithYear(17, FEBRUARY, 2012));
         schedule.assertNoAlerts("Hb Followup Test", max);
 
         visualization.outputTo("mother-hb-followup-test.html", 1);
