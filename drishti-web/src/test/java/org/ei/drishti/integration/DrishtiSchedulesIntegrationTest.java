@@ -345,8 +345,10 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.enrollFor("OCP Refill", newDate(2012, JANUARY, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("OCP Refill", earliest);
-        schedule.assertAlerts("OCP Refill", due, dateWithYear(1, JANUARY, 2012));
-        schedule.assertAlertsStartWith("OCP Refill", late, dateWithYear(8, JANUARY, 2012), dateWithYear(15, JANUARY, 2012), dateWithYear(22, JANUARY, 2012), dateWithYear(29, JANUARY, 2012));
+        schedule.assertAlerts("OCP Refill", due, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012), dateWithYear(3, JANUARY, 2012), dateWithYear(4, JANUARY, 2012),
+                dateWithYear(5, JANUARY, 2012), dateWithYear(6, JANUARY, 2012), dateWithYear(7, JANUARY, 2012));
+        schedule.assertAlertsStartWith("OCP Refill", late, dateWithYear(8, JANUARY, 2012), dateWithYear(9, JANUARY, 2012), dateWithYear(10, JANUARY, 2012),
+                dateWithYear(11, JANUARY, 2012), dateWithYear(12, JANUARY, 2012), dateWithYear(13, JANUARY, 2012), dateWithYear(14, JANUARY, 2012));
         schedule.assertNoAlerts("OCP Refill", max);
 
         visualization.outputTo("ec-ocp-refill.html", 1);
