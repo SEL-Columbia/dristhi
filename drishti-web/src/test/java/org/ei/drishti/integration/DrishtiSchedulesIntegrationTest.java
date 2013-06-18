@@ -376,12 +376,14 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
         schedule.assertNoAlerts("Female sterilization Followup 2", earliest);
         schedule.assertAlerts("Female sterilization Followup 2", due, dateWithYear(8, JANUARY, 2012), dateWithYear(9, JANUARY, 2012));
-        schedule.assertAlertsStartWith("Female sterilization Followup 2", late, dateWithYear(10, JANUARY, 2012), dateWithYear(13, JANUARY, 2012), dateWithYear(16, JANUARY, 2012));
+        schedule.assertAlertsStartWith("Female sterilization Followup 2", late, dateWithYear(10, JANUARY, 2012), dateWithYear(11, JANUARY, 2012),
+                dateWithYear(12, JANUARY, 2012), dateWithYear(13, JANUARY, 2012), dateWithYear(14, JANUARY, 2012), dateWithYear(15, JANUARY, 2012));
         schedule.assertNoAlerts("Female sterilization Followup 2", max);
 
         schedule.assertNoAlerts("Female sterilization Followup 3", earliest);
         schedule.assertAlertsStartWith("Female sterilization Followup 3", due, dateWithYear(1, FEBRUARY, 2012), dateWithYear(2, FEBRUARY, 2012));
-        schedule.assertAlertsStartWith("Female sterilization Followup 3", late, dateWithYear(8, FEBRUARY, 2012), dateWithYear(15, FEBRUARY, 2012), dateWithYear(22, FEBRUARY, 2012));
+        schedule.assertAlertsStartWith("Female sterilization Followup 3", late, dateWithYear(8, FEBRUARY, 2012), dateWithYear(9, FEBRUARY, 2012),
+                dateWithYear(10, FEBRUARY, 2012), dateWithYear(11, FEBRUARY, 2012), dateWithYear(12, FEBRUARY, 2012), dateWithYear(13, FEBRUARY, 2012));
         schedule.assertNoAlerts("Female sterilization Followup 3", max);
 
         visualization.outputTo("ec-female-sterilization-followup.html", 1);
