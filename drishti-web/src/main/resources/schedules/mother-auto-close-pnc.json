@@ -11,8 +11,8 @@
                 {
                     "window": "due",
                     "offset": ["8 Weeks"],
-                    "interval": ["3 Days"],
-                    "count": "2"
+                    "interval": ["1 Day"],
+                    "count": "4"
                 }
             ]
         }

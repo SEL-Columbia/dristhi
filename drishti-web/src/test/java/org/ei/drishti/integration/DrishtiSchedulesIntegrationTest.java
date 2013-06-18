@@ -322,7 +322,8 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.enrollFor("Auto Close PNC", newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("Auto Close PNC", earliest);
-        schedule.assertAlertsStartWith("Auto Close PNC", due, dateWithYear(26, FEBRUARY, 2012), dateWithYear(29, FEBRUARY, 2012));
+        schedule.assertAlertsStartWith("Auto Close PNC", due, dateWithYear(26, FEBRUARY, 2012), dateWithYear(27, FEBRUARY, 2012), dateWithYear(28, FEBRUARY, 2012),
+                dateWithYear(29, FEBRUARY, 2012));
         schedule.assertNoAlerts("Auto Close PNC", late);
         schedule.assertNoAlerts("Auto Close PNC", max);
 
