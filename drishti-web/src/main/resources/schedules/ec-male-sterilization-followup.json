@@ -20,8 +20,8 @@
                 {
                     "window": "late",
                     "offset": ["2 Days"],
-                    "interval": ["11 Days"],
-                    "count": "8"
+                    "interval": ["1 Day"],
+                    "count": "89"
                 }
             ]
         },
@@ -43,8 +43,8 @@
                 {
                     "window": "late",
                     "offset": ["3 Months", "1 Week"],
-                    "interval": ["1 Week"],
-                    "count": "87"
+                    "interval": ["1 Day"],
+                    "count": "602"
                 }
             ]
         }

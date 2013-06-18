@@ -395,12 +395,14 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
         schedule.assertNoAlerts("Male sterilization Followup 1", earliest);
         schedule.assertAlerts("Male sterilization Followup 1", due, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012));
-        schedule.assertAlertsStartWith("Male sterilization Followup 1", late, dateWithYear(3, JANUARY, 2012), dateWithYear(14, JANUARY, 2012), dateWithYear(25, JANUARY, 2012));
+        schedule.assertAlertsStartWith("Male sterilization Followup 1", late, dateWithYear(3, JANUARY, 2012), dateWithYear(4, JANUARY, 2012),
+                dateWithYear(5, JANUARY, 2012), dateWithYear(6, JANUARY, 2012), dateWithYear(7, JANUARY, 2012), dateWithYear(8, JANUARY, 2012), dateWithYear(9, JANUARY, 2012));
         schedule.assertNoAlerts("Male sterilization Followup 1", max);
 
         schedule.assertNoAlerts("Male sterilization Followup 2", earliest);
         schedule.assertAlertsStartWith("Male sterilization Followup 2", due, dateWithYear(1, APRIL, 2012), dateWithYear(2, APRIL, 2012), dateWithYear(3, APRIL, 2012));
-        schedule.assertAlertsStartWith("Male sterilization Followup 2", late, dateWithYear(8, APRIL, 2012), dateWithYear(15, APRIL, 2012), dateWithYear(22, APRIL, 2012));
+        schedule.assertAlertsStartWith("Male sterilization Followup 2", late, dateWithYear(8, APRIL, 2012), dateWithYear(9, APRIL, 2012),
+                dateWithYear(10, APRIL, 2012), dateWithYear(11, APRIL, 2012), dateWithYear(12, APRIL, 2012), dateWithYear(13, APRIL, 2012), dateWithYear(14, APRIL, 2012));
         schedule.assertNoAlerts("Male sterilization Followup 2", max);
 
         visualization.outputTo("ec-male-sterilization-followup.html", 1);
