@@ -14,20 +14,14 @@
                 {
                     "window": "due",
                     "offset": ["0 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "12"
+                    "interval": ["1 Day"],
+                    "count": "84"
                 },
                 {
                     "window": "late",
                     "offset": ["12 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "2"
-                },
-                {
-                    "window": "late",
-                    "offset": ["12 Weeks", "3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "2"
+                    "interval": ["1 Day"],
+                    "count": "14"
                 },
                 {
                     "window": "max",
@@ -49,20 +43,14 @@
                 {
                     "window": "due",
                     "offset": ["14 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "12"
+                    "interval": ["1 Day"],
+                    "count": "84"
                 },
                 {
                     "window": "late",
                     "offset": ["26 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "4"
-                },
-                {
-                    "window": "late",
-                    "offset": ["26 Weeks", "3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "4"
+                    "interval": ["1 Day"],
+                    "count": "14"
                 }
             ]
         },
@@ -78,20 +66,14 @@
                 {
                     "window": "due",
                     "offset": ["28 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "6"
+                    "interval": ["1 Day"],
+                    "count": "42"
                 },
                 {
                     "window": "late",
                     "offset": ["34 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "2"
-                },
-                {
-                    "window": "late",
-                    "offset": ["34 Weeks", "3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "2"
+                    "interval": ["1 Day"],
+                    "count": "14"
                 }
             ]
         },
@@ -107,20 +89,14 @@
                 {
                     "window": "due",
                     "offset": ["36 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "3"
+                    "interval": ["1 Day"],
+                    "count": "21"
                 },
                 {
                     "window": "late",
                     "offset": ["39 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "61"
-                },
-                {
-                    "window": "late",
-                    "offset": ["39 Weeks", "3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "61"
+                    "interval": ["1 Day"],
+                    "count": "427"
                 }
             ]
         }
