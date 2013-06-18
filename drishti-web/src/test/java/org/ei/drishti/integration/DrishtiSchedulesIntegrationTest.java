@@ -490,7 +490,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
         schedule.assertAlertsStartWith("IFA 1", earliest, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY));
         schedule.assertAlertsStartWith("IFA 1", due, date(8, APRIL), date(9, APRIL), date(10, APRIL), date(11, APRIL));
-        schedule.assertAlertsStartWith("IFA 1", late, date(22, APRIL), date(25, APRIL), date(28, APRIL), date(1, MAY));
+        schedule.assertAlertsStartWith("IFA 1", late, date(22, APRIL), date(23, APRIL), date(24, APRIL), date(25, APRIL));
         schedule.assertNoAlerts("IFA 1", max);
 
         visualization.outputTo("mother-ifa-1.html", 1);
