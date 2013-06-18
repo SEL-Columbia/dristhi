@@ -26,8 +26,8 @@
                 {
                     "window": "late",
                     "offset": ["1 Month", "2 Weeks"],
-                    "interval": ["3 Days"],
-                    "count": "200"
+                    "interval": ["1 Day"],
+                    "count": "658"
                 }
             ]
         }
