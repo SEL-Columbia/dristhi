@@ -1,0 +1,166 @@
+{
+    "form": {
+        "bind_type": "mother",
+        "default_bind_path": "/model/instance/Postpartum_FamilyPlanning_EngKan/",
+        "fields": [
+            {
+                "name": "id"
+            },
+            {
+                "name": "ecId",
+                "source": "mother.eligible_couple.id"
+            },
+            {
+                "name": "isFPPostDelivery",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/fp_post_delivery"
+            },
+            {
+                "name": "currentMethod",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/pp_fp_method1",
+                "source": "mother.eligible_couple.currentMethod"
+            },
+            {
+                "name": "familyPlanningMethodChangeDate",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/pp_fp_method1_start_date",
+                "source": "mother.eligible_couple.familyPlanningMethodChangeDate"
+            },
+            {
+                "name": "iudPlace",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/iud_place1",
+                "source": "mother.eligible_couple.iudPlace"
+            },
+            {
+                "name": "iudPlaceName",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/iud_place1_name",
+                "source": "mother.eligible_couple.iudPlaceName"
+            },
+            {
+                "name": "iudPerson",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/iud_person1",
+                "source": "mother.eligible_couple.iudPerson"
+            },
+            {
+                "name": "iudPersonOther",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/iud_person1_other",
+                "source": "mother.eligible_couple.iudPersonOther"
+            },
+            {
+                "name": "iudPersonName",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/iud_person1_name",
+                "source": "mother.eligible_couple.iudPersonName"
+            },
+            {
+                "name": "sterilizationDoctorName",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/sterilization_doctor_name1",
+                "source": "mother.eligible_couple.sterilizationDoctorName"
+            },
+            {
+                "name": "femaleSterilizationType",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/female_sterilization_type1",
+                "source": "mother.eligible_couple.femaleSterilizationType"
+            },
+            {
+                "name": "referenceDate",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/entity_delivery_date"
+            },
+            {
+                "name": "isExclusiveBreastFeeding",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/exclusively_bf"
+            },
+            {
+                "name": "isPartialBreastFeeding",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/partially_bf"
+            },
+            {
+                "name": "isAnyBreastFeeding",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/any_bf"
+            },
+            {
+                "name": "hasMonthlyBleedingReturned",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/monthly_bleeding"
+            },
+            {
+                "name": "isLAMContinued",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/lam_continue"
+            },
+            {
+                "name": "isLAMContinued",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/preference_future_children",
+                "source": "mother.eligible_couple.isLAMContinued"
+            },
+            {
+                "name": "currentMethod",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/pp_fp_method2",
+                "source": "mother.eligible_couple.currentMethod"
+            },
+            {
+                "name": "familyPlanningMethodChangeDate",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/pp_fp_method2_start_date",
+                "source": "mother.eligible_couple.familyPlanningMethodChangeDate"
+            },
+            {
+                "name": "iudPlace",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/iud_place2",
+                "source": "mother.eligible_couple.iudPlace"
+            },
+            {
+                "name": "iudPlaceName",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/iud_place2_name",
+                "source": "mother.eligible_couple.iudPlaceName"
+            },
+            {
+                "name": "iudPerson",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/iud_person2",
+                "source": "mother.eligible_couple.iudPerson"
+            },
+            {
+                "name": "iudPersonOther",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/iud_person2_other",
+                "source": "mother.eligible_couple.iudPersonOther"
+            },
+            {
+                "name": "iudPersonName",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/iud_person2_name",
+                "source": "mother.eligible_couple.iudPersonName"
+            },
+            {
+                "name": "sterilizationDoctorName",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/sterilization_doctor_name2",
+                "source": "mother.eligible_couple.sterilizationDoctorName"
+            },
+            {
+                "name": "femaleSterilizationType",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/female_sterilization_type2",
+                "source": "mother.eligible_couple.femaleSterilizationType"
+            },
+            {
+                "name": "maleSterilizationType",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/male_sterilization_type",
+                "source": "mother.eligible_couple.maleSterilizationType"
+            },
+            {
+                "name": "numberOfOCPDelivered",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/num_ocp_strips",
+                "source": "mother.eligible_couple.numberOfOCPDelivered"
+            },
+            {
+                "name": "numberOfCondomsSupplied",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/num_condoms",
+                "source": "mother.eligible_couple.numberOfCondomsSupplied"
+            },
+            {
+                "name": "numberOfCentchromanPillsSupplied",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/no_fp_after_delivery_group/fp_method_selection_group/num_centchroman_pills",
+                "source": "mother.eligible_couple.numberOfCondomsSupplied"
+            },
+            {
+                "name": "hepB",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/entity_hepb"
+            },
+            {
+                "name": "submissionDate",
+                "bind": "/model/instance/Postpartum_FamilyPlanning_EngKan/today"
+            }
+        ]
+    }
+}
