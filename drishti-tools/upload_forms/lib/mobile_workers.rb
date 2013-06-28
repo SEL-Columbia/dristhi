@@ -24,7 +24,7 @@ class MobileWorkers
         "klp2" => MobileWorker.new("klp2", "examples/7 N.R Kamalakshi Meghalapura.xlsx"),
         "klp3" => MobileWorker.new("klp3", "examples/9 B.T Indira Vajamangala.xlsx"),
         "klp4" => MobileWorker.new("klp4", "examples/6 Hemavathi Keelanapura.xlsx"),
-        "demo" => MobileWorker.new("demo", "examples/5 Latha Munjanhalli.xlsx")
+        "demo1" => MobileWorker.new("demo1", "examples/2 Jyothilakshmi Bheriya-B.xlsx")
     }
   end
 
