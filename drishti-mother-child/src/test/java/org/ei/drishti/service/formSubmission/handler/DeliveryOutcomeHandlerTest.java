@@ -2,6 +2,7 @@ package org.ei.drishti.service.formSubmission.handler;
 
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.service.ANCService;
+import org.ei.drishti.service.ChildService;
 import org.ei.drishti.service.PNCService;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,13 +16,15 @@ public class DeliveryOutcomeHandlerTest {
     private ANCService ancService;
     @Mock
     private PNCService pncService;
+    @Mock
+    private ChildService childService;
 
     private DeliveryOutcomeHandler handler;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        handler = new DeliveryOutcomeHandler(ancService, pncService);
+        handler = new DeliveryOutcomeHandler(ancService, pncService, childService);
     }
 
     @Test
@@ -32,6 +35,6 @@ public class DeliveryOutcomeHandlerTest {
 
         verify(ancService).deliveryOutcome(submission);
         verify(pncService).deliveryOutcome(submission);
-        verify(pncService).registerChildren(submission);
+        verify(childService).registerChildren(submission);
     }
 }

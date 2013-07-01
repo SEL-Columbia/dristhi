@@ -27,16 +27,14 @@ import static org.ei.drishti.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_V
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.PERMANENT_RELOCATION_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.CLOSE_REASON_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_MOTHER_SURVIVE;
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_WOMAN_SURVIVE;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
-import static org.ei.drishti.common.AllConstants.Form.ID;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
 
 @Service
 public class PNCService {
     private static Logger logger = LoggerFactory.getLogger(PNCService.class.toString());
-
     private ActionService actionService;
     private ChildSchedulesService childSchedulesService;
     private PNCSchedulesService pncSchedulesService;
@@ -76,28 +74,6 @@ public class PNCService {
 
         if (BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE)) || BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_MOTHER_SURVIVE))) {
             pncSchedulesService.deliveryOutcome(submission.entityId(), submission.getField(REFERENCE_DATE));
-        }
-    }
-
-    public void registerChildren(FormSubmission submission) {
-        Mother mother = allMothers.findByCaseId(submission.entityId());
-        if (mother == null) {
-            logger.warn("Failed to handle children registration as there is no mother registered with id: " + submission.entityId());
-            return;
-        }
-
-        List<Child> children = allChildren.findByMotherId(submission.entityId());
-
-        for (Child child : children) {
-            child = child.withAnm(submission.anmId()).withDateOfBirth(submission.getField(REFERENCE_DATE)).withThayiCard(mother.thayiCardNo());
-            allChildren.update(child);
-
-            SafeMap reportingData = new SafeMap();
-            reportingData.put(ID, child.caseId());
-            reportingData.put(BF_POSTBIRTH_FIELD_NAME, submission.getField(DID_BREAST_FEEDING_START));
-            childReportingService.registerChild(reportingData);
-
-            childSchedulesService.enrollChild(child);
         }
     }
 
