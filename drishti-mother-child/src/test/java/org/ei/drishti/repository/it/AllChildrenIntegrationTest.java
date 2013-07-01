@@ -33,7 +33,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldRegisterAChild() {
-        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07");
+        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07");
 
         children.add(child);
 
@@ -46,7 +46,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldFindChildByCaseId() {
-        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
         children.add(child);
 
         Child childFromDB = children.findByCaseId("CASE-1");
@@ -56,7 +56,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldCheckIfChildExists() {
-        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child child = new Child("CASE-1", "MOTHER-CASE-1", "THAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
         children.add(child);
 
         assertTrue(children.childExists("CASE-1"));
@@ -65,10 +65,10 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldFindChildrenByMotherCaseId() {
-        Child firstChild = new Child("CASE-1", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
-        Child secondChild = new Child("CASE-2", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
-        Child thirdChild = new Child("CASE-3", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
-        Child orphan = new Child("CASE-4", "MOTHER-CASE-2", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child firstChild = new Child("CASE-1", "MOTHER-CASE-1", "THAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child secondChild = new Child("CASE-2", "MOTHER-CASE-1", "THAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child thirdChild = new Child("CASE-3", "MOTHER-CASE-1", "THAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
+        Child orphan = new Child("CASE-4", "MOTHER-CASE-2", "THAYI-CARD-1", "Child", asList("bcg", "hep"), "male").withAnm("ANM ID 1");
         children.add(firstChild);
         children.add(secondChild);
         children.add(thirdChild);
@@ -106,14 +106,14 @@ public class AllChildrenIntegrationTest {
 
         Child updatedChild = children.update("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, "dpt_1 hep measles").map());
 
-        Child exptectedChild = new Child("CASE X", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep", "dpt_1", "measles"), "male")
+        Child exptectedChild = new Child("CASE X", "MOTHER-CASE-1", "THAYI-CARD-1", "Child", asList("bcg", "hep", "dpt_1", "measles"), "male")
                 .withAnm("ANM ID 1").withDetails(expectedUpdatedDetails);
         assertThat(children.findByCaseId("CASE X"), is(exptectedChild));
         assertThat(updatedChild, is(exptectedChild));
     }
 
     private Child childWithoutDetails() {
-        return new Child("CASE X", "MOTHER-CASE-1", "THAAYI-CARD-1", "Child", asList("bcg", "hep"), "male")
+        return new Child("CASE X", "MOTHER-CASE-1", "THAYI-CARD-1", "Child", asList("bcg", "hep"), "male")
                 .withAnm("ANM ID 1");
     }
 }

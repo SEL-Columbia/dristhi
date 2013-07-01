@@ -108,20 +108,6 @@ public class AllActionsIntegrationTest {
     }
 
     @Test
-    public void shouldRemoveAllExistingActionsByTarget() {
-        Action firstAlertAction = new Action("Case X", "ANM 1", alert());
-        Action secondAlertAction = new Action("Case Y", "ANM 1", alert());
-        Action anotherAction = new Action("Case Z", "ANM 1", ActionData.registerPregnancy("EC Case 1", "Thaayi 1", today(), new HashMap<String, String>()));
-        allActions.add(firstAlertAction);
-        allActions.add(secondAlertAction);
-        allActions.add(anotherAction);
-
-        allActions.deleteAllByTarget("alert");
-
-        assertEquals(asList(anotherAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
-    }
-
-    @Test
     public void shouldNotDoAnythingIfNoActionsAreFoundForATarget() {
         Action alertAction = new Action("Case X", "ANM 1", alert());
         allActions.add(alertAction);

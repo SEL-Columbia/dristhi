@@ -174,14 +174,14 @@ public class ChildReportingService {
     }
 
     private void reportToBoth(Child child, Indicator indicator, String date) {
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thaayiCardNumber(), indicator, date, child.location());
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, child.location());
         reportingService.sendReportData(serviceProvidedData);
         ReportingData anmReportData = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);
     }
 
     private void reportToBoth(Child child, Indicator indicator, String date, Location location) {
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thaayiCardNumber(), indicator, date, location);
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
         reportingService.sendReportData(serviceProvidedData);
         ReportingData anmReportData = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);

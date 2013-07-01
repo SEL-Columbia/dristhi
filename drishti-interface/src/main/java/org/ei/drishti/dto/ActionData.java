@@ -32,15 +32,6 @@ public class ActionData {
                 .with("completionDate", completionDate);
     }
 
-    public static ActionData registerPregnancy(String ecCaseId, String thaayiCardNumber, LocalDate lmpDate, Map<String, String> details) {
-        return new ActionData("mother", "registerPregnancy")
-                .with("ecCaseId", ecCaseId)
-                .with("thaayiCardNumber", thaayiCardNumber)
-                .with("status", "pregnant")
-                .with("referenceDate", lmpDate.toString())
-                .withDetails(details);
-    }
-
     public static ActionData pncVisitHappened(BeneficiaryType beneficiaryType, LocalDate visitDate, int visitNumber, String numberOfIFATabletsProvided, Map<String, String> details) {
         return new ActionData(beneficiaryType.value(), "pncVisitHappened")
                 .with("numberOfIFATabletsProvided", numberOfIFATabletsProvided)

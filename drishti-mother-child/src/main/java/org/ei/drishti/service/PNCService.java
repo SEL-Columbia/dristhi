@@ -89,7 +89,7 @@ public class PNCService {
         List<Child> children = allChildren.findByMotherId(submission.entityId());
 
         for (Child child : children) {
-            child = child.withAnm(submission.anmId()).withDateOfBirth(submission.getField(REFERENCE_DATE)).withThayiCard(mother.thaayiCardNo());
+            child = child.withAnm(submission.anmId()).withDateOfBirth(submission.getField(REFERENCE_DATE)).withThayiCard(mother.thayiCardNo());
             allChildren.update(child);
 
             SafeMap reportingData = new SafeMap();
@@ -126,7 +126,7 @@ public class PNCService {
         List<Child> children = allChildren.findByMotherId(mother.caseId());
 
         for (Child child : children) {
-            child = child.withAnm(submission.anmId()).withDateOfBirth(submission.getField(REFERENCE_DATE)).withThayiCard(mother.thaayiCardNo());
+            child = child.withAnm(submission.anmId()).withDateOfBirth(submission.getField(REFERENCE_DATE)).withThayiCard(mother.thayiCardNo());
             allChildren.update(child);
 
             childSchedulesService.enrollChild(child);

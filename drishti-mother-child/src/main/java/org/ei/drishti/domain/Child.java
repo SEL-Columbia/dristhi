@@ -50,10 +50,10 @@ public class Child extends MotechBaseDataObject {
     private Child() {
     }
 
-    public Child(String caseId, String motherCaseId, String thaayiCardNumber, String name, List<String> immunizationsProvided, String gender) {
+    public Child(String caseId, String motherCaseId, String thayiCardNumber, String name, List<String> immunizationsProvided, String gender) {
         this.caseId = caseId;
         this.motherCaseId = motherCaseId;
-        this.thayiCard = thaayiCardNumber;
+        this.thayiCard = thayiCardNumber;
         this.name = name;
         this.immunizationsProvided = immunizationsProvided;
         this.gender = gender;
@@ -97,7 +97,7 @@ public class Child extends MotechBaseDataObject {
         return motherCaseId;
     }
 
-    public String thaayiCardNumber() {
+    public String thayiCardNumber() {
         return thayiCard;
     }
 

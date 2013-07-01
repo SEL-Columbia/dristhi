@@ -37,7 +37,7 @@ public class AllMothersIntegrationTest {
     public void shouldRegisterAMother() {
         HashMap<String, String> details = new HashMap<>();
         details.put("some_field", "some_value");
-        Mother mother = new Mother("CASE-1", "EC-CASE-1", "THAAYI-CARD-1").withAnm("ANM ID 1").withLMP(DateUtil.tomorrow())
+        Mother mother = new Mother("CASE-1", "EC-CASE-1", "THAYI-CARD-1").withAnm("ANM ID 1").withLMP(DateUtil.tomorrow())
                 .withLocation("bherya", "Sub Center", "PHC X").withDetails(details);
 
         mothers.add(mother);
@@ -52,7 +52,7 @@ public class AllMothersIntegrationTest {
     @Test
     public void shouldFindARegisteredMotherByCaseId() {
         String caseId = "CASE-1";
-        Mother motherToRegister = new Mother(caseId, "EC-CASE-1", "THAAYI-CARD-1");
+        Mother motherToRegister = new Mother(caseId, "EC-CASE-1", "THAYI-CARD-1");
         mothers.add(motherToRegister);
 
         assertThat(mothers.findByCaseId(caseId), hasSameFieldsAs(motherToRegister));
@@ -61,7 +61,7 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldSayThatAMotherDoesNotExistWhenTheMotherIsNotInTheDB() {
-        Mother motherToRegister = new Mother("CASE-1", "EC-CASE-1", "THAAYI-CARD-1");
+        Mother motherToRegister = new Mother("CASE-1", "EC-CASE-1", "THAYI-CARD-1");
         mothers.add(motherToRegister);
 
         assertTrue(mothers.exists("CASE-1"));

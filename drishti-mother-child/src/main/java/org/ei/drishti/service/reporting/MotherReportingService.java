@@ -203,7 +203,7 @@ public class MotherReportingService {
     }
 
     private void reportToBoth(Mother mother, Indicator indicator, String date, Location location) {
-        ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thaayiCardNo(), indicator, date, location);
+        ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thayiCardNo(), indicator, date, location);
         reportingService.sendReportData(serviceProvided);
 
         ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);

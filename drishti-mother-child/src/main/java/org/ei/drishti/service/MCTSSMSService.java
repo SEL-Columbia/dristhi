@@ -18,8 +18,8 @@ public class MCTSSMSService {
         this.mctsPhoneNumber = mctsPhoneNumber;
     }
 
-    public void send(MCTSServiceCode typeOfService, String thaayiCardNumber, LocalDate date) {
-        smsService.sendSMS(mctsPhoneNumber, typeOfService.messageFor(thaayiCardNumber, date));
+    public void send(MCTSServiceCode typeOfService, String thayiCardNumber, LocalDate date) {
+        smsService.sendSMS(mctsPhoneNumber, typeOfService.messageFor(thayiCardNumber, date));
     }
 
     public static enum MCTSServiceCode {
@@ -61,8 +61,8 @@ public class MCTSSMSService {
             this.codeForMCTS = codeForMCTS;
         }
 
-        public String messageFor(String thaayiCardNumber, LocalDate date) {
-            return format("ANMPW {0} {1} {2}", thaayiCardNumber, codeForMCTS, date.toString("ddMMyy"));
+        public String messageFor(String thayiCardNumber, LocalDate date) {
+            return format("ANMPW {0} {1} {2}", thayiCardNumber, codeForMCTS, date.toString("ddMMyy"));
         }
     }
 }

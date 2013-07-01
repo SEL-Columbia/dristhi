@@ -10,8 +10,8 @@ import static org.junit.Assert.assertThat;
 public class MCTSServiceCodeTest {
     @Test
     public void shouldCreateMCTSMessage() {
-        String message = MCTSServiceCode.IFA.messageFor("THAAYI1", DateUtil.newDate(2012, 3, 26));
+        String message = MCTSServiceCode.IFA.messageFor("THAYI1", DateUtil.newDate(2012, 3, 26));
 
-        assertThat(message, is("ANMPW THAAYI1 IFA 260312"));
+        assertThat(message, is("ANMPW THAYI1 IFA 260312"));
     }
 }
