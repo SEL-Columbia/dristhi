@@ -38,7 +38,8 @@ public class FormSubmissionRouter {
                                 DeliveryOutcomeHandler deliveryOutcomeHandler,
                                 PNCRegistrationOAHandler pncRegistrationOAHandler,
                                 PNCCloseHandler pncCloseHandler,
-                                PNCVisitHandler pncVisitHandler) {
+                                PNCVisitHandler pncVisitHandler,
+                                ChildRegistrationECHandler childRegistrationECHandler) {
         this.formSubmissionsRepository = formSubmissionsRepository;
         handlerMap = EasyMap.create(EC_REGISTRATION, (FormSubmissionHandler) ecRegistrationHandler)
                 .put(FP_COMPLICATIONS, fpComplicationsHandler)
@@ -60,6 +61,7 @@ public class FormSubmissionRouter {
                 .put(PNC_REGISTRATION_OA, pncRegistrationOAHandler)
                 .put(PNC_CLOSE, pncCloseHandler)
                 .put(PNC_VISIT, pncVisitHandler)
+                .put(CHILD_REGISTRATION_EC, childRegistrationECHandler)
                 .map();
     }
 
