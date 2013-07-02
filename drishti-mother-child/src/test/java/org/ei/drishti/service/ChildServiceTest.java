@@ -130,6 +130,24 @@ public class ChildServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldUpdateChildWithANMDetailsWhenItIsRegisteredForAnEC() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        Child child = new Child("child id 1", "mother id 1", "opv", "2", "female");
+        when(children.findByCaseId("child id 1")).thenReturn(child);
+        FormSubmission submission = create()
+                .withFormName("child_registration_ec")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("childId", "child id 1")
+                .build();
+
+        service.registerChildrenForEC(submission);
+
+        verify(children).update(child.withAnm("anm id 1"));
+    }
+
+    @Test
     public void shouldUpdateEnrollmentsForUpdatedImmunizations() {
         Child child = mock(Child.class);
         when(children.childExists("Case X")).thenReturn(true);

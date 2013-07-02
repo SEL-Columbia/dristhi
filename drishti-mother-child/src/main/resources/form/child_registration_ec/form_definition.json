@@ -13,6 +13,10 @@
                 "source": "eligible_couple.mother.id"
             },
             {
+                "name": "childId",
+                "source": "eligible_couple.mother.child.id"
+            },
+            {
                 "name": "phc",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/case_phc",
                 "shouldLoadValue": true
@@ -67,7 +71,7 @@
             },
             {
                 "name": "phoneNumber",
-                "bind": "/model/instance/Child_Registration_EC_EngKan/case_phone_no1",
+                "bind": "/model/instance/Child_Registration_EC_EngKan/case_phone_no",
                 "shouldLoadValue": true
             },
             {

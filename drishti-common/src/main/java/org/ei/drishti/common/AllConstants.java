@@ -206,4 +206,8 @@ public class AllConstants {
         public static final String NUMBER_OF_IFA_TABLETS_GIVEN = "numberOfIFATabletsGiven";
         public static final String IFA_TABLETS_DATE = "ifaTabletsDate";
     }
+
+    public static class ChildRegistrationECFields {
+        public static final String CHILD_ID = "childId";
+    }
 }

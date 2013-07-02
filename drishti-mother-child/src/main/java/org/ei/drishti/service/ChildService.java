@@ -20,6 +20,7 @@ import java.util.Map;
 
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildRegistrationECFields.CHILD_ID;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
 import static org.ei.drishti.common.AllConstants.Form.ID;
 import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NAME;
@@ -65,6 +66,12 @@ public class ChildService {
 
             childSchedulesService.enrollChild(child);
         }
+    }
+
+    public void registerChildrenForEC(FormSubmission submission) {
+        Child child = allChildren.findByCaseId(submission.getField(CHILD_ID));
+        child.withAnm(submission.anmId());
+        allChildren.update(child);
     }
 
     @Deprecated
