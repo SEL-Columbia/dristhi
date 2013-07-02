@@ -321,7 +321,7 @@
             },
             {
                 "name": "submissionDate",
-                "bind": "/model/instance/ANC_Close_EngKan/today"
+                "bind": "/model/instance/Child_Registration_EC_EngKan/today"
             }
         ]
     }
