@@ -3,6 +3,7 @@ package org.ei.drishti.controller;
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.service.ANCService;
+import org.ei.drishti.service.ChildService;
 import org.ei.drishti.service.DrishtiMCTSService;
 import org.ei.drishti.service.PNCService;
 import org.slf4j.Logger;
@@ -18,28 +19,30 @@ public class DrishtiController {
 
     private final ANCService ancService;
     private final PNCService pncService;
+    private final ChildService childService;
     private DrishtiMCTSService mctsService;
 
     @Autowired
     public DrishtiController(CommCareFormSubmissionRouter router, ANCService ancService, PNCService pncService,
-                             DrishtiMCTSService drishtiMctsService) {
+                             ChildService childService, DrishtiMCTSService drishtiMctsService) {
         router.registerForDispatch(this);
         this.ancService = ancService;
         this.pncService = pncService;
+        this.childService = childService;
         this.mctsService = drishtiMctsService;
     }
 
     public void updateChildImmunization(ChildImmunizationUpdationRequest request, Map<String, Map<String, String>> extraData) {
         logger.info("Child immunization updation: " + request + ". Extra data: " + extraData);
 
-        pncService.updateChildImmunization(request, extraData);
+        childService.updateChildImmunization(request, extraData);
         mctsService.updateChildImmunization(request);
     }
 
     public void closeChildCase(ChildCloseRequest childCloseRequest, Map<String, Map<String, String>> extraData) {
         logger.info("Child close: " + childCloseRequest);
 
-        pncService.closeChildCase(childCloseRequest, extraData);
+        childService.closeChildCase(childCloseRequest, extraData);
         mctsService.closeChildCase(childCloseRequest);
     }
 

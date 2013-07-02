@@ -151,42 +151,4 @@ public class PNCService {
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         motherReportingService.pncVisitHappened(new SafeMap(submission.getFields(reportFields)));
     }
-
-    @Deprecated
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {
-        if (!allChildren.childExists(updationRequest.caseId())) {
-            logger.warn("Found immunization update without registered child for case ID: " + updationRequest.caseId());
-            return;
-        }
-
-        List<String> previousImmunizations = allChildren.findByCaseId(updationRequest.caseId()).immunizationsProvided();
-
-        Child updatedChild = allChildren.update(updationRequest.caseId(), extraData.get("details"));
-        actionService.updateImmunizations(updationRequest.caseId(), updationRequest.anmIdentifier(), updatedChild.details(), updationRequest.immunizationsProvided(),
-                updationRequest.immunizationsProvidedDate(), updationRequest.vitaminADose());
-
-        childReportingService.immunizationProvided(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)), previousImmunizations);
-
-        childSchedulesService.updateEnrollments(updationRequest);
-        closeAlertsForProvidedImmunizations(updationRequest);
-    }
-
-    @Deprecated
-    public void closeChildCase(ChildCloseRequest childCloseRequest, Map<String, Map<String, String>> extraData) {
-        if (!allChildren.childExists(childCloseRequest.caseId())) {
-            logger.warn("Found close child request without registered child for case ID: " + childCloseRequest.caseId());
-            return;
-        }
-
-        allChildren.close(childCloseRequest.caseId());
-        actionService.closeChild(childCloseRequest.caseId(), childCloseRequest.anmIdentifier());
-        childReportingService.closeChild(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)));
-        childSchedulesService.unenrollChild(childCloseRequest.caseId());
-    }
-
-    private void closeAlertsForProvidedImmunizations(ChildImmunizationUpdationRequest updationRequest) {
-        for (String immunization : updationRequest.immunizationsProvidedList()) {
-            actionService.markAlertAsClosed(updationRequest.caseId(), updationRequest.anmIdentifier(), immunization, updationRequest.immunizationsProvidedDate().toString());
-        }
-    }
 }

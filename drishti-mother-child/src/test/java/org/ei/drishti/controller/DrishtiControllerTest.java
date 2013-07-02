@@ -3,6 +3,7 @@ package org.ei.drishti.controller;
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
 import org.ei.drishti.contract.*;
 import org.ei.drishti.service.ANCService;
+import org.ei.drishti.service.ChildService;
 import org.ei.drishti.service.DrishtiMCTSService;
 import org.ei.drishti.service.PNCService;
 import org.junit.Before;
@@ -28,13 +29,14 @@ public class DrishtiControllerTest {
     private DrishtiMCTSService mctsService;
     @Mock
     private PNCService pncService;
-
+    @Mock
+    private ChildService childService;
     private DrishtiController controller;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new DrishtiController(dispatcher, ancService, pncService, mctsService);
+        controller = new DrishtiController(dispatcher, ancService, pncService, childService, mctsService);
     }
 
     @Test
@@ -43,7 +45,7 @@ public class DrishtiControllerTest {
 
         controller.updateChildImmunization(updationRequest, EXTRA_DATA);
 
-        verify(pncService).updateChildImmunization(updationRequest, EXTRA_DATA);
+        verify(childService).updateChildImmunization(updationRequest, EXTRA_DATA);
         verify(mctsService).updateChildImmunization(updationRequest);
     }
 
@@ -53,7 +55,7 @@ public class DrishtiControllerTest {
 
         controller.closeChildCase(childCloseRequest, EXTRA_DATA);
 
-        verify(pncService).closeChildCase(childCloseRequest, EXTRA_DATA);
+        verify(childService).closeChildCase(childCloseRequest, EXTRA_DATA);
         verify(mctsService).closeChildCase(childCloseRequest);
     }
 
