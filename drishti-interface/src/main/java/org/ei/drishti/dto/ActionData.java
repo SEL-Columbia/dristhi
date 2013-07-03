@@ -32,24 +32,8 @@ public class ActionData {
                 .with("completionDate", completionDate);
     }
 
-    public static ActionData pncVisitHappened(BeneficiaryType beneficiaryType, LocalDate visitDate, int visitNumber, String numberOfIFATabletsProvided, Map<String, String> details) {
-        return new ActionData(beneficiaryType.value(), "pncVisitHappened")
-                .with("numberOfIFATabletsProvided", numberOfIFATabletsProvided)
-                .with("visitNumber", String.valueOf(visitNumber))
-                .with("visitDate", visitDate.toString())
-                .withDetails(details);
-    }
-
     public static ActionData updateBirthPlanning(Map<String, String> details) {
         return new ActionData("mother", "updateBirthPlanning")
-                .withDetails(details);
-    }
-
-    public static ActionData updateImmunizations(String immunizationsProvided, LocalDate immunizationsProvidedDate, String vitaminADose, Map<String, String> details) {
-        return new ActionData("child", "updateImmunizations")
-                .with("immunizationsProvided", immunizationsProvided)
-                .with("immunizationsProvidedDate", immunizationsProvidedDate.toString())
-                .with("vitaminADose", vitaminADose)
                 .withDetails(details);
     }
 

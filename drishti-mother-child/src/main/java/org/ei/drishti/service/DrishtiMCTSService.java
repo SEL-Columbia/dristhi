@@ -23,9 +23,6 @@ public class DrishtiMCTSService {
         this.mothers = mothers;
     }
 
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest) {
-    }
-
     public void closeChildCase(ChildCloseRequest childCloseRequest) {
     }
 }

@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.ChildCloseRequest;
-import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -15,7 +14,6 @@ import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.service.scheduling.PNCSchedulesService;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -23,7 +21,6 @@ import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
 import org.motechproject.util.DateUtil;
 
-import java.util.Arrays;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
@@ -152,55 +149,31 @@ public class ChildServiceTest extends BaseUnitTest {
         Child child = mock(Child.class);
         when(children.childExists("Case X")).thenReturn(true);
         when(children.findByCaseId("Case X")).thenReturn(child);
-        when(child.immunizationsProvided()).thenReturn(asList(""));
-        ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01");
-        when(children.update("Case X", EXTRA_DATA.get("details")))
-                .thenReturn(new Child("Case X", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female")
-                        .withDetails(EXTRA_DATA.get("details")));
+        FormSubmission submission = create()
+                .withFormName("child_immunizations")
+                .withANMId("anm id 1")
+                .withEntityId("Case X")
+                .addFormField("previousImmunizations", "bcg")
+                .addFormField("immunizationsGiven", "bcg opv_0")
+                .build();
 
-        service.updateChildImmunization(request, EXTRA_DATA);
+        service.updateChildImmunization(submission);
 
-        verify(childSchedulesService).updateEnrollments(request.caseId(), asList(""));
-    }
-
-    @Test
-    public void shouldUpdateChildDetailsForUpdatedImmunizations() {
-        Child child = mock(Child.class);
-        when(children.childExists("Case X")).thenReturn(true);
-        when(children.findByCaseId("Case X")).thenReturn(child);
-        when(child.immunizationsProvided()).thenReturn(asList(""));
-        ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01");
-        when(children.update("Case X", EXTRA_DATA.get("details")))
-                .thenReturn(new Child("Case X", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female")
-                        .withDetails(EXTRA_DATA.get("details")));
-
-        service.updateChildImmunization(request, EXTRA_DATA);
-
-        verify(children).update("Case X", EXTRA_DATA.get("details"));
-    }
-
-    @Test
-    public void shouldCreateActionForUpdatedImmunizations() {
-        Child child = mock(Child.class);
-        when(children.childExists("Case X")).thenReturn(true);
-        when(children.findByCaseId("Case X")).thenReturn(child);
-        when(child.immunizationsProvided()).thenReturn(asList(""));
-        ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01").withVitaminADose("1");
-        when(children.update("Case X", EXTRA_DATA.get("details")))
-                .thenReturn(new Child("Case X", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female")
-                        .withDetails(EXTRA_DATA.get("details")));
-
-        service.updateChildImmunization(request, EXTRA_DATA);
-
-        verify(actionService).updateImmunizations("Case X", "DEMO ANM", EXTRA_DATA.get("details"), "bcg opv0", LocalDate.parse("2012-01-01"), "1");
+        verify(childSchedulesService).updateEnrollments("Case X", asList("bcg"));
     }
 
     @Test
     public void shouldNotDoAnythingIfChildIsNotFoundForUpdatedImmunizations() {
-        ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01").withVitaminADose("1");
         when(children.childExists("Case X")).thenReturn(false);
+        FormSubmission submission = create()
+                .withFormName("child_immunizations")
+                .withANMId("anm id 1")
+                .withEntityId("Case X")
+                .addFormField("previousImmunizations", "bcg")
+                .addFormField("immunizationsGiven", "bcg opv_0")
+                .build();
 
-        service.updateChildImmunization(request, EXTRA_DATA);
+        service.updateChildImmunization(submission);
 
         verifyZeroInteractions(actionService);
         verifyZeroInteractions(childReportingService);
@@ -210,16 +183,22 @@ public class ChildServiceTest extends BaseUnitTest {
     @Test
     public void shouldCallReportingServiceWithPreviousImmunizationsInsteadOfCurrentImmunizations() throws Exception {
         when(children.childExists("Case X")).thenReturn(true);
-        when(children.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("hep"), "female")
+        when(children.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withDetails(EXTRA_DATA.get("details")));
-        when(children.update("Case X", EXTRA_DATA.get("details")))
-                .thenReturn(new Child("Case X", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("hep", "bcg", "opv0"), "female")
-                        .withDetails(EXTRA_DATA.get("details")));
-        ChildImmunizationUpdationRequest request = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg opv0", "2012-01-01");
+        when(reportFieldsDefinition.get("child_immunizations")).thenReturn(asList("id", "immunizationsGiven", "immunizationDate"));
+        FormSubmission submission = create()
+                .withFormName("child_immunizations")
+                .withANMId("anm id 1")
+                .withEntityId("Case X")
+                .addFormField("id", "Case X")
+                .addFormField("previousImmunizations", "bcg")
+                .addFormField("immunizationsGiven", "bcg opv_0")
+                .addFormField("immunizationDate", "2013-01-01")
+                .build();
 
-        service.updateChildImmunization(request, EXTRA_DATA);
+        service.updateChildImmunization(submission);
 
-        verify(childReportingService).immunizationProvided(new SafeMap(EXTRA_DATA.get("reporting")), asList("hep"));
+        verify(childReportingService).immunizationProvided(new SafeMap(create("id", "Case X").put("immunizationsGiven", "bcg opv_0").put("immunizationDate", "2013-01-01").map()), asList("bcg"));
     }
 
     @Test
@@ -271,28 +250,5 @@ public class ChildServiceTest extends BaseUnitTest {
         verifyZeroInteractions(childSchedulesService);
         verifyZeroInteractions(actionService);
         verifyNoMoreInteractions(children);
-    }
-
-    @Test
-    public void shouldCloseAlertsForProvidedImmunizations() {
-        DateTime currentTime = DateUtil.now();
-        mockCurrentDate(currentTime);
-
-        Child child = mock(Child.class);
-        when(children.childExists("Case X")).thenReturn(true);
-        when(children.findByCaseId("Case X")).thenReturn(child);
-        when(child.immunizationsProvided()).thenReturn(asList(""));
-        when(children.update("Case X", EXTRA_DATA.get("details")))
-                .thenReturn(new Child("Case X", "MOTHER-CASE-1", "TC 1", "Child 1", Arrays.asList("bcg", "hep"), "female")
-                        .withDetails(EXTRA_DATA.get("details")));
-
-        ChildImmunizationUpdationRequest updationRequest = new ChildImmunizationUpdationRequest("Case X", "DEMO ANM", "bcg dpt_1 measlesbooster", "2012-01-01").withVitaminADose("1");
-        service.updateChildImmunization(updationRequest, EXTRA_DATA);
-
-        verify(actionService).updateImmunizations("Case X", "DEMO ANM", EXTRA_DATA.get("details"), "bcg dpt_1 measlesbooster", LocalDate.parse("2012-01-01"), "1");
-        for (String expectedAlert : updationRequest.immunizationsProvidedList()) {
-            verify(actionService).markAlertAsClosed("Case X", "DEMO ANM", expectedAlert, "2012-01-01");
-        }
-        verifyNoMoreInteractions(actionService);
     }
 }

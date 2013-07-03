@@ -25,8 +25,6 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private String anmIdentifier;
     @JsonProperty
-    private List<String> immunizationsProvided;
-    @JsonProperty
     private String dateOfBirth;
     @JsonProperty
     private String weight;
@@ -50,15 +48,6 @@ public class Child extends MotechBaseDataObject {
     private Map<String, String> details;
 
     private Child() {
-    }
-
-    public Child(String caseId, String motherCaseId, String thayiCardNumber, String name, List<String> immunizationsProvided, String gender) {
-        this.caseId = caseId;
-        this.motherCaseId = motherCaseId;
-        this.thayiCard = thayiCardNumber;
-        this.name = name;
-        this.immunizationsProvided = immunizationsProvided;
-        this.gender = gender;
     }
 
     public Child(String id, String motherCaseId, String immunizationsGiven, String weight, String gender) {
@@ -111,10 +100,6 @@ public class Child extends MotechBaseDataObject {
         return anmIdentifier;
     }
 
-    public List<String> immunizationsProvided() {
-        return immunizationsProvided;
-    }
-
     public List<String> immunizationsGiven() {
         return new ArrayList<>(Arrays.asList(immunizationsGiven.split(" ")));
     }
@@ -130,11 +115,6 @@ public class Child extends MotechBaseDataObject {
 
     public String dateOfBirth() {
         return dateOfBirth;
-    }
-
-    public Child setImmunizationsProvided(List<String> immunizationsProvided) {
-        this.immunizationsProvided = immunizationsProvided;
-        return this;
     }
 
     public String weight() {

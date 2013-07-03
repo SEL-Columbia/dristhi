@@ -62,7 +62,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldSaveAlertActionForChild() throws Exception {
-        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "Thayi 1", "Kid", Arrays.<String>asList(), "female").withAnm("ANM ID C"));
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female").withAnm("ANM ID C"));
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
@@ -142,15 +142,6 @@ public class ActionServiceTest {
         service.updateBirthPlanning("CASE X", "ANM X", details);
 
         verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateBirthPlanning(details)));
-    }
-
-    @Test
-    public void shouldSendImmunizationsUpdatesWhenMotherFoundInDrishti() {
-        Map<String, String> details = mapOf("aKey", "aValue");
-
-        service.updateImmunizations("CASE X", "ANM X", details, "bcg opv0", LocalDate.parse("2012-01-01"), "1");
-
-        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateImmunizations("bcg opv0", LocalDate.parse("2012-01-01"), "1", details)));
     }
 
     @Test

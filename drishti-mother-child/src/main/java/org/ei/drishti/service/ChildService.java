@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.contract.ChildCloseRequest;
-import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -91,31 +90,6 @@ public class ChildService {
         childReportingService.immunizationProvided(reportFieldsMap, previousImmunizations);
 
         childSchedulesService.updateEnrollments(submission.entityId(), previousImmunizations);
-    }
-
-    @Deprecated
-    public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {
-        if (!allChildren.childExists(updationRequest.caseId())) {
-            logger.warn("Found immunization update without registered child for case ID: " + updationRequest.caseId());
-            return;
-        }
-
-        List<String> previousImmunizations = allChildren.findByCaseId(updationRequest.caseId()).immunizationsProvided();
-
-        Child updatedChild = allChildren.update(updationRequest.caseId(), extraData.get("details"));
-        actionService.updateImmunizations(updationRequest.caseId(), updationRequest.anmIdentifier(), updatedChild.details(), updationRequest.immunizationsProvided(),
-                updationRequest.immunizationsProvidedDate(), updationRequest.vitaminADose());
-
-        childReportingService.immunizationProvided(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)), previousImmunizations);
-
-        childSchedulesService.updateEnrollments(updationRequest.caseId(), previousImmunizations);
-        closeAlertsForProvidedImmunizations(updationRequest);
-    }
-
-    private void closeAlertsForProvidedImmunizations(ChildImmunizationUpdationRequest updationRequest) {
-        for (String immunization : updationRequest.immunizationsProvidedList()) {
-            actionService.markAlertAsClosed(updationRequest.caseId(), updationRequest.anmIdentifier(), immunization, updationRequest.immunizationsProvidedDate().toString());
-        }
     }
 
     @Deprecated

@@ -34,10 +34,11 @@ public class ChildReportingServiceTest {
 
     private ChildReportingService service;
 
-    private static final Child CHILD = new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", new ArrayList<String>(), "female")
+    private static final Child CHILD = new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
             .withDateOfBirth("2012-01-01")
             .withLocation("bherya", "Sub Center", "PHC X")
-            .withAnm("ANM X");
+            .withAnm("ANM X")
+            .withThayiCard("TC 1");
 
     @Before
     public void setUp() throws Exception {
@@ -79,9 +80,10 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldMakeAReportingCallForEachNewlyProvidedImmunization() throws Exception {
         SafeMap reportingData = reportDataForImmunization("dpt_1 bcg measles", "");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
-                .withAnm("ANM X"));
+                .withAnm("ANM X")
+                .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -95,9 +97,10 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldReportFirstVitaminDoseDuringImmunizationProvided() throws Exception {
         SafeMap reportingData = reportDataForImmunization("", "1");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
-                .withAnm("ANM X"));
+                .withAnm("ANM X")
+                .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -110,9 +113,10 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldReportSecondVitaminDoseDuringImmunizationProvided() throws Exception {
         SafeMap reportingData = reportDataForImmunization("", "2");
-        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
-                .withAnm("ANM X"));
+                .withAnm("ANM X")
+                .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -126,7 +130,7 @@ public class ChildReportingServiceTest {
     public void shouldNotSendChildReportingDataWhenWrongImmunizationIsProvided() throws Exception {
         SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
-        reportingData.put("immunizationsProvidedDate", "2012-01-01");
+        reportingData.put("immunizationDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));

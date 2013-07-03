@@ -9,7 +9,6 @@ import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,10 +62,6 @@ public class ActionService {
 
     public void updateBirthPlanning(String caseId, String anmIdentifier, Map<String, String> details) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.updateBirthPlanning(details)));
-    }
-
-    public void updateImmunizations(String caseId, String anmIdentifier, Map<String, String> details, String immunizationsGiven, LocalDate immunizationsProvidedDate, String vitaminADose) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.updateImmunizations(immunizationsGiven, immunizationsProvidedDate, vitaminADose, details)));
     }
 
     public void closeChild(String caseId, String anmIdentifier) {

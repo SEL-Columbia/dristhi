@@ -1,7 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.ChildCloseRequest;
-import org.ei.drishti.contract.ChildImmunizationUpdationRequest;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -15,15 +13,12 @@ import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.service.scheduling.PNCSchedulesService;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
 import org.motechproject.util.DateUtil;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -53,7 +48,6 @@ public class PNCServiceTest extends BaseUnitTest {
     private PNCSchedulesService pncSchedulesService;
     @Mock
     private ReportFieldsDefinition reportFieldsDefinition;
-
     private PNCService service;
     private Map<String, Map<String, String>> EXTRA_DATA = create("details", mapOf("someKey", "someValue")).put("reporting", mapOf("someKey", "someValue")).map();
 
@@ -153,7 +147,6 @@ public class PNCServiceTest extends BaseUnitTest {
         verify(pncSchedulesService).deliveryOutcome("mother id 1", "2012-01-01");
     }
 
-
     @Test
     public void shouldNotEnrollPNCIntoSchedulesDuringPNCRegistrationIfMotherDoesNotExists() {
         DateTime currentTime = DateUtil.now();
@@ -189,7 +182,6 @@ public class PNCServiceTest extends BaseUnitTest {
 
         verifyZeroInteractions(pncSchedulesService);
     }
-
 
     @Test
     public void shouldUpdateANMIdOnMotherWhenOAPNCIsRegistered() {

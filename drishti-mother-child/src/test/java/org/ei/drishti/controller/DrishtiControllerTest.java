@@ -36,17 +36,7 @@ public class DrishtiControllerTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new DrishtiController(dispatcher, ancService, pncService, childService, mctsService);
-    }
-
-    @Test
-    public void shouldDelegateToBothPNCServiceAndMCTSDuringChildImmunizationUpdation() {
-        ChildImmunizationUpdationRequest updationRequest = mock(ChildImmunizationUpdationRequest.class);
-
-        controller.updateChildImmunization(updationRequest, EXTRA_DATA);
-
-        verify(childService).updateChildImmunization(updationRequest, EXTRA_DATA);
-        verify(mctsService).updateChildImmunization(updationRequest);
+        controller = new DrishtiController(dispatcher, ancService, childService, mctsService);
     }
 
     @Test

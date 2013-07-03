@@ -29,33 +29,6 @@
                     }
                 },
                 {
-                    "name": "updateChildImmunization",
-                    "url": {
-                        "base": "https://india.commcarehq.org/a/dristhi/reports/export/",
-                        "queryParams": {
-                            "nameSpace": "http://openrosa.org/formdesigner/F7BFC520-1F47-4B91-9353-C78AAC4C74C6"
-                        }
-                    },
-                    "mappings": {
-                        "form|meta|username": "anmIdentifier",
-                        "form|case|@case_id": "caseId",
-                        "form|vaccinations_given": "immunizationsProvided",
-                        "form|immunization_date": "immunizationDate",
-                        "form|vit_a_dose": "vitaminADose"
-                    },
-                    "extraMappings": {
-                        "reporting": {
-                            "form|case|@case_id": "caseId",
-                            "form|vaccinations_given": "immunizationsProvided",
-                            "form|immunization_date": "immunizationsProvidedDate",
-                            "form|vit_a_dose": "vitaminADose"
-                        },
-                        "details": {
-                            "form|child_weight": "childWeight"
-                        }
-                    }
-                },
-                {
                     "name": "closeChildCase",
                     "url": {
                         "base": "https://india.commcarehq.org/a/dristhi/reports/export/",

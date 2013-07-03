@@ -33,29 +33,6 @@ public class AllChildren extends MotechBaseRepository<Child> {
         return db.queryView(createQuery("children_by_mother_id").key(entityId).includeDocs(true), Child.class);
     }
 
-    public Child update(String caseId, Map<String, String> details) {
-        Child child = findByCaseId(caseId);
-        child = updateChildImmunizationIfProvided(child, details);
-        child.details().putAll(details);
-        update(child);
-        return child;
-    }
-
-    private Child updateChildImmunizationIfProvided(Child child, Map<String, String> details) {
-        if (details.containsKey(IMMUNIZATIONS_GIVEN_FIELD_NAME)) {
-            List<String> immunizationsProvided = child.immunizationsProvided();
-            List<String> recentImmunizations = asList(details.get(IMMUNIZATIONS_GIVEN_FIELD_NAME).split(" "));
-            for (String recentImmunization : recentImmunizations) {
-                if (!immunizationsProvided.contains(recentImmunization)) {
-                    immunizationsProvided.add(recentImmunization);
-                }
-            }
-            child.setImmunizationsProvided(immunizationsProvided);
-            details.put(IMMUNIZATIONS_GIVEN_FIELD_NAME, collectionToDelimitedString(immunizationsProvided, " "));
-        }
-        return child;
-    }
-
     public boolean childExists(String caseId) {
         return findByCaseId(caseId) != null;
     }
