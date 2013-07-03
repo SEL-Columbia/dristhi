@@ -66,5 +66,10 @@
         "id",
         "pncVisitNumber",
         "pncVisitDate"
+    ],
+    "child_immunizations": [
+        "id",
+        "immunizationsGiven",
+        "immunizationDate"
     ]
 }

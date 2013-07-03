@@ -7,6 +7,7 @@ import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.util.SafeMap;
@@ -15,11 +16,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationECFields.CHILD_ID;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
 import static org.ei.drishti.common.AllConstants.Form.ID;
@@ -33,17 +36,19 @@ public class ChildService {
     private AllChildren allChildren;
     private ChildReportingService childReportingService;
     private ActionService actionService;
+    private ReportFieldsDefinition reportFieldsDefinition;
 
     @Autowired
     public ChildService(ChildSchedulesService childSchedulesService,
                         AllMothers allMothers,
                         AllChildren allChildren,
-                        ChildReportingService childReportingService, ActionService actionService) {
+                        ChildReportingService childReportingService, ActionService actionService, ReportFieldsDefinition reportFieldsDefinition) {
         this.childSchedulesService = childSchedulesService;
         this.allMothers = allMothers;
         this.allChildren = allChildren;
         this.childReportingService = childReportingService;
         this.actionService = actionService;
+        this.reportFieldsDefinition = reportFieldsDefinition;
     }
 
     public void registerChildren(FormSubmission submission) {
@@ -74,6 +79,20 @@ public class ChildService {
         allChildren.update(child);
     }
 
+    public void updateChildImmunization(FormSubmission submission) {
+        if (!allChildren.childExists(submission.entityId())) {
+            logger.warn("Found immunization update without registered child for entity ID: " + submission.entityId());
+            return;
+        }
+
+        List<String> previousImmunizations = Arrays.asList(submission.getField(PREVIOUS_IMMUNIZATIONS_FIELD_NAME).split(" "));
+
+        SafeMap reportFieldsMap = new SafeMap(submission.getFields(reportFieldsDefinition.get("child_immunizations")));
+        childReportingService.immunizationProvided(reportFieldsMap, previousImmunizations);
+
+        childSchedulesService.updateEnrollments(submission.entityId(), previousImmunizations);
+    }
+
     @Deprecated
     public void updateChildImmunization(ChildImmunizationUpdationRequest updationRequest, Map<String, Map<String, String>> extraData) {
         if (!allChildren.childExists(updationRequest.caseId())) {
@@ -89,7 +108,7 @@ public class ChildService {
 
         childReportingService.immunizationProvided(new SafeMap(extraData.get(REPORT_EXTRA_DATA_KEY_NAME)), previousImmunizations);
 
-        childSchedulesService.updateEnrollments(updationRequest);
+        childSchedulesService.updateEnrollments(updationRequest.caseId(), previousImmunizations);
         closeAlertsForProvidedImmunizations(updationRequest);
     }
 

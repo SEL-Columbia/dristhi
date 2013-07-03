@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.IMMUNIZATIONS_GIVEN_FIELD_NAME;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -102,9 +102,9 @@ public class AllChildrenIntegrationTest {
     @Test
     public void shouldUpdateImmunizationDetailsOfAnExistingChildIfImmunizationProvided() throws Exception {
         children.add(childWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
-        Map<String, String> expectedUpdatedDetails = create("Key 1", "Value 1").put("Key 2", "Value 2 NEW").put("Key 3", "Value 3").put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, "bcg hep dpt_1 measles").map();
+        Map<String, String> expectedUpdatedDetails = create("Key 1", "Value 1").put("Key 2", "Value 2 NEW").put("Key 3", "Value 3").put(IMMUNIZATIONS_GIVEN_FIELD_NAME, "bcg hep dpt_1 measles").map();
 
-        Child updatedChild = children.update("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, "dpt_1 hep measles").map());
+        Child updatedChild = children.update("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").put(IMMUNIZATIONS_GIVEN_FIELD_NAME, "dpt_1 hep measles").map());
 
         Child exptectedChild = new Child("CASE X", "MOTHER-CASE-1", "THAYI-CARD-1", "Child", asList("bcg", "hep", "dpt_1", "measles"), "male")
                 .withAnm("ANM ID 1").withDetails(expectedUpdatedDetails);

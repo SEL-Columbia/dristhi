@@ -1,0 +1,35 @@
+{
+    "form": {
+        "bind_type": "child",
+        "default_bind_path": "/model/instance/Child_Immunizations_EngKan/",
+        "fields": [
+            {
+                "name": "id",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "previousImmunizations",
+                "shouldLoadValue": true,
+                "source": "child.immunizationsGiven"
+            },
+            {
+                "name": "immunizationsGiven",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/Child_Immunizations_EngKan/immunizations_given"
+            },
+            {
+                "name": "immunizationDate",
+                "bind": "/model/instance/Child_Immunizations_EngKan/immunization_date"
+            },
+            {
+                "name": "immunizationPlace",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/Child_Immunizations_EngKan/immunization_place"
+            },
+            {
+                "name": "submissionDate",
+                "bind": "/model/instance/Child_Immunizations_EngKan/today"
+            }
+        ]
+    }
+}

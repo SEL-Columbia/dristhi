@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.IMMUNIZATIONS_GIVEN_FIELD_NAME;
 import static org.springframework.util.StringUtils.collectionToDelimitedString;
 
 @Repository
@@ -42,16 +42,16 @@ public class AllChildren extends MotechBaseRepository<Child> {
     }
 
     private Child updateChildImmunizationIfProvided(Child child, Map<String, String> details) {
-        if (details.containsKey(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME)) {
+        if (details.containsKey(IMMUNIZATIONS_GIVEN_FIELD_NAME)) {
             List<String> immunizationsProvided = child.immunizationsProvided();
-            List<String> recentImmunizations = asList(details.get(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME).split(" "));
+            List<String> recentImmunizations = asList(details.get(IMMUNIZATIONS_GIVEN_FIELD_NAME).split(" "));
             for (String recentImmunization : recentImmunizations) {
                 if (!immunizationsProvided.contains(recentImmunization)) {
                     immunizationsProvided.add(recentImmunization);
                 }
             }
             child.setImmunizationsProvided(immunizationsProvided);
-            details.put(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME, collectionToDelimitedString(immunizationsProvided, " "));
+            details.put(IMMUNIZATIONS_GIVEN_FIELD_NAME, collectionToDelimitedString(immunizationsProvided, " "));
         }
         return child;
     }

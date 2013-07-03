@@ -29,6 +29,7 @@ public class AllConstants {
         public static final String PNC_CLOSE = "pnc_close";
         public static final String PNC_VISIT = "pnc_visit";
         public static final String CHILD_REGISTRATION_EC = "child_registration_ec";
+        public static final String CHILD_IMMUNIZATIONS = "child_immunizations";
         public static final String TT_BOOSTER = "tt_booster";
         public static final String TT_1 = "tt_1";
         public static final String TT_2 = "tt_2";
@@ -175,31 +176,41 @@ public class AllConstants {
         public static final String NEW_FP_METHOD_FIELD_NAME = "newMethod";
     }
 
-    public static class ChildImmunizationCommCareFields {
-        public static final String IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME = "immunizationsProvided";
-        public static final String IMMUNIZATIONS_PROVIDED_DATE_COMMCARE_FIELD_NAME = "immunizationsProvidedDate";
+    public static class ChildImmunizationFields {
+        public static final String IMMUNIZATIONS_GIVEN_FIELD_NAME = "immunizationsGiven";
+        public static final String PREVIOUS_IMMUNIZATIONS_FIELD_NAME = "previousImmunizations";
+        public static final String IMMUNIZATION_DATE_FIELD_NAME = "immunizationDate";
         public static final String VITAMIN_A_DOSE_COMMCARE_FIELD_NAME = "vitaminADose";
-        public static final String BCG_COMMCARE_VALUE = "bcg";
 
-        public static final String DPT_1_COMMCARE_VALUE = "dpt_1";
-        public static final String DPT_2_COMMCARE_VALUE = "dpt_2";
-        public static final String DPT_3_COMMCARE_VALUE = "dpt_3";
-        public static final String DPT_BOOSTER_1_COMMCARE_VALUE = "dptbooster_1";
-        public static final String DPT_BOOSTER_2_COMMCARE_VALUE = "dptbooster_2";
+        public static final String BCG_VALUE = "bcg";
 
-        public static final String HEPATITIS_0_COMMCARE_VALUE = "hepb_0";
-        public static final String HEPATITIS_1_COMMCARE_VALUE = "hepb_1";
-        public static final String HEPATITIS_2_COMMCARE_VALUE = "hepb_2";
-        public static final String HEPATITIS_3_COMMCARE_VALUE = "hepb_3";
+        public static final String DPT_1_VALUE = "dpt_1";
+        public static final String DPT_2_VALUE = "dpt_2";
+        public static final String DPT_3_VALUE = "dpt_3";
 
-        public static final String MEASLES_COMMCARE_VALUE = "measles";
-        public static final String MEASLES_BOOSTER_COMMCARE_VALUE = "measlesbooster";
+        public static final String DPT_BOOSTER_1_VALUE = "dptbooster_1";
+        public static final String DPT_BOOSTER_2_VALUE = "dptbooster_2";
 
-        public static final String OPV_0_COMMCARE_VALUE = "opv_0";
-        public static final String OPV_1_COMMCARE_VALUE = "opv_1";
-        public static final String OPV_2_COMMCARE_VALUE = "opv_2";
-        public static final String OPV_3_COMMCARE_VALUE = "opv_3";
-        public static final String OPV_BOOSTER_COMMCARE_VALUE = "opvbooster";
+        public static final String HEPATITIS_0_VALUE = "hepb_0";
+        public static final String HEPATITIS_1_VALUE = "hepb_1";
+        public static final String HEPATITIS_2_VALUE = "hepb_2";
+        public static final String HEPATITIS_3_VALUE = "hepb_3";
+
+        public static final String MEASLES_VALUE = "measles";
+        public static final String MEASLES_BOOSTER_VALUE = "measlesbooster";
+
+        public static final String OPV_0_VALUE = "opv_0";
+        public static final String OPV_1_VALUE = "opv_1";
+        public static final String OPV_2_VALUE = "opv_2";
+        public static final String OPV_3_VALUE = "opv_3";
+        public static final String OPV_BOOSTER_VALUE = "opvbooster";
+
+        public static final String PENTAVALENT_1_VALUE = "pentavalent_1";
+        public static final String PENTAVALENT_2_VALUE = "pentavalent_2";
+        public static final String PENTAVALENT_3_VALUE = "pentavalent_3";
+
+        public static final String MMR_VALUE = "mmr";
+        public static final String JE_VALUE = "je";
     }
 
     public static class IFAFields {

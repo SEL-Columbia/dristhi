@@ -59,7 +59,7 @@ public class ChildServiceTest extends BaseUnitTest {
     public void setUp() throws Exception {
         initMocks(this);
         service = new ChildService(childSchedulesService, mothers, children,
-                childReportingService, actionService);
+                childReportingService, actionService, reportFieldsDefinition);
     }
 
     @Test
@@ -160,7 +160,7 @@ public class ChildServiceTest extends BaseUnitTest {
 
         service.updateChildImmunization(request, EXTRA_DATA);
 
-        verify(childSchedulesService).updateEnrollments(request);
+        verify(childSchedulesService).updateEnrollments(request.caseId(), asList(""));
     }
 
     @Test

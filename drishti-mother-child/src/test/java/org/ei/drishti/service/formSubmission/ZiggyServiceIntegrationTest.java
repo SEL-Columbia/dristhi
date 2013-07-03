@@ -2,8 +2,6 @@ package org.ei.drishti.service.formSubmission;
 
 import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.ei.drishti.repository.FormDataRepository;
-import org.ei.drishti.service.formSubmission.ZiggyFileLoader;
-import org.ei.drishti.service.formSubmission.ZiggyService;
 import org.ei.drishti.service.formSubmission.handler.*;
 import org.ei.drishti.util.FormSubmissionBuilder;
 import org.junit.Before;
@@ -72,6 +70,8 @@ public class ZiggyServiceIntegrationTest {
     private PNCVisitHandler pncVisitHandler;
     @Mock
     private ChildRegistrationECHandler childRegistrationECHandler;
+    @Mock
+    private ChildImmunizationsHandler childImmunizationsHandler;
 
     private ZiggyFileLoader ziggyFileLoader;
 
@@ -91,7 +91,7 @@ public class ZiggyServiceIntegrationTest {
                         fpChangeHandler, renewFPProductHandler, fpFollowupHandler, fpReferralFollowupHandler,
                         ecCloseHandler, ancRegistrationHandler, ancRegistrationOAHandler, ancVisitHandler,
                         ancCloseHandler, ttHandler, ifaHandler, hbTestHandler, deliveryOutcomeHandler, pncRegistrationOAHandler,
-                        pncCloseHandler, pncVisitHandler, childRegistrationECHandler));
+                        pncCloseHandler, pncVisitHandler, childRegistrationECHandler, childImmunizationsHandler));
 
         service.saveForm(params, formInstance);
     }

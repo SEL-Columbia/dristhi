@@ -3,7 +3,7 @@
     "absolute": true,
     "milestones": [
         {
-            "name": "Hepatitis B1",
+            "name": "hepb_0",
             "scheduleWindows": {
                 "earliest": ["2 Weeks"],
                 "due": ["100 Weeks"],
@@ -26,7 +26,7 @@
             ]
         },
         {
-            "name": "Hepatitis B2",
+            "name": "hepb_1",
             "scheduleWindows": {
                 "earliest": ["5 Weeks"],
                 "due": ["7 Weeks"],
@@ -55,7 +55,7 @@
             ]
         },
         {
-            "name": "Hepatitis B3",
+            "name": "hepb_2",
             "scheduleWindows": {
                 "earliest": ["9 Weeks"],
                 "due": ["11 Weeks"],
@@ -84,7 +84,7 @@
             ]
         },
         {
-            "name": "Hepatitis B4",
+            "name": "hepb_3",
             "scheduleWindows": {
                 "earliest": ["13 Weeks"],
                 "due": ["15 Weeks"],

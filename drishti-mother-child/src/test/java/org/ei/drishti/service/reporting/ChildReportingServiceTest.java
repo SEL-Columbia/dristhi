@@ -67,6 +67,13 @@ public class ChildReportingServiceTest {
         assertIndicatorBasedOnImmunization("opvbooster", OPV, DPT_BOOSTER_OR_OPV_BOOSTER);
 
         assertIndicatorBasedOnImmunization("measles", MEASLES);
+
+        assertIndicatorBasedOnImmunization("pentavalent_1", PENT1);
+        assertIndicatorBasedOnImmunization("pentavalent_2", PENT2);
+        assertIndicatorBasedOnImmunization("pentavalent_3", PENT3);
+
+        assertIndicatorBasedOnImmunization("mmr", MMR);
+        assertIndicatorBasedOnImmunization("je", JE);
     }
 
     @Test
@@ -75,6 +82,8 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.immunizationProvided(reportingData, asList("dpt_1"));
 
@@ -89,8 +98,10 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.immunizationProvided(reportingData, asList("dpt_1"));
+        service.vitaminAProvided(reportingData);
 
         verifyBothReportingCalls(VIT_A_1, "2012-01-01");
         verifyNoMoreInteractions(reportingService);
@@ -102,8 +113,10 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "TC 1", "boo", asList("dpt_1", "dpt_2", "bcg", "measles"), "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.immunizationProvided(reportingData, asList("dpt_1"));
+        service.vitaminAProvided(reportingData);
 
         verifyBothReportingCalls(VIT_A_2, "2012-01-01");
         verifyNoMoreInteractions(reportingService);
@@ -115,6 +128,8 @@ public class ChildReportingServiceTest {
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationsProvidedDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.immunizationProvided(reportDataForImmunization("NON_EXISTENT_IMMUNIZATION bcg", ""), new ArrayList<String>());
 
@@ -368,6 +383,8 @@ public class ChildReportingServiceTest {
         ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, allChildren, allMothers, allEligibleCouples);
         SafeMap reportingData = reportDataForImmunization(immunizationProvided, "");
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         childReportingService.immunizationProvided(reportingData, new ArrayList<String>());
 
@@ -380,9 +397,9 @@ public class ChildReportingServiceTest {
 
     private SafeMap reportDataForImmunization(String immunizationProvided, String vitaminADose) {
         SafeMap reportingData = new SafeMap();
-        reportingData.put("caseId", "CASE X");
-        reportingData.put("immunizationsProvided", immunizationProvided);
-        reportingData.put("immunizationsProvidedDate", "2012-01-01");
+        reportingData.put("id", "CASE X");
+        reportingData.put("immunizationsGiven", immunizationProvided);
+        reportingData.put("immunizationDate", "2012-01-01");
         reportingData.put("vitaminADose", vitaminADose);
         return reportingData;
     }

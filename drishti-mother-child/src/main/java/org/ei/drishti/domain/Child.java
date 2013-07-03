@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.IMMUNIZATION_DATE_FIELD_NAME;
+
 @TypeDiscriminator("doc.type === 'Child'")
 public class Child extends MotechBaseDataObject {
     @JsonProperty
@@ -154,6 +156,10 @@ public class Child extends MotechBaseDataObject {
 
     private String getMotherCaseId() {
         return motherCaseId;
+    }
+
+    public String immunizationDate() {
+        return details().get(IMMUNIZATION_DATE_FIELD_NAME);
     }
 
     @Override

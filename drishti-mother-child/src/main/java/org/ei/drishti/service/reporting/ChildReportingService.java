@@ -21,21 +21,20 @@ import java.util.*;
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.*;
-import static org.ei.drishti.common.AllConstants.ChildImmunizationCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
-import static org.ei.drishti.common.AllConstants.Form.ID;
+import static org.ei.drishti.common.AllConstants.Form.*;
 import static org.ei.drishti.common.AllConstants.Report.*;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.joda.time.LocalDate.parse;
 
 @Service
 public class ChildReportingService {
+    private static Logger logger = LoggerFactory.getLogger(ChildReportingService.class.toString());
     private final ReportingService reportingService;
     private final AllChildren allChildren;
     private final AllMothers allMothers;
     private final AllEligibleCouples allEligibleCouples;
-    private static Logger logger = LoggerFactory.getLogger(ChildReportingService.class.toString());
     private Map<String, List<Indicator>> immunizationToIndicator;
 
     @Autowired
@@ -46,56 +45,71 @@ public class ChildReportingService {
         this.allEligibleCouples = allEligibleCouples;
         immunizationToIndicator = new HashMap<>();
 
-        immunizationToIndicator.put(BCG_COMMCARE_VALUE, asList(BCG));
+        immunizationToIndicator.put(BCG_VALUE, asList(BCG));
 
-        immunizationToIndicator.put(DPT_1_COMMCARE_VALUE, asList(DPT1));
-        immunizationToIndicator.put(DPT_2_COMMCARE_VALUE, asList(DPT2));
-        immunizationToIndicator.put(DPT_3_COMMCARE_VALUE, asList(DPT3, DPT3_OR_OPV3));
-        immunizationToIndicator.put(DPT_BOOSTER_1_COMMCARE_VALUE, asList(DPT, DPT_BOOSTER_OR_OPV_BOOSTER));
-        immunizationToIndicator.put(DPT_BOOSTER_2_COMMCARE_VALUE, asList(DPT_BOOSTER2));
+        immunizationToIndicator.put(DPT_1_VALUE, asList(DPT1));
+        immunizationToIndicator.put(DPT_2_VALUE, asList(DPT2));
+        immunizationToIndicator.put(DPT_3_VALUE, asList(DPT3, DPT3_OR_OPV3));
+        immunizationToIndicator.put(DPT_BOOSTER_1_VALUE, asList(DPT, DPT_BOOSTER_OR_OPV_BOOSTER));
+        immunizationToIndicator.put(DPT_BOOSTER_2_VALUE, asList(DPT_BOOSTER2));
 
-        immunizationToIndicator.put(HEPATITIS_0_COMMCARE_VALUE, asList(HEP));
-        immunizationToIndicator.put(HEPATITIS_1_COMMCARE_VALUE, asList(HEP));
-        immunizationToIndicator.put(HEPATITIS_2_COMMCARE_VALUE, asList(HEP));
-        immunizationToIndicator.put(HEPATITIS_3_COMMCARE_VALUE, asList(HEP));
+        immunizationToIndicator.put(HEPATITIS_0_VALUE, asList(HEP));
+        immunizationToIndicator.put(HEPATITIS_1_VALUE, asList(HEP));
+        immunizationToIndicator.put(HEPATITIS_2_VALUE, asList(HEP));
+        immunizationToIndicator.put(HEPATITIS_3_VALUE, asList(HEP));
 
-        immunizationToIndicator.put(OPV_0_COMMCARE_VALUE, asList(OPV));
-        immunizationToIndicator.put(OPV_1_COMMCARE_VALUE, asList(OPV));
-        immunizationToIndicator.put(OPV_2_COMMCARE_VALUE, asList(OPV));
-        immunizationToIndicator.put(OPV_3_COMMCARE_VALUE, asList(OPV, DPT3_OR_OPV3));
-        immunizationToIndicator.put(OPV_BOOSTER_COMMCARE_VALUE, asList(OPV, DPT_BOOSTER_OR_OPV_BOOSTER));
+        immunizationToIndicator.put(OPV_0_VALUE, asList(OPV));
+        immunizationToIndicator.put(OPV_1_VALUE, asList(OPV));
+        immunizationToIndicator.put(OPV_2_VALUE, asList(OPV));
+        immunizationToIndicator.put(OPV_3_VALUE, asList(OPV, DPT3_OR_OPV3));
+        immunizationToIndicator.put(OPV_BOOSTER_VALUE, asList(OPV, DPT_BOOSTER_OR_OPV_BOOSTER));
 
-        immunizationToIndicator.put(MEASLES_COMMCARE_VALUE, asList(MEASLES));
+        immunizationToIndicator.put(MEASLES_VALUE, asList(MEASLES));
+
+        immunizationToIndicator.put(PENTAVALENT_1_VALUE, asList(PENT1));
+        immunizationToIndicator.put(PENTAVALENT_2_VALUE, asList(PENT2));
+        immunizationToIndicator.put(PENTAVALENT_3_VALUE, asList(PENT3));
+
+        immunizationToIndicator.put(MMR_VALUE, asList(MMR));
+        immunizationToIndicator.put(JE_VALUE, asList(JE));
     }
 
     public void registerChild(SafeMap reportData) {
         String id = reportData.get(ID);
         Child child = allChildren.findByCaseId(id);
-        Mother mother = allMothers.findByCaseId(child.motherCaseId());
-        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
-        Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
 
         List<String> immunizations = child.immunizationsGiven();
 
-        reportImmunizations(child, immunizations, location);
+        Location location = loadLocationOfChild(child);
+        reportImmunizations(child, immunizations, location, child.dateOfBirth());
         reportBirthWeight(child, location);
         reportBFPostBirth(reportData.get(BF_POSTBIRTH_FIELD_NAME), child, location);
     }
 
     public void immunizationProvided(SafeMap reportData, Collection<String> previousImmunizations) {
-        String caseId = reportData.get(CASE_ID_COMMCARE_FIELD_NAME);
-        Child child = allChildren.findByCaseId(caseId);
+        Child child = allChildren.findByCaseId(reportData.get(ID));
 
-        List<String> immunizations = new ArrayList<>(asList(reportData.get(IMMUNIZATIONS_PROVIDED_COMMCARE_FIELD_NAME).split(" ")));
+        List<String> immunizations = new ArrayList<>(asList(reportData.get(IMMUNIZATIONS_GIVEN_FIELD_NAME).split(" ")));
         immunizations.removeAll(previousImmunizations);
 
-        reportImmunizations(caseId, child, immunizations, reportData.get(IMMUNIZATIONS_PROVIDED_DATE_COMMCARE_FIELD_NAME));
+        Location location = loadLocationOfChild(child);
+        reportImmunizations(child, immunizations, location, reportData.get(IMMUNIZATION_DATE_FIELD_NAME));
+    }
+
+    public void vitaminAProvided(SafeMap reportData) {
+        Child child = allChildren.findByCaseId(reportData.get(ID));
 
         if ("1".equals(reportData.get(VITAMIN_A_DOSE_COMMCARE_FIELD_NAME))) {
-            reportToBoth(child, VIT_A_1, reportData.get(IMMUNIZATIONS_PROVIDED_DATE_COMMCARE_FIELD_NAME));
+            reportToBoth(child, VIT_A_1, reportData.get(IMMUNIZATION_DATE_FIELD_NAME));
         } else if ("2".equals(reportData.get(VITAMIN_A_DOSE_COMMCARE_FIELD_NAME))) {
-            reportToBoth(child, VIT_A_2, reportData.get(IMMUNIZATIONS_PROVIDED_DATE_COMMCARE_FIELD_NAME));
+            reportToBoth(child, VIT_A_2, reportData.get(IMMUNIZATION_DATE_FIELD_NAME));
         }
+    }
+
+    private Location loadLocationOfChild(Child child) {
+        Mother mother = allMothers.findByCaseId(child.motherCaseId());
+        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        return new Location(couple.village(), couple.subCenter(), couple.phc());
     }
 
     public void closeChild(SafeMap reportData) {
@@ -143,22 +157,7 @@ public class ChildReportingService {
         }
     }
 
-    private void reportImmunizations(String caseId, Child child, List<String> immunizations, String date) {
-        for (String immunizationProvidedThisTime : immunizations) {
-            List<Indicator> indicators = immunizationToIndicator.get(immunizationProvidedThisTime);
-            if (indicators == null) {
-                logger.warn("Not reporting: Invalid immunization: " + immunizationProvidedThisTime + " for childCaseId: " +
-                        caseId + " with immunizations provided: " + immunizations);
-                continue;
-            }
-
-            for (Indicator indicator : indicators) {
-                reportToBoth(child, indicator, date);
-            }
-        }
-    }
-
-    private void reportImmunizations(Child child, List<String> immunizations, Location location) {
+    private void reportImmunizations(Child child, List<String> immunizations, Location location, String date) {
         for (String immunizationProvidedThisTime : immunizations) {
             List<Indicator> indicators = immunizationToIndicator.get(immunizationProvidedThisTime);
             if (indicators == null) {
@@ -168,7 +167,7 @@ public class ChildReportingService {
             }
 
             for (Indicator indicator : indicators) {
-                reportToBoth(child, indicator, child.dateOfBirth(), location);
+                reportToBoth(child, indicator, date, location);
             }
         }
     }

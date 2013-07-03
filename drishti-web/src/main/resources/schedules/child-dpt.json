@@ -3,7 +3,7 @@
     "absolute": true,
     "milestones": [
         {
-            "name": "DPT 0",
+            "name": "dpt_0",
             "scheduleWindows": {
                 "earliest": ["2 Weeks"],
                 "due": ["100 Weeks"],
@@ -24,93 +24,6 @@
                     "count": "100"
                 }
             ]
-        },
-        {
-            "name": "DPT 1",
-            "scheduleWindows": {
-                "earliest": ["5 Weeks"],
-                "due": ["7 Weeks"],
-                "late": ["100 Weeks"],
-                "max": [""]
-            },
-            "alerts": [
-                {
-                    "window": "due",
-                    "offset": ["5 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "2"
-                },
-                {
-                    "window": "late",
-                    "offset": ["7 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "100"
-                },
-                {
-                    "window": "late",
-                    "offset": ["7 Weeks", "3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "100"
-                }
-            ]
-        },
-        {
-            "name": "DPT 2",
-            "scheduleWindows": {
-                "earliest": ["9 Weeks"],
-                "due": ["11 Weeks"],
-                "late": ["100 Weeks"],
-                "max": [""]
-            },
-            "alerts": [
-                {
-                    "window": "due",
-                    "offset": ["9 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "2"
-                },
-                {
-                    "window": "late",
-                    "offset": ["11 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "100"
-                },
-                {
-                    "window": "late",
-                    "offset": ["11 Weeks", "3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "100"
-                }
-            ]
-        },
-        {
-            "name": "DPT 3",
-            "scheduleWindows": {
-                "earliest": ["13 Weeks"],
-                "due": ["15 Weeks"],
-                "late": ["100 Weeks"],
-                "max": [""]
-            },
-            "alerts": [
-                {
-                    "window": "due",
-                    "offset": ["13 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "2"
-                },
-                {
-                    "window": "late",
-                    "offset": ["15 Weeks"],
-                    "interval": ["1 Week"],
-                    "count": "100"
-                },
-                {
-                    "window": "late",
-                    "offset": ["15 Weeks", "3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "100"
-                }
-            ]
         }
-   ]
+    ]
 }
