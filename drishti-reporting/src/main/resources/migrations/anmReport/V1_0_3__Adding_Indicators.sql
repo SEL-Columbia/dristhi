@@ -53,3 +53,8 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('D_DH');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('D_PRI');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DPT3_OPV3');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('DPTB_OPVB');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('PENT1');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('PENT2');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('PENT3');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MMR');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('JE');
