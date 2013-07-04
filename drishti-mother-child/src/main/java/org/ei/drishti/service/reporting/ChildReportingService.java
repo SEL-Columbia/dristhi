@@ -86,7 +86,7 @@ public class ChildReportingService {
         reportBFPostBirth(reportData.get(BF_POSTBIRTH_FIELD_NAME), child, location);
     }
 
-    public void immunizationProvided(SafeMap reportData, Collection<String> previousImmunizations) {
+    public void immunizationProvided(SafeMap reportData, List<String> previousImmunizations) {
         Child child = allChildren.findByCaseId(reportData.get(ID));
 
         List<String> immunizations = new ArrayList<>(asList(reportData.get(IMMUNIZATIONS_GIVEN_FIELD_NAME).split(" ")));

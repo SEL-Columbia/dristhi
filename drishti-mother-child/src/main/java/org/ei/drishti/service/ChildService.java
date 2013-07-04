@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
@@ -29,6 +30,7 @@ import static org.ei.drishti.common.AllConstants.Report.REPORT_EXTRA_DATA_KEY_NA
 
 @Service
 public class ChildService {
+    public static final String IMMUNIZATIONS_SEPARATOR = " ";
     private static Logger logger = LoggerFactory.getLogger(ChildService.class.toString());
     private ChildSchedulesService childSchedulesService;
     private AllMothers allMothers;
@@ -84,7 +86,9 @@ public class ChildService {
             return;
         }
 
-        List<String> previousImmunizations = Arrays.asList(submission.getField(PREVIOUS_IMMUNIZATIONS_FIELD_NAME).split(" "));
+        String previousImmunizationsField = isBlank(submission.getField(PREVIOUS_IMMUNIZATIONS_FIELD_NAME))
+                ? "" : submission.getField(PREVIOUS_IMMUNIZATIONS_FIELD_NAME);
+        List<String> previousImmunizations = Arrays.asList(previousImmunizationsField.split(IMMUNIZATIONS_SEPARATOR));
 
         SafeMap reportFieldsMap = new SafeMap(submission.getFields(reportFieldsDefinition.get("child_immunizations")));
         childReportingService.immunizationProvided(reportFieldsMap, previousImmunizations);

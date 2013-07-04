@@ -181,7 +181,7 @@ public class ChildServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldCallReportingServiceWithPreviousImmunizationsInsteadOfCurrentImmunizations() throws Exception {
+    public void shouldCallReportServiceWithPreviousImmunizationsInsteadOfCurrentImmunizations() throws Exception {
         when(children.childExists("Case X")).thenReturn(true);
         when(children.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withDetails(EXTRA_DATA.get("details")));
@@ -199,6 +199,28 @@ public class ChildServiceTest extends BaseUnitTest {
         service.updateChildImmunization(submission);
 
         verify(childReportingService).immunizationProvided(new SafeMap(create("id", "Case X").put("immunizationsGiven", "bcg opv_0").put("immunizationDate", "2013-01-01").map()), asList("bcg"));
+    }
+
+    @Test
+    public void shouldCallReportServiceWithEmptyImmunizationsWhenThereIsNoPreviousImmunization() throws Exception {
+        when(children.childExists("Case X")).thenReturn(true);
+        when(children.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female")
+                .withDetails(EXTRA_DATA.get("details")));
+        when(reportFieldsDefinition.get("child_immunizations")).thenReturn(asList("id", "immunizationsGiven", "immunizationDate"));
+        FormSubmission submission = create()
+                .withFormName("child_immunizations")
+                .withANMId("anm id 1")
+                .withEntityId("Case X")
+                .addFormField("id", "Case X")
+                .addFormField("immunizationsGiven", "bcg opv_0")
+                .addFormField("immunizationDate", "2013-01-01")
+                .build();
+
+        service.updateChildImmunization(submission);
+
+        verify(childReportingService).immunizationProvided(
+                new SafeMap(create("id", "Case X").put("immunizationsGiven", "bcg opv_0").put("immunizationDate", "2013-01-01").map()),
+                asList(""));
     }
 
     @Test
