@@ -8,11 +8,14 @@ import org.joda.time.LocalDate;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableMap;
@@ -22,6 +25,8 @@ import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACT
 
 @Service
 public class ChildSchedulesService {
+    private static Logger logger = LoggerFactory.getLogger(ChildSchedulesService.class.toString());
+
     private final ScheduleTrackingService scheduleTrackingService;
     private final AllChildren allChildren;
     private final ScheduleService scheduleService;
@@ -50,29 +55,32 @@ public class ChildSchedulesService {
         updateMilestonesForEnrolledSchedules(child.caseId(), child.anmIdentifier(), child.immunizationsGiven(), child.immunizationDate());
     }
 
-    public void unenrollChild(String caseId) {
-        List<EnrollmentRecord> openEnrollments = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(caseId).havingState(ACTIVE));
+    public void unenrollChild(String id) {
+        List<EnrollmentRecord> openEnrollments = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(id).havingState(ACTIVE));
 
         for (EnrollmentRecord enrollment : openEnrollments) {
-            scheduleTrackingService.unenroll(caseId, Arrays.asList(enrollment.getScheduleName()));
+            logger.info(format("Un-enrolling child from schedule: {0}, entityId: {0}", enrollment.getScheduleName(), id));
+            scheduleTrackingService.unenroll(id, Arrays.asList(enrollment.getScheduleName()));
         }
     }
 
     private void enrollNonDependentModules(String id, LocalDate dateOfBirth) {
         for (Schedule schedule : childSchedules.values()) {
             if (!schedule.hasDependency()) {
+                logger.info(format("Enrolling child to schedule: {0}, entityId: {1}, referenceDate: {2}", schedule.name(), id, dateOfBirth));
                 scheduleService.enroll(id, schedule.name(), dateOfBirth.toString());
             }
         }
     }
 
-    private void enrollDependentModulesIfRequired(String entityId, List<String> previousImmunizations, List<String> immunizationsGiven, String immunizationDate) {
+    private void enrollDependentModulesIfRequired(String id, List<String> previousImmunizations, List<String> immunizationsGiven, String immunizationDate) {
         for (Schedule schedule : childSchedules.values()) {
             if (schedule.hasDependency() && !isImmunizationAlreadyProvided(schedule, previousImmunizations)) {
                 Schedule dependsOn = schedule.getDependencySchedule();
                 if (immunizationsGiven.contains(dependsOn.getLastMilestone())
-                        && isNotEnrolled(entityId, schedule.name())) {
-                    scheduleService.enroll(entityId, schedule.name(), immunizationDate);
+                        && isNotEnrolled(id, schedule.name())) {
+                    logger.info(format("Enrolling child to schedule: {0}, entityId: {1}, referenceDate: {2}", schedule.name(), id, immunizationDate));
+                    scheduleService.enroll(id, schedule.name(), immunizationDate);
                 }
             }
         }
@@ -87,10 +95,10 @@ public class ChildSchedulesService {
         return true;
     }
 
-    private void updateMilestonesForEnrolledSchedules(String entityId, String anmIdentifier, List<String> immunizationsGiven, String immunizationDate) {
+    private void updateMilestonesForEnrolledSchedules(String id, String anmIdentifier, List<String> immunizationsGiven, String immunizationDate) {
         for (Schedule schedule : childSchedules.values()) {
             for (String mileStoneName : schedule.getMileStones()) {
-                EnrollmentRecord record = scheduleTrackingService.getEnrollment(entityId, schedule.name());
+                EnrollmentRecord record = scheduleTrackingService.getEnrollment(id, schedule.name());
                 if (record == null)
                     break;
                 String currentMilestoneName = record.getCurrentMilestoneName();
@@ -98,8 +106,10 @@ public class ChildSchedulesService {
                 boolean isProvided = immunizationsGiven.contains(mileStoneName);
 
                 if (isProvided && currentMilestoneName.equals(mileStoneName)) {
-                    scheduleTrackingService.fulfillCurrentMilestone(entityId, schedule.name(), LocalDate.parse(immunizationDate));
-                    actionService.markAlertAsClosed(entityId, anmIdentifier, mileStoneName, immunizationDate);
+                    logger.info(format("Fulfilling current milestone of schedule: {0}, milestone: {1}, entityId: {2}, completionDate: {3}", schedule.name(),
+                            mileStoneName, id, immunizationDate));
+                    scheduleTrackingService.fulfillCurrentMilestone(id, schedule.name(), LocalDate.parse(immunizationDate));
+                    actionService.markAlertAsClosed(id, anmIdentifier, mileStoneName, immunizationDate);
                 }
             }
         }
