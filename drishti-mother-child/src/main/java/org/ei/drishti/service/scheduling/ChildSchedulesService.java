@@ -129,14 +129,6 @@ public class ChildSchedulesService {
         List<String> dptBooster2MileStones = unmodifiableList(asList(DPT_BOOSTER_2_VALUE));
         final Schedule dptBooster2 = new Schedule(CHILD_SCHEDULE_DPT_BOOSTER2, dptBooster2MileStones).withDependencyOn(dptBooster1);
 
-        List<String> hepMilestones = unmodifiableList(asList(
-                HEPATITIS_0_VALUE,
-                HEPATITIS_1_VALUE,
-                HEPATITIS_2_VALUE,
-                HEPATITIS_3_VALUE));
-        final Schedule hepatitis = new Schedule(CHILD_SCHEDULE_HEPATITIS, hepMilestones);
-
-
         List<String> measlesMileStones = unmodifiableList(asList(MEASLES_VALUE));
         final Schedule measles = new Schedule(CHILD_SCHEDULE_MEASLES, measlesMileStones);
 
@@ -156,7 +148,6 @@ public class ChildSchedulesService {
             put(CHILD_SCHEDULE_BCG, bcg);
             put(CHILD_SCHEDULE_DPT_BOOSTER1, dptBooster1);
             put(CHILD_SCHEDULE_DPT_BOOSTER2, dptBooster2);
-            put(CHILD_SCHEDULE_HEPATITIS, hepatitis);
             put(CHILD_SCHEDULE_MEASLES, measles);
             put(CHILD_SCHEDULE_MEASLES_BOOSTER, measlesBooster);
             put(CHILD_SCHEDULE_OPV, opv);

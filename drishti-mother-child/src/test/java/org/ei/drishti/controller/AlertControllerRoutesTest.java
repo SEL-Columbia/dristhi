@@ -77,10 +77,6 @@ public class AlertControllerRoutesTest {
         Event.of(CHILD_SCHEDULE_BCG, "BCG", due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_BCG, "BCG", late).shouldRouteToAlertCreationActionForChild();
 
-        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", earliest).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", late).shouldRouteToAlertCreationActionForChild();
-
         Event.of(CHILD_SCHEDULE_MEASLES, "Measles", earliest).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_MEASLES, "Measles", due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_MEASLES, "Measles", late).shouldRouteToAlertCreationActionForChild();

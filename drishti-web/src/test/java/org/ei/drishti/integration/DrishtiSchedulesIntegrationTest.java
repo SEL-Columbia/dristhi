@@ -159,37 +159,6 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldProvideAlertsForHepatitisVaccination() throws Exception {
-        schedule.enrollFor("Hepatitis", newDate(2012, 1, 1), new Time(14, 0));
-
-        schedule.assertNoAlerts("hepb_0", earliest);
-        schedule.assertAlertsStartWith("hepb_0", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
-                date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
-                date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
-        schedule.assertNoAlerts("hepb_0", late);
-        schedule.assertNoAlerts("hepb_0", max);
-
-        schedule.assertNoAlerts("hepb_1", earliest);
-        schedule.assertAlerts("hepb_1", due, date(5, FEBRUARY), date(12, FEBRUARY));
-        schedule.assertAlertsStartWith("hepb_1", late, date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY),
-                date(4, MARCH), date(7, MARCH));
-        schedule.assertNoAlerts("hepb_1", max);
-
-        schedule.assertNoAlerts("hepb_2", earliest);
-        schedule.assertAlerts("hepb_2", due, date(4, MARCH), date(11, MARCH));
-        schedule.assertAlertsStartWith("hepb_2", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
-                date(1, APRIL), date(4, APRIL));
-        schedule.assertNoAlerts("hepb_2", max);
-
-        schedule.assertNoAlerts("hepb_3", earliest);
-        schedule.assertAlerts("hepb_3", due, date(1, APRIL), date(8, APRIL));
-        schedule.assertAlertsStartWith("hepb_3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL), date(29, APRIL), date(2, MAY), date(6, MAY), date(9, MAY), date(13, MAY), date(16, MAY));
-        schedule.assertNoAlerts("hepb_3", max);
-
-        visualization.outputTo("child-hepatitis.html", 1);
-    }
-
-    @Test
     public void shouldProvideAlertForMeaslesVaccination() throws Exception {
         schedule.enrollFor(CHILD_SCHEDULE_MEASLES, newDate(2012, 1, 1), new Time(14, 0));
 

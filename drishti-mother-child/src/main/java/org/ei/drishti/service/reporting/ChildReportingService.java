@@ -51,9 +51,6 @@ public class ChildReportingService {
         immunizationToIndicator.put(DPT_BOOSTER_2_VALUE, asList(DPT_BOOSTER2));
 
         immunizationToIndicator.put(HEPATITIS_0_VALUE, asList(HEP));
-        immunizationToIndicator.put(HEPATITIS_1_VALUE, asList(HEP));
-        immunizationToIndicator.put(HEPATITIS_2_VALUE, asList(HEP));
-        immunizationToIndicator.put(HEPATITIS_3_VALUE, asList(HEP));
 
         immunizationToIndicator.put(OPV_0_VALUE, asList(OPV));
         immunizationToIndicator.put(OPV_1_VALUE, asList(OPV));

@@ -188,9 +188,6 @@ public class AllConstants {
         public static final String DPT_BOOSTER_2_VALUE = "dptbooster_2";
 
         public static final String HEPATITIS_0_VALUE = "hepb_0";
-        public static final String HEPATITIS_1_VALUE = "hepb_1";
-        public static final String HEPATITIS_2_VALUE = "hepb_2";
-        public static final String HEPATITIS_3_VALUE = "hepb_3";
 
         public static final String MEASLES_VALUE = "measles";
         public static final String MEASLES_BOOSTER_VALUE = "measlesbooster";

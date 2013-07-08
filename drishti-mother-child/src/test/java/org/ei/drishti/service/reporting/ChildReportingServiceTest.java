@@ -53,11 +53,6 @@ public class ChildReportingServiceTest {
         assertIndicatorBasedOnImmunization("dptbooster_1", DPT, DPT_BOOSTER_OR_OPV_BOOSTER);
         assertIndicatorBasedOnImmunization("dptbooster_2", DPT_BOOSTER2);
 
-        assertIndicatorBasedOnImmunization("hepb_0", HEP);
-        assertIndicatorBasedOnImmunization("hepb_1", HEP);
-        assertIndicatorBasedOnImmunization("hepb_2", HEP);
-        assertIndicatorBasedOnImmunization("hepb_3", HEP);
-
         assertIndicatorBasedOnImmunization("opv_0", OPV);
         assertIndicatorBasedOnImmunization("opv_1", OPV);
         assertIndicatorBasedOnImmunization("opv_2", OPV);

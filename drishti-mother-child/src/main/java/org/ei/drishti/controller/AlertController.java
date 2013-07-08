@@ -34,8 +34,6 @@ public class AlertController {
                 CHILD_SCHEDULE_DPT_BOOSTER1,
                 CHILD_SCHEDULE_DPT_BOOSTER2,
 
-                CHILD_SCHEDULE_HEPATITIS,
-
                 CHILD_SCHEDULE_MEASLES,
                 CHILD_SCHEDULE_MEASLES_BOOSTER,
 

@@ -39,7 +39,7 @@ public class ChildSchedulesServiceTest {
     public void shouldEnrollChildIntoSchedulesAndShouldUpdateEnrollmentsForGivenImmunizations() {
         new TestForChildEnrollmentAndUpdate()
                 .whenEnrolledWithImmunizationsGiven("bcg", "opv_0", "opv_2")
-                .shouldEnrollWithEnrollmentDateAsDateOfBirth(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV)
+                .shouldEnrollWithEnrollmentDateAsDateOfBirth(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV)
                 .shouldFulfillWithFulfillmentDateAsDateOfBirth(CHILD_SCHEDULE_BCG, 1)
                 .shouldCloseAlertWithFulfillmentDateAsDateOfBirth("bcg")
                 .shouldFulfillWithFulfillmentDateAsDateOfBirth(CHILD_SCHEDULE_OPV, 2)
@@ -52,7 +52,7 @@ public class ChildSchedulesServiceTest {
     public void shouldEnrollChildIntoSchedulesButShouldNotUpdateEnrollmentsIfImmunizationsAreNotProvided() {
         new TestForChildEnrollmentAndUpdate()
                 .whenEnrolledWithImmunizationsGiven("")
-                .shouldEnrollWithEnrollmentDateAsDateOfBirth(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV)
+                .shouldEnrollWithEnrollmentDateAsDateOfBirth(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV)
                 .shouldNotEnrollAndFulfillAnythingElse();
     }
 
@@ -60,7 +60,7 @@ public class ChildSchedulesServiceTest {
     public void shouldEnrollChildIntoDependentModulesIfRequiredAndShouldUpdateEnrollments() {
         new TestForChildEnrollmentAndUpdate()
                 .whenEnrolledWithImmunizationsGiven("bcg", "opv_0", "opv_2", "measles")
-                .shouldEnrollWithEnrollmentDateAsDateOfBirth(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_HEPATITIS, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV)
+                .shouldEnrollWithEnrollmentDateAsDateOfBirth(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_OPV)
                 .shouldEnrollWithEnrollmentDateAsDateOfBirth(CHILD_SCHEDULE_MEASLES_BOOSTER)
                 .shouldFulfillWithFulfillmentDateAsDateOfBirth(CHILD_SCHEDULE_BCG, 1)
                 .shouldCloseAlertWithFulfillmentDateAsDateOfBirth("bcg")
@@ -101,9 +101,8 @@ public class ChildSchedulesServiceTest {
 
     @Test
     public void shouldNotUpdateEnrollmentForAScheduleWhenNotEnrolledInSchedule() {
-
         new TestForChildEnrollmentAndUpdate()
-                .whenProvidedWithImmunizations("bcg opv_0 hepb_1 opv_1 hepb_2 opv_2 hepb_2 hepb_3 opvbooster")
+                .whenProvidedWithImmunizations("bcg opv_0 opv_1 opv_2 opvbooster")
                 .shouldNotEnrollAndFulfillAnythingElse();
     }
 
@@ -118,20 +117,6 @@ public class ChildSchedulesServiceTest {
         new TestForChildEnrollmentAndUpdate()
                 .givenEnrollmentIn(CHILD_SCHEDULE_BCG, BCG_VALUE)
                 .whenProvidedWithImmunizations("SOME OTHER IMM")
-                .shouldNotEnrollAndFulfillAnythingElse();
-    }
-
-    @Test
-    public void shouldUpdateEnrollmentForHepatitis() {
-        new TestForChildEnrollmentAndUpdate()
-                .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, HEPATITIS_0_VALUE, HEPATITIS_1_VALUE, HEPATITIS_2_VALUE, HEPATITIS_3_VALUE)
-                .whenProvidedWithImmunizations("hepb_0 hepb_1 hepb_2 hepb_3")
-                .shouldFulfillWithFulfillmentDateAsImmunizationDate(CHILD_SCHEDULE_HEPATITIS, 4)
-                .shouldNotEnrollAndFulfillAnythingElse();
-
-        new TestForChildEnrollmentAndUpdate()
-                .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, HEPATITIS_0_VALUE)
-                .whenProvidedWithImmunizations("SOME OTHER IMMUNIZATION")
                 .shouldNotEnrollAndFulfillAnythingElse();
     }
 
@@ -182,9 +167,9 @@ public class ChildSchedulesServiceTest {
         new TestForChildEnrollmentAndUpdate()
                 .givenEnrollmentIn(CHILD_SCHEDULE_BCG, BCG_VALUE)
                 .givenEnrollmentIn(CHILD_SCHEDULE_OPV, OPV_1_VALUE)
-                .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, HEPATITIS_0_VALUE)
+                .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, MEASLES_VALUE)
                 .whenUnenrolled()
-                .shouldUnEnrollFrom(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_OPV, CHILD_SCHEDULE_HEPATITIS);
+                .shouldUnEnrollFrom(CHILD_SCHEDULE_BCG, CHILD_SCHEDULE_OPV, CHILD_SCHEDULE_MEASLES);
     }
 
     private class TestForChildEnrollmentAndUpdate {
@@ -270,7 +255,6 @@ public class ChildSchedulesServiceTest {
 
         private void setExpectationsForNonDependentSchedules() {
             this.givenEnrollmentIn(CHILD_SCHEDULE_BCG, BCG_VALUE)
-                    .givenEnrollmentIn(CHILD_SCHEDULE_HEPATITIS, HEPATITIS_0_VALUE, HEPATITIS_1_VALUE, HEPATITIS_2_VALUE, HEPATITIS_3_VALUE)
                     .givenEnrollmentIn(CHILD_SCHEDULE_MEASLES, MEASLES_VALUE)
                     .givenEnrollmentIn(CHILD_SCHEDULE_OPV, OPV_0_VALUE, OPV_1_VALUE, OPV_2_VALUE, OPV_3_VALUE);
         }
