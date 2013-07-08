@@ -50,9 +50,6 @@ public class ChildReportingServiceTest {
     public void shouldGetRidOfSequenceNumberFormImmunizationReportIndicator() throws Exception {
         assertIndicatorBasedOnImmunization("bcg", BCG);
 
-        assertIndicatorBasedOnImmunization("dpt_1", DPT1);
-        assertIndicatorBasedOnImmunization("dpt_2", DPT2);
-        assertIndicatorBasedOnImmunization("dpt_3", DPT3, DPT3_OR_OPV3);
         assertIndicatorBasedOnImmunization("dptbooster_1", DPT, DPT_BOOSTER_OR_OPV_BOOSTER);
         assertIndicatorBasedOnImmunization("dptbooster_2", DPT_BOOSTER2);
 
@@ -79,7 +76,7 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldMakeAReportingCallForEachNewlyProvidedImmunization() throws Exception {
-        SafeMap reportingData = reportDataForImmunization("dpt_1 bcg measles", "");
+        SafeMap reportingData = reportDataForImmunization("opv_1 bcg measles", "");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X")
@@ -87,7 +84,7 @@ public class ChildReportingServiceTest {
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
-        service.immunizationProvided(reportingData, asList("dpt_1"));
+        service.immunizationProvided(reportingData, asList("opv_1"));
 
         verifyBothReportingCalls(BCG, "2012-01-01");
         verifyBothReportingCalls(MEASLES, "2012-01-01");

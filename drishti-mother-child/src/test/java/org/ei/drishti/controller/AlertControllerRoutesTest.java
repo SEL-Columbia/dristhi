@@ -77,18 +77,6 @@ public class AlertControllerRoutesTest {
         Event.of(CHILD_SCHEDULE_BCG, "BCG", due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_BCG, "BCG", late).shouldRouteToAlertCreationActionForChild();
 
-        Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", earliest).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT1, "DPT 1", late).shouldRouteToAlertCreationActionForChild();
-
-        Event.of(CHILD_SCHEDULE_DPT2, "DPT 2", earliest).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT2, "DPT 2", due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT2, "DPT 2", late).shouldRouteToAlertCreationActionForChild();
-
-        Event.of(CHILD_SCHEDULE_DPT2, "DPT 3", earliest).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT2, "DPT 3", due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_DPT2, "DPT 3", late).shouldRouteToAlertCreationActionForChild();
-
         Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", earliest).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_HEPATITIS, "Hepatitis B3", late).shouldRouteToAlertCreationActionForChild();

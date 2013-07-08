@@ -159,20 +159,6 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldProvideAlertsForDPT() throws Exception {
-        schedule.enrollFor("DPT", newDate(2012, 1, 1), new Time(14, 0));
-
-        schedule.assertNoAlerts("dpt_0", earliest);
-        schedule.assertAlertsStartWith("dpt_0", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
-                date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
-                date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
-        schedule.assertNoAlerts("dpt_0", late);
-        schedule.assertNoAlerts("dpt_0", max);
-
-        visualization.outputTo("child-dpt.html", 1);
-    }
-
-    @Test
     public void shouldProvideAlertsForHepatitisVaccination() throws Exception {
         schedule.enrollFor("Hepatitis", newDate(2012, 1, 1), new Time(14, 0));
 
@@ -225,42 +211,6 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         schedule.assertNoAlerts(MEASLES_BOOSTER_VALUE, max);
 
         visualization.outputTo("child-measles-booster.html", 4);
-    }
-
-    @Test
-    public void shouldProvideAlertForDPT1Vaccination() throws Exception {
-        schedule.enrollFor(CHILD_SCHEDULE_DPT1, newDate(2012, 1, 1), new Time(14, 0));
-
-        schedule.assertNoAlerts(DPT_1_VALUE, earliest);
-        schedule.assertAlerts(DPT_1_VALUE, due, date(1, JULY), date(4, JULY));
-        schedule.assertAlertsStartWith(DPT_1_VALUE, late, dateWithYear(8, JULY, 2012), dateWithYear(11, JULY, 2012), dateWithYear(15, JULY, 2012));
-        schedule.assertNoAlerts(DPT_1_VALUE, max);
-
-        visualization.outputTo("child-dpt1.html", 4);
-    }
-
-    @Test
-    public void shouldProvideAlertForDPT2Vaccination() throws Exception {
-        schedule.enrollFor(CHILD_SCHEDULE_DPT2, newDate(2012, 1, 1), new Time(14, 0));
-
-        schedule.assertNoAlerts(DPT_2_VALUE, earliest);
-        schedule.assertAlerts(DPT_2_VALUE, due, date(29, APRIL), date(2, MAY));
-        schedule.assertAlertsStartWith(DPT_2_VALUE, late, dateWithYear(6, MAY, 2012), dateWithYear(9, MAY, 2012), dateWithYear(13, MAY, 2012));
-        schedule.assertNoAlerts(DPT_2_VALUE, max);
-
-        visualization.outputTo("child-dpt2.html", 4);
-    }
-
-    @Test
-    public void shouldProvideAlertForDPT3Vaccination() throws Exception {
-        schedule.enrollFor(CHILD_SCHEDULE_DPT3, newDate(2012, 1, 1), new Time(14, 0));
-
-        schedule.assertNoAlerts(DPT_3_VALUE, earliest);
-        schedule.assertAlerts(DPT_3_VALUE, due, date(29, APRIL), date(02, MAY));
-        schedule.assertAlertsStartWith(DPT_3_VALUE, late, dateWithYear(6, MAY, 2012), dateWithYear(9, MAY, 2012), dateWithYear(13, MAY, 2012));
-        schedule.assertNoAlerts(DPT_3_VALUE, max);
-
-        visualization.outputTo("child-dpt3.html", 4);
     }
 
     @Test

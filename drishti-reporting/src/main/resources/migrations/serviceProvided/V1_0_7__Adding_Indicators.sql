@@ -1,7 +1,4 @@
 INSERT INTO report.dim_indicator (indicator) VALUES ('DPT');
-INSERT INTO report.dim_indicator (indicator) VALUES ('DPT_1');
-INSERT INTO report.dim_indicator (indicator) VALUES ('DPT_2');
-INSERT INTO report.dim_indicator (indicator) VALUES ('DPT_3');
 INSERT INTO report.dim_indicator (indicator) VALUES ('DPT_BOOSTER_2');
 INSERT INTO report.dim_indicator (indicator) VALUES ('HEP');
 INSERT INTO report.dim_indicator (indicator) VALUES ('OPV');

@@ -184,10 +184,6 @@ public class AllConstants {
 
         public static final String BCG_VALUE = "bcg";
 
-        public static final String DPT_1_VALUE = "dpt_1";
-        public static final String DPT_2_VALUE = "dpt_2";
-        public static final String DPT_3_VALUE = "dpt_3";
-
         public static final String DPT_BOOSTER_1_VALUE = "dptbooster_1";
         public static final String DPT_BOOSTER_2_VALUE = "dptbooster_2";
 

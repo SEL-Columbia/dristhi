@@ -47,9 +47,6 @@ public class ChildReportingService {
 
         immunizationToIndicator.put(BCG_VALUE, asList(BCG));
 
-        immunizationToIndicator.put(DPT_1_VALUE, asList(DPT1));
-        immunizationToIndicator.put(DPT_2_VALUE, asList(DPT2));
-        immunizationToIndicator.put(DPT_3_VALUE, asList(DPT3, DPT3_OR_OPV3));
         immunizationToIndicator.put(DPT_BOOSTER_1_VALUE, asList(DPT, DPT_BOOSTER_OR_OPV_BOOSTER));
         immunizationToIndicator.put(DPT_BOOSTER_2_VALUE, asList(DPT_BOOSTER2));
 

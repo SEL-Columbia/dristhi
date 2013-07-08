@@ -31,9 +31,6 @@ public class AlertController {
     private Matcher childSchedules() {
         return anyOf(CHILD_SCHEDULE_BCG,
 
-                CHILD_SCHEDULE_DPT1,
-                CHILD_SCHEDULE_DPT2,
-                CHILD_SCHEDULE_DPT3,
                 CHILD_SCHEDULE_DPT_BOOSTER1,
                 CHILD_SCHEDULE_DPT_BOOSTER2,
 

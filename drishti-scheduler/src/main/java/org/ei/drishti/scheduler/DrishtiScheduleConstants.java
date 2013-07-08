@@ -4,10 +4,6 @@ public class DrishtiScheduleConstants {
     public static class ChildScheduleConstants {
         public static final String CHILD_SCHEDULE_BCG = "BCG";
 
-        public static final String CHILD_SCHEDULE_DPT1 = "DPT 1";
-        public static final String CHILD_SCHEDULE_DPT2 = "DPT 2";
-        public static final String CHILD_SCHEDULE_DPT3 = "DPT 3";
-
         public static final String CHILD_SCHEDULE_DPT_BOOSTER1 = "DPT Booster 1";
         public static final String CHILD_SCHEDULE_DPT_BOOSTER2 = "DPT Booster 2";
 
