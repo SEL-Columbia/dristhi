@@ -5,8 +5,8 @@
         {
             "name": "measlesbooster",
             "scheduleWindows": {
-                "earliest": ["7 Months"],
-                "due": ["13 Months"],
+                "earliest": ["16 Months"],
+                "due": ["24 Months"],
                 "late": ["5 Years"],
                 "max": [""]
             },
