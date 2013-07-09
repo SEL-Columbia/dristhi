@@ -1,6 +1,6 @@
 {
     "name": "Measles Booster",
-    "absolute": false,
+    "absolute": true,
     "milestones": [
         {
             "name": "measlesbooster",
@@ -8,32 +8,26 @@
                 "earliest": ["16 Months"],
                 "due": ["24 Months"],
                 "late": ["5 Years"],
-                "max": [""]
+                "max": ["5 Years"]
             },
             "alerts": [
                 {
-                    "window": "due",
+                    "window": "earliest",
                     "offset": ["0 Days"],
-                    "interval": ["1 Week"],
-                    "count": "27"
+                    "interval": ["1 Day"],
+                    "count": "486"
                 },
                 {
                     "window": "due",
-                    "offset": ["3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "27"
+                    "offset": ["16 Months"],
+                    "interval": ["1 Day"],
+                    "count": "243"
                 },
                 {
                     "window": "late",
-                    "offset": ["0 Days"],
-                    "interval": ["1 Week"],
-                    "count": "204"
-                },
-                {
-                    "window": "late",
-                    "offset": ["3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "204"
+                    "offset": ["24 Months"],
+                    "interval": ["1 Day"],
+                    "count": "1095"
                 }
             ]
         }

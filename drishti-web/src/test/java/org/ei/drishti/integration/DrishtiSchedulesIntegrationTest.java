@@ -173,11 +173,13 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
     @Test
     public void shouldProvideAlertForMeaslesBoosterVaccination() throws Exception {
-        schedule.enrollFor(CHILD_SCHEDULE_MEASLES_BOOSTER, newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor(CHILD_SCHEDULE_MEASLES_BOOSTER, newDate(2012, JANUARY, 1), new Time(14, 0));
 
-        schedule.assertNoAlerts(MEASLES_BOOSTER_VALUE, earliest);
-        schedule.assertAlertsStartWith(MEASLES_BOOSTER_VALUE, due, date(1, AUGUST), date(4, AUGUST), date(8, AUGUST), date(11, AUGUST));
-        schedule.assertAlertsStartWith(MEASLES_BOOSTER_VALUE, late, dateWithYear(1, FEBRUARY, 2013), dateWithYear(4, FEBRUARY, 2013), dateWithYear(8, FEBRUARY, 2013));
+        schedule.assertAlertsStartWith(MEASLES_BOOSTER_VALUE, earliest, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY));
+        schedule.assertAlertsStartWith(MEASLES_BOOSTER_VALUE, due, dateWithYear(1, MAY, 2013),
+                            dateWithYear(2, MAY, 2013), dateWithYear(3, MAY, 2013), dateWithYear(4, MAY, 2013));
+        schedule.assertAlertsStartWith(MEASLES_BOOSTER_VALUE, late, dateWithYear(1, JANUARY, 2014),
+                dateWithYear(2, JANUARY, 2014), dateWithYear(3, JANUARY, 2014));
         schedule.assertNoAlerts(MEASLES_BOOSTER_VALUE, max);
 
         visualization.outputTo("child-measles-booster.html", 4);
