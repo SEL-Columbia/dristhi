@@ -161,7 +161,7 @@
         <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>motech-schedule-testing</artifactId>
-            <version>0.12-DRISTHI</version>
+            <version>0.12-DRISTHI-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
