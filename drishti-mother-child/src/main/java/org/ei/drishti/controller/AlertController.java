@@ -37,7 +37,12 @@ public class AlertController {
                 CHILD_SCHEDULE_MEASLES,
                 CHILD_SCHEDULE_MEASLES_BOOSTER,
 
-                CHILD_SCHEDULE_OPV);
+                CHILD_SCHEDULE_OPV_0,
+                CHILD_SCHEDULE_OPV_1,
+                CHILD_SCHEDULE_OPV_2,
+                CHILD_SCHEDULE_OPV_3,
+                CHILD_SCHEDULE_OPV_BOOSTER
+                );
     }
 
     private Matcher motherSchedules() {

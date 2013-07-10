@@ -126,35 +126,58 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldProvideAlertsForOPV() throws Exception {
-        schedule.enrollFor(CHILD_SCHEDULE_OPV, newDate(2012, 1, 1), new Time(14, 0));
+    public void shouldProvideAlertsForOPV0AndOPV1() throws Exception {
+        schedule.enrollFor(CHILD_SCHEDULE_OPV_0_AND_1, newDate(2012, JANUARY, 1), new Time(14, 0));
 
         schedule.assertNoAlerts("opv_0", earliest);
-        schedule.assertAlertsStartWith("opv_0", due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
-                date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
-                date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
+        schedule.assertAlertsStartWith("opv_0", due, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY), date(4, JANUARY));
         schedule.assertNoAlerts("opv_0", late);
         schedule.assertNoAlerts("opv_0", max);
 
-        schedule.assertNoAlerts("opv_1", earliest);
-        schedule.assertAlerts("opv_1", due, date(5, FEBRUARY), date(12, FEBRUARY));
-        schedule.assertAlertsStartWith("opv_1", late, date(19, FEBRUARY), date(22, FEBRUARY), date(26, FEBRUARY), date(29, FEBRUARY),
-                date(4, MARCH), date(7, MARCH));
+        schedule.assertAlertsStartWith("opv_1", earliest, date(16, JANUARY), date(17, JANUARY), date(18, JANUARY), date(19, JANUARY));
+        schedule.assertAlertsStartWith("opv_1", due, date(12, FEBRUARY), date(13, FEBRUARY), date(14, FEBRUARY), date(15, FEBRUARY));
+        schedule.assertAlertsStartWith("opv_1", late, date(26, FEBRUARY), date(27, FEBRUARY), date(28, FEBRUARY), date(29, FEBRUARY));
         schedule.assertNoAlerts("opv_1", max);
 
-        schedule.assertNoAlerts("opv_2", earliest);
-        schedule.assertAlerts("opv_2", due, date(4, MARCH), date(11, MARCH));
-        schedule.assertAlertsStartWith("opv_2", late, date(18, MARCH), date(21, MARCH), date(25, MARCH), date(28, MARCH),
-                date(1, APRIL), date(4, APRIL));
+        visualization.outputTo("child-opv-0-and-1.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForOPV2() throws Exception {
+        schedule.enrollFor("OPV 2", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertAlertsStartWith("opv_2", earliest, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY), date(4, JANUARY));
+        schedule.assertAlertsStartWith("opv_2", due, date(29, JANUARY), date(30, JANUARY), date(31, JANUARY), date(1, FEBRUARY));
+        schedule.assertAlertsStartWith("opv_2", late, date(12, FEBRUARY), date(13, FEBRUARY), date(14, FEBRUARY), date(15, FEBRUARY));
         schedule.assertNoAlerts("opv_2", max);
 
-        schedule.assertNoAlerts("opv_3", earliest);
-        schedule.assertAlerts("opv_3", due, date(1, APRIL), date(8, APRIL));
-        schedule.assertAlertsStartWith("opv_3", late, date(15, APRIL), date(18, APRIL), date(22, APRIL), date(25, APRIL),
-                date(29, APRIL), date(2, MAY));
+        visualization.outputTo("child-opv-2.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForOPV3() throws Exception {
+        schedule.enrollFor("OPV 3", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertAlertsStartWith("opv_3", earliest, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY), date(4, JANUARY));
+        schedule.assertAlertsStartWith("opv_3", due, date(29, JANUARY), date(30, JANUARY), date(31, JANUARY), date(1, FEBRUARY));
+        schedule.assertAlertsStartWith("opv_3", late, date(12, FEBRUARY), date(13, FEBRUARY), date(14, FEBRUARY), date(15, FEBRUARY));
         schedule.assertNoAlerts("opv_3", max);
 
-        visualization.outputTo("child-opv.html", 1);
+        visualization.outputTo("child-opv-3.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForOPVBooster() throws Exception {
+        schedule.enrollFor("OPV BOOSTER", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertNoAlerts("opvbooster", earliest);
+        schedule.assertAlertsStartWith("opvbooster", due, dateWithYear(1, MAY, 2013),
+                dateWithYear(2, MAY, 2013), dateWithYear(3, MAY, 2013), dateWithYear(4, MAY, 2013));
+        schedule.assertAlertsStartWith("opvbooster", late, dateWithYear(1, JANUARY, 2014),
+                dateWithYear(2, JANUARY, 2014), dateWithYear(3, JANUARY, 2014));
+        schedule.assertNoAlerts("opvbooster", max);
+
+        visualization.outputTo("child-opv-booster.html", 1);
     }
 
     @Test

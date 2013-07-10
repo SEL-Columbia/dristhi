@@ -85,9 +85,25 @@ public class AlertControllerRoutesTest {
         Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", late).shouldRouteToAlertCreationActionForChild();
 
-        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", earliest).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_OPV, "OPV 1", late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_0, "opv_0", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_0, "opv_0", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_0, "opv_0", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_OPV_1, "opv_1", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_1, "opv_1", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_1, "opv_1", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_OPV_2, "opv_2", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_2, "opv_2", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_2, "opv_2", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_OPV_3, "opv_3", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_3, "opv_3", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_3, "opv_3", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_OPV_BOOSTER, "opvbooster", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_BOOSTER, "opvbooster", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_BOOSTER, "opvbooster", late).shouldRouteToAlertCreationActionForChild();
     }
 
     @Test
