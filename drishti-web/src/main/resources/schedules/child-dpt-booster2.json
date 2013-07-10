@@ -1,39 +1,20 @@
 {
     "name": "DPT Booster 2",
-    "absolute": false,
+    "absolute": true,
     "milestones": [
         {
             "name": "dptbooster_2",
             "scheduleWindows": {
-                "earliest": ["36 Months"],
-                "due": ["40 Months"],
-                "late": ["5 Years"],
-                "max": [""]
+                "earliest": ["5 Years"],
+                "due": ["7 Years"],
+                "max": ["7 Years"]
             },
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["0 Days"],
-                    "interval": ["1 Week"],
-                    "count": "17"
-                },
-                {
-                    "window": "due",
-                    "offset": ["3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "17"
-                },
-                {
-                    "window": "late",
-                    "offset": ["0 Days"],
-                    "interval": ["1 Week"],
-                    "count": "88"
-                },
-                {
-                    "window": "late",
-                    "offset": ["3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "88"
+                    "offset": ["5 Years"],
+                    "interval": ["1 Day"],
+                    "count": "730"
                 }
             ]
         }

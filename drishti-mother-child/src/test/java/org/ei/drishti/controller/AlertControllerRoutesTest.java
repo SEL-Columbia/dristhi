@@ -85,6 +85,14 @@ public class AlertControllerRoutesTest {
         Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_MEASLES_BOOSTER, "Measles Booster", late).shouldRouteToAlertCreationActionForChild();
 
+        Event.of(CHILD_SCHEDULE_DPT_BOOSTER1, "dptbooster_1", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT_BOOSTER1, "dptbooster_1", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT_BOOSTER1, "dptbooster_1", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_DPT_BOOSTER2, "dptbooster_2", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT_BOOSTER2, "dptbooster_2", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_DPT_BOOSTER2, "dptbooster_2", late).shouldRouteToAlertCreationActionForChild();
+
         Event.of(CHILD_SCHEDULE_OPV_0, "opv_0", earliest).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_OPV_0, "opv_0", due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_OPV_0, "opv_0", late).shouldRouteToAlertCreationActionForChild();

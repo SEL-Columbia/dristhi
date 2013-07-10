@@ -219,13 +219,14 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("child-dpt-booster1.html", 4);
     }
 
-    @Ignore
+    @Test
     public void shouldProvideAlertForDPTBooster2Vaccination() throws Exception {
         schedule.enrollFor(CHILD_SCHEDULE_DPT_BOOSTER2, newDate(2012, 1, 1), new Time(14, 0));
 
         schedule.assertNoAlerts(DPT_BOOSTER_2_VALUE, earliest);
-        schedule.assertAlertsStartWith(DPT_BOOSTER_2_VALUE, due, dateWithYear(1, JANUARY, 2015), dateWithYear(4, JANUARY, 2015), dateWithYear(8, JANUARY, 2015));
-        schedule.assertAlertsStartWith(DPT_BOOSTER_2_VALUE, late, dateWithYear(1, OCTOBER, 2015), dateWithYear(4, OCTOBER, 2015), dateWithYear(8, OCTOBER, 2015));
+        schedule.assertAlertsStartWith(DPT_BOOSTER_2_VALUE, due, dateWithYear(1, JANUARY, 2017),
+                                    dateWithYear(2, JANUARY, 2017), dateWithYear(3, JANUARY, 2017));
+        schedule.assertNoAlerts(DPT_BOOSTER_2_VALUE, late);
         schedule.assertNoAlerts(DPT_BOOSTER_2_VALUE, max);
 
         visualization.outputTo("child-dpt-booster2.html", 4);

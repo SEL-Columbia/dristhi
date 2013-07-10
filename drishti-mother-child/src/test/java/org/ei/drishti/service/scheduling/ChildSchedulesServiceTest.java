@@ -177,6 +177,22 @@ public class ChildSchedulesServiceTest {
     }
 
     @Test
+    public void shouldUpdateEnrollmentForDPTBoosters() {
+        new TestForChildEnrollmentAndUpdate()
+                .givenEnrollmentIn(CHILD_SCHEDULE_DPT_BOOSTER1, "dptbooster_1")
+                .whenProvidedWithImmunizations("dptbooster_1")
+                .shouldFulfillWithFulfillmentDateAsImmunizationDate(CHILD_SCHEDULE_DPT_BOOSTER1, 1)
+                .shouldEnrollWithEnrollmentDateAsImmunizationDate(CHILD_SCHEDULE_DPT_BOOSTER2)
+                .shouldNotEnrollAndFulfillAnythingElse();
+
+        new TestForChildEnrollmentAndUpdate()
+                .givenEnrollmentIn(CHILD_SCHEDULE_DPT_BOOSTER2, "dptbooster_2")
+                .whenProvidedWithImmunizations("dptbooster_2")
+                .shouldFulfillWithFulfillmentDateAsImmunizationDate(CHILD_SCHEDULE_DPT_BOOSTER2, 1)
+                .shouldNotEnrollAndFulfillAnythingElse();
+    }
+
+    @Test
     public void shouldUpdateEnrollmentsWhenMultipleDifferentKindsOfEnrollmentsArePresent() {
         new TestForChildEnrollmentAndUpdate()
                 .givenEnrollmentIn(CHILD_SCHEDULE_BCG, BCG_VALUE)
