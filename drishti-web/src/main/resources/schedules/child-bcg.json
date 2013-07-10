@@ -1,29 +1,29 @@
 {
     "name": "BCG",
-    "absolute": false,
+    "absolute": true,
     "milestones": [
         {
             "name": "bcg",
             "scheduleWindows": {
-                "earliest": ["2 Weeks"],
-                "due": ["100 Weeks"],
-                "late": [""],
-                "max": [""]
+                "earliest": ["0 Days"],
+                "due": ["2 Weeks"],
+                "late": ["1 Year"],
+                "max": ["1 Year"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
-                    "interval": ["1 Week"],
-                    "count": "100"
+                    "interval": ["1 Day"],
+                    "count": "14"
                 },
                 {
-                    "window": "due",
-                    "offset": ["3 Days"],
-                    "interval": ["1 Week"],
-                    "count": "100"
+                    "window": "late",
+                    "offset": ["2 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "350"
                 }
             ]
         }
-   ]
+    ]
 }

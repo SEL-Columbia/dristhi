@@ -114,13 +114,12 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
     @Test
     public void shouldProvideAlertsForBCG() throws Exception {
-        schedule.enrollFor(CHILD_SCHEDULE_BCG, newDate(2012, 1, 1), new Time(14, 0));
+        schedule.enrollFor(CHILD_SCHEDULE_BCG, newDate(2012, JANUARY, 1), new Time(14, 0));
 
         schedule.assertNoAlerts(BCG_VALUE, earliest);
-        schedule.assertAlertsStartWith(BCG_VALUE, due, date(15, JANUARY), date(18, JANUARY), date(22, JANUARY), date(25, JANUARY),
-                date(29, JANUARY), date(1, FEBRUARY), date(5, FEBRUARY), date(8, FEBRUARY), date(12, FEBRUARY),
-                date(15, FEBRUARY), date(19, FEBRUARY), date(22, FEBRUARY));
-        schedule.assertNoAlerts(BCG_VALUE, late);
+        schedule.assertAlertsStartWith(BCG_VALUE, due, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY),
+                date(4, JANUARY));
+        schedule.assertAlertsStartWith(BCG_VALUE, late, date(15, JANUARY), date(16, JANUARY), date(17, JANUARY), date(18, JANUARY));
         schedule.assertNoAlerts(BCG_VALUE, max);
 
         visualization.outputTo("child-bcg.html", 1);
@@ -171,13 +170,13 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("child-measles.html", 4);
     }
 
-    @Test
+    @Ignore
     public void shouldProvideAlertForMeaslesBoosterVaccination() throws Exception {
         schedule.enrollFor(CHILD_SCHEDULE_MEASLES_BOOSTER, newDate(2012, JANUARY, 1), new Time(14, 0));
 
         schedule.assertAlertsStartWith(MEASLES_BOOSTER_VALUE, earliest, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY));
         schedule.assertAlertsStartWith(MEASLES_BOOSTER_VALUE, due, dateWithYear(1, MAY, 2013),
-                            dateWithYear(2, MAY, 2013), dateWithYear(3, MAY, 2013), dateWithYear(4, MAY, 2013));
+                dateWithYear(2, MAY, 2013), dateWithYear(3, MAY, 2013), dateWithYear(4, MAY, 2013));
         schedule.assertAlertsStartWith(MEASLES_BOOSTER_VALUE, late, dateWithYear(1, JANUARY, 2014),
                 dateWithYear(2, JANUARY, 2014), dateWithYear(3, JANUARY, 2014));
         schedule.assertNoAlerts(MEASLES_BOOSTER_VALUE, max);
