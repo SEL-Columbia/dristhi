@@ -7,15 +7,20 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class AllActions extends MotechBaseRepository<Action> {
+    private static Logger logger = LoggerFactory.getLogger(AllActions.class.toString());
+
     @Autowired
     protected AllActions(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
         super(Action.class, db);
@@ -34,8 +39,8 @@ public class AllActions extends MotechBaseRepository<Action> {
                     "emit([doc.anmIdentifier, doc.caseID, doc.data.scheduleName], null)} " +
                     "}")
     public List<Action> findAlertByANMIdEntityIdScheduleName(String anmIdentifier, String caseID, String scheduleName) {
-        ComplexKey startKey = ComplexKey.of(anmIdentifier, caseID, scheduleName);
-        return db.queryView(createQuery("action_by_anm_entityId_scheduleName").key(startKey).includeDocs(true), Action.class);
+        ComplexKey key = ComplexKey.of(anmIdentifier, caseID, scheduleName);
+        return db.queryView(createQuery("action_by_anm_entityId_scheduleName").key(key).includeDocs(true), Action.class);
     }
 
     public void deleteAllByTarget(String target) {
@@ -66,5 +71,17 @@ public class AllActions extends MotechBaseRepository<Action> {
             deleteDocuments.add(BulkDeleteDocument.of(action));
         }
         db.executeBulk(deleteDocuments);
+    }
+
+    public void addOrUpdateAlert(Action alertAction) {
+        List<Action> existingAlerts = findAlertByANMIdEntityIdScheduleName(alertAction.anmIdentifier(), alertAction.caseId(), alertAction.data().get("scheduleName"));
+        if (existingAlerts.size() > 1) {
+            logger.warn(MessageFormat.format("Found more than one alert for the combination of anmId: {0}, entityId: {1} and scheduleName : {2}. Alerts : {3}",
+                    alertAction.anmIdentifier(), alertAction.caseId(), alertAction.data().get("scheduleName"), existingAlerts));
+        }
+        for (Action existingAlert : existingAlerts) {
+            safeRemove(existingAlert);
+        }
+        add(alertAction);
     }
 }

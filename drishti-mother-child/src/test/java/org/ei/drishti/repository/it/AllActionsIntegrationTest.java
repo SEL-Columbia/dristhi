@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 
@@ -130,6 +130,29 @@ public class AllActionsIntegrationTest {
         assertEquals(asList(anotherScheduleAction), allActions.findAlertByANMIdEntityIdScheduleName("anm id 1", "entity id 1", "schedule2"));
         assertEquals(asList(anotherEntityAction), allActions.findAlertByANMIdEntityIdScheduleName("anm id 1", "entity id 2", "schedule1"));
         assertEquals(asList(anotherANMAction), allActions.findAlertByANMIdEntityIdScheduleName("anm id 2", "entity id 2", "schedule2"));
+    }
+
+    @Test
+    public void shouldRemoveExistingAlertBeforeAddingNewOne() throws Exception {
+        Action existingAlert = new Action("entity id 1", "anm id 1", alert("schedule1", "milestone1"));
+        Action existingDifferentScheduleAlert = new Action("entity id 1", "anm id 1", alert("schedule2", "milestone3"));
+        allActions.add(existingAlert);
+        allActions.add(existingDifferentScheduleAlert);
+
+        Action newAlert = new Action("entity id 1", "anm id 1", alert("schedule1", "milestone2"));
+        allActions.addOrUpdateAlert(newAlert);
+
+        assertFalse(allActions.contains(existingAlert.getId()));
+        assertTrue(allActions.contains(existingDifferentScheduleAlert.getId()));
+        assertEquals(allActions.findAlertByANMIdEntityIdScheduleName("anm id 1", "entity id 1", "schedule1").get(0).getId(), newAlert.getId());
+    }
+
+    @Test
+    public void shouldAddNewAlertWhenThereIsNoExistingAlert() throws Exception {
+        Action newAlert = new Action("entity id 1", "anm id 1", alert("schedule1", "milestone2"));
+        allActions.addOrUpdateAlert(newAlert);
+
+        assertTrue(allActions.contains(newAlert.getId()));
     }
 
     private ActionData alert() {

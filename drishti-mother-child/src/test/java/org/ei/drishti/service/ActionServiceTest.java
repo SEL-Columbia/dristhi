@@ -12,7 +12,6 @@ import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -57,7 +56,18 @@ public class ActionServiceTest {
         DateTime expiryDate = dueDate.plusWeeks(2);
         service.alertForBeneficiary(mother, "Case X", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
 
-        verify(allActions).add(new Action("Case X", "ANM ID M", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate)));
+        verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID M", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate)));
+    }
+
+    @Test
+    public void shouldDeleteExistingAlertBeforeCreatingNewOne() throws Exception {
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thayi 1").withAnm("ANM ID M"));
+
+        DateTime dueDate = DateTime.now().minusDays(1);
+        DateTime expiryDate = dueDate.plusWeeks(2);
+        service.alertForBeneficiary(mother, "Case X", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
+
+        verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID M", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate)));
     }
 
     @Test
@@ -68,7 +78,7 @@ public class ActionServiceTest {
         DateTime expiryDate = dueDate.plusWeeks(2);
         service.alertForBeneficiary(child, "Case X", "OPV", "OPV", normal, dueDate, expiryDate);
 
-        verify(allActions).add(new Action("Case X", "ANM ID C", ActionData.createAlert(child, "OPV", "OPV", normal, dueDate, expiryDate)));
+        verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID C", ActionData.createAlert(child, "OPV", "OPV", normal, dueDate, expiryDate)));
     }
 
     @Test
@@ -79,10 +89,10 @@ public class ActionServiceTest {
         DateTime expiryDate = dueDate.plusWeeks(2);
         service.alertForBeneficiary(ec, "Case X", "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate);
 
-        verify(allActions).add(new Action("Case X", "ANM ID C", ActionData.createAlert(ec, "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate)));
+        verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID C", ActionData.createAlert(ec, "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate)));
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionIfBeneficiaryTypeIsUnknown() throws Exception {
         service.alertForBeneficiary(null, "Case X", "Schedule name", "FP Complications", urgent, null, null);
     }
