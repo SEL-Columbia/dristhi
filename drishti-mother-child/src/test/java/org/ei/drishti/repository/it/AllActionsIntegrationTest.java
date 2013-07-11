@@ -11,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
-import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.dto.BeneficiaryType.mother;
 
@@ -117,7 +115,28 @@ public class AllActionsIntegrationTest {
         assertEquals(asList(alertAction), allActions.findByANMIDAndTimeStamp("ANM 1", 0));
     }
 
+    @Test
+    public void shouldReturnActionBasedOnANMIdEntityIdScheduleName() throws Exception {
+        Action anmAction = new Action("entity id 1", "anm id 1", alert("schedule1", "milestone1"));
+        Action anotherANMAction = new Action("entity id 2", "anm id 2", alert("schedule2", "milestone2"));
+        Action anotherEntityAction = new Action("entity id 2", "anm id 1", alert("schedule1", "milestone1"));
+        Action anotherScheduleAction = new Action("entity id 1", "anm id 1", alert("schedule2", "milestone1"));
+        allActions.add(anmAction);
+        allActions.add(anotherEntityAction);
+        allActions.add(anotherANMAction);
+        allActions.add(anotherScheduleAction);
+
+        assertEquals(asList(anmAction), allActions.findAlertByANMIdEntityIdScheduleName("anm id 1", "entity id 1", "schedule1"));
+        assertEquals(asList(anotherScheduleAction), allActions.findAlertByANMIdEntityIdScheduleName("anm id 1", "entity id 1", "schedule2"));
+        assertEquals(asList(anotherEntityAction), allActions.findAlertByANMIdEntityIdScheduleName("anm id 1", "entity id 2", "schedule1"));
+        assertEquals(asList(anotherANMAction), allActions.findAlertByANMIdEntityIdScheduleName("anm id 2", "entity id 2", "schedule2"));
+    }
+
     private ActionData alert() {
         return ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3));
+    }
+
+    private ActionData alert(String schedule, String milestone) {
+        return ActionData.createAlert(mother, schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
     }
 }

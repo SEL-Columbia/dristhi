@@ -28,6 +28,16 @@ public class AllActions extends MotechBaseRepository<Action> {
         return db.queryView(createQuery("action_by_anm_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
     }
 
+    @View(name = "action_by_anm_entityId_scheduleName",
+            map = "function(doc) { " +
+                    "if(doc.type === 'Action' && doc.actionTarget === 'alert' && doc.anmIdentifier && doc.caseID && doc.data && doc.data.scheduleName) {" +
+                    "emit([doc.anmIdentifier, doc.caseID, doc.data.scheduleName], null)} " +
+                    "}")
+    public List<Action> findAlertByANMIdEntityIdScheduleName(String anmIdentifier, String caseID, String scheduleName) {
+        ComplexKey startKey = ComplexKey.of(anmIdentifier, caseID, scheduleName);
+        return db.queryView(createQuery("action_by_anm_entityId_scheduleName").key(startKey).includeDocs(true), Action.class);
+    }
+
     public void deleteAllByTarget(String target) {
         deleteAll(findByActionTarget(target));
     }
