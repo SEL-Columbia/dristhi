@@ -193,6 +193,34 @@ public class ChildSchedulesServiceTest {
     }
 
     @Test
+    public void shouldUpdateEnrollmentForPentavalent() {
+        new TestForChildEnrollmentAndUpdate()
+                .givenEnrollmentIn(CHILD_SCHEDULE_PENTAVALENT_1, "pentavalent_1")
+                .whenProvidedWithImmunizations("pentavalent_1")
+                .shouldFulfillWithFulfillmentDateAsImmunizationDate(CHILD_SCHEDULE_PENTAVALENT_1, 1)
+                .shouldEnrollWithEnrollmentDateAsImmunizationDate(CHILD_SCHEDULE_PENTAVALENT_2)
+                .shouldNotEnrollAndFulfillAnythingElse();
+
+        new TestForChildEnrollmentAndUpdate()
+                .givenEnrollmentIn(CHILD_SCHEDULE_PENTAVALENT_2, "pentavalent_2")
+                .whenProvidedWithImmunizations("pentavalent_2")
+                .shouldFulfillWithFulfillmentDateAsImmunizationDate(CHILD_SCHEDULE_PENTAVALENT_2, 1)
+                .shouldEnrollWithEnrollmentDateAsImmunizationDate(CHILD_SCHEDULE_PENTAVALENT_3)
+                .shouldNotEnrollAndFulfillAnythingElse();
+
+        new TestForChildEnrollmentAndUpdate()
+                .givenEnrollmentIn(CHILD_SCHEDULE_PENTAVALENT_3, "pentavalent_3")
+                .whenProvidedWithImmunizations("pentavalent_3")
+                .shouldFulfillWithFulfillmentDateAsImmunizationDate(CHILD_SCHEDULE_PENTAVALENT_3, 1)
+                .shouldNotEnrollAndFulfillAnythingElse();
+
+        new TestForChildEnrollmentAndUpdate()
+                .givenEnrollmentIn(CHILD_SCHEDULE_PENTAVALENT_3, "pentavalent_3")
+                .whenProvidedWithImmunizations("SOME OTHER IMMUNIZATION")
+                .shouldNotEnrollAndFulfillAnythingElse();
+    }
+
+    @Test
     public void shouldUpdateEnrollmentsWhenMultipleDifferentKindsOfEnrollmentsArePresent() {
         new TestForChildEnrollmentAndUpdate()
                 .givenEnrollmentIn(CHILD_SCHEDULE_BCG, BCG_VALUE)

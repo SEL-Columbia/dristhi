@@ -150,6 +150,15 @@ public class ChildSchedulesService {
         List<String> opvBoosterMileStone = unmodifiableList(asList(OPV_BOOSTER_VALUE));
         final Schedule opvBooster = new Schedule(CHILD_SCHEDULE_OPV_BOOSTER, opvBoosterMileStone).withDependencyOn(opv3);
 
+        List<String> pentavalent1Milestone = unmodifiableList(asList(PENTAVALENT_1_VALUE));
+        final Schedule pentavalent1 = new Schedule(CHILD_SCHEDULE_PENTAVALENT_1, pentavalent1Milestone);
+
+        List<String> pentavalent2Milestone = unmodifiableList(asList(PENTAVALENT_2_VALUE));
+        final Schedule pentavalent2 = new Schedule(CHILD_SCHEDULE_PENTAVALENT_2, pentavalent2Milestone).withDependencyOn(pentavalent1);
+
+        List<String> pentavalent3Milestone = unmodifiableList(asList(PENTAVALENT_3_VALUE));
+        final Schedule pentavalent3 = new Schedule(CHILD_SCHEDULE_PENTAVALENT_3, pentavalent3Milestone).withDependencyOn(pentavalent2);
+
 
         childSchedules = unmodifiableMap(new HashMap<String, Schedule>() {{
             put(CHILD_SCHEDULE_BCG, bcg);
@@ -161,6 +170,9 @@ public class ChildSchedulesService {
             put(CHILD_SCHEDULE_OPV_2, opv2);
             put(CHILD_SCHEDULE_OPV_3, opv3);
             put(CHILD_SCHEDULE_OPV_BOOSTER, opvBooster);
+            put(CHILD_SCHEDULE_PENTAVALENT_1, pentavalent1);
+            put(CHILD_SCHEDULE_PENTAVALENT_2, pentavalent2);
+            put(CHILD_SCHEDULE_PENTAVALENT_3, pentavalent3);
         }});
     }
 }

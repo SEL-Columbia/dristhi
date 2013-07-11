@@ -41,7 +41,11 @@ public class AlertController {
                 CHILD_SCHEDULE_OPV_1,
                 CHILD_SCHEDULE_OPV_2,
                 CHILD_SCHEDULE_OPV_3,
-                CHILD_SCHEDULE_OPV_BOOSTER
+                CHILD_SCHEDULE_OPV_BOOSTER,
+
+                CHILD_SCHEDULE_PENTAVALENT_1,
+                CHILD_SCHEDULE_PENTAVALENT_2,
+                CHILD_SCHEDULE_PENTAVALENT_3
                 );
     }
 

@@ -225,11 +225,47 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
 
         schedule.assertNoAlerts(DPT_BOOSTER_2_VALUE, earliest);
         schedule.assertAlertsStartWith(DPT_BOOSTER_2_VALUE, due, dateWithYear(1, JANUARY, 2017),
-                                    dateWithYear(2, JANUARY, 2017), dateWithYear(3, JANUARY, 2017));
+                dateWithYear(2, JANUARY, 2017), dateWithYear(3, JANUARY, 2017));
         schedule.assertNoAlerts(DPT_BOOSTER_2_VALUE, late);
         schedule.assertNoAlerts(DPT_BOOSTER_2_VALUE, max);
 
         visualization.outputTo("child-dpt-booster2.html", 4);
+    }
+
+    @Test
+    public void shouldProvideAlertsForPentavalent1() throws Exception {
+        schedule.enrollFor(CHILD_SCHEDULE_PENTAVALENT_1, newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertAlertsStartWith("pentavalent_1", earliest, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY), date(4, JANUARY));
+        schedule.assertAlertsStartWith("pentavalent_1", due, date(12, FEBRUARY), date(13, FEBRUARY), date(14, FEBRUARY), date(15, FEBRUARY));
+        schedule.assertAlertsStartWith("pentavalent_1", late, date(26, FEBRUARY), date(27, FEBRUARY), date(28, FEBRUARY), date(29, FEBRUARY));
+        schedule.assertNoAlerts("pentavalent_1", max);
+
+        visualization.outputTo("child-pentavalent-1.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForPentavalent2() throws Exception {
+        schedule.enrollFor(CHILD_SCHEDULE_PENTAVALENT_2, newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertAlertsStartWith("pentavalent_2", earliest, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY), date(4, JANUARY));
+        schedule.assertAlertsStartWith("pentavalent_2", due, date(29, JANUARY), date(30, JANUARY), date(31, JANUARY));
+        schedule.assertAlertsStartWith("pentavalent_2", late, date(12, FEBRUARY), date(13, FEBRUARY), date(14, FEBRUARY), date(15, FEBRUARY));
+        schedule.assertNoAlerts("pentavalent_2", max);
+
+        visualization.outputTo("child-pentavalent-2.html", 1);
+    }
+
+    @Test
+    public void shouldProvideAlertsForPentavalent3() throws Exception {
+        schedule.enrollFor(CHILD_SCHEDULE_PENTAVALENT_3, newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertAlertsStartWith("pentavalent_3", earliest, date(1, JANUARY), date(2, JANUARY), date(3, JANUARY), date(4, JANUARY));
+        schedule.assertAlertsStartWith("pentavalent_3", due, date(29, JANUARY), date(30, JANUARY), date(31, JANUARY));
+        schedule.assertAlertsStartWith("pentavalent_3", late, date(12, FEBRUARY), date(13, FEBRUARY), date(14, FEBRUARY), date(15, FEBRUARY));
+        schedule.assertNoAlerts("pentavalent_3", max);
+
+        visualization.outputTo("child-pentavalent-3.html", 1);
     }
 
     @Test

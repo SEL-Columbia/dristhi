@@ -112,6 +112,18 @@ public class AlertControllerRoutesTest {
         Event.of(CHILD_SCHEDULE_OPV_BOOSTER, "opvbooster", earliest).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_OPV_BOOSTER, "opvbooster", due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_OPV_BOOSTER, "opvbooster", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_PENTAVALENT_1, "pentavalent_1", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_PENTAVALENT_1, "pentavalent_1", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_PENTAVALENT_1, "pentavalent_1", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_PENTAVALENT_2, "pentavalent_2", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_PENTAVALENT_2, "pentavalent_2", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_PENTAVALENT_2, "pentavalent_2", late).shouldRouteToAlertCreationActionForChild();
+
+        Event.of(CHILD_SCHEDULE_PENTAVALENT_3, "pentavalent_3", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_PENTAVALENT_3, "pentavalent_3", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_PENTAVALENT_3, "pentavalent_3", late).shouldRouteToAlertCreationActionForChild();
     }
 
     @Test

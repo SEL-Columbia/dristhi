@@ -17,6 +17,10 @@ public class DrishtiScheduleConstants {
         public static final String CHILD_SCHEDULE_OPV_2 = "OPV 2";
         public static final String CHILD_SCHEDULE_OPV_3 = "OPV 3";
         public static final String CHILD_SCHEDULE_OPV_BOOSTER = "OPV BOOSTER";
+
+        public static final String CHILD_SCHEDULE_PENTAVALENT_1 = "PENTAVALENT 1";
+        public static final String CHILD_SCHEDULE_PENTAVALENT_2 = "PENTAVALENT 2";
+        public static final String CHILD_SCHEDULE_PENTAVALENT_3 = "PENTAVALENT 3";
     }
 
     public static class MotherScheduleConstants {
