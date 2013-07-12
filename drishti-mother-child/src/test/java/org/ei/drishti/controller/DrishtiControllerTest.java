@@ -1,10 +1,9 @@
 package org.ei.drishti.controller;
 
 import org.ei.commcare.listener.CommCareFormSubmissionRouter;
-import org.ei.drishti.contract.*;
+import org.ei.drishti.contract.BirthPlanningRequest;
 import org.ei.drishti.service.ANCService;
 import org.ei.drishti.service.ChildService;
-import org.ei.drishti.service.DrishtiMCTSService;
 import org.ei.drishti.service.PNCService;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,8 +25,6 @@ public class DrishtiControllerTest {
     @Mock
     private ANCService ancService;
     @Mock
-    private DrishtiMCTSService mctsService;
-    @Mock
     private PNCService pncService;
     @Mock
     private ChildService childService;
@@ -36,17 +33,7 @@ public class DrishtiControllerTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new DrishtiController(dispatcher, ancService, childService, mctsService);
-    }
-
-    @Test
-    public void shouldDelegateToBothPNCServiceAndMCTSDuringChildCaseClose() {
-        ChildCloseRequest childCloseRequest = mock(ChildCloseRequest.class);
-
-        controller.closeChildCase(childCloseRequest, EXTRA_DATA);
-
-        verify(childService).closeChildCase(childCloseRequest, EXTRA_DATA);
-        verify(mctsService).closeChildCase(childCloseRequest);
+        controller = new DrishtiController(dispatcher, ancService);
     }
 
     @Test

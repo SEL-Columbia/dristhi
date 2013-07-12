@@ -71,5 +71,10 @@
         "id",
         "immunizationsGiven",
         "immunizationDate"
+    ],
+    "child_close": [
+        "id",
+        "closeReason",
+        "deathDate"
     ]
 }

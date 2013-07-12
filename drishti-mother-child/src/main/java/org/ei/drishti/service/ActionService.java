@@ -64,11 +64,6 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.updateBirthPlanning(details)));
     }
 
-    public void closeChild(String caseId, String anmIdentifier) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.deleteChild()));
-        allActions.markAllAsInActiveFor(caseId);
-    }
-
     public void reportForIndicator(String anmIdentifier, ActionData actionData) {
         allActions.add(new Action("", anmIdentifier, actionData));
     }

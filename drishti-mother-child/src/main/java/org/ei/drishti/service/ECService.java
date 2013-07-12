@@ -157,5 +157,6 @@ public class ECService {
         logger.info("Closing EC : " + submission);
 
         allEligibleCouples.close(submission.entityId());
+        //#TODO: actionService.markAllAlertsAsInactive(submission.entityId());
     }
 }

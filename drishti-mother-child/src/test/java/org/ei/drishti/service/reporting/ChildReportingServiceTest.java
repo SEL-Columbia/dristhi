@@ -272,6 +272,8 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldReportCloseChildCaseWhenReasonIsDeath() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
 
@@ -281,6 +283,8 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldReportEarlyNeonatalMortalityDeath() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-07"));
 
@@ -290,6 +294,8 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldNotReportEarlyNeonatalMortalityDeathIfDateOfDeathIsAfterOneWeekOfBirth() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-08"));
 
@@ -299,6 +305,8 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldReportNeonatalMortalityDeath() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-28"));
 
@@ -308,6 +316,8 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldNotReportNeonatalMortalityDeathIfDateOfDeathIsAfterOneWeekOfBirth() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-29"));
 
@@ -317,6 +327,8 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldReportLateMortalityWithin29DaysAnd1YearOfBirth() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-29"));
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-12-31"));
@@ -328,6 +340,8 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldNotReportLateMortalityIfNotWithin29DaysAnd1YearOfBirth() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-28"));
         service.closeChild(reportDataForCloseChild("death_of_child", "2013-01-01"));
@@ -339,6 +353,8 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldReportChildMortalityWithin7DaysAnd1YearOfBirth() throws Exception {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-08"));
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-12-31"));
@@ -350,6 +366,8 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldReportChildMortalityWithin5YearOfBirth() throws Exception {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2016-12-31"));
 
@@ -359,6 +377,8 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldNotReportChildMortalityAfter5YearOfBirth() throws Exception {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2017-01-01"));
 
@@ -368,6 +388,8 @@ public class ChildReportingServiceTest {
     @Test
     public void shouldNotReportCloseChildCaseWhenReasonIsNotDeath() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("child_over5", "2012-03-05"));
 
@@ -404,7 +426,7 @@ public class ChildReportingServiceTest {
         SafeMap reportingData = new SafeMap();
         reportingData.put("caseId", "CASE X");
         reportingData.put("closeReason", closeReason);
-        reportingData.put("diedOn", closeDate);
+        reportingData.put("deathDate", closeDate);
         return reportingData;
     }
 

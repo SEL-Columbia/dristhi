@@ -132,20 +132,6 @@ public class ActionServiceTest {
     }
 
     @Test
-    public void shouldAddDeleteActionForChildClose() throws Exception {
-        service.closeChild("Case X", "ANM X");
-
-        verify(allActions).add(new Action("Case X", "ANM X", ActionData.deleteChild()));
-    }
-
-    @Test
-    public void shouldMarkInActiveForChildClose() throws Exception {
-        service.closeChild("Case X", "ANM X");
-
-        verify(allActions).markAllAsInActiveFor("Case X");
-    }
-
-    @Test
     public void shouldSendBirthPlanningUpdates() {
         Map<String, String> details = mapOf("aKey", "aValue");
 

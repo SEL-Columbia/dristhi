@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.contract.ChildCloseRequest;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -50,7 +49,8 @@ public class ChildServiceTest extends BaseUnitTest {
     @Mock
     private ReportFieldsDefinition reportFieldsDefinition;
     private ChildService service;
-    private Map<String, Map<String, String>> EXTRA_DATA = create("details", mapOf("someKey", "someValue")).put("reporting", mapOf("someKey", "someValue")).map();
+    private Map<String, Map<String, String>> EXTRA_DATA = create("details", mapOf("someKey", "someValue"))
+            .put("reporting", mapOf("someKey", "someValue")).put("child_close", mapOf("someKey", "someValue")).map();
 
     @Before
     public void setUp() throws Exception {
@@ -227,47 +227,79 @@ public class ChildServiceTest extends BaseUnitTest {
     public void shouldCreateACloseChildActionForChildCaseClose() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(children.childExists("Case X")).thenReturn(true);
+        FormSubmission submission = create()
+                .withFormName("child_close")
+                .withANMId("anm id 1")
+                .withEntityId("child id 1")
+                .build();
 
-        service.closeChildCase(new ChildCloseRequest("Case X", "DEMO ANM"), EXTRA_DATA);
+        when(children.childExists("child id 1")).thenReturn(true);
 
-        verify(actionService).closeChild("Case X", "DEMO ANM");
+        service.closeChild(submission);
+
+        verify(actionService).markAllAlertsAsInactive("child id 1");
     }
 
     @Test
     public void shouldUnenrollChildWhoseCaseHasBeenClosed() {
-        when(children.childExists("Case X")).thenReturn(true);
+        FormSubmission submission = create()
+                .withFormName("child_close")
+                .withANMId("anm id 1")
+                .withEntityId("child id 1")
+                .build();
 
-        service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"), EXTRA_DATA);
+        when(children.childExists("child id 1")).thenReturn(true);
 
-        verify(childSchedulesService).unenrollChild("Case X");
+        service.closeChild(submission);
+
+        verify(childSchedulesService).unenrollChild("child id 1");
     }
 
     @Test
     public void shouldReportWhenChildCaseIsClosed() {
-        when(children.childExists("Case X")).thenReturn(true);
+        FormSubmission submission = create()
+                .withFormName("child_close")
+                .withANMId("anm id 1")
+                .withEntityId("child id 1")
+                .addFormField("someKey", "someValue")
+                .build();
 
-        service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"), EXTRA_DATA);
+        when(children.childExists("child id 1")).thenReturn(true);
+        when(reportFieldsDefinition.get("child_close")).thenReturn(asList("someKey"));
 
-        verify(childReportingService).closeChild(new SafeMap(EXTRA_DATA.get("reporting")));
+        service.closeChild(submission);
+
+        verify(childReportingService).closeChild(new SafeMap(EXTRA_DATA.get("child_close")));
     }
 
     @Test
     public void shouldCloseWhenChildCaseIsClosed() {
-        when(children.childExists("Case X")).thenReturn(true);
+        FormSubmission submission = create()
+                .withFormName("child_close")
+                .withANMId("anm id 1")
+                .withEntityId("child id 1")
+                .build();
 
-        service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"), EXTRA_DATA);
+        when(children.childExists("child id 1")).thenReturn(true);
 
-        verify(children).close("Case X");
+        service.closeChild(submission);
+
+        verify(children).close("child id 1");
     }
 
     @Test
     public void shouldNotDoAnythingIfChildDoesNotExistsDuringClose() {
-        when(children.childExists("Case X")).thenReturn(false);
+        FormSubmission submission = create()
+                .withFormName("child_close")
+                .withANMId("anm id 1")
+                .withEntityId("child id 1")
+                .build();
 
-        service.closeChildCase(new ChildCloseRequest("Case X", "ANM Y"), EXTRA_DATA);
+        when(children.childExists("child id 1")).thenReturn(false);
 
-        verify(children).childExists("Case X");
+        service.closeChild(submission);
+
+        verify(children).childExists("child id 1");
         verifyZeroInteractions(childReportingService);
         verifyZeroInteractions(childSchedulesService);
         verifyZeroInteractions(actionService);

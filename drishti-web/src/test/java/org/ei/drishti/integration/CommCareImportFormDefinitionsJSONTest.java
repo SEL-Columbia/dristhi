@@ -33,7 +33,6 @@ public class CommCareImportFormDefinitionsJSONTest {
         Map<String, Class<?>> classEveryFormMappingConvertsTo = new HashMap<>();
 
         classEveryFormMappingConvertsTo.put("updateBirthPlanning", BirthPlanningRequest.class);
-        classEveryFormMappingConvertsTo.put("closeChildCase", ChildCloseRequest.class);
 
         assertEveryFormDefinitionInTheJSONHasBeenRepresentedInThisTest(classEveryFormMappingConvertsTo);
         assertThatTheControllerHasTheMethodsCorrespondingToTheseFormNames(DrishtiController.class, classEveryFormMappingConvertsTo);

@@ -16,14 +16,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildCloseCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.ChildCloseFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
 import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.Form.*;
+import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
+import static org.ei.drishti.common.AllConstants.Form.ID;
 import static org.ei.drishti.common.AllConstants.Report.*;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.joda.time.LocalDate.parse;
@@ -107,27 +111,28 @@ public class ChildReportingService {
     }
 
     public void closeChild(SafeMap reportData) {
-        if (!DEATH_OF_CHILD_COMMCARE_VALUE.equals(reportData.get(CLOSE_REASON_COMMCARE_FIELD_NAME))) {
+        if (!DEATH_OF_CHILD_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME))) {
             return;
         }
 
         Child child = allChildren.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+        Location location = loadLocationOfChild(child);
         LocalDate childDateOfBirth = parse(child.dateOfBirth());
-        String diedOn = reportData.get(DATE_OF_DEATH_COMMCARE_FIELD_NAME);
+        String diedOn = reportData.get(DATE_OF_DEATH_FIELD_NAME);
         LocalDate diedOnDate = parse(diedOn);
 
         if (childDateOfBirth.plusDays(CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS).isAfter(diedOnDate)) {
-            reportToBoth(child, ENM, diedOn);
+            reportToBoth(child, ENM, diedOn, location);
         }
         if (childDateOfBirth.plusDays(CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS).isAfter(diedOnDate)) {
-            reportToBoth(child, NM, diedOn);
-            reportToBoth(child, INFANT_MORTALITY, diedOn);
+            reportToBoth(child, NM, diedOn, location);
+            reportToBoth(child, INFANT_MORTALITY, diedOn, location);
         } else if (childDateOfBirth.plusYears(INFANT_MORTALITY_THRESHOLD_IN_YEARS).isAfter(diedOnDate)) {
-            reportToBoth(child, LNM, diedOn);
-            reportToBoth(child, INFANT_MORTALITY, diedOn);
+            reportToBoth(child, LNM, diedOn, location);
+            reportToBoth(child, INFANT_MORTALITY, diedOn, location);
         }
         if (childDateOfBirth.plusYears(CHILD_MORTALITY_THRESHOLD_IN_YEARS).isAfter(diedOnDate)) {
-            reportToBoth(child, CHILD_MORTALITY, diedOn);
+            reportToBoth(child, CHILD_MORTALITY, diedOn, location);
         } else {
             logger.warn("Not reporting for child with CaseID" + child.caseId() + "because child's age is more than " + CHILD_MORTALITY_THRESHOLD_IN_YEARS + " years.");
         }

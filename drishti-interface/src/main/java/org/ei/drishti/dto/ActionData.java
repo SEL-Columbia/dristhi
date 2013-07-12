@@ -37,10 +37,6 @@ public class ActionData {
                 .withDetails(details);
     }
 
-    public static ActionData deleteChild() {
-        return new ActionData("child", "deleteChild");
-    }
-
     public static ActionData reportForIndicator(String indicator, String annualTarget, String monthSummaries) {
         return new ActionData("report", indicator)
                 .with("annualTarget", annualTarget)

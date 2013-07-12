@@ -55,6 +55,7 @@ public class ChildSchedulesService {
         updateMilestonesForEnrolledSchedules(child.caseId(), child.anmIdentifier(), child.immunizationsGiven(), child.immunizationDate());
     }
 
+    //#TODO: Remove this duplicated code
     public void unenrollChild(String id) {
         List<EnrollmentRecord> openEnrollments = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(id).havingState(ACTIVE));
 
