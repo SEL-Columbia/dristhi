@@ -22,12 +22,11 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildCloseFields.*;
+import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
-import static org.ei.drishti.common.AllConstants.Form.ID;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
 import static org.ei.drishti.common.AllConstants.Report.*;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.joda.time.LocalDate.parse;
@@ -97,9 +96,9 @@ public class ChildReportingService {
     public void vitaminAProvided(SafeMap reportData) {
         Child child = allChildren.findByCaseId(reportData.get(ID));
 
-        if ("1".equals(reportData.get(VITAMIN_A_DOSE_COMMCARE_FIELD_NAME))) {
+        if ("1".equals(reportData.get(VITAMIN_A_DOSE_FIELD_NAME))) {
             reportToBoth(child, VIT_A_1, reportData.get(IMMUNIZATION_DATE_FIELD_NAME));
-        } else if ("2".equals(reportData.get(VITAMIN_A_DOSE_COMMCARE_FIELD_NAME))) {
+        } else if ("2".equals(reportData.get(VITAMIN_A_DOSE_FIELD_NAME))) {
             reportToBoth(child, VIT_A_2, reportData.get(IMMUNIZATION_DATE_FIELD_NAME));
         }
     }
@@ -115,7 +114,7 @@ public class ChildReportingService {
             return;
         }
 
-        Child child = allChildren.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
+        Child child = allChildren.findByCaseId(reportData.get(ID));
         Location location = loadLocationOfChild(child);
         LocalDate childDateOfBirth = parse(child.dateOfBirth());
         String diedOn = reportData.get(DATE_OF_DEATH_FIELD_NAME);

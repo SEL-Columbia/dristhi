@@ -9,9 +9,9 @@ import org.ei.drishti.util.SafeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.ei.drishti.common.AllConstants.CommonCommCareFields.CASE_ID_COMMCARE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
-import static org.ei.drishti.common.AllConstants.Form.ID;
+import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
 
 @Service
 public class ECReportingService {
@@ -26,15 +26,6 @@ public class ECReportingService {
 
     public void registerEC(SafeMap reportData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
-        reportFPMethod(reportData, couple);
-    }
-
-    public void updateFamilyPlanningMethod(SafeMap reportData) {
-        if (!FP_METHOD_CHANGED_COMMCARE_FIELD_VALUE.equals(reportData.get(FP_UPDATE_COMMCARE_FIELD_NAME))) {
-            return;
-        }
-
-        EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(CASE_ID_COMMCARE_FIELD_NAME));
         reportFPMethod(reportData, couple);
     }
 

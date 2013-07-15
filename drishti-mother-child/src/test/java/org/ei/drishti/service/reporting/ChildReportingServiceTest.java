@@ -424,7 +424,7 @@ public class ChildReportingServiceTest {
 
     private SafeMap reportDataForCloseChild(String closeReason, String closeDate) {
         SafeMap reportingData = new SafeMap();
-        reportingData.put("caseId", "CASE X");
+        reportingData.put("id", "CASE X");
         reportingData.put("closeReason", closeReason);
         reportingData.put("deathDate", closeDate);
         return reportingData;

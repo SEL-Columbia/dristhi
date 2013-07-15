@@ -60,7 +60,7 @@ public class ChildSchedulesService {
         List<EnrollmentRecord> openEnrollments = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(id).havingState(ACTIVE));
 
         for (EnrollmentRecord enrollment : openEnrollments) {
-            logger.info(format("Un-enrolling child from schedule: {0}, entityId: {0}", enrollment.getScheduleName(), id));
+            logger.info(format("Un-enrolling child from schedule: {0}, entityId: {1}", enrollment.getScheduleName(), id));
             scheduleTrackingService.unenroll(id, Arrays.asList(enrollment.getScheduleName()));
         }
     }

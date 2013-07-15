@@ -19,8 +19,7 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
-import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
-import static org.ei.drishti.common.AllConstants.CaseCloseCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
 import static org.ei.drishti.common.AllConstants.Form.*;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_DATE_FIELD_NAME;
@@ -73,19 +72,19 @@ public class MotherReportingService {
     }
 
     public void ancVisit(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
         Location location = loadLocationFromEC(mother);
         reportANC4Visit(reportData, mother, location);
     }
 
     public void ttProvided(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
         Location location = loadLocationFromEC(mother);
         reportTTVisit(reportData.get(TT_DOSE_FIELD), reportData.get(TT_DATE_FIELD), mother, location);
     }
 
     public void deliveryOutcome(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
         Location location = loadLocationFromEC(mother);
         reportPregnancyOutcome(reportData, mother, location);
         reportIfInstitutionalDelivery(reportData, mother, location);
@@ -95,16 +94,16 @@ public class MotherReportingService {
     }
 
     public void pncVisitHappened(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
         Location location = loadLocationFromEC(mother);
-        String visitNumber = reportData.get(AllConstants.PNCVisitCommCareFields.PNC_VISIT_NUMBER_COMMCARE_FIELD);
+        String visitNumber = reportData.get(AllConstants.PNCVisitFormFields.PNC_VISIT_NUMBER_FIELD_NAME);
         if (tryParse(visitNumber, 0) == 3) {
-            reportToBoth(mother, PNC3, reportData.get(AllConstants.PNCVisitCommCareFields.PNC_VISIT_DATE_COMMCARE_FIELD), location);
+            reportToBoth(mother, PNC3, reportData.get(AllConstants.PNCVisitFormFields.PNC_VISIT_DATE_FIELD_NAME), location);
         }
     }
 
     public void closeANC(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
         Location location = loadLocationFromEC(mother);
 
         if (DEATH_OF_WOMAN_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME)) &&
@@ -116,7 +115,7 @@ public class MotherReportingService {
     }
 
     public void closePNC(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
         Location location = loadLocationFromEC(mother);
 
         if (DEATH_OF_MOTHER_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME))

@@ -19,11 +19,11 @@ import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
-import static org.ei.drishti.common.AllConstants.ChildBirthCommCareFields.BF_POSTBIRTH_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationECFields.CHILD_ID;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
-import static org.ei.drishti.common.AllConstants.Form.ID;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
 
 @Service
 public class ChildService {

@@ -5,7 +5,6 @@ public class AllConstants {
 
     public static class Form {
         public static final String ENTITY_ID = "entityId";
-        public static final String ID = "id";
         public static final String ANM_ID = "anmId";
         public static final String FORM_NAME = "formName";
         public static final String INSTANCE_ID = "instanceId";
@@ -74,16 +73,6 @@ public class AllConstants {
         public static final String REFERENCE_DATE = "referenceDate";
         public static final String ANC_VISIT_DATE_FIELD = "ancVisitDate";
         public static final String ANC_VISIT_NUMBER_FIELD = "ancVisitNumber";
-    }
-
-    public static class HbTestFormFields {
-        public static final String HB_TEST_DATE_FIELD = "hbTestDate";
-        public static final String ANAEMIC_STATUS_FIELD = "anaemicStatus";
-    }
-
-    public static class ANCVisitCommCareFields {
-        public static final String VISIT_DATE_COMMCARE_FIELD = "visitDate";
-        public static final String VISIT_NUMBER_COMMCARE_FIELD = "visitNumber";
         public static final String TT1_DOSE_VALUE = "tt1";
         public static final String TT2_DOSE_VALUE = "tt2";
         public static final String TT_BOOSTER_DOSE_VALUE = "ttbooster";
@@ -91,33 +80,33 @@ public class AllConstants {
         public static final String TT_DATE_FIELD = "ttDate";
     }
 
-    public static class PNCVisitCommCareFields {
-        public static final String PNC_VISIT_DATE_COMMCARE_FIELD = "pncVisitDate";
-        public static final String PNC_VISIT_NUMBER_COMMCARE_FIELD = "pncVisitNumber";
+    public static class HbTestFormFields {
+        public static final String HB_TEST_DATE_FIELD = "hbTestDate";
+        public static final String ANAEMIC_STATUS_FIELD = "anaemicStatus";
     }
 
-    public static class CommonCommCareFields {
-        public static final String CASE_ID_COMMCARE_FIELD_NAME = "caseId";
-        public static final String SUBMISSION_DATE_COMMCARE_FIELD_NAME = "submissionDate";
-        public static final String HIGH_PRIORITY_COMMCARE_FIELD_NAME = "isHighPriority";
+    public static class PNCVisitFormFields {
+        public static final String PNC_VISIT_DATE_FIELD_NAME = "pncVisitDate";
+        public static final String PNC_VISIT_NUMBER_FIELD_NAME = "pncVisitNumber";
     }
 
-    public static class ChildBirthCommCareFields {
-        public static final String BIRTH_WEIGHT_FIELD_NAME = "weight";
-        public static final String DATE_OF_BIRTH_FIELD_NAME = "dateOfBirth";
-        public static final String BLOOD_GROUP_COMMCARE_FIELD_NAME = "childBloodGroup";
+    public static class CommonFormFields {
+        public static final String SUBMISSION_DATE_FIELD_NAME = "submissionDate";
+        public static final String ID = "id";
+    }
+
+    public static class ChildRegistrationFormFields {
         public static final String BF_POSTBIRTH_FIELD_NAME = "didBreastfeedingStart";
     }
 
-    public static class ChildCloseFields {
+    public static class ChildCloseFormFields {
         public static final String CLOSE_REASON_FIELD_NAME = "closeReason";
         public static final String DEATH_OF_CHILD_VALUE = "death_of_child";
         public static final String DATE_OF_DEATH_FIELD_NAME = "deathDate";
     }
 
-    public static class CaseCloseCommCareFields {
+    public static class EntityCloseFormFields {
         public static final String CLOSE_REASON_FIELD_NAME = "closeReason";
-        public static final String DEATH_DATE_COMMCARE_FIELD_NAME = "diedOn";
         public static final String ANC_DEATH_DATE_FIELD_NAME = "maternalDeathDate";
         public static final String IS_MATERNAL_LEAVE_FIELD_NAME = "isMaternalDeath";
     }
@@ -142,19 +131,9 @@ public class AllConstants {
         public static final String IS_EC_CLOSE_CONFIRMED_FIELD_NAME = "isECCloseConfirmed";
     }
 
-    public static class PNCCloseCommCareFields {
-        public static final String DEATH_OF_MOTHER_COMMCARE_VALUE = "death_of_mother";
-        public static final String PERMANENT_RELOCATION_COMMCARE_VALUE = "permanent_relocation";
-        public static final String END_OF_PP_PERIOD_COMMCARE_VALUE = "end_of_pp_period";
-    }
-
-    public static class FamilyPlanningCommCareFields {
+    public static class FamilyPlanningFormFields {
         public static final String CURRENT_FP_METHOD_FIELD_NAME = "currentMethod";
         public static final String FP_METHOD_CHANGE_DATE_FIELD_NAME = "familyPlanningMethodChangeDate";
-        public static final String NO_FP_METHOD_COMMCARE_FIELD_VALUE = "none";
-        public static final String FP_UPDATE_COMMCARE_FIELD_NAME = "fpUpdate";
-        public static final String IS_FP_METHOD_SAME_COMMCARE_FIELD_NAME = "isMethodSame";
-        public static final String FP_METHOD_CHANGED_COMMCARE_FIELD_VALUE = "change_fp_product";
         public static final String DMPA_INJECTION_DATE_FIELD_NAME = "dmpaInjectionDate";
         public static final String DMPA_INJECTABLE_FP_METHOD_VALUE = "dmpa_injectable";
         public static final String OCP_REFILL_DATE_FIELD_NAME = "ocpRefillDate";
@@ -170,9 +149,6 @@ public class AllConstants {
         public static final String NEEDS_REFERRAL_FOLLOWUP_FIELD_NAME = "needsReferralFollowup";
         public static final String IUD_FP_METHOD_VALUE = "iud";
         public static final String REFERRAL_FOLLOW_UP_DATE_FIELD_NAME = "referralFollowupDate";
-    }
-
-    public static class ChangeFamilyPlanningMethodCommCareFields {
         public static final String PREVIOUS_FP_METHOD_FIELD_NAME = "currentMethod";
         public static final String NEW_FP_METHOD_FIELD_NAME = "newMethod";
     }
@@ -181,7 +157,7 @@ public class AllConstants {
         public static final String IMMUNIZATIONS_GIVEN_FIELD_NAME = "immunizationsGiven";
         public static final String PREVIOUS_IMMUNIZATIONS_FIELD_NAME = "previousImmunizations";
         public static final String IMMUNIZATION_DATE_FIELD_NAME = "immunizationDate";
-        public static final String VITAMIN_A_DOSE_COMMCARE_FIELD_NAME = "vitaminADose";
+        public static final String VITAMIN_A_DOSE_FIELD_NAME = "vitaminADose";
 
         public static final String BCG_VALUE = "bcg";
 

@@ -3,7 +3,7 @@ package org.ei.drishti.service.scheduling.fpMethodStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static org.ei.drishti.common.AllConstants.FamilyPlanningCommCareFields.*;
+import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
 
 @Component
 public class FPMethodStrategyFactory {

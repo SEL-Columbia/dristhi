@@ -1,5 +1,6 @@
 package org.ei.drishti.service.scheduling;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.service.ActionService;
 import org.joda.time.LocalDate;
@@ -18,7 +19,6 @@ import java.util.List;
 import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.ei.drishti.common.AllConstants.ANCVisitCommCareFields.*;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.common.util.IntegerUtil.tryParse;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
@@ -55,10 +55,10 @@ public class ANCSchedulesService {
     }
 
     public void ttVisitHasHappened(String entityId, String anmId, String ttDose, String ttDate) {
-        if (TT1_DOSE_VALUE.equals(ttDose) || TT_BOOSTER_DOSE_VALUE.equals(ttDose)) {
+        if (AllConstants.ANCFormFields.TT1_DOSE_VALUE.equals(ttDose) || AllConstants.ANCFormFields.TT_BOOSTER_DOSE_VALUE.equals(ttDose)) {
             fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_1, SCHEDULE_TT_1, parse(ttDate));
             scheduleService.enroll(entityId, SCHEDULE_TT_2, ttDate);
-        } else if (TT2_DOSE_VALUE.equals(ttDose)) {
+        } else if (AllConstants.ANCFormFields.TT2_DOSE_VALUE.equals(ttDose)) {
             fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_2, SCHEDULE_TT_2, parse(ttDate));
         }
     }
