@@ -142,7 +142,8 @@
             {
                 "name": "immunizationsGiven",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history",
-                "source": "eligible_couple.mother.child.immunizationsGiven"
+                "source": "eligible_couple.mother.child.immunizationsGiven",
+                "value": ""
             },
             {
                 "name": "bcgDate",

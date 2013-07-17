@@ -10,11 +10,21 @@
             {
                 "name": "previousImmunizations",
                 "shouldLoadValue": true,
-                "source": "child.immunizationsGiven"
+                "source": "child.immunizationsGiven",
+                "value": ""
+            },
+            {
+                "name": "immunizationsReceived",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/Child_Immunizations_EngKan/entity_immunizations_received"
             },
             {
                 "name": "immunizationsGiven",
                 "shouldLoadValue": true,
+                "bind": "/model/instance/Child_Immunizations_EngKan/entity_immunizations_given"
+            },
+            {
+                "name": "immunizationsGiven",
                 "bind": "/model/instance/Child_Immunizations_EngKan/immunizations_given"
             },
             {
