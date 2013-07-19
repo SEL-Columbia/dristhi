@@ -40,6 +40,8 @@ class ECs
         ec.convert_value "Religion", :empty => ""
         ec.convert_value "Caste", :empty => ""
         ec.convert_value "APL/BPL", :empty => ""
+        ec.convert_value "HP", :empty => ""
+        ec.convert_value "Risks", :empty => ""
         ec.convert_value "Number of Abortion", :empty => "0"
         ec.convert_value "Number of Still Birth", :empty => "0"
         ec.convert_value "Number of Living Children", :empty => "0"
@@ -55,6 +57,10 @@ class ECs
         "OCP" => "ocp",
         "IUD" => "iud",
         "Condom" => "condom",
+        "DMPA/Injectable" => "dmpa_injectable",
+        "Male Sterilization" => "male_sterilization",
+        "LAM" => "lam",
+        "Traditional Methods" => "traditional_methods",
         "Female Sterilization" => "female_sterilization",
                          :empty => "none",
                          :default => "none"
