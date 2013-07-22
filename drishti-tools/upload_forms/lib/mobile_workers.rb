@@ -25,7 +25,18 @@ class MobileWorkers
         "klp3" => MobileWorker.new("klp3", "examples/9 B.T Indira Vajamangala.xlsx"),
         "klp4" => MobileWorker.new("klp4", "examples/6 Hemavathi Keelanapura.xlsx"),
         "demo1" => MobileWorker.new("demo1", "examples/2 Jyothilakshmi Bheriya-B.xlsx"),
-        "trainer1" => MobileWorker.new("trainer1", "examples/10 Training data.xlsx")
+        "trainer1" => MobileWorker.new("trainer1", "examples/10 Training data.xlsx"),
+        "trainer2" => MobileWorker.new("trainer2", "examples/10 Training data.xlsx"),
+        "user1" => MobileWorker.new("user1", "examples/10 Training data.xlsx"),
+        "user2" => MobileWorker.new("user2", "examples/10 Training data.xlsx"),
+        "user3" => MobileWorker.new("user3", "examples/10 Training data.xlsx"),
+        "user4" => MobileWorker.new("user4", "examples/10 Training data.xlsx"),
+        "user5" => MobileWorker.new("user5", "examples/10 Training data.xlsx"),
+        "user6" => MobileWorker.new("user6", "examples/10 Training data.xlsx"),
+        "user7" => MobileWorker.new("user7", "examples/10 Training data.xlsx"),
+        "user8" => MobileWorker.new("user8", "examples/10 Training data.xlsx"),
+        "user9" => MobileWorker.new("user9", "examples/10 Training data.xlsx"),
+        "user10" => MobileWorker.new("user10", "examples/10 Training data.xlsx")
     }
   end
 

@@ -1,44 +1,83 @@
+--trainer1
 INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('trainer1', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
 
 INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
   (SELECT ID FROM report.dim_anm WHERE anmIdentifier='trainer1'),
   (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
 
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='DPT'), 40, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='DPT_BOOSTER_2'), 40, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='HEP'), 50, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='OPV'), 60, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='MEASLES'), 45, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='BCG'), 55, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='ANC'), 50, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='ANC<12'), 60, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='OCP'), 40, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='IUD'), 50, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='MALE_STERILIZATION'), 60, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='FEMALE_STERILIZATION'), 400, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='CONDOM'), 55, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='DMPA'), 10, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='FP_TRADITIONAL'), 10, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='LAM'), 10, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='SUB_TT'), 40, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='TT1'), 40, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='TT2'), 10, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='TTB'), 30, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='LIVE_BIRTH'), 200, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='INSTITUTIONAL_DELIVERY'), 200, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='BF_POST_BIRTH'), 200, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='WEIGHED_AT_BIRTH'), 200, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='VIT_A_1'), 50, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='VIT_A_2'), 50, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='ANC4'), 50, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='PNC3'), 20, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='D_HOM'), 20, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='D_SC'), 21, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='D_PHC'), 22, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='D_CHC'), 23, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='D_SDH'), 24, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='D_DH'), 25, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='D_PRI'), 26, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='DPT3_OPV3'), 40, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='DPTB_OPVB'), 45, '2012-03-26', '2013-03-25');
-INSERT INTO report.annual_target (service_provider, indicator, target, start_date, end_date) VALUES ((SELECT sp.ID FROM report.dim_service_provider sp, report.dim_anm a WHERE sp.service_provider = a.id and anmIdentifier='trainer1'), (SELECT ID FROM report.dim_indicator WHERE indicator='DPTB_OPVB'), 45, '2012-03-26', '2013-03-25');
+--trainer2
+INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('trainer2', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
+
+INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
+  (SELECT ID FROM report.dim_anm WHERE anmIdentifier='trainer2'),
+  (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
+
+--user1
+INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('user1', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
+
+INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
+  (SELECT ID FROM report.dim_anm WHERE anmIdentifier='user1'),
+  (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
+
+--user2
+INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('user2', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
+
+INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
+  (SELECT ID FROM report.dim_anm WHERE anmIdentifier='user2'),
+  (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
+
+--user3
+INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('user3', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
+
+INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
+  (SELECT ID FROM report.dim_anm WHERE anmIdentifier='user3'),
+  (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
+
+--user4
+INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('user4', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
+
+INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
+  (SELECT ID FROM report.dim_anm WHERE anmIdentifier='user4'),
+  (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
+
+--user5
+INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('user5', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
+
+INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
+  (SELECT ID FROM report.dim_anm WHERE anmIdentifier='user5'),
+  (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
+
+--user6
+INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('user6', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
+
+INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
+  (SELECT ID FROM report.dim_anm WHERE anmIdentifier='user6'),
+  (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
+
+--user7
+INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('user7', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
+
+INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
+  (SELECT ID FROM report.dim_anm WHERE anmIdentifier='user7'),
+  (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
+
+--user8
+INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('user8', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
+
+INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
+  (SELECT ID FROM report.dim_anm WHERE anmIdentifier='user8'),
+  (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
+
+--user9
+INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('user9', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
+
+INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
+  (SELECT ID FROM report.dim_anm WHERE anmIdentifier='user9'),
+  (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
+
+--user10
+INSERT INTO report.dim_anm (anmIdentifier, phc) VALUES ('user10', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='keelanapura'));
+
+INSERT INTO report.dim_service_provider (service_provider, type) VALUES (
+  (SELECT ID FROM report.dim_anm WHERE anmIdentifier='user10'),
+  (SELECT ID FROM report.dim_service_provider_type WHERE type='ANM'));
