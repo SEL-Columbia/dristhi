@@ -4,10 +4,12 @@
         "default_bind_path": "/model/instance/ANC_Registration_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "motherId",
+                "shouldLoadValue": true,
                 "source": "eligible_couple.mother.id"
             },
             {
@@ -22,10 +24,12 @@
             },
             {
                 "name": "wifeName",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Registration_EngKan/case_woman_name"
             },
             {
                 "name": "numberOfPregnancies",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Registration_EngKan/case_num_pregnancies"
             },
             {
@@ -175,6 +179,14 @@
                 "name": "isClosed",
                 "value": "false",
                 "source": "eligible_couple.mother.isClosed"
+            },
+            {
+                "name": "currentMethod",
+                "value": ""
+            },
+            {
+                "name": "familyPlanningMethodChangeDate",
+                "value": ""
             }
         ]
     }
