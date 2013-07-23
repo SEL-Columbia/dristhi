@@ -4,10 +4,12 @@
         "default_bind_path": "/model/instance/PNC_Child_Registration_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "motherId",
+                "shouldLoadValue": true,
                 "source": "eligible_couple.mother.id"
             },
             {
@@ -45,8 +47,8 @@
                 "source": "eligible_couple.mother.thayiCardNumber"
             },
             {
-                "name": "aadharNumber",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/aadhar_number"
+                "name": "aadhaarNumber",
+                "bind": "/model/instance/PNC_Child_Registration_EngKan/aadhaar_number"
             },
             {
                 "name": "husbandName",
@@ -132,49 +134,6 @@
                 "source": "eligible_couple.mother.otherDeliveryComplications"
             },
             {
-                "name": "isFPPostDelivery",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/fp_post_delivery",
-                "source": "eligible_couple.mother.isFPPostDelivery"
-            },
-            {
-                "name": "currentMethod",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/pp_fp_method"
-            },
-            {
-                "name": "familyPlanningMethodChangeDate",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/pp_fp_method_start_date"
-            },
-            {
-                "name": "jsyPaymentStatus",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/jsy_prasooti_group/jsy_payment",
-                "source": "eligible_couple.mother.jsyPaymentStatus"
-            },
-            {
-                "name": "jsyPaymentDate",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/jsy_prasooti_group/jsy_date",
-                "source": "eligible_couple.mother.jsyPaymentDate"
-            },
-            {
-                "name": "prasootiPayment2",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/jsy_prasooti_group/prasooti_payment2",
-                "source": "eligible_couple.mother.prasootiPayment2"
-            },
-            {
-                "name": "prasooti2Date",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/jsy_prasooti_group/prasooti2_date",
-                "source": "eligible_couple.mother.prasooti2Date"
-            },
-            {
-                "name": "madiluKitStatus",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/madilu_kit",
-                "source": "eligible_couple.mother.madiluKitStatus"
-            },
-            {
-                "name": "madiluKitDate",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/madilu_date",
-                "source": "eligible_couple.mother.madiluKitDate"
-            },
-            {
                 "name": "isHighRisk",
                 "bind": "/model/instance/PNC_Child_Registration_EngKan/is_high_risk",
                 "source": "eligible_couple.mother.isHighRisk"
@@ -193,16 +152,6 @@
                 "name": "didWomanSurvive",
                 "bind": "/model/instance/PNC_Child_Registration_EngKan/woman_survived",
                 "source": "eligible_couple.mother.didWomanSurvive"
-            },
-            {
-                "name": "isHighRiskBaby",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/is_high_risk_baby",
-                "source": "eligible_couple.mother.isHighRiskBaby"
-            },
-            {
-                "name": "highRiskReasonBaby",
-                "bind": "/model/instance/PNC_Child_Registration_EngKan/high_risk_reason_baby",
-                "source": "eligible_couple.mother.highRiskReasonBaby"
             },
             {
                 "name": "submissionDate",
@@ -234,7 +183,8 @@
                 "default_bind_path": "/model/instance/PNC_Child_Registration_EngKan/child",
                 "fields": [
                     {
-                        "name": "id"
+                        "name": "id",
+                        "shouldLoadValue": true
                     },
                     {
                         "name": "gender",
@@ -251,6 +201,18 @@
                     {
                         "name": "immunizationsGiven",
                         "bind": "/model/instance/PNC_Child_Registration_EngKan/child/immunizations_atbirth"
+                    },
+                    {
+                        "name": "isChildHighRisk1",
+                        "bind": "/model/instance/PNC_Child_Registration_EngKan/child/is_child_high_risk1"
+                    },
+                    {
+                        "name": "isChildHighRisk",
+                        "bind": "/model/instance/PNC_Child_Registration_EngKan/child/is_child_high_risk"
+                    },
+                    {
+                        "name": "childHighRiskReasons",
+                        "bind": "/model/instance/PNC_Child_Registration_EngKan/child/child_high_risk_reasons"
                     }
                 ]
             }
