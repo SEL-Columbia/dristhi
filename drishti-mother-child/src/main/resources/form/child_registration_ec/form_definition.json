@@ -306,9 +306,9 @@
                 "source": "eligible_couple.mother.child.vitamin9Date"
             },
             {
-                "name": "isHighRiskBaby",
+                "name": "isChildHighRisk",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/is_child_high_risk",
-                "source": "eligible_couple.mother.child.isHighRiskBaby"
+                "source": "eligible_couple.mother.child.isChildHighRisk"
             },
             {
                 "name": "highRiskReasonBaby",

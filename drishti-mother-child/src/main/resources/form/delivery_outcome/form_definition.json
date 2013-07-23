@@ -4,19 +4,17 @@
         "default_bind_path": "/model/instance/Delivery_Outcome_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "ecId",
+                "shouldLoadValue": true,
                 "source": "mother.eligible_couple.id"
             },
             {
-                "name": "wifeName",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/case_woman_name",
-                "source": "mother.eligible_couple.wifeName"
-            },
-            {
                 "name": "referenceDate",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_lmp"
             },
             {
@@ -65,11 +63,13 @@
             },
             {
                 "name": "parity",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_parity",
                 "source": "mother.eligible_couple.parity"
             },
             {
                 "name": "numberOfLiveBirths",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_num_livebirths",
                 "source": "mother.eligible_couple.numberOfLiveBirths"
             },
@@ -80,6 +80,7 @@
             },
             {
                 "name": "numberOfStillBirths",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_num_stillbirths",
                 "source": "mother.eligible_couple.numberOfStillBirths"
             },
@@ -102,30 +103,7 @@
             },
             {
                 "name": "didMotherSurvive",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/still_birth_group/mother_survived"
-            },
-            {
-                "name": "numberOFLivingChildren",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/num_livingchildren",
-                "source": "mother.eligible_couple.numberOFLivingChildren"
-            },
-            {
-                "name": "numberOfLivingFemaleChild",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/numlivingchildren_female",
-                "source": "mother.eligible_couple.numberOfLivingFemaleChild"
-            },
-            {
-                "name": "numberOfLivingMaleChild",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/numlivingchildren_male",
-                "source": "mother.eligible_couple.numberOfLivingMaleChild"
-            },
-            {
-                "name": "hepB",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/case_hepb"
-            },
-            {
-                "name": "isHepBProphylaxisProvided",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/hepb_prophylaxis_provided"
+                "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/mother_survived"
             },
             {
                 "name": "didBreastfeedingStart",
@@ -141,6 +119,7 @@
             },
             {
                 "name": "isRHNegative",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/woman_survived_group/case_w_rh_negative"
             },
             {
@@ -160,74 +139,33 @@
                 "bind": "/model/instance/Delivery_Outcome_EngKan/woman_survived_group/delivery_complications_other"
             },
             {
-                "name": "isFPPostDelivery",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/woman_survived_group/fp_post_delivery"
-            },
-            {
-                "name": "currentMethod",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/woman_survived_group/pp_fp_method",
-                "source": "mother.eligible_couple.currentMethod"
-            },
-            {
-                "name": "familyPlanningMethodChangeDate",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/woman_survived_group/pp_fp_method_start_date",
-                "source": "mother.eligible_couple.familyPlanningMethodChangeDate"
-            },
-            {
-                "name": "iudPlace",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/woman_survived_group/iud_place",
-                "source": "mother.eligible_couple.iudPlace"
-            },
-            {
-                "name": "jsyPaymentStatus",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/jsy_payment"
-            },
-            {
-                "name": "jsyPaymentDate",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/jsy_date"
-            },
-            {
-                "name": "prasootiPayment1",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/case_prasooti_payment1"
-            },
-            {
-                "name": "prasootiPayment2",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/prasooti_payment2"
-            },
-            {
-                "name": "prasooti2Date",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/prasooti2_date"
-            },
-            {
-                "name": "madiluKitStatus",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/madilu_kit"
-            },
-            {
-                "name": "madiluKitDate",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/madilu_date"
-            },
-            {
                 "name": "isHighRiskTillPNCClose",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_is_high_risk_till_pnc_close"
             },
             {
                 "name": "highRiskTillPNCCloseReason",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_is_high_risk_till_pnc_close_reason"
             },
             {
                 "name": "anemicStatus",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_anaemic_status"
             },
             {
                 "name": "pih",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_pih"
             },
             {
                 "name": "preEclampsia",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_pre_eclampsia"
             },
             {
                 "name": "jaundice",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_jaundice"
             },
             {
@@ -235,11 +173,8 @@
                 "bind": "/model/instance/Delivery_Outcome_EngKan/is_high_risk"
             },
             {
-                "name": "isHighRiskBaby",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/is_high_risk_baby"
-            },
-            {
                 "name": "isBirthPlanningDone",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_birth_planning"
             },
             {
@@ -247,12 +182,42 @@
                 "bind": "/model/instance/Delivery_Outcome_EngKan/high_risk_reason"
             },
             {
-                "name": "highRiskReasonBaby",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/high_risk_reason_baby"
-            },
-            {
                 "name": "submissionDate",
                 "bind": "/model/instance/Delivery_Outcome_EngKan/today"
+            },
+            {
+                "name": "numberOfLivingChildren",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/Delivery_Outcome_EngKan/case_num_livingchildren",
+                "source": "mother.eligible_couple.numberOfLivingChildren"
+            },
+            {
+                "name": "numberOfLivingChildren",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/Delivery_Outcome_EngKan/num_livingchildren",
+                "source": "mother.eligible_couple.numberOfLivingChildren"
+            },
+            {
+                "name": "numberOfLivingFemaleChild",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/Delivery_Outcome_EngKan/case_numlivingchildren_female",
+                "source": "mother.eligible_couple.numberOfLivingChildrenFemale"
+            },
+            {
+                "name": "numberOfLivingFemaleChild",
+                "bind": "/model/instance/Delivery_Outcome_EngKan/numlivingchildren_female",
+                "source": "mother.eligible_couple.numberOfLivingChildrenFemale"
+            },
+            {
+                "name": "numberOfLivingMaleChild",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/Delivery_Outcome_EngKan/case_numlivingchildren_male",
+                "source": "mother.eligible_couple.numberOfLivingMaleChild"
+            },
+            {
+                "name": "numberOfLivingMaleChild",
+                "bind": "/model/instance/Delivery_Outcome_EngKan/numlivingchildren_male",
+                "source": "mother.eligible_couple.numberOfLivingMaleChild"
             }
         ],
         "sub_forms": [
@@ -261,7 +226,8 @@
                 "default_bind_path": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child",
                 "fields": [
                     {
-                        "name": "id"
+                        "name": "id",
+                        "shouldLoadValue": true
                     },
                     {
                         "name": "gender",
@@ -278,6 +244,27 @@
                     {
                         "name": "immunizationsGiven",
                         "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/immunizations_atbirth"
+                    },
+                    {
+                        "name": "hepB",
+                        "shouldLoadValue": true,
+                        "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/case_hepb"
+                    },
+                    {
+                        "name": "isHepBProphylaxisProvided",
+                        "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/hepb_prophylaxis_provided"
+                    },
+                    {
+                        "name": "isChildHighRisk1",
+                        "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/is_child_high_risk1"
+                    },
+                    {
+                        "name": "childHighRiskReasons",
+                        "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/child_high_risk_reasons"
+                    },
+                    {
+                        "name": "isChildHighRisk",
+                        "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/is_child_high_risk"
                     }
                 ]
             }
