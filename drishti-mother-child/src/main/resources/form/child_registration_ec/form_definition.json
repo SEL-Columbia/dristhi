@@ -311,9 +311,9 @@
                 "source": "eligible_couple.mother.child.isChildHighRisk"
             },
             {
-                "name": "highRiskReasonBaby",
+                "name": "childHighRiskReason",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/child_high_risk_reasons",
-                "source": "eligible_couple.mother.child.highRiskReasonBaby"
+                "source": "eligible_couple.mother.child.childHighRiskReason"
             },
             {
                 "name": "isClosed",
