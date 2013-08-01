@@ -1,14 +1,21 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Family_Planning_Renew_Method_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "currentMethod",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/case_familyplanning_method"
+            },
+            {
+                "name": "fpRenewMethodVisitDate",
+                "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/fp_renew_method_visit_date"
             },
             {
                 "name": "wasFPMethodRenewed",
@@ -41,6 +48,10 @@
             {
                 "name": "reasonForCoupleToRefuseRenewalOfFPProduct",
                 "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/didnt_renew_method_group/didnt_renew_method_couple_refused_reason"
+            },
+            {
+                "name": "submissionDate",
+                "bind": "/model/instance/Family_Planning_Renew_Method_EngKan/today"
             }
         ]
     }

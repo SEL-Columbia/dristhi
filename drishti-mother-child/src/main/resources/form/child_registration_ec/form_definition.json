@@ -1,4 +1,5 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Child_Registration_EC_EngKan/",

@@ -1,10 +1,12 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "mother",
         "default_bind_path": "/model/instance/TT1_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "ttDose",

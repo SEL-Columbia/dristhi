@@ -1,10 +1,12 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "mother",
         "default_bind_path": "/model/instance/Hb_Test_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "hbTestDate",
@@ -23,11 +25,8 @@
                 "bind": "/model/instance/Hb_Test_EngKan/anaemic_status"
             },
             {
-                "name": "isHighRisk1",
-                "bind": "/model/instance/Hb_Test_EngKan/is_high_risk1"
-            },
-            {
                 "name": "highRiskReason",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Hb_Test_EngKan/case_high_risk_reason"
             },
             {
@@ -36,6 +35,7 @@
             },
             {
                 "name": "isHighRisk",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Hb_Test_EngKan/is_high_risk"
             },
             {

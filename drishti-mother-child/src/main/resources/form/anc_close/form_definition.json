@@ -1,10 +1,12 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "mother",
         "default_bind_path": "/model/instance/ANC_Close_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "closeReason",
@@ -12,6 +14,7 @@
             },
             {
                 "name": "numberOfAbortions",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Close_EngKan/case_num_abortions"
             },
             {
@@ -24,6 +27,7 @@
             },
             {
                 "name": "numberOfSpontaneousAbortions",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Close_EngKan/spontaneous_abortion_group/case_num_abortions_spontaneous"
             },
             {
@@ -36,6 +40,7 @@
             },
             {
                 "name": "referenceDate",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Close_EngKan/spontaneous_abortion_group/case_lmp"
             },
             {
@@ -56,10 +61,12 @@
             },
             {
                 "name": "isRHNegative",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Close_EngKan/spontaneous_abortion_group/case_w_rh_negative"
             },
             {
                 "name": "numberOfInducedAbortions",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Close_EngKan/induced_abortion_group/case_num_abortions_induced"
             },
             {

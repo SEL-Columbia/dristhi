@@ -1,10 +1,12 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/ANC_Registration_OA_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "originalVillage",
@@ -72,6 +74,7 @@
             },
             {
                 "name": "motherId",
+                "shouldLoadValue": true,
                 "source": "eligible_couple.mother.id"
             },
             {
@@ -223,7 +226,9 @@
             },
             {
                 "name": "isBirthPlanningDone",
-                "bind": "/model/instance/ANC_Registration_OA_EngKan/case_birth_planning"
+                "shouldLoadValue": true,
+                "bind": "/model/instance/ANC_Registration_OA_EngKan/case_birth_planning",
+                "source": "eligible_couple.mother.isBirthPlanningDone"
             },
             {
                 "name": "submissionDate",

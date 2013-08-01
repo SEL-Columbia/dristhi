@@ -1,10 +1,12 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/EC_Close_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "closeReason",

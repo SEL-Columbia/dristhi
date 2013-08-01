@@ -1,4 +1,5 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "child",
         "default_bind_path": "/model/instance/Child_Close_EngKan/",
@@ -8,7 +9,6 @@
                 "shouldLoadValue": true
             },
             {
-                "name": "closeReason",
                 "name": "closeReason",
                 "bind": "/model/instance/Child_Close_EngKan/close_reason"
             },

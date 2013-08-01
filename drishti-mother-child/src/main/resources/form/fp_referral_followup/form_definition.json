@@ -1,13 +1,16 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Family_Planning_Referral_Followup_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "currentMethod",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Family_Planning_Referral_Followup_EngKan/case_familyplanning_method"
             },
             {
@@ -35,16 +38,16 @@
                 "bind": "/model/instance/Family_Planning_Referral_Followup_EngKan/referral_place"
             },
             {
+                "name": "otherReferralPlace",
+                "bind": "/model/instance/Family_Planning_Referral_Followup_EngKan/referral_place_other"
+            },
+            {
                 "name": "needsReferralFollowup",
                 "bind": "/model/instance/Family_Planning_Referral_Followup_EngKan/needs_referral_followup"
             },
             {
                 "name": "needsFollowup",
                 "bind": "/model/instance/Family_Planning_Referral_Followup_EngKan/needs_followup"
-            },
-            {
-                "name": "instructions",
-                "bind": "/model/instance/Family_Planning_Referral_Followup_EngKan/instructions"
             },
             {
                 "name": "submissionDate",

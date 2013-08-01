@@ -1,17 +1,21 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Family_Planning_Change_Method_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "currentMethod",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Family_Planning_Change_Method_EngKan/case_familyplanning_method"
             },
             {
                 "name": "newMethod",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Family_Planning_Change_Method_EngKan/familyplanning_method"
             },
             {

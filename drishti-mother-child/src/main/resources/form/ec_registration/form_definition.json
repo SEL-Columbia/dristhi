@@ -1,22 +1,24 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/EC_Registration_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "phc",
-                "bind": "/model/instance/EC_Registration_EngKan/ec_village_phc"
+                "bind": "/model/instance/EC_Registration_EngKan/phc"
             },
             {
                 "name": "subCenter",
-                "bind": "/model/instance/EC_Registration_EngKan/ec_village_subcenter"
+                "bind": "/model/instance/EC_Registration_EngKan/sub_center"
             },
             {
                 "name": "village",
-                "bind": "/model/instance/EC_Registration_EngKan/ec_village"
+                "bind": "/model/instance/EC_Registration_EngKan/village"
             },
             {
                 "name": "householdNumber",
@@ -39,10 +41,6 @@
                 "bind": "/model/instance/EC_Registration_EngKan/woman_name"
             },
             {
-                "name": "wifeName2",
-                "bind": "/model/instance/EC_Registration_EngKan/woman_name2"
-            },
-            {
                 "name": "aadharNumber",
                 "bind": "/model/instance/EC_Registration_EngKan/aadhar_number"
             },
@@ -51,8 +49,16 @@
                 "bind": "/model/instance/EC_Registration_EngKan/woman_age"
             },
             {
+                "name": "husbandAge",
+                "bind": "/model/instance/EC_Registration_EngKan/husband_age"
+            },
+            {
                 "name": "womanDOB",
                 "bind": "/model/instance/EC_Registration_EngKan/woman_date_of_birth"
+            },
+            {
+                "name": "husbandDOB",
+                "bind": "/model/instance/EC_Registration_EngKan/husband_date_of_birth"
             },
             {
                 "name": "husbandName",
@@ -134,19 +140,15 @@
             },
             {
                 "name": "youngestChildAge",
-                "bind": "/model/instance/EC_Registration_EngKan/age_youngestchild"
+                "bind": "/model/instance/EC_Registration_EngKan/youngestchild_age"
+            },
+            {
+                "name": "youngestChildDOB",
+                "bind": "/model/instance/EC_Registration_EngKan/youngestchild_date_of_birth"
             },
             {
                 "name": "currentMethod",
                 "bind": "/model/instance/EC_Registration_EngKan/familyplanning_method"
-            },
-            {
-                "name": "currentMethod",
-                "bind": "/model/instance/EC_Registration_EngKan/familyplanning_method_1"
-            },
-            {
-                "name": "otherCurrentMethod",
-                "bind": "/model/instance/EC_Registration_EngKan/familyplanning_method_other"
             },
             {
                 "name": "iudPlace",
@@ -194,6 +196,10 @@
             },
             {
                 "name": "submissionDate",
+                "bind": "/model/instance/EC_Registration_EngKan/today"
+            },
+            {
+                "name": "registrationDate",
                 "bind": "/model/instance/EC_Registration_EngKan/today"
             },
             {

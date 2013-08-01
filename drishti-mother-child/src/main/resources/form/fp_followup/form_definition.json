@@ -1,21 +1,26 @@
 {
+    "formDataDefinitionVersion": "1",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Family_Planning_Followup_EngKan/",
         "fields": [
             {
-                "name": "id"
+                "name": "id",
+                "shouldLoadValue": true
             },
             {
                 "name": "needsFollowup",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Family_Planning_Followup_EngKan/case_needs_followup"
             },
             {
                 "name": "currentMethod",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Family_Planning_Followup_EngKan/case_familyplanning_method"
             },
             {
                 "name": "currentMethodNote",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Family_Planning_Followup_EngKan/case_familyplanning_method_note"
             },
             {
