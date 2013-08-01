@@ -49,7 +49,6 @@ public class PNCServiceTest extends BaseUnitTest {
     @Mock
     private ReportFieldsDefinition reportFieldsDefinition;
     private PNCService service;
-    private Map<String, Map<String, String>> EXTRA_DATA = create("details", mapOf("someKey", "someValue")).put("reporting", mapOf("someKey", "someValue")).map();
 
     @Before
     public void setUp() throws Exception {

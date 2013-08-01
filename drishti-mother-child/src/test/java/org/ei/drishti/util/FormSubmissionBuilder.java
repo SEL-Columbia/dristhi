@@ -15,6 +15,7 @@ public class FormSubmissionBuilder {
     private String formName = "form name 1";
     private String bind_type = "entity 1";
     private String default_bind_path = "bind path 1";
+    private String formDataDefinitionVersion = "1";
     private List<FormField> fields = new ArrayList<>();
     private FormInstance formInstance = new FormInstance(new FormData(bind_type, default_bind_path, fields));
     private Long timestamp = 0L;
@@ -25,7 +26,7 @@ public class FormSubmissionBuilder {
     }
 
     public FormSubmission build() {
-        return new FormSubmission(anmId, instanceId, formName, entityId, formInstance, timestamp, serverVersion);
+        return new FormSubmission(anmId, instanceId, formName, entityId, timestamp, formDataDefinitionVersion, formInstance, serverVersion);
     }
 
     public FormSubmissionBuilder addFormField(String name, String value) {

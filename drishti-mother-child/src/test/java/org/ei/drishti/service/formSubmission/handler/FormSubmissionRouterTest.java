@@ -86,14 +86,14 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateFormSubmissionHandlingToHandlerBasedOnFormName() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ec_registration", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ec_registration", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
 
         verify(ecRegistrationHandler).handle(formSubmission);
 
-        formSubmission = new FormSubmission("anm id 1", "instance id 2", "fp_complications", "entity id 2", null, 0L, 0L);
+        formSubmission = new FormSubmission("anm id 1", "instance id 2", "fp_complications", "entity id 2", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 2")).thenReturn(formSubmission);
 
         router.route("instance id 2");
@@ -103,7 +103,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateRenewFPProductFormSubmissionHandlingToRenewFPProductHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "renew_fp_product", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "renew_fp_product", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -114,7 +114,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateFPReferralFollowupFormSubmissionHandlingToFPReferralFollowupHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "fp_referral_followup", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "fp_referral_followup", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -125,7 +125,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateECCloseFormSubmissionHandlingToECCloseHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ec_close", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ec_close", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -136,7 +136,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateANCRegistrationFormSubmissionHandlingToANCRegistrationHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "anc_registration", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "anc_registration", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -147,7 +147,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateANCRegistrationOAFormSubmissionHandlingToANCRegistrationOAHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "anc_registration_oa", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "anc_registration_oa", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -158,7 +158,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateANCVisitFormSubmissionHandlingToANCVisitHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "anc_visit", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "anc_visit", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -169,7 +169,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateANCCloseFormSubmissionHandlingToANCCloseHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "anc_close", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "anc_close", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -180,7 +180,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateTTBoosterFormSubmissionHandlingToTTHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "tt_booster", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "tt_booster", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -191,7 +191,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateTT1FormSubmissionHandlingToTTHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "tt_1", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "tt_1", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -202,7 +202,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateTT2FormSubmissionHandlingToTTHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "tt_2", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "tt_2", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -213,7 +213,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateIFAFormSubmissionHandlingToIFAHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ifa", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ifa", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -224,7 +224,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateHbTestFormSubmissionHandlingToHBTestHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "hb_test", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "hb_test", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -235,7 +235,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateDeliveryOutcomeTestFormSubmissionHandlingToDeliveryOutcomeHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "delivery_outcome", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "delivery_outcome", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -246,7 +246,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegatePNCRegistrationOAFormSubmissionHandlingToPNCRegistrationOAHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "pnc_registration_oa", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "pnc_registration_oa", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -257,7 +257,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegatePNCCloseFormSubmissionHandlingToPNCCloseHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "pnc_close", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "pnc_close", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -268,7 +268,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegatePNCVisitFormSubmissionHandlingToPNCVisitHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "pnc_visit", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "pnc_visit", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -279,7 +279,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateChildRegistrationECFormSubmissionHandlingToChildRegistrationECHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "child_registration_ec", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "child_registration_ec", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -290,7 +290,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateChildImmunizationsFormSubmissionHandlingToChildImmunizationsHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "child_immunizations", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "child_immunizations", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
@@ -301,7 +301,7 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateChildCloseFormSubmissionHandlingToChildCloseHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "child_close", "entity id 1", null, 0L, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "child_close", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");

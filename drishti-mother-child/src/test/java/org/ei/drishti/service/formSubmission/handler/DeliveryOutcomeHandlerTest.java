@@ -29,7 +29,7 @@ public class DeliveryOutcomeHandlerTest {
 
     @Test
     public void shouldDelegateFormSubmissionHandlingToBothANCAndPNCService() throws Exception {
-        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "delivery_outcome", "entity id 1", null, 0L, 0L);
+        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "delivery_outcome", "entity id 1", 0L, "1", null, 0L);
 
         handler.handle(submission);
 

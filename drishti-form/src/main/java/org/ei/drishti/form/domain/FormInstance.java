@@ -4,9 +4,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.ei.drishti.form.domain.FormData;
 
 public class FormInstance {
+    @JsonProperty
+    private String form_data_definition_version;
+
     @JsonProperty
     private FormData form;
 

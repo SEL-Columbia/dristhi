@@ -39,8 +39,8 @@ public class FormEventListenerTest {
 
     @Test
     public void shouldDelegateFormSubmissionToSubmissionService() throws Exception {
-        List<FormSubmissionDTO> formSubmissions = asList(new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name", null, "0"),
-                new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name", null, "0"));
+        List<FormSubmissionDTO> formSubmissions = asList(new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name", null, "0", "1"),
+                new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name", null, "0", "1"));
 
         listener.submitForms(new MotechEvent(FormSubmissionEvent.SUBJECT, mapOf("data", (Object) new Gson().toJson(formSubmissions))));
 
@@ -49,21 +49,21 @@ public class FormEventListenerTest {
 
     @Test
     public void shouldFetchFormSubmissionsFromSubmissionService() throws Exception {
-        List<FormSubmissionDTO> formSubmissions = asList(new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name", null, "0").withServerVersion("0"),
-                new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name", null, "0").withServerVersion("0"));
+        List<FormSubmissionDTO> formSubmissions = asList(new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name", null, "0", "1").withServerVersion("0"),
+                new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name", null, "0", "1").withServerVersion("0"));
         when(formExportTokens.getAll()).thenReturn(asList(new FormExportToken(1L)));
         when(formSubmissionService.fetch(1L)).thenReturn(formSubmissions);
 
         listener.fetchForms(new MotechEvent("SUBJECT", null));
 
-        verify(formEntityService).process(asList(new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", null, 0L, 0L),
-                new FormSubmission("anm id 2", "instance id 2", "form name", "entity id 2", null, 0L, 0L)));
+        verify(formEntityService).process(asList(new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", 0L, "1", null, 0L),
+                new FormSubmission("anm id 2", "instance id 2", "form name", "entity id 2", 0L, "1", null, 0L)));
     }
 
     @Test
     public void shouldCreateFormExportTokenIfItDoesNotExists() throws Exception {
-        List<FormSubmissionDTO> formSubmissions = asList(new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name", null, "0").withServerVersion("0"),
-                new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name", null, "0").withServerVersion("0"));
+        List<FormSubmissionDTO> formSubmissions = asList(new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name", null, "0", "1").withServerVersion("0"),
+                new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name", null, "0", "1").withServerVersion("0"));
         when(formExportTokens.getAll()).thenReturn(Collections.EMPTY_LIST);
         when(formSubmissionService.fetch(1L)).thenReturn(formSubmissions);
 
