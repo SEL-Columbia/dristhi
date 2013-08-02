@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.NEW_FP_METHOD_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.PREVIOUS_FP_METHOD_FIELD_NAME;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ECCloseFields.IS_EC_CLOSE_CONFIRMED_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
@@ -83,6 +82,10 @@ public class ECService {
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
 
         reportingService.fpChange(new SafeMap(submission.getFields(reportFields)));
+        String fpMethodChangeDate = submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME);
+        if (isBlank(fpMethodChangeDate)) {
+            fpMethodChangeDate = submission.getField(SUBMISSION_DATE_FIELD_NAME);
+        }
         FPProductInformation fpProductInformation = new FPProductInformation(
                 submission.entityId(), submission.anmId(),
                 submission.getField(NEW_FP_METHOD_FIELD_NAME),
@@ -91,7 +94,7 @@ public class ECService {
                 null,
                 submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
                 submission.getField(SUBMISSION_DATE_FIELD_NAME),
-                submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME),
+                fpMethodChangeDate,
                 null, null, null);
         schedulingService.fpChange(fpProductInformation);
     }

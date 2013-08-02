@@ -115,6 +115,26 @@ public class ECServiceTest {
     }
 
     @Test
+    public void shouldUseSubmissionDateAsChangeDateWhenFPMethodIsChangedAndChangeDateIsBlank() throws Exception {
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("fp_change")
+                .withANMId("anm id 1")
+                .addFormField("currentMethod", "previous method")
+                .addFormField("newMethod", "none")
+                .addFormField("submissionDate", "2011-02-01")
+                .build();
+        when(reportFieldsDefinition.get("fp_change")).thenReturn(asList("someKey"));
+
+        ecService.reportFPChange(submission);
+
+        verify(schedulingService).fpChange(
+                new FPProductInformation("entity id 1", "anm id 1", "none",
+                        "previous method", null, null, null, null, "2011-02-01", "2011-02-01", null, null, null));
+    }
+
+    @Test
     public void shouldUpdateECSchedulesWhenFPProductIsRenewed() throws Exception {
         EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
