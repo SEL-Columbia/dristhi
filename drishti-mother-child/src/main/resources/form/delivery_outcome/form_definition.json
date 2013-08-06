@@ -1,5 +1,5 @@
 {
-    "formDataDefinitionVersion": "1",
+    "form_data_definition_version": "1",
     "form": {
         "bind_type": "mother",
         "default_bind_path": "/model/instance/Delivery_Outcome_EngKan/",

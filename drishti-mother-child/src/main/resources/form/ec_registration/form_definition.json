@@ -1,5 +1,5 @@
 {
-    "formDataDefinitionVersion": "1",
+    "form_data_definition_version": "1",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/EC_Registration_EngKan/",
