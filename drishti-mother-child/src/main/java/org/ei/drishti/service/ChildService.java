@@ -118,4 +118,25 @@ public class ChildService {
         childReportingService.closeChild(reportFieldsMap);
         childSchedulesService.unenrollChild(submission.entityId());
     }
+
+    public void pncOAChildRegistration(FormSubmission submission) {
+        List<Mother> mothers = allMothers.findByEcCaseId(submission.entityId());
+        if (mothers.size() <= 0) {
+            logger.warn("Failed to handle PNC OA children registration as there is no mother registered with id: " + submission.entityId());
+            return;
+        }
+        Mother mother = mothers.get(0);
+        allMothers.update(mother.withAnm(submission.anmId()));
+
+        SubFormData subFormData = submission.getSubFormByName(AllConstants.Form.PNC_REGISTRATION_OA_SUB_FORM_NAME);
+        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
+
+        for (Map<String, String> childFields : subFormData.instances()) {
+            Child child = allChildren.findByCaseId(childFields.get(AllConstants.CommonFormFields.ID));
+            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
+            allChildren.update(child);
+
+            childSchedulesService.enrollChild(child);
+        }
+    }
 }

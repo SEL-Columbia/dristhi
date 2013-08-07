@@ -1,9 +1,7 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
-import org.ei.drishti.form.domain.SubFormData;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
@@ -21,7 +19,6 @@ import org.motechproject.testing.utils.BaseUnitTest;
 import org.motechproject.util.DateUtil;
 
 import java.util.Collections;
-import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.util.EasyMap.mapOf;
@@ -180,93 +177,6 @@ public class PNCServiceTest extends BaseUnitTest {
         service.pncRegistration(submission);
 
         verifyZeroInteractions(pncSchedulesService);
-    }
-
-    @Test
-    public void shouldUpdateANMIdOnMotherWhenOAPNCIsRegistered() {
-        DateTime currentTime = DateUtil.now();
-        mockCurrentDate(currentTime);
-        Mother mother = new Mother("mother id 1", "ec id 1", "TC1");
-        when(mothers.findByEcCaseId("ec id 1")).thenReturn(asList(mother));
-        when(children.findByMotherId("mother id 1")).thenReturn(Collections.<Child>emptyList());
-        FormSubmission submission = create()
-                .withFormName("pnc_registration_oa")
-                .withANMId("anm id 1")
-                .withEntityId("ec id 1")
-                .addFormField("referenceDate", "2012-01-01")
-                .withSubForm(new SubFormData("Child Registration OA", Collections.<Map<String, String>>emptyList()))
-                .build();
-
-        service.pncOAChildRegistration(submission);
-
-        verify(mothers).update(mother.withAnm("anm id 1"));
-    }
-
-    @Test
-    public void shouldEnrollEveryChildIntoSchedulesDuringPNCRegistration() {
-        DateTime currentTime = DateUtil.now();
-        mockCurrentDate(currentTime);
-        when(mothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "TC1")));
-        Child firstChild = new Child("child id 1", "mother id 1", "opv", "2", "female");
-        Child secondChild = new Child("child id 2", "mother id 1", "opv", "2", "male");
-        when(children.findByCaseId("child id 1")).thenReturn(firstChild);
-        when(children.findByCaseId("child id 2")).thenReturn(secondChild);
-        ;
-        FormSubmission submission = create()
-                .withFormName("pnc_registration_oa")
-                .withANMId("anm id 1")
-                .withEntityId("ec id 1")
-                .addFormField("referenceDate", "2012-01-01")
-                .withSubForm(new SubFormData("Child Registration OA",
-                        asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
-                .build();
-
-        service.pncOAChildRegistration(submission);
-
-        verify(childSchedulesService).enrollChild(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
-        verify(childSchedulesService).enrollChild(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
-    }
-
-    @Test
-    public void shouldUpdateEveryChildWithMotherInfoDuringPNCgRegistration() {
-        DateTime currentTime = DateUtil.now();
-        mockCurrentDate(currentTime);
-        when(mothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "TC1")));
-        Child firstChild = new Child("child id 1", "mother id 1", "opv", "2", "female");
-        Child secondChild = new Child("child id 2", "mother id 1", "opv", "2", "male");
-        when(children.findByCaseId("child id 1")).thenReturn(firstChild);
-        when(children.findByCaseId("child id 2")).thenReturn(secondChild);
-        FormSubmission submission = create()
-                .withFormName("pnc_registration_oa")
-                .withANMId("anm id 1")
-                .withEntityId("ec id 1")
-                .addFormField("referenceDate", "2012-01-01")
-                .withSubForm(new SubFormData("Child Registration OA",
-                        asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
-                .build();
-
-        service.pncOAChildRegistration(submission);
-
-        verify(children).update(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
-        verify(children).update(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
-    }
-
-    @Test
-    public void shouldNotHandlePNCChildRegistrationWhenMotherIsNotFound() {
-        DateTime currentTime = DateUtil.now();
-        mockCurrentDate(currentTime);
-        when(mothers.findByEcCaseId("ec id 1")).thenReturn(Collections.EMPTY_LIST);
-        FormSubmission submission = create()
-                .withFormName("pnc_registration_oa")
-                .withANMId("anm id 1")
-                .withEntityId("ec id 1")
-                .addFormField("referenceDate", "2012-01-01")
-                .build();
-
-        service.pncOAChildRegistration(submission);
-
-        verifyZeroInteractions(children);
-        verifyZeroInteractions(childSchedulesService);
     }
 
     @Test

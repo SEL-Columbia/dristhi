@@ -1,6 +1,7 @@
 package org.ei.drishti.service.formSubmission.handler;
 
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.service.ChildService;
 import org.ei.drishti.service.PNCService;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,13 +13,15 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class PNCRegistrationOAHandlerTest {
     @Mock
     private PNCService pncService;
+    @Mock
+    private ChildService childService;
 
     private PNCRegistrationOAHandler handler;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        handler = new PNCRegistrationOAHandler(pncService);
+        handler = new PNCRegistrationOAHandler(pncService, childService);
     }
 
     @Test
@@ -28,6 +31,6 @@ public class PNCRegistrationOAHandlerTest {
         handler.handle(submission);
 
         verify(pncService).pncRegistration(submission);
-        verify(pncService).pncOAChildRegistration(submission);
+        verify(childService).pncOAChildRegistration(submission);
     }
 }

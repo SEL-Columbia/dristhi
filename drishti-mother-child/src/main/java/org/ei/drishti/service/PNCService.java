@@ -1,10 +1,7 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.common.AllConstants;
-import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
-import org.ei.drishti.form.domain.SubFormData;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
@@ -19,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_VALUE;
@@ -82,27 +78,6 @@ public class PNCService {
         Mother mother = mothers.get(0);
         if (BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE))) {
             pncSchedulesService.deliveryOutcome(mother.caseId(), submission.getField(REFERENCE_DATE));
-        }
-    }
-
-    public void pncOAChildRegistration(FormSubmission submission) {
-        List<Mother> mothers = allMothers.findByEcCaseId(submission.entityId());
-        if (mothers.size() <= 0) {
-            logger.warn("Failed to handle PNC OA children registration as there is no mother registered with id: " + submission.entityId());
-            return;
-        }
-        Mother mother = mothers.get(0);
-        allMothers.update(mother.withAnm(submission.anmId()));
-
-        SubFormData subFormData = submission.getSubFormByName(AllConstants.Form.PNC_REGISTRATION_OA_SUB_FORM_NAME);
-        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
-
-        for (Map<String, String> childFields : subFormData.instances()) {
-            Child child = allChildren.findByCaseId(childFields.get(AllConstants.CommonFormFields.ID));
-            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
-            allChildren.update(child);
-
-            childSchedulesService.enrollChild(child);
         }
     }
 
