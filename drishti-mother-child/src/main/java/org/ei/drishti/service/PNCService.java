@@ -98,7 +98,7 @@ public class PNCService {
         String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
 
         for (Map<String, String> childFields : subFormData.instances()) {
-            Child child = allChildren.findByCaseId(childFields.get(AllConstants.Form.ENTITY_ID));
+            Child child = allChildren.findByCaseId(childFields.get(AllConstants.PNCFormFields.ID_FIELD));
             child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
             allChildren.update(child);
 

@@ -69,6 +69,7 @@ public class AllConstants {
         public static final String PRIVATE_FACILITY2_FIELD_VALUE = "private_facility2";
         public static final String REFERENCE_DATE_FIELD_VALUE = "referenceDate";
         public static final String CHILD_REGISTRATION_SUB_FORM_NAME = "Child Registration";
+        public static final String ID_FIELD = "id";
     }
 
     public static class ANCFormFields {
@@ -124,6 +125,10 @@ public class AllConstants {
         public static final String DEATH_OF_WOMAN_VALUE = "death_of_woman";
         public static final String PERMANENT_RELOCATION_VALUE = "relocation_permanent";
         public static final String SPONTANEOUS_ABORTION_VALUE = "spontaneous_abortion";
+    }
+
+    public static class PNCFormFields {
+        public static final String ID_FIELD = "id";
     }
 
     public static class PNCCloseFields {
