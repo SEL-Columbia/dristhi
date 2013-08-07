@@ -3,6 +3,7 @@ package org.ei.drishti.service;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.domain.SubFormData;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
@@ -67,12 +68,16 @@ public class ChildServiceTest extends BaseUnitTest {
         Child firstChild = new Child("child id 1", "mother id 1", "opv", "2", "female");
         Child secondChild = new Child("child id 2", "mother id 1", "opv", "2", "male");
         when(children.findByMotherId("mother id 1")).thenReturn(asList(firstChild, secondChild));
+        when(children.findByCaseId("child id 1")).thenReturn(firstChild);
+        when(children.findByCaseId("child id 2")).thenReturn(secondChild);
         FormSubmission submission = create()
                 .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didBreastfeedingStart", "no")
+                .withSubForm(new SubFormData("Child Registration",
+                        asList(mapOf("entityId", "child id 1"), mapOf("entityId", "child id 2"))))
                 .build();
 
         service.registerChildren(submission);
@@ -92,12 +97,16 @@ public class ChildServiceTest extends BaseUnitTest {
         Child firstChild = new Child("child id 1", "mother id 1", "opv", "2", "female");
         Child secondChild = new Child("child id 2", "mother id 1", "opv", "2", "male");
         when(children.findByMotherId("mother id 1")).thenReturn(asList(firstChild, secondChild));
+        when(children.findByCaseId("child id 1")).thenReturn(firstChild);
+        when(children.findByCaseId("child id 2")).thenReturn(secondChild);
         FormSubmission submission = create()
                 .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didBreastfeedingStart", "no")
+                .withSubForm(new SubFormData("Child Registration",
+                        asList(mapOf("entityId", "child id 1"), mapOf("entityId", "child id 2"))))
                 .build();
 
         service.registerChildren(submission);

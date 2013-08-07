@@ -1,8 +1,10 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.domain.SubFormData;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
@@ -16,14 +18,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
-import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationECFields.CHILD_ID;
-import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
+import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
 
 @Service
 public class ChildService {
@@ -55,11 +57,13 @@ public class ChildService {
             logger.warn("Failed to handle children registration as there is no mother registered with id: " + submission.entityId());
             return;
         }
+        
+        SubFormData subFormData = submission.getSubFormByName(AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME);
+        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
 
-        List<Child> children = allChildren.findByMotherId(submission.entityId());
-
-        for (Child child : children) {
-            child = child.withAnm(submission.anmId()).withDateOfBirth(submission.getField(REFERENCE_DATE)).withThayiCard(mother.thayiCardNo());
+        for (Map<String, String> childFields : subFormData.instances()) {
+            Child child = allChildren.findByCaseId(childFields.get(AllConstants.Form.ENTITY_ID));
+            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
             allChildren.update(child);
 
             SafeMap reportingData = new SafeMap();

@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class SubFormData {
     @JsonProperty
+    private String name;
+    @JsonProperty
     private String bind_type;
     @JsonProperty
     private String default_bind_path;
@@ -18,7 +20,17 @@ public class SubFormData {
     @JsonProperty
     private List<Map<String, String>> instances;
 
-    public SubFormData() {
+    public SubFormData(String name, List<Map<String, String>> instances) {
+        this.instances = instances;
+        this.name = name;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public List<Map<String, String>> instances() {
+        return instances;
     }
 
     @Override

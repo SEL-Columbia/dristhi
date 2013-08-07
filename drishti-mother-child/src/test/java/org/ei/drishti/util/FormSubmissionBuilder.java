@@ -1,12 +1,13 @@
 package org.ei.drishti.util;
 
-import org.ei.drishti.form.domain.FormData;
-import org.ei.drishti.form.domain.FormField;
-import org.ei.drishti.form.domain.FormInstance;
-import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.domain.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Arrays.asList;
 
 public class FormSubmissionBuilder {
     private String anmId = "anmId";
@@ -16,8 +17,8 @@ public class FormSubmissionBuilder {
     private String bind_type = "entity 1";
     private String default_bind_path = "bind path 1";
     private String formDataDefinitionVersion = "1";
+    private SubFormData subFormData = new SubFormData("sub form name", Collections.<Map<String, String>>emptyList());
     private List<FormField> fields = new ArrayList<>();
-    private FormInstance formInstance = new FormInstance(new FormData(bind_type, default_bind_path, fields));
     private Long timestamp = 0L;
     private long serverVersion = 0L;
 
@@ -26,6 +27,7 @@ public class FormSubmissionBuilder {
     }
 
     public FormSubmission build() {
+        FormInstance formInstance = new FormInstance(new FormData(bind_type, default_bind_path, fields, asList(subFormData)));
         return new FormSubmission(anmId, instanceId, formName, entityId, timestamp, formDataDefinitionVersion, formInstance, serverVersion);
     }
 
@@ -56,6 +58,11 @@ public class FormSubmissionBuilder {
 
     public FormSubmissionBuilder withFormName(String formName) {
         this.formName = formName;
+        return this;
+    }
+
+    public FormSubmissionBuilder withSubForm(SubFormData subFormData) {
+        this.subFormData = subFormData;
         return this;
     }
 

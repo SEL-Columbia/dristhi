@@ -27,6 +27,10 @@ public class FormInstance {
         return form.getField(name);
     }
 
+    public SubFormData getSubFormByName(String name) {
+        return form.getSubFormByName(name);
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
