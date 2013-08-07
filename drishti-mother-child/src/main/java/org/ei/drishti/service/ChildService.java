@@ -57,10 +57,15 @@ public class ChildService {
             logger.warn("Failed to handle children registration as there is no mother registered with id: " + submission.entityId());
             return;
         }
-        
-        SubFormData subFormData = submission.getSubFormByName(AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME);
-        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
 
+        SubFormData subFormData = submission.getSubFormByName(AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME);
+        if (isDeliveryOutcomeStillBirth(submission)) {
+            String childId = subFormData.instances().get(0).get(ID);
+            allChildren.remove(childId);
+            return;
+        }
+
+        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
         for (Map<String, String> childFields : subFormData.instances()) {
             Child child = allChildren.findByCaseId(childFields.get(AllConstants.CommonFormFields.ID));
             child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
@@ -73,6 +78,10 @@ public class ChildService {
 
             childSchedulesService.enrollChild(child);
         }
+    }
+
+    private boolean isDeliveryOutcomeStillBirth(FormSubmission submission) {
+        return AllConstants.DeliveryOutcomeFields.STILL_BIRTH_VALUE.equalsIgnoreCase(submission.getField(AllConstants.DeliveryOutcomeFields.DELIVERY_OUTCOME));
     }
 
     public void registerChildrenForEC(FormSubmission submission) {

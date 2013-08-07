@@ -53,7 +53,7 @@ public class AllConstants {
     }
 
     public static class DeliveryOutcomeFields {
-        public static final String DELIVERY_OUTCOME_FIELD = "deliveryOutcome";
+        public static final String DELIVERY_OUTCOME = "deliveryOutcome";
         public static final String DELIVERY_PLACE = "deliveryPlace";
         public static final String DID_WOMAN_SURVIVE = "didWomanSurvive";
         public static final String DID_MOTHER_SURVIVE = "didMotherSurvive";
@@ -69,6 +69,7 @@ public class AllConstants {
         public static final String PRIVATE_FACILITY2_FIELD_VALUE = "private_facility2";
         public static final String REFERENCE_DATE_FIELD_VALUE = "referenceDate";
         public static final String CHILD_REGISTRATION_SUB_FORM_NAME = "Child Registration";
+        public static final String STILL_BIRTH_VALUE = "still_birth";
     }
 
     public static class ANCFormFields {

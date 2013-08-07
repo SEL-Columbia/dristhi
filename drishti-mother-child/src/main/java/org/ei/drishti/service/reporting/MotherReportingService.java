@@ -19,6 +19,7 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DELIVERY_OUTCOME;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
 import static org.ei.drishti.common.AllConstants.Form.*;
@@ -138,7 +139,7 @@ public class MotherReportingService {
     }
 
     private void reportPregnancyOutcome(SafeMap reportData, Mother mother, Location location) {
-        Indicator indicator = LIVE_BIRTH_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME_FIELD)) ? LIVE_BIRTH : STILL_BIRTH;
+        Indicator indicator = LIVE_BIRTH_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME)) ? LIVE_BIRTH : STILL_BIRTH;
         reportToBoth(mother, indicator, reportData.get(REFERENCE_DATE), location);
     }
 

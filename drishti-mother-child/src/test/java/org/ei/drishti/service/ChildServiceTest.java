@@ -38,9 +38,9 @@ public class ChildServiceTest extends BaseUnitTest {
     @Mock
     private AllEligibleCouples allEligibleCouples;
     @Mock
-    private AllMothers mothers;
+    private AllMothers allMothers;
     @Mock
-    private AllChildren children;
+    private AllChildren allChildren;
     @Mock
     private MotherReportingService motherReportingService;
     @Mock
@@ -56,7 +56,7 @@ public class ChildServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ChildService(childSchedulesService, mothers, children,
+        service = new ChildService(childSchedulesService, allMothers, allChildren,
                 childReportingService, actionService, reportFieldsDefinition);
     }
 
@@ -64,12 +64,12 @@ public class ChildServiceTest extends BaseUnitTest {
     public void shouldEnrollEveryChildIntoSchedulesAndReportDuringRegistration() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "EC-CASE-1", "TC1"));
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "EC-CASE-1", "TC1"));
         Child firstChild = new Child("child id 1", "mother id 1", "opv", "2", "female");
         Child secondChild = new Child("child id 2", "mother id 1", "opv", "2", "male");
-        when(children.findByMotherId("mother id 1")).thenReturn(asList(firstChild, secondChild));
-        when(children.findByCaseId("child id 1")).thenReturn(firstChild);
-        when(children.findByCaseId("child id 2")).thenReturn(secondChild);
+        when(allChildren.findByMotherId("mother id 1")).thenReturn(asList(firstChild, secondChild));
+        when(allChildren.findByCaseId("child id 1")).thenReturn(firstChild);
+        when(allChildren.findByCaseId("child id 2")).thenReturn(secondChild);
         FormSubmission submission = create()
                 .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
@@ -90,15 +90,36 @@ public class ChildServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldDeleteRegisteredChildWhenDeliveryOutcomeIsStillBirth() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        FormSubmission submission = create()
+                .withFormName("delivery_outcome")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("deliveryOutcome", "still_birth")
+                .withSubForm(new SubFormData("Child Registration",
+                        asList(mapOf("id", "child id 1"))))
+                .build();
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "EC-CASE-1", "TC1"));
+
+        service.registerChildren(submission);
+
+        verify(allChildren).remove("child id 1");
+        verifyZeroInteractions(childReportingService);
+        verifyZeroInteractions(childSchedulesService);
+    }
+
+    @Test
     public void shouldUpdateEveryChildWithMotherInfoDuringRegistration() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "EC-CASE-1", "TC1"));
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "EC-CASE-1", "TC1"));
         Child firstChild = new Child("child id 1", "mother id 1", "opv", "2", "female");
         Child secondChild = new Child("child id 2", "mother id 1", "opv", "2", "male");
-        when(children.findByMotherId("mother id 1")).thenReturn(asList(firstChild, secondChild));
-        when(children.findByCaseId("child id 1")).thenReturn(firstChild);
-        when(children.findByCaseId("child id 2")).thenReturn(secondChild);
+        when(allChildren.findByMotherId("mother id 1")).thenReturn(asList(firstChild, secondChild));
+        when(allChildren.findByCaseId("child id 1")).thenReturn(firstChild);
+        when(allChildren.findByCaseId("child id 2")).thenReturn(secondChild);
         FormSubmission submission = create()
                 .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
@@ -111,15 +132,15 @@ public class ChildServiceTest extends BaseUnitTest {
 
         service.registerChildren(submission);
 
-        verify(children).update(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
-        verify(children).update(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
+        verify(allChildren).update(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
+        verify(allChildren).update(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
     }
 
     @Test
     public void shouldNotHandleChildRegistrationWhenMotherIsNotFound() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(null);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(null);
         FormSubmission submission = create()
                 .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
@@ -130,7 +151,7 @@ public class ChildServiceTest extends BaseUnitTest {
 
         service.registerChildren(submission);
 
-        verifyZeroInteractions(children);
+        verifyZeroInteractions(allChildren);
         verifyZeroInteractions(childReportingService);
         verifyZeroInteractions(childSchedulesService);
     }
@@ -140,7 +161,7 @@ public class ChildServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         Child child = new Child("child id 1", "mother id 1", "opv", "2", "female");
-        when(children.findByCaseId("child id 1")).thenReturn(child);
+        when(allChildren.findByCaseId("child id 1")).thenReturn(child);
         FormSubmission submission = create()
                 .withFormName("child_registration_ec")
                 .withANMId("anm id 1")
@@ -150,14 +171,14 @@ public class ChildServiceTest extends BaseUnitTest {
 
         service.registerChildrenForEC(submission);
 
-        verify(children).update(child.withAnm("anm id 1"));
+        verify(allChildren).update(child.withAnm("anm id 1"));
     }
 
     @Test
     public void shouldUpdateEnrollmentsForUpdatedImmunizations() {
         Child child = mock(Child.class);
-        when(children.childExists("Case X")).thenReturn(true);
-        when(children.findByCaseId("Case X")).thenReturn(child);
+        when(allChildren.childExists("Case X")).thenReturn(true);
+        when(allChildren.findByCaseId("Case X")).thenReturn(child);
         FormSubmission submission = create()
                 .withFormName("child_immunizations")
                 .withANMId("anm id 1")
@@ -173,7 +194,7 @@ public class ChildServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldNotDoAnythingIfChildIsNotFoundForUpdatedImmunizations() {
-        when(children.childExists("Case X")).thenReturn(false);
+        when(allChildren.childExists("Case X")).thenReturn(false);
         FormSubmission submission = create()
                 .withFormName("child_immunizations")
                 .withANMId("anm id 1")
@@ -191,8 +212,8 @@ public class ChildServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldCallReportServiceWithPreviousImmunizationsInsteadOfCurrentImmunizations() throws Exception {
-        when(children.childExists("Case X")).thenReturn(true);
-        when(children.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female")
+        when(allChildren.childExists("Case X")).thenReturn(true);
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withDetails(EXTRA_DATA.get("details")));
         when(reportFieldsDefinition.get("child_immunizations")).thenReturn(asList("id", "immunizationsGiven", "immunizationDate"));
         FormSubmission submission = create()
@@ -212,8 +233,8 @@ public class ChildServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldCallReportServiceWithEmptyImmunizationsWhenThereIsNoPreviousImmunization() throws Exception {
-        when(children.childExists("Case X")).thenReturn(true);
-        when(children.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female")
+        when(allChildren.childExists("Case X")).thenReturn(true);
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withDetails(EXTRA_DATA.get("details")));
         when(reportFieldsDefinition.get("child_immunizations")).thenReturn(asList("id", "immunizationsGiven", "immunizationDate"));
         FormSubmission submission = create()
@@ -242,7 +263,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withEntityId("child id 1")
                 .build();
 
-        when(children.childExists("child id 1")).thenReturn(true);
+        when(allChildren.childExists("child id 1")).thenReturn(true);
 
         service.closeChild(submission);
 
@@ -257,7 +278,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withEntityId("child id 1")
                 .build();
 
-        when(children.childExists("child id 1")).thenReturn(true);
+        when(allChildren.childExists("child id 1")).thenReturn(true);
 
         service.closeChild(submission);
 
@@ -273,7 +294,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .addFormField("someKey", "someValue")
                 .build();
 
-        when(children.childExists("child id 1")).thenReturn(true);
+        when(allChildren.childExists("child id 1")).thenReturn(true);
         when(reportFieldsDefinition.get("child_close")).thenReturn(asList("someKey"));
 
         service.closeChild(submission);
@@ -289,11 +310,11 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withEntityId("child id 1")
                 .build();
 
-        when(children.childExists("child id 1")).thenReturn(true);
+        when(allChildren.childExists("child id 1")).thenReturn(true);
 
         service.closeChild(submission);
 
-        verify(children).close("child id 1");
+        verify(allChildren).close("child id 1");
     }
 
     @Test
@@ -304,14 +325,14 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withEntityId("child id 1")
                 .build();
 
-        when(children.childExists("child id 1")).thenReturn(false);
+        when(allChildren.childExists("child id 1")).thenReturn(false);
 
         service.closeChild(submission);
 
-        verify(children).childExists("child id 1");
+        verify(allChildren).childExists("child id 1");
         verifyZeroInteractions(childReportingService);
         verifyZeroInteractions(childSchedulesService);
         verifyZeroInteractions(actionService);
-        verifyNoMoreInteractions(children);
+        verifyNoMoreInteractions(allChildren);
     }
 }

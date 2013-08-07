@@ -10,11 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.IMMUNIZATIONS_GIVEN_FIELD_NAME;
-import static org.springframework.util.StringUtils.collectionToDelimitedString;
 
 @Repository
 public class AllChildren extends MotechBaseRepository<Child> {
@@ -25,7 +20,11 @@ public class AllChildren extends MotechBaseRepository<Child> {
 
     @GenerateView
     public Child findByCaseId(String caseId) {
-        return findChild(caseId, "by_caseId");
+        List<Child> children = queryView("by_caseId", caseId);
+        if (children == null || children.isEmpty()) {
+            return null;
+        }
+        return children.get(0);
     }
 
     @View(name = "children_by_mother_id", map = "function(doc) { if (doc.type === 'Child') { emit(doc.motherCaseId); } }")
@@ -42,11 +41,8 @@ public class AllChildren extends MotechBaseRepository<Child> {
         update(child.setIsClosed(true));
     }
 
-    private Child findChild(String caseId, String criteria) {
-        List<Child> children = queryView(criteria, caseId);
-        if (children == null || children.isEmpty()) {
-            return null;
-        }
-        return children.get(0);
+    public void remove(String id) {
+        Child child = findByCaseId(id);
+        remove(child);
     }
 }

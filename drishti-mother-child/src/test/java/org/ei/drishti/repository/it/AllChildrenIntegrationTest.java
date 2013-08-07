@@ -86,6 +86,16 @@ public class AllChildrenIntegrationTest {
         assertThat(children.findByCaseId("CASE X"), is(child.setIsClosed(true)));
     }
 
+    @Test
+    public void shouldRemoveChild() {
+        Child child = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07");
+        children.add(child);
+
+        children.remove(child);
+
+        assertTrue(children.getAll().isEmpty());
+    }
+
     private Child childWithoutDetails() {
         return new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "male")
                 .withAnm("ANM ID 1");
