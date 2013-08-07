@@ -35,6 +35,8 @@ public class AllConstants {
         public static final String TT_2 = "tt_2";
         public static final String BOOLEAN_TRUE_VALUE = "yes";
         public static final String BOOLEAN_FALSE_VALUE = "no";
+        public static final String PNC_REGISTRATION_OA_SUB_FORM_NAME = "Child Registration OA";
+
     }
 
     public static class Report {

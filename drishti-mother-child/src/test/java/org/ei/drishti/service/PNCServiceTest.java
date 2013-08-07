@@ -3,6 +3,7 @@ package org.ei.drishti.service;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.domain.SubFormData;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
@@ -23,7 +24,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.ei.drishti.util.FormSubmissionBuilder.create;
 import static org.mockito.Mockito.*;
@@ -54,7 +54,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void setUp() throws Exception {
         initMocks(this);
         service = new PNCService(actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, mothers, children,
-                motherReportingService, childReportingService, reportFieldsDefinition);
+                motherReportingService, reportFieldsDefinition);
     }
 
     @Test
@@ -194,6 +194,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
+                .withSubForm(new SubFormData("Child Registration OA", Collections.<Map<String, String>>emptyList()))
                 .build();
 
         service.pncOAChildRegistration(submission);
@@ -208,12 +209,16 @@ public class PNCServiceTest extends BaseUnitTest {
         when(mothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "TC1")));
         Child firstChild = new Child("child id 1", "mother id 1", "opv", "2", "female");
         Child secondChild = new Child("child id 2", "mother id 1", "opv", "2", "male");
-        when(children.findByMotherId("mother id 1")).thenReturn(asList(firstChild, secondChild));
+        when(children.findByCaseId("child id 1")).thenReturn(firstChild);
+        when(children.findByCaseId("child id 2")).thenReturn(secondChild);
+        ;
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
+                .withSubForm(new SubFormData("Child Registration OA",
+                        asList(mapOf("entityId", "child id 1"), mapOf("entityId", "child id 2"))))
                 .build();
 
         service.pncOAChildRegistration(submission);
@@ -229,12 +234,16 @@ public class PNCServiceTest extends BaseUnitTest {
         when(mothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "TC1")));
         Child firstChild = new Child("child id 1", "mother id 1", "opv", "2", "female");
         Child secondChild = new Child("child id 2", "mother id 1", "opv", "2", "male");
-        when(children.findByMotherId("mother id 1")).thenReturn(asList(firstChild, secondChild));
+        when(children.findByCaseId("child id 1")).thenReturn(firstChild);
+        when(children.findByCaseId("child id 2")).thenReturn(secondChild);
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
+                .withSubForm(new SubFormData("Child Registration OA",
+                        asList(mapOf("entityId", "child id 1"),
+                                mapOf("entityId", "child id 2"))))
                 .build();
 
         service.pncOAChildRegistration(submission);

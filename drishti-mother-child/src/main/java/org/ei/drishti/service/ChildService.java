@@ -109,5 +109,4 @@ public class ChildService {
         childReportingService.closeChild(reportFieldsMap);
         childSchedulesService.unenrollChild(submission.entityId());
     }
-
 }

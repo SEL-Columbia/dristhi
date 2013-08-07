@@ -1,13 +1,14 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.domain.SubFormData;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
-import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.service.scheduling.PNCSchedulesService;
@@ -18,14 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.PERMANENT_RELOCATION_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REFERENCE_DATE;
-import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_MOTHER_SURVIVE;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_WOMAN_SURVIVE;
+import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 
 @Service
@@ -38,7 +40,6 @@ public class PNCService {
     private AllMothers allMothers;
     private AllChildren allChildren;
     private MotherReportingService motherReportingService;
-    private ChildReportingService childReportingService;
     private ReportFieldsDefinition reportFieldsDefinition;
 
     @Autowired
@@ -49,7 +50,6 @@ public class PNCService {
                       AllMothers allMothers,
                       AllChildren allChildren,
                       MotherReportingService motherReportingService,
-                      ChildReportingService childReportingService,
                       ReportFieldsDefinition reportFieldsDefinition) {
         this.actionService = actionService;
         this.childSchedulesService = childSchedulesService;
@@ -58,7 +58,6 @@ public class PNCService {
         this.allMothers = allMothers;
         this.allChildren = allChildren;
         this.motherReportingService = motherReportingService;
-        this.childReportingService = childReportingService;
         this.reportFieldsDefinition = reportFieldsDefinition;
     }
 
@@ -95,10 +94,12 @@ public class PNCService {
         Mother mother = mothers.get(0);
         allMothers.update(mother.withAnm(submission.anmId()));
 
-        List<Child> children = allChildren.findByMotherId(mother.caseId());
+        SubFormData subFormData = submission.getSubFormByName(AllConstants.Form.PNC_REGISTRATION_OA_SUB_FORM_NAME);
+        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
 
-        for (Child child : children) {
-            child = child.withAnm(submission.anmId()).withDateOfBirth(submission.getField(REFERENCE_DATE)).withThayiCard(mother.thayiCardNo());
+        for (Map<String, String> childFields : subFormData.instances()) {
+            Child child = allChildren.findByCaseId(childFields.get(AllConstants.Form.ENTITY_ID));
+            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
             allChildren.update(child);
 
             childSchedulesService.enrollChild(child);
