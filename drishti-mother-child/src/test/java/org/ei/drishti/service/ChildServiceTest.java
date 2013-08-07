@@ -91,7 +91,7 @@ public class ChildServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldDeleteRegisteredChildWhenDeliveryOutcomeIsStillBirth() {
+    public void shouldDeleteChildRegisteredThroughDeliveryOutcomeFormWhenDeliveryOutcomeIsStillBirth() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         FormSubmission submission = create()
@@ -420,6 +420,27 @@ public class ChildServiceTest extends BaseUnitTest {
         service.pncOAChildRegistration(submission);
 
         verifyZeroInteractions(allChildren);
+        verifyZeroInteractions(childSchedulesService);
+    }
+
+    @Test
+    public void shouldDeleteChildRegisteredThroughPNCRegistrationFormOAWhenDeliveryOutcomeIsStillBirth() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        FormSubmission submission = create()
+                .withFormName("pnc_registration_oa")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("deliveryOutcome", "still_birth")
+                .withSubForm(new SubFormData("Child Registration OA",
+                        asList(mapOf("id", "child id 1"))))
+                .build();
+        when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "EC-CASE-1", "TC1")));
+
+        service.pncOAChildRegistration(submission);
+
+        verify(allChildren).remove("child id 1");
+        verifyZeroInteractions(childReportingService);
         verifyZeroInteractions(childSchedulesService);
     }
 }

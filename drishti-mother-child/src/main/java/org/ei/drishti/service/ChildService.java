@@ -59,11 +59,7 @@ public class ChildService {
         }
 
         SubFormData subFormData = submission.getSubFormByName(AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME);
-        if (isDeliveryOutcomeStillBirth(submission)) {
-            String childId = subFormData.instances().get(0).get(ID);
-            allChildren.remove(childId);
-            return;
-        }
+        if (handleStillBirth(submission, subFormData)) return;
 
         String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
         for (Map<String, String> childFields : subFormData.instances()) {
@@ -129,8 +125,9 @@ public class ChildService {
         allMothers.update(mother.withAnm(submission.anmId()));
 
         SubFormData subFormData = submission.getSubFormByName(AllConstants.Form.PNC_REGISTRATION_OA_SUB_FORM_NAME);
-        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
+        if (handleStillBirth(submission, subFormData)) return;
 
+        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
         for (Map<String, String> childFields : subFormData.instances()) {
             Child child = allChildren.findByCaseId(childFields.get(AllConstants.CommonFormFields.ID));
             child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
@@ -138,5 +135,14 @@ public class ChildService {
 
             childSchedulesService.enrollChild(child);
         }
+    }
+
+    private boolean handleStillBirth(FormSubmission submission, SubFormData subFormData) {
+        if (isDeliveryOutcomeStillBirth(submission)) {
+            String childId = subFormData.instances().get(0).get(ID);
+            allChildren.remove(childId);
+            return true;
+        }
+        return false;
     }
 }
