@@ -77,7 +77,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didBreastfeedingStart", "no")
                 .withSubForm(new SubFormData("Child Registration",
-                        asList(mapOf("entityId", "child id 1"), mapOf("entityId", "child id 2"))))
+                        asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
                 .build();
 
         service.registerChildren(submission);
@@ -106,7 +106,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didBreastfeedingStart", "no")
                 .withSubForm(new SubFormData("Child Registration",
-                        asList(mapOf("entityId", "child id 1"), mapOf("entityId", "child id 2"))))
+                        asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
                 .build();
 
         service.registerChildren(submission);

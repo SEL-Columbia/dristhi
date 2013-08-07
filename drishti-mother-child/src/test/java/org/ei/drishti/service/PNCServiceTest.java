@@ -218,7 +218,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .withSubForm(new SubFormData("Child Registration OA",
-                        asList(mapOf("entityId", "child id 1"), mapOf("entityId", "child id 2"))))
+                        asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
                 .build();
 
         service.pncOAChildRegistration(submission);
@@ -242,8 +242,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .withSubForm(new SubFormData("Child Registration OA",
-                        asList(mapOf("entityId", "child id 1"),
-                                mapOf("entityId", "child id 2"))))
+                        asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
                 .build();
 
         service.pncOAChildRegistration(submission);
