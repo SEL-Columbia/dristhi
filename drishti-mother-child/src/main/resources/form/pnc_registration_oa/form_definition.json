@@ -180,7 +180,7 @@
         ],
         "sub_forms": [
             {
-                "name": "Child Registration OA",
+                "name": "child_registration_oa",
                 "bind_type": "child",
                 "default_bind_path": "/model/instance/PNC_Child_Registration_EngKan/child",
                 "fields": [

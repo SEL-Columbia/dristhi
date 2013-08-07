@@ -196,7 +196,7 @@
         ],
         "sub_forms": [
             {
-                "name": "Child PNC Visit",
+                "name": "child_pnc_visit",
                 "bind_type": "child",
                 "default_bind_path": "/model/instance/PNC_Visit_EngKan/pnc_child_repeat/",
                 "fields": [

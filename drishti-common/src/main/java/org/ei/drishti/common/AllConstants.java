@@ -35,7 +35,7 @@ public class AllConstants {
         public static final String TT_2 = "tt_2";
         public static final String BOOLEAN_TRUE_VALUE = "yes";
         public static final String BOOLEAN_FALSE_VALUE = "no";
-        public static final String PNC_REGISTRATION_OA_SUB_FORM_NAME = "Child Registration OA";
+        public static final String PNC_REGISTRATION_OA_SUB_FORM_NAME = "child_registration_oa";
 
     }
 
@@ -68,7 +68,7 @@ public class AllConstants {
         public static final String PRIVATE_FACILITY_FIELD_VALUE = "private_facility";
         public static final String PRIVATE_FACILITY2_FIELD_VALUE = "private_facility2";
         public static final String REFERENCE_DATE_FIELD_VALUE = "referenceDate";
-        public static final String CHILD_REGISTRATION_SUB_FORM_NAME = "Child Registration";
+        public static final String CHILD_REGISTRATION_SUB_FORM_NAME = "child_registration";
         public static final String STILL_BIRTH_VALUE = "still_birth";
     }
 

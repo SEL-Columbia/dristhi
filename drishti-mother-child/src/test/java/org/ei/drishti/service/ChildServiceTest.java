@@ -77,7 +77,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didBreastfeedingStart", "no")
-                .withSubForm(new SubFormData("Child Registration",
+                .withSubForm(new SubFormData("child_registration",
                         asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
                 .build();
 
@@ -99,7 +99,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("deliveryOutcome", "still_birth")
-                .withSubForm(new SubFormData("Child Registration",
+                .withSubForm(new SubFormData("child_registration",
                         asList(mapOf("id", "child id 1"))))
                 .build();
         when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "EC-CASE-1", "TC1"));
@@ -127,7 +127,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didBreastfeedingStart", "no")
-                .withSubForm(new SubFormData("Child Registration",
+                .withSubForm(new SubFormData("child_registration",
                         asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
                 .build();
 
@@ -349,7 +349,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
-                .withSubForm(new SubFormData("Child Registration OA", Collections.<Map<String, String>>emptyList()))
+                .withSubForm(new SubFormData("child_registration_oa", Collections.<Map<String, String>>emptyList()))
                 .build();
 
         service.pncOAChildRegistration(submission);
@@ -371,7 +371,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
-                .withSubForm(new SubFormData("Child Registration OA",
+                .withSubForm(new SubFormData("child_registration_oa",
                         asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
                 .build();
 
@@ -395,7 +395,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
-                .withSubForm(new SubFormData("Child Registration OA",
+                .withSubForm(new SubFormData("child_registration_oa",
                         asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
                 .build();
 
@@ -432,7 +432,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .addFormField("deliveryOutcome", "still_birth")
-                .withSubForm(new SubFormData("Child Registration OA",
+                .withSubForm(new SubFormData("child_registration_oa",
                         asList(mapOf("id", "child id 1"))))
                 .build();
         when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "EC-CASE-1", "TC1")));
