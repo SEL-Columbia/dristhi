@@ -62,7 +62,7 @@ public class ChildService {
         String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
 
         for (Map<String, String> childFields : subFormData.instances()) {
-            Child child = allChildren.findByCaseId(childFields.get(AllConstants.DeliveryOutcomeFields.ID_FIELD));
+            Child child = allChildren.findByCaseId(childFields.get(AllConstants.Form.ENTITY_ID));
             child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
             allChildren.update(child);
 
