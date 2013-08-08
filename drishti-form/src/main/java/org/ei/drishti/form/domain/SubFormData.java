@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,11 @@ public class SubFormData {
     private List<FormField> fields;
     @JsonProperty
     private List<Map<String, String>> instances;
+
+    public SubFormData() {
+        this.instances =  new ArrayList<>();
+        this.name = "";
+    }
 
     public SubFormData(String name, List<Map<String, String>> instances) {
         this.instances = instances;
