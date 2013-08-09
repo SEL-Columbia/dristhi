@@ -21,6 +21,10 @@
                 "bind": "/model/instance/IFA_EngKan/ifa_tablets_date"
             },
             {
+                "name": "ifaStockOut",
+                "bind": "/model/instance/IFA_EngKan/ifa_stock_out"
+            },
+            {
                 "name": "submissionDate",
                 "bind": "/model/instance/IFA_EngKan/today"
             }
