@@ -77,6 +77,10 @@
             {
                 "name": "femaleSterilizationType",
                 "bind": "/model/instance/Family_Planning_Change_Method_EngKan/female_sterilization_type"
+            },
+            {
+                "name": "fpMethodStockOut",
+                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/fp_method_stock_out"
             }
         ]
     }
