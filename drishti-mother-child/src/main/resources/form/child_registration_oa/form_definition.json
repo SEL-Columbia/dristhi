@@ -9,48 +9,63 @@
                 "shouldLoadValue": true
             },
             {
+                "name": "registrationDate",
+                "bind": "/model/instance/Child_Registration_EngKan/child_reg_date"
+            },
+            {
                 "name": "phc",
-                "bind": "/model/instance/Child_Registration_EngKan/phc"
+                "bind": "/model/instance/Child_Registration_EngKan/phc",
+                "source": "child.mother.eligible_couple.phc"
             },
             {
                 "name": "subCenter",
-                "bind": "/model/instance/Child_Registration_EngKan/sub_center"
+                "bind": "/model/instance/Child_Registration_EngKan/sub_center",
+                "source": "child.mother.eligible_couple.subCenter"
             },
             {
                 "name": "village",
-                "bind": "/model/instance/Child_Registration_EngKan/village"
+                "bind": "/model/instance/Child_Registration_EngKan/village",
+                "source": "child.mother.eligible_couple.village"
             },
             {
                 "name": "householdNumber",
-                "bind": "/model/instance/Child_Registration_EngKan/hh_number"
+                "bind": "/model/instance/Child_Registration_EngKan/hh_number",
+                "source": "child.mother.eligible_couple.householdNumber"
             },
             {
                 "name": "householdAddress",
-                "bind": "/model/instance/Child_Registration_EngKan/hh_address"
+                "bind": "/model/instance/Child_Registration_EngKan/hh_address",
+                "source": "child.mother.eligible_couple.householdAddress"
             },
             {
                 "name": "motherName",
-                "bind": "/model/instance/Child_Registration_EngKan/mother_name"
+                "bind": "/model/instance/Child_Registration_EngKan/mother_name",
+                "source": "child.mother.eligible_couple.wifeName"
             },
             {
                 "name": "fatherName",
-                "bind": "/model/instance/Child_Registration_EngKan/father_name"
+                "bind": "/model/instance/Child_Registration_EngKan/father_name",
+                "source": "child.mother.eligible_couple.husbandName"
             },
             {
-                "name": "thayiCardNumer",
-                "bind": "/model/instance/Child_Registration_EngKan/thayi_card_number"
+                "name": "thayiCardNumber",
+                "bind": "/model/instance/Child_Registration_EngKan/thayi_card_number",
+                "source": "child.mother.thayiCardNumber"
             },
             {
                 "name": "economicStatus",
-                "bind": "/model/instance/Child_Registration_EngKan/economic_status"
+                "bind": "/model/instance/Child_Registration_EngKan/economic_status",
+                "source": "child.mother.eligible_couple.economicStatus"
             },
             {
                 "name": "caste",
-                "bind": "/model/instance/Child_Registration_EngKan/caste"
+                "bind": "/model/instance/Child_Registration_EngKan/caste",
+                "source": "child.mother.eligible_couple.caste"
             },
             {
                 "name": "phoneNumber",
-                "bind": "/model/instance/Child_Registration_EngKan/phone_number"
+                "bind": "/model/instance/Child_Registration_EngKan/phone_no",
+                "source": "child.mother.eligible_couple.phoneNumber"
             },
             {
                 "name": "name",
@@ -59,10 +74,6 @@
             {
                 "name": "dateOfBirth",
                 "bind": "/model/instance/Child_Registration_EngKan/child_birth_date"
-            },
-            {
-                "name": "age",
-                "bind": "/model/instance/Child_Registration_EngKan/child_age"
             },
             {
                 "name": "gender",
@@ -170,7 +181,7 @@
             },
             {
                 "name": "measlesBoosterDate",
-                "bind": "/model/instance/Child_Registration_EngKan/child_immunization_history_group/measles_booster_date"
+                "bind": "/model/instance/Child_Registration_EngKan/child_immunization_history_group/measlesbooster_date"
             },
             {
                 "name": "dptBooster2Date",
@@ -237,12 +248,19 @@
                 "source": "child.mother.id"
             },
             {
+                "name": "isMotherClosed",
+                "source": "child.mother.isClosed",
+                "value": true
+            },
+            {
                 "name": "isClosed",
-                "source": "child.mother.isClosed"
+                "source": "child.isClosed",
+                "value": false
             },
             {
                 "name": "isOutOfArea",
-                "source": "child.mother.eligible_couple.isOutOfArea"
+                "source": "child.mother.eligible_couple.isOutOfArea",
+                "value": true
             },
             {
                 "name": "submissionDate",
