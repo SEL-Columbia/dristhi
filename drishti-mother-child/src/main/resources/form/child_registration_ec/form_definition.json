@@ -167,16 +167,6 @@
                 "source": "eligible_couple.mother.child.opv1Date"
             },
             {
-                "name": "dpt1Date",
-                "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/dpt_1_date",
-                "source": "eligible_couple.mother.child.dpt1Date"
-            },
-            {
-                "name": "hepb1Date",
-                "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/hepb_1_date",
-                "source": "eligible_couple.mother.child.hepb1Date"
-            },
-            {
                 "name": "pentavalent1Date",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/pentavalent_1_date",
                 "source": "eligible_couple.mother.child.pentavalent1Date"
@@ -187,16 +177,6 @@
                 "source": "eligible_couple.mother.child.opv2Date"
             },
             {
-                "name": "dpt2Date",
-                "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/dpt_2_date",
-                "source": "eligible_couple.mother.child.dpt2Date"
-            },
-            {
-                "name": "hepb2Date",
-                "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/hepb_2_date",
-                "source": "eligible_couple.mother.child.hepb2Date"
-            },
-            {
                 "name": "pentavalent2Date",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/pentavalent_2_date",
                 "source": "eligible_couple.mother.child.pentavalent2Date"
@@ -205,16 +185,6 @@
                 "name": "opv3Date",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/opv_3_date",
                 "source": "eligible_couple.mother.child.opv3Date"
-            },
-            {
-                "name": "dpt3Date",
-                "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/dpt_3_date",
-                "source": "eligible_couple.mother.child.dpt3Date"
-            },
-            {
-                "name": "hepb3Date",
-                "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/hepb_3_date",
-                "source": "eligible_couple.mother.child.hepb3Date"
             },
             {
                 "name": "pentavalent3Date",
