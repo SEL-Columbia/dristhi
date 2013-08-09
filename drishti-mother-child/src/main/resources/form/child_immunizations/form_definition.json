@@ -12,17 +12,13 @@
                 "name": "previousImmunizations",
                 "shouldLoadValue": true,
                 "source": "child.immunizationsGiven",
+                "bind": "/model/instance/Child_Immunizations_EngKan/entity_immunizations_given",
                 "value": ""
             },
             {
                 "name": "immunizationsReceived",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/Child_Immunizations_EngKan/entity_immunizations_received"
-            },
-            {
-                "name": "immunizationsGiven",
-                "shouldLoadValue": true,
-                "bind": "/model/instance/Child_Immunizations_EngKan/entity_immunizations_given"
             },
             {
                 "name": "immunizationsGiven",
@@ -40,6 +36,11 @@
             {
                 "name": "submissionDate",
                 "bind": "/model/instance/Child_Immunizations_EngKan/today"
+            },
+            {
+                "name": "dateOfBirth",
+                "bind": "/model/instance/Child_Immunizations_EngKan/case_child_birth_date",
+                "shouldLoadValue": true
             }
         ]
     }
