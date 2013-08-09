@@ -54,24 +54,21 @@
                 "bind": "/model/instance/Child_Sick_Visit_EngKan/report_child_disease_group/number_ors_given"
             },
             {
+                "name": "orsStockOut",
+                "bind": "/model/instance/Child_Sick_Visit_EngKan/report_child_disease_group/ors_stock_out"
+            },
+            {
                 "name": "childReferral",
                 "bind": "/model/instance/Child_Sick_Visit_EngKan/report_child_disease_group/child_referral"
             },
             {
-                "name": "hasStockOut",
-                "bind": "/model/instance/Child_Sick_Visit_EngKan/has_stock_out"
-            },
-            {
-                "name": "stockOutItems",
-                "bind": "/model/instance/Child_Sick_Visit_EngKan/stock_out_items"
-            },
-            {
-                "name": "stockOutItemsOthers",
-                "bind": "/model/instance/Child_Sick_Visit_EngKan/stock_out_items_others"
-            },
-            {
                 "name": "submissionDate",
                 "bind": "/model/instance/Child_Sick_Visit_EngKan/today"
+            },
+            {
+                "name": "dateOfBirth",
+                "bind": "/model/instance/Child_Sick_Visit_EngKan/child_date_of_birth",
+                "shouldLoadValue": true
             }
         ]
     }
