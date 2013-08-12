@@ -17,7 +17,6 @@
             },
             {
                 "name": "immunizationsReceived",
-                "shouldLoadValue": true,
                 "bind": "/model/instance/Child_Immunizations_EngKan/entity_immunizations_received"
             },
             {
