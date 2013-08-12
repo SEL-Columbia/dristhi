@@ -9,6 +9,11 @@
                 "shouldLoadValue": true
             },
             {
+                "name": "dateOfBirth",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/Child_Vitamin_A_EngKan/case_child_birth_date"
+            },
+            {
                 "name": "vitaminADose",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/Child_Vitamin_A_EngKan/vit_a_dose"
