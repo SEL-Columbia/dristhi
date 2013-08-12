@@ -8,7 +8,7 @@ public class AllConstants {
         public static final String ANM_ID = "anmId";
         public static final String FORM_NAME = "formName";
         public static final String INSTANCE_ID = "instanceId";
-        public static final String TIME_STAMP = "timeStamp";
+        public static final String CLIENT_VERSION = "clientVersion";
         public static final String SERVER_VERSION = "serverVersion";
         public static final String EC_REGISTRATION = "ec_registration";
         public static final String FP_COMPLICATIONS = "fp_complications";

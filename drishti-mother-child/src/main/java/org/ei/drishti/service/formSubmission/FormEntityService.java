@@ -47,7 +47,7 @@ public class FormEntityService {
                 .put(INSTANCE_ID, formSubmission.instanceId())
                 .put(ENTITY_ID, formSubmission.entityId())
                 .put(FORM_NAME, formSubmission.formName())
-                .put(TIME_STAMP, valueOf(formSubmission.clientVersion()))
+                .put(CLIENT_VERSION, valueOf(formSubmission.clientVersion()))
                 .put(SERVER_VERSION, valueOf(formSubmission.serverVersion()))
                 .map());
     }
