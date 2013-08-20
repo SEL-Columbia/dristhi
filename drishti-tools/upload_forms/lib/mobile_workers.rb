@@ -1,9 +1,10 @@
 class MobileWorker
-  attr_reader :user_name, :spreadsheet
+  attr_reader :user_name, :spreadsheet, :user_id
 
   def initialize user_name, spreadsheet
     @spreadsheet = spreadsheet
     @user_name = user_name
+    @user_id = user_name
   end
 end
 

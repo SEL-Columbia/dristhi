@@ -9,14 +9,14 @@ class Forms
   def fill_for_in_area
     fill_ec_form
     fill_anc_registration_forms if has_anc?
-    fill_anc_services_forms if has_anc? and has_services?
-    fill_anc_outcome_forms if has_anc? and has_services? and has_outcome?
+    #fill_anc_services_forms if has_anc? and has_services?
+    #fill_anc_outcome_forms if has_anc? and has_services? and has_outcome?
   end
 
   def fill_for_out_of_area
     fill_out_of_area_anc_registration_forms if has_anc?
-    fill_anc_services_forms if has_anc? and has_services?
-    fill_anc_outcome_forms if has_anc? and has_services? and has_outcome?
+    #fill_anc_services_forms if has_anc? and has_services?
+    #fill_anc_outcome_forms if has_anc? and has_services? and has_outcome?
   end
 
   def fill_ec_form
@@ -27,35 +27,50 @@ class Forms
 
     ec = @ec
     user_name = @mobile_worker.user_name
-    form_instance = form_instance_erb.result(binding);
+    form_instance = form_instance_erb.result(binding)
     ec_registration_json = ec_registration_erb.result(binding)
     File.open("output/EC_#{ec['Entity ID']}.json", "w") do |f| f.puts ec_registration_json end
   end
 
   def fill_out_of_area_anc_registration_forms
     @ancs.each do |anc|
-      puts "    Out of area ANC registration: #{anc['a.Wife Name']} - #{anc['a.Husband Name']} - #{anc['LMP']} - #{anc['Case ID']}"
 
-      out_of_area_anc_registration_erb = ERB.new(File.read('templates/out_of_area_anc_registration.erb'))
+      puts "    Out of area ANC registration: #{anc['Wife Name']} - #{anc['Husband Name']} - #{anc['LMP']} - #{anc['Entity ID']}"
 
+      form_instance_erb = ERB.new(File.read('templates/anc_oa_form_instance_erb.json'))
+      out_of_area_anc_registration_erb = ERB.new(File.read('templates/anc_registration.erb'))
+
+      ec = @ec
       user_id = @mobile_worker.user_id
       user_name = @mobile_worker.user_name
-      out_of_area_anc_registration_xml = out_of_area_anc_registration_erb.result(binding)
-      File.open("output/ANCOutOfArea_#{anc['Case ID']}.xml", "w") do |f| f.puts out_of_area_anc_registration_xml end
+      form_name = "anc_registration_oa"
+      instance_id = anc['Instance ID']
+      entity_id = anc['Entity ID']
+
+      form_instance = form_instance_erb.result(binding)
+      out_of_area_anc_registration_json = out_of_area_anc_registration_erb.result(binding)
+      File.open("output/ANCOutOfArea_#{anc['Entity ID']}.json", "w") do |f| f.puts out_of_area_anc_registration_json end
     end
   end
 
   def fill_anc_registration_forms
-    @ancs.each do |anc|
-      puts "    ANC registration: #{anc['LMP']} - #{anc['Case ID']}"
+    @ancs.each do |value|
+      anc = get_safe_map(value)
+      puts "    ANC registration: #{anc['LMP']} - #{anc['Entity ID']}"
 
+      form_instance_erb = ERB.new(File.read('templates/anc_form_instance_erb.json'))
       anc_registration_erb = ERB.new(File.read('templates/anc_registration.erb'))
 
       ec = @ec
       user_id = @mobile_worker.user_id
       user_name = @mobile_worker.user_name
-      anc_registration_xml = anc_registration_erb.result(binding)
-      File.open("output/ANC_#{anc['Case ID']}.xml", "w") do |f| f.puts anc_registration_xml end
+      form_name = "anc_registration"
+      instance_id = anc['Instance ID']
+      entity_id = anc['Entity ID']
+
+      form_instance = form_instance_erb.result(binding)
+      anc_registration_json = anc_registration_erb.result(binding)
+      File.open("output/ANC_#{anc['Entity ID']}.json", "w") do |f| f.puts anc_registration_json end
     end
   end
 
@@ -92,15 +107,22 @@ class Forms
   end
 
   def has_anc?
-    not @ancs.nil?
+    not (@ancs.nil? or @ancs.to_a.empty?)
   end
 
   def has_services?
-    not @anc_services.nil?
+    not (@anc_services.nil? or @anc_services.to_a.empty?)
   end
 
   def has_outcome?
     @anc_services.any? {|service| not service['Date of Delivery'].nil? and not service['Date of Delivery'].empty? }
   end
+
+  private
+  def get_safe_map(value)
+    raise "Multiple values found for key : [#{value[0]['Village Code'].village}, #{value[0]['Wife Name']}, #{value[0]['Husband Name']}]" if value.size > 1
+    value[0]
+  end
+
 end
 

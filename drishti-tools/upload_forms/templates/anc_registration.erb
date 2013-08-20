@@ -1,76 +1,10 @@
-<?xml version='1.0' ?>
-<ANC_Registration_v7_01 uiVersion="1" version="324" name="ANC Registration" xmlns:jrm="http://dev.commcarehq.org/jr/xforms" xmlns="http://openrosa.org/formdesigner/10825054-464A-46F9-A761-F1CF88194E9C">
-  <today><%= Date.today.to_s %></today>
-  <reg_date><%= anc['a.Registration date'] %></reg_date>
-  <case_woman_name><%= ec['Wife Name'] %></case_woman_name>
-  <case_woman_age><%= ec['Wife Age'] %></case_woman_age>
-  <case_husbands_name><%= ec['Husband Name'] %></case_husbands_name>
-  <thayi_no><%= anc['a.Thayi Card Number'] %></thayi_no>
-  <anc_number><%= anc['Sno'] %></anc_number>
-  <case_phc><%= ec['Village Code'].phc %></case_phc>
-  <anm_name_b>latha</anm_name_b>
-  <anm_name>latha</anm_name>
-  <anm_phone_number></anm_phone_number>
-  <asha_name></asha_name>
-  <asha_phone_number></asha_phone_number>
-  <lmp_date><%= anc['LMP'] %></lmp_date>
-  <edd><%= anc['EDD'] %></edd>
-  <edd_note />
-  <case_num_previouspregnancies><%= anc['Number of parity(P)'] %></case_num_previouspregnancies>
-  <medical_histories />
-  <blood_group></blood_group>
-  <blood_group_message />
-  <height><%= anc['Height'] %></height>
-  <weight_startofpregnancy />
-  <type_deliveryfacility>private_facility</type_deliveryfacility>
-  <name_deliveryfacility><%= anc['Place of Delivery'] %></name_deliveryfacility>
-  <tobacco_use>no_tobacco</tobacco_use>
-  <case_would_be_high_risk><%= anc['HRP'] %></case_would_be_high_risk>
-  <case_would_be_high_risk_reason />
-  <weight_risk />
-  <height_risk />
-  <tobacco_risk />
-  <is_high_risk><%= anc['HRP'] %></is_high_risk>
-  <high_risk_reason></high_risk_reason>
-  <anc_registered_message />
-  <subcase_0>
-    <n0:case case_id="<%= anc['Case ID'] %>" user_id="<%= user_id %>" date_modified="2012-09-18T15:08:24.923+05:30" xmlns:n0="http://commcarehq.org/case/transaction/v2">
-      <n0:create>
-        <n0:case_name><%= anc['a.Thayi Card Number'] %></n0:case_name>
-        <n0:owner_id><%= user_id %></n0:owner_id>
-        <n0:case_type>pregnant_woman</n0:case_type>
-      </n0:create>
-      <n0:update>
-        <n0:asha_phone_number></n0:asha_phone_number>
-        <n0:lmp_date><%= anc['LMP'] %></n0:lmp_date>
-        <n0:is_high_risk><%= anc['HRP'] %></n0:is_high_risk>
-        <n0:asha_name></n0:asha_name>
-        <n0:name_deliveryfacility><%= anc['Place of Delivery'] %></n0:name_deliveryfacility>
-        <n0:edd><%= anc['EDD'] %></n0:edd>
-        <n0:blood_group></n0:blood_group>
-        <n0:weight_startofpregnancy />
-        <n0:type_deliveryfacility>private_facility</n0:type_deliveryfacility>
-        <n0:anm_name>latha</n0:anm_name>
-        <n0:anm_phone_number></n0:anm_phone_number>
-        <n0:high_risk_reason></n0:high_risk_reason>
-        <n0:anc_number><%= anc['Sno'] %></n0:anc_number>
-        <n0:height><%= anc['Height'] %></n0:height>
-        <n0:medical_histories />
-        <n0:tobacco_use>no_tobacco</n0:tobacco_use>
-      </n0:update>
-      <n0:index>
-        <n0:parent case_type="eligible_couple"><%= ec['Case ID'] %></n0:parent>
-      </n0:index>
-    </n0:case>
-  </subcase_0>
-  <n1:case case_id="<%= ec['Case ID'] %>" user_id="<%= user_id %>" date_modified="2012-09-18T15:08:24.923+05:30" xmlns:n1="http://commcarehq.org/case/transaction/v2" />
-  <n2:meta xmlns:n2="http://openrosa.org/jr/xforms">
-    <n2:deviceID>359918045600160</n2:deviceID>
-    <n2:timeStart>2012-09-18T15:06:54.069+05:30</n2:timeStart>
-    <n2:timeEnd>2012-09-18T15:08:24.923+05:30</n2:timeEnd>
-    <n2:username><%= user_name %></n2:username>
-    <n2:userID><%= user_id %></n2:userID>
-    <n2:instanceID><%= anc['Instance ID'] %></n2:instanceID>
-    <n3:appVersion xmlns:n3="http://commcarehq.org/xforms">CommCare ODK, version "2.1"(3027). CommCare Version 2.0. Build 3027, built on: August-07-2012</n3:appVersion>
-  </n2:meta>
-</ANC_Registration_v7_01>
+[
+    {
+        "instanceId": "<%= instance_id %>",
+        "formName": "<%= form_name %>",
+        "anmId":  "<%= user_name %>",
+        "clientVersion":  "<%= Time.now.to_i %>",
+        "entityId":  "<%= entity_id %>",
+        "formInstance": "<%=  form_instance.to_s.gsub('"', '\"').gsub("\n", "").gsub("\r", "") %>"
+    }
+]

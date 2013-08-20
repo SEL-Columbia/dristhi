@@ -11,6 +11,8 @@ def upload_all(filenames, user, password)
   end
 end
 
-ec_forms = Dir['output/EC_*.json']
+ec_forms = Dir['output/EC*.json']
+anc_forms = Dir['output/ANC*.json']
 
 upload_all ec_forms, ARGV[0].to_s, ARGV[1].to_s
+upload_all anc_forms, ARGV[0].to_s, ARGV[1].to_s
