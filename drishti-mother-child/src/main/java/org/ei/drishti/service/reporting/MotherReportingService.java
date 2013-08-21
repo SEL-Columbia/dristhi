@@ -66,7 +66,7 @@ public class MotherReportingService {
         reportToBoth(mother, ANC, reportData.get(REGISTRATION_DATE), location);
 
         boolean isRegisteredWithinTwelveWeeks = !(parse(reportData.get(REGISTRATION_DATE)).minusDays(NUMBER_OF_DAYS_IN_12_WEEKS)
-                .isAfter(parse(reportData.get(REFERENCE_DATE))));
+                .isAfter(parse(reportData.get(AllConstants.ANCFormFields.REFERENCE_DATE))));
         if (isRegisteredWithinTwelveWeeks) {
             reportToBoth(mother, ANC_BEFORE_12_WEEKS, reportData.get(REGISTRATION_DATE), location);
         }
@@ -89,7 +89,7 @@ public class MotherReportingService {
         Location location = loadLocationFromEC(mother);
         reportPregnancyOutcome(reportData, mother, location);
         reportIfInstitutionalDelivery(reportData, mother, location);
-        reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), location);
+        reportToBoth(mother, DELIVERY, reportData.get(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE), location);
         reportMotherMortality(reportData, mother, location);
         reportPlaceOfDelivery(reportData, mother, location);
     }
@@ -134,25 +134,25 @@ public class MotherReportingService {
 
     private void reportIfInstitutionalDelivery(SafeMap reportData, Mother mother, Location location) {
         if (!HOME_FIELD_VALUE.equals(reportData.get(DELIVERY_PLACE))) {
-            reportToBoth(mother, INSTITUTIONAL_DELIVERY, reportData.get(REFERENCE_DATE), location);
+            reportToBoth(mother, INSTITUTIONAL_DELIVERY, reportData.get(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE), location);
         }
     }
 
     private void reportPregnancyOutcome(SafeMap reportData, Mother mother, Location location) {
         Indicator indicator = LIVE_BIRTH_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME)) ? LIVE_BIRTH : STILL_BIRTH;
-        reportToBoth(mother, indicator, reportData.get(REFERENCE_DATE), location);
+        reportToBoth(mother, indicator, reportData.get(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE), location);
     }
 
     private void reportMotherMortality(SafeMap reportData, Mother mother, Location location) {
         if (BOOLEAN_FALSE_VALUE.equals(reportData.get(DID_WOMAN_SURVIVE)) || BOOLEAN_FALSE_VALUE.equals(reportData.get(DID_MOTHER_SURVIVE))) {
-            reportDeath(mother, MMD, reportData.get(REFERENCE_DATE), location);
+            reportDeath(mother, MMD, reportData.get(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE), location);
         }
     }
 
     private void reportPlaceOfDelivery(SafeMap reportData, Mother mother, Location location) {
         Indicator indicator = placeOfDeliveryToIndicator.get(reportData.get(DELIVERY_PLACE));
         if (indicator != null) {
-            reportToBoth(mother, indicator, reportData.get(REFERENCE_DATE), location);
+            reportToBoth(mother, indicator, reportData.get(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE), location);
         } else {
             logger.warn("Not reporting: Invalid place of delivery: " + reportData.get(DELIVERY_PLACE) + " for mother: " +
                     mother.caseId());

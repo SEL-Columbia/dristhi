@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.contract.BirthPlanningRequest;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -21,7 +22,6 @@ import static java.lang.Integer.parseInt;
 import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.PERMANENT_RELOCATION_VALUE;
-import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.TT_DATE_FIELD;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.TT_DOSE_FIELD;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
@@ -59,7 +59,7 @@ public class ANCService {
     }
 
     public void registerANC(FormSubmission submission) {
-        String motherId = submission.getField(MOTHER_ID);
+        String motherId = submission.getField(AllConstants.ANCFormFields.MOTHER_ID);
 
         if (!eligibleCouples.exists(submission.entityId())) {
             logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}",
@@ -70,14 +70,14 @@ public class ANCService {
         Mother mother = allMothers.findByCaseId(motherId);
         allMothers.update(mother.withAnm(submission.anmId()));
 
-        ancSchedulesService.enrollMother(motherId, parse(submission.getField(REFERENCE_DATE)));
+        ancSchedulesService.enrollMother(motherId, parse(submission.getField(AllConstants.ANCFormFields.REFERENCE_DATE)));
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.registerANC(new SafeMap(submission.getFields(reportFields)));
     }
 
     public void registerOutOfAreaANC(FormSubmission submission) {
-        String motherId = submission.getField(MOTHER_ID);
+        String motherId = submission.getField(AllConstants.ANCFormFields.MOTHER_ID);
 
         if (!eligibleCouples.exists(submission.entityId())) {
             logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}",
@@ -88,7 +88,7 @@ public class ANCService {
         Mother mother = allMothers.findByCaseId(motherId);
         allMothers.update(mother.withAnm(submission.anmId()));
 
-        ancSchedulesService.enrollMother(motherId, parse(submission.getField(REFERENCE_DATE)));
+        ancSchedulesService.enrollMother(motherId, parse(submission.getField(AllConstants.ANCFormFields.REFERENCE_DATE)));
     }
 
     public void ancVisit(FormSubmission submission) {
@@ -98,7 +98,7 @@ public class ANCService {
         }
 
         ancSchedulesService.ancVisitHasHappened(submission.entityId(), submission.anmId(),
-                parseInt(submission.getField(ANC_VISIT_NUMBER_FIELD)), submission.getField(ANC_VISIT_DATE_FIELD));
+                parseInt(submission.getField(AllConstants.ANCFormFields.ANC_VISIT_NUMBER_FIELD)), submission.getField(AllConstants.ANCFormFields.ANC_VISIT_DATE_FIELD));
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.ancVisit(new SafeMap(submission.getFields(reportFields)));

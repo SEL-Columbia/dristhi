@@ -61,7 +61,7 @@ public class ChildService {
         SubFormData subFormData = submission.getSubFormByName(AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME);
         if (handleStillBirth(submission, subFormData)) return;
 
-        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
+        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE);
         for (Map<String, String> childFields : subFormData.instances()) {
             Child child = allChildren.findByCaseId(childFields.get(AllConstants.CommonFormFields.ID));
             child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
@@ -127,7 +127,7 @@ public class ChildService {
         SubFormData subFormData = submission.getSubFormByName(AllConstants.Form.PNC_REGISTRATION_OA_SUB_FORM_NAME);
         if (handleStillBirth(submission, subFormData)) return;
 
-        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE_FIELD_VALUE);
+        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE);
         for (Map<String, String> childFields : subFormData.instances()) {
             Child child = allChildren.findByCaseId(childFields.get(AllConstants.CommonFormFields.ID));
             child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
