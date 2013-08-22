@@ -418,6 +418,36 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldReportCesareanPrivateFacilityWhenOAPNCIsRegisteredAndDeliveryTypeIsCesareanAndDeliveryPlaceIsPrivateFacility() {
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        Map<String, String> reportData = create("id", "entity id 1")
+                .put("referenceDate", "2012-01-01")
+                .put("deliveryType", "cesarean")
+                .put("deliveryPlace", "private_facility")
+                .map();
+        service.pncRegistrationOA(new SafeMap(reportData));
+
+        verifyBothReportingCalls(CESAREAN_PRIVATE_FACILITY, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportCesareanGovernmentFacilityWhenOAPNCIsRegisteredAndDeliveryTypeIsCesareanAndPlaceNotPrivateFacility() {
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        Map<String, String> reportData = create("id", "entity id 1")
+                .put("referenceDate", "2012-01-01")
+                .put("deliveryType", "cesarean")
+                .put("deliveryPlace", "phc")
+                .map();
+        service.pncRegistrationOA(new SafeMap(reportData));
+
+        verifyBothReportingCalls(CESAREAN_GOVERNMENT_FACILITY, "2012-01-01");
+    }
+
+    @Test
     public void shouldReportPlaceOfDeliveryDuringPregnancyOutcome() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
