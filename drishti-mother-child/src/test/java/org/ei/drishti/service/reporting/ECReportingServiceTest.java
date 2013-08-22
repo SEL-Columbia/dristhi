@@ -29,7 +29,7 @@ public class ECReportingServiceTest {
     }
 
     @Test
-    public void shouldReportFPMethodChangeDuringRegisterEC() throws Exception {
+    public void shouldReportFPMethodChangeWhenECIsRegistered() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
@@ -45,7 +45,7 @@ public class ECReportingServiceTest {
     }
 
     @Test
-    public void shouldReportOCPSTDuringRegisterECWhenCurrentMethodIsOCPAndCasteIsST() throws Exception {
+    public void shouldReportOCPSTWhenECIsRegisteredAndCurrentMethodIsOCPAndCasteIsST() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
@@ -60,7 +60,7 @@ public class ECReportingServiceTest {
     }
 
     @Test
-    public void shouldReportOCPSCDuringRegisterECWhenCurrentMethodIsOCPAndCasteIsSC() throws Exception {
+    public void shouldReportOCPSCWhenECIsRegisteredAndCurrentMethodIsOCPAndCasteIsSC() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
@@ -75,7 +75,7 @@ public class ECReportingServiceTest {
     }
 
     @Test
-    public void shouldReportOCPC_OthersDuringRegisterECWhenCurrentMethodIsOCPAndCasteIsOthers() throws Exception {
+    public void shouldReportOCPC_OthersWhenECIsRegisteredAndCurrentMethodIsOCPAndCasteIsOthers() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
@@ -90,7 +90,7 @@ public class ECReportingServiceTest {
     }
 
     @Test
-    public void shouldNotReportOCPCasteIndicatorsDuringRegisterECWhenCasteIsNotSpecified() throws Exception {
+    public void shouldNotReportOCPCasteIndicatorsWhenECIsRegisteredAndCasteIsNotSpecified() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
@@ -118,6 +118,52 @@ public class ECReportingServiceTest {
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_IUD, "2012-01-01"));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verifyNoMoreInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportOCPC_OthersWhenFPMethodChangeAndCasteIsOthers() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
+                .put("currentMethod", "ocp")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "c_others")
+                .map());
+        service.fpChange(reportData);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_CASTE_OTHERS, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_CASTE_OTHERS, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+    }
+
+    @Test
+    public void shouldReportOCPSTWhenFPMethodChangeAndCasteIsST() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
+                .put("currentMethod", "ocp")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "st")
+                .map());
+        service.fpChange(reportData);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_ST, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_ST, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+    }
+
+    @Test
+    public void shouldReportOCPSCWhenFPMethodChangeAndCasteIsSC() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
+                .put("currentMethod", "ocp")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "sc")
+                .map());
+        service.fpChange(reportData);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_SC, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_SC, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
     }
 
     @Test

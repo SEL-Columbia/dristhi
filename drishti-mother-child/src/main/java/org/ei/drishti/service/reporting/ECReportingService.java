@@ -40,6 +40,7 @@ public class ECReportingService {
     public void fpChange(SafeMap reportData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
         reportFPMethod(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)));
+        reportOCPCasteBasedIndicators(reportData, couple);
     }
 
     private void reportFPMethod(SafeMap reportData, EligibleCouple ec, Indicator indicator) {

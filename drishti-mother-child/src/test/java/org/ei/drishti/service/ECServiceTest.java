@@ -13,7 +13,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.Collections;
+
 import static java.util.Arrays.asList;
+import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -65,7 +68,7 @@ public class ECServiceTest {
 
     @Test
     public void shouldSendDataToReportingServiceDuringReportFPChange() throws Exception {
-        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1").withDetails(mapOf("caste", "sc"));
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("fp_change")
@@ -76,7 +79,7 @@ public class ECServiceTest {
         ecService.reportFPChange(submission);
 
         verify(allEligibleCouples).findByCaseId("entity id 1");
-        verify(reportingService).fpChange(new SafeMap(mapOf("someKey", "someValue")));
+        verify(reportingService).fpChange(new SafeMap(create("someKey", "someValue").put("caste", "sc").map()));
     }
 
     @Test
@@ -93,7 +96,7 @@ public class ECServiceTest {
 
     @Test
     public void shouldUpdateECSchedulesWhenFPMethodIsChanged() throws Exception {
-        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1").withDetails(Collections.<String, String>emptyMap());
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("fp_change")
@@ -116,7 +119,7 @@ public class ECServiceTest {
 
     @Test
     public void shouldUseSubmissionDateAsChangeDateWhenFPMethodIsChangedAndChangeDateIsBlank() throws Exception {
-        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1").withDetails(Collections.<String, String>emptyMap());
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("fp_change")
