@@ -165,6 +165,7 @@ public class ECReportingServiceTest {
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_SC, "2012-01-01"));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_SC, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
     }
+
     @Test
     public void shouldNotReportFPMethodChangeWhenNoIndicatorIsFoundForTheCurrentFPMethod() throws Exception {
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
@@ -220,6 +221,55 @@ public class ECReportingServiceTest {
                 .put("economicStatus", "")
                 .map());
         service.registerEC(reportData);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verifyNoMoreInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportFemaleSterilizationBPLWhenFPMethodIsChangedAndEconomicStatusIsBPL() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
+                .put("currentMethod", "female_sterilization")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "")
+                .put("economicStatus", "bpl")
+                .map());
+        service.fpChange(reportData);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_FEMALE_STERILIZATION_BPL, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION_BPL, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+    }
+
+    @Test
+    public void shouldReportFemaleSterilizationAPLWhenFPMethodIsChangedAndEconomicStatusIsAPL() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
+                .put("currentMethod", "female_sterilization")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "")
+                .put("economicStatus", "apl")
+                .map());
+        service.fpChange(reportData);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_FEMALE_STERILIZATION_APL, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION_APL, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+    }
+
+    @Test
+    public void shouldNotReportFemaleSterilizationEconomicStatusWhenFPMethodIsChangedAndEconomicStatusIsNotSpecified() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
+                .put("currentMethod", "female_sterilization")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "")
+                .put("economicStatus", "")
+                .map());
+        service.fpChange(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01"));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));

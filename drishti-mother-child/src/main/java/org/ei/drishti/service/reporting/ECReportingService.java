@@ -31,13 +31,13 @@ public class ECReportingService {
         reportFPMethod(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)));
         reportOCPCasteBasedIndicators(reportData, couple);
         reportFemaleSterilizationEconomicStatusBasedIndicators(reportData, couple);
-
     }
 
     public void fpChange(SafeMap reportData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
         reportFPMethod(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)));
         reportOCPCasteBasedIndicators(reportData, couple);
+        reportFemaleSterilizationEconomicStatusBasedIndicators(reportData, couple);
     }
 
     private void reportOCPCasteBasedIndicators(SafeMap reportData, EligibleCouple ec) {

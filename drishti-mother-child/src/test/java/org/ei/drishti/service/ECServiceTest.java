@@ -68,7 +68,7 @@ public class ECServiceTest {
 
     @Test
     public void shouldSendDataToReportingServiceDuringReportFPChange() throws Exception {
-        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1").withDetails(mapOf("caste", "sc"));
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1").withDetails(create("caste", "sc").put("economicStatus", "bpl").map());
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("fp_change")
@@ -79,7 +79,7 @@ public class ECServiceTest {
         ecService.reportFPChange(submission);
 
         verify(allEligibleCouples).findByCaseId("entity id 1");
-        verify(reportingService).fpChange(new SafeMap(create("someKey", "someValue").put("caste", "sc").map()));
+        verify(reportingService).fpChange(new SafeMap(create("someKey", "someValue").put("caste", "sc").put("economicStatus", "bpl").map()));
     }
 
     @Test

@@ -84,6 +84,7 @@ public class ECService {
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         Map<String, String> reportFieldsMap = submission.getFields(reportFields);
         reportFieldsMap.put(AllConstants.ECRegistrationFields.CASTE, couple.details().get(AllConstants.ECRegistrationFields.CASTE));
+        reportFieldsMap.put(AllConstants.ECRegistrationFields.ECONOMIC_STATUS, couple.details().get(AllConstants.ECRegistrationFields.ECONOMIC_STATUS));
         reportingService.fpChange(new SafeMap(reportFieldsMap));
 
         String fpMethodChangeDate = submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME);
