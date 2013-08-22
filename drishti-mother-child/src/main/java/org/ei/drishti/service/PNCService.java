@@ -68,7 +68,7 @@ public class PNCService {
         }
     }
 
-    public void pncRegistration(FormSubmission submission) {
+    public void pncRegistrationOA(FormSubmission submission) {
         List<Mother> mothers = allMothers.findByEcCaseId(submission.entityId());
         if (mothers.size() <= 0) {
             logger.warn("Failed to handle PNC registration as there is no mother registered with ec id: " + submission.entityId());
@@ -79,6 +79,9 @@ public class PNCService {
         if (BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE))) {
             pncSchedulesService.deliveryOutcome(mother.caseId(), submission.getField(REFERENCE_DATE));
         }
+
+        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
+        motherReportingService.pncRegistrationOA(new SafeMap(submission.getFields(reportFields)));
     }
 
     public void close(FormSubmission submission) {

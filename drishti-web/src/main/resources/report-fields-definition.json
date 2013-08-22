@@ -65,6 +65,10 @@
         "isMaternalDeath",
         "deathDate"
     ],
+    "pnc_registration_oa": [
+        "deliveryType",
+        "referenceDate"
+    ],
     "pnc_visit": [
         "id",
         "pncVisitNumber",

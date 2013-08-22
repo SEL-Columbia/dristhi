@@ -216,4 +216,10 @@ public class MotherReportingService {
         ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);
     }
+
+    public void pncRegistrationOA(SafeMap reportData) {
+        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
+        Location location = loadLocationFromEC(mother);
+        reportCesareans(reportData, mother, location);
+    }
 }

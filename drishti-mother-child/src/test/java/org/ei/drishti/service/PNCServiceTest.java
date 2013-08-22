@@ -34,7 +34,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Mock
     private AllEligibleCouples allEligibleCouples;
     @Mock
-    private AllMothers mothers;
+    private AllMothers allMothers;
     @Mock
     private AllChildren children;
     @Mock
@@ -50,7 +50,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new PNCService(actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, mothers, children,
+        service = new PNCService(actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, allMothers, children,
                 motherReportingService, reportFieldsDefinition);
     }
 
@@ -58,7 +58,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldEnrollPNCIntoSchedulesDuringDeliveryOutcomeIfWomanOrMotherSurvives() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.exists("mother id 1")).thenReturn(true);
+        when(allMothers.exists("mother id 1")).thenReturn(true);
         FormSubmission submission = create()
                 .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
@@ -76,7 +76,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldNotEnrollPNCIntoSchedulesDuringDeliveryOutcomeIfMotherDoesNotExists() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.exists("mother id 1")).thenReturn(false);
+        when(allMothers.exists("mother id 1")).thenReturn(false);
         FormSubmission submission = create()
                 .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
@@ -93,7 +93,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldNotEnrollPNCIntoSchedulesDuringDeliveryOutcomeIfWomanDied() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.exists("mother id 1")).thenReturn(true);
+        when(allMothers.exists("mother id 1")).thenReturn(true);
         FormSubmission submission = create()
                 .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
@@ -111,7 +111,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldNotEnrollPNCIntoSchedulesDuringDeliveryOutcomeIfMotherDied() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.exists("mother id 1")).thenReturn(true);
+        when(allMothers.exists("mother id 1")).thenReturn(true);
         FormSubmission submission = create()
                 .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
@@ -129,7 +129,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldEnrollPNCIntoSchedulesDuringPNCRegistrationIfWomanSurvives() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
+        when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .withANMId("anm id 1")
@@ -138,7 +138,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .addFormField("didWomanSurvive", "yes")
                 .build();
 
-        service.pncRegistration(submission);
+        service.pncRegistrationOA(submission);
 
         verify(pncSchedulesService).deliveryOutcome("mother id 1", "2012-01-01");
     }
@@ -147,7 +147,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldNotEnrollPNCIntoSchedulesDuringPNCRegistrationIfMotherDoesNotExists() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.findByEcCaseId("ec id 1")).thenReturn(Collections.EMPTY_LIST);
+        when(allMothers.findByEcCaseId("ec id 1")).thenReturn(Collections.EMPTY_LIST);
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .withANMId("anm id 1")
@@ -156,7 +156,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .addFormField("didWomanSurvive", "")
                 .build();
 
-        service.pncRegistration(submission);
+        service.pncRegistrationOA(submission);
 
         verifyZeroInteractions(pncSchedulesService);
     }
@@ -165,7 +165,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldNotEnrollPNCIntoSchedulesPNCRegistrationIfWomanDied() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
+        when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .withANMId("anm id 1")
@@ -174,14 +174,14 @@ public class PNCServiceTest extends BaseUnitTest {
                 .addFormField("didWomanSurvive", "no")
                 .build();
 
-        service.pncRegistration(submission);
+        service.pncRegistrationOA(submission);
 
         verifyZeroInteractions(pncSchedulesService);
     }
 
     @Test
     public void shouldUnEnrollAMotherFromScheduleWhenPNCCaseIsClosed() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().build());
 
@@ -190,16 +190,16 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldCloseAMotherWhenPNCIsClosed() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().build());
 
-        verify(mothers).close("entity id 1");
+        verify(allMothers).close("entity id 1");
     }
 
     @Test
     public void shouldNotDoAnythingIfMotherIsNotRegistered() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(null);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(null);
 
         service.close(create().build());
 
@@ -211,7 +211,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldCloseECCaseAlsoWhenPNCIsClosedAndReasonIsDeath() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().addFormField("closeReason", "death_of_woman").build());
 
@@ -220,7 +220,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldCloseECCaseAlsoWhenPNCIsClosedAndReasonIsPermanentRelocation() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().addFormField("closeReason", "relocation_permanent").build());
 
@@ -229,7 +229,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldNotCloseECCaseWhenPNCIsClosedAndReasonIsNeitherDeathOrPermanentRelocation() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().addFormField("closeReason", "other_reason").build());
 
@@ -238,7 +238,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldMarkAllActionsAsInactiveWhenPNCIsClosed() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().build());
 
@@ -247,7 +247,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldDoReportingWhenPNCIsClosed() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
         when(reportFieldsDefinition.get("pnc_close")).thenReturn(asList("some-key"));
         FormSubmission submission = create()
                 .withFormName("pnc_close")
@@ -265,11 +265,11 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withFormName("pnc_visit")
                 .build();
 
-        when(mothers.exists("entity id 1")).thenReturn(false);
+        when(allMothers.exists("entity id 1")).thenReturn(false);
 
         service.pncVisitHappened(submission);
 
-        verify(mothers).exists("entity id 1");
+        verify(allMothers).exists("entity id 1");
         verifyZeroInteractions(motherReportingService);
         verifyZeroInteractions(childReportingService);
     }
@@ -277,7 +277,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldReportPNCVisit() throws Exception {
         when(reportFieldsDefinition.get("pnc_visit")).thenReturn(asList("some-key"));
-        when(mothers.exists("entity id 1")).thenReturn(true);
+        when(allMothers.exists("entity id 1")).thenReturn(true);
 
         FormSubmission submission = create()
                 .withFormName("pnc_visit")
@@ -293,11 +293,11 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldAutoClosePNCCaseWhenMotherExists() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1").withAnm("ANM 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC1").withAnm("ANM 1"));
 
         service.autoClosePNCCase("MOTHER-CASE-1");
 
-        verify(mothers).close("MOTHER-CASE-1");
+        verify(allMothers).close("MOTHER-CASE-1");
         verify(actionService).markAllAlertsAsInactive("MOTHER-CASE-1");
         verifyZeroInteractions(motherReportingService);
     }
@@ -306,11 +306,26 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldNotAutoClosePNCCaseWhenMotherDoesNotExist() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(mothers.findByCaseId("MOTHER-CASE-1")).thenReturn(null);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(null);
 
         service.autoClosePNCCase("MOTHER-CASE-1");
 
-        verify(mothers, times(0)).close("MOTHER-CASE-1");
+        verify(allMothers, times(0)).close("MOTHER-CASE-1");
         verifyZeroInteractions(actionService);
+    }
+
+    @Test
+    public void shouldReportPNCRegistrationOA() throws Exception {
+        when(reportFieldsDefinition.get("pnc_registration_oa")).thenReturn(asList("some-key"));
+        when(allMothers.findByEcCaseId("entity id 1")).thenReturn(asList(new Mother("entity id 1", "ec id 1", "tc 1")));
+
+        FormSubmission submission = create()
+                .withFormName("pnc_registration_oa")
+                .addFormField("some-key", "value")
+                .build();
+        service.pncRegistrationOA(submission);
+
+        SafeMap reportFields = new SafeMap(mapOf("some-key", "value"));
+        verify(motherReportingService).pncRegistrationOA(reportFields);
     }
 }
