@@ -459,7 +459,6 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         testPlaceOfDeliveryIsReported("sdh", D_SDH);
         testPlaceOfDeliveryIsReported("dh", D_DH);
         testPlaceOfDeliveryIsReported("private_facility", D_PRI);
-        testPlaceOfDeliveryIsReported("private_facility2", D_PRI);
     }
 
     @Test

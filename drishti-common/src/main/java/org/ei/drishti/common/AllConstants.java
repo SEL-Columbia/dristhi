@@ -71,7 +71,6 @@ public class AllConstants {
         public static final String SDH_FIELD_VALUE = "sdh";
         public static final String DH_FIELD_VALUE = "dh";
         public static final String PRIVATE_FACILITY_FIELD_VALUE = "private_facility";
-        public static final String PRIVATE_FACILITY2_FIELD_VALUE = "private_facility2";
         public static final String REFERENCE_DATE = "referenceDate";
         public static final String CHILD_REGISTRATION_SUB_FORM_NAME = "child_registration";
         public static final String STILL_BIRTH_VALUE = "still_birth";

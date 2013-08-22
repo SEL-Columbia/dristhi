@@ -57,7 +57,6 @@ public class MotherReportingService {
         placeOfDeliveryToIndicator.put(SDH_FIELD_VALUE, D_SDH);
         placeOfDeliveryToIndicator.put(DH_FIELD_VALUE, D_DH);
         placeOfDeliveryToIndicator.put(PRIVATE_FACILITY_FIELD_VALUE, D_PRI);
-        placeOfDeliveryToIndicator.put(PRIVATE_FACILITY2_FIELD_VALUE, D_PRI);
     }
 
     public void registerANC(SafeMap reportData) {
