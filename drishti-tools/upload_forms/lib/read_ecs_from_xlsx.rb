@@ -38,8 +38,15 @@ class ECs
         ec.convert_value "Husband Age", :empty => "25"
         ec.convert_value "Husband DOB", :empty => (registration_date.year - ec['Husband Age'].to_i).to_s + "-" + registration_date.month.to_s + "-" + registration_date.day.to_s
         ec.convert_value "Religion", :empty => ""
-        ec.convert_value "Caste", :empty => ""
-        ec.convert_value "APL/BPL", :empty => ""
+        ec.convert_value "Caste",
+        "ST" => "st",
+        "SC" => "sc",
+        "Others" => "c_others",
+        :empty => ""
+        ec.convert_value "APL/BPL",
+        "APL" => "apl",
+        "BPL" => "bpl",
+        :empty => ""
         ec.convert_value "HP", :empty => ""
         ec.convert_value "Risks", :empty => ""
         ec.convert_value "Number of Abortion", :empty => "0"
