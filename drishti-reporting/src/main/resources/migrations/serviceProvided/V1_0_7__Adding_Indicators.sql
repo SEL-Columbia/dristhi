@@ -56,3 +56,5 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('OCP_C_OTHERS');
 INSERT INTO report.dim_indicator (indicator) VALUES ('FS_APL');
 INSERT INTO report.dim_indicator (indicator) VALUES ('FS_BPL');
 INSERT INTO report.dim_indicator (indicator) VALUES ('CESAREAN');
+INSERT INTO report.dim_indicator (indicator) VALUES ('CESAREAN_GOV');
+INSERT INTO report.dim_indicator (indicator) VALUES ('CESAREAN_PRI');

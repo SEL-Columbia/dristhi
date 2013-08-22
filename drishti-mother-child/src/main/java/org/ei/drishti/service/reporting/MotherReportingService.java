@@ -98,6 +98,11 @@ public class MotherReportingService {
     private void reportCesareans(SafeMap reportData, Mother mother, Location location) {
         if (CESAREAN_VALUE.equalsIgnoreCase(reportData.get(DELIVERY_TYPE))) {
             reportToBoth(mother, CESAREAN, reportData.get(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE), location);
+            Indicator cesareanFacilityIndicator =
+                    PRIVATE_FACILITY_FIELD_VALUE.equalsIgnoreCase(reportData.get(DELIVERY_PLACE))
+                            ? CESAREAN_PRIVATE_FACILITY
+                            : CESAREAN_GOVERNMENT_FACILITY;
+            reportToBoth(mother, cesareanFacilityIndicator, reportData.get(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE), location);
         }
     }
 

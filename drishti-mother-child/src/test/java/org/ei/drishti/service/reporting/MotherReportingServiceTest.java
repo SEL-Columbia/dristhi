@@ -368,13 +368,50 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldReportCesareanPrivateFacilityWhenDeliveryOutcomeIsHandledAndDeliveryTypeIsCesareanAndDeliveryPlaceIsPrivateFacility() {
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        Map<String, String> reportData = create("id", "entity id 1")
+                .put("didWomanSurvive", "yes")
+                .put("didMotherSurvive", "yes")
+                .put("deliveryOutcome", "live_birth")
+                .put("referenceDate", "2012-01-01")
+                .put("deliveryPlace", "private_facility")
+                .put("deliveryType", "cesarean").map();
+        service.deliveryOutcome(new SafeMap(reportData));
+
+        verifyBothReportingCalls(CESAREAN_PRIVATE_FACILITY, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportCesareanGovernmentFacilityWhenDeliveryOutcomeIsHandledAndDeliveryTypeIsCesareanAndDeliveryPlaceIsNotPrivateFacility() {
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        Map<String, String> reportData = create("id", "entity id 1")
+                .put("didWomanSurvive", "yes")
+                .put("didMotherSurvive", "yes")
+                .put("deliveryOutcome", "live_birth")
+                .put("referenceDate", "2012-01-01")
+                .put("deliveryPlace", "phc")
+                .put("deliveryType", "cesarean")
+                .map();
+        service.deliveryOutcome(new SafeMap(reportData));
+
+        verifyBothReportingCalls(CESAREAN_GOVERNMENT_FACILITY, "2012-01-01");
+    }
+
+    @Test
     public void shouldReportCesareanWhenOAPNCIsRegisteredAndDeliveryTypeIsCesarean() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         Map<String, String> reportData = create("id", "entity id 1")
                 .put("referenceDate", "2012-01-01")
-                .put("deliveryType", "cesarean").map();
+                .put("deliveryType", "cesarean")
+                .put("deliveryPlace", "phc")
+                .map();
         service.pncRegistrationOA(new SafeMap(reportData));
 
         verifyBothReportingCalls(CESAREAN, "2012-01-01");
