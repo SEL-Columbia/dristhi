@@ -142,6 +142,7 @@ public class ANCService {
         }
 
         ancSchedulesService.unEnrollFromSchedules(submission.entityId());
+
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.deliveryOutcome(new SafeMap(submission.getFields(reportFields)));
     }

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.domain.Indicator.*;
-import static org.ei.drishti.common.domain.Indicator.DPT3_OR_OPV3;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -148,6 +147,23 @@ public class ChildReportingServiceTest {
         service.registerChild(reportData);
 
         verifyBothReportingCalls(OPV, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportInfantRegistration() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("id", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        service.registerChild(reportData);
+
+        verifyBothReportingCalls(INFANT_REGISTRATION, "2012-01-01");
     }
 
     @Test

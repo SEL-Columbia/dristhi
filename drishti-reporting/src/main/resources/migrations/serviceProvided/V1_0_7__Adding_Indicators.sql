@@ -58,3 +58,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('FS_BPL');
 INSERT INTO report.dim_indicator (indicator) VALUES ('CESAREAN');
 INSERT INTO report.dim_indicator (indicator) VALUES ('CESAREAN_GOV');
 INSERT INTO report.dim_indicator (indicator) VALUES ('CESAREAN_PRI');
+INSERT INTO report.dim_indicator (indicator) VALUES ('INFANT_REG');
