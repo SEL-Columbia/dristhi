@@ -48,7 +48,8 @@ class Row
     value_from_row = @csv_row.field(header)
 
     return default_values_hash[:empty] if value_from_row.nil? or value_from_row.empty?
-    return default_values_hash[value_from_row] if default_values_hash.key? value_from_row
+    key = default_values_hash.keys.find {|k| value_from_row.downcase == k.downcase}
+    return default_values_hash[key] if !key.nil?
     return default_values_hash[:default] if default_values_hash.key? :default
     return value_from_row
   end
