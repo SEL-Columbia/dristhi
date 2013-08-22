@@ -56,7 +56,8 @@
         "referenceDate",
         "deliveryPlace",
         "didWomanSurvive",
-        "didMotherSurvive"
+        "didMotherSurvive",
+        "deliveryType"
     ],
     "pnc_close": [
         "id",

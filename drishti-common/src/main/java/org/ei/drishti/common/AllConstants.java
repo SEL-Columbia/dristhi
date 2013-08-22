@@ -75,6 +75,9 @@ public class AllConstants {
         public static final String REFERENCE_DATE = "referenceDate";
         public static final String CHILD_REGISTRATION_SUB_FORM_NAME = "child_registration";
         public static final String STILL_BIRTH_VALUE = "still_birth";
+        public static final String DELIVERY_TYPE = "deliveryType";
+        public static final String CESAREAN_VALUE = "cesarean";
+
     }
 
     public static class ANCFormFields {

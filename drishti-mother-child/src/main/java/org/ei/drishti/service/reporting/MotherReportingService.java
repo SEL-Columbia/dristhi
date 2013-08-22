@@ -19,10 +19,10 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
-import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DELIVERY_OUTCOME;
-import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
-import static org.ei.drishti.common.AllConstants.Form.*;
+import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.*;
+import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
+import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_OF_MOTHER_VALUE;
 import static org.ei.drishti.common.domain.Indicator.*;
@@ -92,6 +92,13 @@ public class MotherReportingService {
         reportToBoth(mother, DELIVERY, reportData.get(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE), location);
         reportMotherMortality(reportData, mother, location);
         reportPlaceOfDelivery(reportData, mother, location);
+        reportCesareans(reportData, mother, location);
+    }
+
+    private void reportCesareans(SafeMap reportData, Mother mother, Location location) {
+        if (CESAREAN_VALUE.equalsIgnoreCase(reportData.get(DELIVERY_TYPE))) {
+            reportToBoth(mother, CESAREAN, reportData.get(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE), location);
+        }
     }
 
     public void pncVisitHappened(SafeMap reportData) {

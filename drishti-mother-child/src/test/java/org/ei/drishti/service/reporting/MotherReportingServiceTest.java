@@ -234,7 +234,9 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("didMotherSurvive", "yes")
                 .put("deliveryOutcome", "live_birth")
                 .put("referenceDate", "2012-01-01")
-                .put("deliveryPlace", "home").map();
+                .put("deliveryPlace", "home")
+                .put("deliveryType", "normal")
+                .map();
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(DELIVERY, "2012-01-01");
@@ -250,7 +252,9 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("didMotherSurvive", "yes")
                 .put("deliveryOutcome", "live_birth")
                 .put("referenceDate", "2012-01-01")
-                .put("deliveryPlace", "phc").map();
+                .put("deliveryPlace", "phc")
+                .put("deliveryType", "normal")
+                .map();
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
@@ -266,7 +270,9 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("deliveryOutcome", "live_birth")
                 .put("didMotherSurvive", "yes")
                 .put("referenceDate", "2012-01-01")
-                .put("deliveryPlace", "home").map();
+                .put("deliveryPlace", "home")
+                .put("deliveryType", "normal")
+                .map();
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyNoReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
@@ -282,7 +288,9 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("didMotherSurvive", "yes")
                 .put("deliveryOutcome", "live_birth")
                 .put("referenceDate", "2012-01-01")
-                .put("deliveryPlace", "phc").map();
+                .put("deliveryPlace", "phc")
+                .put("deliveryType", "normal")
+                .map();
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(LIVE_BIRTH, "2012-01-01");
@@ -298,7 +306,9 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("didMotherSurvive", "yes")
                 .put("deliveryOutcome", "still_birth")
                 .put("referenceDate", "2012-01-01")
-                .put("deliveryPlace", "phc").map();
+                .put("deliveryPlace", "phc")
+                .put("deliveryType", "normal")
+                .map();
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(STILL_BIRTH, "2012-01-01");
@@ -314,7 +324,9 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("didWomanSurvive", "")
                 .put("deliveryOutcome", "live_birth")
                 .put("referenceDate", "2012-01-01")
-                .put("deliveryPlace", "home").map();
+                .put("deliveryPlace", "home")
+                .put("deliveryType", "normal")
+                .map();
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(MMD, "2012-01-01");
@@ -330,11 +342,29 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("didWomanSurvive", "no")
                 .put("deliveryOutcome", "live_birth")
                 .put("referenceDate", "2012-01-01")
-                .put("deliveryPlace", "home").map();
+                .put("deliveryPlace", "home")
+                .put("deliveryType", "normal")
+                .map();
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(MMD, "2012-01-01");
         verifyBothReportingCalls(MOTHER_MORTALITY, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportCesareanWhenDeliveryOutcomeIsHandledAndDeliveryTypeIsCesarean() {
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        Map<String, String> reportData = create("id", "entity id 1")
+                .put("didWomanSurvive", "no")
+                .put("deliveryOutcome", "live_birth")
+                .put("referenceDate", "2012-01-01")
+                .put("deliveryPlace", "home")
+                .put("deliveryType", "cesarean").map();
+        service.deliveryOutcome(new SafeMap(reportData));
+
+        verifyBothReportingCalls(CESAREAN, "2012-01-01");
     }
 
     @Test
@@ -399,6 +429,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         verifyNoReportingCalls(MMP, "2012-02-01");
         verifyNoReportingCalls(MOTHER_MORTALITY, "2012-02-01");
     }
+
     @Test
     public void shouldNotReportMotherDeathDuringPNCCloseIfNotWithin42DaysOfDeliveryOutcome() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER.withDeliveryOutCome("2012-01-01"));
@@ -508,6 +539,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("deliveryOutcome", "still_birth")
                 .put("referenceDate", "2012-05-01")
                 .put("deliveryPlace", placeOfDelivery)
+                .put("deliveryType", "normal")
                 .map());
     }
 
