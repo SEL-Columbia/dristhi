@@ -3,7 +3,8 @@
         "id",
         "currentMethod",
         "familyPlanningMethodChangeDate",
-        "caste"
+        "caste",
+        "economicStatus"
     ],
     "fp_complications": [
     ],

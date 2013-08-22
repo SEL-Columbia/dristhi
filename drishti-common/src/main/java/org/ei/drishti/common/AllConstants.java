@@ -54,6 +54,7 @@ public class AllConstants {
 
     public static class ECRegistrationFields {
         public static final String CASTE = "caste";
+        public static final String ECONOMIC_STATUS = "economicStatus";
     }
 
     public static class DeliveryOutcomeFields {

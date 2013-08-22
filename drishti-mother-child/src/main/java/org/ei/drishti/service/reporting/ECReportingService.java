@@ -2,6 +2,7 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Caste;
+import org.ei.drishti.common.domain.EconomicStatus;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.EligibleCouple;
@@ -29,6 +30,14 @@ public class ECReportingService {
         EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
         reportFPMethod(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)));
         reportOCPCasteBasedIndicators(reportData, couple);
+        reportFemaleSterilizationEconomicStatusBasedIndicators(reportData, couple);
+
+    }
+
+    public void fpChange(SafeMap reportData) {
+        EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
+        reportFPMethod(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)));
+        reportOCPCasteBasedIndicators(reportData, couple);
     }
 
     private void reportOCPCasteBasedIndicators(SafeMap reportData, EligibleCouple ec) {
@@ -37,10 +46,10 @@ public class ECReportingService {
         }
     }
 
-    public void fpChange(SafeMap reportData) {
-        EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
-        reportFPMethod(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)));
-        reportOCPCasteBasedIndicators(reportData, couple);
+    private void reportFemaleSterilizationEconomicStatusBasedIndicators(SafeMap reportData, EligibleCouple couple) {
+        if (FEMALE_STERILIZATION_FP_METHOD_VALUE.equalsIgnoreCase(reportData.get(CURRENT_FP_METHOD_FIELD_NAME))) {
+            reportFPMethod(reportData, couple, EconomicStatus.from(reportData.get(AllConstants.ECRegistrationFields.ECONOMIC_STATUS)).indicator());
+        }
     }
 
     private void reportFPMethod(SafeMap reportData, EligibleCouple ec, Indicator indicator) {
