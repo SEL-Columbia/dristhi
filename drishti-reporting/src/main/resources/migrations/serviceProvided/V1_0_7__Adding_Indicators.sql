@@ -50,3 +50,6 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('D_DH');
 INSERT INTO report.dim_indicator (indicator) VALUES ('D_PRI');
 INSERT INTO report.dim_indicator (indicator) VALUES ('DPT3_OPV3');
 INSERT INTO report.dim_indicator (indicator) VALUES ('DPTB_OPVB');
+INSERT INTO report.dim_indicator (indicator) VALUES ('OCP_ST');
+INSERT INTO report.dim_indicator (indicator) VALUES ('OCP_SC');
+INSERT INTO report.dim_indicator (indicator) VALUES ('OCP_C_OTHERS');

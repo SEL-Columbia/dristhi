@@ -2,7 +2,8 @@
     "ec_registration": [
         "id",
         "currentMethod",
-        "familyPlanningMethodChangeDate"
+        "familyPlanningMethodChangeDate",
+        "caste"
     ],
     "fp_complications": [
     ],

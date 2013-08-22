@@ -55,3 +55,6 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('PENT2');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('PENT3');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('MMR');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('JE');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('OCP_ST');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('OCP_SC');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('OCP_C_OTHERS');

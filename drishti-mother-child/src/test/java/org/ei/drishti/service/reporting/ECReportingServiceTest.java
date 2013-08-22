@@ -35,11 +35,74 @@ public class ECReportingServiceTest {
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "iud")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "sc")
                 .map());
         service.registerEC(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_IUD, "2012-01-01"));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verifyNoMoreInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportOCPSTDuringRegisterECWhenCurrentMethodIsOCPAndCasteIsST() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
+                .put("currentMethod", "ocp")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "st")
+                .map());
+        service.registerEC(reportData);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_ST, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_ST, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+    }
+
+    @Test
+    public void shouldReportOCPSCDuringRegisterECWhenCurrentMethodIsOCPAndCasteIsSC() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
+                .put("currentMethod", "ocp")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "sc")
+                .map());
+        service.registerEC(reportData);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_SC, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_SC, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+    }
+
+    @Test
+    public void shouldReportOCPC_OthersDuringRegisterECWhenCurrentMethodIsOCPAndCasteIsOthers() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
+                .put("currentMethod", "ocp")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "c_others")
+                .map());
+        service.registerEC(reportData);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_CASTE_OTHERS, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_CASTE_OTHERS, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+    }
+
+    @Test
+    public void shouldNotReportOCPCasteIndicatorsDuringRegisterECWhenCasteIsNotSpecified() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
+                .put("currentMethod", "ocp")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "")
+                .map());
+        service.registerEC(reportData);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP, "2012-01-01"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verifyNoMoreInteractions(reportingService);
     }
 
     @Test

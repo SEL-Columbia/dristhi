@@ -52,6 +52,10 @@ public class AllConstants {
         public static final int CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 28;
     }
 
+    public static class ECRegistrationFields {
+        public static final String CASTE = "caste";
+    }
+
     public static class DeliveryOutcomeFields {
         public static final String DELIVERY_OUTCOME = "deliveryOutcome";
         public static final String DELIVERY_PLACE = "deliveryPlace";
