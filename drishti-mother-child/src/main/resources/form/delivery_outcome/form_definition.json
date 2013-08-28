@@ -20,7 +20,7 @@
             },
             {
                 "name": "referenceDate",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/date_outcome"
+                "bind": "/model/instance/Delivery_Outcome_EngKan/delivery_date"
             },
             {
                 "name": "deliveryRegistrationDate",

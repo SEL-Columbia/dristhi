@@ -17,10 +17,6 @@
                 "bind": "/model/instance/Family_Planning_ECPs/ecp_date"
             },
             {
-                "name": "ecpStockOut",
-                "bind": "/model/instance/Family_Planning_ECPs/ecp_stock_out"
-            },
-            {
                 "name": "submissionDate",
                 "bind": "/model/instance/Family_Planning_ECPs/today"
             }
