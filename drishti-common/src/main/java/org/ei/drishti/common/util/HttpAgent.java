@@ -77,7 +77,7 @@ public class HttpAgent {
             }
 
             SSLSocketFactory socketFactory = new SSLSocketFactory(trustedKeystore);
-            final X509HostnameVerifier oldVerifier = socketFactory.getHostnameVerifier();
+            final X509HostnameVerifier oldVerifier = SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
             socketFactory.setHostnameVerifier(new AbstractVerifier() {
                 @Override
                 public void verify(String host, String[] commonNames, String[] subjectAlts) throws SSLException {
