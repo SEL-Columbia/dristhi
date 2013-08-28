@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.contract.BirthPlanningRequest;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -21,6 +22,7 @@ import static org.ei.drishti.util.EasyMap.create;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.ei.drishti.util.FormSubmissionBuilder.create;
 import static org.joda.time.LocalDate.parse;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -314,6 +316,28 @@ public class ANCServiceTest {
         service.close(create().build());
 
         verify(actionService).markAllAlertsAsInactive("entity id 1");
+    }
+
+    @Test
+    public void shouldUpdateMotherDetailsAndSendAnActionWhenBirthPlanningDetailsAreUpdateAndMotherExists() throws Exception {
+        when(mothers.exists("CASE X")).thenReturn(true);
+        Map<String, String> updatedDetails = mapOf("aNewKey", "aNewValue");
+        when(mothers.updateDetails("CASE X", EXTRA_DATA.get("details"))).thenReturn(new Mother("CASE X", "EC-CASE-1", "TC X").withDetails(updatedDetails));
+
+        service.updateBirthPlanning(new BirthPlanningRequest("CASE X", "ANM X"), EXTRA_DATA);
+
+        verify(mothers).updateDetails("CASE X", EXTRA_DATA.get("details"));
+        verify(actionService).updateBirthPlanning("CASE X", "ANM X", updatedDetails);
+    }
+
+    @Test
+    public void shouldNotSendBirthPlanningUpdatesAsActionWhenMotherNotFoundInDrishti() throws Exception {
+        when(mothers.exists("CASE X")).thenReturn(false);
+
+        service.updateBirthPlanning(new BirthPlanningRequest("CASE X", "ANM X"), EXTRA_DATA);
+
+        verifyZeroInteractions(actionService);
+        verify(mothers, times(0)).updateDetails(any(String.class), any(Map.class));
     }
 
     @Test

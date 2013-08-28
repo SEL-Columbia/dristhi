@@ -72,6 +72,11 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
+            <groupId>${motech.contrib.group}</groupId>
+            <artifactId>commcare-listener</artifactId>
+            <version>${motech.contrib.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.ei.drishti</groupId>
             <artifactId>drishti-scheduler</artifactId>
             <version>0.1-SNAPSHOT</version>

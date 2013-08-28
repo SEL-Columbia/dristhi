@@ -132,6 +132,15 @@ public class ActionServiceTest {
     }
 
     @Test
+    public void shouldSendBirthPlanningUpdates() {
+        Map<String, String> details = mapOf("aKey", "aValue");
+
+        service.updateBirthPlanning("CASE X", "ANM X", details);
+
+        verify(allActions).add(new Action("CASE X", "ANM X", ActionData.updateBirthPlanning(details)));
+    }
+
+    @Test
     public void shouldReportForIndicator() {
         ActionData summaryActionData = ActionData.reportForIndicator("ANC", "30", new Gson().toJson(asList(new MonthSummaryDatum("3", "2012", "2", "2", asList("CASE 5", "CASE 6")))));
 

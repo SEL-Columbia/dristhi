@@ -1,6 +1,8 @@
 package org.ei.drishti.common;
 
 public class AllConstants {
+    public static final String DETAILS_EXTRA_DATA_KEY_NAME = "details";
+
     public static class Form {
         public static final String ENTITY_ID = "entityId";
         public static final String ANM_ID = "anmId";

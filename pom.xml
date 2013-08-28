@@ -25,6 +25,7 @@
         <db.port>5984</db.port>
         <db.name.drishti>drishti</db.name.drishti>
         <db.name.drishti-form>drishti-form</db.name.drishti-form>
+        <db.name.commcare-api>commcare</db.name.commcare-api>
         <db.name.motech-scheduletracking>motech-scheduletracking</db.name.motech-scheduletracking>
         <main.basedir>${project.basedir}</main.basedir>
         <motech.version>0.11</motech.version>
@@ -166,6 +167,7 @@
                                     <arg value="http://${db.server}:${db.port}/${db.name.drishti}"/>
                                     <arg value="http://${db.server}:${db.port}/${db.name.drishti-form}"/>
                                     <arg value="http://${db.server}:${db.port}/${db.name.motech-scheduletracking}"/>
+                                    <arg value="http://${db.server}:${db.port}/${db.name.commcare-api}"/>
                                 </exec>
                                 <echo message="Dropping DB: END"/>
                             </target>

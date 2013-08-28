@@ -1,6 +1,7 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.common.AllConstants;
+import org.ei.drishti.contract.BirthPlanningRequest;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 import static java.text.MessageFormat.format;
@@ -23,6 +25,7 @@ import static org.ei.drishti.common.AllConstants.ANCCloseFields.PERMANENT_RELOCA
 import static org.ei.drishti.common.AllConstants.ANCFormFields.TT_DATE_FIELD;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.TT_DOSE_FIELD;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.DETAILS_EXTRA_DATA_KEY_NAME;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.ANAEMIC_STATUS_FIELD;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_TEST_DATE_FIELD;
 import static org.ei.drishti.common.AllConstants.IFAFields.IFA_TABLETS_DATE;
@@ -163,5 +166,16 @@ public class ANCService {
             logger.info("Closing EC case along with ANC case. Submission: " + submission);
             eligibleCouples.close(mother.ecCaseId());
         }
+    }
+
+    @Deprecated
+    public void updateBirthPlanning(BirthPlanningRequest request, Map<String, Map<String, String>> extraData) {
+        if (!allMothers.exists(request.caseId())) {
+            logger.warn("Tried to update birth planning without registered mother: " + request);
+            return;
+        }
+
+        Mother motherWithUpdatedDetails = allMothers.updateDetails(request.caseId(), extraData.get(DETAILS_EXTRA_DATA_KEY_NAME));
+        actionService.updateBirthPlanning(request.caseId(), request.anmIdentifier(), motherWithUpdatedDetails.details());
     }
 }
