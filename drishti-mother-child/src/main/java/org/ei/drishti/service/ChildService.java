@@ -133,6 +133,11 @@ public class ChildService {
             child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
             allChildren.update(child);
 
+            SafeMap reportingData = new SafeMap();
+            reportingData.put(ID, child.caseId());
+            reportingData.put(BF_POSTBIRTH_FIELD_NAME, childFields.get(DID_BREAST_FEEDING_START));
+            childReportingService.registerChild(reportingData);
+
             childSchedulesService.enrollChild(child);
         }
     }

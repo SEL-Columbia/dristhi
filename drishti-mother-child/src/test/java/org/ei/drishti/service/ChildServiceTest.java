@@ -12,6 +12,7 @@ import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.service.scheduling.PNCSchedulesService;
+import org.ei.drishti.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -372,13 +373,18 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .withSubForm(new SubFormData("child_registration_oa",
-                        asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
+                        asList(EasyMap.create("id", "child id 1").put("didBreastfeedingStart", "no").map(),
+                               EasyMap.create("id", "child id 2").put("didBreastfeedingStart", "yes").map()))
+                )
                 .build();
 
         service.pncOAChildRegistration(submission);
 
-        verify(childSchedulesService).enrollChild(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
-        verify(childSchedulesService).enrollChild(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
+        InOrder inOrder = inOrder(childReportingService, childSchedulesService);
+        inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "no").put("id", "child id 1").map()));
+        inOrder.verify(childSchedulesService).enrollChild(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
+        inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "yes").put("id", "child id 2").map()));
+        inOrder.verify(childSchedulesService).enrollChild(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
     }
 
     @Test
