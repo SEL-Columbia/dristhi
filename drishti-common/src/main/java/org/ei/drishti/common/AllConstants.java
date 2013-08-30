@@ -28,6 +28,7 @@ public class AllConstants {
         public static final String PNC_CLOSE = "pnc_close";
         public static final String PNC_VISIT = "pnc_visit";
         public static final String CHILD_REGISTRATION_EC = "child_registration_ec";
+        public static final String CHILD_REGISTRATION_OA = "child_registration_oa";
         public static final String CHILD_IMMUNIZATIONS = "child_immunizations";
         public static final String CHILD_CLOSE = "child_close";
         public static final String TT_BOOSTER = "tt_booster";

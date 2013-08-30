@@ -177,6 +177,24 @@ public class ChildServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldUpdateChildWithANMDetailsWhenItIsRegisteredAsOA() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        Child child = new Child("child id 1", "mother id 1", "opv", "2", "female");
+        when(allChildren.findByCaseId("child id 1")).thenReturn(child);
+        FormSubmission submission = create()
+                .withFormName("child_registration_oa")
+                .withANMId("anm id 1")
+                .addFormField("id", "child id 1")
+                .addFormField("motherId", "mother id 1")
+                .build();
+
+        service.registerChildrenForOA(submission);
+
+        verify(allChildren).update(child.withAnm("anm id 1"));
+    }
+
+    @Test
     public void shouldUpdateEnrollmentsForUpdatedImmunizations() {
         Child child = mock(Child.class);
         when(allChildren.childExists("Case X")).thenReturn(true);

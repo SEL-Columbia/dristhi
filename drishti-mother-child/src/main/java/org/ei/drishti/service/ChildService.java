@@ -86,6 +86,12 @@ public class ChildService {
         allChildren.update(child);
     }
 
+    public void registerChildrenForOA(FormSubmission submission) {
+        Child child = allChildren.findByCaseId(submission.getField(ID));
+        child.withAnm(submission.anmId());
+        allChildren.update(child);
+    }
+
     public void updateChildImmunization(FormSubmission submission) {
         if (!allChildren.childExists(submission.entityId())) {
             logger.warn("Found immunization update without registered child for entity ID: " + submission.entityId());

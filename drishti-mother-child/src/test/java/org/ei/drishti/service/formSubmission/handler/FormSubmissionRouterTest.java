@@ -55,6 +55,8 @@ public class FormSubmissionRouterTest {
     private ChildImmunizationsHandler childImmunizationsHandler;
     @Mock
     private ChildCloseHandler childCloseHandler;
+    @Mock
+    private ChildRegistrationOAHandler childRegistrationOAHandler;
 
     private FormSubmissionRouter router;
 
@@ -81,7 +83,7 @@ public class FormSubmissionRouterTest {
                 pncCloseHandler,
                 pncVisitHandler,
                 childRegistrationECHandler,
-                childImmunizationsHandler, childCloseHandler);
+                childImmunizationsHandler, childCloseHandler, childRegistrationOAHandler);
     }
 
     @Test
@@ -308,5 +310,16 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(childCloseHandler).handle(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateChildRegistrationOAFormSubmissionHandlingToChildRegistrationOAHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "child_registration_oa", "entity id 1", 0L, "1", null, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(childRegistrationOAHandler).handle(formSubmission);
     }
 }
