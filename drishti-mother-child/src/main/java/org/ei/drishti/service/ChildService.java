@@ -22,10 +22,10 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildRegistrationECFields.CHILD_ID;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
+import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_PROBLEMS;
 
 @Service
 public class ChildService {
@@ -81,7 +81,7 @@ public class ChildService {
     }
 
     public void registerChildrenForEC(FormSubmission submission) {
-        Child child = allChildren.findByCaseId(submission.getField(CHILD_ID));
+        Child child = allChildren.findByCaseId(submission.getField(ChildReportingService.CHILD_ID_FIELD));
         child.withAnm(submission.anmId());
         allChildren.update(child);
     }
@@ -155,5 +155,17 @@ public class ChildService {
             return true;
         }
         return false;
+    }
+
+    public void pncVisitHappened(FormSubmission submission) {
+        Map<String, String> reportFieldsMap = submission.getFields(reportFieldsDefinition.get(submission.formName()));
+
+        SubFormData subFormData = submission.getSubFormByName(AllConstants.Form.PNC_VISIT_CHILD_SUB_FORM_NAME);
+        for (Map<String, String> childFields : subFormData.instances()) {
+            SafeMap reportingData = new SafeMap(reportFieldsMap);
+            reportingData.put(ChildReportingService.CHILD_ID_FIELD, childFields.get(AllConstants.CommonFormFields.ID));
+            reportingData.put(URINE_STOOL_PROBLEMS, childFields.get(URINE_STOOL_PROBLEMS));
+            childReportingService.pncVisitHappened(reportingData);
+        }
     }
 }

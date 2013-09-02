@@ -64,3 +64,4 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('CESAREAN');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('CESAREAN_GOV');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('CESAREAN_PRI');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('INFANT_REG');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('CHILD_DIARRHEA');

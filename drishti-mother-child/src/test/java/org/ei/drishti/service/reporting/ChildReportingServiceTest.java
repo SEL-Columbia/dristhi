@@ -9,6 +9,7 @@ import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -408,6 +409,60 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.closeChild(reportDataForCloseChild("child_over5", "2012-03-05"));
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportChildDiarrheaEpisodeWhenPNCVisitHappened() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
+                .put("id", "MOTHER-CASE-1")
+                .put("childId", "CASE X")
+                .put("urineStoolProblems", "diarrhea")
+                .map()));
+
+        verifyBothReportingCalls(CHILD_DIARRHEA, "2012-01-01");
+    }
+
+    @Test
+    public void shouldNotReportDiarrheaEpisodeWhenPNCVisitHappenedAndThereAreNoUrineStoolProblems() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
+                .put("id", "MOTHER-CASE-1")
+                .put("childId", "CASE X")
+                .put("urineStoolProblems", null)
+                .map()));
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldNotReportDiarrheaEpisodeWhenPNCVisitHappenedAndChildDoesNotHaveDiarrhea() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
+                .put("id", "MOTHER-CASE-1")
+                .put("childId", "CASE X")
+                .put("urineStoolProblems", "vomiting")
+                .map()));
 
         verifyZeroInteractions(reportingService);
     }

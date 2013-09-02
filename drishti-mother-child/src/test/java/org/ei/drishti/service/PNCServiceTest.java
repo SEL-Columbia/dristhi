@@ -50,7 +50,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new PNCService(actionService, childSchedulesService, pncSchedulesService, allEligibleCouples, allMothers, children,
+        service = new PNCService(actionService, pncSchedulesService, allEligibleCouples, allMothers, children,
                 motherReportingService, reportFieldsDefinition);
     }
 

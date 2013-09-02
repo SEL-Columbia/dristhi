@@ -30,7 +30,6 @@ import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 public class PNCService {
     private static Logger logger = LoggerFactory.getLogger(PNCService.class.toString());
     private ActionService actionService;
-    private ChildSchedulesService childSchedulesService;
     private PNCSchedulesService pncSchedulesService;
     private AllEligibleCouples allEligibleCouples;
     private AllMothers allMothers;
@@ -40,7 +39,6 @@ public class PNCService {
 
     @Autowired
     public PNCService(ActionService actionService,
-                      ChildSchedulesService childSchedulesService,
                       PNCSchedulesService pncSchedulesService,
                       AllEligibleCouples allEligibleCouples,
                       AllMothers allMothers,
@@ -48,7 +46,6 @@ public class PNCService {
                       MotherReportingService motherReportingService,
                       ReportFieldsDefinition reportFieldsDefinition) {
         this.actionService = actionService;
-        this.childSchedulesService = childSchedulesService;
         this.pncSchedulesService = pncSchedulesService;
         this.allEligibleCouples = allEligibleCouples;
         this.allMothers = allMothers;

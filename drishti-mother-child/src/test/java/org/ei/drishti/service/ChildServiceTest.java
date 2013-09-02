@@ -362,7 +362,6 @@ public class ChildServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         Mother mother = new Mother("mother id 1", "ec id 1", "TC1");
         when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(mother));
-        when(allChildren.findByMotherId("mother id 1")).thenReturn(Collections.<Child>emptyList());
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .withANMId("anm id 1")
@@ -392,7 +391,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .addFormField("referenceDate", "2012-01-01")
                 .withSubForm(new SubFormData("child_registration_oa",
                         asList(EasyMap.create("id", "child id 1").put("didBreastfeedingStart", "no").map(),
-                               EasyMap.create("id", "child id 2").put("didBreastfeedingStart", "yes").map()))
+                                EasyMap.create("id", "child id 2").put("didBreastfeedingStart", "yes").map()))
                 )
                 .build();
 
@@ -466,5 +465,27 @@ public class ChildServiceTest extends BaseUnitTest {
         verify(allChildren).remove("child id 1");
         verifyZeroInteractions(childReportingService);
         verifyZeroInteractions(childSchedulesService);
+    }
+
+    @Test
+    public void shouldReportWhenPNCVisitHappened() {
+        FormSubmission submission = create()
+                .withFormName("pnc_visit")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("pncVisitDate", "2012-01-01")
+                .withSubForm(new SubFormData("child_pnc_visit",
+                        asList(EasyMap.create("id", "child id 1").put("urineStoolProblems", "diarrhea").map())))
+                .build();
+        when(reportFieldsDefinition.get("pnc_visit")).thenReturn(asList("id", "pncVisitDate"));
+
+        service.pncVisitHappened(submission);
+
+        verify(childReportingService).pncVisitHappened(new SafeMap(
+                create("pncVisitDate", "2012-01-01")
+                        .put("id", "mother id 1")
+                        .put("childId", "child id 1")
+                        .put("urineStoolProblems", "diarrhea")
+                        .map()));
     }
 }

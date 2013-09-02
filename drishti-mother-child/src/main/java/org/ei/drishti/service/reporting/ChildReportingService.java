@@ -1,5 +1,6 @@
 package org.ei.drishti.service.reporting;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.Child;
@@ -22,17 +23,19 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
-import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
+import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
+import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
+import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.*;
 import static org.ei.drishti.common.AllConstants.Report.*;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.joda.time.LocalDate.parse;
 
 @Service
 public class ChildReportingService {
+    public static final String CHILD_ID_FIELD = "childId";
     private static Logger logger = LoggerFactory.getLogger(ChildReportingService.class.toString());
     private final ReportingService reportingService;
     private final AllChildren allChildren;
@@ -183,5 +186,16 @@ public class ChildReportingService {
         reportingService.sendReportData(serviceProvidedData);
         ReportingData anmReportData = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);
+    }
+
+    public void pncVisitHappened(SafeMap reportData) {
+        String id = reportData.get(CHILD_ID_FIELD);
+        Child child = allChildren.findByCaseId(id);
+
+        String problems = reportData.get(URINE_STOOL_PROBLEMS);
+        if (!StringUtils.isBlank(problems) && problems.contains(URINE_STOOL_PROBLEMS_DIARRHEA_VALUE)) {
+            Location location = loadLocationOfChild(child);
+            reportToBoth(child, CHILD_DIARRHEA, reportData.get(VISIT_DATE_FIELD_NAME), location);
+        }
     }
 }

@@ -35,6 +35,8 @@ public class AllConstants {
         public static final String BOOLEAN_TRUE_VALUE = "yes";
         public static final String BOOLEAN_FALSE_VALUE = "no";
         public static final String PNC_REGISTRATION_OA_SUB_FORM_NAME = "child_registration_oa";
+        public static final String PNC_VISIT_CHILD_SUB_FORM_NAME = "child_pnc_visit";
+
 
     }
 
@@ -97,8 +99,10 @@ public class AllConstants {
     }
 
     public static class PNCVisitFormFields {
-        public static final String PNC_VISIT_DATE_FIELD_NAME = "pncVisitDate";
-        public static final String PNC_VISIT_NUMBER_FIELD_NAME = "pncVisitNumber";
+        public static final String VISIT_DATE_FIELD_NAME = "pncVisitDate";
+        public static final String VISIT_NUMBER_FIELD_NAME = "pncVisitNumber";
+        public static final String URINE_STOOL_PROBLEMS = "urineStoolProblems";
+        public static final String URINE_STOOL_PROBLEMS_DIARRHEA_VALUE = "diarrhea";
     }
 
     public static class CommonFormFields {

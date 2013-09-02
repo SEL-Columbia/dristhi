@@ -108,9 +108,9 @@ public class MotherReportingService {
     public void pncVisitHappened(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
         Location location = loadLocationFromEC(mother);
-        String visitNumber = reportData.get(AllConstants.PNCVisitFormFields.PNC_VISIT_NUMBER_FIELD_NAME);
+        String visitNumber = reportData.get(AllConstants.PNCVisitFormFields.VISIT_NUMBER_FIELD_NAME);
         if (tryParse(visitNumber, 0) == 3) {
-            reportToBoth(mother, PNC3, reportData.get(AllConstants.PNCVisitFormFields.PNC_VISIT_DATE_FIELD_NAME), location);
+            reportToBoth(mother, PNC3, reportData.get(AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME), location);
         }
     }
 

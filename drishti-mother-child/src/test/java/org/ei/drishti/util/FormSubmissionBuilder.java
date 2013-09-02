@@ -53,6 +53,7 @@ public class FormSubmissionBuilder {
 
     public FormSubmissionBuilder withEntityId(String entityId) {
         this.entityId = entityId;
+        addFormField("id", entityId);
         return this;
     }
 
