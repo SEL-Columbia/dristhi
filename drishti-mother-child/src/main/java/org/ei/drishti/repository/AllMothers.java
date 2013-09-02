@@ -31,14 +31,6 @@ public class AllMothers extends MotechBaseRepository<Mother> {
         return findByCaseId(caseId) != null;
     }
 
-    public Mother updateDetails(String caseId, Map<String, String> details) {
-        Mother mother = findByCaseId(caseId);
-        mother.details().putAll(details);
-        update(mother);
-
-        return mother;
-    }
-
     @GenerateView
     public List<Mother> findByEcCaseId(String ecId) {
         List<Mother> mothers = queryView("by_ecCaseId", ecId);

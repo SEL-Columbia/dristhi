@@ -17,7 +17,6 @@
     <import resource="classpath:applicationSmsHttp.xml"/>
     <import resource="classpath:applicationSmsAPI.xml"/>
     <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
-    <import resource="classpath:applicationContext-commcare-listener.xml"/>
     <util:properties id="drishti" location="classpath:/drishti.properties"/>
 
     <context:annotation-config/>

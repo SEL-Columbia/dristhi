@@ -69,16 +69,6 @@ public class AllMothersIntegrationTest {
     }
 
     @Test
-    public void shouldUpdateDetailsOfAnExistingMother() throws Exception {
-        mothers.add(motherWithoutDetails().withDetails(create("Key 1", "Value 1").put("Key 2", "Value 2").map()));
-        Mother updatedMother = mothers.updateDetails("CASE X", create("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map());
-
-        Map<String, String> expectedUpdatedDetails = create("Key 1", "Value 1").put("Key 2", "Value 2 NEW").put("Key 3", "Value 3").map();
-        assertThat(mothers.findByCaseId("CASE X"), is(motherWithoutDetails().withDetails(expectedUpdatedDetails)));
-        assertThat(updatedMother, is(motherWithoutDetails().withDetails(expectedUpdatedDetails)));
-    }
-
-    @Test
     public void shouldMarkMotherAsClosedWhenMotherClose() {
         Mother motherToRegister = motherWithoutDetails();
         mothers.add(motherToRegister);

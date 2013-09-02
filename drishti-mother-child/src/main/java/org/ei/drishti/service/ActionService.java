@@ -60,10 +60,6 @@ public class ActionService {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
     }
 
-    public void updateBirthPlanning(String caseId, String anmIdentifier, Map<String, String> details) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.updateBirthPlanning(details)));
-    }
-
     public void reportForIndicator(String anmIdentifier, ActionData actionData) {
         allActions.add(new Action("", anmIdentifier, actionData));
     }
