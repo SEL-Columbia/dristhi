@@ -123,7 +123,13 @@
             },
             {
                 "name": "thayiCardNumber",
-                "bind": "/model/instance/Child_Registration_EC_EngKan/thayi_card_number"
+                "bind": "/model/instance/Child_Registration_EC_EngKan/thayi_card_number",
+                "source": "eligible_couple.mother.child.thayiCardNumber"
+            },
+            {
+                "name": "thayiCard",
+                "bind": "/model/instance/Child_Registration_EC_EngKan/thayi_card_number",
+                "source": "eligible_couple.mother.child.thayiCard"
             },
             {
                 "name": "bloodGroup",
