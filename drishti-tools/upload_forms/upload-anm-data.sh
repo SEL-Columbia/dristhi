@@ -33,4 +33,3 @@ rm output/DONE/*.json
 rm output/*.json
 ruby create_forms.rb klp4
 ruby upload_forms.rb klp4 hema
-
