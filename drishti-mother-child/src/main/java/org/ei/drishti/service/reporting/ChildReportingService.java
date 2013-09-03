@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
-import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
@@ -104,11 +103,22 @@ public class ChildReportingService {
     public void vitaminAProvided(SafeMap reportData) {
         Child child = allChildren.findByCaseId(reportData.get(ID));
         Location location = loadLocationOfChild(child);
-
-        if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_1_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
-            reportToBoth(child, VIT_A_1, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
-        } else if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_2_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
-            reportToBoth(child, VIT_A_2, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+        if (child.isFemale()) {
+            if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_1_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
+                reportToBoth(child, VIT_A_1, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+                reportToBoth(child, VIT_A_1_FOR_FEMALE_CHILD, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+            } else if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_2_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
+                reportToBoth(child, VIT_A_2, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+                reportToBoth(child, VIT_A_2_FOR_FEMALE_CHILD, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+            }
+        } else if (child.isMale()) {
+            if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_1_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
+                reportToBoth(child, VIT_A_1, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+                reportToBoth(child, VIT_A_1_FOR_MALE_CHILD, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+            } else if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_2_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
+                reportToBoth(child, VIT_A_2, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+                reportToBoth(child, VIT_A_2_FOR_MALE_CHILD, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+            }
         }
     }
 
@@ -203,7 +213,7 @@ public class ChildReportingService {
 
         Location location = loadLocationOfChild(child);
         LocalDate childDateOfBirth = parse(child.dateOfBirth());
-        if (childDateOfBirth.plusYears(CHILD_DIARRHEA_THRESHOLD_IN_YEARS).isAfter(DateUtil.today())) {
+        if (childDateOfBirth.plusYears(CHILD_DIARRHEA_THRESHOLD_IN_YEARS).isAfter(LocalDate.parse(reportData.get(AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME)))) {
             if (!StringUtils.isBlank(reportData.get(CHILD_SIGNS)) && reportData.get(CHILD_SIGNS).contains(AllConstants.CommonChildFormFields.DIARRHEA_VALUE)) {
                 reportToBoth(child, CHILD_DIARRHEA, reportData.get(SICK_VISIT_DATE), location);
             } else if (!StringUtils.isBlank(reportData.get(REPORT_CHILD_DISEASE)) && reportData.get(REPORT_CHILD_DISEASE).contains(AllConstants.ChildIllnessFields.DIARRHEA_DEHYDRATION_VALUE)) {

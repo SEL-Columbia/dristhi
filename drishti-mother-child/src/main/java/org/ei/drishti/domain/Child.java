@@ -3,7 +3,9 @@ package org.ei.drishti.domain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.ei.drishti.common.AllConstants;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
@@ -140,6 +142,16 @@ public class Child extends MotechBaseDataObject {
 
     public String immunizationDate() {
         return details().get(IMMUNIZATION_DATE_FIELD_NAME);
+    }
+
+    @JsonIgnore
+    public boolean isFemale() {
+        return AllConstants.CommonChildFormFields.FEMALE_VALUE.equalsIgnoreCase(gender);
+    }
+
+    @JsonIgnore
+    public boolean isMale() {
+        return AllConstants.CommonChildFormFields.MALE_VALUE.equalsIgnoreCase(gender);
     }
 
     @Override

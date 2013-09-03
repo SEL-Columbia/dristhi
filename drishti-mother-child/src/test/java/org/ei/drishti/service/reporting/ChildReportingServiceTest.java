@@ -89,7 +89,7 @@ public class ChildReportingServiceTest {
     }
 
     @Test
-    public void shouldReportFirstVitaminDoseDuringImmunizationProvided() throws Exception {
+    public void shouldReportFirstVitaminDoseDuringImmunizationProvidedForFemaleChild() throws Exception {
         SafeMap reportingData = reportDataForVitaminA("1", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withAnm("ANM X")
@@ -100,11 +100,12 @@ public class ChildReportingServiceTest {
         service.vitaminAProvided(reportingData);
 
         verifyBothReportingCalls(VIT_A_1, "2012-01-02");
+        verifyBothReportingCalls(VIT_A_1_FOR_FEMALE_CHILD, "2012-01-02");
         verifyNoMoreInteractions(reportingService);
     }
 
     @Test
-    public void shouldReportSecondVitaminDoseDuringImmunizationProvided() throws Exception {
+    public void shouldReportSecondVitaminDoseDuringImmunizationProvidedForFemaleChild() throws Exception {
         SafeMap reportingData = reportDataForVitaminA("2", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withAnm("ANM X")
@@ -115,6 +116,39 @@ public class ChildReportingServiceTest {
         service.vitaminAProvided(reportingData);
 
         verifyBothReportingCalls(VIT_A_2, "2012-01-02");
+        verifyBothReportingCalls(VIT_A_2_FOR_FEMALE_CHILD, "2012-01-02");
+        verifyNoMoreInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportFirstVitaminDoseDuringImmunizationProvidedForMaleChild() throws Exception {
+        SafeMap reportingData = reportDataForVitaminA("1", "2012-01-02");
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "male")
+                .withAnm("ANM X")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.vitaminAProvided(reportingData);
+
+        verifyBothReportingCalls(VIT_A_1, "2012-01-02");
+        verifyBothReportingCalls(VIT_A_1_FOR_MALE_CHILD, "2012-01-02");
+        verifyNoMoreInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportSecondVitaminDoseDuringImmunizationProvidedForMaleChild() throws Exception {
+        SafeMap reportingData = reportDataForVitaminA("2", "2012-01-02");
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "male")
+                .withAnm("ANM X")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.vitaminAProvided(reportingData);
+
+        verifyBothReportingCalls(VIT_A_2, "2012-01-02");
+        verifyBothReportingCalls(VIT_A_2_FOR_MALE_CHILD, "2012-01-02");
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -479,6 +513,7 @@ public class ChildReportingServiceTest {
         service.sickVisitHappened(new SafeMap(EasyMap.create("sickVisitDate", "2012-01-01")
                 .put("id", "CASE X")
                 .put("childSigns", "diarrhea")
+                .put("submissionDate", "2012-01-01")
                 .map()));
 
         verifyBothReportingCalls(CHILD_DIARRHEA, "2012-01-01");
@@ -497,6 +532,7 @@ public class ChildReportingServiceTest {
                 .put("id", "CASE X")
                 .put("childSigns", null)
                 .put("reportChildDisease", null)
+                .put("submissionDate", "2012-01-01")
                 .map()));
 
         verifyZeroInteractions(reportingService);
@@ -515,6 +551,7 @@ public class ChildReportingServiceTest {
                 .put("id", "CASE X")
                 .put("childSigns", null)
                 .put("reportChildDisease", "diarrhea_dehydration")
+                .put("submissionDate", "2012-01-01")
                 .map()));
 
         verifyBothReportingCalls(CHILD_DIARRHEA, "2012-01-01");
@@ -522,7 +559,6 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldNotReportChildDiarrheaEpisodeWhenSickVisitHappensAndChildAgeIsGreaterThanFive() {
-        DateUtil.fakeIt(parse("2012-01-01"));
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
                 .withAnm("ANM X")
                 .withDateOfBirth(parse("2012-01-01").minusYears(5).minusDays(1).toString())
@@ -534,6 +570,7 @@ public class ChildReportingServiceTest {
                 .put("id", "CASE X")
                 .put("childSigns", null)
                 .put("reportChildDisease", "diarrhea_dehydration")
+                .put("submissionDate", "2012-01-01")
                 .map()));
 
         verifyZeroInteractions(reportingService);

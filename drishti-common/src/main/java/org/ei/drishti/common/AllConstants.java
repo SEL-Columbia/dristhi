@@ -113,6 +113,9 @@ public class AllConstants {
 
     public static class CommonChildFormFields {
         public static final String DIARRHEA_VALUE = "diarrhea";
+        public static final String FEMALE_VALUE = "female";
+        public static final String MALE_VALUE = "male";
+
     }
 
     public static class ChildRegistrationFormFields {

@@ -89,7 +89,8 @@
         "childSigns",
         "sickVisitDate",
         "reportChildDisease",
-        "reportChildDiseaseDate"
+        "reportChildDiseaseDate",
+        "submissionDate"
     ],
     "vitamin_a": [
         "id",

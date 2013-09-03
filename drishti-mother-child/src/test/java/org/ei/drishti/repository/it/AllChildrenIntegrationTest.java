@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -30,7 +31,7 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldRegisterAChild() {
-        Child child = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07");
+        Child child = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07").withDetails(mapOf("immunizationDate", "2012-01-01"));
 
         children.add(child);
 
