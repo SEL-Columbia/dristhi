@@ -52,6 +52,7 @@ public class AllConstants {
         public static final int CHILD_MORTALITY_THRESHOLD_IN_YEARS = 5;
         public static final int CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 7;
         public static final int CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 28;
+        public static final int CHILD_DIARRHEA_THRESHOLD_IN_YEARS = 5;
     }
 
     public static class ECRegistrationFields {

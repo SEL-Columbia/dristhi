@@ -2,6 +2,7 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.joda.time.LocalDate.parse;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -496,7 +498,7 @@ public class ChildReportingServiceTest {
         service.sickVisitHappened(new SafeMap(EasyMap.create("sickVisitDate", "2012-01-01")
                 .put("id", "CASE X")
                 .put("childSigns", null)
-                .put("reportChildDisease",null)
+                .put("reportChildDisease", null)
                 .map()));
 
         verifyZeroInteractions(reportingService);
@@ -513,11 +515,30 @@ public class ChildReportingServiceTest {
 
         service.sickVisitHappened(new SafeMap(EasyMap.create("reportChildDiseaseDate", "2012-01-01")
                 .put("id", "CASE X")
-                .put("childSigns",null)
+                .put("childSigns", null)
                 .put("reportChildDisease", "diarrhea_dehydration")
                 .map()));
 
         verifyBothReportingCalls(CHILD_DIARRHEA, "2012-01-01");
+    }
+
+    @Test
+    public void shouldNotReportChildDiarrheaEpisodeWhenSickVisitHappensAndChildAgeIsGreaterThanFive() {
+        DateUtil.fakeIt(parse("2012-01-01"));
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth(parse("2012-01-01").minusYears(5).minusDays(1).toString())
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.sickVisitHappened(new SafeMap(EasyMap.create("reportChildDiseaseDate", "2012-01-01")
+                .put("id", "CASE X")
+                .put("childSigns", null)
+                .put("reportChildDisease", "diarrhea_dehydration")
+                .map()));
+
+        verifyZeroInteractions(reportingService);
     }
 
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator... expectedIndicators) {

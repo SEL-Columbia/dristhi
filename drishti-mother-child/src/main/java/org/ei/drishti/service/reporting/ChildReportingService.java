@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
@@ -207,11 +208,13 @@ public class ChildReportingService {
         Child child = allChildren.findByCaseId(id);
 
         Location location = loadLocationOfChild(child);
-        if (!StringUtils.isBlank(reportData.get(CHILD_SIGNS)) && reportData.get(CHILD_SIGNS).contains(AllConstants.CommonChildFormFields.DIARRHEA_VALUE)){
-            reportToBoth(child, CHILD_DIARRHEA, reportData.get(SICK_VISIT_DATE), location);
-        }
-        else if(!StringUtils.isBlank(reportData.get(REPORT_CHILD_DISEASE)) && reportData.get(REPORT_CHILD_DISEASE).contains(AllConstants.ChildIllnessFields.DIARRHEA_DEHYDRATION_VALUE)) {
-            reportToBoth(child, CHILD_DIARRHEA, reportData.get(REPORT_CHILD_DISEASE_DATE), location);
+        LocalDate childDateOfBirth = parse(child.dateOfBirth());
+        if (childDateOfBirth.plusYears(CHILD_DIARRHEA_THRESHOLD_IN_YEARS).isAfter(DateUtil.today())) {
+            if (!StringUtils.isBlank(reportData.get(CHILD_SIGNS)) && reportData.get(CHILD_SIGNS).contains(AllConstants.CommonChildFormFields.DIARRHEA_VALUE)) {
+                reportToBoth(child, CHILD_DIARRHEA, reportData.get(SICK_VISIT_DATE), location);
+            } else if (!StringUtils.isBlank(reportData.get(REPORT_CHILD_DISEASE)) && reportData.get(REPORT_CHILD_DISEASE).contains(AllConstants.ChildIllnessFields.DIARRHEA_DEHYDRATION_VALUE)) {
+                reportToBoth(child, CHILD_DIARRHEA, reportData.get(REPORT_CHILD_DISEASE_DATE), location);
+            }
         }
     }
 }
