@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.ei.drishti.common.AllConstants.ChildIllnessFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
@@ -167,5 +168,17 @@ public class ChildService {
             reportingData.put(URINE_STOOL_PROBLEMS, childFields.get(URINE_STOOL_PROBLEMS));
             childReportingService.pncVisitHappened(reportingData);
         }
+    }
+
+    public void sickVisitHappened(FormSubmission submission) {
+        Map<String, String> reportFieldsMap = submission.getFields(reportFieldsDefinition.get(submission.formName()));
+
+        SafeMap reportingData = new SafeMap(reportFieldsMap);
+        reportingData.put(ChildReportingService.CHILD_ID_FIELD, submission.getField(AllConstants.CommonFormFields.ID));
+        reportingData.put(CHILD_SIGNS, submission.getField(CHILD_SIGNS));
+        reportingData.put(SICKNESS_VISIT_DATE, submission.getField(SICKNESS_VISIT_DATE));
+        reportingData.put(REPORT_CHILD_DISEASE, submission.getField(REPORT_CHILD_DISEASE));
+        reportingData.put(REPORT_CHILD_DISEASE_DATE, submission.getField(REPORT_CHILD_DISEASE_DATE));
+        childReportingService.sickVisitHappened(reportingData);
     }
 }

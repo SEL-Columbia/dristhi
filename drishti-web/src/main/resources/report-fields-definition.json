@@ -83,5 +83,12 @@
         "id",
         "closeReason",
         "deathDate"
+    ],
+    "child_illness": [
+        "id",
+        "reportChildDisease",
+        "reportChildDiseaseDate",
+        "sickVisitDate",
+        "childSigns"
     ]
 }

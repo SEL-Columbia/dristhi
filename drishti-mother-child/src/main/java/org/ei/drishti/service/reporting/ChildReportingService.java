@@ -1,6 +1,7 @@
 package org.ei.drishti.service.reporting;
 
 import org.apache.commons.lang3.StringUtils;
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.Child;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.*;
+import static org.ei.drishti.common.AllConstants.ChildIllnessFields.SICKNESS_VISIT_DATE;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
@@ -197,5 +199,13 @@ public class ChildReportingService {
             Location location = loadLocationOfChild(child);
             reportToBoth(child, CHILD_DIARRHEA, reportData.get(VISIT_DATE_FIELD_NAME), location);
         }
+    }
+
+    public void sickVisitHappened(SafeMap reportData) {
+        String id = reportData.get(CHILD_ID_FIELD);
+        Child child = allChildren.findByCaseId(id);
+
+        Location location = loadLocationOfChild(child);
+        reportToBoth(child, CHILD_DIARRHEA, reportData.get(SICKNESS_VISIT_DATE), location);
     }
 }

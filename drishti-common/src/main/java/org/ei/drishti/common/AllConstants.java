@@ -206,4 +206,11 @@ public class AllConstants {
     public static class ChildRegistrationECFields {
         public static final String CHILD_ID = "childId";
     }
+
+    public static class ChildIllnessFields {
+        public static final String CHILD_SIGNS = "childSigns";
+        public static final String SICKNESS_VISIT_DATE = "sickVisitDate";
+        public static final String REPORT_CHILD_DISEASE = "reportChildDisease";
+        public static final String REPORT_CHILD_DISEASE_DATE = "reportChildDiseaseDate";
+    }
 }
