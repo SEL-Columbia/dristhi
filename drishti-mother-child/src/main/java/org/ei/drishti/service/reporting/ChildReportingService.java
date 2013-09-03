@@ -103,11 +103,12 @@ public class ChildReportingService {
 
     public void vitaminAProvided(SafeMap reportData) {
         Child child = allChildren.findByCaseId(reportData.get(ID));
+        Location location = loadLocationOfChild(child);
 
-        if ("1".equals(reportData.get(VITAMIN_A_DOSE_FIELD_NAME))) {
-            reportToBoth(child, VIT_A_1, reportData.get(IMMUNIZATION_DATE_FIELD_NAME));
-        } else if ("2".equals(reportData.get(VITAMIN_A_DOSE_FIELD_NAME))) {
-            reportToBoth(child, VIT_A_2, reportData.get(IMMUNIZATION_DATE_FIELD_NAME));
+        if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_1_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
+            reportToBoth(child, VIT_A_1, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+        } else if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_2_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
+            reportToBoth(child, VIT_A_2, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
         }
     }
 
@@ -176,13 +177,6 @@ public class ChildReportingService {
                 reportToBoth(child, indicator, date, location);
             }
         }
-    }
-
-    private void reportToBoth(Child child, Indicator indicator, String date) {
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, child.location());
-        reportingService.sendReportData(serviceProvidedData);
-        ReportingData anmReportData = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
-        reportingService.sendReportData(anmReportData);
     }
 
     private void reportToBoth(Child child, Indicator indicator, String date, Location location) {

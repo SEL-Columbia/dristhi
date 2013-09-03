@@ -504,4 +504,20 @@ public class ChildServiceTest extends BaseUnitTest {
         verify(childReportingService).sickVisitHappened(new SafeMap(
                 mapOf("some-field", "some-value")));
     }
+
+    @Test
+    public void shouldReportVitaminADosageWhenVitaminADosageIsGiven() {
+        when(allChildren.childExists("child id 1")).thenReturn(true);
+        FormSubmission submission = create()
+                .withFormName("vitamin_a")
+                .withEntityId("child id 1")
+                .withANMId("anm id 1")
+                .addFormField("some-field", "some-value")
+                .build();
+        when(reportFieldsDefinition.get("vitamin_a")).thenReturn(asList("some-field"));
+
+        service.vitaminAProvided(submission);
+
+        verify(childReportingService).vitaminAProvided(new SafeMap(mapOf("some-field", "some-value")));
+    }
 }

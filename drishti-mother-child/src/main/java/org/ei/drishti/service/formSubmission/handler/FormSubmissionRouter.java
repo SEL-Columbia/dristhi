@@ -41,6 +41,7 @@ public class FormSubmissionRouter {
                                 PNCVisitHandler pncVisitHandler,
                                 ChildRegistrationECHandler childRegistrationECHandler,
                                 ChildRegistrationOAHandler childRegistrationOAHandler,
+                                VitaminAHandler vitaminAHandler,
                                 ChildImmunizationsHandler childImmunizationsHandler,
                                 ChildIllnessHandler childIllnessHandler,
                                 ChildCloseHandler childCloseHandler) {
@@ -70,6 +71,7 @@ public class FormSubmissionRouter {
                 .put(CHILD_IMMUNIZATIONS, childImmunizationsHandler)
                 .put(CHILD_ILLNESS,childIllnessHandler)
                 .put(CHILD_CLOSE, childCloseHandler)
+                .put(VITAMIN_A,vitaminAHandler)
                 .map();
     }
 

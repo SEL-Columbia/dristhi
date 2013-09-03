@@ -90,9 +90,8 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportFirstVitaminDoseDuringImmunizationProvided() throws Exception {
-        SafeMap reportingData = reportDataForImmunization("", "1");
+        SafeMap reportingData = reportDataForVitaminA("1", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
-                .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
@@ -100,15 +99,14 @@ public class ChildReportingServiceTest {
 
         service.vitaminAProvided(reportingData);
 
-        verifyBothReportingCalls(VIT_A_1, "2012-01-01");
+        verifyBothReportingCalls(VIT_A_1, "2012-01-02");
         verifyNoMoreInteractions(reportingService);
     }
 
     @Test
     public void shouldReportSecondVitaminDoseDuringImmunizationProvided() throws Exception {
-        SafeMap reportingData = reportDataForImmunization("", "2");
+        SafeMap reportingData = reportDataForVitaminA("2", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
-                .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
@@ -116,7 +114,7 @@ public class ChildReportingServiceTest {
 
         service.vitaminAProvided(reportingData);
 
-        verifyBothReportingCalls(VIT_A_2, "2012-01-01");
+        verifyBothReportingCalls(VIT_A_2, "2012-01-02");
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -564,6 +562,14 @@ public class ChildReportingServiceTest {
         reportingData.put("immunizationsGiven", immunizationProvided);
         reportingData.put("immunizationDate", "2012-01-01");
         reportingData.put("vitaminADose", vitaminADose);
+        return reportingData;
+    }
+
+    private SafeMap reportDataForVitaminA(String vitaminADose, String vitaminADate) {
+        SafeMap reportingData = new SafeMap();
+        reportingData.put("id", "CASE X");
+        reportingData.put("vitaminADose", vitaminADose);
+        reportingData.put("vitaminADate", vitaminADate);
         return reportingData;
     }
 

@@ -79,7 +79,8 @@ public class ZiggyServiceIntegrationTest {
     @Mock
     private ChildIllnessHandler childIllnessHandler;
     private ZiggyFileLoader ziggyFileLoader;
-
+    @Mock
+    private VitaminAHandler vitaminAHandler;
     @Before
     public void setUp() throws Exception {
         initMocks(this);
@@ -96,7 +97,8 @@ public class ZiggyServiceIntegrationTest {
                         fpChangeHandler, renewFPProductHandler, fpFollowupHandler, fpReferralFollowupHandler,
                         ecCloseHandler, ancRegistrationHandler, ancRegistrationOAHandler, ancVisitHandler,
                         ancCloseHandler, ttHandler, ifaHandler, hbTestHandler, deliveryOutcomeHandler, pncRegistrationOAHandler,
-                        pncCloseHandler, pncVisitHandler, childRegistrationECHandler, childRegistrationOAHandler, childImmunizationsHandler, childIllnessHandler, childCloseHandler
+                        pncCloseHandler, pncVisitHandler, childRegistrationECHandler, childRegistrationOAHandler, vitaminAHandler,
+                        childImmunizationsHandler, childIllnessHandler, childCloseHandler
                 ));
 
         service.saveForm(params, formInstance);

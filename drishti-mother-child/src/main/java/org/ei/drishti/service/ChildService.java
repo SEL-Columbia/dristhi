@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.ei.drishti.common.AllConstants.ChildIllnessFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
@@ -107,6 +106,16 @@ public class ChildService {
         childReportingService.immunizationProvided(reportFieldsMap, previousImmunizations);
 
         childSchedulesService.updateEnrollments(submission.entityId(), previousImmunizations);
+    }
+
+    public void vitaminAProvided(FormSubmission submission) {
+        if (!allChildren.childExists(submission.entityId())) {
+            logger.warn("Found that Vitamin A was provided to a not registered child with entity ID: " + submission.entityId());
+            return;
+        }
+
+        SafeMap reportFieldsMap = new SafeMap(submission.getFields(reportFieldsDefinition.get(submission.formName())));
+        childReportingService.vitaminAProvided(reportFieldsMap);
     }
 
     public void closeChild(FormSubmission submission) {

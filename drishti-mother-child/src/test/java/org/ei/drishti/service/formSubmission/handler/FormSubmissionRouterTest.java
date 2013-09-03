@@ -60,6 +60,8 @@ public class FormSubmissionRouterTest {
     @Mock
     private ChildIllnessHandler childIllnessHandler;
     private FormSubmissionRouter router;
+    @Mock
+    private VitaminAHandler vitaminAHandler;
 
     @Before
     public void setUp() throws Exception {
@@ -84,7 +86,11 @@ public class FormSubmissionRouterTest {
                 pncCloseHandler,
                 pncVisitHandler,
                 childRegistrationECHandler,
-                childRegistrationOAHandler, childImmunizationsHandler, childIllnessHandler, childCloseHandler);
+                childRegistrationOAHandler,
+                vitaminAHandler,
+                childImmunizationsHandler,
+                childIllnessHandler,
+                childCloseHandler);
     }
 
     @Test
@@ -322,5 +328,16 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(childRegistrationOAHandler).handle(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateVitaminAFormSubmissionHandlingToVitaminAHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "vitamin_a", "entity id 1", 0L, "1", null, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(vitaminAHandler).handle(formSubmission);
     }
 }

@@ -37,7 +37,7 @@ public class AllConstants {
         public static final String BOOLEAN_FALSE_VALUE = "no";
         public static final String PNC_REGISTRATION_OA_SUB_FORM_NAME = "child_registration_oa";
         public static final String PNC_VISIT_CHILD_SUB_FORM_NAME = "child_pnc_visit";
-
+        public static final String VITAMIN_A = "vitamin_a";
 
     }
 
@@ -177,7 +177,6 @@ public class AllConstants {
         public static final String IMMUNIZATIONS_GIVEN_FIELD_NAME = "immunizationsGiven";
         public static final String PREVIOUS_IMMUNIZATIONS_FIELD_NAME = "previousImmunizations";
         public static final String IMMUNIZATION_DATE_FIELD_NAME = "immunizationDate";
-        public static final String VITAMIN_A_DOSE_FIELD_NAME = "vitaminADose";
 
         public static final String BCG_VALUE = "bcg";
 
@@ -201,6 +200,13 @@ public class AllConstants {
 
         public static final String MMR_VALUE = "mmr";
         public static final String JE_VALUE = "je";
+    }
+
+    public static class VitaminAFields {
+        public static final String VITAMIN_A_DOSE = "vitaminADose";
+        public static final String VITAMIN_A_DATE = "vitaminADate";
+        public static final String VITAMIN_A_DOSE_1_VALUE = "1";
+        public static final String VITAMIN_A_DOSE_2_VALUE = "2";
     }
 
     public static class IFAFields {

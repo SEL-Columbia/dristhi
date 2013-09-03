@@ -90,5 +90,10 @@
         "sickVisitDate",
         "reportChildDisease",
         "reportChildDiseaseDate"
+    ],
+    "vitamin_a": [
+        "id",
+        "vitaminADose",
+        "vitaminADate"
     ]
 }
