@@ -28,6 +28,7 @@ public class AllConstants {
         public static final String CHILD_REGISTRATION_EC = "child_registration_ec";
         public static final String CHILD_REGISTRATION_OA = "child_registration_oa";
         public static final String CHILD_IMMUNIZATIONS = "child_immunizations";
+        public static final String CHILD_ILLNESS = "child_illness";
         public static final String CHILD_CLOSE = "child_close";
         public static final String TT_BOOSTER = "tt_booster";
         public static final String TT_1 = "tt_1";
@@ -102,12 +103,15 @@ public class AllConstants {
         public static final String VISIT_DATE_FIELD_NAME = "pncVisitDate";
         public static final String VISIT_NUMBER_FIELD_NAME = "pncVisitNumber";
         public static final String URINE_STOOL_PROBLEMS = "urineStoolProblems";
-        public static final String URINE_STOOL_PROBLEMS_DIARRHEA_VALUE = "diarrhea";
     }
 
     public static class CommonFormFields {
         public static final String SUBMISSION_DATE_FIELD_NAME = "submissionDate";
         public static final String ID = "id";
+    }
+
+    public static class CommonChildFormFields {
+        public static final String DIARRHEA_VALUE = "diarrhea";
     }
 
     public static class ChildRegistrationFormFields {
@@ -209,8 +213,9 @@ public class AllConstants {
 
     public static class ChildIllnessFields {
         public static final String CHILD_SIGNS = "childSigns";
-        public static final String SICKNESS_VISIT_DATE = "sickVisitDate";
+        public static final String SICK_VISIT_DATE = "sickVisitDate";
         public static final String REPORT_CHILD_DISEASE = "reportChildDisease";
         public static final String REPORT_CHILD_DISEASE_DATE = "reportChildDiseaseDate";
+        public static final String DIARRHEA_DEHYDRATION_VALUE = "diarrhea_dehydration";
     }
 }

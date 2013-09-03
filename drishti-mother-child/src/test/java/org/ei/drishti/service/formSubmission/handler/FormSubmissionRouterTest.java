@@ -57,7 +57,8 @@ public class FormSubmissionRouterTest {
     private ChildCloseHandler childCloseHandler;
     @Mock
     private ChildRegistrationOAHandler childRegistrationOAHandler;
-
+    @Mock
+    private ChildIllnessHandler childIllnessHandler;
     private FormSubmissionRouter router;
 
     @Before
@@ -83,7 +84,7 @@ public class FormSubmissionRouterTest {
                 pncCloseHandler,
                 pncVisitHandler,
                 childRegistrationECHandler,
-                childImmunizationsHandler, childCloseHandler, childRegistrationOAHandler);
+                childRegistrationOAHandler, childImmunizationsHandler, childIllnessHandler, childCloseHandler);
     }
 
     @Test

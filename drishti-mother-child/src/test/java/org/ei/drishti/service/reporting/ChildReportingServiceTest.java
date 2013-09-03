@@ -414,7 +414,7 @@ public class ChildReportingServiceTest {
     }
 
     @Test
-    public void shouldReportChildDiarrheaEpisodeWhenPNCVisitHappened() {
+    public void shouldReportChildDiarrheaEpisodeWhenPNCVisitHappens() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
                 .withAnm("ANM X")
                 .withDateOfBirth("2012-01-01")
@@ -432,7 +432,7 @@ public class ChildReportingServiceTest {
     }
 
     @Test
-    public void shouldNotReportDiarrheaEpisodeWhenPNCVisitHappenedAndThereAreNoUrineStoolProblems() {
+    public void shouldNotReportDiarrheaEpisodeWhenPNCVisitHappensAndThereAreNoUrineStoolProblems() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
                 .withAnm("ANM X")
                 .withDateOfBirth("2012-01-01")
@@ -450,7 +450,7 @@ public class ChildReportingServiceTest {
     }
 
     @Test
-    public void shouldNotReportDiarrheaEpisodeWhenPNCVisitHappenedAndChildDoesNotHaveDiarrhea() {
+    public void shouldNotReportDiarrheaEpisodeWhenPNCVisitHappensAndChildDoesNotHaveDiarrhea() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
                 .withAnm("ANM X")
                 .withDateOfBirth("2012-01-01")
@@ -465,6 +465,59 @@ public class ChildReportingServiceTest {
                 .map()));
 
         verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportChildDiarrheaEpisodeWhenSickVisitHappens() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.sickVisitHappened(new SafeMap(EasyMap.create("sickVisitDate", "2012-01-01")
+                .put("id", "CASE X")
+                .put("childSigns", "diarrhea")
+                .map()));
+
+        verifyBothReportingCalls(CHILD_DIARRHEA, "2012-01-01");
+    }
+
+    @Test
+    public void shouldNotReportDiarrheaEpisodeWhenSickVisitHappensAndChildDoesNotHaveDiarrhea() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.sickVisitHappened(new SafeMap(EasyMap.create("sickVisitDate", "2012-01-01")
+                .put("id", "CASE X")
+                .put("childSigns", null)
+                .put("reportChildDisease",null)
+                .map()));
+
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportChildDiarrheaEpisodeWhenSickVisitHappensAndChildHasDiarrhea() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.sickVisitHappened(new SafeMap(EasyMap.create("reportChildDiseaseDate", "2012-01-01")
+                .put("id", "CASE X")
+                .put("childSigns",null)
+                .put("reportChildDisease", "diarrhea_dehydration")
+                .map()));
+
+        verifyBothReportingCalls(CHILD_DIARRHEA, "2012-01-01");
     }
 
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator... expectedIndicators) {

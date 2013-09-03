@@ -86,9 +86,9 @@
     ],
     "child_illness": [
         "id",
-        "reportChildDisease",
-        "reportChildDiseaseDate",
+        "childSigns",
         "sickVisitDate",
-        "childSigns"
+        "reportChildDisease",
+        "reportChildDiseaseDate"
     ]
 }

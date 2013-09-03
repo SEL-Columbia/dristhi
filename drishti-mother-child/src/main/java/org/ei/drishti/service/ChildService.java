@@ -172,13 +172,6 @@ public class ChildService {
 
     public void sickVisitHappened(FormSubmission submission) {
         Map<String, String> reportFieldsMap = submission.getFields(reportFieldsDefinition.get(submission.formName()));
-
-        SafeMap reportingData = new SafeMap(reportFieldsMap);
-        reportingData.put(ChildReportingService.CHILD_ID_FIELD, submission.getField(AllConstants.CommonFormFields.ID));
-        reportingData.put(CHILD_SIGNS, submission.getField(CHILD_SIGNS));
-        reportingData.put(SICKNESS_VISIT_DATE, submission.getField(SICKNESS_VISIT_DATE));
-        reportingData.put(REPORT_CHILD_DISEASE, submission.getField(REPORT_CHILD_DISEASE));
-        reportingData.put(REPORT_CHILD_DISEASE_DATE, submission.getField(REPORT_CHILD_DISEASE_DATE));
-        childReportingService.sickVisitHappened(reportingData);
+        childReportingService.sickVisitHappened(new SafeMap(reportFieldsMap));
     }
 }

@@ -495,20 +495,13 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withFormName("child_illness")
                 .withANMId("anm id 1")
                 .withEntityId("child id 1")
-                .addFormField("sickVisitDate", "2012-01-01")
-                .addFormField("reportChildDiseaseDate", "2012-01-01")
-                .addFormField("childSigns", "diarrhea")
-                .addFormField("reportChildDisease", "diarrhea_dehydration")
+                .addFormField("some-field", "some-value")
                 .build();
+        when(reportFieldsDefinition.get("child_illness")).thenReturn(asList("some-field"));
 
         service.sickVisitHappened(submission);
 
         verify(childReportingService).sickVisitHappened(new SafeMap(
-                create("sickVisitDate", "2012-01-01")
-                        .put("childId", "child id 1")
-                        .put("reportChildDiseaseDate", "2012-01-01")
-                        .put("childSigns", "diarrhea")
-                        .put("reportChildDisease", "diarrhea_dehydration")
-                        .map()));
+                mapOf("some-field", "some-value")));
     }
 }

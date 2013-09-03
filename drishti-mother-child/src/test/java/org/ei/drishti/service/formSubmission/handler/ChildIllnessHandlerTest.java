@@ -22,7 +22,7 @@ public class ChildIllnessHandlerTest {
     }
 
     @Test
-    public void shouldDelegateFormSubmissionHandleToPNCService() throws Exception {
+    public void shouldDelegateChildIllnessFormSubmissionHandleToChildService() throws Exception {
         FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "pnc_visit", "entity id 1", 0L, "1", null, 0L);
 
         handler.handle(submission);

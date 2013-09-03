@@ -76,7 +76,8 @@ public class ZiggyServiceIntegrationTest {
     private ChildCloseHandler childCloseHandler;
     @Mock
     private ChildRegistrationOAHandler childRegistrationOAHandler;
-
+    @Mock
+    private ChildIllnessHandler childIllnessHandler;
     private ZiggyFileLoader ziggyFileLoader;
 
     @Before
@@ -95,8 +96,8 @@ public class ZiggyServiceIntegrationTest {
                         fpChangeHandler, renewFPProductHandler, fpFollowupHandler, fpReferralFollowupHandler,
                         ecCloseHandler, ancRegistrationHandler, ancRegistrationOAHandler, ancVisitHandler,
                         ancCloseHandler, ttHandler, ifaHandler, hbTestHandler, deliveryOutcomeHandler, pncRegistrationOAHandler,
-                        pncCloseHandler, pncVisitHandler, childRegistrationECHandler, childImmunizationsHandler, childCloseHandler,
-                        childRegistrationOAHandler));
+                        pncCloseHandler, pncVisitHandler, childRegistrationECHandler, childRegistrationOAHandler, childImmunizationsHandler, childIllnessHandler, childCloseHandler
+                ));
 
         service.saveForm(params, formInstance);
     }
