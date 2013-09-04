@@ -25,13 +25,19 @@ class Forms
   def fill_ec_form
     puts "EC: #{@ec['Wife Name']} - #{@ec['Husband Name']} - #{@ec['Entity ID']}"
 
-    form_instance_erb = ERB.new(File.read('templates/ec_form_instance.erb'))
-    ec_registration_erb = ERB.new(File.read('templates/ec_registration.erb'))
+    form_instance_erb = ERB.new(File.read('templates/json_erb/ec_form_instance_erb.json'))
+    ec_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
     ec = @ec
+    user_id = @mobile_worker.user_id
     user_name = @mobile_worker.user_name
+    form_name = "ec_registration"
+    instance_id = ec['Instance ID']
+    entity_id = ec['Entity ID']
+
     form_instance = form_instance_erb.result(binding)
     ec_registration_json = ec_registration_erb.result(binding)
+
     File.open("output/EC_#{ec['Entity ID']}.json", "w") do |f| f.puts ec_registration_json end
   end
 
@@ -40,8 +46,8 @@ class Forms
 
       puts "    Out of area ANC registration: #{anc['Wife Name']} - #{anc['Husband Name']} - #{anc['LMP']} - #{anc['Entity ID']}"
 
-      form_instance_erb = ERB.new(File.read('templates/anc_oa_form_instance_erb.json'))
-      out_of_area_anc_registration_erb = ERB.new(File.read('templates/anc_registration.erb'))
+      form_instance_erb = ERB.new(File.read('templates/json_erb/anc_oa_form_instance_erb.json'))
+      out_of_area_anc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       ec = @ec
       user_id = @mobile_worker.user_id
@@ -61,8 +67,8 @@ class Forms
       anc = get_safe_map(value)
       puts "    ANC registration: #{anc['LMP']} - #{anc['Entity ID']}"
 
-      form_instance_erb = ERB.new(File.read('templates/anc_form_instance_erb.json'))
-      anc_registration_erb = ERB.new(File.read('templates/anc_registration.erb'))
+      form_instance_erb = ERB.new(File.read('templates/json_erb/anc_form_instance_erb.json'))
+      anc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       ec = @ec
       user_id = @mobile_worker.user_id
@@ -77,44 +83,44 @@ class Forms
     end
   end
 
-  def fill_anc_services_forms
-    (@anc_services.sort_by {|service| service['Visit Number']}).each_with_index do |anc_service, index|
-      puts "        ANC service: Visit number: #{anc_service['Visit Number']}"
+  #def fill_anc_services_forms
+  #  (@anc_services.sort_by {|service| service['Visit Number']}).each_with_index do |anc_service, index|
+  #    puts "        ANC service: Visit number: #{anc_service['Visit Number']}"
+  #
+  #    anc_visit_erb = ERB.new(File.read('templates/anc_visit.erb'))
+  #
+  #    anc = @ancs.find {|anc| anc['a.Thayi Card Number'] == anc_service['Thayi Card Number']}
+  #    anc = @ancs.last if anc.nil?
+  #    ec = @ec
+  #    user_id = @mobile_worker.user_id
+  #    user_name = @mobile_worker.user_name
+  #
+  #    anc_visit_xml = anc_visit_erb.result(binding)
+  #    File.open("output/ANCVisit_#{index.to_s.rjust(4, '0')}_#{anc_service['Instance ID']}.xml", "w") do |f| f.puts anc_visit_xml end
+  #  end
+  #end
 
-      anc_visit_erb = ERB.new(File.read('templates/anc_visit.erb'))
-
-      anc = @ancs.find {|anc| anc['a.Thayi Card Number'] == anc_service['Thayi Card Number']}
-      anc = @ancs.last if anc.nil?
-      ec = @ec
-      user_id = @mobile_worker.user_id
-      user_name = @mobile_worker.user_name
-
-      anc_visit_xml = anc_visit_erb.result(binding)
-      File.open("output/ANCVisit_#{index.to_s.rjust(4, '0')}_#{anc_service['Instance ID']}.xml", "w") do |f| f.puts anc_visit_xml end
-    end
-  end
-
-  def fill_anc_outcome_forms
-    anc_outcome_erb = ERB.new(File.read('templates/anc_outcome.erb'))
-
-    anc_service = @anc_services.first
-    anc = @ancs.find {|anc| anc['a.Thayi Card Number'] == anc_service['Thayi Card Number']}
-    anc = @ancs.last if anc.nil?
-    user_id = @mobile_worker.user_id
-    user_name = @mobile_worker.user_name
-
-    puts "    Have ANC outcome: On #{anc_service['Date of Delivery']}. Result: #{anc_service['Outcomes']}"
-
-    anc_outcome_xml = anc_outcome_erb.result(binding)
-    File.open("output/ANCOutcome_#{anc_service['Outcome Instance ID']}.xml", "w") do |f| f.puts anc_outcome_xml end
-  end
+  #def fill_anc_outcome_forms
+  #  anc_outcome_erb = ERB.new(File.read('templates/anc_outcome.erb'))
+  #
+  #  anc_service = @anc_services.first
+  #  anc = @ancs.find {|anc| anc['a.Thayi Card Number'] == anc_service['Thayi Card Number']}
+  #  anc = @ancs.last if anc.nil?
+  #  user_id = @mobile_worker.user_id
+  #  user_name = @mobile_worker.user_name
+  #
+  #  puts "    Have ANC outcome: On #{anc_service['Date of Delivery']}. Result: #{anc_service['Outcomes']}"
+  #
+  #  anc_outcome_xml = anc_outcome_erb.result(binding)
+  #  File.open("output/ANCOutcome_#{anc_service['Outcome Instance ID']}.xml", "w") do |f| f.puts anc_outcome_xml end
+  #end
 
   def fill_anc_visits_forms
     @anc_visits.each do |anc_visit|
       puts "    ANC Visit: #{anc_visit['Wife Name']} - #{anc_visit['Husband Name']} - #{anc_visit['Entity ID']}"
 
-      form_instance_erb = ERB.new(File.read('templates/anc_visit_form_instance_erb.json'))
-      anc_visit_erb = ERB.new(File.read('templates/anc_registration.erb'))
+      form_instance_erb = ERB.new(File.read('templates/json_erb/anc_visit_form_instance_erb.json'))
+      anc_visit_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       ec = get_safe_map(@ec.select { |e|
             e['Village Code'].village.downcase == anc_visit['Village Code'].village.downcase &&
@@ -139,8 +145,8 @@ class Forms
       key_for_anc = [hb_test['Village Code'].village.downcase, hb_test['Wife Name'].downcase, hb_test['Husband Name'].downcase]
       puts "    Hb Test: #{hb_test['Wife Name']} - #{hb_test['Husband Name']} - #{hb_test['Entity ID']}"
 
-      form_instance_erb = ERB.new(File.read('templates/hb_test_form_instance_erb.json'))
-      hb_test_erb = ERB.new(File.read('templates/anc_registration.erb'))
+      form_instance_erb = ERB.new(File.read('templates/json_erb/hb_test_form_instance_erb.json'))
+      hb_test_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       anc_detail_for_given_couple = @ancs.select { |k, v|
         k == key_for_anc
@@ -158,7 +164,7 @@ class Forms
 
       File.open("output/HbTest_#{hb_test['Entity ID']}.json", "w") do |f| f.puts hb_test_json end
     end
-  end
+    end
 
   def fill_ifa_forms
     @ifas.each do |ifa|
