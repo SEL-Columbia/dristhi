@@ -106,9 +106,14 @@ public class ChildReportingService {
         if (child.isFemale()) {
             reportVitaminADose1ForFemaleChild(reportData, child, location);
             reportVitaminADose2ForFemaleChild(reportData, child, location);
+            reportVitaminADose5ForFemaleChild(reportData, child, location);
+            reportVitaminADose9ForFemaleChild(reportData, child, location);
+
         } else if (child.isMale()) {
             reportVitaminADose1ForMaleChild(reportData, child, location);
             reportVitaminADose2ForMaleChild(reportData, child, location);
+            reportVitaminADose5ForMaleChild(reportData, child, location);
+            reportVitaminADose9ForMaleChild(reportData, child, location);
         }
     }
 
@@ -176,6 +181,18 @@ public class ChildReportingService {
         }
     }
 
+    private void reportVitaminADose5ForMaleChild(SafeMap reportData, Child child, Location location) {
+        if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_5_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
+            reportToBoth(child, VIT_A_5_FOR_MALE_CHILD, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+        }
+    }
+
+    private void reportVitaminADose9ForMaleChild(SafeMap reportData, Child child, Location location) {
+        if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_9_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
+            reportToBoth(child, VIT_A_9_FOR_MALE_CHILD, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+        }
+    }
+
     private void reportVitaminADose1ForMaleChild(SafeMap reportData, Child child, Location location) {
         if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_1_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
             reportToBoth(child, VIT_A_1, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
@@ -187,6 +204,18 @@ public class ChildReportingService {
         if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_2_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
             reportToBoth(child, VIT_A_2, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
             reportToBoth(child, VIT_A_2_FOR_FEMALE_CHILD, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+        }
+    }
+
+    private void reportVitaminADose5ForFemaleChild(SafeMap reportData, Child child, Location location) {
+        if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_5_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
+            reportToBoth(child, VIT_A_5_FOR_FEMALE_CHILD, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
+        }
+    }
+
+    private void reportVitaminADose9ForFemaleChild(SafeMap reportData, Child child, Location location) {
+        if (AllConstants.VitaminAFields.VITAMIN_A_DOSE_9_VALUE.equals(reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DOSE))) {
+            reportToBoth(child, VIT_A_9_FOR_FEMALE_CHILD, reportData.get(AllConstants.VitaminAFields.VITAMIN_A_DATE), location);
         }
     }
 

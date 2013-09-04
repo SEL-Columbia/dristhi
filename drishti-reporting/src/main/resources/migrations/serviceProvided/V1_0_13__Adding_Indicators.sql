@@ -5,3 +5,7 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('M_VIT_A_1');
 INSERT INTO report.dim_indicator (indicator) VALUES ('M_VIT_A_2');
 INSERT INTO report.dim_indicator (indicator) VALUES ('CMD');
 UPDATE report.dim_indicator SET indicator = 'PENTAVALENT3_OPV3' where indicator = 'DPT3_OPV3';
+INSERT INTO report.dim_indicator (indicator) VALUES ('F_VIT_A_5');
+INSERT INTO report.dim_indicator (indicator) VALUES ('F_VIT_A_9');
+INSERT INTO report.dim_indicator (indicator) VALUES ('M_VIT_A_5');
+INSERT INTO report.dim_indicator (indicator) VALUES ('M_VIT_A_9');
