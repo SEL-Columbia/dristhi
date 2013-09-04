@@ -64,14 +64,14 @@ public class ChildReportingService {
         immunizationToIndicator.put(OPV_0_VALUE, asList(OPV));
         immunizationToIndicator.put(OPV_1_VALUE, asList(OPV));
         immunizationToIndicator.put(OPV_2_VALUE, asList(OPV));
-        immunizationToIndicator.put(OPV_3_VALUE, asList(OPV, DPT3_OR_OPV3));
+        immunizationToIndicator.put(OPV_3_VALUE, asList(OPV, PENTAVALENT3_OR_OPV3));
         immunizationToIndicator.put(OPV_BOOSTER_VALUE, asList(OPV, DPT_BOOSTER_OR_OPV_BOOSTER));
 
         immunizationToIndicator.put(MEASLES_VALUE, asList(MEASLES));
 
         immunizationToIndicator.put(PENTAVALENT_1_VALUE, asList(PENT1));
         immunizationToIndicator.put(PENTAVALENT_2_VALUE, asList(PENT2));
-        immunizationToIndicator.put(PENTAVALENT_3_VALUE, asList(PENT3, DPT3_OR_OPV3));
+        immunizationToIndicator.put(PENTAVALENT_3_VALUE, asList(PENT3, PENTAVALENT3_OR_OPV3));
 
         immunizationToIndicator.put(MMR_VALUE, asList(MMR));
         immunizationToIndicator.put(JE_VALUE, asList(JE));

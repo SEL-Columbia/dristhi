@@ -57,14 +57,14 @@ public class ChildReportingServiceTest {
         assertIndicatorBasedOnImmunization("opv_0", OPV);
         assertIndicatorBasedOnImmunization("opv_1", OPV);
         assertIndicatorBasedOnImmunization("opv_2", OPV);
-        assertIndicatorBasedOnImmunization("opv_3", OPV, DPT3_OR_OPV3);
+        assertIndicatorBasedOnImmunization("opv_3", OPV, PENTAVALENT3_OR_OPV3);
         assertIndicatorBasedOnImmunization("opvbooster", OPV, DPT_BOOSTER_OR_OPV_BOOSTER);
 
         assertIndicatorBasedOnImmunization("measles", MEASLES);
 
         assertIndicatorBasedOnImmunization("pentavalent_1", PENT1);
         assertIndicatorBasedOnImmunization("pentavalent_2", PENT2);
-        assertIndicatorBasedOnImmunization("pentavalent_3", PENT3, DPT3_OR_OPV3);
+        assertIndicatorBasedOnImmunization("pentavalent_3", PENT3, PENTAVALENT3_OR_OPV3);
 
         assertIndicatorBasedOnImmunization("mmr", MMR);
         assertIndicatorBasedOnImmunization("je", JE);
