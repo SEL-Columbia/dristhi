@@ -1,9 +1,10 @@
 class Forms
-  def initialize mobile_worker, ec_data, anc_data, anc_services_data
+  def initialize mobile_worker, ec_data, anc_data, anc_services_data, anc_visits_data
     @mobile_worker = mobile_worker
     @ec = ec_data
     @ancs = anc_data
     @anc_services = anc_services_data
+    @anc_visits = anc_visits_data
   end
 
   def fill_for_in_area
@@ -106,6 +107,28 @@ class Forms
     File.open("output/ANCOutcome_#{anc_service['Outcome Instance ID']}.xml", "w") do |f| f.puts anc_outcome_xml end
   end
 
+  def fill_anc_visits_forms
+    @anc_visits.each do |anc_visit|
+      puts "    ANC Visit: #{anc_visit['Wife Name']} - #{anc_visit['Husband Name']} - #{anc_visit['Entity ID']}"
+
+      form_instance_erb = ERB.new(File.read('templates/anc_visit_form_instance_erb.json'))
+      anc_visit_erb = ERB.new(File.read('templates/anc_registration.erb'))
+
+      ec = get_safe_map(@ec.select { |e| e['Village Code'].village.downcase == anc_visit['Village Code'].village.downcase &&
+            e['Husband Name'] == anc_visit['Husband Name'] && e['Wife Name'] == anc_visit['Wife Name']})
+
+      user_id = @mobile_worker.user_id
+      user_name = @mobile_worker.user_name
+      form_name = "anc_visit"
+      instance_id = anc_visit['Instance ID']
+      entity_id = anc_visit['Entity ID']
+
+      form_instance = form_instance_erb.result(binding)
+      anc_visit_json = anc_visit_erb.result(binding)
+      File.open("output/ANCVisit_#{anc_visit['Entity ID']}.json", "w") do |f| f.puts anc_visit_json end
+    end
+  end
+
   def has_anc?
     not (@ancs.nil? or @ancs.to_a.empty?)
   end
@@ -116,6 +139,10 @@ class Forms
 
   def has_outcome?
     @anc_services.any? {|service| not service['Date of Delivery'].nil? and not service['Date of Delivery'].empty? }
+  end
+
+  def has_anc_visits?
+    not (@anc_visits.nil? or @anc_visits.to_a.empty?)
   end
 
   private

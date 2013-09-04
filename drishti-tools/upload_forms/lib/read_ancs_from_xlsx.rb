@@ -26,7 +26,7 @@ class ANCs
     filename = "#{Random.rand(9999999)}_ANC_register.csv"
     sheet_name = "ANC Registration" 
     begin
-      spreadsheet = Excelx.new xlsx_filename, nil, :ignore      
+      spreadsheet = Roo::Excelx.new xlsx_filename, nil, :ignore
       
       if spreadsheet.sheets.include? sheet_name
         spreadsheet.to_csv filename, sheet_name
