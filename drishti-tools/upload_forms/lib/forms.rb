@@ -1,5 +1,5 @@
 class Forms
-  def initialize mobile_worker, ec_data, anc_data, anc_services_data, anc_visits_data, hb_tests_data, ifa_data
+  def initialize mobile_worker, ec_data, anc_data, anc_services_data, anc_visits_data, hb_tests_data, ifa_data, tt_data
     @mobile_worker = mobile_worker
     @ec = ec_data
     @ancs = anc_data
@@ -7,6 +7,7 @@ class Forms
     @anc_visits = anc_visits_data
     @hb_tests = hb_tests_data
     @ifas = ifa_data
+    @tts = tt_data
   end
 
   def fill_for_in_area
@@ -158,6 +159,7 @@ class Forms
       form_name = "hb_test"
       instance_id = hb_test['Instance ID']
       entity_id = hb_test['Entity ID']
+      submission_date = hb_test['Submission date']
 
       form_instance = form_instance_erb.result(binding)
       hb_test_json = hb_test_erb.result(binding)
@@ -184,11 +186,41 @@ class Forms
       form_name = "ifa"
       instance_id = ifa['Instance ID']
       entity_id = ifa['Entity ID']
+      submission_date = ifa['Submission date']
 
       form_instance = form_instance_erb.result(binding)
       ifa_json = ifa_erb.result(binding)
 
       File.open("output/IFA_#{ifa['Entity ID']}.json", "w") do |f| f.puts ifa_json end
+    end
+  end
+
+  def fill_tt_forms
+    @tts.each do |tt|
+      key_for_anc = [tt['Village Code'].village.downcase, tt['Wife Name'].downcase, tt['Husband Name'].downcase]
+      puts "    TT : #{tt['Wife Name']} - #{tt['Husband Name']} - #{tt['Entity ID']}"
+
+      form_instance_erb = ERB.new(File.read('templates/json_erb/tt_form_instance_erb.json'))
+      ifa_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
+
+      anc_detail_for_given_couple = @ancs.select { |k, v|
+        k == key_for_anc
+      }
+
+      anc = get_safe_map(anc_detail_for_given_couple[key_for_anc])
+      user_id = @mobile_worker.user_id
+      user_name = @mobile_worker.user_name
+      dosage = tt['TT dose'].gsub('tt', '') # 1, 2 or booster
+      form_name = "tt_#{dosage}"
+      bind_path = "/model/instance/TT#{dosage.capitalize}_EngKan/"
+      instance_id = tt['Instance ID']
+      entity_id = tt['Entity ID']
+      submission_date = tt['Submission date']
+
+      form_instance = form_instance_erb.result(binding)
+      ifa_json = ifa_erb.result(binding)
+
+      File.open("output/TT#{dosage.capitalize}_#{tt['Entity ID']}.json", "w") do |f| f.puts ifa_json end
     end
   end
 
@@ -214,6 +246,10 @@ class Forms
 
   def has_ifas?
     not (@ifas.nil? or @ifas.to_a.empty?)
+  end
+
+  def has_tts?
+    not (@tts.nil? or @tts.to_a.empty?)
   end
 
   private
