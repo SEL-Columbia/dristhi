@@ -8,13 +8,13 @@ require './lib/village.rb'
 
 class IFAs
   def initialize xlsx_filename
-    @ancs = []
+    @ifas = []
 
     read_from xlsx_filename
   end
 
   def ifas
-    @ancs.collect { |ifa| ifa.to_hash }
+    @ifas.collect { |ifa| ifa.to_hash }
   end
 
   def ifa_grouped_per_couple
@@ -42,9 +42,10 @@ class IFAs
 
           ifa.add_field "Instance ID", Guid.new.to_s
           ifa.add_field "Entity ID", Guid.new.to_s
+          ifa.add_field "Submission date", Date.today.to_s
 
           puts "#{ifa['Wife Name']} - #{ifa['Husband Name']}"
-          @ancs << ifa
+          @ifas << ifa
         end
       end
     ensure

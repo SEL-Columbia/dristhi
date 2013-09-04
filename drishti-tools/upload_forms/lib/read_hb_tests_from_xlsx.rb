@@ -8,13 +8,13 @@ require './lib/village.rb'
 
 class HbTests
   def initialize xlsx_filename
-    @ancs = []
+    @hb_tests = []
 
     read_from xlsx_filename
   end
 
   def hb_tests
-    @ancs.collect { |hb_test| hb_test.to_hash }
+    @hb_tests.collect { |hb_test| hb_test.to_hash }
   end
 
   def hb_tests_grouped_per_couple
@@ -37,7 +37,6 @@ class HbTests
           hb_test.convert_value "Village Code", Village.code_to_village_hash
           hb_test.convert_value "Wife Name", :empty => "Wife Name"
           hb_test.convert_value "Husband Name", :empty => "Husband Name"
-          #Hb test date	Hb test place	Hb level	HRP
           hb_test.convert_to_date "Hb test date", :empty => Date.today.to_s
           hb_test.convert_value "Hb test place", :empty => "phc"
           hb_test.convert_value "Hb level", :empty => "11"
@@ -50,9 +49,10 @@ class HbTests
 
           hb_test.add_field "Instance ID", Guid.new.to_s
           hb_test.add_field "Entity ID", Guid.new.to_s
+          hb_test.add_field "Submission date", Date.today.to_s
 
           puts "#{hb_test['Wife Name']} - #{hb_test['Husband Name']}"
-          @ancs << hb_test
+          @hb_tests << hb_test
         end
       end
     ensure

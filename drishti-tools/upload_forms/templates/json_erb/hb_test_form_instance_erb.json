@@ -55,6 +55,7 @@
             },
             {
                 "name": "submissionDate",
+                "value": "<%= submission_date %>",
                 "source": "mother.submissionDate"
             }
         ]

@@ -51,6 +51,7 @@ class ANCVisits
           anc_visit.add_field "Instance ID", Guid.new.to_s
           anc_visit.add_field "Entity ID", Guid.new.to_s
           anc_visit.add_field "Reference date", anc_visit['ANC visit date']
+          anc_visit.add_field "Submission date", Date.today.to_s
 
           puts "#{anc_visit['Wife Name']} - #{anc_visit['Husband Name']}"
           @anc_visits << anc_visit

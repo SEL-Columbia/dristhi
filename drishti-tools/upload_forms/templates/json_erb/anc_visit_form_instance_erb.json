@@ -163,7 +163,7 @@
             },
             {
                 "name":"submissionDate",
-                "value":"<%= anc_visit['Reference date'] %>",
+                "value": "<%= submission_date %>",
                 "source":"mother.submissionDate"
             }
         ]

@@ -134,6 +134,7 @@ class Forms
       form_name = "anc_visit"
       instance_id = anc_visit['Instance ID']
       entity_id = anc_visit['Entity ID']
+      submission_date = anc_visit['Submission date']
 
       form_instance = form_instance_erb.result(binding)
       anc_visit_json = anc_visit_erb.result(binding)
