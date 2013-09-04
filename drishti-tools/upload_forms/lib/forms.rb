@@ -145,6 +145,10 @@ class Forms
     not (@anc_visits.nil? or @anc_visits.to_a.empty?)
   end
 
+  def has_hb_tests?
+    not (@anc_visits.nil? or @anc_visits.to_a.empty?)
+  end
+
   private
   def get_safe_map(value)
     raise "Multiple values found for key : [#{value[0]['Village Code'].village}, #{value[0]['Wife Name']}, #{value[0]['Husband Name']}]" if value.size > 1
