@@ -71,7 +71,7 @@ public class ChildReportingService {
 
         immunizationToIndicator.put(PENTAVALENT_1_VALUE, asList(PENT1));
         immunizationToIndicator.put(PENTAVALENT_2_VALUE, asList(PENT2));
-        immunizationToIndicator.put(PENTAVALENT_3_VALUE, asList(PENT3));
+        immunizationToIndicator.put(PENTAVALENT_3_VALUE, asList(PENT3, DPT3_OR_OPV3));
 
         immunizationToIndicator.put(MMR_VALUE, asList(MMR));
         immunizationToIndicator.put(JE_VALUE, asList(JE));

@@ -64,7 +64,7 @@ public class ChildReportingServiceTest {
 
         assertIndicatorBasedOnImmunization("pentavalent_1", PENT1);
         assertIndicatorBasedOnImmunization("pentavalent_2", PENT2);
-        assertIndicatorBasedOnImmunization("pentavalent_3", PENT3);
+        assertIndicatorBasedOnImmunization("pentavalent_3", PENT3, DPT3_OR_OPV3);
 
         assertIndicatorBasedOnImmunization("mmr", MMR);
         assertIndicatorBasedOnImmunization("je", JE);
