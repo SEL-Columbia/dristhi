@@ -1,0 +1,62 @@
+{
+    "form_data_definition_version": "1",
+    "form": {
+        "bind_type": "mother",
+        "default_bind_path": "/model/instance/Hb_Test_EngKan/",
+        "fields": [
+            {
+                "name": "id",
+                "value": "<%= anc['Entity ID'] %>",
+                "source": "mother.id"
+            },
+            {
+                "name": "hbTestDate",
+                "source": "mother.hbTestDate"
+            },
+            {
+                "name": "hbTestPlace",
+                "value": "<%= hb_test['Hb test date'] %>",
+                "source": "mother.hbTestPlace"
+            },
+            {
+                "name": "hbLevel",
+                "value": "<%= hb_test['Hb level'] %>",
+                "source": "mother.hbLevel"
+            },
+            {
+                "name": "anaemicStatus",
+                "source": "mother.anaemicStatus"
+            },
+            {
+                "name": "highRiskReason",
+                "value": "<%= hb_test['HRP'] %>",
+                "source": "mother.highRiskReason"
+            },
+            {
+                "name": "isHighRiskTillDelivery",
+                "source": "mother.isHighRiskTillDelivery"
+            },
+            {
+                "name": "isHighRiskTillDeliveryReason",
+                "source": "mother.isHighRiskTillDeliveryReason"
+            },
+            {
+                "name": "isHighRiskTillPNCClose",
+                "value": "yes",
+                "source": "mother.isHighRiskTillPNCClose"
+            },
+            {
+                "name": "isHighRiskTillPNCCloseReason",
+                "source": "mother.isHighRiskTillPNCCloseReason"
+            },
+            {
+                "name": "isHighRisk",
+                "source": "mother.isHighRisk"
+            },
+            {
+                "name": "submissionDate",
+                "source": "mother.submissionDate"
+            }
+        ]
+    }
+}

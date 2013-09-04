@@ -1,10 +1,11 @@
 class Forms
-  def initialize mobile_worker, ec_data, anc_data, anc_services_data, anc_visits_data
+  def initialize mobile_worker, ec_data, anc_data, anc_services_data, anc_visits_data, hb_tests_data
     @mobile_worker = mobile_worker
     @ec = ec_data
     @ancs = anc_data
     @anc_services = anc_services_data
     @anc_visits = anc_visits_data
+    @hb_tests = hb_tests_data
   end
 
   def fill_for_in_area
@@ -114,8 +115,11 @@ class Forms
       form_instance_erb = ERB.new(File.read('templates/anc_visit_form_instance_erb.json'))
       anc_visit_erb = ERB.new(File.read('templates/anc_registration.erb'))
 
-      ec = get_safe_map(@ec.select { |e| e['Village Code'].village.downcase == anc_visit['Village Code'].village.downcase &&
-            e['Husband Name'] == anc_visit['Husband Name'] && e['Wife Name'] == anc_visit['Wife Name']})
+      ec = get_safe_map(@ec.select { |e|
+            e['Village Code'].village.downcase == anc_visit['Village Code'].village.downcase &&
+            e['Husband Name'].downcase == anc_visit['Husband Name'].downcase &&
+            e['Wife Name'].downcase == anc_visit['Wife Name'].downcase
+      })
 
       user_id = @mobile_worker.user_id
       user_name = @mobile_worker.user_name
@@ -126,6 +130,32 @@ class Forms
       form_instance = form_instance_erb.result(binding)
       anc_visit_json = anc_visit_erb.result(binding)
       File.open("output/ANCVisit_#{anc_visit['Entity ID']}.json", "w") do |f| f.puts anc_visit_json end
+    end
+  end
+
+  def fill_hb_tests_forms
+    @hb_tests.each do |hb_test|
+      key_for_anc = [hb_test['Village Code'].village.downcase, hb_test['Wife Name'].downcase, hb_test['Husband Name'].downcase]
+      puts "    Hb Test: #{hb_test['Wife Name']} - #{hb_test['Husband Name']} - #{hb_test['Entity ID']}"
+
+      form_instance_erb = ERB.new(File.read('templates/hb_test_form_instance_erb.json'))
+      hb_test_erb = ERB.new(File.read('templates/anc_registration.erb'))
+
+      anc_detail_for_given_couple = @ancs.select { |k, v|
+        k == key_for_anc
+      }
+
+      anc = get_safe_map(anc_detail_for_given_couple[key_for_anc])
+      user_id = @mobile_worker.user_id
+      user_name = @mobile_worker.user_name
+      form_name = "hb_test"
+      instance_id = hb_test['Instance ID']
+      entity_id = hb_test['Entity ID']
+
+      form_instance = form_instance_erb.result(binding)
+      hb_test_json = hb_test_erb.result(binding)
+
+      File.open("output/HbTest_#{hb_test['Entity ID']}.json", "w") do |f| f.puts hb_test_json end
     end
   end
 
@@ -146,7 +176,7 @@ class Forms
   end
 
   def has_hb_tests?
-    not (@anc_visits.nil? or @anc_visits.to_a.empty?)
+    not (@hb_tests.nil? or @hb_tests.to_a.empty?)
   end
 
   private
