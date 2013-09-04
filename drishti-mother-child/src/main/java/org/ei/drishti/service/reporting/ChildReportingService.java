@@ -164,6 +164,9 @@ public class ChildReportingService {
         } else {
             logger.warn("Not reporting for child with CaseID" + child.caseId() + "because child's age is more than " + CHILD_MORTALITY_THRESHOLD_IN_YEARS + " years.");
         }
+        if (AllConstants.CommonChildFormFields.DIARRHEA_VALUE.equalsIgnoreCase(reportData.get(DEATH_CAUSE))) {
+            reportToBoth(child, CHILD_MORTALITY_DUE_TO_DIARRHEA, diedOn, location);
+        }
     }
 
     private void reportVitaminADose2ForMaleChild(SafeMap reportData, Child child, Location location) {

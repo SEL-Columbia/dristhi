@@ -82,7 +82,8 @@
     "child_close": [
         "id",
         "closeReason",
-        "deathDate"
+        "deathDate",
+        "deathCause"
     ],
     "child_illness": [
         "id",

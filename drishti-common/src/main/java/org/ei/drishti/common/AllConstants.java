@@ -126,6 +126,7 @@ public class AllConstants {
         public static final String CLOSE_REASON_FIELD_NAME = "closeReason";
         public static final String DEATH_OF_CHILD_VALUE = "death_of_child";
         public static final String DATE_OF_DEATH_FIELD_NAME = "deathDate";
+        public static final String DEATH_CAUSE = "deathCause";
     }
 
     public static class EntityCloseFormFields {
@@ -215,10 +216,6 @@ public class AllConstants {
     public static class IFAFields {
         public static final String NUMBER_OF_IFA_TABLETS_GIVEN = "numberOfIFATabletsGiven";
         public static final String IFA_TABLETS_DATE = "ifaTabletsDate";
-    }
-
-    public static class ChildRegistrationECFields {
-        public static final String CHILD_ID = "childId";
     }
 
     public static class ChildIllnessFields {

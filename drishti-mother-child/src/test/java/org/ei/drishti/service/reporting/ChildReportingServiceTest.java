@@ -2,7 +2,6 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportingData;
-import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
@@ -448,6 +447,39 @@ public class ChildReportingServiceTest {
     }
 
     @Test
+    public void shouldReportChildDeathDueToDiarrheaWhenChildIsClosedWithCauseOfDeathAsDiarrhea() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.closeChild(reportDataForCloseChild("death_of_child", "2016-12-31", "diarrhea"));
+
+        verifyBothReportingCalls(CHILD_MORTALITY_DUE_TO_DIARRHEA, "2016-12-31");
+    }
+
+    @Test
+    public void shouldNotReportChildDeathDueToDiarrheaWhenChildIsClosedForOtherReasons() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.closeChild(reportDataForCloseChild("other_reason", "2016-12-31", "diarrhea"));
+
+        verifyNoReportingCalls(CHILD_MORTALITY_DUE_TO_DIARRHEA, "2016-12-31");
+    }
+
+    @Test
+    public void shouldNotReportChildDeathDueToDiarrheaWhenChildIsClosedWithDeathCauseNotAsDiarrhea() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.closeChild(reportDataForCloseChild("other_reason", "2016-12-31", "sepsis"));
+
+        verifyNoReportingCalls(CHILD_MORTALITY_DUE_TO_DIARRHEA, "2016-12-31");
+    }
+
+    @Test
     public void shouldReportChildDiarrheaEpisodeWhenPNCVisitHappens() {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
                 .withAnm("ANM X")
@@ -611,10 +643,15 @@ public class ChildReportingServiceTest {
     }
 
     private SafeMap reportDataForCloseChild(String closeReason, String closeDate) {
+        return reportDataForCloseChild(closeReason, closeDate, null);
+    }
+
+    private SafeMap reportDataForCloseChild(String closeReason, String closeDate, String deathCause) {
         SafeMap reportingData = new SafeMap();
         reportingData.put("id", "CASE X");
         reportingData.put("closeReason", closeReason);
         reportingData.put("deathDate", closeDate);
+        reportingData.put("deathCause", deathCause);
         return reportingData;
     }
 
