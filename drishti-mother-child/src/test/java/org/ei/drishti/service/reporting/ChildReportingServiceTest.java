@@ -100,6 +100,7 @@ public class ChildReportingServiceTest {
 
         verifyBothReportingCalls(VIT_A_1, "2012-01-02");
         verifyBothReportingCalls(VIT_A_1_FOR_FEMALE_CHILD, "2012-01-02");
+        verifyBothReportingCalls(VIT_A_FOR_FEMALE, "2012-01-02");
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -116,6 +117,7 @@ public class ChildReportingServiceTest {
 
         verifyBothReportingCalls(VIT_A_2, "2012-01-02");
         verifyBothReportingCalls(VIT_A_2_FOR_FEMALE_CHILD, "2012-01-02");
+        verifyBothReportingCalls(VIT_A_FOR_FEMALE, "2012-01-02");
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -130,9 +132,11 @@ public class ChildReportingServiceTest {
 
         service.vitaminAProvided(reportingData);
 
+        verifyBothReportingCalls(VIT_A_FOR_FEMALE, "2012-01-02");
         verifyBothReportingCalls(VIT_A_5_FOR_FEMALE_CHILD, "2012-01-02");
         verifyNoMoreInteractions(reportingService);
     }
+
     @Test
     public void shouldReportNinthVitaminDoseDuringImmunizationProvidedForFemaleChild() throws Exception {
         SafeMap reportingData = reportDataForVitaminA("9", "2012-01-02");
@@ -144,11 +148,10 @@ public class ChildReportingServiceTest {
 
         service.vitaminAProvided(reportingData);
 
+        verifyBothReportingCalls(VIT_A_FOR_FEMALE, "2012-01-02");
         verifyBothReportingCalls(VIT_A_9_FOR_FEMALE_CHILD, "2012-01-02");
         verifyNoMoreInteractions(reportingService);
     }
-
-
 
     @Test
     public void shouldReportFirstVitaminDoseDuringImmunizationProvidedForMaleChild() throws Exception {
@@ -163,6 +166,7 @@ public class ChildReportingServiceTest {
 
         verifyBothReportingCalls(VIT_A_1, "2012-01-02");
         verifyBothReportingCalls(VIT_A_1_FOR_MALE_CHILD, "2012-01-02");
+        verifyBothReportingCalls(VIT_A_FOR_MALE, "2012-01-02");
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -179,8 +183,10 @@ public class ChildReportingServiceTest {
 
         verifyBothReportingCalls(VIT_A_2, "2012-01-02");
         verifyBothReportingCalls(VIT_A_2_FOR_MALE_CHILD, "2012-01-02");
+        verifyBothReportingCalls(VIT_A_FOR_MALE, "2012-01-02");
         verifyNoMoreInteractions(reportingService);
     }
+
     @Test
     public void shouldReportFifthVitaminDoseDuringImmunizationProvidedForMaleChild() throws Exception {
         SafeMap reportingData = reportDataForVitaminA("5", "2012-01-02");
@@ -193,8 +199,10 @@ public class ChildReportingServiceTest {
         service.vitaminAProvided(reportingData);
 
         verifyBothReportingCalls(VIT_A_5_FOR_MALE_CHILD, "2012-01-02");
+        verifyBothReportingCalls(VIT_A_FOR_MALE, "2012-01-02");
         verifyNoMoreInteractions(reportingService);
     }
+
     @Test
     public void shouldReportNinthVitaminDoseDuringImmunizationProvidedForMaleChild() throws Exception {
         SafeMap reportingData = reportDataForVitaminA("9", "2012-01-02");
@@ -206,7 +214,22 @@ public class ChildReportingServiceTest {
 
         service.vitaminAProvided(reportingData);
 
+        verifyBothReportingCalls(VIT_A_FOR_MALE, "2012-01-02");
         verifyBothReportingCalls(VIT_A_9_FOR_MALE_CHILD, "2012-01-02");
+        verifyNoMoreInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldNotReportThirdVitaminDoseDuringImmunizationProvidedForMaleChild() throws Exception {
+        SafeMap reportingData = reportDataForVitaminA("3", "2012-01-02");
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "male")
+                .withAnm("ANM X")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.vitaminAProvided(reportingData);
+
         verifyNoMoreInteractions(reportingService);
     }
 

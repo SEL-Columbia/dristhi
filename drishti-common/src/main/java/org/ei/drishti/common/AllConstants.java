@@ -1,5 +1,9 @@
 package org.ei.drishti.common;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 public class AllConstants {
     public static class Form {
         public static final String ENTITY_ID = "entityId";
@@ -213,6 +217,12 @@ public class AllConstants {
         public static final String VITAMIN_A_DOSE_2_VALUE = "2";
         public static final String VITAMIN_A_DOSE_5_VALUE = "5";
         public static final String VITAMIN_A_DOSE_9_VALUE = "9";
+        public static final List<String> VITAMIN_A_DOSES_1_2_5_9 =
+                asList(
+                        VITAMIN_A_DOSE_1_VALUE,
+                        VITAMIN_A_DOSE_2_VALUE,
+                        VITAMIN_A_DOSE_5_VALUE,
+                        VITAMIN_A_DOSE_9_VALUE);
     }
 
     public static class IFAFields {
