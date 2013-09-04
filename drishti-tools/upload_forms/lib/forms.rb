@@ -1,11 +1,12 @@
 class Forms
-  def initialize mobile_worker, ec_data, anc_data, anc_services_data, anc_visits_data, hb_tests_data
+  def initialize mobile_worker, ec_data, anc_data, anc_services_data, anc_visits_data, hb_tests_data, ifa_data
     @mobile_worker = mobile_worker
     @ec = ec_data
     @ancs = anc_data
     @anc_services = anc_services_data
     @anc_visits = anc_visits_data
     @hb_tests = hb_tests_data
+    @ifas = ifa_data
   end
 
   def fill_for_in_area
@@ -159,6 +160,32 @@ class Forms
     end
   end
 
+  def fill_ifa_forms
+    @ifas.each do |ifa|
+      key_for_anc = [ifa['Village Code'].village.downcase, ifa['Wife Name'].downcase, ifa['Husband Name'].downcase]
+      puts "    IFA : #{ifa['Wife Name']} - #{ifa['Husband Name']} - #{ifa['Entity ID']}"
+
+      form_instance_erb = ERB.new(File.read('templates/json_erb/ifa_form_instance_erb.json'))
+      ifa_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
+
+      anc_detail_for_given_couple = @ancs.select { |k, v|
+        k == key_for_anc
+      }
+
+      anc = get_safe_map(anc_detail_for_given_couple[key_for_anc])
+      user_id = @mobile_worker.user_id
+      user_name = @mobile_worker.user_name
+      form_name = "ifa"
+      instance_id = ifa['Instance ID']
+      entity_id = ifa['Entity ID']
+
+      form_instance = form_instance_erb.result(binding)
+      ifa_json = ifa_erb.result(binding)
+
+      File.open("output/IFA_#{ifa['Entity ID']}.json", "w") do |f| f.puts ifa_json end
+    end
+  end
+
   def has_anc?
     not (@ancs.nil? or @ancs.to_a.empty?)
   end
@@ -177,6 +204,10 @@ class Forms
 
   def has_hb_tests?
     not (@hb_tests.nil? or @hb_tests.to_a.empty?)
+  end
+
+  def has_ifas?
+    not (@ifas.nil? or @ifas.to_a.empty?)
   end
 
   private
