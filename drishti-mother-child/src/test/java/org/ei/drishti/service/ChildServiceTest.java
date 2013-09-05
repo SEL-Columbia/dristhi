@@ -398,9 +398,9 @@ public class ChildServiceTest extends BaseUnitTest {
         service.pncOAChildRegistration(submission);
 
         InOrder inOrder = inOrder(childReportingService, childSchedulesService);
-        inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "no").put("id", "child id 1").map()));
+        inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "no").put("childId", "child id 1").map()));
         inOrder.verify(childSchedulesService).enrollChild(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
-        inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "yes").put("id", "child id 2").map()));
+        inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "yes").put("childId", "child id 2").map()));
         inOrder.verify(childSchedulesService).enrollChild(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
     }
 

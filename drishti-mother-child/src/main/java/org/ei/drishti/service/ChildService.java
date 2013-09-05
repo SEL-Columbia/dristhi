@@ -22,7 +22,7 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_PROBLEMS;
@@ -69,7 +69,7 @@ public class ChildService {
 
             SafeMap reportingData = new SafeMap();
             reportingData.put(ID, child.caseId());
-            reportingData.put(BF_POSTBIRTH_FIELD_NAME, submission.getField(DID_BREAST_FEEDING_START));
+            reportingData.put(BF_POSTBIRTH, submission.getField(DID_BREAST_FEEDING_START));
             childReportingService.registerChild(reportingData);
 
             childSchedulesService.enrollChild(child);
@@ -150,8 +150,8 @@ public class ChildService {
             allChildren.update(child);
 
             SafeMap reportingData = new SafeMap();
-            reportingData.put(ID, child.caseId());
-            reportingData.put(BF_POSTBIRTH_FIELD_NAME, childFields.get(DID_BREAST_FEEDING_START));
+            reportingData.put(ChildReportingService.CHILD_ID_FIELD, child.caseId());
+            reportingData.put(BF_POSTBIRTH, childFields.get(DID_BREAST_FEEDING_START));
             childReportingService.registerChild(reportingData);
 
             childSchedulesService.enrollChild(child);

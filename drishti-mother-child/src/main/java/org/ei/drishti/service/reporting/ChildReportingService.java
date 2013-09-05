@@ -27,7 +27,7 @@ import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.ChildIllnessFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
-import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_PROBLEMS;
@@ -87,7 +87,7 @@ public class ChildReportingService {
         Location location = loadLocationOfChild(child);
         reportImmunizations(child, immunizations, location, child.dateOfBirth());
         reportBirthWeight(child, location);
-        reportBFPostBirth(reportData.get(BF_POSTBIRTH_FIELD_NAME), child, location);
+        reportBFPostBirth(reportData.get(BF_POSTBIRTH), child, location);
         reportToBoth(child, INFANT_REGISTRATION, child.dateOfBirth(), location);
     }
 

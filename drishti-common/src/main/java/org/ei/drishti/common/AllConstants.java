@@ -123,7 +123,7 @@ public class AllConstants {
     }
 
     public static class ChildRegistrationFormFields {
-        public static final String BF_POSTBIRTH_FIELD_NAME = "didBreastfeedingStart";
+        public static final String BF_POSTBIRTH = "didBreastfeedingStart";
     }
 
     public static class ChildCloseFormFields {
