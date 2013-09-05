@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.ei.drishti.common.AllConstants.Form.*;
 
 @Component
@@ -69,9 +70,9 @@ public class FormSubmissionRouter {
                 .put(CHILD_REGISTRATION_EC, childRegistrationECHandler)
                 .put(CHILD_REGISTRATION_OA, childRegistrationOAHandler)
                 .put(CHILD_IMMUNIZATIONS, childImmunizationsHandler)
-                .put(CHILD_ILLNESS,childIllnessHandler)
+                .put(CHILD_ILLNESS, childIllnessHandler)
                 .put(CHILD_CLOSE, childCloseHandler)
-                .put(VITAMIN_A,vitaminAHandler)
+                .put(VITAMIN_A, vitaminAHandler)
                 .map();
     }
 
@@ -84,7 +85,13 @@ public class FormSubmissionRouter {
         }
         logger.info(format("Handling {0} form submission with instance Id: {1} for entity: {2}", submission.formName(),
                 submission.instanceId(), submission.entityId()));
-        handler.handle(submission);
+        try {
+            handler.handle(submission);
+        } catch (Exception e) {
+            logger.error(format("Handling {0} form submission with instance Id: {1} for entity: {2} failed with exception : {3}",
+                    submission.formName(), submission.instanceId(), submission.entityId(), getFullStackTrace(e)));
+            throw e;
+        }
     }
 }
 
