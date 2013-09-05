@@ -1,5 +1,5 @@
 class Forms
-  def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data
+  def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data, pnc_data
     @mobile_worker = mobile_worker
     @ec = ec_data
     @ancs = anc_data
@@ -7,6 +7,7 @@ class Forms
     @hb_tests = hb_tests_data
     @ifas = ifa_data
     @tts = tt_data
+    @pncs = pnc_data
   end
 
   def fill_for_in_area
@@ -86,18 +87,14 @@ class Forms
   def fill_anc_visits_forms
     @anc_visits.each do |anc_visit|
       puts "    ANC Visit: #{anc_visit['Wife Name']} - #{anc_visit['Husband Name']} - #{anc_visit['Entity ID']}"
-      key_for_anc = [anc_visit['Village Code'].village.downcase, anc_visit['Wife Name'].downcase, anc_visit['Husband Name'].downcase]
+      key = [anc_visit['Village Code'].village.downcase, anc_visit['Wife Name'].downcase, anc_visit['Husband Name'].downcase]
 
       form_instance_erb = ERB.new(File.read('templates/json_erb/anc_visit_form_instance_erb.json'))
       anc_visit_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
-      ec = get_safe_map(@ec.select { |e|
-            e['Village Code'].village.downcase == anc_visit['Village Code'].village.downcase &&
-            e['Husband Name'].downcase == anc_visit['Husband Name'].downcase &&
-            e['Wife Name'].downcase == anc_visit['Wife Name'].downcase
-      })
+      ec = get_safe_map(ecs_as_hash[key])
 
-      anc = get_safe_map(@ancs[key_for_anc])
+      anc = get_safe_map(@ancs[key])
 
       user_id = @mobile_worker.user_id
       user_name = @mobile_worker.user_name
@@ -184,6 +181,51 @@ class Forms
     end
   end
 
+  def fill_delivery_outcome_forms
+    @pncs.each do |pnc|
+      key = [pnc['Village Code'].village.downcase, pnc['Wife Name'].downcase, pnc['Husband Name'].downcase]
+
+      puts "    Delivery Outcome registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Entity ID']}"
+
+      form_instance_erb = ERB.new(File.read('templates/json_erb/delivery_outcome_form_instance_erb.json'))
+      out_of_area_pnc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
+
+      ec = get_safe_map(ecs_as_hash[key])
+      anc = get_safe_map(@ancs[key])
+      user_id = @mobile_worker.user_id
+      user_name = @mobile_worker.user_name
+      form_name = "delivery_outcome"
+      instance_id = pnc['Instance ID']
+      entity_id = anc['Entity ID']
+      submission_date = pnc['Submission date']
+
+      form_instance = form_instance_erb.result(binding)
+      delivery_outcome_form_json = out_of_area_pnc_registration_erb.result(binding)
+      File.open("output/DO_#{pnc['Entity ID']}.json", "w") do |f| f.puts delivery_outcome_form_json end
+    end
+  end
+
+  def fill_out_of_area_pnc_registration_forms
+    @pncs.each do |pnc|
+
+      puts "    Out of area PNC registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Entity ID']}"
+
+      form_instance_erb = ERB.new(File.read('templates/json_erb/pnc_oa_form_instance_erb.json'))
+      out_of_area_pnc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
+
+      user_id = @mobile_worker.user_id
+      user_name = @mobile_worker.user_name
+      form_name = "pnc_registration_oa"
+      instance_id = pnc['Instance ID']
+      entity_id = pnc['Entity ID']
+      submission_date = pnc['Submission date']
+
+      form_instance = form_instance_erb.result(binding)
+      out_of_area_pnc_registration_json = out_of_area_pnc_registration_erb.result(binding)
+      File.open("output/PNCOutOfArea_#{pnc['Entity ID']}.json", "w") do |f| f.puts out_of_area_pnc_registration_json end
+    end
+  end
+
   def has_anc?
     not (@ancs.nil? or @ancs.to_a.empty?)
   end
@@ -212,11 +254,18 @@ class Forms
     not (@tts.nil? or @tts.to_a.empty?)
   end
 
+  def has_pncs?
+    not (@pncs.nil? or @pncs.to_a.empty?)
+  end
+
   private
   def get_safe_map(value)
     raise "Multiple values found for key : [#{value[0]['Village Code'].village}, #{value[0]['Wife Name']}, #{value[0]['Husband Name']}]" if value.size > 1
     value[0]
   end
 
+  def ecs_as_hash
+    @ec.group_by { |ec| [ec['Village Code'].village.downcase, ec['Wife Name'].downcase, ec['Husband Name'].downcase] }
+  end
 end
 

@@ -4,6 +4,7 @@ require_relative 'lib/read_anc_visits_from_xlsx.rb'
 require_relative 'lib/read_hb_tests_from_xlsx.rb'
 require_relative 'lib/read_ifa_from_xlsx.rb'
 require_relative 'lib/read_tt_from_xlsx.rb'
+require_relative 'lib/read_pncs_from_xlsx.rb'
 
 require_relative 'lib/forms.rb'
 require_relative 'lib/mobile_workers.rb'
@@ -23,36 +24,45 @@ anc_visits = ANCVisits.new(mobile_worker.spreadsheet).anc_visits_grouped_per_cou
 hb_tests =  HbTests.new(mobile_worker.spreadsheet).hb_tests_grouped_per_couple
 ifas = IFAs.new(mobile_worker.spreadsheet).ifa_grouped_per_couple
 tts = TTs.new(mobile_worker.spreadsheet).tt_grouped_per_couple
+pncs = PNCs.new(mobile_worker.spreadsheet).pncs_grouped_per_couple
+pncs_out_of_area = pncs.reject { |k, v| v[0]['OA'].downcase != 'yes'}
+pncs_in_area = pncs.reject { |k, v| v[0]['OA'].downcase == 'yes'}
 
-#anc_services_per_ec = ANCServices.new(mobile_worker.spreadsheet).anc_services_per_ec
 puts "Got: ECs: #{ecs.size}"
 
 ecs.each do |ec|
   anc_for_ec = ancs_in_area.select { |k, v|
     k == [ec['Village Code'].village.downcase, ec['Wife Name'].downcase, ec['Husband Name'].downcase]
   }
-  form = Forms.new(mobile_worker, ec, anc_for_ec.values, [], [], [], [])
-  form.fill_for_in_area
+  Forms.new(mobile_worker, ec, anc_for_ec.values, [], [], [], [], []).fill_for_in_area
 end
 
 ancs_per_ec.each do |anc_key, anc_values|
   if anc_values[0]['OA'].downcase == "yes" then
-    Forms.new(mobile_worker, nil, anc_values, [], [], [], []).fill_for_out_of_area
+    Forms.new(mobile_worker, nil, anc_values, [], [], [], [], []).fill_for_out_of_area
   end
 end
 
 anc_visits.each do |visit_key, visit_value|
-  Forms.new(mobile_worker, ecs, ancs_per_ec, visit_value, [], [], []).fill_anc_visits_forms
+  Forms.new(mobile_worker, ecs, ancs_per_ec, visit_value, [], [], [], []).fill_anc_visits_forms
 end
 
 hb_tests.each do |key, value|
-  Forms.new(mobile_worker, ecs, ancs_per_ec, [], value, [], []).fill_hb_tests_forms
+  Forms.new(mobile_worker, ecs, ancs_per_ec, [], value, [], [], []).fill_hb_tests_forms
 end
 
 ifas.each do |key, value|
-  Forms.new(mobile_worker, ecs, ancs_per_ec, [], [], value, []).fill_ifa_forms
+  Forms.new(mobile_worker, ecs, ancs_per_ec, [], [], value, [], []).fill_ifa_forms
 end
 
 tts.each do |key, value|
-  Forms.new(mobile_worker, ecs, ancs_per_ec, [], [], [], value).fill_tt_forms
+  Forms.new(mobile_worker, ecs, ancs_per_ec, [], [], [], value, []).fill_tt_forms
+end
+
+pncs_in_area.each do |key, value|
+  Forms.new(mobile_worker, ecs, ancs_per_ec, [], [], [], [], value).fill_delivery_outcome_forms
+end
+
+pncs_out_of_area.each do |key, value|
+  Forms.new(mobile_worker, [], [], [], [], [], [], value).fill_out_of_area_pnc_registration_forms
 end

@@ -1,0 +1,276 @@
+{
+    "form_data_definition_version": "1",
+    "form": {
+        "bind_type": "mother",
+        "default_bind_path": "/model/instance/Delivery_Outcome_EngKan/",
+        "fields": [
+            {
+                "name": "id",
+                "value": "<%= entity_id %>",
+                "source": "mother.id"
+            },
+            {
+                "name": "ecId",
+                "value": "<%= ec['Entity ID'] %>",
+                "source": "mother.eligible_couple.id"
+            },
+            {
+                "name": "referenceDate",
+                "value": "<%= pnc['Reference date'] %>",
+                "source": "mother.referenceDate"
+            },
+            {
+                "name": "referenceDate",
+                "value": "<%= pnc['Reference date'] %>",
+                "source": "mother.referenceDate"
+            },
+            {
+                "name": "deliveryRegistrationDate",
+                "value": "<%= pnc['Registration date'] %>",
+                "source": "mother.deliveryRegistrationDate"
+            },
+            {
+                "name": "deliveryPlace",
+                "value": "<%= pnc['Delivery place'].downcase %>",
+                "source": "mother.deliveryPlace"
+            },
+            {
+                "name": "deliveryFacilityName",
+                "source": "mother.deliveryFacilityName"
+            },
+            {
+                "name": "isThisOnlyDeliveryFacility",
+                "source": "mother.isThisOnlyDeliveryFacility"
+            },
+            {
+                "name": "additionalDeliveryFacility",
+                "source": "mother.additionalDeliveryFacility"
+            },
+            {
+                "name": "reasonsForAdditionalDeliveryFacility",
+                "source": "mother.reasonsForAdditionalDeliveryFacility"
+            },
+            {
+                "name": "otherReasonsForAdditionalDeliveryFacility",
+                "source": "mother.otherReasonsForAdditionalDeliveryFacility"
+            },
+            {
+                "name": "isSkilledDelivery",
+                "value": "<%= pnc['Skilled delivery'].downcase %>",
+                "source": "mother.isSkilledDelivery"
+            },
+            {
+                "name": "deliveryType",
+                "value": "<%= pnc['Delivery type'].downcase %>",
+                "source": "mother.deliveryType"
+            },
+            {
+                "name": "deliveryOutcome",
+                "value": "<%= pnc['Delivery outcome'].downcase %>",
+                "source": "mother.deliveryOutcome"
+            },
+            {
+                "name": "parity",
+                "source": "mother.eligible_couple.parity"
+            },
+            {
+                "name": "numberOfLiveBirths",
+                "source": "mother.eligible_couple.numberOfLiveBirths"
+            },
+            {
+                "name": "numberOfLiveBirths",
+                "source": "mother.eligible_couple.numberOfLiveBirths"
+            },
+            {
+                "name": "numberOfStillBirths",
+                "source": "mother.eligible_couple.numberOfStillBirths"
+            },
+            {
+                "name": "numberOfStillBirths",
+                "source": "mother.eligible_couple.numberOfStillBirths"
+            },
+            {
+                "name": "causeOfStillBirth",
+                "source": "mother.causeOfStillBirth"
+            },
+            {
+                "name": "otherCauseOfStillBirth",
+                "source": "mother.otherCauseOfStillBirth"
+            },
+            {
+                "name": "didWomanSurvive",
+                "value": "<%= pnc['Woman survived child birth'].downcase %>",
+                "source": "mother.didWomanSurvive"
+            },
+            {
+                "name": "didMotherSurvive",
+                "value": "yes",
+                "source": "mother.didMotherSurvive"
+            },
+            {
+                "name": "didBreastfeedingStart",
+                "value": "yes",
+                "source": "mother.didBreastfeedingStart"
+            },
+            {
+                "name": "maternalDeathCause",
+                "source": "mother.maternalDeathCause"
+            },
+            {
+                "name": "otherMaternalDeathCause",
+                "source": "mother.otherMaternalDeathCause"
+            },
+            {
+                "name": "isRHNegative",
+                "source": "mother.isRHNegative"
+            },
+            {
+                "name": "isRHInjectionGiven",
+                "source": "mother.isRHInjectionGiven"
+            },
+            {
+                "name": "hadDeliveryComplications",
+                "value": "<%= pnc['Has Delivery Complications'] %>",
+                "source": "mother.hadDeliveryComplications"
+            },
+            {
+                "name": "deliveryComplications",
+                "value": "<%= pnc['Delivery complications'].downcase %>",
+                "source": "mother.deliveryComplications"
+            },
+            {
+                "name": "otherDeliveryComplications",
+                "source": "mother.otherDeliveryComplications"
+            },
+            {
+                "name": "isHighRiskTillPNCClose",
+                "source": "mother.isHighRiskTillPNCClose"
+            },
+            {
+                "name": "highRiskTillPNCCloseReason",
+                "source": "mother.highRiskTillPNCCloseReason"
+            },
+            {
+                "name": "anemicStatus",
+                "source": "mother.anemicStatus"
+            },
+            {
+                "name": "pih",
+                "source": "mother.pih"
+            },
+            {
+                "name": "preEclampsia",
+                "source": "mother.preEclampsia"
+            },
+            {
+                "name": "jaundice",
+                "source": "mother.jaundice"
+            },
+            {
+                "name": "isHighRisk",
+                "value": "<%= pnc['HR'] %>",
+                "source": "mother.isHighRisk"
+            },
+            {
+                "name": "isBirthPlanningDone",
+                "source": "mother.isBirthPlanningDone"
+            },
+            {
+                "name": "highRiskReason",
+                "source": "mother.highRiskReason"
+            },
+            {
+                "name": "submissionDate",
+                "value": "<%= submission_date %>",
+                "source": "mother.submissionDate"
+            },
+            {
+                "name": "numberOfLivingChildren",
+                "source": "mother.eligible_couple.numberOfLivingChildren"
+            },
+            {
+                "name": "numberOfLivingChildren",
+                "source": "mother.eligible_couple.numberOfLivingChildren"
+            },
+            {
+                "name": "numberOfLivingFemaleChild",
+                "source": "mother.eligible_couple.numberOfLivingChildrenFemale"
+            },
+            {
+                "name": "numberOfLivingFemaleChild",
+                "source": "mother.eligible_couple.numberOfLivingChildrenFemale"
+            },
+            {
+                "name": "numberOfLivingMaleChild",
+                "source": "mother.eligible_couple.numberOfLivingMaleChild"
+            },
+            {
+                "name": "numberOfLivingMaleChild",
+                "source": "mother.eligible_couple.numberOfLivingMaleChild"
+            }
+        ],
+        "sub_forms": [
+            {
+                "name": "child_registration",
+                "bind_type": "child",
+                "default_bind_path": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child",
+                "fields": [
+                    {
+                        "name": "id",
+                        "source": "child.id"
+                    },
+                    {
+                        "name": "gender",
+                        "source": "child.gender"
+                    },
+                    {
+                        "name": "weight",
+                        "source": "child.weight"
+                    },
+                    {
+                        "name": "bloodGroup",
+                        "source": "child.bloodGroup"
+                    },
+                    {
+                        "name": "immunizationsGiven",
+                        "source": "child.immunizationsGiven"
+                    },
+                    {
+                        "name": "hepB",
+                        "source": "child.hepB"
+                    },
+                    {
+                        "name": "isHepBProphylaxisProvided",
+                        "source": "child.isHepBProphylaxisProvided"
+                    },
+                    {
+                        "name": "isChildHighRisk1",
+                        "source": "child.isChildHighRisk1"
+                    },
+                    {
+                        "name": "childHighRiskReasons",
+                        "source": "child.childHighRiskReasons"
+                    },
+                    {
+                        "name": "isChildHighRisk",
+                        "source": "child.isChildHighRisk"
+                    }
+                ],
+                "instances": [
+                    {
+                        "gender": "<%= pnc['Child sex'].downcase %>",
+                        "weight":"<%= pnc['Child birthweight'] %>",
+                        "bloodGroup": "",
+                        "immunizationsGiven": "",
+                        "hepB": "",
+                        "isHepBProphylaxisProvided": "",
+                        "isChildHighRisk1": "no",
+                        "childHighRiskReasons": "",
+                        "isChildHighRisk": "no",
+                        "id":"<%= pnc['Child ID'] %>"
+                    }
+                ]
+            }
+        ]
+    }
+}
