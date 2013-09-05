@@ -66,6 +66,7 @@
         "deathDate"
     ],
     "pnc_registration_oa": [
+        "id",
         "deliveryType",
         "referenceDate"
     ],
