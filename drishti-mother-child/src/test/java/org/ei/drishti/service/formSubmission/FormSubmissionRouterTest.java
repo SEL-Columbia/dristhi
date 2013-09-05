@@ -1,7 +1,8 @@
-package org.ei.drishti.service.formSubmission.handler;
+package org.ei.drishti.service.formSubmission;
 
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.repository.AllFormSubmissions;
+import org.ei.drishti.service.formSubmission.handler.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
