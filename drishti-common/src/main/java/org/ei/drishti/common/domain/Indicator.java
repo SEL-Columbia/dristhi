@@ -43,7 +43,7 @@ public enum Indicator {
 
     //Child Mortality Indicators
     NM("NM"), LNM("LNM"), ENM("ENM"), INFANT_MORTALITY("IM"), CHILD_MORTALITY_DUE_TO_DIARRHEA("CMD"),
-    CHILD_MORTALITY("UFM");
+    CHILD_MORTALITY("UFM"), INFANT_LEFT("INFANT_LEFT");
 
     private String value;
 
