@@ -27,10 +27,10 @@ class PNCs
     sheet_name = "PNC registration"
     begin
       spreadsheet = Excelx.new xlsx_filename, nil, :ignore
-      
+
       if spreadsheet.sheets.include? sheet_name
         spreadsheet.to_csv filename, sheet_name
-      
+
 
         CSV.foreach(filename, {:headers => true}) do |csv_row|
           pnc = Row.new csv_row
@@ -42,22 +42,22 @@ class PNCs
           pnc.convert_value "OA", "yes" => "true", "no" => "false", :empty => "true"
           pnc.convert_value "Wife age", :empty => "20"
           pnc.convert_value "APL/BPL",
-                              "BPL" => "bpl",
-                              "APL" => "apl",
-                              :empty => "apl",
-                              :default => "apl"
+                            "BPL" => "bpl",
+                            "APL" => "apl",
+                            :empty => "apl",
+                            :default => "apl"
 
           pnc.convert_value "Caste",
-                              "SC" => "sc",
-                              "ST" => "st",
-                              :empty => "c_others",
-                              :default => "c_others"
+                            "SC" => "sc",
+                            "ST" => "st",
+                            :empty => "c_others",
+                            :default => "c_others"
 
           pnc.convert_value "HR",
-                              "No" => "no",
-                              "Yes" => "yes",
-                              :empty => "no",
-                              :default => "no"
+                            "No" => "no",
+                            "Yes" => "yes",
+                            :empty => "no",
+                            :default => "no"
 
           pnc.convert_value "Thayi number", :empty => "1234567"
           pnc.convert_to_date "Delivery date", :empty => Date.today.to_s
@@ -70,17 +70,17 @@ class PNCs
                             :default => "no"
 
           pnc.convert_value "Delivery complications", :empty => ""
-          pnc.convert_value "Delivery outcome", :empty => "live_birth"
+          pnc.convert_value "Delivery outcome", :empty => "still_birth"
           pnc.convert_value "Woman survived child birth",
                             "Yes" => "yes",
                             "No" => "no",
                             :empty => "yes",
                             :default => "yes"
           pnc.convert_value "Child sex",
-                              "Male" => "male",
-                              "Female" => "female",
-                              :empty => "",
-                              :default => ""
+                            "Male" => "male",
+                            "Female" => "female",
+                            :empty => "",
+                            :default => ""
 
           pnc.convert_value "Child birthweight", :empty => ""
           pnc.convert_value "BF within 1 hr", :empty => "no"
@@ -94,7 +94,7 @@ class PNCs
           pnc.add_field "Submission date", Date.today.to_s
 
           pnc['Delivery complications'] != "" ? pnc.add_field("Has Delivery Complications", "yes") :
-                                                pnc.add_field("Has Delivery Complications", "no")
+              pnc.add_field("Has Delivery Complications", "no")
           @pncs << pnc
         end
       end

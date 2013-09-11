@@ -256,20 +256,22 @@
                         "source": "child.isChildHighRisk"
                     }
                 ],
-                "instances": [
-                    {
-                        "gender": "<%= pnc['Child sex'].downcase %>",
-                        "weight":"<%= pnc['Child birthweight'] %>",
-                        "bloodGroup": "",
-                        "immunizationsGiven": "",
-                        "hepB": "",
-                        "isHepBProphylaxisProvided": "",
-                        "isChildHighRisk1": "no",
-                        "childHighRiskReasons": "",
-                        "isChildHighRisk": "no",
-                        "id":"<%= pnc['Child ID'] %>"
-                    }
-                ]
+                "instances": <% if pnc['Delivery outcome'] == 'live_birth' %>
+                                {
+                                    "gender": "<%= pnc['Child sex'].downcase %>",
+                                    "weight": "<%= pnc['Child birthweight'] %>",
+                                    "bloodGroup": "",
+                                    "immunizationsGiven": "",
+                                    "hepB": "",
+                                    "isHepBProphylaxisProvided": "",
+                                    "isChildHighRisk1": "no",
+                                    "childHighRiskReasons": "",
+                                    "isChildHighRisk": "no",
+                                    "id": "<%= pnc['Child ID'] %>"
+                                }
+                            <% else %>
+                                []
+                            <% end %>
             }
         ]
     }
