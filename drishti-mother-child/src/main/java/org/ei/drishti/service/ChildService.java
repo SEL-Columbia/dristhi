@@ -68,7 +68,7 @@ public class ChildService {
             allChildren.update(child);
 
             SafeMap reportingData = new SafeMap();
-            reportingData.put(ID, child.caseId());
+            reportingData.put(ChildReportingService.CHILD_ID_FIELD, child.caseId());
             reportingData.put(BF_POSTBIRTH, submission.getField(DID_BREAST_FEEDING_START));
             childReportingService.registerChild(reportingData);
 
