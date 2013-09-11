@@ -126,6 +126,24 @@ public class PNCServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldUpdateANMInformationOfMotherWhenOAPNCIsRegistered() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
+        FormSubmission submission = create()
+                .withFormName("pnc_registration_oa")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .addFormField("didWomanSurvive", "yes")
+                .build();
+
+        service.pncRegistrationOA(submission);
+
+        verify(allMothers).update(new Mother("mother id 1", "ec id 1", "tc 1").withAnm("anm id 1"));
+    }
+
+    @Test
     public void shouldEnrollPNCIntoSchedulesDuringPNCRegistrationIfWomanSurvives() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);

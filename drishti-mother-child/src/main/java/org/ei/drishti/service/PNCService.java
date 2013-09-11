@@ -7,7 +7,6 @@ import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.MotherReportingService;
-import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.service.scheduling.PNCSchedulesService;
 import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
@@ -73,6 +72,8 @@ public class PNCService {
         }
 
         Mother mother = mothers.get(0);
+        mother.withAnm(submission.anmId());
+        allMothers.update(mother);
         if (BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE))) {
             pncSchedulesService.deliveryOutcome(mother.caseId(), submission.getField(REFERENCE_DATE));
         }
