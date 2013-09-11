@@ -1,3 +1,5 @@
+require 'date'
+
 class Forms
   def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data, pnc_data, pnc_visits_data
     @mobile_worker = mobile_worker
@@ -271,61 +273,61 @@ class Forms
         entity_id = anc['Entity ID']
       end
 
-        submission_date = pnc_visit['Submission date']
-
-        form_instance = form_instance_erb.result(binding)
-        pnc_visit_json = pnc_visit_erb.result(binding)
-        File.open("output/PNCVisit_#{pnc_visit['Entity ID']}.json", "w") do |f|
-          f.puts pnc_visit_json
-        end
+      submission_date = pnc_visit['Submission date']
+      visit_day = (Date.parse(pnc['Delivery date']) - Date.parse(pnc_visit['Visit date'])).to_i
+      form_instance = form_instance_erb.result(binding)
+      pnc_visit_json = pnc_visit_erb.result(binding)
+      File.open("output/PNCVisit_#{pnc_visit['Entity ID']}.json", "w") do |f|
+        f.puts pnc_visit_json
       end
     end
-
-
-    def has_anc?
-      not (@ancs.nil? or @ancs.to_a.empty?)
-    end
-
-    def has_services?
-      not (@anc_services.nil? or @anc_services.to_a.empty?)
-    end
-
-    def has_outcome?
-      @anc_services.any? { |service| not service['Date of Delivery'].nil? and not service['Date of Delivery'].empty? }
-    end
-
-    def has_anc_visits?
-      not (@anc_visits.nil? or @anc_visits.to_a.empty?)
-    end
-
-    def has_hb_tests?
-      not (@hb_tests.nil? or @hb_tests.to_a.empty?)
-    end
-
-    def has_ifas?
-      not (@ifas.nil? or @ifas.to_a.empty?)
-    end
-
-    def has_tts?
-      not (@tts.nil? or @tts.to_a.empty?)
-    end
-
-    def has_pncs?
-      not (@pncs.nil? or @pncs.to_a.empty?)
-    end
-
-    def has_pnc_visits?
-      not (@pnc_visits.nil? or @pnc_visits.to_a.empty?)
-    end
-
-    private
-    def get_safe_map(value)
-      raise "Multiple values found for key : [#{value[0]['Village Code'].village}, #{value[0]['Wife Name']}, #{value[0]['Husband Name']}]" if value.size > 1
-      value[0]
-    end
-
-    def ecs_as_hash
-      @ec.group_by { |ec| [ec['Village Code'].village.downcase, ec['Wife Name'].downcase, ec['Husband Name'].downcase] }
-    end
   end
+
+
+  def has_anc?
+    not (@ancs.nil? or @ancs.to_a.empty?)
+  end
+
+  def has_services?
+    not (@anc_services.nil? or @anc_services.to_a.empty?)
+  end
+
+  def has_outcome?
+    @anc_services.any? { |service| not service['Date of Delivery'].nil? and not service['Date of Delivery'].empty? }
+  end
+
+  def has_anc_visits?
+    not (@anc_visits.nil? or @anc_visits.to_a.empty?)
+  end
+
+  def has_hb_tests?
+    not (@hb_tests.nil? or @hb_tests.to_a.empty?)
+  end
+
+  def has_ifas?
+    not (@ifas.nil? or @ifas.to_a.empty?)
+  end
+
+  def has_tts?
+    not (@tts.nil? or @tts.to_a.empty?)
+  end
+
+  def has_pncs?
+    not (@pncs.nil? or @pncs.to_a.empty?)
+  end
+
+  def has_pnc_visits?
+    not (@pnc_visits.nil? or @pnc_visits.to_a.empty?)
+  end
+
+  private
+  def get_safe_map(value)
+    raise "Multiple values found for key : [#{value[0]['Village Code'].village}, #{value[0]['Wife Name']}, #{value[0]['Husband Name']}]" if value.size > 1
+    value[0]
+  end
+
+  def ecs_as_hash
+    @ec.group_by { |ec| [ec['Village Code'].village.downcase, ec['Wife Name'].downcase, ec['Husband Name'].downcase] }
+  end
+end
 
