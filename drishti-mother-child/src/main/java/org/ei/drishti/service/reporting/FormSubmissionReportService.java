@@ -3,13 +3,19 @@ package org.ei.drishti.service.reporting;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.service.reporting.rules.IRule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+
 @Component
 public class FormSubmissionReportService {
+    private static Logger logger = LoggerFactory.getLogger(FormSubmissionReportService.class);
+
     private IRulesFactory rulesFactory;
     private ILocationLoader locationLoader;
     private IReporterFactory reporterFactory;
@@ -53,6 +59,8 @@ public class FormSubmissionReportService {
                 if (!didRuleSucceed) break;
             }
         } catch (Exception e) {
+            logger.error(String.format("Exception while applying rules. Message: {0}", e.getMessage()));
+            logger.error(getFullStackTrace(e));
             e.printStackTrace();
         }
         return didRuleSucceed;

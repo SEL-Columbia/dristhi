@@ -2,15 +2,19 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.service.reporting.rules.EmptyRule;
 import org.ei.drishti.service.reporting.rules.IRule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
 @Component
 public class RulesFactory implements IRulesFactory{
+
+    private static Logger logger = LoggerFactory.getLogger(RulesFactory.class);
 
     Map<String, IRule> rules = new HashMap<>();
 
@@ -25,10 +29,16 @@ public class RulesFactory implements IRulesFactory{
             rule = (IRule) ruleClass.newInstance();
             rules.put(ruleName.toLowerCase(), rule);
         } catch (ClassNotFoundException e) {
+            logger.error(String.format("Class for {0} mentioned is not found. Message: {1}", ruleName,e.getMessage()));
+            logger.error(getFullStackTrace(e));
             throw e;
         } catch (InstantiationException e) {
+            logger.error(String.format("Class for {0} cannot be instantiated. Message: {1}", ruleName, e.getMessage()));
+            logger.error(getFullStackTrace(e));
             throw e;
         } catch (IllegalAccessException e) {
+            logger.error(String.format("Class for {0} cannot be accessed. Message: {1}", ruleName, e.getMessage()));
+            logger.error(getFullStackTrace(e));
             throw e;
         }
         return rule;
