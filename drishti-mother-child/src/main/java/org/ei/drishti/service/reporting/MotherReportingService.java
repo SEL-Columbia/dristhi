@@ -222,7 +222,7 @@ public class MotherReportingService {
     }
 
     public void pncRegistrationOA(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.ANCFormFields.MOTHER_ID));
         Location location = loadLocationFromEC(mother);
         reportCesareans(reportData, mother, location);
     }

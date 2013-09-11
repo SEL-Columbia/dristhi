@@ -26,7 +26,7 @@ class TTs
     filename = "#{Random.rand(9999999)}_TT.csv"
     sheet_name = "TT"
     begin
-      spreadsheet = Roo::Excelx.new xlsx_filename, nil, :ignore
+      spreadsheet = Excelx.new xlsx_filename, nil, :ignore
       
       if spreadsheet.sheets.include? sheet_name
         spreadsheet.to_csv filename, sheet_name
@@ -45,7 +45,6 @@ class TTs
           tt.add_field "Entity ID", Guid.new.to_s
           tt.add_field "Submission date", Date.today.to_s
 
-          puts "#{tt['Wife Name']} - #{tt['Husband Name']}"
           @tts << tt
         end
       end

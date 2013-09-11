@@ -27,8 +27,7 @@ class ANCVisits
     filename = "#{Random.rand(9999999)}_ANC_Visit_register.csv"
     sheet_name = "ANC Visit" 
     begin
-      spreadsheet = Roo::Excelx.new xlsx_filename, nil, :ignore
-      
+      spreadsheet = Excelx.new xlsx_filename, nil, :ignore
       if spreadsheet.sheets.include? sheet_name
         spreadsheet.to_csv filename, sheet_name
       
@@ -53,7 +52,6 @@ class ANCVisits
           anc_visit.add_field "Reference date", anc_visit['ANC visit date']
           anc_visit.add_field "Submission date", Date.today.to_s
 
-          puts "#{anc_visit['Wife Name']} - #{anc_visit['Husband Name']}"
           @anc_visits << anc_visit
         end
       end

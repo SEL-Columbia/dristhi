@@ -26,7 +26,7 @@ class PNCs
     filename = "#{Random.rand(9999999)}_PNC_register.csv"
     sheet_name = "PNC registration"
     begin
-      spreadsheet = Roo::Excelx.new xlsx_filename, nil, :ignore
+      spreadsheet = Excelx.new xlsx_filename, nil, :ignore
       
       if spreadsheet.sheets.include? sheet_name
         spreadsheet.to_csv filename, sheet_name
@@ -39,7 +39,7 @@ class PNCs
           pnc.convert_value "Wife Name", :empty => "Wife Name"
           pnc.convert_value "Husband Name", :empty => "Husband Name"
           pnc.convert_value "Village Code", Village.code_to_village_hash
-          pnc.convert_value "OA", :empty => "yes"
+          pnc.convert_value "OA", "yes" => "true", "no" => "false", :empty => "true"
           pnc.convert_value "Wife age", :empty => "20"
           pnc.convert_value "APL/BPL",
                               "BPL" => "bpl",
@@ -89,13 +89,12 @@ class PNCs
           pnc.add_field "Entity ID", Guid.new.to_s
           pnc.add_field "Mother ID", Guid.new.to_s
           pnc.add_field "Child ID", Guid.new.to_s
+          pnc.add_field "EC ID", Guid.new.to_s
           pnc.add_field "Reference date", pnc['Delivery date'] rescue Date.today.to_s
           pnc.add_field "Submission date", Date.today.to_s
 
           pnc['Delivery complications'] != "" ? pnc.add_field("Has Delivery Complications", "yes") :
                                                 pnc.add_field("Has Delivery Complications", "no")
-
-          puts "#{pnc['Wife Name']} - #{pnc['Husband Name']}"
           @pncs << pnc
         end
       end

@@ -26,7 +26,7 @@ class HbTests
     filename = "#{Random.rand(9999999)}_Hb_Test.csv"
     sheet_name = "Hb Test"
     begin
-      spreadsheet = Roo::Excelx.new xlsx_filename, nil, :ignore
+      spreadsheet = Excelx.new xlsx_filename, nil, :ignore
       
       if spreadsheet.sheets.include? sheet_name
         spreadsheet.to_csv filename, sheet_name
@@ -51,7 +51,6 @@ class HbTests
           hb_test.add_field "Entity ID", Guid.new.to_s
           hb_test.add_field "Submission date", Date.today.to_s
 
-          puts "#{hb_test['Wife Name']} - #{hb_test['Husband Name']}"
           @hb_tests << hb_test
         end
       end

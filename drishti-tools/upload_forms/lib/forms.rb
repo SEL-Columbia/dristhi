@@ -1,5 +1,5 @@
 class Forms
-  def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data, pnc_data
+  def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data, pnc_data, pnc_visits_data
     @mobile_worker = mobile_worker
     @ec = ec_data
     @ancs = anc_data
@@ -8,6 +8,7 @@ class Forms
     @ifas = ifa_data
     @tts = tt_data
     @pncs = pnc_data
+    @pnc_visits = pnc_visits_data
   end
 
   def fill_for_in_area
@@ -39,13 +40,15 @@ class Forms
     form_instance = form_instance_erb.result(binding)
     ec_registration_json = ec_registration_erb.result(binding)
 
-    File.open("output/EC_#{ec['Entity ID']}.json", "w") do |f| f.puts ec_registration_json end
+    File.open("output/EC_#{ec['Entity ID']}.json", "w") do |f|
+      f.puts ec_registration_json
+    end
   end
 
   def fill_out_of_area_anc_registration_forms
     @ancs.each do |anc|
 
-      puts "    Out of area ANC registration: #{anc['Wife Name']} - #{anc['Husband Name']} - #{anc['LMP']} - #{anc['Entity ID']}"
+      puts "Out of area ANC registration: #{anc['Wife Name']} - #{anc['Husband Name']} - #{anc['LMP']} - #{anc['Entity ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/json_erb/anc_oa_form_instance_erb.json'))
       out_of_area_anc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
@@ -59,14 +62,16 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       out_of_area_anc_registration_json = out_of_area_anc_registration_erb.result(binding)
-      File.open("output/ANCOutOfArea_#{anc['Entity ID']}.json", "w") do |f| f.puts out_of_area_anc_registration_json end
+      File.open("output/ANCOutOfArea_#{anc['Entity ID']}.json", "w") do |f|
+        f.puts out_of_area_anc_registration_json
+      end
     end
   end
 
   def fill_anc_registration_forms
     @ancs.each do |value|
       anc = get_safe_map(value)
-      puts "    ANC registration: #{anc['LMP']} - #{anc['Entity ID']}"
+      puts "ANC registration: #{anc['LMP']} - #{anc['Entity ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/json_erb/anc_form_instance_erb.json'))
       anc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
@@ -80,13 +85,15 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       anc_registration_json = anc_registration_erb.result(binding)
-      File.open("output/ANC_#{anc['Entity ID']}.json", "w") do |f| f.puts anc_registration_json end
+      File.open("output/ANC_#{anc['Entity ID']}.json", "w") do |f|
+        f.puts anc_registration_json
+      end
     end
   end
 
   def fill_anc_visits_forms
     @anc_visits.each do |anc_visit|
-      puts "    ANC Visit: #{anc_visit['Wife Name']} - #{anc_visit['Husband Name']} - #{anc_visit['Entity ID']}"
+      puts "ANC Visit: #{anc_visit['Wife Name']} - #{anc_visit['Husband Name']} - #{anc_visit['Entity ID']}"
       key = [anc_visit['Village Code'].village.downcase, anc_visit['Wife Name'].downcase, anc_visit['Husband Name'].downcase]
 
       form_instance_erb = ERB.new(File.read('templates/json_erb/anc_visit_form_instance_erb.json'))
@@ -105,14 +112,16 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       anc_visit_json = anc_visit_erb.result(binding)
-      File.open("output/ANCVisit_#{anc_visit['Entity ID']}.json", "w") do |f| f.puts anc_visit_json end
+      File.open("output/ANCVisit_#{anc_visit['Entity ID']}.json", "w") do |f|
+        f.puts anc_visit_json
+      end
     end
   end
 
   def fill_hb_tests_forms
     @hb_tests.each do |hb_test|
       key_for_anc = [hb_test['Village Code'].village.downcase, hb_test['Wife Name'].downcase, hb_test['Husband Name'].downcase]
-      puts "    Hb Test: #{hb_test['Wife Name']} - #{hb_test['Husband Name']} - #{hb_test['Entity ID']}"
+      puts "Hb Test: #{hb_test['Wife Name']} - #{hb_test['Husband Name']} - #{hb_test['Entity ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/json_erb/hb_test_form_instance_erb.json'))
       hb_test_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
@@ -128,14 +137,16 @@ class Forms
       form_instance = form_instance_erb.result(binding)
       hb_test_json = hb_test_erb.result(binding)
 
-      File.open("output/HbTest_#{hb_test['Entity ID']}.json", "w") do |f| f.puts hb_test_json end
+      File.open("output/HbTest_#{hb_test['Entity ID']}.json", "w") do |f|
+        f.puts hb_test_json
+      end
     end
-    end
+  end
 
   def fill_ifa_forms
     @ifas.each do |ifa|
       key_for_anc = [ifa['Village Code'].village.downcase, ifa['Wife Name'].downcase, ifa['Husband Name'].downcase]
-      puts "    IFA : #{ifa['Wife Name']} - #{ifa['Husband Name']} - #{ifa['Entity ID']}"
+      puts "IFA : #{ifa['Wife Name']} - #{ifa['Husband Name']} - #{ifa['Entity ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/json_erb/ifa_form_instance_erb.json'))
       ifa_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
@@ -152,14 +163,16 @@ class Forms
       form_instance = form_instance_erb.result(binding)
       ifa_json = ifa_erb.result(binding)
 
-      File.open("output/IFA_#{ifa['Entity ID']}.json", "w") do |f| f.puts ifa_json end
+      File.open("output/IFA_#{ifa['Entity ID']}.json", "w") do |f|
+        f.puts ifa_json
+      end
     end
   end
 
   def fill_tt_forms
     @tts.each do |tt|
       key_for_anc = [tt['Village Code'].village.downcase, tt['Wife Name'].downcase, tt['Husband Name'].downcase]
-      puts "    TT : #{tt['Wife Name']} - #{tt['Husband Name']} - #{tt['Entity ID']}"
+      puts "TT : #{tt['Wife Name']} - #{tt['Husband Name']} - #{tt['Entity ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/json_erb/tt_form_instance_erb.json'))
       ifa_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
@@ -177,7 +190,9 @@ class Forms
       form_instance = form_instance_erb.result(binding)
       ifa_json = ifa_erb.result(binding)
 
-      File.open("output/TT#{dosage.capitalize}_#{tt['Entity ID']}.json", "w") do |f| f.puts ifa_json end
+      File.open("output/TT#{dosage.capitalize}_#{tt['Entity ID']}.json", "w") do |f|
+        f.puts ifa_json
+      end
     end
   end
 
@@ -185,7 +200,7 @@ class Forms
     @pncs.each do |pnc|
       key = [pnc['Village Code'].village.downcase, pnc['Wife Name'].downcase, pnc['Husband Name'].downcase]
 
-      puts "    Delivery Outcome registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Entity ID']}"
+      puts "Delivery Outcome registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Entity ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/json_erb/delivery_outcome_form_instance_erb.json'))
       out_of_area_pnc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
@@ -201,14 +216,16 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       delivery_outcome_form_json = out_of_area_pnc_registration_erb.result(binding)
-      File.open("output/DO_#{pnc['Entity ID']}.json", "w") do |f| f.puts delivery_outcome_form_json end
+      File.open("output/DO_#{pnc['Entity ID']}.json", "w") do |f|
+        f.puts delivery_outcome_form_json
+      end
     end
   end
 
   def fill_out_of_area_pnc_registration_forms
     @pncs.each do |pnc|
 
-      puts "    Out of area PNC registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Entity ID']}"
+      puts "Out of Area PNC registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Entity ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/json_erb/pnc_oa_form_instance_erb.json'))
       out_of_area_pnc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
@@ -217,55 +234,98 @@ class Forms
       user_name = @mobile_worker.user_name
       form_name = "pnc_registration_oa"
       instance_id = pnc['Instance ID']
-      entity_id = pnc['Entity ID']
+      entity_id = pnc['EC ID']
       submission_date = pnc['Submission date']
 
       form_instance = form_instance_erb.result(binding)
       out_of_area_pnc_registration_json = out_of_area_pnc_registration_erb.result(binding)
-      File.open("output/PNCOutOfArea_#{pnc['Entity ID']}.json", "w") do |f| f.puts out_of_area_pnc_registration_json end
+      File.open("output/PNCOutOfArea_#{pnc['EC ID']}.json", "w") do |f|
+        f.puts out_of_area_pnc_registration_json
+      end
     end
   end
 
-  def has_anc?
-    not (@ancs.nil? or @ancs.to_a.empty?)
-  end
+  def fill_pnc_visit_forms
+    @pnc_visits.each do |pnc_visit|
 
-  def has_services?
-    not (@anc_services.nil? or @anc_services.to_a.empty?)
-  end
+      puts "PNC visit: #{pnc_visit['Wife Name']} - #{pnc_visit['Husband Name']} - #{pnc_visit['Village Code'].village}"
+      key = [pnc_visit['Village Code'].village.downcase, pnc_visit['Wife Name'].downcase, pnc_visit['Husband Name'].downcase]
 
-  def has_outcome?
-    @anc_services.any? {|service| not service['Date of Delivery'].nil? and not service['Date of Delivery'].empty? }
-  end
+      form_instance_erb = ERB.new(File.read('templates/json_erb/pnc_visit_form_instance_erb.json'))
+      pnc_visit_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
-  def has_anc_visits?
-    not (@anc_visits.nil? or @anc_visits.to_a.empty?)
-  end
+      pnc = get_safe_map(@pncs[key])
 
-  def has_hb_tests?
-    not (@hb_tests.nil? or @hb_tests.to_a.empty?)
-  end
+      user_id = @mobile_worker.user_id
+      user_name = @mobile_worker.user_name
+      form_name = "pnc_visit"
+      instance_id = pnc_visit['Instance ID']
 
-  def has_ifas?
-    not (@ifas.nil? or @ifas.to_a.empty?)
-  end
+      if pnc['OA'].downcase == "true" then
+        entity_id = pnc['Entity ID']
+        ecId = pnc['EC ID']
+      else
+        anc = get_safe_map(@ancs[key])
+        ec = get_safe_map(ecs_as_hash[key])
+        ecId = ec['Entity ID']
+        entity_id = anc['Entity ID']
+      end
 
-  def has_tts?
-    not (@tts.nil? or @tts.to_a.empty?)
-  end
+        submission_date = pnc_visit['Submission date']
 
-  def has_pncs?
-    not (@pncs.nil? or @pncs.to_a.empty?)
-  end
+        form_instance = form_instance_erb.result(binding)
+        pnc_visit_json = pnc_visit_erb.result(binding)
+        File.open("output/PNCVisit_#{pnc_visit['Entity ID']}.json", "w") do |f|
+          f.puts pnc_visit_json
+        end
+      end
+    end
 
-  private
-  def get_safe_map(value)
-    raise "Multiple values found for key : [#{value[0]['Village Code'].village}, #{value[0]['Wife Name']}, #{value[0]['Husband Name']}]" if value.size > 1
-    value[0]
-  end
 
-  def ecs_as_hash
-    @ec.group_by { |ec| [ec['Village Code'].village.downcase, ec['Wife Name'].downcase, ec['Husband Name'].downcase] }
+    def has_anc?
+      not (@ancs.nil? or @ancs.to_a.empty?)
+    end
+
+    def has_services?
+      not (@anc_services.nil? or @anc_services.to_a.empty?)
+    end
+
+    def has_outcome?
+      @anc_services.any? { |service| not service['Date of Delivery'].nil? and not service['Date of Delivery'].empty? }
+    end
+
+    def has_anc_visits?
+      not (@anc_visits.nil? or @anc_visits.to_a.empty?)
+    end
+
+    def has_hb_tests?
+      not (@hb_tests.nil? or @hb_tests.to_a.empty?)
+    end
+
+    def has_ifas?
+      not (@ifas.nil? or @ifas.to_a.empty?)
+    end
+
+    def has_tts?
+      not (@tts.nil? or @tts.to_a.empty?)
+    end
+
+    def has_pncs?
+      not (@pncs.nil? or @pncs.to_a.empty?)
+    end
+
+    def has_pnc_visits?
+      not (@pnc_visits.nil? or @pnc_visits.to_a.empty?)
+    end
+
+    private
+    def get_safe_map(value)
+      raise "Multiple values found for key : [#{value[0]['Village Code'].village}, #{value[0]['Wife Name']}, #{value[0]['Husband Name']}]" if value.size > 1
+      value[0]
+    end
+
+    def ecs_as_hash
+      @ec.group_by { |ec| [ec['Village Code'].village.downcase, ec['Wife Name'].downcase, ec['Husband Name'].downcase] }
+    end
   end
-end
 

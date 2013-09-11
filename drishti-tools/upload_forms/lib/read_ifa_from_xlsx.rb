@@ -26,7 +26,7 @@ class IFAs
     filename = "#{Random.rand(9999999)}_IFA.csv"
     sheet_name = "IFA"
     begin
-      spreadsheet = Roo::Excelx.new xlsx_filename, nil, :ignore
+      spreadsheet = Excelx.new xlsx_filename, nil, :ignore
       
       if spreadsheet.sheets.include? sheet_name
         spreadsheet.to_csv filename, sheet_name
@@ -44,7 +44,6 @@ class IFAs
           ifa.add_field "Entity ID", Guid.new.to_s
           ifa.add_field "Submission date", Date.today.to_s
 
-          puts "#{ifa['Wife Name']} - #{ifa['Husband Name']}"
           @ifas << ifa
         end
       end

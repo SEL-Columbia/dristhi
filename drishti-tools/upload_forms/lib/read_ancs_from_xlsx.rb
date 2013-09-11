@@ -26,11 +26,10 @@ class ANCs
     filename = "#{Random.rand(9999999)}_ANC_register.csv"
     sheet_name = "ANC Registration" 
     begin
-      spreadsheet = Roo::Excelx.new xlsx_filename, nil, :ignore
-      
+      spreadsheet = Excelx.new xlsx_filename, nil, :ignore
       if spreadsheet.sheets.include? sheet_name
         spreadsheet.to_csv filename, sheet_name
-      
+
 
         CSV.foreach(filename, {:headers => true}) do |csv_row|
           anc = Row.new csv_row
@@ -45,7 +44,10 @@ class ANCs
           anc.convert_to_date "Registration date", :empty => Date.today.to_s
           anc.convert_to_date "LMP", :empty => Date.today.to_s
           anc.convert_value "HRP reasons", :empty => ""
-          anc.convert_value "OA", :empty => "yes"
+          anc.convert_value "OA",
+                            "no" => "false",
+                            "yes" => "true",
+                            :empty => "true"
           anc.convert_value "HRP",
                             "No" => "no",
                             "Yes" => "yes",
@@ -72,7 +74,6 @@ class ANCs
           anc.add_field "Year", :empty => Date.today.to_s, :default => Date.today.year.to_s
           anc.add_field "EDD", (Date.parse(anc['LMP']) + 280).strftime('%a, %d %b %Y %T GMT')
 
-          puts "#{anc['Wife Name']} - #{anc['Husband Name']}"
           @ancs << anc
         end
       end

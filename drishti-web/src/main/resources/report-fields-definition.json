@@ -66,8 +66,9 @@
         "deathDate"
     ],
     "pnc_registration_oa": [
-        "id",
+        "motherId",
         "deliveryType",
+        "deliveryPlace",
         "referenceDate"
     ],
     "pnc_visit": [

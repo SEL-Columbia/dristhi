@@ -6,7 +6,7 @@
         "fields":[
             {
                 "name":"id",
-                "value":"<%= pnc['Entity ID'] %>",
+                "value":"<%= pnc['EC ID'] %>",
                 "source":"eligible_couple.id"
             },
             {
@@ -180,7 +180,7 @@
             },
             {
                 "name":"isOutOfArea",
-                "value": "<%= pnc['OA'].downcase %>",
+                "value": "<%= pnc['OA']%>",
                 "source":"eligible_couple.isOutOfArea"
             }
         ],

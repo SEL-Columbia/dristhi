@@ -22,7 +22,7 @@ class ECs
     filename = "#{Random.rand(9999999)}_EC_register.csv"
 
     begin
-      spreadsheet = Roo::Excelx.new xlsx_filename, nil, :ignore
+      spreadsheet = Excelx.new xlsx_filename, nil, :ignore
       spreadsheet.to_csv filename, "EC register"
 
       CSV.foreach(filename, {:headers => true}) do |csv_row|
