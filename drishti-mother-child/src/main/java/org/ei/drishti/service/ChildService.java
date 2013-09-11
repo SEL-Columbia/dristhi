@@ -159,7 +159,7 @@ public class ChildService {
     }
 
     private boolean handleStillBirth(FormSubmission submission, SubFormData subFormData) {
-        if (isDeliveryOutcomeStillBirth(submission)) {
+        if (isDeliveryOutcomeStillBirth(submission) && !subFormData.instances().isEmpty()) {
             String childId = subFormData.instances().get(0).get(ID);
             allChildren.remove(childId);
             return true;

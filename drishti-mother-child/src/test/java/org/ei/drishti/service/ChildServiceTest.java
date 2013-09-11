@@ -468,6 +468,27 @@ public class ChildServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldNotFailTryingToDeleteChildWhenPNCRegistrationOAIsHandledAndDeliveryOutcomeIsStillBirthAndThereIsNoChild() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        FormSubmission submission = create()
+                .withFormName("pnc_registration_oa")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("deliveryOutcome", "still_birth")
+                .withSubForm(new SubFormData("child_registration_oa",
+                        Collections.<Map<String, String>>emptyList()))
+                .build();
+        when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "EC-CASE-1", "TC1")));
+
+        service.pncOAChildRegistration(submission);
+
+        verifyZeroInteractions(allChildren);
+        verifyZeroInteractions(childReportingService);
+        verifyZeroInteractions(childSchedulesService);
+    }
+
+    @Test
     public void shouldReportWhenPNCVisitHappened() {
         FormSubmission submission = create()
                 .withFormName("pnc_visit")

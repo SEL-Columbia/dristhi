@@ -258,7 +258,7 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("id", "CASE X");
+        reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
@@ -275,7 +275,7 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("id", "CASE X");
+        reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
@@ -292,7 +292,7 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("id", "CASE X");
+        reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
@@ -309,7 +309,7 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("id", "CASE X");
+        reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "yes");
         service.registerChild(reportData);
 
@@ -326,7 +326,7 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("id", "CASE X");
+        reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
@@ -343,7 +343,7 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("id", "CASE X");
+        reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
@@ -360,7 +360,7 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("id", "CASE X");
+        reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
@@ -377,7 +377,7 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("id", "CASE X");
+        reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 
@@ -394,7 +394,7 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap();
-        reportData.put("id", "CASE X");
+        reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         service.registerChild(reportData);
 

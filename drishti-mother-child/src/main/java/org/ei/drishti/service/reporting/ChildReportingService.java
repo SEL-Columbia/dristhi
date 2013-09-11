@@ -79,7 +79,7 @@ public class ChildReportingService {
     }
 
     public void registerChild(SafeMap reportData) {
-        String id = reportData.get(ID);
+        String id = reportData.get(ChildReportingService.CHILD_ID_FIELD);
         Child child = allChildren.findByCaseId(id);
 
         List<String> immunizations = child.immunizationsGiven();
