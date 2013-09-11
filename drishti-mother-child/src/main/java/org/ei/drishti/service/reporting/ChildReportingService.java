@@ -274,7 +274,7 @@ public class ChildReportingService {
         }
     }
 
-    private void reportToBoth(Child child, Indicator indicator, String date, Location location) {
+    public void reportToBoth(Child child, Indicator indicator, String date, Location location) {
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
         reportingService.sendReportData(serviceProvidedData);
         ReportingData anmReportData = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);

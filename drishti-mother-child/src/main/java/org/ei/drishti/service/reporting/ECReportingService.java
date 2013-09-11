@@ -28,31 +28,31 @@ public class ECReportingService {
 
     public void registerEC(SafeMap reportData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
-        reportFPMethod(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)));
+        reportIndicator(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)));
         reportOCPCasteBasedIndicators(reportData, couple);
         reportFemaleSterilizationEconomicStatusBasedIndicators(reportData, couple);
     }
 
     public void fpChange(SafeMap reportData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
-        reportFPMethod(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)));
+        reportIndicator(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)));
         reportOCPCasteBasedIndicators(reportData, couple);
         reportFemaleSterilizationEconomicStatusBasedIndicators(reportData, couple);
     }
 
     private void reportOCPCasteBasedIndicators(SafeMap reportData, EligibleCouple ec) {
         if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(reportData.get(CURRENT_FP_METHOD_FIELD_NAME))) {
-            reportFPMethod(reportData, ec, Caste.from(reportData.get(AllConstants.ECRegistrationFields.CASTE)).indicator());
+            reportIndicator(reportData, ec, Caste.from(reportData.get(AllConstants.ECRegistrationFields.CASTE)).indicator());
         }
     }
 
     private void reportFemaleSterilizationEconomicStatusBasedIndicators(SafeMap reportData, EligibleCouple couple) {
         if (FEMALE_STERILIZATION_FP_METHOD_VALUE.equalsIgnoreCase(reportData.get(CURRENT_FP_METHOD_FIELD_NAME))) {
-            reportFPMethod(reportData, couple, EconomicStatus.from(reportData.get(AllConstants.ECRegistrationFields.ECONOMIC_STATUS)).indicator());
+            reportIndicator(reportData, couple, EconomicStatus.from(reportData.get(AllConstants.ECRegistrationFields.ECONOMIC_STATUS)).indicator());
         }
     }
 
-    private void reportFPMethod(SafeMap reportData, EligibleCouple ec, Indicator indicator) {
+    public void reportIndicator(SafeMap reportData, EligibleCouple ec, Indicator indicator) {
         if (indicator == null) {
             return;
         }

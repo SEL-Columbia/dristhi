@@ -213,7 +213,7 @@ public class MotherReportingService {
         }
     }
 
-    private void reportToBoth(Mother mother, Indicator indicator, String date, Location location) {
+    public void reportToBoth(Mother mother, Indicator indicator, String date, Location location) {
         ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thayiCardNo(), indicator, date, location);
         reportingService.sendReportData(serviceProvided);
 

@@ -99,6 +99,10 @@ public class Mother extends MotechBaseDataObject {
         return subCenter;
     }
 
+    public Location location() {
+        return new Location(village, subCenter, phc);
+    }
+
     public Map<String, String> details() {
         return details;
     }

@@ -11,10 +11,30 @@ public class ReportIndicator {
     private List<String> formFields;
     private ReferenceData referenceData;
     private List<String> reportWhen;
-    private String location;
+    private String bindType;
 
     public ReportIndicator(String indicator) {
         this.indicator = indicator;
+    }
+
+    public List<String> formFields() {
+        return formFields;
+    }
+
+    public ReferenceData referenceData() {
+        return referenceData;
+    }
+
+    public List<String> reportingRules() {
+        return reportWhen;
+    }
+
+    public String bindType() {
+        return bindType;
+    }
+
+    public String indicator() {
+        return indicator;
     }
 
     @Override

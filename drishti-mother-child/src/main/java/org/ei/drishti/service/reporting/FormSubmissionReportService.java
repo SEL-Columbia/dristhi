@@ -1,31 +1,60 @@
 package org.ei.drishti.service.reporting;
 
-import com.google.gson.Gson;
-import org.apache.commons.io.IOUtils;
+import org.ei.drishti.domain.Location;
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.service.reporting.rules.IRule;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.util.List;
 
+@Component
 public class FormSubmissionReportService {
-    public void reportFor(FormSubmission submission) throws IOException {
-        File file = new File("/Users/Admin/work/projects/drishti/modilabs/drishti/drishti-mother-child/src/main/java/org/ei/drishti/service/reporting/report_definition.json");
-        String indicatorDefinitionJSON = load(file);
-        ReportDefinition reportDefinition = new Gson().fromJson(indicatorDefinitionJSON, ReportDefinition.class);
+    private IRulesFactory rulesFactory;
+    private ILocationLoader locationLoader;
+    private IReporterFactory reporterFactory;
+    private IReportDefinitionLoader reportDefinitionLoader;
 
-        //get formIndicators by name
-        //iterate through indicators
-        //get form field
-        //get reference data
-
-        //invoke the rules with the values
-        //if rules pass load location and report
+    @Autowired
+    public FormSubmissionReportService(ILocationLoader locationLoader, IRulesFactory rulesFactory, IReporterFactory reporterFactory, IReportDefinitionLoader reportDefinitionLoader) {
+        this.locationLoader = locationLoader;
+        this.rulesFactory = rulesFactory;
+        this.reporterFactory = reporterFactory;
+        this.reportDefinitionLoader = reportDefinitionLoader;
     }
 
-    public String load(File file) throws IOException {
-        FileInputStream inputStream = new FileInputStream(file);
-        return IOUtils.toString(inputStream, "UTF-8");
+    public void reportFor(FormSubmission submission) throws Exception {
+        ReportDefinition reportDefinition = reportDefinitionLoader.reportDefintion();
+
+        List<ReportIndicator> reportIndicators = reportDefinition.getIndicatorsByFormName(submission.formName());
+        for (ReportIndicator reportIndicator : reportIndicators) {
+            List<String> formFields = reportIndicator.formFields();
+            ReferenceData referenceData = reportIndicator.referenceData();
+            List<String> rules = reportIndicator.reportingRules();
+            boolean didAllRulesSucceed = processRules(submission, rules, formFields, referenceData);
+            if (didAllRulesSucceed) {
+                Location location = locationLoader.loadLocationFor(reportIndicator.bindType(), submission.entityId());
+                report(submission, reportIndicator.indicator(), reportIndicator.bindType(), location);
+            }
+        }
     }
 
+    private void report(FormSubmission submission, String reportIndicator, String bindType, Location location) {
+        IReporter reporter = reporterFactory.reporterFor(bindType);
+        reporter.report(submission, reportIndicator, location);
+    }
+
+    private boolean processRules(FormSubmission submission, List<String> rules, List<String> formFields, ReferenceData referenceData) {
+        boolean didRuleSucceed = true;
+        try {
+            for (String ruleName : rules) {
+                IRule rule = rulesFactory.ruleByName(ruleName);
+                didRuleSucceed = rule.apply(submission, formFields, referenceData);
+                if (!didRuleSucceed) break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return didRuleSucceed;
+    }
 }

@@ -131,6 +131,7 @@ public class AllConstants {
         public static final String DEATH_OF_CHILD_VALUE = "death_of_child";
         public static final String DATE_OF_DEATH_FIELD_NAME = "deathDate";
         public static final String DEATH_CAUSE = "deathCause";
+        public static final String PERMANENT_RELOCATION_VALUE = "permanent_relocation";
     }
 
     public static class EntityCloseFormFields {

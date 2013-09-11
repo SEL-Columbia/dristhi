@@ -11,6 +11,12 @@ public class ReferenceData {
     private String idField;
     private List<String> fields;
 
+    public ReferenceData(String type, String idField, List<String> fields) {
+        this.type = type;
+        this.idField = idField;
+        this.fields = fields;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
