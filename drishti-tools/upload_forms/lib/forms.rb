@@ -29,7 +29,7 @@ class Forms
   def fill_ec_form
     puts "EC: #{@ec['Wife Name']} - #{@ec['Husband Name']} - #{@ec['Entity ID']}"
 
-    form_instance_erb = ERB.new(File.read('templates/json_erb/ec_form_instance_erb.json'))
+    form_instance_erb = ERB.new(File.read('templates/form_instance_erb/ec_registration.json'))
     ec_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
     ec = @ec
@@ -52,7 +52,7 @@ class Forms
 
       puts "Out of area ANC registration: #{anc['Wife Name']} - #{anc['Husband Name']} - #{anc['LMP']} - #{anc['Entity ID']}"
 
-      form_instance_erb = ERB.new(File.read('templates/json_erb/anc_oa_form_instance_erb.json'))
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/anc_registration_oa.json'))
       out_of_area_anc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       ec = @ec
@@ -75,7 +75,7 @@ class Forms
       anc = get_safe_map(value)
       puts "ANC registration: #{anc['LMP']} - #{anc['Entity ID']}"
 
-      form_instance_erb = ERB.new(File.read('templates/json_erb/anc_form_instance_erb.json'))
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/anc_registration.json'))
       anc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       ec = @ec
@@ -98,7 +98,7 @@ class Forms
       puts "ANC Visit: #{anc_visit['Wife Name']} - #{anc_visit['Husband Name']} - #{anc_visit['Entity ID']}"
       key = [anc_visit['Village Code'].village.downcase, anc_visit['Wife Name'].downcase, anc_visit['Husband Name'].downcase]
 
-      form_instance_erb = ERB.new(File.read('templates/json_erb/anc_visit_form_instance_erb.json'))
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/anc_visit.json'))
       anc_visit_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       ec = get_safe_map(ecs_as_hash[key])
@@ -125,7 +125,7 @@ class Forms
       key_for_anc = [hb_test['Village Code'].village.downcase, hb_test['Wife Name'].downcase, hb_test['Husband Name'].downcase]
       puts "Hb Test: #{hb_test['Wife Name']} - #{hb_test['Husband Name']} - #{hb_test['Entity ID']}"
 
-      form_instance_erb = ERB.new(File.read('templates/json_erb/hb_test_form_instance_erb.json'))
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/hb_test.json'))
       hb_test_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       anc = get_safe_map(@ancs[key_for_anc])
@@ -150,7 +150,7 @@ class Forms
       key_for_anc = [ifa['Village Code'].village.downcase, ifa['Wife Name'].downcase, ifa['Husband Name'].downcase]
       puts "IFA : #{ifa['Wife Name']} - #{ifa['Husband Name']} - #{ifa['Entity ID']}"
 
-      form_instance_erb = ERB.new(File.read('templates/json_erb/ifa_form_instance_erb.json'))
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/ifa.json'))
       ifa_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       anc = get_safe_map(@ancs[key_for_anc])
@@ -176,7 +176,7 @@ class Forms
       key_for_anc = [tt['Village Code'].village.downcase, tt['Wife Name'].downcase, tt['Husband Name'].downcase]
       puts "TT : #{tt['Wife Name']} - #{tt['Husband Name']} - #{tt['Entity ID']}"
 
-      form_instance_erb = ERB.new(File.read('templates/json_erb/tt_form_instance_erb.json'))
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/tt.json'))
       ifa_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       anc = get_safe_map(@ancs[key_for_anc])
@@ -204,7 +204,7 @@ class Forms
 
       puts "Delivery Outcome registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Entity ID']}"
 
-      form_instance_erb = ERB.new(File.read('templates/json_erb/delivery_outcome_form_instance_erb.json'))
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/delivery_outcome.json'))
       out_of_area_pnc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       ec = get_safe_map(ecs_as_hash[key])
@@ -229,7 +229,7 @@ class Forms
 
       puts "Out of Area PNC registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Entity ID']}"
 
-      form_instance_erb = ERB.new(File.read('templates/json_erb/pnc_oa_form_instance_erb.json'))
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/pnc_registration_oa.json'))
       out_of_area_pnc_registration_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       user_id = @mobile_worker.user_id
@@ -253,7 +253,7 @@ class Forms
       puts "PNC visit: #{pnc_visit['Wife Name']} - #{pnc_visit['Husband Name']} - #{pnc_visit['Village Code'].village}"
       key = [pnc_visit['Village Code'].village.downcase, pnc_visit['Wife Name'].downcase, pnc_visit['Husband Name'].downcase]
 
-      form_instance_erb = ERB.new(File.read('templates/json_erb/pnc_visit_form_instance_erb.json'))
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/pnc_visit.json'))
       pnc_visit_erb = ERB.new(File.read('templates/common_form_submission_fields.erb'))
 
       pnc = get_safe_map(@pncs[key])
