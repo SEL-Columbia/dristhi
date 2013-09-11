@@ -1,240 +1,242 @@
 {
-    "form_data_definition_version":"1",
-    "form":{
-        "bind_type":"eligible_couple",
-        "default_bind_path":"/model/instance/PNC_Child_Registration_EngKan/",
-        "fields":[
+    "form_data_definition_version": "1",
+    "form": {
+        "bind_type": "eligible_couple",
+        "default_bind_path": "/model/instance/PNC_Child_Registration_EngKan/",
+        "fields": [
             {
-                "name":"id",
-                "value":"<%= pnc['EC ID'] %>",
-                "source":"eligible_couple.id"
+                "name": "id",
+                "value": "<%= pnc['EC ID'] %>",
+                "source": "eligible_couple.id"
             },
             {
-                "name":"motherId",
-                "value":"<%= pnc['Mother ID']%>",
-                "source":"eligible_couple.mother.id"
+                "name": "motherId",
+                "value": "<%= pnc['Mother ID']%>",
+                "source": "eligible_couple.mother.id"
             },
             {
-                "name":"registrationDate",
-                "value":"<%= pnc['Registration date']%>",
-                "source":"eligible_couple.mother.registrationDate"
+                "name": "registrationDate",
+                "value": "<%= pnc['Registration date']%>",
+                "source": "eligible_couple.mother.registrationDate"
             },
             {
-                "name":"phc",
-                "value":"<%= pnc['Village Code'].phc.downcase %>",
-                "source":"eligible_couple.phc"
+                "name": "phc",
+                "value": "<%= pnc['Village Code'].phc.downcase %>",
+                "source": "eligible_couple.phc"
             },
             {
-                "name":"subCenter",
-                "value":"<%= pnc['Village Code'].sc.downcase %>",
-                "source":"eligible_couple.subCenter"
+                "name": "subCenter",
+                "value": "<%= pnc['Village Code'].sc.downcase %>",
+                "source": "eligible_couple.subCenter"
             },
             {
-                "name":"village",
-                "value":"<%= pnc['Village Code'].village.downcase %>",
-                "source":"eligible_couple.village"
+                "name": "village",
+                "value": "<%= pnc['Village Code'].village.downcase %>",
+                "source": "eligible_couple.village"
             },
             {
-                "name":"householdAddress",
-                "source":"eligible_couple.householdAddress"
+                "name": "householdAddress",
+                "source": "eligible_couple.householdAddress"
             },
             {
-                "name":"wifeName",
-                "value":"<%= pnc['Wife Name'].downcase %>",
-                "source":"eligible_couple.wifeName"
+                "name": "wifeName",
+                "value": "<%= pnc['Wife Name'].downcase %>",
+                "source": "eligible_couple.wifeName"
             },
             {
-                "name":"wifeAge",
-                "value":"<%= pnc['Wife age'] %>",
-                "source":"eligible_couple.wifeAge"
+                "name": "wifeAge",
+                "value": "<%= pnc['Wife age'] %>",
+                "source": "eligible_couple.wifeAge"
             },
             {
-                "name":"thayiCardNumber",
-                "value":"<%= pnc['Thayi number'] %>",
-                "source":"eligible_couple.mother.thayiCardNumber"
+                "name": "thayiCardNumber",
+                "value": "<%= pnc['Thayi number'] %>",
+                "source": "eligible_couple.mother.thayiCardNumber"
             },
             {
-                "name":"aadhaarNumber",
-                "source":"eligible_couple.aadhaarNumber"
+                "name": "aadhaarNumber",
+                "source": "eligible_couple.aadhaarNumber"
             },
             {
-                "name":"husbandName",
-                "value":"<%= pnc['Husband Name'].downcase %>",
-                "source":"eligible_couple.husbandName"
+                "name": "husbandName",
+                "value": "<%= pnc['Husband Name'].downcase %>",
+                "source": "eligible_couple.husbandName"
             },
             {
-                "name":"phoneNumber",
-                "source":"eligible_couple.phoneNumber"
+                "name": "phoneNumber",
+                "source": "eligible_couple.phoneNumber"
             },
             {
-                "name":"phoneOwner",
-                "source":"eligible_couple.phoneOwner"
+                "name": "phoneOwner",
+                "source": "eligible_couple.phoneOwner"
             },
             {
-                "name":"economicStatus",
-                "value":"<%= pnc['APL/BPL'] %>",
-                "source":"eligible_couple.economicStatus"
+                "name": "economicStatus",
+                "value": "<%= pnc['APL/BPL'] %>",
+                "source": "eligible_couple.economicStatus"
             },
             {
-                "name":"bplCardNumber",
-                "source":"eligible_couple.bplCardNumber"
+                "name": "bplCardNumber",
+                "source": "eligible_couple.bplCardNumber"
             },
             {
-                "name":"caste",
-                "value":"<%= pnc['Caste'] %>",
-                "source":"eligible_couple.caste"
+                "name": "caste",
+                "value": "<%= pnc['Caste'] %>",
+                "source": "eligible_couple.caste"
             },
             {
-                "name":"referenceDate",
-                "value":"<%= pnc['Reference date'] %>",
-                "source":"eligible_couple.mother.referenceDate"
+                "name": "referenceDate",
+                "value": "<%= pnc['Reference date'] %>",
+                "source": "eligible_couple.mother.referenceDate"
             },
             {
-                "name":"deliveryPlace",
-                "value":"<%= pnc['Delivery place'].downcase %>",
-                "source":"eligible_couple.mother.deliveryPlace"
+                "name": "deliveryPlace",
+                "value": "<%= pnc['Delivery place'].downcase %>",
+                "source": "eligible_couple.mother.deliveryPlace"
             },
             {
-                "name":"deliveryFacilityName",
-                "source":"eligible_couple.mother.deliveryFacilityName"
+                "name": "deliveryFacilityName",
+                "source": "eligible_couple.mother.deliveryFacilityName"
             },
             {
-                "name":"isSkilledDelivery",
-                "value":"<%= pnc['Skilled delivery'].downcase %>",
-                "source":"eligible_couple.mother.isSkilledDelivery"
+                "name": "isSkilledDelivery",
+                "value": "<%= pnc['Skilled delivery'].downcase %>",
+                "source": "eligible_couple.mother.isSkilledDelivery"
             },
             {
-                "name":"deliveryType",
+                "name": "deliveryType",
                 "value": "<%= pnc['Delivery type'].downcase %>",
-                "source":"eligible_couple.mother.deliveryType"
+                "source": "eligible_couple.mother.deliveryType"
             },
             {
-                "name":"deliveryOutcome",
+                "name": "deliveryOutcome",
                 "value": "<%= pnc['Delivery outcome'].downcase %>",
-                "source":"eligible_couple.mother.deliveryOutcome"
+                "source": "eligible_couple.mother.deliveryOutcome"
             },
             {
-                "name":"causeOfStillBirth",
-                "source":"eligible_couple.mother.causeOfStillBirth"
+                "name": "causeOfStillBirth",
+                "source": "eligible_couple.mother.causeOfStillBirth"
             },
             {
-                "name":"otherCauseOfStillBirth",
-                "source":"eligible_couple.mother.otherCauseOfStillBirth"
+                "name": "otherCauseOfStillBirth",
+                "source": "eligible_couple.mother.otherCauseOfStillBirth"
             },
             {
-                "name":"didBreastfeedingStart",
+                "name": "didBreastfeedingStart",
                 "value": "<%= pnc['BF within 1 hr'].downcase %>",
-                "source":"eligible_couple.mother.didBreastfeedingStart"
+                "source": "eligible_couple.mother.didBreastfeedingStart"
             },
             {
-                "name":"hadDeliveryComplications",
+                "name": "hadDeliveryComplications",
                 "value": "<%= pnc['Has Delivery Complications'] %>",
-                "source":"eligible_couple.mother.hadDeliveryComplications"
+                "source": "eligible_couple.mother.hadDeliveryComplications"
             },
             {
-                "name":"deliveryComplications",
+                "name": "deliveryComplications",
                 "value": "<%= pnc['Delivery complications'].downcase %>",
-                "source":"eligible_couple.mother.deliveryComplications"
+                "source": "eligible_couple.mother.deliveryComplications"
             },
             {
-                "name":"otherDeliveryComplications",
-                "source":"eligible_couple.mother.otherDeliveryComplications"
+                "name": "otherDeliveryComplications",
+                "source": "eligible_couple.mother.otherDeliveryComplications"
             },
             {
-                "name":"isHighRisk",
+                "name": "isHighRisk",
                 "value": "<%= pnc['HR'] %>",
-                "source":"eligible_couple.mother.isHighRisk"
+                "source": "eligible_couple.mother.isHighRisk"
             },
             {
-                "name":"highRiskReason",
-                "source":"eligible_couple.mother.highRiskReason"
+                "name": "highRiskReason",
+                "source": "eligible_couple.mother.highRiskReason"
             },
             {
-                "name":"periodOfStay",
-                "source":"eligible_couple.mother.periodOfStay"
+                "name": "periodOfStay",
+                "source": "eligible_couple.mother.periodOfStay"
             },
             {
-                "name":"didWomanSurvive",
-                "value":"yes",
-                "source":"eligible_couple.mother.didWomanSurvive"
+                "name": "didWomanSurvive",
+                "value": "yes",
+                "source": "eligible_couple.mother.didWomanSurvive"
             },
             {
-                "name":"submissionDate",
+                "name": "submissionDate",
                 "value": "<%= submission_date %>",
-                "source":"eligible_couple.mother.submissionDate"
+                "source": "eligible_couple.mother.submissionDate"
             },
             {
-                "name":"type",
-                "value":"PNC",
-                "source":"eligible_couple.mother.type"
+                "name": "type",
+                "value": "PNC",
+                "source": "eligible_couple.mother.type"
             },
             {
-                "name":"isClosed",
-                "value":"false",
-                "source":"eligible_couple.mother.isClosed"
+                "name": "isClosed",
+                "value": "false",
+                "source": "eligible_couple.mother.isClosed"
             },
             {
-                "name":"isClosed",
-                "value":"false",
-                "source":"eligible_couple.isClosed"
+                "name": "isClosed",
+                "value": "false",
+                "source": "eligible_couple.isClosed"
             },
             {
-                "name":"isOutOfArea",
+                "name": "isOutOfArea",
                 "value": "<%= pnc['OA']%>",
-                "source":"eligible_couple.isOutOfArea"
+                "source": "eligible_couple.isOutOfArea"
             }
         ],
-        "sub_forms":[
+        "sub_forms": [
             {
-                "name":"child_registration_oa",
-                "bind_type":"child",
-                "default_bind_path":"/model/instance/PNC_Child_Registration_EngKan/child",
-                "fields":[
+                "name": "child_registration_oa",
+                "bind_type": "child",
+                "default_bind_path": "/model/instance/PNC_Child_Registration_EngKan/child",
+                "fields": [
                     {
-                        "name":"id",
-                        "source":"child.id"
+                        "name": "id",
+                        "source": "child.id"
                     },
                     {
-                        "name":"gender",
-                        "source":"child.gender"
+                        "name": "gender",
+                        "source": "child.gender"
                     },
                     {
-                        "name":"weight",
-                        "source":"child.weight"
+                        "name": "weight",
+                        "source": "child.weight"
                     },
                     {
-                        "name":"bloodGroup",
-                        "source":"child.bloodGroup"
+                        "name": "bloodGroup",
+                        "source": "child.bloodGroup"
                     },
                     {
-                        "name":"immunizationsGiven",
-                        "source":"child.immunizationsGiven"
+                        "name": "immunizationsGiven",
+                        "source": "child.immunizationsGiven"
                     },
                     {
-                        "name":"isChildHighRisk1",
-                        "source":"child.isChildHighRisk1"
+                        "name": "isChildHighRisk1",
+                        "source": "child.isChildHighRisk1"
                     },
                     {
-                        "name":"isChildHighRisk",
-                        "source":"child.isChildHighRisk"
+                        "name": "isChildHighRisk",
+                        "source": "child.isChildHighRisk"
                     },
                     {
-                        "name":"childHighRiskReasons",
-                        "source":"child.childHighRiskReasons"
+                        "name": "childHighRiskReasons",
+                        "source": "child.childHighRiskReasons"
                     }
                 ],
-                "instances":[
-                    {
-                        "gender": "<%= pnc['Child sex'].downcase %>",
-                        "weight":"<%= pnc['Child birthweight'] %>",
-                        "bloodGroup":"",
-                        "immunizationsGiven":"",
-                        "isChildHighRisk1":"no",
-                        "childHighRiskReasons":"",
-                        "isChildHighRisk":"",
-                        "id":"<%= pnc['Child ID'] %>"
-                    }
-                ]
+                "instances": <% if pnc['Delivery outcome'] == 'live_birth' %>
+                                [{
+                                    "gender": "<%= pnc['Child sex'].downcase %>",
+                                    "weight":"<%= pnc['Child birthweight'] %>",
+                                    "bloodGroup":"",
+                                    "immunizationsGiven":"",
+                                    "isChildHighRisk1":"",
+                                    "childHighRiskReasons":"",
+                                    "isChildHighRisk":"",
+                                    "id":"<%= pnc['Child ID'] %>"
+                                }]
+                            <% else %>
+                                []
+                            <% end %>
             }
         ]
     }

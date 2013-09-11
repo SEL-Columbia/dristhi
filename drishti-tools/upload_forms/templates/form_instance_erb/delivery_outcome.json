@@ -257,7 +257,7 @@
                     }
                 ],
                 "instances": <% if pnc['Delivery outcome'] == 'live_birth' %>
-                                {
+                                [{
                                     "gender": "<%= pnc['Child sex'].downcase %>",
                                     "weight": "<%= pnc['Child birthweight'] %>",
                                     "bloodGroup": "",
@@ -268,7 +268,7 @@
                                     "childHighRiskReasons": "",
                                     "isChildHighRisk": "no",
                                     "id": "<%= pnc['Child ID'] %>"
-                                }
+                                }]
                             <% else %>
                                 []
                             <% end %>
