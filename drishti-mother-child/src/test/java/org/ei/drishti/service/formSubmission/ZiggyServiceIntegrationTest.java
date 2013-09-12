@@ -3,6 +3,7 @@ package org.ei.drishti.service.formSubmission;
 import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.ei.drishti.repository.FormDataRepository;
 import org.ei.drishti.service.formSubmission.handler.*;
+import org.ei.drishti.service.reporting.FormSubmissionReportService;
 import org.ei.drishti.util.FormSubmissionBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,9 +79,13 @@ public class ZiggyServiceIntegrationTest {
     private ChildRegistrationOAHandler childRegistrationOAHandler;
     @Mock
     private ChildIllnessHandler childIllnessHandler;
-    private ZiggyFileLoader ziggyFileLoader;
     @Mock
     private VitaminAHandler vitaminAHandler;
+    @Mock
+    private FormSubmissionReportService formSubmissionReportService;
+
+    private ZiggyFileLoader ziggyFileLoader;
+
     @Before
     public void setUp() throws Exception {
         initMocks(this);
@@ -98,8 +103,8 @@ public class ZiggyServiceIntegrationTest {
                         ecCloseHandler, ancRegistrationHandler, ancRegistrationOAHandler, ancVisitHandler,
                         ancCloseHandler, ttHandler, ifaHandler, hbTestHandler, deliveryOutcomeHandler, pncRegistrationOAHandler,
                         pncCloseHandler, pncVisitHandler, childRegistrationECHandler, childRegistrationOAHandler, vitaminAHandler,
-                        childImmunizationsHandler, childIllnessHandler, childCloseHandler
-                ));
+                        childImmunizationsHandler, childIllnessHandler, childCloseHandler,
+                        formSubmissionReportService));
 
         service.saveForm(params, formInstance);
     }

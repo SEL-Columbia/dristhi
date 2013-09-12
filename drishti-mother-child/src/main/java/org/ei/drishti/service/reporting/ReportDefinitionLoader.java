@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.MessageFormat;
 
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
@@ -29,7 +30,8 @@ public class ReportDefinitionLoader implements IReportDefinitionLoader {
             FileInputStream inputStream = new FileInputStream(file);
             return IOUtils.toString(inputStream, "UTF-8");
         } catch (Exception e) {
-            logger.error(String.format("Error reading report definition file. Message: {0}", e.getMessage()));
+            logger.error("Currently Running on: " + System.getProperty("user.dir"));
+            logger.error(MessageFormat.format("Error reading report definition file. Message: {0}", e.getMessage()));
             logger.error(getFullStackTrace(e));
             throw e;
         }
@@ -43,7 +45,7 @@ public class ReportDefinitionLoader implements IReportDefinitionLoader {
             indicatorDefinitionJSON = load(file);
             return new Gson().fromJson(indicatorDefinitionJSON, ReportDefinition.class);
         } catch (Exception e) {
-            logger.error(String.format("Error loading report definition. Message: {0}", e.getMessage()));
+            logger.error(MessageFormat.format("Error loading report definition. Message: {0}", e.getMessage()));
             logger.error(getFullStackTrace(e));
             throw e;
         }

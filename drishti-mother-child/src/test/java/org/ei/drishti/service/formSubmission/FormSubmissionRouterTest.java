@@ -3,11 +3,14 @@ package org.ei.drishti.service.formSubmission;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.ei.drishti.service.formSubmission.handler.*;
+import org.ei.drishti.service.reporting.FormSubmissionReportService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -60,9 +63,12 @@ public class FormSubmissionRouterTest {
     private ChildRegistrationOAHandler childRegistrationOAHandler;
     @Mock
     private ChildIllnessHandler childIllnessHandler;
-    private FormSubmissionRouter router;
     @Mock
     private VitaminAHandler vitaminAHandler;
+    @Mock
+    private FormSubmissionReportService formSubmissionReportService;
+
+    private FormSubmissionRouter router;
 
     @Before
     public void setUp() throws Exception {
@@ -91,7 +97,8 @@ public class FormSubmissionRouterTest {
                 vitaminAHandler,
                 childImmunizationsHandler,
                 childIllnessHandler,
-                childCloseHandler);
+                childCloseHandler,
+                formSubmissionReportService);
     }
 
     @Test
@@ -102,6 +109,7 @@ public class FormSubmissionRouterTest {
         router.route("instance id 1");
 
         verify(ecRegistrationHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
 
         formSubmission = new FormSubmission("anm id 1", "instance id 2", "fp_complications", "entity id 2", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 2")).thenReturn(formSubmission);
@@ -109,6 +117,7 @@ public class FormSubmissionRouterTest {
         router.route("instance id 2");
 
         verify(fpComplicationsHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -120,6 +129,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(renewFPProductHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -131,6 +141,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(fpReferralFollowupHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -142,6 +153,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ecCloseHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -153,6 +165,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ancRegistrationHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -164,6 +177,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ancRegistrationOAHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -175,6 +189,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ancVisitHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -186,6 +201,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ancCloseHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -197,6 +213,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ttHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -208,6 +225,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ttHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -219,6 +237,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ttHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -230,6 +249,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(ifaHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -241,6 +261,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(hbTestHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -252,6 +273,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(deliveryOutcomeHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -263,6 +285,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(pncRegistrationOAHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -274,6 +297,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(pncCloseHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -285,6 +309,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(pncVisitHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -296,6 +321,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(childRegistrationECHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -307,6 +333,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(childImmunizationsHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -318,6 +345,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(childCloseHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -329,6 +357,7 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(childRegistrationOAHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
     @Test
@@ -340,5 +369,6 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(vitaminAHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
     }
 }

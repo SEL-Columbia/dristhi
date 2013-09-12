@@ -3,6 +3,7 @@ package org.ei.drishti.service.formSubmission;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.ei.drishti.service.formSubmission.handler.*;
+import org.ei.drishti.service.reporting.FormSubmissionReportService;
 import org.ei.drishti.util.EasyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ public class FormSubmissionRouter {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionRouter.class.toString());
     private AllFormSubmissions formSubmissionsRepository;
     private final Map<String, FormSubmissionHandler> handlerMap;
+    private FormSubmissionReportService formSubmissionReportService;
 
     @Autowired
     public FormSubmissionRouter(AllFormSubmissions formSubmissionsRepository,
@@ -46,8 +48,9 @@ public class FormSubmissionRouter {
                                 VitaminAHandler vitaminAHandler,
                                 ChildImmunizationsHandler childImmunizationsHandler,
                                 ChildIllnessHandler childIllnessHandler,
-                                ChildCloseHandler childCloseHandler) {
+                                ChildCloseHandler childCloseHandler, FormSubmissionReportService formSubmissionReportService) {
         this.formSubmissionsRepository = formSubmissionsRepository;
+        this.formSubmissionReportService = formSubmissionReportService;
         handlerMap = EasyMap.create(EC_REGISTRATION, (FormSubmissionHandler) ecRegistrationHandler)
                 .put(FP_COMPLICATIONS, fpComplicationsHandler)
                 .put(FP_CHANGE, fpChangeHandler)
@@ -77,7 +80,7 @@ public class FormSubmissionRouter {
                 .map();
     }
 
-    public void route(String instanceId) {
+    public void route(String instanceId) throws Exception {
         FormSubmission submission = formSubmissionsRepository.findByInstanceId(instanceId);
         FormSubmissionHandler handler = handlerMap.get(submission.formName());
         if (handler == null) {
@@ -88,6 +91,7 @@ public class FormSubmissionRouter {
                 submission.instanceId(), submission.entityId()));
         try {
             handler.handle(submission);
+            formSubmissionReportService.reportFor(submission);
         } catch (Exception e) {
             logger.error(format("Handling {0} form submission with instance Id: {1} for entity: {2} failed with exception : {3}",
                     submission.formName(), submission.instanceId(), submission.entityId(), getFullStackTrace(e)));

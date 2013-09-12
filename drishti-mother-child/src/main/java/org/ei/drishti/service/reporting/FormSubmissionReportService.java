@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
@@ -59,7 +60,7 @@ public class FormSubmissionReportService {
                 if (!didRuleSucceed) break;
             }
         } catch (Exception e) {
-            logger.error(String.format("Exception while applying rules. Message: {0}", e.getMessage()));
+            logger.error(MessageFormat.format("Exception while applying rules. Message: {0}", e.getMessage()));
             logger.error(getFullStackTrace(e));
             e.printStackTrace();
         }

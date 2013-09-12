@@ -5,17 +5,19 @@ import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.service.reporting.ReferenceData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.PERMANENT_RELOCATION_VALUE;
 
+@Component
 public class RelocationIsPermanentRule implements IRule {
 
-    @Autowired
     private AllChildren allChildren;
 
+    @Autowired
     public RelocationIsPermanentRule(AllChildren allChildren) {
         this.allChildren = allChildren;
     }

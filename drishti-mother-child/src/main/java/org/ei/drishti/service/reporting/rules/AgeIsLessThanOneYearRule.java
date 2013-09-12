@@ -15,12 +15,9 @@ import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DAT
 @Component
 public class AgeIsLessThanOneYearRule implements IRule {
 
-    @Autowired
     private AllChildren allChildren;
 
-    public AgeIsLessThanOneYearRule() {
-    }
-
+    @Autowired
     public AgeIsLessThanOneYearRule(AllChildren allChildren) {
         this.allChildren = allChildren;
     }

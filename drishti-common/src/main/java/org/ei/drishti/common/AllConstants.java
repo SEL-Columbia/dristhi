@@ -238,4 +238,16 @@ public class AllConstants {
         public static final String REPORT_CHILD_DISEASE_DATE = "reportChildDiseaseDate";
         public static final String DIARRHEA_DEHYDRATION_VALUE = "diarrhea_dehydration";
     }
+
+    public static class ReportBindTypes {
+        public static final String CHILD_BIND_TYPE = "child";
+        public static final String MOTHER_BIND_TYPE = "mother";
+        public static final String ELIGIBLE_COUPLE_BIND_TYPE = "eligible_couple";
+    }
+
+    public static class ReportingRuleNames {
+        public static final String AGE_LESS_THAN_ONE_YEAR = "AgeIsLessThanOneYearRule";
+        public static final String RELOCATION_PERMANENT = "RelocationIsPermanentRule";
+
+    }
 }
