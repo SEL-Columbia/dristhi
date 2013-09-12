@@ -21,6 +21,7 @@ tt_forms = Dir['output/TT*.json']
 do_forms = Dir['output/DO*.json']
 pnc_oa_forms = Dir['output/PNCOutOfArea*.json']
 pnc_visit_forms = Dir['output/PNCVisit*.json']
+ppfp_forms = Dir['output/PP_FP*.json']
 
 upload_all ec_forms, ARGV[0].to_s, ARGV[1].to_s
 upload_all anc_forms, ARGV[0].to_s, ARGV[1].to_s
@@ -32,3 +33,4 @@ upload_all tt_forms, ARGV[0].to_s, ARGV[1].to_s
 upload_all do_forms, ARGV[0].to_s, ARGV[1].to_s
 upload_all pnc_oa_forms, ARGV[0].to_s, ARGV[1].to_s
 upload_all pnc_visit_forms, ARGV[0].to_s, ARGV[1].to_s
+upload_all ppfp_forms, ARGV[0].to_s, ARGV[1].to_s
