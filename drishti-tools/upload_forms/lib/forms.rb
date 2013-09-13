@@ -331,6 +331,8 @@ class Forms
       form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
       ec = get_safe_map(ecs_as_hash[key])
 
+      ec = get_safe_map(ecs_as_hash[key])
+
       user_name = @mobile_worker.user_name
       form_name = "child_registration_ec"
       instance_id = child['Instance ID']
@@ -420,6 +422,6 @@ class Forms
 
   def ecs_as_hash
     @ec.group_by { |ec| [ec['Village Code'].village.downcase, ec['Wife Name'].downcase, ec['Husband Name'].downcase] }
-  end
+end
 end
 
