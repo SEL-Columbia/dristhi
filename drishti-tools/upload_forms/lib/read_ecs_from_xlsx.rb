@@ -40,14 +40,14 @@ class ECs
         ec.convert_value "Husband DOB", :empty => (registration_date.year - ec['Husband Age'].to_i).to_s + "-" + registration_date.month.to_s + "-" + registration_date.day.to_s
         ec.convert_value "Religion", :empty => ""
         ec.convert_value "Caste",
-        "ST" => "st",
-        "SC" => "sc",
-        "Others" => "c_others",
-        :empty => ""
+                         "ST" => "st",
+                         "SC" => "sc",
+                         "Others" => "c_others",
+                         :empty => ""
         ec.convert_value "APL/BPL",
-        "APL" => "apl",
-        "BPL" => "bpl",
-        :empty => ""
+                         "APL" => "apl",
+                         "BPL" => "bpl",
+                         :empty => ""
         ec.convert_value "HP", :empty => ""
         ec.convert_value "Risks", :empty => ""
         ec.convert_value "Number of Abortion", :empty => "0"
@@ -62,21 +62,20 @@ class ECs
         ec.convert_value "Village Code", Village.code_to_village_hash
 
         ec.convert_value "FP Method",
-        "OCP" => "ocp",
-        "IUD" => "iud",
-        "Condom" => "condom",
-        "DMPA/Injectable" => "dmpa_injectable",
-        "Male Sterilization" => "male_sterilization",
-        "LAM" => "lam",
-        "Traditional Methods" => "traditional_methods",
-        "Female Sterilization" => "female_sterilization",
+                         "OCP" => "ocp",
+                         "IUD" => "iud",
+                         "Condom" => "condom",
+                         "DMPA/Injectable" => "dmpa_injectable",
+                         "Male Sterilization" => "male_sterilization",
+                         "LAM" => "lam",
+                         "Traditional Methods" => "traditional_methods",
+                         "Female Sterilization" => "female_sterilization",
                          :empty => "none",
                          :default => "none"
 
+        ec.add_field "FP Start Date", (Date.parse(ec['Acceptance Date']).to_s rescue Date.today.to_s)
         ec.add_field "Entity ID", Guid.new.to_s
         ec.add_field "Instance ID", Guid.new.to_s
-
-        ec.add_field "FP Start Date", (Date.parse(ec['Registration date']).to_s rescue Date.today.to_s)
 
         @ecs << ec
       end
