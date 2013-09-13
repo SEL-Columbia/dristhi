@@ -231,7 +231,7 @@
                                     "immunizationsGiven":"",
                                     "isChildHighRisk1":"",
                                     "childHighRiskReasons":"",
-                                    "isChildHighRisk":"",
+                                    "isChildHighRisk":"<%= pnc['Child HR'] %>",
                                     "id":"<%= pnc['Child ID'] %>"
                                 }]
                             <% else %>

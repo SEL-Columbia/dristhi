@@ -76,6 +76,11 @@ class PNCs
                             "No" => "no",
                             :empty => "yes",
                             :default => "yes"
+          pnc.convert_value "Child HR",
+                            "No" => "no",
+                            "Yes" => "yes",
+                            :empty => "no",
+                            :default => "no"
           pnc.convert_value "Child sex",
                             "Male" => "male",
                             "Female" => "female",

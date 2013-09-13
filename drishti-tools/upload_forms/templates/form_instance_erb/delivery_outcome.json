@@ -266,7 +266,7 @@
                                     "isHepBProphylaxisProvided": "",
                                     "isChildHighRisk1": "no",
                                     "childHighRiskReasons": "",
-                                    "isChildHighRisk": "no",
+                                    "isChildHighRisk": "<%= pnc['Child HR'] %>",
                                     "id": "<%= pnc['Child ID'] %>"
                                 }]
                             <% else %>
