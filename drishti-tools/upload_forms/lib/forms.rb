@@ -1,7 +1,7 @@
 require 'date'
 
 class Forms
-  def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data, pnc_data, pnc_visits_data, ppfp_data
+  def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data, pnc_data, pnc_visits_data, ppfp_data, child_data
     @mobile_worker = mobile_worker
     @ec = ec_data
     @ancs = anc_data
@@ -12,6 +12,7 @@ class Forms
     @pncs = pnc_data
     @pnc_visits = pnc_visits_data
     @ppfp_list = ppfp_data
+    @children = child_data
   end
 
   def fill_for_in_area
@@ -315,6 +316,31 @@ class Forms
       ppfp_json = form_submission_erb.result(binding)
       File.open("output/PP_FP_#{ppfp['Instance ID']}.json", "w") do |f|
         f.puts ppfp_json
+      end
+    end
+  end
+
+  def fill_child_registration_forms
+    @children.each do |child|
+
+      puts "Child Registration EC: #{child['Wife Name']} - #{child['Husband Name']} - #{child['Village Code'].village}"
+      key = [child['Village Code'].village.downcase, child['Wife Name'].downcase, child['Husband Name'].downcase]
+
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/child_registration_ec.json'))
+      form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
+
+      user_name = @mobile_worker.user_name
+      form_name = "child_registration_ec"
+      instance_id = child['Instance ID']
+      entity_id = ec['Entity ID']
+
+      anc = get_safe_map(@ancs[key])
+      ec = get_safe_map(ecs_as_hash[key])
+
+      form_instance = form_instance_erb.result(binding)
+      child_registration = form_submission_erb.result(binding)
+      File.open("output/Child_Registration_EC_#{child['Instance ID']}.json", "w") do |f|
+        f.puts child_registration
       end
     end
   end
