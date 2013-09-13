@@ -1,7 +1,7 @@
 require 'date'
 
 class Forms
-  def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data, pnc_data, pnc_visits_data, ppfp_data, child_data
+  def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data, pnc_data, pnc_visits_data, ppfp_data, child_data, child_immunizations_data
     @mobile_worker = mobile_worker
     @ec = ec_data
     @ancs = anc_data
@@ -13,6 +13,7 @@ class Forms
     @pnc_visits = pnc_visits_data
     @ppfp_list = ppfp_data
     @children = child_data
+    @child_immunizations = child_immunizations_data
   end
 
   def fill_for_in_area
@@ -328,6 +329,7 @@ class Forms
 
       form_instance_erb = ERB.new(File.read('templates/form_instance_erb/child_registration_ec.json'))
       form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
+      ec = get_safe_map(ecs_as_hash[key])
 
       user_name = @mobile_worker.user_name
       form_name = "child_registration_ec"
@@ -335,12 +337,35 @@ class Forms
       entity_id = ec['Entity ID']
 
       anc = get_safe_map(@ancs[key])
-      ec = get_safe_map(ecs_as_hash[key])
-
       form_instance = form_instance_erb.result(binding)
+
       child_registration = form_submission_erb.result(binding)
       File.open("output/Child_Registration_EC_#{child['Instance ID']}.json", "w") do |f|
         f.puts child_registration
+      end
+    end
+  end
+
+  def fill_child_immunization_forms
+    @child_immunizations.each do |child_immunization|
+
+      puts "Child Immunization: #{child_immunization['Wife Name']} - #{child_immunization['Husband Name']} - #{child_immunization['Village Code'].village}"
+      key = [child_immunization['Village Code'].village.downcase, child_immunization['Wife Name'].downcase, child_immunization['Husband Name'].downcase]
+
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/child_immunizations.json'))
+      form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
+
+      user_name = @mobile_worker.user_name
+      form_name = "child_immunizations"
+      instance_id = child_immunization['Instance ID']
+      child = @children[key]
+      entity_id = child['Entity ID']
+      submission_date = child_immunization['Submission date']
+
+      form_instance = form_instance_erb.result(binding)
+      child_immunization_erb_json = form_submission_erb.result(binding)
+      File.open("output/Child_Immunization_#{child_immunization['Instance ID']}.json", "w") do |f|
+        f.puts child_immunization_erb_json
       end
     end
   end

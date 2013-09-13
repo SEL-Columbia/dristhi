@@ -23,6 +23,7 @@ pnc_oa_forms = Dir['output/PNCOutOfArea*.json']
 pnc_visit_forms = Dir['output/PNCVisit*.json']
 ppfp_forms = Dir['output/PP_FP*.json']
 child_registration_ec_forms = Dir['output/Child_Registration_EC*.json']
+child_immunization_forms = Dir['output/Child_Immunization*.json']
 
 upload_all ec_forms, ARGV[0].to_s, ARGV[1].to_s
 upload_all anc_forms, ARGV[0].to_s, ARGV[1].to_s
@@ -36,3 +37,4 @@ upload_all pnc_oa_forms, ARGV[0].to_s, ARGV[1].to_s
 upload_all pnc_visit_forms, ARGV[0].to_s, ARGV[1].to_s
 upload_all ppfp_forms, ARGV[0].to_s, ARGV[1].to_s
 upload_all child_registration_ec_forms, ARGV[0].to_s, ARGV[1].to_s
+upload_all child_immunization_forms, ARGV[0].to_s, ARGV[1].to_s

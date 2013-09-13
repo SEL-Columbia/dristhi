@@ -46,7 +46,6 @@ class ANCVisits
           anc_visit.convert_value "Weight", :empty => ""
           anc_visit.convert_to_date "ANC visit date", :empty => Date.today.to_s
 
-
           anc_visit.add_field "Instance ID", Guid.new.to_s
           anc_visit.add_field "Entity ID", Guid.new.to_s
           anc_visit.add_field "Reference date", anc_visit['ANC visit date']
