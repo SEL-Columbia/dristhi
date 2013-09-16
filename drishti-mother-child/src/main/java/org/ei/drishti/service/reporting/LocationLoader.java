@@ -1,16 +1,16 @@
 package org.ei.drishti.service.reporting;
 
-import org.ei.drishti.common.AllConstants;
+import org.ei.drishti.domain.Child;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
+import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static org.ei.drishti.common.AllConstants.ReportBindTypes.CHILD_BIND_TYPE;
-import static org.ei.drishti.common.AllConstants.ReportBindTypes.ELIGIBLE_COUPLE_BIND_TYPE;
-import static org.ei.drishti.common.AllConstants.ReportBindTypes.MOTHER_BIND_TYPE;
+import static org.ei.drishti.common.AllConstants.ReportBindTypes.*;
 
 @Component
 public class LocationLoader implements ILocationLoader {
@@ -28,12 +28,27 @@ public class LocationLoader implements ILocationLoader {
 
     @Override
     public Location loadLocationFor(String bindType, String caseId) {
-        if(bindType.equalsIgnoreCase(CHILD_BIND_TYPE))
-            return allChildren.findByCaseId(caseId).location();
-        if(bindType.equalsIgnoreCase(MOTHER_BIND_TYPE))
-            return allMothers.findByCaseId(caseId).location();
-        if(bindType.equalsIgnoreCase(ELIGIBLE_COUPLE_BIND_TYPE))
-            return allEligibleCouples.findByCaseId(caseId).location();
+        if (bindType.equalsIgnoreCase(CHILD_BIND_TYPE))
+            return loadLocationForChild(caseId);
+        if (bindType.equalsIgnoreCase(MOTHER_BIND_TYPE))
+            return loadLocationForMother(caseId);
+        if (bindType.equalsIgnoreCase(ELIGIBLE_COUPLE_BIND_TYPE))
+            return loadLocationForEC(caseId);
         return null;
+    }
+
+    private Location loadLocationForEC(String caseId) {
+        EligibleCouple couple = allEligibleCouples.findByCaseId(caseId);
+        return couple.location();
+    }
+
+    private Location loadLocationForMother(String caseId) {
+        Mother mother = allMothers.findByCaseId(caseId);
+        return loadLocationForEC(mother.ecCaseId());
+    }
+
+    private Location loadLocationForChild(String caseId) {
+        Child child = allChildren.findByCaseId(caseId);
+        return loadLocationForMother(child.motherCaseId());
     }
 }
