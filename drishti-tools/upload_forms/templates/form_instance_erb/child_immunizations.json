@@ -11,7 +11,7 @@
             },
             {
                 "name": "previousImmunizations",
-                "value": "",
+                "value": "<%= previous_immunizations %>",
                 "source": "child.immunizationsGiven"
             },
             {
@@ -21,7 +21,7 @@
             },
             {
                 "name": "immunizationsGiven",
-                "value": " <%= child_immunization['Immunization'] %>",
+                "value": "<%= immunizations_given %>",
                 "source": "child.immunizationsGiven"
             },
             {

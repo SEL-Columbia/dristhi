@@ -335,6 +335,7 @@ class Forms
       form_name = "child_registration_ec"
       instance_id = child['Instance ID']
       entity_id = ec['Entity ID']
+      submission_date = child['Submission date']
 
       anc = get_safe_map(@ancs[key])
       form_instance = form_instance_erb.result(binding)
@@ -347,8 +348,8 @@ class Forms
   end
 
   def fill_child_immunization_forms
+    immunizations_given = ''
     @child_immunizations.each do |child_immunization|
-
       puts "Child Immunization: #{child_immunization['Wife Name']} - #{child_immunization['Husband Name']} - #{child_immunization['Village Code'].village}"
       key = [child_immunization['Village Code'].village.downcase, child_immunization['Wife Name'].downcase, child_immunization['Husband Name'].downcase]
 
@@ -358,9 +359,13 @@ class Forms
       user_name = @mobile_worker.user_name
       form_name = "child_immunizations"
       instance_id = child_immunization['Instance ID']
-      child = @children[key]
+      child = get_safe_map(@children[key])
       entity_id = child['Entity ID']
       submission_date = child_immunization['Submission date']
+      previous_immunizations = immunizations_given
+      immunizations_given += ' ' + child_immunization['Immunization']
+      immunizations_given.strip!
+      puts immunizations_given
 
       form_instance = form_instance_erb.result(binding)
       child_immunization_erb_json = form_submission_erb.result(binding)

@@ -48,6 +48,7 @@ class Children
           child.convert_value "Thayi number", :empty => "1234567"
 
           child.add_field "Entity ID", Guid.new.to_s
+          child.add_field "Submission date", Date.today.to_s
           child.add_field "Instance ID", Guid.new.to_s
 
           @children << child

@@ -122,7 +122,12 @@
             {
                 "name": "thayiCardNumber",
                 "value": "<%= child['Thayi number'] %>",
-                "source": "eligible_couple.thayiCardNumber"
+                "source": "eligible_couple.mother.child.thayiCardNumber"
+            },
+            {
+                "name": "thayiCard",
+                "value": "<%= child['Thayi number'] %>",
+                "source": "eligible_couple.mother.child.thayiCard"
             },
             {
                 "name": "bloodGroup",
@@ -261,7 +266,7 @@
             },
             {
                 "name": "submissionDate",
-                "value": "<%= Date.today.to_s %>",
+                "value": "<%= submission_date %>",
                 "source": "eligible_couple.submissionDate"
             }
         ]
