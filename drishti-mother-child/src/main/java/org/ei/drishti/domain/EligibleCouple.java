@@ -4,11 +4,14 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.ei.drishti.common.AllConstants;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
 
 @TypeDiscriminator("doc.type === 'EligibleCouple'")
 public class EligibleCouple extends MotechBaseDataObject {
@@ -105,6 +108,10 @@ public class EligibleCouple extends MotechBaseDataObject {
     public EligibleCouple setIsClosed(boolean isClosed) {
         this.isClosed = isClosed;
         return this;
+    }
+
+    public String currentMethod() {
+        return details.get(CURRENT_FP_METHOD_FIELD_NAME);
     }
 
     private String getCaseId() {

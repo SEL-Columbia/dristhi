@@ -24,6 +24,30 @@
                     "bindType": "child"
                 }
             ]
+        },
+        {
+            "form": "ec_registration",
+            "indicators": [
+                {
+                    "indicator": "CONDOM_QTY",
+                    "formFields": [
+                        "caseId",
+                        "numberOfCondomsSupplied",
+                        "familyPlanningMethodChangeDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "caseId",
+                        "fields": [
+                            "currentMethod"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsCondomRule"
+                    ],
+                    "bindType": "eligible_couple"
+                }
+            ]
         }
     ]
 }

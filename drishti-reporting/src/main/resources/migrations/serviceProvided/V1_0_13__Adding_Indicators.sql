@@ -12,3 +12,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('M_VIT_A_9');
 INSERT INTO report.dim_indicator (indicator) VALUES ('F_VIT_A');
 INSERT INTO report.dim_indicator (indicator) VALUES ('M_VIT_A');
 INSERT INTO report.dim_indicator (indicator) VALUES ('INFANT_LEFT');
+INSERT INTO report.dim_indicator (indicator) VALUES ('CONDOM_QTY');

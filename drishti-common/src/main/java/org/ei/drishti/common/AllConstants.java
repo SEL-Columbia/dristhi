@@ -248,6 +248,6 @@ public class AllConstants {
     public static class ReportingRuleNames {
         public static final String AGE_LESS_THAN_ONE_YEAR = "AgeIsLessThanOneYearRule";
         public static final String RELOCATION_PERMANENT = "RelocationIsPermanentRule";
-
+        public static final String CURRENT_FP_METHOD_IS_CONDOM = "CurrentFPMethodIsCondomRule";
     }
 }
