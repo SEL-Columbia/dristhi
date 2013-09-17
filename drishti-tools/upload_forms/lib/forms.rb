@@ -375,10 +375,9 @@ class Forms
         f.puts child_immunization_erb_json
       end
     end
-    end
+  end
 
   def fill_vitamin_a_dosage_forms
-    #immunizations_given = ''
     @vitamin_a_dosages.each do |vitamin_a_dosage|
       puts "Vitamin A: #{vitamin_a_dosage['Wife Name']} - #{vitamin_a_dosage['Husband Name']} - #{vitamin_a_dosage['Village Code'].village}"
       key = [vitamin_a_dosage['Village Code'].village.downcase, vitamin_a_dosage['Wife Name'].downcase, vitamin_a_dosage['Husband Name'].downcase]
@@ -392,9 +391,6 @@ class Forms
       child = get_safe_map(@children[key])
       entity_id = child['Entity ID']
       submission_date = vitamin_a_dosage['Submission date']
-      #previous_immunizations = immunizations_given
-      #immunizations_given += ' ' + vitamin_a_dosage['Immunization']
-      #immunizations_given.strip!
 
       form_instance = form_instance_erb.result(binding)
       vitamin_a_json = form_submission_erb.result(binding)

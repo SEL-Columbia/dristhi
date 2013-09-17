@@ -27,7 +27,7 @@ class VitaminADosages
     filename = "#{Random.rand(9999999)}_Vitamin_A.csv"
     sheet_name = "Vitamin A"
     begin
-      spreadsheet = Roo::Excelx.new xlsx_filename, nil, :ignore
+      spreadsheet = Excelx.new xlsx_filename, nil, :ignore
       if spreadsheet.sheets.include? sheet_name
         spreadsheet.to_csv filename, sheet_name
 
@@ -39,13 +39,12 @@ class VitaminADosages
           vitamin_a.convert_value "Husband Name", :empty => "Husband Name"
           vitamin_a.convert_value "Village Code", Village.code_to_village_hash
           vitamin_a.convert_value "Vitamin A dose", :empty => ""
+          vitamin_a['Vitamin A dose'].downcase!
           vitamin_a.convert_to_date "Vitamin A date", :empty => Date.today.to_s
 
           vitamin_a.add_field "Submission date", Date.today.to_s
           vitamin_a.add_field "Instance ID", Guid.new.to_s
           vitamin_a.add_field "Vitamin A Dosage Place", "sub_center"
-
-          vitamin_a['Vitamin A dose'].downcase!
 
           @vitamin_a_dosages << vitamin_a
         end
