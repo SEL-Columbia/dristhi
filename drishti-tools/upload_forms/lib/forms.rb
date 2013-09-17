@@ -1,7 +1,7 @@
 require 'date'
 
 class Forms
-  def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data, pnc_data, pnc_visits_data, ppfp_data, child_data, child_immunizations_data
+  def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data, pnc_data, pnc_visits_data, ppfp_data, child_data, child_immunizations_data, vitamin_a_dosages_data
     @mobile_worker = mobile_worker
     @ec = ec_data
     @ancs = anc_data
@@ -14,6 +14,7 @@ class Forms
     @ppfp_list = ppfp_data
     @children = child_data
     @child_immunizations = child_immunizations_data
+    @vitamin_a_dosages = vitamin_a_dosages_data
   end
 
   def fill_for_in_area
@@ -372,6 +373,33 @@ class Forms
       child_immunization_erb_json = form_submission_erb.result(binding)
       File.open("output/Child_Immunization_#{child_immunization['Instance ID']}.json", "w") do |f|
         f.puts child_immunization_erb_json
+      end
+    end
+    end
+
+  def fill_vitamin_a_dosage_forms
+    #immunizations_given = ''
+    @vitamin_a_dosages.each do |vitamin_a_dosage|
+      puts "Vitamin A: #{vitamin_a_dosage['Wife Name']} - #{vitamin_a_dosage['Husband Name']} - #{vitamin_a_dosage['Village Code'].village}"
+      key = [vitamin_a_dosage['Village Code'].village.downcase, vitamin_a_dosage['Wife Name'].downcase, vitamin_a_dosage['Husband Name'].downcase]
+
+      form_instance_erb = ERB.new(File.read('templates/form_instance_erb/vitamin_a.json'))
+      form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
+
+      user_name = @mobile_worker.user_name
+      form_name = "vitamin_a"
+      instance_id = vitamin_a_dosage['Instance ID']
+      child = get_safe_map(@children[key])
+      entity_id = child['Entity ID']
+      submission_date = vitamin_a_dosage['Submission date']
+      #previous_immunizations = immunizations_given
+      #immunizations_given += ' ' + vitamin_a_dosage['Immunization']
+      #immunizations_given.strip!
+
+      form_instance = form_instance_erb.result(binding)
+      vitamin_a_json = form_submission_erb.result(binding)
+      File.open("output/Vitamin_A_#{vitamin_a_dosage['Instance ID']}.json", "w") do |f|
+        f.puts vitamin_a_json
       end
     end
   end
