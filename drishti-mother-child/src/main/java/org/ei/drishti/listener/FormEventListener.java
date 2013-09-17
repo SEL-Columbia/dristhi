@@ -19,10 +19,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
 import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
 @Component
 public class FormEventListener {
@@ -30,6 +33,7 @@ public class FormEventListener {
     private FormSubmissionService formSubmissionService;
     private FormEntityService formEntityService;
     private AllFormExportTokens allFormExportTokens;
+    private static final ReentrantLock lock = new ReentrantLock();
 
     @Autowired
     public FormEventListener(FormSubmissionService formSubmissionService, FormEntityService formEntityService, AllFormExportTokens allFormExportTokens) {
@@ -47,24 +51,35 @@ public class FormEventListener {
 
     @MotechListener(subjects = DrishtiFormScheduler.SUBJECT)
     public void fetchForms(MotechEvent event) {
-        logger.info("Fetching Forms");
-        long version = getVersion();
-
-        List<FormSubmissionDTO> formSubmissionDTOs = formSubmissionService.fetch(version);
-        if (formSubmissionDTOs.isEmpty()) {
-            logger.info("No new forms found. Export token: " + version);
+        if (!lock.tryLock()) {
+            logger.warn("Not fetching forms from Message Queue. It is already in progress.");
             return;
         }
+        try {
+            logger.info("Fetching Forms");
+            long version = getVersion();
 
-        logger.info(format("Fetched {0} new forms found. Export token: {1}", formSubmissionDTOs.size(), version));
-        List<FormSubmission> formSubmissions = with(formSubmissionDTOs)
-                .convert(new Converter<FormSubmissionDTO, FormSubmission>() {
-                    @Override
-                    public FormSubmission convert(FormSubmissionDTO submission) {
-                        return FormSubmissionConvertor.toFormSubmissionWithVersion(submission);
-                    }
-                });
-        formEntityService.process(formSubmissions);
+            List<FormSubmissionDTO> formSubmissionDTOs = formSubmissionService.fetch(version);
+            if (formSubmissionDTOs.isEmpty()) {
+                logger.info("No new forms found. Export token: " + version);
+                return;
+            }
+
+            logger.info(format("Fetched {0} new forms found. Export token: {1}", formSubmissionDTOs.size(), version));
+            List<FormSubmission> formSubmissions = with(formSubmissionDTOs)
+                    .convert(new Converter<FormSubmissionDTO, FormSubmission>() {
+                        @Override
+                        public FormSubmission convert(FormSubmissionDTO submission) {
+                            return FormSubmissionConvertor.toFormSubmissionWithVersion(submission);
+                        }
+                    });
+            formEntityService.process(formSubmissions);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("{0} occured while trying to fetch forms. Message: {1} with stack trace {2}",
+                                            e.toString(), e.getMessage(), getFullStackTrace(e)));
+        } finally {
+            lock.unlock();
+        }
     }
 
     private long getVersion() {
