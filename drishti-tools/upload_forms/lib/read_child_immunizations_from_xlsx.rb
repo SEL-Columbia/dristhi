@@ -27,7 +27,7 @@ class ChildImmunizations
     filename = "#{Random.rand(9999999)}_Child_immunizations.csv"
     sheet_name = "Child Immunizations"
     begin
-      spreadsheet = Roo::Excelx.new xlsx_filename, nil, :ignore
+      spreadsheet = Excelx.new xlsx_filename, nil, :ignore
       if spreadsheet.sheets.include? sheet_name
         spreadsheet.to_csv filename, sheet_name
 

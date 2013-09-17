@@ -367,7 +367,6 @@ class Forms
       previous_immunizations = immunizations_given
       immunizations_given += ' ' + child_immunization['Immunization']
       immunizations_given.strip!
-      puts immunizations_given
 
       form_instance = form_instance_erb.result(binding)
       child_immunization_erb_json = form_submission_erb.result(binding)
@@ -422,6 +421,6 @@ class Forms
 
   def ecs_as_hash
     @ec.group_by { |ec| [ec['Village Code'].village.downcase, ec['Wife Name'].downcase, ec['Husband Name'].downcase] }
-end
+  end
 end
 

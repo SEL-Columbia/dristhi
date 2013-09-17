@@ -4,8 +4,7 @@ do
    echo "------Uploading trainer$index data-------"
    rm output/DONE/*.json
    rm output/*.json
-   ruby create_forms.rb trainer$index
-   ruby upload_forms.rb trainer$index $index
+   ruby create_forms.rb trainer$index && ruby upload_forms.rb trainer$index $index
 done
 
 echo "------Uploading Training users data-------"
@@ -14,6 +13,5 @@ do
    echo "------Uploading user$index data-------"
    rm output/DONE/*.json
    rm output/*.json
-   ruby create_forms.rb user$index
-   ruby upload_forms.rb user$index $index
+   ruby create_forms.rb user$index && ruby upload_forms.rb user$index $index
 done

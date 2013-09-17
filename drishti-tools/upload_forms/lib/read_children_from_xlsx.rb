@@ -43,7 +43,7 @@ class Children
                               :empty => "no",
                               :default => "no"
           child.convert_value "Child sex", :empty => "male"
-          child.convert_to_date "Child name", :empty => "Child name"
+          child.convert_value "Child name", :empty => "Child name"
           child.convert_to_date "Birth date", :empty => Date.today.to_s
           child.convert_value "Thayi number", :empty => "1234567"
 
