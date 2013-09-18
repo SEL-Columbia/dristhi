@@ -102,7 +102,7 @@
             },
             {
                 "name": "dateOfBirth",
-                "value": "<%= child['Birth date'] %>",
+                "value": "<%= child_dob %>",
                 "source": "eligible_couple.mother.child.dateOfBirth"
             },
             {

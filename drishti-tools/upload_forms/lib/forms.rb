@@ -104,8 +104,9 @@ class Forms
 
       form_instance_erb = ERB.new(File.read('templates/form_instance_erb/anc_visit.json'))
       form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
+      ec_for_anc = ecs_as_hash[key]
 
-      ec = get_safe_map(ecs_as_hash[key])
+      ec = ec_for_anc.nil? ? {'Entity ID' => Guid.new.to_s} : get_safe_map(ec_for_anc)
 
       anc = get_safe_map(@ancs[key])
 
@@ -330,17 +331,19 @@ class Forms
 
       form_instance_erb = ERB.new(File.read('templates/form_instance_erb/child_registration_ec.json'))
       form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
-      ec = get_safe_map(ecs_as_hash[key])
 
       ec = get_safe_map(ecs_as_hash[key])
 
+      child_dob = ec['Youngest child DOB']
       user_name = @mobile_worker.user_name
       form_name = "child_registration_ec"
       instance_id = child['Instance ID']
       entity_id = ec['Entity ID']
       submission_date = child['Submission date']
 
-      anc = get_safe_map(@ancs[key])
+      anc_for_child = @ancs[key]
+
+      anc = anc_for_child.nil? ? {'Entity Id' => Guid.new.to_s} : get_safe_map(anc_for_child)
       form_instance = form_instance_erb.result(binding)
 
       child_registration = form_submission_erb.result(binding)
@@ -362,7 +365,8 @@ class Forms
       user_name = @mobile_worker.user_name
       form_name = "child_immunizations"
       instance_id = child_immunization['Instance ID']
-      child = get_safe_map(@children[key])
+      child_registered = @children[key]
+      child = child_registered.nil? ? get_safe_map(@pncs[key])['Child ID'] : get_safe_map(child_registered)
       entity_id = child['Entity ID']
       submission_date = child_immunization['Submission date']
       previous_immunizations = immunizations_given

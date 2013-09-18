@@ -55,9 +55,9 @@ class ECs
         ec.convert_value "Number of Living Children", :empty => "0"
         ec.convert_value "Male", :empty => "0"
         ec.convert_value "Female", :empty => "0"
-        ec.convert_value "Age of youngest child (in months)", :empty => ""
+        ec.convert_value "Age of youngest child (in months)", :empty => "0"
         ec.convert_to_date "Youngest child DOB", :empty => (registration_date << ec['Age of youngest child (in months)'].to_i).to_s
-        ec.add_field "is youngest child under two", (((registration_date << 24)..registration_date).include? ec['Youngest child DOB']) ? "yes" : "no"
+        ec.add_field "is youngest child under two", ec['Age of youngest child (in months)'].to_i < 24 ? "yes" : "no"
 
         ec.convert_value "Village Code", Village.code_to_village_hash
 

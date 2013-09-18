@@ -86,11 +86,11 @@ ppfp_list.each do |key, value|
 end
 
 children.each do |key, value|
-  Forms.new(mobile_worker, ecs, ancs_per_ec, [], [], [], [], [], [], [], value, [], []).fill_child_registration_forms
+  Forms.new(mobile_worker, ecs, ancs_per_ec, [], [], [], [], pncs, [], [], value, [], []).fill_child_registration_forms
 end
 
 child_immunizations.each do |key, value|
-  Forms.new(mobile_worker, ecs, ancs_per_ec, [], [], [], [], [], [], [], children, value, []).fill_child_immunization_forms
+  Forms.new(mobile_worker, ecs, ancs_per_ec, [], [], [], [], pncs, [], [], children, value, []).fill_child_immunization_forms
 end
 
 vitamin_a_dosages.each do |key, value|
