@@ -45,7 +45,8 @@
                         "fields": []
                     },
                     "reportWhen": [
-                        "CurrentFPMethodIsCondomRule"
+                        "CurrentFPMethodIsCondomRule",
+                        "MoreThanZeroCondomsSuppliedRule"
                     ]
                 }
             ]
@@ -70,7 +71,8 @@
                         "fields": []
                     },
                     "reportWhen": [
-                        "NewFPMethodIsCondomRule"
+                        "NewFPMethodIsCondomRule",
+                        "MoreThanZeroCondomsSuppliedRule"
                     ]
                 }
             ]
@@ -95,7 +97,8 @@
                         "fields": []
                     },
                     "reportWhen": [
-                        "CurrentFPMethodIsCondomRule"
+                        "CurrentFPMethodIsCondomRule",
+                        "MoreThanZeroCondomsSuppliedRule"
                     ]
                 }
             ]
