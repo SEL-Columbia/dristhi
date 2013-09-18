@@ -6,7 +6,6 @@
                 {
                     "indicator": "INFANT_LEFT",
                     "bindType": "child",
-                    "serviceProvidedDateField": "submissionDate",
                     "formFields": [
                         "id",
                         "closeReason",

@@ -118,6 +118,7 @@ public class FormSubmissionReportServiceTest {
         verifyZeroInteractions(locationLoader);
     }
 
+
     private ReportDefinition reportDefinitionForInfantLeft() {
         return new ReportDefinition(
                 asList(
@@ -127,7 +128,7 @@ public class FormSubmissionReportServiceTest {
                                                 "INFANT_LEFT",
                                                 "child",
                                                 null,
-                                                "submissionDate",
+                                                null,
                                                 asList("id", "closeReason", "submissionDate"),
                                                 new ReferenceData("child", "id", asList("dateOfBirth")),
                                                 asList("AgeIsLessThanOneYearRule", "RelocationIsPermanentRule")
@@ -149,5 +150,4 @@ public class FormSubmissionReportServiceTest {
                                                 asList("CurrentFPMethodIsCondomRule")
                                         )))));
     }
-
 }
