@@ -5,6 +5,7 @@
             "indicators": [
                 {
                     "indicator": "INFANT_LEFT",
+                    "bindType": "child",
                     "formFields": [
                         "id",
                         "closeReason",
@@ -20,8 +21,7 @@
                     "reportWhen": [
                         "AgeIsLessThanOneYearRule",
                         "RelocationIsPermanentRule"
-                    ],
-                    "bindType": "child"
+                    ]
                 }
             ]
         },
@@ -30,6 +30,7 @@
             "indicators": [
                 {
                     "indicator": "CONDOM_QTY",
+                    "bindType": "eligible_couple",
                     "quantityField": "numberOfCondomsSupplied",
                     "formFields": [
                         "id",
@@ -45,8 +46,7 @@
                     },
                     "reportWhen": [
                         "CurrentFPMethodIsCondomRule"
-                    ],
-                    "bindType": "eligible_couple"
+                    ]
                 }
             ]
         },
@@ -55,6 +55,7 @@
             "indicators": [
                 {
                     "indicator": "CONDOM_QTY",
+                    "bindType": "eligible_couple",
                     "quantityField": "numberOfCondomsSupplied",
                     "formFields": [
                         "id",
@@ -70,8 +71,7 @@
                     },
                     "reportWhen": [
                         "CurrentFPMethodIsCondomRule"
-                    ],
-                    "bindType": "eligible_couple"
+                    ]
                 }
             ]
         }

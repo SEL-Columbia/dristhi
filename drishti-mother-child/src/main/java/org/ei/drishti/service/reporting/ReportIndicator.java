@@ -8,14 +8,24 @@ import java.util.List;
 
 public class ReportIndicator {
     private String indicator;
+    private String bindType;
+    private String quantityField;
     private List<String> formFields;
     private ReferenceData referenceData;
     private List<String> reportWhen;
-    private String bindType;
-    private String quantityField;
 
     public ReportIndicator(String indicator) {
         this.indicator = indicator;
+    }
+
+    public ReportIndicator(String indicator, String bindType, String quantityField, List<String> formFields,
+                           ReferenceData referenceData, List<String> reportWhen) {
+        this.indicator = indicator;
+        this.formFields = formFields;
+        this.referenceData = referenceData;
+        this.reportWhen = reportWhen;
+        this.bindType = bindType;
+        this.quantityField = quantityField;
     }
 
     public List<String> formFields() {

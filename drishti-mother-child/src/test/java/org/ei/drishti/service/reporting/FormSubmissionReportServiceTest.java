@@ -1,10 +1,6 @@
 package org.ei.drishti.service.reporting;
 
-import com.google.gson.Gson;
-import org.ei.drishti.domain.Child;
-import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
-import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -15,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import static java.util.Arrays.asList;
 import static org.ei.drishti.util.FormSubmissionBuilder.create;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -50,38 +47,56 @@ public class FormSubmissionReportServiceTest {
     }
 
     @Test
-    public void shouldCreateActionsForReports() throws Exception {
+    public void shouldReportIndicatorWhenAllRulesSucceed() throws Exception {
         FormSubmission submission = create()
                 .withFormName("child_close")
                 .withANMId("anm id 1")
                 .withEntityId("child id 1")
                 .addFormField("submissionDate", "2012-03-01")
-                .addFormField("numberOfCondoms", "10")
                 .addFormField("closeReason", "permanent_relocation")
                 .build();
-        Child child = new Child("child id 1", "mother id 1", "opv", "2", "female")
-                .withDateOfBirth("2012-01-01")
-                .withLocation("bherya", "Sub Center", "PHC X");
         Location location = new Location("bherya", "Sub Center", "PHC X");
-
-        when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "EC-CASE-1", "TC 1"));
-        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(allChildren.findByCaseId("child id 1")).thenReturn(child);
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
         when(rule.apply(any(FormSubmission.class), anyList(), any(ReferenceData.class))).thenReturn(true);
-        when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionFromJson());
+        when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionForInfantLeft());
         when(reporterFactory.reporterFor("child")).thenReturn(reporter);
         when(locationLoader.loadLocationFor("child", "child id 1")).thenReturn(location);
         SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
                 .put("id", submission.entityId())
-                .put("closeReason", submission.getField("closeReason"))
-                .put("numberOfCondoms", "10")
-                .put("quantity", submission.getField("numberOfCondoms"));
+                .put("closeReason", submission.getField("closeReason"));
 
         service.reportFor(submission);
 
         verify(locationLoader).loadLocationFor("child", "child id 1");
         verify(reporter).report(submission.entityId(), "INFANT_LEFT", location, reportData);
+    }
+
+    @Test
+    public void shouldReportQuantityWhenQuantityFieldIsSpecifiedInTheIndicatorDefinition() throws Exception {
+        FormSubmission submission = create()
+                .withFormName("eligible_couple")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("submissionDate", "2012-03-01")
+                .addFormField("numberOfCondomsSupplied", "10")
+                .addFormField("familyPlanningMethodChangeDate", "2013-01-01")
+                .build();
+        Location location = new Location("bherya", "Sub Center", "PHC X");
+        when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
+        when(rule.apply(any(FormSubmission.class), anyList(), any(ReferenceData.class))).thenReturn(true);
+        when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionWithCondomQuantity());
+        when(reporterFactory.reporterFor("eligible_couple")).thenReturn(reporter);
+        when(locationLoader.loadLocationFor("eligible_couple", "ec id 1")).thenReturn(location);
+        SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
+                .put("id", submission.entityId())
+                .put("numberOfCondomsSupplied", submission.getField("numberOfCondomsSupplied"))
+                .put("familyPlanningMethodChangeDate", "2013-01-01")
+                .put("quantity", submission.getField("numberOfCondomsSupplied"));
+
+        service.reportFor(submission);
+
+        verify(locationLoader).loadLocationFor("eligible_couple", "ec id 1");
+        verify(reporter).report(submission.entityId(), "CONDOM_QTY", location, reportData);
     }
 
     @Test
@@ -93,12 +108,7 @@ public class FormSubmissionReportServiceTest {
                 .addFormField("submissionDate", "2013-03-01")
                 .addFormField("closeReason", "permanent_relocation")
                 .build();
-        Child child = new Child("child id 1", "mother id 1", "opv", "2", "female").withDateOfBirth("2012-01-01");
-
-        when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "EC-CASE-1", "TC 1"));
-        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionFromJson());
-        when(allChildren.findByCaseId("child id 1")).thenReturn(child);
+        when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionForInfantLeft());
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
         when(rule.apply(any(FormSubmission.class), anyList(), any(ReferenceData.class))).thenReturn(false);
 
@@ -108,40 +118,34 @@ public class FormSubmissionReportServiceTest {
         verifyZeroInteractions(locationLoader);
     }
 
-    //#TODO: Create object with these values instead of parsing from JSON
-    private ReportDefinition reportDefinitionFromJson() {
-        String indicatorJson = "{\n" +
-                "    \"formIndicators\": [\n" +
-                "        {\n" +
-                "            \"form\": \"child_close\",\n" +
-                "            \"indicators\": [\n" +
-                "                {\n" +
-                "                    \"indicator\": \"INFANT_LEFT\",\n" +
-                "                    \"quantityField\": \"numberOfCondoms\",\n" +
-                "                    \"formFields\": [\n" +
-                "                        \"id\",\n" +
-                "                        \"closeReason\",\n" +
-                "                        \"numberOfCondoms\",\n" +
-                "                        \"submissionDate\"\n" +
-                "                    ],\n" +
-                "                    \"referenceData\": {\n" +
-                "                        \"type\": \"child\",\n" +
-                "                        \"idField\": \"id\",\n" +
-                "                        \"fields\": [\n" +
-                "                            \"dateOfBirth\"\n" +
-                "                        ]\n" +
-                "                    },\n" +
-                "                    \"reportWhen\": [\n" +
-                "                        \"AgeIsLessThanOneYearRule\",\n" +
-                "                        \"RelocationIsPermanentRule\"\n" +
-                "                    ],\n" +
-                "                    \"bindType\": \"child\"\n" +
-                "                }\n" +
-                "            ]\n" +
-                "        }\n" +
-                "    ]\n" +
-                "}\n";
-        return new Gson().fromJson(indicatorJson, ReportDefinition.class);
+    private ReportDefinition reportDefinitionForInfantLeft() {
+        return new ReportDefinition(
+                asList(
+                        new FormIndicator("child_close",
+                                asList(
+                                        new ReportIndicator(
+                                                "INFANT_LEFT",
+                                                "child",
+                                                null,
+                                                asList("id", "closeReason", "submissionDate"),
+                                                new ReferenceData("child", "id", asList("dateOfBirth")),
+                                                asList("AgeIsLessThanOneYearRule", "RelocationIsPermanentRule")
+                                        )))));
+    }
+
+    private ReportDefinition reportDefinitionWithCondomQuantity() {
+        return new ReportDefinition(
+                asList(
+                        new FormIndicator("eligible_couple",
+                                asList(
+                                        new ReportIndicator(
+                                                "CONDOM_QTY",
+                                                "eligible_couple",
+                                                "numberOfCondomsSupplied",
+                                                asList("id", "numberOfCondomsSupplied", "familyPlanningMethodChangeDate"),
+                                                new ReferenceData("eligible_couple", "caseId", asList("currentMethod")),
+                                                asList("CurrentFPMethodIsCondomRule")
+                                        )))));
     }
 
 }
