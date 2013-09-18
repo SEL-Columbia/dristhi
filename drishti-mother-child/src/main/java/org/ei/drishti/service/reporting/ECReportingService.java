@@ -59,8 +59,12 @@ public class ECReportingService {
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData(ec.anmIdentifier(), ec.ecNumber(),
                 indicator, reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME), new Location(ec.village(), ec.subCenter(), ec.phc()));
-        ReportingData anmReportData = ReportingData.anmReportData(ec.anmIdentifier(), reportData.get(ID),
-                indicator, reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
+        ReportingData anmReportData = ReportingData.anmReportData(ec.anmIdentifier(), reportData.get(ID), indicator,
+                reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
+        if (reportData.has(AllConstants.ReportDataParameters.QUANTITY)) {
+            serviceProvidedData.withQuantity(reportData.get(AllConstants.ReportDataParameters.QUANTITY));
+            anmReportData.withQuantity(reportData.get(AllConstants.ReportDataParameters.QUANTITY));
+        }
 
         service.sendReportData(serviceProvidedData);
         service.sendReportData(anmReportData);

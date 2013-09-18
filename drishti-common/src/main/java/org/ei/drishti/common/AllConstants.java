@@ -48,15 +48,27 @@ public class AllConstants {
     public static class Report {
         public static final int REPORTING_MONTH = 3;
         public static final int REPORTING_MONTH_START_DAY = 26;
-        public static final String REPORT_EXTRA_DATA_KEY_NAME = "reporting";
-        public static final String SERVICE_PROVIDED_DATA_TYPE = "serviceProvided";
-        public static final String ANM_REPORT_DATA_TYPE = "anmReportData";
         public static final double LOW_BIRTH_WEIGHT_THRESHOLD = 2.5;
         public static final int INFANT_MORTALITY_THRESHOLD_IN_YEARS = 1;
         public static final int CHILD_MORTALITY_THRESHOLD_IN_YEARS = 5;
         public static final int CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 7;
         public static final int CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 28;
         public static final int CHILD_DIARRHEA_THRESHOLD_IN_YEARS = 5;
+    }
+
+    public static class ReportDataParameters {
+        public static final String ANM_IDENTIFIER = "anmIdentifier";
+        public static final String SERVICE_PROVIDED_DATA_TYPE = "serviceProvided";
+        public static final String ANM_REPORT_DATA_TYPE = "anmReportData";
+        public static final String SERVICE_PROVIDER_TYPE = "serviceProviderType";
+        public static final String EXTERNAL_ID = "externalId";
+        public static final String INDICATOR = "indicator";
+        public static final String SERVICE_PROVIDED_DATE = "date";
+        public static final String VILLAGE = "village";
+        public static final String SUB_CENTER = "subCenter";
+        public static final String PHC = "phc";
+        public static final String QUANTITY = "quantity";
+        public static final String SERVICE_PROVIDER_ANM = "ANM";
     }
 
     public static class ECRegistrationFields {

@@ -38,7 +38,7 @@ public class ReportDefinitionLoader implements IReportDefinitionLoader {
     }
 
     @Override
-    public ReportDefinition reportDefintion() throws Exception {
+    public ReportDefinition reportDefinition() throws Exception {
         try {
             File file = new File(reportDefinitionFileName);
             String indicatorDefinitionJSON = null;

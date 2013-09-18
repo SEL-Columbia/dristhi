@@ -39,13 +39,13 @@ public class EligibleCoupleReporterTest {
                 .addFormField("familyPlanningMethodChangeDate", "2012-03-01")
                 .build();
         ArrayList<String> fieldNames = new ArrayList<>();
-        fieldNames.add("familyPlanningMethodChangeDate");
-        fieldNames.add("id");
+        fieldNames.add("submissionDate");
+
         SafeMap reportData = new SafeMap(submission.getFields(fieldNames));
         Location location = new Location("village", "sc", "phc");
         when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
 
-        reporter.report(submission, "OCP", location);
+        reporter.report(submission.entityId(), "OCP", location, reportData);
 
         verify(ecReportingService).reportIndicator(reportData, eligibleCouple, Indicator.from("OCP"));
     }

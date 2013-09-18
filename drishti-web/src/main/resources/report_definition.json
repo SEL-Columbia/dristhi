@@ -30,8 +30,34 @@
             "indicators": [
                 {
                     "indicator": "CONDOM_QTY",
+                    "quantityField": "numberOfCondomsSupplied",
                     "formFields": [
-                        "caseId",
+                        "id",
+                        "numberOfCondomsSupplied",
+                        "familyPlanningMethodChangeDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "caseId",
+                        "fields": [
+                            "currentMethod"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsCondomRule"
+                    ],
+                    "bindType": "eligible_couple"
+                }
+            ]
+        },
+        {
+            "form": "fp_change",
+            "indicators": [
+                {
+                    "indicator": "CONDOM_QTY",
+                    "quantityField": "numberOfCondomsSupplied",
+                    "formFields": [
+                        "id",
                         "numberOfCondomsSupplied",
                         "familyPlanningMethodChangeDate"
                     ],

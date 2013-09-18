@@ -5,6 +5,7 @@ import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
+import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -39,10 +40,10 @@ public class ChildReporterTest {
                 .build();
         Location location = new Location("village", "sc", "phc");
         when(allChildren.findByCaseId("child id 1")).thenReturn(child);
+        SafeMap safeMap = new SafeMap().put("submissionDate", "2012-03-01");
 
-        reporter.report(submission, "INFANT_LEFT", location);
+        reporter.report(submission.entityId(), "INFANT_LEFT", location, safeMap);
 
         verify(childReportingService).reportToBoth(child, Indicator.from("INFANT_LEFT"), submission.getField("submissionDate"), location);
-        reporter.report(submission, "INFANT_LEFT", location);
     }
 }

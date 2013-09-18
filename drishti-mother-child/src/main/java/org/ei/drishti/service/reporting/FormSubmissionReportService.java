@@ -1,8 +1,10 @@
 package org.ei.drishti.service.reporting;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.service.reporting.rules.IRule;
+import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 
 @Component
 public class FormSubmissionReportService {
@@ -31,7 +34,7 @@ public class FormSubmissionReportService {
     }
 
     public void reportFor(FormSubmission submission) throws Exception {
-        ReportDefinition reportDefinition = reportDefinitionLoader.reportDefintion();
+        ReportDefinition reportDefinition = reportDefinitionLoader.reportDefinition();
 
         List<ReportIndicator> reportIndicators = reportDefinition.getIndicatorsByFormName(submission.formName());
         for (ReportIndicator reportIndicator : reportIndicators) {
@@ -41,14 +44,15 @@ public class FormSubmissionReportService {
             boolean didAllRulesSucceed = processRules(submission, rules, formFields, referenceData);
             if (didAllRulesSucceed) {
                 Location location = locationLoader.loadLocationFor(reportIndicator.bindType(), submission.entityId());
-                report(submission, reportIndicator.indicator(), reportIndicator.bindType(), location);
+                report(submission, reportIndicator, location);
             }
         }
     }
 
-    private void report(FormSubmission submission, String reportIndicator, String bindType, Location location) {
-        IReporter reporter = reporterFactory.reporterFor(bindType);
-        reporter.report(submission, reportIndicator, location);
+    private void report(FormSubmission submission, ReportIndicator reportIndicator, Location location) {
+        IReporter reporter = reporterFactory.reporterFor(reportIndicator.bindType());
+        SafeMap reportData = getSafeMapReportData(submission, reportIndicator.formFields(), reportIndicator.quantityField());
+        reporter.report(submission.entityId(), reportIndicator.indicator(), location, reportData);
     }
 
     private boolean processRules(FormSubmission submission, List<String> rules, List<String> formFields, ReferenceData referenceData) {
@@ -65,5 +69,14 @@ public class FormSubmissionReportService {
             e.printStackTrace();
         }
         return didRuleSucceed;
+    }
+
+    private SafeMap getSafeMapReportData(FormSubmission submission, List<String> formFields, String quantityField) {
+        SafeMap safeMap = new SafeMap(submission.getFields(formFields));
+        safeMap.put(SUBMISSION_DATE_FIELD_NAME, submission.getField(SUBMISSION_DATE_FIELD_NAME));
+        if (quantityField != null) {
+            safeMap.put(AllConstants.ReportDataParameters.QUANTITY, submission.getField(quantityField));
+        }
+        return safeMap;
     }
 }

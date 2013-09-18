@@ -12,6 +12,7 @@ public class ReportIndicator {
     private ReferenceData referenceData;
     private List<String> reportWhen;
     private String bindType;
+    private String quantityField;
 
     public ReportIndicator(String indicator) {
         this.indicator = indicator;
@@ -35,6 +36,10 @@ public class ReportIndicator {
 
     public String indicator() {
         return indicator;
+    }
+
+    public String quantityField() {
+        return quantityField;
     }
 
     @Override

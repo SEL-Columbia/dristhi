@@ -186,7 +186,7 @@
             },
             {
                 "name": "submissionDate",
-                "value": "2013-09-04",
+                "value": "<%= Date.today.to_s %>",
                 "source": "mother.submissionDate"
             }
         ],

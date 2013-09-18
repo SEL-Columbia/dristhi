@@ -10,8 +10,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ei.drishti.common.AllConstants.Report.ANM_REPORT_DATA_TYPE;
-import static org.ei.drishti.common.AllConstants.Report.SERVICE_PROVIDED_DATA_TYPE;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.*;
 
 public class ReportingData implements Serializable {
     private static final long serialVersionUID = 454645765753L;
@@ -22,13 +21,23 @@ public class ReportingData implements Serializable {
     private Map<String, String> data;
 
     public static ReportingData serviceProvidedData(String anmIdentifier, String externalId, Indicator indicator, String date, Location location) {
-        return new ReportingData(SERVICE_PROVIDED_DATA_TYPE).with("anmIdentifier", anmIdentifier).with("indicator", indicator.value())
-                .with("externalId", externalId).with("village", location.village()).with("subCenter", location.subCenter()).with("phc", location.phc()).with("date", date).with("serviceProviderType", "ANM");
+        return new ReportingData(SERVICE_PROVIDED_DATA_TYPE)
+                .with(ANM_IDENTIFIER, anmIdentifier)
+                .with(INDICATOR, indicator.value())
+                .with(EXTERNAL_ID, externalId)
+                .with(VILLAGE, location.village())
+                .with(SUB_CENTER, location.subCenter())
+                .with(PHC, location.phc())
+                .with(SERVICE_PROVIDED_DATE, date)
+                .with(SERVICE_PROVIDER_TYPE, SERVICE_PROVIDER_ANM);
     }
 
     public static ReportingData anmReportData(String anmIdentifier, String externalId, Indicator indicator, String date) {
-        return new ReportingData(ANM_REPORT_DATA_TYPE).with("anmIdentifier", anmIdentifier).with("indicator", indicator.value())
-                .with("externalId", externalId).with("date", date);
+        return new ReportingData(ANM_REPORT_DATA_TYPE)
+                .with(ANM_IDENTIFIER, anmIdentifier)
+                .with(INDICATOR, indicator.value())
+                .with(EXTERNAL_ID, externalId)
+                .with(SERVICE_PROVIDED_DATE, date);
     }
 
     private ReportingData() {
@@ -50,7 +59,7 @@ public class ReportingData implements Serializable {
     }
 
     public ReportingData withQuantity(String quantity) {
-        data.put("quantity", quantity);
+        data.put(QUANTITY, quantity);
         return this;
     }
 

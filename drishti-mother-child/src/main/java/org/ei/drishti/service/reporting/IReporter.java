@@ -1,9 +1,9 @@
 package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.domain.Location;
-import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.util.SafeMap;
 
 public interface IReporter {
-    public void report(FormSubmission submission, String reportIndicator, Location location);
+    public void report(String entityId, String reportIndicator, Location location, SafeMap reportData);
 }
 

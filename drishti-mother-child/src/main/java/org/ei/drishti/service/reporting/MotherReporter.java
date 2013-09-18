@@ -3,8 +3,8 @@ package org.ei.drishti.service.reporting;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
-import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.util.SafeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,8 +23,9 @@ public class MotherReporter implements IReporter {
     }
 
     @Override
-    public void report(FormSubmission submission, String reportIndicator, Location location) {
-        Mother mother = allMothers.findByCaseId(submission.entityId());
-        motherReportingService.reportToBoth(mother, Indicator.from(reportIndicator), submission.getField(SUBMISSION_DATE_FIELD_NAME), location);
+    public void report(String entityId, String reportIndicator, Location location, SafeMap reportData) {
+        Mother mother = allMothers.findByCaseId(entityId);
+        String submissionDate = reportData.get(SUBMISSION_DATE_FIELD_NAME);
+        motherReportingService.reportToBoth(mother, Indicator.from(reportIndicator), submissionDate, location);
     }
 }

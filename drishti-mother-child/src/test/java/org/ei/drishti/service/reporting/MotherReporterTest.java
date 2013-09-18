@@ -5,6 +5,7 @@ import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -35,14 +36,14 @@ public class MotherReporterTest {
     public void shouldCallMotherReporting() {
         FormSubmission submission = create()
                 .withEntityId("mother id 1")
-                .addFormField("submissionDate", "2012-03-01")
                 .build();
         Location location = new Location("village", "sc", "phc");
+        SafeMap safeMap = new SafeMap().put("submissionDate", "2012-03-01");
 
         when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
 
-        motherReporter.report(submission, "MMA", location);
+        motherReporter.report(submission.entityId(), "MMA", location, safeMap);
 
-        verify(motherReportingService).reportToBoth(mother, Indicator.from("MMA"), submission.getField("submissionDate"), location);
+        verify(motherReportingService).reportToBoth(mother, Indicator.from("MMA"), safeMap.get("submissionDate"), location);
     }
 }

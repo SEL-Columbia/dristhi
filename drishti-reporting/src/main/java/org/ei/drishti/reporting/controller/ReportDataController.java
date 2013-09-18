@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-import static org.ei.drishti.common.AllConstants.Report.ANM_REPORT_DATA_TYPE;
-import static org.ei.drishti.common.AllConstants.Report.SERVICE_PROVIDED_DATA_TYPE;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters;
 
 @Controller
 public class ReportDataController {
@@ -34,11 +33,24 @@ public class ReportDataController {
     @ResponseBody
     public String submit(@RequestBody ReportingData reportingData) {
         logger.info("Reporting on: " + reportingData);
-        if (reportingData.type().equals(SERVICE_PROVIDED_DATA_TYPE)) {
-            servicesProvidedRepository.save(reportingData.get("anmIdentifier"), reportingData.get("serviceProviderType"), reportingData.get("externalId"),
-                    reportingData.get("indicator"), reportingData.get("date"), reportingData.get("village"), reportingData.get("subCenter"), reportingData.get("phc"), reportingData.get("quantity"));
-        } else if (reportingData.type().equals(ANM_REPORT_DATA_TYPE)) {
-            anmReportsRepository.save(reportingData.get("anmIdentifier"), reportingData.get("externalId"), reportingData.get("indicator"), reportingData.get("date"), reportingData.get("quantity"));
+        if (reportingData.type().equals(ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE)) {
+            servicesProvidedRepository.save(
+                    reportingData.get(ReportDataParameters.ANM_IDENTIFIER),
+                    reportingData.get(ReportDataParameters.SERVICE_PROVIDER_TYPE),
+                    reportingData.get(ReportDataParameters.EXTERNAL_ID),
+                    reportingData.get(ReportDataParameters.INDICATOR),
+                    reportingData.get(ReportDataParameters.SERVICE_PROVIDED_DATE),
+                    reportingData.get(ReportDataParameters.VILLAGE),
+                    reportingData.get(ReportDataParameters.SUB_CENTER),
+                    reportingData.get(ReportDataParameters.PHC),
+                    reportingData.get(ReportDataParameters.QUANTITY));
+        } else if (reportingData.type().equals(ReportDataParameters.ANM_REPORT_DATA_TYPE)) {
+            anmReportsRepository.save(
+                    reportingData.get(ReportDataParameters.ANM_IDENTIFIER),
+                    reportingData.get(ReportDataParameters.EXTERNAL_ID),
+                    reportingData.get(ReportDataParameters.INDICATOR),
+                    reportingData.get(ReportDataParameters.SERVICE_PROVIDED_DATE),
+                    reportingData.get(ReportDataParameters.QUANTITY));
         }
         return "Success.";
     }

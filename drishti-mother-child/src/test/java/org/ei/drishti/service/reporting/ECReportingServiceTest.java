@@ -163,7 +163,8 @@ public class ECReportingServiceTest {
         service.fpChange(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_SC, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_SC, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_SC, "2012-01-01",
+                new Location("bherya", "Sub Center", "PHC X")));
     }
 
     @Test
@@ -274,5 +275,22 @@ public class ECReportingServiceTest {
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01"));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
         verifyNoMoreInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldReportQuantityWhenProvided() throws Exception {
+        EligibleCouple ec = new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X");
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(ec);
+
+        SafeMap reportData = new SafeMap(
+                create("id", "EC CASE 1")
+                        .put("familyPlanningMethodChangeDate", "2013-01-01")
+                        .put("quantity", "10")
+                        .map());
+        service.reportIndicator(reportData, ec, Indicator.CONDOM_QTY);
+
+        verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.CONDOM_QTY, "2013-01-01").withQuantity("10"));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.CONDOM_QTY, "2013-01-01",
+                new Location("bherya", "Sub Center", "PHC X")).withQuantity("10"));
     }
 }

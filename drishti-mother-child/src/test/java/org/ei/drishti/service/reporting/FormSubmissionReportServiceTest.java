@@ -10,6 +10,7 @@ import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.reporting.rules.IRule;
+import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -55,11 +56,12 @@ public class FormSubmissionReportServiceTest {
                 .withANMId("anm id 1")
                 .withEntityId("child id 1")
                 .addFormField("submissionDate", "2012-03-01")
+                .addFormField("numberOfCondoms", "10")
                 .addFormField("closeReason", "permanent_relocation")
                 .build();
         Child child = new Child("child id 1", "mother id 1", "opv", "2", "female")
-                            .withDateOfBirth("2012-01-01")
-                            .withLocation("bherya", "Sub Center", "PHC X");
+                .withDateOfBirth("2012-01-01")
+                .withLocation("bherya", "Sub Center", "PHC X");
         Location location = new Location("bherya", "Sub Center", "PHC X");
 
         when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "EC-CASE-1", "TC 1"));
@@ -67,14 +69,19 @@ public class FormSubmissionReportServiceTest {
         when(allChildren.findByCaseId("child id 1")).thenReturn(child);
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
         when(rule.apply(any(FormSubmission.class), anyList(), any(ReferenceData.class))).thenReturn(true);
-        when(reportDefinitionLoader.reportDefintion()).thenReturn(reportDefinitonFromJson());
+        when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionFromJson());
         when(reporterFactory.reporterFor("child")).thenReturn(reporter);
         when(locationLoader.loadLocationFor("child", "child id 1")).thenReturn(location);
+        SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
+                .put("id", submission.entityId())
+                .put("closeReason", submission.getField("closeReason"))
+                .put("numberOfCondoms", "10")
+                .put("quantity", submission.getField("numberOfCondoms"));
 
         service.reportFor(submission);
 
         verify(locationLoader).loadLocationFor("child", "child id 1");
-        verify(reporter).report(submission, "INFANT_LEFT", location);
+        verify(reporter).report(submission.entityId(), "INFANT_LEFT", location, reportData);
     }
 
     @Test
@@ -90,7 +97,7 @@ public class FormSubmissionReportServiceTest {
 
         when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportDefinitionLoader.reportDefintion()).thenReturn(reportDefinitonFromJson());
+        when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionFromJson());
         when(allChildren.findByCaseId("child id 1")).thenReturn(child);
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
         when(rule.apply(any(FormSubmission.class), anyList(), any(ReferenceData.class))).thenReturn(false);
@@ -101,7 +108,8 @@ public class FormSubmissionReportServiceTest {
         verifyZeroInteractions(locationLoader);
     }
 
-    private ReportDefinition reportDefinitonFromJson() {
+    //#TODO: Create object with these values instead of parsing from JSON
+    private ReportDefinition reportDefinitionFromJson() {
         String indicatorJson = "{\n" +
                 "    \"formIndicators\": [\n" +
                 "        {\n" +
@@ -109,9 +117,11 @@ public class FormSubmissionReportServiceTest {
                 "            \"indicators\": [\n" +
                 "                {\n" +
                 "                    \"indicator\": \"INFANT_LEFT\",\n" +
+                "                    \"quantityField\": \"numberOfCondoms\",\n" +
                 "                    \"formFields\": [\n" +
                 "                        \"id\",\n" +
                 "                        \"closeReason\",\n" +
+                "                        \"numberOfCondoms\",\n" +
                 "                        \"submissionDate\"\n" +
                 "                    ],\n" +
                 "                    \"referenceData\": {\n" +
