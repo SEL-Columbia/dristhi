@@ -10,7 +10,7 @@
     ],
     "fp_change": [
         "id",
-        "currentMethod",
+        "newMethod",
         "familyPlanningMethodChangeDate"
     ],
     "anc_registration": [

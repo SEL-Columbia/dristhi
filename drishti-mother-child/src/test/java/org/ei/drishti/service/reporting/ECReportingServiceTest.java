@@ -110,7 +110,8 @@ public class ECReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
-                .put("currentMethod", "iud")
+                .put("currentMethod", "ocp")
+                .put("newMethod", "iud")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .put("method_still_the_same", "no")
                 .map());
@@ -126,7 +127,8 @@ public class ECReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
-                .put("currentMethod", "ocp")
+                .put("currentMethod", "iud")
+                .put("newMethod", "ocp")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .put("caste", "c_others")
                 .map());
@@ -141,7 +143,8 @@ public class ECReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
-                .put("currentMethod", "ocp")
+                .put("currentMethod", "iud")
+                .put("newMethod", "ocp")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .put("caste", "st")
                 .map());
@@ -156,7 +159,8 @@ public class ECReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
-                .put("currentMethod", "ocp")
+                .put("currentMethod", "iud")
+                .put("newMethod", "ocp")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .put("caste", "sc")
                 .map());
@@ -233,7 +237,8 @@ public class ECReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
-                .put("currentMethod", "female_sterilization")
+                .put("currentMethod", "iud")
+                .put("newMethod", "female_sterilization")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .put("caste", "")
                 .put("economicStatus", "bpl")
@@ -249,7 +254,8 @@ public class ECReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
-                .put("currentMethod", "female_sterilization")
+                .put("currentMethod", "iud")
+                .put("newMethod", "female_sterilization")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .put("caste", "")
                 .put("economicStatus", "apl")
@@ -265,7 +271,8 @@ public class ECReportingServiceTest {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
-                .put("currentMethod", "female_sterilization")
+                .put("currentMethod", "iud")
+                .put("newMethod", "female_sterilization")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
                 .put("caste", "")
                 .put("economicStatus", "")
