@@ -8,8 +8,6 @@ import org.ei.drishti.util.SafeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
-
 @Component
 public class MotherReporter implements IReporter {
 
@@ -23,9 +21,8 @@ public class MotherReporter implements IReporter {
     }
 
     @Override
-    public void report(String entityId, String reportIndicator, Location location, SafeMap reportData) {
+    public void report(String entityId, String reportIndicator, Location location, String serviceProvidedDate, SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(entityId);
-        String submissionDate = reportData.get(SUBMISSION_DATE_FIELD_NAME);
-        motherReportingService.reportToBoth(mother, Indicator.from(reportIndicator), submissionDate, location);
+        motherReportingService.reportToBoth(mother, Indicator.from(reportIndicator), serviceProvidedDate, location);
     }
 }

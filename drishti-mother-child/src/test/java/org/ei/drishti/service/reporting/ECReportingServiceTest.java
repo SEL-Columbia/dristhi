@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -294,7 +295,7 @@ public class ECReportingServiceTest {
                         .put("familyPlanningMethodChangeDate", "2013-01-01")
                         .put("quantity", "10")
                         .map());
-        service.reportIndicator(reportData, ec, Indicator.CONDOM_QTY);
+        service.reportIndicator(reportData, ec, Indicator.CONDOM_QTY, reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.CONDOM_QTY, "2013-01-01").withQuantity("10"));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.CONDOM_QTY, "2013-01-01",

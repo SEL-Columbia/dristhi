@@ -68,7 +68,7 @@ public class FormSubmissionReportServiceTest {
         service.reportFor(submission);
 
         verify(locationLoader).loadLocationFor("child", "child id 1");
-        verify(reporter).report(submission.entityId(), "INFANT_LEFT", location, reportData);
+        verify(reporter).report(submission.entityId(), "INFANT_LEFT", location, "2012-03-01", reportData);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class FormSubmissionReportServiceTest {
         service.reportFor(submission);
 
         verify(locationLoader).loadLocationFor("eligible_couple", "ec id 1");
-        verify(reporter).report(submission.entityId(), "CONDOM_QTY", location, reportData);
+        verify(reporter).report(submission.entityId(), "CONDOM_QTY", location, "2013-01-01", reportData);
     }
 
     @Test
@@ -127,6 +127,7 @@ public class FormSubmissionReportServiceTest {
                                                 "INFANT_LEFT",
                                                 "child",
                                                 null,
+                                                "submissionDate",
                                                 asList("id", "closeReason", "submissionDate"),
                                                 new ReferenceData("child", "id", asList("dateOfBirth")),
                                                 asList("AgeIsLessThanOneYearRule", "RelocationIsPermanentRule")
@@ -142,6 +143,7 @@ public class FormSubmissionReportServiceTest {
                                                 "CONDOM_QTY",
                                                 "eligible_couple",
                                                 "numberOfCondomsSupplied",
+                                                "familyPlanningMethodChangeDate",
                                                 asList("id", "numberOfCondomsSupplied", "familyPlanningMethodChangeDate"),
                                                 new ReferenceData("eligible_couple", "caseId", asList("currentMethod")),
                                                 asList("CurrentFPMethodIsCondomRule")

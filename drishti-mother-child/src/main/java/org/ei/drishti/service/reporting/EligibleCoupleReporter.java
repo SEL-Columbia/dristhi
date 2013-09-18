@@ -21,8 +21,9 @@ public class EligibleCoupleReporter implements IReporter {
     }
 
     @Override
-    public void report(String entityId, String reportIndicator, Location location, SafeMap reportData) {
+    public void report(String entityId, String reportIndicator, Location location, String serviceProvidedDate, SafeMap reportData) {
         EligibleCouple eligibleCouple = allEligibleCouples.findByCaseId(entityId);
-        ecReportingService.reportIndicator(reportData, eligibleCouple, Indicator.from(reportIndicator));
+        //#TODO: Pull out the reportIndicator method out of ecReportingService
+        ecReportingService.reportIndicator(reportData, eligibleCouple, Indicator.from(reportIndicator), serviceProvidedDate);
     }
 }

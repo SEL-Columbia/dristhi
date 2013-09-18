@@ -42,7 +42,7 @@ public class MotherReporterTest {
 
         when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
 
-        motherReporter.report(submission.entityId(), "MMA", location, safeMap);
+        motherReporter.report(submission.entityId(), "MMA", location, "2012-03-01", safeMap);
 
         verify(motherReportingService).reportToBoth(mother, Indicator.from("MMA"), safeMap.get("submissionDate"), location);
     }

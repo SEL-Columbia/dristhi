@@ -6,6 +6,7 @@
                 {
                     "indicator": "INFANT_LEFT",
                     "bindType": "child",
+                    "serviceProvidedDateField": "submissionDate",
                     "formFields": [
                         "id",
                         "closeReason",
@@ -31,6 +32,7 @@
                 {
                     "indicator": "CONDOM_QTY",
                     "bindType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "quantityField": "numberOfCondomsSupplied",
                     "formFields": [
                         "id",
@@ -55,6 +57,7 @@
                 {
                     "indicator": "CONDOM_QTY",
                     "bindType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "quantityField": "numberOfCondomsSupplied",
                     "formFields": [
                         "id",
@@ -69,6 +72,31 @@
                     },
                     "reportWhen": [
                         "NewFPMethodIsCondomRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "renew_fp_product",
+            "indicators": [
+                {
+                    "indicator": "CONDOM_QTY",
+                    "bindType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "quantityField": "numberOfCondomsSupplied",
+                    "formFields": [
+                        "id",
+                        "numberOfCondomsSupplied",
+                        "currentMethod",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "caseId",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsCondomRule"
                     ]
                 }
             ]

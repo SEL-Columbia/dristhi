@@ -45,8 +45,8 @@ public class EligibleCoupleReporterTest {
         Location location = new Location("village", "sc", "phc");
         when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
 
-        reporter.report(submission.entityId(), "OCP", location, reportData);
+        reporter.report(submission.entityId(), "OCP", location, "2012-03-01", reportData);
 
-        verify(ecReportingService).reportIndicator(reportData, eligibleCouple, Indicator.from("OCP"));
+        verify(ecReportingService).reportIndicator(reportData, eligibleCouple, Indicator.from("OCP"), "2012-03-01");
     }
 }

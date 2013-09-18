@@ -42,7 +42,7 @@ public class ChildReporterTest {
         when(allChildren.findByCaseId("child id 1")).thenReturn(child);
         SafeMap safeMap = new SafeMap().put("submissionDate", "2012-03-01");
 
-        reporter.report(submission.entityId(), "INFANT_LEFT", location, safeMap);
+        reporter.report(submission.entityId(), "INFANT_LEFT", location, "2012-03-01", safeMap);
 
         verify(childReportingService).reportToBoth(child, Indicator.from("INFANT_LEFT"), submission.getField("submissionDate"), location);
     }

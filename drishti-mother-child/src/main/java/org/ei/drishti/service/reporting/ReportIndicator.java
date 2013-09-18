@@ -9,6 +9,7 @@ import java.util.List;
 public class ReportIndicator {
     private String indicator;
     private String bindType;
+    private String serviceProvidedDateField;
     private String quantityField;
     private List<String> formFields;
     private ReferenceData referenceData;
@@ -18,14 +19,31 @@ public class ReportIndicator {
         this.indicator = indicator;
     }
 
-    public ReportIndicator(String indicator, String bindType, String quantityField, List<String> formFields,
-                           ReferenceData referenceData, List<String> reportWhen) {
+    public ReportIndicator(String indicator, String bindType, String quantityField, String serviceProvidedDateField,
+                           List<String> formFields, ReferenceData referenceData, List<String> reportWhen) {
         this.indicator = indicator;
+        this.bindType = bindType;
+        this.serviceProvidedDateField = serviceProvidedDateField;
+        this.quantityField = quantityField;
         this.formFields = formFields;
         this.referenceData = referenceData;
         this.reportWhen = reportWhen;
-        this.bindType = bindType;
-        this.quantityField = quantityField;
+    }
+
+    public String indicator() {
+        return indicator;
+    }
+
+    public String bindType() {
+        return bindType;
+    }
+
+    public String serviceProvidedDateField() {
+        return serviceProvidedDateField;
+    }
+
+    public String quantityField() {
+        return quantityField;
     }
 
     public List<String> formFields() {
@@ -38,18 +56,6 @@ public class ReportIndicator {
 
     public List<String> reportingRules() {
         return reportWhen;
-    }
-
-    public String bindType() {
-        return bindType;
-    }
-
-    public String indicator() {
-        return indicator;
-    }
-
-    public String quantityField() {
-        return quantityField;
     }
 
     @Override

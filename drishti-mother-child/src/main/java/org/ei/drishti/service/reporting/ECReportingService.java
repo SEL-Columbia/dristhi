@@ -28,39 +28,39 @@ public class ECReportingService {
 
     public void registerEC(SafeMap reportData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
-        reportIndicator(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)));
+        reportIndicator(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)), reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
         reportOCPCasteBasedIndicators(reportData, couple, reportData.get(CURRENT_FP_METHOD_FIELD_NAME));
         reportFemaleSterilizationEconomicStatusBasedIndicators(reportData, couple, reportData.get(CURRENT_FP_METHOD_FIELD_NAME));
     }
 
     public void fpChange(SafeMap reportData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
-        reportIndicator(reportData, couple, Indicator.from(reportData.get(NEW_FP_METHOD_FIELD_NAME)));
+        reportIndicator(reportData, couple, Indicator.from(reportData.get(NEW_FP_METHOD_FIELD_NAME)), reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
         reportOCPCasteBasedIndicators(reportData, couple, reportData.get(NEW_FP_METHOD_FIELD_NAME));
         reportFemaleSterilizationEconomicStatusBasedIndicators(reportData, couple, reportData.get(NEW_FP_METHOD_FIELD_NAME));
     }
 
     private void reportOCPCasteBasedIndicators(SafeMap reportData, EligibleCouple ec, String fpMethod) {
         if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
-            reportIndicator(reportData, ec, Caste.from(reportData.get(AllConstants.ECRegistrationFields.CASTE)).indicator());
+            reportIndicator(reportData, ec, Caste.from(reportData.get(AllConstants.ECRegistrationFields.CASTE)).indicator(), reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
         }
     }
 
     private void reportFemaleSterilizationEconomicStatusBasedIndicators(SafeMap reportData, EligibleCouple couple, String fpMethod) {
         if (FEMALE_STERILIZATION_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
-            reportIndicator(reportData, couple, EconomicStatus.from(reportData.get(AllConstants.ECRegistrationFields.ECONOMIC_STATUS)).indicator());
+            reportIndicator(reportData, couple, EconomicStatus.from(reportData.get(AllConstants.ECRegistrationFields.ECONOMIC_STATUS)).indicator(), reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
         }
     }
 
-    public void reportIndicator(SafeMap reportData, EligibleCouple ec, Indicator indicator) {
+    public void reportIndicator(SafeMap reportData, EligibleCouple ec, Indicator indicator, String serviceProvidedDate) {
         if (indicator == null) {
             return;
         }
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData(ec.anmIdentifier(), ec.ecNumber(),
-                indicator, reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME), new Location(ec.village(), ec.subCenter(), ec.phc()));
+                indicator, serviceProvidedDate, new Location(ec.village(), ec.subCenter(), ec.phc()));
         ReportingData anmReportData = ReportingData.anmReportData(ec.anmIdentifier(), reportData.get(ID), indicator,
-                reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
+                serviceProvidedDate);
         if (reportData.has(AllConstants.ReportDataParameters.QUANTITY)) {
             serviceProvidedData.withQuantity(reportData.get(AllConstants.ReportDataParameters.QUANTITY));
             anmReportData.withQuantity(reportData.get(AllConstants.ReportDataParameters.QUANTITY));

@@ -52,7 +52,7 @@ public class FormSubmissionReportService {
     private void report(FormSubmission submission, ReportIndicator reportIndicator, Location location) {
         IReporter reporter = reporterFactory.reporterFor(reportIndicator.bindType());
         SafeMap reportData = getSafeMapReportData(submission, reportIndicator.formFields(), reportIndicator.quantityField());
-        reporter.report(submission.entityId(), reportIndicator.indicator(), location, reportData);
+        reporter.report(submission.entityId(), reportIndicator.indicator(), location, submission.getField(reportIndicator.serviceProvidedDateField()), reportData);
     }
 
     private boolean processRules(FormSubmission submission, List<String> rules, List<String> formFields, ReferenceData referenceData) {
