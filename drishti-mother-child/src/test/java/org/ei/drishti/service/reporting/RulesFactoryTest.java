@@ -18,13 +18,15 @@ public class RulesFactoryTest {
     private CurrentFPMethodIsCondomRule currentFPMethodIsCondomRule;
     @Mock
     private NewFPMethodIsCondomRule newFPMethodIsCondomRule;
+    @Mock
+    private MoreThanZeroCondomsSuppliedRule moreThanZeroCondomsSuppliedRule;
 
     private IRulesFactory rulesFactory;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        rulesFactory = new RulesFactory(ageIsLessThanOneYearRule, relocationIsPermanentRule, currentFPMethodIsCondomRule, newFPMethodIsCondomRule);
+        rulesFactory = new RulesFactory(ageIsLessThanOneYearRule, relocationIsPermanentRule, currentFPMethodIsCondomRule, newFPMethodIsCondomRule, moreThanZeroCondomsSuppliedRule);
     }
 
     @Test
@@ -61,6 +63,15 @@ public class RulesFactoryTest {
         IRule rule = rulesFactory.ruleByName(ruleName);
 
         assertTrue(rule instanceof NewFPMethodIsCondomRule);
+    }
+
+    @Test
+    public void shouldLoadMoreThanOneCondomSuppliedRuleRuleClassByName() throws Exception {
+        String ruleName = "MoreThanZeroCondomsSuppliedRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof MoreThanZeroCondomsSuppliedRule);
     }
 
     @Test(expected = RuleNotFoundException.class)
