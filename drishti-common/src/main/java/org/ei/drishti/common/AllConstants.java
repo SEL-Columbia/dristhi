@@ -256,10 +256,4 @@ public class AllConstants {
         public static final String MOTHER_BIND_TYPE = "mother";
         public static final String ELIGIBLE_COUPLE_BIND_TYPE = "eligible_couple";
     }
-
-    public static class ReportingRuleNames {
-        public static final String AGE_LESS_THAN_ONE_YEAR = "AgeIsLessThanOneYearRule";
-        public static final String RELOCATION_PERMANENT = "RelocationIsPermanentRule";
-        public static final String CURRENT_FP_METHOD_IS_CONDOM = "CurrentFPMethodIsCondomRule";
-    }
 }

@@ -1,7 +1,6 @@
 package org.ei.drishti.service.reporting.rules;
 
 import org.ei.drishti.form.domain.FormSubmission;
-import org.ei.drishti.service.reporting.ReferenceData;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 
-public class CurrentFPMethodIsCondomRuleTest {
+public class NewFPMethodIsCondomRuleTest {
 
     @Before
     public void setUp() {
@@ -27,12 +26,13 @@ public class CurrentFPMethodIsCondomRuleTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .addFormField("submissionDate", "2012-03-01")
-                .addFormField("currentMethod", "ocp")
+                .addFormField("currentMethod", "condom")
+                .addFormField("newMethod", "ocp")
                 .build();
 
-        CurrentFPMethodIsCondomRule currentFPMethodIsCondomRule = new CurrentFPMethodIsCondomRule();
+        NewFPMethodIsCondomRule newFPMethodIsCondomRule = new NewFPMethodIsCondomRule();
 
-        boolean didRuleSucceed = currentFPMethodIsCondomRule.apply(submission, null, null);
+        boolean didRuleSucceed = newFPMethodIsCondomRule.apply(submission, null, null);
 
         assertFalse(didRuleSucceed);
     }
@@ -44,15 +44,14 @@ public class CurrentFPMethodIsCondomRuleTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .addFormField("submissionDate", "2012-03-01")
-                .addFormField("currentMethod", "condom")
+                .addFormField("currentMethod", "ocp")
+                .addFormField("newMethod", "condom")
                 .build();
         ArrayList<String> formFields = new ArrayList<>();
         formFields.add("caseId");
-        ArrayList<String> referenceFields = new ArrayList<>();
-        ReferenceData referenceData = new ReferenceData("eligible_couple", "caseId", referenceFields);
-        CurrentFPMethodIsCondomRule currentFPMethodIsCondomRule = new CurrentFPMethodIsCondomRule();
 
-        boolean didRuleSucceed = currentFPMethodIsCondomRule.apply(submission, formFields, referenceData);
+        NewFPMethodIsCondomRule newFPMethodIsCondomRule = new NewFPMethodIsCondomRule();
+        boolean didRuleSucceed = newFPMethodIsCondomRule.apply(submission, formFields, null);
 
         assertTrue(didRuleSucceed);
     }

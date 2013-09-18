@@ -67,6 +67,21 @@ public class ECServiceTest {
     }
 
     @Test
+    public void shouldUpdateCurrentFPMethodOfECWhenFPMethodIsChanged() throws Exception {
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1").withDetails(create("currentMethod", "ocp").put("caste", "c_others").map());
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("fp_change")
+                .addFormField("currentMethod", "ocp")
+                .addFormField("newMethod", "condom")
+                .build();
+
+        ecService.reportFPChange(submission);
+
+        verify(allEligibleCouples).update(ec.withDetails(create("currentMethod", "condom").put("caste", "c_others").map()));
+    }
+
+    @Test
     public void shouldSendDataToReportingServiceDuringReportFPChange() throws Exception {
         EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1").withDetails(create("caste", "sc").put("economicStatus", "bpl").map());
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);

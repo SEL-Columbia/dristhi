@@ -35,14 +35,13 @@
                     "formFields": [
                         "id",
                         "numberOfCondomsSupplied",
-                        "familyPlanningMethodChangeDate"
+                        "familyPlanningMethodChangeDate",
+                        "currentMethod"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
                         "idField": "caseId",
-                        "fields": [
-                            "currentMethod"
-                        ]
+                        "fields": []
                     },
                     "reportWhen": [
                         "CurrentFPMethodIsCondomRule"
@@ -60,17 +59,16 @@
                     "formFields": [
                         "id",
                         "numberOfCondomsSupplied",
-                        "familyPlanningMethodChangeDate"
+                        "familyPlanningMethodChangeDate",
+                        "newMethod"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
                         "idField": "caseId",
-                        "fields": [
-                            "currentMethod"
-                        ]
+                        "fields": []
                     },
                     "reportWhen": [
-                        "CurrentFPMethodIsCondomRule"
+                        "NewFPMethodIsCondomRule"
                     ]
                 }
             ]

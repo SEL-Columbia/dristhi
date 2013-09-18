@@ -81,6 +81,10 @@ public class ECService {
             return;
         }
 
+        String newFPMethod = submission.getField(NEW_FP_METHOD_FIELD_NAME);
+        couple.details().put(NEW_FP_METHOD_FIELD_NAME, newFPMethod);
+        allEligibleCouples.update(couple);
+
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         Map<String, String> reportFieldsMap = submission.getFields(reportFields);
         reportFieldsMap.put(AllConstants.ECRegistrationFields.CASTE, couple.details().get(AllConstants.ECRegistrationFields.CASTE));
@@ -93,7 +97,7 @@ public class ECService {
         }
         FPProductInformation fpProductInformation = new FPProductInformation(
                 submission.entityId(), submission.anmId(),
-                submission.getField(NEW_FP_METHOD_FIELD_NAME),
+                newFPMethod,
                 submission.getField(PREVIOUS_FP_METHOD_FIELD_NAME), null,
                 submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME),
                 null,
