@@ -26,7 +26,7 @@ public class RulesFactoryTest {
     }
 
     @Test
-    public void shouldLoadAgeIsLessThanOneYearRuleClassByName() throws Exception{
+    public void shouldLoadAgeIsLessThanOneYearRuleClassByName() throws Exception {
         String ruleName = "AgeIsLessThanOneYearRule";
 
         IRule rule = rulesFactory.ruleByName(ruleName);
@@ -35,7 +35,7 @@ public class RulesFactoryTest {
     }
 
     @Test
-    public void shouldLoadCurrentFPMethodIsCondomRuleClassByName() throws Exception{
+    public void shouldLoadCurrentFPMethodIsCondomRuleClassByName() throws Exception {
         String ruleName = "CurrentFPMethodIsCondomRule";
 
         IRule rule = rulesFactory.ruleByName(ruleName);
@@ -44,7 +44,7 @@ public class RulesFactoryTest {
     }
 
     @Test
-    public void shouldLoadRelocationIsPermanentRuleClassByName() throws Exception{
+    public void shouldLoadRelocationIsPermanentRuleClassByName() throws Exception {
         String ruleName = "RelocationIsPermanentRule";
 
         IRule rule = rulesFactory.ruleByName(ruleName);
@@ -52,11 +52,9 @@ public class RulesFactoryTest {
         assertTrue(rule instanceof RelocationIsPermanentRule);
     }
 
-    @Test
-    public void shouldReturnEmptyRuleWhenRuleClassCannotBeFoundByName() throws Exception{
+    @Test(expected = RuleNotFoundException.class)
+    public void shouldThrowExceptionWhenRuleClassCannotBeFoundByName() throws Exception {
         String ruleName = "NonExistentRule";
         IRule rule = rulesFactory.ruleByName(ruleName);
-
-        assertTrue(rule instanceof EmptyRule);
     }
 }

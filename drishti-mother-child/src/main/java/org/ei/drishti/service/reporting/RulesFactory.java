@@ -1,15 +1,16 @@
 package org.ei.drishti.service.reporting;
 
-import org.ei.drishti.service.reporting.rules.*;
+import org.ei.drishti.service.reporting.rules.AgeIsLessThanOneYearRule;
+import org.ei.drishti.service.reporting.rules.CurrentFPMethodIsCondomRule;
+import org.ei.drishti.service.reporting.rules.IRule;
+import org.ei.drishti.service.reporting.rules.RelocationIsPermanentRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ei.drishti.common.AllConstants.ReportingRuleNames.AGE_LESS_THAN_ONE_YEAR;
-import static org.ei.drishti.common.AllConstants.ReportingRuleNames.RELOCATION_PERMANENT;
-import static org.ei.drishti.common.AllConstants.ReportingRuleNames.CURRENT_FP_METHOD_IS_CONDOM;
+import static org.ei.drishti.common.AllConstants.ReportingRuleNames.*;
 
 @Component
 public class RulesFactory implements IRulesFactory {
@@ -23,10 +24,10 @@ public class RulesFactory implements IRulesFactory {
         rules.put(CURRENT_FP_METHOD_IS_CONDOM, currentFPMethodIsCondomRule);
     }
 
-    public IRule ruleByName(String ruleName) throws Exception {
+    public IRule ruleByName(String ruleName) throws RuleNotFoundException {
         if (rules.containsKey(ruleName)) {
             return rules.get(ruleName);
         }
-        return new EmptyRule();
+        throw new RuleNotFoundException(ruleName);
     }
 }

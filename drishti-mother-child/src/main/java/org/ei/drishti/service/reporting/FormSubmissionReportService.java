@@ -55,7 +55,6 @@ public class FormSubmissionReportService {
         reporter.report(submission.entityId(), reportIndicator.indicator(), location, reportData);
     }
 
-    //#TODO: Throw exception if a Rule class cannot be found
     private boolean processRules(FormSubmission submission, List<String> rules, List<String> formFields, ReferenceData referenceData) {
         boolean didRuleSucceed = true;
         try {
