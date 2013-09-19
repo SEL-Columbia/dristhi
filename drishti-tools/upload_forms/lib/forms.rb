@@ -343,7 +343,7 @@ class Forms
 
       anc_for_child = @ancs[key]
 
-      anc = anc_for_child.nil? ? {'Entity Id' => Guid.new.to_s} : get_safe_map(anc_for_child)
+      anc = anc_for_child.nil? ? {'Entity ID' => Guid.new.to_s} : get_safe_map(anc_for_child)
       form_instance = form_instance_erb.result(binding)
 
       child_registration = form_submission_erb.result(binding)
