@@ -1,16 +1,13 @@
 package org.ei.drishti.service.reporting;
 
-import com.google.gson.Gson;
-import org.apache.commons.io.IOUtils;
+import com.google.gson.reflect.TypeToken;
+import org.motechproject.dao.MotechJsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.text.MessageFormat;
 
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
@@ -25,26 +22,13 @@ public class ReportDefinitionLoader implements IReportDefinitionLoader {
         this.reportDefinitionFileName = reportDefinitionFileName;
     }
 
-    private String load(File file) throws IOException {
-        try {
-            FileInputStream inputStream = new FileInputStream(file);
-            return IOUtils.toString(inputStream, "UTF-8");
-        } catch (Exception e) {
-            logger.error("Currently Running on: " + System.getProperty("user.dir"));
-            logger.error(MessageFormat.format("Error reading report definition file. Message: {0}", e.getMessage()));
-            logger.error(getFullStackTrace(e));
-            throw e;
-        }
-    }
-
     @Override
     public ReportDefinition reportDefinition() throws Exception {
         try {
-            File file = new File(reportDefinitionFileName);
-            String indicatorDefinitionJSON = null;
-            indicatorDefinitionJSON = load(file);
-            return new Gson().fromJson(indicatorDefinitionJSON, ReportDefinition.class);
+            return (ReportDefinition) new MotechJsonReader().readFromFile(reportDefinitionFileName, new TypeToken<ReportDefinition>() {
+            }.getType());
         } catch (Exception e) {
+            logger.error("Currently Running on: " + System.getProperty("user.dir"));
             logger.error(MessageFormat.format("Error loading report definition. Message: {0}", e.getMessage()));
             logger.error(getFullStackTrace(e));
             throw e;
