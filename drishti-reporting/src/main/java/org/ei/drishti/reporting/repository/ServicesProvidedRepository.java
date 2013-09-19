@@ -48,7 +48,8 @@ public class ServicesProvidedRepository {
     }
 
     @Transactional("service_provided")
-    public void save(String serviceProviderIdentifier, String serviceProviderType, String externalId, String indicator, String date, String village, String subCenter, String phcIdentifier, String quantity) {
+    public void save(String serviceProviderIdentifier, String serviceProviderType, String externalId, String indicator,
+                     String date, String village, String subCenter, String phcIdentifier, String quantity) {
         Probe probeForCache = monitor.start(REPORTING_SERVICE_PROVIDED_CACHE_TIME);
         Indicator fetchedIndicator = cachedIndicators.fetch(new Indicator(indicator));
         Dates dates = cachedDates.fetch(new Dates(LocalDate.parse(date).toDate()));

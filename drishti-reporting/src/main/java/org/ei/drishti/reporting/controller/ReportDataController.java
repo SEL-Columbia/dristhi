@@ -2,6 +2,7 @@ package org.ei.drishti.reporting.controller;
 
 import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.reporting.ReportDataMissingException;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.ei.drishti.common.AllConstants.ReportDataParameters;
@@ -31,10 +33,10 @@ public class ReportDataController {
 
     @RequestMapping(value = "/report/submit", method = RequestMethod.POST)
     @ResponseBody
-    public String submit(@RequestBody ReportingData reportingData) {
+    public String submit(@RequestBody ReportingData reportingData) throws ReportDataMissingException {
         logger.info("Reporting on: " + reportingData);
-        //#TODO: Validate the parameters and throw exception if any of the mandatory parameter is not in ReportingData
-        if (reportingData.type().equals(ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE)) {
+        if (ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE.equals(reportingData.type())) {
+            throwExceptionIfMandatoryDataIsNotPresentForServiceProvidedReport(reportingData);
             servicesProvidedRepository.save(
                     reportingData.get(ReportDataParameters.ANM_IDENTIFIER),
                     reportingData.get(ReportDataParameters.SERVICE_PROVIDER_TYPE),
@@ -45,7 +47,8 @@ public class ReportDataController {
                     reportingData.get(ReportDataParameters.SUB_CENTER),
                     reportingData.get(ReportDataParameters.PHC),
                     reportingData.get(ReportDataParameters.QUANTITY));
-        } else if (reportingData.type().equals(ReportDataParameters.ANM_REPORT_DATA_TYPE)) {
+        } else if (ReportDataParameters.ANM_REPORT_DATA_TYPE.equals(reportingData.type())) {
+            throwExceptionIfMandatoryDataIsNotPresentForANMReport(reportingData);
             anmReportsRepository.save(
                     reportingData.get(ReportDataParameters.ANM_IDENTIFIER),
                     reportingData.get(ReportDataParameters.EXTERNAL_ID),
@@ -54,6 +57,20 @@ public class ReportDataController {
                     reportingData.get(ReportDataParameters.QUANTITY));
         }
         return "Success.";
+    }
+
+    private void throwExceptionIfMandatoryDataIsNotPresentForServiceProvidedReport(ReportingData reportingData) throws ReportDataMissingException {
+        ArrayList missingData = reportingData.getMissingReportDataForANMReport();
+        if (!missingData.isEmpty()) {
+            throw new ReportDataMissingException(reportingData, missingData);
+        }
+    }
+
+    private void throwExceptionIfMandatoryDataIsNotPresentForANMReport(ReportingData reportingData) throws ReportDataMissingException {
+        ArrayList missingData = reportingData.getMissingReportDataForServiceProvided();
+        if (!missingData.isEmpty()) {
+            throw new ReportDataMissingException(reportingData, missingData);
+        }
     }
 
     @RequestMapping(value = "/report/fetchForAllANMs", method = RequestMethod.GET)
