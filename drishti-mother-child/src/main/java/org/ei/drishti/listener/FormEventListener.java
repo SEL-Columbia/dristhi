@@ -75,8 +75,8 @@ public class FormEventListener {
                     });
             formEntityService.process(formSubmissions);
         } catch (Exception e) {
-            logger.error(MessageFormat.format("{0} occured while trying to fetch forms. Message: {1} with stack trace {2}",
-                                            e.toString(), e.getMessage(), getFullStackTrace(e)));
+            logger.error(MessageFormat.format("{0} occurred while trying to fetch forms. Message: {1} with stack trace {2}",
+                    e.toString(), e.getMessage(), getFullStackTrace(e)));
         } finally {
             lock.unlock();
         }
