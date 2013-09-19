@@ -12,8 +12,6 @@ public class DrishtiScheduleConstants {
         public static final String CHILD_SCHEDULE_MEASLES_BOOSTER = "Measles Booster";
 
         public static final String CHILD_SCHEDULE_OPV_0_AND_1 = "OPV_0_AND_1";
-        public static final String CHILD_SCHEDULE_OPV_0 = "OPV 0";
-        public static final String CHILD_SCHEDULE_OPV_1 = "OPV 1";
         public static final String CHILD_SCHEDULE_OPV_2 = "OPV 2";
         public static final String CHILD_SCHEDULE_OPV_3 = "OPV 3";
         public static final String CHILD_SCHEDULE_OPV_BOOSTER = "OPV BOOSTER";

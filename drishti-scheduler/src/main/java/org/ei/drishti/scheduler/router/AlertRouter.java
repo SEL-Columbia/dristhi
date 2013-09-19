@@ -38,6 +38,6 @@ public class AlertRouter {
             }
         }
 
-        throw new NoRoutesMatchException();
+        throw new NoRoutesMatchException(event);
     }
 }

@@ -93,13 +93,15 @@ public class AlertControllerRoutesTest {
         Event.of(CHILD_SCHEDULE_DPT_BOOSTER2, "dptbooster_2", due).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_DPT_BOOSTER2, "dptbooster_2", late).shouldRouteToAlertCreationActionForChild();
 
-        Event.of(CHILD_SCHEDULE_OPV_0, "opv_0", earliest).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_OPV_0, "opv_0", due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_OPV_0, "opv_0", late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_0_AND_1, "opv_0", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_0_AND_1, "opv_0", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_0_AND_1, "opv_0", late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_0_AND_1, "opv_0", max).shouldRouteToAlertCreationActionForChild();
 
-        Event.of(CHILD_SCHEDULE_OPV_1, "opv_1", earliest).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_OPV_1, "opv_1", due).shouldRouteToAlertCreationActionForChild();
-        Event.of(CHILD_SCHEDULE_OPV_1, "opv_1", late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_0_AND_1, "opv_1", earliest).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_0_AND_1, "opv_1", due).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_0_AND_1, "opv_1", late).shouldRouteToAlertCreationActionForChild();
+        Event.of(CHILD_SCHEDULE_OPV_0_AND_1, "opv_1", max).shouldRouteToAlertCreationActionForChild();
 
         Event.of(CHILD_SCHEDULE_OPV_2, "opv_2", earliest).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_OPV_2, "opv_2", due).shouldRouteToAlertCreationActionForChild();

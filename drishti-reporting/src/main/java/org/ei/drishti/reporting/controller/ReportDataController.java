@@ -33,6 +33,7 @@ public class ReportDataController {
     @ResponseBody
     public String submit(@RequestBody ReportingData reportingData) {
         logger.info("Reporting on: " + reportingData);
+        //#TODO: Validate the parameters and throw exception if any of the mandatory parameter is not in ReportingData
         if (reportingData.type().equals(ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE)) {
             servicesProvidedRepository.save(
                     reportingData.get(ReportDataParameters.ANM_IDENTIFIER),

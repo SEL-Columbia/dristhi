@@ -24,7 +24,7 @@ public class AlertController {
         router.addRoute(eq(SCHEDULE_LAB), any(), eq(max.toString()), forceFulfill);
         router.addRoute(eq(SCHEDULE_AUTO_CLOSE_PNC), any(), any(), autoClosePNCAction);
         router.addRoute(motherSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "mother");
-        router.addRoute(childSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "child");
+        router.addRoute(childSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString(),max.toString()), alertCreation).addExtraData("beneficiaryType", "child");
         router.addRoute(ecSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "ec");
     }
 
@@ -37,8 +37,7 @@ public class AlertController {
                 CHILD_SCHEDULE_MEASLES,
                 CHILD_SCHEDULE_MEASLES_BOOSTER,
 
-                CHILD_SCHEDULE_OPV_0,
-                CHILD_SCHEDULE_OPV_1,
+                CHILD_SCHEDULE_OPV_0_AND_1,
                 CHILD_SCHEDULE_OPV_2,
                 CHILD_SCHEDULE_OPV_3,
                 CHILD_SCHEDULE_OPV_BOOSTER,
