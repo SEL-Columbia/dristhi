@@ -7,9 +7,11 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ei.drishti.domain.Location;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.*;
 
 public class ReportingData implements Serializable {
@@ -69,6 +71,34 @@ public class ReportingData implements Serializable {
 
     public String type() {
         return type;
+    }
+
+    public ArrayList getMissingReportDataForServiceProvided() {
+        ArrayList missingData = new ArrayList();
+        addToMissingDataIfFieldValueIsMissing(ANM_IDENTIFIER, missingData);
+        addToMissingDataIfFieldValueIsMissing(EXTERNAL_ID, missingData);
+        addToMissingDataIfFieldValueIsMissing(INDICATOR, missingData);
+        addToMissingDataIfFieldValueIsMissing(SERVICE_PROVIDED_DATE, missingData);
+        return missingData;
+    }
+
+    public ArrayList getMissingReportDataForANMReport() {
+        ArrayList missingData = new ArrayList();
+        addToMissingDataIfFieldValueIsMissing(ANM_IDENTIFIER, missingData);
+        addToMissingDataIfFieldValueIsMissing(SERVICE_PROVIDER_TYPE, missingData);
+        addToMissingDataIfFieldValueIsMissing(EXTERNAL_ID, missingData);
+        addToMissingDataIfFieldValueIsMissing(INDICATOR, missingData);
+        addToMissingDataIfFieldValueIsMissing(SERVICE_PROVIDED_DATE, missingData);
+        addToMissingDataIfFieldValueIsMissing(VILLAGE, missingData);
+        addToMissingDataIfFieldValueIsMissing(SUB_CENTER, missingData);
+        addToMissingDataIfFieldValueIsMissing(PHC, missingData);
+        return missingData;
+    }
+
+    private void addToMissingDataIfFieldValueIsMissing(String fieldName, ArrayList missingData) {
+        if (isBlank(get(fieldName))) {
+            missingData.add(fieldName);
+        }
     }
 
     @Override
