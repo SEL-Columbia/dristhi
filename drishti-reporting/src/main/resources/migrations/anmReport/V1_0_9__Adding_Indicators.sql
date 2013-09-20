@@ -13,3 +13,4 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('F_VIT_A');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('M_VIT_A');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('INFANT_LEFT');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('CONDOM_QTY');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IBT');

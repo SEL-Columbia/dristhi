@@ -89,6 +89,7 @@ public class ChildReportingService {
         reportBirthWeight(child, location);
         reportBFPostBirth(reportData.get(BF_POSTBIRTH), child, location);
         reportToBoth(child, INFANT_REGISTRATION, child.dateOfBirth(), location);
+        reportToBoth(child, INFANT_BALANCE_TOTAL, child.dateOfBirth(), location);
     }
 
     public void immunizationProvided(SafeMap reportData, List<String> previousImmunizations) {

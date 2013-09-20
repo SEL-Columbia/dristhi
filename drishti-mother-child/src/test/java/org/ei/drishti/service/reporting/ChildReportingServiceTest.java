@@ -266,7 +266,7 @@ public class ChildReportingServiceTest {
     }
 
     @Test
-    public void shouldReportInfantRegistration() throws Exception {
+    public void shouldReportInfantRegistrationAndInfantTotalBalance() throws Exception {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
                 .withAnm("ANM X")
                 .withDateOfBirth("2012-01-01")
@@ -280,6 +280,7 @@ public class ChildReportingServiceTest {
         service.registerChild(reportData);
 
         verifyBothReportingCalls(INFANT_REGISTRATION, "2012-01-01");
+        verifyBothReportingCalls(INFANT_BALANCE_TOTAL, "2012-01-01");
     }
 
     @Test
