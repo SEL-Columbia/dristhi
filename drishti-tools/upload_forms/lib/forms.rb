@@ -366,7 +366,7 @@ class Forms
       form_name = "child_immunizations"
       instance_id = child_immunization['Instance ID']
       child_registered = @children[key]
-      child = child_registered.nil? ? get_safe_map(@pncs[key])['Child ID'] : get_safe_map(child_registered)
+      child = child_registered.nil? ? get_child_from_pnc(key)  : get_safe_map(child_registered)
       entity_id = child['Entity ID']
       submission_date = child_immunization['Submission date']
       previous_immunizations = immunizations_given
@@ -449,6 +449,12 @@ class Forms
 
   def ecs_as_hash
     @ec.group_by { |ec| [ec['Village Code'].village.downcase, ec['Wife Name'].downcase, ec['Husband Name'].downcase] }
+  end
+
+  def get_child_from_pnc key
+    pnc = get_safe_map(@pncs[key])
+    child = { 'Child ID' => pnc['Child ID'], 'Birth date' => pnc['Delivery date'], 'Entity ID' => pnc['Entity ID']}
+    child
   end
 end
 
