@@ -102,6 +102,28 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "child_registration_oa",
+            "indicators": [
+                {
+                    "indicator": "INFANT_REG",
+                    "bindType": "child",
+                    "formFields": [
+                        "id",
+                        "registrationDate",
+                        "dateOfBirth"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "caseId",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "AgeIsLessThanOneYearRule"
+                    ]
+                }
+            ]
         }
     ]
 }
