@@ -236,7 +236,7 @@
             },
             {
                 "name": "dmpaInjectionDate",
-                "source": "eligible_couple.dmpaInjectionDate"
+                "source": "eligible_couple.dmpaInjectionDate",
                 "value": "<%= ec['DMPA Injection Date'] %>"
             },
             {
