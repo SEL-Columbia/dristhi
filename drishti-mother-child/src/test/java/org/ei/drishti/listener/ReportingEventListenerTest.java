@@ -60,6 +60,16 @@ public class ReportingEventListenerTest {
     }
 
     @Test
+    public void shouldAddANMReportsThatAreGeneratedFromEntities() throws Exception {
+        Map<String, Object> data = new HashMap<>();
+        when(agent.get(eq("http://drishti/fetchForAllANMs"))).thenReturn(new HttpResponse(true, new Gson().toJson(new ArrayList<ANMReport>())));
+
+        listener.fetchANMReports(new MotechEvent("SUBJECT", data));
+
+        verify(anmReportingService).reportFromEntityData();
+    }
+
+    @Test
     public void shouldNotPassDataToANMReportServiceIfRequestFailed() throws Exception {
         Map<String, Object> data = new HashMap<>();
         when(agent.get(eq("http://drishti/fetchForAllANMs"))).thenReturn(new HttpResponse(false, null));
@@ -67,8 +77,9 @@ public class ReportingEventListenerTest {
         listener.fetchANMReports(new MotechEvent("SUBJECT", data));
 
         verify(agent).get("http://drishti/fetchForAllANMs");
-        verifyZeroInteractions(anmReportingService);
+        verify(anmReportingService, times(0)).processReports(anyList());
     }
+
 
     @Test
     public void shouldNotPassDataToANMReportServiceIfNoReportIsFetched() throws Exception {
@@ -78,6 +89,6 @@ public class ReportingEventListenerTest {
         listener.fetchANMReports(new MotechEvent("SUBJECT", data));
 
         verify(agent).get("http://drishti/fetchForAllANMs");
-        verifyZeroInteractions(anmReportingService);
+        verify(anmReportingService, times(0)).processReports(anyList());
     }
 }

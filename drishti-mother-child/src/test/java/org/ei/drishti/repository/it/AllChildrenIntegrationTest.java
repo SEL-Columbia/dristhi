@@ -2,6 +2,7 @@ package org.ei.drishti.repository.it;
 
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.repository.AllChildren;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,20 +23,20 @@ import static org.junit.Assert.*;
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
 public class AllChildrenIntegrationTest {
     @Autowired
-    private AllChildren children;
+    private AllChildren allChildren;
 
     @Before
     public void setUp() throws Exception {
-        children.removeAll();
+        allChildren.removeAll();
     }
 
     @Test
     public void shouldRegisterAChild() {
         Child child = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07").withDetails(mapOf("immunizationDate", "2012-01-01"));
 
-        children.add(child);
+        allChildren.add(child);
 
-        List<Child> allTheChildren = children.getAll();
+        List<Child> allTheChildren = allChildren.getAll();
         assertThat(allTheChildren.size(), is(1));
 
         Child childFromDB = allTheChildren.get(0);
@@ -45,9 +46,9 @@ public class AllChildrenIntegrationTest {
     @Test
     public void shouldFindChildByCaseId() {
         Child child = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1");
-        children.add(child);
+        allChildren.add(child);
 
-        Child childFromDB = children.findByCaseId("CASE-1");
+        Child childFromDB = allChildren.findByCaseId("CASE-1");
 
         assertThat(childFromDB, hasSameFieldsAs(child));
     }
@@ -55,10 +56,10 @@ public class AllChildrenIntegrationTest {
     @Test
     public void shouldCheckIfChildExists() {
         Child child = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1");
-        children.add(child);
+        allChildren.add(child);
 
-        assertTrue(children.childExists("CASE-1"));
-        assertFalse(children.childExists("CASE-NON-EXISTENT"));
+        assertTrue(allChildren.childExists("CASE-1"));
+        assertFalse(allChildren.childExists("CASE-NON-EXISTENT"));
     }
 
     @Test
@@ -67,12 +68,12 @@ public class AllChildrenIntegrationTest {
         Child secondChild = new Child("CASE-2", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1");
         Child thirdChild = new Child("CASE-3", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1");
         Child orphan = new Child("CASE-4", "MOTHER-CASE-2", "bcg", "3", "male").withAnm("ANM ID 1");
-        children.add(firstChild);
-        children.add(secondChild);
-        children.add(thirdChild);
-        children.add(orphan);
+        allChildren.add(firstChild);
+        allChildren.add(secondChild);
+        allChildren.add(thirdChild);
+        allChildren.add(orphan);
 
-        List<Child> childrenFromDB = children.findByMotherId("MOTHER-CASE-1");
+        List<Child> childrenFromDB = allChildren.findByMotherId("MOTHER-CASE-1");
 
         assertEquals(asList(firstChild, secondChild, thirdChild), childrenFromDB);
     }
@@ -80,21 +81,44 @@ public class AllChildrenIntegrationTest {
     @Test
     public void shouldMarkChildAsClosedOnClose() {
         Child child = childWithoutDetails();
-        children.add(child);
+        allChildren.add(child);
 
-        children.close(child.caseId());
+        allChildren.close(child.caseId());
 
-        assertThat(children.findByCaseId("CASE X"), is(child.setIsClosed(true)));
+        assertThat(allChildren.findByCaseId("CASE X"), is(child.setIsClosed(true)));
     }
 
     @Test
     public void shouldRemoveChild() {
         Child child = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07");
-        children.add(child);
+        allChildren.add(child);
 
-        children.remove(child);
+        allChildren.remove(child);
 
-        assertTrue(children.getAll().isEmpty());
+        assertTrue(allChildren.getAll().isEmpty());
+    }
+
+    @Test
+    public void shouldFindAllChildrenLessThanOneYearOldAsOfDate() {
+        Child moreThanOneYearOld = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-11-27");
+        Child oneDayLessThanOneYearOld = new Child("CASE-2", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-12-27");
+        Child exactlyOneYearOld = new Child("CASE-3", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-12-26");
+        Child bornOnSameDay = new Child("CASE-4", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2013-12-26");
+        Child bornOneDayBefore = new Child("CASE-5", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2013-12-25");
+        Child fewMonthsOld = new Child("CASE-6", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2013-06-06");
+        Child closed = new Child("CASE-7", "MOTHER-CASE-2", "bcg", "3", "male").withAnm("ANM ID 1").setIsClosed(true).withDateOfBirth("2013-06-06");
+        allChildren.add(moreThanOneYearOld);
+        allChildren.add(oneDayLessThanOneYearOld);
+        allChildren.add(exactlyOneYearOld);
+        allChildren.add(bornOnSameDay);
+        allChildren.add(bornOneDayBefore);
+        allChildren.add(fewMonthsOld);
+        allChildren.add(closed);
+
+        List<Child> childrenFromDB = allChildren.
+                findAllChildrenLessThanOneYearOldAsOfDate(LocalDate.parse("2013-12-26"));
+
+        assertEquals(asList(exactlyOneYearOld, oneDayLessThanOneYearOld, fewMonthsOld, bornOneDayBefore), childrenFromDB);
     }
 
     private Child childWithoutDetails() {

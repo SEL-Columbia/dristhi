@@ -3,6 +3,7 @@ package org.ei.drishti.reporting.repository;
 import org.ei.drishti.common.domain.ANMIndicatorSummary;
 import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.domain.MonthSummary;
+import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.monitor.Probe;
 import org.ei.drishti.reporting.domain.*;
@@ -15,13 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import static ch.lambdaj.Lambda.*;
 import static java.lang.String.valueOf;
-import static org.ei.drishti.common.AllConstants.Report.REPORTING_MONTH;
-import static org.ei.drishti.common.AllConstants.Report.REPORTING_MONTH_START_DAY;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_ANM_REPORTS_CACHE_TIME;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_ANM_REPORTS_INSERT_TIME;
 import static org.ei.drishti.common.util.DateUtil.today;
@@ -29,6 +27,7 @@ import static org.hamcrest.Matchers.*;
 
 @Repository
 public class ANMReportsRepository {
+    private final ReportMonth reportMonth = new ReportMonth();
     private AllANMReportDataRepository anmReportDataRepository;
     private AllAnnualTargetsRepository annualTargetsRepository;
     private Monitor monitor;
@@ -80,7 +79,7 @@ public class ANMReportsRepository {
     public List<ANMIndicatorSummary> fetchANMSummary(String anmIdentifier) {
         List<ANMIndicatorSummary> anmIndicatorSummaries = new ArrayList<>();
 
-        List<ANMReportData> allReportData = anmReportDataRepository.fetchByANMIdAndDate(anmIdentifier, startDateOfReportingYear());
+        List<ANMReportData> allReportData = anmReportDataRepository.fetchByANMIdAndDate(anmIdentifier, reportMonth.startDateOfReportingYear());
 
         Collection<Indicator> indicators = getDistinctIndicators(allReportData);
         for (Indicator indicator : indicators) {
@@ -88,9 +87,9 @@ public class ANMReportsRepository {
             int aggregatedProgress = 0;
             List<MonthSummary> monthSummaries = new ArrayList<>();
 
-            for (LocalDate indexDate = new LocalDate(startDateOfReportingYear()); indexDate.isBefore(startDateOfNextReportingMonth()); indexDate = indexDate.plusMonths(1)) {
+            for (LocalDate indexDate = new LocalDate(reportMonth.startDateOfReportingYear()); indexDate.isBefore(reportMonth.startDateOfNextReportingMonth()); indexDate = indexDate.plusMonths(1)) {
                 LocalDate reportingMonthEndDate = new LocalDate(indexDate).plusMonths(1);
-                List<ANMReportData> allReportDataForAMonth = filterReportsByMonth(allReportDataForIndicator, indexDate, endDateOfReportingMonth(indexDate));
+                List<ANMReportData> allReportDataForAMonth = filterReportsByMonth(allReportDataForIndicator, indexDate, reportMonth.endDateOfReportingMonth(indexDate));
                 if (allReportDataForAMonth.size() == 0) {
                     continue;
                 }
@@ -117,25 +116,6 @@ public class ANMReportsRepository {
             anmReports.add(new ANMReport(anm.anmIdentifier(), fetchANMSummary(anm.anmIdentifier())));
         }
         return anmReports;
-    }
-
-    private LocalDate endDateOfReportingMonth(LocalDate date) {
-        return date.plusMonths(1).minusDays(1);
-    }
-
-    private Date startDateOfReportingYear() {
-        LocalDate now = today();
-        LocalDate beginningOfReportingYear = today().withMonthOfYear(REPORTING_MONTH).withDayOfMonth(REPORTING_MONTH_START_DAY);
-        int reportingYear = now.isBefore(beginningOfReportingYear) ? now.getYear() - 1 : now.getYear();
-        return new LocalDate().withDayOfMonth(REPORTING_MONTH_START_DAY).withMonthOfYear(REPORTING_MONTH).withYear(reportingYear).toDate();
-    }
-
-    private LocalDate startDateOfNextReportingMonth() {
-        LocalDate today = today();
-        if (today.getDayOfMonth() < REPORTING_MONTH_START_DAY) {
-            return new LocalDate(today.getYear(), today.getMonthOfYear(), REPORTING_MONTH_START_DAY);
-        }
-        return new LocalDate(today.getYear(), today.getMonthOfYear() + 1, REPORTING_MONTH_START_DAY);
     }
 
     private List<String> getAllExternalIds(List<ANMReportData> reportDataList) {

@@ -36,7 +36,7 @@ public class ReportingEventListener {
     }
 
     @MotechListener(subjects = ReportEvent.SUBJECT)
-    public void submitReportingData(MotechEvent event){
+    public void submitReportingData(MotechEvent event) {
         String data = new Gson().toJson(event.getParameters().get("data"));
         HttpResponse response = httpAgent.post(url + "/" + SUBMIT_REPORT_ACTION, data, "application/json");
         if (!response.isSuccess()) {
@@ -48,12 +48,14 @@ public class ReportingEventListener {
     public void fetchANMReports(MotechEvent event) throws Exception {
         logger.info("Fetching ANM reports...");
 
+        anmReportService.reportFromEntityData();
         HttpResponse response = httpAgent.get(url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION);
         if (!response.isSuccess()) {
             logger.error("ANM Reports fetch failed. URL: " + url + ". Response body: " + response.body());
             return;
         }
-        List<ANMReport> anmReports = new Gson().fromJson(response.body(), new TypeToken<List<ANMReport>>() {}.getType());
+        List<ANMReport> anmReports = new Gson().fromJson(response.body(), new TypeToken<List<ANMReport>>() {
+        }.getType());
         if (anmReports.isEmpty()) {
             logger.info("No ANM Reports fetched");
             return;

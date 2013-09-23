@@ -3,13 +3,13 @@ package org.ei.drishti.service.reporting;
 import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
+import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.domain.ReportingData;
-import org.ei.drishti.domain.Child;
-import org.ei.drishti.domain.EligibleCouple;
-import org.ei.drishti.domain.Location;
-import org.ei.drishti.domain.Mother;
+import org.ei.drishti.common.util.DateUtil;
+import org.ei.drishti.domain.*;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
+import org.ei.drishti.repository.AllInfantBalanceOnHandReportTokens;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
@@ -18,10 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.MessageFormat;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.*;
@@ -45,14 +43,19 @@ public class ChildReportingService {
     private final AllChildren allChildren;
     private final AllMothers allMothers;
     private final AllEligibleCouples allEligibleCouples;
+    private final AllInfantBalanceOnHandReportTokens allInfantBalanceOnHandReportTokens;
+    private final ReportMonth reportMonth = new ReportMonth();
     private Map<String, List<Indicator>> immunizationToIndicator;
 
     @Autowired
-    public ChildReportingService(ReportingService reportingService, AllChildren allChildren, AllMothers allMothers, AllEligibleCouples allEligibleCouples) {
+    public ChildReportingService(ReportingService reportingService, AllChildren allChildren, AllMothers allMothers,
+                                 AllEligibleCouples allEligibleCouples,
+                                 AllInfantBalanceOnHandReportTokens allInfantBalanceOnHandReportTokens) {
         this.reportingService = reportingService;
         this.allChildren = allChildren;
         this.allMothers = allMothers;
         this.allEligibleCouples = allEligibleCouples;
+        this.allInfantBalanceOnHandReportTokens = allInfantBalanceOnHandReportTokens;
         immunizationToIndicator = new HashMap<>();
 
         immunizationToIndicator.put(BCG_VALUE, asList(BCG));
@@ -281,4 +284,48 @@ public class ChildReportingService {
         ReportingData anmReportData = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);
     }
+
+    public void reportInfantBalance() {
+        reportInfantBalanceOnHand();
+    }
+
+    private void reportInfantBalanceOnHand() {
+        LocalDate today = DateUtil.today();
+        InfantBalanceOnHandReportToken infantBalanceOnHandReportToken = getInfantBalanceOnHandReportToken(today);
+        if (reportMonth.isDateWithinCurrentReportMonth(infantBalanceOnHandReportToken.getLastReportedDate())) {
+            logger.info(MessageFormat.format("Infant Balance (On Hand) was last reported on: {0}, so not reporting now: {1}.",
+                    infantBalanceOnHandReportToken.getLastReportedDate(), today));
+            return;
+        }
+
+        logger.info(MessageFormat.format("Infant Balance (On Hand) was last reported on: {0}, so reporting now: {1}.",
+                infantBalanceOnHandReportToken.getLastReportedDate(), today));
+        LocalDate startOfCurrentReportMonth = this.reportMonth.startOfCurrentReportMonth(today);
+        List<Child> childrenLessThanOneYearOld = allChildren.findAllChildrenLessThanOneYearOldAsOfDate(
+                startOfCurrentReportMonth);
+        logger.info(MessageFormat.format("Found {0} children for reporting Infant Balance (On Hand)",
+                childrenLessThanOneYearOld.size()));
+        for (Child child : childrenLessThanOneYearOld) {
+            logger.info(MessageFormat.format("Reporting Infant Balance (On Hand) on date: {0} for child: {1}.",
+                    startOfCurrentReportMonth.toString(), child));
+            reportToBoth(child, Indicator.INFANT_BALANCE_ON_HAND,
+                    startOfCurrentReportMonth.toString(), loadLocationOfChild(child));
+        }
+        logger.info(MessageFormat.format("Updating Infant Balance (On Hand) last reported date to {0}", today));
+        allInfantBalanceOnHandReportTokens.update(infantBalanceOnHandReportToken.withLastReportedDate(today));
+    }
+
+    private InfantBalanceOnHandReportToken getInfantBalanceOnHandReportToken(LocalDate today) {
+        InfantBalanceOnHandReportToken infantBalanceOnHandReportToken;
+        List<InfantBalanceOnHandReportToken> tokens = allInfantBalanceOnHandReportTokens.getAll();
+        if (tokens.isEmpty()) {
+            infantBalanceOnHandReportToken = new InfantBalanceOnHandReportToken(
+                    reportMonth.startOfCurrentReportMonth(today).minusMonths(1))
+                    .withId(UUID.randomUUID().toString());
+        } else {
+            infantBalanceOnHandReportToken = tokens.get(0);
+        }
+        return infantBalanceOnHandReportToken;
+    }
+
 }

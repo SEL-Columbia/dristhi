@@ -19,10 +19,12 @@ import static ch.lambdaj.collection.LambdaCollections.with;
 @Service
 public class ANMReportingService {
     private ActionService actionService;
+    private ChildReportingService childReportingService;
 
     @Autowired
-    public ANMReportingService(ActionService actionService) {
+    public ANMReportingService(ActionService actionService, ChildReportingService childReportingService) {
         this.actionService = actionService;
+        this.childReportingService = childReportingService;
     }
 
     public void processReports(List<ANMReport> reports) {
@@ -41,8 +43,12 @@ public class ANMReportingService {
         }
     }
 
-    public MonthSummaryDatum convertToMonthSummaryDatum(MonthSummary monthSummary) {
+    private MonthSummaryDatum convertToMonthSummaryDatum(MonthSummary monthSummary) {
         return new MonthSummaryDatum(monthSummary.month(), monthSummary.year(),
                 monthSummary.currentProgress(), monthSummary.aggregatedProgress(), monthSummary.externalIDs());
+    }
+
+    public void reportFromEntityData() {
+        childReportingService.reportInfantBalance();
     }
 }

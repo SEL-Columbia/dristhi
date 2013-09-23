@@ -4,6 +4,7 @@ import org.ei.drishti.domain.Child;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
+import org.joda.time.LocalDate;
 import org.motechproject.dao.MotechBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,5 +45,15 @@ public class AllChildren extends MotechBaseRepository<Child> {
     public void remove(String id) {
         Child child = findByCaseId(id);
         remove(child);
+    }
+
+    @View(name = "children_less_than_one_year_old_as_of_date",
+            map = "function(doc) { if (doc.type === 'Child' && !doc.isClosed && doc.dateOfBirth) { emit(new Date(Date.parse(doc.dateOfBirth))); } }")
+    public List<Child> findAllChildrenLessThanOneYearOldAsOfDate(LocalDate date) {
+        return db.queryView(createQuery("children_less_than_one_year_old_as_of_date")
+                .startKey(date.minusYears(1))
+                .endKey(date)
+                .includeDocs(true),
+                Child.class);
     }
 }

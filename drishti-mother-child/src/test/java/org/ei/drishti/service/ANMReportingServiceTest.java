@@ -2,9 +2,9 @@ package org.ei.drishti.service;
 
 import com.google.gson.Gson;
 import org.ei.drishti.common.domain.ANMReport;
-import org.ei.drishti.dto.ActionData;
 import org.ei.drishti.dto.MonthSummaryDatum;
 import org.ei.drishti.service.reporting.ANMReportingService;
+import org.ei.drishti.service.reporting.ChildReportingService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -23,13 +23,15 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class ANMReportingServiceTest {
     @Mock
     private ActionService actionService;
+    @Mock
+    private ChildReportingService childReportingService;
 
     private ANMReportingService anmReportingService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        anmReportingService = new ANMReportingService(actionService);
+        anmReportingService = new ANMReportingService(actionService, childReportingService);
     }
 
     @Test

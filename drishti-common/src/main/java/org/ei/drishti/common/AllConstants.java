@@ -48,6 +48,7 @@ public class AllConstants {
     public static class Report {
         public static final int REPORTING_MONTH = 3;
         public static final int REPORTING_MONTH_START_DAY = 26;
+        public static final int REPORTING_MONTH_END_DAY = 25;
         public static final double LOW_BIRTH_WEIGHT_THRESHOLD = 2.5;
         public static final int INFANT_MORTALITY_THRESHOLD_IN_YEARS = 1;
         public static final int CHILD_MORTALITY_THRESHOLD_IN_YEARS = 5;
