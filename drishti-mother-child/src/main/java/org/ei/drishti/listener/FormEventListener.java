@@ -7,7 +7,7 @@ import org.ei.drishti.domain.FormExportToken;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
-import org.ei.drishti.form.service.FormSubmissionConvertor;
+import org.ei.drishti.form.service.FormSubmissionConverter;
 import org.ei.drishti.form.service.FormSubmissionService;
 import org.ei.drishti.repository.AllFormExportTokens;
 import org.ei.drishti.scheduler.DrishtiFormScheduler;
@@ -70,7 +70,7 @@ public class FormEventListener {
                     .convert(new Converter<FormSubmissionDTO, FormSubmission>() {
                         @Override
                         public FormSubmission convert(FormSubmissionDTO submission) {
-                            return FormSubmissionConvertor.toFormSubmissionWithVersion(submission);
+                            return FormSubmissionConverter.toFormSubmissionWithVersion(submission);
                         }
                     });
             formEntityService.process(formSubmissions);

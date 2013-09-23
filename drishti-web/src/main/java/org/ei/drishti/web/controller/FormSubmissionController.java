@@ -4,7 +4,7 @@ import ch.lambdaj.function.convert.Converter;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
-import org.ei.drishti.form.service.FormSubmissionConvertor;
+import org.ei.drishti.form.service.FormSubmissionConverter;
 import org.ei.drishti.form.service.FormSubmissionService;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class FormSubmissionController {
         return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
-                return FormSubmissionConvertor.from(submission);
+                return FormSubmissionConverter.from(submission);
             }
         });
     }

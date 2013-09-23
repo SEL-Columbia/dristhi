@@ -31,7 +31,7 @@ public class FormSubmissionService {
         return with(allFormSubmissions.findByServerVersion(formFetchToken)).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
-                return FormSubmissionConvertor.from(submission);
+                return FormSubmissionConverter.from(submission);
             }
         });
     }
@@ -44,7 +44,7 @@ public class FormSubmissionService {
         List<FormSubmission> formSubmissions = with(formSubmissionsDTO).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
             @Override
             public FormSubmission convert(FormSubmissionDTO submission) {
-                return FormSubmissionConvertor.toFormSubmission(submission);
+                return FormSubmissionConverter.toFormSubmission(submission);
             }
         });
 
