@@ -17,6 +17,18 @@ public class ReferenceData {
         this.fields = fields;
     }
 
+    public String type() {
+        return type;
+    }
+
+    public String idField() {
+        return idField;
+    }
+
+    public List<String> fields() {
+        return fields;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);

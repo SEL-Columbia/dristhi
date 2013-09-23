@@ -1,11 +1,8 @@
 package org.ei.drishti.service.reporting.rules;
 
-import org.ei.drishti.form.domain.FormSubmission;
-import org.ei.drishti.service.reporting.ReferenceData;
-
-import java.util.List;
+import org.ei.drishti.util.SafeMap;
 
 public interface IRule {
-    public boolean apply(FormSubmission submission, List<String> formFields, ReferenceData referenceData);
+    boolean apply(SafeMap safeMap);
 }
 

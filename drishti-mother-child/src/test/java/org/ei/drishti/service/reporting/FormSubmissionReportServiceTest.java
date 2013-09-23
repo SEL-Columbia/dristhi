@@ -5,6 +5,7 @@ import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
+import org.ei.drishti.service.reporting.rules.IReferenceDataRepository;
 import org.ei.drishti.service.reporting.rules.IRule;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
@@ -37,13 +38,15 @@ public class FormSubmissionReportServiceTest {
     private IReportDefinitionLoader reportDefinitionLoader;
     @Mock
     private IReporter reporter;
+    @Mock
+    private IReferenceDataRepository referenceDataRepository;
 
     private FormSubmissionReportService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new FormSubmissionReportService(locationLoader, rulesFactory, reporterFactory, reportDefinitionLoader);
+        service = new FormSubmissionReportService(locationLoader, rulesFactory, reporterFactory, referenceDataRepository, reportDefinitionLoader);
     }
 
     @Test
@@ -57,10 +60,11 @@ public class FormSubmissionReportServiceTest {
                 .build();
         Location location = new Location("bherya", "Sub Center", "PHC X");
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
-        when(rule.apply(any(FormSubmission.class), anyList(), any(ReferenceData.class))).thenReturn(true);
         when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionForInfantLeft());
+        when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
         when(reporterFactory.reporterFor("child")).thenReturn(reporter);
         when(locationLoader.loadLocationFor("child", "child id 1")).thenReturn(location);
+        when(rule.apply(any(SafeMap.class))).thenReturn(true);
         SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
                 .put("id", submission.entityId())
                 .put("closeReason", submission.getField("closeReason"));
@@ -83,8 +87,9 @@ public class FormSubmissionReportServiceTest {
                 .build();
         Location location = new Location("bherya", "Sub Center", "PHC X");
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
-        when(rule.apply(any(FormSubmission.class), anyList(), any(ReferenceData.class))).thenReturn(true);
+        when(rule.apply(any(SafeMap.class))).thenReturn(true);
         when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionWithCondomQuantity());
+        when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
         when(reporterFactory.reporterFor("eligible_couple")).thenReturn(reporter);
         when(locationLoader.loadLocationFor("eligible_couple", "ec id 1")).thenReturn(location);
         SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
@@ -108,9 +113,11 @@ public class FormSubmissionReportServiceTest {
                 .addFormField("submissionDate", "2013-03-01")
                 .addFormField("closeReason", "permanent_relocation")
                 .build();
+
         when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionForInfantLeft());
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
-        when(rule.apply(any(FormSubmission.class), anyList(), any(ReferenceData.class))).thenReturn(false);
+        when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
+        when(rule.apply(any(SafeMap.class))).thenReturn(false);
 
         service.reportFor(submission);
 

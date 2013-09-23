@@ -11,6 +11,7 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="org.ei.drishti.repository"/>
+    <context:component-scan base-package="org.ei.drishti.service.reporting.rules"/>
 
     <bean id="drishtiDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="drishti"/>

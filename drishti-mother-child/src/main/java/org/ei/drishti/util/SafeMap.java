@@ -18,6 +18,13 @@ public class SafeMap {
         this.data = data;
     }
 
+    public SafeMap concatenate(Map<String, String> formFieldsMap) {
+        for (String key : formFieldsMap.keySet()) {
+            put(key, formFieldsMap.get(key));
+        }
+        return this;
+    }
+
     public String get(String key) {
         if (!data.containsKey(key)) {
             throw new RuntimeException("Key: " + key + " does not exist in: " + this);
@@ -28,6 +35,10 @@ public class SafeMap {
     public SafeMap put(String key, String value) {
         data.put(key, value);
         return this;
+    }
+
+    public boolean isEmpty(){
+        return data.isEmpty();
     }
 
     public boolean has(String key) {

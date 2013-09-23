@@ -251,9 +251,9 @@ public class AllConstants {
         public static final String DIARRHEA_DEHYDRATION_VALUE = "diarrhea_dehydration";
     }
 
-    public static class ReportBindTypes {
-        public static final String CHILD_BIND_TYPE = "child";
-        public static final String MOTHER_BIND_TYPE = "mother";
-        public static final String ELIGIBLE_COUPLE_BIND_TYPE = "eligible_couple";
+    public static class ReferenceDataTypes {
+        public static final String CHILD_TYPE = "child";
+        public static final String MOTHER_TYPE = "mother";
+        public static final String ELIGIBLE_COUPLE_TYPE = "eligible_couple";
     }
 }

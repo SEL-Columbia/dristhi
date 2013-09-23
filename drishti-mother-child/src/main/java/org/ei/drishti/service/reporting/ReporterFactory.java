@@ -1,12 +1,9 @@
 package org.ei.drishti.service.reporting;
 
-import org.ei.drishti.common.AllConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static org.ei.drishti.common.AllConstants.ReportBindTypes.CHILD_BIND_TYPE;
-import static org.ei.drishti.common.AllConstants.ReportBindTypes.ELIGIBLE_COUPLE_BIND_TYPE;
-import static org.ei.drishti.common.AllConstants.ReportBindTypes.MOTHER_BIND_TYPE;
+import static org.ei.drishti.common.AllConstants.ReferenceDataTypes.*;
 
 @Component
 public class ReporterFactory implements IReporterFactory {
@@ -23,11 +20,11 @@ public class ReporterFactory implements IReporterFactory {
     }
 
     public IReporter reporterFor(String bindType) {
-        if(bindType.equalsIgnoreCase(CHILD_BIND_TYPE))
+        if(bindType.equalsIgnoreCase(CHILD_TYPE))
             return childReporter;
-        if(bindType.equalsIgnoreCase(MOTHER_BIND_TYPE))
+        if(bindType.equalsIgnoreCase(MOTHER_TYPE))
             return motherReporter;
-        if(bindType.equalsIgnoreCase(ELIGIBLE_COUPLE_BIND_TYPE))
+        if(bindType.equalsIgnoreCase(ELIGIBLE_COUPLE_TYPE))
             return eligibleCoupleReporter;
         return null;
     }

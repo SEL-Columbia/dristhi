@@ -10,7 +10,7 @@ import org.ei.drishti.repository.AllMothers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static org.ei.drishti.common.AllConstants.ReportBindTypes.*;
+import static org.ei.drishti.common.AllConstants.ReferenceDataTypes.*;
 
 @Component
 public class LocationLoader implements ILocationLoader {
@@ -28,11 +28,11 @@ public class LocationLoader implements ILocationLoader {
 
     @Override
     public Location loadLocationFor(String bindType, String caseId) {
-        if (bindType.equalsIgnoreCase(CHILD_BIND_TYPE))
+        if (bindType.equalsIgnoreCase(CHILD_TYPE))
             return loadLocationForChild(caseId);
-        if (bindType.equalsIgnoreCase(MOTHER_BIND_TYPE))
+        if (bindType.equalsIgnoreCase(MOTHER_TYPE))
             return loadLocationForMother(caseId);
-        if (bindType.equalsIgnoreCase(ELIGIBLE_COUPLE_BIND_TYPE))
+        if (bindType.equalsIgnoreCase(ELIGIBLE_COUPLE_TYPE))
             return loadLocationForEC(caseId);
         return null;
     }

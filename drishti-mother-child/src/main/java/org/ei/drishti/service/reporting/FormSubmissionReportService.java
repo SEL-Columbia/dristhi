@@ -3,6 +3,7 @@ package org.ei.drishti.service.reporting;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.service.reporting.rules.IReferenceDataRepository;
 import org.ei.drishti.service.reporting.rules.IRule;
 import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
@@ -23,13 +25,15 @@ public class FormSubmissionReportService {
     private IRulesFactory rulesFactory;
     private ILocationLoader locationLoader;
     private IReporterFactory reporterFactory;
+    private IReferenceDataRepository referenceDataRepository;
     private IReportDefinitionLoader reportDefinitionLoader;
 
     @Autowired
-    public FormSubmissionReportService(ILocationLoader locationLoader, IRulesFactory rulesFactory, IReporterFactory reporterFactory, IReportDefinitionLoader reportDefinitionLoader) {
+    public FormSubmissionReportService(ILocationLoader locationLoader, IRulesFactory rulesFactory, IReporterFactory reporterFactory, IReferenceDataRepository referenceDataRepository, IReportDefinitionLoader reportDefinitionLoader) {
         this.locationLoader = locationLoader;
         this.rulesFactory = rulesFactory;
         this.reporterFactory = reporterFactory;
+        this.referenceDataRepository = referenceDataRepository;
         this.reportDefinitionLoader = reportDefinitionLoader;
     }
 
@@ -63,14 +67,18 @@ public class FormSubmissionReportService {
         try {
             for (String ruleName : rules) {
                 IRule rule = rulesFactory.ruleByName(ruleName);
-                didRuleSucceed = rule.apply(submission, formFields, referenceData);
+                Map<String, String> formFieldsMap = submission.getFields(formFields);
+                SafeMap safeMap = referenceDataRepository.getReferenceData(submission, referenceData).concatenate(formFieldsMap);
+                didRuleSucceed = rule.apply(safeMap);
                 if (!didRuleSucceed) break;
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("Exception while applying rules. Message: {0}", e.getMessage()));
             logger.error(getFullStackTrace(e));
+            didRuleSucceed = false;
+        } finally {
+            return didRuleSucceed;
         }
-        return didRuleSucceed;
     }
 
     private SafeMap getSafeMapReportData(FormSubmission submission, List<String> formFields, String quantityField) {
