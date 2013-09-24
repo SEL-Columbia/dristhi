@@ -303,13 +303,16 @@ public class ChildReportingService {
         LocalDate startOfCurrentReportMonth = this.reportMonth.startOfCurrentReportMonth(today);
         List<Child> childrenLessThanOneYearOld = allChildren.findAllChildrenLessThanOneYearOldAsOfDate(
                 startOfCurrentReportMonth);
-        logger.info(MessageFormat.format("Found {0} children for reporting Infant Balance (On Hand)",
+        logger.info(MessageFormat.format("Found {0} children for reporting Infant Balance (On Hand) and Infant Balance (Total) ",
                 childrenLessThanOneYearOld.size()));
         for (Child child : childrenLessThanOneYearOld) {
-            logger.info(MessageFormat.format("Reporting Infant Balance (On Hand) on date: {0} for child: {1}.",
+            logger.info(MessageFormat.format("Reporting Infant Balance (On Hand) and Infant Balance (Total) on date: {0} for child: {1}.",
                     startOfCurrentReportMonth.toString(), child));
+            Location location = loadLocationOfChild(child);
             reportToBoth(child, Indicator.INFANT_BALANCE_ON_HAND,
-                    startOfCurrentReportMonth.toString(), loadLocationOfChild(child));
+                    startOfCurrentReportMonth.toString(), location);
+            reportToBoth(child, Indicator.INFANT_BALANCE_TOTAL,
+                    startOfCurrentReportMonth.toString(), location);
         }
         logger.info(MessageFormat.format("Updating Infant Balance (On Hand) last reported date to {0}", today));
         allInfantBalanceOnHandReportTokens.update(infantBalanceOnHandReportToken.withLastReportedDate(today));

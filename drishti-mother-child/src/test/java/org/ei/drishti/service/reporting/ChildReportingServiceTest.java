@@ -715,6 +715,8 @@ public class ChildReportingServiceTest {
 
         verifyBothReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 1", "thayi card 1");
         verifyBothReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 2", "thayi card 2");
+        verifyBothReportingCalls(Indicator.INFANT_BALANCE_TOTAL, currentReportMonthStartDate, "child id 1", "thayi card 1");
+        verifyBothReportingCalls(Indicator.INFANT_BALANCE_TOTAL, currentReportMonthStartDate, "child id 2", "thayi card 2");
         verify(allInfantBalanceOnHandTokens).update(new InfantBalanceOnHandReportToken(parse("2013-02-01")));
     }
 
@@ -737,6 +739,8 @@ public class ChildReportingServiceTest {
 
         verifyBothReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 1", "thayi card 1");
         verifyBothReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 2", "thayi card 2");
+        verifyBothReportingCalls(Indicator.INFANT_BALANCE_TOTAL, currentReportMonthStartDate, "child id 1", "thayi card 1");
+        verifyBothReportingCalls(Indicator.INFANT_BALANCE_TOTAL, currentReportMonthStartDate, "child id 2", "thayi card 2");
         verify(allInfantBalanceOnHandTokens).update(new InfantBalanceOnHandReportToken(parse("2013-02-01")));
     }
 
@@ -759,6 +763,8 @@ public class ChildReportingServiceTest {
 
         verifyNoReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 1", "thayi card 1");
         verifyNoReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 2", "thayi card 2");
+        verifyNoReportingCalls(Indicator.INFANT_BALANCE_TOTAL, currentReportMonthStartDate, "child id 1", "thayi card 1");
+        verifyNoReportingCalls(Indicator.INFANT_BALANCE_TOTAL, currentReportMonthStartDate, "child id 2", "thayi card 2");
     }
 
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator... expectedIndicators) {
