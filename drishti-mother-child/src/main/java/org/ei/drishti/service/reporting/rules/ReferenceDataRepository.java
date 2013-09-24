@@ -9,10 +9,13 @@ import org.ei.drishti.util.SafeMap;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
 import org.ektorp.ViewResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +25,7 @@ import static org.ei.drishti.common.AllConstants.FormEntityTypes.*;
 @Repository
 public class ReferenceDataRepository implements IReferenceDataRepository {
 
+    private static Logger logger = LoggerFactory.getLogger(ReferenceDataRepository.class);
     private CouchDbConnector db;
     private static final String ID_FIELD_ON_ENTITY = "caseId";
     private static final String CASE_ID_VIEW_NAME = "by_caseId";
@@ -67,11 +71,10 @@ public class ReferenceDataRepository implements IReferenceDataRepository {
     }
 
     public List<ViewResult.Row> getDBViewQueryResult(String id, String docEntityType) {
-        System.out.println("ID :" + id);
-        System.out.println("DocEntityType :" + docEntityType);
+        logger.info(MessageFormat.format("Trying to load entityType: {0}, with id: {1}", docEntityType, id));
         List<ViewResult.Row> rows = db.queryView(new ViewQuery().viewName(CASE_ID_VIEW_NAME).designDocId("_design/" + docEntityType).key(id)
                 .queryParam(ID_FIELD_ON_ENTITY, id).includeDocs(true)).getRows();
-        System.out.println("Rows :" + rows);
+        logger.debug(MessageFormat.format("Found these rows for entityType: {0}, with id: {1}, rows: {2}", docEntityType, id, rows));
         return rows;
     }
 }

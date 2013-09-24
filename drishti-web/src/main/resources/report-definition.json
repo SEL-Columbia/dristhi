@@ -41,7 +41,7 @@
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
-                        "idField": "caseId",
+                        "idField": "id",
                         "fields": []
                     },
                     "reportWhen": [
@@ -67,7 +67,7 @@
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
-                        "idField": "caseId",
+                        "idField": "id",
                         "fields": []
                     },
                     "reportWhen": [
@@ -93,7 +93,7 @@
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
-                        "idField": "caseId",
+                        "idField": "id",
                         "fields": []
                     },
                     "reportWhen": [
@@ -116,7 +116,7 @@
                     ],
                     "referenceData": {
                         "type": "child",
-                        "idField": "caseId",
+                        "idField": "id",
                         "fields": []
                     },
                     "reportWhen": [

@@ -11,7 +11,7 @@
             },
             {
                 "name": "motherId",
-                "value": "<%= pnc['Mother ID']%>",
+                "value": "<%= pnc['Entity ID']%>",
                 "source": "eligible_couple.mother.id"
             },
             {
