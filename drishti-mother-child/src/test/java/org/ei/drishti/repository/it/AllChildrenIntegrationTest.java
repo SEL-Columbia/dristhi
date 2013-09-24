@@ -4,7 +4,6 @@ import org.ei.drishti.domain.Child;
 import org.ei.drishti.repository.AllChildren;
 import org.joda.time.LocalDate;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +98,7 @@ public class AllChildrenIntegrationTest {
         assertTrue(allChildren.getAll().isEmpty());
     }
 
-    @Ignore
+    @Test
     public void shouldFindAllChildrenLessThanOneYearOldAsOfDate() {
         Child moreThanOneYearOld = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-11-27");
         Child oneDayLessThanOneYearOld = new Child("CASE-2", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-12-27");

@@ -34,7 +34,7 @@ public class ReferenceDataRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-//        children.removeAll();
+        children.removeAll();
     }
 
     @Test

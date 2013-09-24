@@ -49,11 +49,11 @@ public class AllChildren extends MotechBaseRepository<Child> {
     }
 
     @View(name = "children_less_than_one_year_old_as_of_date",
-            map = "function(doc) { if (doc.type === 'Child' && !doc.isClosed && doc.dateOfBirth) { emit(new Date(Date.parse(doc.dateOfBirth))); } }")
+            map = "function(doc) { if (doc.type === 'Child' && !doc.isClosed && doc.dateOfBirth) { emit(doc.dateOfBirth); } }")
     public List<Child> findAllChildrenLessThanOneYearOldAsOfDate(LocalDate date) {
         return db.queryView(createQuery("children_less_than_one_year_old_as_of_date")
                 .startKey(date.minusYears(1))
-                .endKey(date)
+                .endKey(date.minusDays(1))
                 .includeDocs(true),
                 Child.class);
     }
