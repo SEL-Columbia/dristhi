@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
@@ -35,7 +36,7 @@ public class FormDataRepository {
     private Map<String, String> designDocMap;
 
     @Autowired
-    public FormDataRepository(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
+    public FormDataRepository(@Qualifier(AllConstants.DRISHTI_DATABASE_CONNECTOR) CouchDbConnector db) {
         this.db = db;
         initMaps();
     }
@@ -43,12 +44,12 @@ public class FormDataRepository {
     private void initMaps() {
         designDocMap = new HashMap<>();
         fieldSetMap = new HashMap<>();
-        designDocMap.put("eligible_couple", "EligibleCouple");
-        designDocMap.put("mother", "Mother");
-        designDocMap.put("child", "Child");
-        fieldSetMap.put("eligible_couple", EligibleCouple.class.getDeclaredFields());
-        fieldSetMap.put("mother", Mother.class.getDeclaredFields());
-        fieldSetMap.put("child", Child.class.getDeclaredFields());
+        designDocMap.put(AllConstants.FormEntityTypes.ELIGIBLE_COUPLE_TYPE, "EligibleCouple");
+        designDocMap.put(AllConstants.FormEntityTypes.MOTHER_TYPE, "Mother");
+        designDocMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, "Child");
+        fieldSetMap.put(AllConstants.FormEntityTypes.ELIGIBLE_COUPLE_TYPE, EligibleCouple.class.getDeclaredFields());
+        fieldSetMap.put(AllConstants.FormEntityTypes.MOTHER_TYPE, Mother.class.getDeclaredFields());
+        fieldSetMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, Child.class.getDeclaredFields());
     }
 
     public String saveEntity(String entityType, String fields) {

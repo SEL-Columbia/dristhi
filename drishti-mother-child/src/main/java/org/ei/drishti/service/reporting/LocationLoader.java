@@ -10,7 +10,7 @@ import org.ei.drishti.repository.AllMothers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static org.ei.drishti.common.AllConstants.ReferenceDataTypes.*;
+import static org.ei.drishti.common.AllConstants.FormEntityTypes.*;
 
 @Component
 public class LocationLoader implements ILocationLoader {

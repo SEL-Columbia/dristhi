@@ -60,7 +60,7 @@ public class FormSubmissionReportServiceTest {
                 .build();
         Location location = new Location("bherya", "Sub Center", "PHC X");
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
-        when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionForInfantLeft());
+        when(reportDefinitionLoader.load()).thenReturn(reportDefinitionForInfantLeft());
         when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
         when(reporterFactory.reporterFor("child")).thenReturn(reporter);
         when(locationLoader.loadLocationFor("child", "child id 1")).thenReturn(location);
@@ -88,7 +88,7 @@ public class FormSubmissionReportServiceTest {
         Location location = new Location("bherya", "Sub Center", "PHC X");
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
         when(rule.apply(any(SafeMap.class))).thenReturn(true);
-        when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionWithCondomQuantity());
+        when(reportDefinitionLoader.load()).thenReturn(reportDefinitionWithCondomQuantity());
         when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
         when(reporterFactory.reporterFor("eligible_couple")).thenReturn(reporter);
         when(locationLoader.loadLocationFor("eligible_couple", "ec id 1")).thenReturn(location);
@@ -114,7 +114,7 @@ public class FormSubmissionReportServiceTest {
                 .addFormField("closeReason", "permanent_relocation")
                 .build();
 
-        when(reportDefinitionLoader.reportDefinition()).thenReturn(reportDefinitionForInfantLeft());
+        when(reportDefinitionLoader.load()).thenReturn(reportDefinitionForInfantLeft());
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
         when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
         when(rule.apply(any(SafeMap.class))).thenReturn(false);

@@ -10,8 +10,8 @@ import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.NUMBER
 public class MoreThanZeroCondomsSuppliedRule implements IRule {
 
     @Override
-    public boolean apply(SafeMap safeMap) {
-        return IntegerUtil.tryParse(safeMap.get(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME), 0) > 0;
+    public boolean apply(SafeMap reportFields) {
+        return IntegerUtil.tryParse(reportFields.get(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME), 0) > 0;
     }
 }
 

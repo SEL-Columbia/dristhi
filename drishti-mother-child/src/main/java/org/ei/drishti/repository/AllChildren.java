@@ -1,5 +1,6 @@
 package org.ei.drishti.repository;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Child;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
@@ -15,7 +16,7 @@ import java.util.List;
 @Repository
 public class AllChildren extends MotechBaseRepository<Child> {
     @Autowired
-    protected AllChildren(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
+    protected AllChildren(@Qualifier(AllConstants.DRISHTI_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(Child.class, db);
     }
 

@@ -23,7 +23,7 @@ public class ReportDefinitionLoader implements IReportDefinitionLoader {
     }
 
     @Override
-    public ReportDefinition reportDefinition() throws Exception {
+    public ReportDefinition load() throws Exception {
         try {
             return (ReportDefinition) new MotechJsonReader().readFromFile(reportDefinitionFileName, new TypeToken<ReportDefinition>() {
             }.getType());

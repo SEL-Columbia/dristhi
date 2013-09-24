@@ -10,8 +10,8 @@ import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.CURREN
 public class CurrentFPMethodIsCondomRule implements IRule {
 
     @Override
-    public boolean apply(SafeMap safeMap) {
-        return CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(safeMap.get(CURRENT_FP_METHOD_FIELD_NAME));
+    public boolean apply(SafeMap reportFields) {
+        return CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(reportFields.get(CURRENT_FP_METHOD_FIELD_NAME));
     }
 }
 

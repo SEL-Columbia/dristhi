@@ -5,6 +5,8 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 public class AllConstants {
+    public static final String DRISHTI_DATABASE_CONNECTOR = "drishtiDatabaseConnector";
+
     public static class Form {
         public static final String ENTITY_ID = "entityId";
         public static final String ANM_ID = "anmId";
@@ -137,6 +139,7 @@ public class AllConstants {
 
     public static class ChildRegistrationFormFields {
         public static final String BF_POSTBIRTH = "didBreastfeedingStart";
+        public static final String DATE_OF_BIRTH = "dateOfBirth";
     }
 
     public static class ChildCloseFormFields {
@@ -252,7 +255,7 @@ public class AllConstants {
         public static final String DIARRHEA_DEHYDRATION_VALUE = "diarrhea_dehydration";
     }
 
-    public static class ReferenceDataTypes {
+    public static class FormEntityTypes {
         public static final String CHILD_TYPE = "child";
         public static final String MOTHER_TYPE = "mother";
         public static final String ELIGIBLE_COUPLE_TYPE = "eligible_couple";

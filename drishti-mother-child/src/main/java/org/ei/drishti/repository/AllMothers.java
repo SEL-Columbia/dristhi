@@ -1,5 +1,6 @@
 package org.ei.drishti.repository;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Mother;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
@@ -9,12 +10,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class AllMothers extends MotechBaseRepository<Mother> {
     @Autowired
-    public AllMothers(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
+    public AllMothers(@Qualifier(AllConstants.DRISHTI_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(Mother.class, db);
     }
 

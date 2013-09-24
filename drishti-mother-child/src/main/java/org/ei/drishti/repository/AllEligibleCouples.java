@@ -1,5 +1,6 @@
 package org.ei.drishti.repository;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
@@ -18,7 +19,7 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
     private final AllMothers allMothers;
 
     @Autowired
-    public AllEligibleCouples(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db, AllMothers allMothers) {
+    public AllEligibleCouples(@Qualifier(AllConstants.DRISHTI_DATABASE_CONNECTOR) CouchDbConnector db, AllMothers allMothers) {
         super(EligibleCouple.class, db);
         this.allMothers = allMothers;
     }

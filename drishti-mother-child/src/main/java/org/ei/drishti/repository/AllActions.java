@@ -1,5 +1,6 @@
 package org.ei.drishti.repository;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Action;
 import org.ektorp.BulkDeleteDocument;
 import org.ektorp.ComplexKey;
@@ -22,7 +23,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     private static Logger logger = LoggerFactory.getLogger(AllActions.class.toString());
 
     @Autowired
-    protected AllActions(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
+    protected AllActions(@Qualifier(AllConstants.DRISHTI_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(Action.class, db);
     }
 

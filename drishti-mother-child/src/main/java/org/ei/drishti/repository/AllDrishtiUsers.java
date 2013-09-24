@@ -1,5 +1,6 @@
 package org.ei.drishti.repository;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.DrishtiUser;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
@@ -13,7 +14,7 @@ import java.util.List;
 @Repository
 public class AllDrishtiUsers extends MotechBaseRepository<DrishtiUser> {
     @Autowired
-    protected AllDrishtiUsers(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
+    protected AllDrishtiUsers(@Qualifier(AllConstants.DRISHTI_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(DrishtiUser.class, db);
     }
 

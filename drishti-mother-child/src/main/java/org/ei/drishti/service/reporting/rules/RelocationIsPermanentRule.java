@@ -10,9 +10,7 @@ import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.PERMANENT_
 public class RelocationIsPermanentRule implements IRule {
 
     @Override
-    public boolean apply(SafeMap safeMap) {
-        String closeReason = safeMap.get(CLOSE_REASON_FIELD_NAME);
-
-        return closeReason.equalsIgnoreCase(PERMANENT_RELOCATION_VALUE);
+    public boolean apply(SafeMap reportFields) {
+        return PERMANENT_RELOCATION_VALUE.equalsIgnoreCase(reportFields.get(CLOSE_REASON_FIELD_NAME));
     }
 }

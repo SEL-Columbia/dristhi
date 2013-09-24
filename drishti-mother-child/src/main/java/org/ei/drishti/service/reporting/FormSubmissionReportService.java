@@ -38,14 +38,13 @@ public class FormSubmissionReportService {
     }
 
     public void reportFor(FormSubmission submission) throws Exception {
-        ReportDefinition reportDefinition = reportDefinitionLoader.reportDefinition();
-
+        //#TODO: Cache the report definition, it need not be loaded for every form submission
+        ReportDefinition reportDefinition = reportDefinitionLoader.load();
         List<ReportIndicator> reportIndicators = reportDefinition.getIndicatorsByFormName(submission.formName());
+
         for (ReportIndicator reportIndicator : reportIndicators) {
-            List<String> formFields = reportIndicator.formFields();
-            ReferenceData referenceData = reportIndicator.referenceData();
-            List<String> rules = reportIndicator.reportingRules();
-            boolean didAllRulesSucceed = processRules(submission, rules, formFields, referenceData);
+            SafeMap reportFields = createReportFields(submission, reportIndicator.formFields(), reportIndicator.referenceData());
+            boolean didAllRulesSucceed = processRules(reportIndicator.reportingRules(), reportFields);
             if (didAllRulesSucceed) {
                 Location location = locationLoader.loadLocationFor(reportIndicator.bindType(), submission.entityId());
                 report(submission, reportIndicator, location);
@@ -53,35 +52,39 @@ public class FormSubmissionReportService {
         }
     }
 
+    private boolean processRules(List<String> rules, SafeMap reportFields) {
+        try {
+            for (String ruleName : rules) {
+                IRule rule = rulesFactory.ruleByName(ruleName);
+                if (!rule.apply(reportFields)) {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("Exception while applying rules. Message: {0}", e.getMessage()));
+            logger.error(getFullStackTrace(e));
+            return false;
+        }
+        return true;
+    }
+
+    private SafeMap createReportFields(FormSubmission submission, List<String> formFields, ReferenceData referenceData) {
+        Map<String, String> formFieldsMap = submission.getFields(formFields);
+        return referenceDataRepository
+                .getReferenceData(submission, referenceData)
+                .concatenate(formFieldsMap);
+    }
+
     private void report(FormSubmission submission, ReportIndicator reportIndicator, Location location) {
         IReporter reporter = reporterFactory.reporterFor(reportIndicator.bindType());
-        SafeMap reportData = getSafeMapReportData(submission, reportIndicator.formFields(), reportIndicator.quantityField());
+        SafeMap reportData = createReportData(submission, reportIndicator.formFields(), reportIndicator.quantityField());
         String serviceProvidedDate = reportIndicator.serviceProvidedDateField() == null
                 ? submission.getField(SUBMISSION_DATE_FIELD_NAME)
                 : submission.getField(reportIndicator.serviceProvidedDateField());
         reporter.report(submission.entityId(), reportIndicator.indicator(), location, serviceProvidedDate, reportData);
     }
 
-    private boolean processRules(FormSubmission submission, List<String> rules, List<String> formFields, ReferenceData referenceData) {
-        boolean didRuleSucceed = true;
-        try {
-            for (String ruleName : rules) {
-                IRule rule = rulesFactory.ruleByName(ruleName);
-                Map<String, String> formFieldsMap = submission.getFields(formFields);
-                SafeMap safeMap = referenceDataRepository.getReferenceData(submission, referenceData).concatenate(formFieldsMap);
-                didRuleSucceed = rule.apply(safeMap);
-                if (!didRuleSucceed) break;
-            }
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("Exception while applying rules. Message: {0}", e.getMessage()));
-            logger.error(getFullStackTrace(e));
-            didRuleSucceed = false;
-        } finally {
-            return didRuleSucceed;
-        }
-    }
-
-    private SafeMap getSafeMapReportData(FormSubmission submission, List<String> formFields, String quantityField) {
+    private SafeMap createReportData(FormSubmission submission, List<String> formFields, String quantityField) {
         SafeMap safeMap = new SafeMap(submission.getFields(formFields));
         safeMap.put(SUBMISSION_DATE_FIELD_NAME, submission.getField(SUBMISSION_DATE_FIELD_NAME));
         if (quantityField != null) {

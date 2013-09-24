@@ -1,9 +1,10 @@
-package org.ei.drishti.service.reporting.rules;
+package org.ei.drishti.repository.it;
 
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.service.reporting.ReferenceData;
+import org.ei.drishti.service.reporting.rules.ReferenceDataRepository;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class ReferenceDataRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        children.removeAll();
+//        children.removeAll();
     }
 
     @Test

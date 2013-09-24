@@ -2,6 +2,7 @@ package org.ei.drishti.service.reporting.rules;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.service.reporting.ReferenceData;
 import org.ei.drishti.util.SafeMap;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.ei.drishti.common.AllConstants.ReferenceDataTypes.*;
+import static org.ei.drishti.common.AllConstants.FormEntityTypes.*;
 
 @Repository
 public class ReferenceDataRepository implements IReferenceDataRepository {
@@ -28,7 +29,7 @@ public class ReferenceDataRepository implements IReferenceDataRepository {
     private Map<String, String> designDocMap;
 
     @Autowired
-    public ReferenceDataRepository(@Qualifier("drishtiDatabaseConnector") CouchDbConnector db) {
+    public ReferenceDataRepository(@Qualifier(AllConstants.DRISHTI_DATABASE_CONNECTOR) CouchDbConnector db) {
         this.db = db;
         designDocMap = new HashMap<>();
         //replace with constants
@@ -45,22 +46,22 @@ public class ReferenceDataRepository implements IReferenceDataRepository {
         ObjectNode entity;
         ObjectNode details;
 
-        if (!viewQueryResult.isEmpty()) {
-            JsonNode document = viewQueryResult.get(0).getDocAsNode();
-            entity = (ObjectNode) document;
-            details = (ObjectNode) document.get(DETAILS);
-            for (String field : referenceData.fields()) {
-                if (entity.get(field) != null) {
-                    referenceDataFields.put(field, entity.get(field).getTextValue());
-                    continue;
-                }
-                if (details.get(field) != null) {
-                    referenceDataFields.put(field, details.get(field).getTextValue());
-                    continue;
-                }
-                referenceDataFields.put(field, null);
-            }
+        if (viewQueryResult.isEmpty()) {
             return referenceDataFields;
+        }
+        JsonNode document = viewQueryResult.get(0).getDocAsNode();
+        entity = (ObjectNode) document;
+        details = (ObjectNode) document.get(DETAILS);
+        for (String field : referenceData.fields()) {
+            if (entity.get(field) != null) {
+                referenceDataFields.put(field, entity.get(field).getTextValue());
+                continue;
+            }
+            if (details.get(field) != null) {
+                referenceDataFields.put(field, details.get(field).getTextValue());
+                continue;
+            }
+            referenceDataFields.put(field, null);
         }
         return referenceDataFields;
     }
