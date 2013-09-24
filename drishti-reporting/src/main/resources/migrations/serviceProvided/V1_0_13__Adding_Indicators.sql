@@ -18,3 +18,6 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('IB_OH');
 INSERT INTO report.dim_indicator (indicator) VALUES ('PENT1');
 INSERT INTO report.dim_indicator (indicator) VALUES ('PENT2');
 INSERT INTO report.dim_indicator (indicator) VALUES ('PENT3');
+INSERT INTO report.dim_indicator (indicator) VALUES ('MMR');
+INSERT INTO report.dim_indicator (indicator) VALUES ('JE');
+
