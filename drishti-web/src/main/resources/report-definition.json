@@ -217,6 +217,24 @@
                         "DeliveryHappenedAtHomeRule",
                         "DeliveryIsAttendedByNonSBATrainedPersonRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_SC_DEL",
+                    "bindType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "deliveryPlace",
+                        "referenceDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "DeliveryHappenedAtSubCenterRule"
+                    ]
                 }
             ]
         },
