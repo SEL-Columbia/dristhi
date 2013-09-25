@@ -198,6 +198,31 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "pnc_registration_oa",
+            "indicators": [
+                {
+                    "indicator": "NRHM_SBA",
+                    "bindType": "eligible_couple",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "isSkilledDelivery",
+                        "deliveryPlace",
+                        "referenceDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "DeliveryHappenedAtHomeRule",
+                        "DeliveryIsAttendedBySBATrainedPersonRule"
+                    ]
+                }
+            ]
         }
     ]
 }
