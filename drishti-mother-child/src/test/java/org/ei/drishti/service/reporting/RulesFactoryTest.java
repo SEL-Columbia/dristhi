@@ -30,6 +30,8 @@ public class RulesFactoryTest {
     private DeliveryHappenedAtHomeRule deliveryHappenedAtHomeRule;
     @Mock
     private DeliveryIsAttendedBySBATrainedPersonRule deliveryIsAttendedBySBATrainedPersonRule;
+    @Mock
+    private DeliveryIsAttendedByNonSBATrainedPersonRule deliveryIsAttendedByNonSBATrainedPersonRule;
 
     private IRulesFactory rulesFactory;
 
@@ -45,7 +47,8 @@ public class RulesFactoryTest {
                 thirdANCVisitHappenedOnTimeRule,
                 serviceProvidedAtSubCenterRule,
                 deliveryIsAttendedBySBATrainedPersonRule,
-                deliveryHappenedAtHomeRule);
+                deliveryHappenedAtHomeRule,
+                deliveryIsAttendedByNonSBATrainedPersonRule);
     }
 
     @Test(expected = RuleNotFoundException.class)
@@ -143,5 +146,14 @@ public class RulesFactoryTest {
         IRule rule = rulesFactory.ruleByName(ruleName);
 
         assertTrue(rule instanceof DeliveryHappenedAtHomeRule);
+    }
+
+    @Test
+    public void shouldLoadDeliveryIsAttendedByNonSBATrainedPersonRuleClassByName() throws Exception {
+        String ruleName = "DeliveryIsAttendedByNonSBATrainedPersonRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof DeliveryIsAttendedByNonSBATrainedPersonRule);
     }
 }

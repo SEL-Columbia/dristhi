@@ -18,3 +18,4 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IB_OH');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ANC3');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_JSY_REG');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_SBA');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_NON_SBA');

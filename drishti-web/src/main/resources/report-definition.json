@@ -196,6 +196,26 @@
                         "DeliveryHappenedAtHomeRule",
                         "DeliveryIsAttendedBySBATrainedPersonRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_NON_SBA",
+                    "bindType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "isSkilledDelivery",
+                        "deliveryPlace",
+                        "referenceDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "DeliveryHappenedAtHomeRule",
+                        "DeliveryIsAttendedByNonSBATrainedPersonRule"
+                    ]
                 }
             ]
         },
