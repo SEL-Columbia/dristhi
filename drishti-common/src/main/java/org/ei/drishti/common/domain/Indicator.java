@@ -48,7 +48,7 @@ public enum Indicator {
 
     //NRHM Indicators
     NRHM_JSY_REG("NRHM_JSY_REG"), NRHM_ANC3("NRHM_ANC3"), NRHM_SBA("NRHM_SBA"), NRHM_NON_SBA("NRHM_NON_SBA"),
-    NRHM_HB_LEVEL("NRHM_HB_LEVEL"), NRHM_PNC24("NRHM_PNC24");
+    NRHM_HB_LEVEL("NRHM_HB_LEVEL"), NRHM_PNC24("NRHM_PNC24"), NRHM_SC_DEL("NRHM_SC_DEL");
 
     private String value;
 
