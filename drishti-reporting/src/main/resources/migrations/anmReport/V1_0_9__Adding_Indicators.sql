@@ -15,3 +15,4 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('INFANT_LEFT');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('CONDOM_QTY');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IBT');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IB_OH');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ANC3');

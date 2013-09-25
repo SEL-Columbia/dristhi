@@ -20,4 +20,5 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('PENT2');
 INSERT INTO report.dim_indicator (indicator) VALUES ('PENT3');
 INSERT INTO report.dim_indicator (indicator) VALUES ('MMR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('JE');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ANC3');
 
