@@ -124,6 +124,30 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "anc_visit",
+            "indicators": [
+                {
+                    "indicator": "NRHM_ANC3",
+                    "bindType": "mother",
+                    "formFields": [
+                        "id",
+                        "referenceDate",
+                        "ancVisitDate",
+                        "ancVisitNumber",
+                        "ancVisitPlace"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "ThirdANCVisitHappenedOnTimeRule"
+                    ]
+                }
+            ]
         }
     ]
 }
