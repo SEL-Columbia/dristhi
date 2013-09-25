@@ -34,6 +34,8 @@ public class RulesFactoryTest {
     private DeliveryIsAttendedByNonSBATrainedPersonRule deliveryIsAttendedByNonSBATrainedPersonRule;
     @Mock
     private IsPersonAnaemicRule isPersonAnaemicRule;
+    @Mock
+    private PNCVisitHappenedLessThan24HoursAfterDeliveryRule pncVisitHappenedLessThan24HoursAfterDeliveryRule;
 
     private IRulesFactory rulesFactory;
 
@@ -51,7 +53,8 @@ public class RulesFactoryTest {
                 deliveryIsAttendedBySBATrainedPersonRule,
                 deliveryHappenedAtHomeRule,
                 deliveryIsAttendedByNonSBATrainedPersonRule,
-                isPersonAnaemicRule);
+                isPersonAnaemicRule,
+                pncVisitHappenedLessThan24HoursAfterDeliveryRule);
     }
 
     @Test(expected = RuleNotFoundException.class)
@@ -134,7 +137,7 @@ public class RulesFactoryTest {
     }
 
     @Test
-    public void shouldLoadIsPersonAnaemicRuleRuleClassByName ()throws Exception {
+    public void shouldLoadIsPersonAnaemicRuleRuleClassByName() throws Exception {
         String ruleName = "IsPersonAnaemicRule";
 
         IRule rule = rulesFactory.ruleByName(ruleName);
@@ -149,32 +152,41 @@ public class RulesFactoryTest {
         IRule rule = rulesFactory.ruleByName(ruleName);
 
         assertTrue(rule instanceof DeliveryIsAttendedBySBATrainedPersonRule);
-        }
-
-        @Test
-        public void shouldLoadDeliveryHappenedAtHomeRuleClassByName ()throws Exception {
-            String ruleName = "DeliveryHappenedAtHomeRule";
-
-            IRule rule = rulesFactory.ruleByName(ruleName);
-
-            assertTrue(rule instanceof DeliveryHappenedAtHomeRule);
-        }
-
-        @Test
-        public void shouldLoadDeliveryIsAttendedByNonSBATrainedPersonRuleClassByName ()throws Exception {
-            String ruleName = "DeliveryIsAttendedByNonSBATrainedPersonRule";
-
-            IRule rule = rulesFactory.ruleByName(ruleName);
-
-            assertTrue(rule instanceof DeliveryIsAttendedByNonSBATrainedPersonRule);
-        }
-
-        @Test
-        public void shouldLoadIsPersonAnaemicRuleClassByName ()throws Exception {
-            String ruleName = "IsPersonAnaemicRule";
-
-            IRule rule = rulesFactory.ruleByName(ruleName);
-
-            assertTrue(rule instanceof IsPersonAnaemicRule);
-        }
     }
+
+    @Test
+    public void shouldLoadDeliveryHappenedAtHomeRuleClassByName() throws Exception {
+        String ruleName = "DeliveryHappenedAtHomeRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof DeliveryHappenedAtHomeRule);
+    }
+
+    @Test
+    public void shouldLoadDeliveryIsAttendedByNonSBATrainedPersonRuleClassByName() throws Exception {
+        String ruleName = "DeliveryIsAttendedByNonSBATrainedPersonRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof DeliveryIsAttendedByNonSBATrainedPersonRule);
+    }
+
+    @Test
+    public void shouldLoadIsPersonAnaemicRuleClassByName() throws Exception {
+        String ruleName = "IsPersonAnaemicRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof IsPersonAnaemicRule);
+    }
+
+    @Test
+    public void shouldLoadPNCVisitHappenedLessThan24HoursAfterDeliveryRuleClassByName() throws Exception {
+        String ruleName = "PNCVisitHappenedLessThan24HoursAfterDeliveryRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof PNCVisitHappenedLessThan24HoursAfterDeliveryRule);
+    }
+}

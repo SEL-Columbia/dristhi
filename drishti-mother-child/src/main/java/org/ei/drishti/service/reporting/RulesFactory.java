@@ -21,6 +21,7 @@ public class RulesFactory implements IRulesFactory {
     private static final String DELIVERY_HAPPENED_AT_HOME_RULE = "DeliveryHappenedAtHomeRule";
     private static final String DELIVERY_IS_ATTENDED_BY_NON_SBA_TRAINED_PERSON_RULE = "DeliveryIsAttendedByNonSBATrainedPersonRule";
     private static final String IS_PERSON_ANAEMIC_RULE = "IsPersonAnaemicRule";
+    private static final String PNC_VISIT_HAPPENED_LESS_THAN_24_HOURS_AFTER_DELIVERY_RULE = "PNCVisitHappenedLessThan24HoursAfterDeliveryRule";
 
     Map<String, IRule> rules = new HashMap<>();
 
@@ -37,7 +38,8 @@ public class RulesFactory implements IRulesFactory {
                         DeliveryIsAttendedBySBATrainedPersonRule deliveryIsAttendedBySBATrainedPerson,
                         DeliveryHappenedAtHomeRule deliveryHappenedAtHomeRule,
                         DeliveryIsAttendedByNonSBATrainedPersonRule deliveryIsAttendedByNonSBATrainedPersonRule,
-                        IsPersonAnaemicRule isPersonAnaemicRule) {
+                        IsPersonAnaemicRule isPersonAnaemicRule,
+                        PNCVisitHappenedLessThan24HoursAfterDeliveryRule pncVisitHappenedLessThan24HoursAfterDeliveryRule) {
         rules.put(AGE_LESS_THAN_ONE_YEAR, ageIsLessThanOneYearRule);
         rules.put(RELOCATION_PERMANENT, relocationIsPermanentRule);
         rules.put(CURRENT_FP_METHOD_IS_CONDOM, currentFPMethodIsCondomRule);
@@ -50,6 +52,7 @@ public class RulesFactory implements IRulesFactory {
         rules.put(DELIVERY_HAPPENED_AT_HOME_RULE, deliveryHappenedAtHomeRule);
         rules.put(DELIVERY_IS_ATTENDED_BY_NON_SBA_TRAINED_PERSON_RULE, deliveryIsAttendedByNonSBATrainedPersonRule);
         rules.put(IS_PERSON_ANAEMIC_RULE, isPersonAnaemicRule);
+        rules.put(PNC_VISIT_HAPPENED_LESS_THAN_24_HOURS_AFTER_DELIVERY_RULE, pncVisitHappenedLessThan24HoursAfterDeliveryRule);
     }
 
     public IRule ruleByName(String ruleName) throws RuleNotFoundException {
