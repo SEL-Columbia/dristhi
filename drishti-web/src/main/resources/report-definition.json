@@ -136,7 +136,7 @@
                         "referenceDate",
                         "ancVisitDate",
                         "ancVisitNumber",
-                        "ancVisitPlace"
+                        "serviceProvidedPlace"
                     ],
                     "referenceData": {
                         "type": "mother",
@@ -144,7 +144,8 @@
                         "fields": []
                     },
                     "reportWhen": [
-                        "ThirdANCVisitHappenedOnTimeRule"
+                        "ThirdANCVisitHappenedOnTimeRule",
+                        "ServiceProvidedAtSubCenterRule"
                     ]
                 }
             ]

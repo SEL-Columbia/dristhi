@@ -24,7 +24,6 @@ public class ThirdANCVisitHappenedOnTimeRuleTest {
 
     @Test
     public void shouldReturnTrueWhenThirdANCVisitHappens28WeeksAfterLMP() {
-
         Map<String, String> reportFields =
                 create("id", "mother id 1")
                         .put("referenceDate", "2012-01-01")

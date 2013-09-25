@@ -57,6 +57,7 @@ public class AllConstants {
         public static final int CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 7;
         public static final int CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 28;
         public static final int CHILD_DIARRHEA_THRESHOLD_IN_YEARS = 5;
+        public static final String SUB_CENTER_SERVICE_PROVIDED_PLACE = "sub_center";
     }
 
     public static class ReportDataParameters {
@@ -133,6 +134,7 @@ public class AllConstants {
     public static class CommonFormFields {
         public static final String SUBMISSION_DATE_FIELD_NAME = "submissionDate";
         public static final String ID = "id";
+        public static final String SERVICE_PROVIDED_PLACE = "serviceProvidedPlace";
     }
 
     public static class CommonChildFormFields {
