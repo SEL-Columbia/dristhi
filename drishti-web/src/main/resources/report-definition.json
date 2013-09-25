@@ -310,6 +310,26 @@
                         "DeliveryHappenedAtHomeRule",
                         "PNCVisitHappenedLessThan24HoursAfterDeliveryRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_48HRS",
+                    "bindType": "mother",
+                    "serviceProvidedDateField": "dischargeDate",
+                    "formFields": [
+                        "id",
+                        "deliveryPlace",
+                        "dischargeDate",
+                        "referenceDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": ["deliveryPlace"]
+                    },
+                    "reportWhen": [
+                        "DeliveryHappenedAtSubCenterRule",
+                        "WomanIsDischargedWithin48HoursOfDeliveryRule"
+                    ]
                 }
             ]
         }

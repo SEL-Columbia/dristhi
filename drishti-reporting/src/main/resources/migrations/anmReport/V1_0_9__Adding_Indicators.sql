@@ -22,3 +22,4 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_NON_SBA');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_HB_LEVEL');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_PNC24');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_SC_DEL');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_48HRS');

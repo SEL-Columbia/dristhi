@@ -36,6 +36,10 @@ public class RulesFactoryTest {
     private IsPersonAnaemicRule isPersonAnaemicRule;
     @Mock
     private PNCVisitHappenedLessThan24HoursAfterDeliveryRule pncVisitHappenedLessThan24HoursAfterDeliveryRule;
+    @Mock
+    private DeliveryHappenedAtSubCenterRule deliveryHappenedAtSubCenterRule;
+    @Mock
+    private WomanIsDischargedWithin48HoursOfDeliveryRule womanIsDischargedWithin48HoursOfDeliveryRule;
 
     private IRulesFactory rulesFactory;
 
@@ -54,7 +58,9 @@ public class RulesFactoryTest {
                 deliveryHappenedAtHomeRule,
                 deliveryIsAttendedByNonSBATrainedPersonRule,
                 isPersonAnaemicRule,
-                pncVisitHappenedLessThan24HoursAfterDeliveryRule);
+                pncVisitHappenedLessThan24HoursAfterDeliveryRule,
+                deliveryHappenedAtSubCenterRule,
+                womanIsDischargedWithin48HoursOfDeliveryRule);
     }
 
     @Test(expected = RuleNotFoundException.class)
@@ -188,5 +194,23 @@ public class RulesFactoryTest {
         IRule rule = rulesFactory.ruleByName(ruleName);
 
         assertTrue(rule instanceof PNCVisitHappenedLessThan24HoursAfterDeliveryRule);
+    }
+
+    @Test
+    public void shouldLoadDeliveryHappenedAtSubCenterRuleClassByName() throws Exception {
+        String ruleName = "DeliveryHappenedAtSubCenterRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof DeliveryHappenedAtSubCenterRule);
+    }
+
+    @Test
+    public void shouldLoadWomanIsDischargedWithin48HoursOfDeliveryRuleClassByName() throws Exception {
+        String ruleName = "WomanIsDischargedWithin48HoursOfDeliveryRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof WomanIsDischargedWithin48HoursOfDeliveryRule);
     }
 }
