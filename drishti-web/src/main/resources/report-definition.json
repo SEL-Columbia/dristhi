@@ -166,7 +166,8 @@
                         "fields": []
                     },
                     "reportWhen": [
-                        "JsyBeneficiaryIsTrueRule"
+                        "JsyBeneficiaryIsTrueRule",
+                        "ServiceProvidedAtSubCenterRule"
                     ]
                 }
             ]
