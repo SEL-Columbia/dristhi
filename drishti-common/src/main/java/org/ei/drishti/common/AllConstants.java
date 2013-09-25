@@ -122,6 +122,7 @@ public class AllConstants {
 
     public static class HbTestFormFields {
         public static final String HB_TEST_DATE_FIELD = "hbTestDate";
+        public static final String HB_LEVEL_FIELD = "hbLevel";
         public static final String ANAEMIC_STATUS_FIELD = "anaemicStatus";
     }
 

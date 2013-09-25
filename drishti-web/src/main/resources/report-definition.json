@@ -263,6 +263,30 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "hb_test",
+            "indicators": [
+                {
+                    "indicator": "NRHM_HB_LEVEL",
+                    "bindType": "mother",
+                    "formFields": [
+                        "id",
+                        "hbLevel",
+                        "hbTestDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "HBLevelIsLessThanElevenRule",
+                        "ServiceProvidedAtSubCenterRule"
+                    ]
+                }
+            ]
         }
     ]
 }

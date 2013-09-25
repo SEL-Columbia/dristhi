@@ -24,4 +24,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ANC3');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_JSY_REG');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_SBA');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_NON_SBA');
-
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_HB_LEVEL');

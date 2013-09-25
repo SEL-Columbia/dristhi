@@ -20,6 +20,7 @@ public class RulesFactory implements IRulesFactory {
     private static final String DELIVERY_IS_ATTENDED_BY_SBA_TRAINED_PERSON_RULE = "DeliveryIsAttendedBySBATrainedPersonRule";
     private static final String DELIVERY_HAPPENED_AT_HOME_RULE = "DeliveryHappenedAtHomeRule";
     private static final String DELIVERY_IS_ATTENDED_BY_NON_SBA_TRAINED_PERSON_RULE = "DeliveryIsAttendedByNonSBATrainedPersonRule";
+    private static final String HB_LEVEL_IS_LESS_THAN_ELEVEN_RULE = "HBLevelIsLessThanElevenRule";
 
     Map<String, IRule> rules = new HashMap<>();
 
@@ -35,7 +36,8 @@ public class RulesFactory implements IRulesFactory {
                         ServiceProvidedAtSubCenterRule serviceProvidedAtSubCenterRule,
                         DeliveryIsAttendedBySBATrainedPersonRule deliveryIsAttendedBySBATrainedPerson,
                         DeliveryHappenedAtHomeRule deliveryHappenedAtHomeRule,
-                        DeliveryIsAttendedByNonSBATrainedPersonRule deliveryIsAttendedByNonSBATrainedPersonRule) {
+                        DeliveryIsAttendedByNonSBATrainedPersonRule deliveryIsAttendedByNonSBATrainedPersonRule,
+                        HBLevelIsLessThanElevenRule hbLevelIsLessThanElevenRule) {
         rules.put(AGE_LESS_THAN_ONE_YEAR, ageIsLessThanOneYearRule);
         rules.put(RELOCATION_PERMANENT, relocationIsPermanentRule);
         rules.put(CURRENT_FP_METHOD_IS_CONDOM, currentFPMethodIsCondomRule);
@@ -47,6 +49,7 @@ public class RulesFactory implements IRulesFactory {
         rules.put(DELIVERY_IS_ATTENDED_BY_SBA_TRAINED_PERSON_RULE, deliveryIsAttendedBySBATrainedPerson);
         rules.put(DELIVERY_HAPPENED_AT_HOME_RULE, deliveryHappenedAtHomeRule);
         rules.put(DELIVERY_IS_ATTENDED_BY_NON_SBA_TRAINED_PERSON_RULE, deliveryIsAttendedByNonSBATrainedPersonRule);
+        rules.put(HB_LEVEL_IS_LESS_THAN_ELEVEN_RULE, hbLevelIsLessThanElevenRule);
     }
 
     public IRule ruleByName(String ruleName) throws RuleNotFoundException {

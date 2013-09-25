@@ -32,6 +32,8 @@ public class RulesFactoryTest {
     private DeliveryIsAttendedBySBATrainedPersonRule deliveryIsAttendedBySBATrainedPersonRule;
     @Mock
     private DeliveryIsAttendedByNonSBATrainedPersonRule deliveryIsAttendedByNonSBATrainedPersonRule;
+    @Mock
+    private HBLevelIsLessThanElevenRule hbLevelIsLessThanElevenRule;
 
     private IRulesFactory rulesFactory;
 
@@ -155,5 +157,14 @@ public class RulesFactoryTest {
         IRule rule = rulesFactory.ruleByName(ruleName);
 
         assertTrue(rule instanceof DeliveryIsAttendedByNonSBATrainedPersonRule);
+    }
+
+    @Test
+    public void shouldLoadHbLevelIsLessThanElevenRuleClassByName() throws Exception {
+        String ruleName = "HBLevelIsLessThanElevenRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof HBLevelIsLessThanElevenRule);
     }
 }
