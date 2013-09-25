@@ -148,6 +148,27 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "anc_registration",
+            "indicators": [
+                {
+                    "indicator": "NRHM_JSY_REG",
+                    "bindType": "eligible_couple",
+                    "formFields": [
+                        "id",
+                        "isJSYBeneficiary"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "JsyBeneficiaryIsTrueRule"
+                    ]
+                }
+            ]
         }
     ]
 }

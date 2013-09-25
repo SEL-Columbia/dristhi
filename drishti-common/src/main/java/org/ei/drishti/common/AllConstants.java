@@ -101,6 +101,11 @@ public class AllConstants {
 
     }
 
+    public static class ANCRegistrationFormFields{
+        public static final String JSY_BENEFICIARY ="isJSYBeneficiary";
+        public static final String JSY_BENEFICIARY_TRUE_VALUE ="yes";
+    }
+
     public static class ANCFormFields {
         public static final String MOTHER_ID = "motherId";
         public static final String REGISTRATION_DATE = "registrationDate";
