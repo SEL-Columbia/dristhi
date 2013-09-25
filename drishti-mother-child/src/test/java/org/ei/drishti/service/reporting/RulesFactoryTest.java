@@ -22,13 +22,24 @@ public class RulesFactoryTest {
     private MoreThanZeroCondomsSuppliedRule moreThanZeroCondomsSuppliedRule;
     @Mock
     private JsyBeneficiaryIsTrueRule jsyBeneficiaryIsTrueRule;
+    @Mock
+    private ThirdANCVisitHappenedOnTimeRule thirdANCVisitHappenedOnTimeRule;
+    @Mock
+    private ServiceProvidedAtSubCenterRule serviceProvidedAtSubCenterRule;
 
     private IRulesFactory rulesFactory;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        rulesFactory = new RulesFactory(ageIsLessThanOneYearRule, relocationIsPermanentRule, currentFPMethodIsCondomRule, newFPMethodIsCondomRule, moreThanZeroCondomsSuppliedRule, jsyBeneficiaryIsTrueRule);
+        rulesFactory = new RulesFactory(ageIsLessThanOneYearRule,
+                relocationIsPermanentRule,
+                currentFPMethodIsCondomRule,
+                newFPMethodIsCondomRule,
+                moreThanZeroCondomsSuppliedRule,
+                jsyBeneficiaryIsTrueRule,
+                thirdANCVisitHappenedOnTimeRule,
+                serviceProvidedAtSubCenterRule);
     }
 
     @Test
@@ -84,6 +95,24 @@ public class RulesFactoryTest {
         IRule rule = rulesFactory.ruleByName(ruleName);
 
         assertTrue(rule instanceof JsyBeneficiaryIsTrueRule);
+    }
+
+    @Test
+    public void shouldLoadThirdANCVisitHappenedOnTimeRuleClassByName() throws Exception {
+        String ruleName = "ThirdANCVisitHappenedOnTimeRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof ThirdANCVisitHappenedOnTimeRule);
+    }
+
+    @Test
+    public void shouldLoadServiceProvidedAtSubCenterRuleClassByName() throws Exception {
+        String ruleName = "ServiceProvidedAtSubCenterRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof ServiceProvidedAtSubCenterRule);
     }
 
     @Test(expected = RuleNotFoundException.class)

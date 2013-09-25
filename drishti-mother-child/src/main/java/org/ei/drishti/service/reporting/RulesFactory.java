@@ -15,6 +15,8 @@ public class RulesFactory implements IRulesFactory {
     private static final String NEW_FP_METHOD_IS_CONDOM = "NewFPMethodIsCondomRule";
     private static final String MORE_THAN_ZERO_CONDOMS_SUPPLIED = "MoreThanZeroCondomsSuppliedRule";
     private static final String JSY_BENEFICIARY_IS_TRUE = "JsyBeneficiaryIsTrueRule";
+    private static final String THIRD_ANC_VISIT_HAPPENED_ON_TIME_RULE = "ThirdANCVisitHappenedOnTimeRule";
+    private static final String SERVICE_PROVIDED_AT_SUB_CENTER_RULE = "ServiceProvidedAtSubCenterRule";
 
     Map<String, IRule> rules = new HashMap<>();
 
@@ -24,13 +26,17 @@ public class RulesFactory implements IRulesFactory {
                         RelocationIsPermanentRule relocationIsPermanentRule,
                         CurrentFPMethodIsCondomRule currentFPMethodIsCondomRule,
                         NewFPMethodIsCondomRule newFPMethodIsCondomRule,
-                        MoreThanZeroCondomsSuppliedRule moreThanZeroCondomsSuppliedRule, JsyBeneficiaryIsTrueRule jsyBeneficiaryIsTrueRule) {
+                        MoreThanZeroCondomsSuppliedRule moreThanZeroCondomsSuppliedRule,
+                        JsyBeneficiaryIsTrueRule jsyBeneficiaryIsTrueRule,
+                        ThirdANCVisitHappenedOnTimeRule thirdANCVisitHappenedOnTimeRule, ServiceProvidedAtSubCenterRule serviceProvidedAtSubCenterRule) {
         rules.put(AGE_LESS_THAN_ONE_YEAR, ageIsLessThanOneYearRule);
         rules.put(RELOCATION_PERMANENT, relocationIsPermanentRule);
         rules.put(CURRENT_FP_METHOD_IS_CONDOM, currentFPMethodIsCondomRule);
         rules.put(NEW_FP_METHOD_IS_CONDOM, newFPMethodIsCondomRule);
         rules.put(MORE_THAN_ZERO_CONDOMS_SUPPLIED, moreThanZeroCondomsSuppliedRule);
-        rules.put(JSY_BENEFICIARY_IS_TRUE,jsyBeneficiaryIsTrueRule);
+        rules.put(JSY_BENEFICIARY_IS_TRUE, jsyBeneficiaryIsTrueRule);
+        rules.put(THIRD_ANC_VISIT_HAPPENED_ON_TIME_RULE, thirdANCVisitHappenedOnTimeRule);
+        rules.put(SERVICE_PROVIDED_AT_SUB_CENTER_RULE, serviceProvidedAtSubCenterRule);
     }
 
     public IRule ruleByName(String ruleName) throws RuleNotFoundException {
