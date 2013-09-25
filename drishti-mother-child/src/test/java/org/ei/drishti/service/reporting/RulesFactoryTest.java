@@ -26,6 +26,10 @@ public class RulesFactoryTest {
     private ThirdANCVisitHappenedOnTimeRule thirdANCVisitHappenedOnTimeRule;
     @Mock
     private ServiceProvidedAtSubCenterRule serviceProvidedAtSubCenterRule;
+    @Mock
+    private DeliveryHappenedAtHomeRule deliveryHappenedAtHomeRule;
+    @Mock
+    private DeliveryIsAttendedBySBATrainedPersonRule deliveryIsAttendedBySBATrainedPersonRule;
 
     private IRulesFactory rulesFactory;
 
@@ -39,7 +43,15 @@ public class RulesFactoryTest {
                 moreThanZeroCondomsSuppliedRule,
                 jsyBeneficiaryIsTrueRule,
                 thirdANCVisitHappenedOnTimeRule,
-                serviceProvidedAtSubCenterRule);
+                serviceProvidedAtSubCenterRule,
+                deliveryIsAttendedBySBATrainedPersonRule,
+                deliveryHappenedAtHomeRule);
+    }
+
+    @Test(expected = RuleNotFoundException.class)
+    public void shouldThrowExceptionWhenRuleClassCannotBeFoundByName() throws Exception {
+        String ruleName = "NonExistentRule";
+        IRule rule = rulesFactory.ruleByName(ruleName);
     }
 
     @Test
@@ -115,9 +127,21 @@ public class RulesFactoryTest {
         assertTrue(rule instanceof ServiceProvidedAtSubCenterRule);
     }
 
-    @Test(expected = RuleNotFoundException.class)
-    public void shouldThrowExceptionWhenRuleClassCannotBeFoundByName() throws Exception {
-        String ruleName = "NonExistentRule";
+    @Test
+    public void shouldLoadDeliveryIsAttendedBySBATrainedPersonRuleClassByName() throws Exception {
+        String ruleName = "DeliveryIsAttendedBySBATrainedPersonRule";
+
         IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof DeliveryIsAttendedBySBATrainedPersonRule);
+    }
+
+    @Test
+    public void shouldLoadDeliveryHappenedAtHomeRuleClassByName() throws Exception {
+        String ruleName = "DeliveryHappenedAtHomeRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof DeliveryHappenedAtHomeRule);
     }
 }

@@ -131,6 +131,7 @@
                 {
                     "indicator": "NRHM_ANC3",
                     "bindType": "mother",
+                    "serviceProvidedDateField": "ancVisitDate",
                     "formFields": [
                         "id",
                         "referenceDate",
@@ -158,7 +159,8 @@
                     "bindType": "eligible_couple",
                     "formFields": [
                         "id",
-                        "isJSYBeneficiary"
+                        "isJSYBeneficiary",
+                        "serviceProvidedPlace"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
@@ -168,6 +170,31 @@
                     "reportWhen": [
                         "JsyBeneficiaryIsTrueRule",
                         "ServiceProvidedAtSubCenterRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "delivery_outcome",
+            "indicators": [
+                {
+                    "indicator": "NRHM_SBA",
+                    "bindType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "isSkilledDelivery",
+                        "deliveryPlace",
+                        "referenceDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "DeliveryHappenedAtHomeRule",
+                        "DeliveryIsAttendedBySBATrainedPersonRule"
                     ]
                 }
             ]

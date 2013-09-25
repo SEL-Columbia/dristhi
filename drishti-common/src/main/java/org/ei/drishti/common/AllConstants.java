@@ -99,12 +99,12 @@ public class AllConstants {
         public static final String STILL_BIRTH_VALUE = "still_birth";
         public static final String DELIVERY_TYPE = "deliveryType";
         public static final String CESAREAN_VALUE = "cesarean";
+        public static final String IS_SKILLED_DELIVERY = "isSkilledDelivery";
 
     }
 
-    public static class ANCRegistrationFormFields{
-        public static final String JSY_BENEFICIARY ="isJSYBeneficiary";
-        public static final String JSY_BENEFICIARY_TRUE_VALUE ="yes";
+    public static class ANCRegistrationFormFields {
+        public static final String JSY_BENEFICIARY = "isJSYBeneficiary";
     }
 
     public static class ANCFormFields {

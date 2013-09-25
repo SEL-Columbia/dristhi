@@ -17,6 +17,8 @@ public class RulesFactory implements IRulesFactory {
     private static final String JSY_BENEFICIARY_IS_TRUE = "JsyBeneficiaryIsTrueRule";
     private static final String THIRD_ANC_VISIT_HAPPENED_ON_TIME_RULE = "ThirdANCVisitHappenedOnTimeRule";
     private static final String SERVICE_PROVIDED_AT_SUB_CENTER_RULE = "ServiceProvidedAtSubCenterRule";
+    private static final String DELIVERY_IS_ATTENDED_BY_SBA_TRAINED_PERSON_RULE = "DeliveryIsAttendedBySBATrainedPersonRule";
+    private static final String DELIVERY_HAPPENED_AT_HOME_RULE = "DeliveryHappenedAtHomeRule";
 
     Map<String, IRule> rules = new HashMap<>();
 
@@ -28,7 +30,10 @@ public class RulesFactory implements IRulesFactory {
                         NewFPMethodIsCondomRule newFPMethodIsCondomRule,
                         MoreThanZeroCondomsSuppliedRule moreThanZeroCondomsSuppliedRule,
                         JsyBeneficiaryIsTrueRule jsyBeneficiaryIsTrueRule,
-                        ThirdANCVisitHappenedOnTimeRule thirdANCVisitHappenedOnTimeRule, ServiceProvidedAtSubCenterRule serviceProvidedAtSubCenterRule) {
+                        ThirdANCVisitHappenedOnTimeRule thirdANCVisitHappenedOnTimeRule,
+                        ServiceProvidedAtSubCenterRule serviceProvidedAtSubCenterRule,
+                        DeliveryIsAttendedBySBATrainedPersonRule deliveryIsAttendedBySBATrainedPerson,
+                        DeliveryHappenedAtHomeRule deliveryHappenedAtHomeRule) {
         rules.put(AGE_LESS_THAN_ONE_YEAR, ageIsLessThanOneYearRule);
         rules.put(RELOCATION_PERMANENT, relocationIsPermanentRule);
         rules.put(CURRENT_FP_METHOD_IS_CONDOM, currentFPMethodIsCondomRule);
@@ -37,6 +42,8 @@ public class RulesFactory implements IRulesFactory {
         rules.put(JSY_BENEFICIARY_IS_TRUE, jsyBeneficiaryIsTrueRule);
         rules.put(THIRD_ANC_VISIT_HAPPENED_ON_TIME_RULE, thirdANCVisitHappenedOnTimeRule);
         rules.put(SERVICE_PROVIDED_AT_SUB_CENTER_RULE, serviceProvidedAtSubCenterRule);
+        rules.put(DELIVERY_IS_ATTENDED_BY_SBA_TRAINED_PERSON_RULE, deliveryIsAttendedBySBATrainedPerson);
+        rules.put(DELIVERY_HAPPENED_AT_HOME_RULE, deliveryHappenedAtHomeRule);
     }
 
     public IRule ruleByName(String ruleName) throws RuleNotFoundException {
