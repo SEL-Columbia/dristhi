@@ -282,7 +282,7 @@
                         "fields": []
                     },
                     "reportWhen": [
-                        "HBLevelIsLessThanElevenRule",
+                        "IsPersonAnaemicRule",
                         "ServiceProvidedAtSubCenterRule"
                     ]
                 }

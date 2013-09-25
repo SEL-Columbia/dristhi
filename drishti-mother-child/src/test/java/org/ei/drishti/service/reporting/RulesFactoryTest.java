@@ -33,7 +33,7 @@ public class RulesFactoryTest {
     @Mock
     private DeliveryIsAttendedByNonSBATrainedPersonRule deliveryIsAttendedByNonSBATrainedPersonRule;
     @Mock
-    private HBLevelIsLessThanElevenRule hbLevelIsLessThanElevenRule;
+    private IsPersonAnaemicRule isPersonAnaemicRule;
 
     private IRulesFactory rulesFactory;
 
@@ -50,7 +50,8 @@ public class RulesFactoryTest {
                 serviceProvidedAtSubCenterRule,
                 deliveryIsAttendedBySBATrainedPersonRule,
                 deliveryHappenedAtHomeRule,
-                deliveryIsAttendedByNonSBATrainedPersonRule);
+                deliveryIsAttendedByNonSBATrainedPersonRule,
+                isPersonAnaemicRule);
     }
 
     @Test(expected = RuleNotFoundException.class)
@@ -133,38 +134,47 @@ public class RulesFactoryTest {
     }
 
     @Test
+    public void shouldLoadIsPersonAnaemicRuleRuleClassByName ()throws Exception {
+        String ruleName = "IsPersonAnaemicRule";
+
+        IRule rule = rulesFactory.ruleByName(ruleName);
+
+        assertTrue(rule instanceof IsPersonAnaemicRule);
+    }
+
+    @Test
     public void shouldLoadDeliveryIsAttendedBySBATrainedPersonRuleClassByName() throws Exception {
         String ruleName = "DeliveryIsAttendedBySBATrainedPersonRule";
 
         IRule rule = rulesFactory.ruleByName(ruleName);
 
         assertTrue(rule instanceof DeliveryIsAttendedBySBATrainedPersonRule);
+        }
+
+        @Test
+        public void shouldLoadDeliveryHappenedAtHomeRuleClassByName ()throws Exception {
+            String ruleName = "DeliveryHappenedAtHomeRule";
+
+            IRule rule = rulesFactory.ruleByName(ruleName);
+
+            assertTrue(rule instanceof DeliveryHappenedAtHomeRule);
+        }
+
+        @Test
+        public void shouldLoadDeliveryIsAttendedByNonSBATrainedPersonRuleClassByName ()throws Exception {
+            String ruleName = "DeliveryIsAttendedByNonSBATrainedPersonRule";
+
+            IRule rule = rulesFactory.ruleByName(ruleName);
+
+            assertTrue(rule instanceof DeliveryIsAttendedByNonSBATrainedPersonRule);
+        }
+
+        @Test
+        public void shouldLoadIsPersonAnaemicRuleClassByName ()throws Exception {
+            String ruleName = "IsPersonAnaemicRule";
+
+            IRule rule = rulesFactory.ruleByName(ruleName);
+
+            assertTrue(rule instanceof IsPersonAnaemicRule);
+        }
     }
-
-    @Test
-    public void shouldLoadDeliveryHappenedAtHomeRuleClassByName() throws Exception {
-        String ruleName = "DeliveryHappenedAtHomeRule";
-
-        IRule rule = rulesFactory.ruleByName(ruleName);
-
-        assertTrue(rule instanceof DeliveryHappenedAtHomeRule);
-    }
-
-    @Test
-    public void shouldLoadDeliveryIsAttendedByNonSBATrainedPersonRuleClassByName() throws Exception {
-        String ruleName = "DeliveryIsAttendedByNonSBATrainedPersonRule";
-
-        IRule rule = rulesFactory.ruleByName(ruleName);
-
-        assertTrue(rule instanceof DeliveryIsAttendedByNonSBATrainedPersonRule);
-    }
-
-    @Test
-    public void shouldLoadHbLevelIsLessThanElevenRuleClassByName() throws Exception {
-        String ruleName = "HBLevelIsLessThanElevenRule";
-
-        IRule rule = rulesFactory.ruleByName(ruleName);
-
-        assertTrue(rule instanceof HBLevelIsLessThanElevenRule);
-    }
-}

@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_LEVEL_FIELD;
 
 @Component
-public class HBLevelIsLessThanElevenRule implements IRule {
+public class IsPersonAnaemicRule implements IRule {
 
-    public static final Double HB_LEVEL_THRESHOLD_FOR_ANEMIA = 11D;
+    public static final Double HB_LEVEL_THRESHOLD_FOR_ANAEMIA = 11D;
 
     @Override
     public boolean apply(SafeMap reportFields) {
-        double hbLevelValueFromField = DoubleUtil.tryParse(reportFields.get(HB_LEVEL_FIELD), 0D);
-        return hbLevelValueFromField < HB_LEVEL_THRESHOLD_FOR_ANEMIA;
+        double hbLevel = DoubleUtil.tryParse(reportFields.get(HB_LEVEL_FIELD), HB_LEVEL_THRESHOLD_FOR_ANAEMIA + 1);
+        return hbLevel < HB_LEVEL_THRESHOLD_FOR_ANAEMIA;
     }
 }

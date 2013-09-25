@@ -10,20 +10,20 @@ import static junit.framework.Assert.assertTrue;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class HBLevelIsLessThanElevenRuleTest {
+public class IsPersonAnaemicRuleTest {
 
-    private HBLevelIsLessThanElevenRule hbLevelIsLessThanElevenRule;
+    private IsPersonAnaemicRule isPersonAnaemicRule;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        hbLevelIsLessThanElevenRule = new HBLevelIsLessThanElevenRule();
+        isPersonAnaemicRule = new IsPersonAnaemicRule();
     }
 
     @Test
     public void shouldReturnTrueWhenHBLevelIsLessThanEleven() throws Exception {
         EasyMap easyMap = create("serviceProvidedPlace", "sub_center").put("hbLevel","10.3");
-        boolean rulePassed = hbLevelIsLessThanElevenRule.apply(new SafeMap(easyMap.map()));
+        boolean rulePassed = isPersonAnaemicRule.apply(new SafeMap(easyMap.map()));
 
         assertTrue(rulePassed);
     }
@@ -31,7 +31,7 @@ public class HBLevelIsLessThanElevenRuleTest {
     @Test
     public void shouldReturnFalseWhenHBLevelIsMoreThanEleven() throws Exception {
         EasyMap easyMap = create("serviceProvidedPlace", "sub_center").put("hbLevel", "11.3");
-        boolean rulePassed = hbLevelIsLessThanElevenRule.apply(new SafeMap(easyMap.map()));
+        boolean rulePassed = isPersonAnaemicRule.apply(new SafeMap(easyMap.map()));
 
         assertFalse(rulePassed);
     }
