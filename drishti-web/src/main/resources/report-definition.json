@@ -157,6 +157,7 @@
                 {
                     "indicator": "NRHM_JSY_REG",
                     "bindType": "eligible_couple",
+                    "serviceProvidedDateField": "registrationDate",
                     "formFields": [
                         "id",
                         "isJSYBeneficiary",
@@ -168,7 +169,7 @@
                         "fields": []
                     },
                     "reportWhen": [
-                        "JsyBeneficiaryIsTrueRule",
+                        "IsJsyBeneficiaryRule",
                         "ServiceProvidedAtSubCenterRule"
                     ]
                 }

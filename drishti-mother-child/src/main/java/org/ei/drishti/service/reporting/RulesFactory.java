@@ -14,7 +14,7 @@ public class RulesFactory implements IRulesFactory {
     private static final String CURRENT_FP_METHOD_IS_CONDOM = "CurrentFPMethodIsCondomRule";
     private static final String NEW_FP_METHOD_IS_CONDOM = "NewFPMethodIsCondomRule";
     private static final String MORE_THAN_ZERO_CONDOMS_SUPPLIED = "MoreThanZeroCondomsSuppliedRule";
-    private static final String JSY_BENEFICIARY_IS_TRUE = "JsyBeneficiaryIsTrueRule";
+    private static final String JSY_BENEFICIARY_IS_TRUE = "IsJsyBeneficiaryRule";
     private static final String THIRD_ANC_VISIT_HAPPENED_ON_TIME_RULE = "ThirdANCVisitHappenedOnTimeRule";
     private static final String SERVICE_PROVIDED_AT_SUB_CENTER_RULE = "ServiceProvidedAtSubCenterRule";
     private static final String DELIVERY_IS_ATTENDED_BY_SBA_TRAINED_PERSON_RULE = "DeliveryIsAttendedBySBATrainedPersonRule";
@@ -31,7 +31,7 @@ public class RulesFactory implements IRulesFactory {
                         CurrentFPMethodIsCondomRule currentFPMethodIsCondomRule,
                         NewFPMethodIsCondomRule newFPMethodIsCondomRule,
                         MoreThanZeroCondomsSuppliedRule moreThanZeroCondomsSuppliedRule,
-                        JsyBeneficiaryIsTrueRule jsyBeneficiaryIsTrueRule,
+                        IsJsyBeneficiaryRule isJsyBeneficiaryRule,
                         ThirdANCVisitHappenedOnTimeRule thirdANCVisitHappenedOnTimeRule,
                         ServiceProvidedAtSubCenterRule serviceProvidedAtSubCenterRule,
                         DeliveryIsAttendedBySBATrainedPersonRule deliveryIsAttendedBySBATrainedPerson,
@@ -43,7 +43,7 @@ public class RulesFactory implements IRulesFactory {
         rules.put(CURRENT_FP_METHOD_IS_CONDOM, currentFPMethodIsCondomRule);
         rules.put(NEW_FP_METHOD_IS_CONDOM, newFPMethodIsCondomRule);
         rules.put(MORE_THAN_ZERO_CONDOMS_SUPPLIED, moreThanZeroCondomsSuppliedRule);
-        rules.put(JSY_BENEFICIARY_IS_TRUE, jsyBeneficiaryIsTrueRule);
+        rules.put(JSY_BENEFICIARY_IS_TRUE, isJsyBeneficiaryRule);
         rules.put(THIRD_ANC_VISIT_HAPPENED_ON_TIME_RULE, thirdANCVisitHappenedOnTimeRule);
         rules.put(SERVICE_PROVIDED_AT_SUB_CENTER_RULE, serviceProvidedAtSubCenterRule);
         rules.put(DELIVERY_IS_ATTENDED_BY_SBA_TRAINED_PERSON_RULE, deliveryIsAttendedBySBATrainedPerson);

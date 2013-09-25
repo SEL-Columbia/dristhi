@@ -21,7 +21,7 @@ public class RulesFactoryTest {
     @Mock
     private MoreThanZeroCondomsSuppliedRule moreThanZeroCondomsSuppliedRule;
     @Mock
-    private JsyBeneficiaryIsTrueRule jsyBeneficiaryIsTrueRule;
+    private IsJsyBeneficiaryRule isJsyBeneficiaryRule;
     @Mock
     private ThirdANCVisitHappenedOnTimeRule thirdANCVisitHappenedOnTimeRule;
     @Mock
@@ -45,7 +45,7 @@ public class RulesFactoryTest {
                 currentFPMethodIsCondomRule,
                 newFPMethodIsCondomRule,
                 moreThanZeroCondomsSuppliedRule,
-                jsyBeneficiaryIsTrueRule,
+                isJsyBeneficiaryRule,
                 thirdANCVisitHappenedOnTimeRule,
                 serviceProvidedAtSubCenterRule,
                 deliveryIsAttendedBySBATrainedPersonRule,
@@ -108,11 +108,11 @@ public class RulesFactoryTest {
 
     @Test
     public void shouldLoadJsyBeneficiaryIsTrueRuleRuleClassByName() throws Exception {
-        String ruleName = "JsyBeneficiaryIsTrueRule";
+        String ruleName = "IsJsyBeneficiaryRule";
 
         IRule rule = rulesFactory.ruleByName(ruleName);
 
-        assertTrue(rule instanceof JsyBeneficiaryIsTrueRule);
+        assertTrue(rule instanceof IsJsyBeneficiaryRule);
     }
 
     @Test

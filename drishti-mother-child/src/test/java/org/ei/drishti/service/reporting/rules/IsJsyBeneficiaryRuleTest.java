@@ -8,25 +8,25 @@ import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class JsyBeneficiaryIsTrueRuleTest {
+public class IsJsyBeneficiaryRuleTest {
 
-    private JsyBeneficiaryIsTrueRule rule;
+    private IsJsyBeneficiaryRule rule;
 
     @Before
     public void setUp() throws Exception {
-        rule = new JsyBeneficiaryIsTrueRule();
+        rule = new IsJsyBeneficiaryRule();
     }
 
     @Test
     public void shouldReturnFalseWhenJsyBeneficiaryIsSetToFalse() throws Exception {
-        assertFalse(rule.apply(new SafeMap(mapOf("isJSYBeneficiary","no"))));
-
-
+        boolean isJsyBeneficiary = rule.apply(new SafeMap(mapOf("isJSYBeneficiary", "no")));
+        assertFalse(isJsyBeneficiary);
     }
 
 
     @Test
     public void shouldReturnTrueWhenJsyBeneficiaryIsSetToTrue() throws Exception {
-        assertTrue(rule.apply(new SafeMap(mapOf("isJSYBeneficiary", "yes"))));
+        boolean isJsyBeneficiary = rule.apply(new SafeMap(mapOf("isJSYBeneficiary", "yes")));
+        assertTrue(isJsyBeneficiary);
     }
 }
