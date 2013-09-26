@@ -25,6 +25,8 @@ public class RulesFactory implements IRulesFactory {
     private static final String DELIVERY_HAPPENED_AT_SUB_CENTER_RULE = "DeliveryHappenedAtSubCenterRule";
     private static final String WOMAN_IS_DISCHARGED_WITHIN_48_HOURS_OF_DELIVERY_RULE = "WomanIsDischargedWithin48HoursOfDeliveryRule";
     private static final String IUD_REMOVED_AT_HOME_AT_HOME_OR_SUB_CENTER_RULE = "IUDRemovedAtHomeAtHomeOrSubCenterRule";
+    private static final String MORE_THAN_ZERO_OCP_STRIPS_SUPPLIED_RULE = "MoreThanZeroOCPStripsSuppliedRule";
+    private static final String NEW_FP_METHOD_IS_OCP_RULE = "NewFPMethodIsOCPRule";
 
     Map<String, IRule> rules = new HashMap<>();
 
@@ -45,7 +47,9 @@ public class RulesFactory implements IRulesFactory {
                         PNCVisitHappenedLessThan24HoursAfterDeliveryRule pncVisitHappenedLessThan24HoursAfterDeliveryRule,
                         DeliveryHappenedAtSubCenterRule deliveryHappenedAtSubCenterRule,
                         WomanIsDischargedWithin48HoursOfDeliveryRule womanIsDischargedWithin48HoursOfDeliveryRule,
-                        IUDRemovedAtHomeAtHomeOrSubCenterRule iudRemovedAtHomeAtHomeOrSubCenterRule) {
+                        IUDRemovedAtHomeAtHomeOrSubCenterRule iudRemovedAtHomeAtHomeOrSubCenterRule,
+                        NewFPMethodIsOCPRule newFPMethodIsOCPRule,
+                        MoreThanZeroOCPStripsSuppliedRule moreThanZeroOCPStripsSuppliedRule) {
         rules.put(AGE_LESS_THAN_ONE_YEAR, ageIsLessThanOneYearRule);
         rules.put(RELOCATION_PERMANENT, relocationIsPermanentRule);
         rules.put(CURRENT_FP_METHOD_IS_CONDOM, currentFPMethodIsCondomRule);
@@ -62,6 +66,8 @@ public class RulesFactory implements IRulesFactory {
         rules.put(DELIVERY_HAPPENED_AT_SUB_CENTER_RULE, deliveryHappenedAtSubCenterRule);
         rules.put(WOMAN_IS_DISCHARGED_WITHIN_48_HOURS_OF_DELIVERY_RULE, womanIsDischargedWithin48HoursOfDeliveryRule);
         rules.put(IUD_REMOVED_AT_HOME_AT_HOME_OR_SUB_CENTER_RULE, iudRemovedAtHomeAtHomeOrSubCenterRule);
+        rules.put(MORE_THAN_ZERO_OCP_STRIPS_SUPPLIED_RULE, moreThanZeroOCPStripsSuppliedRule);
+        rules.put(NEW_FP_METHOD_IS_OCP_RULE, newFPMethodIsOCPRule);
     }
 
     public IRule ruleByName(String ruleName) throws RuleNotFoundException {
