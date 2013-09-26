@@ -8,7 +8,7 @@ import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.REFERENCE
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
 
 @Component
-public class PNCVisitHappenedWithin2DaysOfDeliveryRule1 implements IRule {
+public class PNCVisitHappenedWithin2DaysOfDeliveryRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {

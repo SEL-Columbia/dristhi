@@ -11,14 +11,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class PNCVisitHappenedWithin2DaysOfDeliveryRule1Test {
+public class PNCVisitHappenedWithin2DaysOfDeliveryRuleTest {
 
-    private PNCVisitHappenedWithin2DaysOfDeliveryRule1 rule;
+    private PNCVisitHappenedWithin2DaysOfDeliveryRule rule;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        rule = new PNCVisitHappenedWithin2DaysOfDeliveryRule1();
+        rule = new PNCVisitHappenedWithin2DaysOfDeliveryRule();
     }
 
     @Test

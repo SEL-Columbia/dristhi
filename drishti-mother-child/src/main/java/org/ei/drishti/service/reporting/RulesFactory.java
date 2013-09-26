@@ -41,7 +41,7 @@ public class RulesFactory implements IRulesFactory {
                         DeliveryHappenedAtHomeRule deliveryHappenedAtHomeRule,
                         DeliveryIsAttendedByNonSBATrainedPersonRule deliveryIsAttendedByNonSBATrainedPersonRule,
                         IsPersonAnaemicRule isPersonAnaemicRule,
-                        PNCVisitHappenedLessThan24HoursAfterDeliveryRule1 pncVisitHappenedLessThan24HoursAfterDeliveryRule1,
+                        PNCVisitHappenedLessThan24HoursAfterDeliveryRule pncVisitHappenedLessThan24HoursAfterDeliveryRule,
                         DeliveryHappenedAtSubCenterRule deliveryHappenedAtSubCenterRule,
                         WomanIsDischargedWithin48HoursOfDeliveryRule womanIsDischargedWithin48HoursOfDeliveryRule) {
         rules.put(AGE_LESS_THAN_ONE_YEAR, ageIsLessThanOneYearRule);
@@ -56,7 +56,7 @@ public class RulesFactory implements IRulesFactory {
         rules.put(DELIVERY_HAPPENED_AT_HOME_RULE, deliveryHappenedAtHomeRule);
         rules.put(DELIVERY_IS_ATTENDED_BY_NON_SBA_TRAINED_PERSON_RULE, deliveryIsAttendedByNonSBATrainedPersonRule);
         rules.put(IS_PERSON_ANAEMIC_RULE, isPersonAnaemicRule);
-        rules.put(PNC_VISIT_HAPPENED_LESS_THAN_24_HOURS_AFTER_DELIVERY_RULE, pncVisitHappenedLessThan24HoursAfterDeliveryRule1);
+        rules.put(PNC_VISIT_HAPPENED_LESS_THAN_24_HOURS_AFTER_DELIVERY_RULE, pncVisitHappenedLessThan24HoursAfterDeliveryRule);
         rules.put(DELIVERY_HAPPENED_AT_SUB_CENTER_RULE, deliveryHappenedAtSubCenterRule);
         rules.put(WOMAN_IS_DISCHARGED_WITHIN_48_HOURS_OF_DELIVERY_RULE, womanIsDischargedWithin48HoursOfDeliveryRule);
     }

@@ -6,7 +6,7 @@ import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PNCVisitHappenedLessThan24HoursAfterDeliveryRule1 implements IRule {
+public class PNCVisitHappenedLessThan24HoursAfterDeliveryRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {

@@ -12,14 +12,14 @@ import static junit.framework.Assert.assertTrue;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class PNCVisitHappenedLessThan24HoursAfterDeliveryRule1Test {
+public class PNCVisitHappenedLessThan24HoursAfterDeliveryRuleTest {
 
-    private PNCVisitHappenedLessThan24HoursAfterDeliveryRule1 rule;
+    private PNCVisitHappenedLessThan24HoursAfterDeliveryRule rule;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        rule = new PNCVisitHappenedLessThan24HoursAfterDeliveryRule1();
+        rule = new PNCVisitHappenedLessThan24HoursAfterDeliveryRule();
     }
 
     @Test
