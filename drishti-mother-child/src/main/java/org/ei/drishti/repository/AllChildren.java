@@ -57,4 +57,17 @@ public class AllChildren extends MotechBaseRepository<Child> {
                 .includeDocs(true),
                 Child.class);
     }
+
+    @View(name = "children_turned_one_year_old_as_of_date",
+            map = "function(doc) { if (doc.type === 'Child' && !doc.isClosed && doc.dateOfBirth) { emit(doc.dateOfBirth); } }")
+    public List<Child> findAllChildrenWhoTurnedOneYearOld(LocalDate date) {
+        LocalDate startKey = date.minusYears(1);
+        LocalDate endKey = startKey.plusMonths(1);
+        List<Child> children_turned_one_year_old_as_of_date = db.queryView(createQuery("children_turned_one_year_old_as_of_date")
+                .startKey(startKey)
+                .endKey(endKey)
+                .includeDocs(true),
+                Child.class);
+        return children_turned_one_year_old_as_of_date;
+    }
 }

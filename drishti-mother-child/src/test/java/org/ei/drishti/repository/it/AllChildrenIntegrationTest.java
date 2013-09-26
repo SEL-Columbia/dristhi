@@ -118,7 +118,36 @@ public class AllChildrenIntegrationTest {
         List<Child> childrenFromDB = allChildren.
                 findAllChildrenLessThanOneYearOldAsOfDate(LocalDate.parse("2013-12-26"));
 
-        assertEquals(asList(exactlyOneYearOld, oneDayLessThanOneYearOld, fewMonthsOld, bornOneDayBefore), childrenFromDB);
+        assertEquals(4, childrenFromDB.size());
+        assertTrue(childrenFromDB.containsAll(asList(exactlyOneYearOld, oneDayLessThanOneYearOld, fewMonthsOld, bornOneDayBefore)));
+    }
+
+    @Test
+    public void shouldFindAllChildrenTurnedOneYearOldAsOfDate() {
+        Child turningOneYearOldOnFirstDayOfReportingMonth = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-12-26");
+        Child turningOneYearOldOnLastDayOfReportingMonth = new Child("CASE-2", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2013-01-25");
+        Child turningOneYearOldInTheReportingMonth = new Child("CASE-3", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-12-26");
+        Child turningOneYearOldOnReportingDay = new Child("CASE-4", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-12-26");
+        Child turningOneYearOldBeforeReportingMonth = new Child("CASE-5", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-11-26");
+        Child turningOneYearOldAfterReportingMonth = new Child("CASE-6", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2013-02-02");
+        Child closed = new Child("CASE-7", "MOTHER-CASE-2", "bcg", "3", "male").withAnm("ANM ID 1").setIsClosed(true).withDateOfBirth("2012-06-06");
+        allChildren.add(turningOneYearOldOnFirstDayOfReportingMonth);
+        allChildren.add(turningOneYearOldOnLastDayOfReportingMonth);
+        allChildren.add(turningOneYearOldInTheReportingMonth);
+        allChildren.add(turningOneYearOldOnReportingDay);
+        allChildren.add(turningOneYearOldBeforeReportingMonth);
+        allChildren.add(turningOneYearOldAfterReportingMonth);
+        allChildren.add(closed);
+
+        List<Child> childrenFromDB = allChildren.
+                findAllChildrenWhoTurnedOneYearOld(LocalDate.parse("2013-12-26"));
+
+        for (Child child : childrenFromDB) {
+            System.out.println(child.dateOfBirth());
+        }
+        assertTrue(childrenFromDB.containsAll(asList(turningOneYearOldOnFirstDayOfReportingMonth, turningOneYearOldOnLastDayOfReportingMonth,
+                turningOneYearOldInTheReportingMonth, turningOneYearOldOnReportingDay)));
+        assertEquals(4, childrenFromDB.size());
     }
 
     private Child childWithoutDetails() {

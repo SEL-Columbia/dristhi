@@ -3,6 +3,7 @@ package org.ei.drishti.service.reporting;
 import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
+import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.util.DateUtil;
@@ -31,6 +32,8 @@ import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_PROBLEMS;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.*;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.ANM_REPORT_DATA_TYPE;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDER_TYPE;
 import static org.ei.drishti.common.AllConstants.VitaminAFields.*;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.joda.time.LocalDate.parse;
@@ -285,8 +288,49 @@ public class ChildReportingService {
         reportingService.sendReportData(anmReportData);
     }
 
+    public void updateBoth(List<Child> children, Indicator indicator, String date) {
+        List<ReportingData> serviceProvidedData = new ArrayList<>();
+        List<ReportingData> anmReportData = new ArrayList<>();
+        for (Child child : children) {
+            Location location = loadLocationOfChild(child);
+            ReportingData serviceProvidedDataForChild = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
+            ReportingData anmReportDataForChild = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
+            serviceProvidedData.add(serviceProvidedDataForChild);
+            anmReportData.add(anmReportDataForChild);
+        }
+        reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDER_TYPE, date, indicator, serviceProvidedData));
+        reportingService.updateReportData(buildReportDataRequest(ANM_REPORT_DATA_TYPE, date, indicator, anmReportData));
+    }
+
+    private ReportDataUpdateRequest buildReportDataRequest(String type, String date, Indicator indicator, List<ReportingData> serviceProvidedData) {
+        LocalDate reportingDate = LocalDate.parse(date);
+
+        return new ReportDataUpdateRequest(type).withReportingData(serviceProvidedData)
+                .withStartDate(reportMonth.startOfCurrentReportMonth(reportingDate).toString())
+                .withEndDate(reportMonth.endOfCurrentReportMonth(reportingDate).toString())
+                .withIndicator(indicator.value());
+    }
+
     public void reportInfantBalance() {
         reportInfantBalanceOnHand();
+        reportInfantBalanceTurningOneYearOld();
+    }
+
+    public void reportInfantBalanceTurningOneYearOld() {
+        LocalDate today = DateUtil.today();
+
+        LocalDate startOfCurrentReportMonth = this.reportMonth.startOfCurrentReportMonth(today);
+        List<Child> childrenTurnedOneYearOld = allChildren.findAllChildrenWhoTurnedOneYearOld(
+                startOfCurrentReportMonth);
+        logger.info(MessageFormat.format("Found {0} children for reporting Infant Balance (Turned One Year old)  ",
+                childrenTurnedOneYearOld.size()));
+
+        logger.info(MessageFormat.format("Reporting Infant Balance (Turned One Year old) on date: {0} for child: {1}.",
+                startOfCurrentReportMonth.toString(), childrenTurnedOneYearOld));
+
+        updateBoth(childrenTurnedOneYearOld, Indicator.INFANT_BALANCE_TURNING_ONE_YEAR,
+                startOfCurrentReportMonth.toString());
+        logger.info(MessageFormat.format("Updating Infant Balance (On Hand) last reported date to {0}", today));
     }
 
     private void reportInfantBalanceOnHand() {
@@ -330,5 +374,4 @@ public class ChildReportingService {
         }
         return infantBalanceOnHandReportToken;
     }
-
 }
