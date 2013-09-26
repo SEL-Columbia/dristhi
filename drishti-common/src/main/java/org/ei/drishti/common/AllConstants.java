@@ -86,7 +86,6 @@ public class AllConstants {
         public static final String DID_MOTHER_SURVIVE = "didMotherSurvive";
         public static final String DID_BREAST_FEEDING_START = "didBreastfeedingStart";
         public static final String LIVE_BIRTH_FIELD_VALUE = "live_birth";
-        public static final String HOME_FIELD_VALUE = "home";
         public static final String SC_FIELD_VALUE = "subcenter";
         public static final String PHC_FIELD_VALUE = "phc";
         public static final String CHC_FIELD_VALUE = "chc";
@@ -138,6 +137,7 @@ public class AllConstants {
         public static final String ID = "id";
         public static final String SERVICE_PROVIDED_PLACE = "serviceProvidedPlace";
         public static final String SUB_CENTER_SERVICE_PROVIDED_PLACE_VALUE = "sub_center";
+        public static final String HOME_FIELD_VALUE = "home";
     }
 
     public static class CommonChildFormFields {
@@ -206,6 +206,7 @@ public class AllConstants {
         public static final String REFERRAL_FOLLOW_UP_DATE_FIELD_NAME = "referralFollowupDate";
         public static final String PREVIOUS_FP_METHOD_FIELD_NAME = "currentMethod";
         public static final String NEW_FP_METHOD_FIELD_NAME = "newMethod";
+        public static final String IUD_REMOVAL_PLACE = "iudRemovalPlace";
     }
 
     public static class ChildImmunizationFields {

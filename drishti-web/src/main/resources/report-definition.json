@@ -74,6 +74,24 @@
                         "NewFPMethodIsCondomRule",
                         "MoreThanZeroCondomsSuppliedRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_IUDREM",
+                    "bindType": "eligible_couple",
+                    "serviceProvidedDateField": "iudRemovalDate",
+                    "formFields": [
+                        "id",
+                        "iudRemovalDate",
+                        "iudRemovalPlace"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "IUDRemovedAtHomeAtHomeOrSubCenterRule"
+                    ]
                 }
             ]
         },

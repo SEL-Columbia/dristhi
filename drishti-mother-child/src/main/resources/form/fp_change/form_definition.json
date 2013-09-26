@@ -23,6 +23,10 @@
                 "bind": "/model/instance/Family_Planning_Change_Method_EngKan/iud_removal_date"
             },
             {
+                "name": "iudRemovalPlace",
+                "bind": "/model/instance/Family_Planning_Change_Method_EngKan/iud_removal_place"
+            },
+            {
                 "name": "familyPlanningMethodChangeDate",
                 "bind": "/model/instance/Family_Planning_Change_Method_EngKan/date_familyplanningstart"
             },
