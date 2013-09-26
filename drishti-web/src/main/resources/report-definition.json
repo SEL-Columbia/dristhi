@@ -160,6 +160,27 @@
                         "CurrentFPMethodIsCondomRule",
                         "MoreThanZeroCondomsSuppliedRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_OCP_STRIPS",
+                    "bindType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "quantityField": "numberOfOCPDelivered",
+                    "formFields": [
+                        "id",
+                        "fpRenewMethodVisitDate",
+                        "numberOfOCPDelivered",
+                        "currentMethod"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule"
+                    ]
                 }
             ]
         },
