@@ -24,6 +24,8 @@ import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_MOTHE
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_WOMAN_SURVIVE;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
+import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATES_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
 
 @Service
 public class PNCService {
@@ -116,12 +118,24 @@ public class PNCService {
     }
 
     public void pncVisitHappened(FormSubmission submission) {
-        if (!allMothers.exists(submission.entityId())) {
+        Mother mother = allMothers.findByCaseId(submission.entityId());
+        if (mother == null) {
             logger.warn("Found PNC visit without registered mother for entity ID: " + submission.entityId());
             return;
         }
 
+        updatePNCVisitDatesOfMother(submission, mother);
+
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         motherReportingService.pncVisitHappened(new SafeMap(submission.getFields(reportFields)));
+    }
+
+    private void updatePNCVisitDatesOfMother(FormSubmission submission, Mother mother) {
+        String visitDate = submission.getField(VISIT_DATE_FIELD_NAME);
+        String pncVisitDates = mother.getDetail(VISIT_DATES_FIELD_NAME) == null
+                ? visitDate
+                : mother.getDetail(VISIT_DATES_FIELD_NAME) + " " + visitDate;
+        mother.details().put(VISIT_DATES_FIELD_NAME, pncVisitDates);
+        allMothers.update(mother);
     }
 }

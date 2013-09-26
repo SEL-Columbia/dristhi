@@ -107,6 +107,10 @@ public class Mother extends MotechBaseDataObject {
         return details;
     }
 
+    public String getDetail(String name) {
+        return details.get(name);
+    }
+
     public LocalDate dateOfDelivery() {
         return LocalDate.parse(referenceDate);
     }

@@ -10,6 +10,7 @@ import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.service.scheduling.PNCSchedulesService;
+import org.ei.drishti.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -287,7 +288,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
         service.pncVisitHappened(submission);
 
-        verify(allMothers).exists("entity id 1");
+        verify(allMothers).findByCaseId("entity id 1");
         verifyZeroInteractions(motherReportingService);
         verifyZeroInteractions(childReportingService);
     }
@@ -295,7 +296,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldReportPNCVisit() throws Exception {
         when(reportFieldsDefinition.get("pnc_visit")).thenReturn(asList("some-key"));
-        when(allMothers.exists("entity id 1")).thenReturn(true);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("mother id 1", "ec id 1", "TC1"));
 
         FormSubmission submission = create()
                 .withFormName("pnc_visit")
@@ -305,6 +306,45 @@ public class PNCServiceTest extends BaseUnitTest {
 
         SafeMap reportFields = new SafeMap(mapOf("some-key", "value"));
         verify(motherReportingService).pncVisitHappened(reportFields);
+    }
+
+    @Test
+    public void shouldMaintainAHistoryOfPNCVisitsThatHappened() throws Exception {
+        when(reportFieldsDefinition.get("pnc_visit")).thenReturn(asList("pncVisitDate"));
+        Mother mother = new Mother("mother id 1", "ec id 1", "TC1")
+                .withDetails(EasyMap.mapOf("some-key", "some-value"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+
+        FormSubmission submission = create()
+                .withFormName("pnc_visit")
+                .addFormField("pncVisitDate", "2013-01-01")
+                .build();
+        service.pncVisitHappened(submission);
+
+        Mother updatedMother = new Mother("mother id 1", "ec id 1", "TC1")
+                .withDetails(EasyMap.create("some-key", "some-value")
+                        .put("pncVisitDates", "2013-01-01").map());
+        verify(allMothers).update(updatedMother);
+    }
+
+    @Test
+    public void shouldAddNewPNCVisitDateToPNCVisitsDatesThatHappened() throws Exception {
+        when(reportFieldsDefinition.get("pnc_visit")).thenReturn(asList("pncVisitDate"));
+        Mother mother = new Mother("mother id 1", "ec id 1", "TC1")
+                .withDetails(EasyMap.create("some-key", "some-value").put("pncVisitDates", "2013-01-01").map());
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+
+        FormSubmission submission = create()
+                .withFormName("pnc_visit")
+                .addFormField("pncVisitDate", "2013-01-02")
+                .build();
+        service.pncVisitHappened(submission);
+
+        Mother updatedMother = new Mother("mother id 1", "ec id 1", "TC1").withDetails(
+                EasyMap.create("some-key", "some-value")
+                        .put("pncVisitDates", "2013-01-01 2013-01-02")
+                        .map());
+        verify(allMothers).update(updatedMother);
     }
 
     @Test
