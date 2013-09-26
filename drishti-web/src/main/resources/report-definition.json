@@ -371,6 +371,26 @@
                         "DeliveryHappenedAtSubCenterRule",
                         "WomanIsDischargedWithin48HoursOfDeliveryRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_PNC_V_2D",
+                    "bindType": "mother",
+                    "serviceProvidedDateField": "pncVisitDate",
+                    "formFields": [
+                        "id",
+                        "pncVisitPlace",
+                        "pncVisitDate",
+                        "referenceDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "PncVisitHappenedAtSubCenterOrHomeRule",
+                        "PNCVisitHappenedWithin2DaysOfDeliveryRule"
+                    ]
                 }
             ]
         }

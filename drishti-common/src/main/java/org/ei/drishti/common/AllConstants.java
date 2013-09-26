@@ -48,7 +48,7 @@ public class AllConstants {
     }
 
     public static class Report {
-        public static final int REPORTING_MONTH = 3;
+        public static final int FIRST_REPORT_MONTH_OF_YEAR = 3;
         public static final int REPORTING_MONTH_START_DAY = 26;
         public static final int REPORTING_MONTH_END_DAY = 25;
         public static final double LOW_BIRTH_WEIGHT_THRESHOLD = 2.5;
@@ -57,7 +57,6 @@ public class AllConstants {
         public static final int CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 7;
         public static final int CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 28;
         public static final int CHILD_DIARRHEA_THRESHOLD_IN_YEARS = 5;
-        public static final String SUB_CENTER_SERVICE_PROVIDED_PLACE = "sub_center";
     }
 
     public static class ReportDataParameters {
@@ -128,6 +127,7 @@ public class AllConstants {
 
     public static class PNCVisitFormFields {
         public static final String VISIT_DATE_FIELD_NAME = "pncVisitDate";
+        public static final String VISIT_PLACE_FIELD_NAME = "pncVisitPlace";
         public static final String VISIT_NUMBER_FIELD_NAME = "pncVisitNumber";
         public static final String URINE_STOOL_PROBLEMS = "urineStoolProblems";
         public static final String DISCHARGE_DATE = "dischargeDate";
@@ -137,6 +137,7 @@ public class AllConstants {
         public static final String SUBMISSION_DATE_FIELD_NAME = "submissionDate";
         public static final String ID = "id";
         public static final String SERVICE_PROVIDED_PLACE = "serviceProvidedPlace";
+        public static final String SUB_CENTER_SERVICE_PROVIDED_PLACE_VALUE = "sub_center";
     }
 
     public static class CommonChildFormFields {

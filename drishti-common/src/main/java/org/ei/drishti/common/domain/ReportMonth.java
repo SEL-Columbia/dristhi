@@ -14,9 +14,9 @@ public class ReportMonth {
 
     public Date startDateOfReportingYear() {
         LocalDate now = DateUtil.today();
-        LocalDate beginningOfReportingYear = DateUtil.today().withMonthOfYear(REPORTING_MONTH).withDayOfMonth(REPORTING_MONTH_START_DAY);
+        LocalDate beginningOfReportingYear = DateUtil.today().withMonthOfYear(FIRST_REPORT_MONTH_OF_YEAR).withDayOfMonth(REPORTING_MONTH_START_DAY);
         int reportingYear = now.isBefore(beginningOfReportingYear) ? previousYear(now) : now.getYear();
-        return new LocalDate().withDayOfMonth(REPORTING_MONTH_START_DAY).withMonthOfYear(REPORTING_MONTH).withYear(reportingYear).toDate();
+        return new LocalDate().withDayOfMonth(REPORTING_MONTH_START_DAY).withMonthOfYear(FIRST_REPORT_MONTH_OF_YEAR).withYear(reportingYear).toDate();
     }
 
     public LocalDate startDateOfNextReportingMonth() {
