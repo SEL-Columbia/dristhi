@@ -406,7 +406,7 @@
                         "fields": []
                     },
                     "reportWhen": [
-                        "PncVisitHappenedAtSubCenterOrHomeRule",
+                        "PNCVisitHappenedAtSubCenterOrHomeRule",
                         "PNCVisitHappenedWithin2DaysOfDeliveryRule"
                     ]
                 }

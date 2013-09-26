@@ -8,7 +8,7 @@ import static org.ei.drishti.common.AllConstants.CommonFormFields.SUB_CENTER_SER
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_PLACE_FIELD_NAME;
 
 @Component
-public class PNCVisitHappenedAtSubCenterOrHomeRule1 implements IRule {
+public class PNCVisitHappenedAtSubCenterOrHomeRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {
