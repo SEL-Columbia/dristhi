@@ -61,7 +61,7 @@ public class RulesFactoryTest {
                 pncVisitHappenedLessThan24HoursAfterDeliveryRule,
                 deliveryHappenedAtSubCenterRule,
                 womanIsDischargedWithin48HoursOfDeliveryRule,
-                null, null, null);
+                null, null, null, null);
     }
 
     @Test(expected = RuleNotFoundException.class)

@@ -48,6 +48,27 @@
                         "CurrentFPMethodIsCondomRule",
                         "MoreThanZeroCondomsSuppliedRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_OCP_STRIPS",
+                    "bindType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "quantityField": "numberOfOCPDelivered",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "numberOfOCPDelivered",
+                        "currentMethod"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule"
+                    ]
                 }
             ]
         },

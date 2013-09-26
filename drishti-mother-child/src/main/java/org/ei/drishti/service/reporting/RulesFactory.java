@@ -27,6 +27,7 @@ public class RulesFactory implements IRulesFactory {
     private static final String IUD_REMOVED_AT_HOME_AT_HOME_OR_SUB_CENTER_RULE = "IUDRemovedAtHomeAtHomeOrSubCenterRule";
     private static final String MORE_THAN_ZERO_OCP_STRIPS_SUPPLIED_RULE = "MoreThanZeroOCPStripsSuppliedRule";
     private static final String NEW_FP_METHOD_IS_OCP_RULE = "NewFPMethodIsOCPRule";
+    private static final String CURRENT_FP_METHOD_IS_OCP_RULE = "CurrentFPMethodIsOCPRule";
 
     Map<String, IRule> rules = new HashMap<>();
 
@@ -49,7 +50,8 @@ public class RulesFactory implements IRulesFactory {
                         WomanIsDischargedWithin48HoursOfDeliveryRule womanIsDischargedWithin48HoursOfDeliveryRule,
                         IUDRemovedAtHomeAtHomeOrSubCenterRule iudRemovedAtHomeAtHomeOrSubCenterRule,
                         NewFPMethodIsOCPRule newFPMethodIsOCPRule,
-                        MoreThanZeroOCPStripsSuppliedRule moreThanZeroOCPStripsSuppliedRule) {
+                        MoreThanZeroOCPStripsSuppliedRule moreThanZeroOCPStripsSuppliedRule,
+                        CurrentFPMethodIsOCPRule currentFPMethodIsOCPRule) {
         rules.put(AGE_LESS_THAN_ONE_YEAR, ageIsLessThanOneYearRule);
         rules.put(RELOCATION_PERMANENT, relocationIsPermanentRule);
         rules.put(CURRENT_FP_METHOD_IS_CONDOM, currentFPMethodIsCondomRule);
@@ -68,6 +70,7 @@ public class RulesFactory implements IRulesFactory {
         rules.put(IUD_REMOVED_AT_HOME_AT_HOME_OR_SUB_CENTER_RULE, iudRemovedAtHomeAtHomeOrSubCenterRule);
         rules.put(MORE_THAN_ZERO_OCP_STRIPS_SUPPLIED_RULE, moreThanZeroOCPStripsSuppliedRule);
         rules.put(NEW_FP_METHOD_IS_OCP_RULE, newFPMethodIsOCPRule);
+        rules.put(CURRENT_FP_METHOD_IS_OCP_RULE, currentFPMethodIsOCPRule);
     }
 
     public IRule ruleByName(String ruleName) throws RuleNotFoundException {
