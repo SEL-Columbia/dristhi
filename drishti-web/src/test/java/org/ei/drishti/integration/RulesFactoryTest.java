@@ -1,67 +1,28 @@
-package org.ei.drishti.service.reporting;
+package org.ei.drishti.integration;
 
+import org.ei.drishti.service.reporting.RuleNotFoundException;
+import org.ei.drishti.service.reporting.RulesFactory;
 import org.ei.drishti.service.reporting.rules.*;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:spring/applicationContext-drishti-web.xml")
 public class RulesFactoryTest {
 
-    @Mock
-    private AgeIsLessThanOneYearRule ageIsLessThanOneYearRule;
-    @Mock
-    private RelocationIsPermanentRule relocationIsPermanentRule;
-    @Mock
-    private CurrentFPMethodIsCondomRule currentFPMethodIsCondomRule;
-    @Mock
-    private NewFPMethodIsCondomRule newFPMethodIsCondomRule;
-    @Mock
-    private MoreThanZeroCondomsSuppliedRule moreThanZeroCondomsSuppliedRule;
-    @Mock
-    private IsJsyBeneficiaryRule isJsyBeneficiaryRule;
-    @Mock
-    private ThirdANCVisitHappenedOnTimeRule thirdANCVisitHappenedOnTimeRule;
-    @Mock
-    private ServiceProvidedAtSubCenterRule serviceProvidedAtSubCenterRule;
-    @Mock
-    private DeliveryHappenedAtHomeRule deliveryHappenedAtHomeRule;
-    @Mock
-    private DeliveryIsAttendedBySBATrainedPersonRule deliveryIsAttendedBySBATrainedPersonRule;
-    @Mock
-    private DeliveryIsAttendedByNonSBATrainedPersonRule deliveryIsAttendedByNonSBATrainedPersonRule;
-    @Mock
-    private IsPersonAnaemicRule isPersonAnaemicRule;
-    @Mock
-    private PNCVisitHappenedLessThan24HoursAfterDeliveryRule pncVisitHappenedLessThan24HoursAfterDeliveryRule;
-    @Mock
-    private DeliveryHappenedAtSubCenterRule deliveryHappenedAtSubCenterRule;
-    @Mock
-    private WomanIsDischargedWithin48HoursOfDeliveryRule womanIsDischargedWithin48HoursOfDeliveryRule;
-
-    private IRulesFactory rulesFactory;
+    @Autowired
+    private RulesFactory rulesFactory;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        rulesFactory = new RulesFactory(ageIsLessThanOneYearRule,
-                relocationIsPermanentRule,
-                currentFPMethodIsCondomRule,
-                newFPMethodIsCondomRule,
-                moreThanZeroCondomsSuppliedRule,
-                isJsyBeneficiaryRule,
-                thirdANCVisitHappenedOnTimeRule,
-                serviceProvidedAtSubCenterRule,
-                deliveryIsAttendedBySBATrainedPersonRule,
-                deliveryHappenedAtHomeRule,
-                deliveryIsAttendedByNonSBATrainedPersonRule,
-                isPersonAnaemicRule,
-                pncVisitHappenedLessThan24HoursAfterDeliveryRule,
-                deliveryHappenedAtSubCenterRule,
-                womanIsDischargedWithin48HoursOfDeliveryRule,
-                null, null, null, null, null, null, null);
     }
 
     @Test(expected = RuleNotFoundException.class)
