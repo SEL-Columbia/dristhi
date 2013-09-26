@@ -35,7 +35,7 @@ public class RulesFactoryTest {
     @Mock
     private IsPersonAnaemicRule isPersonAnaemicRule;
     @Mock
-    private PNCVisitHappenedLessThan24HoursAfterDeliveryRule pncVisitHappenedLessThan24HoursAfterDeliveryRule;
+    private PNCVisitHappenedLessThan24HoursAfterDeliveryRule1 pncVisitHappenedLessThan24HoursAfterDeliveryRule1;
     @Mock
     private DeliveryHappenedAtSubCenterRule deliveryHappenedAtSubCenterRule;
     @Mock
@@ -58,7 +58,7 @@ public class RulesFactoryTest {
                 deliveryHappenedAtHomeRule,
                 deliveryIsAttendedByNonSBATrainedPersonRule,
                 isPersonAnaemicRule,
-                pncVisitHappenedLessThan24HoursAfterDeliveryRule,
+                pncVisitHappenedLessThan24HoursAfterDeliveryRule1,
                 deliveryHappenedAtSubCenterRule,
                 womanIsDischargedWithin48HoursOfDeliveryRule);
     }
@@ -193,7 +193,7 @@ public class RulesFactoryTest {
 
         IRule rule = rulesFactory.ruleByName(ruleName);
 
-        assertTrue(rule instanceof PNCVisitHappenedLessThan24HoursAfterDeliveryRule);
+        assertTrue(rule instanceof PNCVisitHappenedLessThan24HoursAfterDeliveryRule1);
     }
 
     @Test
