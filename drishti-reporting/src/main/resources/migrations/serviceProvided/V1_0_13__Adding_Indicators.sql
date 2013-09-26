@@ -29,3 +29,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_PNC24');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_SC_DEL');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_48HRS');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_PNC_V_2D');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_PNC_V_14D');
