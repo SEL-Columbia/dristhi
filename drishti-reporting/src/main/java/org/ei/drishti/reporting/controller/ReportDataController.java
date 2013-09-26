@@ -1,6 +1,7 @@
 package org.ei.drishti.reporting.controller;
 
 import org.ei.drishti.common.domain.ANMReport;
+import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.reporting.ReportDataMissingException;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,28 @@ public class ReportDataController {
         return "Success.";
     }
 
+    @RequestMapping(value = "/report/update", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateReports(@RequestBody ReportDataUpdateRequest request) throws ReportDataMissingException {
+        logger.info(MessageFormat.format("Flushing reports for reporting month {0} to {1}", request.startDate(), request.endDate()));
+        List<ReportingData> reportingData = request.reportingData();
+        if (ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE.equals(request.type())) {
+            throwExceptionIfMandatoryDataIsNotPresentForServiceProvidedReport(reportingData);
+            servicesProvidedRepository.update(request);
+        } else if (ReportDataParameters.ANM_REPORT_DATA_TYPE.equals(request.type())) {
+            throwExceptionIfMandatoryDataIsNotPresentForANMReport(reportingData);
+            anmReportsRepository.update(request);
+        }
+        return "Success.";
+    }
+
+    private void throwExceptionIfMandatoryDataIsNotPresentForANMReport(ReportingData reportingData) throws ReportDataMissingException {
+        ArrayList missingData = reportingData.getMissingReportDataForServiceProvided();
+        if (!missingData.isEmpty()) {
+            throw new ReportDataMissingException(reportingData, missingData);
+        }
+    }
+
     private void throwExceptionIfMandatoryDataIsNotPresentForServiceProvidedReport(ReportingData reportingData) throws ReportDataMissingException {
         ArrayList missingData = reportingData.getMissingReportDataForANMReport();
         if (!missingData.isEmpty()) {
@@ -66,10 +90,15 @@ public class ReportDataController {
         }
     }
 
-    private void throwExceptionIfMandatoryDataIsNotPresentForANMReport(ReportingData reportingData) throws ReportDataMissingException {
-        ArrayList missingData = reportingData.getMissingReportDataForServiceProvided();
-        if (!missingData.isEmpty()) {
-            throw new ReportDataMissingException(reportingData, missingData);
+    private void throwExceptionIfMandatoryDataIsNotPresentForANMReport(List<ReportingData> reportingData) throws ReportDataMissingException {
+        for (ReportingData data : reportingData) {
+            throwExceptionIfMandatoryDataIsNotPresentForANMReport(data);
+        }
+    }
+
+    private void throwExceptionIfMandatoryDataIsNotPresentForServiceProvidedReport(List<ReportingData> reportingData) throws ReportDataMissingException {
+        for (ReportingData data : reportingData) {
+            throwExceptionIfMandatoryDataIsNotPresentForServiceProvidedReport(data);
         }
     }
 

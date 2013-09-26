@@ -1,5 +1,8 @@
 package org.ei.drishti.reporting.repository;
 
+import org.ei.drishti.common.AllConstants;
+import org.ei.drishti.common.domain.ReportDataUpdateRequest;
+import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.monitor.Probe;
 import org.ei.drishti.reporting.domain.Dates;
@@ -15,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_CACHE_TIME;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_INSERT_TIME;
@@ -65,10 +70,30 @@ public class ServicesProvidedRepository {
             } catch (Exception e) {
                 cachedIndicators.clear(fetchedIndicator);
                 cachedDates.clear(dates);
-
             }
         }
         monitor.end(probeForInsert);
+    }
+
+    @Transactional("service_provided")
+    public void update(ReportDataUpdateRequest request) {
+        servicesProvidedRepository.delete(request.indicator(), request.startDate(), request.endDate());
+        saveReportingDataForIndicator(request.reportingData(), request.indicator());
+    }
+
+    private void saveReportingDataForIndicator(List<ReportingData> reportingData, String indicator) {
+        for (ReportingData data : reportingData) {
+            this.save(data.get(AllConstants.ReportDataParameters.ANM_IDENTIFIER),
+                    data.get(AllConstants.ReportDataParameters.SERVICE_PROVIDER_TYPE),
+                    data.get(AllConstants.ReportDataParameters.EXTERNAL_ID),
+                    indicator,
+                    data.get(AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATE),
+                    data.get(AllConstants.ReportDataParameters.VILLAGE),
+                    data.get(AllConstants.ReportDataParameters.SUB_CENTER),
+                    data.get(AllConstants.ReportDataParameters.PHC),
+                    data.get(AllConstants.ReportDataParameters.QUANTITY)
+            );
+        }
     }
 
     private int getCount(String quantity) {

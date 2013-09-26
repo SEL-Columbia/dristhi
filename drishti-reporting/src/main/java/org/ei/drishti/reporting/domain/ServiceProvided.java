@@ -4,7 +4,13 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "service_provided")
+@NamedQueries({
+        @NamedQuery(name = ServiceProvided.FIND_BY_ANM_IDENTIFIER_WITH_INDICATOR_FOR_MONTH, query = "select r from ServiceProvided r, Dates d, Indicator i where  r.date = d.id and r.indicator = i.id and i.indicator = ? and d.date >= ? and d.date < ?")
+})
+
 public class ServiceProvided {
+    public static final String FIND_BY_ANM_IDENTIFIER_WITH_INDICATOR_FOR_MONTH = "find.service.provided.by.anm.identifier.with.indicator.for.month";
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,21 +1,22 @@
 package org.ei.drishti.reporting.repository;
 
-import org.ei.drishti.common.domain.ANMIndicatorSummary;
-import org.ei.drishti.common.domain.ANMReport;
-import org.ei.drishti.common.domain.MonthSummary;
+import org.ei.drishti.common.domain.*;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.reporting.domain.*;
+import org.ei.drishti.reporting.domain.Indicator;
 import org.ei.drishti.reporting.repository.cache.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.*;
 import static org.ei.drishti.common.util.ANMIndicatorSummaryFactory.*;
 import static org.joda.time.LocalDate.parse;
 import static org.junit.Assert.assertTrue;
@@ -57,21 +58,21 @@ public class ANMReportsRepositoryTest {
         Date date = parse("2012-04-04").toDate();
 
         Dates dates = new Dates(2, date);
-        Indicator indicator_ = new Indicator(2, indicator);
+        Indicator fetchedIndicator = new Indicator(2, indicator);
         ANM anm = new ANM(2, anmIdentifier);
 
         when(anmRepository.fetch(new ANM((anmIdentifier)))).thenReturn(anm);
         when(datesRepository.fetch(new Dates(date))).thenReturn(dates);
-        when(indicatorRepository.fetch(new Indicator(indicator))).thenReturn(indicator_);
+        when(indicatorRepository.fetch(new Indicator(indicator))).thenReturn(fetchedIndicator);
 
         repository.save(anmIdentifier, externalId, indicator, "2012-04-04", null);
         repository.save(anmIdentifier, externalId, indicator, "2012-04-04", null);
 
         verifyCallsToReadOnlyCachedRepository(anmRepository, new ANM(anmIdentifier));
-        verifyCallsToReadOnlyCachedRepository(indicatorRepository, indicator_);
+        verifyCallsToReadOnlyCachedRepository(indicatorRepository, fetchedIndicator);
         verifyCallsToCachedRepository(datesRepository, dates);
 
-        verify(anmReportDataRepository, times(2)).save(anm, externalId, indicator_, dates);
+        verify(anmReportDataRepository, times(2)).save(anm, externalId, fetchedIndicator, dates);
     }
 
 
@@ -83,16 +84,16 @@ public class ANMReportsRepositoryTest {
         Date date = parse("2012-04-04").toDate();
 
         Dates dates = new Dates(2, date);
-        Indicator indicator_ = new Indicator(2, indicator);
+        Indicator fetchedIndicator = new Indicator(2, indicator);
         ANM anm = new ANM(2, anmIdentifier);
 
         when(anmRepository.fetch(new ANM((anmIdentifier)))).thenReturn(anm);
         when(datesRepository.fetch(new Dates(date))).thenReturn(dates);
-        when(indicatorRepository.fetch(new Indicator(indicator))).thenReturn(indicator_);
+        when(indicatorRepository.fetch(new Indicator(indicator))).thenReturn(fetchedIndicator);
 
         repository.save(anmIdentifier, externalId, indicator, "2012-04-04", "50");
 
-        verify(anmReportDataRepository, times(50)).save(anm, externalId, indicator_, dates);
+        verify(anmReportDataRepository, times(50)).save(anm, externalId, fetchedIndicator, dates);
     }
 
     @Test
@@ -254,6 +255,45 @@ public class ANMReportsRepositoryTest {
 
         assertTrue(anmReports.containsAll(asList(anmXReport, anmYReport)));
         assertEquals(2, anmReports.size());
+    }
+
+    @Test
+    public void shouldUpdateAllIndicatorsForReportingMonthForAllANMS() {
+        String anmIdentifier = "ANM X";
+        String externalId = "EC CASE 1";
+        String indicator = "INDICATOR 1";
+        String reportDate = "2013-01-26";
+        Date date = parse(reportDate).toDate();
+
+        Dates dates = new Dates(2, date);
+        Indicator fetchedIndicator = new Indicator(2, indicator);
+        ANM anm = new ANM(2, anmIdentifier);
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put(SERVICE_PROVIDER_TYPE, "ANM");
+        data.put(SERVICE_PROVIDED_DATE, reportDate);
+        data.put(EXTERNAL_ID, externalId);
+        data.put(PHC, "phc");
+        data.put(QUANTITY, "1");
+        data.put(INDICATOR, indicator);
+        data.put(ANM_IDENTIFIER, anmIdentifier);
+
+        ReportingData reportingData = new ReportingData("type", data)
+                .withQuantity("1");
+
+        ReportDataUpdateRequest request = new ReportDataUpdateRequest("type")
+                .withIndicator(indicator)
+                .withStartDate("2013-01-26")
+                .withEndDate("2013-02-25")
+                .withReportingData(asList(reportingData));
+
+        when(anmRepository.fetch(new ANM((anmIdentifier)))).thenReturn(anm);
+        when(datesRepository.fetch(new Dates(date))).thenReturn(dates);
+        when(indicatorRepository.fetch(new Indicator(indicator))).thenReturn(fetchedIndicator);
+
+        repository.update(request);
+
+        verify(anmReportDataRepository).delete("INDICATOR 1", "2013-01-26", "2013-02-25");
+        verify(anmReportDataRepository).save(anm, externalId, fetchedIndicator, dates);
     }
 
     private <T> void verifyCallsToReadOnlyCachedRepository(ReadOnlyCacheableRepository<T> repo, T object) {

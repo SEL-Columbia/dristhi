@@ -109,4 +109,22 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
         assertTrue(anmReportDataList.contains(new ANMReportData(anm1, "EC CASE X", indicator, dates3)));
         assertEquals(2, anmReportDataList.size());
     }
+
+    @Test
+    @Transactional("anm_report")
+    @Rollback
+    public void shouldDeleteAllIndicatorsForReportingMonthForAllANMs() throws Exception {
+        ANM anm = new ANM("ANM X");
+        Dates startDate = new Dates(LocalDate.parse("2013-01-26").toDate());
+        Dates endDate = new Dates(LocalDate.parse("2013-02-25").toDate());
+        Indicator indicator = new Indicator("ANC Indicator");
+        template.save(anm);
+        allDatesRepository.save(startDate);
+        allDatesRepository.save(endDate);
+        template.save(indicator);
+
+        repository.delete("ANC Indicator", "2013-01-26", "2013-02-25");
+
+        assertEquals(0, template.loadAll(ANMReportData.class).size());
+    }
 }

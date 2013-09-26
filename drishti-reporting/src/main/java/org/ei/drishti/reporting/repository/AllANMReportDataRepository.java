@@ -1,9 +1,7 @@
 package org.ei.drishti.reporting.repository;
 
-import org.ei.drishti.reporting.domain.ANM;
-import org.ei.drishti.reporting.domain.ANMReportData;
-import org.ei.drishti.reporting.domain.Dates;
-import org.ei.drishti.reporting.domain.Indicator;
+import org.ei.drishti.reporting.domain.*;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -12,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.ei.drishti.reporting.domain.ANMReportData.FIND_BY_ANM_IDENTIFIER_AND_DATE;
+import static org.ei.drishti.reporting.domain.ANMReportData.FIND_BY_ANM_IDENTIFIER_WITH_INDICATOR_FOR_MONTH;
 
 @Repository
 public class AllANMReportDataRepository {
@@ -32,5 +31,11 @@ public class AllANMReportDataRepository {
     public List<ANMReportData> fetchByANMIdAndDate(String anmIdentifier, Date date) {
         return (List<ANMReportData>) dataAccessTemplate.findByNamedQueryAndNamedParam(FIND_BY_ANM_IDENTIFIER_AND_DATE, new String[]{"anmIdentifier", "date"}, new Object[]{anmIdentifier, date});
 
+    }
+
+    public void delete(String indicator, String startDate, String endDate) {
+        List result = dataAccessTemplate.findByNamedQuery(FIND_BY_ANM_IDENTIFIER_WITH_INDICATOR_FOR_MONTH,
+                    new Object[]{ indicator, LocalDate.parse(startDate).toDate(), LocalDate.parse(endDate).toDate()});
+        dataAccessTemplate.deleteAll(result);
     }
 }

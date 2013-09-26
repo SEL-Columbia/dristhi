@@ -48,4 +48,29 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedReposito
 
         assertEquals(1, template.loadAll(ServiceProvided.class).size());
     }
+
+    @Test
+    @Transactional("service_provided")
+    @Rollback
+    public void shouldUpdateIndicatorForReportingMonth() throws Exception {
+        PHC phc = new PHC("bhe", "Bherya");
+        template.save(phc);
+        SP_ANM anm = new SP_ANM("ANM X", phc.id());
+        template.save(anm);
+        Indicator indicatorToDelete = new Indicator("INDICATOR 1");
+        Indicator otherIndicator = new Indicator("INDICATOR 2");
+        Dates startDate = new Dates(LocalDate.parse("2013-01-26").toDate());
+        Dates endDate = new Dates(LocalDate.parse("2013-02-25").toDate());
+        List<ServiceProviderType> serviceProviderTypes = template.loadAll(ServiceProviderType.class);
+        ServiceProviderType anmServiceProvider = selectUnique(serviceProviderTypes, having(on(ServiceProviderType.class).type(), equalTo(ANM.type())));
+        ServiceProvider serviceProvider = new ServiceProvider(anm.id(), anmServiceProvider);
+        template.save(otherIndicator);
+        template.save(serviceProvider);
+        allDatesRepository.save(startDate);
+        allDatesRepository.save(endDate);
+
+        repository.delete("INDICATOR 1", "2013-01-26", "2013-02-02");
+
+        assertEquals(0, template.loadAll(ServiceProvided.class).size());
+    }
 }

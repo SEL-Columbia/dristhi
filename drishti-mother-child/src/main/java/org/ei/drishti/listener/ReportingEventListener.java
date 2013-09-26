@@ -6,6 +6,7 @@ import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
 import org.ei.drishti.event.ReportEvent;
+import org.ei.drishti.event.ReportUpdateEvent;
 import org.ei.drishti.service.reporting.ANMReportingService;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
@@ -23,6 +24,7 @@ import static org.ei.drishti.scheduler.ANMReportScheduler.SUBJECT;
 public class ReportingEventListener {
     public static final String FETCH_REPORTS_FOR_ALL_ANMS_ACTION = "fetchForAllANMs";
     public static final String SUBMIT_REPORT_ACTION = "submit";
+    public static final String UPDATE_REPORT_ACTION = "update";
     private ANMReportingService anmReportService;
     private HttpAgent httpAgent;
     private String url;
@@ -39,6 +41,15 @@ public class ReportingEventListener {
     public void submitReportingData(MotechEvent event) {
         String data = new Gson().toJson(event.getParameters().get("data"));
         HttpResponse response = httpAgent.post(url + "/" + SUBMIT_REPORT_ACTION, data, "application/json");
+        if (!response.isSuccess()) {
+            logger.error("Reporting data post failed. URL: " + url + ". Data: " + data + ". Response: " + response.body());
+        }
+    }
+
+    @MotechListener(subjects = ReportUpdateEvent.SUBJECT)
+    public void updateReportingData(MotechEvent event) {
+        String data = new Gson().toJson(event.getParameters().get("data"));
+        HttpResponse response = httpAgent.post(url + "/" + UPDATE_REPORT_ACTION, data, "application/json");
         if (!response.isSuccess()) {
             logger.error("Reporting data post failed. URL: " + url + ". Data: " + data + ". Response: " + response.body());
         }

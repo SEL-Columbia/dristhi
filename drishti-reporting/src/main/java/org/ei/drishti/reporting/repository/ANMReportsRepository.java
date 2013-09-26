@@ -1,12 +1,10 @@
 package org.ei.drishti.reporting.repository;
 
-import org.ei.drishti.common.domain.ANMIndicatorSummary;
-import org.ei.drishti.common.domain.ANMReport;
-import org.ei.drishti.common.domain.MonthSummary;
-import org.ei.drishti.common.domain.ReportMonth;
+import org.ei.drishti.common.domain.*;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.monitor.Probe;
 import org.ei.drishti.reporting.domain.*;
+import org.ei.drishti.reporting.domain.Indicator;
 import org.ei.drishti.reporting.repository.cache.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,7 @@ import java.util.List;
 
 import static ch.lambdaj.Lambda.*;
 import static java.lang.String.valueOf;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.*;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_ANM_REPORTS_CACHE_TIME;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_ANM_REPORTS_INSERT_TIME;
 import static org.ei.drishti.common.util.DateUtil.today;
@@ -137,5 +136,17 @@ public class ANMReportsRepository {
 
     private int getCount(String quantity) {
         return quantity == null ? 1 : Integer.parseInt(quantity);
+    }
+
+    @Transactional("anm_report")
+    public void update(ReportDataUpdateRequest request) {
+        anmReportDataRepository.delete(request.indicator(), request.startDate(), request.endDate());
+        saveReportDataForIndicator(request.reportingData(), request.indicator());
+    }
+
+    private void saveReportDataForIndicator(List<ReportingData> reportingData, String indicator) {
+        for (ReportingData data : reportingData) {
+            save(data.get(ANM_IDENTIFIER), data.get(EXTERNAL_ID), indicator, data.get(SERVICE_PROVIDED_DATE), data.get(QUANTITY));
+        }
     }
 }

@@ -2,6 +2,7 @@ package org.ei.drishti.listener;
 
 import com.google.gson.Gson;
 import org.ei.drishti.common.domain.ANMReport;
+import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
@@ -44,6 +45,24 @@ public class ReportingEventListenerTest {
         listener.submitReportingData(new MotechEvent("SUBJECT", data));
 
         verify(agent).post("http://drishti/submit", "{\"type\":\"Boo\",\"data\":{\"abc\":\"def\"}}", "application/json");
+    }
+
+    @Test
+    public void shouldUpdateReportingData() throws Exception {
+        Map<String, Object> data = new HashMap<>();
+        ReportingData reportingData = new ReportingData("Boo").with("abc", "def");
+        ReportDataUpdateRequest dataRequest = new ReportDataUpdateRequest("Boo")
+                .withReportingData(asList(reportingData))
+                .withStartDate("2013-01-26")
+                .withEndDate("2013-02-25");
+        data.put("data", dataRequest);
+        when(agent.post(eq("http://drishti/update"), any(String.class), eq("application/json"))).thenReturn(new HttpResponse(true, null));
+
+        listener.updateReportingData(new MotechEvent("SUBJECT", data));
+
+        verify(agent).post("http://drishti/update",
+                "{\"startDate\":\"2013-01-26\",\"endDate\":\"2013-02-25\",\"type\":\"Boo\",\"reportingData\":[{\"type\":\"Boo\",\"data\":{\"abc\":\"def\"}}]}",
+                "application/json");
     }
 
     @Test
