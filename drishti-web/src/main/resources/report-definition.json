@@ -158,8 +158,10 @@
                     "indicator": "NRHM_JSY_REG",
                     "bindType": "eligible_couple",
                     "serviceProvidedDateField": "registrationDate",
+                    "reportEntityIdField": "motherId",
                     "formFields": [
                         "id",
+                        "motherId",
                         "isJSYBeneficiary",
                         "serviceProvidedPlace"
                     ],
@@ -245,6 +247,7 @@
                     "indicator": "NRHM_SBA",
                     "bindType": "eligible_couple",
                     "serviceProvidedDateField": "referenceDate",
+                    "reportEntityIdField": "motherId",
                     "formFields": [
                         "id",
                         "isSkilledDelivery",
@@ -265,6 +268,7 @@
                     "indicator": "NRHM_NON_SBA",
                     "bindType": "eligible_couple",
                     "serviceProvidedDateField": "referenceDate",
+                    "reportEntityIdField": "motherId",
                     "formFields": [
                         "id",
                         "isSkilledDelivery",
@@ -285,6 +289,7 @@
                     "indicator": "NRHM_SC_DEL",
                     "bindType": "eligible_couple",
                     "serviceProvidedDateField": "referenceDate",
+                    "reportEntityIdField": "motherId",
                     "formFields": [
                         "id",
                         "deliveryPlace",

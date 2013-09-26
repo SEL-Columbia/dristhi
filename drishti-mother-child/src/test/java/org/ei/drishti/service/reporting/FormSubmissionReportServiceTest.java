@@ -76,6 +76,32 @@ public class FormSubmissionReportServiceTest {
     }
 
     @Test
+    public void shouldReportWithSpecifiedEntityIdWhenFieldIsSpecified() throws Exception {
+        FormSubmission submission = create()
+                .withFormName("anc_registration")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("motherId", "mother id 1")
+                .addFormField("submissionDate", "2012-03-01")
+                .build();
+        Location location = new Location("bherya", "Sub Center", "PHC X");
+        when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
+        when(reportDefinitionLoader.load()).thenReturn(reportDefinitionWithReportEntityFieldSpecified());
+        when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
+        when(reporterFactory.reporterFor("eligible_couple")).thenReturn(reporter);
+        when(locationLoader.loadLocationFor("eligible_couple", "ec id 1")).thenReturn(location);
+        when(rule.apply(any(SafeMap.class))).thenReturn(true);
+        SafeMap reportData = new SafeMap()
+                .put("id", submission.entityId())
+                .put("submissionDate", submission.getField("submissionDate"))
+                .put("motherId", submission.getField("motherId"));
+
+        service.reportFor(submission);
+
+        verify(reporter).report("mother id 1", "NRHM_JSY_REG", location, "2012-03-01", reportData);
+    }
+
+    @Test
     public void shouldReportQuantityWhenQuantityFieldIsSpecifiedInTheIndicatorDefinition() throws Exception {
         FormSubmission submission = create()
                 .withFormName("eligible_couple")
@@ -156,5 +182,22 @@ public class FormSubmissionReportServiceTest {
                                                 new ReferenceData("eligible_couple", "caseId", asList("currentMethod")),
                                                 asList("CurrentFPMethodIsCondomRule")
                                         )))));
+    }
+
+    private ReportDefinition reportDefinitionWithReportEntityFieldSpecified() {
+        return new ReportDefinition(
+                asList(
+                        new FormIndicator("anc_registration",
+                                asList(
+                                        new ReportIndicator(
+                                                "NRHM_JSY_REG",
+                                                "eligible_couple",
+                                                null,
+                                                null,
+                                                asList("id", "motherId"),
+                                                new ReferenceData("eligible_couple", "id", null),
+                                                asList("IsJsyBeneficiaryRule", "ServiceProvidedAtSubCenterRule")
+                                        ).withReportEntityIdField("motherId")
+                                ))));
     }
 }

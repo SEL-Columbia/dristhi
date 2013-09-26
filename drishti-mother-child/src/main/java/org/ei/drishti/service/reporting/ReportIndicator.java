@@ -14,6 +14,7 @@ public class ReportIndicator {
     private List<String> formFields;
     private ReferenceData referenceData;
     private List<String> reportWhen;
+    private String reportEntityIdField;
 
     public ReportIndicator(String indicator) {
         this.indicator = indicator;
@@ -56,6 +57,15 @@ public class ReportIndicator {
 
     public List<String> reportingRules() {
         return reportWhen;
+    }
+
+    public String reportEntityIdField() {
+        return reportEntityIdField;
+    }
+
+    public ReportIndicator withReportEntityIdField(String reportEntityIdField) {
+        this.reportEntityIdField = reportEntityIdField;
+        return this;
     }
 
     @Override

@@ -81,7 +81,10 @@ public class FormSubmissionReportService {
         String serviceProvidedDate = reportIndicator.serviceProvidedDateField() == null
                 ? submission.getField(SUBMISSION_DATE_FIELD_NAME)
                 : submission.getField(reportIndicator.serviceProvidedDateField());
-        reporter.report(submission.entityId(), reportIndicator.indicator(), location, serviceProvidedDate, reportData);
+        String reportEntityId = reportIndicator.reportEntityIdField() == null
+                ? submission.entityId()
+                : submission.getField(reportIndicator.reportEntityIdField());
+        reporter.report(reportEntityId, reportIndicator.indicator(), location, serviceProvidedDate, reportData);
     }
 
     private SafeMap createReportData(FormSubmission submission, List<String> formFields, String quantityField) {
