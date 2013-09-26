@@ -13,12 +13,12 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PNCVisitHappenedAtSubCenterOrHomeRuleTest {
 
-    private PNCVisitHappenedAtSubCenterOrHomeRule rule;
+    private PNCVisitHappenedAtSubCenterOrHomeRule1 rule;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        rule = new PNCVisitHappenedAtSubCenterOrHomeRule();
+        rule = new PNCVisitHappenedAtSubCenterOrHomeRule1();
     }
 
     @Test
