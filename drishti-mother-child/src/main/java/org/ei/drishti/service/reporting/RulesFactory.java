@@ -28,6 +28,9 @@ public class RulesFactory implements IRulesFactory {
     private static final String MORE_THAN_ZERO_OCP_STRIPS_SUPPLIED_RULE = "MoreThanZeroOCPStripsSuppliedRule";
     private static final String NEW_FP_METHOD_IS_OCP_RULE = "NewFPMethodIsOCPRule";
     private static final String CURRENT_FP_METHOD_IS_OCP_RULE = "CurrentFPMethodIsOCPRule";
+    private static final String PNC_VISIT_HAPPENED_AT_SUB_CENTER_OR_HOME_RULE = "PNCVisitHappenedAtSubCenterOrHomeRule";
+    private static final String PNC_VISIT_HAPPENED_WITHIN_2_DAYS_OF_DELIVERY_RULE = "PNCVisitHappenedWithin2DaysOfDeliveryRule";
+    private static final String PNC_VISIT_HAPPENED_BETWEEN_2_AND_14_DAYS_OF_DELIVERY_RULE = "PNCVisitHappenedBetween2And14DaysOfDeliveryRule";
 
     Map<String, IRule> rules = new HashMap<>();
 
@@ -51,7 +54,10 @@ public class RulesFactory implements IRulesFactory {
                         IUDRemovedAtHomeAtHomeOrSubCenterRule iudRemovedAtHomeAtHomeOrSubCenterRule,
                         NewFPMethodIsOCPRule newFPMethodIsOCPRule,
                         MoreThanZeroOCPStripsSuppliedRule moreThanZeroOCPStripsSuppliedRule,
-                        CurrentFPMethodIsOCPRule currentFPMethodIsOCPRule) {
+                        CurrentFPMethodIsOCPRule currentFPMethodIsOCPRule,
+                        PNCVisitHappenedAtSubCenterOrHomeRule pncVisitHappenedAtSubCenterOrHomeRule,
+                        PNCVisitHappenedWithin2DaysOfDeliveryRule pncVisitHappenedWithin2DaysOfDeliveryRule,
+                        PNCVisitHappenedBetween2And14DaysOfDeliveryRule pncVisitHappenedBetween2And14DaysOfDeliveryRule) {
         rules.put(AGE_LESS_THAN_ONE_YEAR, ageIsLessThanOneYearRule);
         rules.put(RELOCATION_PERMANENT, relocationIsPermanentRule);
         rules.put(CURRENT_FP_METHOD_IS_CONDOM, currentFPMethodIsCondomRule);
@@ -71,6 +77,9 @@ public class RulesFactory implements IRulesFactory {
         rules.put(MORE_THAN_ZERO_OCP_STRIPS_SUPPLIED_RULE, moreThanZeroOCPStripsSuppliedRule);
         rules.put(NEW_FP_METHOD_IS_OCP_RULE, newFPMethodIsOCPRule);
         rules.put(CURRENT_FP_METHOD_IS_OCP_RULE, currentFPMethodIsOCPRule);
+        rules.put(PNC_VISIT_HAPPENED_AT_SUB_CENTER_OR_HOME_RULE, pncVisitHappenedAtSubCenterOrHomeRule);
+        rules.put(PNC_VISIT_HAPPENED_WITHIN_2_DAYS_OF_DELIVERY_RULE, pncVisitHappenedWithin2DaysOfDeliveryRule);
+        rules.put(PNC_VISIT_HAPPENED_BETWEEN_2_AND_14_DAYS_OF_DELIVERY_RULE, pncVisitHappenedBetween2And14DaysOfDeliveryRule);
     }
 
     public IRule ruleByName(String ruleName) throws RuleNotFoundException {
