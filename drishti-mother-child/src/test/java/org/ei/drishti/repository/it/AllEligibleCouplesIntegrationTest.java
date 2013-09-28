@@ -17,6 +17,8 @@ import static java.util.Arrays.asList;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
@@ -74,5 +76,23 @@ public class AllEligibleCouplesIntegrationTest {
         eligibleCouples.close("THIS CASE DOES NOT EXIST");
 
         assertThat(eligibleCouples.getAll(), is(asList(couple)));
+    }
+
+    @Test
+    public void shouldFindAllOutOfAreaCouples() throws Exception {
+        EligibleCouple closedOutOfArea = new EligibleCouple("CASE X", "EC Number 1").setIsClosed(true);
+        EligibleCouple inArea = new EligibleCouple("CASE Y", "EC Number 2");
+        EligibleCouple outOfArea = new EligibleCouple("CASE Z", "EC Number 3").asOutOfArea();
+        EligibleCouple anotherOutOfArea = new EligibleCouple("CASE A", "EC Number 3").asOutOfArea();
+        eligibleCouples.add(closedOutOfArea);
+        eligibleCouples.add(inArea);
+        eligibleCouples.add(outOfArea);
+        eligibleCouples.add(anotherOutOfArea);
+
+        List<EligibleCouple> outOfAreaCouples = eligibleCouples.findAllOutOfAreaCouples();
+
+        assertTrue(outOfAreaCouples.containsAll(asList(outOfArea, anotherOutOfArea)));
+        assertFalse(outOfAreaCouples.contains(inArea));
+        assertFalse(outOfAreaCouples.contains(closedOutOfArea));
     }
 }

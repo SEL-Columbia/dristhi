@@ -68,6 +68,11 @@ public class EligibleCouple extends MotechBaseDataObject {
         return this;
     }
 
+    public EligibleCouple asOutOfArea() {
+        this.isOutOfArea = true;
+        return this;
+    }
+
     public String wifeName() {
         return wifeName;
     }

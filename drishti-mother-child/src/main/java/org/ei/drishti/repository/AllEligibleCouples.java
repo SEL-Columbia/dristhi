@@ -4,6 +4,7 @@ import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
+import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,5 +46,13 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
         }
         update(couple.setIsClosed(true));
         allMothers.closeAllMothersForEC(caseId);
+    }
+
+    @View(name = "all_out_of_area",
+            map = "function(doc) { if (doc.type === 'EligibleCouple' && !doc.isClosed && doc.isOutOfArea) { emit(doc.caseId); } }")
+    public List<EligibleCouple> findAllOutOfAreaCouples() {
+        return db.queryView(createQuery("all_out_of_area")
+                .includeDocs(true),
+                EligibleCouple.class);
     }
 }
