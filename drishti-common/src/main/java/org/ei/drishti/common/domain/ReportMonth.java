@@ -2,11 +2,13 @@ package org.ei.drishti.common.domain;
 
 import org.ei.drishti.common.util.DateUtil;
 import org.joda.time.LocalDate;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 import static org.ei.drishti.common.AllConstants.Report.*;
 
+@Component
 public class ReportMonth {
 
     private static final int JANUARY = 1;

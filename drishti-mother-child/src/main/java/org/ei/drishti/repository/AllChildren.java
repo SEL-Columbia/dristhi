@@ -70,4 +70,13 @@ public class AllChildren extends MotechBaseRepository<Child> {
                 Child.class);
         return children_turned_one_year_old_as_of_date;
     }
+
+    @View(name = "all_open_children_by_mother_id",
+            map = "function(doc) { if (doc.type === 'Child' && !doc.isClosed && doc.motherCaseId) { emit(doc.motherCaseId); } }")
+    public List<Child> findAllOpenChildrenByMotherId(List<String> motherIds) {
+        return db.queryView(createQuery("all_open_children_by_mother_id")
+                .keys(motherIds)
+                .includeDocs(true),
+                Child.class);
+    }
 }

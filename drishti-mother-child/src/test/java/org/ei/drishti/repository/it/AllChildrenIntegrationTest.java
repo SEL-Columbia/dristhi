@@ -142,12 +142,29 @@ public class AllChildrenIntegrationTest {
         List<Child> childrenFromDB = allChildren.
                 findAllChildrenWhoTurnedOneYearOld(LocalDate.parse("2013-12-26"));
 
-        for (Child child : childrenFromDB) {
-            System.out.println(child.dateOfBirth());
-        }
         assertTrue(childrenFromDB.containsAll(asList(turningOneYearOldOnFirstDayOfReportingMonth, turningOneYearOldOnLastDayOfReportingMonth,
                 turningOneYearOldInTheReportingMonth, turningOneYearOldOnReportingDay)));
         assertEquals(4, childrenFromDB.size());
+    }
+
+    @Test
+    public void shouldFindOpenChildrenByMotherCaseId() {
+        Child firstChild = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1");
+        Child secondChild = new Child("CASE-2", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1");
+        Child closedChild = new Child("CASE-5", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").setIsClosed(true);
+        Child thirdChild = new Child("CASE-3", "MOTHER-CASE-2", "bcg", "3", "male").withAnm("ANM ID 2");
+        Child fourthChild = new Child("CASE-4", "MOTHER-CASE-3", "bcg", "3", "male").withAnm("ANM ID 2");
+        allChildren.add(firstChild);
+        allChildren.add(secondChild);
+        allChildren.add(thirdChild);
+        allChildren.add(closedChild);
+        allChildren.add(fourthChild);
+
+        List<Child> children = allChildren.findAllOpenChildrenByMotherId(asList("MOTHER-CASE-1", "MOTHER-CASE-2"));
+
+        assertTrue(children.containsAll(asList(firstChild, secondChild, thirdChild)));
+        assertFalse(children.contains(closedChild));
+        assertFalse(children.contains(fourthChild));
     }
 
     private Child childWithoutDetails() {

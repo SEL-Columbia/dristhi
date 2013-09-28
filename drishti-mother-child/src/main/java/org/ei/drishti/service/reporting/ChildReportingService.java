@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 import java.util.*;
 
+import static ch.lambdaj.Lambda.*;
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.ChildIllnessFields.*;
@@ -36,6 +37,7 @@ import static org.ei.drishti.common.AllConstants.ReportDataParameters.ANM_REPORT
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDER_TYPE;
 import static org.ei.drishti.common.AllConstants.VitaminAFields.*;
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.joda.time.LocalDate.parse;
 
 @Service
@@ -47,18 +49,20 @@ public class ChildReportingService {
     private final AllMothers allMothers;
     private final AllEligibleCouples allEligibleCouples;
     private final AllInfantBalanceOnHandReportTokens allInfantBalanceOnHandReportTokens;
-    private final ReportMonth reportMonth = new ReportMonth();
+    private final ReportMonth reportMonth;
     private Map<String, List<Indicator>> immunizationToIndicator;
 
     @Autowired
     public ChildReportingService(ReportingService reportingService, AllChildren allChildren, AllMothers allMothers,
                                  AllEligibleCouples allEligibleCouples,
-                                 AllInfantBalanceOnHandReportTokens allInfantBalanceOnHandReportTokens) {
+                                 AllInfantBalanceOnHandReportTokens allInfantBalanceOnHandReportTokens, ReportMonth reportMonth) {
         this.reportingService = reportingService;
         this.allChildren = allChildren;
         this.allMothers = allMothers;
         this.allEligibleCouples = allEligibleCouples;
         this.allInfantBalanceOnHandReportTokens = allInfantBalanceOnHandReportTokens;
+        this.reportMonth = reportMonth;
+
         immunizationToIndicator = new HashMap<>();
 
         immunizationToIndicator.put(BCG_VALUE, asList(BCG));
@@ -288,52 +292,12 @@ public class ChildReportingService {
         reportingService.sendReportData(anmReportData);
     }
 
-    public void updateBoth(List<Child> children, Indicator indicator, String date) {
-        List<ReportingData> serviceProvidedData = new ArrayList<>();
-        List<ReportingData> anmReportData = new ArrayList<>();
-        for (Child child : children) {
-            Location location = loadLocationOfChild(child);
-            ReportingData serviceProvidedDataForChild = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
-            ReportingData anmReportDataForChild = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
-            serviceProvidedData.add(serviceProvidedDataForChild);
-            anmReportData.add(anmReportDataForChild);
-        }
-        reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDER_TYPE, date, indicator, serviceProvidedData));
-        reportingService.updateReportData(buildReportDataRequest(ANM_REPORT_DATA_TYPE, date, indicator, anmReportData));
-    }
-
-    private ReportDataUpdateRequest buildReportDataRequest(String type, String date, Indicator indicator, List<ReportingData> serviceProvidedData) {
-        LocalDate reportingDate = LocalDate.parse(date);
-
-        return new ReportDataUpdateRequest(type).withReportingData(serviceProvidedData)
-                .withStartDate(reportMonth.startOfCurrentReportMonth(reportingDate).toString())
-                .withEndDate(reportMonth.endOfCurrentReportMonth(reportingDate).toString())
-                .withIndicator(indicator.value());
-    }
-
     public void reportInfantBalance() {
         reportInfantBalanceOnHand();
         reportInfantBalanceTurningOneYearOld();
     }
 
-    public void reportInfantBalanceTurningOneYearOld() {
-        LocalDate today = DateUtil.today();
-
-        LocalDate startOfCurrentReportMonth = this.reportMonth.startOfCurrentReportMonth(today);
-        List<Child> childrenTurnedOneYearOld = allChildren.findAllChildrenWhoTurnedOneYearOld(
-                startOfCurrentReportMonth);
-        logger.info(MessageFormat.format("Found {0} children for reporting Infant Balance (Turned One Year old)  ",
-                childrenTurnedOneYearOld.size()));
-
-        logger.info(MessageFormat.format("Reporting Infant Balance (Turned One Year old) on date: {0} for child: {1}.",
-                startOfCurrentReportMonth.toString(), childrenTurnedOneYearOld));
-
-        updateBoth(childrenTurnedOneYearOld, Indicator.INFANT_BALANCE_TURNING_ONE_YEAR,
-                startOfCurrentReportMonth.toString());
-        logger.info(MessageFormat.format("Updating Infant Balance (On Hand) last reported date to {0}", today));
-    }
-
-    private void reportInfantBalanceOnHand() {
+    public void reportInfantBalanceOnHand() {
         LocalDate today = DateUtil.today();
         InfantBalanceOnHandReportToken infantBalanceOnHandReportToken = getInfantBalanceOnHandReportToken(today);
         if (reportMonth.isDateWithinCurrentReportMonth(infantBalanceOnHandReportToken.getLastReportedDate())) {
@@ -362,6 +326,32 @@ public class ChildReportingService {
         allInfantBalanceOnHandReportTokens.update(infantBalanceOnHandReportToken.withLastReportedDate(today));
     }
 
+    public void reportInfantBalanceTurningOneYearOld() {
+        LocalDate today = DateUtil.today();
+
+        LocalDate startOfCurrentReportMonth = this.reportMonth.startOfCurrentReportMonth(today);
+        List<Child> childrenTurnedOneYearOld = allChildren.findAllChildrenWhoTurnedOneYearOld(
+                startOfCurrentReportMonth);
+        logger.info(MessageFormat.format("Found {0} children for reporting Infant Balance (Turned One Year old)  ",
+                childrenTurnedOneYearOld.size()));
+
+        updateInfantBalanceTurningOneYearOld(childrenTurnedOneYearOld, Indicator.INFANT_BALANCE_TURNING_ONE_YEAR,
+                startOfCurrentReportMonth.toString());
+    }
+
+    public void reportInfantBalanceTotalNumberOfOAChildren() {
+        List<EligibleCouple> outOfAreaCouples = allEligibleCouples.findAllOutOfAreaCouples();
+        List<String> ecIds = extract(outOfAreaCouples, on(EligibleCouple.class).caseId());
+        List<Mother> outOfAreaMothers = allMothers.findAllOpenMothersByECCaseId(ecIds);
+        List<String> motherIds = extract(outOfAreaMothers, on(Mother.class).caseId());
+        List<Child> outOfAreaChildren = allChildren.findAllOpenChildrenByMotherId(motherIds);
+
+        logger.info(MessageFormat.format("Found {0} children for reporting Infant Balance (O/A children)  ",
+                outOfAreaChildren.size()));
+
+        updateInfantBalanceOAChildren(outOfAreaChildren, outOfAreaMothers, outOfAreaCouples, Indicator.INFANT_BALANCE_OA_CHILDREN, DateUtil.today().toString());
+    }
+
     private InfantBalanceOnHandReportToken getInfantBalanceOnHandReportToken(LocalDate today) {
         InfantBalanceOnHandReportToken infantBalanceOnHandReportToken;
         List<InfantBalanceOnHandReportToken> tokens = allInfantBalanceOnHandReportTokens.getAll();
@@ -373,5 +363,48 @@ public class ChildReportingService {
             infantBalanceOnHandReportToken = tokens.get(0);
         }
         return infantBalanceOnHandReportToken;
+    }
+
+    private void updateInfantBalanceTurningOneYearOld(List<Child> children, Indicator indicator, String date) {
+        List<ReportingData> serviceProvidedData = new ArrayList<>();
+        List<ReportingData> anmReportData = new ArrayList<>();
+        for (Child child : children) {
+            Location location = loadLocationOfChild(child);
+            ReportingData serviceProvidedDataForChild = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
+            ReportingData anmReportDataForChild = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
+            serviceProvidedData.add(serviceProvidedDataForChild);
+            anmReportData.add(anmReportDataForChild);
+            logger.info(MessageFormat.format("Reporting Infant Balance (Turned One Year old) on date: {0} for child: {1}.",
+                    date, child));
+        }
+        reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDER_TYPE, date, indicator, serviceProvidedData));
+        reportingService.updateReportData(buildReportDataRequest(ANM_REPORT_DATA_TYPE, date, indicator, anmReportData));
+    }
+
+    private void updateInfantBalanceOAChildren(List<Child> children, List<Mother> mothers, List<EligibleCouple> ecs, Indicator indicator, String date) {
+        List<ReportingData> serviceProvidedData = new ArrayList<>();
+        List<ReportingData> anmReportData = new ArrayList<>();
+        for (Child child : children) {
+            Mother mother = selectFirst(mothers, having(on(Mother.class).caseId(), equalTo(child.motherCaseId())));
+            EligibleCouple ec = selectFirst(ecs, having(on(EligibleCouple.class).caseId(), equalTo(mother.ecCaseId())));
+            Location location = ec.location();
+            ReportingData serviceProvidedDataForChild = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
+            ReportingData anmReportDataForChild = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
+            serviceProvidedData.add(serviceProvidedDataForChild);
+            anmReportData.add(anmReportDataForChild);
+            logger.info(MessageFormat.format("Reporting Infant Balance (O/A children) on date: {0} for child: {1}.",
+                    date, child));
+        }
+        reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDER_TYPE, date, indicator, serviceProvidedData));
+        reportingService.updateReportData(buildReportDataRequest(ANM_REPORT_DATA_TYPE, date, indicator, anmReportData));
+    }
+
+    private ReportDataUpdateRequest buildReportDataRequest(String type, String date, Indicator indicator, List<ReportingData> serviceProvidedData) {
+        LocalDate reportingDate = LocalDate.parse(date);
+
+        return new ReportDataUpdateRequest(type).withReportingData(serviceProvidedData)
+                .withStartDate(reportMonth.startOfCurrentReportMonth(reportingDate).toString())
+                .withEndDate(reportMonth.endOfCurrentReportMonth(reportingDate).toString())
+                .withIndicator(indicator.value());
     }
 }

@@ -1,6 +1,8 @@
 package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
+import org.ei.drishti.common.domain.ReportDataUpdateRequest;
+import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.domain.*;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static java.util.Arrays.asList;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.ANM_REPORT_DATA_TYPE;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDER_TYPE;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.joda.time.LocalDate.parse;
 import static org.mockito.Mockito.*;
@@ -35,6 +39,8 @@ public class ChildReportingServiceTest {
     private AllEligibleCouples allEligibleCouples;
     @Mock
     private AllInfantBalanceOnHandReportTokens allInfantBalanceOnHandTokens;
+    @Mock
+    private ReportMonth reportMonth;
 
     private ChildReportingService service;
 
@@ -47,7 +53,7 @@ public class ChildReportingServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ChildReportingService(reportingService, allChildren, allMothers, allEligibleCouples, allInfantBalanceOnHandTokens);
+        service = new ChildReportingService(reportingService, allChildren, allMothers, allEligibleCouples, allInfantBalanceOnHandTokens, reportMonth);
     }
 
     @Test
@@ -710,8 +716,9 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
         when(allMothers.findByCaseId("mother id 2")).thenReturn(new Mother("mother id 2", "ec id 2", "thayi card 2"));
         when(allEligibleCouples.findByCaseId("ec id 2")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.startOfCurrentReportMonth(parse("2013-02-01"))).thenReturn(parse("2013-01-26"));
 
-        service.reportInfantBalance();
+        service.reportInfantBalanceOnHand();
 
         verifyBothReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 1", "thayi card 1");
         verifyBothReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 2", "thayi card 2");
@@ -734,8 +741,9 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
         when(allMothers.findByCaseId("mother id 2")).thenReturn(new Mother("mother id 2", "ec id 2", "thayi card 2"));
         when(allEligibleCouples.findByCaseId("ec id 2")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.startOfCurrentReportMonth(parse("2013-02-01"))).thenReturn(parse("2013-01-26"));
 
-        service.reportInfantBalance();
+        service.reportInfantBalanceOnHand();
 
         verifyBothReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 1", "thayi card 1");
         verifyBothReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 2", "thayi card 2");
@@ -758,8 +766,10 @@ public class ChildReportingServiceTest {
         when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
         when(allMothers.findByCaseId("mother id 2")).thenReturn(new Mother("mother id 2", "ec id 2", "thayi card 2"));
         when(allEligibleCouples.findByCaseId("ec id 2")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.startOfCurrentReportMonth(parse("2013-02-01"))).thenReturn(parse("2013-01-26"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse(currentReportMonthStartDate))).thenReturn(true);
 
-        service.reportInfantBalance();
+        service.reportInfantBalanceOnHand();
 
         verifyNoReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 1", "thayi card 1");
         verifyNoReportingCalls(Indicator.INFANT_BALANCE_ON_HAND, currentReportMonthStartDate, "child id 2", "thayi card 2");
@@ -767,9 +777,28 @@ public class ChildReportingServiceTest {
         verifyNoReportingCalls(Indicator.INFANT_BALANCE_TOTAL, currentReportMonthStartDate, "child id 2", "thayi card 2");
     }
 
+    @Test
+    public void shouldReportTotalNumberOfOAChildrenWhenInfantBalanceIsReported() throws Exception {
+        DateUtil.fakeIt(parse("2013-02-01"));
+        Mother mother = new Mother("mother id 1", "ec id 1", "thayi card 1");
+        Child child = new Child("child id 1", "mother id 1", "bcg", "3", "female").withThayiCard("thayi card 1").withAnm("ANM X");
+        EligibleCouple ec = new EligibleCouple("ec id 1", "123").withLocation("bherya", "Sub Center", "PHC X").asOutOfArea();
+        when(allEligibleCouples.findAllOutOfAreaCouples()).thenReturn(asList(ec));
+        when(allMothers.findAllOpenMothersByECCaseId(asList("ec id 1"))).thenReturn(asList(mother));
+        when(allMothers.findAllOpenMothersByECCaseId(asList("ec id 1"))).thenReturn(asList(mother));
+        when(allChildren.findAllOpenChildrenByMotherId(asList("mother id 1"))).thenReturn(asList(child));
+        when(reportMonth.startOfCurrentReportMonth(parse("2013-02-01"))).thenReturn(parse("2013-01-26"));
+        when(reportMonth.endOfCurrentReportMonth(parse("2013-02-01"))).thenReturn(parse("2013-02-25"));
+
+        service.reportInfantBalanceTotalNumberOfOAChildren();
+
+        verifyBothUpdateReportCalls(Indicator.INFANT_BALANCE_OA_CHILDREN, "2013-02-01", "child id 1", "thayi card 1",
+                "2013-01-26", "2013-02-25");
+    }
+
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator... expectedIndicators) {
         ReportingService fakeReportingService = mock(ReportingService.class);
-        ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, allChildren, allMothers, allEligibleCouples, allInfantBalanceOnHandTokens);
+        ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, allChildren, allMothers, allEligibleCouples, allInfantBalanceOnHandTokens, reportMonth);
         SafeMap reportingData = reportDataForImmunization(immunizationProvided, "");
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
@@ -824,6 +853,24 @@ public class ChildReportingServiceTest {
         ReportingData anmReportData = ReportingData.anmReportData("ANM X", externalIdForANMReport, indicator, date);
         verify(reportingService).sendReportData(serviceProvidedData);
         verify(reportingService).sendReportData(anmReportData);
+    }
+
+    private void verifyBothUpdateReportCalls(Indicator indicator, String date, String externalIdForANMReport,
+                                             String externalIdForServiceProvidedReport, String startDate, String endDate) {
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X",
+                externalIdForServiceProvidedReport, indicator, date, new Location("bherya", "Sub Center", "PHC X"));
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", externalIdForANMReport, indicator, date);
+        ReportDataUpdateRequest serviceProvidedUpdateRequest = new ReportDataUpdateRequest(SERVICE_PROVIDER_TYPE).withReportingData(asList(serviceProvidedData))
+                .withStartDate(startDate)
+                .withEndDate(endDate)
+                .withIndicator(indicator.value());
+        ReportDataUpdateRequest anmReportUpdateRequest = new ReportDataUpdateRequest(ANM_REPORT_DATA_TYPE).withReportingData(asList(anmReportData))
+                .withStartDate(startDate)
+                .withEndDate(endDate)
+                .withIndicator(indicator.value());
+
+        verify(reportingService).updateReportData(serviceProvidedUpdateRequest);
+        verify(reportingService).updateReportData(anmReportUpdateRequest);
     }
 
     private void verifyNoReportingCalls(Indicator indicator, String date) {

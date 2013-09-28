@@ -28,3 +28,4 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_PNC_V_2D');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_PNC_V_14D');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_IUDREM');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_OCP_STRIPS');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IB_OA');

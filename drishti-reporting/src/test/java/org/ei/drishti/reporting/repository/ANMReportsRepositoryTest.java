@@ -47,7 +47,8 @@ public class ANMReportsRepositoryTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        repository = new ANMReportsRepository(anmRepository, datesRepository, indicatorRepository, anmReportDataRepository, annualTargetsRepository, monitor);
+        repository = new ANMReportsRepository(anmRepository, datesRepository, indicatorRepository,
+                anmReportDataRepository, annualTargetsRepository, monitor, new ReportMonth());
     }
 
     @Test

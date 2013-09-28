@@ -33,3 +33,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_PNC_V_2D');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_PNC_V_14D');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_IUDREM');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_OCP_STRIPS');
+INSERT INTO report.dim_indicator (indicator) VALUES ('IB_OA');

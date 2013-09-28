@@ -26,7 +26,7 @@ import static org.hamcrest.Matchers.*;
 
 @Repository
 public class ANMReportsRepository {
-    private final ReportMonth reportMonth = new ReportMonth();
+    private ReportMonth reportMonth;
     private AllANMReportDataRepository anmReportDataRepository;
     private AllAnnualTargetsRepository annualTargetsRepository;
     private Monitor monitor;
@@ -42,10 +42,12 @@ public class ANMReportsRepository {
     public ANMReportsRepository(ANMCacheableRepository anmRepository,
                                 @Qualifier("anmReportsDatesRepository") DatesCacheableRepository datesRepository,
                                 @Qualifier("anmReportsIndicatorRepository") IndicatorCacheableRepository indicatorRepository,
-                                AllANMReportDataRepository anmReportDataRepository, AllAnnualTargetsRepository annualTargetsRepository, Monitor monitor) {
+                                AllANMReportDataRepository anmReportDataRepository,
+                                AllAnnualTargetsRepository annualTargetsRepository, Monitor monitor, ReportMonth reportMonth) {
         this.anmReportDataRepository = anmReportDataRepository;
         this.annualTargetsRepository = annualTargetsRepository;
         this.monitor = monitor;
+        this.reportMonth = reportMonth;
         cachedANMs = new ReadOnlyCachingRepository<>(anmRepository);
         cachedIndicators = new ReadOnlyCachingRepository<>(indicatorRepository);
         cachedDates = new CachingRepository<>(datesRepository);
