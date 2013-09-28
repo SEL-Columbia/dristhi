@@ -4,6 +4,7 @@ import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Mother;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
+import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,5 +56,14 @@ public class AllMothers extends MotechBaseRepository<Mother> {
             mother.setIsClosed(true);
             update(mother);
         }
+    }
+
+    @View(name = "all_open_mothers_by_ec_caseId",
+            map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.ecCaseId) { emit(doc.ecCaseId); } }")
+    public List<Mother> findAllOpenMothersByECCaseId(List<String> ecIds) {
+        return db.queryView(createQuery("all_open_mothers_by_ec_caseId")
+                .keys(ecIds)
+                .includeDocs(true),
+                Mother.class);
     }
 }

@@ -12,9 +12,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static org.ei.drishti.util.EasyMap.create;
+import static java.util.Arrays.asList;
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -26,11 +25,11 @@ import static org.junit.Assert.assertTrue;
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
 public class AllMothersIntegrationTest {
     @Autowired
-    private AllMothers mothers;
+    private AllMothers allMothers;
 
     @Before
     public void setUp() throws Exception {
-        mothers.removeAll();
+        allMothers.removeAll();
     }
 
     @Test
@@ -40,9 +39,9 @@ public class AllMothersIntegrationTest {
         Mother mother = new Mother("CASE-1", "EC-CASE-1", "THAYI-CARD-1").withAnm("ANM ID 1").withLMP(DateUtil.tomorrow())
                 .withLocation("bherya", "Sub Center", "PHC X").withDetails(details);
 
-        mothers.add(mother);
+        allMothers.add(mother);
 
-        List<Mother> allTheMothers = mothers.getAll();
+        List<Mother> allTheMothers = allMothers.getAll();
         assertThat(allTheMothers.size(), is(1));
 
         Mother motherFromDB = allTheMothers.get(0);
@@ -53,29 +52,47 @@ public class AllMothersIntegrationTest {
     public void shouldFindARegisteredMotherByCaseId() {
         String caseId = "CASE-1";
         Mother motherToRegister = new Mother(caseId, "EC-CASE-1", "THAYI-CARD-1");
-        mothers.add(motherToRegister);
+        allMothers.add(motherToRegister);
 
-        assertThat(mothers.findByCaseId(caseId), hasSameFieldsAs(motherToRegister));
-        assertThat(mothers.findByCaseId("SOME OTHER ID"), is(nullValue()));
+        assertThat(allMothers.findByCaseId(caseId), hasSameFieldsAs(motherToRegister));
+        assertThat(allMothers.findByCaseId("SOME OTHER ID"), is(nullValue()));
     }
 
     @Test
     public void shouldSayThatAMotherDoesNotExistWhenTheMotherIsNotInTheDB() {
         Mother motherToRegister = new Mother("CASE-1", "EC-CASE-1", "THAYI-CARD-1");
-        mothers.add(motherToRegister);
+        allMothers.add(motherToRegister);
 
-        assertTrue(mothers.exists("CASE-1"));
-        assertFalse(mothers.exists("CASE-NOT-KNOWN"));
+        assertTrue(allMothers.exists("CASE-1"));
+        assertFalse(allMothers.exists("CASE-NOT-KNOWN"));
     }
 
     @Test
     public void shouldMarkMotherAsClosedWhenMotherClose() {
         Mother motherToRegister = motherWithoutDetails();
-        mothers.add(motherToRegister);
+        allMothers.add(motherToRegister);
 
-        mothers.close("CASE X");
+        allMothers.close("CASE X");
 
-        assertThat(mothers.findByCaseId("CASE X"), is(motherToRegister.setIsClosed(true)));
+        assertThat(allMothers.findByCaseId("CASE X"), is(motherToRegister.setIsClosed(true)));
+    }
+
+    @Test
+    public void shouldFindOpenMothersByECCaseId() {
+        Mother motherForEC1 = new Mother("mother id 1", "ec id 1", "thayi 1");
+        Mother closedMotherForEC1 = new Mother("mother id 2", "ec id 1", "thayi 2").setIsClosed(true);
+        Mother motherForEC2 = new Mother("mother id 3", "ec id 2", "thayi 2");
+        Mother motherForEC3 = new Mother("mother id 4", "ec id 3", "thayi 3");
+        allMothers.add(motherForEC1);
+        allMothers.add(closedMotherForEC1);
+        allMothers.add(motherForEC2);
+        allMothers.add(motherForEC3);
+
+        List<Mother> mothers = allMothers.findAllOpenMothersByECCaseId(asList("ec id 1", "ec id 2"));
+
+        assertTrue(mothers.containsAll(asList(motherForEC1, motherForEC2)));
+        assertFalse(mothers.contains(closedMotherForEC1));
+        assertFalse(mothers.contains(motherForEC3));
     }
 
     private Mother motherWithoutDetails() {
