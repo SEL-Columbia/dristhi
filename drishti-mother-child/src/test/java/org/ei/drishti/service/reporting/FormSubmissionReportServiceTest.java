@@ -89,7 +89,7 @@ public class FormSubmissionReportServiceTest {
         when(reportDefinitionLoader.load()).thenReturn(reportDefinitionWithReportEntityFieldSpecified());
         when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
         when(reporterFactory.reporterFor("eligible_couple")).thenReturn(reporter);
-        when(locationLoader.loadLocationFor("eligible_couple", "ec id 1")).thenReturn(location);
+        when(locationLoader.loadLocationFor("eligible_couple", "mother id 1")).thenReturn(location);
         when(rule.apply(any(SafeMap.class))).thenReturn(true);
         SafeMap reportData = new SafeMap()
                 .put("id", submission.entityId())
@@ -98,6 +98,7 @@ public class FormSubmissionReportServiceTest {
 
         service.reportFor(submission);
 
+        verify(locationLoader).loadLocationFor("eligible_couple", "mother id 1");
         verify(reporter).report("mother id 1", "NRHM_JSY_REG", location, "2012-03-01", reportData);
     }
 

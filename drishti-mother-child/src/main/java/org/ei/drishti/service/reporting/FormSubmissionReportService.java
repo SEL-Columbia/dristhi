@@ -46,7 +46,11 @@ public class FormSubmissionReportService {
             SafeMap reportFields = createReportFields(submission, reportIndicator.formFields(), reportIndicator.referenceData());
             boolean didAllRulesSucceed = processRules(reportIndicator.reportingRules(), reportFields);
             if (didAllRulesSucceed) {
-                Location location = locationLoader.loadLocationFor(reportIndicator.bindType(), submission.entityId());
+                String entityId = reportIndicator.reportEntityIdField() == null
+                        ? submission.entityId()
+                        : submission.getField(reportIndicator.reportEntityIdField());
+
+                Location location = locationLoader.loadLocationFor(reportIndicator.reportEntityType(), entityId);
                 report(submission, reportIndicator, location);
             }
         }
@@ -76,7 +80,7 @@ public class FormSubmissionReportService {
     }
 
     private void report(FormSubmission submission, ReportIndicator reportIndicator, Location location) {
-        IReporter reporter = reporterFactory.reporterFor(reportIndicator.bindType());
+        IReporter reporter = reporterFactory.reporterFor(reportIndicator.reportEntityType());
         SafeMap reportData = createReportData(submission, reportIndicator.formFields(), reportIndicator.quantityField());
         String serviceProvidedDate = reportIndicator.serviceProvidedDateField() == null
                 ? submission.getField(SUBMISSION_DATE_FIELD_NAME)

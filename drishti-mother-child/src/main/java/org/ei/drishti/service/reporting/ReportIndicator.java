@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ReportIndicator {
     private String indicator;
-    private String bindType;
+    private String reportEntityType;
     private String serviceProvidedDateField;
     private String quantityField;
     private List<String> formFields;
@@ -20,10 +20,10 @@ public class ReportIndicator {
         this.indicator = indicator;
     }
 
-    public ReportIndicator(String indicator, String bindType, String quantityField, String serviceProvidedDateField,
+    public ReportIndicator(String indicator, String reportEntityType, String quantityField, String serviceProvidedDateField,
                            List<String> formFields, ReferenceData referenceData, List<String> reportWhen) {
         this.indicator = indicator;
-        this.bindType = bindType;
+        this.reportEntityType = reportEntityType;
         this.serviceProvidedDateField = serviceProvidedDateField;
         this.quantityField = quantityField;
         this.formFields = formFields;
@@ -35,8 +35,8 @@ public class ReportIndicator {
         return indicator;
     }
 
-    public String bindType() {
-        return bindType;
+    public String reportEntityType() {
+        return reportEntityType;
     }
 
     public String serviceProvidedDateField() {
@@ -63,7 +63,7 @@ public class ReportIndicator {
         return reportEntityIdField;
     }
 
-    public ReportIndicator withReportEntityIdField(String reportEntityIdField) {
+    public ReportIndicator  withReportEntityIdField(String reportEntityIdField) {
         this.reportEntityIdField = reportEntityIdField;
         return this;
     }
