@@ -223,6 +223,27 @@
                         "CurrentFPMethodIsOCPRule",
                         "MoreThanZeroOCPStripsSuppliedRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_CENTCHROMAN_PILLS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "quantityField": "numberOfCentchromanPillsDelivered",
+                    "formFields": [
+                        "id",
+                        "fpRenewMethodVisitDate",
+                        "numberOfCentchromanPillsDelivered",
+                        "currentMethod"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsCentchromanRule",
+                        "MoreThanZeroCentchromanPillsSuppliedRule"
+                    ]
                 }
             ]
         },
