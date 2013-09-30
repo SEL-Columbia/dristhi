@@ -362,6 +362,8 @@ public class ChildReportingService {
         LocalDate startOfCurrentReportMonth = reportMonth.startOfCurrentReportMonth(today);
         updateInfantBalanceIndicator(Indicator.INFANT_BALANCE_LESS_THAN_ONE_YEAR, childrenLessThanOneYearOld,
                 startOfCurrentReportMonth.toString());
+        updateInfantBalanceIndicator(Indicator.INFANT_BALANCE_BALANCE, childrenLessThanOneYearOld,
+                startOfCurrentReportMonth.toString());
     }
 
     public void reportInfantBalanceLessThanFiveYearOld() {

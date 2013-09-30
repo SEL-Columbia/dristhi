@@ -813,6 +813,7 @@ public class ChildReportingServiceTest {
         service.reportInfantBalanceLessThanOneYearOld();
 
         verifyBothUpdateReportCalls(Indicator.INFANT_BALANCE_LESS_THAN_ONE_YEAR, "2013-01-26", "child id 1", "thayi card 1", "2013-01-26", "2013-02-25");
+        verifyBothUpdateReportCalls(Indicator.INFANT_BALANCE_BALANCE, "2013-01-26", "child id 1", "thayi card 1", "2013-01-26", "2013-02-25");
     }
 
     @Test

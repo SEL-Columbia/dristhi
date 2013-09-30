@@ -44,7 +44,6 @@ public class AllConstants {
         public static final String PNC_REGISTRATION_OA_SUB_FORM_NAME = "child_registration_oa";
         public static final String PNC_VISIT_CHILD_SUB_FORM_NAME = "child_pnc_visit";
         public static final String VITAMIN_A = "vitamin_a";
-
     }
 
     public static class Report {
