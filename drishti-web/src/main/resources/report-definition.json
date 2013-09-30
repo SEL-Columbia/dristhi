@@ -193,7 +193,8 @@
                     "formFields": [
                         "id",
                         "registrationDate",
-                        "dateOfBirth"
+                        "dateOfBirth",
+                        "submissionDate"
                     ],
                     "referenceData": {
                         "type": "child",
