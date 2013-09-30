@@ -35,3 +35,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_IUDREM');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_OCP_STRIPS');
 INSERT INTO report.dim_indicator (indicator) VALUES ('IB_OA');
 INSERT INTO report.dim_indicator (indicator) VALUES ('IB<1Y');
+INSERT INTO report.dim_indicator (indicator) VALUES ('IB<5Y');

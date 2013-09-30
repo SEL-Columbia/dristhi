@@ -815,6 +815,25 @@ public class ChildReportingServiceTest {
         verifyBothUpdateReportCalls(Indicator.INFANT_BALANCE_LESS_THAN_ONE_YEAR, "2013-01-26", "child id 1", "thayi card 1", "2013-01-26", "2013-02-25");
     }
 
+    @Test
+    public void shouldReportTotalNumberOfChildrenLessThanFiveYearOldWhenInfantBalanceIsReported()
+            throws Exception {
+        LocalDate today = parse("2013-02-01");
+        DateUtil.fakeIt(today);
+        when(allChildren.findAllChildrenLessThanFiveYearOldAsOfDate(today))
+                .thenReturn(asList(
+                        new Child("child id 1", "mother id 1", "", "5", "male").withThayiCard("thayi card 1").withAnm("ANM X")));
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "ec id 1", "thayi card 1"));
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.startOfCurrentReportMonth(today)).thenReturn(parse("2013-01-26"));
+        when(reportMonth.startOfCurrentReportMonth(parse("2013-01-26"))).thenReturn(parse("2013-01-26"));
+        when(reportMonth.endOfCurrentReportMonth(parse("2013-01-26"))).thenReturn(parse("2013-02-25"));
+
+        service.reportInfantBalanceLessThanFiveYearOld();
+
+        verifyBothUpdateReportCalls(Indicator.INFANT_BALANCE_LESS_THAN_FIVE_YEAR, "2013-01-26", "child id 1", "thayi card 1", "2013-01-26", "2013-02-25");
+    }
+
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator... expectedIndicators) {
         ReportingService fakeReportingService = mock(ReportingService.class);
         ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, allChildren, allMothers, allEligibleCouples, allInfantBalanceOnHandTokens, reportMonth);

@@ -167,6 +167,38 @@ public class AllChildrenIntegrationTest {
         assertFalse(children.contains(fourthChild));
     }
 
+    @Test
+    public void shouldFindAllChildrenLessThanFiveYearOldAsOfDate() {
+        LocalDate referenceDate = LocalDate.parse("2013-12-26");
+        Child moreThanFiveYearOld = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1")
+                .withDateOfBirth(referenceDate.minusYears(5).minusDays(1).toString());
+        Child exactlyFiveYearOld = new Child("CASE-3", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1")
+                .withDateOfBirth(referenceDate.minusYears(5).toString());
+        Child oneDayLessThanFiveYearOld = new Child("CASE-2", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1")
+                .withDateOfBirth(referenceDate.minusYears(5).plusDays(1).toString());
+        Child bornOnSameDay = new Child("CASE-4", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1")
+                .withDateOfBirth(referenceDate.toString());
+        Child bornOneDayBefore = new Child("CASE-5", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1")
+                .withDateOfBirth(referenceDate.minusDays(1).toString());
+        Child fewYearsOld = new Child("CASE-6", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1")
+                .withDateOfBirth(referenceDate.minusYears(2).toString());
+        Child closed = new Child("CASE-7", "MOTHER-CASE-2", "bcg", "3", "male").withAnm("ANM ID 1").setIsClosed(true)
+                .withDateOfBirth(referenceDate.toString());
+        allChildren.add(moreThanFiveYearOld);
+        allChildren.add(exactlyFiveYearOld);
+        allChildren.add(oneDayLessThanFiveYearOld);
+        allChildren.add(fewYearsOld);
+        allChildren.add(bornOneDayBefore);
+        allChildren.add(bornOnSameDay);
+        allChildren.add(closed);
+
+        List<Child> childrenFromDB = allChildren.
+                findAllChildrenLessThanFiveYearOldAsOfDate(referenceDate);
+
+        assertEquals(5, childrenFromDB.size());
+        assertTrue(childrenFromDB.containsAll(asList(exactlyFiveYearOld, oneDayLessThanFiveYearOld, bornOnSameDay, fewYearsOld, bornOneDayBefore)));
+    }
+
     private Child childWithoutDetails() {
         return new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "male")
                 .withAnm("ANM ID 1");

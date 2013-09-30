@@ -355,12 +355,24 @@ public class ChildReportingService {
     public void reportInfantBalanceLessThanOneYearOld() {
         LocalDate today = DateUtil.today();
 
-        LocalDate startOfCurrentReportMonth = this.reportMonth.startOfCurrentReportMonth(today);
         List<Child> childrenLessThanOneYearOld = allChildren.findAllChildrenLessThanOneYearOldAsOfDate(today);
         logger.info(MessageFormat.format("Found {0} children for reporting Infant Balance (less than one year old)  ",
                 childrenLessThanOneYearOld.size()));
 
+        LocalDate startOfCurrentReportMonth = reportMonth.startOfCurrentReportMonth(today);
         updateInfantBalanceIndicator(Indicator.INFANT_BALANCE_LESS_THAN_ONE_YEAR, childrenLessThanOneYearOld,
+                startOfCurrentReportMonth.toString());
+    }
+
+    public void reportInfantBalanceLessThanFiveYearOld() {
+        LocalDate today = DateUtil.today();
+
+        List<Child> childrenLessThanFiveYearOld = allChildren.findAllChildrenLessThanFiveYearOldAsOfDate(today);
+        logger.info(MessageFormat.format("Found {0} children for reporting Infant Balance (less than five year old)  ",
+                childrenLessThanFiveYearOld.size()));
+
+        LocalDate startOfCurrentReportMonth = reportMonth.startOfCurrentReportMonth(today);
+        updateInfantBalanceIndicator(Indicator.INFANT_BALANCE_LESS_THAN_FIVE_YEAR, childrenLessThanFiveYearOld,
                 startOfCurrentReportMonth.toString());
     }
 
