@@ -9,25 +9,25 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class NewFPMethodIsOCPRuleTest {
+public class NewFPMethodIsCentchromanPillsRuleTest {
 
-    NewFPMethodIsOCPRule rule;
+    NewFPMethodIsCentchromanPillsRule rule;
 
     @Before
     public void setUp() {
-        rule = new NewFPMethodIsOCPRule();
+        rule = new NewFPMethodIsCentchromanPillsRule();
     }
 
     @Test
-    public void shouldReturnFalseWhenNewFPMethodOfECIsNotOCP() {
+    public void shouldReturnFalseWhenNewFPMethodOfECIsNotCentchroman() {
         boolean didRuleSucceed = rule.apply(new SafeMap(mapOf("newMethod", "condom")));
 
         assertFalse(didRuleSucceed);
     }
 
     @Test
-    public void shouldReturnTrueIfNewFPMethodOfTheECIsOCP() {
-        boolean didRuleSucceed = rule.apply(new SafeMap(mapOf("newMethod", "ocp")));
+    public void shouldReturnTrueIfNewFPMethodOfTheECIsCentchroman() {
+        boolean didRuleSucceed = rule.apply(new SafeMap(mapOf("newMethod", "centchroman")));
 
         assertTrue(didRuleSucceed);
     }
