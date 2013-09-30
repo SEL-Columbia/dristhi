@@ -9,7 +9,6 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.scheme.SocketFactory;
-import org.apache.http.conn.ssl.AbstractVerifier;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.entity.StringEntity;
@@ -20,7 +19,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.stereotype.Component;
 
-import javax.net.ssl.SSLException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.Security;
@@ -47,7 +45,9 @@ public class HttpAgent {
         HttpPost request = new HttpPost(url);
         try {
             request.setHeader("Content-Type", contentType);
-            request.setEntity(new StringEntity(data));
+            StringEntity entity = new StringEntity(data);
+            entity.setContentEncoding("application/json");
+            request.setEntity(entity);
             org.apache.http.HttpResponse response = httpClient.execute(request);
             return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
         } catch (Exception e) {

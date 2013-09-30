@@ -899,13 +899,17 @@ public class ChildReportingServiceTest {
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X",
                 externalIdForServiceProvidedReport, indicator, date, new Location("bherya", "Sub Center", "PHC X"));
         ReportingData anmReportData = ReportingData.anmReportData("ANM X", externalIdForANMReport, indicator, date);
-        ReportDataUpdateRequest serviceProvidedUpdateRequest = new ReportDataUpdateRequest(SERVICE_PROVIDER_TYPE).withReportingData(asList(serviceProvidedData))
+        ReportDataUpdateRequest serviceProvidedUpdateRequest = new ReportDataUpdateRequest()
+                .withType(SERVICE_PROVIDER_TYPE)
                 .withStartDate(startDate)
                 .withEndDate(endDate)
+                .withReportingData(asList(serviceProvidedData))
                 .withIndicator(indicator.value());
-        ReportDataUpdateRequest anmReportUpdateRequest = new ReportDataUpdateRequest(ANM_REPORT_DATA_TYPE).withReportingData(asList(anmReportData))
+        ReportDataUpdateRequest anmReportUpdateRequest = new ReportDataUpdateRequest()
+                .withType(ANM_REPORT_DATA_TYPE)
                 .withStartDate(startDate)
                 .withEndDate(endDate)
+                .withReportingData(asList(anmReportData))
                 .withIndicator(indicator.value());
 
         verify(reportingService).updateReportData(serviceProvidedUpdateRequest);

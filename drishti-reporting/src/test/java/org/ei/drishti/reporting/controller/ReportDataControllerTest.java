@@ -99,10 +99,11 @@ public class ReportDataControllerTest {
         data.put(ANM_IDENTIFIER,"anm id 1");
         ReportingData reportingData = new ReportingData("serviceProvided", data);
 
-        ReportDataUpdateRequest reportDataUpdateRequest = new ReportDataUpdateRequest(type)
-                                        .withReportingData(asList(reportingData))
+        ReportDataUpdateRequest reportDataUpdateRequest = new ReportDataUpdateRequest()
+                                        .withType(type)
                                         .withStartDate("2013-01-26")
-                                        .withEndDate("2013-02-25");
+                                        .withEndDate("2013-02-25")
+                                        .withReportingData(asList(reportingData));
 
         String result = controller.updateReports(reportDataUpdateRequest);
 
@@ -127,7 +128,8 @@ public class ReportDataControllerTest {
         data.put(ANM_IDENTIFIER,"anm id 1");
 
         ReportingData reportingData = new ReportingData("anmReportData", data);
-        ReportDataUpdateRequest reportDataUpdateRequest = new ReportDataUpdateRequest("anmReportData")
+        ReportDataUpdateRequest reportDataUpdateRequest = new ReportDataUpdateRequest()
+                .withType("anmReportData")
                 .withReportingData(asList(reportingData))
                 .withStartDate(startDate)
                 .withEndDate(endDate)

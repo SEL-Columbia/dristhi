@@ -281,7 +281,7 @@ public class ANMReportsRepositoryTest {
         ReportingData reportingData = new ReportingData("type", data)
                 .withQuantity("1");
 
-        ReportDataUpdateRequest request = new ReportDataUpdateRequest("type")
+        ReportDataUpdateRequest request = new ReportDataUpdateRequest().withType("type")
                 .withIndicator(indicator)
                 .withStartDate("2013-01-26")
                 .withEndDate("2013-02-25")

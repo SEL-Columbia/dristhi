@@ -51,7 +51,7 @@ public class ReportingEventListenerTest {
     public void shouldUpdateReportingData() throws Exception {
         Map<String, Object> data = new HashMap<>();
         ReportingData reportingData = new ReportingData("Boo").with("abc", "def");
-        ReportDataUpdateRequest dataRequest = new ReportDataUpdateRequest("Boo")
+        ReportDataUpdateRequest dataRequest = new ReportDataUpdateRequest().withType("Boo")
                 .withReportingData(asList(reportingData))
                 .withStartDate("2013-01-26")
                 .withEndDate("2013-02-25");

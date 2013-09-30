@@ -61,10 +61,12 @@ public class ReportDataController {
         return "Success.";
     }
 
-    @RequestMapping(value = "/report/update", method = RequestMethod.POST)
+
+    @RequestMapping(headers = {"Accept=application/json"}, value = "/report/update", method = RequestMethod.POST)
     @ResponseBody
     public String updateReports(@RequestBody ReportDataUpdateRequest request) throws ReportDataMissingException {
-        logger.info(MessageFormat.format("Flushing reports for reporting month {0} to {1}", request.startDate(), request.endDate()));
+        logger.info(MessageFormat.format("Flushing reports for reporting month {0} to {1} for indicator {2} for service type {3}",
+                                request.startDate(), request.endDate(), request.indicator(), request.type()));
         List<ReportingData> reportingData = request.reportingData();
         if (ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE.equals(request.type())) {
             throwExceptionIfMandatoryDataIsNotPresentForServiceProvidedReport(reportingData);

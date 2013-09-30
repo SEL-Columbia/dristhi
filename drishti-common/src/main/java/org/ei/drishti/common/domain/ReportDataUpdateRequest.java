@@ -22,6 +22,9 @@ public class ReportDataUpdateRequest implements Serializable {
     @JsonProperty
     private List<ReportingData> reportingData;
 
+    public ReportDataUpdateRequest() {
+    }
+
     public ReportDataUpdateRequest(String type) {
         this.type = type;
     }
@@ -53,6 +56,11 @@ public class ReportDataUpdateRequest implements Serializable {
 
     public ReportDataUpdateRequest withStartDate(String startDate) {
         this.startDate = startDate;
+        return this;
+    }
+
+    public ReportDataUpdateRequest withType(String type) {
+        this.type = type;
         return this;
     }
 

@@ -126,7 +126,8 @@ public class ServicesProvidedRepositoryTest {
         data.put(ANM_IDENTIFIER, anmIdentifier);
         ReportingData reportingData = new ReportingData("type", data);
 
-        ReportDataUpdateRequest request = new ReportDataUpdateRequest("type")
+        ReportDataUpdateRequest request = new ReportDataUpdateRequest()
+                .withType("type")
                 .withIndicator(indicator)
                 .withStartDate(startDate)
                 .withEndDate(endDate)

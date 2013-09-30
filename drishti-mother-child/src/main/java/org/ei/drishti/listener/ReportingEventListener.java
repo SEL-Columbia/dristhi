@@ -51,7 +51,7 @@ public class ReportingEventListener {
         String data = new Gson().toJson(event.getParameters().get("data"));
         HttpResponse response = httpAgent.post(url + "/" + UPDATE_REPORT_ACTION, data, "application/json");
         if (!response.isSuccess()) {
-            logger.error("Reporting data post failed. URL: " + url + ". Data: " + data + ". Response: " + response.body());
+            logger.error("Reporting data post failed. URL: " + url + "/" + UPDATE_REPORT_ACTION + ". Data: " + data + ". Response: " + response.body());
         }
     }
 

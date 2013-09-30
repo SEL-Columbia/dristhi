@@ -428,7 +428,7 @@ public class ChildReportingService {
     private ReportDataUpdateRequest buildReportDataRequest(String type, String date, Indicator indicator, List<ReportingData> serviceProvidedData) {
         LocalDate reportingDate = LocalDate.parse(date);
 
-        return new ReportDataUpdateRequest(type).withReportingData(serviceProvidedData)
+        return new ReportDataUpdateRequest().withType(type).withReportingData(serviceProvidedData)
                 .withStartDate(reportMonth.startOfCurrentReportMonth(reportingDate).toString())
                 .withEndDate(reportMonth.endOfCurrentReportMonth(reportingDate).toString())
                 .withIndicator(indicator.value());
