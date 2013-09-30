@@ -32,3 +32,4 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IB_OA');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IB<1Y');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IB<5Y');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IB_BAL');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_CENTCHROMAN_PILLS');
