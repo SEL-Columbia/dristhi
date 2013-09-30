@@ -92,7 +92,6 @@ public class AllConstants {
         public static final String SDH_FIELD_VALUE = "sdh";
         public static final String DH_FIELD_VALUE = "dh";
         public static final String PRIVATE_FACILITY_FIELD_VALUE = "private_facility";
-        public static final String REFERENCE_DATE = "referenceDate";
         public static final String CHILD_REGISTRATION_SUB_FORM_NAME = "child_registration";
         public static final String STILL_BIRTH_VALUE = "still_birth";
         public static final String DELIVERY_TYPE = "deliveryType";
@@ -108,7 +107,6 @@ public class AllConstants {
     public static class ANCFormFields {
         public static final String MOTHER_ID = "motherId";
         public static final String REGISTRATION_DATE = "registrationDate";
-        public static final String REFERENCE_DATE = "referenceDate";
         public static final String ANC_VISIT_DATE_FIELD = "ancVisitDate";
         public static final String ANC_VISIT_NUMBER_FIELD = "ancVisitNumber";
         public static final String TT1_DOSE_VALUE = "tt1";
@@ -139,6 +137,7 @@ public class AllConstants {
         public static final String SERVICE_PROVIDED_PLACE = "serviceProvidedPlace";
         public static final String SUB_CENTER_SERVICE_PROVIDED_PLACE_VALUE = "sub_center";
         public static final String HOME_FIELD_VALUE = "home";
+        public static final String REFERENCE_DATE = "referenceDate";
     }
 
     public static class CommonChildFormFields {

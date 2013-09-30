@@ -24,6 +24,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_PROBLEMS;
 
@@ -61,9 +62,9 @@ public class ChildService {
         SubFormData subFormData = submission.getSubFormByName(AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME);
         if (handleStillBirth(submission, subFormData)) return;
 
-        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE);
+        String referenceDate = submission.getField(REFERENCE_DATE);
         for (Map<String, String> childFields : subFormData.instances()) {
-            Child child = allChildren.findByCaseId(childFields.get(AllConstants.CommonFormFields.ID));
+            Child child = allChildren.findByCaseId(childFields.get(ID));
             child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
             allChildren.update(child);
 
@@ -143,9 +144,9 @@ public class ChildService {
         SubFormData subFormData = submission.getSubFormByName(AllConstants.Form.PNC_REGISTRATION_OA_SUB_FORM_NAME);
         if (handleStillBirth(submission, subFormData)) return;
 
-        String referenceDate = submission.getField(AllConstants.DeliveryOutcomeFields.REFERENCE_DATE);
+        String referenceDate = submission.getField(REFERENCE_DATE);
         for (Map<String, String> childFields : subFormData.instances()) {
-            Child child = allChildren.findByCaseId(childFields.get(AllConstants.CommonFormFields.ID));
+            Child child = allChildren.findByCaseId(childFields.get(ID));
             child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
             allChildren.update(child);
 
@@ -173,7 +174,7 @@ public class ChildService {
         SubFormData subFormData = submission.getSubFormByName(AllConstants.Form.PNC_VISIT_CHILD_SUB_FORM_NAME);
         for (Map<String, String> childFields : subFormData.instances()) {
             SafeMap reportingData = new SafeMap(reportFieldsMap);
-            reportingData.put(ChildReportingService.CHILD_ID_FIELD, childFields.get(AllConstants.CommonFormFields.ID));
+            reportingData.put(ChildReportingService.CHILD_ID_FIELD, childFields.get(ID));
             reportingData.put(URINE_STOOL_PROBLEMS, childFields.get(URINE_STOOL_PROBLEMS));
             childReportingService.pncVisitHappened(reportingData);
         }

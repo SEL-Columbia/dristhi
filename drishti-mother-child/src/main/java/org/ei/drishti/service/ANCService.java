@@ -22,6 +22,7 @@ import static org.ei.drishti.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_V
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.PERMANENT_RELOCATION_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.TT_DATE_FIELD;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.TT_DOSE_FIELD;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.ANAEMIC_STATUS_FIELD;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_TEST_DATE_FIELD;
@@ -67,7 +68,7 @@ public class ANCService {
         Mother mother = allMothers.findByCaseId(motherId);
         allMothers.update(mother.withAnm(submission.anmId()));
 
-        ancSchedulesService.enrollMother(motherId, parse(submission.getField(AllConstants.ANCFormFields.REFERENCE_DATE)));
+        ancSchedulesService.enrollMother(motherId, parse(submission.getField(REFERENCE_DATE)));
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.registerANC(new SafeMap(submission.getFields(reportFields)));
@@ -85,7 +86,7 @@ public class ANCService {
         Mother mother = allMothers.findByCaseId(motherId);
         allMothers.update(mother.withAnm(submission.anmId()));
 
-        ancSchedulesService.enrollMother(motherId, parse(submission.getField(AllConstants.ANCFormFields.REFERENCE_DATE)));
+        ancSchedulesService.enrollMother(motherId, parse(submission.getField(REFERENCE_DATE)));
     }
 
     public void ancVisit(FormSubmission submission) {

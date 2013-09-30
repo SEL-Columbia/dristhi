@@ -6,6 +6,8 @@ import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
 
+import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
+
 @Component
 public class ThirdANCVisitHappenedOnTimeRule implements IRule {
 
@@ -15,7 +17,7 @@ public class ThirdANCVisitHappenedOnTimeRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {
-        LocalDate lmp = LocalDate.parse(reportFields.get(AllConstants.ANCFormFields.REFERENCE_DATE));
+        LocalDate lmp = LocalDate.parse(reportFields.get(REFERENCE_DATE));
         LocalDate ancVisitDate = LocalDate.parse(reportFields.get(AllConstants.ANCFormFields.ANC_VISIT_DATE_FIELD));
         int ancVisitNumber = IntegerUtil.tryParse(reportFields.get(AllConstants.ANCFormFields.ANC_VISIT_NUMBER_FIELD), 0);
 

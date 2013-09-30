@@ -4,7 +4,7 @@ import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
 
-import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.REFERENCE_DATE;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
 
 @Component
