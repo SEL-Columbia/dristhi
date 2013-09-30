@@ -300,6 +300,11 @@
             {
                 "name": "submissionDate",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/today"
+            },
+            {
+                "name": "isMotherClosed",
+                "value": "true",
+                "source": "eligible_couple.mother.isClosed"
             }
         ]
     }
