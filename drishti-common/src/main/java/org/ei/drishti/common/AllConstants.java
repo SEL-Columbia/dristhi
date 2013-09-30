@@ -198,6 +198,7 @@ public class AllConstants {
         public static final String CONDOM_FP_METHOD_VALUE = "condom";
         public static final String FEMALE_STERILIZATION_FP_METHOD_VALUE = "female_sterilization";
         public static final String MALE_STERILIZATION_FP_METHOD_VALUE = "male_sterilization";
+        public static final String CENTCHROMAN_FP_METHOD_VALUE = "centchroman";
         public static final String COMPLICATION_DATE_FIELD_NAME = "complicationDate";
         public static final String NEEDS_FOLLOWUP_FIELD_NAME = "needsFollowup";
         public static final String NEEDS_REFERRAL_FOLLOWUP_FIELD_NAME = "needsReferralFollowup";
