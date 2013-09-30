@@ -69,6 +69,27 @@
                         "CurrentFPMethodIsOCPRule",
                         "MoreThanZeroOCPStripsSuppliedRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_CENTCHROMAN_PILLS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "quantityField": "numberOfCentchromanPillsDelivered",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "numberOfCentchromanPillsDelivered",
+                        "currentMethod"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsCentchromanRule",
+                        "MoreThanZeroCentchromanPillsSuppliedRule"
+                    ]
                 }
             ]
         },

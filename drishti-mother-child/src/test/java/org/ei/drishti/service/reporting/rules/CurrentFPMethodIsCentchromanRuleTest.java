@@ -7,16 +7,14 @@ import org.junit.Test;
 import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 
 public class CurrentFPMethodIsCentchromanRuleTest {
 
-     CurrentFPMethodIsCentchromanRule rule;
+    CurrentFPMethodIsCentchromanRule rule;
 
     @Before
     public void setUp() {
-        initMocks(this);
         rule = new CurrentFPMethodIsCentchromanRule();
     }
 
