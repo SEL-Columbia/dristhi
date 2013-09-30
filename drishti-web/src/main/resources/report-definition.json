@@ -486,11 +486,13 @@
                     "referenceData": {
                         "type": "mother",
                         "idField": "id",
-                        "fields": []
+                        "fields": ["pncVisitDates"]
                     },
                     "reportWhen": [
                         "PncVisitHappenedAtSubCenterOrHomeRule",
-                        "PNCVisitHappenedBetween2And14DaysOfDeliveryRule"
+                        "PNCVisitHappenedBetween2And14DaysOfDeliveryRule",
+                        "IsPNCVisitFirstBetween2And14DaysOfDeliveryRule"
+
                     ]
                 }
             ]
