@@ -250,6 +250,21 @@
                         "IsSideEffectDueToSterilizationRule"
                     ]
                 },
+                {
+                    "indicator": "NRHM_F_S_COMP",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpFollowupDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationSideEffect",
+                        "currentMethod",
+                        "fpFollowupDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsSideEffectDueToSterilizationRule"
+                    ]
+                }
             ]
         },
         {
