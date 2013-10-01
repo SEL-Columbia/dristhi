@@ -309,6 +309,51 @@
                         "CurrentFPMethodIsFemaleSterilizationRule",
                         "IsSideEffectDueToSterilizationRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_M_S_FAILURE",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpFollowupDate",
+                    "formFields": [
+                        "id",
+                        "isSterilizationFailure",
+                        "currentMethod",
+                        "fpFollowupDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsMaleSterilizationRule",
+                        "IsSterilizationFailureRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_F_S_FAILURE",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpFollowupDate",
+                    "formFields": [
+                        "id",
+                        "isSterilizationFailure",
+                        "currentMethod",
+                        "fpFollowupDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsSterilizationFailureRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_S_FAILURE",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpFollowupDate",
+                    "formFields": [
+                        "id",
+                        "isSterilizationFailure",
+                        "currentMethod",
+                        "fpFollowupDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsEitherMaleOrFemaleSterilizationRule",
+                        "IsSterilizationFailureRule"
+                    ]
                 }
             ]
         },
