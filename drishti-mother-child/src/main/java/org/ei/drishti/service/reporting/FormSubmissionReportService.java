@@ -72,10 +72,13 @@ public class FormSubmissionReportService {
         return true;
     }
 
-    private SafeMap createReportFields(FormSubmission submission, List<String> formFields, ReferenceData referenceData) {
+    private SafeMap createReportFields(FormSubmission submission, List<String> formFields, ReferenceData referenceDataDefinition) {
         Map<String, String> formFieldsMap = submission.getFields(formFields);
+        if (referenceDataDefinition == null) {
+            return new SafeMap(formFieldsMap);
+        }
         return referenceDataRepository
-                .getReferenceData(submission, referenceData)
+                .getReferenceData(submission, referenceDataDefinition)
                 .concatenate(formFieldsMap);
     }
 

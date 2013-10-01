@@ -60,7 +60,7 @@ public class FormSubmissionReportServiceTest {
                 .build();
         Location location = new Location("bherya", "Sub Center", "PHC X");
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
-        when(reportDefinitionLoader.load()).thenReturn(reportDefinitionForInfantLeft());
+        when(reportDefinitionLoader.load()).thenReturn(reportDefinition());
         when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
         when(reporterFactory.reporterFor("child")).thenReturn(reporter);
         when(locationLoader.loadLocationFor("child", "child id 1")).thenReturn(location);
@@ -132,6 +132,32 @@ public class FormSubmissionReportServiceTest {
     }
 
     @Test
+    public void shouldReportWhenReferenceDataDefinitionIsNotSpecified() throws Exception {
+        FormSubmission submission = create()
+                .withFormName("child_close")
+                .withANMId("anm id 1")
+                .withEntityId("child id 1")
+                .addFormField("submissionDate", "2012-03-01")
+                .addFormField("closeReason", "permanent_relocation")
+                .build();
+        Location location = new Location("bherya", "Sub Center", "PHC X");
+        when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
+        when(reportDefinitionLoader.load()).thenReturn(reportDefinitionWithoutReferenceDataDefinition());
+        when(reporterFactory.reporterFor("child")).thenReturn(reporter);
+        when(locationLoader.loadLocationFor("child", "child id 1")).thenReturn(location);
+        when(rule.apply(any(SafeMap.class))).thenReturn(true);
+        SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
+                .put("id", submission.entityId())
+                .put("closeReason", submission.getField("closeReason"));
+
+        service.reportFor(submission);
+
+        verify(referenceDataRepository, times(0)).getReferenceData(any(FormSubmission.class), any(ReferenceData.class));
+        verify(locationLoader).loadLocationFor("child", "child id 1");
+        verify(reporter).report(submission.entityId(), "INFANT_LEFT", location, "2012-03-01", reportData);
+    }
+
+    @Test
     public void shouldNotReportWhenRulesAreNotSatisfied() throws Exception {
         FormSubmission submission = create()
                 .withFormName("child_close")
@@ -141,7 +167,7 @@ public class FormSubmissionReportServiceTest {
                 .addFormField("closeReason", "permanent_relocation")
                 .build();
 
-        when(reportDefinitionLoader.load()).thenReturn(reportDefinitionForInfantLeft());
+        when(reportDefinitionLoader.load()).thenReturn(reportDefinition());
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
         when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
         when(rule.apply(any(SafeMap.class))).thenReturn(false);
@@ -153,7 +179,7 @@ public class FormSubmissionReportServiceTest {
     }
 
 
-    private ReportDefinition reportDefinitionForInfantLeft() {
+    private ReportDefinition reportDefinition() {
         return new ReportDefinition(
                 asList(
                         new FormIndicator("child_close",
@@ -200,5 +226,21 @@ public class FormSubmissionReportServiceTest {
                                                 asList("IsJsyBeneficiaryRule", "ServiceProvidedAtSubCenterRule")
                                         ).withReportEntityIdField("motherId")
                                 ))));
+    }
+
+    private ReportDefinition reportDefinitionWithoutReferenceDataDefinition() {
+        return new ReportDefinition(
+                asList(
+                        new FormIndicator("child_close",
+                                asList(
+                                        new ReportIndicator(
+                                                "INFANT_LEFT",
+                                                "child",
+                                                null,
+                                                null,
+                                                asList("id", "closeReason", "submissionDate"),
+                                                null,
+                                                asList("AgeIsLessThanOneYearRule", "RelocationIsPermanentRule")
+                                        )))));
     }
 }
