@@ -18,8 +18,7 @@
             },
             {
                 "name": "serviceProvidedPlace",
-                "bind": "/model/instance/ANC_Registration_EngKan/reg_place",
-                "source": "eligible_couple.mother.registrationPlace"
+                "bind": "/model/instance/ANC_Registration_EngKan/reg_place"
             },
             {
                 "name": "hbLevel",
