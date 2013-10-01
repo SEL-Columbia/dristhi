@@ -60,7 +60,7 @@ public enum Indicator {
     NRHM_IUDREM("NRHM_IUDREM"), NRHM_OCP_STRIPS("NRHM_OCP_STRIPS"), NRHM_CENTCHROMAN_PILLS("NRHM_CENTCHROMAN_PILLS"),
 
     //FP complication Indicators
-    NRHM_M_S_COMP("NRHM_M_S_COMP");
+    NRHM_M_S_COMP("NRHM_M_S_COMP"), NRHM_F_S_COMP("NRHM_F_S_COMP");
 
     private String value;
 
