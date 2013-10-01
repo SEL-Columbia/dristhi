@@ -40,6 +40,11 @@
                 "source":"mother.ancVisitPlace"
             },
             {
+                "name": "serviceProvidedPlace",
+                "value":"<%= anc_visit['ANC visit place']%>",
+                "source":"mother.serviceProvidedPlace"
+            },
+            {
                 "name":"riskObservedDuringANC",
                 "source":"mother.riskObservedDuringANC"
             },
