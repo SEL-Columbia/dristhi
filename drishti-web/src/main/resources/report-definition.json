@@ -411,6 +411,56 @@
             ]
         },
         {
+            "form": "ec_close",
+            "indicators": [
+                {
+                    "indicator": "NRHM_M_S_DEATH",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "sterilizationDeathDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationDeathDate",
+                        "isSterilizationDeath",
+                        "currentMethod"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsMaleSterilizationRule",
+                        "IsDeathDueToSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_F_S_DEATH",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "sterilizationDeathDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationDeathDate",
+                        "isSterilizationDeath",
+                        "currentMethod"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsDeathDueToSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_S_DEATH",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "sterilizationDeathDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationDeathDate",
+                        "isSterilizationDeath",
+                        "currentMethod"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsEitherMaleOrFemaleSterilizationRule",
+                        "IsDeathDueToSterilizationRule"
+                    ]
+                }
+            ]
+        },
+        {
             "form": "anc_visit",
             "indicators": [
                 {

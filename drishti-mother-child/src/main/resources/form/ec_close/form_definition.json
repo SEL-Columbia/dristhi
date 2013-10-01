@@ -25,6 +25,10 @@
                 "bind": "/model/instance/EC_Close_EngKan/sterilization_death_date"
             },
             {
+                "name": "currentMethod",
+                "shouldLoadValue": true
+            },
+            {
                 "name": "isMaternalDeath",
                 "bind": "/model/instance/EC_Close_EngKan/maternal_death"
             },

@@ -183,6 +183,7 @@ public class AllConstants {
 
     public static class ECCloseFields {
         public static final String IS_EC_CLOSE_CONFIRMED_FIELD_NAME = "isECCloseConfirmed";
+        public static final String IS_STERILIZATION_DEATH_FIELD_NAME = "isSterilizationDeath";
     }
 
     public static class FamilyPlanningFormFields {

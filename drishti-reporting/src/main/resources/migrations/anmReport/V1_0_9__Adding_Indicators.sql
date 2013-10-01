@@ -40,3 +40,6 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('ANCS_AND_PNCS_WITH_BPL
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_M_S_FAILURE');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_F_S_FAILURE');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_S_FAILURE');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_M_S_DEATH');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_F_S_DEATH');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_S_DEATH');
