@@ -111,6 +111,7 @@ public class CachingRepositoryTest {
         assertEquals(objectWithID, repository.fetch(factory.makeObjectWithIDOfZero()));
 
         verify(cacheableRepository, times(1)).save(factory.makeObjectWithIDOfZero());
+        verify(cacheableRepository, times(1)).flush();
         verify(cacheableRepository, times(2)).fetch(factory.makeObjectWithIDOfZero());
         verifyNoMoreInteractions(cacheableRepository);
     }

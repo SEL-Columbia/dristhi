@@ -24,7 +24,7 @@ public class CachingRepository<T> {
         return cache.get(object);
     }
 
-    public void clear(T object){
+    public void clear(T object) {
         if (cache.containsKey(object)) {
             cache.remove(object);
         }
@@ -40,6 +40,7 @@ public class CachingRepository<T> {
             T objectInDB = cacheableRepository.fetch(object);
             if (objectInDB == null) {
                 cacheableRepository.save(object);
+                cacheableRepository.flush();
                 objectInDB = cacheableRepository.fetch(object);
             }
             cache.put(object, objectInDB);
