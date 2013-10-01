@@ -35,6 +35,7 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('IB_BAL');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_CENTCHROMAN_PILLS');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_M_S_COMP');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_F_S_COMP');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_S_COMP');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('ANCS_AND_PNCS_WITH_BPL');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_M_S_FAILURE');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_F_S_FAILURE');
