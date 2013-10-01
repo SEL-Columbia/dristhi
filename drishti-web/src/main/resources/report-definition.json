@@ -39,11 +39,6 @@
                         "familyPlanningMethodChangeDate",
                         "currentMethod"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "CurrentFPMethodIsCondomRule",
                         "MoreThanZeroCondomsSuppliedRule"
@@ -60,11 +55,6 @@
                         "numberOfOCPDelivered",
                         "currentMethod"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "CurrentFPMethodIsOCPRule",
                         "MoreThanZeroOCPStripsSuppliedRule"
@@ -81,11 +71,6 @@
                         "numberOfCentchromanPillsDelivered",
                         "currentMethod"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "CurrentFPMethodIsCentchromanRule",
                         "MoreThanZeroCentchromanPillsSuppliedRule"
@@ -107,11 +92,6 @@
                         "familyPlanningMethodChangeDate",
                         "newMethod"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "NewFPMethodIsCondomRule",
                         "MoreThanZeroCondomsSuppliedRule"
@@ -126,11 +106,6 @@
                         "iudRemovalDate",
                         "iudRemovalPlace"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "IUDRemovedAtHomeAtHomeOrSubCenterRule"
                     ]
@@ -146,11 +121,6 @@
                         "numberOfOCPDelivered",
                         "newMethod"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "NewFPMethodIsOCPRule",
                         "MoreThanZeroOCPStripsSuppliedRule"
@@ -167,11 +137,6 @@
                         "numberOfCentchromanPillsDelivered",
                         "newMethod"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "NewFPMethodIsCentchromanPillsRule",
                         "MoreThanZeroCentchromanPillsSuppliedRule"
@@ -193,11 +158,6 @@
                         "currentMethod",
                         "fpRenewMethodVisitDate"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "CurrentFPMethodIsCondomRule",
                         "MoreThanZeroCondomsSuppliedRule"
@@ -214,11 +174,6 @@
                         "numberOfOCPDelivered",
                         "currentMethod"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "CurrentFPMethodIsOCPRule",
                         "MoreThanZeroOCPStripsSuppliedRule"
@@ -235,18 +190,14 @@
                         "numberOfCentchromanPillsDelivered",
                         "currentMethod"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "CurrentFPMethodIsCentchromanRule",
                         "MoreThanZeroCentchromanPillsSuppliedRule"
                     ]
                 }
             ]
-        },{
+        },
+        {
             "form": "fp_complications",
             "indicators": [
                 {
