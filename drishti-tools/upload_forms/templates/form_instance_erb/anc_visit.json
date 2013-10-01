@@ -6,7 +6,7 @@
         "fields":[
             {
                 "name":"id",
-                "value":"<%= anc_visit['Entity ID']%>",
+                "value":"<%= entity_id %>",
                 "source":"mother.id"
             },
             {

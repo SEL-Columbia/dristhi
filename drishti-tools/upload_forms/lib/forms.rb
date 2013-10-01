@@ -119,7 +119,7 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       anc_visit_json = form_submission_erb.result(binding)
-      File.open("output/ANCVisit_#{anc_visit['Entity ID']}.json", "w") do |f|
+      File.open("output/ANCVisit_#{anc_visit['Instance ID']}.json", "w") do |f|
         f.puts anc_visit_json
       end
     end
