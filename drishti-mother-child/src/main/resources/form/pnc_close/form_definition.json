@@ -13,6 +13,10 @@
                 "bind": "/model/instance/PNC_Close_EngKan/pnc_close_reason"
             },
             {
+                "name": "didWomanSurvive",
+                "bind": "/model/instance/PNC_Close_EngKan/death_mother_group/woman_survived"
+            },
+            {
                 "name": "deathDate",
                 "bind": "/model/instance/PNC_Close_EngKan/death_mother_group/death_date"
             },
