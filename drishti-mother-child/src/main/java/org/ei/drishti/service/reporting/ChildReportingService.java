@@ -3,7 +3,6 @@ package org.ei.drishti.service.reporting;
 import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
-import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.util.DateUtil;
@@ -37,6 +36,9 @@ import static org.ei.drishti.common.AllConstants.ReportDataParameters.ANM_REPORT
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDER_TYPE;
 import static org.ei.drishti.common.AllConstants.VitaminAFields.*;
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.ei.drishti.common.domain.ReportDataUpdateRequest.buildReportDataRequest;
+import static org.ei.drishti.common.domain.ReportingData.anmReportData;
+import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
 import static org.hamcrest.Matchers.equalTo;
 import static org.joda.time.LocalDate.parse;
 
@@ -286,9 +288,9 @@ public class ChildReportingService {
     }
 
     public void reportToBoth(Child child, Indicator indicator, String date, Location location) {
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
+        ReportingData serviceProvidedData = serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
         reportingService.sendReportData(serviceProvidedData);
-        ReportingData anmReportData = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
+        ReportingData anmReportData = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);
     }
 
@@ -396,15 +398,14 @@ public class ChildReportingService {
         List<ReportingData> anmReportData = new ArrayList<>();
         for (Child child : children) {
             Location location = loadLocationOfChild(child);
-            ReportingData serviceProvidedDataForChild = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
-            ReportingData anmReportDataForChild = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
+            ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
+            ReportingData anmReportDataForChild = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
             serviceProvidedData.add(serviceProvidedDataForChild);
             anmReportData.add(anmReportDataForChild);
             logger.info(MessageFormat.format("Reporting Indicator: {0} on date: {1} for child: {2}.",
                     indicator, date, child));
         }
-        reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDER_TYPE, date, indicator, serviceProvidedData));
-        reportingService.updateReportData(buildReportDataRequest(ANM_REPORT_DATA_TYPE, date, indicator, anmReportData));
+        updateBothReports(indicator, date, serviceProvidedData, anmReportData);
     }
 
     private void updateInfantBalanceOAChildren(List<Child> children, List<Mother> mothers, List<EligibleCouple> ecs, Indicator indicator, String date) {
@@ -414,23 +415,21 @@ public class ChildReportingService {
             Mother mother = selectFirst(mothers, having(on(Mother.class).caseId(), equalTo(child.motherCaseId())));
             EligibleCouple ec = selectFirst(ecs, having(on(EligibleCouple.class).caseId(), equalTo(mother.ecCaseId())));
             Location location = ec.location();
-            ReportingData serviceProvidedDataForChild = ReportingData.serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
-            ReportingData anmReportDataForChild = ReportingData.anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
+            ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
+            ReportingData anmReportDataForChild = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
             serviceProvidedData.add(serviceProvidedDataForChild);
             anmReportData.add(anmReportDataForChild);
             logger.info(MessageFormat.format("Reporting Infant Balance (O/A children) on date: {0} for child: {1}.",
                     date, child));
         }
-        reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDER_TYPE, date, indicator, serviceProvidedData));
-        reportingService.updateReportData(buildReportDataRequest(ANM_REPORT_DATA_TYPE, date, indicator, anmReportData));
+        updateBothReports(indicator, date, serviceProvidedData, anmReportData);
     }
 
-    private ReportDataUpdateRequest buildReportDataRequest(String type, String date, Indicator indicator, List<ReportingData> serviceProvidedData) {
+    private void updateBothReports(Indicator indicator, String date, List<ReportingData> serviceProvidedData, List<ReportingData> anmReportData) {
         LocalDate reportingDate = LocalDate.parse(date);
-
-        return new ReportDataUpdateRequest().withType(type).withReportingData(serviceProvidedData)
-                .withStartDate(reportMonth.startOfCurrentReportMonth(reportingDate).toString())
-                .withEndDate(reportMonth.endOfCurrentReportMonth(reportingDate).toString())
-                .withIndicator(indicator.value());
+        String reportingMonthStartDate = reportMonth.startOfCurrentReportMonth(reportingDate).toString();
+        String reportingMonthEndDate = reportMonth.endOfCurrentReportMonth(reportingDate).toString();
+        reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDER_TYPE, indicator, reportingMonthStartDate, reportingMonthEndDate, serviceProvidedData));
+        reportingService.updateReportData(buildReportDataRequest(ANM_REPORT_DATA_TYPE, indicator, reportingMonthStartDate, reportingMonthEndDate, anmReportData));
     }
 }

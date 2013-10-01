@@ -79,7 +79,7 @@ public class Mother extends MotechBaseDataObject {
         return ecCaseId;
     }
 
-    public String thayiCardNo() {
+    public String thayiCardNumber() {
         return thayiCardNumber;
     }
 

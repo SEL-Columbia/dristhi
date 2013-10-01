@@ -5,6 +5,7 @@ import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.dto.MonthSummaryDatum;
 import org.ei.drishti.service.reporting.ANMReportingService;
 import org.ei.drishti.service.reporting.ChildReportingService;
+import org.ei.drishti.service.reporting.MotherReportingService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -18,6 +19,7 @@ import static org.ei.drishti.common.util.ANMIndicatorSummaryFactory.createSummar
 import static org.ei.drishti.common.util.ANMIndicatorSummaryFactory.createSummaryForIUD;
 import static org.ei.drishti.dto.ActionData.reportForIndicator;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ANMReportingServiceTest {
@@ -25,13 +27,15 @@ public class ANMReportingServiceTest {
     private ActionService actionService;
     @Mock
     private ChildReportingService childReportingService;
+    @Mock
+    private MotherReportingService motherReportingService;
 
     private ANMReportingService anmReportingService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        anmReportingService = new ANMReportingService(actionService, childReportingService);
+        anmReportingService = new ANMReportingService(actionService, motherReportingService, childReportingService);
     }
 
     @Test
@@ -49,5 +53,13 @@ public class ANMReportingServiceTest {
                         new MonthSummaryDatum("5", "2012", "2", "4", asList("CASE 3", "CASE 4"))))));
         inOrder.verify(actionService).reportForIndicator("ANM Y",
                 reportForIndicator("ANC", "30", new Gson().toJson(asList(new MonthSummaryDatum("6", "2012", "2", "2", asList("CASE 5", "CASE 6"))))));
+    }
+
+    @Test
+    public void shouldReportEntityDataToServices() throws Exception {
+        anmReportingService.reportFromEntityData();
+
+        verify(childReportingService).reportInfantBalance();
+        verify(motherReportingService).reportAllOpenMothersWithBPLEconomicStatus();
     }
 }

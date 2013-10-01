@@ -15,8 +15,10 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.util.EasyMap.create;
+import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -94,5 +96,20 @@ public class AllEligibleCouplesIntegrationTest {
         assertTrue(outOfAreaCouples.containsAll(asList(outOfArea, anotherOutOfArea)));
         assertFalse(outOfAreaCouples.contains(inArea));
         assertFalse(outOfAreaCouples.contains(closedOutOfArea));
+    }
+
+    @Test
+    public void shouldFindAllBPLCouples() throws Exception {
+        EligibleCouple coupleWithBplStatus = new EligibleCouple("CASE X", "EC Number 1").withDetails(mapOf("economicStatus", "bpl"));
+        EligibleCouple coupleWithAplStatus = new EligibleCouple("CASE Y", "EC Number 2").withDetails(mapOf("economicStatus", "apl"));
+        EligibleCouple coupleWithNoEconomicStatus = new EligibleCouple("CASE Z", "EC Number 3");
+        eligibleCouples.add(coupleWithBplStatus);
+        eligibleCouples.add(coupleWithAplStatus);
+        eligibleCouples.add(coupleWithNoEconomicStatus);
+
+        List<EligibleCouple> bplCouples = eligibleCouples.findAllBPLCouples();
+
+        assertTrue(bplCouples.containsAll(asList(coupleWithBplStatus)));
+        assertEquals(1, bplCouples.size());
     }
 }

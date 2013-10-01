@@ -19,11 +19,13 @@ import static ch.lambdaj.collection.LambdaCollections.with;
 @Service
 public class ANMReportingService {
     private ActionService actionService;
+    private MotherReportingService motherReportingService;
     private ChildReportingService childReportingService;
 
     @Autowired
-    public ANMReportingService(ActionService actionService, ChildReportingService childReportingService) {
+    public ANMReportingService(ActionService actionService, MotherReportingService motherReportingService, ChildReportingService childReportingService) {
         this.actionService = actionService;
+        this.motherReportingService = motherReportingService;
         this.childReportingService = childReportingService;
     }
 
@@ -50,5 +52,6 @@ public class ANMReportingService {
 
     public void reportFromEntityData() {
         childReportingService.reportInfantBalance();
+        motherReportingService.reportAllOpenMothersWithBPLEconomicStatus();
     }
 }

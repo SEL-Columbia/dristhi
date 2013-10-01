@@ -65,7 +65,7 @@ public class ChildService {
         String referenceDate = submission.getField(REFERENCE_DATE);
         for (Map<String, String> childFields : subFormData.instances()) {
             Child child = allChildren.findByCaseId(childFields.get(ID));
-            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
+            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNumber());
             allChildren.update(child);
 
             SafeMap reportingData = new SafeMap();
@@ -147,7 +147,7 @@ public class ChildService {
         String referenceDate = submission.getField(REFERENCE_DATE);
         for (Map<String, String> childFields : subFormData.instances()) {
             Child child = allChildren.findByCaseId(childFields.get(ID));
-            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNo());
+            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNumber());
             allChildren.update(child);
 
             SafeMap reportingData = new SafeMap();

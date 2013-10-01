@@ -29,6 +29,15 @@ public class ReportDataUpdateRequest implements Serializable {
         this.type = type;
     }
 
+    public static ReportDataUpdateRequest buildReportDataRequest(String type, Indicator indicator, String reportingMonthStartDate, String reportingMonthEndDate, List<ReportingData> serviceProvidedData) {
+        return new ReportDataUpdateRequest()
+                .withType(type)
+                .withReportingData(serviceProvidedData)
+                .withStartDate(reportingMonthStartDate)
+                .withEndDate(reportingMonthEndDate)
+                .withIndicator(indicator.value());
+    }
+
     public String indicator() {
         return this.indicator;
     }

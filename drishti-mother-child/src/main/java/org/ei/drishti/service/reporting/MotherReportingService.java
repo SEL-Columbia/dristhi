@@ -2,20 +2,28 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
+import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
+import org.joda.time.LocalDate;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static ch.lambdaj.Lambda.extract;
+import static ch.lambdaj.Lambda.on;
 import static java.lang.Integer.parseInt;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
@@ -27,7 +35,10 @@ import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_OF_MOTHER_VALUE;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.ANM_REPORT_DATA_TYPE;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDER_TYPE;
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.ei.drishti.common.domain.ReportDataUpdateRequest.buildReportDataRequest;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
 import static org.ei.drishti.common.util.IntegerUtil.tryParse;
@@ -42,14 +53,16 @@ public class MotherReportingService {
     private ReportingService reportingService;
     private AllMothers allMothers;
     private AllEligibleCouples allEligibleCouples;
+    private final ReportMonth reportMonth;
     private final Map<String, Indicator> placeOfDeliveryToIndicator;
 
 
     @Autowired
-    public MotherReportingService(ReportingService reportingService, AllMothers allMothers, AllEligibleCouples allEligibleCouples) {
+    public MotherReportingService(ReportingService reportingService, AllMothers allMothers, AllEligibleCouples allEligibleCouples, ReportMonth reportMonth) {
         this.reportingService = reportingService;
         this.allMothers = allMothers;
         this.allEligibleCouples = allEligibleCouples;
+        this.reportMonth = reportMonth;
 
         placeOfDeliveryToIndicator = new HashMap<>();
         placeOfDeliveryToIndicator.put(HOME_FIELD_VALUE, D_HOM);
@@ -216,7 +229,7 @@ public class MotherReportingService {
     }
 
     public void reportToBoth(Mother mother, Indicator indicator, String date, Location location) {
-        ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thayiCardNo(), indicator, date, location);
+        ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thayiCardNumber(), indicator, date, location);
         reportingService.sendReportData(serviceProvided);
 
         ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);
@@ -227,5 +240,43 @@ public class MotherReportingService {
         Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.ANCFormFields.MOTHER_ID));
         Location location = loadLocationFromEC(mother);
         reportCesareans(reportData, mother, location);
+    }
+
+    public void reportAllOpenMothersWithBPLEconomicStatus() {
+        LocalDate startOfCurrentReportMonth = this.reportMonth.startOfCurrentReportMonth(DateUtil.today());
+
+        List<EligibleCouple> bplEligibleCouples = allEligibleCouples.findAllBPLCouples();
+        List<String> ecIds = extract(bplEligibleCouples, on(EligibleCouple.class).caseId());
+        List<Mother> bplMothers = allMothers.findAllOpenMothersByECCaseId(ecIds);
+        logger.info(MessageFormat.format("Found {0} mothers for reporting ANCs and PNCs with BPL status ",
+                bplMothers.size()));
+
+        updateBPLIndicatorForOpenMothers(Indicator.ANCS_AND_PNCS_WITH_BPL, bplMothers, startOfCurrentReportMonth.toString());
+
+    }
+
+    private void updateBPLIndicatorForOpenMothers(Indicator indicator, List<Mother> mothers, String date) {
+        List<ReportingData> serviceProvidedData = new ArrayList<>();
+        List<ReportingData> anmReportData = new ArrayList<>();
+
+        for (Mother mother : mothers) {
+            Location location = loadLocationFromEC(mother);
+            ReportingData serviceProvidedDataForChild = serviceProvidedData(mother.anmIdentifier(), mother.thayiCardNumber(), indicator, date, location);
+            ReportingData anmReportDataForChild = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);
+            serviceProvidedData.add(serviceProvidedDataForChild);
+            anmReportData.add(anmReportDataForChild);
+            logger.info(MessageFormat.format("Reporting Indicator: {0} on date: {1} for mother: {2}.",
+                    indicator, date, mother));
+        }
+
+        updateBothReports(indicator, date, serviceProvidedData, anmReportData);
+    }
+
+    private void updateBothReports(Indicator indicator, String date, List<ReportingData> serviceProvidedData, List<ReportingData> anmReportData) {
+        LocalDate reportingDate = LocalDate.parse(date);
+        String reportingMonthStartDate = reportMonth.startOfCurrentReportMonth(reportingDate).toString();
+        String reportingMonthEndDate = reportMonth.endOfCurrentReportMonth(reportingDate).toString();
+        reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDER_TYPE, indicator, reportingMonthStartDate, reportingMonthEndDate, serviceProvidedData));
+        reportingService.updateReportData(buildReportDataRequest(ANM_REPORT_DATA_TYPE, indicator, reportingMonthStartDate, reportingMonthEndDate, anmReportData));
     }
 }

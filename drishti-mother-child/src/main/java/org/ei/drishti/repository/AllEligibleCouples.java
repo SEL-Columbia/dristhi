@@ -55,4 +55,12 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
                 .includeDocs(true),
                 EligibleCouple.class);
     }
+
+    @View(name = "all_bpl_couples",
+            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.details.economicStatus === 'bpl') { emit(doc.caseId); } }")
+    public List<EligibleCouple> findAllBPLCouples() {
+        return db.queryView(createQuery("all_bpl_couples")
+                .includeDocs(true),
+                EligibleCouple.class);
+    }
 }
