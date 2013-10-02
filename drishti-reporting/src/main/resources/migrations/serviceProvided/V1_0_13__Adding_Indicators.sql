@@ -51,3 +51,8 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_S_DEATH');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MEASLES');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_DIARRHEA_DEHYDRATION');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MALARIA');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ID_24HRS');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ID_SEPSIS');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ID_ASPHYXIA');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ID_LBW');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ID_PNEUMONIA');
