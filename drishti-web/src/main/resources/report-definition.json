@@ -66,6 +66,28 @@
                         "IsChildLessThanOneYearOldRule",
                         "IsDeathWasCausedBySepsisRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_ID_ASPHYXIA",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWasCausedByAsphyxiaRule"
+                    ]
                 }
             ]
         },
