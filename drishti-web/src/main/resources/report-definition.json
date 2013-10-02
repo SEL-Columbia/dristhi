@@ -456,6 +456,28 @@
                         "IsChildDiseaseReportedAsDiarrheaDehydrationRule",
                         "IsChildBelowFiveYearsRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_MALARIA",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "reportChildDiseaseDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "reportChildDisease",
+                        "reportChildDiseaseDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "ServiceProvidedAtSubCenterRule",
+                        "IsChildDiseaseReportedAsMalariaRule",
+                        "IsChildBelowFiveYearsRule"
+                    ]
                 }
             ]
         },
