@@ -27,6 +27,10 @@
             {
                 "name": "deathDate",
                 "bind": "/model/instance/Child_Close_EngKan/death_child_group/child_death_date"
+            },,
+            {
+                "name": "serviceProvidedDate",
+                "bind": "/model/instance/Child_Close_EngKan/death_child_group/child_death_date"
             },
             {
                 "name": "isCloseConfirmed",

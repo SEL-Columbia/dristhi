@@ -22,6 +22,28 @@
                         "AgeIsLessThanOneYearRule",
                         "RelocationIsPermanentRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_ID_24HRS",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWithin24HoursRule"
+                    ]
                 }
             ]
         },

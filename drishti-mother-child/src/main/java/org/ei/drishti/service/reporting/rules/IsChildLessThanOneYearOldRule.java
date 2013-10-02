@@ -5,16 +5,16 @@ import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
 
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.DATE_OF_BIRTH;
-import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.SERVICE_PROVIDED_DATE;
 
 @Component
-public class AgeIsLessThanOneYearRule implements IRule {
+public class IsChildLessThanOneYearOldRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {
         LocalDate dateOfBirth = LocalDate.parse(reportFields.get(DATE_OF_BIRTH));
-        LocalDate submissionDate = LocalDate.parse(reportFields.get(SUBMISSION_DATE_FIELD_NAME));
+        LocalDate serviceProvidedDate = LocalDate.parse(reportFields.get(SERVICE_PROVIDED_DATE));
 
-        return dateOfBirth.plusYears(1).isAfter(submissionDate);
+        return dateOfBirth.plusYears(1).isAfter(serviceProvidedDate);
     }
 }

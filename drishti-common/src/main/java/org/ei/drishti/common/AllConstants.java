@@ -134,6 +134,7 @@ public class AllConstants {
         public static final String SUBMISSION_DATE_FIELD_NAME = "submissionDate";
         public static final String ID = "id";
         public static final String SERVICE_PROVIDED_PLACE = "serviceProvidedPlace";
+        public static final String SERVICE_PROVIDED_DATE = "serviceProvidedDate";
         public static final String SUB_CENTER_SERVICE_PROVIDED_PLACE_VALUE = "sub_center";
         public static final String HOME_FIELD_VALUE = "home";
         public static final String REFERENCE_DATE = "referenceDate";
@@ -157,6 +158,7 @@ public class AllConstants {
         public static final String DATE_OF_DEATH_FIELD_NAME = "deathDate";
         public static final String DEATH_CAUSE = "deathCause";
         public static final String PERMANENT_RELOCATION_VALUE = "permanent_relocation";
+        public static final String WITHIN_24HRS_VALUE = "within_24hrs";
     }
 
     public static class EntityCloseFormFields {
