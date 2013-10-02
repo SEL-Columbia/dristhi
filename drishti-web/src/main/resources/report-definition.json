@@ -399,11 +399,6 @@
                         "dateOfBirth",
                         "submissionDate"
                     ],
-                    "referenceData": {
-                        "type": "child",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "AgeIsLessThanOneYearRule"
                     ]
@@ -424,11 +419,6 @@
                         "reportChildDiseaseDate",
                         "serviceProvidedPlace"
                     ],
-                    "referenceData": {
-                        "type": "child",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "ServiceProvidedAtSubCenterRule",
                         "IsChildDiseaseReportedAsMeaslesRule",
@@ -446,11 +436,6 @@
                         "reportChildDiseaseDate",
                         "serviceProvidedPlace"
                     ],
-                    "referenceData": {
-                        "type": "child",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "ServiceProvidedAtSubCenterRule",
                         "IsChildDiseaseReportedAsDiarrheaDehydrationRule",
@@ -468,11 +453,6 @@
                         "reportChildDiseaseDate",
                         "serviceProvidedPlace"
                     ],
-                    "referenceData": {
-                        "type": "child",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "ServiceProvidedAtSubCenterRule",
                         "IsChildDiseaseReportedAsMalariaRule",
@@ -545,11 +525,6 @@
                         "ancVisitNumber",
                         "serviceProvidedPlace"
                     ],
-                    "referenceData": {
-                        "type": "mother",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "ThirdANCVisitHappenedOnTimeRule",
                         "ServiceProvidedAtSubCenterRule"
@@ -571,11 +546,6 @@
                         "isJSYBeneficiary",
                         "serviceProvidedPlace"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "IsJsyBeneficiaryRule",
                         "ServiceProvidedAtSubCenterRule"
@@ -596,11 +566,6 @@
                         "deliveryPlace",
                         "referenceDate"
                     ],
-                    "referenceData": {
-                        "type": "mother",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "DeliveryHappenedAtHomeRule",
                         "DeliveryIsAttendedBySBATrainedPersonRule"
@@ -616,11 +581,6 @@
                         "deliveryPlace",
                         "referenceDate"
                     ],
-                    "referenceData": {
-                        "type": "mother",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "DeliveryHappenedAtHomeRule",
                         "DeliveryIsAttendedByNonSBATrainedPersonRule"
@@ -635,11 +595,6 @@
                         "deliveryPlace",
                         "referenceDate"
                     ],
-                    "referenceData": {
-                        "type": "mother",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "DeliveryHappenedAtSubCenterRule"
                     ]
@@ -660,11 +615,6 @@
                         "deliveryPlace",
                         "referenceDate"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "DeliveryHappenedAtHomeRule",
                         "DeliveryIsAttendedBySBATrainedPersonRule"
@@ -681,11 +631,6 @@
                         "deliveryPlace",
                         "referenceDate"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "DeliveryHappenedAtHomeRule",
                         "DeliveryIsAttendedByNonSBATrainedPersonRule"
@@ -701,11 +646,6 @@
                         "deliveryPlace",
                         "referenceDate"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "DeliveryHappenedAtSubCenterRule"
                     ]
@@ -724,11 +664,6 @@
                         "hbTestDate",
                         "serviceProvidedPlace"
                     ],
-                    "referenceData": {
-                        "type": "mother",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "IsPersonAnaemicRule",
                         "ServiceProvidedAtSubCenterRule"
@@ -837,11 +772,6 @@
                         "numberOfOCPDelivered",
                         "currentMethod"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "CurrentFPMethodIsOCPRule",
                         "MoreThanZeroOCPStripsSuppliedRule"
@@ -859,11 +789,6 @@
                         "numberOfCondomsSupplied",
                         "currentMethod"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "CurrentFPMethodIsCondomRule",
                         "MoreThanZeroCondomsSuppliedRule"
@@ -881,11 +806,6 @@
                         "numberOfCentchromanPillsDelivered",
                         "currentMethod"
                     ],
-                    "referenceData": {
-                        "type": "eligible_couple",
-                        "idField": "id",
-                        "fields": []
-                    },
                     "reportWhen": [
                         "CurrentFPMethodIsCentchromanRule",
                         "MoreThanZeroCentchromanPillsSuppliedRule"
