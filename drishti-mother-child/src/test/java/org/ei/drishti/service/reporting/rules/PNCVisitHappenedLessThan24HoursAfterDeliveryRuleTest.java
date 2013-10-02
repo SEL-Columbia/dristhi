@@ -10,7 +10,6 @@ import java.util.Map;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.ei.drishti.util.EasyMap.create;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PNCVisitHappenedLessThan24HoursAfterDeliveryRuleTest {
 
@@ -18,7 +17,6 @@ public class PNCVisitHappenedLessThan24HoursAfterDeliveryRuleTest {
 
     @Before
     public void setUp() throws Exception {
-        initMocks(this);
         rule = new PNCVisitHappenedLessThan24HoursAfterDeliveryRule();
     }
 

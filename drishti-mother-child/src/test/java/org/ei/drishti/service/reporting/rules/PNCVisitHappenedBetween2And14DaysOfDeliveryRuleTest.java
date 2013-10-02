@@ -10,7 +10,6 @@ import java.util.Map;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PNCVisitHappenedBetween2And14DaysOfDeliveryRuleTest {
 
@@ -18,7 +17,6 @@ public class PNCVisitHappenedBetween2And14DaysOfDeliveryRuleTest {
 
     @Before
     public void setUp() throws Exception {
-        initMocks(this);
         rule = new PNCVisitHappenedBetween2And14DaysOfDeliveryRule();
     }
 

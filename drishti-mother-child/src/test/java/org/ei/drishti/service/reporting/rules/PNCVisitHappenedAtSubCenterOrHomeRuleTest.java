@@ -9,7 +9,6 @@ import java.util.Map;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PNCVisitHappenedAtSubCenterOrHomeRuleTest {
 
@@ -17,7 +16,6 @@ public class PNCVisitHappenedAtSubCenterOrHomeRuleTest {
 
     @Before
     public void setUp() throws Exception {
-        initMocks(this);
         rule = new PNCVisitHappenedAtSubCenterOrHomeRule();
     }
 

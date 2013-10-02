@@ -8,7 +8,6 @@ import org.junit.Test;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.ei.drishti.util.EasyMap.create;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class IsPersonAnaemicRuleTest {
 
@@ -16,13 +15,12 @@ public class IsPersonAnaemicRuleTest {
 
     @Before
     public void setUp() throws Exception {
-        initMocks(this);
         isPersonAnaemicRule = new IsPersonAnaemicRule();
     }
 
     @Test
     public void shouldReturnTrueWhenHBLevelIsLessThanEleven() throws Exception {
-        EasyMap easyMap = create("serviceProvidedPlace", "sub_center").put("hbLevel","10.3");
+        EasyMap easyMap = create("serviceProvidedPlace", "sub_center").put("hbLevel", "10.3");
         boolean rulePassed = isPersonAnaemicRule.apply(new SafeMap(easyMap.map()));
 
         assertTrue(rulePassed);

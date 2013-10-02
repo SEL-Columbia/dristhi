@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class IsPNCVisitFirstRuleTest {
 
@@ -14,7 +13,6 @@ public class IsPNCVisitFirstRuleTest {
 
     @Before
     public void setUp() throws Exception {
-        initMocks(this);
         rule = new IsPNCVisitFirstRule();
     }
 

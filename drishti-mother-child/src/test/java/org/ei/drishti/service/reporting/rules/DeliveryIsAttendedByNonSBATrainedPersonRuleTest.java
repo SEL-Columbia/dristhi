@@ -7,7 +7,6 @@ import org.junit.Test;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.ei.drishti.util.EasyMap.mapOf;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DeliveryIsAttendedByNonSBATrainedPersonRuleTest {
 
@@ -15,7 +14,6 @@ public class DeliveryIsAttendedByNonSBATrainedPersonRuleTest {
 
     @Before
     public void setUp() throws Exception {
-        initMocks(this);
         deliveryIsAttendedByNonSBATrainedPersonRule = new DeliveryIsAttendedByNonSBATrainedPersonRule();
     }
 

@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class IsPNCVisitFirstBetween2And14DaysOfDeliveryRuleTest {
 
@@ -14,7 +13,6 @@ public class IsPNCVisitFirstBetween2And14DaysOfDeliveryRuleTest {
 
     @Before
     public void setUp() throws Exception {
-        initMocks(this);
         rule = new IsPNCVisitFirstBetween2And14DaysOfDeliveryRule();
     }
 

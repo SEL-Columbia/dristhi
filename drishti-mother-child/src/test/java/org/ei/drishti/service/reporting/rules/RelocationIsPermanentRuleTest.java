@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class RelocationIsPermanentRuleTest {
 
@@ -14,7 +13,6 @@ public class RelocationIsPermanentRuleTest {
 
     @Before
     public void setUp() throws Exception {
-        initMocks(this);
         relocationIsPermanentRule = new RelocationIsPermanentRule();
     }
 

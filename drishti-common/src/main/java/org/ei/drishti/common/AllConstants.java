@@ -268,6 +268,7 @@ public class AllConstants {
         public static final String REPORT_CHILD_DISEASE = "reportChildDisease";
         public static final String REPORT_CHILD_DISEASE_DATE = "reportChildDiseaseDate";
         public static final String DIARRHEA_DEHYDRATION_VALUE = "diarrhea_dehydration";
+        public static final String MALARIA_VALUE = "malaria";
     }
 
     public static class FormEntityTypes {

@@ -411,6 +411,33 @@
             ]
         },
         {
+            "form": "child_illness",
+            "indicators": [
+                {
+                    "indicator": "NRHM_MEASLES",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "reportChildDiseaseDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "reportChildDisease",
+                        "reportChildDiseaseDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": []
+                    },
+                    "reportWhen": [
+                        "ServiceProvidedAtSubCenterRule",
+                        "IsChildDiseaseReportedAsMeaslesRule",
+                        "IsChildBelowFiveYearsRule"
+                    ]
+                }
+            ]
+        },
+        {
             "form": "ec_close",
             "indicators": [
                 {

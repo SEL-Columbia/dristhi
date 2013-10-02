@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 
 public class NewFPMethodIsCondomRuleTest {
@@ -15,7 +14,6 @@ public class NewFPMethodIsCondomRuleTest {
 
     @Before
     public void setUp() {
-        initMocks(this);
         newFPMethodIsCondomRule = new NewFPMethodIsCondomRule();
     }
 
