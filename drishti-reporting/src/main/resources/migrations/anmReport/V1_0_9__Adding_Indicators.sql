@@ -43,3 +43,6 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_S_FAILURE');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_M_S_DEATH');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_F_S_DEATH');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_S_DEATH');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_MEASLES');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_DIARRHEA_DEHYDRATION');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_MALARIA');
