@@ -31,7 +31,6 @@
                         "id",
                         "deathCause",
                         "deathDate",
-                        "serviceProvidedDate"
                     ],
                     "referenceData": {
                         "type": "child",
@@ -53,7 +52,6 @@
                         "id",
                         "deathCause",
                         "deathDate",
-                        "serviceProvidedDate"
                     ],
                     "referenceData": {
                         "type": "child",
@@ -75,7 +73,6 @@
                         "id",
                         "deathCause",
                         "deathDate",
-                        "serviceProvidedDate"
                     ],
                     "referenceData": {
                         "type": "child",

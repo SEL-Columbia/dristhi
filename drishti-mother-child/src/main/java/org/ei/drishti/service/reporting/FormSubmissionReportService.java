@@ -91,6 +91,7 @@ public class FormSubmissionReportService {
         String reportEntityId = reportIndicator.reportEntityIdField() == null
                 ? submission.entityId()
                 : submission.getField(reportIndicator.reportEntityIdField());
+        reportData.put("serviceProvidedDate", serviceProvidedDate);
         reporter.report(reportEntityId, reportIndicator.indicator(), location, serviceProvidedDate, reportData);
     }
 
