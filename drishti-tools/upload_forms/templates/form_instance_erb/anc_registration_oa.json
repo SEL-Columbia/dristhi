@@ -1,4 +1,5 @@
 {
+    "form_data_definition_version": "1",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/ANC_Registration_OA_EngKan/",
@@ -115,7 +116,7 @@
             },
             {
                 "name": "referenceDate",
-                "value":"<%= anc['Reference date'] %>",
+                "value": "<%= anc['Reference date'] %>",
                 "source": "eligible_couple.mother.referenceDate"
             },
             {

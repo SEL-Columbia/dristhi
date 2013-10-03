@@ -115,6 +115,13 @@ class Forms
       instance_id = anc_visit['Instance ID']
       entity_id = anc['Entity ID']
       submission_date = anc_visit['Submission date']
+      entity_id = anc['Entity ID']
+
+      if anc['OA'].downcase == "true" then
+        ecId = anc['EC ID']
+      else
+        ecId = ec['Entity ID']
+      end
 
       form_instance = form_instance_erb.result(binding)
       anc_visit_json = form_submission_erb.result(binding)
