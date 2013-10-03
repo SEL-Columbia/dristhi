@@ -59,7 +59,6 @@ class Forms
       form_instance_erb = ERB.new(File.read('templates/form_instance_erb/anc_registration_oa.json'))
       form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
 
-      ec = @ec
       user_id = @mobile_worker.user_id
       user_name = @mobile_worker.user_name
       form_name = "anc_registration_oa"
@@ -68,7 +67,7 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       out_of_area_anc_registration_json = form_submission_erb.result(binding)
-      File.open("output/ANCOutOfArea_#{anc['Entity ID']}.json", "w") do |f|
+      File.open("output/ANCOutOfArea_#{anc['Instance ID']}.json", "w") do |f|
         f.puts out_of_area_anc_registration_json
       end
     end
@@ -128,7 +127,7 @@ class Forms
   def fill_hb_tests_forms
     @hb_tests.each do |hb_test|
       key_for_anc = [hb_test['Village Code'].village.downcase, hb_test['Wife Name'].downcase, hb_test['Husband Name'].downcase]
-      puts "Hb Test: #{hb_test['Wife Name']} - #{hb_test['Husband Name']} - #{hb_test['Entity ID']}"
+      puts "Hb Test: #{hb_test['Wife Name']} - #{hb_test['Husband Name']} - #{hb_test['Instance ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/form_instance_erb/hb_test.json'))
       form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
@@ -144,7 +143,7 @@ class Forms
       form_instance = form_instance_erb.result(binding)
       hb_test_json = form_submission_erb.result(binding)
 
-      File.open("output/HbTest_#{hb_test['Entity ID']}.json", "w") do |f|
+      File.open("output/HbTest_#{hb_test['Instance ID']}.json", "w") do |f|
         f.puts hb_test_json
       end
     end
@@ -366,7 +365,7 @@ class Forms
       form_name = "child_immunizations"
       instance_id = child_immunization['Instance ID']
       child_registered = @children[key]
-      child = child_registered.nil? ? get_child_from_pnc(key)  : get_safe_map(child_registered)
+      child = child_registered.nil? ? get_child_from_pnc(key) : get_safe_map(child_registered)
       entity_id = child['Entity ID']
       submission_date = child_immunization['Submission date']
       previous_immunizations = immunizations_given
@@ -453,7 +452,7 @@ class Forms
 
   def get_child_from_pnc key
     pnc = get_safe_map(@pncs[key])
-    child = { 'Child ID' => pnc['Child ID'], 'Birth date' => pnc['Delivery date'], 'Entity ID' => pnc['Entity ID']}
+    child = {'Child ID' => pnc['Child ID'], 'Birth date' => pnc['Delivery date'], 'Entity ID' => pnc['Entity ID']}
     child
   end
 end

@@ -5,7 +5,7 @@
         "fields": [
             {
                 "name": "id",
-                "value": "<%= anc['Entity ID'] %>",
+                "value": "<%= anc['EC ID'] %>",
                 "source": "eligible_couple.id"
             },
             {

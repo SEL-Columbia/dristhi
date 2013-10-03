@@ -48,7 +48,6 @@ class HbTests
 
 
           hb_test.add_field "Instance ID", Guid.new.to_s
-          hb_test.add_field "Entity ID", Guid.new.to_s
           hb_test.add_field "Submission date", Date.today.to_s
 
           @hb_tests << hb_test

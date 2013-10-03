@@ -70,6 +70,7 @@ class ANCs
 
           anc.add_field "Instance ID", Guid.new.to_s
           anc.add_field "Entity ID", Guid.new.to_s
+          anc.add_field "EC ID", Guid.new.to_s #this should be used only for OA ANCs
           anc.add_field "Reference date", anc['LMP']
           anc.add_field "Year", :empty => Date.today.to_s, :default => Date.today.year.to_s
           anc.add_field "EDD", (Date.parse(anc['LMP']) + 280).strftime('%a, %d %b %Y %T GMT')
