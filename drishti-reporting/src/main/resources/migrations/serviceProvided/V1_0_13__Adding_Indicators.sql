@@ -64,3 +64,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_BCG_1YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_PENT_1_1YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_PENT_2_1YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_PENT_3_1YR');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_OPV_0_1YR');

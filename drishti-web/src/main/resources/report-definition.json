@@ -601,6 +601,24 @@
                         "IsPentavalent3ImmunizationGivenRule",,
                         "ServiceProvidedAtSub_CenterRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_OPV_0_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsOPV0ImmunizationGivenRule",,
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
                 }
             ]
         },
@@ -764,6 +782,29 @@
                         "IsBCGImmunizationGivenRule",
                         "ServiceProvidedAtSubCenterRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_OPV_0_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "immunizationsGiven",
+                        "referenceDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsOPV0ImmunizationGivenRule",
+                        "ServiceProvidedAtSubCenterRule"
+                    ]
                 }
             ]
         },
@@ -836,6 +877,29 @@
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
                         "IsBCGImmunizationGivenRule",
+                        "ServiceProvidedAtSubCenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OPV_0_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "immunizationsGiven",
+                        "referenceDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsOPV0ImmunizationGivenRule",
                         "ServiceProvidedAtSubCenterRule"
                     ]
                 }
