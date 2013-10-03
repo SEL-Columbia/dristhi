@@ -103,9 +103,6 @@ class Forms
 
       form_instance_erb = ERB.new(File.read('templates/form_instance_erb/anc_visit.json'))
       form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
-      ec_for_anc = ecs_as_hash[key]
-
-      ec = ec_for_anc.nil? ? {'Entity ID' => Guid.new.to_s} : get_safe_map(ec_for_anc)
 
       anc = get_safe_map(@ancs[key])
 
@@ -115,11 +112,12 @@ class Forms
       instance_id = anc_visit['Instance ID']
       entity_id = anc['Entity ID']
       submission_date = anc_visit['Submission date']
-      entity_id = anc['Entity ID']
 
       if anc['OA'].downcase == "true" then
         ecId = anc['EC ID']
       else
+        ec_for_anc = ecs_as_hash[key]
+        ec = get_safe_map(ec_for_anc)
         ecId = ec['Entity ID']
       end
 

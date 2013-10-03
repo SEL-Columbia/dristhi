@@ -11,7 +11,7 @@
             },
             {
                 "name":"ecId",
-                "value":"<%= ec['Entity ID']%>",
+                "value":"<%= ecId %>",
                 "source":"mother.eligible_couple.id"
             },
             {
