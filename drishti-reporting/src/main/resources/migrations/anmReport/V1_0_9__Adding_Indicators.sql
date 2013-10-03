@@ -53,3 +53,7 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ID_LBW');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ID_PNEUMONIA');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_BCG_1YR');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_PENT_1_1YR');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ID_DIARRHEA');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ID_FEVER_RELATED');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ID_MEASLES');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ID_OTHERS');
