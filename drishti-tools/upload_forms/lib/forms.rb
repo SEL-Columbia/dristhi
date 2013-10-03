@@ -63,7 +63,7 @@ class Forms
       user_name = @mobile_worker.user_name
       form_name = "anc_registration_oa"
       instance_id = anc['Instance ID']
-      entity_id = anc['Entity ID']
+      entity_id = anc['EC ID']
 
       form_instance = form_instance_erb.result(binding)
       out_of_area_anc_registration_json = form_submission_erb.result(binding)
