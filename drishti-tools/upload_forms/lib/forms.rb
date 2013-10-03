@@ -452,7 +452,7 @@ class Forms
 
   def get_child_from_pnc key
     pnc = get_safe_map(@pncs[key])
-    child = {'Child ID' => pnc['Child ID'], 'Birth date' => pnc['Delivery date'], 'Entity ID' => pnc['Entity ID']}
+    child = {'Birth date' => pnc['Delivery date'], 'Entity ID' => pnc['Child ID']}
     child
   end
 end
