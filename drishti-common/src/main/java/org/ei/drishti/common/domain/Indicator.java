@@ -58,7 +58,7 @@ public enum Indicator {
 
     //NRHM Child Immunization Indicators
     NRHM_BCG_1YR("NRHM_BCG_1YR"),
-    NRHM_PENT_1_1YR("NRHM_PENT_1_1YR"),
+    NRHM_PENT_1_1YR("NRHM_PENT_1_1YR"), NRHM_PENT_2_1YR("NRHM_PENT_2_1YR"),
 
     //Economic status indicators
     ANCS_AND_PNCS_WITH_BPL("ANCS_AND_PNCS_WITH_BPL"),

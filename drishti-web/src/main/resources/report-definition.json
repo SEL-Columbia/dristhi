@@ -545,7 +545,7 @@
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
                         "IsBCGImmunizationGivenRule",,
-                        "ServiceProvidedAtSub_CenterRule",
+                        "ServiceProvidedAtSub_CenterRule"
                     ]
                 },
                 {
@@ -563,7 +563,25 @@
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
                         "IsPentavalent1ImmunizationGivenRule",,
-                        "ServiceProvidedAtSub_CenterRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_PENT_2_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsPentavalent2ImmunizationGivenRule",,
+                        "ServiceProvidedAtSub_CenterRule"
                     ]
                 }
             ]
