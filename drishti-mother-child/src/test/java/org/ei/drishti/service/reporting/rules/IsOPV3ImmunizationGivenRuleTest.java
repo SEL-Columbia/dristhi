@@ -9,33 +9,33 @@ import static junit.framework.Assert.assertTrue;
 import static org.ei.drishti.util.EasyMap.create;
 import static org.junit.Assert.assertFalse;
 
-public class IsOPV0ImmunizationGivenRuleTest {
-    private IsOPV0ImmunizationGivenRule rule;
+public class IsOPV3ImmunizationGivenRuleTest {
+    private IsOPV3ImmunizationGivenRule rule;
 
     @Before
     public void setUp() throws Exception {
-        rule = new IsOPV0ImmunizationGivenRule();
+        rule = new IsOPV3ImmunizationGivenRule();
     }
 
     @Test
-    public void shouldReturnTrueIfImmunizationsGivenContainsOPV_0() {
-        SafeMap safeMap = new SafeMap(create("immunizationsGiven", "pentavalent_1 opv_0 tt_1").map());
+    public void shouldReturnTrueIfImmunizationsGivenContainsOPV_3() {
+        SafeMap safeMap = new SafeMap(create("immunizationsGiven", "pentavalent_1 opv_3 tt_1").map());
 
         boolean didRuleApply = rule.apply(safeMap);
         assertTrue(didRuleApply);
 
-        didRuleApply = rule.apply(new SafeMap(create("immunizationsGiven", "pentavalent_1 opv_0 tt_1").put("previousImmunizations", "pentavalent_1 tt_1").map()));
+        didRuleApply = rule.apply(new SafeMap(create("immunizationsGiven", "pentavalent_1 opv_3 tt_1").put("previousImmunizations", "pentavalent_1 tt_1").map()));
         Assert.assertTrue(didRuleApply);
 
-        didRuleApply = rule.apply(new SafeMap(create("immunizationsGiven", "pentavalent_1 opv_0 tt_1").put("previousImmunizations", "").map()));
+        didRuleApply = rule.apply(new SafeMap(create("immunizationsGiven", "pentavalent_1 opv_3 tt_1").put("previousImmunizations", "").map()));
         Assert.assertTrue(didRuleApply);
 
-        didRuleApply = rule.apply(new SafeMap(create("immunizationsGiven", "pentavalent_1 opv_0 tt_1").put("previousImmunizations", null).map()));
+        didRuleApply = rule.apply(new SafeMap(create("immunizationsGiven", "pentavalent_1 opv_3 tt_1").put("previousImmunizations", null).map()));
         Assert.assertTrue(didRuleApply);
     }
 
     @Test
-    public void shouldReturnFalseIfImmunizationsGivenDoesNotContainOPV_0() {
+    public void shouldReturnFalseIfImmunizationsGivenDoesNotContainOPV_3() {
         boolean didRuleApply = rule.apply(new SafeMap(create("immunizationsGiven", "").map()));
         assertFalse(didRuleApply);
 
@@ -45,7 +45,7 @@ public class IsOPV0ImmunizationGivenRuleTest {
         didRuleApply = rule.apply(new SafeMap(create("immunizationsGiven", "pentavalent_1 tt_1").map()));
         assertFalse(didRuleApply);
 
-        didRuleApply = rule.apply(new SafeMap(create("immunizationsGiven", "pentavalent_1 opv_0 tt_1").put("previousImmunizations", "opv_0").map()));
+        didRuleApply = rule.apply(new SafeMap(create("immunizationsGiven", "pentavalent_1 opv_3 tt_1").put("previousImmunizations", "opv_3").map()));
         Assert.assertFalse(didRuleApply);
     }
 }

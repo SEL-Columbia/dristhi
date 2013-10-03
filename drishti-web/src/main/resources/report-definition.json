@@ -541,7 +541,7 @@
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
-                        "IsBCGImmunizationGivenRule",,
+                        "IsBCGImmunizationGivenRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
                 },
@@ -559,7 +559,7 @@
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
-                        "IsPentavalent1ImmunizationGivenRule",,
+                        "IsPentavalent1ImmunizationGivenRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
                 },
@@ -577,7 +577,7 @@
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
-                        "IsPentavalent2ImmunizationGivenRule",,
+                        "IsPentavalent2ImmunizationGivenRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
                 },
@@ -595,7 +595,7 @@
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
-                        "IsPentavalent3ImmunizationGivenRule",,
+                        "IsPentavalent3ImmunizationGivenRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
                 },
@@ -613,7 +613,61 @@
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
-                        "IsOPV0ImmunizationGivenRule",,
+                        "IsOPV0ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OPV_1_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsOPV1ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OPV_2_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsOPV2ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OPV_3_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsOPV3ImmunizationGivenRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
                 }
