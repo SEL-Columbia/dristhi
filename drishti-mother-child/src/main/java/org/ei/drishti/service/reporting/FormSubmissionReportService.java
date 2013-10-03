@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class FormSubmissionReportService {
         List<ReportIndicator> reportIndicators = reportDefinition.getIndicatorsByFormName(submission.formName());
 
         for (ReportIndicator reportIndicator : reportIndicators) {
-            SafeMap reportFields = createReportFields(submission, reportIndicator.formFields(), reportIndicator.referenceData());
+            SafeMap reportFields = createReportFields(submission, reportIndicator);
             boolean didAllRulesSucceed = processRules(reportIndicator.reportingRules(), reportFields);
             if (didAllRulesSucceed) {
                 String entityId = reportIndicator.reportEntityIdField() == null
@@ -72,14 +73,21 @@ public class FormSubmissionReportService {
         return true;
     }
 
-    private SafeMap createReportFields(FormSubmission submission, List<String> formFields, ReferenceData referenceDataDefinition) {
+    private SafeMap createReportFields(FormSubmission submission, ReportIndicator reportIndicator) {
+        List<String> formFields = reportIndicator.formFields();
+        ReferenceData referenceDataDefinition = reportIndicator.referenceData();
         Map<String, String> formFieldsMap = submission.getFields(formFields);
         if (referenceDataDefinition == null) {
             return new SafeMap(formFieldsMap);
         }
-        return referenceDataRepository
+        Map<String, String> map = new HashMap<>();
+        map.put("serviceProvidedDate", reportIndicator.serviceProvidedDateField());
+        SafeMap safeMap = referenceDataRepository
                 .getReferenceData(submission, referenceDataDefinition)
-                .concatenate(formFieldsMap);
+                .concatenate(formFieldsMap)
+                .concatenate(map);
+
+        return safeMap;
     }
 
     private void report(FormSubmission submission, ReportIndicator reportIndicator, Location location) {

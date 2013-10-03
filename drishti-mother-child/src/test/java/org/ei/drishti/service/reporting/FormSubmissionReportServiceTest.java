@@ -67,7 +67,8 @@ public class FormSubmissionReportServiceTest {
         when(rule.apply(any(SafeMap.class))).thenReturn(true);
         SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
                 .put("id", submission.entityId())
-                .put("closeReason", submission.getField("closeReason"));
+                .put("closeReason", submission.getField("closeReason"))
+                .put("serviceProvidedDate", "2012-03-01");
 
         service.reportFor(submission);
 
@@ -94,7 +95,8 @@ public class FormSubmissionReportServiceTest {
         SafeMap reportData = new SafeMap()
                 .put("id", submission.entityId())
                 .put("submissionDate", submission.getField("submissionDate"))
-                .put("motherId", submission.getField("motherId"));
+                .put("motherId", submission.getField("motherId"))
+                .put("serviceProvidedDate", "2012-03-01");
 
         service.reportFor(submission);
 
@@ -123,7 +125,8 @@ public class FormSubmissionReportServiceTest {
                 .put("id", submission.entityId())
                 .put("numberOfCondomsSupplied", submission.getField("numberOfCondomsSupplied"))
                 .put("familyPlanningMethodChangeDate", "2013-01-01")
-                .put("quantity", submission.getField("numberOfCondomsSupplied"));
+                .put("quantity", submission.getField("numberOfCondomsSupplied"))
+                .put("serviceProvidedDate", "2013-01-01");
 
         service.reportFor(submission);
 
@@ -148,7 +151,8 @@ public class FormSubmissionReportServiceTest {
         when(rule.apply(any(SafeMap.class))).thenReturn(true);
         SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
                 .put("id", submission.entityId())
-                .put("closeReason", submission.getField("closeReason"));
+                .put("closeReason", submission.getField("closeReason"))
+                .put("serviceProvidedDate", "2012-03-01");
 
         service.reportFor(submission);
 
