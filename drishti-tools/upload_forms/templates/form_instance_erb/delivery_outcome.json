@@ -35,6 +35,11 @@
                 "source": "mother.deliveryPlace"
             },
             {
+                "name": "serviceProvidedPlace",
+                "value": "<%= pnc['Delivery place'].downcase %>",
+                "source": "mother.deliveryPlace"
+            },
+            {
                 "name": "deliveryFacilityName",
                 "source": "mother.deliveryFacilityName"
             },

@@ -35,6 +35,11 @@
                 "source": "child.immunizationPlace"
             },
             {
+                "name": "serviceProvidedPlace",
+                "value": "<%= child_immunization['Immunization Place'] %>",
+                "source": "child.immunizationPlace"
+            },
+            {
                 "name": "submissionDate",
                 "value": "<%= submission_date %>",
                 "source": "child.submissionDate"

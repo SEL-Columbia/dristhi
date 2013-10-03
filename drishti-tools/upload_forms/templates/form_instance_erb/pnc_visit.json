@@ -41,6 +41,10 @@
                 "source": "mother.deliveryPlace"
             },
             {
+                "name": "serviceProvidedPlace",
+                "source": "mother.deliveryPlace"
+            },
+            {
                 "name": "dischargeDate",
                 "value": "<%= pnc_visit['Discharge date'] %>",
                 "source": "mother.dischargeDate"
