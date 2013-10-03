@@ -91,9 +91,9 @@ class PNCs
           pnc.convert_value "BF within 1 hr", :empty => "no"
 
           pnc.add_field "Instance ID", Guid.new.to_s
-          pnc.add_field "Entity ID", Guid.new.to_s
+          pnc.add_field "Entity ID", Guid.new.to_s #this id should be used only for OA PNCs
           pnc.add_field "Child ID", Guid.new.to_s
-          pnc.add_field "EC ID", Guid.new.to_s
+          pnc.add_field "EC ID", Guid.new.to_s #this id should be used only for OA PNCs
           pnc.add_field "Reference date", pnc['Delivery date'] rescue Date.today.to_s
           pnc.add_field "Submission date", Date.today.to_s
 

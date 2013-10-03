@@ -42,7 +42,6 @@ class TTs
           tt.convert_value "TT Injection place", :empty => "phc"
 
           tt.add_field "Instance ID", Guid.new.to_s
-          tt.add_field "Entity ID", Guid.new.to_s
           tt.add_field "Submission date", Date.today.to_s
 
           @tts << tt

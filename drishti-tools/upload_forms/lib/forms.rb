@@ -152,7 +152,7 @@ class Forms
   def fill_ifa_forms
     @ifas.each do |ifa|
       key_for_anc = [ifa['Village Code'].village.downcase, ifa['Wife Name'].downcase, ifa['Husband Name'].downcase]
-      puts "IFA : #{ifa['Wife Name']} - #{ifa['Husband Name']} - #{ifa['Entity ID']}"
+      puts "IFA : #{ifa['Wife Name']} - #{ifa['Husband Name']} - #{ifa['Instance ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/form_instance_erb/ifa.json'))
       form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
@@ -169,7 +169,7 @@ class Forms
       form_instance = form_instance_erb.result(binding)
       ifa_json = form_submission_erb.result(binding)
 
-      File.open("output/IFA_#{ifa['Entity ID']}.json", "w") do |f|
+      File.open("output/IFA_#{ifa['Instance ID']}.json", "w") do |f|
         f.puts ifa_json
       end
     end
@@ -178,7 +178,7 @@ class Forms
   def fill_tt_forms
     @tts.each do |tt|
       key_for_anc = [tt['Village Code'].village.downcase, tt['Wife Name'].downcase, tt['Husband Name'].downcase]
-      puts "TT : #{tt['Wife Name']} - #{tt['Husband Name']} - #{tt['Entity ID']}"
+      puts "TT : #{tt['Wife Name']} - #{tt['Husband Name']} - #{tt['Instance ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/form_instance_erb/tt.json'))
       form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
@@ -196,7 +196,7 @@ class Forms
       form_instance = form_instance_erb.result(binding)
       ifa_json = form_submission_erb.result(binding)
 
-      File.open("output/TT#{dosage.capitalize}_#{tt['Entity ID']}.json", "w") do |f|
+      File.open("output/TT#{dosage.capitalize}_#{tt['Instance ID']}.json", "w") do |f|
         f.puts ifa_json
       end
     end
@@ -206,7 +206,7 @@ class Forms
     @pncs.each do |pnc|
       key = [pnc['Village Code'].village.downcase, pnc['Wife Name'].downcase, pnc['Husband Name'].downcase]
 
-      puts "Delivery Outcome registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Entity ID']}"
+      puts "Delivery Outcome registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Instance ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/form_instance_erb/delivery_outcome.json'))
       form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
@@ -222,7 +222,7 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       delivery_outcome_form_json = form_submission_erb.result(binding)
-      File.open("output/DO_#{pnc['Entity ID']}.json", "w") do |f|
+      File.open("output/DO_#{pnc['Instance ID']}.json", "w") do |f|
         f.puts delivery_outcome_form_json
       end
     end
@@ -231,7 +231,7 @@ class Forms
   def fill_out_of_area_pnc_registration_forms
     @pncs.each do |pnc|
 
-      puts "Out of Area PNC registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Entity ID']}"
+      puts "Out of Area PNC registration: #{pnc['Wife Name']} - #{pnc['Husband Name']} - #{pnc['Instance ID']}"
 
       form_instance_erb = ERB.new(File.read('templates/form_instance_erb/pnc_registration_oa.json'))
       form_submission_erb = ERB.new(File.read('templates/form_submission.erb'))
@@ -245,7 +245,7 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       out_of_area_pnc_registration_json = form_submission_erb.result(binding)
-      File.open("output/PNCOutOfArea_#{pnc['EC ID']}.json", "w") do |f|
+      File.open("output/PNCOutOfArea_#{pnc['Instance ID']}.json", "w") do |f|
         f.puts out_of_area_pnc_registration_json
       end
     end
@@ -281,7 +281,7 @@ class Forms
       visit_day = (Date.parse(pnc['Delivery date']) - Date.parse(pnc_visit['Visit date'])).to_i
       form_instance = form_instance_erb.result(binding)
       pnc_visit_json = form_submission_erb.result(binding)
-      File.open("output/PNCVisit_#{pnc_visit['Entity ID']}.json", "w") do |f|
+      File.open("output/PNCVisit_#{pnc_visit['Instance ID']}.json", "w") do |f|
         f.puts pnc_visit_json
       end
     end

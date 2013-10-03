@@ -41,7 +41,6 @@ class IFAs
           ifa.convert_value "IFA tablets", :empty => "0"
 
           ifa.add_field "Instance ID", Guid.new.to_s
-          ifa.add_field "Entity ID", Guid.new.to_s
           ifa.add_field "Submission date", Date.today.to_s
 
           @ifas << ifa
