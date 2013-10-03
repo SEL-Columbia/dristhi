@@ -99,7 +99,7 @@ class Forms
 
   def fill_anc_visits_forms
     @anc_visits.each do |anc_visit|
-      puts "ANC Visit: #{anc_visit['Wife Name']} - #{anc_visit['Husband Name']} - #{anc_visit['Entity ID']}"
+      puts "ANC Visit: #{anc_visit['Wife Name']} - #{anc_visit['Husband Name']} - #{anc_visit['Instance ID']}"
       key = [anc_visit['Village Code'].village.downcase, anc_visit['Wife Name'].downcase, anc_visit['Husband Name'].downcase]
 
       form_instance_erb = ERB.new(File.read('templates/form_instance_erb/anc_visit.json'))
