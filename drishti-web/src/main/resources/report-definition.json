@@ -583,6 +583,24 @@
                         "IsPentavalent2ImmunizationGivenRule",,
                         "ServiceProvidedAtSub_CenterRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_PENT_3_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsPentavalent3ImmunizationGivenRule",,
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
                 }
             ]
         },
