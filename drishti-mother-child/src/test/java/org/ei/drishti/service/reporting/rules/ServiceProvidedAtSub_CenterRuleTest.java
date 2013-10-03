@@ -8,18 +8,18 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.ei.drishti.util.EasyMap.mapOf;
 
-public class ServiceProvidedAtSubCenterRuleTest {
+public class ServiceProvidedAtSub_CenterRuleTest {
 
-    private ServiceProvidedAtSubCenterRule rule;
+    private ServiceProvidedAtSub_CenterRule rule;
 
     @Before
     public void setUp() throws Exception {
-        rule = new ServiceProvidedAtSubCenterRule();
+        rule = new ServiceProvidedAtSub_CenterRule();
     }
 
     @Test
     public void shouldReturnTrueWhenServiceProvidedPlaceIsSubCenter() throws Exception {
-        boolean rulePassed = rule.apply(new SafeMap(mapOf("serviceProvidedPlace", "subcenter")));
+        boolean rulePassed = rule.apply(new SafeMap(mapOf("serviceProvidedPlace", "sub_center")));
 
         assertTrue(rulePassed);
     }

@@ -33,6 +33,11 @@
                 "bind": "/model/instance/Child_Immunizations_EngKan/immunization_place"
             },
             {
+                "name": "serviceProvidedPlace",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/Child_Immunizations_EngKan/immunization_place"
+            },
+            {
                 "name": "submissionDate",
                 "bind": "/model/instance/Child_Immunizations_EngKan/today"
             },

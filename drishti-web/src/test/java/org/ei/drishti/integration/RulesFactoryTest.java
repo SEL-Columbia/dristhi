@@ -96,12 +96,12 @@ public class RulesFactoryTest {
     }
 
     @Test
-    public void shouldLoadServiceProvidedAtSubCenterRuleClassByName() throws Exception {
-        String ruleName = "ServiceProvidedAtSubCenterRule";
+    public void shouldLoadServiceProvidedAtSub_CenterRuleClassByName() throws Exception {
+        String ruleName = "ServiceProvidedAtSub_CenterRule";
 
         IRule rule = rulesFactory.ruleByName(ruleName);
 
-        assertTrue(rule instanceof ServiceProvidedAtSubCenterRule);
+        assertTrue(rule instanceof ServiceProvidedAtSub_CenterRule);
     }
 
     @Test
@@ -156,15 +156,6 @@ public class RulesFactoryTest {
         IRule rule = rulesFactory.ruleByName(ruleName);
 
         assertTrue(rule instanceof PNCVisitHappenedLessThan24HoursAfterDeliveryRule);
-    }
-
-    @Test
-    public void shouldLoadDeliveryHappenedAtSubCenterRuleClassByName() throws Exception {
-        String ruleName = "DeliveryHappenedAtSubCenterRule";
-
-        IRule rule = rulesFactory.ruleByName(ruleName);
-
-        assertTrue(rule instanceof DeliveryHappenedAtSubCenterRule);
     }
 
     @Test

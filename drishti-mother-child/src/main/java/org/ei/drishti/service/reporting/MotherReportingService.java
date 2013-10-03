@@ -29,6 +29,7 @@ import static org.ei.drishti.common.AllConstants.ANCCloseFields.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.HOME_FIELD_VALUE;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
@@ -66,7 +67,7 @@ public class MotherReportingService {
 
         placeOfDeliveryToIndicator = new HashMap<>();
         placeOfDeliveryToIndicator.put(HOME_FIELD_VALUE, D_HOM);
-        placeOfDeliveryToIndicator.put(SC_FIELD_VALUE, D_SC);
+        placeOfDeliveryToIndicator.put(SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE, D_SC);
         placeOfDeliveryToIndicator.put(PHC_FIELD_VALUE, D_PHC);
         placeOfDeliveryToIndicator.put(CHC_FIELD_VALUE, D_CHC);
         placeOfDeliveryToIndicator.put(SDH_FIELD_VALUE, D_SDH);

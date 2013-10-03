@@ -85,6 +85,11 @@
                 "source": "eligible_couple.mother.deliveryPlace"
             },
             {
+                "name": "serviceProvidedPlace",
+                "bind": "/model/instance/PNC_Child_Registration_EngKan/place_delivery",
+                "source": "eligible_couple.mother.deliveryPlace"
+            },
+            {
                 "name": "deliveryFacilityName",
                 "bind": "/model/instance/PNC_Child_Registration_EngKan/name_delivery_facility",
                 "source": "eligible_couple.mother.deliveryFacilityName"

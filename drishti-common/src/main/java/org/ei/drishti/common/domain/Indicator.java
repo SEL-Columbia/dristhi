@@ -56,6 +56,8 @@ public enum Indicator {
     NRHM_HB_LEVEL("NRHM_HB_LEVEL"), NRHM_PNC24("NRHM_PNC24"), NRHM_SC_DEL("NRHM_SC_DEL"), NRHM_48HRS("NRHM_48HRS"),
     NRHM_PNC_V_2D("NRHM_PNC_V_2D"), NRHM_PNC_V_14D("NRHM_PNC_V_14D"),
 
+    //NRHM Child Immunization Indicators
+    NRHM_BCG_1YR("NRHM_BCG_1YR"),
     //Economic status indicators
     ANCS_AND_PNCS_WITH_BPL("ANCS_AND_PNCS_WITH_BPL"),
 

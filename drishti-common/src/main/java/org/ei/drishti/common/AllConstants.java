@@ -6,6 +6,7 @@ import static java.util.Arrays.asList;
 
 public class AllConstants {
     public static final String DRISHTI_DATABASE_CONNECTOR = "drishtiDatabaseConnector";
+    public static final String SPACE = " ";
 
     public static class Form {
         public static final String ENTITY_ID = "entityId";
@@ -85,7 +86,6 @@ public class AllConstants {
         public static final String DID_MOTHER_SURVIVE = "didMotherSurvive";
         public static final String DID_BREAST_FEEDING_START = "didBreastfeedingStart";
         public static final String LIVE_BIRTH_FIELD_VALUE = "live_birth";
-        public static final String SC_FIELD_VALUE = "subcenter";
         public static final String PHC_FIELD_VALUE = "phc";
         public static final String CHC_FIELD_VALUE = "chc";
         public static final String SDH_FIELD_VALUE = "sdh";
@@ -136,6 +136,7 @@ public class AllConstants {
         public static final String SERVICE_PROVIDED_PLACE = "serviceProvidedPlace";
         public static final String SERVICE_PROVIDED_DATE = "serviceProvidedDate";
         public static final String SUB_CENTER_SERVICE_PROVIDED_PLACE_VALUE = "sub_center";
+        public static final String SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE = "subcenter";
         public static final String HOME_FIELD_VALUE = "home";
         public static final String REFERENCE_DATE = "referenceDate";
     }

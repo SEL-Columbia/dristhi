@@ -51,3 +51,4 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ID_SEPSIS');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ID_ASPHYXIA');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ID_LBW');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ID_PNEUMONIA');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_BCG_1YR');

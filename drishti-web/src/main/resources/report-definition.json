@@ -486,7 +486,7 @@
                         "serviceProvidedPlace"
                     ],
                     "reportWhen": [
-                        "ServiceProvidedAtSubCenterRule",
+                        "ServiceProvidedAtSub_CenterRule",
                         "IsChildDiseaseReportedAsMeaslesRule",
                         "IsChildBelowFiveYearsRule"
                     ]
@@ -503,7 +503,7 @@
                         "serviceProvidedPlace"
                     ],
                     "reportWhen": [
-                        "ServiceProvidedAtSubCenterRule",
+                        "ServiceProvidedAtSub_CenterRule",
                         "IsChildDiseaseReportedAsDiarrheaDehydrationRule",
                         "IsChildBelowFiveYearsRule"
                     ]
@@ -520,9 +520,32 @@
                         "serviceProvidedPlace"
                     ],
                     "reportWhen": [
-                        "ServiceProvidedAtSubCenterRule",
+                        "ServiceProvidedAtSub_CenterRule",
                         "IsChildDiseaseReportedAsMalariaRule",
                         "IsChildBelowFiveYearsRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "child_immunizations",
+            "indicators": [
+                {
+                    "indicator": "NRHM_BCG_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsBCGImmunizationGivenRule",,
+                        "ServiceProvidedAtSub_CenterRule",
                     ]
                 }
             ]
@@ -593,7 +616,7 @@
                     ],
                     "reportWhen": [
                         "ThirdANCVisitHappenedOnTimeRule",
-                        "ServiceProvidedAtSubCenterRule"
+                        "ServiceProvidedAtSub_CenterRule"
                     ]
                 }
             ]
@@ -614,7 +637,7 @@
                     ],
                     "reportWhen": [
                         "IsJsyBeneficiaryRule",
-                        "ServiceProvidedAtSubCenterRule"
+                        "ServiceProvidedAtSub_CenterRule"
                     ]
                 }
             ]
@@ -662,7 +685,30 @@
                         "referenceDate"
                     ],
                     "reportWhen": [
-                        "DeliveryHappenedAtSubCenterRule"
+                        "ServiceProvidedAtSubCenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_BCG_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "immunizationsGiven",
+                        "referenceDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsBCGImmunizationGivenRule",
+                        "ServiceProvidedAtSubCenterRule"
                     ]
                 }
             ]
@@ -713,7 +759,30 @@
                         "referenceDate"
                     ],
                     "reportWhen": [
-                        "DeliveryHappenedAtSubCenterRule"
+                        "ServiceProvidedAtSubCenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_BCG_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "immunizationsGiven",
+                        "referenceDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsBCGImmunizationGivenRule",
+                        "ServiceProvidedAtSubCenterRule"
                     ]
                 }
             ]
@@ -732,7 +801,7 @@
                     ],
                     "reportWhen": [
                         "IsPersonAnaemicRule",
-                        "ServiceProvidedAtSubCenterRule"
+                        "ServiceProvidedAtSub_CenterRule"
                     ]
                 }
             ]
@@ -767,7 +836,8 @@
                         "id",
                         "deliveryPlace",
                         "dischargeDate",
-                        "referenceDate"
+                        "referenceDate",
+                        "serviceProvidedPlace"
                     ],
                     "referenceData": {
                         "type": "mother",
@@ -775,7 +845,7 @@
                         "fields": ["deliveryPlace"]
                     },
                     "reportWhen": [
-                        "DeliveryHappenedAtSubCenterRule",
+                        "ServiceProvidedAtSubCenterRule",
                         "WomanIsDischargedWithin48HoursOfDeliveryRule"
                     ]
                 },

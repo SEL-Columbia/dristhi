@@ -45,6 +45,11 @@
                 "bind": "/model/instance/PNC_Visit_EngKan/case_place_delivery"
             },
             {
+                "name": "serviceProvidedPlace",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/PNC_Visit_EngKan/case_place_delivery"
+            },
+            {
                 "name": "dischargeDate",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/PNC_Visit_EngKan/case_discharge_date"
