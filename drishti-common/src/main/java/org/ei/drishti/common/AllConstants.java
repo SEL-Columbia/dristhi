@@ -164,6 +164,7 @@ public class AllConstants {
         public static final String ASPHYXIA_VALUE = "asphyxia";
         public static final String DIARRHEA_VALUE = "diarrhea";
         public static final String FEVER_RELATED_VALUE = "fever_related";
+        public static final String MEASLES_VALUE = "measles";
     }
 
     public static class EntityCloseFormFields {

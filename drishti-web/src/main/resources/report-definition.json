@@ -129,6 +129,28 @@
                         "IsChildLessThanOneYearOldRule",
                         "IsDeathWasCausedByFeverRelatedRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_ID_MEASLES",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWasCausedByMeaslesRule"
+                    ]
                 }
             ]
         },
