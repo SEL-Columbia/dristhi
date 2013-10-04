@@ -12,7 +12,7 @@ import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace
 
 @Component
 public class RulesFactory implements IRulesFactory, ApplicationContextAware {
-    private static Logger logger = LoggerFactory.getLogger(ChildReportingService.class.toString());
+    private static Logger logger = LoggerFactory.getLogger(RulesFactory.class.toString());
 
     private static final String RULES_PACKAGE_NAME = "org.ei.drishti.service.reporting.rules";
     private ApplicationContext applicationContext;
