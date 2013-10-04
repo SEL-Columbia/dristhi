@@ -12,11 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.SERVICE_PROVIDED_DATE;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 
 @Component
@@ -74,32 +73,30 @@ public class FormSubmissionReportService {
     }
 
     private SafeMap createReportFields(FormSubmission submission, ReportIndicator reportIndicator) {
-        List<String> formFields = reportIndicator.formFields();
-        ReferenceData referenceDataDefinition = reportIndicator.referenceData();
-        Map<String, String> formFieldsMap = submission.getFields(formFields);
-        if (referenceDataDefinition == null) {
-            return new SafeMap(formFieldsMap);
+        SafeMap reportFields = new SafeMap(submission.getFields(reportIndicator.formFields()));
+        reportFields.put(SERVICE_PROVIDED_DATE, getServiceProvidedDate(submission, reportIndicator));
+        if (reportIndicator.referenceData() == null) {
+            return reportFields;
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("serviceProvidedDate", reportIndicator.serviceProvidedDateField());
-        SafeMap safeMap = referenceDataRepository
-                .getReferenceData(submission, referenceDataDefinition)
-                .concatenate(formFieldsMap)
-                .concatenate(map);
+        SafeMap referenceDataFields = referenceDataRepository.getReferenceData(submission, reportIndicator.referenceData());
+        reportFields.putAll(referenceDataFields);
 
-        return safeMap;
+        return reportFields;
+    }
+
+    private String getServiceProvidedDate(FormSubmission submission, ReportIndicator reportIndicator) {
+        return reportIndicator.serviceProvidedDateField() == null
+                ? submission.getField(SUBMISSION_DATE_FIELD_NAME)
+                : submission.getField(reportIndicator.serviceProvidedDateField());
     }
 
     private void report(FormSubmission submission, ReportIndicator reportIndicator, Location location) {
         IReporter reporter = reporterFactory.reporterFor(reportIndicator.reportEntityType());
         SafeMap reportData = createReportData(submission, reportIndicator.formFields(), reportIndicator.quantityField());
-        String serviceProvidedDate = reportIndicator.serviceProvidedDateField() == null
-                ? submission.getField(SUBMISSION_DATE_FIELD_NAME)
-                : submission.getField(reportIndicator.serviceProvidedDateField());
+        String serviceProvidedDate = getServiceProvidedDate(submission, reportIndicator);
         String reportEntityId = reportIndicator.reportEntityIdField() == null
                 ? submission.entityId()
                 : submission.getField(reportIndicator.reportEntityIdField());
-        reportData.put("serviceProvidedDate", serviceProvidedDate);
         reporter.report(reportEntityId, reportIndicator.indicator(), location, serviceProvidedDate, reportData);
     }
 

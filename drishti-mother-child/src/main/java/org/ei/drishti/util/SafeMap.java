@@ -18,8 +18,8 @@ public class SafeMap {
         this.data = data;
     }
 
-    public SafeMap concatenate(Map<String, String> formFieldsMap) {
-        for (String key : formFieldsMap.keySet()) {
+    public SafeMap putAll(SafeMap formFieldsMap) {
+        for (String key : formFieldsMap.data.keySet()) {
             put(key, formFieldsMap.get(key));
         }
         return this;
@@ -37,7 +37,7 @@ public class SafeMap {
         return this;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return data.isEmpty();
     }
 

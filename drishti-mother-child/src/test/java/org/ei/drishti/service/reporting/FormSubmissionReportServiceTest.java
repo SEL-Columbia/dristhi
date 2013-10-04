@@ -7,10 +7,13 @@ import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.reporting.rules.IReferenceDataRepository;
 import org.ei.drishti.service.reporting.rules.IRule;
+import org.ei.drishti.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.util.FormSubmissionBuilder.create;
@@ -67,11 +70,17 @@ public class FormSubmissionReportServiceTest {
         when(rule.apply(any(SafeMap.class))).thenReturn(true);
         SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
                 .put("id", submission.entityId())
-                .put("closeReason", submission.getField("closeReason"))
-                .put("serviceProvidedDate", "2012-03-01");
+                .put("closeReason", submission.getField("closeReason"));
 
         service.reportFor(submission);
 
+        Map<String, String> expectedReportFields = EasyMap
+                .create("id", "child id 1")
+                .put("closeReason", "permanent_relocation")
+                .put("submissionDate", "2012-03-01")
+                .put("serviceProvidedDate", "2012-03-01")
+                .map();
+        verify(rule, times(2)).apply(new SafeMap(expectedReportFields));
         verify(locationLoader).loadLocationFor("child", "child id 1");
         verify(reporter).report(submission.entityId(), "INFANT_LEFT", location, "2012-03-01", reportData);
     }
@@ -95,8 +104,7 @@ public class FormSubmissionReportServiceTest {
         SafeMap reportData = new SafeMap()
                 .put("id", submission.entityId())
                 .put("submissionDate", submission.getField("submissionDate"))
-                .put("motherId", submission.getField("motherId"))
-                .put("serviceProvidedDate", "2012-03-01");
+                .put("motherId", submission.getField("motherId"));
 
         service.reportFor(submission);
 
@@ -118,18 +126,25 @@ public class FormSubmissionReportServiceTest {
         when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
         when(rule.apply(any(SafeMap.class))).thenReturn(true);
         when(reportDefinitionLoader.load()).thenReturn(reportDefinitionWithCondomQuantity());
-        when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
+        when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class)))
+                .thenReturn(new SafeMap());
         when(reporterFactory.reporterFor("eligible_couple")).thenReturn(reporter);
         when(locationLoader.loadLocationFor("eligible_couple", "ec id 1")).thenReturn(location);
         SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
                 .put("id", submission.entityId())
                 .put("numberOfCondomsSupplied", submission.getField("numberOfCondomsSupplied"))
                 .put("familyPlanningMethodChangeDate", "2013-01-01")
-                .put("quantity", submission.getField("numberOfCondomsSupplied"))
-                .put("serviceProvidedDate", "2013-01-01");
+                .put("quantity", submission.getField("numberOfCondomsSupplied"));
 
         service.reportFor(submission);
 
+        Map<String, String> expectedReportFields = EasyMap
+                .create("id", "ec id 1")
+                .put("numberOfCondomsSupplied", "10")
+                .put("familyPlanningMethodChangeDate", "2013-01-01")
+                .put("serviceProvidedDate", "2013-01-01")
+                .map();
+        verify(rule).apply(new SafeMap(expectedReportFields));
         verify(locationLoader).loadLocationFor("eligible_couple", "ec id 1");
         verify(reporter).report(submission.entityId(), "CONDOM_QTY", location, "2013-01-01", reportData);
     }
@@ -140,6 +155,7 @@ public class FormSubmissionReportServiceTest {
                 .withFormName("child_close")
                 .withANMId("anm id 1")
                 .withEntityId("child id 1")
+                .addFormField("deathDate", "2012-01-01")
                 .addFormField("submissionDate", "2012-03-01")
                 .addFormField("closeReason", "permanent_relocation")
                 .build();
@@ -151,14 +167,21 @@ public class FormSubmissionReportServiceTest {
         when(rule.apply(any(SafeMap.class))).thenReturn(true);
         SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
                 .put("id", submission.entityId())
-                .put("closeReason", submission.getField("closeReason"))
-                .put("serviceProvidedDate", "2012-03-01");
+                .put("closeReason", submission.getField("closeReason"));
 
         service.reportFor(submission);
 
+        Map<String, String> expectedReportFields = EasyMap
+                .create("id", "child id 1")
+                .put("closeReason", "permanent_relocation")
+                .put("submissionDate", "2012-03-01")
+                .put("serviceProvidedDate", "2012-01-01")
+                .map();
+
+        verify(rule, times(2)).apply(new SafeMap(expectedReportFields));
         verify(referenceDataRepository, times(0)).getReferenceData(any(FormSubmission.class), any(ReferenceData.class));
         verify(locationLoader).loadLocationFor("child", "child id 1");
-        verify(reporter).report(submission.entityId(), "INFANT_LEFT", location, "2012-03-01", reportData);
+        verify(reporter).report(submission.entityId(), "INFANT_LEFT", location, "2012-01-01", reportData);
     }
 
     @Test
@@ -241,7 +264,7 @@ public class FormSubmissionReportServiceTest {
                                                 "INFANT_LEFT",
                                                 "child",
                                                 null,
-                                                null,
+                                                "deathDate",
                                                 asList("id", "closeReason", "submissionDate"),
                                                 null,
                                                 asList("AgeIsLessThanOneYearRule", "RelocationIsPermanentRule")
