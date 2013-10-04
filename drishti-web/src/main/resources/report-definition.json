@@ -85,6 +85,28 @@
                         "IsChildLessThanOneYearOldRule",
                         "IsDeathWasCausedByAsphyxiaRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_ID_DIARRHEA",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWasCausedByDiarrheaRule"
+                    ]
                 }
             ]
         },

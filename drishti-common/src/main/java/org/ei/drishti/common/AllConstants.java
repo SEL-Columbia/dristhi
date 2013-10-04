@@ -162,6 +162,7 @@ public class AllConstants {
         public static final String WITHIN_24HRS_VALUE = "within_24hrs";
         public static final String SEPSIS_VALUE = "sepsis";
         public static final String ASPHYXIA_VALUE = "asphyxia";
+        public static final String DIARRHEA_VALUE = "diarrhea";
     }
 
     public static class EntityCloseFormFields {
