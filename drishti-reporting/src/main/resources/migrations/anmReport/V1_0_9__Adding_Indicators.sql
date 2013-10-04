@@ -72,3 +72,4 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_MD_FITS');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_MD_BLEEDING');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_MD_H_FEVER');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_MD_OTHER');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_MEASLES_BOOSTER_1YR');

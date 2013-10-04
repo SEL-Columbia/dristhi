@@ -857,6 +857,24 @@
                         "IsMeaslesImmunizationGivenRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_MEASLES_BOOSTER_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsMeaslesBoosterImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
                 }
             ]
         },
