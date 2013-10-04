@@ -30,7 +30,7 @@
                     "formFields": [
                         "id",
                         "deathCause",
-                        "deathDate",
+                        "deathDate"
                     ],
                     "referenceData": {
                         "type": "child",
@@ -51,7 +51,7 @@
                     "formFields": [
                         "id",
                         "deathCause",
-                        "deathDate",
+                        "deathDate"
                     ],
                     "referenceData": {
                         "type": "child",
@@ -72,7 +72,7 @@
                     "formFields": [
                         "id",
                         "deathCause",
-                        "deathDate",
+                        "deathDate"
                     ],
                     "referenceData": {
                         "type": "child",
