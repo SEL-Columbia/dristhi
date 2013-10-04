@@ -107,6 +107,28 @@
                         "IsChildLessThanOneYearOldRule",
                         "IsDeathWasCausedByDiarrheaRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_ID_FEVER_RELATED",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWasCausedByFeverRelatedRule"
+                    ]
                 }
             ]
         },
