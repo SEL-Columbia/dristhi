@@ -879,6 +879,19 @@
                     "reportWhen": [
                         "IsDeathDueToAbortionRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_MD_LABOR",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToProlongedObstructedLaborRule"
+                    ]
                 }
             ]
         },
