@@ -71,3 +71,8 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_OPV_3_1YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_HEPB_0_1YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MEASLES_1YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MD_ABORTION');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MD_LABOR');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MD_FITS');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MD_BLEEDING');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MD_H_FEVER');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MD_OTHER');
