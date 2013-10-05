@@ -904,6 +904,24 @@
             ]
         },
         {
+            "form": "anc_close",
+            "indicators": [
+                {
+                    "indicator": "NRHM_MD_ABORTION",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToAbortionRule"
+                    ]
+                }
+            ]
+        },
+        {
             "form": "anc_registration",
             "indicators": [
                 {
