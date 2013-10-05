@@ -866,6 +866,19 @@
                         "CurrentFPMethodIsEitherMaleOrFemaleSterilizationRule",
                         "IsDeathDueToSterilizationRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_MD_ABORTION",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToAbortionRule"
+                    ]
                 }
             ]
         },
