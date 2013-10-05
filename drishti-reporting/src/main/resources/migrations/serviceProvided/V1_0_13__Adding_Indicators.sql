@@ -70,3 +70,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_OPV_2_1YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_OPV_3_1YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_HEPB_0_1YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MEASLES_1YR');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MD_ABORTION');
