@@ -892,6 +892,19 @@
                     "reportWhen": [
                         "IsDeathDueToProlongedObstructedLaborRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_MD_FITS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToSevereHyperTensionOrFitsRule"
+                    ]
                 }
             ]
         },
