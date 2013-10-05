@@ -205,6 +205,7 @@ public class AllConstants {
         public static final String PROLONGED_OBSTRUCTED_LABOR_VALUE = "prolonged_obstructed_labor";
         public static final String HYPERTENSION_FITS_VALUE = "hypertension_fits";
         public static final String BLEEDING_VALUE = "bleeding_hemorrhage";
+        public static final String HIGH_FEVER_VALUE = "fever_infection";
     }
 
     public static class FamilyPlanningFormFields {

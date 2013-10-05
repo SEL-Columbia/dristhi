@@ -918,6 +918,19 @@
                     "reportWhen": [
                         "IsDeathDueToBleedingRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_MD_H_FEVER",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToHighFeverRule"
+                    ]
                 }
             ]
         },
