@@ -1366,6 +1366,24 @@
                     ]
                 }
             ]
-        }
+        },
+        {
+            "form": "pnc_close",
+            "indicators": [
+                {
+                    "indicator": "NRHM_MD_LABOR",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "deathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToProlongedObstructedLaborRule"
+                    ]
+                }
+            ]
+        },
     ]
 }
