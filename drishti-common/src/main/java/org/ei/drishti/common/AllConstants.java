@@ -166,12 +166,14 @@ public class AllConstants {
         public static final String DIARRHEA_VALUE = "diarrhea";
         public static final String FEVER_RELATED_VALUE = "fever_related";
         public static final String PNEUMONIA_VALUE = "pneumonia";
+        public static final List<String> OTHERS_LIST = new ArrayList<String>() {{
+            add("cause_not_identified");
+            add("others");
+        }};
         public static final List<String> OTHERS_VALUE_LIST = new ArrayList<String>() {{
             add("malnutrition");
             add("ari");
             add("malaria");
-            add("cause_not_identified");
-            add("others");
         }};
     }
 
