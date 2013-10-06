@@ -109,6 +109,28 @@
                     ]
                 },
                 {
+                    "indicator": "NRHM_ID_LBW",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanFourWeeksOldRule",
+                        "IsDeathWasCausedByLBWRule"
+                    ]
+                },
+                {
                     "indicator": "NRHM_ID_PNEUMONIA",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "deathDate",
