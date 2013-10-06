@@ -983,6 +983,19 @@
                     "reportWhen": [
                         "IsDeathDueToAbortionRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_MD_FITS",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToSevereHyperTensionOrFitsRule"
+                    ]
                 }
             ]
         },
