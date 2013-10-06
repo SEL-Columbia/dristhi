@@ -1199,6 +1199,19 @@
                     "reportWhen": [
                         "IsDeathDueToSevereHyperTensionOrFitsRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_MD_BLEEDING",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToBleedingRule"
+                    ]
                 }
             ]
         },
