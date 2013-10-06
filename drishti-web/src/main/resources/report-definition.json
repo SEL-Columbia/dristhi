@@ -1212,6 +1212,19 @@
                     "reportWhen": [
                         "IsDeathDueToBleedingRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_MD_H_FEVER",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToHighFeverRule"
+                    ]
                 }
             ]
         },
