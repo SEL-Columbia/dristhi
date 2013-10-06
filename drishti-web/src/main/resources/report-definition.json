@@ -1022,6 +1022,19 @@
                     "reportWhen": [
                         "IsDeathDueToHighFeverRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_MD_OTHER",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToOtherReasonsRule"
+                    ]
                 }
             ]
         },
