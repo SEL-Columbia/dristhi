@@ -38,6 +38,7 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('IB<1Y');
 INSERT INTO report.dim_indicator (indicator) VALUES ('IB<5Y');
 INSERT INTO report.dim_indicator (indicator) VALUES ('IB_BAL');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_CENTCHROMAN_PILLS');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ECP');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_M_S_COMP');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_F_S_COMP');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_S_COMP');
