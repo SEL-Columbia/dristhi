@@ -220,6 +220,7 @@ public class AllConstants {
         public static final String NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME = "numberOfOCPDelivered";
         public static final String NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME = "numberOfCondomsSupplied";
         public static final String NUMBER_OF_CENTCHROMAN_PILLS_SUPPLIED_FIELD_NAME = "numberOfCentchromanPillsDelivered";
+        public static final String NUMBER_OF_ECPS_GIVEN_FIELD_NAME = "numberOfECPsGiven";
         public static final String FP_FOLLOWUP_DATE_FIELD_NAME = "fpFollowupDate";
         public static final String STERILIZATION_SIDE_EFFECT_FIELD_NAME = "sterilizationSideEffect";
         public static final String IS_STERILIZATION_FAILURE_FIELD_NAME = "isSterilizationFailure";
