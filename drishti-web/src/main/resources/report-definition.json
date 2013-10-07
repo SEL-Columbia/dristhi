@@ -1182,7 +1182,6 @@
                         ]
                     },
                     "reportWhen": [
-                        "IsChildLessThanOneYearOldRule",
                         "IsBCGImmunizationGivenRule",
                         "ServiceProvidedAtSubCenterRule"
                     ]
@@ -1205,7 +1204,6 @@
                         ]
                     },
                     "reportWhen": [
-                        "IsChildLessThanOneYearOldRule",
                         "IsOPV0ImmunizationGivenRule",
                         "ServiceProvidedAtSubCenterRule"
                     ]
@@ -1228,7 +1226,6 @@
                         ]
                     },
                     "reportWhen": [
-                        "IsChildLessThanOneYearOldRule",
                         "IsHepB0ImmunizationGivenRule",
                         "ServiceProvidedAtSubCenterRule"
                     ]
