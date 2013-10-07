@@ -44,7 +44,7 @@ public class FormSubmissionReportService {
 
         for (ReportIndicator reportIndicator : reportIndicators) {
             SafeMap reportFields = createReportFields(submission, reportIndicator);
-            boolean didAllRulesSucceed = processRules(reportIndicator.reportingRules(), reportFields);
+            boolean didAllRulesSucceed = processRules(reportIndicator.reportingRules(), reportFields, reportIndicator.indicator());
             if (didAllRulesSucceed) {
                 String entityId = reportIndicator.reportEntityIdField() == null
                         ? submission.entityId()
@@ -56,7 +56,7 @@ public class FormSubmissionReportService {
         }
     }
 
-    private boolean processRules(List<String> rules, SafeMap reportFields) {
+    private boolean processRules(List<String> rules, SafeMap reportFields, String indicator) {
         try {
             for (String ruleName : rules) {
                 IRule rule = rulesFactory.ruleByName(ruleName);
@@ -65,7 +65,8 @@ public class FormSubmissionReportService {
                 }
             }
         } catch (Exception e) {
-            logger.error(MessageFormat.format("Exception while applying rules. Message: {0}", e.getMessage()));
+            logger.error(MessageFormat.format("Exception while applying rules. Indicator: {0}. Message: {1}",
+                                                                    indicator,e.getMessage()));
             logger.error(getFullStackTrace(e));
             return false;
         }
