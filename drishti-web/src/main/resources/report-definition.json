@@ -274,6 +274,25 @@
             ]
         },
         {
+            "form": "record_ecps",
+            "indicators": [
+                {
+                    "indicator": "NRHM_ECP",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "ecpDate",
+                    "quantityField": "numberOfECPsGiven",
+                    "formFields": [
+                        "id",
+                        "numberOfECPsGiven",
+                        "ecpDate"
+                    ],
+                    "reportWhen": [
+                        "MoreThanZeroECPsSuppliedRule"
+                    ]
+                },
+            ]
+        },
+        {
             "form": "fp_change",
             "indicators": [
                 {
