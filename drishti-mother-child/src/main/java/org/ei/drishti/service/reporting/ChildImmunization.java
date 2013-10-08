@@ -30,6 +30,13 @@ public class ChildImmunization {
 
     public boolean isAllImmunizationsGiven(SafeMap reportFields) {
         List<String> immunizationsGivenList = getImmunizationGivenList(reportFields);
-        return immunizationsGivenList.containsAll(ALL_IMMUNIZATIONS_VALUE_LIST);
+        return immunizationsGivenList.containsAll(IMMUNIZATIONS_VALUE_LIST);
+    }
+
+    public boolean isImmunizationsGivenWithMeaslesOrMMR(SafeMap reportFields) {
+        List<String> immunizationsGivenList = getImmunizationGivenList(reportFields);
+        if(immunizationsGivenList.contains(AllConstants.ChildImmunizationFields.MMR_VALUE))
+            return immunizationsGivenList.containsAll(IMMUNIZATIONS_WITH_MMR_VALUE_LIST);
+        return immunizationsGivenList.containsAll(IMMUNIZATIONS_VALUE_LIST);
     }
 }

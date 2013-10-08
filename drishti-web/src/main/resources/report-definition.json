@@ -976,6 +976,56 @@
                         "IsOPVBoosterImmunizationGivenRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_M_ALL_VACC_2Y",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "gender"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildBetween12And23MonthsRule",
+                        "IsAllImmunizationsGivenEitherWithMeaslesOrMMRRule",
+                        "IsChildMaleRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_F_ALL_VACC_2Y",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "gender"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildBetween12And23MonthsRule",
+                        "IsAllImmunizationsGivenEitherWithMeaslesOrMMRRule",
+                        "IsChildFemaleRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
                 }
             ]
         },
