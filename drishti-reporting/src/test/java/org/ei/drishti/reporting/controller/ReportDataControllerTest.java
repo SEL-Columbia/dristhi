@@ -51,7 +51,8 @@ public class ReportDataControllerTest {
 
     @Test
     public void shouldSaveANMReportDataInDB() throws Exception {
-        ReportingData data = anmReportData("ANM X", "EC Number 1", FP_IUD, "2012-01-01").withQuantity("40");
+        ReportingData data = anmReportData("ANM X", "EC Number 1", FP_IUD, "2012-01-01").withQuantity("40").with("village", "village1")
+                .with("subCenter", "subcenter1").with("phc", "phc1").with("serviceProviderType", "anmReport");
 
         controller.submit(data);
 
