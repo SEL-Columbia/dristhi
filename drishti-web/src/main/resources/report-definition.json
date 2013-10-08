@@ -1356,15 +1356,8 @@
                         "referenceDate",
                         "serviceProvidedPlace"
                     ],
-                    "referenceData": {
-                        "type": "child",
-                        "idField": "id",
-                        "fields": [
-                            "dateOfBirth"
-                        ]
-                    },
                     "reportWhen": [
-                        "IsChildLessThanOneYearOldRule",
+                        "IsDeliveryDateOneYearInThePastRule",
                         "IsBCGImmunizationGivenRule",
                         "ServiceProvidedAtSubCenterRule"
                     ]
@@ -1379,15 +1372,8 @@
                         "referenceDate",
                         "serviceProvidedPlace"
                     ],
-                    "referenceData": {
-                        "type": "child",
-                        "idField": "id",
-                        "fields": [
-                            "dateOfBirth"
-                        ]
-                    },
                     "reportWhen": [
-                        "IsChildLessThanOneYearOldRule",
+                        "IsDeliveryDateOneYearInThePastRule",
                         "IsOPV0ImmunizationGivenRule",
                         "ServiceProvidedAtSubCenterRule"
                     ]
@@ -1402,15 +1388,8 @@
                         "referenceDate",
                         "serviceProvidedPlace"
                     ],
-                    "referenceData": {
-                        "type": "child",
-                        "idField": "id",
-                        "fields": [
-                            "dateOfBirth"
-                        ]
-                    },
                     "reportWhen": [
-                        "IsChildLessThanOneYearOldRule",
+                        "IsDeliveryDateOneYearInThePastRule",
                         "IsHepB0ImmunizationGivenRule",
                         "ServiceProvidedAtSubCenterRule"
                     ]
