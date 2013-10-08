@@ -900,6 +900,31 @@
                         "ServiceProvidedAtSub_CenterRule",
                         "IsChildMaleRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_F_ALL_VAC",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "gender"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildBetween9to12MonthsRule",
+                        "IsAllImmunizationsGivenRule",
+                        "ServiceProvidedAtSub_CenterRule",
+                        "IsChildFemaleRule"
+                    ]
                 }
             ]
         },
