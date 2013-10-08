@@ -289,7 +289,7 @@
                     "reportWhen": [
                         "MoreThanZeroECPsSuppliedRule"
                     ]
-                },
+                }
             ]
         },
         {
@@ -940,7 +940,7 @@
                     "reportWhen": [
                         "IsChildBetween9to12MonthsRule",
                         "IsAllImmunizationsGivenRule",
-                        "ServiceProvidedAtSub_CenterRule",
+                        "ServiceProvidedAtSub_CenterRule"
                     ]
                 },
                 {
@@ -957,9 +957,26 @@
                     "reportWhen": [
                         "IsChildMoreThan16MonthsRule",
                         "IsDPTBoosterImmunizationGivenRule",
-                        "ServiceProvidedAtSub_CenterRule",
+                        "ServiceProvidedAtSub_CenterRule"
                     ]
                 },
+                {
+                    "indicator": "NRHM_OPV",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven",
+                        "serviceProvidedPlace"
+                    ],
+                    "reportWhen": [
+                        "IsChildMoreThan16MonthsRule",
+                        "IsOPVBoosterImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                }
             ]
         },
         {
@@ -1711,6 +1728,6 @@
                     ]
                 }
             ]
-        },
+        }
     ]
 }
