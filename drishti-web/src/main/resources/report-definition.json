@@ -943,6 +943,23 @@
                         "ServiceProvidedAtSub_CenterRule",
                     ]
                 },
+                {
+                    "indicator": "NRHM_DPT",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven",
+                        "serviceProvidedPlace"
+                    ],
+                    "reportWhen": [
+                        "IsChildMoreThan16MonthsRule",
+                        "IsDPTBoosterImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule",
+                    ]
+                },
             ]
         },
         {
