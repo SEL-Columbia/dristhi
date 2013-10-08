@@ -79,14 +79,14 @@ public class ReportDataController {
     }
 
     private void throwExceptionIfMandatoryDataIsNotPresentForANMReport(ReportingData reportingData) throws ReportDataMissingException {
-        ArrayList missingData = reportingData.getMissingReportDataForServiceProvided();
+        ArrayList missingData = reportingData.getMissingReportDataForANMReport();
         if (!missingData.isEmpty()) {
             throw new ReportDataMissingException(reportingData, missingData);
         }
     }
 
     private void throwExceptionIfMandatoryDataIsNotPresentForServiceProvidedReport(ReportingData reportingData) throws ReportDataMissingException {
-        ArrayList missingData = reportingData.getMissingReportDataForANMReport();
+        ArrayList missingData = reportingData.getMissingReportDataForServiceProvided();
         if (!missingData.isEmpty()) {
             throw new ReportDataMissingException(reportingData, missingData);
         }
