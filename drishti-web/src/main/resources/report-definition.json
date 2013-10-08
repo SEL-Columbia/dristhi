@@ -613,7 +613,6 @@
                         "dateOfBirth",
                         "submissionDate"
                     ],
-
                     "reportWhen": [
                         "AgeIsLessThanOneYearRule"
                     ]
