@@ -4,9 +4,7 @@ import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Map;
-
-import static org.ei.drishti.util.EasyMap.create;
+import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -22,24 +20,18 @@ public class IsChildFemaleRuleTest {
 
     @Test
     public void shouldReturnFalseWhenChildIsNotFemale() {
-        Map<String, String> reportData = create("gender", "male")
-                .map();
-        boolean didRuleSucceed = rule.apply(new SafeMap(reportData));
+        boolean didRuleSucceed = rule.apply(new SafeMap(mapOf("gender", "male")));
 
         assertFalse(didRuleSucceed);
 
-        reportData = create("gender", "")
-                .map();
-        didRuleSucceed = rule.apply(new SafeMap(reportData));
+        didRuleSucceed = rule.apply(new SafeMap(mapOf("gender", "")));
 
         assertFalse(didRuleSucceed);
     }
 
     @Test
     public void shouldReturnTrueWhenChildIsFemale() {
-        Map<String, String> reportData = create("gender", "female")
-                .map();
-        boolean didRuleSucceed = rule.apply(new SafeMap(reportData));
+        boolean didRuleSucceed = rule.apply(new SafeMap(mapOf("gender", "female")));
 
         assertTrue(didRuleSucceed);
     }

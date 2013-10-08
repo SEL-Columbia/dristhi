@@ -7,20 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
 
 public class ChildImmunization {
     public boolean isImmunizedWith(String immunisation, SafeMap reportFields) {
-        String immunizationsGiven = reportFields.get(AllConstants.ChildImmunizationFields.IMMUNIZATIONS_GIVEN_FIELD_NAME) != null ?
-                reportFields.get(AllConstants.ChildImmunizationFields.IMMUNIZATIONS_GIVEN_FIELD_NAME) : "";
-        List<String> immunizationsGivenList = new ArrayList<>(asList(immunizationsGiven.split(AllConstants.SPACE)));
+        List<String> immunizationsGivenList = getImmunizationGivenList(reportFields);
 
-        if (reportFields.has(AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME)) {
-            String previousImmunizations = reportFields.get(AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME) != null ?
-                    reportFields.get(AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME) : "";
+        if (reportFields.has(PREVIOUS_IMMUNIZATIONS_FIELD_NAME)) {
+            String previousImmunizations = reportFields.get(PREVIOUS_IMMUNIZATIONS_FIELD_NAME) != null ?
+                    reportFields.get(PREVIOUS_IMMUNIZATIONS_FIELD_NAME) : "";
             List<String> previousImmunizationsList = new ArrayList<>(asList(previousImmunizations.split(AllConstants.SPACE)));
             immunizationsGivenList.removeAll(previousImmunizationsList);
         }
-
         return immunizationsGivenList.contains(immunisation);
+    }
+
+    private List<String> getImmunizationGivenList(SafeMap reportFields) {
+        String immunizationsGiven = reportFields.get(IMMUNIZATIONS_GIVEN_FIELD_NAME) != null ?
+                reportFields.get(IMMUNIZATIONS_GIVEN_FIELD_NAME) : "";
+        return new ArrayList<>(asList(immunizationsGiven.split(AllConstants.SPACE)));
+    }
+
+    public boolean isAllImmunizationsGiven(SafeMap reportFields) {
+        List<String> immunizationsGivenList = getImmunizationGivenList(reportFields);
+        return immunizationsGivenList.containsAll(ALL_IMMUNIZATIONS_VALUE_LIST);
     }
 }

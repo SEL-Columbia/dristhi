@@ -263,6 +263,19 @@ public class AllConstants {
         public static final String PENTAVALENT_1_VALUE = "pentavalent_1";
         public static final String PENTAVALENT_2_VALUE = "pentavalent_2";
         public static final String PENTAVALENT_3_VALUE = "pentavalent_3";
+        public static final List<String> ALL_IMMUNIZATIONS_VALUE_LIST = new ArrayList<String>() {{
+            add(BCG_VALUE);
+            add(PENTAVALENT_1_VALUE);
+            add(PENTAVALENT_2_VALUE);
+            add(PENTAVALENT_3_VALUE);
+            add(OPV_0_VALUE);
+            add(OPV_1_VALUE);
+            add(OPV_2_VALUE);
+            add(OPV_3_VALUE);
+            add(MEASLES_VALUE);
+
+        }};
+
 
         public static final String MMR_VALUE = "mmr";
         public static final String JE_VALUE = "je";
