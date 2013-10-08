@@ -85,3 +85,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_DPT');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_OPV');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_M_ALL_VACC_2Y');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_F_ALL_VACC_2Y');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ALL_VACC_2Y');

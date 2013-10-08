@@ -1026,6 +1026,23 @@
                         "IsChildFemaleRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_ALL_VACC_2Y",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven",
+                        "serviceProvidedPlace"
+                    ],
+                    "reportWhen": [
+                        "IsChildBetween12And23MonthsRule",
+                        "IsAllImmunizationsGivenEitherWithMeaslesOrMMRRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
                 }
             ]
         },
