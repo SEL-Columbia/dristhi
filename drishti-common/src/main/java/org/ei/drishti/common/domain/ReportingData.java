@@ -73,7 +73,7 @@ public class ReportingData implements Serializable {
         return type;
     }
 
-    public ArrayList getMissingReportDataForServiceProvided() {
+    public ArrayList getMissingReportDataForANMReport() {
         ArrayList missingData = new ArrayList();
         addToMissingDataIfFieldValueIsMissing(ANM_IDENTIFIER, missingData);
         addToMissingDataIfFieldValueIsMissing(EXTERNAL_ID, missingData);
@@ -82,7 +82,7 @@ public class ReportingData implements Serializable {
         return missingData;
     }
 
-    public ArrayList getMissingReportDataForANMReport() {
+    public ArrayList getMissingReportDataForServiceProvided() {
         ArrayList missingData = new ArrayList();
         addToMissingDataIfFieldValueIsMissing(ANM_IDENTIFIER, missingData);
         addToMissingDataIfFieldValueIsMissing(SERVICE_PROVIDER_TYPE, missingData);
