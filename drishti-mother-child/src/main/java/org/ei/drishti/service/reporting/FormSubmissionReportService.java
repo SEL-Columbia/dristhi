@@ -27,6 +27,7 @@ public class FormSubmissionReportService {
     private IReporterFactory reporterFactory;
     private IReferenceDataRepository referenceDataRepository;
     private IReportDefinitionLoader reportDefinitionLoader;
+    private ReportDefinition reportDefinition;
 
     @Autowired
     public FormSubmissionReportService(ILocationLoader locationLoader, IRulesFactory rulesFactory, IReporterFactory reporterFactory, IReferenceDataRepository referenceDataRepository, IReportDefinitionLoader reportDefinitionLoader) {
@@ -38,8 +39,11 @@ public class FormSubmissionReportService {
     }
 
     public void reportFor(FormSubmission submission) throws Exception {
-        //#TODO: Cache the report definition, it need not be loaded for every form submission
-        ReportDefinition reportDefinition = reportDefinitionLoader.load();
+        if (reportDefinition == null) {
+            logger.info("Loading report definition.");
+            reportDefinition = reportDefinitionLoader.load();
+        }
+
         List<ReportIndicator> reportIndicators = reportDefinition.getIndicatorsByFormName(submission.formName());
 
         for (ReportIndicator reportIndicator : reportIndicators) {
@@ -66,7 +70,7 @@ public class FormSubmissionReportService {
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("Exception while applying rules. Indicator: {0}. Message: {1}",
-                                                                    indicator,e.getMessage()));
+                    indicator, e.getMessage()));
             logger.error(getFullStackTrace(e));
             return false;
         }

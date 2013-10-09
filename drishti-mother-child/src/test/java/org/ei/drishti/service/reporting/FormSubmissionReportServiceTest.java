@@ -53,6 +53,22 @@ public class FormSubmissionReportServiceTest {
     }
 
     @Test
+    public void shouldLoadReportDefinitionOnlyWhenItIsNull() throws Exception {
+        FormSubmission submission = create()
+                .withFormName("new_form")
+                .withANMId("anm id 1")
+                .withEntityId("child id 1")
+                .addFormField("submissionDate", "2012-03-01")
+                .build();
+        when(reportDefinitionLoader.load()).thenReturn(reportDefinition());
+
+        service.reportFor(submission);
+        service.reportFor(submission);
+
+        verify(reportDefinitionLoader, times(1)).load();
+    }
+
+    @Test
     public void shouldReportIndicatorWhenAllRulesSucceed() throws Exception {
         FormSubmission submission = create()
                 .withFormName("child_close")
