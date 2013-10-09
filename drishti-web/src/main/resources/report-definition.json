@@ -1056,9 +1056,15 @@
                     "formFields": [
                         "id",
                         "sterilizationDeathDate",
-                        "isSterilizationDeath",
-                        "currentMethod"
+                        "isSterilizationDeath"
                     ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "currentMethod"
+                        ]
+                    },
                     "reportWhen": [
                         "CurrentFPMethodIsMaleSterilizationRule",
                         "IsDeathDueToSterilizationRule"
@@ -1071,9 +1077,15 @@
                     "formFields": [
                         "id",
                         "sterilizationDeathDate",
-                        "isSterilizationDeath",
-                        "currentMethod"
+                        "isSterilizationDeath"
                     ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "currentMethod"
+                        ]
+                    },
                     "reportWhen": [
                         "CurrentFPMethodIsFemaleSterilizationRule",
                         "IsDeathDueToSterilizationRule"
@@ -1086,9 +1098,15 @@
                     "formFields": [
                         "id",
                         "sterilizationDeathDate",
-                        "isSterilizationDeath",
-                        "currentMethod"
+                        "isSterilizationDeath"
                     ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "currentMethod"
+                        ]
+                    },
                     "reportWhen": [
                         "CurrentFPMethodIsEitherMaleOrFemaleSterilizationRule",
                         "IsDeathDueToSterilizationRule"
