@@ -1605,25 +1605,6 @@
             "form": "pnc_visit",
             "indicators": [
                 {
-                    "indicator": "NRHM_PNC24",
-                    "reportEntityType": "mother",
-                    "serviceProvidedDateField": "pncVisitDate",
-                    "formFields": [
-                        "id",
-                        "pncVisitDate",
-                        "referenceDate"
-                    ],
-                    "referenceData": {
-                        "type": "mother",
-                        "idField": "id",
-                        "fields": ["deliveryPlace"]
-                    },
-                    "reportWhen": [
-                        "DeliveryHappenedAtHomeRule",
-                        "PNCVisitHappenedLessThan24HoursAfterDeliveryRule"
-                    ]
-                },
-                {
                     "indicator": "NRHM_48HRS",
                     "reportEntityType": "mother",
                     "serviceProvidedDateField": "dischargeDate",

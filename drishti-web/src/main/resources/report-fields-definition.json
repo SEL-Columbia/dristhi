@@ -74,7 +74,9 @@
     "pnc_visit": [
         "id",
         "pncVisitNumber",
-        "pncVisitDate"
+        "pncVisitDate",
+        "deliveryPlace",
+        "referenceDate"
     ],
     "child_immunizations": [
         "id",

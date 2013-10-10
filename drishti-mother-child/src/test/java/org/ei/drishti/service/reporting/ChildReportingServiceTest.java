@@ -584,6 +584,9 @@ public class ChildReportingServiceTest {
                 .put("id", "MOTHER-CASE-1")
                 .put("childId", "CASE X")
                 .put("urineStoolProblems", "diarrhea")
+                .put("deliveryPlace", "home")
+                .put("referenceDate", "2012-01-01")
+                .put("pncVisitDate", "2012-01-01")
                 .map()));
 
         verifyBothReportingCalls(CHILD_DIARRHEA, "2012-01-01");
@@ -602,9 +605,12 @@ public class ChildReportingServiceTest {
                 .put("id", "MOTHER-CASE-1")
                 .put("childId", "CASE X")
                 .put("urineStoolProblems", null)
+                .put("deliveryPlace", "home")
+                .put("referenceDate", "2012-01-01")
+                .put("pncVisitDate", "2012-01-01")
                 .map()));
 
-        verifyZeroInteractions(reportingService);
+        verifyNoReportingCalls(CHILD_DIARRHEA, "2012-01-01");
     }
 
     @Test
@@ -620,9 +626,96 @@ public class ChildReportingServiceTest {
                 .put("id", "MOTHER-CASE-1")
                 .put("childId", "CASE X")
                 .put("urineStoolProblems", "vomiting")
+                .put("deliveryPlace", "home")
+                .put("referenceDate", "2012-01-01")
+                .put("pncVisitDate", "2012-01-01")
                 .map()));
 
-        verifyZeroInteractions(reportingService);
+        verifyNoReportingCalls(CHILD_DIARRHEA, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportPNCVisitThatHappenOnTheSameDayOfHomeDelivery() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
+                .put("id", "MOTHER-CASE-1")
+                .put("childId", "CASE X")
+                .put("urineStoolProblems", "diarrhea")
+                .put("deliveryPlace", "home")
+                .put("referenceDate", "2012-01-01")
+                .put("pncVisitDate", "2012-01-01")
+                .map()));
+
+        verifyBothReportingCalls(NRHM_PNC24, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportPNCVisitThatHappenNextDayOfHomeDelivery() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
+                .put("id", "MOTHER-CASE-1")
+                .put("childId", "CASE X")
+                .put("urineStoolProblems", "diarrhea")
+                .put("deliveryPlace", "home")
+                .put("referenceDate", "2012-01-01")
+                .put("pncVisitDate", "2012-01-02")
+                .map()));
+
+        verifyBothReportingCalls(NRHM_PNC24, "2012-01-02");
+    }
+
+    @Test
+    public void shouldNotReportPNCVisitThatHappenTwoOrMoreDaysOfHomeDelivery() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
+                .put("id", "MOTHER-CASE-1")
+                .put("childId", "CASE X")
+                .put("urineStoolProblems", "diarrhea")
+                .put("deliveryPlace", "home")
+                .put("referenceDate", "2012-01-01")
+                .put("pncVisitDate", "2012-01-03")
+                .map()));
+
+        verifyNoReportingCalls(NRHM_PNC24, "2012-01-01");
+    }
+
+    @Test
+    public void shouldNotReportPNCVisitForNonHomeDelivery() {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
+                .put("id", "MOTHER-CASE-1")
+                .put("childId", "CASE X")
+                .put("urineStoolProblems", "diarrhea")
+                .put("deliveryPlace", "phc")
+                .put("referenceDate", "2012-01-01")
+                .put("pncVisitDate", "2012-01-03")
+                .map()));
+
+        verifyNoReportingCalls(NRHM_PNC24, "2012-01-01");
     }
 
     @Test

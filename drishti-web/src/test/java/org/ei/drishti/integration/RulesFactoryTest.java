@@ -150,15 +150,6 @@ public class RulesFactoryTest {
     }
 
     @Test
-    public void shouldLoadPNCVisitHappenedLessThan24HoursAfterDeliveryRuleClassByName() throws Exception {
-        String ruleName = "PNCVisitHappenedLessThan24HoursAfterDeliveryRule";
-
-        IRule rule = rulesFactory.ruleByName(ruleName);
-
-        assertTrue(rule instanceof PNCVisitHappenedLessThan24HoursAfterDeliveryRule);
-    }
-
-    @Test
     public void shouldLoadWomanIsDischargedWithin48HoursOfDeliveryRuleClassByName() throws Exception {
         String ruleName = "WomanIsDischargedWithin48HoursOfDeliveryRule";
 

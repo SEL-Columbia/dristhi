@@ -27,7 +27,8 @@ import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.ChildIllnessFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH;
-import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.*;
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DELIVERY_PLACE;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_PROBLEMS;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
@@ -142,10 +143,25 @@ public class ChildReportingService {
     public void pncVisitHappened(SafeMap reportData) {
         String id = reportData.get(CHILD_ID_FIELD);
         Child child = allChildren.findByCaseId(id);
+        Location location = loadLocationOfChild(child);
 
+        reportDIarrhea(reportData, child, location);
+        reportVisitsThatHappenWithin24HoursOfHomeDelivery(reportData, child, location);
+    }
+
+    private void reportVisitsThatHappenWithin24HoursOfHomeDelivery(SafeMap reportData, Child child, Location location) {
+        LocalDate deliveryDate = LocalDate.parse(reportData.get(REFERENCE_DATE));
+        LocalDate pncVisitDate = LocalDate.parse(reportData.get(AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME));
+
+        if (HOME_FIELD_VALUE.equalsIgnoreCase(reportData.get(DELIVERY_PLACE))
+                && (pncVisitDate.equals(deliveryDate) || pncVisitDate.equals(deliveryDate.plusDays(1)))) {
+            reportToBoth(child, NRHM_PNC24, reportData.get(VISIT_DATE_FIELD_NAME), location);
+        }
+    }
+
+    private void reportDIarrhea(SafeMap reportData, Child child, Location location) {
         String problems = reportData.get(URINE_STOOL_PROBLEMS);
         if (!StringUtils.isBlank(problems) && problems.contains(AllConstants.CommonChildFormFields.DIARRHEA_VALUE)) {
-            Location location = loadLocationOfChild(child);
             reportToBoth(child, CHILD_DIARRHEA, reportData.get(VISIT_DATE_FIELD_NAME), location);
         }
     }
