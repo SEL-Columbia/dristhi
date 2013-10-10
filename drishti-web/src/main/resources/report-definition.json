@@ -1794,6 +1794,33 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "ifa",
+            "indicators": [
+                {
+                    "indicator": "NRHM_IFA_100",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ifaTabletsDate",
+                    "formFields": [
+                        "id",
+                        "numberOfIFATabletsGiven",
+                        "ifaTabletsDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "totalNumberOfIFATabletsGiven"
+                        ]
+                    },
+                    "reportWhen": [
+                        "MoreThan100IFATabletsAreProvidedRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                }
+            ]
         }
     ]
 }
