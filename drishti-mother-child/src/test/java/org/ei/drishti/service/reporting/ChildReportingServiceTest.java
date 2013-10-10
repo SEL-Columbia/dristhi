@@ -269,6 +269,10 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
         service.registerChild(reportData);
 
         verifyBothReportingCalls(OPV, "2012-01-01");
@@ -286,6 +290,10 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
         service.registerChild(reportData);
 
         verifyBothReportingCalls(INFANT_REGISTRATION, "2012-01-01");
@@ -304,6 +312,10 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
         service.registerChild(reportData);
 
         verifyBothReportingCalls(LBW, "2012-01-01");
@@ -321,6 +333,10 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "yes");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
         service.registerChild(reportData);
 
         verifyBothReportingCalls(BF_POST_BIRTH, "2012-01-01");
@@ -338,6 +354,10 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
         service.registerChild(reportData);
 
         verifyBothReportingCalls(WEIGHED_AT_BIRTH, "2012-01-01");
@@ -355,6 +375,10 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
         service.registerChild(reportData);
 
         verifyNoReportingCalls(WEIGHED_AT_BIRTH, "2012-01-01");
@@ -372,6 +396,10 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
         service.registerChild(reportData);
 
         verifyNoReportingCalls(BF_POST_BIRTH, "2012-01-01");
@@ -389,6 +417,10 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
         service.registerChild(reportData);
 
         verifyNoReportingCalls(LBW, "2012-01-01");
@@ -406,9 +438,93 @@ public class ChildReportingServiceTest {
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
         service.registerChild(reportData);
 
         verifyNoReportingCalls(LBW, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportMaleLiveBirthWhenMaleChildIsRegisteredAndDeliveryHappenedAtHome() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "male")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "home");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+        service.registerChild(reportData);
+
+        verifyBothReportingCalls(MALE_LIVE_BIRTH, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportMaleLiveBirthWhenMaleChildIsRegisteredAndDeliveryHappenedAtSubCenter() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "male")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "subcenter");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+        service.registerChild(reportData);
+
+        verifyBothReportingCalls(MALE_LIVE_BIRTH, "2012-01-01");
+    }
+
+    @Test
+    public void shouldNotReportMaleLiveBirthWhenFemaleChildIsRegistered() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "subcenter");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+        service.registerChild(reportData);
+
+        verifyNoReportingCalls(MALE_LIVE_BIRTH, "2012-01-01");
+    }
+
+    @Test
+    public void shouldNotReportMaleLiveBirthWhenMaleChildIsRegisteredAndDeliveryHappenedAtNeigherHomeNorSubCenter() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+        service.registerChild(reportData);
+
+        verifyNoReportingCalls(MALE_LIVE_BIRTH, "2012-01-01");
     }
 
     @Test
