@@ -1,6 +1,7 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.common.AllConstants;
+import org.ei.drishti.common.util.IntegerUtil;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -110,10 +111,16 @@ public class ANCService {
     }
 
     public void ifaTabletsGiven(FormSubmission submission) {
-        if (!allMothers.exists(submission.entityId())) {
+        Mother mother = allMothers.findByCaseId(submission.entityId());
+        if (mother == null) {
             logger.warn("Tried to handle ifa tablets given without registered mother. Submission: " + submission);
             return;
         }
+
+        int numberOfIFATabletsGivenThisTime =
+                IntegerUtil.tryParse(submission.getField(NUMBER_OF_IFA_TABLETS_GIVEN), 0);
+        mother.updateTotalNumberOfIFATabletsGiven(numberOfIFATabletsGivenThisTime);
+        allMothers.update(mother);
 
         ancSchedulesService.ifaTabletsGiven(
                 submission.entityId(),

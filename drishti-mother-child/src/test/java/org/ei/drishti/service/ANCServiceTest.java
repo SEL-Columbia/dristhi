@@ -29,7 +29,7 @@ public class ANCServiceTest {
     @Mock
     private ActionService actionService;
     @Mock
-    private AllMothers mothers;
+    private AllMothers allMothers;
     @Mock
     private AllEligibleCouples eligibleCouples;
     @Mock
@@ -48,7 +48,7 @@ public class ANCServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ANCService(mothers, eligibleCouples, ancSchedulesService, actionService, motherReportingService, reportFieldsDefinition);
+        service = new ANCService(allMothers, eligibleCouples, ancSchedulesService, actionService, motherReportingService, reportFieldsDefinition);
     }
 
     @Test
@@ -67,12 +67,12 @@ public class ANCServiceTest {
 
         Mother mother = new Mother("Mother 1", "ec id 1", "thayi 1").withLMP(lmp);
         when(eligibleCouples.exists("ec id 1")).thenReturn(true);
-        when(mothers.findByCaseId("Mother 1")).thenReturn(mother);
+        when(allMothers.findByCaseId("Mother 1")).thenReturn(mother);
         when(reportFieldsDefinition.get("anc_registration")).thenReturn(asList("someKey"));
 
         service.registerANC(submission);
 
-        verify(mothers).update(mother.withAnm("anm id 1"));
+        verify(allMothers).update(mother.withAnm("anm id 1"));
         verify(motherReportingService).registerANC(new SafeMap(mapOf("someKey", "someValue")));
     }
 
@@ -87,7 +87,7 @@ public class ANCServiceTest {
 
         service.registerANC(submission);
 
-        verifyZeroInteractions(mothers);
+        verifyZeroInteractions(allMothers);
         verifyZeroInteractions(ancSchedulesService);
         verifyZeroInteractions(motherReportingService);
     }
@@ -106,7 +106,7 @@ public class ANCServiceTest {
                 .build();
         Mother mother = new Mother("Mother 1", "ec id 1", "thayi 1").withLMP(lmp);
         when(eligibleCouples.exists("ec id 1")).thenReturn(true);
-        when(mothers.findByCaseId("Mother 1")).thenReturn(mother);
+        when(allMothers.findByCaseId("Mother 1")).thenReturn(mother);
         when(reportFieldsDefinition.get("anc_registration")).thenReturn(asList("someKey"));
 
         service.registerANC(submission);
@@ -130,11 +130,11 @@ public class ANCServiceTest {
                 .build();
         Mother mother = new Mother("Mother 1", "ec id 1", "thayi 1").withLMP(lmp);
         when(eligibleCouples.exists("ec id 1")).thenReturn(true);
-        when(mothers.findByCaseId("Mother 1")).thenReturn(mother);
+        when(allMothers.findByCaseId("Mother 1")).thenReturn(mother);
 
         service.registerOutOfAreaANC(submission);
 
-        verify(mothers).update(mother.withAnm("anm id 1"));
+        verify(allMothers).update(mother.withAnm("anm id 1"));
         verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp));
     }
 
@@ -149,7 +149,7 @@ public class ANCServiceTest {
 
         service.registerOutOfAreaANC(submission);
 
-        verifyZeroInteractions(mothers);
+        verifyZeroInteractions(allMothers);
         verifyZeroInteractions(ancSchedulesService);
     }
 
@@ -163,7 +163,7 @@ public class ANCServiceTest {
                 .addFormField("ancVisitNumber", "2")
                 .addFormField("someKey", "someValue")
                 .build();
-        when(mothers.exists("entity id 1")).thenReturn(true);
+        when(allMothers.exists("entity id 1")).thenReturn(true);
         when(reportFieldsDefinition.get("anc_visit")).thenReturn(asList("someKey"));
 
         service.ancVisit(submission);
@@ -180,7 +180,7 @@ public class ANCServiceTest {
                 .withEntityId("entity id 1")
                 .build();
 
-        when(mothers.exists("entity id 1")).thenReturn(false);
+        when(allMothers.exists("entity id 1")).thenReturn(false);
 
         service.ancVisit(submission);
 
@@ -200,7 +200,7 @@ public class ANCServiceTest {
                 .addFormField("someKey", "someValue")
                 .build();
 
-        when(mothers.exists("entity id 1")).thenReturn(true);
+        when(allMothers.exists("entity id 1")).thenReturn(true);
         when(reportFieldsDefinition.get("tt_1")).thenReturn(asList("someKey"));
 
         service.ttProvided(submission);
@@ -218,7 +218,7 @@ public class ANCServiceTest {
                 .addFormField("hbTestDate", "2013-01-01")
                 .addFormField("anaemicStatus", "Anaemic")
                 .build();
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1").withLMP(parse("2012-01-01")));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1").withLMP(parse("2012-01-01")));
 
         service.hbTest(submission);
 
@@ -233,7 +233,7 @@ public class ANCServiceTest {
                 .withEntityId("entity id 1")
                 .addFormField("someKey", "someValue")
                 .build();
-        when(mothers.exists("entity id 1")).thenReturn(true);
+        when(allMothers.exists("entity id 1")).thenReturn(true);
         when(reportFieldsDefinition.get("delivery_outcome")).thenReturn(asList("someKey"));
 
         service.deliveryOutcome(submission);
@@ -244,7 +244,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldDoNothingIfMotherIsNotRegisteredWhileDeliveryOutcome() {
-        when(mothers.exists("entity id 1")).thenReturn(false);
+        when(allMothers.exists("entity id 1")).thenReturn(false);
 
         service.deliveryOutcome(create().build());
 
@@ -255,7 +255,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldUnEnrollAMotherFromScheduleWhenANCCaseIsClosed() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().build());
 
@@ -264,16 +264,16 @@ public class ANCServiceTest {
 
     @Test
     public void shouldCloseAMotherWhenANCIsClosed() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().build());
 
-        verify(mothers).close("entity id 1");
+        verify(allMothers).close("entity id 1");
     }
 
     @Test
     public void shouldNotUnEnrollAMotherFromScheduleWhenSheIsNotRegistered() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(null);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(null);
 
         service.close(create().build());
 
@@ -282,7 +282,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldCloseECCaseAlsoWhenANCIsClosedAndReasonIsDeath() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().addFormField("closeReason", "death_of_woman").build());
 
@@ -291,7 +291,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldCloseECCaseAlsoWhenANCIsClosedAndReasonIsPermanentRelocation() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().addFormField("closeReason", "relocation_permanent").build());
 
@@ -300,7 +300,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotCloseECCaseWhenANCIsClosedAndReasonIsNeitherDeathOrPermanentRelocation() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().addFormField("closeReason", "other_reason").build());
 
@@ -309,7 +309,7 @@ public class ANCServiceTest {
 
     @Test
     public void shouldMarkAllActionsAsInactiveWhenANCIsClosed() {
-        when(mothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
         service.close(create().build());
 
@@ -318,7 +318,10 @@ public class ANCServiceTest {
 
     @Test
     public void shouldUpdateIFASchedulesWhenNumberOfIFATabletsGivenIsMoreThanZero() {
-        when(mothers.exists("entity id 1")).thenReturn(true);
+        Mother mother = new Mother("entity id 1", "ec entity id 1", "thayi 1")
+                .withDetails(create("some-key", "some-value").put("totalNumberOfIFATabletsGiven", "30").map());
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+
 
         FormSubmission submission = create()
                 .withFormName("ifa")
@@ -332,7 +335,8 @@ public class ANCServiceTest {
 
     @Test
     public void shouldNotDoAnythingWhenIFATabletsAreGivenForNonExistentEC() {
-        when(mothers.exists("entity id 1")).thenReturn(false);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(null);
+
 
         FormSubmission submission = create()
                 .withFormName("ifa")
@@ -342,5 +346,41 @@ public class ANCServiceTest {
         service.ifaTabletsGiven(submission);
 
         verifyZeroInteractions(ancSchedulesService);
+    }
+
+    @Test
+    public void shouldCreateTotalNumberOfIFATabletsGivenWhenIFATabletsIsGivenForFirstTime() {
+        Mother mother = new Mother("entity id 1", "ec entity id 1", "thayi 1")
+                .withDetails(mapOf("some-key", "some-value"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+
+        FormSubmission submission = create()
+                .withFormName("ifa")
+                .withEntityId("entity id 1")
+                .addFormField("numberOfIFATabletsGiven", "30")
+                .build();
+        service.ifaTabletsGiven(submission);
+
+        Mother updatedMother = new Mother("entity id 1", "ec entity id 1", "thayi 1")
+                .withDetails(create("some-key", "some-value").put("totalNumberOfIFATabletsGiven", "30").map());
+        verify(allMothers).update(updatedMother);
+    }
+
+    @Test
+    public void shouldMaintainTotalNumberOfIFATabletsGiven() {
+        Mother mother = new Mother("entity id 1", "ec entity id 1", "thayi 1")
+                .withDetails(create("some-key", "some-value").put("totalNumberOfIFATabletsGiven", "30").map());
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+
+        FormSubmission submission = create()
+                .withFormName("ifa")
+                .withEntityId("entity id 1")
+                .addFormField("numberOfIFATabletsGiven", "60")
+                .build();
+        service.ifaTabletsGiven(submission);
+
+        Mother updatedMother = new Mother("entity id 1", "ec entity id 1", "thayi 1")
+                .withDetails(create("some-key", "some-value").put("totalNumberOfIFATabletsGiven", "90").map());
+        verify(allMothers).update(updatedMother);
     }
 }

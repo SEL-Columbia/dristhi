@@ -4,12 +4,15 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.ei.drishti.common.util.IntegerUtil;
 import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.LocalDate;
 import org.motechproject.model.MotechBaseDataObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.ei.drishti.common.AllConstants.IFAFields.TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN;
 
 @TypeDiscriminator("doc.type === 'Mother'")
 public class Mother extends MotechBaseDataObject {
@@ -130,6 +133,12 @@ public class Mother extends MotechBaseDataObject {
 
     private String getEcCaseId() {
         return ecCaseId;
+    }
+
+    public void updateTotalNumberOfIFATabletsGiven(int numberOfIFATabletsGivenThisTime) {
+        int totalNumberOfIFATabletsGiven = IntegerUtil.tryParse(getDetail(TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN), 0);
+        details().put(TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN,
+                String.valueOf(totalNumberOfIFATabletsGiven + numberOfIFATabletsGivenThisTime));
     }
 
     @Override
