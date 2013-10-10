@@ -112,6 +112,7 @@ class Forms
       instance_id = anc_visit['Instance ID']
       entity_id = anc['Entity ID']
       submission_date = anc_visit['Submission date']
+      reference_date = anc['Reference date']
 
       if anc['OA'].downcase == "true" then
         ecId = anc['EC ID']

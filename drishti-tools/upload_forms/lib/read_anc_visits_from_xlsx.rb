@@ -47,7 +47,6 @@ class ANCVisits
           anc_visit.convert_to_date "ANC visit date", :empty => Date.today.to_s
 
           anc_visit.add_field "Instance ID", Guid.new.to_s
-          anc_visit.add_field "Reference date", anc_visit['ANC visit date']
           anc_visit.add_field "Submission date", Date.today.to_s
 
           @anc_visits << anc_visit

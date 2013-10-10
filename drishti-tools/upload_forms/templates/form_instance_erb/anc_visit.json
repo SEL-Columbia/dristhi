@@ -90,7 +90,7 @@
             },
             {
                 "name":"referenceDate",
-                "value":"<%= anc_visit['Reference date']%>",
+                "value":"<%= reference_date %>",
                 "source":"mother.referenceDate"
             },
             {
