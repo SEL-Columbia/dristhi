@@ -69,7 +69,8 @@
         "motherId",
         "deliveryType",
         "deliveryPlace",
-        "referenceDate"
+        "referenceDate",
+        "deliveryOutcome"
     ],
     "pnc_visit": [
         "id",
