@@ -180,7 +180,9 @@
             },
             {
                 "name": "familyPlanningMethodChangeDate",
-                "value": "<%= ec['FP Start Date'] %>",
+                <% if ec['FP Start Date'] != '' %>
+                    "value": "<%= ec['FP Start Date'] %>",
+                <% end %>
                 "source": "eligible_couple.familyPlanningMethodChangeDate"
             },
             {

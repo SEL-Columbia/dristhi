@@ -75,7 +75,7 @@ class ECs
 
         ec.convert_to_date "Acceptance Date", :empty => Date.today.to_s
         ec.add_field "DMPA Injection Date", (ec['FP Method'] == 'dmpa_injectable' ? ec['Acceptance Date'] : nil)
-        ec.add_field "FP Start Date", (Date.parse(ec['Acceptance Date']).to_s rescue Date.today.to_s)
+        ec.add_field "FP Start Date", ec['FP Method'] != 'none' ? ((Date.parse(ec['Acceptance Date']).to_s rescue Date.today.to_s)) : ''
         ec.add_field "Entity ID", Guid.new.to_s
         ec.add_field "Instance ID", Guid.new.to_s
 
