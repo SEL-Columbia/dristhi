@@ -39,7 +39,7 @@ class PNCVisits
           pnc_visit.convert_value "Wife Name", :empty => "Wife Name"
           pnc_visit.convert_value "Husband Name", :empty => "Husband Name"
           pnc_visit.convert_value "Village Code", Village.code_to_village_hash
-          pnc_visit.convert_value "Discharge date", :empty => Date.today.to_s
+          pnc_visit.convert_to_date "Discharge date", :empty => Date.today.to_s
           pnc_visit.convert_to_date "Visit date", :empty => Date.today.to_s
           pnc_visit.convert_value "Visit place", :empty => "phc"
           pnc_visit.convert_value "Visit person", :empty => "anm"

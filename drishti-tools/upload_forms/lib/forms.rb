@@ -284,7 +284,7 @@ class Forms
       end
 
       submission_date = pnc_visit['Submission date']
-      visit_day = (Date.parse(pnc['Delivery date']) - Date.parse(pnc_visit['Visit date'])).to_i
+      visit_day = (Date.parse(pnc_visit['Visit date']) - Date.parse(pnc['Delivery date'])).to_i
       form_instance = form_instance_erb.result(binding)
       pnc_visit_json = form_submission_erb.result(binding)
       File.open("output/PNCVisit_#{pnc_visit['Instance ID']}.json", "w") do |f|
