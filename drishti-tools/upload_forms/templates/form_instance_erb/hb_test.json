@@ -35,7 +35,6 @@
             },
             {
                 "name": "highRiskReason",
-                "value": "",
                 "source": "mother.highRiskReason"
             },
             {
