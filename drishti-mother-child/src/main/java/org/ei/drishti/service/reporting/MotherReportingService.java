@@ -84,6 +84,8 @@ public class MotherReportingService {
                 .isAfter(parse(reportData.get(REFERENCE_DATE))));
         if (isRegisteredWithinTwelveWeeks) {
             reportToBoth(mother, ANC_BEFORE_12_WEEKS, reportData.get(REGISTRATION_DATE), location);
+        } else {
+            reportToBoth(mother, ANC_AFTER_12_WEEKS, reportData.get(REGISTRATION_DATE), location);
         }
     }
 

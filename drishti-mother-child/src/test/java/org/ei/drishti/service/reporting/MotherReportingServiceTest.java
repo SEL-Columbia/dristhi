@@ -64,7 +64,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldNotReportANCRegistrationWhichHasBeenDoneAfterTwelveWeeksLMPAsEarlyRegistration() throws Exception {
+    public void shouldReportANCRegistrationWhichHasBeenDoneAfterTwelveWeeksLMPAsLateRegistration() throws Exception {
         SafeMap reportData = new SafeMap();
         reportData.put("referenceDate", "2011-10-08");
         reportData.put("motherId", "CASE-1");
@@ -75,6 +75,22 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         service.registerANC(reportData);
 
         verifyNoReportingCalls(ANC_BEFORE_12_WEEKS, "2012-01-01");
+        verifyBothReportingCalls(ANC_AFTER_12_WEEKS, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportANCRegistrationWhichHasBeenDoneBeforeTwelveWeeksLMPAsEarlyRegistration() throws Exception {
+        SafeMap reportData = new SafeMap();
+        reportData.put("referenceDate", "2011-10-08");
+        reportData.put("motherId", "CASE-1");
+        reportData.put("registrationDate", "2011-12-15");
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.registerANC(reportData);
+
+        verifyBothReportingCalls(ANC_BEFORE_12_WEEKS, "2011-12-15");
+        verifyNoReportingCalls(ANC_AFTER_12_WEEKS, "2011-12-15");
     }
 
     @Test
