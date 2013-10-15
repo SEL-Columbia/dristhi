@@ -19,7 +19,7 @@
                         ]
                     },
                     "reportWhen": [
-                        "AgeIsLessThanOneYearRule",
+                        "IsChildLessThanOneYearOldRule",
                         "RelocationIsPermanentRule"
                     ]
                 },
@@ -607,6 +607,7 @@
                 {
                     "indicator": "INFANT_REG",
                     "reportEntityType": "child",
+                    "serviceProvidedDateField": "registrationDate",
                     "formFields": [
                         "id",
                         "registrationDate",
@@ -614,7 +615,7 @@
                         "submissionDate"
                     ],
                     "reportWhen": [
-                        "AgeIsLessThanOneYearRule"
+                        "IsChildLessThanOneYearOldRule"
                     ]
                 }
             ]

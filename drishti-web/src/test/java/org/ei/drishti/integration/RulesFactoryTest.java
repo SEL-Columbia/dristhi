@@ -33,11 +33,11 @@ public class RulesFactoryTest {
 
     @Test
     public void shouldLoadAgeIsLessThanOneYearRuleClassByName() throws Exception {
-        String ruleName = "AgeIsLessThanOneYearRule";
+        String ruleName = "IsChildLessThanOneYearOldRule";
 
         IRule rule = rulesFactory.ruleByName(ruleName);
 
-        assertTrue(rule instanceof AgeIsLessThanOneYearRule);
+        assertTrue(rule instanceof IsChildLessThanOneYearOldRule);
     }
 
     @Test
