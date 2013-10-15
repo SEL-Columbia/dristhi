@@ -1632,6 +1632,21 @@
                         "IsVitaminA5DoseGivenRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_VIT_A_9_3YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "formFields": [
+                        "id",
+                        "vitaminADose",
+                        "vitaminADate",
+                        "vitaminAPlace"
+                    ],
+                    "reportWhen": [
+                        "IsVitaminA9DoseGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
                 }
             ]
         },
