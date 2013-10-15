@@ -87,6 +87,19 @@
                     ]
                 },
                 {
+                    "indicator": "NRHM_IMMUNIZATION_DEATH",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "isImmunizationDeath",
+                        "deathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathCausedByImmunizationRule"
+                    ]
+                },
+                {
                     "indicator": "NRHM_ID_DIARRHEA",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "deathDate",

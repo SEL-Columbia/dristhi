@@ -156,6 +156,7 @@ public class AllConstants {
 
     public static class ChildCloseFormFields {
         public static final String CLOSE_REASON_FIELD_NAME = "closeReason";
+        public static final String IS_IMMUNIZATION_DEATH = "isImmunizationDeath";
         public static final String DEATH_OF_CHILD_VALUE = "death_of_child";
         public static final String DATE_OF_DEATH_FIELD_NAME = "deathDate";
         public static final String DEATH_CAUSE = "deathCause";
