@@ -1616,6 +1616,26 @@
             ]
         },
         {
+            "form": "vitamin_a",
+            "indicators": [
+                {
+                    "indicator": "NRHM_VIT_A_5_3YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "formFields": [
+                        "id",
+                        "vitaminADose",
+                        "vitaminADate",
+                        "vitaminAPlace"
+                    ],
+                    "reportWhen": [
+                        "IsVitaminA5DoseGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                }
+            ]
+        },
+        {
             "form": "pnc_visit",
             "indicators": [
                 {
