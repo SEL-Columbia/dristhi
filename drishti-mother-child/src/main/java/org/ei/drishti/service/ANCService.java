@@ -8,7 +8,9 @@ import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.MotherReportingService;
+import org.ei.drishti.service.reporting.rules.IsHypertensionDetectedRule;
 import org.ei.drishti.service.scheduling.ANCSchedulesService;
+import org.ei.drishti.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,9 @@ import static org.ei.drishti.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_V
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.PERMANENT_RELOCATION_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.TT_DATE_FIELD;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.TT_DOSE_FIELD;
+import static org.ei.drishti.common.AllConstants.ANCVisitFormFields.*;
+import static org.ei.drishti.common.AllConstants.BOOLEAN_FALSE_VALUE;
+import static org.ei.drishti.common.AllConstants.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.ANAEMIC_STATUS_FIELD;
@@ -91,16 +96,32 @@ public class ANCService {
     }
 
     public void ancVisit(FormSubmission submission) {
-        if (!allMothers.exists(submission.entityId())) {
+        Mother mother = allMothers.findByCaseId(submission.entityId());
+        if (mother == null) {
             logger.warn("Found ANC visit without registered mother for Entity ID: " + submission.entityId());
             return;
         }
 
+        updateHypertensionDetection(submission, mother);
         ancSchedulesService.ancVisitHasHappened(submission.entityId(), submission.anmId(),
                 parseInt(submission.getField(AllConstants.ANCFormFields.ANC_VISIT_NUMBER_FIELD)), submission.getField(AllConstants.ANCFormFields.ANC_VISIT_DATE_FIELD));
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.ancVisit(new SafeMap(submission.getFields(reportFields)));
+    }
+
+    private void updateHypertensionDetection(FormSubmission submission, Mother mother) {
+        String bpDiastolic = submission.getField(BP_DIASTOLIC);
+        String bpSystolic = submission.getField(BP_DIASTOLIC);
+        SafeMap safeMap = new SafeMap(EasyMap.create(BP_DIASTOLIC, bpDiastolic).put(BP_SYSTOLIC, bpSystolic).map());
+
+        IsHypertensionDetectedRule isHypertensionDetectedRule = new IsHypertensionDetectedRule();
+        boolean isHyperTensionDetected = isHypertensionDetectedRule.apply(safeMap);
+        if (isHyperTensionDetected) {
+            String hypertension = (mother.getDetail(IS_HYPERTENSION_DETECTED_FOR_FIRST_TIME) == null) ? BOOLEAN_TRUE_VALUE : BOOLEAN_FALSE_VALUE;
+            mother.details().put(IS_HYPERTENSION_DETECTED_FOR_FIRST_TIME, hypertension);
+            allMothers.update(mother);
+        }
     }
 
     public void ttProvided(FormSubmission submission) {

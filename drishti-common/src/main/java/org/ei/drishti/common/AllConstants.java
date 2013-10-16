@@ -8,6 +8,8 @@ import static java.util.Arrays.asList;
 public class AllConstants {
     public static final String DRISHTI_DATABASE_CONNECTOR = "drishtiDatabaseConnector";
     public static final String SPACE = " ";
+    public static final String BOOLEAN_TRUE_VALUE = "true";
+    public static final String BOOLEAN_FALSE_VALUE = "false";
 
     public static class Form {
         public static final String ENTITY_ID = "entityId";
@@ -116,6 +118,11 @@ public class AllConstants {
         public static final String TT_DATE_FIELD = "ttDate";
     }
 
+    public static class ANCVisitFormFields {
+        public static final String BP_DIASTOLIC = "bpDiastolic";
+        public static final String BP_SYSTOLIC = "bpSystolic";
+        public static final String IS_HYPERTENSION_DETECTED_FOR_FIRST_TIME = "isHypertensionDetectedForFirstTime";
+    }
     public static class HbTestFormFields {
         public static final String HB_TEST_DATE_FIELD = "hbTestDate";
         public static final String HB_LEVEL_FIELD = "hbLevel";

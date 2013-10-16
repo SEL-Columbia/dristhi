@@ -1259,6 +1259,28 @@
                         "ThirdANCVisitHappenedOnTimeRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_HYPERTENSION",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ancVisitDate",
+                    "formFields": [
+                        "id",
+                        "bpSystolic",
+                        "bpDiastolic",
+                        "ancVisitDate",
+                        "serviceProvidedPlace"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": ["isHypertensionDetectedForFirstTime"]
+                    },
+                    "reportWhen": [
+                        "IsHypertensionDetectedRule",
+                        "IsHypertensionDetectedForFirstTimeRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
                 }
             ]
         },

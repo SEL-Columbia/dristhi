@@ -7,6 +7,7 @@ import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.scheduling.ANCSchedulesService;
+import org.ei.drishti.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -163,13 +164,118 @@ public class ANCServiceTest {
                 .addFormField("ancVisitNumber", "2")
                 .addFormField("someKey", "someValue")
                 .build();
-        when(allMothers.exists("entity id 1")).thenReturn(true);
+
+        Mother mother = new Mother("entity id 1", "ec id 1", "TC1")
+                .withDetails(EasyMap.create("someKey", "someValue").map());
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
         when(reportFieldsDefinition.get("anc_visit")).thenReturn(asList("someKey"));
 
         service.ancVisit(submission);
 
         verify(ancSchedulesService).ancVisitHasHappened("entity id 1", "anm id 1", 2, "2013-01-01");
         verify(motherReportingService).ancVisit(new SafeMap(mapOf("someKey", "someValue")));
+    }
+
+    @Test
+    public void shouldHandleANCVisitAndUpdateHyperTensionDetectedForFirstTimeAsTrueWhenHyperTensionOccursForFirstTime() {
+        FormSubmission submission = create()
+                .withFormName("anc_visit")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("thayiCardNumber", "TC1")
+                .addFormField("ecCaseId", "ec id 1")
+                .addFormField("ancVisitDate", "2013-01-01")
+                .addFormField("ancVisitNumber", "2")
+                .addFormField("someKey", "someValue")
+                .addFormField("bpSystolic", "140")
+                .addFormField("bpDiastolic", "90")
+                .build();
+        Mother mother = new Mother("mother id 1", "ec id 1", "TC1")
+                .withDetails(EasyMap.create("someKey", "someValue").put("bpDiastolic", "90").put("bpSystolic", "140").map());
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
+        when(reportFieldsDefinition.get("anc_visit")).thenReturn(asList("someKey", "bpSystolic", "bpDiastolic"));
+
+        service.ancVisit(submission);
+
+        verify(ancSchedulesService).ancVisitHasHappened("mother id 1", "anm id 1", 2, "2013-01-01");
+        verify(motherReportingService).ancVisit(new SafeMap(create("someKey", "someValue").put("bpDiastolic", "90").put("bpSystolic", "140").map()));
+
+        Mother updatedMother = new Mother("mother id 1", "ec id 1", "TC1").withDetails(
+                EasyMap.create("someKey", "someValue")
+                        .put("isHypertensionDetectedForFirstTime", "true")
+                        .put("bpDiastolic", "90")
+                        .put("bpSystolic", "140")
+                        .map());
+        verify(allMothers).update(updatedMother);
+    }
+
+    @Test
+    public void shouldHandleANCVisitAndSetHyperTensionDetectedForFirstTimeAsFalseWhenHyperTensionOccursForSecondTime() {
+        FormSubmission submission = create()
+                .withFormName("anc_visit")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("thayiCardNumber", "TC1")
+                .addFormField("ecCaseId", "ec id 1")
+                .addFormField("ancVisitDate", "2013-01-01")
+                .addFormField("ancVisitNumber", "2")
+                .addFormField("someKey", "someValue")
+                .addFormField("bpSystolic", "140")
+                .addFormField("bpDiastolic", "90")
+                .build();
+        Mother mother = new Mother("mother id 1", "ec id 1", "TC1")
+                .withDetails(EasyMap.create("someKey", "someValue")
+                        .put("bpDiastolic", "90")
+                        .put("bpSystolic", "140")
+                        .put("isHypertensionDetectedForFirstTime", "true")
+                        .map());
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
+        when(reportFieldsDefinition.get("anc_visit")).thenReturn(asList("someKey", "bpSystolic", "bpDiastolic"));
+
+        service.ancVisit(submission);
+
+        verify(ancSchedulesService).ancVisitHasHappened("mother id 1", "anm id 1", 2, "2013-01-01");
+        verify(motherReportingService).ancVisit(new SafeMap(create("someKey", "someValue").put("bpDiastolic", "90").put("bpSystolic", "140").map()));
+
+        Mother updatedMother = new Mother("mother id 1", "ec id 1", "TC1").withDetails(
+                EasyMap.create("someKey", "someValue")
+                        .put("isHypertensionDetectedForFirstTime", "false")
+                        .put("bpDiastolic", "90")
+                        .put("bpSystolic", "140")
+                        .map());
+        verify(allMothers).update(updatedMother);
+    }
+
+    @Test
+    public void shouldHandleANCVisitAndShouldNotUpdateMotherWhenThereIsNoHyperTensionDetected() {
+        FormSubmission submission = create()
+                .withFormName("anc_visit")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("thayiCardNumber", "TC1")
+                .addFormField("ecCaseId", "ec id 1")
+                .addFormField("ancVisitDate", "2013-01-01")
+                .addFormField("ancVisitNumber", "2")
+                .addFormField("someKey", "someValue")
+                .addFormField("bpSystolic", "120")
+                .addFormField("bpDiastolic", "80")
+                .build();
+        Mother mother = new Mother("mother id 1", "ec id 1", "TC1")
+                .withDetails(EasyMap.create("someKey", "someValue").put("bpDiastolic", "80").put("bpSystolic", "120").map());
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
+        when(reportFieldsDefinition.get("anc_visit")).thenReturn(asList("someKey", "bpSystolic", "bpDiastolic"));
+
+        service.ancVisit(submission);
+
+        verify(ancSchedulesService).ancVisitHasHappened("mother id 1", "anm id 1", 2, "2013-01-01");
+        verify(motherReportingService).ancVisit(new SafeMap(create("someKey", "someValue").put("bpDiastolic", "80").put("bpSystolic", "120").map()));
+
+        Mother updatedMother = new Mother("mother id 1", "ec id 1", "TC1").withDetails(
+                EasyMap.create("someKey", "someValue")
+                        .put("bpDiastolic", "80")
+                        .put("bpSystolic", "120")
+                        .map());
+        verify(allMothers, never()).update(updatedMother);
     }
 
     @Test
@@ -180,7 +286,7 @@ public class ANCServiceTest {
                 .withEntityId("entity id 1")
                 .build();
 
-        when(allMothers.exists("entity id 1")).thenReturn(false);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(null);
 
         service.ancVisit(submission);
 
