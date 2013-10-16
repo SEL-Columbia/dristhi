@@ -6,3 +6,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_VIT_A_5_3YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_VIT_A_9_3YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_DPTBOOSTER_2_5YR');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_HYPERTENSION');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_MMR');
