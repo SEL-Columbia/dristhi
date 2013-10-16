@@ -25,6 +25,7 @@ import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOU
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DELIVERY_PLACE;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_PROBLEMS;
 
@@ -152,6 +153,7 @@ public class ChildService {
 
             SafeMap reportingData = new SafeMap();
             reportingData.put(ChildReportingService.CHILD_ID_FIELD, child.caseId());
+            reportingData.put(DELIVERY_PLACE, submission.getField(DELIVERY_PLACE));
             reportingData.put(BF_POSTBIRTH, childFields.get(DID_BREAST_FEEDING_START));
             childReportingService.registerChild(reportingData);
 
