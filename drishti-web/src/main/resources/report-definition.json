@@ -1022,7 +1022,7 @@
                     ],
                     "reportWhen": [
                         "IsChildMoreThan16MonthsRule",
-                        "IsOPVBoosterImmunizationGivenRule",
+                        "IsMMRImmunizationGivenRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
                 },
