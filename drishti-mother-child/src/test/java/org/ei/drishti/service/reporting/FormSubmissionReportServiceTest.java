@@ -234,7 +234,7 @@ public class FormSubmissionReportServiceTest {
                                                 null,
                                                 asList("id", "closeReason", "submissionDate"),
                                                 new ReferenceData("child", "id", asList("dateOfBirth")),
-                                                asList("AgeIsLessThanOneYearRule", "RelocationIsPermanentRule")
+                                                asList("IsChildLessThanOneYearOldRule", "RelocationIsPermanentRule")
                                         )))));
     }
 
@@ -283,7 +283,7 @@ public class FormSubmissionReportServiceTest {
                                                 "deathDate",
                                                 asList("id", "closeReason", "submissionDate"),
                                                 null,
-                                                asList("AgeIsLessThanOneYearRule", "RelocationIsPermanentRule")
+                                                asList("IsChildLessThanOneYearOldRule", "RelocationIsPermanentRule")
                                         )))));
     }
 }
