@@ -116,6 +116,7 @@ public class AllConstants {
         public static final String TT_BOOSTER_DOSE_VALUE = "ttbooster";
         public static final String TT_DOSE_FIELD = "ttDose";
         public static final String TT_DATE_FIELD = "ttDate";
+        public static final String THAYI_CARD_NUMBER = "thayiCardNumber";
     }
 
     public static class ANCVisitFormFields {

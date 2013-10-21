@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.ei.drishti.common.AllConstants.ANCFormFields.THAYI_CARD_NUMBER;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
@@ -84,13 +85,13 @@ public class ChildService {
 
     public void registerChildrenForEC(FormSubmission submission) {
         Child child = allChildren.findByCaseId(submission.getField(ChildReportingService.CHILD_ID_FIELD));
-        child.withAnm(submission.anmId());
+        child.withAnm(submission.anmId()).withThayiCard(submission.getField(THAYI_CARD_NUMBER));
         allChildren.update(child);
     }
 
     public void registerChildrenForOA(FormSubmission submission) {
         Child child = allChildren.findByCaseId(submission.getField(ID));
-        child.withAnm(submission.anmId());
+        child.withAnm(submission.anmId()).withThayiCard(submission.getField(THAYI_CARD_NUMBER));
         allChildren.update(child);
     }
 
