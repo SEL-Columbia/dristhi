@@ -53,16 +53,6 @@
                 "source": "child.mother.thayiCardNumber"
             },
             {
-                "name": "childThayiCardNumber",
-                "bind": "/model/instance/Child_Registration_EngKan/thayi_card_number",
-                "source": "child.thayiCardNumber"
-            },
-            {
-                "name": "thayiCard",
-                "bind": "/model/instance/Child_Registration_EngKan/thayi_card_number",
-                "source": "child.thayiCard"
-            },
-            {
                 "name": "economicStatus",
                 "bind": "/model/instance/Child_Registration_EngKan/economic_status",
                 "source": "child.mother.eligible_couple.economicStatus"
