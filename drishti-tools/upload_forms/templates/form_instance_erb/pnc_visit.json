@@ -55,7 +55,7 @@
             },
             {
                 "name": "referenceDate",
-                "value": "<%= pnc_visit['Reference date'] %>",
+                "value": "<%= pnc['Reference date'] %>",
                 "source": "mother.referenceDate"
             },
             {
