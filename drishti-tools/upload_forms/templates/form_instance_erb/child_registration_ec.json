@@ -125,11 +125,6 @@
                 "source": "eligible_couple.mother.thayiCardNumber"
             },
             {
-                "name": "thayiCard",
-                "value": "<%= child['Thayi number'] %>",
-                "source": "eligible_couple.mother.child.thayiCard"
-            },
-            {
                 "name": "bloodGroup",
                 "source": "eligible_couple.mother.child.bloodGroup"
             },

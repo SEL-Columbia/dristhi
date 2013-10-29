@@ -86,7 +86,9 @@ public class ChildService {
 
     public void registerChildrenForEC(FormSubmission submission) {
         Child child = allChildren.findByCaseId(submission.getField(ChildReportingService.CHILD_ID_FIELD));
-        child.withAnm(submission.anmId()).withThayiCard(submission.getField(THAYI_CARD_NUMBER));
+        child
+                .withAnm(submission.anmId())
+                .withThayiCard(submission.getField(THAYI_CARD_NUMBER));
         allChildren.update(child);
     }
 
