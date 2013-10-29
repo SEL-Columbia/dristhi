@@ -405,9 +405,16 @@ class Forms
       user_name = @mobile_worker.user_name
       form_name = "vitamin_a"
       instance_id = vitamin_a_dosage['Instance ID']
-      child = get_safe_map(@children[key])
-      ec = get_safe_map(ecs_as_hash[key])
-      child_dob = ec['Youngest child DOB']
+
+      child_registered = @children[key]
+      if child_registered == nil
+        child = get_child_from_pnc(key)
+        child_dob = child['Birth date']
+      else
+        child = get_safe_map(child_registered)
+        child_dob = get_safe_map(ecs_as_hash[key])['Youngest child DOB']
+      end
+
       entity_id = child['Entity ID']
       submission_date = vitamin_a_dosage['Submission date']
 
