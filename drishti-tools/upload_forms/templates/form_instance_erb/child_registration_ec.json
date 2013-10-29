@@ -122,7 +122,7 @@
             {
                 "name": "thayiCardNumber",
                 "value": "<%= child['Thayi number'] %>",
-                "source": "eligible_couple.mother.child.thayiCardNumber"
+                "source": "eligible_couple.mother.thayiCardNumber"
             },
             {
                 "name": "thayiCard",

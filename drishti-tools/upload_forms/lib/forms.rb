@@ -371,7 +371,15 @@ class Forms
       form_name = "child_immunizations"
       instance_id = child_immunization['Instance ID']
       child_registered = @children[key]
-      child = child_registered.nil? ? get_child_from_pnc(key) : get_safe_map(child_registered)
+
+      if child_registered == nil
+        child = get_child_from_pnc(key)
+        child_dob = child['Birth date']
+      else
+        child = get_safe_map(child_registered)
+        child_dob = get_safe_map(ecs_as_hash[key])['Youngest child DOB']
+      end
+
       entity_id = child['Entity ID']
       submission_date = child_immunization['Submission date']
       previous_immunizations = immunizations_given
@@ -398,6 +406,8 @@ class Forms
       form_name = "vitamin_a"
       instance_id = vitamin_a_dosage['Instance ID']
       child = get_safe_map(@children[key])
+      ec = get_safe_map(ecs_as_hash[key])
+      child_dob = ec['Youngest child DOB']
       entity_id = child['Entity ID']
       submission_date = vitamin_a_dosage['Submission date']
 

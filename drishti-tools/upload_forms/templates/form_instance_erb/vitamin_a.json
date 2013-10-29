@@ -11,7 +11,7 @@
             },
             {
                 "name": "dateOfBirth",
-                "value": "<%= child['Birth date'] %>",
+                "value": "<%= child_dob %>",
                 "source": "child.dateOfBirth"
             },
             {
