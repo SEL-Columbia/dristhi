@@ -1,8 +1,10 @@
 require 'date'
 
 class Forms
-  def initialize mobile_worker, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data, tt_data, pnc_data, pnc_visits_data, ppfp_data, child_data, child_immunizations_data, vitamin_a_dosages_data
+  def initialize(mobile_worker, form_store, ec_data, anc_data, anc_visits_data, hb_tests_data, ifa_data,
+      tt_data, pnc_data, pnc_visits_data, ppfp_data, child_data, child_immunizations_data, vitamin_a_dosages_data)
     @mobile_worker = mobile_worker
+    @form_store = form_store
     @ec = ec_data
     @ancs = anc_data
     @anc_visits = anc_visits_data
@@ -46,9 +48,7 @@ class Forms
     form_instance = form_instance_erb.result(binding)
     ec_registration_json = form_submission_erb.result(binding)
 
-    File.open("output/EC_#{ec['Entity ID']}.json", "w") do |f|
-      f.puts ec_registration_json
-    end
+    @form_store.save_form_instance(ec_registration_json, 'EC', ec['Entity ID'])
   end
 
   def fill_out_of_area_anc_registration_forms
@@ -67,9 +67,7 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       out_of_area_anc_registration_json = form_submission_erb.result(binding)
-      File.open("output/ANCOutOfArea_#{anc['Instance ID']}.json", "w") do |f|
-        f.puts out_of_area_anc_registration_json
-      end
+      @form_store.save_form_instance(out_of_area_anc_registration_json, 'ANCOutOfArea', anc['Instance ID'])
     end
   end
 
@@ -90,9 +88,7 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       anc_registration_json = form_submission_erb.result(binding)
-      File.open("output/ANC_#{anc['Entity ID']}.json", "w") do |f|
-        f.puts anc_registration_json
-      end
+      @form_store.save_form_instance(anc_registration_json, 'ANC', anc['Entity ID'])
     end
   end
 
@@ -124,9 +120,7 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       anc_visit_json = form_submission_erb.result(binding)
-      File.open("output/ANCVisit_#{anc_visit['Instance ID']}.json", "w") do |f|
-        f.puts anc_visit_json
-      end
+      @form_store.save_form_instance(anc_visit_json, 'ANCVisit', anc_visit['Instance ID'])
     end
   end
 
@@ -149,9 +143,7 @@ class Forms
       form_instance = form_instance_erb.result(binding)
       hb_test_json = form_submission_erb.result(binding)
 
-      File.open("output/HbTest_#{hb_test['Instance ID']}.json", "w") do |f|
-        f.puts hb_test_json
-      end
+      @form_store.save_form_instance(hb_test_json, 'HbTest', hb_test['Instance ID'])
     end
   end
 
@@ -175,9 +167,7 @@ class Forms
       form_instance = form_instance_erb.result(binding)
       ifa_json = form_submission_erb.result(binding)
 
-      File.open("output/IFA_#{ifa['Instance ID']}.json", "w") do |f|
-        f.puts ifa_json
-      end
+      @form_store.save_form_instance(ifa_json, 'IFA', ifa['Instance ID'])
     end
   end
 
@@ -200,11 +190,9 @@ class Forms
       submission_date = tt['Submission date']
 
       form_instance = form_instance_erb.result(binding)
-      ifa_json = form_submission_erb.result(binding)
+      tt_json = form_submission_erb.result(binding)
 
-      File.open("output/TT#{dosage.capitalize}_#{tt['Instance ID']}.json", "w") do |f|
-        f.puts ifa_json
-      end
+      @form_store.save_form_instance(tt_json, 'TT', tt['Instance ID'])
     end
   end
 
@@ -228,9 +216,8 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       delivery_outcome_form_json = form_submission_erb.result(binding)
-      File.open("output/DO_#{pnc['Instance ID']}.json", "w") do |f|
-        f.puts delivery_outcome_form_json
-      end
+
+      @form_store.save_form_instance(delivery_outcome_form_json, 'DO', pnc['Instance ID'])
     end
   end
 
@@ -251,9 +238,8 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       out_of_area_pnc_registration_json = form_submission_erb.result(binding)
-      File.open("output/PNCOutOfArea_#{pnc['Instance ID']}.json", "w") do |f|
-        f.puts out_of_area_pnc_registration_json
-      end
+
+      @form_store.save_form_instance(out_of_area_pnc_registration_json, 'PNCOutOfArea', pnc['Instance ID'])
     end
   end
 
@@ -287,9 +273,8 @@ class Forms
       visit_day = (Date.parse(pnc_visit['Visit date']) - Date.parse(pnc['Delivery date'])).to_i
       form_instance = form_instance_erb.result(binding)
       pnc_visit_json = form_submission_erb.result(binding)
-      File.open("output/PNCVisit_#{pnc_visit['Instance ID']}.json", "w") do |f|
-        f.puts pnc_visit_json
-      end
+
+      @form_store.save_form_instance(pnc_visit_json, 'PNCVisit', pnc_visit['Instance ID'])
     end
   end
 
@@ -322,9 +307,8 @@ class Forms
       submission_date = ppfp['Submission date']
       form_instance = form_instance_erb.result(binding)
       ppfp_json = form_submission_erb.result(binding)
-      File.open("output/PP_FP_#{ppfp['Instance ID']}.json", "w") do |f|
-        f.puts ppfp_json
-      end
+
+      @form_store.save_form_instance(ppfp_json, 'PP_FP', ppfp['Instance ID'])
     end
   end
 
@@ -352,9 +336,8 @@ class Forms
       form_instance = form_instance_erb.result(binding)
 
       child_registration = form_submission_erb.result(binding)
-      File.open("output/Child_Registration_EC_#{child['Instance ID']}.json", "w") do |f|
-        f.puts child_registration
-      end
+
+      @form_store.save_form_instance(child_registration, 'Child_Registration_EC', child['Instance ID'])
     end
   end
 
@@ -388,9 +371,7 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       child_immunization_erb_json = form_submission_erb.result(binding)
-      File.open("output/Child_Immunization_#{child_immunization['Instance ID']}.json", "w") do |f|
-        f.puts child_immunization_erb_json
-      end
+      @form_store.save_form_instance(child_immunization_erb_json, 'Child_Immunization', child_immunization['Instance ID'])
     end
   end
 
@@ -420,9 +401,8 @@ class Forms
 
       form_instance = form_instance_erb.result(binding)
       vitamin_a_json = form_submission_erb.result(binding)
-      File.open("output/Vitamin_A_#{vitamin_a_dosage['Instance ID']}.json", "w") do |f|
-        f.puts vitamin_a_json
-      end
+
+      @form_store.save_form_instance(vitamin_a_json, 'Vitamin_A', vitamin_a_dosage['Instance ID'])
     end
   end
 
