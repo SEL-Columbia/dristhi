@@ -45,7 +45,6 @@ class PNCVisits
           pnc_visit.convert_value "Visit person", :empty => "anm"
 
           pnc_visit.add_field "Instance ID", Guid.new.to_s
-          pnc_visit.add_field "Reference date", pnc_visit['Visit date']
           pnc_visit.add_field "Submission date", Date.today.to_s
 
           @pnc_visits << pnc_visit
