@@ -127,4 +127,23 @@ public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegratio
 
         assertEquals(0, template.loadAll(ANMReportData.class).size());
     }
+
+    @Test
+    @Transactional("anm_report")
+    @Rollback
+    public void shouldFetchANMReportDataForReportingMonth() throws Exception {
+        ANM anm = new ANM("ANM X");
+        Dates startDate = new Dates(LocalDate.parse("2012-10-26").toDate());
+        Dates endDate = new Dates(LocalDate.parse("2012-11-25").toDate());
+        Indicator indicator = new Indicator("INDICATOR 1");
+        template.save(anm);
+        allDatesRepository.save(startDate);
+        allDatesRepository.save(endDate);
+        template.save(indicator);
+        repository.save(anm, "123", indicator, startDate);
+
+        List result = repository.getReportsFor("ANM X", "2012-10-26", "2012-11-25");
+
+        assertEquals(1, result.size());
+    }
 }

@@ -99,4 +99,9 @@ public class ServicesProvidedRepository {
     private int getCount(String quantity) {
         return quantity == null ? 1 : Integer.parseInt(quantity);
     }
+
+    @Transactional("service_provided")
+    public List getReportsFor(String startDate, String endDate) {
+        return servicesProvidedRepository.getReportsFor(startDate, endDate);
+    }
 }

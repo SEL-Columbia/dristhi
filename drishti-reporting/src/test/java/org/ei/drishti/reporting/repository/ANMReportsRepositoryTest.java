@@ -297,6 +297,13 @@ public class ANMReportsRepositoryTest {
         verify(anmReportDataRepository).save(anm, externalId, fetchedIndicator, dates);
     }
 
+    @Test
+    public void shouldCallANMReportRepositoryForReports() {
+        repository.getReportsFor("ANM X", "2013-10-26", "2013-11-25");
+
+        verify(anmReportDataRepository).getReportsFor("ANM X", "2013-10-26", "2013-11-25");
+    }
+
     private <T> void verifyCallsToReadOnlyCachedRepository(ReadOnlyCacheableRepository<T> repo, T object) {
         verify(repo, times(1)).fetch(object);
         verifyNoMoreInteractions(repo);

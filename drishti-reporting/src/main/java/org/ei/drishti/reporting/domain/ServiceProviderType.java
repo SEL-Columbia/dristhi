@@ -18,6 +18,10 @@ public class ServiceProviderType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    public String getType() {
+        return type;
+    }
+
     @Column(name = "type")
     private String type;
 

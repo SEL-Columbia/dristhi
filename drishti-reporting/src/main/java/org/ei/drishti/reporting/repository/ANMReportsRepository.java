@@ -151,4 +151,9 @@ public class ANMReportsRepository {
             save(data.get(ANM_IDENTIFIER), data.get(EXTERNAL_ID), indicator, data.get(SERVICE_PROVIDED_DATE), data.get(QUANTITY));
         }
     }
+
+    @Transactional("anm_report")
+    public List getReportsFor(String anmId, String startDate, String endDate) {
+        return anmReportDataRepository.getReportsFor(anmId, startDate, endDate);
+    }
 }

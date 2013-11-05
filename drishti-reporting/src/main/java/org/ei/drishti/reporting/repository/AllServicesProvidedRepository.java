@@ -29,4 +29,9 @@ public class AllServicesProvidedRepository {
                 new Object[]{indicator, LocalDate.parse(startDate).toDate(), LocalDate.parse(endDate).toDate()});
         dataAccessTemplate.deleteAll(result);
     }
+
+    public List getReportsFor(String startDate, String endDate) {
+        return dataAccessTemplate.findByNamedQuery(ServiceProvided.FIND_SERVICE_PROVIDED_FOR_REPORTING_MONTH,
+                new Object[]  {LocalDate.parse(startDate).toDate(), LocalDate.parse(endDate).toDate()});
+    }
 }
