@@ -101,7 +101,9 @@ public class ReportDataController {
                     serviceProvided.serviceProviderType(),
                     serviceProvided.indicator(),
                     serviceProvided.date(),
-                    serviceProvided.location()));
+                    serviceProvided.location().village(),
+                    serviceProvided.location().subCenter(),
+                    serviceProvided.location().phc()));
         }
         return serviceProvidedReportDTOs;
     }

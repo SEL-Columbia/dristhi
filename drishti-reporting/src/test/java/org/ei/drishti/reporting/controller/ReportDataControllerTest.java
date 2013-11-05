@@ -171,7 +171,7 @@ public class ReportDataControllerTest {
         String json = controller.reportForCurrentReportingMonth("serviceProvided", "2013-10-26", "2013-11-25", null);
 
         verify(servicesProvidedRepository).getReportsFor("2013-10-26", "2013-11-25");
-        assertEquals(json, "[{\"id\":\"123\",\"serviceProviderType\":\"ANM\",\"indicator\":\"INDICATOR 1\",\"date\":\"2013-10-26\",\"location\":{\"village\":\"village\",\"subCenter\":\"subcenter\",\"phc\":\"phc\"}}]");
+        assertEquals(json, "[{\"id\":\"123\",\"serviceProviderType\":\"ANM\",\"indicator\":\"INDICATOR 1\",\"date\":\"2013-10-26\",\"village\":\"village\",\"subCenter\":\"subcenter\",\"phc\":\"phc\"}]");
     }
 
     @Test

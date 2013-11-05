@@ -1,20 +1,22 @@
 package org.ei.drishti.common.domain;
 
-import org.ei.drishti.domain.Location;
-
 public class ServiceProvidedReportDTO {
 
     private String id;
     private String serviceProviderType;
     private String indicator;
     private String date;
-    private Location location;
+    private final String village;
+    private final String subCenter;
+    private final String phc;
 
-    public ServiceProvidedReportDTO(String id, String serviceProviderType, String indicator, String date, Location location) {
+    public ServiceProvidedReportDTO(String id, String serviceProviderType, String indicator, String date, String village, String subCenter, String phc) {
         this.id = id;
         this.serviceProviderType = serviceProviderType;
         this.indicator = indicator;
         this.date = date;
-        this.location = location;
+        this.village = village;
+        this.subCenter = subCenter;
+        this.phc = phc;
     }
 }
