@@ -58,6 +58,7 @@ public class AlertController {
                 EC_SCHEDULE_CONDOM_REFILL,
                 EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP,
                 EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP,
-                EC_SCHEDULE_IUD_FOLLOWUP);
+                EC_SCHEDULE_IUD_FOLLOWUP,
+                EC_SCHEDULE_FP_FOLLOWUP);
     }
 }

@@ -153,6 +153,10 @@ public class AlertControllerRoutesTest {
         Event.of(EC_SCHEDULE_IUD_FOLLOWUP, "IUD followup", earliest).shouldRouteToAlertCreationActionForEC();
         Event.of(EC_SCHEDULE_IUD_FOLLOWUP, "IUD followup", due).shouldRouteToAlertCreationActionForEC();
         Event.of(EC_SCHEDULE_IUD_FOLLOWUP, "IUD followup", late).shouldRouteToAlertCreationActionForEC();
+
+        Event.of(EC_SCHEDULE_FP_FOLLOWUP, "FP Referral Followup", earliest).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_FP_FOLLOWUP, "FP Referral Followup", due).shouldRouteToAlertCreationActionForEC();
+        Event.of(EC_SCHEDULE_FP_FOLLOWUP, "FP Referral Followup", late).shouldRouteToAlertCreationActionForEC();
     }
 
     @Test
