@@ -101,7 +101,7 @@ public class ServicesProvidedRepository {
     }
 
     @Transactional("service_provided")
-    public List getReportsFor(String startDate, String endDate) {
-        return servicesProvidedRepository.getReportsFor(startDate, endDate);
+    public List getReportsFor(String anmId, String startDate, String endDate) {
+        return servicesProvidedRepository.getReportsFor(anmId, startDate, endDate);
     }
 }

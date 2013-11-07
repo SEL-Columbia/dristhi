@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
-import org.ei.drishti.common.domain.ServiceProvidedReportDTO;
 import org.ei.drishti.reporting.ReportDataMissingException;
-import org.ei.drishti.reporting.domain.ANMReportData;
-import org.ei.drishti.reporting.domain.ServiceProvided;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
 import org.slf4j.Logger;
@@ -64,48 +61,10 @@ public class ReportDataController {
 
     @RequestMapping(value = "/report/month", method = RequestMethod.GET)
     @ResponseBody
-    public String reportForCurrentReportingMonth(@RequestParam("type") String type, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam(value = "anmId", defaultValue = "", required = false) String anmId) throws ReportDataMissingException {
-        logger.info("Reporting on: " + type);
-        String reportJson = "";
-        if (ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE.equals(type)) {
-            List result = servicesProvidedRepository.getReportsFor(startDate, endDate);
-            List<ServiceProvidedReportDTO> serviceProvidedReportDTOs = buildServiceProvidedReportDTO(result);
-            reportJson = new Gson().toJson(serviceProvidedReportDTOs);
-        } else if (ReportDataParameters.ANM_REPORT_DATA_TYPE.equals(type)) {
-            List result = anmReportsRepository.getReportsFor(anmId, startDate, endDate);
-            List<ANMReportDTO> anmReportDTOs = buildAnmReportsReportDTO(result);
-            reportJson = new Gson().toJson(anmReportDTOs);
-        }
-        return reportJson;
-    }
-
-    private List<ANMReportDTO> buildAnmReportsReportDTO(List result) {
-        List<ANMReportDTO> anmReportDTOList = new ArrayList<>();
-        for (Object object : result) {
-            ANMReportData anmReport = (ANMReportData) object;
-            anmReportDTOList.add(new ANMReportDTO(
-                    anmReport.id(),
-                    anmReport.indicator().indicator(),
-                    anmReport.anmIdentifier(),
-                    anmReport.date().date().toString()));
-        }
-        return anmReportDTOList;
-    }
-
-    private List<ServiceProvidedReportDTO> buildServiceProvidedReportDTO(List result) {
-        List<ServiceProvidedReportDTO> serviceProvidedReportDTOs = new ArrayList<>();
-        for (Object object : result) {
-            ServiceProvided serviceProvided = (ServiceProvided) object;
-            serviceProvidedReportDTOs.add(new ServiceProvidedReportDTO(
-                    serviceProvided.id(),
-                    serviceProvided.serviceProviderType(),
-                    serviceProvided.indicator(),
-                    serviceProvided.date(),
-                    serviceProvided.location().village(),
-                    serviceProvided.location().subCenter(),
-                    serviceProvided.location().phc()));
-        }
-        return serviceProvidedReportDTOs;
+    public String reportForCurrentReportingMonth(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam(value = "anmId", defaultValue = "", required = false) String anmId) throws ReportDataMissingException {
+        logger.info(MessageFormat.format("Reporting data for ANM: {0} between dates {1} and {2}", anmId, startDate, endDate));
+        List result = servicesProvidedRepository.getReportsFor(anmId, startDate, endDate);
+        return new Gson().toJson(result);
     }
 
 

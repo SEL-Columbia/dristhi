@@ -7,10 +7,11 @@ import org.ei.drishti.domain.Location;
 import org.ei.drishti.reporting.ReportDataMissingException;
 import org.ei.drishti.reporting.domain.ANMReportData;
 import org.ei.drishti.reporting.domain.Dates;
-import org.ei.drishti.reporting.domain.Indicator;
 import org.ei.drishti.reporting.domain.ServiceProvided;
+import org.ei.drishti.reporting.domain.ServiceProvidedReport;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -157,43 +158,34 @@ public class ReportDataControllerTest {
 
     @Test
     public void shouldFetchServiceProvidedReportForTheGivenMonth() throws ReportDataMissingException {
+        String anmId = "ANM X";
         Map<String, String> map = new HashMap<>();
-        map.put("startDate", "2013-10-26");
-        map.put("endDate", "2013-11-25");
-        ReportingData reportingData = new ReportingData(SERVICE_PROVIDED_DATA_TYPE, map);
-        when(servicesProvidedRepository.getReportsFor("2013-10-26", "2013-11-25")).thenReturn(asList(serviceProvided));
-        when(serviceProvided.id()).thenReturn("123");
-        when(serviceProvided.indicator()).thenReturn("INDICATOR 1");
-        when(serviceProvided.location()).thenReturn(new Location("village", "subcenter", "phc"));
-        when(serviceProvided.date()).thenReturn("2013-10-26");
-        when(serviceProvided.serviceProviderType()).thenReturn("ANM");
+        String startDate = "2013-10-26";
+        String endDate = "2013-11-25";
+        when(servicesProvidedRepository.getReportsFor(anmId, startDate, endDate)).thenReturn(asList(serviceProvidedReport(anmId)));
+        String json = controller.reportForCurrentReportingMonth("2013-10-26", "2013-11-25", anmId);
 
-        String json = controller.reportForCurrentReportingMonth("serviceProvided", "2013-10-26", "2013-11-25", null);
-
-        verify(servicesProvidedRepository).getReportsFor("2013-10-26", "2013-11-25");
-        assertEquals(json, "[{\"id\":\"123\",\"serviceProviderType\":\"ANM\",\"indicator\":\"INDICATOR 1\",\"date\":\"2013-10-26\",\"village\":\"village\",\"subCenter\":\"subcenter\",\"phc\":\"phc\"}]");
+        assertEquals("[{\"id\":\"1\",\"anmIdentifier\":\"ANM X\",\"type\":\"ANM\",\"indicator\":\"INDICATOR 1\"" +
+                ",\"date\":\"Oct 26, 2013 12:00:00 AM\",\"village\":\"village\",\"subCenter\":\"subCenter\",\"phc\":\"phc\"," +
+                "\"taluka\":\"taluka\",\"district\":\"district\",\"state\":\"state\"}]", json);
     }
 
     @Test
     public void shouldFetchANMReportForTheGivenMonth() throws ReportDataMissingException {
         Map<String, String> map = new HashMap<>();
-        map.put("anmId", "ANM X");
-        map.put("startDate", "2013-10-26");
-        map.put("endDate", "2013-11-25");
-        ReportingData reportingData = new ReportingData(ANM_REPORT_DATA_TYPE, map);
+        String anmId = "ANM X";
 
-        when(anmReportsRepository.getReportsFor("ANM X", "2013-10-26", "2013-11-25")).thenReturn(asList(anmReportData));
-        when(anmReportData.id()).thenReturn("123");
-        when(anmReportData.anmIdentifier()).thenReturn("ANM X");
-        when(anmReportData.indicator()).thenReturn(new Indicator("INDICATOR 1"));
-        when(anmReportData.date()).thenReturn(dates);
-        when(dates.date()).thenReturn(date);
-        when(date.toString()).thenReturn("2013-10-26");
+        ServiceProvidedReport serviceProvidedReport = serviceProvidedReport(anmId);
+        when(servicesProvidedRepository.getReportsFor(anmId, "2013-10-26", "2013-11-25")).thenReturn(asList(serviceProvidedReport));
 
+        String json = controller.reportForCurrentReportingMonth("2013-10-26", "2013-11-25", anmId);
 
-            String json = controller.reportForCurrentReportingMonth("anmReportData", "2013-10-26", "2013-11-25", "ANM X");
+        assertEquals("[{\"id\":\"1\",\"anmIdentifier\":\"ANM X\",\"type\":\"ANM\",\"indicator\":\"INDICATOR 1\"" +
+                ",\"date\":\"Oct 26, 2013 12:00:00 AM\",\"village\":\"village\",\"subCenter\":\"subCenter\",\"phc\":\"phc\"," +
+                "\"taluka\":\"taluka\",\"district\":\"district\",\"state\":\"state\"}]", json);
+    }
 
-        verify(anmReportsRepository).getReportsFor("ANM X", "2013-10-26", "2013-11-25");
-        assertEquals(json, "[{\"anmIdentifier\":\"ANM X\",\"indicator\":\"INDICATOR 1\",\"id\":\"123\",\"date\":\"2013-10-26\"}]");
+    private ServiceProvidedReport serviceProvidedReport(String anmId) {
+        return new ServiceProvidedReport("1", anmId, "ANM", "INDICATOR 1", LocalDate.parse("2013-10-26").toDate(), "village", "subCenter", "phc", "taluka", "district", "state");
     }
 }

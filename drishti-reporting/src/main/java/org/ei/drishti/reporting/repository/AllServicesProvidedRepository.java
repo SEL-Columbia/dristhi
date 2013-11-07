@@ -26,12 +26,12 @@ public class AllServicesProvidedRepository {
 
     public void delete(String indicator, String startDate, String endDate) {
         List result = dataAccessTemplate.findByNamedQuery(ServiceProvided.FIND_BY_ANM_IDENTIFIER_WITH_INDICATOR_FOR_MONTH,
-                new Object[]{indicator, LocalDate.parse(startDate).toDate(), LocalDate.parse(endDate).toDate()});
+                indicator, LocalDate.parse(startDate).toDate(), LocalDate.parse(endDate).toDate());
         dataAccessTemplate.deleteAll(result);
     }
 
-    public List getReportsFor(String startDate, String endDate) {
-        return dataAccessTemplate.findByNamedQuery(ServiceProvided.FIND_SERVICE_PROVIDED_FOR_REPORTING_MONTH,
-                new Object[]  {LocalDate.parse(startDate).toDate(), LocalDate.parse(endDate).toDate()});
+    public List getReportsFor(String anmId, String startDate, String endDate) {
+        return dataAccessTemplate.findByNamedQuery(ServiceProvidedReport.FIND_ALL_SERVICE_PROVIDED_BY_DATE_FOR_ANM, anmId,
+                LocalDate.parse(startDate).toDate(), LocalDate.parse(endDate).toDate());
     }
 }

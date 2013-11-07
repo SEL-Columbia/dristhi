@@ -15,6 +15,7 @@ import java.util.List;
 import static ch.lambdaj.Lambda.*;
 import static org.ei.drishti.reporting.domain.ServiceProviderType.ANM;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -105,8 +106,8 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedReposito
         allDatesRepository.save(endDate);
         repository.save(serviceProvider, "123", indicator, startDate, location);
 
-        List reports = repository.getReportsFor("2013-01-26", "2013-02-25");
+        List reports = repository.getReportsFor(anm.anmIdentifier(), "2013-01-26", "2013-02-25");
 
-        assertTrue(reports.contains(new ServiceProvided(serviceProvider, "123", indicator, startDate, location)));
+        assertEquals(reports.size(), 1);
     }
 }
