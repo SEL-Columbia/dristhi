@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.HashMap;
 
 import static org.joda.time.DateTimeConstants.MILLIS_PER_HOUR;
 
@@ -32,7 +31,7 @@ public class AggregateReportsScheduler {
         logger.info("Scheduling report aggregator job...");
 
         Date startTime = DateTimeUtil.now().plusMinutes(START_DELAY_IN_MINUTES).toDate();
-        MotechEvent event = new MotechEvent(SUBJECT, new HashMap<String, Object>());
+        MotechEvent event = new MotechEvent(SUBJECT);
         RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null,
                 REPEAT_INTERVAL_IN_HOUR * MILLIS_PER_HOUR);
         schedulerService.safeScheduleRepeatingJob(job);
