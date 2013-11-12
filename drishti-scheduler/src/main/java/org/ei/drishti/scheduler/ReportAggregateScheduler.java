@@ -1,6 +1,6 @@
 package org.ei.drishti.scheduler;
 
-import org.joda.time.DateTime;
+import org.ei.drishti.common.util.DateTimeUtil;
 import org.motechproject.scheduler.MotechSchedulerService;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduler.domain.RepeatingSchedulableJob;
@@ -15,26 +15,27 @@ import java.util.HashMap;
 import static org.joda.time.DateTimeConstants.MILLIS_PER_HOUR;
 
 @Component
-public class ANMReportScheduler {
-    public static final String SUBJECT = "DRISHTI-ANM-REPORT-FETCH-SCHEDULE";
-    public static final int START_DELAY_IN_MINUTES = 5;
-    public static final long REPEAT_INTERVAL_IN_HOUR = 1L;
-    private MotechSchedulerService schedulerService;
+public class ReportAggregateScheduler {
     private static Logger logger = LoggerFactory.getLogger(ANMReportScheduler.class.toString());
 
+    public static final String SUBJECT = "REPORT_AGGREGATOR_SCHEDULE";
+    public static final int START_DELAY_IN_MINUTES = 10;
+    public static final long REPEAT_INTERVAL_IN_HOUR = 1L;
+    private MotechSchedulerService schedulerService;
+
     @Autowired
-    public ANMReportScheduler(MotechSchedulerService schedulerService) {
+    public ReportAggregateScheduler(MotechSchedulerService schedulerService) {
         this.schedulerService = schedulerService;
     }
 
     public void startTimedScheduler() {
-        logger.info("Scheduling anm report fetch ...");
+        logger.info("Scheduling report aggregator job...");
 
-        Date startTime = DateTime.now().plusMinutes(START_DELAY_IN_MINUTES).toDate();
+        Date startTime = DateTimeUtil.now().plusMinutes(START_DELAY_IN_MINUTES).toDate();
         MotechEvent event = new MotechEvent(SUBJECT, new HashMap<String, Object>());
         RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null,
                 REPEAT_INTERVAL_IN_HOUR * MILLIS_PER_HOUR);
-
         schedulerService.safeScheduleRepeatingJob(job);
     }
 }
+

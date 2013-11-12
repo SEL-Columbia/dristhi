@@ -83,7 +83,6 @@ public class ReportDataController {
         return "Success";
     }
 
-
     @RequestMapping(headers = {"Accept=application/json"}, value = "/report/update", method = RequestMethod.POST)
     @ResponseBody
     public String updateReports(@RequestBody ReportDataUpdateRequest request) throws ReportDataMissingException {
