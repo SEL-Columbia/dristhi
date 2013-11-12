@@ -14,16 +14,16 @@ import org.motechproject.scheduler.domain.RepeatingSchedulableJob;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class ReportAggregateSchedulerTest {
+public class AggregateReportsSchedulerTest {
 
     @Mock
     private MotechSchedulerService schedulerService;
-    private ReportAggregateScheduler scheduler;
+    private AggregateReportsScheduler scheduler;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        scheduler = new ReportAggregateScheduler(schedulerService);
+        scheduler = new AggregateReportsScheduler(schedulerService);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class ReportAggregateSchedulerTest {
     }
 
     private RepeatingSchedulableJob verifyJob() {
-        RepeatingSchedulableJob repeatingSchedulableJob = Matchers.argThat(new ArgumentMatcher<RepeatingSchedulableJob>() {
+        return Matchers.argThat(new ArgumentMatcher<RepeatingSchedulableJob>() {
             @Override
             public boolean matches(Object o) {
                 RepeatingSchedulableJob job = (RepeatingSchedulableJob) o;
@@ -46,6 +46,5 @@ public class ReportAggregateSchedulerTest {
                         && "REPORT_AGGREGATOR_SCHEDULE".equals(job.getMotechEvent().getSubject());
             }
         });
-        return repeatingSchedulableJob;
     }
 }

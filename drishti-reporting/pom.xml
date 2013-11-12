@@ -146,6 +146,11 @@
             <artifactId>motech-platform-server-api</artifactId>
             <version>${motech.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.ei.drishti</groupId>
+            <artifactId>drishti-scheduler</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

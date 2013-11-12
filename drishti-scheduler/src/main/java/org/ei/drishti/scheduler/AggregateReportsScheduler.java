@@ -15,7 +15,7 @@ import java.util.HashMap;
 import static org.joda.time.DateTimeConstants.MILLIS_PER_HOUR;
 
 @Component
-public class ReportAggregateScheduler {
+public class AggregateReportsScheduler {
     private static Logger logger = LoggerFactory.getLogger(ANMReportScheduler.class.toString());
 
     public static final String SUBJECT = "REPORT_AGGREGATOR_SCHEDULE";
@@ -24,7 +24,7 @@ public class ReportAggregateScheduler {
     private MotechSchedulerService schedulerService;
 
     @Autowired
-    public ReportAggregateScheduler(MotechSchedulerService schedulerService) {
+    public AggregateReportsScheduler(MotechSchedulerService schedulerService) {
         this.schedulerService = schedulerService;
     }
 
