@@ -106,7 +106,7 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedReposito
         allDatesRepository.save(endDate);
         repository.save(serviceProvider, "123", indicator, startDate, location);
 
-        List reports = repository.getReportsFor(anm.anmIdentifier(), "2013-01-26", "2013-02-25");
+        List<ServiceProvidedReport> reports = repository.getReportsFor(anm.anmIdentifier(), "2013-01-26", "2013-02-25");
 
         assertEquals(reports.size(), 1);
     }

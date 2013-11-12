@@ -1,0 +1,169 @@
+From a7dd9dbb633bb6fe4a640c1d65e480a422d51d8b Mon Sep 17 00:00:00 2001
+From: Kumaran V <me@kumaranvram.com>
+Date: Fri, 8 Nov 2013 09:45:37 +0530
+Subject: [PATCH] Bamboo Service
+
+---
+ assets/config/drishti.properties                   |  3 +-
+ .../java/org/ei/drishti/common/util/HttpAgent.java | 15 ++++++++
+ .../reporting/controller/BambooService.java        | 41 ++++++++++++++++++++++
+ .../reporting/controller/ReportDataController.java | 14 +++++++-
+ .../controller/ReportDataControllerTest.java       |  4 ++-
+ 5 files changed, 74 insertions(+), 3 deletions(-)
+ create mode 100644 drishti-reporting/src/main/java/org/ei/drishti/reporting/controller/BambooService.java
+
+diff --git a/assets/config/drishti.properties b/assets/config/drishti.properties
+index 36d8c1f..35707ea 100644
+--- a/assets/config/drishti.properties
++++ b/assets/config/drishti.properties
+@@ -11,4 +11,5 @@ jdbc.driverClassName=org.postgresql.Driver
+ jdbc.username=postgres
+ jdbc.password=password
+ jdbc.url=jdbc:postgresql://localhost/drishti/
+-preferred.time=7
+\ No newline at end of file
++preferred.time=7
++bamboo.dataset.url=http://bamboo.io/datasets/ae78a7ec466e42019f7563a8db7b1272
+\ No newline at end of file
+diff --git a/drishti-common/src/main/java/org/ei/drishti/common/util/HttpAgent.java b/drishti-common/src/main/java/org/ei/drishti/common/util/HttpAgent.java
+index dfc4987..f8f5782 100644
+--- a/drishti-common/src/main/java/org/ei/drishti/common/util/HttpAgent.java
++++ b/drishti-common/src/main/java/org/ei/drishti/common/util/HttpAgent.java
+@@ -4,6 +4,7 @@ import org.apache.commons.httpclient.HttpStatus;
+ import org.apache.commons.io.IOUtils;
+ import org.apache.http.client.methods.HttpGet;
+ import org.apache.http.client.methods.HttpPost;
++import org.apache.http.client.methods.HttpPut;
+ import org.apache.http.conn.ClientConnectionManager;
+ import org.apache.http.conn.scheme.PlainSocketFactory;
+ import org.apache.http.conn.scheme.Scheme;
+@@ -55,6 +56,20 @@ public class HttpAgent {
+         }
+     }
+ 
++    public HttpResponse put(String url, String data, String contentType) {
++        HttpPut request = new HttpPut(url);
++        try {
++            request.setHeader("Content-Type", contentType);
++            StringEntity entity = new StringEntity(data);
++            entity.setContentEncoding("application/json");
++            request.setEntity(entity);
++            org.apache.http.HttpResponse response = httpClient.execute(request);
++            return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
++        } catch (Exception e) {
++            throw new RuntimeException(e);
++        }
++    }
++
+     public HttpResponse get(String url) {
+         HttpGet request = new HttpGet(url);
+         try {
+diff --git a/drishti-reporting/src/main/java/org/ei/drishti/reporting/controller/BambooService.java b/drishti-reporting/src/main/java/org/ei/drishti/reporting/controller/BambooService.java
+new file mode 100644
+index 0000000..3af348e
+--- /dev/null
++++ b/drishti-reporting/src/main/java/org/ei/drishti/reporting/controller/BambooService.java
+@@ -0,0 +1,41 @@
++package org.ei.drishti.reporting.controller;
++
++import com.google.gson.Gson;
++import org.ei.drishti.common.util.HttpAgent;
++import org.ei.drishti.common.util.HttpResponse;
++import org.ei.drishti.reporting.domain.ServiceProvidedReport;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.beans.factory.annotation.Value;
++import org.springframework.stereotype.Component;
++
++import java.text.MessageFormat;
++import java.util.List;
++
++@Component
++public class BambooService {
++
++    private String bambooDataSetUrl;
++    private HttpAgent httpAgent;
++
++    @Autowired
++    public BambooService(@Value("#{drishti['bamboo.dataset.url']}") String bambooDataSetUrl, HttpAgent httpAgent)  {
++        this.bambooDataSetUrl = bambooDataSetUrl;
++        this.httpAgent = httpAgent;
++    }
++
++    public void update(List reports) throws Exception {
++        Gson gson = new Gson();
++        for (Object report : reports) {
++            ServiceProvidedReport serviceProvidedReport = (ServiceProvidedReport) report;
++            String reportJson = gson.toJson(serviceProvidedReport);
++            postToBamboo(reportJson);
++        }
++    }
++
++    private void postToBamboo(String reportJson) throws Exception {
++        HttpResponse response = httpAgent.put(bambooDataSetUrl, "update="+reportJson, "application/json");
++        if (!response.isSuccess()) {
++            throw new Exception(MessageFormat.format("Updating data to bamboo with url {0} failed with error: {0}", bambooDataSetUrl, response.body()));
++        }
++    }
++}
+diff --git a/drishti-reporting/src/main/java/org/ei/drishti/reporting/controller/ReportDataController.java b/drishti-reporting/src/main/java/org/ei/drishti/reporting/controller/ReportDataController.java
+index ea029eb..43ec08f 100644
+--- a/drishti-reporting/src/main/java/org/ei/drishti/reporting/controller/ReportDataController.java
++++ b/drishti-reporting/src/main/java/org/ei/drishti/reporting/controller/ReportDataController.java
+@@ -23,12 +23,16 @@ import static org.ei.drishti.common.AllConstants.ReportDataParameters;
+ public class ReportDataController {
+     private ServicesProvidedRepository servicesProvidedRepository;
+     private ANMReportsRepository anmReportsRepository;
++    private BambooService bambooService;
+     private static final Logger logger = LoggerFactory.getLogger(ReportDataController.class);
+ 
+     @Autowired
+-    public ReportDataController(ServicesProvidedRepository servicesProvidedRepository, ANMReportsRepository anmReportsRepository) {
++    public ReportDataController(ServicesProvidedRepository servicesProvidedRepository,
++                                ANMReportsRepository anmReportsRepository,
++                                BambooService bambooService) {
+         this.servicesProvidedRepository = servicesProvidedRepository;
+         this.anmReportsRepository = anmReportsRepository;
++        this.bambooService = bambooService;
+     }
+ 
+     @RequestMapping(value = "/report/submit", method = RequestMethod.POST)
+@@ -67,6 +71,14 @@ public class ReportDataController {
+         return new Gson().toJson(result);
+     }
+ 
++    @RequestMapping(value = "/report/aggregate", method = RequestMethod.GET)
++    @ResponseBody
++    public String aggregateReportForCurrentReportingMonth(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam(value = "anmId") String anmId) throws Exception {
++        logger.info(MessageFormat.format("Reporting data for ANM: {0}", anmId));
++        bambooService.update(servicesProvidedRepository.getReportsFor(anmId, startDate, endDate));
++        return "Success";
++    }
++
+ 
+     @RequestMapping(headers = {"Accept=application/json"}, value = "/report/update", method = RequestMethod.POST)
+     @ResponseBody
+diff --git a/drishti-reporting/src/test/java/org/ei/drishti/reporting/controller/ReportDataControllerTest.java b/drishti-reporting/src/test/java/org/ei/drishti/reporting/controller/ReportDataControllerTest.java
+index 3b414bb..5a3cb9f 100644
+--- a/drishti-reporting/src/test/java/org/ei/drishti/reporting/controller/ReportDataControllerTest.java
++++ b/drishti-reporting/src/test/java/org/ei/drishti/reporting/controller/ReportDataControllerTest.java
+@@ -39,6 +39,8 @@ public class ReportDataControllerTest {
+     @Mock
+     private ANMReportsRepository anmReportsRepository;
+     @Mock
++    private BambooService bambooService;
++    @Mock
+     private ServiceProvided serviceProvided;
+     @Mock
+     private ANMReportData anmReportData;
+@@ -52,7 +54,7 @@ public class ReportDataControllerTest {
+     @Before
+     public void setUp() throws Exception {
+         initMocks(this);
+-        controller = new ReportDataController(servicesProvidedRepository, anmReportsRepository);
++        controller = new ReportDataController(servicesProvidedRepository, anmReportsRepository, bambooService);
+     }
+ 
+     @Test
+-- 
+1.8.3.4 (Apple Git-47)
+

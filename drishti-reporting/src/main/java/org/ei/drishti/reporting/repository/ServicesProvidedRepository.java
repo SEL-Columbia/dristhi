@@ -5,10 +5,7 @@ import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.monitor.Probe;
-import org.ei.drishti.reporting.domain.Dates;
-import org.ei.drishti.reporting.domain.Indicator;
-import org.ei.drishti.reporting.domain.Location;
-import org.ei.drishti.reporting.domain.ServiceProvider;
+import org.ei.drishti.reporting.domain.*;
 import org.ei.drishti.reporting.repository.cache.CachingRepository;
 import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
 import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
@@ -101,7 +98,7 @@ public class ServicesProvidedRepository {
     }
 
     @Transactional("service_provided")
-    public List getReportsFor(String anmId, String startDate, String endDate) {
+    public List<ServiceProvidedReport> getReportsFor(String anmId, String startDate, String endDate) {
         return servicesProvidedRepository.getReportsFor(anmId, startDate, endDate);
     }
 }

@@ -4,6 +4,7 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
@@ -16,6 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.protocol.HTTP;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.stereotype.Component;
 
@@ -44,12 +46,27 @@ public class HttpAgent {
     public HttpResponse post(String url, String data, String contentType) {
         HttpPost request = new HttpPost(url);
         try {
-            request.setHeader("Content-Type", contentType);
+            request.setHeader(HTTP.CONTENT_TYPE, contentType);
             StringEntity entity = new StringEntity(data);
-            entity.setContentEncoding("application/json");
+            entity.setContentEncoding(contentType);
             request.setEntity(entity);
             org.apache.http.HttpResponse response = httpClient.execute(request);
             return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public HttpResponse put(String url, String data, String contentType) {
+        HttpPut request = new HttpPut(url);
+        try {
+            request.setHeader(HTTP.CONTENT_TYPE, contentType);
+            StringEntity entity = new StringEntity(data);
+            entity.setContentEncoding(contentType);
+            request.setEntity(entity);
+            org.apache.http.HttpResponse response = httpClient.execute(request);
+            return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK,
+                    IOUtils.toString(response.getEntity().getContent()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

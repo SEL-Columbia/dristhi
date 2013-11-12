@@ -39,6 +39,8 @@ public class ReportDataControllerTest {
     @Mock
     private ANMReportsRepository anmReportsRepository;
     @Mock
+    private BambooService bambooService;
+    @Mock
     private ServiceProvided serviceProvided;
     @Mock
     private ANMReportData anmReportData;
@@ -52,7 +54,7 @@ public class ReportDataControllerTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new ReportDataController(servicesProvidedRepository, anmReportsRepository);
+        controller = new ReportDataController(servicesProvidedRepository, anmReportsRepository, bambooService);
     }
 
     @Test
@@ -163,6 +165,7 @@ public class ReportDataControllerTest {
         String startDate = "2013-10-26";
         String endDate = "2013-11-25";
         when(servicesProvidedRepository.getReportsFor(anmId, startDate, endDate)).thenReturn(asList(serviceProvidedReport(anmId)));
+
         String json = controller.reportForCurrentReportingMonth("2013-10-26", "2013-11-25", anmId);
 
         assertEquals("[{\"id\":\"1\",\"anmIdentifier\":\"ANM X\",\"type\":\"ANM\",\"indicator\":\"INDICATOR 1\"" +
@@ -174,7 +177,6 @@ public class ReportDataControllerTest {
     public void shouldFetchANMReportForTheGivenMonth() throws ReportDataMissingException {
         Map<String, String> map = new HashMap<>();
         String anmId = "ANM X";
-
         ServiceProvidedReport serviceProvidedReport = serviceProvidedReport(anmId);
         when(servicesProvidedRepository.getReportsFor(anmId, "2013-10-26", "2013-11-25")).thenReturn(asList(serviceProvidedReport));
 

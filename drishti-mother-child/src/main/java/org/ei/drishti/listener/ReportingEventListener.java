@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class ReportingEventListener {
     @MotechListener(subjects = ReportEvent.SUBJECT)
     public void submitReportingData(MotechEvent event) {
         String data = new Gson().toJson(event.getParameters().get("data"));
-        HttpResponse response = httpAgent.post(url + "/" + SUBMIT_REPORT_ACTION, data, "application/json");
+        HttpResponse response = httpAgent.post(url + "/" + SUBMIT_REPORT_ACTION, data, MediaType.APPLICATION_JSON_VALUE);
         if (!response.isSuccess()) {
             logger.error("Reporting data post failed. URL: " + url + ". Data: " + data + ". Response: " + response.body());
         }
@@ -49,7 +50,7 @@ public class ReportingEventListener {
     @MotechListener(subjects = ReportUpdateEvent.SUBJECT)
     public void updateReportingData(MotechEvent event) {
         String data = new Gson().toJson(event.getParameters().get("data"));
-        HttpResponse response = httpAgent.post(url + "/" + UPDATE_REPORT_ACTION, data, "application/json");
+        HttpResponse response = httpAgent.post(url + "/" + UPDATE_REPORT_ACTION, data, MediaType.APPLICATION_JSON_VALUE);
         if (!response.isSuccess()) {
             logger.error("Reporting data post failed. URL: " + url + "/" + UPDATE_REPORT_ACTION + ". Data: " + data + ". Response: " + response.body());
         }
