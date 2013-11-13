@@ -13,14 +13,14 @@ import java.text.MessageFormat;
 import java.util.List;
 
 @Component
-public class BambooService {
+public class AggregateReportsService {
 
-    private String bambooDataSetUrl;
+    private String AggregatorDataSetUrl;
     private HttpAgent httpAgent;
 
     @Autowired
-    public BambooService(@Value("#{drishti['bamboo.dataset.url']}") String bambooDataSetUrl, HttpAgent httpAgent)  {
-        this.bambooDataSetUrl = bambooDataSetUrl;
+    public AggregateReportsService(@Value("#{drishti['aggregator.dataset.url']}") String AggregatorDataSetUrl, HttpAgent httpAgent) {
+        this.AggregatorDataSetUrl = AggregatorDataSetUrl;
         this.httpAgent = httpAgent;
     }
 
@@ -29,14 +29,14 @@ public class BambooService {
         for (Object report : reports) {
             ServiceProvidedReport serviceProvidedReport = (ServiceProvidedReport) report;
             String reportJson = gson.toJson(serviceProvidedReport);
-            postToBamboo(reportJson);
+            postToAggregator(reportJson);
         }
     }
 
-    private void postToBamboo(String reportJson) throws Exception {
-        HttpResponse response = httpAgent.put(bambooDataSetUrl, "update="+reportJson, MediaType.APPLICATION_JSON_VALUE);
+    private void postToAggregator(String reportJson) throws Exception {
+        HttpResponse response = httpAgent.put(AggregatorDataSetUrl, "update=" + reportJson, MediaType.APPLICATION_JSON_VALUE);
         if (!response.isSuccess()) {
-            throw new Exception(MessageFormat.format("Updating data to bamboo with url {0} failed with error: {0}", bambooDataSetUrl, response.body()));
+            throw new Exception(MessageFormat.format("Updating data to Aggregator with url {0} failed with error: {0}", AggregatorDataSetUrl, response.body()));
         }
     }
 }

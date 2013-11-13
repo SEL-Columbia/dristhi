@@ -1,6 +1,6 @@
 package org.ei.drishti.reporting.listener;
 
-import org.ei.drishti.reporting.controller.BambooService;
+import org.ei.drishti.reporting.controller.AggregateReportsService;
 import org.ei.drishti.reporting.domain.ServiceProvidedReport;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
 import org.ei.drishti.reporting.repository.TokenRepository;
@@ -23,14 +23,14 @@ public class AggregateReportsEventListenerTest {
     @Mock
     private ServicesProvidedRepository servicesProvidedRepository;
     @Mock
-    private BambooService bambooService;
+    private AggregateReportsService aggregateReportsService;
     @Mock
     private TokenRepository tokenRepository;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        aggregateReportsEventListener = new AggregateReportsEventListener(servicesProvidedRepository, bambooService, tokenRepository);
+        aggregateReportsEventListener = new AggregateReportsEventListener(servicesProvidedRepository, aggregateReportsService, tokenRepository);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class AggregateReportsEventListenerTest {
 
         aggregateReportsEventListener.aggregate(new MotechEvent("REPORT_AGGREGATOR_SCHEDULE"));
 
-        verify(bambooService).update(serviceProvidedReportList);
+        verify(aggregateReportsService).update(serviceProvidedReportList);
     }
 
     @Test
@@ -51,6 +51,6 @@ public class AggregateReportsEventListenerTest {
 
         aggregateReportsEventListener.aggregate(new MotechEvent("REPORT_AGGREGATOR_SCHEDULE"));
 
-        verify(bambooService, never()).update(anyList());
+        verify(aggregateReportsService, never()).update(anyList());
     }
 }

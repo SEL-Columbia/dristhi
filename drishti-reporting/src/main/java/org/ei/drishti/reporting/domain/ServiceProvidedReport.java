@@ -8,14 +8,13 @@ import java.util.Date;
 @Table(name = "service_provided_report_view")
 @NamedQuery(name = ServiceProvidedReport.FIND_ALL_SERVICE_PROVIDED_BY_DATE_FOR_ANM,
         query = "select r from ServiceProvidedReport r where r.anmIdentifier = ? and r.date >= ? and r.date < ?")
-
 public class ServiceProvidedReport {
 
     public static final String FIND_ALL_SERVICE_PROVIDED_BY_DATE_FOR_ANM = "find.all.service.provided.by.date.for.anm";
 
     @Id
     @Column(name = "id", insertable = false, updatable = false)
-    private String id;
+    private Integer id;
 
     @Column(name = "anmidentifier", insertable = false, updatable = false)
     private String anmIdentifier;
@@ -26,7 +25,45 @@ public class ServiceProvidedReport {
     @Column(name = "indicator", insertable = false, updatable = false)
     private String indicator;
 
-    public String id() {
+    @Column(name = "service_date", insertable = false, updatable = false)
+    private Date date;
+
+    @Column(name = "village", insertable = false, updatable = false)
+    private String village;
+
+    @Column(name = "subcenter", insertable = false, updatable = false)
+    private String subCenter;
+
+    @Column(name = "phc", insertable = false, updatable = false)
+    private String phc;
+
+    @Column(name = "taluka", insertable = false, updatable = false)
+    private String taluka;
+
+    @Column(name = "district", insertable = false, updatable = false)
+    private String district;
+
+    @Column(name = "state", insertable = false, updatable = false)
+    private String state;
+
+    public ServiceProvidedReport(Integer id, String anmIdentifier, String type, String indicator, Date date, String village, String subCenter, String phc, String taluka, String district, String state) {
+        this.id = id;
+        this.anmIdentifier = anmIdentifier;
+        this.type = type;
+        this.indicator = indicator;
+        this.date = date;
+        this.village = village;
+        this.subCenter = subCenter;
+        this.phc = phc;
+        this.taluka = taluka;
+        this.district = district;
+        this.state = state;
+    }
+
+    public ServiceProvidedReport() {
+    }
+
+    public Integer id() {
         return id;
     }
 
@@ -70,41 +107,8 @@ public class ServiceProvidedReport {
         return state;
     }
 
-    @Column(name = "service_date", insertable = false, updatable = false)
-    private Date date;
-
-    @Column(name = "village", insertable = false, updatable = false)
-    private String village;
-
-    @Column(name = "subcenter", insertable = false, updatable = false)
-    private String subCenter;
-
-    @Column(name = "phc", insertable = false, updatable = false)
-    private String phc;
-
-    @Column(name = "taluka", insertable = false, updatable = false)
-    private String taluka;
-
-    @Column(name = "district", insertable = false, updatable = false)
-    private String district;
-
-    @Column(name = "state", insertable = false, updatable = false)
-    private String state;
-
-    public ServiceProvidedReport(String id, String anmIdentifier, String type, String indicator, Date date, String village, String subCenter, String phc, String taluka, String district, String state) {
+    public ServiceProvidedReport withId(Integer id) {
         this.id = id;
-        this.anmIdentifier = anmIdentifier;
-        this.type = type;
-        this.indicator = indicator;
-        this.date = date;
-        this.village = village;
-        this.subCenter = subCenter;
-        this.phc = phc;
-        this.taluka = taluka;
-        this.district = district;
-        this.state = state;
-    }
-
-    public ServiceProvidedReport() {
+        return this;
     }
 }

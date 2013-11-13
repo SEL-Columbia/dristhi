@@ -39,7 +39,7 @@ public class ReportDataControllerTest {
     @Mock
     private ANMReportsRepository anmReportsRepository;
     @Mock
-    private BambooService bambooService;
+    private AggregateReportsService aggregateReportsService;
     @Mock
     private ServiceProvided serviceProvided;
     @Mock
@@ -54,7 +54,7 @@ public class ReportDataControllerTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new ReportDataController(servicesProvidedRepository, anmReportsRepository, bambooService);
+        controller = new ReportDataController(servicesProvidedRepository, anmReportsRepository, aggregateReportsService);
     }
 
     @Test
@@ -158,36 +158,7 @@ public class ReportDataControllerTest {
         assertEquals("Success.", result);
     }
 
-    @Test
-    public void shouldFetchServiceProvidedReportForTheGivenMonth() throws ReportDataMissingException {
-        String anmId = "ANM X";
-        Map<String, String> map = new HashMap<>();
-        String startDate = "2013-10-26";
-        String endDate = "2013-11-25";
-        when(servicesProvidedRepository.getReportsFor(anmId, startDate, endDate)).thenReturn(asList(serviceProvidedReport(anmId)));
-
-        String json = controller.reportForCurrentReportingMonth("2013-10-26", "2013-11-25", anmId);
-
-        assertEquals("[{\"id\":\"1\",\"anmIdentifier\":\"ANM X\",\"type\":\"ANM\",\"indicator\":\"INDICATOR 1\"" +
-                ",\"date\":\"Oct 26, 2013 12:00:00 AM\",\"village\":\"village\",\"subCenter\":\"subCenter\",\"phc\":\"phc\"," +
-                "\"taluka\":\"taluka\",\"district\":\"district\",\"state\":\"state\"}]", json);
-    }
-
-    @Test
-    public void shouldFetchANMReportForTheGivenMonth() throws ReportDataMissingException {
-        Map<String, String> map = new HashMap<>();
-        String anmId = "ANM X";
-        ServiceProvidedReport serviceProvidedReport = serviceProvidedReport(anmId);
-        when(servicesProvidedRepository.getReportsFor(anmId, "2013-10-26", "2013-11-25")).thenReturn(asList(serviceProvidedReport));
-
-        String json = controller.reportForCurrentReportingMonth("2013-10-26", "2013-11-25", anmId);
-
-        assertEquals("[{\"id\":\"1\",\"anmIdentifier\":\"ANM X\",\"type\":\"ANM\",\"indicator\":\"INDICATOR 1\"" +
-                ",\"date\":\"Oct 26, 2013 12:00:00 AM\",\"village\":\"village\",\"subCenter\":\"subCenter\",\"phc\":\"phc\"," +
-                "\"taluka\":\"taluka\",\"district\":\"district\",\"state\":\"state\"}]", json);
-    }
-
     private ServiceProvidedReport serviceProvidedReport(String anmId) {
-        return new ServiceProvidedReport("1", anmId, "ANM", "INDICATOR 1", LocalDate.parse("2013-10-26").toDate(), "village", "subCenter", "phc", "taluka", "district", "state");
+        return new ServiceProvidedReport(1, anmId, "ANM", "INDICATOR 1", LocalDate.parse("2013-10-26").toDate(), "village", "subCenter", "phc", "taluka", "district", "state");
     }
 }

@@ -1,18 +1,19 @@
 package org.ei.drishti.reporting.controller;
 
-import com.google.gson.Gson;
 import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.reporting.ReportDataMissingException;
-import org.ei.drishti.reporting.domain.ServiceProvidedReport;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -24,16 +25,16 @@ import static org.ei.drishti.common.AllConstants.ReportDataParameters;
 public class ReportDataController {
     private ServicesProvidedRepository servicesProvidedRepository;
     private ANMReportsRepository anmReportsRepository;
-    private BambooService bambooService;
+    private AggregateReportsService aggregateReportsService;
     private static final Logger logger = LoggerFactory.getLogger(ReportDataController.class);
 
     @Autowired
     public ReportDataController(ServicesProvidedRepository servicesProvidedRepository,
                                 ANMReportsRepository anmReportsRepository,
-                                BambooService bambooService) {
+                                AggregateReportsService aggregateReportsService) {
         this.servicesProvidedRepository = servicesProvidedRepository;
         this.anmReportsRepository = anmReportsRepository;
-        this.bambooService = bambooService;
+        this.aggregateReportsService = aggregateReportsService;
     }
 
     @RequestMapping(value = "/report/submit", method = RequestMethod.POST)
@@ -62,25 +63,6 @@ public class ReportDataController {
                     reportingData.get(ReportDataParameters.QUANTITY));
         }
         return "Success.";
-    }
-
-    @RequestMapping(value = "/report/month", method = RequestMethod.GET)
-    @ResponseBody
-    public String reportForCurrentReportingMonth(@RequestParam("startDate") String startDate,
-                                                 @RequestParam("endDate") String endDate, @RequestParam(value = "anmId", defaultValue = "", required = false) String anmId) throws ReportDataMissingException {
-        logger.info(MessageFormat.format("Reporting data for ANM: {0} between dates {1} and {2}", anmId, startDate, endDate));
-        List<ServiceProvidedReport> result = servicesProvidedRepository.getReportsFor(anmId, startDate, endDate);
-        return new Gson().toJson(result);
-    }
-
-    @RequestMapping(value = "/report/aggregate", method = RequestMethod.GET)
-    @ResponseBody
-    public String aggregateReportForCurrentReportingMonth(@RequestParam("startDate") String startDate,
-                                                          @RequestParam("endDate") String endDate,
-                                                          @RequestParam(value = "anmId") String anmId) throws Exception {
-        logger.info(MessageFormat.format("Reporting data for ANM: {0}", anmId));
-        bambooService.update(servicesProvidedRepository.getReportsFor(anmId, startDate, endDate));
-        return "Success";
     }
 
     @RequestMapping(headers = {"Accept=application/json"}, value = "/report/update", method = RequestMethod.POST)

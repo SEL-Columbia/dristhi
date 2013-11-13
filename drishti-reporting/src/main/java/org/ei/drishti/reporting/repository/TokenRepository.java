@@ -9,4 +9,8 @@ public class TokenRepository {
     public Integer getAggregateReportsToken() {
         return null;
     }
+
+    public void updateAggregateReportsToken(Integer token) {
+
+    }
 }
