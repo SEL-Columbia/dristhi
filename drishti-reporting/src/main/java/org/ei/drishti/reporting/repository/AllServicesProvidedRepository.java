@@ -30,8 +30,7 @@ public class AllServicesProvidedRepository {
         dataAccessTemplate.deleteAll(result);
     }
 
-    public List<ServiceProvidedReport> getReportsFor(String anmId, String startDate, String endDate) {
-        return dataAccessTemplate.findByNamedQuery(ServiceProvidedReport.FIND_ALL_SERVICE_PROVIDED_BY_DATE_FOR_ANM, anmId,
-                LocalDate.parse(startDate).toDate(), LocalDate.parse(endDate).toDate());
+    public List<ServiceProvidedReport> getNewReports(Integer token) {
+        return dataAccessTemplate.findByNamedQuery(ServiceProvidedReport.FIND_NEW_SERVICE_PROVIDED,token);
     }
 }

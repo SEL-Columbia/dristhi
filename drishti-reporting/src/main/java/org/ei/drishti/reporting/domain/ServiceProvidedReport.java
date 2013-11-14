@@ -1,16 +1,20 @@
 package org.ei.drishti.reporting.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
 @Table(name = "service_provided_report_view")
-@NamedQuery(name = ServiceProvidedReport.FIND_ALL_SERVICE_PROVIDED_BY_DATE_FOR_ANM,
-        query = "select r from ServiceProvidedReport r where r.anmIdentifier = ? and r.date >= ? and r.date < ?")
+@NamedQuery(name = ServiceProvidedReport.FIND_NEW_SERVICE_PROVIDED,
+        query = "select r from ServiceProvidedReport r where r.id > ?")
 public class ServiceProvidedReport {
 
-    public static final String FIND_ALL_SERVICE_PROVIDED_BY_DATE_FOR_ANM = "find.all.service.provided.by.date.for.anm";
+    public static final String FIND_NEW_SERVICE_PROVIDED = "find.new.service.provided";
 
     @Id
     @Column(name = "id", insertable = false, updatable = false)
@@ -46,7 +50,8 @@ public class ServiceProvidedReport {
     @Column(name = "state", insertable = false, updatable = false)
     private String state;
 
-    public ServiceProvidedReport(Integer id, String anmIdentifier, String type, String indicator, Date date, String village, String subCenter, String phc, String taluka, String district, String state) {
+    public ServiceProvidedReport(Integer id, String anmIdentifier, String type, String indicator, Date date,
+                                 String village, String subCenter, String phc, String taluka, String district, String state) {
         this.id = id;
         this.anmIdentifier = anmIdentifier;
         this.type = type;
@@ -110,5 +115,20 @@ public class ServiceProvidedReport {
     public ServiceProvidedReport withId(Integer id) {
         this.id = id;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o, new String[]{"id"});
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this, new String[]{"id"});
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

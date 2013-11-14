@@ -98,11 +98,7 @@ public class ServicesProvidedRepository {
     }
 
     @Transactional("service_provided")
-    public List<ServiceProvidedReport> getReportsFor(String anmId, String startDate, String endDate) {
-        return servicesProvidedRepository.getReportsFor(anmId, startDate, endDate);
-    }
-
-    public List<ServiceProvidedReport> getNewerReportsAfter(Integer token) {
-        return null;
+    public List<ServiceProvidedReport> getNewReports(Integer token) {
+       return servicesProvidedRepository.getNewReports(token);
     }
 }

@@ -37,7 +37,7 @@ public class AggregateReportsEventListenerTest {
     public void shouldAggregateReports() throws Exception {
         when(allTokensRepository.getAggregateReportsToken()).thenReturn(12345);
         List<ServiceProvidedReport> serviceProvidedReportList = asList(new ServiceProvidedReport());
-        when(servicesProvidedRepository.getNewerReportsAfter(12345)).thenReturn(serviceProvidedReportList);
+        when(servicesProvidedRepository.getNewReports(12345)).thenReturn(serviceProvidedReportList);
 
         aggregateReportsEventListener.aggregate(new MotechEvent("REPORT_AGGREGATOR_SCHEDULE"));
 
@@ -47,7 +47,7 @@ public class AggregateReportsEventListenerTest {
     @Test
     public void shouldNotAggregateReportsWhenThereIsNoNewReport() throws Exception {
         when(allTokensRepository.getAggregateReportsToken()).thenReturn(12345);
-        when(servicesProvidedRepository.getNewerReportsAfter(12345)).thenReturn(Collections.<ServiceProvidedReport>emptyList());
+        when(servicesProvidedRepository.getNewReports(12345)).thenReturn(Collections.<ServiceProvidedReport>emptyList());
 
         aggregateReportsEventListener.aggregate(new MotechEvent("REPORT_AGGREGATOR_SCHEDULE"));
 

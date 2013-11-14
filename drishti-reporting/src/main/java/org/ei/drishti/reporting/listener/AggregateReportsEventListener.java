@@ -35,7 +35,7 @@ public class AggregateReportsEventListener {
     public void aggregate(MotechEvent event) throws Exception {
         Integer token = allTokensRepository.getAggregateReportsToken();
         logger.info(MessageFormat.format("Trying to aggregate reports. Token: {0}", token));
-        List<ServiceProvidedReport> reports = servicesProvidedRepository.getNewerReportsAfter(token);
+        List<ServiceProvidedReport> reports = servicesProvidedRepository.getNewReports(token);
         if (reports.isEmpty()) {
             logger.info("No new reports to aggregate.");
             return;

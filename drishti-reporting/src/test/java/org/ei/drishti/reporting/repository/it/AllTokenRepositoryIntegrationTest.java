@@ -20,8 +20,13 @@ public class AllTokenRepositoryIntegrationTest extends ServicesProvidedIntegrati
         template.save(new Token("aggregate-reports-token", ((Integer) 1).toString()));
         template.save(new Token("another-token", ((Integer) 2).toString()));
 
-        Integer token = repository.getAggregateReportsToken();
+        assertEquals((Integer) 1, repository.getAggregateReportsToken());
+    }
 
-        assertEquals((Integer) 1, token);
+    @Test
+    @Transactional("service_provided")
+    @Rollback
+    public void shouldDefaultTokenToZeroWhenItDoesNotExist() throws Exception {
+        assertEquals((Integer) 0, repository.getAggregateReportsToken());
     }
 }

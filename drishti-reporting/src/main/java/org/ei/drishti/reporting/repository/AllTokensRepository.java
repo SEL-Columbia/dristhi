@@ -1,6 +1,7 @@
 package org.ei.drishti.reporting.repository;
 
 
+import org.ei.drishti.common.util.IntegerUtil;
 import org.ei.drishti.reporting.domain.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,6 +24,6 @@ public class AllTokensRepository {
                 .getUniqueResult(Token.FIND_TOKEN_BY_NAME,
                         new String[]{NAME_PARAMETER},
                         new String[]{AGGREGATE_REPORTS_TOKEN_NAME});
-        return Integer.valueOf(token.value());
+        return token == null ? 0 : IntegerUtil.tryParse(token.value(), 0);
     }
 }

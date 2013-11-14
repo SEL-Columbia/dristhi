@@ -153,9 +153,9 @@ public class ServicesProvidedRepositoryTest {
 
     @Test
     public void shouldCallServiceProvidedRepositoryForReports() {
-        repository.getReportsFor("anmId", "2013-10-26", "2013-11-25");
+        repository.getNewReports(1232);
 
-        verify(servicesProvidedRepository).getReportsFor("anmId", "2013-10-26", "2013-11-25");
+        verify(servicesProvidedRepository).getNewReports(1232);
     }
 
 
