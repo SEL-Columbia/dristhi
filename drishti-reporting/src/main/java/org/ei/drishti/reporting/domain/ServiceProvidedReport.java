@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name = "service_provided_report_view")
 @NamedQuery(name = ServiceProvidedReport.FIND_NEW_SERVICE_PROVIDED,
-        query = "select r from ServiceProvidedReport r where r.id > ?")
+        query = "select r from ServiceProvidedReport r where r.id > ? order by r.id")
 public class ServiceProvidedReport {
 
     public static final String FIND_NEW_SERVICE_PROVIDED = "find.new.service.provided";
