@@ -15,7 +15,7 @@ import static org.joda.time.DateTimeConstants.MILLIS_PER_HOUR;
 
 @Component
 public class AggregateReportsScheduler {
-    private static Logger logger = LoggerFactory.getLogger(ANMReportScheduler.class.toString());
+    private static Logger logger = LoggerFactory.getLogger(AggregateReportsScheduler.class.toString());
 
     public static final String SUBJECT = "REPORT_AGGREGATOR_SCHEDULE";
     public static final int START_DELAY_IN_MINUTES = 10;

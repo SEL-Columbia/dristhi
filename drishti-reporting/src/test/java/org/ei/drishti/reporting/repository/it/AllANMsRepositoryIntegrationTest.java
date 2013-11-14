@@ -12,7 +12,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertTrue;
 
-public class AllANMsRepositoryIntegrationTest extends ANMReportsRepositoryIntegrationTestBase {
+public class AllANMsRepositoryIntegrationTest extends ANMReportsIntegrationTestBase {
     @Autowired
     private AllANMsRepository repository;
 

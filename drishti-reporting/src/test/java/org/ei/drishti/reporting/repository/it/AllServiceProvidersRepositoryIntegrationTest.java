@@ -21,7 +21,7 @@ import static org.ei.drishti.reporting.domain.ServiceProviderType.ANM;
 import static org.ei.drishti.reporting.domain.ServiceProviderType.PHC;
 import static org.hamcrest.Matchers.equalTo;
 
-public class AllServiceProvidersRepositoryIntegrationTest extends ServicesProvidedRepositoryIntegrationTestBase {
+public class AllServiceProvidersRepositoryIntegrationTest extends ServicesProvidedIntegrationTestBase {
     @Autowired
     private AllServiceProvidersRepository repository;
 

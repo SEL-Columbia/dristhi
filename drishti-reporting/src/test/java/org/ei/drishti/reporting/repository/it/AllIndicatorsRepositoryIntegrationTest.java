@@ -14,7 +14,7 @@ import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class AllIndicatorsRepositoryIntegrationTest extends ServicesProvidedRepositoryIntegrationTestBase {
+public class AllIndicatorsRepositoryIntegrationTest extends ServicesProvidedIntegrationTestBase {
     @Autowired
     @Qualifier("serviceProvidedIndicatorRepository")
     private AllIndicatorsRepository repository;

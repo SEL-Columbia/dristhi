@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static org.joda.time.LocalDate.parse;
 
-public class AllAnnualTargetsRepositoryIntegrationTest extends ANMReportsRepositoryIntegrationTestBase {
+public class AllAnnualTargetsRepositoryIntegrationTest extends ANMReportsIntegrationTestBase {
     @Autowired
     private AllAnnualTargetsRepository repository;
 

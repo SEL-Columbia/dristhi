@@ -1,6 +1,7 @@
-package org.ei.drishti.scheduler;
+package org.ei.drishti.reporting;
 
 import org.ei.drishti.common.util.DateTimeUtil;
+import org.ei.drishti.scheduler.AggregateReportsScheduler;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDateTime;
 import org.junit.Before;

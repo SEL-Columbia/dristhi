@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class AllLocationsRepositoryIntegrationTest extends ServicesProvidedRepositoryIntegrationTestBase {
+public class AllLocationsRepositoryIntegrationTest extends ServicesProvidedIntegrationTestBase {
     @Autowired
     private AllLocationsRepository repository;
 

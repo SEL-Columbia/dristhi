@@ -3,7 +3,7 @@ package org.ei.drishti.reporting.listener;
 import org.ei.drishti.reporting.controller.AggregateReportsService;
 import org.ei.drishti.reporting.domain.ServiceProvidedReport;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
-import org.ei.drishti.reporting.repository.TokenRepository;
+import org.ei.drishti.reporting.repository.AllTokensRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -25,17 +25,17 @@ public class AggregateReportsEventListenerTest {
     @Mock
     private AggregateReportsService aggregateReportsService;
     @Mock
-    private TokenRepository tokenRepository;
+    private AllTokensRepository allTokensRepository;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        aggregateReportsEventListener = new AggregateReportsEventListener(servicesProvidedRepository, aggregateReportsService, tokenRepository);
+        aggregateReportsEventListener = new AggregateReportsEventListener(servicesProvidedRepository, aggregateReportsService, allTokensRepository);
     }
 
     @Test
     public void shouldAggregateReports() throws Exception {
-        when(tokenRepository.getAggregateReportsToken()).thenReturn(12345);
+        when(allTokensRepository.getAggregateReportsToken()).thenReturn(12345);
         List<ServiceProvidedReport> serviceProvidedReportList = asList(new ServiceProvidedReport());
         when(servicesProvidedRepository.getNewerReportsAfter(12345)).thenReturn(serviceProvidedReportList);
 
@@ -46,7 +46,7 @@ public class AggregateReportsEventListenerTest {
 
     @Test
     public void shouldNotAggregateReportsWhenThereIsNoNewReport() throws Exception {
-        when(tokenRepository.getAggregateReportsToken()).thenReturn(12345);
+        when(allTokensRepository.getAggregateReportsToken()).thenReturn(12345);
         when(servicesProvidedRepository.getNewerReportsAfter(12345)).thenReturn(Collections.<ServiceProvidedReport>emptyList());
 
         aggregateReportsEventListener.aggregate(new MotechEvent("REPORT_AGGREGATOR_SCHEDULE"));

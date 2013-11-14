@@ -18,7 +18,7 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class ANMReportDataIntegrationTest extends ANMReportsRepositoryIntegrationTestBase {
+public class ANMReportDataIntegrationTest extends ANMReportsIntegrationTestBase {
     @Autowired
     private AllANMReportDataRepository repository;
 

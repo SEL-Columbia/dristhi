@@ -16,7 +16,7 @@ import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class AllDatesRepositoryIntegrationTest extends ServicesProvidedRepositoryIntegrationTestBase {
+public class AllDatesRepositoryIntegrationTest extends ServicesProvidedIntegrationTestBase {
     @Autowired
     private @Qualifier("serviceProvidedDatesRepository") DatesCacheableRepository repository;
 

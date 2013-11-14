@@ -3,7 +3,7 @@ package org.ei.drishti.reporting.listener;
 import org.ei.drishti.reporting.controller.AggregateReportsService;
 import org.ei.drishti.reporting.domain.ServiceProvidedReport;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
-import org.ei.drishti.reporting.repository.TokenRepository;
+import org.ei.drishti.reporting.repository.AllTokensRepository;
 import org.ei.drishti.scheduler.AggregateReportsScheduler;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
@@ -20,20 +20,20 @@ public class AggregateReportsEventListener {
     private static Logger logger = LoggerFactory.getLogger(AggregateReportsEventListener.class);
     private final ServicesProvidedRepository servicesProvidedRepository;
     private final AggregateReportsService aggregateReportsService;
-    private final TokenRepository tokenRepository;
+    private final AllTokensRepository allTokensRepository;
 
     @Autowired
     public AggregateReportsEventListener(ServicesProvidedRepository servicesProvidedRepository,
-                                         AggregateReportsService aggregateReportsService, TokenRepository tokenRepository) {
+                                         AggregateReportsService aggregateReportsService, AllTokensRepository allTokensRepository) {
 
         this.servicesProvidedRepository = servicesProvidedRepository;
         this.aggregateReportsService = aggregateReportsService;
-        this.tokenRepository = tokenRepository;
+        this.allTokensRepository = allTokensRepository;
     }
 
     @MotechListener(subjects = AggregateReportsScheduler.SUBJECT)
     public void aggregate(MotechEvent event) throws Exception {
-        Integer token = tokenRepository.getAggregateReportsToken();
+        Integer token = allTokensRepository.getAggregateReportsToken();
         logger.info(MessageFormat.format("Trying to aggregate reports. Token: {0}", token));
         List<ServiceProvidedReport> reports = servicesProvidedRepository.getNewerReportsAfter(token);
         if (reports.isEmpty()) {

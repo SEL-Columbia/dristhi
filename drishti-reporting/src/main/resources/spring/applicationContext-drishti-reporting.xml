@@ -8,13 +8,21 @@
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:activemq.properties"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
     <context:property-placeholder location="classpath*:drishti-report.properties"/>
     <context:annotation-config/>
 
     <import resource="classpath:spring/applicationContext-reporting-repository.xml"/>
+    <import resource="classpath:applicationScheduler.xml"/>
+
     <util:properties id="drishti" location="classpath:/drishti.properties"/>
 
-    <context:component-scan base-package="org.ei.drishti.reporting, org.ei.drishti.common"/>
+    <context:component-scan base-package="org.ei.drishti.scheduler, org.ei.drishti.reporting, org.ei.drishti.common"/>
     <mvc:default-servlet-handler/>
 
     <mvc:annotation-driven/>
