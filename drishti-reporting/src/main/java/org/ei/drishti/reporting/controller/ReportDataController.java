@@ -81,6 +81,12 @@ public class ReportDataController {
         return "Success.";
     }
 
+    @RequestMapping(value = "/report/fetchForAllANMs", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ANMReport> getAllANMsIndicatorSummaries() {
+        return anmReportsRepository.fetchAllANMsReport();
+    }
+
     private void throwExceptionIfMandatoryDataIsNotPresentForANMReport(ReportingData reportingData) throws ReportDataMissingException {
         ArrayList missingData = reportingData.getMissingReportDataForANMReport();
         if (!missingData.isEmpty()) {
@@ -105,12 +111,6 @@ public class ReportDataController {
         for (ReportingData data : reportingData) {
             throwExceptionIfMandatoryDataIsNotPresentForServiceProvidedReport(data);
         }
-    }
-
-    @RequestMapping(value = "/report/fetchForAllANMs", method = RequestMethod.GET)
-    @ResponseBody
-    public List<ANMReport> getAllANMsIndicatorSummaries() {
-        return anmReportsRepository.fetchAllANMsReport();
     }
 }
 

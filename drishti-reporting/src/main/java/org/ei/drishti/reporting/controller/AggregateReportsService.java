@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
 import org.ei.drishti.reporting.domain.ServiceProvidedReport;
+import org.ei.drishti.reporting.repository.AllTokensRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -17,26 +18,29 @@ public class AggregateReportsService {
 
     private String AggregatorDataSetUrl;
     private HttpAgent httpAgent;
+    private AllTokensRepository tokenRepository;
 
     @Autowired
-    public AggregateReportsService(@Value("#{drishti['aggregator.dataset.url']}") String AggregatorDataSetUrl, HttpAgent httpAgent) {
+    public AggregateReportsService(@Value("#{drishti['aggregator.dataset.url']}") String AggregatorDataSetUrl,
+                                   HttpAgent httpAgent, AllTokensRepository tokenRepository) {
         this.AggregatorDataSetUrl = AggregatorDataSetUrl;
         this.httpAgent = httpAgent;
+        this.tokenRepository = tokenRepository;
     }
 
-    public void update(List reports) throws Exception {
+    public void update(List<ServiceProvidedReport> reports) {
         Gson gson = new Gson();
-        for (Object report : reports) {
-            ServiceProvidedReport serviceProvidedReport = (ServiceProvidedReport) report;
-            String reportJson = gson.toJson(serviceProvidedReport);
-            postToAggregator(reportJson);
+        for (ServiceProvidedReport report : reports) {
+            String reportJson = gson.toJson(report);
+            HttpResponse response = sendToAggregator(reportJson);
+            if (!response.isSuccess()) {
+                throw new RuntimeException(MessageFormat.format("Updating data to Aggregator with url {0} failed with error: {0}", AggregatorDataSetUrl, response.body()));
+            }
+            tokenRepository.saveAggregateReportsToken(report.id());
         }
     }
 
-    private void postToAggregator(String reportJson) throws Exception {
-        HttpResponse response = httpAgent.put(AggregatorDataSetUrl, "update=" + reportJson, MediaType.APPLICATION_JSON_VALUE);
-        if (!response.isSuccess()) {
-            throw new Exception(MessageFormat.format("Updating data to Aggregator with url {0} failed with error: {0}", AggregatorDataSetUrl, response.body()));
-        }
+    private HttpResponse sendToAggregator(String reportJson) {
+        return httpAgent.put(AggregatorDataSetUrl, "update=" + reportJson, MediaType.APPLICATION_JSON_VALUE);
     }
 }

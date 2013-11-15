@@ -29,4 +29,24 @@ public class AllTokenRepositoryIntegrationTest extends ServicesProvidedIntegrati
     public void shouldDefaultTokenToZeroWhenItDoesNotExist() throws Exception {
         assertEquals((Integer) 0, repository.getAggregateReportsToken());
     }
+
+    @Test
+    @Transactional("service_provided")
+    @Rollback
+    public void shouldCreateTokenWhenItDoesNotExist() throws Exception {
+        repository.saveAggregateReportsToken(2);
+
+        assertEquals((Integer) 2, repository.getAggregateReportsToken());
+    }
+
+    @Test
+    @Transactional("service_provided")
+    @Rollback
+    public void shouldUpdateTokenWhenItExists() throws Exception {
+        template.save(new Token("aggregate-reports-token", ((Integer) 1).toString()));
+
+        repository.saveAggregateReportsToken(2);
+
+        assertEquals((Integer) 2, repository.getAggregateReportsToken());
+    }
 }

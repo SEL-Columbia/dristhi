@@ -31,6 +31,6 @@ public class AllServicesProvidedRepository {
     }
 
     public List<ServiceProvidedReport> getNewReports(Integer token) {
-        return dataAccessTemplate.findByNamedQuery(ServiceProvidedReport.FIND_NEW_SERVICE_PROVIDED,token);
+        return dataAccessTemplate.findByNamedQuery(ServiceProvidedReport.FIND_NEW_SERVICE_PROVIDED, token);
     }
 }

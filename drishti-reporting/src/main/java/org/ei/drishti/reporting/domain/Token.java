@@ -45,6 +45,11 @@ public class Token {
         return value;
     }
 
+    public Token withValue(String value) {
+        this.value = value;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, new String[]{"id"});
