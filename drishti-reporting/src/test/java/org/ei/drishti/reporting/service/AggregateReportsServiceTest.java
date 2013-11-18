@@ -3,13 +3,16 @@ package org.ei.drishti.reporting.service;
 import com.google.gson.Gson;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
+import org.ei.drishti.dto.report.ServiceProvidedReportDTO;
 import org.ei.drishti.reporting.domain.ServiceProvidedReport;
 import org.ei.drishti.reporting.repository.AllTokensRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.sql.Date;
 import java.util.Collections;
 
 import static java.util.Arrays.asList;
@@ -36,12 +39,13 @@ public class AggregateReportsServiceTest {
     @Test
     public void shouldSendReportsToAggregator() throws Exception {
         when(tokenRepository.getAggregateReportsToken()).thenReturn(0);
-
-        ServiceProvidedReport firstServiceProvidedReport = new ServiceProvidedReport().withId(1);
-        ServiceProvidedReport secondServiceProvidedReport = new ServiceProvidedReport().withId(2);
-        when(servicesProvidedRepository.getNewReports(0)).thenReturn(asList(firstServiceProvidedReport, secondServiceProvidedReport));
-        String firstReportJson = new Gson().toJson(firstServiceProvidedReport);
-        String secondReportJson = new Gson().toJson(secondServiceProvidedReport);
+        when(servicesProvidedRepository.getNewReports(0))
+                .thenReturn(asList(new ServiceProvidedReport().withId(1).withDate(LocalDate.parse("2012-01-01").toDate()),
+                        new ServiceProvidedReport().withId(2).withDate(LocalDate.parse("2013-02-02").toDate())));
+        String firstReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(Date.valueOf(LocalDate.parse("2012-01-01").toString())).withDay(1).withMonth(1).withYear(2012).withId(1));
+        String secondReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(Date.valueOf(LocalDate.parse("2013-02-02").toString())).withDay(2).withMonth(2).withYear(2013).withId(2));
+        System.out.println(firstReportJson);
+        System.out.println(secondReportJson);
         when(httpAgent.put("bamboo.url", mapOf("update", firstReportJson))).thenReturn(new HttpResponse(true, ""));
         when(httpAgent.put("bamboo.url", mapOf("update", secondReportJson))).thenReturn(new HttpResponse(true, ""));
 

@@ -3,9 +3,11 @@ package org.ei.drishti.reporting.service;
 import com.google.gson.Gson;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
+import org.ei.drishti.dto.report.ServiceProvidedReportDTO;
 import org.ei.drishti.reporting.domain.ServiceProvidedReport;
 import org.ei.drishti.reporting.repository.AllTokensRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -57,7 +60,11 @@ public class AggregateReportsService {
     private void update(List<ServiceProvidedReport> reports) {
         Gson gson = new Gson();
         for (ServiceProvidedReport report : reports) {
-            String reportJson = gson.toJson(report);
+
+
+            LocalDate reportingDate = LocalDate.parse(report.date());
+            String reportJson = gson.toJson(mapDomainToDTO(report, reportingDate));
+
             HttpResponse response = sendToAggregator(reportJson);
             if (!response.isSuccess()) {
                 throw new RuntimeException(MessageFormat.format("Updating data to Aggregator with url {0} failed with error: {0}", aggregatorDataSetUrl, response.body()));
@@ -65,6 +72,23 @@ public class AggregateReportsService {
             tokenRepository.saveAggregateReportsToken(report.id());
             logger.info(MessageFormat.format("Updated report token to: {0}", report.id()));
         }
+    }
+
+    private ServiceProvidedReportDTO mapDomainToDTO(ServiceProvidedReport report, LocalDate reportingDate) {
+        return new ServiceProvidedReportDTO(report.id(),
+                report.anmIdentifier(),
+                report.type(),
+                report.indicator(),
+                Date.valueOf(report.date()),
+                report.village(),
+                report.subCenter(),
+                report.phc(),
+                report.taluka(),
+                report.district(),
+                report.state())
+                .withDay(reportingDate.getDayOfMonth())
+                .withMonth(reportingDate.getMonthOfYear())
+                .withYear(reportingDate.getYear());
     }
 
     private HttpResponse sendToAggregator(String reportJson) {

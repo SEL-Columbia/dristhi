@@ -131,4 +131,9 @@ public class ServiceProvidedReport {
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
+
+    public ServiceProvidedReport withDate(Date date) {
+        this.date = date;
+        return this;
+    }
 }
