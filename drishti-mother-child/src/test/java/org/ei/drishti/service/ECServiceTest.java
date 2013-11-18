@@ -16,8 +16,8 @@ import org.mockito.Mock;
 import java.util.Collections;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.util.EasyMap.create;
-import static org.ei.drishti.util.EasyMap.mapOf;
+import static org.ei.drishti.common.util.EasyMap.create;
+import static org.ei.drishti.common.util.EasyMap.mapOf;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 

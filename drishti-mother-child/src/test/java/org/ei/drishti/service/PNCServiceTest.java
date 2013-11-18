@@ -10,7 +10,7 @@ import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.service.scheduling.PNCSchedulesService;
-import org.ei.drishti.util.EasyMap;
+import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -22,7 +22,7 @@ import org.motechproject.util.DateUtil;
 import java.util.Collections;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.util.EasyMap.mapOf;
+import static org.ei.drishti.common.util.EasyMap.mapOf;
 import static org.ei.drishti.util.FormSubmissionBuilder.create;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;

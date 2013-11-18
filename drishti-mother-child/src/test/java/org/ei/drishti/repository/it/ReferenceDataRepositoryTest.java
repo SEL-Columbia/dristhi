@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Collections;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.util.EasyMap.mapOf;
+import static org.ei.drishti.common.util.EasyMap.mapOf;
 import static org.ei.drishti.util.FormSubmissionBuilder.create;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

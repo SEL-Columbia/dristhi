@@ -10,12 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.List;
+
+import static org.ei.drishti.common.util.EasyMap.mapOf;
 
 @Service
 public class AggregateReportsService {
@@ -69,6 +70,6 @@ public class AggregateReportsService {
     private HttpResponse sendToAggregator(String reportJson) {
         logger.info(MessageFormat.format("Sending report data to Aggregator. URL: {0}, data: {1}",
                 aggregatorDataSetUrl, "update=" + reportJson));
-        return httpAgent.put(aggregatorDataSetUrl, "update=" + reportJson, MediaType.APPLICATION_JSON_VALUE);
+        return httpAgent.put(aggregatorDataSetUrl, mapOf("update", reportJson));
     }
 }

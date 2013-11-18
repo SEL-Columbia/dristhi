@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import java.util.Collections;
 
 import static java.util.Arrays.asList;
+import static org.ei.drishti.common.util.EasyMap.mapOf;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -41,13 +42,13 @@ public class AggregateReportsServiceTest {
         when(servicesProvidedRepository.getNewReports(0)).thenReturn(asList(firstServiceProvidedReport, secondServiceProvidedReport));
         String firstReportJson = new Gson().toJson(firstServiceProvidedReport);
         String secondReportJson = new Gson().toJson(secondServiceProvidedReport);
-        when(httpAgent.put("bamboo.url", "update=" + firstReportJson, "application/json")).thenReturn(new HttpResponse(true, ""));
-        when(httpAgent.put("bamboo.url", "update=" + secondReportJson, "application/json")).thenReturn(new HttpResponse(true, ""));
+        when(httpAgent.put("bamboo.url", mapOf("update", firstReportJson))).thenReturn(new HttpResponse(true, ""));
+        when(httpAgent.put("bamboo.url", mapOf("update", secondReportJson))).thenReturn(new HttpResponse(true, ""));
 
         aggregateReportsService.sendReportsToAggregator();
 
-        verify(httpAgent).put("bamboo.url", "update=" + firstReportJson, "application/json");
-        verify(httpAgent).put("bamboo.url", "update=" + secondReportJson, "application/json");
+        verify(httpAgent).put("bamboo.url", mapOf("update", firstReportJson));
+        verify(httpAgent).put("bamboo.url", mapOf("update", secondReportJson));
         verify(tokenRepository).saveAggregateReportsToken(1);
         verify(tokenRepository).saveAggregateReportsToken(2);
     }
@@ -60,12 +61,12 @@ public class AggregateReportsServiceTest {
         when(servicesProvidedRepository.getNewReports(0)).thenReturn(asList(firstServiceProvidedReport, secondServiceProvidedReport));
         String firstReportJson = new Gson().toJson(firstServiceProvidedReport);
         String secondReportAsJson = new Gson().toJson(secondServiceProvidedReport);
-        when(httpAgent.put("bamboo.url", "update=" + firstReportJson, "application/json")).thenReturn(new HttpResponse(false, ""));
+        when(httpAgent.put("bamboo.url", mapOf("update", firstReportJson))).thenReturn(new HttpResponse(false, ""));
 
         aggregateReportsService.sendReportsToAggregator();
 
-        verify(httpAgent).put("bamboo.url", "update=" + firstReportJson, "application/json");
-        verify(httpAgent, never()).put("bamboo.url", "update=" + secondReportAsJson, "application/json");
+        verify(httpAgent).put("bamboo.url", mapOf("update", firstReportJson));
+        verify(httpAgent, never()).put("bamboo.url", mapOf("update", secondReportAsJson));
     }
 
     @Test
@@ -75,7 +76,7 @@ public class AggregateReportsServiceTest {
 
         aggregateReportsService.sendReportsToAggregator();
 
-        verify(httpAgent, never()).put(anyString(), anyString(), anyString());
+        verify(httpAgent, never()).put(anyString(), anyMap());
         verify(tokenRepository, never()).saveAggregateReportsToken(anyInt());
     }
 }

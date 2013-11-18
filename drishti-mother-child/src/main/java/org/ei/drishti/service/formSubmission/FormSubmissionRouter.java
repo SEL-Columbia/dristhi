@@ -4,7 +4,7 @@ import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.ei.drishti.service.formSubmission.handler.*;
 import org.ei.drishti.service.reporting.FormSubmissionReportService;
-import org.ei.drishti.util.EasyMap;
+import org.ei.drishti.common.util.EasyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

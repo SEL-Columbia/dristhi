@@ -16,7 +16,7 @@ import static java.lang.String.valueOf;
 import static java.text.MessageFormat.format;
 import static java.util.Collections.sort;
 import static org.ei.drishti.common.AllConstants.Form.*;
-import static org.ei.drishti.util.EasyMap.create;
+import static org.ei.drishti.common.util.EasyMap.create;
 
 @Service
 public class FormEntityService {

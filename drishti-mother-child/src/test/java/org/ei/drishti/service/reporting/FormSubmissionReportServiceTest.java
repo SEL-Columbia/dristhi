@@ -7,7 +7,7 @@ import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.reporting.rules.IReferenceDataRepository;
 import org.ei.drishti.service.reporting.rules.IRule;
-import org.ei.drishti.util.EasyMap;
+import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;

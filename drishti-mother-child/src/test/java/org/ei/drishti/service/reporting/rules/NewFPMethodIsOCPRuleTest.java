@@ -4,7 +4,7 @@ import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.ei.drishti.util.EasyMap.mapOf;
+import static org.ei.drishti.common.util.EasyMap.mapOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

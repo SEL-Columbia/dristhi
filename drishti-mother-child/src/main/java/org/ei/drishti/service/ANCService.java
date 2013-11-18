@@ -10,7 +10,7 @@ import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.reporting.rules.IsHypertensionDetectedRule;
 import org.ei.drishti.service.scheduling.ANCSchedulesService;
-import org.ei.drishti.util.EasyMap;
+import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

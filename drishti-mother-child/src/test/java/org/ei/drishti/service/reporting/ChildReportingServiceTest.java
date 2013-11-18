@@ -10,7 +10,7 @@ import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllInfantBalanceOnHandReportTokens;
 import org.ei.drishti.repository.AllMothers;
-import org.ei.drishti.util.EasyMap;
+import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.junit.Before;

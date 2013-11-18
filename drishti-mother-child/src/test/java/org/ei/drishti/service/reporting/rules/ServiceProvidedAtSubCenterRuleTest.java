@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static org.ei.drishti.util.EasyMap.mapOf;
+import static org.ei.drishti.common.util.EasyMap.mapOf;
 
 public class ServiceProvidedAtSubCenterRuleTest {
 

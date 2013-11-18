@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertTrue;
-import static org.ei.drishti.util.EasyMap.create;
-import static org.ei.drishti.util.EasyMap.mapOf;
+import static org.ei.drishti.common.util.EasyMap.create;
+import static org.ei.drishti.common.util.EasyMap.mapOf;
 import static org.junit.Assert.assertFalse;
 
 public class IsAllImmunizationsGivenEitherWithMeaslesOrMMRRuleTest {

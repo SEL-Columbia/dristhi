@@ -18,14 +18,12 @@ import org.mockito.Mock;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.dto.AlertStatus.urgent;
 import static org.ei.drishti.dto.BeneficiaryType.*;
-import static org.ei.drishti.util.EasyMap.mapOf;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;

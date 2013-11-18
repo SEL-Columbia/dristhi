@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
-import static org.ei.drishti.util.EasyMap.create;
+import static org.ei.drishti.common.util.EasyMap.create;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 

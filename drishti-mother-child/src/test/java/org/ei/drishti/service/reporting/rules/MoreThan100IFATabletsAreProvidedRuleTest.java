@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.Map;
 
-import static org.ei.drishti.util.EasyMap.create;
+import static org.ei.drishti.common.util.EasyMap.create;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;

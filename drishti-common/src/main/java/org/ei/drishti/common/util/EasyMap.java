@@ -1,4 +1,4 @@
-package org.ei.drishti.util;
+package org.ei.drishti.common.util;
 
 import java.util.HashMap;
 import java.util.Map;

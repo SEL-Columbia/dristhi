@@ -15,7 +15,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.Form.*;
-import static org.ei.drishti.util.EasyMap.create;
+import static org.ei.drishti.common.util.EasyMap.create;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
