@@ -22,7 +22,7 @@ public class AggregateReportsService {
 
     private static Logger logger = LoggerFactory.getLogger(AggregateReportsService.class);
 
-    private String AggregatorDataSetUrl;
+    private String aggregatorDataSetUrl;
     private HttpAgent httpAgent;
     private AllTokensRepository tokenRepository;
     private ServicesProvidedRepository servicesProvidedRepository;
@@ -34,7 +34,7 @@ public class AggregateReportsService {
     public AggregateReportsService(@Value("#{drishti['aggregator.dataset.url']}") String AggregatorDataSetUrl,
                                    HttpAgent httpAgent, AllTokensRepository tokenRepository,
                                    ServicesProvidedRepository servicesProvidedRepository) {
-        this.AggregatorDataSetUrl = AggregatorDataSetUrl;
+        this.aggregatorDataSetUrl = AggregatorDataSetUrl;
         this.httpAgent = httpAgent;
         this.tokenRepository = tokenRepository;
         this.servicesProvidedRepository = servicesProvidedRepository;
@@ -43,7 +43,7 @@ public class AggregateReportsService {
     @Transactional("service_provided")
     public void sendReportsToAggregator() {
         Integer token = tokenRepository.getAggregateReportsToken();
-        logger.info(MessageFormat.format("Trying to aggregate reports. Token: {0}", token));
+        logger.info(MessageFormat.format("Trying to aggregate reports. Report Token: {0}", token));
         List<ServiceProvidedReport> reports = servicesProvidedRepository.getNewReports(token);
         if (reports.isEmpty()) {
             logger.info("No new reports to aggregate.");
@@ -59,13 +59,16 @@ public class AggregateReportsService {
             String reportJson = gson.toJson(report);
             HttpResponse response = sendToAggregator(reportJson);
             if (!response.isSuccess()) {
-                throw new RuntimeException(MessageFormat.format("Updating data to Aggregator with url {0} failed with error: {0}", AggregatorDataSetUrl, response.body()));
+                throw new RuntimeException(MessageFormat.format("Updating data to Aggregator with url {0} failed with error: {0}", aggregatorDataSetUrl, response.body()));
             }
             tokenRepository.saveAggregateReportsToken(report.id());
+            logger.info(MessageFormat.format("Updated report token to: {0}", report.id()));
         }
     }
 
     private HttpResponse sendToAggregator(String reportJson) {
-        return httpAgent.put(AggregatorDataSetUrl, "update=" + reportJson, MediaType.APPLICATION_JSON_VALUE);
+        logger.info(MessageFormat.format("Sending report data to Aggregator. URL: {0}, data: {1}",
+                aggregatorDataSetUrl, "update=" + reportJson));
+        return httpAgent.put(aggregatorDataSetUrl, "update=" + reportJson, MediaType.APPLICATION_JSON_VALUE);
     }
 }

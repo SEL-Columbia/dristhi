@@ -32,7 +32,8 @@ public class ReportingEventListener {
     private static Logger logger = LoggerFactory.getLogger(ReportingEventListener.class);
 
     @Autowired
-    public ReportingEventListener(ANMReportingService anmReportService, HttpAgent httpAgent, @Value("#{drishti['drishti.reporting.url']}") String url) {
+    public ReportingEventListener(ANMReportingService anmReportService, HttpAgent httpAgent,
+                                  @Value("#{drishti['drishti.reporting.url']}") String url) {
         this.anmReportService = anmReportService;
         this.httpAgent = httpAgent;
         this.url = url;

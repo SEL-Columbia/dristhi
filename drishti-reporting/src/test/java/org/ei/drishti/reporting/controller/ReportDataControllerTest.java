@@ -8,11 +8,8 @@ import org.ei.drishti.reporting.ReportDataMissingException;
 import org.ei.drishti.reporting.domain.ANMReportData;
 import org.ei.drishti.reporting.domain.Dates;
 import org.ei.drishti.reporting.domain.ServiceProvided;
-import org.ei.drishti.reporting.domain.ServiceProvidedReport;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
-import org.ei.drishti.reporting.service.AggregateReportsService;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -39,8 +36,6 @@ public class ReportDataControllerTest {
     @Mock
     private ANMReportsRepository anmReportsRepository;
     @Mock
-    private AggregateReportsService aggregateReportsService;
-    @Mock
     private ServiceProvided serviceProvided;
     @Mock
     private ANMReportData anmReportData;
@@ -54,7 +49,7 @@ public class ReportDataControllerTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new ReportDataController(servicesProvidedRepository, anmReportsRepository, aggregateReportsService);
+        controller = new ReportDataController(servicesProvidedRepository, anmReportsRepository);
     }
 
     @Test
@@ -156,9 +151,5 @@ public class ReportDataControllerTest {
 
         verify(anmReportsRepository).update(reportDataUpdateRequest);
         assertEquals("Success.", result);
-    }
-
-    private ServiceProvidedReport serviceProvidedReport(String anmId) {
-        return new ServiceProvidedReport(1, anmId, "ANM", "INDICATOR 1", LocalDate.parse("2013-10-26").toDate(), "village", "subCenter", "phc", "taluka", "district", "state");
     }
 }

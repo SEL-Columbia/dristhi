@@ -6,7 +6,6 @@ import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.reporting.ReportDataMissingException;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
-import org.ei.drishti.reporting.service.AggregateReportsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +25,13 @@ import static org.ei.drishti.common.AllConstants.ReportDataParameters;
 public class ReportDataController {
     private ServicesProvidedRepository servicesProvidedRepository;
     private ANMReportsRepository anmReportsRepository;
-    private AggregateReportsService aggregateReportsService;
     private static final Logger logger = LoggerFactory.getLogger(ReportDataController.class);
 
     @Autowired
     public ReportDataController(ServicesProvidedRepository servicesProvidedRepository,
-                                ANMReportsRepository anmReportsRepository,
-                                AggregateReportsService aggregateReportsService) {
+                                ANMReportsRepository anmReportsRepository) {
         this.servicesProvidedRepository = servicesProvidedRepository;
         this.anmReportsRepository = anmReportsRepository;
-        this.aggregateReportsService = aggregateReportsService;
     }
 
     @RequestMapping(value = "/report/submit", method = RequestMethod.POST)
