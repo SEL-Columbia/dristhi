@@ -112,10 +112,12 @@
             },
             {
                 "name": "numberOfPregnancies",
+                "value": "<%= ec['Number of Pregnancies'] %>",
                 "source": "eligible_couple.numberOfPregnancies"
             },
             {
                 "name": "numberOfLiveBirths",
+                "value": "<%= ec['Number of Live Birth'] %>",
                 "source": "eligible_couple.numberOfLiveBirths"
             },
             {
@@ -233,7 +235,7 @@
             },
             {
                 "name": "parity",
-                "value": "0",
+                "value": "<%= ec['Parity'] %>",
                 "source": "eligible_couple.parity"
             },
             {

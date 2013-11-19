@@ -50,8 +50,10 @@ class ECs
                          :empty => ""
         ec.convert_value "HP", :empty => ""
         ec.convert_value "Risks", :empty => ""
+        ec.convert_value "Number of Pregnancies", :empty => "0"
         ec.convert_value "Number of Abortion", :empty => "0"
         ec.convert_value "Number of Still Birth", :empty => "0"
+        ec.convert_value "Number of Live Birth", :empty => "0"
         ec.convert_value "Number of Living Children", :empty => "0"
         ec.convert_value "Male", :empty => "0"
         ec.convert_value "Female", :empty => "0"
@@ -60,7 +62,7 @@ class ECs
         ec.add_field "is youngest child under two", ec['Age of youngest child (in months)'].to_i < 24 ? "yes" : "no"
 
         ec.convert_value "Village Code", Village.code_to_village_hash
-
+        ec.add_field "Parity", (ec['Number of Still Birth'].to_i + ec['Number of Live Birth'].to_i).to_s
         ec.convert_value "FP Method",
                          "OCP" => "ocp",
                          "IUD" => "iud",
