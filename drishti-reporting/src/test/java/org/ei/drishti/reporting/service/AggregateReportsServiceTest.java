@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.sql.Date;
 import java.util.Collections;
 
 import static java.util.Arrays.asList;
@@ -42,8 +41,8 @@ public class AggregateReportsServiceTest {
         when(servicesProvidedRepository.getNewReports(0))
                 .thenReturn(asList(new ServiceProvidedReport().withId(1).withDate(LocalDate.parse("2012-01-01").toDate()),
                         new ServiceProvidedReport().withId(2).withDate(LocalDate.parse("2013-02-02").toDate())));
-        String firstReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(Date.valueOf(LocalDate.parse("2012-01-01").toString())).withDay(1).withMonth(1).withYear(2012).withId(1));
-        String secondReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(Date.valueOf(LocalDate.parse("2013-02-02").toString())).withDay(2).withMonth(2).withYear(2013).withId(2));
+        String firstReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(LocalDate.parse("2012-01-01")).withDay(1).withMonth(1).withYear(2012).withId(1));
+        String secondReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(LocalDate.parse("2013-02-02")).withDay(2).withMonth(2).withYear(2013).withId(2));
         System.out.println(firstReportJson);
         System.out.println(secondReportJson);
         when(httpAgent.put("bamboo.url", mapOf("update", firstReportJson))).thenReturn(new HttpResponse(true, ""));

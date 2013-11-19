@@ -1,8 +1,7 @@
 package org.ei.drishti.dto.report;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-
-import java.util.Date;
+import org.joda.time.LocalDate;
 
 public class ServiceProvidedReportDTO {
 
@@ -11,7 +10,7 @@ public class ServiceProvidedReportDTO {
     private Integer id;
 
     @JsonProperty
-    private String anmIdentifier;
+    private String anm_identifier;
 
     @JsonProperty
     private String type;
@@ -20,7 +19,7 @@ public class ServiceProvidedReportDTO {
     private String indicator;
 
     @JsonProperty
-    private java.util.Date date;
+    private LocalDate reported_date;
 
     @JsonProperty
     private Integer day;
@@ -35,7 +34,7 @@ public class ServiceProvidedReportDTO {
     private String village;
 
     @JsonProperty
-    private String subCenter;
+    private String sub_center;
 
     @JsonProperty
     private String phc;
@@ -49,15 +48,15 @@ public class ServiceProvidedReportDTO {
     @JsonProperty
     private String state;
 
-    public ServiceProvidedReportDTO(Integer id, String anmIdentifier, String type, String indicator, Date date,
-                                    String village, String subCenter, String phc, String taluka, String district, String state) {
+    public ServiceProvidedReportDTO(Integer id, String anm_identifier, String type, String indicator, LocalDate reported_date,
+                                    String village, String sub_center, String phc, String taluka, String district, String state) {
         this.id = id;
-        this.anmIdentifier = anmIdentifier;
+        this.anm_identifier = anm_identifier;
         this.type = type;
         this.indicator = indicator;
-        this.date = date;
+        this.reported_date = reported_date;
         this.village = village;
-        this.subCenter = subCenter;
+        this.sub_center = sub_center;
         this.phc = phc;
         this.taluka = taluka;
         this.district = district;
@@ -84,12 +83,12 @@ public class ServiceProvidedReportDTO {
     }
 
     public ServiceProvidedReportDTO withYear(Integer year) {
-        this.year= year;
+        this.year = year;
         return this;
     }
 
-    public ServiceProvidedReportDTO withDate(Date date) {
-        this.date = date;
+    public ServiceProvidedReportDTO withDate(LocalDate date) {
+        this.reported_date = date;
         return this;
     }
 }

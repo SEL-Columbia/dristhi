@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -79,7 +78,7 @@ public class AggregateReportsService {
                 report.anmIdentifier(),
                 report.type(),
                 report.indicator(),
-                Date.valueOf(report.date()),
+                LocalDate.parse(report.date()),
                 report.village(),
                 report.subCenter(),
                 report.phc(),
