@@ -63,7 +63,7 @@ public class AggregateReportsService {
         Gson gson = new Gson();
         for (ServiceProvidedReport report : reports) {
 
-            String reportJson = gson.toJson(mapDomainToDTO(report, LocalDate.parse(report.date())));
+            String reportJson = gson.toJson(mapDomainToDTO(report));
 
             HttpResponse response = sendToAggregator(reportJson);
             if (!response.isSuccess()) {
@@ -74,7 +74,7 @@ public class AggregateReportsService {
         }
     }
 
-    private ServiceProvidedReportDTO mapDomainToDTO(ServiceProvidedReport report, LocalDate reportingDate) {
+    private ServiceProvidedReportDTO mapDomainToDTO(ServiceProvidedReport report) {
         return new ServiceProvidedReportDTO(report.id(),
                 report.anmIdentifier(),
                 report.type(),
@@ -86,8 +86,8 @@ public class AggregateReportsService {
                 report.taluka(),
                 report.district(),
                 report.state())
-                .withNRHMReportingMonth(reportMonth.reportingMonth(reportingDate))
-                .withNRHMReportingYear(reportMonth.reportingYear(reportingDate));
+                .withNRHMReportMonth(reportMonth.reportingMonth(LocalDate.parse(report.date())))
+                .withNRHMReportYear(reportMonth.reportingYear(LocalDate.parse(report.date())));
     }
 
     private HttpResponse sendToAggregator(String reportJson) {

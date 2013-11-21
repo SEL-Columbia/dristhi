@@ -68,12 +68,12 @@ public class ServiceProvidedReportDTO {
         return this;
     }
 
-    public ServiceProvidedReportDTO withNRHMReportingMonth(Integer month) {
+    public ServiceProvidedReportDTO withNRHMReportMonth(Integer month) {
         this.nrhm_report_month = month;
         return this;
     }
 
-    public ServiceProvidedReportDTO withNRHMReportingYear(Integer year) {
+    public ServiceProvidedReportDTO withNRHMReportYear(Integer year) {
         this.nrhm_report_year = year;
         return this;
     }

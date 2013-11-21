@@ -50,8 +50,8 @@ public class AggregateReportsServiceTest {
         when(reportMonth.reportingMonth(LocalDate.parse("2012-12-28"))).thenReturn(1);
         when(reportMonth.reportingYear(LocalDate.parse("2012-12-28"))).thenReturn(2013);
 
-        String firstReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(LocalDate.parse("2012-11-26")).withNRHMReportingMonth(12).withNRHMReportingYear(2012).withId(1));
-        String secondReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(LocalDate.parse("2012-12-28")).withNRHMReportingMonth(1).withNRHMReportingYear(2013).withId(2));
+        String firstReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(LocalDate.parse("2012-11-26")).withNRHMReportMonth(12).withNRHMReportYear(2012).withId(1));
+        String secondReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(LocalDate.parse("2012-12-28")).withNRHMReportMonth(1).withNRHMReportYear(2013).withId(2));
         when(httpAgent.put("bamboo.url", mapOf("update", firstReportJson))).thenReturn(new HttpResponse(true, ""));
         when(httpAgent.put("bamboo.url", mapOf("update", secondReportJson))).thenReturn(new HttpResponse(true, ""));
 
