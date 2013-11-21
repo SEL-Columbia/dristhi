@@ -1,6 +1,7 @@
 package org.ei.drishti.reporting.service;
 
 import com.google.gson.Gson;
+import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
 import org.ei.drishti.dto.report.ServiceProvidedReportDTO;
@@ -29,6 +30,7 @@ public class AggregateReportsService {
     private HttpAgent httpAgent;
     private AllTokensRepository tokenRepository;
     private ServicesProvidedRepository servicesProvidedRepository;
+    private ReportMonth reportMonth;
 
     protected AggregateReportsService() {
     }
@@ -36,11 +38,12 @@ public class AggregateReportsService {
     @Autowired
     public AggregateReportsService(@Value("#{drishti['aggregator.dataset.url']}") String AggregatorDataSetUrl,
                                    HttpAgent httpAgent, AllTokensRepository tokenRepository,
-                                   ServicesProvidedRepository servicesProvidedRepository) {
+                                   ServicesProvidedRepository servicesProvidedRepository, ReportMonth reportMonth) {
         this.aggregatorDataSetUrl = AggregatorDataSetUrl;
         this.httpAgent = httpAgent;
         this.tokenRepository = tokenRepository;
         this.servicesProvidedRepository = servicesProvidedRepository;
+        this.reportMonth = reportMonth;
     }
 
     @Transactional("service_provided")
@@ -60,9 +63,7 @@ public class AggregateReportsService {
         Gson gson = new Gson();
         for (ServiceProvidedReport report : reports) {
 
-
-            LocalDate reportingDate = LocalDate.parse(report.date());
-            String reportJson = gson.toJson(mapDomainToDTO(report, reportingDate));
+            String reportJson = gson.toJson(mapDomainToDTO(report, LocalDate.parse(report.date())));
 
             HttpResponse response = sendToAggregator(reportJson);
             if (!response.isSuccess()) {
@@ -85,8 +86,8 @@ public class AggregateReportsService {
                 report.taluka(),
                 report.district(),
                 report.state())
-                .withNRHMReportingMonth(reportingDate.getMonthOfYear())
-                .withNRHMReportingYear(reportingDate.getYear());
+                .withNRHMReportingMonth(reportMonth.reportingMonth(reportingDate))
+                .withNRHMReportingYear(reportMonth.reportingYear(reportingDate));
     }
 
     private HttpResponse sendToAggregator(String reportJson) {
