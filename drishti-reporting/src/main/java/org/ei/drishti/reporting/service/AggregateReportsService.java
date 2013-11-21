@@ -85,9 +85,8 @@ public class AggregateReportsService {
                 report.taluka(),
                 report.district(),
                 report.state())
-                .withDay(reportingDate.getDayOfMonth())
-                .withMonth(reportingDate.getMonthOfYear())
-                .withYear(reportingDate.getYear());
+                .withNRHMReportingMonth(reportingDate.getMonthOfYear())
+                .withNRHMReportingYear(reportingDate.getYear());
     }
 
     private HttpResponse sendToAggregator(String reportJson) {

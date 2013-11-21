@@ -22,13 +22,10 @@ public class ServiceProvidedReportDTO {
     private LocalDate reported_date;
 
     @JsonProperty
-    private Integer day;
+    private Integer nrhm_report_month;
 
     @JsonProperty
-    private Integer month;
-
-    @JsonProperty
-    private Integer year;
+    private Integer nrhm_report_year;
 
     @JsonProperty
     private String village;
@@ -71,19 +68,13 @@ public class ServiceProvidedReportDTO {
         return this;
     }
 
-
-    public ServiceProvidedReportDTO withDay(Integer day) {
-        this.day = day;
+    public ServiceProvidedReportDTO withNRHMReportingMonth(Integer month) {
+        this.nrhm_report_month = month;
         return this;
     }
 
-    public ServiceProvidedReportDTO withMonth(Integer month) {
-        this.month = month;
-        return this;
-    }
-
-    public ServiceProvidedReportDTO withYear(Integer year) {
-        this.year = year;
+    public ServiceProvidedReportDTO withNRHMReportingYear(Integer year) {
+        this.nrhm_report_year = year;
         return this;
     }
 
