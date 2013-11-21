@@ -53,4 +53,19 @@ public class ReportMonthTest {
         assertTrue(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2013-01-01")));
         assertTrue(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2013-01-25")));
     }
+
+    @Test
+    public void shouldCalculateReportingMonthForGivenDate(){
+        assertEquals(2,reportMonth.reportingMonth(LocalDate.parse("2013-01-26")));
+
+        assertEquals(1,reportMonth.reportingMonth(LocalDate.parse("2014-12-26")));
+    }
+
+    @Test
+    public void shouldCalculateReportingYearForGivenDate(){
+        assertEquals(2013,reportMonth.reportingYear(LocalDate.parse("2013-01-26")));
+
+        assertEquals(2014,reportMonth.reportingYear(LocalDate.parse("2013-12-26")));
+    }
 }
+

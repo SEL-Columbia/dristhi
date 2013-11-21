@@ -76,5 +76,13 @@ public class ReportMonth {
     private int nextYear(LocalDate today) {
         return today.getYear() + 1;
     }
+
+    public int reportingMonth(LocalDate date) {
+        return endOfCurrentReportMonth(date).getMonthOfYear();
+    }
+
+    public int reportingYear(LocalDate date) {
+        return endOfCurrentReportMonth(date).getYear();
+    }
 }
 
