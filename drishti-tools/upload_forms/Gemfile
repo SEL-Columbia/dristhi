@@ -1,5 +1,0 @@
-source :rubygems
-
-gem 'guid'
-gem 'multipart-post'
-gem 'roo'
