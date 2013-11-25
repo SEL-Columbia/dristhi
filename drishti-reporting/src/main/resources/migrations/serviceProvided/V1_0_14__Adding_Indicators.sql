@@ -14,3 +14,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_F_ALL_VACC_2Y');
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ALL_VACC_2Y');
 INSERT INTO report.dim_indicator (indicator) VALUES ('ANC_GT_12');
 UPDATE report.dim_indicator SET indicator = 'IB_LT_1Y' where indicator = 'IB<1Y';
+UPDATE report.dim_indicator SET indicator = 'IB_LT_5Y' where indicator = 'IB<5Y';
