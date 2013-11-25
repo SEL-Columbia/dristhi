@@ -76,8 +76,3 @@ INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_MEASLES_BOOSTER_1
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_M_ALL_VAC');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_F_ALL_VAC');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ALL_VAC');
-INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_DPT');
-INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_OPV');
-INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_M_ALL_VACC_2Y');
-INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_F_ALL_VACC_2Y');
-INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ALL_VACC_2Y');
