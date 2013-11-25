@@ -17,3 +17,4 @@ UPDATE anm_report.dim_indicator SET indicator = 'IB_LT_1Y' where indicator = 'IB
 UPDATE anm_report.dim_indicator SET indicator = 'IB_LT_5Y' where indicator = 'IB<5Y';
 UPDATE anm_report.dim_indicator SET indicator = 'ANC_LT_12' where indicator = 'ANC<12';
 UPDATE anm_report.dim_indicator SET indicator = 'MTP_LT_12' where indicator = 'MTP<12';
+UPDATE anm_report.dim_indicator SET indicator = 'MTP_GT_12' where indicator = 'MTP>12';
