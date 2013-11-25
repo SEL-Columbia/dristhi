@@ -16,3 +16,4 @@ INSERT INTO report.dim_indicator (indicator) VALUES ('ANC_GT_12');
 UPDATE report.dim_indicator SET indicator = 'IB_LT_1Y' where indicator = 'IB<1Y';
 UPDATE report.dim_indicator SET indicator = 'IB_LT_5Y' where indicator = 'IB<5Y';
 UPDATE report.dim_indicator SET indicator = 'ANC_LT_12' where indicator = 'ANC<12';
+UPDATE report.dim_indicator SET indicator = 'MTP_LT_12' where indicator = 'MTP<12';
