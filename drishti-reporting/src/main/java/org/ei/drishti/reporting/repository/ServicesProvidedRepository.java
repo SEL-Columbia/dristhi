@@ -5,9 +5,10 @@ import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.monitor.Probe;
-import org.ei.drishti.reporting.domain.*;
-import org.ei.drishti.reporting.repository.cache.CachingRepository;
-import org.ei.drishti.reporting.repository.cache.DatesCacheableRepository;
+import org.ei.drishti.reporting.domain.Indicator;
+import org.ei.drishti.reporting.domain.Location;
+import org.ei.drishti.reporting.domain.ServiceProvidedReport;
+import org.ei.drishti.reporting.domain.ServiceProvider;
 import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
 import org.ei.drishti.reporting.repository.cache.ReadOnlyCachingRepository;
 import org.joda.time.LocalDate;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_CACHE_TIME;
@@ -28,7 +30,6 @@ public class ServicesProvidedRepository {
     private AllServicesProvidedRepository servicesProvidedRepository;
     private Monitor monitor;
 
-    private CachingRepository<Dates> cachedDates;
     private ReadOnlyCachingRepository<Indicator> cachedIndicators;
     private AllLocationsRepository locationRepository;
 
@@ -36,8 +37,7 @@ public class ServicesProvidedRepository {
     }
 
     @Autowired
-    public ServicesProvidedRepository(@Qualifier("serviceProvidedDatesRepository") DatesCacheableRepository datesRepository,
-                                      @Qualifier("serviceProvidedIndicatorRepository") IndicatorCacheableRepository indicatorRepository,
+    public ServicesProvidedRepository(@Qualifier("serviceProvidedIndicatorRepository") IndicatorCacheableRepository indicatorRepository,
                                       AllLocationsRepository locationRepository,
                                       AllServiceProvidersRepository serviceProvidersRepository,
                                       AllServicesProvidedRepository servicesProvidedRepository, Monitor monitor) {
@@ -46,7 +46,6 @@ public class ServicesProvidedRepository {
         this.monitor = monitor;
         cachedIndicators = new ReadOnlyCachingRepository<>(indicatorRepository);
         this.locationRepository = locationRepository;
-        cachedDates = new CachingRepository<>(datesRepository);
     }
 
     @Transactional("service_provided")
@@ -54,7 +53,7 @@ public class ServicesProvidedRepository {
                      String date, String village, String subCenter, String phcIdentifier, String quantity) {
         Probe probeForCache = monitor.start(REPORTING_SERVICE_PROVIDED_CACHE_TIME);
         Indicator fetchedIndicator = cachedIndicators.fetch(new Indicator(indicator));
-        Dates dates = cachedDates.fetch(new Dates(LocalDate.parse(date).toDate()));
+        Date dates = LocalDate.parse(date).toDate();
         Location location = locationRepository.fetchBy(village, subCenter, phcIdentifier);
         ServiceProvider serviceProvider = serviceProvidersRepository.fetchBy(serviceProviderIdentifier, parse(serviceProviderType));
         monitor.end(probeForCache);
@@ -66,7 +65,6 @@ public class ServicesProvidedRepository {
                 servicesProvidedRepository.save(serviceProvider, externalId, fetchedIndicator, dates, location);
             } catch (Exception e) {
                 cachedIndicators.clear(fetchedIndicator);
-                cachedDates.clear(dates);
             }
         }
         monitor.end(probeForInsert);

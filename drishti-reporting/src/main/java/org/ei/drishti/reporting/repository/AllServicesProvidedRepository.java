@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -20,7 +21,7 @@ public class AllServicesProvidedRepository {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 
-    public void save(ServiceProvider serviceProvider, String externalId, Indicator indicator, Dates date, Location location) {
+    public void save(ServiceProvider serviceProvider, String externalId, Indicator indicator, Date date, Location location) {
         dataAccessTemplate.save(new ServiceProvided(serviceProvider, externalId, indicator, date, location));
     }
 

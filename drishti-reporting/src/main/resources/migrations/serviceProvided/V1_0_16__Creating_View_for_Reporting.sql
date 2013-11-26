@@ -6,7 +6,7 @@ AS
   g.anmIdentifier AS "anmidentifier",
   f.type "service_provided_type",
   c.indicator AS "indicator", 
-  d.date_ AS "service_date", 
+  a.date_ AS "service_date",
   e.village AS "village", 
   e.subcenter AS "subcenter", 
   h.phcidentifier AS "phc", 
@@ -17,16 +17,14 @@ FROM
   report.service_provided a, 
   report.dim_service_provider b, 
   report.dim_indicator c, 
-  report.dim_date d, 
-  report.dim_location e, 
+  report.dim_location e,
   report.dim_service_provider_type f, 
   report.dim_anm g,
   report.dim_phc h
 WHERE
   a.service_provider=b.id AND
   a.indicator=c.id AND 
-  a.date_=d.id AND 
-  a.location=e.id AND 
+  a.location=e.id AND
   b.type=f.id AND 
   b.service_provider=g.id AND 
   e.phc=h.id

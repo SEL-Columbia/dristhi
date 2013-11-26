@@ -29,9 +29,6 @@
 
     <bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl"/>
 
-    <bean id="serviceProvidedDatesRepository" class="org.ei.drishti.reporting.repository.AllDatesRepository">
-        <constructor-arg name="dataAccessTemplate" ref="serviceProvidedDataAccessTemplate"/>
-    </bean>
     <bean id="serviceProvidedIndicatorRepository" class="org.ei.drishti.reporting.repository.AllIndicatorsRepository">
         <constructor-arg name="dataAccessTemplate" ref="serviceProvidedDataAccessTemplate"/>
     </bean>
@@ -39,9 +36,6 @@
         <constructor-arg name="sessionFactory" ref="serviceProvidedSessionFactory"/>
     </bean>
 
-    <bean id="anmReportsDatesRepository" class="org.ei.drishti.reporting.repository.AllDatesRepository">
-        <constructor-arg name="dataAccessTemplate" ref="anmReportsDataAccessTemplate"/>
-    </bean>
     <bean id="anmReportsIndicatorRepository" class="org.ei.drishti.reporting.repository.AllIndicatorsRepository">
         <constructor-arg name="dataAccessTemplate" ref="anmReportsDataAccessTemplate"/>
     </bean>

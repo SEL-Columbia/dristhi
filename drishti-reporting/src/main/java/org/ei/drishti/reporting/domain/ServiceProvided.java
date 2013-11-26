@@ -5,17 +5,18 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "service_provided")
 @NamedQueries({
         @NamedQuery(name = ServiceProvided.FIND_BY_ANM_IDENTIFIER_WITH_INDICATOR_FOR_MONTH,
-                query = "select r from ServiceProvided r, Dates d, Indicator i " +
-                        "where  r.date = d.id and r.indicator = i.id and i.indicator = ? and d.date >= ? and d.date < ?"),
+                query = "select r from ServiceProvided r, Indicator i " +
+                        "where r.indicator = i.id and i.indicator = ? and r.date >= ? and r.date < ?"),
         @NamedQuery(name = ServiceProvided.FIND_SERVICE_PROVIDED_FOR_REPORTING_MONTH,
-                query = "select r from ServiceProvided r, Dates d, Indicator i,ServiceProvider p, ServiceProviderType spt" +
-                        " where  r.date = d.id and r.indicator = i.id and r.serviceProvider = p.id and p.type = spt.id" +
-                        " and d.date >= ? and d.date < ?")
+                query = "select r from ServiceProvided r, Indicator i,ServiceProvider p, ServiceProviderType spt" +
+                        " where r.indicator = i.id and r.serviceProvider = p.id and p.type = spt.id" +
+                        " and r.date >= ? and r.date < ?")
 })
 
 public class ServiceProvided {
@@ -51,16 +52,15 @@ public class ServiceProvided {
     }
 
     public String date() {
-        return date.date().toString();
+        return date.toString();
     }
 
     public org.ei.drishti.domain.Location location() {
         return new org.ei.drishti.domain.Location(location.village(), location.subCenter(), location.phc().phcIdentifier());
     }
 
-    @ManyToOne
-    @JoinColumn(name = "date_")
-    private Dates date;
+    @Column(name = "date_")
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name = "location")
@@ -69,7 +69,7 @@ public class ServiceProvided {
     private ServiceProvided() {
     }
 
-    public ServiceProvided(ServiceProvider serviceProvider, String externalId, Indicator indicator, Dates date, Location location) {
+    public ServiceProvided(ServiceProvider serviceProvider, String externalId, Indicator indicator, Date date, Location location) {
         this.serviceProvider = serviceProvider;
         this.externalId = externalId;
         this.indicator = indicator;

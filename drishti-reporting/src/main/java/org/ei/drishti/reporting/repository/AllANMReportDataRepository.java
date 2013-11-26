@@ -2,7 +2,6 @@ package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.reporting.domain.ANM;
 import org.ei.drishti.reporting.domain.ANMReportData;
-import org.ei.drishti.reporting.domain.Dates;
 import org.ei.drishti.reporting.domain.Indicator;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class AllANMReportDataRepository {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 
-    public void save(ANM anm, String externalId, Indicator indicator, Dates date) {
+    public void save(ANM anm, String externalId, Indicator indicator, Date date) {
         dataAccessTemplate.save(new ANMReportData(anm, externalId, indicator, date));
     }
 

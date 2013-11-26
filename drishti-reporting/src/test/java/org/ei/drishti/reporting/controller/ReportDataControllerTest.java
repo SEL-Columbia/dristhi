@@ -6,7 +6,6 @@ import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.reporting.ReportDataMissingException;
 import org.ei.drishti.reporting.domain.ANMReportData;
-import org.ei.drishti.reporting.domain.Dates;
 import org.ei.drishti.reporting.domain.ServiceProvided;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
@@ -39,8 +38,6 @@ public class ReportDataControllerTest {
     private ServiceProvided serviceProvided;
     @Mock
     private ANMReportData anmReportData;
-    @Mock
-    private Dates dates;
     @Mock
     private Date date;
 

@@ -5,19 +5,20 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "anm_report_data")
 @NamedQueries({
         @NamedQuery(name = ANMReportData.FIND_BY_ANM_IDENTIFIER_AND_DATE,
-                query = "select r from ANMReportData r, ANM a, Dates d " +
-                        "where r.anm=a.id and r.date=d.id and a.anmIdentifier=:anmIdentifier and d.date >= :date"),
+                query = "select r from ANMReportData r, ANM a " +
+                        "where r.anm=a.id and a.anmIdentifier=:anmIdentifier and r.date >= :date"),
         @NamedQuery(name = ANMReportData.FIND_BY_ANM_IDENTIFIER_WITH_INDICATOR_FOR_MONTH,
-                query = "select r from ANMReportData r, ANM a, Dates d, Indicator i " +
-                        "where r.anm=a.id and r.date=d.id and r.indicator = i.id  and i.indicator = ? and d.date >= ? and d.date < ?"),
+                query = "select r from ANMReportData r, ANM a, Indicator i " +
+                        "where r.anm=a.id and r.indicator = i.id  and i.indicator = ? and r.date >= ? and r.date < ?"),
         @NamedQuery(name = ANMReportData.FIND_BY_ANM_IDENTIFIER_FOR_REPORTING_MONTH,
-                query = "select r from ANMReportData r, ANM a, Dates d, Indicator i " +
-                        "where r.anm=a.id and r.date=d.id and r.indicator = i.id and a.anmIdentifier = ? and d.date >= ? and d.date < ?")
+                query = "select r from ANMReportData r, ANM a, Indicator i " +
+                        "where r.anm=a.id and r.indicator = i.id and a.anmIdentifier = ? and r.date >= ? and r.date < ?")
 })
 public class ANMReportData {
     public static final String FIND_BY_ANM_IDENTIFIER_AND_DATE = "find.by.anm.identifier.and.date";
@@ -40,9 +41,8 @@ public class ANMReportData {
     @Column(name = "externalId")
     private String externalId;
 
-    @ManyToOne
-    @JoinColumn(name = "date_", insertable = true, updatable = true)
-    private Dates date;
+    @Column(name = "date_")
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name = "indicator", insertable = true, updatable = true)
@@ -51,7 +51,7 @@ public class ANMReportData {
     private ANMReportData() {
     }
 
-    public ANMReportData(ANM anm, String externalId, Indicator indicator, Dates date) {
+    public ANMReportData(ANM anm, String externalId, Indicator indicator, Date date) {
         this.anm = anm;
         this.externalId = externalId;
         this.indicator = indicator;
@@ -62,7 +62,7 @@ public class ANMReportData {
         return indicator;
     }
 
-    public Dates date() {
+    public Date date() {
         return date;
     }
 

@@ -33,14 +33,12 @@ public class ANMReportsRepository {
 
     private ReadOnlyCachingRepository<ANM> cachedANMs;
     private ReadOnlyCachingRepository<Indicator> cachedIndicators;
-    private CachingRepository<Dates> cachedDates;
 
     protected ANMReportsRepository() {
     }
 
     @Autowired
     public ANMReportsRepository(ANMCacheableRepository anmRepository,
-                                @Qualifier("anmReportsDatesRepository") DatesCacheableRepository datesRepository,
                                 @Qualifier("anmReportsIndicatorRepository") IndicatorCacheableRepository indicatorRepository,
                                 AllANMReportDataRepository anmReportDataRepository,
                                 AllAnnualTargetsRepository annualTargetsRepository, Monitor monitor, ReportMonth reportMonth) {
@@ -50,7 +48,6 @@ public class ANMReportsRepository {
         this.reportMonth = reportMonth;
         cachedANMs = new ReadOnlyCachingRepository<>(anmRepository);
         cachedIndicators = new ReadOnlyCachingRepository<>(indicatorRepository);
-        cachedDates = new CachingRepository<>(datesRepository);
     }
 
     @Transactional("anm_report")
@@ -58,18 +55,16 @@ public class ANMReportsRepository {
         Probe probeForCache = monitor.start(REPORTING_ANM_REPORTS_CACHE_TIME);
         ANM anm = cachedANMs.fetch(new ANM(anmIdentifier));
         Indicator fetchedIndicator = cachedIndicators.fetch(new Indicator(indicator));
-        Dates dates = cachedDates.fetch(new Dates(LocalDate.parse(date).toDate()));
         monitor.end(probeForCache);
 
         int count = getCount(quantity);
         Probe probeForInsert = monitor.start(REPORTING_ANM_REPORTS_INSERT_TIME);
         for (int i = 0; i < count; i++) {
             try {
-                anmReportDataRepository.save(anm, externalId, fetchedIndicator, dates);
+                anmReportDataRepository.save(anm, externalId, fetchedIndicator, LocalDate.parse(date).toDate());
             } catch (Exception e) {
                 cachedANMs.clear(anm);
                 cachedIndicators.clear(fetchedIndicator);
-                cachedDates.clear(dates);
             }
         }
         monitor.end(probeForInsert);
@@ -129,7 +124,7 @@ public class ANMReportsRepository {
     }
 
     private List<ANMReportData> filterReportsByMonth(List<ANMReportData> reportDataList, LocalDate startDate, LocalDate endDate) {
-        return filter(having(on(ANMReportData.class).date().date(), allOf(greaterThanOrEqualTo(startDate.toDate()), lessThanOrEqualTo(endDate.toDate()))), reportDataList);
+        return filter(having(on(ANMReportData.class).date(), allOf(greaterThanOrEqualTo(startDate.toDate()), lessThanOrEqualTo(endDate.toDate()))), reportDataList);
     }
 
     private List<ANMReportData> filterReportsByIndicator(List<ANMReportData> reportDataList, Indicator indicator) {
