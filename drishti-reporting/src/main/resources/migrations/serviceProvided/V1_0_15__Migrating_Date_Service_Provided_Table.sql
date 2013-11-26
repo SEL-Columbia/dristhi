@@ -24,6 +24,6 @@ $THIS$LANGUAGE plpgsql;
 SELECT * FROM merge_date_in_service_provided();
 
 ALTER TABLE report.service_provided DROP CONSTRAINT FK_SP_DD_ID;
-ALTER TABLE report.service_provided DROP COLUMN date_;
 ALTER TABLE report.service_provided RENAME COLUMN date_ TO old_date_;
+ALTER TABLE report.service_provided ALTER COLUMN old_date_ DROP NOT NULL; ;
 ALTER TABLE report.service_provided RENAME COLUMN new_date_ TO date_;
