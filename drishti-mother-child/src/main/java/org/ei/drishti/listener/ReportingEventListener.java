@@ -44,7 +44,7 @@ public class ReportingEventListener {
         String data = new Gson().toJson(event.getParameters().get("data"));
         HttpResponse response = httpAgent.post(url + "/" + SUBMIT_REPORT_ACTION, data, MediaType.APPLICATION_JSON_VALUE);
         if (!response.isSuccess()) {
-            logger.error("Reporting data post failed. URL: " + url + ". Data: " + data + ". Response: " + response.body());
+            logger.error("Reporting data post failed. URL: " + url + "/" + SUBMIT_REPORT_ACTION +". Data: " + data + ". Response: " + response.body());
         }
     }
 
@@ -64,7 +64,7 @@ public class ReportingEventListener {
         anmReportService.reportFromEntityData();
         HttpResponse response = httpAgent.get(url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION);
         if (!response.isSuccess()) {
-            logger.error("ANM Reports fetch failed. URL: " + url + ". Response body: " + response.body());
+            logger.error("ANM Reports fetch failed. URL: " + url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION +". Response body: " + response.body());
             return;
         }
         List<ANMReport> anmReports = new Gson().fromJson(response.body(), new TypeToken<List<ANMReport>>() {
