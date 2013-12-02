@@ -27,10 +27,6 @@
                 "bind": "/model/instance/Child_Vitamin_A_EngKan/vit_a_place"
             },
             {
-                "name": "serviceProvidedPlace",
-                "bind": "/model/instance/Child_Vitamin_A_EngKan/vit_a_place"
-            },
-            {
                 "name": "submissionDate",
                 "bind": "/model/instance/Child_Vitamin_A_EngKan/today"
             }

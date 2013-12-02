@@ -15,8 +15,8 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
-import static org.ei.drishti.common.AllConstants.CommonFormFields.SERVICE_PROVIDED_DATE;
-import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.*;
 
 @Component
 public class FormSubmissionReportService {
@@ -80,6 +80,7 @@ public class FormSubmissionReportService {
     private SafeMap createReportFields(FormSubmission submission, ReportIndicator reportIndicator) {
         SafeMap reportFields = new SafeMap(submission.getFields(reportIndicator.formFields()));
         reportFields.put(SERVICE_PROVIDED_DATE, getServiceProvidedDate(submission, reportIndicator));
+        addServiceProvidedPlaceFieldIfNeeded(submission, reportFields, reportIndicator.serviceProvidedPlaceField());
         if (reportIndicator.referenceData() == null) {
             return reportFields;
         }
@@ -95,9 +96,15 @@ public class FormSubmissionReportService {
                 : submission.getField(reportIndicator.serviceProvidedDateField());
     }
 
+    private void addServiceProvidedPlaceFieldIfNeeded(FormSubmission submission, SafeMap map, String serviceProvidedPlaceField) {
+        if (isNotBlank(serviceProvidedPlaceField)) {
+            map.put(SERVICE_PROVIDED_PLACE, submission.getField(serviceProvidedPlaceField));
+        }
+    }
+
     private void report(FormSubmission submission, ReportIndicator reportIndicator, Location location) {
         IReporter reporter = reporterFactory.reporterFor(reportIndicator.reportEntityType());
-        SafeMap reportData = createReportData(submission, reportIndicator.formFields(), reportIndicator.quantityField());
+        SafeMap reportData = createReportData(submission, reportIndicator.formFields(), reportIndicator.quantityField(), reportIndicator.serviceProvidedPlaceField());
         String serviceProvidedDate = getServiceProvidedDate(submission, reportIndicator);
         String reportEntityId = reportIndicator.reportEntityIdField() == null
                 ? submission.entityId()
@@ -105,12 +112,14 @@ public class FormSubmissionReportService {
         reporter.report(reportEntityId, reportIndicator.indicator(), location, serviceProvidedDate, reportData);
     }
 
-    private SafeMap createReportData(FormSubmission submission, List<String> formFields, String quantityField) {
-        SafeMap safeMap = new SafeMap(submission.getFields(formFields));
-        safeMap.put(SUBMISSION_DATE_FIELD_NAME, submission.getField(SUBMISSION_DATE_FIELD_NAME));
+    private SafeMap createReportData(FormSubmission submission, List<String> formFields, String quantityField, String serviceProvidedPlaceField) {
+        SafeMap reportData = new SafeMap(submission.getFields(formFields));
+
+        reportData.put(SUBMISSION_DATE_FIELD_NAME, submission.getField(SUBMISSION_DATE_FIELD_NAME));
         if (quantityField != null) {
-            safeMap.put(AllConstants.ReportDataParameters.QUANTITY, submission.getField(quantityField));
+            reportData.put(AllConstants.ReportDataParameters.QUANTITY, submission.getField(quantityField));
         }
-        return safeMap;
+        addServiceProvidedPlaceFieldIfNeeded(submission, reportData, serviceProvidedPlaceField);
+        return reportData;
     }
 }

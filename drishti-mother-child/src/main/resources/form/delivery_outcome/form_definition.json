@@ -31,10 +31,6 @@
                 "bind": "/model/instance/Delivery_Outcome_EngKan/place_delivery"
             },
             {
-                "name": "serviceProvidedPlace",
-                "bind": "/model/instance/Delivery_Outcome_EngKan/place_delivery"
-            },
-            {
                 "name": "deliveryFacilityName",
                 "bind": "/model/instance/Delivery_Outcome_EngKan/name_delivery_facility"
             },

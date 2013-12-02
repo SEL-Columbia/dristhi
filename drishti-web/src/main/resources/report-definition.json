@@ -640,12 +640,12 @@
                     "indicator": "NRHM_MEASLES",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "reportChildDiseaseDate",
+                    "serviceProvidedPlaceField": "reportChildDiseasePlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "reportChildDisease",
-                        "reportChildDiseaseDate",
-                        "serviceProvidedPlace"
+                        "reportChildDiseaseDate"
                     ],
                     "reportWhen": [
                         "ServiceProvidedAtSub_CenterRule",
@@ -657,12 +657,12 @@
                     "indicator": "NRHM_DIARRHEA_DEHYDRATION",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "reportChildDiseaseDate",
+                    "serviceProvidedPlaceField": "reportChildDiseasePlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "reportChildDisease",
-                        "reportChildDiseaseDate",
-                        "serviceProvidedPlace"
+                        "reportChildDiseaseDate"
                     ],
                     "reportWhen": [
                         "ServiceProvidedAtSub_CenterRule",
@@ -674,12 +674,12 @@
                     "indicator": "NRHM_MALARIA",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "reportChildDiseaseDate",
+                    "serviceProvidedPlaceField": "reportChildDiseasePlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "reportChildDisease",
-                        "reportChildDiseaseDate",
-                        "serviceProvidedPlace"
+                        "reportChildDiseaseDate"
                     ],
                     "reportWhen": [
                         "ServiceProvidedAtSub_CenterRule",
@@ -696,13 +696,13 @@
                     "indicator": "NRHM_BCG_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
@@ -714,13 +714,13 @@
                     "indicator": "NRHM_PENT_1_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
@@ -732,13 +732,13 @@
                     "indicator": "NRHM_PENT_2_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
@@ -750,13 +750,13 @@
                     "indicator": "NRHM_PENT_3_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
@@ -768,13 +768,13 @@
                     "indicator": "NRHM_OPV_0_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
@@ -786,13 +786,13 @@
                     "indicator": "NRHM_OPV_1_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
@@ -804,13 +804,13 @@
                     "indicator": "NRHM_OPV_2_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
@@ -822,13 +822,13 @@
                     "indicator": "NRHM_OPV_3_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
@@ -840,13 +840,13 @@
                     "indicator": "NRHM_HEPB_0_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
@@ -858,13 +858,13 @@
                     "indicator": "NRHM_MEASLES_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
@@ -876,13 +876,13 @@
                     "indicator": "NRHM_MEASLES_BOOSTER_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildLessThanOneYearOldRule",
@@ -894,13 +894,13 @@
                     "indicator": "NRHM_DPTBOOSTER_2_>5YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "previousImmunizations",
                         "immunizationsGiven",
-                        "immunizationDate",
-                        "serviceProvidedPlace"
+                        "immunizationDate"
                     ],
                     "reportWhen": [
                         "IsChildMoreThan5YearsOldRule",
@@ -912,12 +912,12 @@
                     "indicator": "NRHM_M_ALL_VAC",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "immunizationDate",
-                        "immunizationsGiven",
-                        "serviceProvidedPlace"
+                        "immunizationsGiven"
                     ],
                     "referenceData": {
                         "type": "child",
@@ -937,12 +937,12 @@
                     "indicator": "NRHM_F_ALL_VAC",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "immunizationDate",
-                        "immunizationsGiven",
-                        "serviceProvidedPlace"
+                        "immunizationsGiven"
                     ],
                     "referenceData": {
                         "type": "child",
@@ -962,12 +962,12 @@
                     "indicator": "NRHM_ALL_VAC",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "immunizationDate",
-                        "immunizationsGiven",
-                        "serviceProvidedPlace"
+                        "immunizationsGiven"
                     ],
                     "reportWhen": [
                         "IsChildBetween9to12MonthsRule",
@@ -979,12 +979,12 @@
                     "indicator": "NRHM_DPT",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "immunizationDate",
-                        "immunizationsGiven",
-                        "serviceProvidedPlace"
+                        "immunizationsGiven"
                     ],
                     "reportWhen": [
                         "IsChildMoreThan16MonthsRule",
@@ -996,12 +996,12 @@
                     "indicator": "NRHM_OPV",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "immunizationDate",
-                        "immunizationsGiven",
-                        "serviceProvidedPlace"
+                        "immunizationsGiven"
                     ],
                     "reportWhen": [
                         "IsChildMoreThan16MonthsRule",
@@ -1013,12 +1013,12 @@
                     "indicator": "NRHM_MMR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "immunizationDate",
-                        "immunizationsGiven",
-                        "serviceProvidedPlace"
+                        "immunizationsGiven"
                     ],
                     "reportWhen": [
                         "IsChildMoreThan16MonthsRule",
@@ -1030,12 +1030,12 @@
                     "indicator": "NRHM_M_ALL_VACC_2Y",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "immunizationDate",
-                        "immunizationsGiven",
-                        "serviceProvidedPlace"
+                        "immunizationsGiven"
                     ],
                     "referenceData": {
                         "type": "child",
@@ -1055,12 +1055,12 @@
                     "indicator": "NRHM_F_ALL_VACC_2Y",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "immunizationDate",
-                        "immunizationsGiven",
-                        "serviceProvidedPlace"
+                        "immunizationsGiven"
                     ],
                     "referenceData": {
                         "type": "child",
@@ -1080,12 +1080,12 @@
                     "indicator": "NRHM_ALL_VACC_2Y",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
                     "formFields": [
                         "id",
                         "dateOfBirth",
                         "immunizationDate",
-                        "immunizationsGiven",
-                        "serviceProvidedPlace"
+                        "immunizationsGiven"
                     ],
                     "reportWhen": [
                         "IsChildBetween12And23MonthsRule",
@@ -1248,12 +1248,12 @@
                     "indicator": "NRHM_ANC3",
                     "reportEntityType": "mother",
                     "serviceProvidedDateField": "ancVisitDate",
+                    "serviceProvidedPlaceField": "ancVisitPlace",
                     "formFields": [
                         "id",
                         "referenceDate",
                         "ancVisitDate",
-                        "ancVisitNumber",
-                        "serviceProvidedPlace"
+                        "ancVisitNumber"
                     ],
                     "reportWhen": [
                         "ThirdANCVisitHappenedOnTimeRule",
@@ -1264,12 +1264,12 @@
                     "indicator": "NRHM_HYPERTENSION",
                     "reportEntityType": "mother",
                     "serviceProvidedDateField": "ancVisitDate",
+                    "serviceProvidedPlaceField": "ancVisitPlace",
                     "formFields": [
                         "id",
                         "bpSystolic",
                         "bpDiastolic",
-                        "ancVisitDate",
-                        "serviceProvidedPlace"
+                        "ancVisitDate"
                     ],
                     "referenceData": {
                         "type": "mother",
@@ -1362,11 +1362,11 @@
                     "reportEntityType": "mother",
                     "serviceProvidedDateField": "registrationDate",
                     "reportEntityIdField": "motherId",
+                    "serviceProvidedPlaceField": "registrationPlace",
                     "formFields": [
                         "id",
                         "motherId",
-                        "isJSYBeneficiary",
-                        "serviceProvidedPlace"
+                        "isJSYBeneficiary"
                     ],
                     "reportWhen": [
                         "IsJsyBeneficiaryRule",
@@ -1412,9 +1412,9 @@
                     "indicator": "NRHM_SC_DEL",
                     "reportEntityType": "mother",
                     "serviceProvidedDateField": "referenceDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
                     "formFields": [
                         "id",
-                        "deliveryPlace",
                         "referenceDate"
                     ],
                     "reportWhen": [
@@ -1425,11 +1425,11 @@
                     "indicator": "NRHM_BCG_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "referenceDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
                     "formFields": [
                         "id",
                         "immunizationsGiven",
-                        "referenceDate",
-                        "serviceProvidedPlace"
+                        "referenceDate"
                     ],
                     "referenceData": {
                         "type": "child",
@@ -1447,11 +1447,11 @@
                     "indicator": "NRHM_OPV_0_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "referenceDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
                     "formFields": [
                         "id",
                         "immunizationsGiven",
-                        "referenceDate",
-                        "serviceProvidedPlace"
+                        "referenceDate"
                     ],
                     "referenceData": {
                         "type": "child",
@@ -1469,11 +1469,11 @@
                     "indicator": "NRHM_HEPB_0_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "referenceDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
                     "formFields": [
                         "id",
                         "immunizationsGiven",
-                        "referenceDate",
-                        "serviceProvidedPlace"
+                        "referenceDate"
                     ],
                     "referenceData": {
                         "type": "child",
@@ -1593,10 +1593,10 @@
                     "indicator": "NRHM_SC_DEL",
                     "reportEntityType": "mother",
                     "serviceProvidedDateField": "referenceDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
                     "reportEntityIdField": "motherId",
                     "formFields": [
                         "id",
-                        "deliveryPlace",
                         "referenceDate"
                     ],
                     "reportWhen": [
@@ -1607,11 +1607,11 @@
                     "indicator": "NRHM_BCG_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "referenceDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
                     "formFields": [
                         "id",
                         "immunizationsGiven",
-                        "referenceDate",
-                        "serviceProvidedPlace"
+                        "referenceDate"
                     ],
                     "reportWhen": [
                         "IsDeliveryDateOneYearInThePastRule",
@@ -1623,11 +1623,11 @@
                     "indicator": "NRHM_OPV_0_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "referenceDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
                     "formFields": [
                         "id",
                         "immunizationsGiven",
-                        "referenceDate",
-                        "serviceProvidedPlace"
+                        "referenceDate"
                     ],
                     "reportWhen": [
                         "IsDeliveryDateOneYearInThePastRule",
@@ -1636,14 +1636,15 @@
                     ]
                 },
                 {
+
                     "indicator": "NRHM_HEPB_0_1YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "referenceDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
                     "formFields": [
                         "id",
                         "immunizationsGiven",
-                        "referenceDate",
-                        "serviceProvidedPlace"
+                        "referenceDate"
                     ],
                     "reportWhen": [
                         "IsDeliveryDateOneYearInThePastRule",
@@ -1659,11 +1660,11 @@
                 {
                     "indicator": "NRHM_HB_LEVEL",
                     "reportEntityType": "mother",
+                    "serviceProvidedPlaceField": "hbTestPlace",
                     "formFields": [
                         "id",
                         "hbLevel",
-                        "hbTestDate",
-                        "serviceProvidedPlace"
+                        "hbTestDate"
                     ],
                     "reportWhen": [
                         "IsPersonAnaemicRule",
@@ -1714,18 +1715,12 @@
                     "indicator": "NRHM_48HRS",
                     "reportEntityType": "mother",
                     "serviceProvidedDateField": "dischargeDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
                     "formFields": [
                         "id",
-                        "deliveryPlace",
                         "dischargeDate",
-                        "referenceDate",
-                        "serviceProvidedPlace"
+                        "referenceDate"
                     ],
-                    "referenceData": {
-                        "type": "mother",
-                        "idField": "id",
-                        "fields": ["deliveryPlace"]
-                    },
                     "reportWhen": [
                         "ServiceProvidedAtSubCenterRule",
                         "WomanIsDischargedWithin48HoursOfDeliveryRule"
@@ -1908,11 +1903,11 @@
                     "indicator": "NRHM_IFA_100",
                     "reportEntityType": "mother",
                     "serviceProvidedDateField": "ifaTabletsDate",
+                    "serviceProvidedPlaceField": "ifaTabletsPlace",
                     "formFields": [
                         "id",
                         "numberOfIFATabletsGiven",
-                        "ifaTabletsDate",
-                        "serviceProvidedPlace"
+                        "ifaTabletsDate"
                     ],
                     "referenceData": {
                         "type": "mother",

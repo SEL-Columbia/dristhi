@@ -1,5 +1,6 @@
 package org.ei.drishti.service.reporting;
 
+import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
@@ -7,7 +8,6 @@ import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.service.reporting.rules.IReferenceDataRepository;
 import org.ei.drishti.service.reporting.rules.IRule;
-import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -221,6 +221,51 @@ public class FormSubmissionReportServiceTest {
         verifyZeroInteractions(locationLoader);
     }
 
+    @Test
+    public void shouldReportServiceProvidedPlaceWhenServiceProvidedPlaceFieldIsSpecifiedInTheIndicatorDefinition() throws Exception {
+        FormSubmission submission = create()
+                .withFormName("anc_registration")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("motherId", "mother id 1")
+                .addFormField("submissionDate", "2012-03-01")
+                .addFormField("registrationPlace", "phc")
+                .build();
+        Location location = new Location("bherya", "Sub Center", "PHC X");
+        when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
+        when(reportDefinitionLoader.load()).thenReturn(reportDefinitionWithServiceProvidedPlace());
+        when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class))).thenReturn(new SafeMap());
+        when(reporterFactory.reporterFor("eligible_couple")).thenReturn(reporter);
+        when(locationLoader.loadLocationFor("eligible_couple", "mother id 1")).thenReturn(location);
+        when(rule.apply(any(SafeMap.class))).thenReturn(true);
+        SafeMap reportData = new SafeMap()
+                .put("id", submission.entityId())
+                .put("submissionDate", submission.getField("submissionDate"))
+                .put("motherId", submission.getField("motherId"))
+                .put("serviceProvidedPlace", submission.getField("registrationPlace"));
+
+        service.reportFor(submission);
+
+        verify(locationLoader).loadLocationFor("eligible_couple", "mother id 1");
+        verify(reporter).report("mother id 1", "NRHM_JSY_REG", location, "2012-03-01", reportData);
+    }
+
+    private ReportDefinition reportDefinitionWithServiceProvidedPlace() {
+        return new ReportDefinition(
+                asList(
+                        new FormIndicator("anc_registration",
+                                asList(
+                                        new ReportIndicator(
+                                                "NRHM_JSY_REG",
+                                                "eligible_couple",
+                                                null,
+                                                null,
+                                                asList("id", "motherId"),
+                                                new ReferenceData("eligible_couple", "id", null),
+                                                asList("IsJsyBeneficiaryRule", "ServiceProvidedAtSubCenterRule"),
+                                                "registrationPlace").withReportEntityIdField("motherId")
+                                ))));
+    }
 
     private ReportDefinition reportDefinition() {
         return new ReportDefinition(
@@ -234,8 +279,8 @@ public class FormSubmissionReportServiceTest {
                                                 null,
                                                 asList("id", "closeReason", "submissionDate"),
                                                 new ReferenceData("child", "id", asList("dateOfBirth")),
-                                                asList("IsChildLessThanOneYearOldRule", "RelocationIsPermanentRule")
-                                        )))));
+                                                asList("IsChildLessThanOneYearOldRule", "RelocationIsPermanentRule"),
+                                                null)))));
     }
 
     private ReportDefinition reportDefinitionWithCondomQuantity() {
@@ -250,8 +295,8 @@ public class FormSubmissionReportServiceTest {
                                                 "familyPlanningMethodChangeDate",
                                                 asList("id", "numberOfCondomsSupplied", "familyPlanningMethodChangeDate"),
                                                 new ReferenceData("eligible_couple", "caseId", asList("currentMethod")),
-                                                asList("CurrentFPMethodIsCondomRule")
-                                        )))));
+                                                asList("CurrentFPMethodIsCondomRule"),
+                                                null)))));
     }
 
     private ReportDefinition reportDefinitionWithReportEntityFieldSpecified() {
@@ -266,10 +311,12 @@ public class FormSubmissionReportServiceTest {
                                                 null,
                                                 asList("id", "motherId"),
                                                 new ReferenceData("eligible_couple", "id", null),
-                                                asList("IsJsyBeneficiaryRule", "ServiceProvidedAtSubCenterRule")
-                                        ).withReportEntityIdField("motherId")
+                                                asList("IsJsyBeneficiaryRule", "ServiceProvidedAtSubCenterRule"),
+                                                null).withReportEntityIdField("motherId")
                                 ))));
     }
+
+
 
     private ReportDefinition reportDefinitionWithoutReferenceDataDefinition() {
         return new ReportDefinition(
@@ -283,7 +330,7 @@ public class FormSubmissionReportServiceTest {
                                                 "deathDate",
                                                 asList("id", "closeReason", "submissionDate"),
                                                 null,
-                                                asList("IsChildLessThanOneYearOldRule", "RelocationIsPermanentRule")
-                                        )))));
+                                                asList("IsChildLessThanOneYearOldRule", "RelocationIsPermanentRule"),
+                                                null)))));
     }
 }

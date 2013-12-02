@@ -50,10 +50,6 @@
                 "bind": "/model/instance/Child_Sick_Visit_EngKan/report_child_disease_group/report_child_disease_place"
             },
             {
-                "name": "serviceProvidedPlace",
-                "bind": "/model/instance/Child_Sick_Visit_EngKan/report_child_disease_group/report_child_disease_place"
-            },
-            {
                 "name": "numberOfORSGiven",
                 "bind": "/model/instance/Child_Sick_Visit_EngKan/report_child_disease_group/number_ors_given"
             },

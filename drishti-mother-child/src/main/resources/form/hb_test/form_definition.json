@@ -17,10 +17,6 @@
                 "bind": "/model/instance/Hb_Test_EngKan/hb_test_place"
             },
             {
-                "name": "serviceProvidedPlace",
-                "bind": "/model/instance/ANC_Registration_EngKan/reg_place"
-            },
-            {
                 "name": "hbLevel",
                 "bind": "/model/instance/Hb_Test_EngKan/hb_level"
             },

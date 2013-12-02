@@ -1,6 +1,6 @@
 package org.ei.drishti.service.reporting;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -10,6 +10,7 @@ public class ReportIndicator {
     private String indicator;
     private String reportEntityType;
     private String serviceProvidedDateField;
+    private String serviceProvidedPlaceField;
     private String quantityField;
     private List<String> formFields;
     private ReferenceData referenceData;
@@ -21,10 +22,11 @@ public class ReportIndicator {
     }
 
     public ReportIndicator(String indicator, String reportEntityType, String quantityField, String serviceProvidedDateField,
-                           List<String> formFields, ReferenceData referenceData, List<String> reportWhen) {
+                           List<String> formFields, ReferenceData referenceData, List<String> reportWhen, String serviceProvidedPlaceField) {
         this.indicator = indicator;
         this.reportEntityType = reportEntityType;
         this.serviceProvidedDateField = serviceProvidedDateField;
+        this.serviceProvidedPlaceField = serviceProvidedPlaceField;
         this.quantityField = quantityField;
         this.formFields = formFields;
         this.referenceData = referenceData;
@@ -45,6 +47,10 @@ public class ReportIndicator {
 
     public String quantityField() {
         return quantityField;
+    }
+
+    public String serviceProvidedPlaceField() {
+        return serviceProvidedPlaceField;
     }
 
     public List<String> formFields() {
@@ -69,11 +75,6 @@ public class ReportIndicator {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o);
-    }
-
-    @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
@@ -81,5 +82,10 @@ public class ReportIndicator {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 }

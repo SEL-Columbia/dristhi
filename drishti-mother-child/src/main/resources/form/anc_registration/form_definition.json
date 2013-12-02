@@ -24,11 +24,6 @@
                 "source": "eligible_couple.mother.registrationPlace"
             },
             {
-                "name": "serviceProvidedPlace",
-                "bind": "/model/instance/ANC_Registration_EngKan/reg_place",
-                "source": "eligible_couple.mother.registrationPlace"
-            },
-            {
                 "name": "wifeName",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Registration_EngKan/case_woman_name"

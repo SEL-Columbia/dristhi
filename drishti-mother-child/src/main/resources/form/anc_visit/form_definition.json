@@ -36,10 +36,6 @@
                 "bind": "/model/instance/ANC_Visit_EngKan/anc_visit_place"
             },
             {
-                "name": "serviceProvidedPlace",
-                "bind": "/model/instance/ANC_Visit_EngKan/anc_visit_place"
-            },
-            {
                 "name": "riskObservedDuringANC",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Visit_EngKan/risk_observed"
