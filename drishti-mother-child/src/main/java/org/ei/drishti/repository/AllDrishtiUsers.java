@@ -20,7 +20,7 @@ public class AllDrishtiUsers extends MotechBaseRepository<DrishtiUser> {
 
     @GenerateView()
     public DrishtiUser findByUsername(String username) {
-        if(username == null) {
+        if (username == null) {
             return null;
         }
         List<DrishtiUser> users = queryView("by_username", username);
@@ -28,5 +28,9 @@ public class AllDrishtiUsers extends MotechBaseRepository<DrishtiUser> {
             return null;
         }
         return users.get(0);
+    }
+
+    public List<DrishtiUser> allANMs() {
+        return getAll();
     }
 }

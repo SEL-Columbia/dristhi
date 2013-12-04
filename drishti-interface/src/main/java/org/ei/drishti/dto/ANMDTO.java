@@ -8,12 +8,9 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class ANMDTO {
     @JsonProperty
     private String identifier;
-    @JsonProperty
-    private String subCenter;
 
-    public ANMDTO(String identifier, String subCenter) {
+    public ANMDTO(String identifier) {
         this.identifier = identifier;
-        this.subCenter = subCenter;
     }
 
     @Override
