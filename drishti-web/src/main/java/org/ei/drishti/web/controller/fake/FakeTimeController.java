@@ -1,4 +1,4 @@
-package org.ei.drishti.web.controller;
+package org.ei.drishti.web.controller.fake;
 
 import org.motechproject.util.DateUtil;
 import org.springframework.stereotype.Controller;

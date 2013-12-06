@@ -1,4 +1,4 @@
-package org.ei.drishti.web.controller;
+package org.ei.drishti.web.controller.fake;
 
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.listener.ReportingEventListener;
