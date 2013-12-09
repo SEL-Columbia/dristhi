@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
+import org.ei.drishti.dto.aggregatorResponse.AggregatorResponseDTO;
 import org.ei.drishti.dto.report.ServiceProvidedReportDTO;
 import org.ei.drishti.reporting.domain.ServiceProvidedReport;
 import org.ei.drishti.reporting.repository.AllTokensRepository;
@@ -17,6 +18,7 @@ import java.util.Collections;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.EasyMap.mapOf;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -35,7 +37,7 @@ public class AggregateReportsServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        aggregateReportsService = new AggregateReportsService("bamboo.url", httpAgent, tokenRepository, servicesProvidedRepository, reportMonth);
+        aggregateReportsService = new AggregateReportsService("bamboo.url", "bamboo.aggregated.url", httpAgent, tokenRepository, servicesProvidedRepository, reportMonth);
     }
 
     @Test
@@ -43,7 +45,7 @@ public class AggregateReportsServiceTest {
         when(tokenRepository.getAggregateReportsToken()).thenReturn(0);
         when(servicesProvidedRepository.getNewReports(0))
                 .thenReturn(asList(new ServiceProvidedReport().withId(1).withDate(LocalDate.parse("2012-11-26").toDate()),
-                new ServiceProvidedReport().withId(2).withDate(LocalDate.parse("2012-12-28").toDate())));
+                        new ServiceProvidedReport().withId(2).withDate(LocalDate.parse("2012-12-28").toDate())));
         when(reportMonth.reportingMonth(LocalDate.parse("2012-11-26"))).thenReturn(12);
         when(reportMonth.reportingYear(LocalDate.parse("2012-11-26"))).thenReturn(2012);
 
@@ -88,5 +90,15 @@ public class AggregateReportsServiceTest {
 
         verify(httpAgent, never()).put(anyString(), anyMap());
         verify(tokenRepository, never()).saveAggregateReportsToken(anyInt());
+    }
+
+    @Test
+    public void shouldCallAggregatorToGetAggregatedReports() throws Exception {
+        when(httpAgent.get("bamboo.aggregated.url/summary?select=%7B%22indicator%22%3A1%7D&query=%7B%22anm_identifier%22%3A+%22demo1%22%2C%22nrhm_report_year%22%3A2013%2C+%22nrhm_report_month%22%3A3%7D"))
+                .thenReturn(new HttpResponse(true, "{\"indicator\": {\"summary\": {\"OCP\": 1}}}"));
+
+        AggregatorResponseDTO aggregatorResponse = aggregateReportsService.getAggregatedReports("demo1", 3, 2013);
+
+        assertEquals(new AggregatorResponseDTO(mapOf("OCP", 1)), aggregatorResponse);
     }
 }

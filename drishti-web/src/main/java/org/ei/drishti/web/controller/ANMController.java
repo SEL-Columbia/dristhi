@@ -1,6 +1,7 @@
 package org.ei.drishti.web.controller;
 
 import ch.lambdaj.function.convert.Converter;
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.DrishtiUser;
 import org.ei.drishti.dto.ANMDTO;
 import org.ei.drishti.service.ANMService;
@@ -19,7 +20,6 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Controller
 public class ANMController {
-    private static final String ACCESS_CONTROL_ALLOW_ORIGIN_HEADER = "Access-Control-Allow-Origin";
     private String drishtiSiteUrl;
     private ANMService anmService;
 
@@ -34,7 +34,7 @@ public class ANMController {
         List<DrishtiUser> anms = anmService.all();
         List<ANMDTO> anmDTOList = convertToDTO(anms);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, drishtiSiteUrl);
+        headers.add(AllConstants.HTTP.ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, drishtiSiteUrl);
         return new ResponseEntity<>(anmDTOList, headers, OK);
     }
 

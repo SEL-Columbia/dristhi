@@ -336,4 +336,8 @@ public class AllConstants {
         public static final String MOTHER_TYPE = "mother";
         public static final String ELIGIBLE_COUPLE_TYPE = "eligible_couple";
     }
+
+    public static class HTTP {
+        public static final String ACCESS_CONTROL_ALLOW_ORIGIN_HEADER = "Access-Control-Allow-Origin";
+    }
 }

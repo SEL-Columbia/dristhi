@@ -11,6 +11,7 @@
         <security:intercept-url pattern="/index.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/anms" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/aggregated-reports" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/**" access="ROLE_USER"/>
         <security:http-basic/>
     </security:http>
