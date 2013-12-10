@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class AggregatorResponseDTO {
@@ -17,6 +18,14 @@ public class AggregatorResponseDTO {
 
     public Map<String, Integer> indicatorSummary() {
         return indicator.summary();
+    }
+
+    public AggregatorResponseIndicatorDTO indicator() {
+        return indicator;
+    }
+
+    public static AggregatorResponseDTO empty() {
+        return new AggregatorResponseDTO(new HashMap<String, Integer>());
     }
 
     @Override

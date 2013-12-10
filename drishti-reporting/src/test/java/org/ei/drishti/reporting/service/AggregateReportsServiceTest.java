@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.Collections;
+import java.util.HashMap;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.EasyMap.mapOf;
@@ -100,5 +101,15 @@ public class AggregateReportsServiceTest {
         AggregatorResponseDTO aggregatorResponse = aggregateReportsService.getAggregatedReports("demo1", 3, 2013);
 
         assertEquals(new AggregatorResponseDTO(mapOf("OCP", 1)), aggregatorResponse);
+    }
+
+    @Test
+    public void shouldReturnEmptyDTOWhenThereAreNoAggregatedReports() throws Exception {
+        when(httpAgent.get("bamboo.aggregated.url/summary?select=%7B%22indicator%22%3A1%7D&query=%7B%22anm_identifier%22%3A+%22demo1%22%2C%22nrhm_report_year%22%3A2013%2C+%22nrhm_report_month%22%3A3%7D"))
+                .thenReturn(new HttpResponse(true, "{}"));
+
+        AggregatorResponseDTO aggregatorResponse = aggregateReportsService.getAggregatedReports("demo1", 3, 2013);
+
+        assertEquals(new AggregatorResponseDTO(new HashMap<String, Integer>()), aggregatorResponse);
     }
 }

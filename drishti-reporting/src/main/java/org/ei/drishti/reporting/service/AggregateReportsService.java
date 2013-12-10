@@ -110,7 +110,11 @@ public class AggregateReportsService {
                 , "UTF-8");
         String url = aggregatedDataSetUrl + "/summary?" + queryParams;
         HttpResponse response = httpAgent.get(url);
-        return new Gson().fromJson(response.body(), AggregatorResponseDTO.class);
+        AggregatorResponseDTO aggregatorResponse = new Gson().fromJson(response.body(), AggregatorResponseDTO.class);
+        if (aggregatorResponse == null || aggregatorResponse.indicator() == null) {
+            return AggregatorResponseDTO.empty();
+        }
+        return aggregatorResponse;
     }
 
     private BasicNameValuePair whereClauseParam(String anmIdentifier, int month, int year) {
