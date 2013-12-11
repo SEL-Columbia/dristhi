@@ -15,10 +15,6 @@ public class AggregatedReportsDTO {
         this.ind = indicatorSummary;
     }
 
-    public Map<String, Integer> indicatorSummary() {
-        return ind;
-    }
-
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);

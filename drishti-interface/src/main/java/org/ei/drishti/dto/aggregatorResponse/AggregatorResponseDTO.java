@@ -5,27 +5,24 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AggregatorResponseDTO {
     @JsonProperty
-    private AggregatorResponseIndicatorDTO indicator;
+    private String indicator;
 
-    public AggregatorResponseDTO(Map<String, Integer> indicatorSummaries) {
-        indicator = new AggregatorResponseIndicatorDTO(indicatorSummaries);
+    @JsonProperty
+    private Integer nrhm_report_indicator_count;
+
+    public AggregatorResponseDTO(String indicator, Integer nrhm_report_indicator_count) {
+        this.indicator = indicator;
+        this.nrhm_report_indicator_count = nrhm_report_indicator_count;
     }
 
-    public Map<String, Integer> indicatorSummary() {
-        return indicator.summary();
-    }
-
-    public AggregatorResponseIndicatorDTO indicator() {
+    public String indicator() {
         return indicator;
     }
 
-    public static AggregatorResponseDTO empty() {
-        return new AggregatorResponseDTO(new HashMap<String, Integer>());
+    public Integer count() {
+        return nrhm_report_indicator_count;
     }
 
     @Override

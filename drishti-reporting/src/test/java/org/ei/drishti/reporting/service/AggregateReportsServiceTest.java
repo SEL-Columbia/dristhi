@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.EasyMap.mapOf;
@@ -95,21 +95,11 @@ public class AggregateReportsServiceTest {
 
     @Test
     public void shouldCallAggregatorToGetAggregatedReports() throws Exception {
-        when(httpAgent.get("bamboo.aggregated.url/summary?select=%7B%22indicator%22%3A1%7D&query=%7B%22anm_identifier%22%3A+%22demo1%22%2C%22nrhm_report_year%22%3A2013%2C+%22nrhm_report_month%22%3A3%7D"))
-                .thenReturn(new HttpResponse(true, "{\"indicator\": {\"summary\": {\"OCP\": 1}}}"));
+        when(httpAgent.get("bamboo.aggregated.url?query=%7B%22anm_identifier%22%3A+%22demo1%22%2C%22nrhm_report_year%22%3A2013%2C+%22nrhm_report_month%22%3A10%7D"))
+                .thenReturn(new HttpResponse(true, "[{\"nrhm_report_month\": 10, \"indicator\": \"OCP\", \"nrhm_report_indicator_count\": 2, \"nrhm_report_year\": 2013, \"anm_identifier\": \"demo1\"}, {\"nrhm_report_month\": 10, \"indicator\": \"OPV_1\", \"nrhm_report_indicator_count\": 1, \"nrhm_report_year\": 2013, \"anm_identifier\": \"demo1\"}]"));
 
-        AggregatorResponseDTO aggregatorResponse = aggregateReportsService.getAggregatedReports("demo1", 3, 2013);
+        List<AggregatorResponseDTO> aggregatorResponse = aggregateReportsService.getAggregatedReports("demo1", 10, 2013);
 
-        assertEquals(new AggregatorResponseDTO(mapOf("OCP", 1)), aggregatorResponse);
-    }
-
-    @Test
-    public void shouldReturnEmptyDTOWhenThereAreNoAggregatedReports() throws Exception {
-        when(httpAgent.get("bamboo.aggregated.url/summary?select=%7B%22indicator%22%3A1%7D&query=%7B%22anm_identifier%22%3A+%22demo1%22%2C%22nrhm_report_year%22%3A2013%2C+%22nrhm_report_month%22%3A3%7D"))
-                .thenReturn(new HttpResponse(true, "{}"));
-
-        AggregatorResponseDTO aggregatorResponse = aggregateReportsService.getAggregatedReports("demo1", 3, 2013);
-
-        assertEquals(new AggregatorResponseDTO(new HashMap<String, Integer>()), aggregatorResponse);
+        assertEquals(asList(new AggregatorResponseDTO("OCP", 2), new AggregatorResponseDTO("OPV_1", 1)), aggregatorResponse);
     }
 }

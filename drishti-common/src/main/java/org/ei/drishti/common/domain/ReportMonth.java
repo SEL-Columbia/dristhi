@@ -41,7 +41,6 @@ public class ReportMonth {
             return new LocalDate(previousYear(date), DECEMBER, REPORTING_MONTH_START_DAY);
         }
         return new LocalDate(date.getYear(), previousMonth(date), REPORTING_MONTH_START_DAY);
-
     }
 
     public LocalDate endOfCurrentReportMonth(LocalDate date) {

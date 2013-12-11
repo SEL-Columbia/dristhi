@@ -1,6 +1,7 @@
 package org.ei.drishti.reporting.service;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.ei.drishti.common.domain.ReportMonth;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import static java.text.MessageFormat.format;
@@ -103,18 +105,16 @@ public class AggregateReportsService {
         return httpAgent.put(aggregatorDataSetUrl, mapOf("update", reportJson));
     }
 
-    public AggregatorResponseDTO getAggregatedReports(String anmIdentifier, int month, int year) {
-        //http://bamboo.io/datasets/2ed48f2461854baca56c0e2e236bdb36/summary\?select\='{"indicator":1}'\&query='{"anm_identifier": "demo1","nrhm_report_year":2013, "nrhm_report_month":2}'
+    public List<AggregatorResponseDTO> getAggregatedReports(String anmIdentifier, int month, int year) {
+        //http://bamboo.io/datasets/c67218ce415e4722a9f3b00882cd5a7b\?query\='{"anm_identifier": "demo1","nrhm_report_year":2013, "nrhm_report_month":10}'
         String queryParams = URLEncodedUtils.format(
-                asList(selectParam(), whereClauseParam(anmIdentifier, month, year))
+                asList(whereClauseParam(anmIdentifier, month, year))
                 , "UTF-8");
-        String url = aggregatedDataSetUrl + "/summary?" + queryParams;
+        String url = MessageFormat.format("{0}?{1}", aggregatedDataSetUrl, queryParams);
         HttpResponse response = httpAgent.get(url);
-        AggregatorResponseDTO aggregatorResponse = new Gson().fromJson(response.body(), AggregatorResponseDTO.class);
-        if (aggregatorResponse == null || aggregatorResponse.indicator() == null) {
-            return AggregatorResponseDTO.empty();
-        }
-        return aggregatorResponse;
+        return new Gson().fromJson(response.body(),
+                new TypeToken<List<AggregatorResponseDTO>>() {
+                }.getType());
     }
 
     private BasicNameValuePair whereClauseParam(String anmIdentifier, int month, int year) {
@@ -122,9 +122,5 @@ public class AggregateReportsService {
                 "{\"anm_identifier\": \"" +
                         anmIdentifier + "\",\"nrhm_report_year\":" + year + ", \"nrhm_report_month\":" + month +
                         "}");
-    }
-
-    private BasicNameValuePair selectParam() {
-        return new BasicNameValuePair("select", "{\"indicator\":1}");
     }
 }
