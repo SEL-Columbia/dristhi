@@ -29,8 +29,4 @@ public class AllDrishtiUsers extends MotechBaseRepository<DrishtiUser> {
         }
         return users.get(0);
     }
-
-    public List<DrishtiUser> allANMs() {
-        return getAll();
-    }
 }

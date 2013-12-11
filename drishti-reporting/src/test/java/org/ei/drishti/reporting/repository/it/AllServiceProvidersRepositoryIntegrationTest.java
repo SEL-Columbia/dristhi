@@ -55,7 +55,7 @@ public class AllServiceProvidersRepositoryIntegrationTest extends ServicesProvid
         ServiceProvider bheryaANM = new ServiceProvider(anm.id(), anmServiceProvider);
         template.save(bheryaANM);
 
-        ServiceProvider serviceProvider = repository.fetchBy(anm.anmIdentifier(), ANM);
+        ServiceProvider serviceProvider = repository.fetchBy(anm.identifier(), ANM);
 
         assertEquals(anm.id(), serviceProvider.serviceProviderId());
         assertTrue("ID should be non-zero.", serviceProvider.id() != 0);

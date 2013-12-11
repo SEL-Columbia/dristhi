@@ -32,7 +32,7 @@ public class SP_ANM {
         return id;
     }
 
-    public String anmIdentifier() {
+    public String identifier() {
         return anmIdentifier;
     }
 
