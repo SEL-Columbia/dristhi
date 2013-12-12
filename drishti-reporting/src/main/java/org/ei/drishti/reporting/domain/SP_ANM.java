@@ -20,11 +20,15 @@ public class SP_ANM {
     @Column(name = "phc")
     private Integer phcId;
 
+    @Column(name = "subcenter")
+    private String subCenter;
+
     private SP_ANM() {
     }
 
-    public SP_ANM(String anmIdentifier, Integer phcId) {
-        this.anmIdentifier = anmIdentifier;
+    public SP_ANM(String identifier, String subCenter, Integer phcId) {
+        this.anmIdentifier = identifier;
+        this.subCenter = subCenter;
         this.phcId = phcId;
     }
 

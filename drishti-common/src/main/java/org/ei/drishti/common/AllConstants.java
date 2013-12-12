@@ -124,6 +124,7 @@ public class AllConstants {
         public static final String BP_SYSTOLIC = "bpSystolic";
         public static final String IS_HYPERTENSION_DETECTED_FOR_FIRST_TIME = "isHypertensionDetectedForFirstTime";
     }
+
     public static class HbTestFormFields {
         public static final String HB_TEST_DATE_FIELD = "hbTestDate";
         public static final String HB_LEVEL_FIELD = "hbLevel";

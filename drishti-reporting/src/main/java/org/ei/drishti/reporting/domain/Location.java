@@ -8,10 +8,15 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "dim_location")
-@NamedQuery(name = Location.FIND_BY_VILLAGE_SUBCENTER_AND_PHC_IDENTIFIER,
-        query = "select r from Location r, PHC p where r.phc=p.id and r.village=:village and r.subCenter=:subCenter and p.phcIdentifier=:phcIdentifier")
+@NamedQueries({
+        @NamedQuery(name = Location.FIND_BY_VILLAGE_SUBCENTER_AND_PHC_IDENTIFIER,
+                query = "select r from Location r, PHC p where r.phc=p.id and r.village=:village and r.subCenter=:subCenter and p.phcIdentifier=:phcIdentifier"),
+        @NamedQuery(name = Location.FIND_BY_ANM_IDENTIFIER,
+                query = "select r from Location r, PHC p, SP_ANM a where r.phc=p.id and r.subCenter=a.subCenter and a.anmIdentifier=:anmIdentifier")
+})
 public class Location {
     public static final String FIND_BY_VILLAGE_SUBCENTER_AND_PHC_IDENTIFIER = "find.by.village.subcenter.and.phcIdentifier";
+    public static final String FIND_BY_ANM_IDENTIFIER = "find.by.anmIdentifier";
 
     @Id
     @Column(name = "id")
@@ -68,6 +73,10 @@ public class Location {
 
     public PHC phc() {
         return phc;
+    }
+
+    public String phcName() {
+        return phc.name();
     }
 
     @Override

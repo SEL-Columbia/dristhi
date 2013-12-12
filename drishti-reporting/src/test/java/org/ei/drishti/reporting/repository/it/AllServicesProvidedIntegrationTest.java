@@ -29,7 +29,7 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
     public void shouldSaveAService() throws Exception {
         PHC phc = new PHC("bhe", "Bherya");
         template.save(phc);
-        SP_ANM anm = new SP_ANM("ANM X", phc.id());
+        SP_ANM anm = new SP_ANM("ANM X", "Sub Center 1", phc.id());
         template.save(anm);
         Date dates = LocalDate.now().toDate();
         Indicator indicator = new Indicator("ANC indicator");
@@ -53,7 +53,7 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
     public void shouldUpdateIndicatorForReportingMonth() throws Exception {
         PHC phc = new PHC("bhe", "Bherya");
         template.save(phc);
-        SP_ANM anm = new SP_ANM("ANM X", phc.id());
+        SP_ANM anm = new SP_ANM("ANM X", "Sub Center 1", phc.id());
         template.save(anm);
         Indicator indicatorToDelete = new Indicator("INDICATOR 1");
         Indicator otherIndicator = new Indicator("INDICATOR 2");
@@ -134,7 +134,7 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
     private void createServiceProvidedData() {
         PHC phc = new PHC("bhe", "Bherya");
         template.save(phc);
-        SP_ANM anm = new SP_ANM("ANM X", phc.id());
+        SP_ANM anm = new SP_ANM("ANM X", "Sub Center 1", phc.id());
         template.save(anm);
         Indicator indicator = new Indicator("INDICATOR");
         Location location = new Location("Bherya", "Sub Center", phc, "taluka", "mysore", "karnataka");

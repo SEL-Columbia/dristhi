@@ -44,6 +44,10 @@ public class PHC {
         return phcIdentifier;
     }
 
+    public String name() {
+        return name;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, new String[]{"id"});

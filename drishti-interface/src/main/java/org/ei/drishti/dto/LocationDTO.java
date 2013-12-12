@@ -1,22 +1,28 @@
-package org.ei.drishti.dto.report;
+package org.ei.drishti.dto;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.ei.drishti.dto.LocationDTO;
 
-import java.util.Map;
-
-public class AggregatedReportsDTO {
+public class LocationDTO {
     @JsonProperty
-    private Map<String, Integer> ind;
+    private String sub_center;
     @JsonProperty
-    private LocationDTO loc;
+    private String phc;
+    @JsonProperty
+    private String taluka;
+    @JsonProperty
+    private String district;
+    @JsonProperty
+    private String state;
 
-    public AggregatedReportsDTO(Map<String, Integer> indicatorSummary, LocationDTO loc) {
-        this.ind = indicatorSummary;
-        this.loc = loc;
+    public LocationDTO(String sub_center, String phc, String taluka, String district, String state) {
+        this.state = state;
+        this.district = district;
+        this.taluka = taluka;
+        this.phc = phc;
+        this.sub_center = sub_center;
     }
 
     @Override
@@ -34,3 +40,4 @@ public class AggregatedReportsDTO {
         return ToStringBuilder.reflectionToString(this);
     }
 }
+

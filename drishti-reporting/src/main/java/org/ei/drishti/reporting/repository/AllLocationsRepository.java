@@ -19,8 +19,14 @@ public class AllLocationsRepository {
 
     public Location fetchBy(String village, String subCenter, String phcIdentifier) {
         return (Location) dataAccessTemplate.getUniqueResult(Location.FIND_BY_VILLAGE_SUBCENTER_AND_PHC_IDENTIFIER,
-                new String[] {"village", "subCenter", "phcIdentifier"}, new Object[] {village,
+                new String[]{"village", "subCenter", "phcIdentifier"}, new Object[]{village,
                 subCenter, phcIdentifier});
+
+    }
+
+    public Location fetchByANMIdentifier(String anmIdentifier) {
+        return (Location) dataAccessTemplate.findByNamedQueryAndNamedParam(Location.FIND_BY_ANM_IDENTIFIER,
+                new String[]{"anmIdentifier"}, new Object[]{anmIdentifier}).get(0);
 
     }
 }
