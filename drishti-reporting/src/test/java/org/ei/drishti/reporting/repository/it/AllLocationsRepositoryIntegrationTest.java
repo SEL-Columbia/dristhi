@@ -52,9 +52,9 @@ public class AllLocationsRepositoryIntegrationTest extends ServicesProvidedInteg
         Location anotherLocation = new Location("Keelanapura", "Sub Center 2", anotherPHC, "taluka", "mysore", "karnataka");
         template.save(location);
         template.save(anotherLocation);
-        SP_ANM anm = new SP_ANM("anm1", "Sub Center", phc.id());
-        SP_ANM anotherANMForPHCX = new SP_ANM("anm2", "Sub Center 1", phc.id());
-        SP_ANM anmForPHCY = new SP_ANM("anm3", "Sub Center 2", anotherPHC.id());
+        SP_ANM anm = new SP_ANM("anm1", "anm1 name", "Sub Center", phc.id());
+        SP_ANM anotherANMForPHCX = new SP_ANM("anm2", "anm2 name", "Sub Center 1", phc.id());
+        SP_ANM anmForPHCY = new SP_ANM("anm3", "anm3 name", "Sub Center 2", anotherPHC.id());
         template.save(anm);
         template.save(anotherANMForPHCX);
         template.save(anmForPHCY);

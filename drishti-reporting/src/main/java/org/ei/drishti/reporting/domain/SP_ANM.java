@@ -23,14 +23,19 @@ public class SP_ANM {
     @Column(name = "subcenter")
     private String subCenter;
 
+    @Column(name = "name")
+    private String name;
+
     private SP_ANM() {
     }
 
-    public SP_ANM(String identifier, String subCenter, Integer phcId) {
+    public SP_ANM(String identifier, String name, String subCenter, Integer phcId) {
         this.anmIdentifier = identifier;
         this.subCenter = subCenter;
         this.phcId = phcId;
+        this.name = name;
     }
+
 
     public Integer id() {
         return id;
@@ -38,6 +43,14 @@ public class SP_ANM {
 
     public String identifier() {
         return anmIdentifier;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public String subCenter() {
+        return subCenter;
     }
 
     @Override

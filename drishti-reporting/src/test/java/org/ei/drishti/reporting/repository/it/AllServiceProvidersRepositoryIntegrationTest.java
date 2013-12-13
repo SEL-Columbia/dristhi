@@ -48,7 +48,7 @@ public class AllServiceProvidersRepositoryIntegrationTest extends ServicesProvid
     public void shouldFetchServiceProviderThatIsANM() throws Exception {
         PHC phc = new PHC("bhe", "Bherya");
         template.save(phc);
-        SP_ANM anm = new SP_ANM("bhe1anm", "Sub Center 1", phc.id());
+        SP_ANM anm = new SP_ANM("bhe1anm", "bhe1anm name", "Sub Center 1", phc.id());
         template.save(anm);
         List<ServiceProviderType> serviceProviderTypes = template.loadAll(ServiceProviderType.class);
         ServiceProviderType anmServiceProvider = selectUnique(serviceProviderTypes, having(on(ServiceProviderType.class).type(), equalTo(ANM.type())));

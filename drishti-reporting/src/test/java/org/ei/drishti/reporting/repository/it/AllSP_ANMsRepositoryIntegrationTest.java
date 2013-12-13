@@ -25,8 +25,8 @@ public class AllSP_ANMsRepositoryIntegrationTest extends ServicesProvidedIntegra
         PHC phc2 = new PHC("phc2", "PHC 2");
         template.save(phc1);
         template.save(phc2);
-        SP_ANM anm1 = new SP_ANM("ANM 1", "Sub Center 1", phc1.id());
-        SP_ANM anm2 = new SP_ANM("ANM 2", "Sub Center 1", phc2.id());
+        SP_ANM anm1 = new SP_ANM("ANM 1", "anm1 name", "Sub Center 1", phc1.id());
+        SP_ANM anm2 = new SP_ANM("ANM 2", "anm2 name", "Sub Center 1", phc2.id());
         template.save(anm1);
         template.save(anm2);
 

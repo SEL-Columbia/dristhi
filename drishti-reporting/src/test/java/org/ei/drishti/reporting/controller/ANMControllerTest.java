@@ -31,12 +31,12 @@ public class ANMControllerTest {
     public void shouldReturnListOfANMs() throws Exception {
         when(anmService.all()).thenReturn(
                 asList(
-                        new SP_ANM("username1", "Sub Center 1", 0),
-                        new SP_ANM("username2", "Sub Center 1", 0)
+                        new SP_ANM("username1", "user1 name", "Sub Center 1", 0),
+                        new SP_ANM("username2", "user2 name", "Sub Center 1", 0)
                 ));
 
         ResponseEntity<List<ANMDTO>> response = controller.all();
 
-        assertEquals(asList(new ANMDTO("username1"), new ANMDTO("username2")), response.getBody());
+        assertEquals(asList(new ANMDTO("username1", "user1 name", "Sub Center 1"), new ANMDTO("username2", "user2 name", "Sub Center 1")), response.getBody());
     }
 }

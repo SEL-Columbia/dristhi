@@ -44,7 +44,7 @@ public class ANMController {
         return with(anms).convert(new Converter<SP_ANM, ANMDTO>() {
             @Override
             public ANMDTO convert(SP_ANM anm) {
-                return new ANMDTO(anm.identifier());
+                return new ANMDTO(anm.identifier(), anm.name(), anm.subCenter());
             }
         });
     }

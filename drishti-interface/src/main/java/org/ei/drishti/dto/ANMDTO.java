@@ -9,8 +9,16 @@ public class ANMDTO {
     @JsonProperty
     private String identifier;
 
-    public ANMDTO(String identifier) {
+    @JsonProperty
+    private String name;
+
+    @JsonProperty
+    private String subcenter;
+
+    public ANMDTO(String identifier, String name, String subcenter) {
         this.identifier = identifier;
+        this.name = name;
+        this.subcenter = subcenter;
     }
 
     @Override
