@@ -32,7 +32,7 @@ public class ANCSchedulesService {
     private static Logger logger = LoggerFactory.getLogger(ANCSchedulesService.class.toString());
 
     private final ScheduleTrackingService trackingService;
-    private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1, SCHEDULE_HB_TEST_1};
+    private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1, SCHEDULE_HB_TEST_1, SCHEDULE_DELIVERY_PLAN};
     private ActionService actionService;
     private final ScheduleService scheduleService;
 
@@ -52,6 +52,10 @@ public class ANCSchedulesService {
 
     public void ancVisitHasHappened(String entityId, String anmId, int visitNumberToFulfill, String visitDate) {
         fastForwardSchedule(entityId, anmId, SCHEDULE_ANC, SCHEDULE_ANC_MILESTONE_PREFIX, visitNumberToFulfill, parse(visitDate));
+    }
+
+    public void deliveryHasBeenPlanned(String entityId, String anmId, String deliveryPlanDate) {
+        fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_DELIVERY_PLAN, SCHEDULE_DELIVERY_PLAN, parse(deliveryPlanDate));
     }
 
     public void ttVisitHasHappened(String entityId, String anmId, String ttDose, String ttDate) {

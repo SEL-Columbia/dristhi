@@ -29,6 +29,7 @@ import static org.ei.drishti.common.AllConstants.ANCVisitFormFields.*;
 import static org.ei.drishti.common.AllConstants.BOOLEAN_FALSE_VALUE;
 import static org.ei.drishti.common.AllConstants.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.ANAEMIC_STATUS_FIELD;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_TEST_DATE_FIELD;
@@ -159,6 +160,15 @@ public class ANCService {
 
         ancSchedulesService.hbTestDone(submission.entityId(), submission.anmId(), submission.getField(HB_TEST_DATE_FIELD),
                 submission.getField(ANAEMIC_STATUS_FIELD), mother.lmp());
+    }
+
+    public void deliveryPlanned(FormSubmission submission) {
+        if (!allMothers.exists(submission.entityId())) {
+            logger.warn("Tried to handle delivery plan without registered mother. Submission: " + submission);
+            return;
+        }
+
+        ancSchedulesService.deliveryHasBeenPlanned(submission.entityId(), submission.anmId(), submission.getField(SUBMISSION_DATE_FIELD_NAME));
     }
 
     public void deliveryOutcome(FormSubmission submission) {

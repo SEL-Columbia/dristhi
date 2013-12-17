@@ -4,13 +4,11 @@ import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.ei.drishti.service.formSubmission.handler.*;
 import org.ei.drishti.service.reporting.FormSubmissionReportService;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -66,6 +64,8 @@ public class FormSubmissionRouterTest {
     @Mock
     private VitaminAHandler vitaminAHandler;
     @Mock
+    private DeliveryPlanHandler deliveryPlanHandler;
+    @Mock
     private FormSubmissionReportService formSubmissionReportService;
 
     private FormSubmissionRouter router;
@@ -98,7 +98,7 @@ public class FormSubmissionRouterTest {
                 childImmunizationsHandler,
                 childIllnessHandler,
                 childCloseHandler,
-                formSubmissionReportService);
+                deliveryPlanHandler, formSubmissionReportService);
     }
 
     @Test
@@ -369,6 +369,18 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(vitaminAHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateDeliveryPlanFormSubmissionHandlingToDeliveryPlanHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "delivery_plan", "entity id 1", 0L, "1", null, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(deliveryPlanHandler).handle(formSubmission);
         verify(formSubmissionReportService).reportFor(formSubmission);
     }
 }

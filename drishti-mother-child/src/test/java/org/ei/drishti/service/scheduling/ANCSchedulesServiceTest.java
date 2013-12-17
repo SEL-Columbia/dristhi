@@ -28,6 +28,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
 import static org.powermock.api.mockito.PowerMockito.verifyNoMoreInteractions;
+import static org.powermock.api.mockito.PowerMockito.verifyZeroInteractions;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 public class ANCSchedulesServiceTest extends BaseUnitTest {
@@ -248,6 +249,16 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-04-16", "Anaemic", parse("2012-09-01"));
 
         verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("Hb Test 2"), eq(parse("2013-04-16")), any(Time.class));
+    }
+
+    @Test
+    public void shouldFulfillScheduleWhenDeliveryHasBeenPlanned() {
+        when(scheduleTrackingService.getEnrollment("Case X", "Delivery Plan"))
+                .thenReturn(new EnrollmentRecord("Case X", "Delivery Plan", "Delivery Plan", null, null, null, null, null, null, null));
+
+        ancSchedulesService.deliveryHasBeenPlanned("Case X", "ANM id 1", "2013-01-01");
+
+        verify(scheduleTrackingService).fulfillCurrentMilestone(eq("Case X"), eq("Delivery Plan"), eq(parse("2013-01-01")), any(Time.class));
     }
 
     @Test

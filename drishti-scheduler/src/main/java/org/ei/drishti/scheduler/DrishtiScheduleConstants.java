@@ -39,6 +39,7 @@ public class DrishtiScheduleConstants {
         public static final String SCHEDULE_HB_TEST_1 = "Hb Test 1";
         public static final String SCHEDULE_HB_TEST_2 = "Hb Test 2";
         public static final String SCHEDULE_HB_FOLLOWUP_TEST = "Hb Followup Test";
+        public static final String SCHEDULE_DELIVERY_PLAN = "Delivery Plan";
     }
 
     public static class ECSchedulesConstants {

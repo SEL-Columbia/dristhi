@@ -523,6 +523,18 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("mother-hb-test-2.html", 1);
     }
 
+    @Test
+    public void shouldProvideAlertsForDeliveryPlanAtTheRightTimes() throws Exception {
+        schedule.enrollFor("Delivery Plan", newDate(2012, JANUARY, 1), new Time(14, 0));
+
+        schedule.assertAlertsStartWith("Delivery Plan", earliest, dateWithYear(1, JANUARY, 2012), dateWithYear(2, JANUARY, 2012), dateWithYear(3, JANUARY, 2012), dateWithYear(4, JANUARY, 2012));
+        schedule.assertAlertsStartWith("Delivery Plan", due, dateWithYear(26, AUGUST, 2012), dateWithYear(27, AUGUST, 2012), dateWithYear(28, AUGUST, 2012), dateWithYear(29, AUGUST, 2012));
+        schedule.assertAlertsStartWith("Delivery Plan", late, dateWithYear(9, SEPTEMBER, 2012), dateWithYear(10, SEPTEMBER, 2012), dateWithYear(11, SEPTEMBER, 2012));
+        schedule.assertNoAlerts("Delivery Plan", max);
+
+        visualization.outputTo("mother-delivery-plan.html", 1);
+    }
+
     @Before
     public void setUp() throws Exception {
         FakeSchedule fakeSchedule = new FakeSchedule(trackingService, schedulerFactoryBean, new SetDateAction() {

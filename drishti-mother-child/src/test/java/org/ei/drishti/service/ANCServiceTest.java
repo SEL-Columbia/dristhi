@@ -349,6 +349,23 @@ public class ANCServiceTest {
     }
 
     @Test
+    public void shouldHandleDeliveryPlan() {
+        FormSubmission submission = create()
+                .withFormName("delivery_plan")
+                .withANMId("anm id 1")
+                .withEntityId("entity id 1")
+                .addFormField("someKey", "someValue")
+                .addFormField("submissionDate", "2013-01-01")
+                .build();
+        when(allMothers.exists("entity id 1")).thenReturn(true);
+        when(reportFieldsDefinition.get("delivery_plan")).thenReturn(asList("someKey"));
+
+        service.deliveryPlanned(submission);
+
+        verify(ancSchedulesService).deliveryHasBeenPlanned("entity id 1", "anm id 1", "2013-01-01");
+    }
+
+    @Test
     public void shouldDoNothingIfMotherIsNotRegisteredWhileDeliveryOutcome() {
         when(allMothers.exists("entity id 1")).thenReturn(false);
 
