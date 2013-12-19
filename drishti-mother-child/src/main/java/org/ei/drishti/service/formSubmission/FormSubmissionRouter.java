@@ -48,7 +48,8 @@ public class FormSubmissionRouter {
                                 VitaminAHandler vitaminAHandler,
                                 ChildImmunizationsHandler childImmunizationsHandler,
                                 ChildIllnessHandler childIllnessHandler,
-                                ChildCloseHandler childCloseHandler, DeliveryPlanHandler deliveryPlanHandler,
+                                ChildCloseHandler childCloseHandler,
+                                DeliveryPlanHandler deliveryPlanHandler,
                                 FormSubmissionReportService formSubmissionReportService) {
         this.formSubmissionsRepository = formSubmissionsRepository;
         this.formSubmissionReportService = formSubmissionReportService;
