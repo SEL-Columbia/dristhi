@@ -3,9 +3,13 @@ package org.ei.drishti.reporting.repository;
 import org.ei.drishti.common.domain.*;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.monitor.Probe;
-import org.ei.drishti.reporting.domain.*;
+import org.ei.drishti.reporting.domain.ANM;
+import org.ei.drishti.reporting.domain.ANMReportData;
+import org.ei.drishti.reporting.domain.AnnualTarget;
 import org.ei.drishti.reporting.domain.Indicator;
-import org.ei.drishti.reporting.repository.cache.*;
+import org.ei.drishti.reporting.repository.cache.ANMCacheableRepository;
+import org.ei.drishti.reporting.repository.cache.IndicatorCacheableRepository;
+import org.ei.drishti.reporting.repository.cache.ReadOnlyCachingRepository;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -83,9 +87,9 @@ public class ANMReportsRepository {
             int aggregatedProgress = 0;
             List<MonthSummary> monthSummaries = new ArrayList<>();
 
-            for (LocalDate indexDate = new LocalDate(reportMonth.startDateOfReportingYear()); indexDate.isBefore(reportMonth.startDateOfNextReportingMonth()); indexDate = indexDate.plusMonths(1)) {
+            for (LocalDate indexDate = new LocalDate(reportMonth.startDateOfReportingYear()); indexDate.isBefore(reportMonth.startDateOfNextReportingMonth(today())); indexDate = indexDate.plusMonths(1)) {
                 LocalDate reportingMonthEndDate = new LocalDate(indexDate).plusMonths(1);
-                List<ANMReportData> allReportDataForAMonth = filterReportsByMonth(allReportDataForIndicator, indexDate, reportMonth.endDateOfReportingMonth(indexDate));
+                List<ANMReportData> allReportDataForAMonth = filterReportsByMonth(allReportDataForIndicator, indexDate, reportMonth.endDateOfReportingMonthGivenStartDate(indexDate));
                 if (allReportDataForAMonth.size() == 0) {
                     continue;
                 }

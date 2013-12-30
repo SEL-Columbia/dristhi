@@ -21,16 +21,18 @@ public class ReportMonth {
         return new LocalDate().withDayOfMonth(REPORTING_MONTH_START_DAY).withMonthOfYear(FIRST_REPORT_MONTH_OF_YEAR).withYear(reportingYear).toDate();
     }
 
-    public LocalDate startDateOfNextReportingMonth() {
-        LocalDate today = DateUtil.today();
-        if (today.getDayOfMonth() < REPORTING_MONTH_START_DAY) {
-            return new LocalDate(today.getYear(), today.getMonthOfYear(), REPORTING_MONTH_START_DAY);
+    public LocalDate startDateOfNextReportingMonth(LocalDate date) {
+        if (date.getDayOfMonth() < REPORTING_MONTH_START_DAY) {
+            return new LocalDate(date.getYear(), date.getMonthOfYear(), REPORTING_MONTH_START_DAY);
         }
-        return new LocalDate(today.getYear(), today.getMonthOfYear() + 1, REPORTING_MONTH_START_DAY);
+        if (date.getMonthOfYear() == DECEMBER) {
+            return new LocalDate(date.plusYears(1).getYear(), JANUARY, REPORTING_MONTH_START_DAY);
+        }
+        return new LocalDate(date.getYear(), date.plusMonths(1).getMonthOfYear(), REPORTING_MONTH_START_DAY);
     }
 
-    public LocalDate endDateOfReportingMonth(LocalDate date) {
-        return date.plusMonths(1).minusDays(1);
+    public LocalDate endDateOfReportingMonthGivenStartDate(LocalDate startDate) {
+        return startDate.plusMonths(1).minusDays(1);
     }
 
     public LocalDate startOfCurrentReportMonth(LocalDate date) {

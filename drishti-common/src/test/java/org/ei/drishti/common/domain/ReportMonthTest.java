@@ -30,6 +30,26 @@ public class ReportMonthTest {
     }
 
     @Test
+    public void shouldCalculateStartOfNextReportMonth() throws Exception {
+        assertEquals(LocalDate.parse("2012-01-26"), reportMonth.startDateOfNextReportingMonth(LocalDate.parse("2012-01-01")));
+        assertEquals(LocalDate.parse("2012-02-26"), reportMonth.startDateOfNextReportingMonth(LocalDate.parse("2012-01-26")));
+        assertEquals(LocalDate.parse("2012-02-26"), reportMonth.startDateOfNextReportingMonth(LocalDate.parse("2012-01-27")));
+
+        assertEquals(LocalDate.parse("2011-12-26"), reportMonth.startDateOfNextReportingMonth(LocalDate.parse("2011-11-28")));
+
+        assertEquals(LocalDate.parse("2011-12-26"), reportMonth.startDateOfNextReportingMonth(LocalDate.parse("2011-12-25")));
+        assertEquals(LocalDate.parse("2012-01-26"), reportMonth.startDateOfNextReportingMonth(LocalDate.parse("2011-12-26")));
+        assertEquals(LocalDate.parse("2012-01-26"), reportMonth.startDateOfNextReportingMonth(LocalDate.parse("2011-12-27")));
+    }
+
+    @Test
+    public void shouldCalculateEndDateOfReportMonth() throws Exception {
+        assertEquals(LocalDate.parse("2012-02-25"), reportMonth.endDateOfReportingMonthGivenStartDate(LocalDate.parse("2012-01-26")));
+        assertEquals(LocalDate.parse("2012-12-25"), reportMonth.endDateOfReportingMonthGivenStartDate(LocalDate.parse("2012-11-26")));
+        assertEquals(LocalDate.parse("2013-01-25"), reportMonth.endDateOfReportingMonthGivenStartDate(LocalDate.parse("2012-12-26")));
+    }
+
+    @Test
     public void shouldCalculateEndDateOfCurrentReportMonth() throws Exception {
         assertEquals(LocalDate.parse("2013-01-25"), reportMonth.endOfCurrentReportMonth(LocalDate.parse("2012-12-26")));
         assertEquals(LocalDate.parse("2013-01-25"), reportMonth.endOfCurrentReportMonth(LocalDate.parse("2012-12-30")));
