@@ -26,6 +26,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class AggregateReportsServiceTest {
 
     private AggregateReportsService aggregateReportsService;
+    private int batchSizeToUpdate = 10;
     @Mock
     private HttpAgent httpAgent;
     @Mock
@@ -38,13 +39,13 @@ public class AggregateReportsServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        aggregateReportsService = new AggregateReportsService("bamboo.url", "bamboo.aggregated.url", httpAgent, tokenRepository, servicesProvidedRepository, reportMonth);
+        aggregateReportsService = new AggregateReportsService("bamboo.url", "bamboo.aggregated.url", batchSizeToUpdate, httpAgent, tokenRepository, servicesProvidedRepository, reportMonth);
     }
 
     @Test
     public void shouldSendReportsWithNRHMReportingMonthToAggregator() throws Exception {
         when(tokenRepository.getAggregateReportsToken()).thenReturn(0);
-        when(servicesProvidedRepository.getNewReports(0))
+        when(servicesProvidedRepository.getNewReports(0, batchSizeToUpdate))
                 .thenReturn(asList(new ServiceProvidedReport().withId(1).withDate(LocalDate.parse("2012-11-26").toDate()),
                         new ServiceProvidedReport().withId(2).withDate(LocalDate.parse("2012-12-28").toDate())));
         when(reportMonth.reportingMonth(LocalDate.parse("2012-11-26"))).thenReturn(12);
@@ -53,16 +54,14 @@ public class AggregateReportsServiceTest {
         when(reportMonth.reportingMonth(LocalDate.parse("2012-12-28"))).thenReturn(1);
         when(reportMonth.reportingYear(LocalDate.parse("2012-12-28"))).thenReturn(2013);
 
-        String firstReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(LocalDate.parse("2012-11-26")).withNRHMReportMonth(12).withNRHMReportYear(2012).withId(1));
-        String secondReportJson = new Gson().toJson(new ServiceProvidedReportDTO().withDate(LocalDate.parse("2012-12-28")).withNRHMReportMonth(1).withNRHMReportYear(2013).withId(2));
-        when(httpAgent.put("bamboo.url", mapOf("update", firstReportJson))).thenReturn(new HttpResponse(true, ""));
-        when(httpAgent.put("bamboo.url", mapOf("update", secondReportJson))).thenReturn(new HttpResponse(true, ""));
+        String reportJson = new Gson().toJson(asList(
+                new ServiceProvidedReportDTO().withDate(LocalDate.parse("2012-11-26")).withNRHMReportMonth(12).withNRHMReportYear(2012).withId(1),
+                new ServiceProvidedReportDTO().withDate(LocalDate.parse("2012-12-28")).withNRHMReportMonth(1).withNRHMReportYear(2013).withId(2)));
+        when(httpAgent.put("bamboo.url", mapOf("update", reportJson))).thenReturn(new HttpResponse(true, ""));
 
         aggregateReportsService.sendReportsToAggregator();
 
-        verify(httpAgent).put("bamboo.url", mapOf("update", firstReportJson));
-        verify(httpAgent).put("bamboo.url", mapOf("update", secondReportJson));
-        verify(tokenRepository).saveAggregateReportsToken(1);
+        verify(httpAgent).put("bamboo.url", mapOf("update", reportJson));
         verify(tokenRepository).saveAggregateReportsToken(2);
     }
 
@@ -71,7 +70,7 @@ public class AggregateReportsServiceTest {
         when(tokenRepository.getAggregateReportsToken()).thenReturn(0);
         ServiceProvidedReport firstServiceProvidedReport = new ServiceProvidedReport().withId(1);
         ServiceProvidedReport secondServiceProvidedReport = new ServiceProvidedReport().withId(2);
-        when(servicesProvidedRepository.getNewReports(0)).thenReturn(asList(firstServiceProvidedReport, secondServiceProvidedReport));
+        when(servicesProvidedRepository.getNewReports(0, batchSizeToUpdate)).thenReturn(asList(firstServiceProvidedReport, secondServiceProvidedReport));
         String firstReportJson = new Gson().toJson(firstServiceProvidedReport);
         String secondReportAsJson = new Gson().toJson(secondServiceProvidedReport);
         when(httpAgent.put("bamboo.url", mapOf("update", firstReportJson))).thenReturn(new HttpResponse(false, ""));
@@ -85,7 +84,7 @@ public class AggregateReportsServiceTest {
     @Test
     public void shouldNotAggregateReportsWhenThereIsNoNewReport() throws Exception {
         when(tokenRepository.getAggregateReportsToken()).thenReturn(12345);
-        when(servicesProvidedRepository.getNewReports(12345)).thenReturn(Collections.<ServiceProvidedReport>emptyList());
+        when(servicesProvidedRepository.getNewReports(12345, batchSizeToUpdate)).thenReturn(Collections.<ServiceProvidedReport>emptyList());
 
         aggregateReportsService.sendReportsToAggregator();
 

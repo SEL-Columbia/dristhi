@@ -34,4 +34,14 @@ public class AllServicesProvidedRepository {
     public List<ServiceProvidedReport> getNewReports(Integer token) {
         return dataAccessTemplate.findByNamedQuery(ServiceProvidedReport.FIND_NEW_SERVICE_PROVIDED, token);
     }
+
+    public List<ServiceProvidedReport> getNewReports(Integer token, int numberOfRowsToFetch) {
+        return dataAccessTemplate.getSessionFactory()
+                .getCurrentSession()
+                .getNamedQuery(ServiceProvidedReport.FIND_NEW_SERVICE_PROVIDED)
+                .setParameter(0, token)
+                .setMaxResults(numberOfRowsToFetch)
+                .list();
+
+    }
 }

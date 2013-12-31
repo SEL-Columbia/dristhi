@@ -99,4 +99,9 @@ public class ServicesProvidedRepository {
     public List<ServiceProvidedReport> getNewReports(Integer token) {
        return servicesProvidedRepository.getNewReports(token);
     }
+
+    @Transactional("service_provided")
+    public List<ServiceProvidedReport> getNewReports(Integer token, int numberOfRowsToFetch) {
+       return servicesProvidedRepository.getNewReports(token, numberOfRowsToFetch);
+    }
 }

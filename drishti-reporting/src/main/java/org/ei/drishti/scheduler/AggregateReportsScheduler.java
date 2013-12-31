@@ -7,11 +7,12 @@ import org.motechproject.scheduler.domain.RepeatingSchedulableJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-import static org.joda.time.DateTimeConstants.MILLIS_PER_HOUR;
+import static org.joda.time.DateTimeConstants.MILLIS_PER_MINUTE;
 
 @Component
 public class AggregateReportsScheduler {
@@ -19,12 +20,13 @@ public class AggregateReportsScheduler {
 
     public static final String SUBJECT = "REPORT_AGGREGATOR_SCHEDULE";
     public static final int START_DELAY_IN_MINUTES = 10;
-    public static final long REPEAT_INTERVAL_IN_HOUR = 1L;
+    public static long REPEAT_INTERVAL_IN_MINUTES = 10L;
     private MotechSchedulerService schedulerService;
 
     @Autowired
-    public AggregateReportsScheduler(MotechSchedulerService schedulerService) {
+    public AggregateReportsScheduler(@Value("#{drishti['batch.update.time.interval']}") long batchUpdateTimeInterval, MotechSchedulerService schedulerService) {
         this.schedulerService = schedulerService;
+        REPEAT_INTERVAL_IN_MINUTES = batchUpdateTimeInterval;
     }
 
     public void startTimedScheduler() {
@@ -33,7 +35,7 @@ public class AggregateReportsScheduler {
         Date startTime = DateTimeUtil.now().plusMinutes(START_DELAY_IN_MINUTES).toDate();
         MotechEvent event = new MotechEvent(SUBJECT);
         RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null,
-                REPEAT_INTERVAL_IN_HOUR * MILLIS_PER_HOUR);
+                REPEAT_INTERVAL_IN_MINUTES * MILLIS_PER_MINUTE);
         schedulerService.safeScheduleRepeatingJob(job);
     }
 }

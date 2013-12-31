@@ -20,11 +20,12 @@ public class AggregateReportsSchedulerTest {
     @Mock
     private MotechSchedulerService schedulerService;
     private AggregateReportsScheduler scheduler;
+    private final int REPEAT_INTERVAL_IN_MINUTES = 10;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        scheduler = new AggregateReportsScheduler(schedulerService);
+        scheduler = new AggregateReportsScheduler(REPEAT_INTERVAL_IN_MINUTES, schedulerService);
     }
 
     @Test
@@ -43,7 +44,7 @@ public class AggregateReportsSchedulerTest {
                 RepeatingSchedulableJob job = (RepeatingSchedulableJob) o;
                 return LocalDateTime.parse("2013-01-01T12:00:00.000").plusMinutes(10).toDate()
                         .equals(job.getStartTime())
-                        && DateTimeConstants.MILLIS_PER_HOUR == job.getRepeatIntervalInMilliSeconds()
+                        && DateTimeConstants.MILLIS_PER_MINUTE * REPEAT_INTERVAL_IN_MINUTES == job.getRepeatIntervalInMilliSeconds()
                         && "REPORT_AGGREGATOR_SCHEDULE".equals(job.getMotechEvent().getSubject());
             }
         });

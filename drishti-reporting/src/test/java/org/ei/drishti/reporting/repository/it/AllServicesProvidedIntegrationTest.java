@@ -14,14 +14,11 @@ import java.util.List;
 import static ch.lambdaj.Lambda.*;
 import static org.ei.drishti.reporting.domain.ServiceProviderType.ANM;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrationTestBase {
     @Autowired
     private AllServicesProvidedRepository repository;
-
-
 
     @Test
     @Transactional("service_provided")
@@ -59,7 +56,6 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
         Indicator otherIndicator = new Indicator("INDICATOR 2");
         Location location = new Location("Bherya", "Sub Center", phc, "taluka", "mysore", "karnataka");
         Date startDate = LocalDate.parse("2013-01-26").toDate();
-        Date endDate = LocalDate.parse("2013-02-25").toDate();
         List<ServiceProviderType> serviceProviderTypes = template.loadAll(ServiceProviderType.class);
         ServiceProviderType anmServiceProvider = selectUnique(serviceProviderTypes, having(on(ServiceProviderType.class).type(), equalTo(ANM.type())));
         ServiceProvider serviceProvider = new ServiceProvider(anm.id(), anmServiceProvider);
@@ -131,6 +127,22 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
                                 "taluka", "mysore", "karnataka")));
     }
 
+    @Test
+    @Transactional("service_provided")
+    @Rollback
+    public void shouldFetchOnlyAFixedBatchSizeOfReportsFromTheGivenToken() throws Exception {
+        createMultipleServiceProvidedData();
+
+        List<ServiceProvidedReport> reports = repository.getNewReports(0, 1);
+
+        assertEquals(1, reports.size());
+        assertTrue(
+                reports.contains(
+                        new ServiceProvidedReport(1, "ANM X", ANM.type(), "INDICATOR",
+                                LocalDate.parse("2013-01-26").toDate(), "Bherya", "Sub Center", "bhe",
+                                "taluka", "mysore", "karnataka")));
+    }
+
     private void createServiceProvidedData() {
         PHC phc = new PHC("bhe", "Bherya");
         template.save(phc);
@@ -146,5 +158,28 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
         template.save(indicator);
         template.save(serviceProvider);
         repository.save(serviceProvider, "1", indicator, date, location);
+    }
+
+    private void createMultipleServiceProvidedData() {
+        PHC phc = new PHC("bhe", "Bherya");
+        template.save(phc);
+        SP_ANM anm = new SP_ANM("ANM X", "anmx name", "Sub Center 1", phc.id());
+        template.save(anm);
+        SP_ANM anm1 = new SP_ANM("ANM Y", "anmy name", "Sub Center 1", phc.id());
+        template.save(anm1);
+        Indicator indicator = new Indicator("INDICATOR");
+        Location location = new Location("Bherya", "Sub Center", phc, "taluka", "mysore", "karnataka");
+        Date date = LocalDate.parse("2013-01-26").toDate();
+        List<ServiceProviderType> serviceProviderTypes = template.loadAll(ServiceProviderType.class);
+        ServiceProviderType anmServiceProvider = selectUnique(serviceProviderTypes, having(on(ServiceProviderType.class).type(), equalTo(ANM.type())));
+        ServiceProvider serviceProvider = new ServiceProvider(anm.id(), anmServiceProvider);
+        ServiceProvider anotherServiceProvider = new ServiceProvider(anm1.id(), anmServiceProvider);
+        template.save(location);
+        template.save(indicator);
+        template.save(serviceProvider);
+        template.save(anotherServiceProvider);
+
+        repository.save(serviceProvider, "1", indicator, date, location);
+        repository.save(anotherServiceProvider, "2", indicator, date, location);
     }
 }

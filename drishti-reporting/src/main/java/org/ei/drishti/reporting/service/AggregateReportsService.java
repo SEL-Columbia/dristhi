@@ -21,23 +21,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.ei.drishti.common.util.EasyMap.mapOf;
 
 @Service
 public class AggregateReportsService {
 
     private static Logger logger = LoggerFactory.getLogger(AggregateReportsService.class);
-
+    private static final ReentrantLock lock = new ReentrantLock();
     private String aggregatorDataSetUrl;
     private String aggregatedDataSetUrl;
     private HttpAgent httpAgent;
     private AllTokensRepository tokenRepository;
     private ServicesProvidedRepository servicesProvidedRepository;
     private ReportMonth reportMonth;
+    private int numberOfReportsSentInABatch;
 
     protected AggregateReportsService() {
     }
@@ -45,10 +49,12 @@ public class AggregateReportsService {
     @Autowired
     public AggregateReportsService(@Value("#{drishti['aggregator.dataset.url']}") String aggregatorDataSetUrl,
                                    @Value("#{drishti['aggregated.dataset.url']}") String aggregatedDataSetUrl,
+                                   @Value("#{drishti['number.of.reports.sent.in.a.batch']}") int numberOfReportsSentInABatch,
                                    HttpAgent httpAgent, AllTokensRepository tokenRepository,
                                    ServicesProvidedRepository servicesProvidedRepository, ReportMonth reportMonth) {
         this.aggregatorDataSetUrl = aggregatorDataSetUrl;
         this.aggregatedDataSetUrl = aggregatedDataSetUrl;
+        this.numberOfReportsSentInABatch = numberOfReportsSentInABatch;
         this.httpAgent = httpAgent;
         this.tokenRepository = tokenRepository;
         this.servicesProvidedRepository = servicesProvidedRepository;
@@ -57,30 +63,48 @@ public class AggregateReportsService {
 
     @Transactional("service_provided")
     public void sendReportsToAggregator() {
-        Integer token = tokenRepository.getAggregateReportsToken();
-        logger.info(format("Trying to aggregate reports. Report Token: {0}", token));
-        List<ServiceProvidedReport> reports = servicesProvidedRepository.getNewReports(token);
-        if (reports.isEmpty()) {
-            logger.info("No new reports to aggregate.");
+        if (!lock.tryLock()) {
+            logger.warn("Not Aggregating reports. It is already in progress.");
             return;
         }
-        logger.info(format("Got reports to aggregate. Number of reports: {0}", reports.size()));
-        update(reports);
+        try {
+            Integer token = tokenRepository.getAggregateReportsToken();
+            logger.info(format("Trying to aggregate reports. Report Token: {0}", token));
+            List<ServiceProvidedReport> reports = servicesProvidedRepository.getNewReports(token, this.numberOfReportsSentInABatch);
+            if (reports.isEmpty()) {
+                logger.info("No new reports to aggregate.");
+                return;
+            }
+            logger.info(format("Got reports to aggregate. Number of reports: {0}", reports.size()));
+            update(reports);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("{0} occurred while trying to aggregate reports. Message: {1} with stack trace {2}",
+                    e.toString(), e.getMessage(), getFullStackTrace(e)));
+            throw e;
+        } finally {
+            lock.unlock();
+        }
     }
 
     private void update(List<ServiceProvidedReport> reports) {
-        Gson gson = new Gson();
-        for (ServiceProvidedReport report : reports) {
+        String reportJson = new Gson().toJson(mapDomainToDTO(reports));
+        HttpResponse response = sendToAggregator(reportJson);
 
-            String reportJson = gson.toJson(mapDomainToDTO(report));
-
-            HttpResponse response = sendToAggregator(reportJson);
-            if (!response.isSuccess()) {
-                throw new RuntimeException(format("Updating data to Aggregator with url {0} failed with error: {0}", aggregatorDataSetUrl, response.body()));
-            }
-            tokenRepository.saveAggregateReportsToken(report.id());
-            logger.info(format("Updated report token to: {0}", report.id()));
+        if (!response.isSuccess()) {
+            throw new RuntimeException(format("Updating data to Aggregator with url {0} failed with error: {0}", aggregatorDataSetUrl, response.body()));
         }
+
+        Integer id = reports.get(reports.size() - 1).id();
+        tokenRepository.saveAggregateReportsToken(id);
+        logger.info(format("Updated report token to: {0}", id));
+    }
+
+    private List<ServiceProvidedReportDTO> mapDomainToDTO(List<ServiceProvidedReport> reports) {
+        List<ServiceProvidedReportDTO> serviceProvidedReportDTOs = new ArrayList<>();
+        for (ServiceProvidedReport report : reports) {
+            serviceProvidedReportDTOs.add(mapDomainToDTO(report));
+        }
+        return serviceProvidedReportDTOs;
     }
 
     private ServiceProvidedReportDTO mapDomainToDTO(ServiceProvidedReport report) {

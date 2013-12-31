@@ -20,5 +20,4 @@ public class AggregateReportsEventListener {
     public void aggregate(MotechEvent event) {
         aggregateReportsService.sendReportsToAggregator();
     }
-
 }
