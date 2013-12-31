@@ -218,6 +218,11 @@
                 "source": "eligible_couple.mother.child.jeDate"
             },
             {
+                "name": "je2Date",
+                "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/je_2_date",
+                "source": "eligible_couple.mother.child.je2Date"
+            },
+            {
                 "name": "measlesboosterDate",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/measlesbooster_date",
                 "source": "eligible_couple.mother.child.measlesboosterDate"
