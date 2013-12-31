@@ -23,9 +23,12 @@ public class AlertController {
         router.addRoute(eq(SCHEDULE_ANC), any(), eq(max.toString()), forceFulfill);
         router.addRoute(eq(SCHEDULE_LAB), any(), eq(max.toString()), forceFulfill);
         router.addRoute(eq(SCHEDULE_AUTO_CLOSE_PNC), any(), any(), autoClosePNCAction);
-        router.addRoute(motherSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "mother");
-        router.addRoute(childSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString(),max.toString()), alertCreation).addExtraData("beneficiaryType", "child");
-        router.addRoute(ecSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()), alertCreation).addExtraData("beneficiaryType", "ec");
+        router.addRoute(motherSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()),
+                alertCreation).addExtraData("beneficiaryType", "mother");
+        router.addRoute(childSchedules(), any(), anyOf(earliest.toString(), due.toString(),
+                late.toString(), max.toString()), alertCreation).addExtraData("beneficiaryType", "child");
+        router.addRoute(ecSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()),
+                alertCreation).addExtraData("beneficiaryType", "ec");
     }
 
     private Matcher childSchedules() {
@@ -45,11 +48,13 @@ public class AlertController {
                 CHILD_SCHEDULE_PENTAVALENT_1,
                 CHILD_SCHEDULE_PENTAVALENT_2,
                 CHILD_SCHEDULE_PENTAVALENT_3
-                );
+        );
     }
 
     private Matcher motherSchedules() {
-        return anyOf(SCHEDULE_ANC, SCHEDULE_TT_1, SCHEDULE_TT_2, SCHEDULE_IFA_1, SCHEDULE_IFA_2, SCHEDULE_IFA_3, SCHEDULE_LAB, SCHEDULE_EDD, SCHEDULE_HB_TEST_1, SCHEDULE_HB_TEST_2, SCHEDULE_HB_FOLLOWUP_TEST, SCHEDULE_DELIVERY_PLAN);
+        return anyOf(SCHEDULE_ANC, SCHEDULE_TT_1, SCHEDULE_TT_2, SCHEDULE_IFA_1, SCHEDULE_IFA_2, SCHEDULE_IFA_3,
+                SCHEDULE_LAB, SCHEDULE_EDD, SCHEDULE_HB_TEST_1, SCHEDULE_HB_TEST_2, SCHEDULE_HB_FOLLOWUP_TEST,
+                SCHEDULE_DELIVERY_PLAN);
     }
 
     private Matcher ecSchedules() {

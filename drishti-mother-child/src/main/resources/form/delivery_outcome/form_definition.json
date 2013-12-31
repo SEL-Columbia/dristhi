@@ -69,6 +69,11 @@
                 "source": "mother.eligible_couple.parity"
             },
             {
+                "name": "parity",
+                "bind": "/model/instance/Delivery_Outcome_EngKan/parity",
+                "source": "mother.eligible_couple.parity"
+            },
+            {
                 "name": "numberOfLiveBirths",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_num_livebirths",
@@ -199,6 +204,18 @@
                 "source": "mother.eligible_couple.numberOfLivingChildren"
             },
             {
+                "name": "numberOfChildrenBorn",
+                "bind": "/model/instance/Delivery_Outcome_EngKan/num_children_born"
+            },
+            {
+                "name": "numberOfFemaleChildrenBorn",
+                "bind": "/model/instance/Delivery_Outcome_EngKan/num_female_children_born"
+            },
+            {
+                "name": "numberOfMaleChildrenBorn",
+                "bind": "/model/instance/Delivery_Outcome_EngKan/num_male_children_born"
+            },
+            {
                 "name": "numberOfLivingFemaleChild",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/Delivery_Outcome_EngKan/case_numlivingchildren_female",
@@ -267,6 +284,18 @@
                     {
                         "name": "isChildHighRisk",
                         "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/is_child_high_risk"
+                    },
+                    {
+                        "name": "lbw",
+                        "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/lbw"
+                    },
+                    {
+                        "name": "vlbw",
+                        "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/vlbw"
+                    },
+                    {
+                        "name": "premature",
+                        "bind": "/model/instance/Delivery_Outcome_EngKan/live_birth_group/child/premature"
                     }
                 ]
             }
