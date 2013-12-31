@@ -225,12 +225,6 @@
                 "source": "eligible_couple.mother.isHighRisk"
             },
             {
-                "name": "isBirthPlanningDone",
-                "shouldLoadValue": true,
-                "bind": "/model/instance/ANC_Registration_OA_EngKan/case_birth_planning",
-                "source": "eligible_couple.mother.isBirthPlanningDone"
-            },
-            {
                 "name": "submissionDate",
                 "bind": "/model/instance/ANC_Registration_OA_EngKan/today",
                 "source": "eligible_couple.mother.submissionDate"
