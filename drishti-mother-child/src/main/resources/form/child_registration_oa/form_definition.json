@@ -180,6 +180,10 @@
                 "bind": "/model/instance/Child_Registration_EngKan/child_immunization_history_group/je_date"
             },
             {
+                "name": "je2Date",
+                "bind": "/model/instance/Child_Registration_EngKan/child_immunization_history_group/je_2_date"
+            },
+            {
                 "name": "measlesBoosterDate",
                 "bind": "/model/instance/Child_Registration_EngKan/child_immunization_history_group/measlesbooster_date"
             },
