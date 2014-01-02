@@ -29,6 +29,7 @@ public class ReportApplicationStartupListener implements ApplicationListener<Con
                 contextRefreshedEvent.getApplicationContext().getId()));
         if (APPLICATION_ID.equals(contextRefreshedEvent.getApplicationContext().getId())) {
             aggregateReportsScheduler.startTimedScheduler();
+            logger.info("Aggregation of Reports scheduled...");
         }
     }
 }
