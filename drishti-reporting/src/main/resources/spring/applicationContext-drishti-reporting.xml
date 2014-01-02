@@ -19,6 +19,7 @@
 
     <import resource="classpath:spring/applicationContext-reporting-repository.xml"/>
     <import resource="classpath:applicationScheduler.xml"/>
+    <import resource="classpath:applicationPlatformServerAPI.xml"/>
 
     <util:properties id="drishti" location="classpath:/drishti.properties"/>
 

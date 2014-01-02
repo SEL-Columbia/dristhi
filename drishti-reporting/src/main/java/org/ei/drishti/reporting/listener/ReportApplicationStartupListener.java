@@ -14,7 +14,7 @@ import java.text.MessageFormat;
 @Component
 public class ReportApplicationStartupListener implements ApplicationListener<ContextRefreshedEvent> {
     private static Logger logger = LoggerFactory.getLogger(ReportApplicationStartupListener.class.toString());
-    private static String APPLICATION_ID;
+    private String APPLICATION_ID;
     private AggregateReportsScheduler aggregateReportsScheduler;
 
     @Autowired
