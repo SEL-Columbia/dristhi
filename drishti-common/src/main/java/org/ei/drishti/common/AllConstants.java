@@ -80,7 +80,22 @@ public class AllConstants {
 
     public static class ECRegistrationFields {
         public static final String CASTE = "caste";
+        public static final String RELIGION = "religion";
         public static final String ECONOMIC_STATUS = "economicStatus";
+        public static final String AADHAR_NUMBER = "aadharNumber";
+        public static final String HOUSEHOLD_ADDRESS = "householdAddress";
+        public static final String WIFE_AGE = "wifeAge";
+        public static final String PHONE_NUMBER = "phoneNumber";
+        public static final String WIFE_EDUCATIONAL_LEVEL = "educationalLevel";
+        public static final String HUSBAND_EDUCATION_LEVEL = "husbandEducationLevel";
+        public static final String BPL_CARD_NUMBER = "bplCardNumber";
+        public static final String NUMBER_OF_PREGNANCIES = "numberOfPregnancies";
+        public static final String PARITY = "parity";
+        public static final String NUMBER_OF_LIVING_CHILDREN = "numberOfLivingChildren";
+        public static final String NUMBER_OF_STILL_BIRTHS = "numberOfStillBirths";
+        public static final String NUMBER_OF_ABORTIONS = "numberOfAbortions";
+        public static final String YOUNGEST_CHILD_DOB = "youngestChildDOB";
+        public static final String WIFE_DOB = "womanDOB";
     }
 
     public static class DeliveryOutcomeFields {
@@ -100,11 +115,14 @@ public class AllConstants {
         public static final String DELIVERY_TYPE = "deliveryType";
         public static final String CESAREAN_VALUE = "cesarean";
         public static final String IS_SKILLED_DELIVERY = "isSkilledDelivery";
-
     }
 
     public static class ANCRegistrationFormFields {
         public static final String JSY_BENEFICIARY = "isJSYBeneficiary";
+        public static final String ANC_NUMBER = "ancNumber";
+        public static final String EDD = "edd";
+        public static final String HEIGHT = "height";
+        public static final String BLOOD_GROUP = "bloodGroup";
     }
 
     public static class ANCFormFields {
@@ -150,6 +168,7 @@ public class AllConstants {
         public static final String SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE = "subcenter";
         public static final String HOME_FIELD_VALUE = "home";
         public static final String REFERENCE_DATE = "referenceDate";
+        public static final String IS_HIGH_RISK = "isHighRisk";
     }
 
     public static class CommonChildFormFields {

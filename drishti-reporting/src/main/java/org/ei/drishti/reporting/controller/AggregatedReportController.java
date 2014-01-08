@@ -31,7 +31,8 @@ public class AggregatedReportController {
 
     @Autowired
     public AggregatedReportController(AggregateReportsService aggregateReportsService,
-                                      @Value("#{drishti['drishti.site.url']}") String drishtiSiteUrl, ANMService anmService) {
+                                      @Value("#{drishti['drishti.site.url']}") String drishtiSiteUrl,
+                                      ANMService anmService) {
         this.aggregateReportsService = aggregateReportsService;
         this.drishtiSiteUrl = drishtiSiteUrl;
         this.anmService = anmService;

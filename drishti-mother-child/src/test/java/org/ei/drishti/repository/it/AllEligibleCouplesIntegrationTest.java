@@ -18,9 +18,7 @@ import static org.ei.drishti.common.util.EasyMap.create;
 import static org.ei.drishti.common.util.EasyMap.mapOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
@@ -111,5 +109,19 @@ public class AllEligibleCouplesIntegrationTest {
 
         assertTrue(bplCouples.containsAll(asList(coupleWithBplStatus)));
         assertEquals(1, bplCouples.size());
+    }
+
+    @Test
+    public void shouldFindAllECsByCaseId() throws Exception {
+        EligibleCouple couple1 = new EligibleCouple("case 1", "EC Number 1");
+        EligibleCouple couple2 = new EligibleCouple("case 2", "EC Number 2");
+        EligibleCouple couple3 = new EligibleCouple("case 3", "EC Number 3");
+        eligibleCouples.add(couple1);
+        eligibleCouples.add(couple2);
+        eligibleCouples.add(couple3);
+
+        List<EligibleCouple> couples = eligibleCouples.findAll(asList("case 1", "case 2"));
+
+        assertEquals(asList(couple1, couple2), couples);
     }
 }

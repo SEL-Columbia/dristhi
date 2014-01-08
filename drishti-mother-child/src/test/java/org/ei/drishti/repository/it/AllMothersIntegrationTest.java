@@ -95,6 +95,23 @@ public class AllMothersIntegrationTest {
         assertFalse(mothers.contains(motherForEC3));
     }
 
+    @Test
+    public void shouldFindOpenMothersForANM() {
+        Mother mother = new Mother("mother id 1", "ec id 1", "thayi 1").withAnm("demo1");
+        Mother closedMother = new Mother("mother id 2", "ec id 1", "thayi 2").withAnm("demo1").setIsClosed(true);
+        Mother motherServicedByDifferentANM = new Mother("mother id 3", "ec id 2", "thayi 2").withAnm("demo2");
+        allMothers.add(mother);
+        allMothers.add(closedMother);
+        allMothers.add(motherServicedByDifferentANM);
+
+        List<Mother> mothers = allMothers.findAllOpenMothersForANM("demo1");
+
+        assertTrue(mothers.contains(mother));
+        assertFalse(mothers.contains(closedMother));
+        assertFalse(mothers.contains(motherServicedByDifferentANM));
+    }
+
+
     private Mother motherWithoutDetails() {
         return new Mother("CASE X", "EC-CASE-1", "TC 1").withAnm("ANM X");
     }

@@ -77,6 +77,10 @@ public class EligibleCouple extends MotechBaseDataObject {
         return wifeName;
     }
 
+    public String husbandName() {
+        return husbandName;
+    }
+
     public String caseId() {
         return caseId;
     }
@@ -120,6 +124,10 @@ public class EligibleCouple extends MotechBaseDataObject {
 
     private String getCaseId() {
         return caseId;
+    }
+
+    public String getDetail(String name) {
+        return details.get(name);
     }
 
     @Override
