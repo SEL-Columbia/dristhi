@@ -4,12 +4,16 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.ei.drishti.common.util.IntegerUtil;
 import org.ektorp.support.TypeDiscriminator;
+import org.joda.time.LocalDate;
 import org.motechproject.model.MotechBaseDataObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.ei.drishti.common.AllConstants.ECRegistrationFields.WIFE_AGE;
+import static org.ei.drishti.common.AllConstants.ECRegistrationFields.WIFE_DOB;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
 
 @TypeDiscriminator("doc.type === 'EligibleCouple'")
@@ -143,5 +147,14 @@ public class EligibleCouple extends MotechBaseDataObject {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public LocalDate wifeDOB() {
+        String wifeDOB = details.get(WIFE_DOB);
+        if (wifeDOB != null) {
+            return LocalDate.parse(wifeDOB);
+        }
+        int wifeAge = IntegerUtil.tryParse(details.get(WIFE_AGE), 0);
+        return (wifeAge != 0) ? LocalDate.now().minusYears(wifeAge) : null;
     }
 }

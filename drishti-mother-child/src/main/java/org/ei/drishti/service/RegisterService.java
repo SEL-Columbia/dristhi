@@ -6,7 +6,6 @@ import org.ei.drishti.domain.register.ANCRegister;
 import org.ei.drishti.domain.register.ANCRegisterEntry;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,7 @@ public class RegisterService {
                     .withWifeName(ec.wifeName())
                     .withHusbandName(ec.husbandName())
                     .withAddress(ec.getDetail(HOUSEHOLD_ADDRESS))
-                    .withWifeDOB(LocalDate.parse(ec.getDetail(WIFE_DOB)))
+                    .withWifeDOB(ec.wifeDOB())
                     .withPhoneNumber(ec.getDetail(PHONE_NUMBER))
                     .withWifeEducationLevel(ec.getDetail(WIFE_EDUCATIONAL_LEVEL))
                     .withHusbandEducationLevel(ec.getDetail(HUSBAND_EDUCATION_LEVEL))
