@@ -1,5 +1,6 @@
 package org.ei.drishti.repository.it;
 
+import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllMothers;
 import org.junit.Before;
@@ -97,18 +98,26 @@ public class AllMothersIntegrationTest {
 
     @Test
     public void shouldFindOpenMothersForANM() {
-        Mother mother = new Mother("mother id 1", "ec id 1", "thayi 1").withAnm("demo1");
+        Mother anc = new Mother("mother id 1", "ec id 1", "thayi 1")
+                .withAnm("demo1")
+                .withDetails(EasyMap.mapOf("type", "ANC"));
         Mother closedMother = new Mother("mother id 2", "ec id 1", "thayi 2").withAnm("demo1").setIsClosed(true);
         Mother motherServicedByDifferentANM = new Mother("mother id 3", "ec id 2", "thayi 2").withAnm("demo2");
-        allMothers.add(mother);
+        Mother pnc = new Mother("mother id 4", "ec id 4", "thayi 4")
+                .withAnm("demo1")
+                .withDetails(EasyMap.mapOf("type", "PNC"));
+
+        allMothers.add(anc);
         allMothers.add(closedMother);
         allMothers.add(motherServicedByDifferentANM);
+        allMothers.add(pnc);
 
         List<Mother> mothers = allMothers.findAllOpenMothersForANM("demo1");
 
-        assertTrue(mothers.contains(mother));
+        assertTrue(mothers.contains(anc));
         assertFalse(mothers.contains(closedMother));
         assertFalse(mothers.contains(motherServicedByDifferentANM));
+        assertFalse(mothers.contains(pnc));
     }
 
 

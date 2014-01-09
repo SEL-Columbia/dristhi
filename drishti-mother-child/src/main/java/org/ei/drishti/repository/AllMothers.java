@@ -68,7 +68,7 @@ public class AllMothers extends MotechBaseRepository<Mother> {
     }
 
     @View(name = "all_open_mothers_by_anmId",
-            map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.anmIdentifier) { emit(doc.anmIdentifier); } }")
+            map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.anmIdentifier && doc.details.type === 'ANC') { emit(doc.anmIdentifier); } }")
     public List<Mother> findAllOpenMothersForANM(String anmIdentifier) {
         return db.queryView(createQuery("all_open_mothers_by_anmId")
                 .key(anmIdentifier)
