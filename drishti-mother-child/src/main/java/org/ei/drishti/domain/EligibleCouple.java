@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.common.util.IntegerUtil;
 import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.LocalDate;
@@ -155,6 +156,6 @@ public class EligibleCouple extends MotechBaseDataObject {
             return LocalDate.parse(wifeDOB);
         }
         int wifeAge = IntegerUtil.tryParse(details.get(WIFE_AGE), 0);
-        return (wifeAge != 0) ? LocalDate.now().minusYears(wifeAge) : null;
+        return (wifeAge != 0) ? DateUtil.today().minusYears(wifeAge) : null;
     }
 }

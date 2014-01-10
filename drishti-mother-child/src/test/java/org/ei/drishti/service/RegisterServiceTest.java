@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.domain.register.ANCRegister;
@@ -104,6 +105,7 @@ public class RegisterServiceTest {
 
     @Test
     public void shouldGetANCRegisterForANCOutOfAreaWithoutDOB() throws Exception {
+        DateUtil.fakeIt(LocalDate.parse("2014-01-01"));
         Mother mother = new Mother("caseId", "ecCaseId", "thayi card number 1")
                 .withLMP(LocalDate.parse("2013-12-30"))
                 .withDetails(
@@ -147,7 +149,7 @@ public class RegisterServiceTest {
                 .withWifeName("name1")
                 .withHusbandName("name2")
                 .withAddress("address1")
-                .withWifeDOB(LocalDate.parse("1988-01-09"))
+                .withWifeDOB(LocalDate.parse("1988-01-01"))
                 .withPhoneNumber("phone 1")
                 .withWifeEducationLevel("wife education level")
                 .withHusbandEducationLevel("husband education level")

@@ -32,6 +32,6 @@ public class EligibleCoupleTest {
 
         LocalDate dob = ec.wifeDOB();
 
-        assertEquals(LocalDate.parse("1988-01-09"), dob);
+        assertEquals(LocalDate.parse("1988-01-01"), dob);
     }
 }
