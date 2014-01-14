@@ -3,6 +3,8 @@ package org.ei.drishti.reporting.controller;
 import ch.lambdaj.function.convert.Converter;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.dto.ANMDTO;
+import org.ei.drishti.dto.LocationDTO;
+import org.ei.drishti.reporting.domain.Location;
 import org.ei.drishti.reporting.domain.SP_ANM;
 import org.ei.drishti.reporting.service.ANMService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,12 @@ public class ANMController {
         return with(anms).convert(new Converter<SP_ANM, ANMDTO>() {
             @Override
             public ANMDTO convert(SP_ANM anm) {
-                return new ANMDTO(anm.identifier(), anm.name(), anm.subCenter());
+                LocationDTO location = convertToDTO(anmService.getLocation(anm.identifier()));
+                return new ANMDTO(anm.identifier(), anm.name(), location);
+            }
+
+            private LocationDTO convertToDTO(Location location) {
+                return new LocationDTO(location.subCenter(), location.phcName(), location.taluka(), location.district(), location.state());
             }
         });
     }

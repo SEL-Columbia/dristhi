@@ -13,12 +13,12 @@ public class ANMDTO {
     private String name;
 
     @JsonProperty
-    private String subcenter;
+    private LocationDTO location;
 
-    public ANMDTO(String identifier, String name, String subcenter) {
+    public ANMDTO(String identifier, String name, LocationDTO location) {
         this.identifier = identifier;
         this.name = name;
-        this.subcenter = subcenter;
+        this.location = location;
     }
 
     @Override
