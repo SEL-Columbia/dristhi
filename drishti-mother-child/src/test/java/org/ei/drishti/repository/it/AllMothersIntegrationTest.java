@@ -19,8 +19,7 @@ import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-drishti.xml")
@@ -120,6 +119,57 @@ public class AllMothersIntegrationTest {
         assertFalse(mothers.contains(pnc));
     }
 
+    @Test
+    public void shouldFindANCCountForANM() {
+        Mother anc = new Mother("mother id 1", "ec id 1", "thayi 1")
+                .withAnm("demo1")
+                .withDetails(EasyMap.mapOf("type", "ANC"));
+        Mother anotherANC = new Mother("mother id 21", "ec id 21", "thayi 21")
+                .withAnm("demo1")
+                .withDetails(EasyMap.mapOf("type", "ANC"));
+        Mother closedMother = new Mother("mother id 2", "ec id 1", "thayi 2").withAnm("demo1").setIsClosed(true);
+        Mother motherServicedByDifferentANM = new Mother("mother id 3", "ec id 2", "thayi 2").withAnm("demo2");
+        Mother pnc = new Mother("mother id 4", "ec id 4", "thayi 4")
+                .withAnm("demo1")
+                .withDetails(EasyMap.mapOf("type", "PNC"));
+
+        allMothers.add(anc);
+        allMothers.add(anotherANC);
+        allMothers.add(closedMother);
+        allMothers.add(motherServicedByDifferentANM);
+        allMothers.add(pnc);
+
+        int openMothersCountForANM = allMothers.ancCountForANM("demo1");
+
+        assertEquals(2, openMothersCountForANM);
+    }
+
+    @Test
+    public void shouldFindPNCCountForANM() {
+        Mother pnc = new Mother("mother id 1", "ec id 1", "thayi 1")
+                .withAnm("demo1")
+                .withDetails(EasyMap.mapOf("type", "PNC"));
+        Mother anotherPNC = new Mother("mother id 21", "ec id 21", "thayi 21")
+                .withAnm("demo1")
+                .withDetails(EasyMap.mapOf("type", "PNC"));
+        Mother closedMother = new Mother("mother id 2", "ec id 1", "thayi 2").withAnm("demo1")
+                .withDetails(EasyMap.mapOf("type", "PNC")).setIsClosed(true);
+        Mother motherServicedByDifferentANM = new Mother("mother id 3", "ec id 2", "thayi 2")
+                .withDetails(EasyMap.mapOf("type", "PNC")).withAnm("demo2");
+        Mother anc = new Mother("mother id 4", "ec id 4", "thayi 4")
+                .withAnm("demo1")
+                .withDetails(EasyMap.mapOf("type", "ANC"));
+
+        allMothers.add(pnc);
+        allMothers.add(anotherPNC);
+        allMothers.add(closedMother);
+        allMothers.add(motherServicedByDifferentANM);
+        allMothers.add(anc);
+
+        int pncCountForANM = allMothers.pncCountForANM("demo1");
+
+        assertEquals(2, pncCountForANM);
+    }
 
     private Mother motherWithoutDetails() {
         return new Mother("CASE X", "EC-CASE-1", "TC 1").withAnm("ANM X");

@@ -72,7 +72,28 @@ public class AllMothers extends MotechBaseRepository<Mother> {
     public List<Mother> findAllOpenMothersForANM(String anmIdentifier) {
         return db.queryView(createQuery("all_open_mothers_by_anmId")
                 .key(anmIdentifier)
-                .includeDocs(true),
-                Mother.class);
+                .includeDocs(true), Mother.class);
+    }
+
+    @View(name = "all_open_mothers_count_by_anmId",
+            map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.anmIdentifier && doc.details.type === 'ANC') { emit(doc.anmIdentifier); } }"
+            )
+    public int ancCountForANM(String anmIdentifier) {
+        return db.queryView(createQuery("all_open_mothers_count_by_anmId")
+                .key(anmIdentifier)
+                .reduce(false)
+                .includeDocs(true)
+                .cacheOk(true)).getSize();
+    }
+
+    @View(name = "all_open_pnc_by_anmId",
+            map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.anmIdentifier && doc.details.type === 'PNC') { emit(doc.anmIdentifier); } }",
+            reduce = "_count")
+    public int pncCountForANM(String anmIdentifier) {
+        return db.queryView(createQuery("all_open_pnc_by_anmId")
+                .key(anmIdentifier)
+                .reduce(false)
+                .includeDocs(true)
+                .cacheOk(true)).getSize();
     }
 }

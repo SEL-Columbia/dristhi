@@ -3,6 +3,7 @@ package org.ei.drishti.repository;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Child;
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewQuery;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.joda.time.LocalDate;
@@ -84,5 +85,15 @@ public class AllChildren extends MotechBaseRepository<Child> {
                 .endKey(date)
                 .includeDocs(true),
                 Child.class);
+    }
+
+    @View(name = "all_open_children_for_anm",
+            map = "function(doc) { if (doc.type === 'Child' && !doc.isClosed && doc.anmIdentifier) { emit(doc.anmIdentifier); } }")
+    public int childCountForANM(String anmIdentifier) {
+        ViewQuery query = createQuery("all_open_children_for_anm")
+                .key(anmIdentifier)
+                .includeDocs(true)
+                .cacheOk(true);
+        return db.queryView(query).getSize();
     }
 }

@@ -124,4 +124,45 @@ public class AllEligibleCouplesIntegrationTest {
 
         assertEquals(asList(couple1, couple2), couples);
     }
+
+    @Test
+    public void shouldFindCountOfAllOpenEligibleCouplesForANM() throws Exception {
+        EligibleCouple closedOutOfArea = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("demo1").setIsClosed(true);
+        EligibleCouple inArea = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1");
+        EligibleCouple outOfArea = new EligibleCouple("CASE Z", "EC Number 3").withANMIdentifier("demo2").asOutOfArea();
+        EligibleCouple anotherOutOfArea = new EligibleCouple("CASE A", "EC Number 3").withANMIdentifier("demo1").asOutOfArea();
+        eligibleCouples.add(closedOutOfArea);
+        eligibleCouples.add(inArea);
+        eligibleCouples.add(outOfArea);
+        eligibleCouples.add(anotherOutOfArea);
+
+        int allOpenECCountForANM = eligibleCouples.ecCountForANM("demo1");
+
+        assertEquals(1, allOpenECCountForANM);
+    }
+
+    @Test
+    public void shouldFindCountOfAllOpenEligibleCouplesWithFPMethodForANM() throws Exception {
+        EligibleCouple closedOutOfArea = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("demo1").setIsClosed(true);
+        EligibleCouple inAreaWithFPMethodAsNone = new EligibleCouple("CASE Y", "EC Number 2")
+                .withANMIdentifier("demo1").withDetails(mapOf("currentMethod", "none"));
+        EligibleCouple inAreaWithFPMethodAsNull = new EligibleCouple("CASE Y", "EC Number 2")
+                .withANMIdentifier("demo1");
+        EligibleCouple inAreaWithValidFPMethod = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1")
+                .withDetails(mapOf("currentMethod", "ocp"));;
+        EligibleCouple inArea1 = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1");
+        EligibleCouple outOfArea = new EligibleCouple("CASE Z", "EC Number 3").withANMIdentifier("demo2").asOutOfArea();
+        EligibleCouple anotherOutOfArea = new EligibleCouple("CASE A", "EC Number 3").withANMIdentifier("demo1").asOutOfArea();
+
+        eligibleCouples.add(closedOutOfArea);
+        eligibleCouples.add(inAreaWithFPMethodAsNone);
+        eligibleCouples.add(inAreaWithFPMethodAsNull);
+        eligibleCouples.add(inAreaWithValidFPMethod);
+        eligibleCouples.add(outOfArea);
+        eligibleCouples.add(anotherOutOfArea);
+
+        int allOpenECCountForANM = eligibleCouples.fpCountForANM("demo1");
+
+        assertEquals(1, allOpenECCountForANM);
+    }
 }

@@ -31,7 +31,7 @@ public class ANMController {
         this.anmService = anmService;
     }
 
-    @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS}, value = "/anms")
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS}, value = "/anm-details")
     public ResponseEntity<List<ANMDTO>> all() {
         List<SP_ANM> anmList = anmService.all();
 

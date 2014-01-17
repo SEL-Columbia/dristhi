@@ -72,4 +72,26 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
                 .includeDocs(true),
                 EligibleCouple.class);
     }
+
+    @View(name = "all_open_ecs_by_anm",
+            map = "function(doc) { if (doc.type === 'EligibleCouple' && !doc.isClosed && !doc.isOutOfArea && doc.anmIdentifier) { emit(doc.anmIdentifier); } }",
+            reduce = "_count")
+    public int ecCountForANM(String anmIdentifier) {
+        return db.queryView(createQuery("all_open_ecs_by_anm")
+                .reduce(false)
+                .key(anmIdentifier)
+                .includeDocs(true)
+                .cacheOk(true)).getSize();
+    }
+
+    @View(name = "all_open_fps_by_anm",
+            map = "function(doc) { if (doc.type === 'EligibleCouple' && !doc.isClosed && !doc.isOutOfArea && doc.anmIdentifier && doc.details.currentMethod && doc.details.currentMethod !== 'none') { emit(doc.anmIdentifier); } }",
+            reduce = "_count")
+    public int fpCountForANM(String anmIdentifier) {
+        return db.queryView(createQuery("all_open_fps_by_anm")
+                .reduce(false)
+                .key(anmIdentifier)
+                .includeDocs(true)
+                .cacheOk(true)).getSize();
+    }
 }

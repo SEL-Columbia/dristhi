@@ -21,6 +21,18 @@ public class ANMDTO {
         this.location = location;
     }
 
+    public String identifier() {
+        return identifier;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public LocationDTO location() {
+        return location;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
