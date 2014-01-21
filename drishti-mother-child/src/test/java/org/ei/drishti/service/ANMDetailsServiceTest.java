@@ -10,7 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.List;
+
 import static java.util.Arrays.asList;
+import static org.ei.drishti.common.util.EasyMap.mapOf;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -33,11 +36,13 @@ public class ANMDetailsServiceTest {
 
     @Test
     public void shouldGetBeneficiariesCountForANM() {
-        when(allEligibleCouples.ecCountForANM("demo1")).thenReturn(1);
-        when(allEligibleCouples.fpCountForANM("demo1")).thenReturn(2);
-        when(allMothers.ancCountForANM("demo1")).thenReturn(3);
-        when(allMothers.pncCountForANM("demo1")).thenReturn(4);
-        when(allChildren.childCountForANM("demo1")).thenReturn(5);
+        List<String> anmIdentifiers = asList("demo1");
+        when(allEligibleCouples.allOpenECs(anmIdentifiers)).thenReturn(mapOf("demo1", 1));
+        when(allEligibleCouples.fpCountForANM(anmIdentifiers)).thenReturn(mapOf("demo1", 2));
+        when(allMothers.allOpenMotherCount(anmIdentifiers)).thenReturn(mapOf("demo1", 3));
+        when(allMothers.allOpenPNCCount(anmIdentifiers)).thenReturn(mapOf("demo1", 4));
+        when(allChildren.openChildCount(anmIdentifiers)).thenReturn(mapOf("demo1", 5));
+
 
         ANMDetails anmDetails = service.anmDetails(asList(new ANMDTO("demo1", "demo1", null)));
 

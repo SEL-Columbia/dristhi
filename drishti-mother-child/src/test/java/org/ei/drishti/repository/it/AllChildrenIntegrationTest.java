@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.EasyMap.mapOf;
@@ -221,8 +222,10 @@ public class AllChildrenIntegrationTest {
         allChildren.add(servedByAnotherANM);
         allChildren.add(closed);
 
-        int childCountForANM = allChildren.childCountForANM("ANM ID 1");
+        Map<String, Integer> openChildCount = allChildren.openChildCount(asList("ANM ID 1", "ANM ID 2"));
 
-        assertEquals(2, childCountForANM);
+        assertEquals(2, openChildCount.size());
+        assertEquals(2, (long) openChildCount.get("ANM ID 1"));
+        assertEquals(1, (long) openChildCount.get("ANM ID 2"));
     }
 }

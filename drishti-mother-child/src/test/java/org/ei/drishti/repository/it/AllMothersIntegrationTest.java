@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
@@ -128,7 +129,7 @@ public class AllMothersIntegrationTest {
                 .withAnm("demo1")
                 .withDetails(EasyMap.mapOf("type", "ANC"));
         Mother closedMother = new Mother("mother id 2", "ec id 1", "thayi 2").withAnm("demo1").setIsClosed(true);
-        Mother motherServicedByDifferentANM = new Mother("mother id 3", "ec id 2", "thayi 2").withAnm("demo2");
+        Mother motherServicedByDifferentANM = new Mother("mother id 3", "ec id 2", "thayi 2").withAnm("demo2").withDetails(EasyMap.mapOf("type", "ANC"));
         Mother pnc = new Mother("mother id 4", "ec id 4", "thayi 4")
                 .withAnm("demo1")
                 .withDetails(EasyMap.mapOf("type", "PNC"));
@@ -139,9 +140,11 @@ public class AllMothersIntegrationTest {
         allMothers.add(motherServicedByDifferentANM);
         allMothers.add(pnc);
 
-        int openMothersCountForANM = allMothers.ancCountForANM("demo1");
+        Map<String, Integer> openMothersCount = allMothers.allOpenMotherCount(asList("demo1", "demo2"));
 
-        assertEquals(2, openMothersCountForANM);
+        assertEquals(2, openMothersCount.size());
+        assertEquals(2, (long) openMothersCount.get("demo1"));
+        assertEquals(1, (long) openMothersCount.get("demo2"));
     }
 
     @Test
@@ -166,9 +169,11 @@ public class AllMothersIntegrationTest {
         allMothers.add(motherServicedByDifferentANM);
         allMothers.add(anc);
 
-        int pncCountForANM = allMothers.pncCountForANM("demo1");
+        Map<String, Integer> openPNCCount = allMothers.allOpenPNCCount(asList("demo1", "demo2"));
 
-        assertEquals(2, pncCountForANM);
+        assertEquals(2, openPNCCount.size());
+        assertEquals(2, (long) openPNCCount.get("demo1"));
+        assertEquals(1, (long) openPNCCount.get("demo2"));
     }
 
     private Mother motherWithoutDetails() {

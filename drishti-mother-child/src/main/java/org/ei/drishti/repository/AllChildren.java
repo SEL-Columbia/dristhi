@@ -3,7 +3,7 @@ package org.ei.drishti.repository;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Child;
 import org.ektorp.CouchDbConnector;
-import org.ektorp.ViewQuery;
+import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.joda.time.LocalDate;
@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class AllChildren extends MotechBaseRepository<Child> {
@@ -87,13 +89,19 @@ public class AllChildren extends MotechBaseRepository<Child> {
                 Child.class);
     }
 
-    @View(name = "all_open_children_for_anm",
-            map = "function(doc) { if (doc.type === 'Child' && !doc.isClosed && doc.anmIdentifier) { emit(doc.anmIdentifier); } }")
-    public int childCountForANM(String anmIdentifier) {
-        ViewQuery query = createQuery("all_open_children_for_anm")
-                .key(anmIdentifier)
-                .includeDocs(true)
-                .cacheOk(true);
-        return db.queryView(query).getSize();
+    @View(name = "all_open_children",
+            map = "function(doc) { if (doc.type === 'Child' && !doc.isClosed && doc.anmIdentifier) { emit(doc.anmIdentifier); } }",
+            reduce = "_count")
+    public Map<String, Integer> openChildCount(List<String> anmIdentifiers) {
+        List<ViewResult.Row> rows = db.queryView(createQuery("all_open_children")
+                .keys(anmIdentifiers)
+                .group(true)
+                .reduce(true)
+                .cacheOk(true)).getRows();
+        Map<String, Integer> openChildCount = new HashMap<>();
+        for (ViewResult.Row row : rows) {
+            openChildCount.put(row.getKey(), row.getValueAsInt());
+        }
+        return openChildCount;
     }
 }

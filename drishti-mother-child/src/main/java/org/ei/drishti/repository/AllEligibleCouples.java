@@ -3,6 +3,7 @@ package org.ei.drishti.repository;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
@@ -12,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
@@ -73,25 +76,35 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
                 EligibleCouple.class);
     }
 
-    @View(name = "all_open_ecs_by_anm",
+    @View(name = "all_open_ecs",
             map = "function(doc) { if (doc.type === 'EligibleCouple' && !doc.isClosed && !doc.isOutOfArea && doc.anmIdentifier) { emit(doc.anmIdentifier); } }",
             reduce = "_count")
-    public int ecCountForANM(String anmIdentifier) {
-        return db.queryView(createQuery("all_open_ecs_by_anm")
-                .reduce(false)
-                .key(anmIdentifier)
-                .includeDocs(true)
-                .cacheOk(true)).getSize();
+    public Map<String, Integer> allOpenECs(List<String> anmIdentifiers) {
+        List<ViewResult.Row> rows = db.queryView(createQuery("all_open_ecs")
+                .keys(anmIdentifiers)
+                .group(true)
+                .reduce(true)
+                .cacheOk(true)).getRows();
+        Map<String, Integer> ecCount = new HashMap<>();
+        for (ViewResult.Row row : rows) {
+            ecCount.put(row.getKey(), row.getValueAsInt());
+        }
+        return ecCount;
     }
 
-    @View(name = "all_open_fps_by_anm",
+    @View(name = "all_open_fps",
             map = "function(doc) { if (doc.type === 'EligibleCouple' && !doc.isClosed && !doc.isOutOfArea && doc.anmIdentifier && doc.details.currentMethod && doc.details.currentMethod !== 'none') { emit(doc.anmIdentifier); } }",
             reduce = "_count")
-    public int fpCountForANM(String anmIdentifier) {
-        return db.queryView(createQuery("all_open_fps_by_anm")
-                .reduce(false)
-                .key(anmIdentifier)
-                .includeDocs(true)
-                .cacheOk(true)).getSize();
+    public Map<String, Integer> fpCountForANM(List<String> anmIdentifiers) {
+        List<ViewResult.Row> rows = db.queryView(createQuery("all_open_fps")
+                .keys(anmIdentifiers)
+                .group(true)
+                .reduce(true)
+                .cacheOk(true)).getRows();
+        Map<String, Integer> fpCount = new HashMap<>();
+        for (ViewResult.Row row : rows) {
+            fpCount.put(row.getKey(), row.getValueAsInt());
+        }
+        return fpCount;
     }
 }

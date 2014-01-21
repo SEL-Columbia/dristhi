@@ -3,6 +3,7 @@ package org.ei.drishti.repository;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Mother;
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class AllMothers extends MotechBaseRepository<Mother> {
@@ -75,25 +78,35 @@ public class AllMothers extends MotechBaseRepository<Mother> {
                 .includeDocs(true), Mother.class);
     }
 
-    @View(name = "all_open_mothers_count_by_anmId",
-            map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.anmIdentifier && doc.details.type === 'ANC') { emit(doc.anmIdentifier); } }"
-            )
-    public int ancCountForANM(String anmIdentifier) {
-        return db.queryView(createQuery("all_open_mothers_count_by_anmId")
-                .key(anmIdentifier)
-                .reduce(false)
-                .includeDocs(true)
-                .cacheOk(true)).getSize();
+    @View(name = "all_open_mothers_count",
+            map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.anmIdentifier && doc.details.type === 'ANC') { emit(doc.anmIdentifier); } }",
+            reduce = "_count")
+    public Map<String, Integer> allOpenMotherCount(List<String> anmIdentifiers) {
+        List<ViewResult.Row> rows = db.queryView(createQuery("all_open_mothers_count")
+                .keys(anmIdentifiers)
+                .group(true)
+                .reduce(true)
+                .cacheOk(true)).getRows();
+        Map<String, Integer> openMotherCount = new HashMap<>();
+        for (ViewResult.Row row : rows) {
+            openMotherCount.put(row.getKey(), row.getValueAsInt());
+        }
+        return openMotherCount;
     }
 
-    @View(name = "all_open_pnc_by_anmId",
+    @View(name = "all_open_pncs",
             map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.anmIdentifier && doc.details.type === 'PNC') { emit(doc.anmIdentifier); } }",
             reduce = "_count")
-    public int pncCountForANM(String anmIdentifier) {
-        return db.queryView(createQuery("all_open_pnc_by_anmId")
-                .key(anmIdentifier)
-                .reduce(false)
-                .includeDocs(true)
-                .cacheOk(true)).getSize();
+    public Map<String, Integer> allOpenPNCCount(List<String> anmIdentifiers) {
+        List<ViewResult.Row> rows = db.queryView(createQuery("all_open_pncs")
+                .keys(anmIdentifiers)
+                .group(true)
+                .reduce(true)
+                .cacheOk(true)).getRows();
+        Map<String, Integer> openPNCCount = new HashMap<>();
+        for (ViewResult.Row row : rows) {
+            openPNCCount.put(row.getKey(), row.getValueAsInt());
+        }
+        return openPNCCount;
     }
 }

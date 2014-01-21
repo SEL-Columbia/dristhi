@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static ch.lambdaj.Lambda.collect;
+import static ch.lambdaj.Lambda.on;
 
 @Service
 public class ANMDetailsService {
@@ -29,19 +33,25 @@ public class ANMDetailsService {
     }
 
     public ANMDetails anmDetails(List<ANMDTO> anms) {
-            List<ANMDetail> anmDetails = new ArrayList<>();
-            for (ANMDTO anm : anms) {
-                anmDetails.add(anmDetails(anm));
-            }
-            return new ANMDetails(anmDetails);
-    }
-
-    private ANMDetail anmDetails(ANMDTO anm) {
-        int ecCount = allEligibleCouples.ecCountForANM(anm.identifier());
-        int fpCount = allEligibleCouples.fpCountForANM(anm.identifier());
-        int ancCount = allMothers.ancCountForANM(anm.identifier());
-        int pncCount = allMothers.pncCountForANM(anm.identifier());
-        int childCount = allChildren.childCountForANM(anm.identifier());
-        return new ANMDetail(anm.identifier(), anm.name(), anm.location(), ecCount, fpCount, ancCount, pncCount, childCount);
+        List<String> anmIdentifiers = collect(anms, on(ANMDTO.class).identifier());
+        Map<String, Integer> ecCount = allEligibleCouples.allOpenECs(anmIdentifiers);
+        Map<String, Integer> fpCount = allEligibleCouples.fpCountForANM(anmIdentifiers);
+        Map<String, Integer> ancCount = allMothers.allOpenMotherCount(anmIdentifiers);
+        Map<String, Integer> pncCount = allMothers.allOpenPNCCount(anmIdentifiers);
+        Map<String, Integer> childCount = allChildren.openChildCount(anmIdentifiers);
+        List<ANMDetail> anmDetails = new ArrayList<>();
+        for (ANMDTO anm : anms) {
+            anmDetails.add(new ANMDetail(
+                    anm.identifier(),
+                    anm.name(),
+                    anm.location(),
+                    ecCount.get(anm.identifier()),
+                    fpCount.get(anm.identifier()),
+                    ancCount.get(anm.identifier()),
+                    pncCount.get(anm.identifier()),
+                    childCount.get(anm.identifier()))
+            );
+        }
+        return new ANMDetails(anmDetails);
     }
 }

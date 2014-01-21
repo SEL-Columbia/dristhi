@@ -3,6 +3,7 @@ package org.ei.drishti.web.controller;
 import ch.lambdaj.function.convert.Converter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
 import org.ei.drishti.domain.ANMDetail;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
 import static org.ei.drishti.web.HttpHeaderFactory.allowOrigin;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
@@ -50,13 +52,20 @@ public class ANMDetailsController {
     @RequestMapping(method = GET, value = "/anms")
     @ResponseBody
     public ResponseEntity<ANMDetailsDTO> allANMs() {
-        HttpResponse response = httpAgent.get(drishtiANMDetailsUrl);
-        logger.info(MessageFormat.format("Response Status: {0}. Body: {1}" + response.isSuccess(), response.body()));
-        List<ANMDTO> anmBasicDetails = new Gson().fromJson(response.body(),
+        HttpResponse response = new HttpResponse(false, null);
+        try {
+            response = httpAgent.get(drishtiANMDetailsUrl);
+            logger.info(MessageFormat.format("Response Status: {0}. Body: {1}" + response.isSuccess(), response.body()));
+            List<ANMDTO> anmBasicDetails = new Gson().fromJson(response.body(),
                     new TypeToken<List<ANMDTO>>() {
-                }.getType());
-        ANMDetails anmDetails = anmDetailsService.anmDetails(anmBasicDetails);
-        return new ResponseEntity<>(mapToDTO(anmDetails), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
+                    }.getType());
+            ANMDetails anmDetails = anmDetailsService.anmDetails(anmBasicDetails);
+            return new ResponseEntity<>(mapToDTO(anmDetails), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
+        } catch (Exception exception) {
+            logger.error(MessageFormat.format("{0} occurred while fetching ANM Details. StackTrace: \n {1}", exception.getMessage(), ExceptionUtils.getFullStackTrace(exception)));
+            logger.error(MessageFormat.format("Response with status {0} and body: {1} was obtained from {2}" + response.isSuccess(), response.body(), drishtiANMDetailsUrl));
+        }
+        return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
     }
 
     private ANMDetailsDTO mapToDTO(ANMDetails anmDetails) {

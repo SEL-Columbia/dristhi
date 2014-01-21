@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.EasyMap.create;
@@ -129,16 +130,20 @@ public class AllEligibleCouplesIntegrationTest {
     public void shouldFindCountOfAllOpenEligibleCouplesForANM() throws Exception {
         EligibleCouple closedOutOfArea = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("demo1").setIsClosed(true);
         EligibleCouple inArea = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1");
-        EligibleCouple outOfArea = new EligibleCouple("CASE Z", "EC Number 3").withANMIdentifier("demo2").asOutOfArea();
+        EligibleCouple anotherInArea = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1");
+        EligibleCouple ecForAnotherANM = new EligibleCouple("CASE Z", "EC Number 3").withANMIdentifier("demo2");
         EligibleCouple anotherOutOfArea = new EligibleCouple("CASE A", "EC Number 3").withANMIdentifier("demo1").asOutOfArea();
         eligibleCouples.add(closedOutOfArea);
         eligibleCouples.add(inArea);
-        eligibleCouples.add(outOfArea);
+        eligibleCouples.add(anotherInArea);
+        eligibleCouples.add(ecForAnotherANM);
         eligibleCouples.add(anotherOutOfArea);
 
-        int allOpenECCountForANM = eligibleCouples.ecCountForANM("demo1");
+        Map<String, Integer> allOpenECs = eligibleCouples.allOpenECs(asList("demo1", "demo2"));
 
-        assertEquals(1, allOpenECCountForANM);
+        assertEquals(2, allOpenECs.size());
+        assertEquals(2, (long) allOpenECs.get("demo1"));
+        assertEquals(1, (long) allOpenECs.get("demo2"));
     }
 
     @Test
@@ -146,23 +151,31 @@ public class AllEligibleCouplesIntegrationTest {
         EligibleCouple closedOutOfArea = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("demo1").setIsClosed(true);
         EligibleCouple inAreaWithFPMethodAsNone = new EligibleCouple("CASE Y", "EC Number 2")
                 .withANMIdentifier("demo1").withDetails(mapOf("currentMethod", "none"));
-        EligibleCouple inAreaWithFPMethodAsNull = new EligibleCouple("CASE Y", "EC Number 2")
+        EligibleCouple inAreaWithFPMethodWithoutFPMethod = new EligibleCouple("CASE Y", "EC Number 2")
                 .withANMIdentifier("demo1");
         EligibleCouple inAreaWithValidFPMethod = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1")
-                .withDetails(mapOf("currentMethod", "ocp"));;
-        EligibleCouple inArea1 = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1");
-        EligibleCouple outOfArea = new EligibleCouple("CASE Z", "EC Number 3").withANMIdentifier("demo2").asOutOfArea();
+                .withDetails(mapOf("currentMethod", "ocp"));
+        EligibleCouple anotherInAreaECWithoutFPMethod = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1");
+        EligibleCouple ecForAnotherANMWithFPMethod = new EligibleCouple("CASE Z", "EC Number 3").withANMIdentifier("demo2")
+                .withDetails(mapOf("currentMethod", "ocp"));
+        EligibleCouple ecForAnotherANMWithoutFPMethod = new EligibleCouple("CASE Z", "EC Number 3").withANMIdentifier("demo2");
+        EligibleCouple outOfArea = new EligibleCouple("CASE Z", "EC Number 3").withANMIdentifier("demo2");
         EligibleCouple anotherOutOfArea = new EligibleCouple("CASE A", "EC Number 3").withANMIdentifier("demo1").asOutOfArea();
 
         eligibleCouples.add(closedOutOfArea);
         eligibleCouples.add(inAreaWithFPMethodAsNone);
-        eligibleCouples.add(inAreaWithFPMethodAsNull);
+        eligibleCouples.add(inAreaWithFPMethodWithoutFPMethod);
+        eligibleCouples.add(anotherInAreaECWithoutFPMethod);
         eligibleCouples.add(inAreaWithValidFPMethod);
+        eligibleCouples.add(ecForAnotherANMWithFPMethod);
+        eligibleCouples.add(ecForAnotherANMWithoutFPMethod);
         eligibleCouples.add(outOfArea);
         eligibleCouples.add(anotherOutOfArea);
 
-        int allOpenECCountForANM = eligibleCouples.fpCountForANM("demo1");
+        Map<String, Integer> allOpenFP = eligibleCouples.fpCountForANM(asList("demo1", "demo2"));
 
-        assertEquals(1, allOpenECCountForANM);
+        assertEquals(2, allOpenFP.size());
+        assertEquals(1, (long) allOpenFP.get("demo1"));
+        assertEquals(1, (long) allOpenFP.get("demo2"));
     }
 }
