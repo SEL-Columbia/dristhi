@@ -41,16 +41,13 @@ public class ANMDetailsService {
         Map<String, Integer> childCount = allChildren.openChildCount(anmIdentifiers);
         List<ANMDetail> anmDetails = new ArrayList<>();
         for (ANMDTO anm : anms) {
-            anmDetails.add(new ANMDetail(
-                    anm.identifier(),
-                    anm.name(),
-                    anm.location(),
-                    ecCount.get(anm.identifier()),
-                    fpCount.get(anm.identifier()),
-                    ancCount.get(anm.identifier()),
-                    pncCount.get(anm.identifier()),
-                    childCount.get(anm.identifier()))
-            );
+            int ecCountForANM = ecCount.get(anm.identifier()) == null ? 0 : ecCount.get(anm.identifier());
+            int fpCountForANM = fpCount.get(anm.identifier()) == null ? 0 : fpCount.get(anm.identifier());
+            int ancCountForANM = ancCount.get(anm.identifier()) == null ? 0 : ancCount.get(anm.identifier());
+            int pncCountForANM = pncCount.get(anm.identifier()) == null ? 0 : pncCount.get(anm.identifier());
+            int childCountForANM = childCount.get(anm.identifier()) == null ? 0 : childCount.get(anm.identifier());
+            anmDetails.add(new ANMDetail(anm.identifier(), anm.name(), anm.location(),
+                    ecCountForANM, fpCountForANM, ancCountForANM, pncCountForANM, childCountForANM));
         }
         return new ANMDetails(anmDetails);
     }
