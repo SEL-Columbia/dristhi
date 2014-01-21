@@ -55,11 +55,11 @@ public class ANMDetailsController {
         HttpResponse response = new HttpResponse(false, null);
         try {
             response = httpAgent.get(drishtiANMDetailsUrl);
-            logger.info(MessageFormat.format("Response Status: {0}. Body: {1}" + response.isSuccess(), response.body()));
             List<ANMDTO> anmBasicDetails = new Gson().fromJson(response.body(),
                     new TypeToken<List<ANMDTO>>() {
                     }.getType());
             ANMDetails anmDetails = anmDetailsService.anmDetails(anmBasicDetails);
+            logger.info("Fetched ANM details with beneficiary count.");
             return new ResponseEntity<>(mapToDTO(anmDetails), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
         } catch (Exception exception) {
             logger.error(MessageFormat.format("{0} occurred while fetching ANM Details. StackTrace: \n {1}", exception.getMessage(), ExceptionUtils.getFullStackTrace(exception)));

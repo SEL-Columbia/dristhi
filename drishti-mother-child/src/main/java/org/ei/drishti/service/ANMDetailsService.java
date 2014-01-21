@@ -35,10 +35,15 @@ public class ANMDetailsService {
     public ANMDetails anmDetails(List<ANMDTO> anms) {
         List<String> anmIdentifiers = collect(anms, on(ANMDTO.class).identifier());
         Map<String, Integer> ecCount = allEligibleCouples.allOpenECs(anmIdentifiers);
+        logger.info("Fetched EC count");
         Map<String, Integer> fpCount = allEligibleCouples.fpCountForANM(anmIdentifiers);
+        logger.info("Fetched FP count");
         Map<String, Integer> ancCount = allMothers.allOpenMotherCount(anmIdentifiers);
+        logger.info("Fetched ANC count");
         Map<String, Integer> pncCount = allMothers.allOpenPNCCount(anmIdentifiers);
+        logger.info("Fetched PNC count");
         Map<String, Integer> childCount = allChildren.openChildCount(anmIdentifiers);
+        logger.info("Fetched Child count");
         List<ANMDetail> anmDetails = new ArrayList<>();
         for (ANMDTO anm : anms) {
             int ecCountForANM = ecCount.get(anm.identifier()) == null ? 0 : ecCount.get(anm.identifier());
