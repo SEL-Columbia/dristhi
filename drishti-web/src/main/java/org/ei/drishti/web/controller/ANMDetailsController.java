@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
@@ -50,8 +51,9 @@ public class ANMDetailsController {
     @ResponseBody
     public ResponseEntity<ANMDetailsDTO> allANMs() {
         HttpResponse response = httpAgent.get(drishtiANMDetailsUrl);
+        logger.info(MessageFormat.format("Response Status: {0}. Body: {1}" + response.isSuccess(), response.body()));
         List<ANMDTO> anmBasicDetails = new Gson().fromJson(response.body(),
-                new TypeToken<List<ANMDTO>>() {
+                    new TypeToken<List<ANMDTO>>() {
                 }.getType());
         ANMDetails anmDetails = anmDetailsService.anmDetails(anmBasicDetails);
         return new ResponseEntity<>(mapToDTO(anmDetails), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
