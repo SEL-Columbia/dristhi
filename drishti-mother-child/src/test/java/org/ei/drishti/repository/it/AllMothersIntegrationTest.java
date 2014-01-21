@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
+import static org.ei.drishti.common.util.EasyMap.create;
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -37,8 +38,22 @@ public class AllMothersIntegrationTest {
     public void shouldRegisterAMother() {
         HashMap<String, String> details = new HashMap<>();
         details.put("some_field", "some_value");
-        Mother mother = new Mother("CASE-1", "EC-CASE-1", "THAYI-CARD-1").withAnm("ANM ID 1").withLMP(DateUtil.tomorrow())
-                .withLocation("bherya", "Sub Center", "PHC X").withDetails(details);
+        Mother mother = new Mother("CASE-1", "EC-CASE-1", "THAYI-CARD-1")
+                .withAnm("ANM ID 1")
+                .withLMP(DateUtil.tomorrow())
+                .withLocation("bherya", "Sub Center", "PHC X")
+                .withANCVisits(asList(
+                        create("ancVisitDate", "2014-02-14")
+                                .put("weight", "70")
+                                .put("bpSystolic", "150")
+                                .put("bpDiastolic", "100")
+                                .map(),
+                        create("ancVisitDate", "2014-04-14")
+                                .put("weight", "72")
+                                .put("bpSystolic", "120")
+                                .put("bpDiastolic", "80")
+                                .map()))
+                .withDetails(details);
 
         allMothers.add(mother);
 

@@ -142,6 +142,7 @@ public class AllConstants {
         public static final String BP_DIASTOLIC = "bpDiastolic";
         public static final String BP_SYSTOLIC = "bpSystolic";
         public static final String IS_HYPERTENSION_DETECTED_FOR_FIRST_TIME = "isHypertensionDetectedForFirstTime";
+        public static final String WEIGHT = "weight";
     }
 
     public static class HbTestFormFields {

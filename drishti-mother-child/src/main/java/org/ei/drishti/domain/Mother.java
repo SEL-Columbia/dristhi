@@ -10,6 +10,7 @@ import org.joda.time.LocalDate;
 import org.motechproject.model.MotechBaseDataObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.ei.drishti.common.AllConstants.IFAFields.TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN;
@@ -36,6 +37,8 @@ public class Mother extends MotechBaseDataObject {
     private boolean isClosed;
     @JsonProperty
     private Map<String, String> details;
+    @JsonProperty
+    private List<Map<String, String>> ancVisits;
 
     private Mother() {
     }
@@ -139,6 +142,15 @@ public class Mother extends MotechBaseDataObject {
         int totalNumberOfIFATabletsGiven = IntegerUtil.tryParse(getDetail(TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN), 0);
         details().put(TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN,
                 String.valueOf(totalNumberOfIFATabletsGiven + numberOfIFATabletsGivenThisTime));
+    }
+
+    public Mother withANCVisits(List<Map<String, String>> ancVisits) {
+        this.ancVisits = ancVisits;
+        return this;
+    }
+
+    public List<Map<String, String>> ancVisits() {
+        return ancVisits;
     }
 
     @Override

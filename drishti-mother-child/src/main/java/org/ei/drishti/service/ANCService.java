@@ -1,7 +1,6 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.common.AllConstants;
-import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.common.util.IntegerUtil;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -17,14 +16,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.PERMANENT_RELOCATION_VALUE;
-import static org.ei.drishti.common.AllConstants.ANCFormFields.TT_DATE_FIELD;
-import static org.ei.drishti.common.AllConstants.ANCFormFields.TT_DOSE_FIELD;
+import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.ANCVisitFormFields.*;
 import static org.ei.drishti.common.AllConstants.BOOLEAN_FALSE_VALUE;
 import static org.ei.drishti.common.AllConstants.BOOLEAN_TRUE_VALUE;
@@ -35,6 +35,7 @@ import static org.ei.drishti.common.AllConstants.HbTestFormFields.ANAEMIC_STATUS
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_TEST_DATE_FIELD;
 import static org.ei.drishti.common.AllConstants.IFAFields.IFA_TABLETS_DATE;
 import static org.ei.drishti.common.AllConstants.IFAFields.NUMBER_OF_IFA_TABLETS_GIVEN;
+import static org.ei.drishti.common.util.EasyMap.create;
 import static org.joda.time.LocalDate.parse;
 
 @Service
@@ -103,7 +104,7 @@ public class ANCService {
             return;
         }
 
-        updateHypertensionDetection(submission, mother);
+        updateMotherAfterANCVisit(submission, mother);
         ancSchedulesService.ancVisitHasHappened(submission.entityId(), submission.anmId(),
                 parseInt(submission.getField(AllConstants.ANCFormFields.ANC_VISIT_NUMBER_FIELD)), submission.getField(AllConstants.ANCFormFields.ANC_VISIT_DATE_FIELD));
 
@@ -111,17 +112,36 @@ public class ANCService {
         reportingService.ancVisit(new SafeMap(submission.getFields(reportFields)));
     }
 
+    private void updateMotherAfterANCVisit(FormSubmission submission, Mother mother) {
+        updateHypertensionDetection(submission, mother);
+        updateANCVisitInformation(submission, mother);
+        allMothers.update(mother);
+    }
+
+    private void updateANCVisitInformation(FormSubmission submission, Mother mother) {
+        if (mother.ancVisits() == null) {
+            mother.withANCVisits(new ArrayList<Map<String, String>>());
+        }
+        mother.ancVisits()
+                .add(create(ANC_VISIT_DATE_FIELD, submission.getField(ANC_VISIT_DATE_FIELD))
+                        .put(WEIGHT, submission.getField(WEIGHT))
+                        .put(BP_SYSTOLIC, submission.getField(BP_SYSTOLIC))
+                        .put(BP_DIASTOLIC, submission.getField(BP_DIASTOLIC))
+                        .put(ANC_VISIT_NUMBER_FIELD, submission.getField(ANC_VISIT_NUMBER_FIELD))
+                        .map());
+
+    }
+
     private void updateHypertensionDetection(FormSubmission submission, Mother mother) {
         String bpDiastolic = submission.getField(BP_DIASTOLIC);
         String bpSystolic = submission.getField(BP_DIASTOLIC);
-        SafeMap safeMap = new SafeMap(EasyMap.create(BP_DIASTOLIC, bpDiastolic).put(BP_SYSTOLIC, bpSystolic).map());
+        SafeMap safeMap = new SafeMap(create(BP_DIASTOLIC, bpDiastolic).put(BP_SYSTOLIC, bpSystolic).map());
 
         IsHypertensionDetectedRule isHypertensionDetectedRule = new IsHypertensionDetectedRule();
         boolean isHyperTensionDetected = isHypertensionDetectedRule.apply(safeMap);
         if (isHyperTensionDetected) {
             String hypertension = (mother.getDetail(IS_HYPERTENSION_DETECTED_FOR_FIRST_TIME) == null) ? BOOLEAN_TRUE_VALUE : BOOLEAN_FALSE_VALUE;
             mother.details().put(IS_HYPERTENSION_DETECTED_FOR_FIRST_TIME, hypertension);
-            allMothers.update(mother);
         }
     }
 
