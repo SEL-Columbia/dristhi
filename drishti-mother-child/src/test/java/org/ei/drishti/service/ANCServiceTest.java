@@ -548,11 +548,47 @@ public class ANCServiceTest {
                 .withFormName("ifa")
                 .withEntityId("entity id 1")
                 .addFormField("numberOfIFATabletsGiven", "30")
+                .addFormField("ifaTabletsDate", "2013-05-24")
                 .build();
         service.ifaTabletsGiven(submission);
 
         Mother updatedMother = new Mother("entity id 1", "ec entity id 1", "thayi 1")
-                .withDetails(create("some-key", "some-value").put("totalNumberOfIFATabletsGiven", "30").map());
+                .withDetails(create("some-key", "some-value").put("totalNumberOfIFATabletsGiven", "30").map())
+                .withIFATablets(asList(
+                        create("ifaTabletsDate", "2013-05-24")
+                                .put("numberOfIFATabletsGiven", "30")
+                                .map()));
+        verify(allMothers).update(updatedMother);
+    }
+
+    @Test
+    public void shouldUpdateIFATabletsInformationWhenTheyAreGiven() {
+        List<Map<String, String>> ifaTablets = new ArrayList<>();
+        ifaTablets.add(create("ifaTabletsDate", "2013-04-24")
+                .put("numberOfIFATabletsGiven", "30")
+                .map());
+        Mother mother = new Mother("entity id 1", "ec entity id 1", "thayi 1")
+                .withDetails(mapOf("some-key", "some-value"))
+                .withIFATablets(ifaTablets);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+
+        FormSubmission submission = create()
+                .withFormName("ifa")
+                .withEntityId("entity id 1")
+                .addFormField("numberOfIFATabletsGiven", "30")
+                .addFormField("ifaTabletsDate", "2013-05-24")
+                .build();
+        service.ifaTabletsGiven(submission);
+
+        Mother updatedMother = new Mother("entity id 1", "ec entity id 1", "thayi 1")
+                .withDetails(create("some-key", "some-value").put("totalNumberOfIFATabletsGiven", "30").map())
+                .withIFATablets(asList(
+                        create("ifaTabletsDate", "2013-04-24")
+                                .put("numberOfIFATabletsGiven", "30")
+                                .map(),
+                        create("ifaTabletsDate", "2013-05-24")
+                                .put("numberOfIFATabletsGiven", "30")
+                                .map()));
         verify(allMothers).update(updatedMother);
     }
 
@@ -566,11 +602,16 @@ public class ANCServiceTest {
                 .withFormName("ifa")
                 .withEntityId("entity id 1")
                 .addFormField("numberOfIFATabletsGiven", "60")
+                .addFormField("ifaTabletsDate", "2013-05-24")
                 .build();
         service.ifaTabletsGiven(submission);
 
         Mother updatedMother = new Mother("entity id 1", "ec entity id 1", "thayi 1")
-                .withDetails(create("some-key", "some-value").put("totalNumberOfIFATabletsGiven", "90").map());
+                .withDetails(create("some-key", "some-value").put("totalNumberOfIFATabletsGiven", "90").map())
+                .withIFATablets(asList(
+                        create("ifaTabletsDate", "2013-05-24")
+                                .put("numberOfIFATabletsGiven", "60")
+                                .map()));
         verify(allMothers).update(updatedMother);
     }
 }

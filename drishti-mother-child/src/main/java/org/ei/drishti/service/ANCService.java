@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -114,22 +113,14 @@ public class ANCService {
 
     private void updateMotherAfterANCVisit(FormSubmission submission, Mother mother) {
         updateHypertensionDetection(submission, mother);
-        updateANCVisitInformation(submission, mother);
+        Map<String, String> ancVisits = create(ANC_VISIT_DATE_FIELD, submission.getField(ANC_VISIT_DATE_FIELD))
+                .put(WEIGHT, submission.getField(WEIGHT))
+                .put(BP_SYSTOLIC, submission.getField(BP_SYSTOLIC))
+                .put(BP_DIASTOLIC, submission.getField(BP_DIASTOLIC))
+                .put(ANC_VISIT_NUMBER_FIELD, submission.getField(ANC_VISIT_NUMBER_FIELD))
+                .map();
+        mother.updateANCVisitInformation(ancVisits);
         allMothers.update(mother);
-    }
-
-    private void updateANCVisitInformation(FormSubmission submission, Mother mother) {
-        if (mother.ancVisits() == null) {
-            mother.withANCVisits(new ArrayList<Map<String, String>>());
-        }
-        mother.ancVisits()
-                .add(create(ANC_VISIT_DATE_FIELD, submission.getField(ANC_VISIT_DATE_FIELD))
-                        .put(WEIGHT, submission.getField(WEIGHT))
-                        .put(BP_SYSTOLIC, submission.getField(BP_SYSTOLIC))
-                        .put(BP_DIASTOLIC, submission.getField(BP_DIASTOLIC))
-                        .put(ANC_VISIT_NUMBER_FIELD, submission.getField(ANC_VISIT_NUMBER_FIELD))
-                        .map());
-
     }
 
     private void updateHypertensionDetection(FormSubmission submission, Mother mother) {
@@ -162,6 +153,10 @@ public class ANCService {
         int numberOfIFATabletsGivenThisTime =
                 IntegerUtil.tryParse(submission.getField(NUMBER_OF_IFA_TABLETS_GIVEN), 0);
         mother.updateTotalNumberOfIFATabletsGiven(numberOfIFATabletsGivenThisTime);
+        Map<String, String> ifaTablets = create(IFA_TABLETS_DATE, submission.getField(IFA_TABLETS_DATE))
+                .put(NUMBER_OF_IFA_TABLETS_GIVEN, submission.getField(NUMBER_OF_IFA_TABLETS_GIVEN))
+                .map();
+        mother.updateIFATabletsInformation(ifaTablets);
         allMothers.update(mother);
 
         ancSchedulesService.ifaTabletsGiven(

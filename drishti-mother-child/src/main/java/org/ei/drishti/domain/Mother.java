@@ -9,10 +9,12 @@ import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.LocalDate;
 import org.motechproject.model.MotechBaseDataObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.String.valueOf;
 import static org.ei.drishti.common.AllConstants.IFAFields.TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN;
 
 @TypeDiscriminator("doc.type === 'Mother'")
@@ -39,6 +41,8 @@ public class Mother extends MotechBaseDataObject {
     private Map<String, String> details;
     @JsonProperty
     private List<Map<String, String>> ancVisits;
+    @JsonProperty
+    private List<Map<String, String>> ifaTablets;
 
     private Mother() {
     }
@@ -140,8 +144,8 @@ public class Mother extends MotechBaseDataObject {
 
     public void updateTotalNumberOfIFATabletsGiven(int numberOfIFATabletsGivenThisTime) {
         int totalNumberOfIFATabletsGiven = IntegerUtil.tryParse(getDetail(TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN), 0);
-        details().put(TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN,
-                String.valueOf(totalNumberOfIFATabletsGiven + numberOfIFATabletsGivenThisTime));
+        details()
+                .put(TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN, valueOf(totalNumberOfIFATabletsGiven + numberOfIFATabletsGivenThisTime));
     }
 
     public Mother withANCVisits(List<Map<String, String>> ancVisits) {
@@ -149,8 +153,23 @@ public class Mother extends MotechBaseDataObject {
         return this;
     }
 
-    public List<Map<String, String>> ancVisits() {
-        return ancVisits;
+    public void updateANCVisitInformation(Map<String, String> ancVisits) {
+        if (this.ancVisits == null) {
+            this.ancVisits = new ArrayList<>();
+        }
+        this.ancVisits.add(ancVisits);
+    }
+
+    public Mother withIFATablets(List<Map<String, String>> ifaTablets) {
+        this.ifaTablets = ifaTablets;
+        return this;
+    }
+
+    public void updateIFATabletsInformation(Map<String, String> ifaTablets) {
+        if (this.ifaTablets == null) {
+            this.ifaTablets = new ArrayList<>();
+        }
+        this.ifaTablets.add(ifaTablets);
     }
 
     @Override
