@@ -137,7 +137,20 @@ public class ANCService {
     }
 
     public void ttProvided(FormSubmission submission) {
-        ancSchedulesService.ttVisitHasHappened(submission.entityId(), submission.anmId(), submission.getField(TT_DOSE_FIELD), submission.getField(TT_DATE_FIELD));
+        Mother mother = allMothers.findByCaseId(submission.entityId());
+        if (mother == null) {
+            logger.warn("Tried to handle TT provided without registered mother. Submission: " + submission);
+            return;
+        }
+
+        Map<String, String> ttDose = create(TT_DATE_FIELD, submission.getField(TT_DATE_FIELD))
+                .put(TT_DOSE_FIELD, submission.getField(TT_DOSE_FIELD))
+                .map();
+        mother.updateTTDoseInformation(ttDose);
+        allMothers.update(mother);
+
+        ancSchedulesService.ttVisitHasHappened(submission.entityId(), submission.anmId(),
+                submission.getField(TT_DOSE_FIELD), submission.getField(TT_DATE_FIELD));
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.ttProvided(new SafeMap(submission.getFields(reportFields)));

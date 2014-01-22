@@ -365,20 +365,37 @@ public class ANCServiceTest {
     @Test
     public void shouldHandleTTProvided() {
         FormSubmission submission = create()
-                .withFormName("tt_1")
+                .withFormName("tt_2")
                 .withANMId("anm id 1")
                 .withEntityId("entity id 1")
                 .addFormField("ttDate", "2013-01-01")
-                .addFormField("ttDose", "tt1")
+                .addFormField("ttDose", "tt2")
                 .addFormField("someKey", "someValue")
                 .build();
+        List<Map<String, String>> ttDoses = new ArrayList<>();
+        ttDoses.add(create("ttDate", "2012-12-24")
+                .put("ttDose", "tt1")
+                .map());
+        Mother mother = new Mother("entity id 1", "ec entity id 1", "thayi 1")
+                .withDetails(mapOf("some-key", "some-value"))
+                .withTTDoses(ttDoses);
 
-        when(allMothers.exists("entity id 1")).thenReturn(true);
-        when(reportFieldsDefinition.get("tt_1")).thenReturn(asList("someKey"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+        when(reportFieldsDefinition.get("tt_2")).thenReturn(asList("someKey"));
 
         service.ttProvided(submission);
 
-        verify(ancSchedulesService).ttVisitHasHappened("entity id 1", "anm id 1", "tt1", "2013-01-01");
+        Mother updatedMother = new Mother("entity id 1", "ec entity id 1", "thayi 1")
+                .withDetails(create("some-key", "some-value").map())
+                .withTTDoses(asList(
+                        create("ttDate", "2012-12-24")
+                                .put("ttDose", "tt1")
+                                .map(),
+                        create("ttDate", "2013-01-01")
+                                .put("ttDose", "tt2")
+                                .map()));
+        verify(allMothers).update(updatedMother);
+        verify(ancSchedulesService).ttVisitHasHappened("entity id 1", "anm id 1", "tt2", "2013-01-01");
         verify(motherReportingService).ttProvided(new SafeMap(mapOf("someKey", "someValue")));
     }
 

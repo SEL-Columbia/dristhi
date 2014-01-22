@@ -43,6 +43,8 @@ public class Mother extends MotechBaseDataObject {
     private List<Map<String, String>> ancVisits;
     @JsonProperty
     private List<Map<String, String>> ifaTablets;
+    @JsonProperty
+    private List<Map<String, String>> ttDoses;
 
     private Mother() {
     }
@@ -170,6 +172,18 @@ public class Mother extends MotechBaseDataObject {
             this.ifaTablets = new ArrayList<>();
         }
         this.ifaTablets.add(ifaTablets);
+    }
+
+    public Mother withTTDoses(List<Map<String, String>> ttDoses) {
+        this.ttDoses = ttDoses;
+        return this;
+    }
+
+    public void updateTTDoseInformation(Map<String, String> ttDose) {
+        if (this.ttDoses == null) {
+            this.ttDoses = new ArrayList<>();
+        }
+        this.ttDoses.add(ttDose);
     }
 
     @Override
