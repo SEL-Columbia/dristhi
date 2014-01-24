@@ -43,7 +43,7 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private String phc;
     @JsonProperty
-    private boolean isClosed;
+    private String isClosed;
     @JsonProperty
     private String thayiCard;
     @JsonProperty
@@ -128,8 +128,18 @@ public class Child extends MotechBaseDataObject {
     }
 
     public Child setIsClosed(boolean isClosed) {
-        this.isClosed = isClosed;
+        this.isClosed = Boolean.toString(isClosed);
         return this;
+    }
+
+    public Child withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    @JsonIgnore
+    public boolean isClosed() {
+        return Boolean.parseBoolean(this.isClosed);
     }
 
     private String getCaseId() {

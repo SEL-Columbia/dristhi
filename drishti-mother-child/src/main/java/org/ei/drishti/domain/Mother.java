@@ -36,7 +36,7 @@ public class Mother extends MotechBaseDataObject {
     @JsonProperty
     private String phc;
     @JsonProperty
-    private boolean isClosed;
+    private String isClosed;
     @JsonProperty
     private Map<String, String> details;
     @JsonProperty
@@ -132,7 +132,7 @@ public class Mother extends MotechBaseDataObject {
     }
 
     public Mother setIsClosed(boolean isClosed) {
-        this.isClosed = isClosed;
+        this.isClosed = Boolean.toString(isClosed);
         return this;
     }
 

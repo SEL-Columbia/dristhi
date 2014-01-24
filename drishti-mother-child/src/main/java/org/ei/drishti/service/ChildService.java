@@ -67,7 +67,8 @@ public class ChildService {
         String referenceDate = submission.getField(REFERENCE_DATE);
         for (Map<String, String> childFields : subFormData.instances()) {
             Child child = allChildren.findByCaseId(childFields.get(ID));
-            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNumber());
+            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate)
+                    .withThayiCard(mother.thayiCardNumber()).setIsClosed(false);
             allChildren.update(child);
 
             SafeMap reportingData = new SafeMap();
@@ -80,15 +81,20 @@ public class ChildService {
         }
     }
 
+    private Child getChild(FormSubmission submission, Mother mother, String referenceDate, Map<String, String> childFields) {
+        Child child = allChildren.findByCaseId(childFields.get(ID));
+        child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNumber());
+        allChildren.update(child);
+        return child;
+    }
+
     private boolean isDeliveryOutcomeStillBirth(FormSubmission submission) {
         return AllConstants.DeliveryOutcomeFields.STILL_BIRTH_VALUE.equalsIgnoreCase(submission.getField(AllConstants.DeliveryOutcomeFields.DELIVERY_OUTCOME));
     }
 
     public void registerChildrenForEC(FormSubmission submission) {
         Child child = allChildren.findByCaseId(submission.getField(ChildReportingService.CHILD_ID_FIELD));
-        child
-                .withAnm(submission.anmId())
-                .withThayiCard(submission.getField(THAYI_CARD_NUMBER));
+        child.withAnm(submission.anmId()).withThayiCard(submission.getField(THAYI_CARD_NUMBER)).setIsClosed(false);
         allChildren.update(child);
     }
 
@@ -152,7 +158,7 @@ public class ChildService {
         String referenceDate = submission.getField(REFERENCE_DATE);
         for (Map<String, String> childFields : subFormData.instances()) {
             Child child = allChildren.findByCaseId(childFields.get(ID));
-            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNumber());
+            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNumber()).setIsClosed(false);
             allChildren.update(child);
 
             SafeMap reportingData = new SafeMap();

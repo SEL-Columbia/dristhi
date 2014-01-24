@@ -29,6 +29,7 @@ import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.EasyMap.create;
 import static org.ei.drishti.common.util.EasyMap.mapOf;
 import static org.ei.drishti.util.FormSubmissionBuilder.create;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -90,6 +91,8 @@ public class ChildServiceTest extends BaseUnitTest {
         inOrder.verify(childSchedulesService).enrollChild(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
         inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "no").put("childId", "child id 2").put("deliveryPlace", "phc").map()));
         inOrder.verify(childSchedulesService).enrollChild(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
+        assertFalse(firstChild.isClosed());
+        assertFalse(secondChild.isClosed());
     }
 
     @Test
@@ -137,6 +140,8 @@ public class ChildServiceTest extends BaseUnitTest {
 
         verify(allChildren).update(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
         verify(allChildren).update(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
+        assertFalse(firstChild.isClosed());
+        assertFalse(secondChild.isClosed());
     }
 
     @Test
@@ -175,6 +180,7 @@ public class ChildServiceTest extends BaseUnitTest {
         service.registerChildrenForEC(submission);
 
         verify(allChildren).update(child.withAnm("anm id 1"));
+        assertFalse(child.isClosed());
     }
 
     @Test
@@ -432,6 +438,8 @@ public class ChildServiceTest extends BaseUnitTest {
 
         verify(allChildren).update(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
         verify(allChildren).update(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
+        assertFalse(firstChild.isClosed());
+        assertFalse(secondChild.isClosed());
     }
 
     @Test
