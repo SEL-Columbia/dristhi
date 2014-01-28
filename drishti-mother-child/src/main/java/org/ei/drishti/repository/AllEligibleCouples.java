@@ -92,6 +92,14 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
         return ecCount;
     }
 
+    @View(name = "all_open_ecs_for_anm",
+            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && !doc.isOutOfArea && doc.anmIdentifier) { emit(doc.anmIdentifier); } }")
+    public List<EligibleCouple> allOpenECsForANM(String anmIdentifier) {
+        return db.queryView(createQuery("all_open_ecs_for_anm")
+                .key(anmIdentifier)
+                .includeDocs(true), EligibleCouple.class);
+    }
+
     @View(name = "all_open_fps",
             map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && !doc.isOutOfArea && doc.anmIdentifier && doc.details.currentMethod && doc.details.currentMethod !== 'none') { emit(doc.anmIdentifier); } }",
             reduce = "_count")

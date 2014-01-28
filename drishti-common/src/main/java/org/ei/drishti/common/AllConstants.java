@@ -95,7 +95,13 @@ public class AllConstants {
         public static final String NUMBER_OF_STILL_BIRTHS = "numberOfStillBirths";
         public static final String NUMBER_OF_ABORTIONS = "numberOfAbortions";
         public static final String YOUNGEST_CHILD_DOB = "youngestChildDOB";
+        public static final String YOUNGEST_CHILD_AGE = "youngestChildAge";
         public static final String WIFE_DOB = "womanDOB";
+        public static final String HUSBAND_AGE = "husbandAge";
+        public static final String HOUSEHOLD_NUMBER = "householdNumber";
+        public static final String HEAD_OF_HOUSEHOLD = "headOfHousehold";
+        public static final String NUMBER_OF_LIVING_MALE_CHILDREN = "numberOfLivingMaleChildren";
+        public static final String NUMBER_OF_LIVING_FEMALE_CHILDREN = "numberOfLivingFemaleChild";
     }
 
     public static class DeliveryOutcomeFields {

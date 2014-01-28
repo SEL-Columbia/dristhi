@@ -127,7 +127,7 @@ public class AllEligibleCouplesIntegrationTest {
     }
 
     @Test
-    public void shouldFindCountOfAllOpenEligibleCouplesForANM() throws Exception {
+    public void shouldFindCountOfAllOpenEligibleCouplesForAllANMs() throws Exception {
         EligibleCouple closedOutOfArea = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("demo1").setIsClosed(true);
         EligibleCouple inArea = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1");
         EligibleCouple anotherInArea = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1");
@@ -144,6 +144,25 @@ public class AllEligibleCouplesIntegrationTest {
         assertEquals(2, allOpenECs.size());
         assertEquals(2, (long) allOpenECs.get("demo1"));
         assertEquals(1, (long) allOpenECs.get("demo2"));
+    }
+
+    @Test
+    public void shouldFindAllOpenEligibleCouplesForANM() throws Exception {
+        EligibleCouple closedOutOfArea = new EligibleCouple("CASE X", "EC Number 1").withANMIdentifier("demo1").setIsClosed(true);
+        EligibleCouple inArea = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1");
+        EligibleCouple anotherInArea = new EligibleCouple("CASE Y", "EC Number 2").withANMIdentifier("demo1");
+        EligibleCouple ecForAnotherANM = new EligibleCouple("CASE Z", "EC Number 3").withANMIdentifier("demo2");
+        EligibleCouple anotherOutOfArea = new EligibleCouple("CASE A", "EC Number 3").withANMIdentifier("demo1").asOutOfArea();
+        eligibleCouples.add(closedOutOfArea);
+        eligibleCouples.add(inArea);
+        eligibleCouples.add(anotherInArea);
+        eligibleCouples.add(ecForAnotherANM);
+        eligibleCouples.add(anotherOutOfArea);
+
+        List<EligibleCouple> allOpenECs = eligibleCouples.allOpenECsForANM("demo1");
+
+        assertEquals(2, allOpenECs.size());
+        assertEquals(asList(inArea, anotherInArea), allOpenECs);
     }
 
     @Test
