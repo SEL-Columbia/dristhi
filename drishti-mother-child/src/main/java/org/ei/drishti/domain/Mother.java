@@ -54,6 +54,7 @@ public class Mother extends MotechBaseDataObject {
         this.ecCaseId = ecCaseId;
         this.thayiCardNumber = thayiCardNumber;
         this.details = new HashMap<>();
+        this.setIsClosed(false);
     }
 
     public Mother withAnm(String identifier) {

@@ -58,6 +58,7 @@ public class Child extends MotechBaseDataObject {
         this.immunizationsGiven = immunizationsGiven;
         this.weight = weight;
         this.gender = gender;
+        this.setIsClosed(false);
     }
 
     public Child withAnm(String anmIdentifier) {

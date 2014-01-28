@@ -48,6 +48,7 @@ public class EligibleCouple extends MotechBaseDataObject {
     public EligibleCouple(String caseId, String ecNumber) {
         this.caseId = caseId;
         this.ecNumber = ecNumber;
+        this.setIsClosed(false);
     }
 
     public EligibleCouple withCouple(String wifeName, String husbandName) {

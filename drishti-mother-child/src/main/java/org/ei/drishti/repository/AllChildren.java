@@ -52,7 +52,7 @@ public class AllChildren extends MotechBaseRepository<Child> {
     }
 
     @View(name = "by_date_of_birth",
-            map = "function(doc) { if (doc.type === 'Child' && !doc.isClosed && doc.dateOfBirth) { emit(doc.dateOfBirth); } }")
+            map = "function(doc) { if (doc.type === 'Child' && doc.isClosed === 'false' && doc.dateOfBirth) { emit(doc.dateOfBirth); } }")
     public List<Child> findAllChildrenLessThanOneYearOldAsOfDate(LocalDate date) {
         return db.queryView(createQuery("by_date_of_birth")
                 .startKey(date.minusYears(1))
@@ -73,7 +73,7 @@ public class AllChildren extends MotechBaseRepository<Child> {
     }
 
     @View(name = "all_open_children_by_mother_id",
-            map = "function(doc) { if (doc.type === 'Child' && !doc.isClosed && doc.motherCaseId) { emit(doc.motherCaseId); } }")
+            map = "function(doc) { if (doc.type === 'Child' && doc.isClosed === 'false' && doc.motherCaseId) { emit(doc.motherCaseId); } }")
     public List<Child> findAllOpenChildrenByMotherId(List<String> motherIds) {
         return db.queryView(createQuery("all_open_children_by_mother_id")
                 .keys(motherIds)
@@ -90,7 +90,7 @@ public class AllChildren extends MotechBaseRepository<Child> {
     }
 
     @View(name = "all_open_children",
-            map = "function(doc) { if (doc.type === 'Child' && !doc.isClosed && doc.anmIdentifier) { emit(doc.anmIdentifier); } }",
+            map = "function(doc) { if (doc.type === 'Child' && doc.isClosed === 'false' && doc.anmIdentifier) { emit(doc.anmIdentifier); } }",
             reduce = "_count")
     public Map<String, Integer> openChildCount(List<String> anmIdentifiers) {
         List<ViewResult.Row> rows = db.queryView(createQuery("all_open_children")

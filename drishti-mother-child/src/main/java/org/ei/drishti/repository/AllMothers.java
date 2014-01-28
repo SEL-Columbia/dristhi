@@ -62,7 +62,7 @@ public class AllMothers extends MotechBaseRepository<Mother> {
     }
 
     @View(name = "all_open_mothers_by_ec_caseId",
-            map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.ecCaseId) { emit(doc.ecCaseId); } }")
+            map = "function(doc) { if (doc.type === 'Mother' && doc.isClosed === 'false' && doc.ecCaseId) { emit(doc.ecCaseId); } }")
     public List<Mother> findAllOpenMothersByECCaseId(List<String> ecIds) {
         return db.queryView(createQuery("all_open_mothers_by_ec_caseId")
                 .keys(ecIds)
@@ -71,7 +71,7 @@ public class AllMothers extends MotechBaseRepository<Mother> {
     }
 
     @View(name = "all_open_mothers_by_anmId",
-            map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.anmIdentifier && doc.details.type === 'ANC') { emit(doc.anmIdentifier); } }")
+            map = "function(doc) { if (doc.type === 'Mother' && doc.isClosed === 'false' && doc.anmIdentifier && doc.details.type === 'ANC') { emit(doc.anmIdentifier); } }")
     public List<Mother> findAllOpenMothersForANM(String anmIdentifier) {
         return db.queryView(createQuery("all_open_mothers_by_anmId")
                 .key(anmIdentifier)
@@ -79,7 +79,7 @@ public class AllMothers extends MotechBaseRepository<Mother> {
     }
 
     @View(name = "all_open_mothers_count",
-            map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.anmIdentifier && doc.details.type === 'ANC') { emit(doc.anmIdentifier); } }",
+            map = "function(doc) { if (doc.type === 'Mother' && doc.isClosed === 'false' && doc.anmIdentifier && doc.details.type === 'ANC') { emit(doc.anmIdentifier); } }",
             reduce = "_count")
     public Map<String, Integer> allOpenMotherCount(List<String> anmIdentifiers) {
         List<ViewResult.Row> rows = db.queryView(createQuery("all_open_mothers_count")
@@ -95,7 +95,7 @@ public class AllMothers extends MotechBaseRepository<Mother> {
     }
 
     @View(name = "all_open_pncs",
-            map = "function(doc) { if (doc.type === 'Mother' && !doc.isClosed && doc.anmIdentifier && doc.details.type === 'PNC') { emit(doc.anmIdentifier); } }",
+            map = "function(doc) { if (doc.type === 'Mother' && doc.isClosed === 'false' && doc.anmIdentifier && doc.details.type === 'PNC') { emit(doc.anmIdentifier); } }",
             reduce = "_count")
     public Map<String, Integer> allOpenPNCCount(List<String> anmIdentifiers) {
         List<ViewResult.Row> rows = db.queryView(createQuery("all_open_pncs")
