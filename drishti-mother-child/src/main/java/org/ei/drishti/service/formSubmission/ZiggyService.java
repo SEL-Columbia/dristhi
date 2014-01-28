@@ -19,12 +19,9 @@ public class ZiggyService {
     public static final String JAVA_SCRIPT = "JavaScript";
     private static Logger logger = LoggerFactory.getLogger(ZiggyService.class.toString());
     private static final String SAVE_METHOD_NAME = "createOrUpdateEntity";
-    private static final String JS_INIT_SCRIPT = "var formDataRepository = new enketo.FormDataRepository();\n" +
-            "    var controller = new enketo.FormDataController(\n" +
-            "        new enketo.EntityRelationshipLoader(),\n" +
-            "        new enketo.FormDefinitionLoader(),\n" +
-            "        new enketo.FormModelMapper(formDataRepository, new enketo.SQLQueryBuilder(formDataRepository), new enketo.IdFactory(new enketo.IdFactoryBridge())),\n" +
-            "        formDataRepository, new enketo.FormSubmissionRouter());";
+    private static final String JS_INIT_SCRIPT = "require([\"ziggy/FormDataController\"], function (FormDataController) {\n" +
+            "    controller = FormDataController;\n" +
+            "});";
     private static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     private static final String REPOSITORY = "formDataRepositoryContext";
     private static final String FORM_SUBMISSION_ROUTER = "formSubmissionRouter";
