@@ -102,6 +102,10 @@ public class AllConstants {
         public static final String HEAD_OF_HOUSEHOLD = "headOfHousehold";
         public static final String NUMBER_OF_LIVING_MALE_CHILDREN = "numberOfLivingMaleChildren";
         public static final String NUMBER_OF_LIVING_FEMALE_CHILDREN = "numberOfLivingFemaleChild";
+        public static final String SC_VALUE = "sc";
+        public static final String ST_VALUE = "st";
+        public static final String C_OTHERS_VALUE = "c_others";
+
     }
 
     public static class DeliveryOutcomeFields {
