@@ -1922,6 +1922,90 @@
                         "CurrentFPMethodIsCentchromanRule",
                         "MoreThanZeroCentchromanPillsSuppliedRule"
                     ]
+                },
+                {
+                    "indicator": "IUD",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "currentMethod"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsIUDRule"
+                    ]
+                },
+                {
+                    "indicator": "MALE_STERILIZATION",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "currentMethod"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsMaleSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "FEMALE_STERILIZATION",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "currentMethod"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "FS_APL",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "familyPlanningMethodChangeDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "economicStatus"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsEconomicStatusIsAPLRule"
+                    ]
+                },
+                {
+                    "indicator": "FS_BPL",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "familyPlanningMethodChangeDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "economicStatus"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsEconomicStatusIsBPLRule"
+                    ]
                 }
             ]
         },

@@ -83,6 +83,8 @@ public class AllConstants {
         public static final String CASTE = "caste";
         public static final String RELIGION = "religion";
         public static final String ECONOMIC_STATUS = "economicStatus";
+        public static final String ECONOMIC_STATUS_APL_VALUE = "apl";
+        public static final String ECONOMIC_STATUS_BPL_VALUE = "bpl";
         public static final String AADHAR_NUMBER = "aadharNumber";
         public static final String HOUSEHOLD_ADDRESS = "householdAddress";
         public static final String WIFE_AGE = "wifeAge";
