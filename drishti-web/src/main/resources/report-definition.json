@@ -421,6 +421,105 @@
                         "CurrentFPMethodIsCentchromanRule",
                         "MoreThanZeroCentchromanPillsSuppliedRule"
                     ]
+                },
+                {
+                    "indicator": "CONDOM",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "numberOfCondomsSupplied",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsCondomRule",
+                        "MoreThanZeroCondomsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "OCP",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "numberOfOCPDelivered",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "OCP_SC",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "numberOfOCPDelivered",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "caste"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule",
+                        "CasteIsSCRule"
+                    ]
+                },
+                {
+                    "indicator": "OCP_ST",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "numberOfOCPDelivered",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "caste"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule",
+                        "CasteIsSTRule"
+                    ]
+                },
+                {
+                    "indicator": "OCP_C_OTHERS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "numberOfOCPDelivered",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "caste"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule",
+                        "CasteIsOthersRule"
+                    ]
                 }
             ]
         },
