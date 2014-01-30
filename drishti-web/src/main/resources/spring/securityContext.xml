@@ -13,6 +13,7 @@
         <security:intercept-url pattern="/anms" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/aggregated-reports" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/registers/anc" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/registers/ec" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/**" access="ROLE_USER"/>
         <security:http-basic/>
     </security:http>
