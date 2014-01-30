@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
@@ -10,7 +11,6 @@ import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.service.scheduling.PNCSchedulesService;
-import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -357,6 +357,7 @@ public class PNCServiceTest extends BaseUnitTest {
 
         verify(allMothers).close("MOTHER-CASE-1");
         verify(actionService).markAllAlertsAsInactive("MOTHER-CASE-1");
+        verify(actionService).closeMother("MOTHER-CASE-1", "ANM 1", "Auto Close PNC");
         verifyZeroInteractions(motherReportingService);
     }
 

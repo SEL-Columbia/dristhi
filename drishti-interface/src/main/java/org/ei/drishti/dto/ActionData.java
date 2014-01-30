@@ -4,7 +4,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,15 +31,15 @@ public class ActionData {
                 .with("completionDate", completionDate);
     }
 
-    public static ActionData updateBirthPlanning(Map<String, String> details) {
-        return new ActionData("mother", "updateBirthPlanning")
-                .withDetails(details);
-    }
-
     public static ActionData reportForIndicator(String indicator, String annualTarget, String monthSummaries) {
         return new ActionData("report", indicator)
                 .with("annualTarget", annualTarget)
                 .with("monthlySummaries", monthSummaries);
+    }
+
+    public static ActionData closeMother(String reasonForClose) {
+        return new ActionData("mother", "close")
+                .with("reasonForClose", reasonForClose);
     }
 
     public static ActionData from(String actionType, String actionTarget, Map<String, String> data, Map<String, String> details) {

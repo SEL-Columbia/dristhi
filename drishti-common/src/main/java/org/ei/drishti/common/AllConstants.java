@@ -10,6 +10,7 @@ public class AllConstants {
     public static final String SPACE = " ";
     public static final String BOOLEAN_TRUE_VALUE = "true";
     public static final String BOOLEAN_FALSE_VALUE = "false";
+    public static final String AUTO_CLOSE_PNC_CLOSE_REASON = "Auto Close PNC";
 
     public static class Form {
         public static final String ENTITY_ID = "entityId";

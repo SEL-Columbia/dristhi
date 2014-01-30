@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.ei.drishti.dto.BeneficiaryType.*;
 
@@ -58,6 +57,10 @@ public class ActionService {
 
     public void markAlertAsClosed(String caseId, String anmIdentifier, String visitCode, String completionDate) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
+    }
+
+    public void closeMother(String caseId, String anmIdentifier, String reasonForClose) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.closeMother(reasonForClose)));
     }
 
     public void reportForIndicator(String anmIdentifier, ActionData actionData) {

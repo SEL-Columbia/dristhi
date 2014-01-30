@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
@@ -115,6 +116,7 @@ public class PNCService {
         logger.info(format("Auto closing mother case with entity id {0} as the Post-pregnancy period has elapsed.", entityId));
         allMothers.close(entityId);
         actionService.markAllAlertsAsInactive(entityId);
+        actionService.closeMother(entityId, mother.anmIdentifier(), AllConstants.AUTO_CLOSE_PNC_CLOSE_REASON);
     }
 
     public void pncVisitHappened(FormSubmission submission) {
