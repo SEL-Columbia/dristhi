@@ -50,6 +50,7 @@ public class AllConstants {
         public static final String PNC_REGISTRATION_OA_SUB_FORM_NAME = "child_registration_oa";
         public static final String PNC_VISIT_CHILD_SUB_FORM_NAME = "child_pnc_visit";
         public static final String VITAMIN_A = "vitamin_a";
+        public static final String PPFP = "postpartum_family_planning";
     }
 
     public static class Report {
@@ -108,6 +109,9 @@ public class AllConstants {
         public static final String SC_VALUE = "sc";
         public static final String ST_VALUE = "st";
         public static final String C_OTHERS_VALUE = "c_others";
+        public static final String IS_OUT_OF_AREA_TRUE = "true";
+        public static final String IS_OUT_OF_AREA_FALSE = "false";
+        public static final String IS_OUT_OF_AREA = "isOutOfArea";
 
     }
 

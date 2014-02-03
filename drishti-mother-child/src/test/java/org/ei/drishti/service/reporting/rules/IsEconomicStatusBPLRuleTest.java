@@ -9,13 +9,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class IsEconomicStatusIsBPLRuleTest {
+public class IsEconomicStatusBPLRuleTest {
 
-    IsEconomicStatusIsBPLRule rule;
+    IsEconomicStatusBPLRule rule;
 
     @Before
     public void setUp() {
-        rule = new IsEconomicStatusIsBPLRule();
+        rule = new IsEconomicStatusBPLRule();
     }
 
     @Test

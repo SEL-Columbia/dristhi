@@ -4,14 +4,14 @@ import org.ei.drishti.util.SafeMap;
 import org.springframework.stereotype.Component;
 
 import static org.ei.drishti.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS;
-import static org.ei.drishti.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS_APL_VALUE;
+import static org.ei.drishti.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS_BPL_VALUE;
 
 @Component
-public class IsEconomicStatusIsAPLRule implements IRule {
+public class IsEconomicStatusBPLRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {
-        return ECONOMIC_STATUS_APL_VALUE.equalsIgnoreCase(reportFields.get(ECONOMIC_STATUS));
+        return ECONOMIC_STATUS_BPL_VALUE.equalsIgnoreCase(reportFields.get(ECONOMIC_STATUS));
     }
 }
 

@@ -1933,8 +1933,16 @@
                         "familyPlanningMethodChangeDate",
                         "currentMethod"
                     ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "ecId",
+                        "fields": [
+                            "isOutOfArea"
+                        ]
+                    },
                     "reportWhen": [
-                        "CurrentFPMethodIsIUDRule"
+                        "CurrentFPMethodIsIUDRule",
+                        "IsNotOutOfAreaRule"
                     ]
                 },
                 {
@@ -1947,8 +1955,16 @@
                         "familyPlanningMethodChangeDate",
                         "currentMethod"
                     ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "ecId",
+                        "fields": [
+                            "isOutOfArea"
+                        ]
+                    },
                     "reportWhen": [
-                        "CurrentFPMethodIsMaleSterilizationRule"
+                        "CurrentFPMethodIsMaleSterilizationRule",
+                        "IsNotOutOfAreaRule"
                     ]
                 },
                 {
@@ -1961,8 +1977,16 @@
                         "familyPlanningMethodChangeDate",
                         "currentMethod"
                     ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "ecId",
+                        "fields": [
+                            "isOutOfArea"
+                        ]
+                    },
                     "reportWhen": [
-                        "CurrentFPMethodIsFemaleSterilizationRule"
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsNotOutOfAreaRule"
                     ]
                 },
                 {
@@ -1976,14 +2000,16 @@
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
-                        "idField": "id",
+                        "idField": "ecId",
                         "fields": [
+                            "isOutOfArea",
                             "economicStatus"
                         ]
                     },
                     "reportWhen": [
                         "CurrentFPMethodIsFemaleSterilizationRule",
-                        "IsEconomicStatusIsAPLRule"
+                        "IsNotOutOfAreaRule",
+                        "IsEconomicStatusAPLRule"
                     ]
                 },
                 {
@@ -1997,14 +2023,16 @@
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
-                        "idField": "id",
+                        "idField": "ecId",
                         "fields": [
+                            "isOutOfArea",
                             "economicStatus"
                         ]
                     },
                     "reportWhen": [
                         "CurrentFPMethodIsFemaleSterilizationRule",
-                        "IsEconomicStatusIsBPLRule"
+                        "IsNotOutOfAreaRule",
+                        "IsEconomicStatusBPLRule"
                     ]
                 }
             ]

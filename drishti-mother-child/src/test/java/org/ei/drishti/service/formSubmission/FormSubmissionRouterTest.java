@@ -66,6 +66,8 @@ public class FormSubmissionRouterTest {
     @Mock
     private DeliveryPlanHandler deliveryPlanHandler;
     @Mock
+    private PostpartumFamilyPlanningHandler postpartumFamilyPlanningHandler;
+    @Mock
     private FormSubmissionReportService formSubmissionReportService;
 
     private FormSubmissionRouter router;
@@ -98,7 +100,9 @@ public class FormSubmissionRouterTest {
                 childImmunizationsHandler,
                 childIllnessHandler,
                 childCloseHandler,
-                deliveryPlanHandler, formSubmissionReportService);
+                deliveryPlanHandler,
+                postpartumFamilyPlanningHandler,
+                formSubmissionReportService);
     }
 
     @Test
@@ -381,6 +385,18 @@ public class FormSubmissionRouterTest {
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(deliveryPlanHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegatePostpartumFamilyPlanningFormSubmissionHandlingToPostpartumFamilyPlanningHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "postpartum_family_planning", "entity id 1", 0L, "1", null, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(postpartumFamilyPlanningHandler).handle(formSubmission);
         verify(formSubmissionReportService).reportFor(formSubmission);
     }
 }

@@ -50,6 +50,7 @@ public class FormSubmissionRouter {
                                 ChildIllnessHandler childIllnessHandler,
                                 ChildCloseHandler childCloseHandler,
                                 DeliveryPlanHandler deliveryPlanHandler,
+                                PostpartumFamilyPlanningHandler postpartumFamilyPlanningHandler,
                                 FormSubmissionReportService formSubmissionReportService) {
         this.formSubmissionsRepository = formSubmissionsRepository;
         this.formSubmissionReportService = formSubmissionReportService;
@@ -80,6 +81,7 @@ public class FormSubmissionRouter {
                 .put(CHILD_ILLNESS, childIllnessHandler)
                 .put(CHILD_CLOSE, childCloseHandler)
                 .put(VITAMIN_A, vitaminAHandler)
+                .put(PPFP, postpartumFamilyPlanningHandler)
                 .map();
     }
 

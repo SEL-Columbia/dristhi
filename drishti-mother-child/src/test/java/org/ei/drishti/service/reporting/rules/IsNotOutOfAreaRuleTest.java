@@ -9,25 +9,25 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class IsEconomicStatusIsAPLRuleTest {
+public class IsNotOutOfAreaRuleTest {
 
-    IsEconomicStatusIsAPLRule rule;
+    IsNotOutOfAreaRule rule;
 
     @Before
     public void setUp() {
-        rule = new IsEconomicStatusIsAPLRule();
+        rule = new IsNotOutOfAreaRule();
     }
 
     @Test
-    public void shouldReturnFalseWhenEconomicStatusIsNotAPL() {
-        boolean didRuleSucceed = rule.apply(new SafeMap(mapOf("economicStatus", "bpl")));
+    public void shouldReturnFalseWhenTheEntityIsOutOfArea() {
+        boolean didRuleSucceed = rule.apply(new SafeMap(mapOf("isOutOfArea", "true")));
 
         assertFalse(didRuleSucceed);
     }
 
     @Test
-    public void shouldReturnFalseWhenEconomicStatusIsAPL() {
-        boolean didRuleSucceed = rule.apply(new SafeMap(mapOf("economicStatus", "apl")));
+    public void shouldReturnTrueWhenTheEntityNotIsOutOfArea() {
+        boolean didRuleSucceed = rule.apply(new SafeMap(mapOf("isOutOfArea", "false")));
 
         assertTrue(didRuleSucceed);
     }
