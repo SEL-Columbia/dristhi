@@ -52,7 +52,7 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
     }
 
     @View(name = "all_out_of_area",
-            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && doc.isOutOfArea) { emit(doc.caseId); } }")
+            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && doc.isOutOfArea === 'true') { emit(doc.caseId); } }")
     public List<EligibleCouple> findAllOutOfAreaCouples() {
         return db.queryView(createQuery("all_out_of_area")
                 .includeDocs(true),
@@ -77,7 +77,7 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
     }
 
     @View(name = "all_open_ecs",
-            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && !doc.isOutOfArea && doc.anmIdentifier) { emit(doc.anmIdentifier); } }",
+            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && doc.isOutOfArea === 'false' && doc.anmIdentifier) { emit(doc.anmIdentifier); } }",
             reduce = "_count")
     public Map<String, Integer> allOpenECs(List<String> anmIdentifiers) {
         List<ViewResult.Row> rows = db.queryView(createQuery("all_open_ecs")
@@ -93,7 +93,7 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
     }
 
     @View(name = "all_open_ecs_for_anm",
-            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && !doc.isOutOfArea && doc.anmIdentifier) { emit(doc.anmIdentifier); } }")
+            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && doc.isOutOfArea === 'false' && doc.anmIdentifier) { emit(doc.anmIdentifier); } }")
     public List<EligibleCouple> allOpenECsForANM(String anmIdentifier) {
         return db.queryView(createQuery("all_open_ecs_for_anm")
                 .key(anmIdentifier)
@@ -101,7 +101,7 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
     }
 
     @View(name = "all_open_fps",
-            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && !doc.isOutOfArea && doc.anmIdentifier && doc.details.currentMethod && doc.details.currentMethod !== 'none') { emit(doc.anmIdentifier); } }",
+            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && doc.isOutOfArea === 'false' && doc.anmIdentifier && doc.details.currentMethod && doc.details.currentMethod !== 'none') { emit(doc.anmIdentifier); } }",
             reduce = "_count")
     public Map<String, Integer> fpCountForANM(List<String> anmIdentifiers) {
         List<ViewResult.Row> rows = db.queryView(createQuery("all_open_fps")

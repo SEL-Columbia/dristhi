@@ -50,6 +50,7 @@ public class FormDataRepositoryIntegrationTest {
                         .put("currentMethod", "ocp")
                         .put("isHighPriority", "no")
                         .put("isClosed", "false")
+                        .put("isOutOfArea", "false")
                         .map();
         String fieldsJSON = new Gson().toJson(fields);
 
@@ -80,6 +81,7 @@ public class FormDataRepositoryIntegrationTest {
                         .put("currentMethod", "ocp")
                         .put("isHighPriority", "no")
                         .put("isClosed", "false")
+                        .put("isOutOfArea", "false")
                         .map();
         String fieldsJSON = new Gson().toJson(fields);
 

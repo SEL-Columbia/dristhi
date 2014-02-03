@@ -36,7 +36,7 @@ public class EligibleCouple extends MotechBaseDataObject {
     @JsonProperty
     private String phc;
     @JsonProperty
-    private boolean isOutOfArea;
+    private String isOutOfArea;
     @JsonProperty
     private String isClosed;
     @JsonProperty
@@ -48,6 +48,7 @@ public class EligibleCouple extends MotechBaseDataObject {
     public EligibleCouple(String caseId, String ecNumber) {
         this.caseId = caseId;
         this.ecNumber = ecNumber;
+        this.isOutOfArea = "false";
         this.setIsClosed(false);
     }
 
@@ -75,7 +76,7 @@ public class EligibleCouple extends MotechBaseDataObject {
     }
 
     public EligibleCouple asOutOfArea() {
-        this.isOutOfArea = true;
+        this.isOutOfArea = "true";
         return this;
     }
 
