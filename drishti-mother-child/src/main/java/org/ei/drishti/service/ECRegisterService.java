@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
 import static org.ei.drishti.common.AllConstants.ECRegistrationFields.*;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
@@ -37,10 +36,7 @@ public class ECRegisterService {
         ArrayList<ECRegisterEntry> ecRegisterEntries = new ArrayList<>();
         List<EligibleCouple> ecs = allEligibleCouples.allOpenECsForANM(anmIdentifier);
         for (EligibleCouple ec : ecs) {
-            Integer gravida = Integer.parseInt(ec.getDetail(NUMBER_OF_LIVING_CHILDREN)) +
-                    Integer.parseInt(ec.getDetail(NUMBER_OF_STILL_BIRTHS)) +
-                    Integer.parseInt(ec.getDetail(NUMBER_OF_ABORTIONS));
-            List<Mother> mothers = allMothers.findAllOpenMothersByECCaseId(asList(ec.caseId()));
+            List<Mother> mothers = allMothers.findAllOpenANCByECCaseId(ec.caseId());
             boolean isPregnant = mothers.size() > 0;
             ECRegisterEntry ecRegisterEntry = new ECRegisterEntry()
                     .withECNumber(ec.ecNumber())
@@ -64,7 +60,7 @@ public class ECRegisterService {
                     .withNumberOfStillBirths(ec.getDetail(NUMBER_OF_STILL_BIRTHS))
                     .withNumberOfAbortions(ec.getDetail(NUMBER_OF_ABORTIONS))
                     .withParity(ec.getDetail(PARITY))
-                    .withGravida(gravida.toString())
+                    .withGravida(ec.gravida())
                     .withNumberOfLivingMaleChildren(ec.getDetail(NUMBER_OF_LIVING_MALE_CHILDREN))
                     .withNumberOfLivingFemaleChildren(ec.getDetail(NUMBER_OF_LIVING_FEMALE_CHILDREN))
                     .withYoungestChildAge(ec.getDetail(YOUNGEST_CHILD_AGE))

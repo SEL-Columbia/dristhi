@@ -13,8 +13,7 @@ import org.motechproject.model.MotechBaseDataObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ei.drishti.common.AllConstants.ECRegistrationFields.WIFE_AGE;
-import static org.ei.drishti.common.AllConstants.ECRegistrationFields.WIFE_DOB;
+import static org.ei.drishti.common.AllConstants.ECRegistrationFields.*;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
 
 @TypeDiscriminator("doc.type === 'EligibleCouple'")
@@ -135,6 +134,13 @@ public class EligibleCouple extends MotechBaseDataObject {
 
     public String getDetail(String name) {
         return details.get(name);
+    }
+
+    public String gravida() {
+        Integer gravida = IntegerUtil.tryParse(getDetail(NUMBER_OF_LIVING_CHILDREN), 0) +
+                IntegerUtil.tryParse(getDetail(NUMBER_OF_STILL_BIRTHS), 0) +
+                IntegerUtil.tryParse(getDetail(NUMBER_OF_ABORTIONS), 0);
+        return gravida.toString();
     }
 
     @Override

@@ -70,6 +70,15 @@ public class AllMothers extends MotechBaseRepository<Mother> {
                 Mother.class);
     }
 
+    @View(name = "all_open_anc_by_ec_caseId",
+            map = "function(doc) { if (doc.type === 'Mother' && doc.isClosed === 'false' && doc.details.type === 'ANC' && doc.ecCaseId) { emit(doc.ecCaseId); } }")
+    public List<Mother> findAllOpenANCByECCaseId(String ecId) {
+        return db.queryView(createQuery("all_open_anc_by_ec_caseId")
+                .key(ecId)
+                .includeDocs(true),
+                Mother.class);
+    }
+
     @View(name = "all_open_mothers_by_anmId",
             map = "function(doc) { if (doc.type === 'Mother' && doc.isClosed === 'false' && doc.anmIdentifier && doc.details.type === 'ANC') { emit(doc.anmIdentifier); } }")
     public List<Mother> findAllOpenMothersForANM(String anmIdentifier) {

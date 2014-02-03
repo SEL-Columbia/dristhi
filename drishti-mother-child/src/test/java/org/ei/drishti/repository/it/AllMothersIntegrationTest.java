@@ -17,6 +17,7 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.EasyMap.create;
+import static org.ei.drishti.common.util.EasyMap.mapOf;
 import static org.ei.drishti.util.Matcher.hasSameFieldsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -160,6 +161,27 @@ public class AllMothersIntegrationTest {
         assertEquals(2, openMothersCount.size());
         assertEquals(2, (long) openMothersCount.get("demo1"));
         assertEquals(1, (long) openMothersCount.get("demo2"));
+    }
+
+    @Test
+    public void shouldFindOpenANCByECCaseId() {
+        Mother motherForEC1 = new Mother("mother id 1", "ec id 1", "thayi 1").withDetails(mapOf("type", "ANC"));
+        Mother closedMotherForEC1 = new Mother("mother id 2", "ec id 1", "thayi 2").setIsClosed(true);
+        Mother motherForEC2 = new Mother("mother id 3", "ec id 2", "thayi 2");
+        Mother pncMotherForEC1 = new Mother("mother id 3", "ec id 2", "thayi 2").withDetails(mapOf("type", "PNC"));
+
+        allMothers.add(motherForEC1);
+        allMothers.add(closedMotherForEC1);
+        allMothers.add(motherForEC2);
+        allMothers.add(pncMotherForEC1);
+
+        List<Mother> mothers = allMothers.findAllOpenANCByECCaseId("ec id 1");
+
+        assertTrue(mothers.containsAll(asList(motherForEC1)));
+        assertFalse(mothers.contains(closedMotherForEC1));
+        assertFalse(mothers.contains(motherForEC2));
+        assertFalse(mothers.contains(closedMotherForEC1));
+        assertFalse(mothers.contains(pncMotherForEC1));
     }
 
     @Test

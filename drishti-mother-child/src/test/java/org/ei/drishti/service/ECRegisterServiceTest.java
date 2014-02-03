@@ -75,7 +75,7 @@ public class ECRegisterServiceTest {
                                 .map()
                 );
         when(allEligibleCouples.allOpenECsForANM("anm1")).thenReturn(asList(eligibleCouple));
-        when(allMothers.findAllOpenMothersByECCaseId(asList("ecCaseId"))).thenReturn(asList(mother));
+        when(allMothers.findAllOpenANCByECCaseId("ecCaseId")).thenReturn(asList(mother));
         ECRegister expectedRegister = new ECRegister(asList(new ECRegisterEntry()
                 .withECNumber("123")
                 .withRegistrationDate("2013-01-01")
