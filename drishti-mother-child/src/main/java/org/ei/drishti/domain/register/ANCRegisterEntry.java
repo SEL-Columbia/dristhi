@@ -5,6 +5,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.LocalDate;
 
+import java.util.List;
+import java.util.Map;
+
 public class ANCRegisterEntry {
     private String ancNumber;
     private String registrationDate;
@@ -34,6 +37,9 @@ public class ANCRegisterEntry {
     private String height;
     private String bloodGroup;
     private String isHRP;
+    private List<Map<String, String>> ancVisits;
+    private List<Map<String, String>> ifaTablets;
+    private List<Map<String, String>> ttDoses;
 
     public ANCRegisterEntry withANCNumber(String ancNumber) {
         this.ancNumber = ancNumber;
@@ -179,6 +185,21 @@ public class ANCRegisterEntry {
         return this;
     }
 
+    public ANCRegisterEntry withANCVisits(List<Map<String, String>> ancVisits) {
+        this.ancVisits = ancVisits;
+        return this;
+    }
+
+    public ANCRegisterEntry withIFATablets(List<Map<String, String>> ifaTablets) {
+        this.ifaTablets = ifaTablets;
+        return this;
+    }
+
+    public ANCRegisterEntry withTTDoses(List<Map<String, String>> ttDoses) {
+        this.ttDoses = ttDoses;
+        return this;
+    }
+
     public String ancNumber() {
         return ancNumber;
     }
@@ -289,6 +310,18 @@ public class ANCRegisterEntry {
 
     public String isHRP() {
         return isHRP;
+    }
+
+    public List<Map<String, String>> ancVisits() {
+        return ancVisits;
+    }
+
+    public List<Map<String, String>> ifaTablets() {
+        return ifaTablets;
+    }
+
+    public List<Map<String, String>> ttDoses() {
+        return ttDoses;
     }
 
     @Override

@@ -36,6 +36,19 @@ public class ANCRegisterServiceTest {
     public void shouldGetANCRegisterForAGivenANM() throws Exception {
         Mother mother = new Mother("caseId", "ecCaseId", "thayi card number 1")
                 .withLMP(LocalDate.parse("2013-12-30"))
+                .withANCVisits(asList(
+                        create("ancVisitDate", "2013-01-01")
+                                .put("weight", "55")
+                                .put("bpSystolic", "120")
+                                .put("bpDiastolic", "80")
+                                .map()))
+                .withIFATablets(asList(
+                        create("ifaTabletsDate", "2013-05-24")
+                                .put("numberOfIFATabletsGiven", "30")
+                                .map()))
+                .withTTDoses(asList(create("ttDate", "2012-12-24")
+                        .put("ttDose", "tt1")
+                        .map()))
                 .withDetails(
                         create("ancNumber", "OA899")
                                 .put("registrationDate", "2014-01-01")
@@ -96,7 +109,21 @@ public class ANCRegisterServiceTest {
                 .withEDD("2014-09-01")
                 .withHeight("150")
                 .withBloodGroup("o -ve")
-                .withIsHRP("yes")));
+                .withIsHRP("yes")
+                .withANCVisits(asList(
+                        create("ancVisitDate", "2013-01-01")
+                                .put("weight", "55")
+                                .put("bpSystolic", "120")
+                                .put("bpDiastolic", "80")
+                                .map()))
+                .withIFATablets(asList(
+                        create("ifaTabletsDate", "2013-05-24")
+                                .put("numberOfIFATabletsGiven", "30")
+                                .map()))
+                .withTTDoses(asList(create("ttDate", "2012-12-24")
+                        .put("ttDose", "tt1")
+                        .map())))
+        );
 
         ANCRegister register = registerService.getRegisterForANM("anm1");
 

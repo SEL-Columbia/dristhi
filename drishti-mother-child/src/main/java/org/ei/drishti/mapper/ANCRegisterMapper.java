@@ -5,8 +5,6 @@ import org.ei.drishti.domain.register.ANCRegister;
 import org.ei.drishti.domain.register.ANCRegisterEntry;
 import org.ei.drishti.dto.register.ANCRegisterDTO;
 import org.ei.drishti.dto.register.ANCRegisterEntryDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,8 +13,6 @@ import static ch.lambdaj.collection.LambdaCollections.with;
 
 @Component
 public class ANCRegisterMapper {
-    private static Logger logger = LoggerFactory.getLogger(ANCRegisterMapper.class.toString());
-
     public ANCRegisterDTO mapToDTO(ANCRegister ancRegister) {
         List<ANCRegisterEntryDTO> ancRegisterEntryDTOs =
                 with(ancRegister.ancRegisterEntries())
@@ -51,7 +47,10 @@ public class ANCRegisterMapper {
                                         .withEDD(entry.edd())
                                         .withHeight(entry.height())
                                         .withBloodGroup(entry.bloodGroup())
-                                        .withIsHRP(entry.isHRP());
+                                        .withIsHRP(entry.isHRP())
+                                        .withANCVisits(entry.ancVisits())
+                                        .withIFATablets(entry.ifaTablets())
+                                        .withTTDoses(entry.ttDoses());
                             }
                         });
         return new ANCRegisterDTO(ancRegisterEntryDTOs);

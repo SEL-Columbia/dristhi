@@ -70,7 +70,10 @@ public class ANCRegisterService {
                     .withEDD(mother.getDetail(EDD))
                     .withHeight(mother.getDetail(HEIGHT))
                     .withBloodGroup(mother.getDetail(BLOOD_GROUP))
-                    .withIsHRP(mother.getDetail(IS_HIGH_RISK));
+                    .withIsHRP(mother.getDetail(IS_HIGH_RISK))
+                    .withANCVisits(mother.ancVisits())
+                    .withIFATablets(mother.ifaTablets())
+                    .withTTDoses(mother.ttDoses());
             ancRegisterEntries.add(entry);
         }
         return new ANCRegister(ancRegisterEntries);

@@ -6,6 +6,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.LocalDate;
 
+import java.util.List;
+import java.util.Map;
+
 public class ANCRegisterEntryDTO {
     @JsonProperty
     private String ancNumber;
@@ -63,6 +66,13 @@ public class ANCRegisterEntryDTO {
     private String bloodGroup;
     @JsonProperty
     private String isHRP;
+    @JsonProperty
+    private List<Map<String, String>> ancVisits;
+    @JsonProperty
+    private List<Map<String, String>> ifaTablets;
+    @JsonProperty
+    private List<Map<String, String>> ttDoses;
+
 
     public ANCRegisterEntryDTO withANCNumber(String ancNumber) {
         this.ancNumber = ancNumber;
@@ -205,6 +215,21 @@ public class ANCRegisterEntryDTO {
 
     public ANCRegisterEntryDTO withIsHRP(String isHRP) {
         this.isHRP = isHRP;
+        return this;
+    }
+
+    public ANCRegisterEntryDTO withANCVisits(List<Map<String, String>> ancVisits) {
+        this.ancVisits = ancVisits;
+        return this;
+    }
+
+    public ANCRegisterEntryDTO withIFATablets(List<Map<String, String>> ifaTablets) {
+        this.ifaTablets = ifaTablets;
+        return this;
+    }
+
+    public ANCRegisterEntryDTO withTTDoses(List<Map<String, String>> ttDoses) {
+        this.ttDoses = ttDoses;
         return this;
     }
 

@@ -132,6 +132,18 @@ public class Mother extends MotechBaseDataObject {
         return LocalDate.parse(referenceDate);
     }
 
+    public List<Map<String, String>> ancVisits() {
+        return ancVisits;
+    }
+
+    public List<Map<String, String>> ifaTablets() {
+        return ifaTablets;
+    }
+
+    public List<Map<String, String>> ttDoses() {
+        return ttDoses;
+    }
+
     public Mother setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);
         return this;
