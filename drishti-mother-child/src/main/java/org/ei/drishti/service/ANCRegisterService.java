@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static ch.lambdaj.Lambda.*;
@@ -37,7 +38,7 @@ public class ANCRegisterService {
     public ANCRegister getRegisterForANM(String anmIdentifier) {
         ArrayList<ANCRegisterEntry> ancRegisterEntries = new ArrayList<>();
         List<Mother> mothers = allMothers.findAllOpenMothersForANM(anmIdentifier);
-        List<String> ecIDs = collect(mothers, on(Mother.class).ecCaseId());
+        List<String> ecIDs = new ArrayList<>(new HashSet<>(collect(mothers, on(Mother.class).ecCaseId())));
         List<EligibleCouple> ecs = allEligibleCouples.findAll(ecIDs);
         for (Mother mother : mothers) {
             EligibleCouple ec = selectUnique(ecs,
