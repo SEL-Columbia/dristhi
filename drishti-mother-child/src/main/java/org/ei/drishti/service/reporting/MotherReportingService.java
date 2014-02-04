@@ -27,9 +27,7 @@ import static ch.lambdaj.Lambda.on;
 import static java.lang.Integer.parseInt;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
-import static org.ei.drishti.common.AllConstants.CommonFormFields.HOME_FIELD_VALUE;
-import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
-import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.*;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
@@ -42,7 +40,6 @@ import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.common.domain.ReportDataUpdateRequest.buildReportDataRequest;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
-import static org.ei.drishti.common.util.IntegerUtil.tryParse;
 import static org.joda.time.LocalDate.parse;
 
 @Service
@@ -126,9 +123,10 @@ public class MotherReportingService {
     public void pncVisitHappened(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
         Location location = loadLocationFromEC(mother);
-        String visitNumber = reportData.get(AllConstants.PNCVisitFormFields.VISIT_NUMBER_FIELD_NAME);
-        if (tryParse(visitNumber, 0) == 3) {
-            reportToBoth(mother, PNC3, reportData.get(AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME), location);
+        String thirdVisitDate = mother.thirdPNCVisitDate();
+        String visitDate = reportData.get(AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME);
+        if (thirdVisitDate != null && parse(visitDate).isEqual(parse(thirdVisitDate))) {
+            reportToBoth(mother, PNC3, visitDate, location);
         }
     }
 

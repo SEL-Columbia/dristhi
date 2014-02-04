@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.util.IntegerUtil;
 import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.LocalDate;
@@ -197,6 +198,13 @@ public class Mother extends MotechBaseDataObject {
             this.ttDoses = new ArrayList<>();
         }
         this.ttDoses.add(ttDose);
+    }
+
+    public String thirdPNCVisitDate() {
+        String[] visitDates = details.get(AllConstants.PNCVisitFormFields.VISIT_DATES_FIELD_NAME).split(" ");
+        if (visitDates.length >= 3)
+            return visitDates[2];
+        return null;
     }
 
     @Override

@@ -550,12 +550,17 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldReportPNCVisit3DuringPNCVisit() throws Exception {
+    public void shouldReportPNCVisit3DuringThirdPNCVisit() throws Exception {
+        Mother mother = new Mother("CASE-1", "EC-CASE-1", "TC 1")
+                .withAnm("ANM X")
+                .withDetails(mapOf("pncVisitDates", "2011-12-25 2011-12-28 2012-01-01"))
+                .withLMP(parse("2012-01-01"));
+
         SafeMap reportData = new SafeMap();
         reportData.put("id", "entity id 1");
+        reportData.put("pncVisitDates", "2011-12-25 2011-12-28 2012-01-01");
         reportData.put("pncVisitDate", "2012-01-01");
-        reportData.put("pncVisitNumber", "3");
-        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.pncVisitHappened(reportData);
@@ -564,31 +569,54 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldNotReportPNCVisit3IfPNCVisitNumberIsNot3() throws Exception {
+    public void shouldNotReportPNCVisit3IfItsNotThirdPNCVisit() throws Exception {
+        Mother mother = new Mother("CASE-1", "EC-CASE-1", "TC 1")
+                .withAnm("ANM X")
+                .withDetails(mapOf("pncVisitDates", "2011-12-25 2011-12-26 2011-12-28 2012-01-01"))
+                .withLMP(parse("2012-01-01"));
+
         SafeMap reportData = new SafeMap();
         reportData.put("id", "entity id 1");
+        reportData.put("pncVisitDates", "2011-12-25 2011-12-26 2011-12-28 2012-01-01");
         reportData.put("pncVisitDate", "2012-01-01");
-        reportData.put("pncVisitNumber", "1");
-        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.pncVisitHappened(reportData);
 
         verifyNoReportingCalls(PNC3, "2012-01-01");
-    }
 
-    @Test
-    public void shouldNotReportPNCVisit3IfPNCVisitNumberIsInvalid() throws Exception {
-        SafeMap reportData = new SafeMap();
+        mother = new Mother("CASE-1", "EC-CASE-1", "TC 1")
+                .withAnm("ANM X")
+                .withDetails(mapOf("pncVisitDates", "2011-12-28 2012-01-01"))
+                .withLMP(parse("2012-01-01"));
+
+        reportData = new SafeMap();
         reportData.put("id", "entity id 1");
+        reportData.put("pncVisitDates", "2011-12-28 2012-01-01");
         reportData.put("pncVisitDate", "2012-01-01");
-        reportData.put("pncVisitNumber", "");
-        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.pncVisitHappened(reportData);
+
+        mother = new Mother("CASE-1", "EC-CASE-1", "TC 1")
+                .withAnm("ANM X")
+                .withDetails(mapOf("pncVisitDates", "2012-01-01"))
+                .withLMP(parse("2012-01-01"));
+
+        verifyNoReportingCalls(PNC3, "2012-01-01");
+        reportData = new SafeMap();
+        reportData.put("id", "entity id 1");
+        reportData.put("pncVisitDates", "2012-01-01");
+        reportData.put("pncVisitDate", "2012-01-01");
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.pncVisitHappened(reportData);
 
         verifyNoReportingCalls(PNC3, "2012-01-01");
+
     }
 
     @Test
@@ -706,5 +734,4 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("maternalDeathDate", "2012-12-12");
         return reportData;
     }
-
 }
