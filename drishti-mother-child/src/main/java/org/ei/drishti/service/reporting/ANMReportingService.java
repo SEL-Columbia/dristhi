@@ -52,6 +52,5 @@ public class ANMReportingService {
 
     public void reportFromEntityData() {
         childReportingService.reportInfantBalance();
-        motherReportingService.reportAllOpenMothersWithBPLEconomicStatus();
     }
 }

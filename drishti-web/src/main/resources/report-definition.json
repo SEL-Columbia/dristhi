@@ -1457,6 +1457,25 @@
             "form": "anc_registration",
             "indicators": [
                 {
+                    "indicator": "ANCS_AND_PNCS_WITH_BPL",
+                    "reportEntityType": "mother",
+                    "reportEntityIdField": "motherId",
+                    "formFields": [
+                        "id",
+                        "motherId"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "economicStatus"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsEconomicStatusBPLRule"
+                    ]
+                },
+                {
                     "indicator": "NRHM_JSY_REG",
                     "reportEntityType": "mother",
                     "serviceProvidedDateField": "registrationDate",
@@ -1475,8 +1494,42 @@
             ]
         },
         {
+            "form": "anc_registration_oa",
+            "indicators": [
+                {
+                    "indicator": "ANCS_AND_PNCS_WITH_BPL",
+                    "reportEntityType": "mother",
+                    "reportEntityIdField": "motherId",
+                    "formFields": [
+                        "motherId",
+                        "economicStatus"
+                    ],
+                    "reportWhen": [
+                        "IsEconomicStatusBPLRule"
+                    ]
+                }
+            ]
+        },
+        {
             "form": "delivery_outcome",
             "indicators": [
+                {
+                    "indicator": "ANCS_AND_PNCS_WITH_BPL",
+                    "reportEntityType": "mother",
+                    "formFields": [
+                        "id"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "ecId",
+                        "fields": [
+                            "economicStatus"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsEconomicStatusBPLRule"
+                    ]
+                },
                 {
                     "indicator": "NRHM_SBA",
                     "reportEntityType": "mother",
@@ -1656,6 +1709,18 @@
         {
             "form": "pnc_registration_oa",
             "indicators": [
+                {
+                    "indicator": "ANCS_AND_PNCS_WITH_BPL",
+                    "reportEntityType": "mother",
+                    "reportEntityIdField": "motherId",
+                    "formFields": [
+                        "motherId",
+                        "economicStatus"
+                    ],
+                    "reportWhen": [
+                        "IsEconomicStatusBPLRule"
+                    ]
+                },
                 {
                     "indicator": "NRHM_SBA",
                     "reportEntityType": "mother",

@@ -1,7 +1,6 @@
 package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
-import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.EligibleCouple;
@@ -10,7 +9,6 @@ import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -18,8 +16,6 @@ import org.motechproject.testing.utils.BaseUnitTest;
 
 import java.util.Map;
 
-import static java.util.Arrays.asList;
-import static org.ei.drishti.common.AllConstants.ReportDataParameters.*;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
@@ -617,55 +613,6 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         verifyNoReportingCalls(PNC3, "2012-01-01");
 
-    }
-
-    @Test
-    public void shouldReportAllOpenMothersWithBPLStatus() throws Exception {
-        EligibleCouple eligibleCouple = new EligibleCouple("ec case id 1", "ec number 1").withANMIdentifier("anm id 1").withLocation("bherya", "Sub Center", "PHC X").withDetails(mapOf("economicStatus", "bpl"));
-        when(allEligibleCouples.findAllBPLCouples()).thenReturn(asList(eligibleCouple));
-        Mother mother = new Mother("mother id 1", "ec case id 1", "thayi card number").withAnm("anm id 1").withLocation("bherya", "Sub Center", "PHC X");
-        when(allMothers.findAllOpenMothersByECCaseId(asList("ec case id 1"))).thenReturn(asList(mother));
-        when(allEligibleCouples.findByCaseId("ec case id 1")).thenReturn(eligibleCouple);
-        when(reportMonth.startOfCurrentReportMonth(any(LocalDate.class))).thenReturn(LocalDate.parse("2013-01-26"));
-        when(reportMonth.endOfCurrentReportMonth(any(LocalDate.class))).thenReturn(LocalDate.parse("2013-02-25"));
-        service.reportAllOpenMothersWithBPLEconomicStatus();
-        verifyBothUpdateReportCalls(Indicator.ANCS_AND_PNCS_WITH_BPL, "2013-01-26", "2013-02-25");
-
-    }
-
-    private void verifyBothUpdateReportCalls(Indicator indicator, String startDate, String endDate) {
-
-        ReportingData serviceProvidedData = new ReportingData("serviceProvided")
-                .with(ANM_IDENTIFIER, "anm id 1")
-                .with(SERVICE_PROVIDER_TYPE, "ANM")
-                .with(INDICATOR, indicator.value())
-                .with(EXTERNAL_ID, "thayi card number")
-                .with(VILLAGE, "bherya")
-                .with(SUB_CENTER, "Sub Center")
-                .with(PHC, "PHC X")
-                .with(SERVICE_PROVIDED_DATE, "2013-01-26");
-
-        ReportingData anmReportData = new ReportingData("anmReportData")
-                .with(ANM_IDENTIFIER, "anm id 1")
-                .with(INDICATOR, indicator.value())
-                .with(EXTERNAL_ID, "mother id 1")
-                .with(SERVICE_PROVIDED_DATE, "2013-01-26");
-
-        ReportDataUpdateRequest serviceProvidedUpdateRequest = new ReportDataUpdateRequest()
-                .withType("serviceProviderType")
-                .withStartDate(startDate)
-                .withEndDate(endDate)
-                .withIndicator(indicator.value())
-                .withReportingData(asList(serviceProvidedData));
-        ReportDataUpdateRequest anmReportUpdateRequest = new ReportDataUpdateRequest()
-                .withType("anmReportData")
-                .withStartDate(startDate)
-                .withEndDate(endDate)
-                .withIndicator(indicator.value())
-                .withReportingData(asList(anmReportData));
-
-        verify(reportingService).updateReportData(serviceProvidedUpdateRequest);
-        verify(reportingService).updateReportData(anmReportUpdateRequest);
     }
 
     private void verifyBothReportingCalls(Indicator indicator, String date) {

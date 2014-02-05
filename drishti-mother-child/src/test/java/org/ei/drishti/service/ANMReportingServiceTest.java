@@ -60,6 +60,5 @@ public class ANMReportingServiceTest {
         anmReportingService.reportFromEntityData();
 
         verify(childReportingService).reportInfantBalance();
-        verify(motherReportingService).reportAllOpenMothersWithBPLEconomicStatus();
     }
 }
