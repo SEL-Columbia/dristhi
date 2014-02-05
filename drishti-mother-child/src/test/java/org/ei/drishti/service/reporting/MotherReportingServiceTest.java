@@ -14,8 +14,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
 
+import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
@@ -185,13 +187,31 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldReportANC4ProvidedWhenANCVisitIsAfter36Weeks() {
+    public void shouldReportANC4ProvidedWhenANCVisitIsAfter36WeeksAndAlready3ANCVisitsHappened() {
         String visitDate = parse("2012-01-01").plusWeeks(36).toString();
+        Map<String, String> ancVisit1 = create("ancVisitDate", "2012-03-04")
+                .put("ancVisitNumber", "1")
+                .map();
+        Map<String, String> ancVisit2 = create("ancVisitDate", "2012-05-04")
+                .put("ancVisitNumber", "2")
+                .map();
+        Map<String, String> ancVisit3 = create("ancVisitDate", "2012-07-04")
+                .put("ancVisitNumber", "3")
+                .map();
+        Map<String, String> ancVisit4 = create("ancVisitDate", visitDate)
+                .put("ancVisitNumber", "4")
+                .map();
+        List<Map<String, String>> ancVisits = asList(ancVisit1, ancVisit2, ancVisit4, ancVisit3);
+        Mother mother = new Mother("CASE-1", "EC-CASE-1", "TC 1")
+                .withAnm("ANM X")
+                .withLMP(parse("2012-01-01"))
+                .withANCVisits(ancVisits);
+
         SafeMap reportData = new SafeMap();
         reportData.put("id", "entity id 1");
         reportData.put("ancVisitDate", visitDate);
         reportData.put("ancVisitNumber", "4");
-        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.ancVisit(reportData);
@@ -200,13 +220,77 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldNotReportANC4WhenANCVisitHappenedIs4ButDoesNotHave3ANCVisitsAlready() {
+        String visitDate = parse("2012-01-01").plusWeeks(36).toString();
+
+        Map<String, String> ancVisit4 = create("ancVisitDate", visitDate)
+                .put("ancVisitNumber", "4")
+                .map();
+        List<Map<String, String>> ancVisits = asList(ancVisit4);
+        Mother mother = new Mother("CASE-1", "EC-CASE-1", "TC 1")
+                .withAnm("ANM X")
+                .withLMP(parse("2012-01-01"))
+                .withANCVisits(ancVisits);
+        SafeMap reportData = new SafeMap();
+        reportData.put("id", "entity id 1");
+        reportData.put("ancVisitDate", visitDate);
+        reportData.put("ancVisitNumber", "4");
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.ancVisit(reportData);
+
+        verifyNoReportingCalls(ANC4, visitDate);
+
+        Map<String, String> ancVisit1 = create("ancVisitDate", "2012-03-04")
+                .put("ancVisitNumber", "1")
+                .map();
+        Map<String, String> ancVisit2 = create("ancVisitDate", "2012-05-04")
+                .put("ancVisitNumber", "2")
+                .map();
+        ancVisits = asList(ancVisit1, ancVisit2, ancVisit4);
+
+        mother = new Mother("CASE-1", "EC-CASE-1", "TC 1")
+                .withAnm("ANM X")
+                .withLMP(parse("2012-01-01"))
+                .withANCVisits(ancVisits);
+
+        reportData = new SafeMap();
+        reportData.put("id", "entity id 1");
+        reportData.put("ancVisitDate", visitDate);
+        reportData.put("ancVisitNumber", "4");
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.ancVisit(reportData);
+
+        verifyNoReportingCalls(ANC4, visitDate);
+    }
+
+    @Test
     public void shouldNotReportANC4WhenANCVisitIsNotFourthVisit() {
+        Map<String, String> ancVisit1 = create("ancVisitDate", "2012-03-04")
+                .put("ancVisitNumber", "1")
+                .map();
+        Map<String, String> ancVisit2 = create("ancVisitDate", "2012-05-04")
+                .put("ancVisitNumber", "2")
+                .map();
+        Map<String, String> ancVisit3 = create("ancVisitDate", "2012-07-04")
+                .put("ancVisitNumber", "3")
+                .map();
+        List<Map<String, String>> ancVisits = asList(ancVisit1, ancVisit2, ancVisit3);
+
+        Mother mother = new Mother("CASE-1", "EC-CASE-1", "TC 1")
+                .withAnm("ANM X")
+                .withLMP(parse("2012-01-01"))
+                .withANCVisits(ancVisits);
+
         String visitDate = parse("2012-01-01").plusWeeks(36).toString();
         SafeMap reportData = new SafeMap();
         reportData.put("id", "entity id 1");
         reportData.put("ancVisitDate", visitDate);
         reportData.put("ancVisitNumber", "3");
-        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.ancVisit(reportData);
@@ -217,11 +301,30 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotReportANC4WhenANCVisitIsBefore36Weeks() {
         String visitDate = parse("2012-01-01").plusWeeks(36).minusDays(1).toString();
+        Map<String, String> ancVisit1 = create("ancVisitDate", "2012-03-04")
+                .put("ancVisitNumber", "1")
+                .map();
+        Map<String, String> ancVisit2 = create("ancVisitDate", "2012-05-04")
+                .put("ancVisitNumber", "2")
+                .map();
+        Map<String, String> ancVisit3 = create("ancVisitDate", "2012-07-04")
+                .put("ancVisitNumber", "3")
+                .map();
+        Map<String, String> ancVisit4 = create("ancVisitDate", visitDate)
+                .put("ancVisitNumber", "4")
+                .map();
+        List<Map<String, String>> ancVisits = asList(ancVisit1, ancVisit2, ancVisit3, ancVisit4);
+
+        Mother mother = new Mother("CASE-1", "EC-CASE-1", "TC 1")
+                .withAnm("ANM X")
+                .withLMP(parse("2012-01-01"))
+                .withANCVisits(ancVisits);
+
         SafeMap reportData = new SafeMap();
         reportData.put("id", "entity id 1");
         reportData.put("ancVisitDate", visitDate);
         reportData.put("ancVisitNumber", "4");
-        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.ancVisit(reportData);

@@ -1,5 +1,6 @@
 package org.ei.drishti.service.reporting;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportMonth;
@@ -10,12 +11,12 @@ import org.ei.drishti.domain.Mother;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
 import org.ei.drishti.util.SafeMap;
+import org.joda.time.LocalDate;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.Integer.parseInt;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.*;
@@ -197,7 +198,8 @@ public class MotherReportingService {
     private void reportANC4Visit(SafeMap reportData, Mother mother, Location location) {
         try {
             int visitNumber = parseInt(reportData.get(ANC_VISIT_NUMBER_FIELD));
-            if ((visitNumber == 4)
+            String ancVisitDate = getFourthAncVisitDate(mother.ancVisits());
+            if ((visitNumber == 4 && StringUtils.equalsIgnoreCase(ancVisitDate, reportData.get(ANC_VISIT_DATE_FIELD)))
                     && (!parse(reportData.get(ANC_VISIT_DATE_FIELD)).minusWeeks(36).isBefore(mother.lmp()))) {
                 reportToBoth(mother, ANC4, reportData.get(ANC_VISIT_DATE_FIELD), location);
             }
@@ -205,6 +207,16 @@ public class MotherReportingService {
             logger.warn("Not reporting ANC visit for mother: " + mother.ecCaseId() + " a" +
                     "s visit number is invalid, visit number:" + reportData.get(ANC_VISIT_NUMBER_FIELD));
         }
+    }
+
+    private String getFourthAncVisitDate(List<Map<String, String>> ancVisits) {
+        Collections.sort(ancVisits, new Comparator<Map<String, String>>() {
+            @Override
+            public int compare(Map<String, String> ancVisit1, Map<String, String> ancVisit2) {
+                return LocalDate.parse(ancVisit1.get(ANC_VISIT_DATE_FIELD)).compareTo(LocalDate.parse(ancVisit2.get(ANC_VISIT_DATE_FIELD)));
+            }
+        });
+        return (ancVisits.size() >= 4) ? ancVisits.get(3).get("ancVisitDate") : null;
     }
 
     private void reportTTVisit(String ttDose, String ttDate, Mother mother, Location location) {
