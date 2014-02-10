@@ -36,8 +36,8 @@ public class FormSubmissionService {
         });
     }
 
-    public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version) {
-        return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version);
+    public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version, Integer batchSize) {
+        return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
     }
 
     public void submit(List<FormSubmissionDTO> formSubmissionsDTO) {

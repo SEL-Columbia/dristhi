@@ -53,7 +53,7 @@ public class AllSubmissionsIntegrationTest {
     }
 
     @Test
-    public void shouldFetchFormSubmissionsBasedOnANMIDAndTimeStamp() throws Exception {
+    public void shouldFetchFormSubmissionsBasedOnANMIDTimeStampAndBatchSize() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
         FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "instance id 1", "form name 1", "entity id 1", 0L, "1", null, baseTimeStamp);
         formSubmissions.add(firstFormSubmission);
@@ -64,10 +64,11 @@ public class AllSubmissionsIntegrationTest {
         FormSubmission thirdFormSubmission = new FormSubmission("ANM 1", "instance id 3", "form name 1", "entity id 3", 2L, "1", null, baseTimeStamp + 2);
         formSubmissions.add(thirdFormSubmission);
 
-        assertEquals(asList(firstFormSubmission, secondFormSubmission, thirdFormSubmission), formSubmissions.findByANMIDAndServerVersion("ANM 1", 0L));
-        assertEquals(asList(secondFormSubmission, thirdFormSubmission), formSubmissions.findByANMIDAndServerVersion("ANM 1", firstFormSubmission.serverVersion()));
-        assertEquals(asList(thirdFormSubmission), formSubmissions.findByANMIDAndServerVersion("ANM 1", secondFormSubmission.serverVersion()));
+        assertEquals(asList(firstFormSubmission, secondFormSubmission, thirdFormSubmission), formSubmissions.findByANMIDAndServerVersion("ANM 1", 0L, null));
+        assertEquals(asList(secondFormSubmission, thirdFormSubmission), formSubmissions.findByANMIDAndServerVersion("ANM 1", firstFormSubmission.serverVersion(), null));
+        assertEquals(asList(thirdFormSubmission), formSubmissions.findByANMIDAndServerVersion("ANM 1", secondFormSubmission.serverVersion(), null));
+        assertEquals(asList(firstFormSubmission, secondFormSubmission), formSubmissions.findByANMIDAndServerVersion("ANM 1", 0L, 2));
 
-        assertEquals(0, formSubmissions.findByANMIDAndServerVersion("ANM 1", thirdFormSubmission.serverVersion()).size());
+        assertEquals(0, formSubmissions.findByANMIDAndServerVersion("ANM 1", thirdFormSubmission.serverVersion(), null).size());
     }
 }

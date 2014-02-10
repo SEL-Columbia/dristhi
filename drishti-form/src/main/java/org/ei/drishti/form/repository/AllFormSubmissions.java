@@ -3,6 +3,7 @@ package org.ei.drishti.form.repository;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewQuery;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
@@ -39,10 +40,19 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         return db.queryView(createQuery("formSubmission_by_server_version").startKey(startKey).endKey(endKey).includeDocs(true), FormSubmission.class);
     }
 
-    @View(name = "formSubmission_by_anm_and_server_version", map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.serverVersion], null); } }")
-    public List<FormSubmission> findByANMIDAndServerVersion(String anmId, long version) {
+    @View(
+            name = "formSubmission_by_anm_and_server_version",
+            map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.serverVersion], null); } }")
+    public List<FormSubmission> findByANMIDAndServerVersion(String anmId, long version, Integer batchSize) {
         ComplexKey startKey = ComplexKey.of(anmId, version + 1);
         ComplexKey endKey = ComplexKey.of(anmId, Long.MAX_VALUE);
-        return db.queryView(createQuery("formSubmission_by_anm_and_server_version").startKey(startKey).endKey(endKey).includeDocs(true), FormSubmission.class);
+        ViewQuery query = createQuery("formSubmission_by_anm_and_server_version")
+                .startKey(startKey)
+                .endKey(endKey)
+                .includeDocs(true);
+        if (batchSize != null) {
+            query.limit(batchSize);
+        }
+        return db.queryView(query, FormSubmission.class);
     }
 }

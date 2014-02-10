@@ -41,8 +41,12 @@ public class FormSubmissionController {
 
     @RequestMapping(method = GET)
     @ResponseBody
-    private List<FormSubmissionDTO> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier, @RequestParam("timestamp") Long timeStamp) {
-        List<FormSubmission> newSubmissionsForANM = formSubmissionService.getNewSubmissionsForANM(anmIdentifier, timeStamp);
+    private List<FormSubmissionDTO> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier,
+                                                            @RequestParam("timestamp") Long timeStamp,
+                                                            @RequestParam(value = "batch-size", required = false)
+                                                            Integer batchSize) {
+        List<FormSubmission> newSubmissionsForANM = formSubmissionService
+                .getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
         return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
