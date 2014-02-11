@@ -172,12 +172,14 @@ public class ChildService {
     }
 
     private boolean handleStillBirth(FormSubmission submission, SubFormData subFormData) {
-        if (isDeliveryOutcomeStillBirth(submission) && !subFormData.instances().isEmpty()) {
+        if (!isDeliveryOutcomeStillBirth(submission)) {
+            return false;
+        }
+        if (!subFormData.instances().isEmpty()) {
             String childId = subFormData.instances().get(0).get(ID);
             allChildren.remove(childId);
-            return true;
         }
-        return false;
+        return true;
     }
 
     public void pncVisitHappened(FormSubmission submission) {
