@@ -549,6 +549,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         verifyBothReportingCalls(CESAREAN, "2012-01-01");
         verifyBothReportingCalls(DELIVERY, "2012-01-01");
         verifyBothReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
+        verifyBothReportingCalls(D_PHC, "2012-01-01");
     }
 
     @Test
@@ -566,6 +567,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         verifyBothReportingCalls(CESAREAN_PRIVATE_FACILITY, "2012-01-01");
         verifyBothReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
+        verifyBothReportingCalls(D_PRI, "2012-01-01");
     }
 
     @Test
@@ -600,6 +602,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         verifyBothReportingCalls(LIVE_BIRTH, "2012-01-01");
         verifyBothReportingCalls(NRHM_LIVE_BIRTH, "2012-01-01");
         verifyNoReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
+        verifyBothReportingCalls(D_HOM, "2012-01-01");
 
     }
 

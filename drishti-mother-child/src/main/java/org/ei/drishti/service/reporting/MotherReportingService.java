@@ -250,8 +250,9 @@ public class MotherReportingService {
         Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.ANCFormFields.MOTHER_ID));
         Location location = loadLocationFromEC(mother);
         reportPregnancyOutcome(reportData, mother, location);
-        reportCesareans(reportData, mother, location);
-        reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), location);
         reportIfInstitutionalDelivery(reportData, mother, location);
+        reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), location);
+        reportPlaceOfDelivery(reportData, mother, location);
+        reportCesareans(reportData, mother, location);
     }
 }
