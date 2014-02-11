@@ -157,8 +157,15 @@ public class MotherReportingService {
     }
 
     private void reportPregnancyOutcome(SafeMap reportData, Mother mother, Location location) {
-        Indicator indicator = LIVE_BIRTH_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME)) ? LIVE_BIRTH : STILL_BIRTH;
-        reportToBoth(mother, indicator, reportData.get(REFERENCE_DATE), location);
+        Indicator stateIndicator = LIVE_BIRTH_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME)) ? LIVE_BIRTH : STILL_BIRTH;
+        reportToBoth(mother, stateIndicator, reportData.get(REFERENCE_DATE), location);
+
+        String deliveryPlace = reportData.get(DELIVERY_PLACE);
+        if (HOME_FIELD_VALUE.equalsIgnoreCase(deliveryPlace)
+                || SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE.equalsIgnoreCase(deliveryPlace)) {
+            Indicator nrhmIndicator = LIVE_BIRTH_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME)) ? NRHM_LIVE_BIRTH : NRHM_STILL_BIRTH;
+            reportToBoth(mother, nrhmIndicator, reportData.get(REFERENCE_DATE), location);
+        }
     }
 
     private void reportMotherMortality(SafeMap reportData, Mother mother, Location location) {
@@ -242,6 +249,7 @@ public class MotherReportingService {
     public void pncRegistrationOA(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.ANCFormFields.MOTHER_ID));
         Location location = loadLocationFromEC(mother);
+        reportPregnancyOutcome(reportData, mother, location);
         reportCesareans(reportData, mother, location);
     }
 }

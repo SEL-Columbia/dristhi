@@ -363,10 +363,12 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(DELIVERY, "2012-01-01");
+        verifyBothReportingCalls(LIVE_BIRTH, "2012-01-01");
+        verifyBothReportingCalls(NRHM_LIVE_BIRTH, "2012-01-01");
     }
 
     @Test
-    public void shouldReportInstitutionalDeliveryWhenPlaceOfDeliveryIsNotHome() {
+    public void shouldReportInstitutionalDeliveryAndNotReportLiveBirthWhenPlaceOfDeliveryIsNotHome() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -381,10 +383,12 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
+        verifyBothReportingCalls(LIVE_BIRTH, "2012-01-01");
+        verifyNoReportingCalls(NRHM_LIVE_BIRTH, "2012-01-01");
     }
 
     @Test
-    public void shouldNotReportInstitutionalDeliveryWhenPlaceOfDeliveryIsHome() {
+    public void shouldNotReportInstitutionalDeliveryAndReportLiveBirthAndNRHMLiveBirthWhenPlaceOfDeliveryIsHome() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -399,10 +403,12 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyNoReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
+        verifyBothReportingCalls(LIVE_BIRTH, "2012-01-01");
+        verifyBothReportingCalls(NRHM_LIVE_BIRTH, "2012-01-01");
     }
 
     @Test
-    public void shouldReportLiveBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsLiveBirth() {
+    public void shouldReportLiveBirthAndNRHMLiveBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsLiveBirthAndDeliveryPlaceIsSubCenter() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -411,16 +417,17 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("didMotherSurvive", "yes")
                 .put("deliveryOutcome", "live_birth")
                 .put("referenceDate", "2012-01-01")
-                .put("deliveryPlace", "phc")
+                .put("deliveryPlace", "subcenter")
                 .put("deliveryType", "normal")
                 .map();
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(LIVE_BIRTH, "2012-01-01");
+        verifyBothReportingCalls(NRHM_LIVE_BIRTH, "2012-01-01");
     }
 
     @Test
-    public void shouldReportStillBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsStillBirth() {
+    public void shouldReportStillBirthAndNRHMStillBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsStillBirthAndDeliveryPlaceIsSubCenter() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -429,12 +436,13 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("didMotherSurvive", "yes")
                 .put("deliveryOutcome", "still_birth")
                 .put("referenceDate", "2012-01-01")
-                .put("deliveryPlace", "phc")
+                .put("deliveryPlace", "subcenter")
                 .put("deliveryType", "normal")
                 .map();
         service.deliveryOutcome(new SafeMap(reportData));
 
         verifyBothReportingCalls(STILL_BIRTH, "2012-01-01");
+        verifyBothReportingCalls(NRHM_STILL_BIRTH, "2012-01-01");
     }
 
     @Test
@@ -534,6 +542,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("referenceDate", "2012-01-01")
                 .put("deliveryType", "cesarean")
                 .put("deliveryPlace", "phc")
+                .put("deliveryOutcome", "live_birth")
                 .map();
         service.pncRegistrationOA(new SafeMap(reportData));
 
@@ -549,6 +558,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("referenceDate", "2012-01-01")
                 .put("deliveryType", "cesarean")
                 .put("deliveryPlace", "private_facility")
+                .put("deliveryOutcome", "live_birth")
                 .map();
         service.pncRegistrationOA(new SafeMap(reportData));
 
@@ -564,10 +574,28 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .put("referenceDate", "2012-01-01")
                 .put("deliveryType", "cesarean")
                 .put("deliveryPlace", "phc")
+                .put("deliveryOutcome", "live_birth")
                 .map();
         service.pncRegistrationOA(new SafeMap(reportData));
 
         verifyBothReportingCalls(CESAREAN_GOVERNMENT_FACILITY, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportLiveBirthAndNRHMLiveBirthWhenOAPNCIsRegisteredWithDeliveryOutcomeAsLiveBirth() {
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        Map<String, String> reportData = create("motherId", "entity id 1")
+                .put("referenceDate", "2012-01-01")
+                .put("deliveryOutcome", "live_birth")
+                .put("deliveryPlace", "home")
+                .put("deliveryType", "normal")
+                .map();
+        service.pncRegistrationOA(new SafeMap(reportData));
+
+        verifyBothReportingCalls(LIVE_BIRTH, "2012-01-01");
+        verifyBothReportingCalls(NRHM_LIVE_BIRTH, "2012-01-01");
     }
 
     @Test
