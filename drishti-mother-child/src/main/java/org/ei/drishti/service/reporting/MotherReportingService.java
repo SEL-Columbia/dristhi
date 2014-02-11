@@ -251,5 +251,6 @@ public class MotherReportingService {
         Location location = loadLocationFromEC(mother);
         reportPregnancyOutcome(reportData, mother, location);
         reportCesareans(reportData, mother, location);
+        reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), location);
     }
 }

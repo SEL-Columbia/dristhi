@@ -547,6 +547,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         service.pncRegistrationOA(new SafeMap(reportData));
 
         verifyBothReportingCalls(CESAREAN, "2012-01-01");
+        verifyBothReportingCalls(DELIVERY, "2012-01-01");
     }
 
     @Test
