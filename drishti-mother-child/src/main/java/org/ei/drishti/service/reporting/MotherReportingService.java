@@ -252,5 +252,6 @@ public class MotherReportingService {
         reportPregnancyOutcome(reportData, mother, location);
         reportCesareans(reportData, mother, location);
         reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), location);
+        reportIfInstitutionalDelivery(reportData, mother, location);
     }
 }

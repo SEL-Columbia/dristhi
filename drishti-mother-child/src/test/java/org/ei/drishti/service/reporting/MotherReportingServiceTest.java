@@ -534,7 +534,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldReportCesareanWhenOAPNCIsRegisteredAndDeliveryTypeIsCesarean() {
+    public void shouldReportCesareanAndInstitutionalDeliveryWhenOAPNCIsRegisteredAndDeliveryTypeIsCesareanAndAtPHC() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -548,10 +548,11 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         verifyBothReportingCalls(CESAREAN, "2012-01-01");
         verifyBothReportingCalls(DELIVERY, "2012-01-01");
+        verifyBothReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
     }
 
     @Test
-    public void shouldReportCesareanPrivateFacilityWhenOAPNCIsRegisteredAndDeliveryTypeIsCesareanAndDeliveryPlaceIsPrivateFacility() {
+    public void shouldReportCesareanPrivateFacilityAndInstitutionalDeliveryWhenOAPNCIsRegisteredAndDeliveryTypeIsCesareanAndDeliveryPlaceIsPrivateFacility() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -564,6 +565,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         service.pncRegistrationOA(new SafeMap(reportData));
 
         verifyBothReportingCalls(CESAREAN_PRIVATE_FACILITY, "2012-01-01");
+        verifyBothReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
     }
 
     @Test
@@ -583,7 +585,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldReportLiveBirthAndNRHMLiveBirthWhenOAPNCIsRegisteredWithDeliveryOutcomeAsLiveBirth() {
+    public void shouldReportLiveBirthAndNRHMLiveBirthAndNotReportInstitutionalDeliveryWhenOAPNCIsRegisteredWithDeliveryOutcomeAsLiveBirthAndAtHome() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -597,6 +599,8 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         verifyBothReportingCalls(LIVE_BIRTH, "2012-01-01");
         verifyBothReportingCalls(NRHM_LIVE_BIRTH, "2012-01-01");
+        verifyNoReportingCalls(INSTITUTIONAL_DELIVERY, "2012-01-01");
+
     }
 
     @Test
