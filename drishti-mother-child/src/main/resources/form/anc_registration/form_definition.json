@@ -34,6 +34,11 @@
                 "bind": "/model/instance/ANC_Registration_EngKan/case_num_pregnancies"
             },
             {
+                "name": "numberOfPregnancies",
+                "bind": "/model/instance/ANC_Registration_EngKan/num_pregnancies",
+                "source":"eligible_couple.numberOfPregnancies"
+            },
+            {
                 "name": "thayiCardNumber",
                 "bind": "/model/instance/ANC_Registration_EngKan/thayi_no",
                 "source": "eligible_couple.mother.thayiCardNumber"
