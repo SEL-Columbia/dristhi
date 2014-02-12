@@ -232,7 +232,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldCloseECCaseAlsoWhenPNCIsClosedAndReasonIsDeath() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.close(create().addFormField("closeReason", "death_of_woman").build());
+        service.close(create().addFormField("closeReason", "death_of_mother").build());
 
         verify(allEligibleCouples).close("ec entity id 1");
     }

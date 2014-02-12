@@ -18,13 +18,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static java.text.MessageFormat.format;
-import static org.ei.drishti.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.PERMANENT_RELOCATION_VALUE;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_MOTHER_SURVIVE;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_WOMAN_SURVIVE;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
+import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_OF_MOTHER_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATES_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
 
@@ -99,7 +99,7 @@ public class PNCService {
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         motherReportingService.closePNC(new SafeMap(submission.getFields(reportFields)));
 
-        if (DEATH_OF_WOMAN_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_FIELD_NAME))
+        if (DEATH_OF_MOTHER_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_FIELD_NAME))
                 || PERMANENT_RELOCATION_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_FIELD_NAME))) {
             logger.info("Closing EC case along with PNC case. Submission: " + submission);
             allEligibleCouples.close(mother.ecCaseId());
