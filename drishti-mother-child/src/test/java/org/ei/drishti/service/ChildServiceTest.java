@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -12,7 +13,6 @@ import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.reporting.MotherReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.service.scheduling.PNCSchedulesService;
-import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -522,6 +522,24 @@ public class ChildServiceTest extends BaseUnitTest {
                         .put("childId", "child id 1")
                         .put("urineStoolProblems", "diarrhea")
                         .map()));
+    }
+
+    @Test
+    public void shouldNotCreateChildWhenThereIsStillBirth() {
+        FormSubmission submission = create()
+                .withFormName("pnc_visit")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("pncVisitDate", "2012-01-01")
+                .addFormField("deliveryOutcome", "still_birth")
+                .withSubForm(new SubFormData("child_pnc_visit",
+                        asList(EasyMap.create("id", "child id 1").map())))
+                .build();
+
+        service.pncVisitHappened(submission);
+
+        verify(allChildren).remove("child id 1");
+        verifyNoMoreInteractions(childReportingService);
     }
 
     @Test

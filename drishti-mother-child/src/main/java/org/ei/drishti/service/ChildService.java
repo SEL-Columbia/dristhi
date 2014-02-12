@@ -186,6 +186,9 @@ public class ChildService {
         Map<String, String> reportFieldsMap = submission.getFields(reportFieldsDefinition.get(submission.formName()));
 
         SubFormData subFormData = submission.getSubFormByName(AllConstants.Form.PNC_VISIT_CHILD_SUB_FORM_NAME);
+
+        if (handleStillBirth(submission, subFormData)) return;
+
         for (Map<String, String> childFields : subFormData.instances()) {
             SafeMap reportingData = new SafeMap(reportFieldsMap);
             reportingData.put(ChildReportingService.CHILD_ID_FIELD, childFields.get(ID));
