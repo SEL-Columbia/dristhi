@@ -77,8 +77,12 @@ public class ECServiceTest {
                 .build();
 
         ecService.reportFPChange(submission);
+        EligibleCouple expectedEc = new EligibleCouple("entity id 1", "EC Number 1")
+                .withDetails(create("currentMethod", "condom")
+                        .put("caste", "c_others")
+                        .map());
 
-        verify(allEligibleCouples).update(ec.withDetails(create("currentMethod", "condom").put("caste", "c_others").map()));
+        verify(allEligibleCouples).update(expectedEc);
     }
 
     @Test

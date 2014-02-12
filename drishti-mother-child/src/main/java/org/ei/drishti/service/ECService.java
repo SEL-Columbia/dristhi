@@ -82,7 +82,7 @@ public class ECService {
         }
 
         String newFPMethod = submission.getField(NEW_FP_METHOD_FIELD_NAME);
-        couple.details().put(NEW_FP_METHOD_FIELD_NAME, newFPMethod);
+        couple.details().put(CURRENT_FP_METHOD_FIELD_NAME, newFPMethod);
         allEligibleCouples.update(couple);
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
