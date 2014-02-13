@@ -246,6 +246,7 @@ public class AllConstants {
     public static class PNCCloseFields {
         public static final String DEATH_DATE_FIELD_NAME = "deathDate";
         public static final String DEATH_OF_MOTHER_VALUE = "death_of_mother";
+        public static final String PERMANENT_RELOCATION_VALUE = "permanent_relocation";
     }
 
     public static class ECCloseFields {

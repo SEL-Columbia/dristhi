@@ -241,7 +241,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldCloseECCaseAlsoWhenPNCIsClosedAndReasonIsPermanentRelocation() {
         when(allMothers.findByCaseId("entity id 1")).thenReturn(new Mother("entity id 1", "ec entity id 1", "thayi 1"));
 
-        service.close(create().addFormField("closeReason", "relocation_permanent").build());
+        service.close(create().addFormField("closeReason", "permanent_relocation").build());
 
         verify(allEligibleCouples).close("ec entity id 1");
     }
