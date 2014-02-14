@@ -1,6 +1,7 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.common.util.EasyMap;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
@@ -59,7 +60,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldEnrollPNCIntoSchedulesDuringDeliveryOutcomeIfWomanOrMotherSurvives() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
-        when(allMothers.exists("mother id 1")).thenReturn(true);
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "ec id 1", "1234567"));
         FormSubmission submission = create()
                 .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
@@ -123,6 +124,34 @@ public class PNCServiceTest extends BaseUnitTest {
                 .build();
         service.deliveryOutcome(submission);
 
+        verifyZeroInteractions(pncSchedulesService);
+    }
+
+    @Test
+    public void shouldCloseMotherAndECDuringDeliveryOutcomeIfMotherDied() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(allMothers.exists("mother id 1")).thenReturn(true);
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "ec id 1", "1234567"));
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple("ec id 1", "123"));
+
+        FormSubmission submission = create()
+                .withFormName("delivery_outcome")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .addFormField("didWomanSurvive", "")
+                .addFormField("didMotherSurvive", "no")
+                .build();
+        service.deliveryOutcome(submission);
+
+        Mother expectedMother = new Mother("mother id 1", "ec id 1", "1234567").setIsClosed(true);
+        EligibleCouple expectedEC = new EligibleCouple("ec id 1", "123").setIsClosed(true);
+
+        verify(allMothers).update(expectedMother);
+        verify(allEligibleCouples).update(expectedEC);
+        verify(actionService).markAllAlertsAsInactive("mother id 1");
+        verify(pncSchedulesService).unEnrollFromSchedules("mother id 1");
         verifyZeroInteractions(pncSchedulesService);
     }
 

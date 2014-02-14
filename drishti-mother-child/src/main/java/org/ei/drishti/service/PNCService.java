@@ -1,6 +1,7 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.common.AllConstants;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
@@ -22,6 +23,7 @@ import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_MOTHER_SURVIVE;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_WOMAN_SURVIVE;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_OF_MOTHER_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.PERMANENT_RELOCATION_VALUE;
@@ -57,14 +59,31 @@ public class PNCService {
     }
 
     public void deliveryOutcome(FormSubmission submission) {
-        if (!allMothers.exists(submission.entityId())) {
-            logger.warn("Failed to handle delivery outcome as there is no mother registered with id: " + submission.entityId());
+        Mother mother = allMothers.findByCaseId(submission.entityId());
+        if (mother == null) {
+            logger.warn(format("Failed to handle delivery outcome as there is no mother registered with ID: {0}", submission.entityId()));
             return;
         }
-
-        if (BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE)) || BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_MOTHER_SURVIVE))) {
+        if (BOOLEAN_FALSE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE))
+                || BOOLEAN_FALSE_VALUE.equals(submission.getField(DID_MOTHER_SURVIVE))) {
+            logger.info("Closing Mother as the mother died during delivery. Mother Id: " + mother.caseId());
+            closeMother(mother);
+        } else if (BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE))
+                || BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_MOTHER_SURVIVE))) {
             pncSchedulesService.deliveryOutcome(submission.entityId(), submission.getField(REFERENCE_DATE));
         }
+    }
+
+    private void closeMother(Mother mother) {
+        mother.setIsClosed(true);
+        allMothers.update(mother);
+        actionService.markAllAlertsAsInactive(mother.caseId());
+        pncSchedulesService.unEnrollFromSchedules(mother.caseId());
+
+        EligibleCouple eligibleCouple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        logger.info("Closing EC case along with PNC case. Ec Id: " + eligibleCouple.caseId());
+        eligibleCouple.setIsClosed(true);
+        allEligibleCouples.update(eligibleCouple);
     }
 
     public void pncRegistrationOA(FormSubmission submission) {
