@@ -380,5 +380,6 @@ public class AllConstants {
 
     public static class HTTP {
         public static final String ACCESS_CONTROL_ALLOW_ORIGIN_HEADER = "Access-Control-Allow-Origin";
+        public static final String WWW_AUTHENTICATE_HEADER = "www-authenticate";
     }
 }
