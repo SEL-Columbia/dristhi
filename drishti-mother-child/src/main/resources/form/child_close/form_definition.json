@@ -13,6 +13,17 @@
                 "bind": "/model/instance/Child_Close_EngKan/close_reason"
             },
             {
+                "name": "numberOfLivingChildren",
+                "bind": "/model/instance/Child_Close_EngKan/death_child_group/case_num_livingchildren",
+                "source": "child.mother.ec.numberOfLivingChildren",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "numberOfLivingChildren",
+                "bind": "/model/instance/Child_Close_EngKan/death_child_group/num_livingchildren",
+                "source": "child.mother.ec.numberOfLivingChildren"
+            },
+            {
                 "name": "isImmunizationDeath",
                 "bind": "/model/instance/Child_Close_EngKan/death_child_group/child_death_immunization"
             },
