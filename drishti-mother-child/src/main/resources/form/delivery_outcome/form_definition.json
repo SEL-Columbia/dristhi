@@ -241,6 +241,16 @@
                 "name": "numberOfLivingMaleChild",
                 "bind": "/model/instance/Delivery_Outcome_EngKan/numlivingchildren_male",
                 "source": "mother.eligible_couple.numberOfLivingMaleChild"
+            },
+            {
+                "name": "youngestChildDOB",
+                "bind": "/model/instance/Delivery_Outcome_EngKan/youngestchild_date_of_birth",
+                "source": "mother.eligible_couple.numberOfLivingMaleChild"
+            },
+            {
+                "name": "youngestChildAge",
+                "bind": "/model/instance/EC_Registration_EngKan/youngestchild_age",
+                "source": "mother.eligible_couple.numberOfLivingMaleChild"
             }
         ],
         "sub_forms": [
