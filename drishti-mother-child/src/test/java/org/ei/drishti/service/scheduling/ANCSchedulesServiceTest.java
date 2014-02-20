@@ -149,10 +149,10 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldEnrollMotherInTT2ScheduleIfTTBoosterIsProvided() throws Exception {
+    public void shouldNotEnrollMotherInTT2ScheduleIfTTBoosterIsProvided() throws Exception {
         ancSchedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "ttbooster", "2012-01-01");
 
-        verify(scheduleService).enroll("entity id 1", "TT 2", "2012-01-01");
+        verifyZeroInteractions(scheduleService);
     }
 
     @Test

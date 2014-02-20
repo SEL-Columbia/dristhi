@@ -61,7 +61,9 @@ public class ANCSchedulesService {
     public void ttVisitHasHappened(String entityId, String anmId, String ttDose, String ttDate) {
         if (AllConstants.ANCFormFields.TT1_DOSE_VALUE.equals(ttDose) || AllConstants.ANCFormFields.TT_BOOSTER_DOSE_VALUE.equals(ttDose)) {
             fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_1, SCHEDULE_TT_1, parse(ttDate));
-            scheduleService.enroll(entityId, SCHEDULE_TT_2, ttDate);
+            if(AllConstants.ANCFormFields.TT1_DOSE_VALUE.equals(ttDose)){
+                scheduleService.enroll(entityId, SCHEDULE_TT_2, ttDate);
+            }
         } else if (AllConstants.ANCFormFields.TT2_DOSE_VALUE.equals(ttDose)) {
             fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_2, SCHEDULE_TT_2, parse(ttDate));
         }

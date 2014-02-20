@@ -32,6 +32,12 @@
         "isMaternalDeath",
         "maternalDeathDate"
     ],
+    "tt": [
+        "id",
+        "ttDose",
+        "ttInjectionPlace",
+        "ttDate"
+    ],
     "tt_1": [
         "id",
         "ttDose",

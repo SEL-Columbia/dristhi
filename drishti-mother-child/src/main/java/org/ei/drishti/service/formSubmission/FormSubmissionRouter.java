@@ -65,6 +65,7 @@ public class FormSubmissionRouter {
                 .put(ANC_REGISTRATION_OA, ancRegistrationOAHandler)
                 .put(ANC_VISIT, ancVisitHandler)
                 .put(ANC_CLOSE, ancCloseHandler)
+                .put(TT, ttHandler)
                 .put(TT_BOOSTER, ttHandler)
                 .put(TT_1, ttHandler)
                 .put(TT_2, ttHandler)
