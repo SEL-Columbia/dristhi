@@ -27,11 +27,13 @@ public class LocationController {
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS}, value = "/villages")
     public ResponseEntity<VillagesDTO> villagesForANM(@RequestParam("anm-id") String anmIdentifier) {
-        Location anmLocation = anmService.getLocation(anmIdentifier);
         List villagesForANM = anmService.getVillagesForANM(anmIdentifier);
-        List<String> villages = collect(villagesForANM, on(Location.class).village());
-
-        VillagesDTO villagesDTO = new VillagesDTO(anmLocation.phcName(), anmLocation.phc().phcIdentifier(), anmLocation.subCenter(), villages);
+        VillagesDTO villagesDTO = null;
+        if (villagesForANM != null) {
+            Location anmLocation = (Location) villagesForANM.get(0);
+            List<String> villages = collect(villagesForANM, on(Location.class).village());
+            villagesDTO = new VillagesDTO(anmLocation.phcName(), anmLocation.phc().phcIdentifier(), anmLocation.subCenter(), villages);
+        }
         return new ResponseEntity<>(villagesDTO, OK);
     }
 }

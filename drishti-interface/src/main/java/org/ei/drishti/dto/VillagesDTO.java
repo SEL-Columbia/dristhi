@@ -39,6 +39,10 @@ public class VillagesDTO {
         return villages;
     }
 
+    public String phcIdentifier() {
+        return phcIdentifier;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);

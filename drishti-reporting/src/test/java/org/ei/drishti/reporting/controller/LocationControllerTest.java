@@ -42,6 +42,7 @@ public class LocationControllerTest {
         when(location.phc()).thenReturn(phc);
         when(location.subCenter()).thenReturn("sc");
         when(phc.phcIdentifier()).thenReturn("phc1");
+        when(phc.name()).thenReturn("PHC X");
         when(location.phcName()).thenReturn("PHC X");
 
         ResponseEntity<VillagesDTO> response = controller.villagesForANM("demo1");

@@ -63,7 +63,7 @@ public class ANMDetailsController {
             return new ResponseEntity<>(mapToDTO(anmDetails), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
         } catch (Exception exception) {
             logger.error(MessageFormat.format("{0} occurred while fetching ANM Details. StackTrace: \n {1}", exception.getMessage(), ExceptionUtils.getFullStackTrace(exception)));
-            logger.error(MessageFormat.format("Response with status {0} and body: {1} was obtained from {2}" + response.isSuccess(), response.body(), drishtiANMDetailsUrl));
+            logger.error(MessageFormat.format("Response with status {0} and body: {1} was obtained from {2}", response.isSuccess(), response.body(), drishtiANMDetailsUrl));
         }
         return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
     }

@@ -33,6 +33,8 @@ public class AllLocationsRepository {
 
     public List fetchVillagesForANM(String anmIdentifier) {
         Location location = fetchByANMIdentifier(anmIdentifier);
+        if (location == null)
+            return null;
         return dataAccessTemplate.findByNamedQueryAndNamedParam(Location.FIND_VILLAGES_BY_PHC_AND_SUBCENTER,
                 new String[]{"phcIdentifier", "subCenter"}, new Object[]{location.phc().phcIdentifier(), location.subCenter()});
     }
