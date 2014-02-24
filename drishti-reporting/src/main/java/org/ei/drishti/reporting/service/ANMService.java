@@ -33,4 +33,9 @@ public class ANMService {
     public Location getLocation(String anmIdentifier) {
         return allLocationsRepository.fetchByANMIdentifier(anmIdentifier);
     }
+
+    @Transactional("service_provided")
+    public List getVillagesForANM(String anmIdentifier) {
+        return allLocationsRepository.fetchVillagesForANM(anmIdentifier);
+    }
 }

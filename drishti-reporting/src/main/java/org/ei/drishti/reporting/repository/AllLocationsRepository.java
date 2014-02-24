@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class AllLocationsRepository {
     private DataAccessTemplate dataAccessTemplate;
@@ -27,6 +29,11 @@ public class AllLocationsRepository {
     public Location fetchByANMIdentifier(String anmIdentifier) {
         return (Location) dataAccessTemplate.findByNamedQueryAndNamedParam(Location.FIND_BY_ANM_IDENTIFIER,
                 new String[]{"anmIdentifier"}, new Object[]{anmIdentifier}).get(0);
+    }
 
+    public List fetchVillagesForANM(String anmIdentifier) {
+        Location location = fetchByANMIdentifier(anmIdentifier);
+        return dataAccessTemplate.findByNamedQueryAndNamedParam(Location.FIND_VILLAGES_BY_PHC_AND_SUBCENTER,
+                new String[]{"phcIdentifier", "subCenter"}, new Object[]{location.phc().phcIdentifier(), location.subCenter()});
     }
 }
