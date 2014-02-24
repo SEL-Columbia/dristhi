@@ -12,13 +12,17 @@ public class VillagesDTO {
     private String phcName;
 
     @JsonProperty
+    private String phcIdentifier;
+
+    @JsonProperty
     private String subCenter;
 
     @JsonProperty
     private List<String> villages;
 
-    public VillagesDTO(String phcName, String subCenter, List<String> villages) {
+    public VillagesDTO(String phcName, String phcIdentifier, String subCenter, List<String> villages) {
         this.phcName = phcName;
+        this.phcIdentifier = phcIdentifier;
         this.subCenter = subCenter;
         this.villages = villages;
     }

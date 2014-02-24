@@ -20,6 +20,8 @@ public class LocationControllerTest {
     private ANMService anmService;
     @Mock
     private Location location;
+    @Mock
+    private PHC phc;
     private LocationController controller;
 
     @Before
@@ -30,8 +32,6 @@ public class LocationControllerTest {
 
     @Test
     public void shouldReturnListOfVillagesForANM() throws Exception {
-        PHC phc = new PHC("phc1", "PHC X");
-        new Location("village1", "sc", phc, "taluk", "district", "state");
         when(anmService.getVillagesForANM("demo1")).thenReturn(
                 asList(
                         new Location("village1", "sc", phc, "taluk", "district", "state"),
@@ -39,9 +39,13 @@ public class LocationControllerTest {
                         ));
 
         when(anmService.getLocation("demo1")).thenReturn(location);
+        when(location.phc()).thenReturn(phc);
+        when(location.subCenter()).thenReturn("sc");
+        when(phc.phcIdentifier()).thenReturn("phc1");
+        when(location.phcName()).thenReturn("PHC X");
 
         ResponseEntity<VillagesDTO> response = controller.villagesForANM("demo1");
-        VillagesDTO villagesDTO = new VillagesDTO(location.phcName(), location.subCenter(), asList("village1", "village2"));
+        VillagesDTO villagesDTO = new VillagesDTO("PHC X", "phc1", "sc", asList("village1", "village2"));
         assertEquals(villagesDTO, response.getBody());
     }
 }

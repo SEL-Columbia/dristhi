@@ -31,7 +31,7 @@ public class LocationController {
         List villagesForANM = anmService.getVillagesForANM(anmIdentifier);
         List<String> villages = collect(villagesForANM, on(Location.class).village());
 
-        VillagesDTO villagesDTO = new VillagesDTO(anmLocation.phcName(), anmLocation.subCenter(), villages);
+        VillagesDTO villagesDTO = new VillagesDTO(anmLocation.phcName(), anmLocation.phc().phcIdentifier(), anmLocation.subCenter(), villages);
         return new ResponseEntity<>(villagesDTO, OK);
     }
 }
