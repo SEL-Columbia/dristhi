@@ -32,7 +32,8 @@ public class ANCSchedulesService {
     private static Logger logger = LoggerFactory.getLogger(ANCSchedulesService.class.toString());
 
     private final ScheduleTrackingService trackingService;
-    private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1, SCHEDULE_HB_TEST_1, SCHEDULE_DELIVERY_PLAN};
+    private static final String[] NON_ANC_SCHEDULES = {SCHEDULE_EDD, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1,
+            SCHEDULE_HB_TEST_1, SCHEDULE_DELIVERY_PLAN};
     private ActionService actionService;
     private final ScheduleService scheduleService;
 
@@ -59,11 +60,12 @@ public class ANCSchedulesService {
     }
 
     public void ttVisitHasHappened(String entityId, String anmId, String ttDose, String ttDate) {
-        if (AllConstants.ANCFormFields.TT1_DOSE_VALUE.equals(ttDose) || AllConstants.ANCFormFields.TT_BOOSTER_DOSE_VALUE.equals(ttDose)) {
+        if (AllConstants.ANCFormFields.TT_BOOSTER_DOSE_VALUE.equals(ttDose)) {
             fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_1, SCHEDULE_TT_1, parse(ttDate));
-            if(AllConstants.ANCFormFields.TT1_DOSE_VALUE.equals(ttDose)){
-                scheduleService.enroll(entityId, SCHEDULE_TT_2, ttDate);
-            }
+            fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_2, SCHEDULE_TT_2, parse(ttDate));
+        } else if (AllConstants.ANCFormFields.TT1_DOSE_VALUE.equals(ttDose)) {
+            fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_1, SCHEDULE_TT_1, parse(ttDate));
+            scheduleService.enroll(entityId, SCHEDULE_TT_2, ttDate);
         } else if (AllConstants.ANCFormFields.TT2_DOSE_VALUE.equals(ttDose)) {
             fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_2, SCHEDULE_TT_2, parse(ttDate));
         }
