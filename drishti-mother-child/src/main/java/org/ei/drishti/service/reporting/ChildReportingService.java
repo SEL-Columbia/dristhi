@@ -317,7 +317,13 @@ public class ChildReportingService {
     }
 
     public void reportToBoth(Child child, Indicator indicator, String date, Location location) {
-        ReportingData serviceProvidedData = serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
+        String externalId = child.thayiCardNumber();
+        if (StringUtils.isBlank(externalId)) {
+            Mother mother = allMothers.findByCaseId(child.motherCaseId());
+            EligibleCouple ec = allEligibleCouples.findByCaseId(mother.ecCaseId());
+            externalId = ec.ecNumber();
+        }
+        ReportingData serviceProvidedData = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location);
         reportingService.sendReportData(serviceProvidedData);
         ReportingData anmReportData = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);

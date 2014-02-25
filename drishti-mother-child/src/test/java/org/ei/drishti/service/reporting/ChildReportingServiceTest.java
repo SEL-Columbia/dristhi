@@ -5,12 +5,12 @@ import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.util.DateUtil;
+import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.*;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllInfantBalanceOnHandReportTokens;
 import org.ei.drishti.repository.AllMothers;
-import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -1202,6 +1202,21 @@ public class ChildReportingServiceTest {
 
         verify(reportingService).updateReportData(serviceProvidedUpdateRequest);
         verify(reportingService).updateReportData(anmReportUpdateRequest);
+    }
+
+    @Test
+    public void shouldUseECNumberAsExternalIdWhenThayiCardNumberIsNotPresent() throws Exception {
+        DateUtil.fakeIt(parse("2013-02-01"));
+        Child child = new Child("child id 1", "mother id 1", "bcg", "3", "female").withAnm("ANM X");
+        Mother mother = new Mother("mother id 1", "ec id 1", "thayi card 1");
+        EligibleCouple ec = new EligibleCouple("ec id 1", "123").withLocation("bherya", "Sub Center", "PHC X").asOutOfArea();
+        Location location = new Location("bherya", "Sub Center", "PHC X");
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(ec);
+
+        service.reportToBoth(child, Indicator.FP_IUD, "2013-01-01", location);
+
+        verifyBothReportingCalls(Indicator.FP_IUD, "2013-01-01", "child id 1", "123");
     }
 
     private void verifyNoReportingCalls(Indicator indicator, String date) {
