@@ -111,4 +111,85 @@ public class ECRegisterServiceTest {
 
         assertEquals(expectedRegister, register);
     }
+
+    @Test
+    public void shouldDefaultIntegerFieldsToZeroWhenValueIsNotInteger() throws Exception {
+        Mother mother = new Mother("caseId", "ecCaseId", "thayi card number 1")
+                .withLMP(LocalDate.parse("2013-12-30"))
+                .withDetails(
+                        create("ancNumber", "OA899")
+                                .put("registrationDate", "2014-01-01")
+                                .put("isJSYBeneficiary", "yes")
+                                .put("edd", "2014-09-01")
+                                .put("height", "150")
+                                .put("bloodGroup", "o -ve")
+                                .put("isHighRisk", "yes")
+                                .map()
+                );
+        EligibleCouple eligibleCouple = new EligibleCouple("ecCaseId", "123")
+                .withANMIdentifier("anm1")
+                .withLocation("village", "sc", "phc")
+                .withCouple("wife Name", "husband Name")
+                .withDetails(
+                        create("registrationDate", "2013-01-01")
+                                .put("wifeName", "wife Name")
+                                .put("husbandName", "husband Name")
+                                .put("wifeAge", "23")
+                                .put("husbandAge", "32")
+                                .put("householdNumber", "22")
+                                .put("householdAddress", "HH Address")
+                                .put("headOfHousehold", "Head of HH")
+                                .put("religion", "religion")
+                                .put("caste", "caste")
+                                .put("economicStatus", "bpl")
+                                .put("educationalLevel", "wife education level")
+                                .put("husbandEducationLevel", "husband education level")
+                                .put("parity", "NaN")
+                                .put("numberOfLivingChildren", "str")
+                                .put("numberOfLivingMaleChildren", null)
+                                .put("numberOfLivingFemaleChild", "NaN")
+                                .put("numberOfAbortions", "inp")
+                                .put("numberOfStillBirths", null)
+                                .put("youngestChildAge", "")
+                                .put("currentMethod", "ocp")
+                                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                                .map()
+                );
+        when(allEligibleCouples.allOpenECsForANM("anm1")).thenReturn(asList(eligibleCouple));
+        when(allMothers.findAllOpenANCByECCaseId("ecCaseId")).thenReturn(asList(mother));
+        ECRegister expectedRegister = new ECRegister(asList(new ECRegisterEntry()
+                .withECNumber("123")
+                .withRegistrationDate("2013-01-01")
+                .withWifeName("wife Name")
+                .withHusbandName("husband Name")
+                .withVillage("village")
+                .withSubCenter("sc")
+                .withPHC("phc")
+                .withWifeAge("23")
+                .withHusbandAge("32")
+                .withHouseholdNumber("22")
+                .withHouseholdAddress("HH Address")
+                .withHeadOfHousehold("Head of HH")
+                .withReligion("religion")
+                .withCaste("caste")
+                .withEconomicStatus("bpl")
+                .withWifeEducationLevel("wife education level")
+                .withHusbandEducationLevel("husband education level")
+                .withGravida("")
+                .withParity("")
+                .withNumberOfLivingChildren("")
+                .withNumberOfLivingMaleChildren("")
+                .withNumberOfLivingFemaleChildren("")
+                .withNumberOfStillBirths("")
+                .withNumberOfAbortions("")
+                .withYoungestChildAge("")
+                .withCurrentFPMethod("ocp")
+                .withCurrentFPMethodStartDate("2012-01-01")
+                .withPregnancyStatus(true)
+        ));
+
+        ECRegister register = registerService.getRegisterForANM("anm1");
+
+        assertEquals(expectedRegister, register);
+    }
 }

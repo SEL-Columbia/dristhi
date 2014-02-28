@@ -137,10 +137,15 @@ public class EligibleCouple extends MotechBaseDataObject {
     }
 
     public String gravida() {
-        Integer gravida = IntegerUtil.tryParse(getDetail(NUMBER_OF_LIVING_CHILDREN), 0) +
-                IntegerUtil.tryParse(getDetail(NUMBER_OF_STILL_BIRTHS), 0) +
-                IntegerUtil.tryParse(getDetail(NUMBER_OF_ABORTIONS), 0);
-        return gravida.toString();
+        if (!IntegerUtil.isInteger(getDetail(NUMBER_OF_LIVING_CHILDREN))
+                || !IntegerUtil.isInteger(getDetail(NUMBER_OF_STILL_BIRTHS))
+                || !IntegerUtil.isInteger(getDetail(NUMBER_OF_ABORTIONS))) {
+            return "";
+        }
+        return String.valueOf(
+                IntegerUtil.tryParse(getDetail(NUMBER_OF_LIVING_CHILDREN), 0) +
+                        IntegerUtil.tryParse(getDetail(NUMBER_OF_STILL_BIRTHS), 0) +
+                        IntegerUtil.tryParse(getDetail(NUMBER_OF_ABORTIONS), 0));
     }
 
     @Override
