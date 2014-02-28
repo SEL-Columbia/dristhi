@@ -136,18 +136,6 @@ public class EligibleCouple extends MotechBaseDataObject {
         return details.get(name);
     }
 
-    public String gravida() {
-        if (!IntegerUtil.isInteger(getDetail(NUMBER_OF_LIVING_CHILDREN))
-                || !IntegerUtil.isInteger(getDetail(NUMBER_OF_STILL_BIRTHS))
-                || !IntegerUtil.isInteger(getDetail(NUMBER_OF_ABORTIONS))) {
-            return "";
-        }
-        return String.valueOf(
-                IntegerUtil.tryParse(getDetail(NUMBER_OF_LIVING_CHILDREN), 0) +
-                        IntegerUtil.tryParse(getDetail(NUMBER_OF_STILL_BIRTHS), 0) +
-                        IntegerUtil.tryParse(getDetail(NUMBER_OF_ABORTIONS), 0));
-    }
-
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

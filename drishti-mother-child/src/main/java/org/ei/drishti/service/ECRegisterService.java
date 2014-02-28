@@ -7,8 +7,6 @@ import org.ei.drishti.domain.register.ECRegister;
 import org.ei.drishti.domain.register.ECRegisterEntry;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,6 @@ import static org.ei.drishti.common.util.IntegerUtil.isInteger;
 
 @Service
 public class ECRegisterService {
-    private static Logger logger = LoggerFactory.getLogger(ECRegisterService.class.toString());
     private final AllMothers allMothers;
     private final AllEligibleCouples allEligibleCouples;
 
@@ -62,7 +59,7 @@ public class ECRegisterService {
                     .withNumberOfStillBirths(parseValidIntegersAndDefaultInvalidOnesToEmptyString(ec.getDetail(NUMBER_OF_STILL_BIRTHS)))
                     .withNumberOfAbortions(parseValidIntegersAndDefaultInvalidOnesToEmptyString(ec.getDetail(NUMBER_OF_ABORTIONS)))
                     .withParity(parseValidIntegersAndDefaultInvalidOnesToEmptyString((ec.getDetail(PARITY))))
-                    .withGravida(ec.gravida())
+                    .withGravida(parseValidIntegersAndDefaultInvalidOnesToEmptyString((ec.getDetail(NUMBER_OF_PREGNANCIES))))
                     .withNumberOfLivingMaleChildren(parseValidIntegersAndDefaultInvalidOnesToEmptyString(ec.getDetail(NUMBER_OF_LIVING_MALE_CHILDREN)))
                     .withNumberOfLivingFemaleChildren(parseValidIntegersAndDefaultInvalidOnesToEmptyString(ec.getDetail(NUMBER_OF_LIVING_FEMALE_CHILDREN)))
                     .withYoungestChildAge(parseValidIntegersAndDefaultInvalidOnesToEmptyString(ec.getDetail(YOUNGEST_CHILD_AGE)))
