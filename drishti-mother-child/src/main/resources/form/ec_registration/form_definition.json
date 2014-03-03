@@ -215,10 +215,6 @@
                 "bind": "/model/instance/EC_Registration_EngKan/refill_date"
             },
             {
-                "name": "husbandAge",
-                "bind": "/model/instance/EC_Registration_EngKan/husband_age"
-            },
-            {
                 "name": "husbandEducationLevel",
                 "bind": "/model/instance/EC_Registration_EngKan/husband_education_level"
             },
