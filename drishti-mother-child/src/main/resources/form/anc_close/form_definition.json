@@ -9,17 +9,24 @@
                 "shouldLoadValue": true
             },
             {
+                "name": "ecId",
+                "shouldLoadValue": true,
+                "source": "mother.eligible_couple.id"
+            },
+            {
                 "name": "closeReason",
                 "bind": "/model/instance/ANC_Close_EngKan/close_reason"
             },
             {
                 "name": "numberOfAbortions",
                 "shouldLoadValue": true,
-                "bind": "/model/instance/ANC_Close_EngKan/case_num_abortions"
+                "bind": "/model/instance/ANC_Close_EngKan/case_num_abortions",
+                "source": "mother.eligible_couple.numberOfAbortions"
             },
             {
                 "name": "numberOfAbortions",
-                "bind": "/model/instance/ANC_Close_EngKan/num_abortions"
+                "bind": "/model/instance/ANC_Close_EngKan/num_abortions",
+                "source": "mother.eligible_couple.numberOfAbortions"
             },
             {
                 "name": "isMaternalDeath",
