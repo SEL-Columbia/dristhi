@@ -149,7 +149,7 @@
             },
             {
                 "name": "bcgDate",
-                "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/bcg_Date",
+                "bind": "/model/instance/Child_Registration_EC_EngKan/child_immunization_history_group/bcg_date",
                 "source": "eligible_couple.mother.child.bcgDate"
             },
             {
