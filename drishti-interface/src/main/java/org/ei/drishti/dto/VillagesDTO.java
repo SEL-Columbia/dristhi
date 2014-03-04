@@ -9,6 +9,9 @@ import java.util.List;
 
 public class VillagesDTO {
     @JsonProperty
+    private String district;
+
+    @JsonProperty
     private String phcName;
 
     @JsonProperty
@@ -20,7 +23,8 @@ public class VillagesDTO {
     @JsonProperty
     private List<String> villages;
 
-    public VillagesDTO(String phcName, String phcIdentifier, String subCenter, List<String> villages) {
+    public VillagesDTO(String district, String phcName, String phcIdentifier, String subCenter, List<String> villages) {
+        this.district = district;
         this.phcName = phcName;
         this.phcIdentifier = phcIdentifier;
         this.subCenter = subCenter;

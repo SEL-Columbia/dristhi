@@ -34,9 +34,9 @@ public class LocationControllerTest {
     public void shouldReturnListOfVillagesForANM() throws Exception {
         when(anmService.getVillagesForANM("demo1")).thenReturn(
                 asList(
-                        new Location("village1", "sc", phc, "taluk", "district", "state"),
-                        new Location("village2", "sc", phc, "taluk", "district", "state")
-                        ));
+                        new Location("village1", "sc", phc, "taluk", "District", "state"),
+                        new Location("village2", "sc", phc, "taluk", "District", "state")
+                ));
 
         when(anmService.getLocation("demo1")).thenReturn(location);
         when(location.phc()).thenReturn(phc);
@@ -46,7 +46,8 @@ public class LocationControllerTest {
         when(location.phcName()).thenReturn("PHC X");
 
         ResponseEntity<VillagesDTO> response = controller.villagesForANM("demo1");
-        VillagesDTO villagesDTO = new VillagesDTO("PHC X", "phc1", "sc", asList("village1", "village2"));
+
+        VillagesDTO villagesDTO = new VillagesDTO("district", "PHC X", "phc1", "sc", asList("village1", "village2"));
         assertEquals(villagesDTO, response.getBody());
     }
 }

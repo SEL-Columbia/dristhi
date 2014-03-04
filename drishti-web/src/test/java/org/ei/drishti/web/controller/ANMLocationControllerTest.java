@@ -1,5 +1,6 @@
 package org.ei.drishti.web.controller;
 
+import com.google.gson.Gson;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
 import org.ei.drishti.dto.VillagesDTO;
@@ -31,21 +32,14 @@ public class ANMLocationControllerTest {
 
     @Test
     public void shouldGetANCDetailsForAllANMs() throws Exception {
+
         when(httpAgent.get("http://dristhi_reporting_url/villages?anm-id=demo1")).
-                thenReturn(new HttpResponse(true, "{\n" +
-                        "    \"phcName\": \"PHC X\",\n" +
-                        "    \"phcIdentifier\": \"phc1\",\n" +
-                        "    \"subCenter\": \"Sub Center 1\",\n" +
-                        "    \"villages\": [\n" +
-                        "        \"village1\",\n" +
-                        "        \"village2\",\n" +
-                        "        \"village3\"\n" +
-                        "    ]\n" +
-                        "}"));
+                thenReturn(new HttpResponse(true,
+                        new Gson().toJson(new VillagesDTO("district", "PHC X", "phc1", "Sub Center 1", asList("village1", "village2", "village3")))));
 
         ResponseEntity<VillagesDTO> response = controller.villagesForANM("demo1");
 
-        assertEquals(new VillagesDTO("PHC X", "phc1", "Sub Center 1", asList("village1", "village2", "village3")), response.getBody());
+        assertEquals(new VillagesDTO("district", "PHC X", "phc1", "Sub Center 1", asList("village1", "village2", "village3")), response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 }

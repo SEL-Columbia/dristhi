@@ -32,7 +32,11 @@ public class LocationController {
         if (villagesForANM != null) {
             Location anmLocation = (Location) villagesForANM.get(0);
             List<String> villages = collect(villagesForANM, on(Location.class).village());
-            villagesDTO = new VillagesDTO(anmLocation.phcName(), anmLocation.phc().phcIdentifier(), anmLocation.subCenter(), villages);
+            villagesDTO = new VillagesDTO(anmLocation.district().toLowerCase(),
+                    anmLocation.phcName(),
+                    anmLocation.phc().phcIdentifier(),
+                    anmLocation.subCenter(),
+                    villages);
         }
         return new ResponseEntity<>(villagesDTO, OK);
     }
