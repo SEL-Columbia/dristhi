@@ -46,6 +46,8 @@ public class Mother extends MotechBaseDataObject {
     private List<Map<String, String>> ifaTablets;
     @JsonProperty
     private List<Map<String, String>> ttDoses;
+    @JsonProperty
+    private List<Map<String, String>> hbTests;
 
     private Mother() {
     }
@@ -145,6 +147,10 @@ public class Mother extends MotechBaseDataObject {
         return ttDoses;
     }
 
+    public List<Map<String, String>> hbTests() {
+        return hbTests;
+    }
+
     public Mother setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);
         return this;
@@ -190,6 +196,11 @@ public class Mother extends MotechBaseDataObject {
 
     public Mother withTTDoses(List<Map<String, String>> ttDoses) {
         this.ttDoses = ttDoses;
+        return this;
+    }
+
+    public Mother withHBTests(List<Map<String, String>> hbTests) {
+        this.hbTests = hbTests;
         return this;
     }
 

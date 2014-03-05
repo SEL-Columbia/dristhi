@@ -49,6 +49,9 @@ public class ANCRegisterServiceTest {
                 .withTTDoses(asList(create("ttDate", "2012-12-24")
                         .put("ttDose", "tt1")
                         .map()))
+                .withHBTests(asList(create("hbTestDate", "2013-01-01")
+                        .put("hbLevel", "7.9")
+                        .map()))
                 .withDetails(
                         create("ancNumber", "OA899")
                                 .put("registrationDate", "2014-01-01")
@@ -110,6 +113,10 @@ public class ANCRegisterServiceTest {
                 .withHeight("150")
                 .withBloodGroup("o -ve")
                 .withIsHRP("yes")
+                .withHBTests(asList(
+                        create("hbTestDate", "2013-01-01")
+                                .put("hbLevel", "7.9")
+                                .map()))
                 .withANCVisits(asList(
                         create("ancVisitDate", "2013-01-01")
                                 .put("weight", "55")

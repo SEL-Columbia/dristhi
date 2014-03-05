@@ -72,6 +72,7 @@ public class ANCRegisterService {
                     .withHeight(mother.getDetail(HEIGHT))
                     .withBloodGroup(mother.getDetail(BLOOD_GROUP))
                     .withIsHRP(mother.getDetail(IS_HIGH_RISK))
+                    .withHBTests(mother.hbTests())
                     .withANCVisits(mother.ancVisits())
                     .withIFATablets(mother.ifaTablets())
                     .withTTDoses(mother.ttDoses());

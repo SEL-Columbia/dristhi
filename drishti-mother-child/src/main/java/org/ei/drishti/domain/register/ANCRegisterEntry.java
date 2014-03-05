@@ -40,6 +40,7 @@ public class ANCRegisterEntry {
     private List<Map<String, String>> ancVisits;
     private List<Map<String, String>> ifaTablets;
     private List<Map<String, String>> ttDoses;
+    private List<Map<String, String>> hbTests;
 
     public ANCRegisterEntry withANCNumber(String ancNumber) {
         this.ancNumber = ancNumber;
@@ -200,6 +201,11 @@ public class ANCRegisterEntry {
         return this;
     }
 
+    public ANCRegisterEntry withHBTests(List<Map<String, String>> hbTests) {
+        this.hbTests = hbTests;
+        return this;
+    }
+
     public String ancNumber() {
         return ancNumber;
     }
@@ -322,6 +328,10 @@ public class ANCRegisterEntry {
 
     public List<Map<String, String>> ttDoses() {
         return ttDoses;
+    }
+
+    public List<Map<String, String>> hbTests() {
+        return hbTests;
     }
 
     @Override

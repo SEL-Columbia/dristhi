@@ -48,6 +48,7 @@ public class ANCRegisterMapper {
                                         .withHeight(entry.height())
                                         .withBloodGroup(entry.bloodGroup())
                                         .withIsHRP(entry.isHRP())
+                                        .withHBTests(entry.hbTests())
                                         .withANCVisits(entry.ancVisits())
                                         .withIFATablets(entry.ifaTablets())
                                         .withTTDoses(entry.ttDoses());
