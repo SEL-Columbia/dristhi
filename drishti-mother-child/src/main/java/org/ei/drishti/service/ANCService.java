@@ -31,6 +31,7 @@ import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE
 import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.ANAEMIC_STATUS_FIELD;
+import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_LEVEL_FIELD;
 import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_TEST_DATE_FIELD;
 import static org.ei.drishti.common.AllConstants.IFAFields.IFA_TABLETS_DATE;
 import static org.ei.drishti.common.AllConstants.IFAFields.NUMBER_OF_IFA_TABLETS_GIVEN;
@@ -185,6 +186,12 @@ public class ANCService {
             logger.warn("Tried to handle Hb test given without registered mother. Submission: " + submission);
             return;
         }
+
+        Map<String, String> hbTest = create(HB_TEST_DATE_FIELD, submission.getField(HB_TEST_DATE_FIELD))
+                .put(HB_LEVEL_FIELD, submission.getField(HB_LEVEL_FIELD))
+                .map();
+        mother.updateHBTestInformation(hbTest);
+        allMothers.update(mother);
 
         ancSchedulesService.hbTestDone(submission.entityId(), submission.anmId(), submission.getField(HB_TEST_DATE_FIELD),
                 submission.getField(ANAEMIC_STATUS_FIELD), mother.lmp());

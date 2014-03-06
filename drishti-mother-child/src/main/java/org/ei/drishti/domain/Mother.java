@@ -199,16 +199,23 @@ public class Mother extends MotechBaseDataObject {
         return this;
     }
 
-    public Mother withHBTests(List<Map<String, String>> hbTests) {
-        this.hbTests = hbTests;
-        return this;
-    }
-
     public void updateTTDoseInformation(Map<String, String> ttDose) {
         if (this.ttDoses == null) {
             this.ttDoses = new ArrayList<>();
         }
         this.ttDoses.add(ttDose);
+    }
+
+    public Mother withHBTests(List<Map<String, String>> hbTests) {
+        this.hbTests = hbTests;
+        return this;
+    }
+
+    public void updateHBTestInformation(Map<String, String> hbTest) {
+        if (this.hbTests == null) {
+            this.hbTests = new ArrayList<>();
+        }
+        this.hbTests.add(hbTest);
     }
 
     public String thirdPNCVisitDate() {
