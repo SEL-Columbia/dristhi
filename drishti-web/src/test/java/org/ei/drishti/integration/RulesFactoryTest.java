@@ -87,12 +87,12 @@ public class RulesFactoryTest {
     }
 
     @Test
-    public void shouldLoadThirdANCVisitHappenedOnTimeRuleClassByName() throws Exception {
-        String ruleName = "ThirdANCVisitHappenedOnTimeRule";
+    public void shouldLoadMinimumThreeANCVisitsHappenedOnTimeRuleClassByName() throws Exception {
+        String ruleName = "MinimumThreeANCVisitsHappenedOnTimeRule";
 
         IRule rule = rulesFactory.ruleByName(ruleName);
 
-        assertTrue(rule instanceof ThirdANCVisitHappenedOnTimeRule);
+        assertTrue(rule instanceof MinimumThreeANCVisitsHappenedOnTimeRule);
     }
 
     @Test

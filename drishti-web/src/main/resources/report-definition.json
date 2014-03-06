@@ -1355,7 +1355,7 @@
                         "ancVisitNumber"
                     ],
                     "reportWhen": [
-                        "ThirdANCVisitHappenedOnTimeRule",
+                        "MinimumThreeANCVisitsHappenedOnTimeRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
                 },
