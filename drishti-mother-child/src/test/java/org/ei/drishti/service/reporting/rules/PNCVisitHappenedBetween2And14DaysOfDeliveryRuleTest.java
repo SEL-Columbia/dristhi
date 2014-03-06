@@ -1,7 +1,6 @@
 package org.ei.drishti.service.reporting.rules;
 
 import org.ei.drishti.util.SafeMap;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,63 +21,49 @@ public class PNCVisitHappenedBetween2And14DaysOfDeliveryRuleTest {
 
     @Test
     public void shouldReturnTrueWhenPNCVisitHappenedBetween2And14DaysOfDelivery() {
-        LocalDate deliveryDate = LocalDate.parse("2013-09-20");
         Map<String, String> reportFields =
-                create("pncVisitDate", deliveryDate.plusDays(3).toString())
-                        .put("referenceDate", deliveryDate.toString())
+                create("pncVisitDate", "2013-01-04")
+                        .put("referenceDate", "2013-01-01")
                         .map();
-
-        boolean didRuleApplied = rule.apply(new SafeMap(reportFields));
-
-        assertTrue(didRuleApplied);
+        boolean didRuleSucceed = rule.apply(new SafeMap(reportFields));
+        assertTrue(didRuleSucceed);
 
         reportFields =
-                create("pncVisitDate", deliveryDate.plusDays(13).toString())
-                        .put("referenceDate", deliveryDate.toString())
+                create("pncVisitDate", "2013-01-15")
+                        .put("referenceDate", "2013-01-01")
                         .map();
-
-        didRuleApplied = rule.apply(new SafeMap(reportFields));
-
-        assertTrue(didRuleApplied);
+        didRuleSucceed = rule.apply(new SafeMap(reportFields));
+        assertTrue(didRuleSucceed);
 
         reportFields =
-                create("pncVisitDate", deliveryDate.plusDays(14).toString())
-                        .put("referenceDate", deliveryDate.toString())
+                create("pncVisitDate", "2013-01-12")
+                        .put("referenceDate", "2013-01-01")
                         .map();
-
-        didRuleApplied = rule.apply(new SafeMap(reportFields));
-
-        assertTrue(didRuleApplied);
+        didRuleSucceed = rule.apply(new SafeMap(reportFields));
+        assertTrue(didRuleSucceed);
     }
 
     @Test
     public void shouldReturnFalseWhenPNCVisitNotHappenedBetween2And14DaysOfDelivery() {
-        LocalDate deliveryDate = LocalDate.parse("2013-09-20");
         Map<String, String> reportFields =
-                create("pncVisitDate", deliveryDate.plusDays(1).toString())
-                        .put("referenceDate", deliveryDate.toString())
+                create("pncVisitDate", "2013-01-03")
+                        .put("referenceDate", "2013-01-01")
                         .map();
-
-        boolean didRuleApplied = rule.apply(new SafeMap(reportFields));
-
-        assertFalse(didRuleApplied);
+        boolean didRuleSucceed = rule.apply(new SafeMap(reportFields));
+        assertFalse(didRuleSucceed);
 
         reportFields =
-                create("pncVisitDate", deliveryDate.plusDays(2).toString())
-                        .put("referenceDate", deliveryDate.toString())
+                create("pncVisitDate", "2013-01-02")
+                        .put("referenceDate", "2013-01-01")
                         .map();
-
-        didRuleApplied = rule.apply(new SafeMap(reportFields));
-
-        assertFalse(didRuleApplied);
+        didRuleSucceed = rule.apply(new SafeMap(reportFields));
+        assertFalse(didRuleSucceed);
 
         reportFields =
-                create("pncVisitDate", deliveryDate.plusDays(15).toString())
-                        .put("referenceDate", deliveryDate.toString())
+                create("pncVisitDate", "2013-01-16")
+                        .put("referenceDate", "2013-01-01")
                         .map();
-
-        didRuleApplied = rule.apply(new SafeMap(reportFields));
-
-        assertFalse(didRuleApplied);
+        didRuleSucceed = rule.apply(new SafeMap(reportFields));
+        assertFalse(didRuleSucceed);
     }
 }
