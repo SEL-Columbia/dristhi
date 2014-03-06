@@ -10,16 +10,11 @@ import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
 
 public class ChildImmunization {
-    public boolean isImmunizedWith(String immunisation, SafeMap reportFields) {
+    public boolean isImmunizedWith(String immunization, SafeMap reportFields) {
         List<String> immunizationsGivenList = getImmunizationGivenList(reportFields);
+        immunizationsGivenList.removeAll(getPreviousImmunizations(reportFields));
 
-        if (reportFields.has(PREVIOUS_IMMUNIZATIONS_FIELD_NAME)) {
-            String previousImmunizations = reportFields.get(PREVIOUS_IMMUNIZATIONS_FIELD_NAME) != null ?
-                    reportFields.get(PREVIOUS_IMMUNIZATIONS_FIELD_NAME) : "";
-            List<String> previousImmunizationsList = new ArrayList<>(asList(previousImmunizations.split(AllConstants.SPACE)));
-            immunizationsGivenList.removeAll(previousImmunizationsList);
-        }
-        return immunizationsGivenList.contains(immunisation);
+        return immunizationsGivenList.contains(immunization);
     }
 
     private List<String> getImmunizationGivenList(SafeMap reportFields) {
@@ -35,8 +30,22 @@ public class ChildImmunization {
 
     public boolean isImmunizationsGivenWithMeaslesOrMMR(SafeMap reportFields) {
         List<String> immunizationsGivenList = getImmunizationGivenList(reportFields);
-        if(immunizationsGivenList.contains(AllConstants.ChildImmunizationFields.MMR_VALUE))
+        if (immunizationsGivenList.contains(AllConstants.ChildImmunizationFields.MMR_VALUE))
             return immunizationsGivenList.containsAll(IMMUNIZATIONS_WITH_MMR_VALUE_LIST);
         return immunizationsGivenList.containsAll(IMMUNIZATIONS_VALUE_LIST);
+    }
+
+    public boolean isPreviouslyImmunizedWith(String immunization, SafeMap reportFields) {
+        return getPreviousImmunizations(reportFields).contains(immunization);
+    }
+
+    private List<String> getPreviousImmunizations(SafeMap reportFields) {
+        List<String> previousImmunizationsList = new ArrayList<>();
+        if (reportFields.has(PREVIOUS_IMMUNIZATIONS_FIELD_NAME)) {
+            String previousImmunizations = reportFields.get(PREVIOUS_IMMUNIZATIONS_FIELD_NAME) != null ?
+                    reportFields.get(PREVIOUS_IMMUNIZATIONS_FIELD_NAME) : "";
+            previousImmunizationsList = new ArrayList<>(asList(previousImmunizations.split(AllConstants.SPACE)));
+        }
+        return previousImmunizationsList;
     }
 }

@@ -1026,7 +1026,7 @@
                         ]
                     },
                     "reportWhen": [
-                        "IsChildBetween9to12MonthsRule",
+                        "IsChildLessThan23MonthsRule",
                         "IsAllImmunizationsGivenRule",
                         "ServiceProvidedAtSub_CenterRule",
                         "IsChildMaleRule"
@@ -1051,7 +1051,7 @@
                         ]
                     },
                     "reportWhen": [
-                        "IsChildBetween9to12MonthsRule",
+                        "IsChildLessThan23MonthsRule",
                         "IsAllImmunizationsGivenRule",
                         "ServiceProvidedAtSub_CenterRule",
                         "IsChildFemaleRule"
@@ -1069,7 +1069,7 @@
                         "immunizationsGiven"
                     ],
                     "reportWhen": [
-                        "IsChildBetween9to12MonthsRule",
+                        "IsChildLessThan23MonthsRule",
                         "IsAllImmunizationsGivenRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
