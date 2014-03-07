@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "3",
+    "form_data_definition_version": "4",
     "form": {
         "bind_type": "child",
         "default_bind_path": "/model/instance/Child_Registration_EngKan/",
@@ -11,6 +11,11 @@
             {
                 "name": "registrationDate",
                 "bind": "/model/instance/Child_Registration_EngKan/child_reg_date"
+            },
+            {
+                "name": "district",
+                "bind": "/model/instance/Child_Registration_EngKan/district",
+                "source": "child.mother.eligible_couple.district"
             },
             {
                 "name": "phc",

@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "2",
+    "form_data_definition_version": "3",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/ANC_Registration_OA_EngKan/",
@@ -12,6 +12,10 @@
                 "name": "originalVillage",
                 "bind": "/model/instance/ANC_Registration_OA_EngKan/out_of_area_village",
                 "source": "eligible_couple.originalVillage"
+            },
+            {
+                "name": "district",
+                "bind": "/model/instance/ANC_Registration_OA_EngKan/district"
             },
             {
                 "name": "phc",

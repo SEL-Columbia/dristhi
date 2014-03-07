@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "1",
+    "form_data_definition_version": "2",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/EC_Registration_EngKan/",
@@ -7,6 +7,10 @@
             {
                 "name": "id",
                 "shouldLoadValue": true
+            },
+            {
+                "name": "district",
+                "bind": "/model/instance/EC_Registration_EngKan/district"
             },
             {
                 "name": "phc",
