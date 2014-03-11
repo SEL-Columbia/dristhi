@@ -47,7 +47,7 @@
 
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/authenticate-user</url-pattern>
+        <url-pattern>/authenticate-user/</url-pattern>
     </filter-mapping>
 
     <filter-mapping>
