@@ -118,4 +118,13 @@ public class AllMothers extends MotechBaseRepository<Mother> {
         }
         return openPNCCount;
     }
+
+    @View(name = "all_mothers_by_CaseIDs",
+            map = "function(doc) { if (doc.type === 'Mother' && doc.caseId) { emit(doc.caseId); } }")
+    public List<Mother> findAll(List<String> motherIds) {
+        return db.queryView(createQuery("all_mothers_by_CaseIDs")
+                .keys(motherIds)
+                .includeDocs(true),
+                Mother.class);
+    }
 }

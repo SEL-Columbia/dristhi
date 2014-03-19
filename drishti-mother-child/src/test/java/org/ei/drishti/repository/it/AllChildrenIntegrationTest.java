@@ -228,4 +228,28 @@ public class AllChildrenIntegrationTest {
         assertEquals(2, (long) openChildCount.get("ANM ID 1"));
         assertEquals(1, (long) openChildCount.get("ANM ID 2"));
     }
+
+    @Test
+    public void shouldFindAllOpenChildrenForAGivenANM() throws Exception {
+        LocalDate referenceDate = LocalDate.parse("2013-12-26");
+        Child aChild = new Child("CASE-3", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1")
+                .withDateOfBirth(referenceDate.minusYears(5).toString());
+        Child anotherChild = new Child("CASE-2", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1")
+                .withDateOfBirth(referenceDate.minusYears(5).plusDays(1).toString());
+        Child servedByAnotherANM = new Child("CASE-6", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 2")
+                .withDateOfBirth(referenceDate.minusYears(2).toString());
+        Child closed = new Child("CASE-7", "MOTHER-CASE-2", "bcg", "3", "male").withAnm("ANM ID 1").setIsClosed(true)
+                .withDateOfBirth(referenceDate.toString());
+
+        allChildren.add(aChild);
+        allChildren.add(anotherChild);
+        allChildren.add(servedByAnotherANM);
+        allChildren.add(closed);
+
+        List<Child> allOpenChildrenForANM = allChildren.findAllOpenChildrenForANM("ANM ID 1");
+
+        assertTrue(allOpenChildrenForANM.containsAll(asList(aChild, anotherChild)));
+        assertFalse(allOpenChildrenForANM.contains(servedByAnotherANM));
+        assertFalse(allOpenChildrenForANM.contains(closed));
+    }
 }

@@ -7,6 +7,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ei.drishti.common.AllConstants;
 import org.ektorp.support.TypeDiscriminator;
+import org.joda.time.LocalDate;
 import org.motechproject.model.MotechBaseDataObject;
 
 import java.util.ArrayList;
@@ -48,6 +49,8 @@ public class Child extends MotechBaseDataObject {
     private String thayiCard;
     @JsonProperty
     private Map<String, String> details;
+    @JsonProperty
+    private Map<String, LocalDate> immunizations;
 
     private Child() {
     }
@@ -83,6 +86,26 @@ public class Child extends MotechBaseDataObject {
         return this;
     }
 
+    public Child withImmunziations(Map<String, LocalDate> immunziations) {
+        this.immunizations = immunziations;
+        return this;
+    }
+
+    public Child withDetails(Map<String, String> details) {
+        this.details = details;
+        return this;
+    }
+
+    public Child setIsClosed(boolean isClosed) {
+        this.isClosed = Boolean.toString(isClosed);
+        return this;
+    }
+
+    public Child withName(String name) {
+        this.name = name;
+        return this;
+    }
+
     public String caseId() {
         return caseId;
     }
@@ -107,11 +130,6 @@ public class Child extends MotechBaseDataObject {
         return new ArrayList<>(Arrays.asList(immunizationsGiven.split(" ")));
     }
 
-    public Child withDetails(Map<String, String> details) {
-        this.details = details;
-        return this;
-    }
-
     public Map<String, String> details() {
         return details;
     }
@@ -128,14 +146,8 @@ public class Child extends MotechBaseDataObject {
         return new Location(village, subCenter, phc);
     }
 
-    public Child setIsClosed(boolean isClosed) {
-        this.isClosed = Boolean.toString(isClosed);
-        return this;
-    }
-
-    public Child withName(String name) {
-        this.name = name;
-        return this;
+    public Map<String, LocalDate> immunizations() {
+        return immunizations;
     }
 
     @JsonIgnore

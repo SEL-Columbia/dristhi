@@ -213,6 +213,20 @@ public class AllMothersIntegrationTest {
         assertEquals(1, (long) openPNCCount.get("demo2"));
     }
 
+    @Test
+    public void shouldFindAllMothersByCaseId() throws Exception {
+        Mother mother1 = new Mother("mother id 1", "ec id 1", "thayi card number 1");
+        Mother mother2 = new Mother("mother id 2", "ec id 2", "thayi card number 2");
+        Mother mother3 = new Mother("mother id 3", "ec id 3", "thayi card number 3");
+        allMothers.add(mother1);
+        allMothers.add(mother2);
+        allMothers.add(mother3);
+
+        List<Mother> mothers = allMothers.findAll(asList("mother id 1", "mother id 2"));
+
+        assertEquals(asList(mother1, mother2), mothers);
+    }
+
     private Mother motherWithoutDetails() {
         return new Mother("CASE X", "EC-CASE-1", "TC 1").withAnm("ANM X");
     }

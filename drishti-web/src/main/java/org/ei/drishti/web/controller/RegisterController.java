@@ -1,12 +1,16 @@
 package org.ei.drishti.web.controller;
 
 import org.ei.drishti.domain.register.ANCRegister;
+import org.ei.drishti.domain.register.ChildRegister;
 import org.ei.drishti.domain.register.ECRegister;
 import org.ei.drishti.dto.register.ANCRegisterDTO;
+import org.ei.drishti.dto.register.ChildRegisterDTO;
 import org.ei.drishti.dto.register.ECRegisterDTO;
 import org.ei.drishti.mapper.ANCRegisterMapper;
+import org.ei.drishti.mapper.ChildRegisterMapper;
 import org.ei.drishti.mapper.ECRegisterMapper;
 import org.ei.drishti.service.ANCRegisterService;
+import org.ei.drishti.service.ChildRegisterService;
 import org.ei.drishti.service.ECRegisterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,21 +31,34 @@ public class RegisterController {
     private static Logger logger = LoggerFactory.getLogger(RegisterController.class.toString());
     private ANCRegisterService ancRegisterService;
     private ECRegisterService ecRegisterService;
+    private ChildRegisterService childRegisterService;
     private ANCRegisterMapper ancRegisterMapper;
     private ECRegisterMapper ecRegisterMapper;
+    private ChildRegisterMapper childRegisterMapper;
     private final String drishtiSiteUrl;
 
     @Autowired
     public RegisterController(ANCRegisterService ancRegisterService,
                               ECRegisterService ecRegisterService,
+                              ChildRegisterService childRegisterService,
                               ANCRegisterMapper ancRegisterMapper,
                               ECRegisterMapper ecRegisterMapper,
+                              ChildRegisterMapper childRegisterMapper,
                               @Value("#{drishti['drishti.site.url']}") String drishtiSiteUrl) {
         this.ancRegisterService = ancRegisterService;
         this.ecRegisterService = ecRegisterService;
+        this.childRegisterService = childRegisterService;
         this.ancRegisterMapper = ancRegisterMapper;
         this.ecRegisterMapper = ecRegisterMapper;
+        this.childRegisterMapper = childRegisterMapper;
         this.drishtiSiteUrl = drishtiSiteUrl;
+    }
+
+    @RequestMapping(method = GET, value = "/registers/ec")
+    @ResponseBody
+    public ResponseEntity<ECRegisterDTO> getECRegister(@RequestParam("anm-id") String anmIdentifier) {
+        ECRegister ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier);
+        return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
     }
 
     @RequestMapping(method = GET, value = "/registers/anc")
@@ -51,10 +68,10 @@ public class RegisterController {
         return new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
     }
 
-    @RequestMapping(method = GET, value = "/registers/ec")
+    @RequestMapping(method = GET, value = "/registers/child")
     @ResponseBody
-    public ResponseEntity<ECRegisterDTO> getECRegister(@RequestParam("anm-id") String anmIdentifier) {
-        ECRegister ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
+    public ResponseEntity<ChildRegisterDTO> getChildRegister(@RequestParam("anm-id") String anmIdentifier) {
+        ChildRegister childRegister = childRegisterService.getRegisterForANM(anmIdentifier);
+        return new ResponseEntity<>(childRegisterMapper.mapToDTO(childRegister), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
     }
 }
