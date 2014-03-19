@@ -20,7 +20,6 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -118,8 +117,6 @@ public class RegisterControllerTest {
 
         assertEquals(expectedECRegisterDTO, response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getHeaders().containsKey("Access-Control-Allow-Origin"));
-        assertEquals("http://dristhi_site_url", response.getHeaders().getFirst("Access-Control-Allow-Origin"));
     }
 
     @Test
@@ -189,8 +186,6 @@ public class RegisterControllerTest {
 
         assertEquals(expectedANCRegisterDTO, response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getHeaders().containsKey("Access-Control-Allow-Origin"));
-        assertEquals("http://dristhi_site_url", response.getHeaders().getFirst("Access-Control-Allow-Origin"));
     }
 
     @Test
@@ -219,7 +214,7 @@ public class RegisterControllerTest {
                 .withThayiCardNumber("thayi card number 1")
                 .withWifeName("name1")
                 .withHusbandName("name2")
-                .withDob(LocalDate.parse("2013-01-01"))
+                .withDOB(LocalDate.parse("2013-01-01"))
                 .withVillage("village1")
                 .withSubCenter("subCenter1")
                 .withWifeDOB(LocalDate.parse("1989-01-01"))

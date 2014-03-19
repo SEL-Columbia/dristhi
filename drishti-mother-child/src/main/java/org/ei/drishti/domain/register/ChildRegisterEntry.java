@@ -72,11 +72,11 @@ public class ChildRegisterEntry {
         return this;
     }
 
-    public LocalDate dob() {
+    public LocalDate DOB() {
         return DOB;
     }
 
-    public ChildRegisterEntry withDob(LocalDate dob) {
+    public ChildRegisterEntry withDOB(LocalDate dob) {
         this.DOB = dob;
         return this;
     }

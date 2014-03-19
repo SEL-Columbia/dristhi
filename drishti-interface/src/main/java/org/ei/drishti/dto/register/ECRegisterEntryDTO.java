@@ -205,12 +205,12 @@ public class ECRegisterEntryDTO {
 
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, "id", "revision");
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override

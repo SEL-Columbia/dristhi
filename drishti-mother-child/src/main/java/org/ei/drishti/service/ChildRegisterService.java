@@ -47,7 +47,6 @@ public class ChildRegisterService {
                     having(on(Mother.class).caseId(), equalTo(child.motherCaseId())));
             EligibleCouple ec = selectUnique(ecs,
                     having(on(EligibleCouple.class).caseId(), equalTo(mother.ecCaseId())));
-
             ChildRegisterEntry entry = new ChildRegisterEntry()
                     .withThayiCardNumber(mother.thayiCardNumber())
                     .withWifeName(ec.wifeName())
@@ -55,7 +54,7 @@ public class ChildRegisterService {
                     .withWifeDOB(ec.wifeDOB())
                     .withVillage(ec.location().village())
                     .withSubCenter(ec.location().subCenter())
-                    .withDob(LocalDate.parse(child.dateOfBirth()))
+                    .withDOB(LocalDate.parse(child.dateOfBirth()))
                     .withImmunizations(child.immunizations());
             childRegisterEntries.add(entry);
         }

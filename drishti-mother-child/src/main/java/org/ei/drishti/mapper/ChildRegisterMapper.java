@@ -23,7 +23,7 @@ public class ChildRegisterMapper {
                                         .withThayiCardNumber(entry.thayiCardNumber())
                                         .withWifeName(entry.wifeName())
                                         .withHusbandName(entry.husbandName())
-                                        .withDOB(entry.dob())
+                                        .withDOB(entry.DOB())
                                         .withVillage(entry.village())
                                         .withSubCenter(entry.subCenter())
                                         .withWifeDOB(entry.wifeDOB())

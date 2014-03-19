@@ -69,7 +69,6 @@ public class ChildRegisterServiceTest {
                 .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
                 .withDetails(
                         mapOf("womanDOB", "1989-01-01"));
-
         ChildRegister expectedRegister = new ChildRegister(asList(new ChildRegisterEntry()
                 .withThayiCardNumber("thayi card number 1")
                 .withWifeName("name1")
@@ -77,9 +76,8 @@ public class ChildRegisterServiceTest {
                 .withWifeDOB(LocalDate.parse("1989-01-01"))
                 .withVillage("boregowdanakoppalu")
                 .withSubCenter("hosa_agrahara")
-                .withDob(LocalDate.parse("2013-01-01"))
+                .withDOB(LocalDate.parse("2013-01-01"))
                 .withImmunizations(immunizations)));
-
         when(allChildren.findAllOpenChildrenForANM("anm1")).thenReturn(asList(child));
         when(allMothers.findAll(asList("mother id"))).thenReturn(asList(mother));
         when(allEligibleCouples.findAll(asList("ec id"))).thenReturn(asList(eligibleCouple));

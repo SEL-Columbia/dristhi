@@ -12,8 +12,6 @@ import org.ei.drishti.mapper.ECRegisterMapper;
 import org.ei.drishti.service.ANCRegisterService;
 import org.ei.drishti.service.ChildRegisterService;
 import org.ei.drishti.service.ECRegisterService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -28,7 +26,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 public class RegisterController {
-    private static Logger logger = LoggerFactory.getLogger(RegisterController.class.toString());
     private ANCRegisterService ancRegisterService;
     private ECRegisterService ecRegisterService;
     private ChildRegisterService childRegisterService;
