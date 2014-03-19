@@ -28,7 +28,6 @@
             },
             {
                 "name": "familyPlanningMethodChangeDate",
-                "value": "",
                 "bind": "/model/instance/Family_Planning_Change_Method_EngKan/date_familyplanningstart"
             },
             {

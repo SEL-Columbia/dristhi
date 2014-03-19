@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "1",
+    "form_data_definition_version": "3",
     "form": {
         "bind_type": "child",
         "default_bind_path": "/model/instance/Child_Close_EngKan/",
@@ -15,13 +15,13 @@
             {
                 "name": "numberOfLivingChildren",
                 "bind": "/model/instance/Child_Close_EngKan/death_child_group/case_num_livingchildren",
-                "source": "child.mother.ec.numberOfLivingChildren",
+                "source": "child.mother.eligible_couple.numberOfLivingChildren",
                 "shouldLoadValue": true
             },
             {
                 "name": "numberOfLivingChildren",
                 "bind": "/model/instance/Child_Close_EngKan/death_child_group/num_livingchildren",
-                "source": "child.mother.ec.numberOfLivingChildren"
+                "source": "child.mother.eligible_couple.numberOfLivingChildren"
             },
             {
                 "name": "isImmunizationDeath",
