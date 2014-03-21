@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "4",
+    "form_data_definition_version": "5",
     "form": {
         "bind_type": "child",
         "default_bind_path": "/model/instance/Child_Registration_EngKan/",
@@ -173,11 +173,11 @@
                 "bind": "/model/instance/Child_Registration_EngKan/child_immunization_history_group/mmr_date"
             },
             {
-                "name": "dptBooster1Date",
+                "name": "dptbooster1Date",
                 "bind": "/model/instance/Child_Registration_EngKan/child_immunization_history_group/dptbooster_1_date"
             },
             {
-                "name": "opvBoosterDate",
+                "name": "opvboosterDate",
                 "bind": "/model/instance/Child_Registration_EngKan/child_immunization_history_group/opvbooster_date"
             },
             {
@@ -189,11 +189,11 @@
                 "bind": "/model/instance/Child_Registration_EngKan/child_immunization_history_group/je_2_date"
             },
             {
-                "name": "measlesBoosterDate",
+                "name": "measlesboosterDate",
                 "bind": "/model/instance/Child_Registration_EngKan/child_immunization_history_group/measlesbooster_date"
             },
             {
-                "name": "dptBooster2Date",
+                "name": "dptbooster2Date",
                 "bind": "/model/instance/Child_Registration_EngKan/child_immunization_history_group/dptbooster_2_date"
             },
             {
