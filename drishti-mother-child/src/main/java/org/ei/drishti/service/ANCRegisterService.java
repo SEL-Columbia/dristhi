@@ -6,13 +6,11 @@ import org.ei.drishti.domain.register.ANCRegister;
 import org.ei.drishti.domain.register.ANCRegisterEntry;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
 
 import static ch.lambdaj.Lambda.*;
@@ -24,7 +22,6 @@ import static org.hamcrest.Matchers.equalTo;
 
 @Service
 public class ANCRegisterService {
-    private static Logger logger = LoggerFactory.getLogger(ANCRegisterService.class.toString());
     private final AllMothers allMothers;
     private final AllEligibleCouples allEligibleCouples;
 
@@ -38,8 +35,10 @@ public class ANCRegisterService {
     public ANCRegister getRegisterForANM(String anmIdentifier) {
         ArrayList<ANCRegisterEntry> ancRegisterEntries = new ArrayList<>();
         List<Mother> mothers = allMothers.findAllOpenMothersForANM(anmIdentifier);
-        List<String> ecIDs = new ArrayList<>(new HashSet<>(collect(mothers, on(Mother.class).ecCaseId())));
-        List<EligibleCouple> ecs = allEligibleCouples.findAll(ecIDs);
+        Collection<String> ecIDs = selectDistinct(collect(mothers, on(Mother.class).ecCaseId()));
+        List<String> ecIdsList = new ArrayList<>();
+        ecIdsList.addAll(ecIDs);
+        List<EligibleCouple> ecs = allEligibleCouples.findAll(ecIdsList);
         for (Mother mother : mothers) {
             EligibleCouple ec = selectUnique(ecs,
                     having(on(EligibleCouple.class).caseId(), equalTo(mother.ecCaseId())));

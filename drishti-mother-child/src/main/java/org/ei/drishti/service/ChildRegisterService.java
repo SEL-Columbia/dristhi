@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
 
 import static ch.lambdaj.Lambda.*;
@@ -36,12 +36,14 @@ public class ChildRegisterService {
     public ChildRegister getRegisterForANM(String anmIdentifier) {
         ArrayList<ChildRegisterEntry> childRegisterEntries = new ArrayList<>();
         List<Child> children = allChildren.findAllOpenChildrenForANM(anmIdentifier);
-        List<String> motherIds = new ArrayList<>(
-                new HashSet<>(collect(children, on(Child.class).motherCaseId())));
-        List<Mother> mothers = allMothers.findAll(motherIds);
-        List<String> ecIDs = new ArrayList<>(new HashSet<>(
-                collect(mothers, on(Mother.class).ecCaseId())));
-        List<EligibleCouple> ecs = allEligibleCouples.findAll(ecIDs);
+        Collection<String> motherIds = selectDistinct(collect(children, on(Child.class).motherCaseId()));
+        List<String> motherIdsList = new ArrayList<>();
+        motherIdsList.addAll(motherIds);
+        List<Mother> mothers = allMothers.findAll(motherIdsList);
+        Collection<String> ecIDs =  selectDistinct(collect(mothers, on(Mother.class).ecCaseId()));
+        List<String> ecIdsList = new ArrayList<>();
+        ecIdsList.addAll(ecIDs);
+        List<EligibleCouple> ecs = allEligibleCouples.findAll(ecIdsList);
         for (Child child : children) {
             Mother mother = selectUnique(mothers,
                     having(on(Mother.class).caseId(), equalTo(child.motherCaseId())));
