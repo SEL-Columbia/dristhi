@@ -10,10 +10,7 @@ import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.LocalDate;
 import org.motechproject.model.MotechBaseDataObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.IMMUNIZATION_DATE_FIELD_NAME;
 
@@ -51,6 +48,7 @@ public class Child extends MotechBaseDataObject {
     private Map<String, String> details;
     @JsonProperty
     private Map<String, LocalDate> immunizations;
+    @JsonProperty
     private Map<String, LocalDate> vitaminADoses;
 
     private Child() {
@@ -63,6 +61,7 @@ public class Child extends MotechBaseDataObject {
         this.weight = weight;
         this.gender = gender;
         this.setIsClosed(false);
+        this.immunizations = new HashMap<>();
     }
 
     public Child withAnm(String anmIdentifier) {
@@ -87,8 +86,8 @@ public class Child extends MotechBaseDataObject {
         return this;
     }
 
-    public Child withImmunziations(Map<String, LocalDate> immunziations) {
-        this.immunizations = immunziations;
+    public Child withImmunizations(Map<String, LocalDate> immunizations) {
+        this.immunizations = immunizations;
         return this;
     }
 

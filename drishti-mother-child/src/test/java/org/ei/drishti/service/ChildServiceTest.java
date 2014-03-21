@@ -15,6 +15,7 @@ import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.service.scheduling.PNCSchedulesService;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -117,7 +118,7 @@ public class ChildServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldUpdateEveryChildWithMotherInfoDuringRegistration() {
+    public void shouldUpdateEveryChildWithMotherInfoAndImmunizationInfoDuringRegistration() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "EC-CASE-1", "TC1"));
@@ -131,15 +132,17 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
+                .addFormField("submissionDate", "2012-01-01")
                 .addFormField("didBreastfeedingStart", "no")
                 .withSubForm(new SubFormData("child_registration",
-                        asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
+                        asList(create("id", "child id 1").put("immunizationsGiven", "bcg").map(), mapOf("id", "child id 2"))))
                 .build();
 
         service.registerChildren(submission);
 
-        verify(allChildren).update(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
-        verify(allChildren).update(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
+        verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1").withImmunizations(mapOf("bcg", LocalDate.parse("2012-01-01"))));
+        verify(allChildren).update(new Child("child id 2", "mother id 1", "opv", "2", "male").withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
+
         assertFalse(firstChild.isClosed());
         assertFalse(secondChild.isClosed());
     }
@@ -165,7 +168,7 @@ public class ChildServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldUpdateChildWithANMDetailsWhenItIsRegisteredForAnEC() {
+    public void shouldUpdateChildWithANMDetailsAndImmunizationDetailsWhenItIsRegisteredForAnEC() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         Child child = new Child("child id 1", "mother id 1", "opv", "2", "female");
@@ -175,16 +178,27 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("childId", "child id 1")
+                .addFormField("immunizationsGiven", "bcg opv_0")
+                .addFormField("bcgDate", "2013-01-01")
+                .addFormField("opv0Date", "2013-01-02")
+                .addFormField("childVitaminAHistory", "1 2")
+                .addFormField("vitamin1Date", "2013-01-01")
+                .addFormField("vitamin2Date", "2013-01-02")
                 .build();
 
         service.registerChildrenForEC(submission);
 
-        verify(allChildren).update(child.withAnm("anm id 1"));
+        verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1")
+                .withImmunizations(create("bcg", LocalDate.parse("2013-01-01"))
+                        .put("opv_0", LocalDate.parse("2013-01-02")).map())
+                .withVitaminADoses(create("1", LocalDate.parse("2013-01-01"))
+                        .put("2", LocalDate.parse("2013-01-02"))
+                        .map()));
         assertFalse(child.isClosed());
     }
 
     @Test
-    public void shouldUpdateChildWithANMDetailsWhenItIsRegisteredAsOA() {
+    public void shouldUpdateChildWithANMDetailsImmunizationDetailsAndVitaminDetailsWhenItIsRegisteredAsOA() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         Child child = new Child("child id 1", "mother id 1", "opv", "2", "female");
@@ -194,11 +208,24 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .addFormField("id", "child id 1")
                 .addFormField("motherId", "mother id 1")
+                .addFormField("immunizationsGiven", "bcg opv_0 dptbooster_1")
+                .addFormField("childVitaminAHistory", "1 2")
+                .addFormField("bcgDate", "2013-01-01")
+                .addFormField("opv0Date", "2013-01-02")
+                .addFormField("dptbooster1Date", "2013-01-03")
+                .addFormField("vitamin1Date", "2013-01-01")
+                .addFormField("vitamin2Date", "2013-01-02")
                 .build();
 
         service.registerChildrenForOA(submission);
 
-        verify(allChildren).update(child.withAnm("anm id 1"));
+        verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1")
+                .withImmunizations(create("bcg", LocalDate.parse("2013-01-01"))
+                        .put("opv_0", LocalDate.parse("2013-01-02"))
+                        .put("dptbooster_1", LocalDate.parse("2013-01-03")).map())
+                .withVitaminADoses(create("1", LocalDate.parse("2013-01-01"))
+                        .put("2", LocalDate.parse("2013-01-02"))
+                        .map()));
     }
 
     @Test
@@ -211,7 +238,8 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .withEntityId("Case X")
                 .addFormField("previousImmunizations", "bcg")
-                .addFormField("immunizationsGiven", "bcg opv_0")
+                .addFormField("immunizationsGiven", "bcg")
+                .addFormField("bcgDate", "2013-01-01")
                 .build();
 
         service.updateChildImmunization(submission);
@@ -239,7 +267,6 @@ public class ChildServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldCallReportServiceWithPreviousImmunizationsInsteadOfCurrentImmunizations() throws Exception {
-        when(allChildren.childExists("Case X")).thenReturn(true);
         when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withDetails(EXTRA_DATA.get("details")));
         when(reportFieldsDefinition.get("child_immunizations")).thenReturn(asList("id", "immunizationsGiven", "immunizationDate"));
@@ -256,6 +283,26 @@ public class ChildServiceTest extends BaseUnitTest {
         service.updateChildImmunization(submission);
 
         verify(childReportingService).immunizationProvided(new SafeMap(create("id", "Case X").put("immunizationsGiven", "bcg opv_0").put("immunizationDate", "2013-01-01").map()), asList("bcg"));
+    }
+
+    @Test
+    public void shouldUpdateChildWithImmunizationsInfoFromChildImmunizationsForm() throws Exception {
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female")
+                .withDetails(EXTRA_DATA.get("details")));
+        FormSubmission submission = create()
+                .withFormName("child_immunizations")
+                .withANMId("anm id 1")
+                .withEntityId("Case X")
+                .addFormField("id", "Case X")
+                .addFormField("previousImmunizations", "bcg")
+                .addFormField("immunizationsGiven", "bcg opv_0")
+                .addFormField("immunizationDate", "2013-01-01")
+                .build();
+
+        service.updateChildImmunization(submission);
+
+        verify(allChildren).update(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female")
+                .withDetails(EXTRA_DATA.get("details")).withImmunizations(mapOf("opv_0", LocalDate.parse("2013-01-01"))));
     }
 
     @Test
@@ -443,6 +490,31 @@ public class ChildServiceTest extends BaseUnitTest {
     }
 
     @Test
+    public void shouldUpdateEveryChildWithImmunizationInfoDuringPNCOARegistration() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "TC1")));
+        Child firstChild = new Child("child id 1", "mother id 1", "opv", "2", "female");
+        Child secondChild = new Child("child id 2", "mother id 1", "opv", "2", "male");
+        when(allChildren.findByCaseId("child id 1")).thenReturn(firstChild);
+        when(allChildren.findByCaseId("child id 2")).thenReturn(secondChild);
+        FormSubmission submission = create()
+                .withFormName("pnc_registration_oa")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .addFormField("submissionDate", "2012-01-01")
+                .withSubForm(new SubFormData("child_registration_oa",
+                        asList(create("id", "child id 1").put("immunizationsGiven", "bcg").map(), mapOf("id", "child id 2"))))
+                .build();
+
+        service.pncOAChildRegistration(submission);
+
+        verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1").withImmunizations(mapOf("bcg", LocalDate.parse("2012-01-01"))));
+
+    }
+
+    @Test
     public void shouldNotHandlePNCChildRegistrationWhenMotherIsNotFound() {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
@@ -560,11 +632,12 @@ public class ChildServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldReportVitaminADosageWhenVitaminADosageIsGiven() {
-        when(allChildren.childExists("child id 1")).thenReturn(true);
+        when(allChildren.findByCaseId("child id 1")).thenReturn(new Child("child id 1", "Mother id 1", "bcg", "3", "male"));
         FormSubmission submission = create()
                 .withFormName("vitamin_a")
                 .withEntityId("child id 1")
                 .withANMId("anm id 1")
+                .addFormField("vitaminADate", "2013-01-01")
                 .addFormField("some-field", "some-value")
                 .build();
         when(reportFieldsDefinition.get("vitamin_a")).thenReturn(asList("some-field"));
@@ -572,5 +645,22 @@ public class ChildServiceTest extends BaseUnitTest {
         service.vitaminAProvided(submission);
 
         verify(childReportingService).vitaminAProvided(new SafeMap(mapOf("some-field", "some-value")));
+    }
+
+    @Test
+    public void shouldUpdateVitaminADosageInChild() {
+        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "Mother id 1", "bcg", "3", "male"));
+        FormSubmission submission = create()
+                .withFormName("vitamin_a")
+                .withEntityId("Case X")
+                .withANMId("anm id 1")
+                .addFormField("some-field", "some-value")
+                .addFormField("vitaminADose", "1")
+                .addFormField("vitaminADate", "2013-01-01")
+                .build();
+
+        service.vitaminAProvided(submission);
+
+        verify(allChildren).update(new Child("Case X", "Mother id 1", "bcg", "3", "male").withVitaminADoses(mapOf("1", LocalDate.parse("2013-01-01"))));
     }
 }

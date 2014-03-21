@@ -62,7 +62,7 @@ public class ChildRegisterServiceTest {
                 .put("2", LocalDate.parse("2013-01-01"))
                 .map();
         Child child = new Child("child id", "mother id", "bcg opv_0 hepb_0 opv_1 pentavalent_1 opv_2 pentavalent_2", "3.0", "male")
-                .withImmunziations(immunizations)
+                .withImmunizations(immunizations)
                 .withVitaminADoses(vitaminADoses)
                 .withDateOfBirth("2013-01-01");
         Mother mother = new Mother("mother id", "ec id", "thayi card number 1");

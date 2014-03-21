@@ -200,6 +200,9 @@ public class AllConstants {
     public static class ChildRegistrationFormFields {
         public static final String BF_POSTBIRTH = "didBreastfeedingStart";
         public static final String DATE_OF_BIRTH = "dateOfBirth";
+        public static final String CHILD_VITAMIN_A_HISTORY = "childVitaminAHistory";
+        public static final String DATE = "Date";
+        public static final String VITAMIN = "vitamin";
     }
 
     public static class ChildCloseFormFields {
@@ -293,6 +296,7 @@ public class AllConstants {
         public static final String IMMUNIZATIONS_GIVEN_FIELD_NAME = "immunizationsGiven";
         public static final String PREVIOUS_IMMUNIZATIONS_FIELD_NAME = "previousImmunizations";
         public static final String IMMUNIZATION_DATE_FIELD_NAME = "immunizationDate";
+        public static final String IMMUNIZATION_RECEIVED_FIELD_NAME = "immunizationsReceived";
 
         public static final String BCG_VALUE = "bcg";
 

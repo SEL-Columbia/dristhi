@@ -11,21 +11,23 @@ import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.util.SafeMap;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.THAYI_CARD_NUMBER;
-import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH;
-import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
-import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
+import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.*;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.*;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DELIVERY_PLACE;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_PROBLEMS;
@@ -67,8 +69,11 @@ public class ChildService {
         String referenceDate = submission.getField(REFERENCE_DATE);
         for (Map<String, String> childFields : subFormData.instances()) {
             Child child = allChildren.findByCaseId(childFields.get(ID));
+
+            List<String> immunizationsGiven = getNamesOfImmunizationsGiven(childFields.get(IMMUNIZATIONS_GIVEN_FIELD_NAME));
             child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate)
-                    .withThayiCard(mother.thayiCardNumber()).setIsClosed(false);
+                    .withThayiCard(mother.thayiCardNumber()).setIsClosed(false)
+                    .withImmunizations(getChildImmunizationDetails(submission, child, immunizationsGiven));
             allChildren.update(child);
 
             SafeMap reportingData = new SafeMap();
@@ -79,6 +84,10 @@ public class ChildService {
 
             childSchedulesService.enrollChild(child);
         }
+    }
+
+    private ArrayList<String> split(String immunizationsGivenField) {
+        return new ArrayList<>(asList(immunizationsGivenField.split(IMMUNIZATIONS_SEPARATOR)));
     }
 
     private Child getChild(FormSubmission submission, Mother mother, String referenceDate, Map<String, String> childFields) {
@@ -95,39 +104,122 @@ public class ChildService {
     public void registerChildrenForEC(FormSubmission submission) {
         Child child = allChildren.findByCaseId(submission.getField(ChildReportingService.CHILD_ID_FIELD));
         child.withAnm(submission.anmId()).withThayiCard(submission.getField(THAYI_CARD_NUMBER)).setIsClosed(false);
+
+        List<String> immunizationsGiven = getNamesOfImmunizationsGiven(submission.getField(IMMUNIZATIONS_GIVEN_FIELD_NAME));
+
+        List<String> vitaminHistory = getVitaminDoses(submission.getField("childVitaminAHistory"));
+
+        child.withImmunizations(getChildImmunizationDetails(submission, child, immunizationsGiven));
+        child.withVitaminADoses(getVitaminDoseDetails(submission, child, vitaminHistory));
         allChildren.update(child);
+    }
+
+    private Map<String, LocalDate> getVitaminDoseDetails(FormSubmission submission, Child child, List<String> vitaminHistory) {
+        Map<String, LocalDate> vitaminDoses = child.vitaminADoses() == null
+                ? new HashMap<String, LocalDate>()
+                : child.vitaminADoses();
+        for (String vitamin : vitaminHistory) {
+            vitaminDoses.put(vitamin, getVitaminDate(submission, vitamin));
+        }
+        return vitaminDoses;
+    }
+
+    private ArrayList<String> getVitaminDoses(String vitaminDoses) {
+        return isBlank(vitaminDoses)
+                ? new ArrayList<String>()
+                : split(vitaminDoses);
+    }
+
+    private LocalDate getVitaminDate(FormSubmission submission, String vitaminDose) {
+        return LocalDate.parse(submission.getField(VITAMIN + vitaminDose + DATE));
     }
 
     public void registerChildrenForOA(FormSubmission submission) {
         Child child = allChildren.findByCaseId(submission.getField(ID));
         child.withAnm(submission.anmId()).withThayiCard(submission.getField(THAYI_CARD_NUMBER));
+
+        List<String> immunizationsGiven = getNamesOfImmunizationsGiven(submission.getField(IMMUNIZATIONS_GIVEN_FIELD_NAME));
+        List<String> vitaminHistory = getVitaminDoses(submission.getField(CHILD_VITAMIN_A_HISTORY));
+
+        child.withImmunizations(getChildImmunizationDetails(submission, child, immunizationsGiven));
+        child.withVitaminADoses(getVitaminDoseDetails(submission, child, vitaminHistory));
+
         allChildren.update(child);
     }
 
     public void updateChildImmunization(FormSubmission submission) {
-        if (!allChildren.childExists(submission.entityId())) {
+        Child child = allChildren.findByCaseId(submission.entityId());
+        if (child == null) {
             logger.warn("Found immunization update without registered child for entity ID: " + submission.entityId());
             return;
         }
 
         String previousImmunizationsField = isBlank(submission.getField(PREVIOUS_IMMUNIZATIONS_FIELD_NAME))
                 ? "" : submission.getField(PREVIOUS_IMMUNIZATIONS_FIELD_NAME);
-        List<String> previousImmunizations = Arrays.asList(previousImmunizationsField.split(IMMUNIZATIONS_SEPARATOR));
+        List<String> previousImmunizations = asList(previousImmunizationsField.split(IMMUNIZATIONS_SEPARATOR));
 
+        List<String> immunizationsGiven = getNamesOfImmunizationsGiven(submission.getField(IMMUNIZATIONS_GIVEN_FIELD_NAME));
+        immunizationsGiven.removeAll(previousImmunizations);
+        child.withImmunizations(getChildImmunizationDetails(submission, child, immunizationsGiven));
+
+        allChildren.update(child);
         SafeMap reportFieldsMap = new SafeMap(submission.getFields(reportFieldsDefinition.get(submission.formName())));
         childReportingService.immunizationProvided(reportFieldsMap, previousImmunizations);
 
         childSchedulesService.updateEnrollments(submission.entityId(), previousImmunizations);
     }
 
+    private Map<String, LocalDate> getChildImmunizationDetails(FormSubmission submission, Child child, List<String> immunizationsGiven) {
+        Map<String, LocalDate> immunizations = child.immunizations() == null
+                ? new HashMap<String, LocalDate>()
+                : child.immunizations();
+        for (String immunization : immunizationsGiven) {
+            immunizations.put(immunization, getImmunizationDate(submission, immunization));
+        }
+        return immunizations;
+    }
+
+    private LocalDate getImmunizationDate(FormSubmission submission, String immunization) {
+        String immunizationDateField = immunizationDateForImmunizationFromChildRegistrationEC(submission, immunization);
+
+        //For Child OA and Child registration EC
+        if (immunizationDateField != null)
+            return LocalDate.parse(immunizationDateField);
+        if (submission.getField(IMMUNIZATION_DATE_FIELD_NAME) != null)
+            return LocalDate.parse(submission.getField(IMMUNIZATION_DATE_FIELD_NAME));
+        return LocalDate.parse(submission.getField(SUBMISSION_DATE_FIELD_NAME));
+    }
+
+    private String immunizationDateForImmunizationFromChildRegistrationEC(FormSubmission submission, String immunization) {
+        String immunizationDateField = immunization.replace("_", "") + "Date";
+        return submission.getField(immunizationDateField);
+    }
+
+    private List<String> getNamesOfImmunizationsGiven(String immunizationsGiven) {
+        return isBlank(immunizationsGiven)
+                ? new ArrayList<String>()
+                : split(immunizationsGiven);
+    }
+
     public void vitaminAProvided(FormSubmission submission) {
-        if (!allChildren.childExists(submission.entityId())) {
+        Child child = allChildren.findByCaseId(submission.entityId());
+        if (child == null) {
             logger.warn("Found that Vitamin A was provided to a not registered child with entity ID: " + submission.entityId());
             return;
         }
-
+        updateVitaminDetailsToChildEntity(submission, child);
         SafeMap reportFieldsMap = new SafeMap(submission.getFields(reportFieldsDefinition.get(submission.formName())));
         childReportingService.vitaminAProvided(reportFieldsMap);
+    }
+
+    private void updateVitaminDetailsToChildEntity(FormSubmission submission, Child child) {
+        String vitaminADose = submission.getField("vitaminADose");
+        LocalDate vitaminADate = LocalDate.parse(submission.getField("vitaminADate"));
+        Map<String, LocalDate> vitaminDoses = child.vitaminADoses() == null
+                ? new HashMap<String, LocalDate>()
+                : child.vitaminADoses();
+        vitaminDoses.put(vitaminADose, vitaminADate);
+        allChildren.update(child.withVitaminADoses(vitaminDoses));
     }
 
     public void closeChild(FormSubmission submission) {
@@ -158,7 +250,12 @@ public class ChildService {
         String referenceDate = submission.getField(REFERENCE_DATE);
         for (Map<String, String> childFields : subFormData.instances()) {
             Child child = allChildren.findByCaseId(childFields.get(ID));
-            child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNumber()).setIsClosed(false);
+            List<String> immunizationsGiven = getNamesOfImmunizationsGiven(childFields.get(IMMUNIZATIONS_GIVEN_FIELD_NAME));
+            child = child.withAnm(submission.anmId())
+                    .withDateOfBirth(referenceDate)
+                    .withThayiCard(mother.thayiCardNumber())
+                    .setIsClosed(false)
+                    .withImmunizations(getChildImmunizationDetails(submission, child, immunizationsGiven));
             allChildren.update(child);
 
             SafeMap reportingData = new SafeMap();

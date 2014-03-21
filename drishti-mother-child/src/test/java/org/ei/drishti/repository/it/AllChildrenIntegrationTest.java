@@ -33,7 +33,8 @@ public class AllChildrenIntegrationTest {
 
     @Test
     public void shouldRegisterAChild() {
-        Child child = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07").withDetails(mapOf("immunizationDate", "2012-01-01"));
+        Child child = new Child("CASE-1", "MOTHER-CASE-1", "bcg", "3", "male").withAnm("ANM ID 1").withDateOfBirth("2012-09-07").
+                withDetails(mapOf("immunizationDate", "2012-01-01"));
 
         allChildren.add(child);
 
