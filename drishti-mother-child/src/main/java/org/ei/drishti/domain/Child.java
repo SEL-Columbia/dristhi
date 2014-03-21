@@ -51,6 +51,7 @@ public class Child extends MotechBaseDataObject {
     private Map<String, String> details;
     @JsonProperty
     private Map<String, LocalDate> immunizations;
+    private Map<String, LocalDate> vitaminADoses;
 
     private Child() {
     }
@@ -88,6 +89,11 @@ public class Child extends MotechBaseDataObject {
 
     public Child withImmunziations(Map<String, LocalDate> immunziations) {
         this.immunizations = immunziations;
+        return this;
+    }
+
+    public Child withVitaminADoses(Map<String, LocalDate> vitaminADoses) {
+        this.vitaminADoses = vitaminADoses;
         return this;
     }
 
@@ -148,6 +154,10 @@ public class Child extends MotechBaseDataObject {
 
     public Map<String, LocalDate> immunizations() {
         return immunizations;
+    }
+
+    public Map<String, LocalDate> vitaminADoses() {
+        return vitaminADoses;
     }
 
     @JsonIgnore

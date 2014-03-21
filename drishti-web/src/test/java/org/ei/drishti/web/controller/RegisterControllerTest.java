@@ -207,8 +207,9 @@ public class RegisterControllerTest {
                 .put("opvbooster", LocalDate.parse("2013-01-01"))
                 .put("measlesbooster", LocalDate.parse("2013-01-01"))
                 .put("je_2", LocalDate.parse("2013-01-01"))
-                .put("vitamin_a1", LocalDate.parse("2013-01-01"))
-                .put("vitamin_a2", LocalDate.parse("2013-01-01"))
+                .map();
+        Map<String, LocalDate> vitaminADoses = EasyMap.create("1", LocalDate.parse("2013-01-01"))
+                .put("2", LocalDate.parse("2013-01-01"))
                 .map();
         ChildRegister childRegister = new ChildRegister(asList(new ChildRegisterEntry()
                 .withThayiCardNumber("thayi card number 1")
@@ -218,7 +219,8 @@ public class RegisterControllerTest {
                 .withVillage("village1")
                 .withSubCenter("subCenter1")
                 .withWifeDOB(LocalDate.parse("1989-01-01"))
-                .withImmunizations(immunizations)));
+                .withImmunizations(immunizations)
+                .withVitaminADoses(vitaminADoses)));
 
         ChildRegisterDTO expectedChildRegisterDTO = new ChildRegisterDTO(asList(new ChildRegisterEntryDTO()
                 .withThayiCardNumber("thayi card number 1")
@@ -228,7 +230,8 @@ public class RegisterControllerTest {
                 .withVillage("village1")
                 .withSubCenter("subCenter1")
                 .withWifeDOB(LocalDate.parse("1989-01-01"))
-                .withImmunizations(immunizations)));
+                .withImmunizations(immunizations)
+                .withVitaminADoses(vitaminADoses)));
 
         when(childRegisterService.getRegisterForANM("anm1")).thenReturn(childRegister);
         when(childRegisterMapper.mapToDTO(childRegister)).thenReturn(expectedChildRegisterDTO);

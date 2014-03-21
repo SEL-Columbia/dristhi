@@ -25,6 +25,7 @@ public class ChildRegisterEntryDTO {
     private LocalDate DOB;
     @JsonProperty
     private Map<String, LocalDate> immunizations;
+    private Map<String, LocalDate> vitaminADoses;
 
     public ChildRegisterEntryDTO withThayiCardNumber(String thayiCardNumber) {
         this.thayiCardNumber = thayiCardNumber;
@@ -63,6 +64,11 @@ public class ChildRegisterEntryDTO {
 
     public ChildRegisterEntryDTO withImmunizations(Map<String, LocalDate> immunizations) {
         this.immunizations = immunizations;
+        return this;
+    }
+
+    public ChildRegisterEntryDTO withVitaminADoses(Map<String, LocalDate> vitaminADoses) {
+        this.vitaminADoses = vitaminADoses;
         return this;
     }
 

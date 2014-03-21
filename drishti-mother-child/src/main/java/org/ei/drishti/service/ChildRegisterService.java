@@ -55,7 +55,8 @@ public class ChildRegisterService {
                     .withVillage(ec.location().village())
                     .withSubCenter(ec.location().subCenter())
                     .withDOB(LocalDate.parse(child.dateOfBirth()))
-                    .withImmunizations(child.immunizations());
+                    .withImmunizations(child.immunizations())
+                    .withVitaminADoses(child.vitaminADoses());
             childRegisterEntries.add(entry);
         }
         return new ChildRegister(childRegisterEntries);

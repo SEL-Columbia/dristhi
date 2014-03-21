@@ -17,9 +17,42 @@ public class ChildRegisterEntry {
     private LocalDate wifeDOB;
     private LocalDate DOB;
     private Map<String, LocalDate> immunizations;
+    private Map<String, LocalDate> vitaminADoses;
 
     public String thayiCardNumber() {
         return thayiCardNumber;
+    }
+
+    public String wifeName() {
+        return wifeName;
+    }
+
+    public String husbandName() {
+        return husbandName;
+    }
+
+    public String village() {
+        return village;
+    }
+
+    public String subCenter() {
+        return subCenter;
+    }
+
+    public LocalDate wifeDOB() {
+        return wifeDOB;
+    }
+
+    public LocalDate DOB() {
+        return DOB;
+    }
+
+    public Map<String, LocalDate> immunizations() {
+        return immunizations;
+    }
+
+    public Map<String, LocalDate> vitaminADoses() {
+        return vitaminADoses;
     }
 
     public ChildRegisterEntry withThayiCardNumber(String thayiCardNumber) {
@@ -27,17 +60,9 @@ public class ChildRegisterEntry {
         return this;
     }
 
-    public String wifeName() {
-        return wifeName;
-    }
-
     public ChildRegisterEntry withWifeName(String wifeName) {
         this.wifeName = wifeName;
         return this;
-    }
-
-    public String husbandName() {
-        return husbandName;
     }
 
     public ChildRegisterEntry withHusbandName(String husbandName) {
@@ -45,17 +70,9 @@ public class ChildRegisterEntry {
         return this;
     }
 
-    public String village() {
-        return village;
-    }
-
     public ChildRegisterEntry withVillage(String village) {
         this.village = village;
         return this;
-    }
-
-    public String subCenter() {
-        return subCenter;
     }
 
     public ChildRegisterEntry withSubCenter(String subCenter) {
@@ -63,17 +80,9 @@ public class ChildRegisterEntry {
         return this;
     }
 
-    public LocalDate wifeDOB() {
-        return wifeDOB;
-    }
-
     public ChildRegisterEntry withWifeDOB(LocalDate wifeDOB) {
         this.wifeDOB = wifeDOB;
         return this;
-    }
-
-    public LocalDate DOB() {
-        return DOB;
     }
 
     public ChildRegisterEntry withDOB(LocalDate dob) {
@@ -81,12 +90,13 @@ public class ChildRegisterEntry {
         return this;
     }
 
-    public Map<String, LocalDate> immunizations() {
-        return immunizations;
-    }
-
     public ChildRegisterEntry withImmunizations(Map<String, LocalDate> immunizations) {
         this.immunizations = immunizations;
+        return this;
+    }
+
+    public ChildRegisterEntry withVitaminADoses(Map<String, LocalDate> vitaminADoses) {
+        this.vitaminADoses = vitaminADoses;
         return this;
     }
 

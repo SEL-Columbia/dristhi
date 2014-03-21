@@ -57,11 +57,13 @@ public class ChildRegisterServiceTest {
                 .put("opvbooster", LocalDate.parse("2013-01-01"))
                 .put("measlesbooster", LocalDate.parse("2013-01-01"))
                 .put("je_2", LocalDate.parse("2013-01-01"))
-                .put("vitamin_a1", LocalDate.parse("2013-01-01"))
-                .put("vitamin_a2", LocalDate.parse("2013-01-01"))
+                .map();
+        Map<String, LocalDate> vitaminADoses = EasyMap.create("1", LocalDate.parse("2013-01-01"))
+                .put("2", LocalDate.parse("2013-01-01"))
                 .map();
         Child child = new Child("child id", "mother id", "bcg opv_0 hepb_0 opv_1 pentavalent_1 opv_2 pentavalent_2", "3.0", "male")
                 .withImmunziations(immunizations)
+                .withVitaminADoses(vitaminADoses)
                 .withDateOfBirth("2013-01-01");
         Mother mother = new Mother("mother id", "ec id", "thayi card number 1");
         EligibleCouple eligibleCouple = new EligibleCouple("ec id", "123")
@@ -77,7 +79,8 @@ public class ChildRegisterServiceTest {
                 .withVillage("boregowdanakoppalu")
                 .withSubCenter("hosa_agrahara")
                 .withDOB(LocalDate.parse("2013-01-01"))
-                .withImmunizations(immunizations)));
+                .withImmunizations(immunizations)
+                .withVitaminADoses(vitaminADoses)));
         when(allChildren.findAllOpenChildrenForANM("anm1")).thenReturn(asList(child));
         when(allMothers.findAll(asList("mother id"))).thenReturn(asList(mother));
         when(allEligibleCouples.findAll(asList("ec id"))).thenReturn(asList(eligibleCouple));
