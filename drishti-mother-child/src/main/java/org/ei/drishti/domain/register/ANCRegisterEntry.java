@@ -17,7 +17,7 @@ public class ANCRegisterEntry {
     private String wifeName;
     private String husbandName;
     private String address;
-    private LocalDate wifeDOB;
+    private String wifeDOB;
     private String phoneNumber;
     private String wifeEducationLevel;
     private String husbandEducationLevel;
@@ -85,7 +85,7 @@ public class ANCRegisterEntry {
         return this;
     }
 
-    public ANCRegisterEntry withWifeDOB(LocalDate wifeDOB) {
+    public ANCRegisterEntry withWifeDOB(String wifeDOB) {
         this.wifeDOB = wifeDOB;
         return this;
     }
@@ -238,7 +238,7 @@ public class ANCRegisterEntry {
         return address;
     }
 
-    public LocalDate wifeDOB() {
+    public String wifeDOB() {
         return wifeDOB;
     }
 

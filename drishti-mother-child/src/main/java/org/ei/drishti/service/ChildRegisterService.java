@@ -8,7 +8,6 @@ import org.ei.drishti.domain.register.ChildRegisterEntry;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,10 +52,10 @@ public class ChildRegisterService {
                     .withThayiCardNumber(mother.thayiCardNumber())
                     .withWifeName(ec.wifeName())
                     .withHusbandName(ec.husbandName())
-                    .withWifeDOB(ec.wifeDOB())
+                    .withWifeDOB(ec.wifeDOB().toString())
                     .withVillage(ec.location().village())
                     .withSubCenter(ec.location().subCenter())
-                    .withDOB(LocalDate.parse(child.dateOfBirth()))
+                    .withDOB(child.dateOfBirth())
                     .withImmunizations(child.immunizations())
                     .withVitaminADoses(child.vitaminADoses());
             childRegisterEntries.add(entry);

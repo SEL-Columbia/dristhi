@@ -4,7 +4,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.joda.time.LocalDate;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,7 @@ public class ANCRegisterEntryDTO {
     @JsonProperty
     private String address;
     @JsonProperty
-    private LocalDate wifeDOB;
+    private String wifeDOB;
     @JsonProperty
     private String phoneNumber;
     @JsonProperty
@@ -119,7 +118,7 @@ public class ANCRegisterEntryDTO {
         return this;
     }
 
-    public ANCRegisterEntryDTO withWifeDOB(LocalDate wifeDOB) {
+    public ANCRegisterEntryDTO withWifeDOB(String wifeDOB) {
         this.wifeDOB = wifeDOB;
         return this;
     }

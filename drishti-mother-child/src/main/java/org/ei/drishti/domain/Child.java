@@ -7,7 +7,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ei.drishti.common.AllConstants;
 import org.ektorp.support.TypeDiscriminator;
-import org.joda.time.LocalDate;
 import org.motechproject.model.MotechBaseDataObject;
 
 import java.util.*;
@@ -47,9 +46,9 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private Map<String, String> details;
     @JsonProperty
-    private Map<String, LocalDate> immunizations;
+    private Map<String, String> immunizations;
     @JsonProperty
-    private Map<String, LocalDate> vitaminADoses;
+    private Map<String, String> vitaminADoses;
 
     private Child() {
     }
@@ -87,12 +86,12 @@ public class Child extends MotechBaseDataObject {
         return this;
     }
 
-    public Child withImmunizations(Map<String, LocalDate> immunizations) {
+    public Child withImmunizations(Map<String, String> immunizations) {
         this.immunizations = immunizations;
         return this;
     }
 
-    public Child withVitaminADoses(Map<String, LocalDate> vitaminADoses) {
+    public Child withVitaminADoses(Map<String, String> vitaminADoses) {
         this.vitaminADoses = vitaminADoses;
         return this;
     }
@@ -152,11 +151,11 @@ public class Child extends MotechBaseDataObject {
         return new Location(village, subCenter, phc);
     }
 
-    public Map<String, LocalDate> immunizations() {
+    public Map<String, String> immunizations() {
         return immunizations;
     }
 
-    public Map<String, LocalDate> vitaminADoses() {
+    public Map<String, String> vitaminADoses() {
         return vitaminADoses;
     }
 

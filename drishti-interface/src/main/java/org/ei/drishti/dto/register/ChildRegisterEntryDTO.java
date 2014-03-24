@@ -4,7 +4,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.joda.time.LocalDate;
 
 import java.util.Map;
 
@@ -20,12 +19,13 @@ public class ChildRegisterEntryDTO {
     @JsonProperty
     private String subCenter;
     @JsonProperty
-    private LocalDate wifeDOB;
+    private String wifeDOB;
     @JsonProperty
-    private LocalDate DOB;
+    private String dob;
     @JsonProperty
-    private Map<String, LocalDate> immunizations;
-    private Map<String, LocalDate> vitaminADoses;
+    private Map<String, String> immunizations;
+    @JsonProperty
+    private Map<String, String> vitaminADoses;
 
     public ChildRegisterEntryDTO withThayiCardNumber(String thayiCardNumber) {
         this.thayiCardNumber = thayiCardNumber;
@@ -52,22 +52,22 @@ public class ChildRegisterEntryDTO {
         return this;
     }
 
-    public ChildRegisterEntryDTO withWifeDOB(LocalDate wifeDOB) {
+    public ChildRegisterEntryDTO withWifeDOB(String wifeDOB) {
         this.wifeDOB = wifeDOB;
         return this;
     }
 
-    public ChildRegisterEntryDTO withDOB(LocalDate DOB) {
-        this.DOB = DOB;
+    public ChildRegisterEntryDTO withDOB(String DOB) {
+        this.dob = DOB;
         return this;
     }
 
-    public ChildRegisterEntryDTO withImmunizations(Map<String, LocalDate> immunizations) {
+    public ChildRegisterEntryDTO withImmunizations(Map<String, String> immunizations) {
         this.immunizations = immunizations;
         return this;
     }
 
-    public ChildRegisterEntryDTO withVitaminADoses(Map<String, LocalDate> vitaminADoses) {
+    public ChildRegisterEntryDTO withVitaminADoses(Map<String, String> vitaminADoses) {
         this.vitaminADoses = vitaminADoses;
         return this;
     }

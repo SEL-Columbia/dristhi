@@ -15,7 +15,6 @@ import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.service.scheduling.PNCSchedulesService;
 import org.ei.drishti.util.SafeMap;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -140,7 +139,8 @@ public class ChildServiceTest extends BaseUnitTest {
 
         service.registerChildren(submission);
 
-        verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1").withImmunizations(mapOf("bcg", LocalDate.parse("2012-01-01"))));
+        verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1")
+                .withImmunizations(mapOf("bcg", "2012-01-01")));
         verify(allChildren).update(new Child("child id 2", "mother id 1", "opv", "2", "male").withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
 
         assertFalse(firstChild.isClosed());
@@ -189,10 +189,10 @@ public class ChildServiceTest extends BaseUnitTest {
         service.registerChildrenForEC(submission);
 
         verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1")
-                .withImmunizations(create("bcg", LocalDate.parse("2013-01-01"))
-                        .put("opv_0", LocalDate.parse("2013-01-02")).map())
-                .withVitaminADoses(create("1", LocalDate.parse("2013-01-01"))
-                        .put("2", LocalDate.parse("2013-01-02"))
+                .withImmunizations(create("bcg", "2013-01-01")
+                        .put("opv_0", "2013-01-02").map())
+                .withVitaminADoses(create("1", "2013-01-01")
+                        .put("2", "2013-01-02")
                         .map()));
         assertFalse(child.isClosed());
     }
@@ -220,11 +220,11 @@ public class ChildServiceTest extends BaseUnitTest {
         service.registerChildrenForOA(submission);
 
         verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1")
-                .withImmunizations(create("bcg", LocalDate.parse("2013-01-01"))
-                        .put("opv_0", LocalDate.parse("2013-01-02"))
-                        .put("dptbooster_1", LocalDate.parse("2013-01-03")).map())
-                .withVitaminADoses(create("1", LocalDate.parse("2013-01-01"))
-                        .put("2", LocalDate.parse("2013-01-02"))
+                .withImmunizations(create("bcg", "2013-01-01")
+                        .put("opv_0", "2013-01-02")
+                        .put("dptbooster_1", "2013-01-03").map())
+                .withVitaminADoses(create("1", "2013-01-01")
+                        .put("2", "2013-01-02")
                         .map()));
     }
 
@@ -302,7 +302,7 @@ public class ChildServiceTest extends BaseUnitTest {
         service.updateChildImmunization(submission);
 
         verify(allChildren).update(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female")
-                .withDetails(EXTRA_DATA.get("details")).withImmunizations(mapOf("opv_0", LocalDate.parse("2013-01-01"))));
+                .withDetails(EXTRA_DATA.get("details")).withImmunizations(mapOf("opv_0", "2013-01-01")));
     }
 
     @Test
@@ -510,7 +510,8 @@ public class ChildServiceTest extends BaseUnitTest {
 
         service.pncOAChildRegistration(submission);
 
-        verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1").withImmunizations(mapOf("bcg", LocalDate.parse("2012-01-01"))));
+        verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1")
+                .withImmunizations(mapOf("bcg", "2012-01-01")));
 
     }
 
@@ -661,6 +662,7 @@ public class ChildServiceTest extends BaseUnitTest {
 
         service.vitaminAProvided(submission);
 
-        verify(allChildren).update(new Child("Case X", "Mother id 1", "bcg", "3", "male").withVitaminADoses(mapOf("1", LocalDate.parse("2013-01-01"))));
+        verify(allChildren).update(new Child("Case X", "Mother id 1", "bcg", "3", "male")
+                .withVitaminADoses(mapOf("1", "2013-01-01")));
     }
 }

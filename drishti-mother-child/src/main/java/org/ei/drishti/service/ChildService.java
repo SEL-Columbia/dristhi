@@ -11,7 +11,6 @@ import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ChildReportingService;
 import org.ei.drishti.service.scheduling.ChildSchedulesService;
 import org.ei.drishti.util.SafeMap;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,9 +113,9 @@ public class ChildService {
         allChildren.update(child);
     }
 
-    private Map<String, LocalDate> getVitaminDoseDetails(FormSubmission submission, Child child, List<String> vitaminHistory) {
-        Map<String, LocalDate> vitaminDoses = child.vitaminADoses() == null
-                ? new HashMap<String, LocalDate>()
+    private Map<String, String> getVitaminDoseDetails(FormSubmission submission, Child child, List<String> vitaminHistory) {
+        Map<String, String> vitaminDoses = child.vitaminADoses() == null
+                ? new HashMap<String, String>()
                 : child.vitaminADoses();
         for (String vitamin : vitaminHistory) {
             vitaminDoses.put(vitamin, getVitaminDate(submission, vitamin));
@@ -130,8 +129,8 @@ public class ChildService {
                 : split(vitaminDoses);
     }
 
-    private LocalDate getVitaminDate(FormSubmission submission, String vitaminDose) {
-        return LocalDate.parse(submission.getField(VITAMIN + vitaminDose + DATE));
+    private String getVitaminDate(FormSubmission submission, String vitaminDose) {
+        return submission.getField(VITAMIN + vitaminDose + DATE);
     }
 
     public void registerChildrenForOA(FormSubmission submission) {
@@ -169,9 +168,9 @@ public class ChildService {
         childSchedulesService.updateEnrollments(submission.entityId(), previousImmunizations);
     }
 
-    private Map<String, LocalDate> getChildImmunizationDetails(FormSubmission submission, Child child, List<String> immunizationsGiven) {
-        Map<String, LocalDate> immunizations = child.immunizations() == null
-                ? new HashMap<String, LocalDate>()
+    private Map<String, String> getChildImmunizationDetails(FormSubmission submission, Child child, List<String> immunizationsGiven) {
+        Map<String, String> immunizations = child.immunizations() == null
+                ? new HashMap<String, String>()
                 : child.immunizations();
         for (String immunization : immunizationsGiven) {
             immunizations.put(immunization, getImmunizationDate(submission, immunization));
@@ -179,15 +178,15 @@ public class ChildService {
         return immunizations;
     }
 
-    private LocalDate getImmunizationDate(FormSubmission submission, String immunization) {
+    private String getImmunizationDate(FormSubmission submission, String immunization) {
         String immunizationDateField = immunizationDateForImmunizationFromChildRegistrationEC(submission, immunization);
 
         //For Child OA and Child registration EC
         if (immunizationDateField != null)
-            return LocalDate.parse(immunizationDateField);
+            return immunizationDateField;
         if (submission.getField(IMMUNIZATION_DATE_FIELD_NAME) != null)
-            return LocalDate.parse(submission.getField(IMMUNIZATION_DATE_FIELD_NAME));
-        return LocalDate.parse(submission.getField(SUBMISSION_DATE_FIELD_NAME));
+            return submission.getField(IMMUNIZATION_DATE_FIELD_NAME);
+        return submission.getField(SUBMISSION_DATE_FIELD_NAME);
     }
 
     private String immunizationDateForImmunizationFromChildRegistrationEC(FormSubmission submission, String immunization) {
@@ -214,9 +213,9 @@ public class ChildService {
 
     private void updateVitaminDetailsToChildEntity(FormSubmission submission, Child child) {
         String vitaminADose = submission.getField("vitaminADose");
-        LocalDate vitaminADate = LocalDate.parse(submission.getField("vitaminADate"));
-        Map<String, LocalDate> vitaminDoses = child.vitaminADoses() == null
-                ? new HashMap<String, LocalDate>()
+        String vitaminADate = submission.getField("vitaminADate");
+        Map<String, String> vitaminDoses = child.vitaminADoses() == null
+                ? new HashMap<String, String>()
                 : child.vitaminADoses();
         vitaminDoses.put(vitaminADose, vitaminADate);
         allChildren.update(child.withVitaminADoses(vitaminDoses));

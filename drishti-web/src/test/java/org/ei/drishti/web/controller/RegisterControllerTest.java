@@ -9,7 +9,6 @@ import org.ei.drishti.mapper.ECRegisterMapper;
 import org.ei.drishti.service.ANCRegisterService;
 import org.ei.drishti.service.ChildRegisterService;
 import org.ei.drishti.service.ECRegisterService;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -130,7 +129,7 @@ public class RegisterControllerTest {
                 .withWifeName("name1")
                 .withHusbandName("name2")
                 .withAddress("address1")
-                .withWifeDOB(LocalDate.parse("1989-01-01"))
+                .withWifeDOB("1989-01-01")
                 .withPhoneNumber("phone 1")
                 .withWifeEducationLevel("wife education level")
                 .withHusbandEducationLevel("husband education level")
@@ -159,7 +158,7 @@ public class RegisterControllerTest {
                 .withWifeName("name1")
                 .withHusbandName("name2")
                 .withAddress("address1")
-                .withWifeDOB(LocalDate.parse("1989-01-01"))
+                .withWifeDOB("1989-01-01")
                 .withPhoneNumber("phone 1")
                 .withWifeEducationLevel("wife education level")
                 .withHusbandEducationLevel("husband education level")
@@ -190,35 +189,35 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldGetChildRegisterForGivenANM() throws Exception {
-        Map<String, LocalDate> immunizations = EasyMap.create("bcg", LocalDate.parse("2013-01-01"))
-                .put("opv_0", LocalDate.parse("2013-01-01"))
-                .put("hepb_0", LocalDate.parse("2013-01-01"))
-                .put("opv_1", LocalDate.parse("2013-01-01"))
-                .put("pentavalent_1", LocalDate.parse("2013-01-01"))
-                .put("opv_2", LocalDate.parse("2013-01-01"))
-                .put("pentavalent_2", LocalDate.parse("2013-01-01"))
-                .put("opv_3", LocalDate.parse("2013-01-01"))
-                .put("pentavalent_3", LocalDate.parse("2013-01-01"))
-                .put("measles", LocalDate.parse("2013-01-01"))
-                .put("je", LocalDate.parse("2013-01-01"))
-                .put("mmr", LocalDate.parse("2013-01-01"))
-                .put("dptbooster_1", LocalDate.parse("2013-01-01"))
-                .put("dptbooster_2", LocalDate.parse("2013-01-01"))
-                .put("opvbooster", LocalDate.parse("2013-01-01"))
-                .put("measlesbooster", LocalDate.parse("2013-01-01"))
-                .put("je_2", LocalDate.parse("2013-01-01"))
+        Map<String, String> immunizations = EasyMap.create("bcg", "2013-01-01")
+                .put("opv_0", "2013-01-01")
+                .put("hepb_0", "2013-01-01")
+                .put("opv_1", "2013-01-01")
+                .put("pentavalent_1", "2013-01-01")
+                .put("opv_2", "2013-01-01")
+                .put("pentavalent_2", "2013-01-01")
+                .put("opv_3", "2013-01-01")
+                .put("pentavalent_3", "2013-01-01")
+                .put("measles", "2013-01-01")
+                .put("je", "2013-01-01")
+                .put("mmr", "2013-01-01")
+                .put("dptbooster_1", "2013-01-01")
+                .put("dptbooster_2", "2013-01-01")
+                .put("opvbooster", "2013-01-01")
+                .put("measlesbooster", "2013-01-01")
+                .put("je_2", "2013-01-01")
                 .map();
-        Map<String, LocalDate> vitaminADoses = EasyMap.create("1", LocalDate.parse("2013-01-01"))
-                .put("2", LocalDate.parse("2013-01-01"))
+        Map<String, String> vitaminADoses = EasyMap.create("1", "2013-01-01")
+                .put("2", "2013-01-01")
                 .map();
         ChildRegister childRegister = new ChildRegister(asList(new ChildRegisterEntry()
                 .withThayiCardNumber("thayi card number 1")
                 .withWifeName("name1")
                 .withHusbandName("name2")
-                .withDOB(LocalDate.parse("2013-01-01"))
+                .withDOB("2013-01-01")
                 .withVillage("village1")
                 .withSubCenter("subCenter1")
-                .withWifeDOB(LocalDate.parse("1989-01-01"))
+                .withWifeDOB("1989-01-01")
                 .withImmunizations(immunizations)
                 .withVitaminADoses(vitaminADoses)));
 
@@ -226,10 +225,10 @@ public class RegisterControllerTest {
                 .withThayiCardNumber("thayi card number 1")
                 .withWifeName("name1")
                 .withHusbandName("name2")
-                .withDOB(LocalDate.parse("2013-01-01"))
+                .withDOB("2013-01-01")
                 .withVillage("village1")
                 .withSubCenter("subCenter1")
-                .withWifeDOB(LocalDate.parse("1989-01-01"))
+                .withWifeDOB("1989-01-01")
                 .withImmunizations(immunizations)
                 .withVitaminADoses(vitaminADoses)));
 

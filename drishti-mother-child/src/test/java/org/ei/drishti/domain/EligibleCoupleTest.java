@@ -18,9 +18,9 @@ public class EligibleCoupleTest {
         ec = new EligibleCouple("CASE X", "EC Number 1")
                 .withDetails(EasyMap.mapOf("womanDOB", "1988-01-01"));
 
-        LocalDate dob = ec.wifeDOB();
+        String dob = ec.wifeDOB();
 
-        assertEquals(LocalDate.parse("1988-01-01"), dob);
+        assertEquals("1988-01-01", dob);
     }
 
     @Test
@@ -30,8 +30,8 @@ public class EligibleCoupleTest {
         ec = new EligibleCouple("CASE X", "EC Number 1")
                 .withDetails(EasyMap.mapOf("wifeAge", "26"));
 
-        LocalDate dob = ec.wifeDOB();
+        String dob = ec.wifeDOB();
 
-        assertEquals(LocalDate.parse("1988-01-01"), dob);
+        assertEquals("1988-01-01", dob);
     }
 }

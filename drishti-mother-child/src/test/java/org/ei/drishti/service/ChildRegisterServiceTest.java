@@ -9,7 +9,6 @@ import org.ei.drishti.domain.register.ChildRegisterEntry;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -40,26 +39,26 @@ public class ChildRegisterServiceTest {
 
     @Test
     public void shouldGetChildRegisterForAGivenANM() throws Exception {
-        Map<String, LocalDate> immunizations = EasyMap.create("bcg", LocalDate.parse("2013-01-01"))
-                .put("opv_0", LocalDate.parse("2013-01-01"))
-                .put("hepb_0", LocalDate.parse("2013-01-01"))
-                .put("opv_1", LocalDate.parse("2013-01-01"))
-                .put("pentavalent_1", LocalDate.parse("2013-01-01"))
-                .put("opv_2", LocalDate.parse("2013-01-01"))
-                .put("pentavalent_2", LocalDate.parse("2013-01-01"))
-                .put("opv_3", LocalDate.parse("2013-01-01"))
-                .put("pentavalent_3", LocalDate.parse("2013-01-01"))
-                .put("measles", LocalDate.parse("2013-01-01"))
-                .put("je", LocalDate.parse("2013-01-01"))
-                .put("mmr", LocalDate.parse("2013-01-01"))
-                .put("dptbooster_1", LocalDate.parse("2013-01-01"))
-                .put("dptbooster_2", LocalDate.parse("2013-01-01"))
-                .put("opvbooster", LocalDate.parse("2013-01-01"))
-                .put("measlesbooster", LocalDate.parse("2013-01-01"))
-                .put("je_2", LocalDate.parse("2013-01-01"))
+        Map<String, String> immunizations = EasyMap.create("bcg", "2013-01-01")
+                .put("opv_0", "2013-01-01")
+                .put("hepb_0", "2013-01-01")
+                .put("opv_1", "2013-01-01")
+                .put("pentavalent_1", "2013-01-01")
+                .put("opv_2", "2013-01-01")
+                .put("pentavalent_2", "2013-01-01")
+                .put("opv_3", "2013-01-01")
+                .put("pentavalent_3", "2013-01-01")
+                .put("measles", "2013-01-01")
+                .put("je", "2013-01-01")
+                .put("mmr", "2013-01-01")
+                .put("dptbooster_1", "2013-01-01")
+                .put("dptbooster_2", "2013-01-01")
+                .put("opvbooster", "2013-01-01")
+                .put("measlesbooster", "2013-01-01")
+                .put("je_2", "2013-01-01")
                 .map();
-        Map<String, LocalDate> vitaminADoses = EasyMap.create("1", LocalDate.parse("2013-01-01"))
-                .put("2", LocalDate.parse("2013-01-01"))
+        Map<String, String> vitaminADoses = EasyMap.create("1", "2013-01-01")
+                .put("2", "2013-01-01")
                 .map();
         Child child = new Child("child id", "mother id", "bcg opv_0 hepb_0 opv_1 pentavalent_1 opv_2 pentavalent_2", "3.0", "male")
                 .withImmunizations(immunizations)
@@ -75,10 +74,10 @@ public class ChildRegisterServiceTest {
                 .withThayiCardNumber("thayi card number 1")
                 .withWifeName("name1")
                 .withHusbandName("name2")
-                .withWifeDOB(LocalDate.parse("1989-01-01"))
+                .withWifeDOB("1989-01-01")
                 .withVillage("boregowdanakoppalu")
                 .withSubCenter("hosa_agrahara")
-                .withDOB(LocalDate.parse("2013-01-01"))
+                .withDOB("2013-01-01")
                 .withImmunizations(immunizations)
                 .withVitaminADoses(vitaminADoses)));
         when(allChildren.findAllOpenChildrenForANM("anm1")).thenReturn(asList(child));

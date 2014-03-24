@@ -3,7 +3,6 @@ package org.ei.drishti.domain.register;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.joda.time.LocalDate;
 
 import java.util.Map;
 
@@ -14,10 +13,10 @@ public class ChildRegisterEntry {
     private String husbandName;
     private String village;
     private String subCenter;
-    private LocalDate wifeDOB;
-    private LocalDate DOB;
-    private Map<String, LocalDate> immunizations;
-    private Map<String, LocalDate> vitaminADoses;
+    private String wifeDOB;
+    private String dob;
+    private Map<String, String> immunizations;
+    private Map<String, String> vitaminADoses;
 
     public String thayiCardNumber() {
         return thayiCardNumber;
@@ -39,19 +38,19 @@ public class ChildRegisterEntry {
         return subCenter;
     }
 
-    public LocalDate wifeDOB() {
+    public String wifeDOB() {
         return wifeDOB;
     }
 
-    public LocalDate DOB() {
-        return DOB;
+    public String dob() {
+        return dob;
     }
 
-    public Map<String, LocalDate> immunizations() {
+    public Map<String, String> immunizations() {
         return immunizations;
     }
 
-    public Map<String, LocalDate> vitaminADoses() {
+    public Map<String, String> vitaminADoses() {
         return vitaminADoses;
     }
 
@@ -80,22 +79,22 @@ public class ChildRegisterEntry {
         return this;
     }
 
-    public ChildRegisterEntry withWifeDOB(LocalDate wifeDOB) {
+    public ChildRegisterEntry withWifeDOB(String wifeDOB) {
         this.wifeDOB = wifeDOB;
         return this;
     }
 
-    public ChildRegisterEntry withDOB(LocalDate dob) {
-        this.DOB = dob;
+    public ChildRegisterEntry withDOB(String dob) {
+        this.dob = dob;
         return this;
     }
 
-    public ChildRegisterEntry withImmunizations(Map<String, LocalDate> immunizations) {
+    public ChildRegisterEntry withImmunizations(Map<String, String> immunizations) {
         this.immunizations = immunizations;
         return this;
     }
 
-    public ChildRegisterEntry withVitaminADoses(Map<String, LocalDate> vitaminADoses) {
+    public ChildRegisterEntry withVitaminADoses(Map<String, String> vitaminADoses) {
         this.vitaminADoses = vitaminADoses;
         return this;
     }

@@ -23,11 +23,12 @@ public class ChildRegisterMapper {
                                         .withThayiCardNumber(entry.thayiCardNumber())
                                         .withWifeName(entry.wifeName())
                                         .withHusbandName(entry.husbandName())
-                                        .withDOB(entry.DOB())
+                                        .withDOB(entry.dob())
                                         .withVillage(entry.village())
                                         .withSubCenter(entry.subCenter())
                                         .withWifeDOB(entry.wifeDOB())
-                                        .withImmunizations(entry.immunizations());
+                                        .withImmunizations(entry.immunizations())
+                                        .withVitaminADoses(entry.vitaminADoses());
                             }
                         });
         return new ChildRegisterDTO(childRegisterEntryDTOs);
