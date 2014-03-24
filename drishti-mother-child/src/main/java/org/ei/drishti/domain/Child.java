@@ -62,6 +62,7 @@ public class Child extends MotechBaseDataObject {
         this.gender = gender;
         this.setIsClosed(false);
         this.immunizations = new HashMap<>();
+        this.vitaminADoses = new HashMap<>();
     }
 
     public Child withAnm(String anmIdentifier) {
