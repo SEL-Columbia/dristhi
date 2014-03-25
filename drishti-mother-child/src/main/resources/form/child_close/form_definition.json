@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "3",
+    "form_data_definition_version": "4",
     "form": {
         "bind_type": "child",
         "default_bind_path": "/model/instance/Child_Close_EngKan/",
@@ -7,6 +7,16 @@
             {
                 "name": "id",
                 "shouldLoadValue": true
+            },
+            {
+                "name": "motherId",
+                "shouldLoadValue": true,
+                "source": "child.mother.id"
+            },
+            {
+                "name": "ecId",
+                "shouldLoadValue": true,
+                "source": "child.mother.eligible_couple.id"
             },
             {
                 "name": "closeReason",
