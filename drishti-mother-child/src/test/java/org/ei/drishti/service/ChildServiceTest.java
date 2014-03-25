@@ -191,8 +191,8 @@ public class ChildServiceTest extends BaseUnitTest {
         verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1")
                 .withImmunizations(create("bcg", "2013-01-01")
                         .put("opv_0", "2013-01-02").map())
-                .withVitaminADoses(create("1", "2013-01-01")
-                        .put("2", "2013-01-02")
+                .withVitaminADoses(create("dose1", "2013-01-01")
+                        .put("dose2", "2013-01-02")
                         .map()));
         assertFalse(child.isClosed());
     }
@@ -223,8 +223,8 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withImmunizations(create("bcg", "2013-01-01")
                         .put("opv_0", "2013-01-02")
                         .put("dptbooster_1", "2013-01-03").map())
-                .withVitaminADoses(create("1", "2013-01-01")
-                        .put("2", "2013-01-02")
+                .withVitaminADoses(create("dose1", "2013-01-01")
+                        .put("dose2", "2013-01-02")
                         .map()));
     }
 
@@ -663,6 +663,6 @@ public class ChildServiceTest extends BaseUnitTest {
         service.vitaminAProvided(submission);
 
         verify(allChildren).update(new Child("Case X", "Mother id 1", "bcg", "3", "male")
-                .withVitaminADoses(mapOf("1", "2013-01-01")));
+                .withVitaminADoses(mapOf("dose1", "2013-01-01")));
     }
 }

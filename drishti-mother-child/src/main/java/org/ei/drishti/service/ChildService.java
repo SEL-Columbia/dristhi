@@ -30,6 +30,7 @@ import static org.ei.drishti.common.AllConstants.CommonFormFields.*;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DELIVERY_PLACE;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_PROBLEMS;
+import static org.ei.drishti.common.AllConstants.VitaminAFields.VITAMIN_A_DOSE_PREFIX;
 
 @Service
 public class ChildService {
@@ -118,7 +119,7 @@ public class ChildService {
                 ? new HashMap<String, String>()
                 : child.vitaminADoses();
         for (String vitamin : vitaminHistory) {
-            vitaminDoses.put(vitamin, getVitaminDate(submission, vitamin));
+            vitaminDoses.put(VITAMIN_A_DOSE_PREFIX + vitamin, getVitaminDate(submission, vitamin));
         }
         return vitaminDoses;
     }
@@ -217,7 +218,7 @@ public class ChildService {
         Map<String, String> vitaminDoses = child.vitaminADoses() == null
                 ? new HashMap<String, String>()
                 : child.vitaminADoses();
-        vitaminDoses.put(vitaminADose, vitaminADate);
+        vitaminDoses.put(VITAMIN_A_DOSE_PREFIX + vitaminADose, vitaminADate);
         allChildren.update(child.withVitaminADoses(vitaminDoses));
     }
 

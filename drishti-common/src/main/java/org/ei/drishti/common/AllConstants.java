@@ -359,6 +359,7 @@ public class AllConstants {
                         VITAMIN_A_DOSE_2_VALUE,
                         VITAMIN_A_DOSE_5_VALUE,
                         VITAMIN_A_DOSE_9_VALUE);
+        public static final String VITAMIN_A_DOSE_PREFIX = "dose";
     }
 
     public static class IFAFields {
