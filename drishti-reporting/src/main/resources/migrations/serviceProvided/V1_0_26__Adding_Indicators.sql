@@ -1,0 +1,1 @@
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ANC');

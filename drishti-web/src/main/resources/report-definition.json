@@ -1490,6 +1490,20 @@
                         "IsJsyBeneficiaryRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_ANC",
+                    "reportEntityType": "mother",
+                    "reportEntityIdField": "motherId",
+                    "serviceProvidedDateField": "registrationDate",
+                    "serviceProvidedPlaceField": "registrationPlace",
+                    "formFields": [
+                        "id",
+                        "motherId"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
                 }
             ]
         },
