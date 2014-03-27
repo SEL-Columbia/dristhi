@@ -1,2 +1,4 @@
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ANC');
 INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_ANC_LT_12');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_TT1');
+INSERT INTO anm_report.dim_indicator (indicator) VALUES ('NRHM_SUB_TT');

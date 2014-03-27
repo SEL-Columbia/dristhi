@@ -2228,6 +2228,39 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "tt",
+            "indicators": [
+                {
+                    "indicator": "NRHM_TT1",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ttDate",
+                    "serviceProvidedPlaceField": "ttInjectionPlace",
+                    "formFields": [
+                        "id",
+                        "ttDose"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSub_CenterRule",
+                        "IsTT1DoseGivenForMother"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_SUB_TT",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ttDate",
+                    "serviceProvidedPlaceField": "ttInjectionPlace",
+                    "formFields": [
+                        "id",
+                        "ttDose"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSub_CenterRule",
+                        "IsTT2OrTTBoosterDoseGivenForMother"
+                    ]
+                }
+            ]
         }
     ]
 }
