@@ -1504,6 +1504,22 @@
                     "reportWhen": [
                         "ServiceProvidedAtSub_CenterRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_ANC_LT_12",
+                    "reportEntityType": "mother",
+                    "reportEntityIdField": "motherId",
+                    "serviceProvidedDateField": "registrationDate",
+                    "serviceProvidedPlaceField": "registrationPlace",
+                    "formFields": [
+                        "id",
+                        "motherId",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "IsANCRegisteredWithinTwelveWeeksOfPregnancy",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
                 }
             ]
         },

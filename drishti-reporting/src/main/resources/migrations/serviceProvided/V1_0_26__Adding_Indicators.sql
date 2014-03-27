@@ -1,1 +1,2 @@
 INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ANC');
+INSERT INTO report.dim_indicator (indicator) VALUES ('NRHM_ANC_LT_12');
