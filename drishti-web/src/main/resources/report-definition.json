@@ -1855,10 +1855,10 @@
                     "indicator": "NRHM_HB_LEVEL",
                     "reportEntityType": "mother",
                     "serviceProvidedPlaceField": "hbTestPlace",
+                    "serviceProvidedDateField": "hbTestDate",
                     "formFields": [
                         "id",
-                        "hbLevel",
-                        "hbTestDate"
+                        "hbLevel"
                     ],
                     "reportWhen": [
                         "IsPersonAnaemicRule",
