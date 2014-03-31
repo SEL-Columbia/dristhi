@@ -86,6 +86,8 @@ public class ZiggyServiceIntegrationTest {
     @Mock
     private PostpartumFamilyPlanningHandler postpartumFamilyPlanningHandler;
     @Mock
+    private RecordECPsHandler recordECPsHandler;
+    @Mock
     private FormSubmissionReportService formSubmissionReportService;
 
     private ZiggyFileLoader ziggyFileLoader;
@@ -108,7 +110,8 @@ public class ZiggyServiceIntegrationTest {
                         ancCloseHandler, ttHandler, ifaHandler, hbTestHandler, deliveryOutcomeHandler, pncRegistrationOAHandler,
                         pncCloseHandler, pncVisitHandler, childRegistrationECHandler, childRegistrationOAHandler, vitaminAHandler,
                         childImmunizationsHandler, childIllnessHandler, childCloseHandler,
-                        deliveryPlanHandler, postpartumFamilyPlanningHandler, formSubmissionReportService));
+                        deliveryPlanHandler, postpartumFamilyPlanningHandler, recordECPsHandler, formSubmissionReportService)
+        );
 
         service.saveForm(params, formInstance);
     }

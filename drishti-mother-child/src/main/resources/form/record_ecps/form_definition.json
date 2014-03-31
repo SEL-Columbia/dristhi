@@ -2,7 +2,7 @@
     "form_data_definition_version": "1",
     "form": {
         "bind_type": "eligible_couple",
-        "default_bind_path": "/model/instance/Family_Planning_ECPs/",
+        "default_bind_path": "/model/instance/Family_Planning_ECPs_EngKan/",
         "fields": [
             {
                 "name": "id",
@@ -10,15 +10,15 @@
             },
             {
                 "name": "numberOfECPsGiven",
-                "bind": "/model/instance/Family_Planning_ECPs/ecp_given"
+                "bind": "/model/instance/Family_Planning_ECPs_EngKan/ecp_given"
             },
             {
                 "name": "ecpDate",
-                "bind": "/model/instance/Family_Planning_ECPs/ecp_date"
+                "bind": "/model/instance/Family_Planning_ECPs_EngKan/ecp_date"
             },
             {
                 "name": "submissionDate",
-                "bind": "/model/instance/Family_Planning_ECPs/today"
+                "bind": "/model/instance/Family_Planning_ECPs_EngKan/today"
             }
         ]
     }

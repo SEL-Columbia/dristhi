@@ -52,6 +52,7 @@ public class AllConstants {
         public static final String PNC_VISIT_CHILD_SUB_FORM_NAME = "child_pnc_visit";
         public static final String VITAMIN_A = "vitamin_a";
         public static final String PPFP = "postpartum_family_planning";
+        public static final String RECORD_ECPS = "record_ecps";
     }
 
     public static class Report {
