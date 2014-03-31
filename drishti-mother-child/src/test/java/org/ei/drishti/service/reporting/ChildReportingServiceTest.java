@@ -343,6 +343,69 @@ public class ChildReportingServiceTest {
     }
 
     @Test
+    public void shouldReportIfNRHMBreastFeedingInitiatedDuringChildRegistrationIfDeliveryPlaceIsHome() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "yes");
+        reportData.put("deliveryPlace", "home");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
+        service.registerChild(reportData);
+
+        verifyBothReportingCalls(NRHM_BF_POST_BIRTH, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportIfNRHMBreastFeedingInitiatedDuringChildRegistrationIfDeliveryPlaceIsSubCenter() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "yes");
+        reportData.put("deliveryPlace", "subcenter");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
+        service.registerChild(reportData);
+
+        verifyBothReportingCalls(NRHM_BF_POST_BIRTH, "2012-01-01");
+    }
+
+    @Test
+    public void shouldNotReportIfNRHMBreastFeedingInitiatedDuringChildRegistrationIfDeliveryPlaceIsNotSubCenterOrHome() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "yes");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
+        service.registerChild(reportData);
+
+        verifyNoReportingCalls(NRHM_BF_POST_BIRTH, "2012-01-01");
+    }
+
+    @Test
     public void shouldReportIfWeightIsMeasuredDuringChildRegistration() throws Exception {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "boo", "2.2", "female")
                 .withAnm("ANM X")

@@ -100,7 +100,7 @@ public class ChildReportingService {
         Location location = loadLocationOfChild(child);
         reportImmunizations(child, immunizations, location, child.dateOfBirth());
         reportBirthWeight(child, location);
-        reportBFPostBirth(reportData.get(BF_POSTBIRTH), child, location);
+        reportBFPostBirth(reportData.get(BF_POSTBIRTH), child, location, reportData.get(DELIVERY_PLACE));
         reportToBoth(child, INFANT_REGISTRATION, child.dateOfBirth(), location);
         reportLiveBirthByGender(reportData, child, location);
         reportToBoth(child, INFANT_BALANCE_TOTAL, child.dateOfBirth(), location);
@@ -283,9 +283,13 @@ public class ChildReportingService {
         }
     }
 
-    private void reportBFPostBirth(String bfPostBirth, Child child, Location location) {
+    private void reportBFPostBirth(String bfPostBirth, Child child, Location location, String deliveryPlace) {
         if (BOOLEAN_TRUE_VALUE.equalsIgnoreCase(bfPostBirth)) {
             reportToBoth(child, BF_POST_BIRTH, child.dateOfBirth(), location);
+            if (SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE.equalsIgnoreCase(deliveryPlace)
+                    || HOME_FIELD_VALUE.equalsIgnoreCase(deliveryPlace)) {
+                reportToBoth(child, NRHM_BF_POST_BIRTH, child.dateOfBirth(), location);
+            }
         }
     }
 
