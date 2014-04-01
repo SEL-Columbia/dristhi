@@ -94,4 +94,14 @@ public class IsAllImmunizationsGivenEitherWithMeaslesOrMMRRuleTest {
                                 .put("previousImmunizations", "mmr").map()));
         Assert.assertFalse(didRuleApply);
     }
+
+    @Test
+    public void shouldReturnFalseWhenTheChildIsImmunizedAlready() throws Exception {
+       boolean didRuleApply = rule.apply(new SafeMap(
+                create("immunizationsGiven", "bcg opv_0 hepb_0 opv_1 pentavalent_1 opv_2 pentavalent_2 opv_3 pentavalent_3 mmr je")
+                        .put("previousImmunizations", "bcg opv_0 hepb_0 opv_1 pentavalent_1 opv_2 pentavalent_2 opv_3 pentavalent_3 mmr")
+                        .map()));
+        Assert.assertFalse(didRuleApply);
+
+    }
 }

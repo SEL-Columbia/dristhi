@@ -29,10 +29,17 @@ public class ChildImmunization {
     }
 
     public boolean isImmunizationsGivenWithMeaslesOrMMR(SafeMap reportFields) {
+        if (isChildFullyImmunizedPreviously(getPreviousImmunizations(reportFields))) {
+            return false;
+        }
         List<String> immunizationsGivenList = getImmunizationGivenList(reportFields);
         if (immunizationsGivenList.contains(AllConstants.ChildImmunizationFields.MMR_VALUE))
             return immunizationsGivenList.containsAll(IMMUNIZATIONS_WITH_MMR_VALUE_LIST);
         return immunizationsGivenList.containsAll(IMMUNIZATIONS_VALUE_LIST);
+    }
+
+    private boolean isChildFullyImmunizedPreviously(List<String> previousImmunizations) {
+        return previousImmunizations.containsAll(IMMUNIZATIONS_WITH_MMR_VALUE_LIST) || previousImmunizations.containsAll(IMMUNIZATIONS_VALUE_LIST);
     }
 
     public boolean isPreviouslyImmunizedWith(String immunization, SafeMap reportFields) {
