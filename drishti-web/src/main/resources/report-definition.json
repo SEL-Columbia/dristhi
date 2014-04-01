@@ -1083,6 +1083,7 @@
                         "id",
                         "dateOfBirth",
                         "immunizationDate",
+                        "previousImmunizations",
                         "immunizationsGiven"
                     ],
                     "reportWhen": [
@@ -1100,6 +1101,7 @@
                         "id",
                         "dateOfBirth",
                         "immunizationDate",
+                        "previousImmunizations",
                         "immunizationsGiven"
                     ],
                     "reportWhen": [
