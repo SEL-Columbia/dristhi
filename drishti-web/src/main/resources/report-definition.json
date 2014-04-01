@@ -1452,6 +1452,20 @@
                     "reportWhen": [
                         "IsDeathDueToOtherReasonsRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_SPONTANEOUS_ABORTION",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "dateOfSpontaneousAbortion",
+                    "serviceProvidedPlaceField": "placeOfSpontaneousAbortion",
+                    "formFields": [
+                        "id",
+                        "closeReason"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToSpontaneousAbortionRule",
+                        "SpontaneousAbortionAtHomeAtHomeOrSubCenterRule"
+                    ]
                 }
             ]
         },

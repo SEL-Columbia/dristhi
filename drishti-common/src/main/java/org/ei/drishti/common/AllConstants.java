@@ -246,6 +246,7 @@ public class AllConstants {
         public static final String DEATH_OF_WOMAN_VALUE = "death_of_woman";
         public static final String PERMANENT_RELOCATION_VALUE = "relocation_permanent";
         public static final String SPONTANEOUS_ABORTION_VALUE = "spontaneous_abortion";
+        public static final String SPONTANEOUS_ABORTION_PLACE_FIELD_NAME = "placeOfSpontaneousAbortion";
     }
 
     public static class PNCCloseFields {
