@@ -1890,14 +1890,16 @@
                     "indicator": "NRHM_VIT_A_5_3YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "vitaminADate",
+                    "serviceProvidedPlaceField": "vitaminAPlace",
                     "formFields": [
                         "id",
                         "vitaminADose",
                         "vitaminADate",
-                        "vitaminAPlace"
+                        "dateOfBirth"
                     ],
                     "reportWhen": [
                         "IsVitaminA5DoseGivenRule",
+                        "IsChildBelowThreeYearsRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
                 },
@@ -1905,14 +1907,16 @@
                     "indicator": "NRHM_VIT_A_9_3YR",
                     "reportEntityType": "child",
                     "serviceProvidedDateField": "vitaminADate",
+                    "serviceProvidedPlaceField": "vitaminAPlace",
                     "formFields": [
                         "id",
                         "vitaminADose",
                         "vitaminADate",
-                        "vitaminAPlace"
+                        "dateOfBirth"
                     ],
                     "reportWhen": [
                         "IsVitaminA9DoseGivenRule",
+                        "IsChildBelowThreeYearsRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
                 }
