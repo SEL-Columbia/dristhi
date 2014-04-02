@@ -11,13 +11,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class IsChildMoreThan16MonthsRuleTest {
+public class IsChildAgeGreaterThanOrEqualTo16MonthsRuleTest {
 
-    private IsChildMoreThan16MonthsRule rule;
+    private IsChildAgeGreaterThanOrEqualTo16MonthsRule rule;
 
     @Before
     public void setUp() {
-        rule = new IsChildMoreThan16MonthsRule();
+        rule = new IsChildAgeGreaterThanOrEqualTo16MonthsRule();
     }
 
     @Test
@@ -29,7 +29,7 @@ public class IsChildMoreThan16MonthsRuleTest {
 
         assertFalse(didRuleSucceed);
 
-        reportData = create("serviceProvidedDate", "2013-05-01")
+        reportData = create("serviceProvidedDate", "2013-04-01")
                 .put("dateOfBirth", "2012-01-01")
                 .map();
         didRuleSucceed = rule.apply(new SafeMap(reportData));
@@ -38,11 +38,18 @@ public class IsChildMoreThan16MonthsRuleTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenChildIsAbove16Months() {
-        Map<String, String> reportData = create("serviceProvidedDate", "2013-05-02")
+    public void shouldReturnTrueWhenChildAgeIsGreaterThanOrEqualTo16Months() {
+        Map<String, String> reportData = create("serviceProvidedDate", "2013-04-02")
                 .put("dateOfBirth", "2012-01-01")
                 .map();
         boolean didRuleSucceed = rule.apply(new SafeMap(reportData));
+
+        assertTrue(didRuleSucceed);
+
+        reportData = create("serviceProvidedDate", "2014-05-02")
+                .put("dateOfBirth", "2012-01-01")
+                .map();
+        didRuleSucceed = rule.apply(new SafeMap(reportData));
 
         assertTrue(didRuleSucceed);
 

@@ -984,7 +984,7 @@
                         "immunizationDate"
                     ],
                     "reportWhen": [
-                        "IsChildLessThanOneYearOldRule",
+                        "IsChildAgeGreaterThanOrEqualTo16MonthsRule",
                         "IsMeaslesBoosterImmunizationGivenRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
