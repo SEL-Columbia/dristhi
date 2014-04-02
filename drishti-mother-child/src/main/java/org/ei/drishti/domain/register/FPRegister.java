@@ -13,18 +13,19 @@ public class FPRegister {
     private final List<OCPRegisterEntry> ocpRegisterEntries;
     private final List<MaleSterilizationRegisterEntry> maleSterilizationRegisterEntries;
     private final List<FemaleSterilizationRegisterEntry> femaleSterilizationRegisterEntries;
-    private String reportingYear;
+    private final Integer reportingYear;
 
     public FPRegister(List<IUDRegisterEntry> iudRegisterEntries,
                       List<CondomRegisterEntry> condomRegisterEntries,
                       List<OCPRegisterEntry> ocpRegisterEntries,
                       List<MaleSterilizationRegisterEntry> maleSterilizationRegisterEntries,
-                      List<FemaleSterilizationRegisterEntry> femaleSterilizationRegisterEntries) {
+                      List<FemaleSterilizationRegisterEntry> femaleSterilizationRegisterEntries, Integer reportingYear) {
         this.iudRegisterEntries = iudRegisterEntries;
         this.condomRegisterEntries = condomRegisterEntries;
         this.ocpRegisterEntries = ocpRegisterEntries;
         this.maleSterilizationRegisterEntries = maleSterilizationRegisterEntries;
         this.femaleSterilizationRegisterEntries = femaleSterilizationRegisterEntries;
+        this.reportingYear = reportingYear;
     }
 
     public List<IUDRegisterEntry> iudRegisterEntries() {
@@ -45,6 +46,10 @@ public class FPRegister {
 
     public List<FemaleSterilizationRegisterEntry> femaleSterilizationRegisterEntries() {
         return femaleSterilizationRegisterEntries;
+    }
+
+    public Integer getReportingYear() {
+        return reportingYear;
     }
 
     @Override

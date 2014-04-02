@@ -17,7 +17,7 @@ public class CondomRegisterEntry {
     private String numberOfLivingFemaleChildren;
     private String wifeEducationLevel;
     private String husbandEducationLevel;
-    private FPDetails FPDetails;
+    private RefillableFPDetails RefillableFPDetails;
 
     public String ecNumber() {
         return ecNumber;
@@ -67,8 +67,8 @@ public class CondomRegisterEntry {
         return husbandEducationLevel;
     }
 
-    public FPDetails fpDetails() {
-        return FPDetails;
+    public RefillableFPDetails fpDetails() {
+        return RefillableFPDetails;
     }
 
     public CondomRegisterEntry withEcNumber(String ecNumber) {
@@ -131,8 +131,8 @@ public class CondomRegisterEntry {
         return this;
     }
 
-    public CondomRegisterEntry withFpDetails(FPDetails FPDetails) {
-        this.FPDetails = FPDetails;
+    public CondomRegisterEntry withFpDetails(RefillableFPDetails RefillableFPDetails) {
+        this.RefillableFPDetails = RefillableFPDetails;
         return this;
     }
 

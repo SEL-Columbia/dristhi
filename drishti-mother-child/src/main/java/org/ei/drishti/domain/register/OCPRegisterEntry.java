@@ -19,7 +19,7 @@ public class OCPRegisterEntry {
     private String uptResult;
     private String wifeEducationLevel;
     private String husbandEducationLevel;
-    private FPDetails FPDetails;
+    private RefillableFPDetails RefillableFPDetails;
 
     public String ecNumber() {
         return ecNumber;
@@ -77,8 +77,8 @@ public class OCPRegisterEntry {
         return husbandEducationLevel;
     }
 
-    public FPDetails fpDetails() {
-        return FPDetails;
+    public RefillableFPDetails fpDetails() {
+        return RefillableFPDetails;
     }
 
     public OCPRegisterEntry withEcNumber(String ecNumber) {
@@ -151,8 +151,8 @@ public class OCPRegisterEntry {
         return this;
     }
 
-    public OCPRegisterEntry withFpDetails(FPDetails FPDetails) {
-        this.FPDetails = FPDetails;
+    public OCPRegisterEntry withFpDetails(RefillableFPDetails RefillableFPDetails) {
+        this.RefillableFPDetails = RefillableFPDetails;
         return this;
     }
 

@@ -31,7 +31,7 @@ public class CondomRegisterEntryDTO {
         @JsonProperty
         private String husbandEducationLevel;
         @JsonProperty
-        private FPDetailsDTO fpDetailsDTO;
+        private RefillableFPDetailsDTO refillableFpDetailsDTO;
 
     public String ecNumber() {
         return ecNumber;
@@ -81,8 +81,8 @@ public class CondomRegisterEntryDTO {
         return husbandEducationLevel;
     }
 
-    public FPDetailsDTO fpDetails() {
-        return fpDetailsDTO;
+    public RefillableFPDetailsDTO fpDetails() {
+        return refillableFpDetailsDTO;
     }
 
     public CondomRegisterEntryDTO withEcNumber(String ecNumber) {
@@ -145,8 +145,8 @@ public class CondomRegisterEntryDTO {
         return this;
     }
 
-    public CondomRegisterEntryDTO withFpDetailsDTO(FPDetailsDTO fpDetailsDTO) {
-        this.fpDetailsDTO = fpDetailsDTO;
+    public CondomRegisterEntryDTO withFpDetailsDTO(RefillableFPDetailsDTO refillableFpDetailsDTO) {
+        this.refillableFpDetailsDTO = refillableFpDetailsDTO;
         return this;
     }
 

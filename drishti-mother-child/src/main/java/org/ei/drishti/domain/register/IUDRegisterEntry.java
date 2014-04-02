@@ -4,8 +4,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Map;
-
 public class IUDRegisterEntry {
     private String ecNumber;
     private String wifeName;
@@ -22,7 +20,7 @@ public class IUDRegisterEntry {
     private String uptResult;
     private String wifeEducationLevel;
     private String husbandEducationLevel;
-    private Map<String, String> fpDetails;
+    private IUDFPDetails fpDetails;
 
     public String ecNumber() {
         return ecNumber;
@@ -84,7 +82,7 @@ public class IUDRegisterEntry {
         return husbandEducationLevel;
     }
 
-    public Map<String, String> fpDetails() {
+    public IUDFPDetails fpDetails() {
         return fpDetails;
     }
 
@@ -163,7 +161,7 @@ public class IUDRegisterEntry {
         return this;
     }
 
-    public IUDRegisterEntry withFpDetails(Map<String, String> fpDetails) {
+    public IUDRegisterEntry withFpDetails(IUDFPDetails fpDetails) {
         this.fpDetails = fpDetails;
         return this;
     }

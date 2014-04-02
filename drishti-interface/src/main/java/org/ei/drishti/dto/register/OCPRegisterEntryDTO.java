@@ -35,7 +35,7 @@ public class OCPRegisterEntryDTO {
     @JsonProperty
     private String husbandEducationLevel;
     @JsonProperty
-    private FPDetailsDTO fpDetailsDTO;
+    private RefillableFPDetailsDTO refillableFpDetailsDTO;
 
     public String ecNumber() {
         return ecNumber;
@@ -93,8 +93,8 @@ public class OCPRegisterEntryDTO {
         return husbandEducationLevel;
     }
 
-    public FPDetailsDTO fpDetails() {
-        return fpDetailsDTO;
+    public RefillableFPDetailsDTO fpDetails() {
+        return refillableFpDetailsDTO;
     }
 
     public OCPRegisterEntryDTO withEcNumber(String ecNumber) {
@@ -167,8 +167,8 @@ public class OCPRegisterEntryDTO {
         return this;
     }
 
-    public OCPRegisterEntryDTO withFpDetailsDTO(FPDetailsDTO fpDetailsDTO) {
-        this.fpDetailsDTO = fpDetailsDTO;
+    public OCPRegisterEntryDTO withFpDetailsDTO(RefillableFPDetailsDTO refillableFpDetailsDTO) {
+        this.refillableFpDetailsDTO = refillableFpDetailsDTO;
         return this;
     }
 

@@ -33,7 +33,10 @@ public class FPRegisterMapper {
                                         .withUptResult(entry.uptResult())
                                         .withWifeEducationLevel(entry.wifeEducationLevel())
                                         .withHusbandEducationLevel(entry.husbandEducationLevel())
-                                        .withFpDetails(entry.fpDetails());
+                                        .withFpDetails(new IUDFPDetailsDTO(
+                                                entry.fpDetails().fpAcceptanceDate(),
+                                                entry.fpDetails().iudPlace(),
+                                                entry.fpDetails().remarks()));
                             }
                         });
         List<CondomRegisterEntryDTO> condomRegisterEntryDTOs = with(fpRegister.condomRegisterEntries())
@@ -53,7 +56,7 @@ public class FPRegisterMapper {
                                 .withNumberOfLivingFemaleChildren(entry.numberOfLivingFemaleChildren())
                                 .withWifeEducationLevel(entry.wifeEducationLevel())
                                 .withHusbandEducationLevel(entry.husbandEducationLevel())
-                                .withFpDetailsDTO(new FPDetailsDTO(
+                                .withFpDetailsDTO(new RefillableFPDetailsDTO(
                                         entry.fpDetails().fpAcceptanceDate(),
                                         entry.fpDetails().refills())
                                 );
@@ -77,7 +80,7 @@ public class FPRegisterMapper {
                                 .withNumberOfLivingFemaleChildren(entry.numberOfLivingFemaleChildren())
                                 .withWifeEducationLevel(entry.wifeEducationLevel())
                                 .withHusbandEducationLevel(entry.husbandEducationLevel())
-                                .withFpDetailsDTO(new FPDetailsDTO(
+                                .withFpDetailsDTO(new RefillableFPDetailsDTO(
                                         entry.fpDetails().fpAcceptanceDate(),
                                         entry.fpDetails().refills())
                                 );

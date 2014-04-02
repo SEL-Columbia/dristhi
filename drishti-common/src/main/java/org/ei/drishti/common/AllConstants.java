@@ -267,6 +267,8 @@ public class AllConstants {
     }
 
     public static class FamilyPlanningFormFields {
+        public static final String LMP_DATE = "lmpDate";
+        public static final String UPT_RESULT = "uptResult";
         public static final String CURRENT_FP_METHOD_FIELD_NAME = "currentMethod";
         public static final String FP_METHOD_CHANGE_DATE_FIELD_NAME = "familyPlanningMethodChangeDate";
         public static final String DMPA_INJECTION_DATE_FIELD_NAME = "dmpaInjectionDate";

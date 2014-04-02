@@ -1,22 +1,27 @@
-package org.ei.drishti.dto.register;
+package org.ei.drishti.domain.register;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
 
-public class FPDetailsDTO {
-    @JsonProperty
+public class RefillableFPDetails extends FPDetails {
     private String fpAcceptanceDate;
-    @JsonProperty
     private List<Map<String, String>> refills;
 
-    public FPDetailsDTO(String fpAcceptanceDate, List<Map<String, String>> refills) {
+    public RefillableFPDetails(String fpAcceptanceDate, List<Map<String, String>> refills) {
         this.fpAcceptanceDate = fpAcceptanceDate;
         this.refills = refills;
+    }
+
+    public String fpAcceptanceDate() {
+        return fpAcceptanceDate;
+    }
+
+    public List<Map<String, String>> refills() {
+        return refills;
     }
 
     @Override

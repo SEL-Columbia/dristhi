@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.common.util.IntegerUtil;
+import org.ei.drishti.domain.register.*;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
@@ -40,6 +41,16 @@ public class EligibleCouple extends MotechBaseDataObject {
     private String isClosed;
     @JsonProperty
     private Map<String, String> details;
+    @JsonProperty
+    private IUDFPDetails iudFPDetails;
+    @JsonProperty
+    private CondomFPDetails condomFPDetails;
+    @JsonProperty
+    private OCPFPDetails ocpFPDetails;
+    @JsonProperty
+    private MaleSterilizationFPDetails maleSterilizationFPDetails;
+    @JsonProperty
+    private FemaleSterilizationFPDetails femaleSterilizationFPDetails;
 
     public EligibleCouple() {
     }
@@ -71,6 +82,31 @@ public class EligibleCouple extends MotechBaseDataObject {
 
     public EligibleCouple withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
+        return this;
+    }
+
+    public EligibleCouple withIUDFPDetails(IUDFPDetails iudfpDetails) {
+        this.iudFPDetails = iudfpDetails;
+        return this;
+    }
+
+    public EligibleCouple withCondomFPDetails(CondomFPDetails condomFPDetails) {
+        this.condomFPDetails = condomFPDetails;
+        return this;
+    }
+
+    public EligibleCouple withOCPFPDetails(OCPFPDetails ocpfpDetails) {
+        this.ocpFPDetails = ocpfpDetails;
+        return this;
+    }
+
+    public EligibleCouple withMaleSterilizationFPDetails(MaleSterilizationFPDetails maleSterilizationFPDetails) {
+        this.maleSterilizationFPDetails = maleSterilizationFPDetails;
+        return this;
+    }
+
+    public EligibleCouple withFemaleSterilizationFPDetails(FemaleSterilizationFPDetails femaleSterilizationFPDetails) {
+        this.femaleSterilizationFPDetails = femaleSterilizationFPDetails;
         return this;
     }
 
@@ -119,6 +155,10 @@ public class EligibleCouple extends MotechBaseDataObject {
         return details;
     }
 
+    public FPDetails fpDetails() {
+        return iudFPDetails;
+    }
+
     public EligibleCouple setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);
         return this;
@@ -134,6 +174,26 @@ public class EligibleCouple extends MotechBaseDataObject {
 
     public String getDetail(String name) {
         return details.get(name);
+    }
+
+    public IUDFPDetails iudFPDetails() {
+        return iudFPDetails;
+    }
+
+    public CondomFPDetails condomFPDetails() {
+        return condomFPDetails;
+    }
+
+    public OCPFPDetails ocpFPDetails() {
+        return ocpFPDetails;
+    }
+
+    public MaleSterilizationFPDetails maleSterilizationFPDetails() {
+        return maleSterilizationFPDetails;
+    }
+
+    public FemaleSterilizationFPDetails femaleSterilizationFPDetails() {
+        return femaleSterilizationFPDetails;
     }
 
     @Override

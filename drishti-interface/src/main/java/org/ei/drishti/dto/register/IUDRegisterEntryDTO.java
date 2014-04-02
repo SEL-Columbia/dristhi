@@ -5,8 +5,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.Map;
-
 public class IUDRegisterEntryDTO {
     @JsonProperty
     private String ecNumber;
@@ -39,7 +37,7 @@ public class IUDRegisterEntryDTO {
     @JsonProperty
     private String husbandEducationLevel;
     @JsonProperty
-    private Map<String, String> fpDetails;
+    private IUDFPDetailsDTO fpDetails;
 
     public String ecNumber() {
         return ecNumber;
@@ -101,7 +99,7 @@ public class IUDRegisterEntryDTO {
         return husbandEducationLevel;
     }
 
-    public Map<String, String> fpDetails() {
+    public IUDFPDetailsDTO fpDetails() {
         return fpDetails;
     }
 
@@ -180,7 +178,7 @@ public class IUDRegisterEntryDTO {
         return this;
     }
 
-    public IUDRegisterEntryDTO withFpDetails(Map<String, String> fpDetails) {
+    public IUDRegisterEntryDTO withFpDetails(IUDFPDetailsDTO fpDetails) {
         this.fpDetails = fpDetails;
         return this;
     }

@@ -1,8 +1,12 @@
 package org.ei.drishti.domain.register;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.List;
 
-public class SterilizationFPDetails {
+public class SterilizationFPDetails extends FPDetails {
     private String typeOfSterilization;
     private String sterilizationDate;
     private List<String> followupVisitDates;
@@ -30,5 +34,20 @@ public class SterilizationFPDetails {
 
     public String remarks() {
         return remarks;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

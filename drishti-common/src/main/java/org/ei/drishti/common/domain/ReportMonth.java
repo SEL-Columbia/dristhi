@@ -15,10 +15,14 @@ public class ReportMonth {
     private static final int DECEMBER = 12;
 
     public Date startDateOfReportingYear() {
+        int reportingYear = reportingYear();
+        return new LocalDate().withDayOfMonth(REPORTING_MONTH_START_DAY).withMonthOfYear(FIRST_REPORT_MONTH_OF_YEAR).withYear(reportingYear).toDate();
+    }
+
+    public int reportingYear() {
         LocalDate now = DateUtil.today();
         LocalDate beginningOfReportingYear = DateUtil.today().withMonthOfYear(FIRST_REPORT_MONTH_OF_YEAR).withDayOfMonth(REPORTING_MONTH_START_DAY);
-        int reportingYear = now.isBefore(beginningOfReportingYear) ? previousYear(now) : now.getYear();
-        return new LocalDate().withDayOfMonth(REPORTING_MONTH_START_DAY).withMonthOfYear(FIRST_REPORT_MONTH_OF_YEAR).withYear(reportingYear).toDate();
+        return now.isBefore(beginningOfReportingYear) ? previousYear(now) : now.getYear();
     }
 
     public LocalDate startDateOfNextReportingMonth(LocalDate date) {
