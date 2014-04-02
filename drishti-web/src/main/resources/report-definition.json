@@ -1919,6 +1919,23 @@
                         "IsChildBelowThreeYearsRule",
                         "ServiceProvidedAtSub_CenterRule"
                     ]
+                },
+                {
+                    "indicator": "NRHM_VIT_A_1",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "serviceProvidedPlaceField": "vitaminAPlace",
+                    "formFields": [
+                        "id",
+                        "vitaminADose",
+                        "vitaminADate",
+                        "dateOfBirth"
+                    ],
+                    "reportWhen": [
+                        "IsVitaminA1DoseGivenRule",
+                        "IsChildBetween6to12MonthsRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
                 }
             ]
         },
