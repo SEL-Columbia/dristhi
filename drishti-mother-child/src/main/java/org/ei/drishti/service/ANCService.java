@@ -30,9 +30,7 @@ import static org.ei.drishti.common.AllConstants.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.HbTestFormFields.ANAEMIC_STATUS_FIELD;
-import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_LEVEL_FIELD;
-import static org.ei.drishti.common.AllConstants.HbTestFormFields.HB_TEST_DATE_FIELD;
+import static org.ei.drishti.common.AllConstants.HbTestFormFields.*;
 import static org.ei.drishti.common.AllConstants.IFAFields.IFA_TABLETS_DATE;
 import static org.ei.drishti.common.AllConstants.IFAFields.NUMBER_OF_IFA_TABLETS_GIVEN;
 import static org.ei.drishti.common.util.EasyMap.create;
@@ -237,5 +235,9 @@ public class ANCService {
             logger.info("Closing EC case along with ANC case. Submission: " + submission);
             eligibleCouples.close(mother.ecCaseId());
         }
+    }
+
+    public void ancInvestigations(FormSubmission submission) {
+
     }
 }

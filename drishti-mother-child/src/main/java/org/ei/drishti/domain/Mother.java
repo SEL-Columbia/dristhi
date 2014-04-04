@@ -48,6 +48,8 @@ public class Mother extends MotechBaseDataObject {
     private List<Map<String, String>> ttDoses;
     @JsonProperty
     private List<Map<String, String>> hbTests;
+    @JsonProperty
+    private List<Map<String, String>> ancInvestigations;
 
     private Mother() {
     }
@@ -151,6 +153,10 @@ public class Mother extends MotechBaseDataObject {
         return hbTests;
     }
 
+    public List<Map<String, String>> ancInvestigations() {
+        return ancInvestigations;
+    }
+
     public Mother setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);
         return this;
@@ -211,11 +217,23 @@ public class Mother extends MotechBaseDataObject {
         return this;
     }
 
+    public Mother withANCInvestigations(List<Map<String, String>> ancInvestigations) {
+        this.ancInvestigations = ancInvestigations;
+        return this;
+    }
+
     public void updateHBTestInformation(Map<String, String> hbTest) {
         if (this.hbTests == null) {
             this.hbTests = new ArrayList<>();
         }
         this.hbTests.add(hbTest);
+    }
+
+    public void updateANCInvestigationsInformation(Map<String, String> ancInvestigations) {
+        if (this.ancInvestigations == null) {
+            this.ancInvestigations = new ArrayList<>();
+        }
+        this.ancInvestigations.add(ancInvestigations);
     }
 
     public String thirdPNCVisitDate() {

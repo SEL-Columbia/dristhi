@@ -3,7 +3,6 @@ package org.ei.drishti.domain.register;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.joda.time.LocalDate;
 
 import java.util.List;
 import java.util.Map;
@@ -41,6 +40,7 @@ public class ANCRegisterEntry {
     private List<Map<String, String>> ifaTablets;
     private List<Map<String, String>> ttDoses;
     private List<Map<String, String>> hbTests;
+    private List<Map<String, String>> ancInvestigations;
 
     public ANCRegisterEntry withANCNumber(String ancNumber) {
         this.ancNumber = ancNumber;
@@ -206,6 +206,11 @@ public class ANCRegisterEntry {
         return this;
     }
 
+    public ANCRegisterEntry withANCInvestigations(List<Map<String, String>> ancInvestigations) {
+        this.ancInvestigations = ancInvestigations;
+        return this;
+    }
+
     public String ancNumber() {
         return ancNumber;
     }
@@ -332,6 +337,9 @@ public class ANCRegisterEntry {
 
     public List<Map<String, String>> hbTests() {
         return hbTests;
+    }
+    public List<Map<String, String>> ancInvestigations() {
+        return ancInvestigations;
     }
 
     @Override

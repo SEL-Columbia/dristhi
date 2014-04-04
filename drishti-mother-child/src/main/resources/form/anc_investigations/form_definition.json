@@ -1,0 +1,156 @@
+{
+    "form_data_definition_version": "2",
+    "form": {
+        "bind_type": "mother",
+        "default_bind_path": "/model/instance/ANC_Investigations_EngKan/",
+        "fields": [
+            {
+                "name": "id",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "ecId",
+                "shouldLoadValue": true,
+                "source": "mother.eligible_couple.id"
+            },
+            {
+                "name": "testResultsToEnter",
+                "bind": "/model/instance/ANC_Investigations_EngKan/test_results_to_enter"
+            },
+            {
+                "name": "womanBloodGroup",
+                "bind": "/model/instance/ANC_Investigations_EngKan/w_blood_group"
+            },
+            {
+                "name": "womanRhNegative",
+                "bind": "/model/instance/ANC_Investigations_EngKan/case_w_rh_negative",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "womanRhNegative",
+                "bind": "/model/instance/ANC_Investigations_EngKan/w_rh_negative1"
+            },
+            {
+                "name": "womanRhNegative",
+                "bind": "/model/instance/ANC_Investigations_EngKan/w_rh_negative"
+            },
+            {
+                "name": "husbandBloodGroup",
+                "bind": "/model/instance/ANC_Investigations_EngKan/h_blood_group"
+            },
+            {
+                "name": "rhIncompatibleCouple",
+                "bind": "/model/instance/ANC_Investigations_EngKan/rh_incompatible_couple"
+            },
+            {
+                "name": "testsResultPositive",
+                "bind": "/model/instance/ANC_Investigations_EngKan/tests_result_positive"
+            },
+            {
+                "name": "bileSalts",
+                "bind": "/model/instance/ANC_Investigations_EngKan/bile_salts"
+            },
+            {
+                "name": "bilePigments",
+                "bind": "/model/instance/ANC_Investigations_EngKan/bile_pigments"
+            },
+            {
+                "name": "pih",
+                "bind": "/model/instance/ANC_Investigations_EngKan/case_pih",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "preEclampsia",
+                "bind": "/model/instance/ANC_Investigations_EngKan/case_pre_eclampsia",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "preEclampsia",
+                "bind": "/model/instance/ANC_Investigations_EngKan/pre_eclampsia"
+            },
+            {
+                "name": "hepB",
+                "bind": "/model/instance/ANC_Investigations_EngKan/case_hepb",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "hepB",
+                "bind": "/model/instance/ANC_Investigations_EngKan/hepb"
+            },
+            {
+                "name": "gestationalDiabetes",
+                "bind": "/model/instance/ANC_Investigations_EngKan/case_gestational_diabetes",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "gestationalDiabetes",
+                "bind": "/model/instance/ANC_Investigations_EngKan/gestational_diabetes"
+            },
+            {
+                "name": "rhIncompatible",
+                "bind": "/model/instance/ANC_Investigations_EngKan/case_rh_incompatible",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "rhIncompatible",
+                "bind": "/model/instance/ANC_Investigations_EngKan/rh_incompatible"
+            },
+            {
+                "name": "isHighRiskTillDelivery",
+                "bind": "/model/instance/ANC_Investigations_EngKan/case_is_high_risk_till_delivery",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "isHighRiskTillDeliveryReason",
+                "bind": "/model/instance/ANC_Investigations_EngKan/case_is_high_risk_till_delivery_reason",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "isHighRiskTillPNCClose",
+                "bind": "/model/instance/ANC_Investigations_EngKan/case_is_high_risk_till_pnc_close",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "isHighRiskTillPNCCloseReason",
+                "bind": "/model/instance/ANC_Investigations_EngKan/case_is_high_risk_till_pnc_close_reason",
+                "shouldLoadValue": true
+            },
+            {
+                "name": "isHighRiskTillDelivery",
+                "bind": "/model/instance/ANC_Investigations_EngKan/is_high_risk_till_delivery"
+            },
+            {
+                "name": "isHighRiskTillDeliveryReason",
+                "bind": "/model/instance/ANC_Investigations_EngKan/is_high_risk_till_delivery_reason"
+            },
+            {
+                "name": "isHighRiskTillPNCClose",
+                "bind": "/model/instance/ANC_Investigations_EngKan/is_high_risk_till_pnc_close"
+            },
+            {
+                "name": "isHighRiskTillPNCCloseReason",
+                "bind": "/model/instance/ANC_Investigations_EngKan/is_high_risk_till_pnc_close_reason"
+            },
+            {
+                "name": "isHighRisk",
+                "bind": "/model/instance/ANC_Investigations_EngKan/is_high_risk1"
+            },
+            {
+                "name": "isHighRisk",
+                "bind": "/model/instance/ANC_Investigations_EngKan/is_high_risk"
+            },
+            {
+                "name": "highRiskReason",
+                "bind": "/model/instance/ANC_Investigations_EngKan/high_risk_reason"
+            },
+            {
+                "name": "highRiskNote",
+                "bind": "/model/instance/ANC_Investigations_EngKan/high_risk_note"
+            },
+            {
+                "name": "submissionDate",
+                "bind": "/model/instance/ANC_Investigations_EngKan/today"
+            }
+        ]
+    }
+}

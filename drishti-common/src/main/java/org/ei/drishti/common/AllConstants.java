@@ -30,6 +30,7 @@ public class AllConstants {
         public static final String ANC_REGISTRATION = "anc_registration";
         public static final String ANC_REGISTRATION_OA = "anc_registration_oa";
         public static final String ANC_VISIT = "anc_visit";
+        public static final String ANC_INVESTIGATIONS = "anc_investigations";
         public static final String ANC_CLOSE = "anc_close";
         public static final String IFA = "ifa";
         public static final String HB_TEST = "hb_test";
@@ -169,6 +170,17 @@ public class AllConstants {
         public static final String HB_TEST_DATE_FIELD = "hbTestDate";
         public static final String HB_LEVEL_FIELD = "hbLevel";
         public static final String ANAEMIC_STATUS_FIELD = "anaemicStatus";
+    }
+
+    public static class ANCInvestigationsFormFields {
+        public static final String WOMAN_BLOOD_GROUP = "womanBloodGroup";
+        public static final String HUSBAND_BLOOD_GROUP = "husbandBloodGroup";
+        public static final String TESTS_CONDUCTED = "testResultsToEnter";
+        public static final String TESTS_POSITIVE_RESULTS = "testsResultPositive";
+        public static final String BILE_SALTS = "bileSalts";
+        public static final String BILE_PIGMENTS = "bilePigments";
+        public static final String IS_HIGH_RISK = "isHighRisk";
+        public static final String HIGH_RISK_REASON = "highRiskReason";
     }
 
     public static class PNCVisitFormFields {

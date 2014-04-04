@@ -73,6 +73,8 @@ public class ANCRegisterEntryDTO {
     private List<Map<String, String>> ttDoses;
     @JsonProperty
     private List<Map<String, String>> hbTests;
+    @JsonProperty
+    private List<Map<String, String>> ancInvestigations;
 
 
     public ANCRegisterEntryDTO withANCNumber(String ancNumber) {
@@ -236,6 +238,11 @@ public class ANCRegisterEntryDTO {
 
     public ANCRegisterEntryDTO withHBTests(List<Map<String, String>> hbTests) {
         this.hbTests = hbTests;
+        return this;
+    }
+
+    public ANCRegisterEntryDTO withANCInvestigations(List<Map<String, String>> ancInvestigations) {
+        this.ancInvestigations = ancInvestigations;
         return this;
     }
 

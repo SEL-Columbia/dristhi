@@ -72,6 +72,8 @@ public class FormSubmissionRouterTest {
     @Mock
     private ECEditHandler ecEditHandler;
     @Mock
+    private ANCInvestigationsHandler ancInvestigationsHandler;
+    @Mock
     private FormSubmissionReportService formSubmissionReportService;
 
     private FormSubmissionRouter router;
@@ -108,6 +110,7 @@ public class FormSubmissionRouterTest {
                 postpartumFamilyPlanningHandler,
                 recordECPsHandler,
                 ecEditHandler,
+                ancInvestigationsHandler,
                 formSubmissionReportService);
     }
 
@@ -427,5 +430,15 @@ public class FormSubmissionRouterTest {
         verify(formSubmissionReportService).reportFor(formSubmission);
     }
 
+    @Test
+    public void shouldDelegateANCInvestigationsFormSubmissionHandlingToANCInvestigationswHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "anc_investigations", "entity id 1", 0L, "1", null, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
+        router.route("instance id 1");
+
+        verify(formSubmissionsRepository).findByInstanceId("instance id 1");
+        verify(ancInvestigationsHandler).handle(formSubmission);
+        verify(formSubmissionReportService).reportFor(formSubmission);
+    }
 }
