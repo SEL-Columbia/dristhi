@@ -52,6 +52,7 @@ public class FormSubmissionRouter {
                                 DeliveryPlanHandler deliveryPlanHandler,
                                 PostpartumFamilyPlanningHandler postpartumFamilyPlanningHandler,
                                 RecordECPsHandler recordECPsHandler,
+                                ECEditHandler ecEditHandler,
                                 FormSubmissionReportService formSubmissionReportService) {
         this.formSubmissionsRepository = formSubmissionsRepository;
         this.formSubmissionReportService = formSubmissionReportService;
@@ -85,6 +86,7 @@ public class FormSubmissionRouter {
                 .put(VITAMIN_A, vitaminAHandler)
                 .put(PPFP, postpartumFamilyPlanningHandler)
                 .put(RECORD_ECPS, recordECPsHandler)
+                .put(EC_EDIT, ecEditHandler)
                 .map();
     }
 

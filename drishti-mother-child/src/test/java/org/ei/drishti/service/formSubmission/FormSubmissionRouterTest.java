@@ -70,6 +70,8 @@ public class FormSubmissionRouterTest {
     @Mock
     private RecordECPsHandler recordECPsHandler;
     @Mock
+    private ECEditHandler ecEditHandler;
+    @Mock
     private FormSubmissionReportService formSubmissionReportService;
 
     private FormSubmissionRouter router;
@@ -105,6 +107,7 @@ public class FormSubmissionRouterTest {
                 deliveryPlanHandler,
                 postpartumFamilyPlanningHandler,
                 recordECPsHandler,
+                ecEditHandler,
                 formSubmissionReportService);
     }
 
@@ -407,11 +410,22 @@ public class FormSubmissionRouterTest {
     public void shouldDelegateRecordECPsFormSubmissionHandlingToRecordECPsHandler() throws Exception {
         FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "record_ecps", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
-
         router.route("instance id 1");
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
         verify(recordECPsHandler).handle(formSubmission);
+    }
+
+    @Test
+    public void shouldDelegateECEditFormSubmissionHandlingToECEditHandler() throws Exception {
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "ec_edit", "entity id 1", 0L, "1", null, 0L);
+        when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
+
+        router.route("instance id 1");
+
+        verify(ecEditHandler).handle(formSubmission);
         verify(formSubmissionReportService).reportFor(formSubmission);
     }
+
+
 }
