@@ -99,11 +99,27 @@ public class ChildReportingService {
 
         Location location = loadLocationOfChild(child);
         reportImmunizations(child, immunizations, location, child.dateOfBirth());
+        reportNRHMImmunizations(reportData, child, immunizations, location);
         reportBirthWeight(child, location);
         reportBFPostBirth(reportData.get(BF_POSTBIRTH), child, location, reportData.get(DELIVERY_PLACE));
         reportToBoth(child, INFANT_REGISTRATION, child.dateOfBirth(), location);
         reportLiveBirthByGender(reportData, child, location);
         reportToBoth(child, INFANT_BALANCE_TOTAL, child.dateOfBirth(), location);
+    }
+
+    private void reportNRHMImmunizations(SafeMap reportData, Child child, List<String> immunizations, Location location) {
+        if (reportData.get(DELIVERY_PLACE).equalsIgnoreCase(SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE)) {
+            if (immunizations.contains(OPV_0_VALUE)) {
+                reportToBoth(child, NRHM_OPV_0_1YR, child.dateOfBirth(), location);
+            }
+            if (immunizations.contains(BCG_VALUE)) {
+                reportToBoth(child, NRHM_BCG_1YR, child.dateOfBirth(), location);
+            }
+            if (immunizations.contains(HEPATITIS_0_VALUE)) {
+                reportToBoth(child, NRHM_HEPB_0_1YR, child.dateOfBirth(), location);
+            }
+
+        }
     }
 
     public void immunizationProvided(SafeMap reportData, List<String> previousImmunizations) {

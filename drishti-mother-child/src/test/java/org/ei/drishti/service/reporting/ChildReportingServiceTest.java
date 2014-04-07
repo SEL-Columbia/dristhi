@@ -279,6 +279,111 @@ public class ChildReportingServiceTest {
     }
 
     @Test
+    public void shouldReportNRHMChildImmunizationDataWhenChildIsRegisteredInSubCenter() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "subcenter");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
+        service.registerChild(reportData);
+
+        verifyBothReportingCalls(NRHM_OPV_0_1YR, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportNRHMOPV0ChildImmunizationDataWhenChildIsRegisteredInSubCenter() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "subcenter");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
+        service.registerChild(reportData);
+
+        verifyBothReportingCalls(NRHM_OPV_0_1YR, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportNRHMBCGChildImmunizationDataWhenChildIsRegisteredInSubCenter() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "subcenter");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
+        service.registerChild(reportData);
+
+        verifyBothReportingCalls(NRHM_BCG_1YR, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportNRHMHepB0ChildImmunizationDataWhenChildIsRegisteredInSubCenter() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "hepb_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "subcenter");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
+        service.registerChild(reportData);
+
+        verifyBothReportingCalls(NRHM_HEPB_0_1YR, "2012-01-01");
+    }
+
+    @Test
+    public void shouldNotReportNRHMChildImmunizationDataWhenChildIsRegisteredNotInSubCenter() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1"));
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "phc");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+
+        service.registerChild(reportData);
+
+        verifyNoReportingCalls(NRHM_OPV_0_1YR, "2012-01-01");
+    }
+
+    @Test
     public void shouldReportInfantRegistrationAndInfantTotalBalance() throws Exception {
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
                 .withAnm("ANM X")
