@@ -182,7 +182,8 @@ public class ANCServiceTest {
                                 .put("weight", "55")
                                 .put("bpSystolic", "120")
                                 .put("bpDiastolic", "80")
-                                .map())));
+                                .map()
+                )));
         verify(ancSchedulesService).ancVisitHasHappened("entity id 1", "anm id 1", 2, "2013-01-01");
         verify(motherReportingService).ancVisit(new SafeMap(mapOf("someKey", "someValue")));
     }
@@ -205,6 +206,7 @@ public class ANCServiceTest {
                 .put("weight", "55")
                 .put("bpSystolic", "121")
                 .put("bpDiastolic", "81")
+                .put("ancVisitNumber", "1")
                 .map());
         Mother mother = new Mother("entity id 1", "ec id 1", "TC1")
                 .withANCVisits(ancVisits)
@@ -214,7 +216,8 @@ public class ANCServiceTest {
 
         service.ancVisit(submission);
 
-        verify(allMothers).update(mother
+        Mother updatedMother = new Mother("entity id 1", "ec id 1", "TC1")
+                .withDetails(mapOf("someKey", "someValue"))
                 .withANCVisits(asList(
                         create("ancVisitDate", "2012-09-01")
                                 .put("weight", "55")
@@ -227,7 +230,10 @@ public class ANCServiceTest {
                                 .put("bpSystolic", "120")
                                 .put("bpDiastolic", "80")
                                 .put("ancVisitNumber", "2")
-                                .map())));
+                                .map()
+                ));
+
+        verify(allMothers).update(updatedMother);
         verify(ancSchedulesService).ancVisitHasHappened("entity id 1", "anm id 1", 2, "2013-01-01");
         verify(motherReportingService).ancVisit(new SafeMap(mapOf("someKey", "someValue")));
     }
@@ -341,7 +347,8 @@ public class ANCServiceTest {
                 create("someKey", "someValue")
                         .put("bpDiastolic", "80")
                         .put("bpSystolic", "120")
-                        .map());
+                        .map()
+        );
         verify(allMothers, never()).update(updatedMother);
     }
 
@@ -393,7 +400,8 @@ public class ANCServiceTest {
                                 .map(),
                         create("ttDate", "2013-01-01")
                                 .put("ttDose", "tt2")
-                                .map()));
+                                .map()
+                ));
         verify(allMothers).update(updatedMother);
         verify(ancSchedulesService).ttVisitHasHappened("entity id 1", "anm id 1", "tt2", "2013-01-01");
         verify(motherReportingService).ttProvided(new SafeMap(mapOf("someKey", "someValue")));
@@ -574,7 +582,8 @@ public class ANCServiceTest {
                 .withIFATablets(asList(
                         create("ifaTabletsDate", "2013-05-24")
                                 .put("numberOfIFATabletsGiven", "30")
-                                .map()));
+                                .map()
+                ));
         verify(allMothers).update(updatedMother);
     }
 
@@ -605,7 +614,8 @@ public class ANCServiceTest {
                                 .map(),
                         create("ifaTabletsDate", "2013-05-24")
                                 .put("numberOfIFATabletsGiven", "30")
-                                .map()));
+                                .map()
+                ));
         verify(allMothers).update(updatedMother);
     }
 
@@ -628,7 +638,92 @@ public class ANCServiceTest {
                 .withIFATablets(asList(
                         create("ifaTabletsDate", "2013-05-24")
                                 .put("numberOfIFATabletsGiven", "60")
-                                .map()));
+                                .map()
+                ));
+        verify(allMothers).update(updatedMother);
+    }
+
+    @Test
+    public void shouldHandleANCInvestigations() {
+        FormSubmission submission = create()
+                .withFormName("anc_investigations")
+                .withANMId("anm id 1")
+                .withEntityId("entity id 1")
+                .addFormField("testDate", "2013-01-01")
+                .addFormField("testResultsToEnter", "urine_sugar mp hiv")
+                .addFormField("testsResultPositive", "urine_sugar")
+                .addFormField("bileSalts", "absent")
+                .addFormField("bilePigments", "absent")
+                .addFormField("womanBloodGroup", "ab_positive")
+                .addFormField("rhIncompatibleCouple", "no")
+                .build();
+
+        Mother mother = new Mother("entity id 1", "ec id 1", "TC1")
+                .withDetails(mapOf("someKey", "someValue"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+
+        service.ancInvestigations(submission);
+
+        Mother updatedMother = new Mother("entity id 1", "ec id 1", "TC1")
+                .withDetails(mapOf("someKey", "someValue"))
+                .withANCInvestigations(asList(
+                        create("testDate", "2013-01-01")
+                                .put("testResultsToEnter", "urine_sugar mp hiv")
+                                .put("testsResultPositive", "urine_sugar")
+                                .put("bileSalts", "absent")
+                                .put("bilePigments", "absent")
+                                .put("womanBloodGroup", "ab_positive")
+                                .put("rhIncompatibleCouple", "no")
+                                .map()
+                ));
+
+        verify(allMothers).update(updatedMother);
+    }
+
+    @Test
+    public void shouldUpdateANCInvestigationsWhenItAlreadyExists() {
+        FormSubmission submission = create()
+                .withFormName("anc_investigations")
+                .withANMId("anm id 1")
+                .withEntityId("entity id 1")
+                .addFormField("testDate", "2013-01-01")
+                .addFormField("testResultsToEnter", "urine_sugar mp hiv")
+                .addFormField("testsResultPositive", "urine_sugar")
+                .addFormField("bileSalts", "absent")
+                .addFormField("bilePigments", "absent")
+                .addFormField("womanBloodGroup", "ab_positive")
+                .addFormField("rhIncompatibleCouple", "no")
+                .build();
+        List<Map<String, String>> ancInvestigations = new ArrayList<>();
+        ancInvestigations.add(create("testDate", "2012-09-01")
+                .put("bileSalts", "present")
+                .put("bilePigments", "present")
+                .map());
+
+        Mother mother = new Mother("entity id 1", "ec id 1", "TC1")
+                .withANCInvestigations(ancInvestigations)
+                .withDetails(mapOf("someKey", "someValue"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+
+        service.ancInvestigations(submission);
+
+        Mother updatedMother = new Mother("entity id 1", "ec id 1", "TC1")
+                .withDetails(mapOf("someKey", "someValue"))
+                .withANCInvestigations(asList(
+                        create("testDate", "2012-09-01")
+                                .put("bileSalts", "present")
+                                .put("bilePigments", "present")
+                                .map(),
+                        create("testDate", "2013-01-01")
+                                .put("testResultsToEnter", "urine_sugar mp hiv")
+                                .put("testsResultPositive", "urine_sugar")
+                                .put("bileSalts", "absent")
+                                .put("bilePigments", "absent")
+                                .put("womanBloodGroup", "ab_positive")
+                                .put("rhIncompatibleCouple", "no")
+                                .map()
+                ));
+
         verify(allMothers).update(updatedMother);
     }
 }

@@ -52,6 +52,19 @@ public class ANCRegisterServiceTest {
                 .withHBTests(asList(create("hbTestDate", "2013-01-01")
                         .put("hbLevel", "7.9")
                         .map()))
+                .withANCInvestigations(asList(
+                        create("testDate", "2012-09-01")
+                                .put("bileSalts", "present")
+                                .put("bilePigments", "present")
+                                .map(),
+                        create("testDate", "2013-01-01")
+                                .put("testResultsToEnter", "urine_sugar mp hiv")
+                                .put("testsResultPositive", "urine_sugar")
+                                .put("bileSalts", "absent")
+                                .put("bilePigments", "absent")
+                                .put("womanBloodGroup", "ab_positive")
+                                .put("rhIncompatibleCouple", "no")
+                                .map()))
                 .withDetails(
                         create("ancNumber", "OA899")
                                 .put("registrationDate", "2014-01-01")
@@ -122,6 +135,19 @@ public class ANCRegisterServiceTest {
                                 .put("weight", "55")
                                 .put("bpSystolic", "120")
                                 .put("bpDiastolic", "80")
+                                .map()))
+                .withANCInvestigations(asList(
+                        create("testDate", "2012-09-01")
+                                .put("bileSalts", "present")
+                                .put("bilePigments", "present")
+                                .map(),
+                        create("testDate", "2013-01-01")
+                                .put("testResultsToEnter", "urine_sugar mp hiv")
+                                .put("testsResultPositive", "urine_sugar")
+                                .put("bileSalts", "absent")
+                                .put("bilePigments", "absent")
+                                .put("womanBloodGroup", "ab_positive")
+                                .put("rhIncompatibleCouple", "no")
                                 .map()))
                 .withIFATablets(asList(
                         create("ifaTabletsDate", "2013-05-24")

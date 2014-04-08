@@ -24,6 +24,7 @@ import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.PERMANENT_RELOCATION_VALUE;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
+import static org.ei.drishti.common.AllConstants.ANCInvestigationsFormFields.*;
 import static org.ei.drishti.common.AllConstants.ANCVisitFormFields.*;
 import static org.ei.drishti.common.AllConstants.BOOLEAN_FALSE_VALUE;
 import static org.ei.drishti.common.AllConstants.BOOLEAN_TRUE_VALUE;
@@ -238,6 +239,21 @@ public class ANCService {
     }
 
     public void ancInvestigations(FormSubmission submission) {
+        Mother mother = allMothers.findByCaseId(submission.entityId());
+        if (mother == null) {
+            logger.warn("Tried to close case without registered mother for case ID: " + submission.entityId());
+            return;
+        }
 
+        Map<String, String> ancInvestigations = create(TEST_DATE, submission.getField(TEST_DATE))
+                .put(TESTS_RESULTS_TO_ENTER, submission.getField(TESTS_RESULTS_TO_ENTER))
+                .put(TESTS_POSITIVE_RESULTS, submission.getField(TESTS_POSITIVE_RESULTS))
+                .put(BILE_PIGMENTS, submission.getField(BILE_PIGMENTS))
+                .put(BILE_SALTS, submission.getField(BILE_SALTS))
+                .put(WOMAN_BLOOD_GROUP, submission.getField(WOMAN_BLOOD_GROUP))
+                .put(RH_INCOMPATIBLE_COUPLE, submission.getField(RH_INCOMPATIBLE_COUPLE))
+                .map();
+        mother.updateANCInvestigationsInformation(ancInvestigations);
+        allMothers.update(mother);
     }
 }

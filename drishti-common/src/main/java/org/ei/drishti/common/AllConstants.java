@@ -173,14 +173,13 @@ public class AllConstants {
     }
 
     public static class ANCInvestigationsFormFields {
+        public static final String TEST_DATE = "testDate";
+        public static final String TESTS_RESULTS_TO_ENTER = "testResultsToEnter";
         public static final String WOMAN_BLOOD_GROUP = "womanBloodGroup";
-        public static final String HUSBAND_BLOOD_GROUP = "husbandBloodGroup";
-        public static final String TESTS_CONDUCTED = "testResultsToEnter";
+        public static final String RH_INCOMPATIBLE_COUPLE = "rhIncompatibleCouple";
         public static final String TESTS_POSITIVE_RESULTS = "testsResultPositive";
         public static final String BILE_SALTS = "bileSalts";
         public static final String BILE_PIGMENTS = "bilePigments";
-        public static final String IS_HIGH_RISK = "isHighRisk";
-        public static final String HIGH_RISK_REASON = "highRiskReason";
     }
 
     public static class PNCVisitFormFields {
