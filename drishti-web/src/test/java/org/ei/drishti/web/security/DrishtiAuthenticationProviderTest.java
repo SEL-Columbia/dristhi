@@ -80,8 +80,8 @@ public class DrishtiAuthenticationProviderTest {
     @Test
     @Ignore
     public void toGenerateUserPasswordsAndSalt() throws Exception {
-        String username = "demo1";
-        String password = "1";
+        String username = "username";
+        String password = "password";
         UUID salt = randomUUID();
         String hashedPassword = new ShaPasswordEncoder().encodePassword(password, salt);
         System.out.println(new Gson().toJson(new DrishtiUser(username, hashedPassword, salt.toString(), asList("ROLE_USER"), true)));
