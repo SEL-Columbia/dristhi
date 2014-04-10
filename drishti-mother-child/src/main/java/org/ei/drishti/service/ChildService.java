@@ -23,6 +23,7 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.ei.drishti.common.AllConstants.ANCFormFields.MOTHER_ID;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.THAYI_CARD_NUMBER;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.*;
@@ -102,6 +103,9 @@ public class ChildService {
     }
 
     public void registerChildrenForEC(FormSubmission submission) {
+        if (shouldCloseMother(submission.getField(SHOULD_CLOSE_MOTHER))) {
+            closeMother(submission.getField(MOTHER_ID));
+        }
         Child child = allChildren.findByCaseId(submission.getField(ChildReportingService.CHILD_ID_FIELD));
         child.withAnm(submission.anmId()).withThayiCard(submission.getField(THAYI_CARD_NUMBER)).setIsClosed(false);
 
@@ -112,6 +116,16 @@ public class ChildService {
         child.withImmunizations(getChildImmunizationDetails(submission, child, immunizationsGiven));
         child.withVitaminADoses(getVitaminDoseDetails(submission, child, vitaminHistory));
         allChildren.update(child);
+    }
+
+    private void closeMother(String field) {
+        Mother mother = allMothers.findByCaseId(field);
+        mother.setIsClosed(true);
+        allMothers.update(mother);
+    }
+
+    private boolean shouldCloseMother(String shouldCloseMother) {
+        return isBlank(shouldCloseMother) || Boolean.parseBoolean(shouldCloseMother);
     }
 
     private Map<String, String> getVitaminDoseDetails(FormSubmission submission, Child child, List<String> vitaminHistory) {

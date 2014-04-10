@@ -172,11 +172,14 @@ public class ChildServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         Child child = new Child("child id 1", "mother id 1", "opv", "2", "female");
+        Mother mother = new Mother("mother id 1", "ec id 1", "thayi card number");
         when(allChildren.findByCaseId("child id 1")).thenReturn(child);
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
         FormSubmission submission = create()
                 .withFormName("child_registration_ec")
                 .withANMId("anm id 1")
-                .withEntityId("mother id 1")
+                .withEntityId("ec id 1")
+                .addFormField("motherId", "mother id 1")
                 .addFormField("childId", "child id 1")
                 .addFormField("immunizationsGiven", "bcg opv_0")
                 .addFormField("bcgDate", "2013-01-01")
@@ -184,6 +187,42 @@ public class ChildServiceTest extends BaseUnitTest {
                 .addFormField("childVitaminAHistory", "1 2")
                 .addFormField("vitamin1Date", "2013-01-01")
                 .addFormField("vitamin2Date", "2013-01-02")
+                .addFormField("shouldCloseMother", "")
+                .build();
+
+        service.registerChildrenForEC(submission);
+
+        verify(allMothers).update(mother.setIsClosed(true));
+        verify(allChildren).update(new Child("child id 1", "mother id 1", "opv", "2", "female").withAnm("anm id 1")
+                .withImmunizations(create("bcg", "2013-01-01")
+                        .put("opv_0", "2013-01-02").map())
+                .withVitaminADoses(create("dose1", "2013-01-01")
+                        .put("dose2", "2013-01-02")
+                        .map()));
+        assertFalse(child.isClosed());
+    }
+
+    @Test
+    public void shouldNotCloseMotherWhenAnOpenANCIsPresentAlready() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        Child child = new Child("child id 1", "mother id 1", "opv", "2", "female");
+        Mother mother = new Mother("mother id 1", "ec id 1", "thayi card number");
+        when(allChildren.findByCaseId("child id 1")).thenReturn(child);
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
+        FormSubmission submission = create()
+                .withFormName("child_registration_ec")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("motherId", "mother id 1")
+                .addFormField("childId", "child id 1")
+                .addFormField("immunizationsGiven", "bcg opv_0")
+                .addFormField("bcgDate", "2013-01-01")
+                .addFormField("opv0Date", "2013-01-02")
+                .addFormField("childVitaminAHistory", "1 2")
+                .addFormField("vitamin1Date", "2013-01-01")
+                .addFormField("vitamin2Date", "2013-01-02")
+                .addFormField("shouldCloseMother", "false")
                 .build();
 
         service.registerChildrenForEC(submission);
