@@ -1,0 +1,13 @@
+UPDATE report.dim_anm SET name = 'User11' WHERE anmIdentifier = 'user11';
+UPDATE report.dim_anm SET name = 'User12' WHERE anmIdentifier = 'user12';
+UPDATE report.dim_anm SET name = 'User13' WHERE anmIdentifier = 'user13';
+UPDATE report.dim_anm SET name = 'User14' WHERE anmIdentifier = 'user14';
+UPDATE report.dim_anm SET name = 'User15' WHERE anmIdentifier = 'user15';
+UPDATE report.dim_anm SET name = 'User16' WHERE anmIdentifier = 'user16';
+UPDATE report.dim_anm SET name = 'User17' WHERE anmIdentifier = 'user17';
+UPDATE report.dim_anm SET name = 'User18' WHERE anmIdentifier = 'user18';
+UPDATE report.dim_anm SET name = 'User19' WHERE anmIdentifier = 'user19';
+UPDATE report.dim_anm SET name = 'User20' WHERE anmIdentifier = 'user20';
+UPDATE report.dim_anm SET name = 'Trainer3' WHERE anmIdentifier = 'trainer3';
+UPDATE report.dim_anm SET name = 'Trainer4' WHERE anmIdentifier = 'trainer4';
+UPDATE report.dim_anm SET name = 'Trainer5' WHERE anmIdentifier = 'trainer5';
