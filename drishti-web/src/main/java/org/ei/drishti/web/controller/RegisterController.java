@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import static org.ei.drishti.web.HttpHeaderFactory.allowOrigin;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
@@ -64,28 +63,28 @@ public class RegisterController {
     @ResponseBody
     public ResponseEntity<ECRegisterDTO> getECRegister(@RequestParam("anm-id") String anmIdentifier) {
         ECRegister ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
+        return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
     }
 
     @RequestMapping(method = GET, value = "/registers/anc")
     @ResponseBody
     public ResponseEntity<ANCRegisterDTO> getANCRegister(@RequestParam("anm-id") String anmIdentifier) {
         ANCRegister ancRegister = ancRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
+        return new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister), HttpStatus.OK);
     }
 
     @RequestMapping(method = GET, value = "/registers/child")
     @ResponseBody
     public ResponseEntity<ChildRegisterDTO> getChildRegister(@RequestParam("anm-id") String anmIdentifier) {
         ChildRegister childRegister = childRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(childRegisterMapper.mapToDTO(childRegister), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
+        return new ResponseEntity<>(childRegisterMapper.mapToDTO(childRegister), HttpStatus.OK);
     }
 
     @RequestMapping(method = GET, value = "/registers/fp")
     @ResponseBody
     public ResponseEntity<FPRegisterDTO> getFPRegister(String anmIdentifier) {
         FPRegister fpRegister = fpRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(fpRegisterMapper.mapToDTO(fpRegister), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
+        return new ResponseEntity<>(fpRegisterMapper.mapToDTO(fpRegister), HttpStatus.OK);
 
     }
 }

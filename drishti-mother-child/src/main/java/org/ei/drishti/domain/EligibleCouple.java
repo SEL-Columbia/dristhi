@@ -11,6 +11,7 @@ import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.ei.drishti.common.AllConstants.ECRegistrationFields.WIFE_AGE;
@@ -42,15 +43,15 @@ public class EligibleCouple extends MotechBaseDataObject {
     @JsonProperty
     private Map<String, String> details;
     @JsonProperty
-    private IUDFPDetails iudFPDetails;
+    private List<IUDFPDetails> iudFPDetails;
     @JsonProperty
-    private CondomFPDetails condomFPDetails;
+    private List<CondomFPDetails> condomFPDetails;
     @JsonProperty
-    private OCPFPDetails ocpFPDetails;
+    private List<OCPFPDetails> ocpFPDetails;
     @JsonProperty
-    private MaleSterilizationFPDetails maleSterilizationFPDetails;
+    private List<MaleSterilizationFPDetails> maleSterilizationFPDetails;
     @JsonProperty
-    private FemaleSterilizationFPDetails femaleSterilizationFPDetails;
+    private List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails;
 
     public EligibleCouple() {
     }
@@ -85,27 +86,27 @@ public class EligibleCouple extends MotechBaseDataObject {
         return this;
     }
 
-    public EligibleCouple withIUDFPDetails(IUDFPDetails iudfpDetails) {
+    public EligibleCouple withIUDFPDetails(List<IUDFPDetails> iudfpDetails) {
         this.iudFPDetails = iudfpDetails;
         return this;
     }
 
-    public EligibleCouple withCondomFPDetails(CondomFPDetails condomFPDetails) {
+    public EligibleCouple withCondomFPDetails(List<CondomFPDetails> condomFPDetails) {
         this.condomFPDetails = condomFPDetails;
         return this;
     }
 
-    public EligibleCouple withOCPFPDetails(OCPFPDetails ocpfpDetails) {
+    public EligibleCouple withOCPFPDetails(List<OCPFPDetails> ocpfpDetails) {
         this.ocpFPDetails = ocpfpDetails;
         return this;
     }
 
-    public EligibleCouple withMaleSterilizationFPDetails(MaleSterilizationFPDetails maleSterilizationFPDetails) {
+    public EligibleCouple withMaleSterilizationFPDetails(List<MaleSterilizationFPDetails> maleSterilizationFPDetails) {
         this.maleSterilizationFPDetails = maleSterilizationFPDetails;
         return this;
     }
 
-    public EligibleCouple withFemaleSterilizationFPDetails(FemaleSterilizationFPDetails femaleSterilizationFPDetails) {
+    public EligibleCouple withFemaleSterilizationFPDetails(List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails) {
         this.femaleSterilizationFPDetails = femaleSterilizationFPDetails;
         return this;
     }
@@ -155,7 +156,7 @@ public class EligibleCouple extends MotechBaseDataObject {
         return details;
     }
 
-    public FPDetails fpDetails() {
+    public List<IUDFPDetails> fpDetails() {
         return iudFPDetails;
     }
 
@@ -176,23 +177,23 @@ public class EligibleCouple extends MotechBaseDataObject {
         return details.get(name);
     }
 
-    public IUDFPDetails iudFPDetails() {
+    public List<IUDFPDetails> iudFPDetails() {
         return iudFPDetails;
     }
 
-    public CondomFPDetails condomFPDetails() {
+    public List<CondomFPDetails> condomFPDetails() {
         return condomFPDetails;
     }
 
-    public OCPFPDetails ocpFPDetails() {
+    public List<OCPFPDetails> ocpFPDetails() {
         return ocpFPDetails;
     }
 
-    public MaleSterilizationFPDetails maleSterilizationFPDetails() {
+    public List<MaleSterilizationFPDetails> maleSterilizationFPDetails() {
         return maleSterilizationFPDetails;
     }
 
-    public FemaleSterilizationFPDetails femaleSterilizationFPDetails() {
+    public List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails() {
         return femaleSterilizationFPDetails;
     }
 

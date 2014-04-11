@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.common.util.IntegerUtil;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.domain.register.ECRegister;
@@ -17,7 +16,7 @@ import static org.ei.drishti.common.AllConstants.ANCFormFields.REGISTRATION_DATE
 import static org.ei.drishti.common.AllConstants.ECRegistrationFields.*;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
-import static org.ei.drishti.common.util.IntegerUtil.isInteger;
+import static org.ei.drishti.common.util.IntegerUtil.parseValidIntegersAndDefaultInvalidOnesToEmptyString;
 
 @Service
 public class ECRegisterService {
@@ -69,9 +68,5 @@ public class ECRegisterService {
             ecRegisterEntries.add(ecRegisterEntry);
         }
         return new ECRegister(ecRegisterEntries);
-    }
-
-    private String parseValidIntegersAndDefaultInvalidOnesToEmptyString(String value) {
-        return !isInteger(value) ? "" : String.valueOf(IntegerUtil.tryParse(value, 0));
     }
 }
