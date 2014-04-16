@@ -38,4 +38,9 @@ public class ANMService {
     public List getVillagesForANM(String anmIdentifier) {
         return allLocationsRepository.fetchVillagesForANM(anmIdentifier);
     }
+
+    @Transactional("service_provided")
+    public List<SP_ANM> anmsInTheSameSC(String anmIdentifier) {
+        return allANMsRepository.fetchAllANMSInSameSC(anmIdentifier);
+    }
 }

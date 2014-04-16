@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -31,8 +32,8 @@ public class ANMController {
     }
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS}, value = "/anm-details")
-    public ResponseEntity<List<ANMDTO>> all() {
-        List<SP_ANM> anmList = anmService.all();
+    public ResponseEntity<List<ANMDTO>> all(@RequestParam("anm-id") String anmIdentifier) {
+        List<SP_ANM> anmList = anmService.anmsInTheSameSC(anmIdentifier);
 
         List<ANMDTO> anmDTOList = convertToDTO(anmList);
 

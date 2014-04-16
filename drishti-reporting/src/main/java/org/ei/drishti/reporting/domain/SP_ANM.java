@@ -8,7 +8,16 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "dim_anm")
+@NamedQueries({
+        @NamedQuery(name = SP_ANM.FIND_ANMS_IN_SAME_PHC,
+                query = "select a from SP_ANM a where a.phcId=(select anm.phcId from SP_ANM anm where anm.anmIdentifier=:anmIdentifier)" ),
+        @NamedQuery(name = SP_ANM.FIND_ANMS_IN_SAME_SC,
+                query = "select a from SP_ANM a where a.subCenter=(select anm.subCenter from SP_ANM anm where anm.anmIdentifier=:anmIdentifier)" )
+})
 public class SP_ANM {
+    public static final String FIND_ANMS_IN_SAME_PHC = "find.anms.in.same.phc";
+    public static final String FIND_ANMS_IN_SAME_SC = "find.anms.in.same.sc";
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

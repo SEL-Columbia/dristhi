@@ -36,16 +36,18 @@ public class ANMDetailsController {
     private ANMDetailsService anmDetailsService;
     private final String drishtiSiteUrl;
     private String drishtiANMDetailsUrl;
+    private UserController userController;
     private HttpAgent httpAgent;
 
     @Autowired
     public ANMDetailsController(ANMDetailsService anmDetailsService,
                                 @Value("#{drishti['drishti.site.url']}") String drishtiSiteUrl,
                                 @Value("#{drishti['drishti.anm.details.url']}") String drishtiANMDetailsUrl,
-                                HttpAgent httpAgent) {
+                                UserController userController, HttpAgent httpAgent) {
         this.anmDetailsService = anmDetailsService;
         this.drishtiSiteUrl = drishtiSiteUrl;
         this.drishtiANMDetailsUrl = drishtiANMDetailsUrl;
+        this.userController = userController;
         this.httpAgent = httpAgent;
     }
 
@@ -54,7 +56,8 @@ public class ANMDetailsController {
     public ResponseEntity<ANMDetailsDTO> allANMs() {
         HttpResponse response = new HttpResponse(false, null);
         try {
-            response = httpAgent.get(drishtiANMDetailsUrl);
+            String anmIdentifier = userController.currentUser().getUsername();
+            response = httpAgent.get(drishtiANMDetailsUrl + "?anm-id=" + anmIdentifier);
             List<ANMDTO> anmBasicDetails = new Gson().fromJson(response.body(),
                     new TypeToken<List<ANMDTO>>() {
                     }.getType());

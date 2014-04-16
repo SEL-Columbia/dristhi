@@ -4,6 +4,7 @@ import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
 import org.ei.drishti.domain.ANMDetail;
 import org.ei.drishti.domain.ANMDetails;
+import org.ei.drishti.domain.DrishtiUser;
 import org.ei.drishti.dto.ANMDTO;
 import org.ei.drishti.dto.LocationDTO;
 import org.ei.drishti.dto.register.ANMDetailDTO;
@@ -27,17 +28,21 @@ public class ANMDetailsControllerTest {
     private ANMDetailsService service;
     @Mock
     private HttpAgent httpAgent;
+    @Mock
+    private UserController userController;
+    @Mock
+    private DrishtiUser user;
     private ANMDetailsController controller;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new ANMDetailsController(service, "http://dristhi_site_url", "http://dristhi_reporting_url/anms", httpAgent);
+        controller = new ANMDetailsController(service, "http://dristhi_site_url", "http://dristhi_reporting_url/anms", userController, httpAgent);
     }
 
     @Test
     public void shouldGetANCDetailsForAllANMs() throws Exception {
-        when(httpAgent.get("http://dristhi_reporting_url/anms")).
+        when(httpAgent.get("http://dristhi_reporting_url/anms?anm-id=bhe1")).
                 thenReturn(new HttpResponse(true,
                         "[\n" +
                                 "    {\n" +
@@ -54,6 +59,9 @@ public class ANMDetailsControllerTest {
                                 "]"));
         ANMDetails expectedANMDetails = new ANMDetails(asList(new ANMDetail("bhe1", "Elizebeth D'souza",
                 new LocationDTO("bherya_a", "Bherya", "K.R. Nagar", "Mysore", "Karnataka"), 1, 2, 3, 4, 5)));
+        DrishtiUser drishtiUser = new DrishtiUser("bhe1", "1", "salt", asList(""), true);
+        when(userController.currentUser()).thenReturn(drishtiUser);
+
 
         when(service.anmDetails(asList(new ANMDTO("bhe1", "Elizebeth D'souza", new LocationDTO("bherya_a", "Bherya", "K.R. Nagar", "Mysore", "Karnataka")))))
                 .thenReturn(expectedANMDetails);

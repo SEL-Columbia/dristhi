@@ -24,4 +24,10 @@ public class AllSP_ANMsRepository {
     public List<SP_ANM> fetchAll() {
         return dataAccessTemplate.loadAll(SP_ANM.class);
     }
+
+    @Transactional("service_provided")
+    public List<SP_ANM> fetchAllANMSInSameSC(String anmIdentifier) {
+        return (List<SP_ANM>) dataAccessTemplate.findByNamedQueryAndNamedParam(SP_ANM.FIND_ANMS_IN_SAME_SC,
+                new String[]{"anmIdentifier"}, new Object[]{anmIdentifier});
+    }
 }

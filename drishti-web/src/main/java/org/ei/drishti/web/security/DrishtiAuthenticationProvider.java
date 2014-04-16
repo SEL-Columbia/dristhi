@@ -71,7 +71,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
         });
     }
 
-    private DrishtiUser getDrishtiUser(Authentication authentication) {
+    public DrishtiUser getDrishtiUser(Authentication authentication) {
         DrishtiUser user;
         try {
             user = allDrishtiUsers.findByUsername((String) authentication.getPrincipal());

@@ -33,7 +33,7 @@ public class ANMControllerTest {
 
     @Test
     public void shouldReturnListOfANMs() throws Exception {
-        when(anmService.all()).thenReturn(
+        when(anmService.anmsInTheSameSC("username1")).thenReturn(
                 asList(
                         new SP_ANM("username1", "user1 name", "Sub Center 1", 0),
                         new SP_ANM("username2", "user2 name", "Sub Center 1", 0)
@@ -48,7 +48,7 @@ public class ANMControllerTest {
         when(anmService.getLocation("username1")).thenReturn(location);
         when(anmService.getLocation("username2")).thenReturn(location);
 
-        ResponseEntity<List<ANMDTO>> response = controller.all();
+        ResponseEntity<List<ANMDTO>> response = controller.all("username1");
         LocationDTO locationDTO = new LocationDTO(location.subCenter(), location.phcName(), location.taluka(), location.district(), location.state());
         assertEquals(asList(new ANMDTO("username1", "user1 name", locationDTO), new ANMDTO("username2", "user2 name", locationDTO)), response.getBody());
     }
