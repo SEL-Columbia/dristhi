@@ -39,4 +39,16 @@ public class IsChildLessThanOneYearOldRuleTest {
 
         assertFalse(didRuleApply);
     }
+
+    @Test
+    public void shouldReturnFalseIfServiceProvidedDateIsBlank() {
+        SafeMap safeMap = new SafeMap();
+        safeMap.put("entityId", "child id 1");
+        safeMap.put("serviceProvidedDate", "");
+        safeMap.put("dateOfBirth", "2011-01-01");
+
+        boolean didRuleApply = rule.apply(safeMap);
+
+        assertFalse(didRuleApply);
+    }
 }
