@@ -2,6 +2,7 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.util.IntegerUtil;
+import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -84,14 +85,15 @@ public class ANCService {
     public void registerOutOfAreaANC(FormSubmission submission) {
         String motherId = submission.getField(AllConstants.ANCFormFields.MOTHER_ID);
 
-        if (!eligibleCouples.exists(submission.entityId())) {
+        EligibleCouple eligibleCouple = eligibleCouples.findByCaseId(submission.entityId());
+        if (eligibleCouple == null) {
             logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}",
                     submission.entityId(), motherId, submission.anmId()));
             return;
         }
-
         Mother mother = allMothers.findByCaseId(motherId);
         allMothers.update(mother.withAnm(submission.anmId()));
+        eligibleCouples.update(eligibleCouple.withLMPDate(submission.getField(REFERENCE_DATE)));
 
         ancSchedulesService.enrollMother(motherId, parse(submission.getField(REFERENCE_DATE)));
     }
