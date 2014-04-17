@@ -307,6 +307,11 @@ public class AllConstants {
         public static final String PREVIOUS_FP_METHOD_FIELD_NAME = "currentMethod";
         public static final String NEW_FP_METHOD_FIELD_NAME = "newMethod";
         public static final String IUD_REMOVAL_PLACE = "iudRemovalPlace";
+        public static final String IUD_PLACE = "iudPlace";
+        public static final String FEMALE_STERILIZATION_TYPE = "femaleSterilizationType";
+        public static final String MALE_STERILIZATION_TYPE = "maleSterilizationType";
+
+
     }
 
     public static class ChildImmunizationFields {

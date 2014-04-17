@@ -2,6 +2,8 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
+import org.ei.drishti.domain.register.CondomFPDetails;
+import org.ei.drishti.domain.register.IUDFPDetails;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
@@ -11,6 +13,7 @@ import org.ei.drishti.util.FormSubmissionBuilder;
 import org.ei.drishti.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 
 import java.util.Collections;
@@ -46,12 +49,52 @@ public class ECServiceTest {
                 .withANMId("anm id 1")
                 .withEntityId("entity id 1")
                 .addFormField("someKey", "someValue")
+                .addFormField("lmpDate", "2011-01-01")
+                .addFormField("uptResult", "negative")
                 .addFormField("currentMethod", "some method")
                 .addFormField("isHighPriority", "yes")
                 .addFormField("submissionDate", "2011-01-01")
                 .addFormField("dmpaInjectionDate", "2010-12-20")
                 .addFormField("numberOfOCPDelivered", "1")
                 .addFormField("ocpRefillDate", "2010-12-25")
+                .addFormField("iudPlace", "phc")
+                .addFormField("familyPlanningMethodChangeDate", "2011-01-01")
+                .build();
+        EligibleCouple eligibleCouple = new EligibleCouple("entity id 1", "0").withCouple("Wife 1", "Husband 1");
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(eligibleCouple);
+        when(reportFieldsDefinition.get("ec_registration")).thenReturn(asList("someKey"));
+
+        ecService.registerEligibleCouple(submission);
+
+        verify(allEligibleCouples).update(Matchers.eq(eligibleCouple
+                .withANMIdentifier("ANM X")
+                .withLMPDate("2011-01-01")
+                .withUPTResult("negative")
+                .withIUDFPDetails(asList(new IUDFPDetails("2011-01-01", "phc")))
+                .withCondomFPDetails(null)
+                .withOCPFPDetails(null)
+                .withFemaleSterilizationFPDetails(null)
+                .withMaleSterilizationFPDetails(null))
+        );
+        verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
+        verify(schedulingService).registerEC(new FPProductInformation("entity id 1", "anm id 1", "some method", null, "2010-12-20", "1", "2010-12-25"
+                , null, "2011-01-01", "2011-01-01", null, null, null));
+    }
+
+    @Test
+    public void shouldRegisterEligibleCoupleAndUpdateCondomDetails() throws Exception {
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("ec_registration")
+                .withANMId("anm id 1")
+                .withEntityId("entity id 1")
+                .addFormField("someKey", "someValue")
+                .addFormField("lmpDate", "2011-01-01")
+                .addFormField("uptResult", "negative")
+                .addFormField("currentMethod", "some method")
+                .addFormField("isHighPriority", "yes")
+                .addFormField("submissionDate", "2011-01-01")
+                .addFormField("dmpaInjectionDate", "2010-12-20")
+                .addFormField("familyPlanningMethodChangeDate", "2011-01-01")
                 .addFormField("numberOfCondomsSupplied", "20")
                 .build();
         EligibleCouple eligibleCouple = new EligibleCouple("entity id 1", "0").withCouple("Wife 1", "Husband 1");
@@ -60,10 +103,15 @@ public class ECServiceTest {
 
         ecService.registerEligibleCouple(submission);
 
-        verify(allEligibleCouples).update(eligibleCouple.withANMIdentifier("ANM X"));
+        verify(allEligibleCouples).update(eligibleCouple
+                .withANMIdentifier("ANM X")
+                .withLMPDate("2011-01-01")
+                .withUPTResult("negative")
+                .withCondomFPDetails(asList(new CondomFPDetails("2011-01-01",
+                        asList(create("date", "2011-01-01").put("quantity", "20").map())))));
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
-        verify(schedulingService).registerEC(new FPProductInformation("entity id 1", "anm id 1", "some method", null, "2010-12-20", "1", "2010-12-25"
-                , "20", "2011-01-01", null, null, null, null));
+        verify(schedulingService).registerEC(new FPProductInformation("entity id 1", "anm id 1", "some method", null, "2010-12-20", null, null
+                , "20", "2011-01-01", "2011-01-01", null, null, null));
     }
 
     @Test
