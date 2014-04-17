@@ -67,10 +67,10 @@ public class ANCServiceTest {
                 .addFormField("referenceDate", lmp.toString())
                 .addFormField("someKey", "someValue")
                 .build();
-
+        EligibleCouple eligibleCouple = new EligibleCouple("ec id 1", "1234");
         Mother mother = new Mother("Mother 1", "ec id 1", "thayi 1").withLMP(lmp);
-        when(eligibleCouples.exists("ec id 1")).thenReturn(true);
         when(allMothers.findByCaseId("Mother 1")).thenReturn(mother);
+        when(eligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
         when(reportFieldsDefinition.get("anc_registration")).thenReturn(asList("someKey"));
 
         service.registerANC(submission);
@@ -86,7 +86,7 @@ public class ANCServiceTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .build();
-        when(eligibleCouples.exists("ec id 1")).thenReturn(false);
+        when(eligibleCouples.findByCaseId("ec id 1")).thenReturn(null);
 
         service.registerANC(submission);
 
@@ -98,7 +98,7 @@ public class ANCServiceTest {
     @Test
     public void shouldEnrollMotherIntoDefaultScheduleDuringEnrollmentBasedOnLMP() {
         LocalDate lmp = today().minusDays(2);
-
+        EligibleCouple eligibleCouple = new EligibleCouple("ec id 1", "1234");
         FormSubmission submission = create()
                 .withFormName("anc_registration")
                 .withANMId("anm id 1")
@@ -108,7 +108,7 @@ public class ANCServiceTest {
                 .addFormField("someKey", "someValue")
                 .build();
         Mother mother = new Mother("Mother 1", "ec id 1", "thayi 1").withLMP(lmp);
-        when(eligibleCouples.exists("ec id 1")).thenReturn(true);
+        when(eligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
         when(allMothers.findByCaseId("Mother 1")).thenReturn(mother);
         when(reportFieldsDefinition.get("anc_registration")).thenReturn(asList("someKey"));
 
