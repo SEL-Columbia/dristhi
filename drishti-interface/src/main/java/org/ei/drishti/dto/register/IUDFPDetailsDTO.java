@@ -10,13 +10,10 @@ public class IUDFPDetailsDTO {
     private String fpAcceptanceDate;
     @JsonProperty
     private String iudPlace;
-    @JsonProperty
-    private String remarks;
 
-    public IUDFPDetailsDTO(String fpAcceptanceDate, String iudPlace, String remarks) {
+    public IUDFPDetailsDTO(String fpAcceptanceDate, String iudPlace) {
         this.fpAcceptanceDate = fpAcceptanceDate;
         this.iudPlace = iudPlace;
-        this.remarks = remarks;
     }
 
     @Override

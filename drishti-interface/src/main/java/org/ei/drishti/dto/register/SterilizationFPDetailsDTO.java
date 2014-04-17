@@ -14,15 +14,11 @@ public class SterilizationFPDetailsDTO {
     private String sterilizationDate;
     @JsonProperty
     private List<String> followupVisitDates;
-    @JsonProperty
-    private String remarks;
 
-    public SterilizationFPDetailsDTO(String typeOfSterilization, String sterilizationDate, List<String> followupVisitDates,
-                                     String remarks) {
+    public SterilizationFPDetailsDTO(String typeOfSterilization, String sterilizationDate, List<String> followupVisitDates) {
         this.typeOfSterilization = typeOfSterilization;
         this.sterilizationDate = sterilizationDate;
         this.followupVisitDates = followupVisitDates;
-        this.remarks = remarks;
     }
 
     @Override

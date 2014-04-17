@@ -63,8 +63,8 @@ public class FPRegisterServiceTest {
                 .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
                 .withDetails(details)
                 .withIUDFPDetails(asList(new IUDFPDetails(
-                        "2014-02-23", "district hospital", "Follow up in 1 month"),
-                        new IUDFPDetails("2014-06-23", "district hospital", "Follow up in 1 month")))
+                        "2014-02-23", "district hospital"),
+                        new IUDFPDetails("2014-06-23", "district hospital")))
                 .withOCPFPDetails(asList(new OCPFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4)),
                         new OCPFPDetails("2014-06-23", asList(refill1, refill2, refill3, refill4))));
         EligibleCouple secondEligibleCouple = new EligibleCouple("ec id2", "91")
@@ -83,18 +83,18 @@ public class FPRegisterServiceTest {
                 .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
                 .withDetails(details)
                 .withMaleSterilizationFPDetails(asList(new MaleSterilizationFPDetails("nsv", "2014-05-01",
-                        asList("2014-05-06", "2014-05-10"), "Follow up in 1 month"),
+                        asList("2014-05-06", "2014-05-10")),
                         new MaleSterilizationFPDetails("conventional_vasectomy", "2014-05-01",
-                                asList("2014-05-06", "2014-05-10"), "Follow up in 1 month")));
+                                asList("2014-05-06", "2014-05-10"))));
         EligibleCouple fifthEligibleCouple = new EligibleCouple("ec id5", "94")
                 .withCouple("Saranya", "Manjunatha")
                 .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
                 .withDetails(details)
                 .withFemaleSterilizationFPDetails(asList(
                         new FemaleSterilizationFPDetails("minilap", "2014-06-02",
-                                asList("2014-06-06", "2014-06-10", "2014-07-10"), "Follow up in 1 month"),
+                                asList("2014-06-06", "2014-06-10", "2014-07-10")),
                         new FemaleSterilizationFPDetails("laparoscopic", "2014-06-02",
-                                asList("2014-06-06", "2014-06-10", "2014-07-10"), "Follow up in 1 month")));
+                                asList("2014-06-06", "2014-06-10", "2014-07-10"))));
         IUDRegisterEntry iudRegisterEntry = new IUDRegisterEntry()
                 .withEcNumber("90")
                 .withWifeName("Saranya")
@@ -112,8 +112,8 @@ public class FPRegisterServiceTest {
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
                 .withFpDetails(new IUDFPDetails("2014-02-23",
-                        "district hospital",
-                        "Follow up in 1 month"));
+                        "district hospital"
+                ));
         IUDRegisterEntry anotherIUDRegistry = new IUDRegisterEntry()
                 .withEcNumber("90")
                 .withWifeName("Saranya")
@@ -131,8 +131,8 @@ public class FPRegisterServiceTest {
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
                 .withFpDetails(new IUDFPDetails("2014-06-23",
-                        "district hospital",
-                        "Follow up in 1 month"));
+                        "district hospital"
+                ));
         CondomRegisterEntry condomRegisterEntry = new CondomRegisterEntry()
                 .withEcNumber("91")
                 .withWifeName("Saranya")
@@ -218,7 +218,7 @@ public class FPRegisterServiceTest {
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
                 .withFpDetails(new MaleSterilizationFPDetails("nsv", "2014-05-01", asList("2014-05-06",
-                        "2014-05-10"), "Follow up in 1 month"));
+                        "2014-05-10")));
         MaleSterilizationRegisterEntry anotherMaleSterilizationRegisterEntry = new MaleSterilizationRegisterEntry()
                 .withEcNumber("93")
                 .withWifeName("Saranya")
@@ -234,7 +234,7 @@ public class FPRegisterServiceTest {
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
                 .withFpDetails(new MaleSterilizationFPDetails("conventional_vasectomy", "2014-05-01", asList("2014-05-06",
-                        "2014-05-10"), "Follow up in 1 month"));
+                        "2014-05-10")));
         FemaleSterilizationRegisterEntry femaleSterilizationRegisterEntry = new FemaleSterilizationRegisterEntry()
                 .withEcNumber("94")
                 .withWifeName("Saranya")
@@ -252,7 +252,7 @@ public class FPRegisterServiceTest {
                 .withFpDetails(new FemaleSterilizationFPDetails("minilap", "2014-06-02", asList("2014-06-06",
                         "2014-06-10",
                         "2014-07-10"
-                ), "Follow up in 1 month"));
+                )));
         FemaleSterilizationRegisterEntry anotherFemaleSterilizationRegisterEntry = new FemaleSterilizationRegisterEntry()
                 .withEcNumber("94")
                 .withWifeName("Saranya")
@@ -270,7 +270,7 @@ public class FPRegisterServiceTest {
                 .withFpDetails(new FemaleSterilizationFPDetails("laparoscopic", "2014-06-02", asList("2014-06-06",
                         "2014-06-10",
                         "2014-07-10"
-                ), "Follow up in 1 month"));
+                )));
         FPRegister expectedFPRegister = new FPRegister(asList(iudRegisterEntry, anotherIUDRegistry),
                 asList(condomRegisterEntry, anotherCondomRegisterEntry),
                 asList(ocpRegisterEntry, oneMoreOCPPRegisterEntry, anotherOCPRegisterEntry),

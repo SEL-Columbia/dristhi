@@ -10,14 +10,11 @@ public class SterilizationFPDetails extends FPDetails {
     private String typeOfSterilization;
     private String sterilizationDate;
     private List<String> followupVisitDates;
-    private String remarks;
 
-    public SterilizationFPDetails(String typeOfSterilization, String sterilizationDate, List<String> followupVisitDates,
-                                  String remarks) {
+    public SterilizationFPDetails(String typeOfSterilization, String sterilizationDate, List<String> followupVisitDates) {
         this.typeOfSterilization = typeOfSterilization;
         this.sterilizationDate = sterilizationDate;
         this.followupVisitDates = followupVisitDates;
-        this.remarks = remarks;
     }
 
     public String typeOfSterilization() {
@@ -30,10 +27,6 @@ public class SterilizationFPDetails extends FPDetails {
 
     public List<String> followupVisitDates() {
         return followupVisitDates;
-    }
-
-    public String remarks() {
-        return remarks;
     }
 
     @Override

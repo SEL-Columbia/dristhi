@@ -41,8 +41,8 @@ public class FPRegisterMapper {
                                         .withHusbandEducationLevel(entry.husbandEducationLevel())
                                         .withFpDetails(new IUDFPDetailsDTO(
                                                 entry.fpDetails().fpAcceptanceDate(),
-                                                entry.fpDetails().iudPlace(),
-                                                entry.fpDetails().remarks()));
+                                                entry.fpDetails().iudPlace()
+                                        ));
                             }
                         });
         List<CondomRegisterEntryDTO> condomRegisterEntryDTOs = with(fpRegister.condomRegisterEntries())
@@ -114,10 +114,7 @@ public class FPRegisterMapper {
                                 .withFpDetailsDTO(new SterilizationFPDetailsDTO(
                                         entry.fpDetails().typeOfSterilization(),
                                         entry.fpDetails().sterilizationDate(),
-                                        entry.fpDetails().followupVisitDates(),
-                                        entry.fpDetails().remarks())
-                                );
-
+                                        entry.fpDetails().followupVisitDates()));
                     }
                 });
 
@@ -142,8 +139,8 @@ public class FPRegisterMapper {
                                 .withFpDetailsDTO(new SterilizationFPDetailsDTO(
                                         entry.fpDetails().typeOfSterilization(),
                                         entry.fpDetails().sterilizationDate(),
-                                        entry.fpDetails().followupVisitDates(),
-                                        entry.fpDetails().remarks())
+                                        entry.fpDetails().followupVisitDates()
+                                )
                                 );
 
                     }

@@ -265,7 +265,7 @@ public class RegisterControllerTest {
                 .withUptResult("+ve")
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
-                .withFpDetails(new IUDFPDetails("2014-02-23", "district hospital", "Follow up in 1 month"));
+                .withFpDetails(new IUDFPDetails("2014-02-23", "district hospital"));
         Map<String, String> refill1 = create("date", "2014-10-02")
                 .put("pieces", "10")
                 .map();
@@ -321,7 +321,7 @@ public class RegisterControllerTest {
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
                 .withFpDetails(new SterilizationFPDetails("nsv", "2014-05-01", asList("2014-05-06",
-                        "2014-05-10"), "Follow up in 1 month"));
+                        "2014-05-10")));
         FemaleSterilizationRegisterEntry femaleSterilizationRegisterEntry = new FemaleSterilizationRegisterEntry()
                 .withEcNumber("90")
                 .withWifeName("Saranya")
@@ -339,7 +339,7 @@ public class RegisterControllerTest {
                 .withFpDetails(new SterilizationFPDetails("minilap", "2014-06-02", asList("2014-06-06",
                         "2014-06-10",
                         "2014-07-10"
-                ), "Follow up in 1 month"));
+                )));
         FPRegister fpRegister = new FPRegister(asList(iudRegisterEntry), asList(condomRegisterEntry),
                 asList(ocpRegisterEntry), asList(maleSterilizationRegisterEntry),
                 asList(femaleSterilizationRegisterEntry), 2014);
@@ -360,7 +360,7 @@ public class RegisterControllerTest {
                 .withUptResult("+ve")
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
-                .withFpDetails(new IUDFPDetailsDTO("2014-02-23", "district hospital", "Follow up in 1 month"));
+                .withFpDetails(new IUDFPDetailsDTO("2014-02-23", "district hospital"));
         CondomRegisterEntryDTO condomRegisterEntryDTO = new CondomRegisterEntryDTO()
                 .withEcNumber("90")
                 .withWifeName("Saranya")
@@ -404,7 +404,7 @@ public class RegisterControllerTest {
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
                 .withFpDetailsDTO(new SterilizationFPDetailsDTO("nsv", "2014-05-01", asList("2014-05-06",
-                        "2014-05-10"), "Follow up in 1 month"));
+                        "2014-05-10")));
         FemaleSterilizationRegisterEntryDTO femaleSterilizationRegisterEntryDTO = new FemaleSterilizationRegisterEntryDTO()
                 .withEcNumber("90")
                 .withWifeName("Saranya")
@@ -422,7 +422,7 @@ public class RegisterControllerTest {
                 .withFpDetailsDTO(new SterilizationFPDetailsDTO("minilap", "2014-06-02", asList("2014-06-06",
                         "2014-06-10",
                         "2014-07-10"
-                ), "Follow up in 1 month"));
+                )));
         FPRegisterDTO expectedFPRegisterDTO = new FPRegisterDTO(
                 asList(iudRegisterEntryDTO),
                 asList(condomRegisterEntryDTO),
