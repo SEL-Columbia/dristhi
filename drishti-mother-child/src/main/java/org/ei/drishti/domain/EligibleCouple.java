@@ -156,10 +156,6 @@ public class EligibleCouple extends MotechBaseDataObject {
         return details;
     }
 
-    public List<IUDFPDetails> fpDetails() {
-        return iudFPDetails;
-    }
-
     public EligibleCouple setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);
         return this;

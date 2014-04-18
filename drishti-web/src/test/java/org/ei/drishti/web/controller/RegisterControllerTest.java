@@ -261,11 +261,9 @@ public class RegisterControllerTest {
                 .withReligion("Hindu")
                 .withNumberOfLivingMaleChildren("1")
                 .withNumberOfLivingFemaleChildren("1")
-                .withLmpDate("2014-05-12")
-                .withUptResult("+ve")
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
-                .withFpDetails(new IUDFPDetails("2014-02-23", "district hospital"));
+                .withFpDetails(new IUDFPDetails("2014-02-23", "district hospital", "2014-05-12", "positive"));
         Map<String, String> refill1 = create("date", "2014-10-02")
                 .put("pieces", "10")
                 .map();

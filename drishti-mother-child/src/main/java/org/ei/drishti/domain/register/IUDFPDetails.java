@@ -7,10 +7,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class IUDFPDetails extends FPDetails {
     private String fpAcceptanceDate;
     private String iudPlace;
+    private String lmpDate;
+    private String uptResult;
 
-    public IUDFPDetails(String fpAcceptanceDate, String iudPlace) {
+    public IUDFPDetails(String fpAcceptanceDate, String iudPlace, String lmpDate, String uptResult) {
         this.fpAcceptanceDate = fpAcceptanceDate;
         this.iudPlace = iudPlace;
+        this.lmpDate = lmpDate;
+        this.uptResult = uptResult;
     }
 
     public String fpAcceptanceDate() {
@@ -19,6 +23,14 @@ public class IUDFPDetails extends FPDetails {
 
     public String iudPlace() {
         return iudPlace;
+    }
+
+    public String lmpDate() {
+        return lmpDate;
+    }
+
+    public String uptResult() {
+        return uptResult;
     }
 
     @Override

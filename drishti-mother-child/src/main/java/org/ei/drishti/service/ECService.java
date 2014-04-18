@@ -47,7 +47,9 @@ public class ECService {
 
     public void registerEligibleCouple(FormSubmission submission) {
         EligibleCouple eligibleCouple = allEligibleCouples.findByCaseId(submission.entityId());
-        eligibleCouple = getEligibleCoupleWithFPDetails(eligibleCouple, submission);
+        String fpMethod = submission.getField(CURRENT_FP_METHOD_FIELD_NAME);
+
+        eligibleCouple = getEligibleCoupleWithFPDetails(eligibleCouple, submission, fpMethod);
         allEligibleCouples.update(eligibleCouple.withANMIdentifier(submission.anmId()));
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
@@ -66,16 +68,34 @@ public class ECService {
         schedulingService.registerEC(fpProductInformation);
     }
 
-    private EligibleCouple getEligibleCoupleWithFPDetails(EligibleCouple eligibleCouple, FormSubmission submission) {
-        String fpMethod = submission.getField(CURRENT_FP_METHOD_FIELD_NAME);
-        String fpAcceptanceDate = submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME);
+    private EligibleCouple getEligibleCoupleWithUpdatedFPDetails(EligibleCouple eligibleCouple, FormSubmission submission, String fpMethod) {
+        List<IUDFPDetails> iudFPDetails = eligibleCouple.iudFPDetails();
+        List<CondomFPDetails> condomFPDetails = eligibleCouple.condomFPDetails();
+        List<OCPFPDetails> ocpFPDetails = eligibleCouple.ocpFPDetails();
+        List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = eligibleCouple.femaleSterilizationFPDetails();
+        List<MaleSterilizationFPDetails> maleSterilizationFPDetails = eligibleCouple.maleSterilizationFPDetails();
+        return getEligibleCoupleWithFPDetailsUpdated(eligibleCouple, submission, fpMethod, iudFPDetails, condomFPDetails, ocpFPDetails, femaleSterilizationFPDetails, maleSterilizationFPDetails);
+    }
+
+    private EligibleCouple getEligibleCoupleWithFPDetails(EligibleCouple eligibleCouple, FormSubmission submission, String fpMethod) {
         List<IUDFPDetails> iudFPDetails = new ArrayList<>();
         List<CondomFPDetails> condomFPDetails = new ArrayList<>();
         List<OCPFPDetails> ocpFPDetails = new ArrayList<>();
         List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
         List<MaleSterilizationFPDetails> maleSterilizationFPDetails = new ArrayList<>();
+        return getEligibleCoupleWithFPDetailsUpdated(eligibleCouple, submission, fpMethod,
+                iudFPDetails, condomFPDetails, ocpFPDetails, femaleSterilizationFPDetails, maleSterilizationFPDetails);
+    }
+
+    private EligibleCouple getEligibleCoupleWithFPDetailsUpdated(EligibleCouple eligibleCouple, FormSubmission submission,
+                                                                 String fpMethod,
+                                                                 List<IUDFPDetails> iudFPDetails,
+                                                                 List<CondomFPDetails> condomFPDetails,
+                                                                 List<OCPFPDetails> ocpFPDetails, List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails,
+                                                                 List<MaleSterilizationFPDetails> maleSterilizationFPDetails) {
+        String fpAcceptanceDate = submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME);
         if (fpMethod.equalsIgnoreCase(IUD_FP_METHOD_VALUE)) {
-            iudFPDetails.add(new IUDFPDetails(fpAcceptanceDate, submission.getField(IUD_PLACE)));
+            iudFPDetails.add(new IUDFPDetails(fpAcceptanceDate, submission.getField(IUD_PLACE), submission.getField(LMP_DATE), submission.getField(UPT_RESULT)));
         }
         if (fpMethod.equalsIgnoreCase(CONDOM_FP_METHOD_VALUE)) {
             condomFPDetails.add(getCondomFPDetails(submission, fpAcceptanceDate));
@@ -100,8 +120,6 @@ public class ECService {
             );
         }
         return eligibleCouple
-                .withLMPDate(submission.getField(LMP_DATE))
-                .withUPTResult(submission.getField(UPT_RESULT))
                 .withIUDFPDetails(iudFPDetails)
                 .withCondomFPDetails(condomFPDetails)
                 .withOCPFPDetails(ocpFPDetails)
@@ -115,7 +133,7 @@ public class ECService {
         refill.put(QUANTITY, submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME));
         List<Map<String, String>> refills = new ArrayList<>();
         refills.add(refill);
-        return new OCPFPDetails(fpAcceptanceDate, refills);
+        return new OCPFPDetails(fpAcceptanceDate, refills, submission.getField(LMP_DATE), submission.getField(UPT_RESULT));
     }
 
     private CondomFPDetails getCondomFPDetails(FormSubmission submission, String fpAcceptanceDate) {
@@ -150,6 +168,7 @@ public class ECService {
 
         String newFPMethod = submission.getField(NEW_FP_METHOD_FIELD_NAME);
         couple.details().put(CURRENT_FP_METHOD_FIELD_NAME, newFPMethod);
+        couple = getEligibleCoupleWithUpdatedFPDetails(couple, submission, newFPMethod);
         allEligibleCouples.update(couple);
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());

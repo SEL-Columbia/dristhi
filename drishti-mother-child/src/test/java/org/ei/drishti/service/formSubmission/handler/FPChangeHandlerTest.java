@@ -23,7 +23,7 @@ public class FPChangeHandlerTest {
 
     @Test
     public void shouldDelegateFormSubmissionHandlingToECService() throws Exception {
-        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "ec_registration", "entity id 1", 0L, "1", null, 0L);
+        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "postpartum_family_planning", "entity id 1", 0L, "1", null, 0L);
 
         handler.handle(submission);
 

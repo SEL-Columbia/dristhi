@@ -63,10 +63,10 @@ public class FPRegisterServiceTest {
                 .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
                 .withDetails(details)
                 .withIUDFPDetails(asList(new IUDFPDetails(
-                        "2014-02-23", "district hospital"),
-                        new IUDFPDetails("2014-06-23", "district hospital")))
-                .withOCPFPDetails(asList(new OCPFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4)),
-                        new OCPFPDetails("2014-06-23", asList(refill1, refill2, refill3, refill4))));
+                        "2014-02-23", "district hospital", "2014-04-12", "negative"),
+                        new IUDFPDetails("2014-06-23", "district hospital", "2014-05-12", "negative")))
+                .withOCPFPDetails(asList(new OCPFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4), "2014-06-12", "negative"),
+                        new OCPFPDetails("2014-06-23", asList(refill1, refill2, refill3, refill4), "2014-07-12", "negative")));
         EligibleCouple secondEligibleCouple = new EligibleCouple("ec id2", "91")
                 .withCouple("Saranya", "Manjunatha")
                 .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
@@ -77,7 +77,7 @@ public class FPRegisterServiceTest {
                 .withCouple("Saranya", "Manjunatha")
                 .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
                 .withDetails(details)
-                .withOCPFPDetails(asList(new OCPFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4))));
+                .withOCPFPDetails(asList(new OCPFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4), "2014-08-12", "negative")));
         EligibleCouple fourthEligibleCouple = new EligibleCouple("ec id4", "93")
                 .withCouple("Saranya", "Manjunatha")
                 .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
@@ -112,8 +112,8 @@ public class FPRegisterServiceTest {
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
                 .withFpDetails(new IUDFPDetails("2014-02-23",
-                        "district hospital"
-                ));
+                        "district hospital",
+                        "2014-04-12", "negative"));
         IUDRegisterEntry anotherIUDRegistry = new IUDRegisterEntry()
                 .withEcNumber("90")
                 .withWifeName("Saranya")
@@ -131,8 +131,8 @@ public class FPRegisterServiceTest {
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
                 .withFpDetails(new IUDFPDetails("2014-06-23",
-                        "district hospital"
-                ));
+                        "district hospital",
+                        "2014-05-12", "negative"));
         CondomRegisterEntry condomRegisterEntry = new CondomRegisterEntry()
                 .withEcNumber("91")
                 .withWifeName("Saranya")
@@ -174,7 +174,7 @@ public class FPRegisterServiceTest {
                 .withNumberOfLivingFemaleChildren("1")
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
-                .withFpDetails(new OCPFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4)));
+                .withFpDetails(new OCPFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4), "2014-06-12", "negative"));
         OCPRegisterEntry oneMoreOCPPRegisterEntry = new OCPRegisterEntry()
                 .withEcNumber("90")
                 .withWifeName("Saranya")
@@ -188,7 +188,7 @@ public class FPRegisterServiceTest {
                 .withNumberOfLivingFemaleChildren("1")
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
-                .withFpDetails(new OCPFPDetails("2014-06-23", asList(refill1, refill2, refill3, refill4)));
+                .withFpDetails(new OCPFPDetails("2014-06-23", asList(refill1, refill2, refill3, refill4), "2014-07-12", "negative"));
         OCPRegisterEntry anotherOCPRegisterEntry = new OCPRegisterEntry()
                 .withEcNumber("92")
                 .withWifeName("Saranya")
@@ -202,7 +202,7 @@ public class FPRegisterServiceTest {
                 .withNumberOfLivingFemaleChildren("1")
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
-                .withFpDetails(new OCPFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4)));
+                .withFpDetails(new OCPFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4), "2014-08-12", "negative"));
         MaleSterilizationRegisterEntry maleSterilizationRegisterEntry = new MaleSterilizationRegisterEntry()
                 .withEcNumber("93")
                 .withWifeName("Saranya")

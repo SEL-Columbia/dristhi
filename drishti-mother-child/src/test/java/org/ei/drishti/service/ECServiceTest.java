@@ -2,8 +2,7 @@ package org.ei.drishti.service;
 
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
-import org.ei.drishti.domain.register.CondomFPDetails;
-import org.ei.drishti.domain.register.IUDFPDetails;
+import org.ei.drishti.domain.register.*;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
@@ -16,7 +15,9 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.EasyMap.create;
@@ -51,7 +52,7 @@ public class ECServiceTest {
                 .addFormField("someKey", "someValue")
                 .addFormField("lmpDate", "2011-01-01")
                 .addFormField("uptResult", "negative")
-                .addFormField("currentMethod", "some method")
+                .addFormField("currentMethod", "iud")
                 .addFormField("isHighPriority", "yes")
                 .addFormField("submissionDate", "2011-01-01")
                 .addFormField("dmpaInjectionDate", "2010-12-20")
@@ -68,16 +69,14 @@ public class ECServiceTest {
 
         verify(allEligibleCouples).update(Matchers.eq(eligibleCouple
                 .withANMIdentifier("ANM X")
-                .withLMPDate("2011-01-01")
-                .withUPTResult("negative")
-                .withIUDFPDetails(asList(new IUDFPDetails("2011-01-01", "phc")))
-                .withCondomFPDetails(null)
-                .withOCPFPDetails(null)
-                .withFemaleSterilizationFPDetails(null)
-                .withMaleSterilizationFPDetails(null))
-        );
+                .withIUDFPDetails(asList(new IUDFPDetails("2011-01-01", "phc", "2011-01-01", "negative")))
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList())
+        ));
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
-        verify(schedulingService).registerEC(new FPProductInformation("entity id 1", "anm id 1", "some method", null, "2010-12-20", "1", "2010-12-25"
+        verify(schedulingService).registerEC(new FPProductInformation("entity id 1", "anm id 1", "iud", null, "2010-12-20", "1", "2010-12-25"
                 , null, "2011-01-01", "2011-01-01", null, null, null));
     }
 
@@ -105,8 +104,6 @@ public class ECServiceTest {
 
         verify(allEligibleCouples).update(eligibleCouple
                 .withANMIdentifier("ANM X")
-                .withLMPDate("2011-01-01")
-                .withUPTResult("negative")
                 .withCondomFPDetails(asList(new CondomFPDetails("2011-01-01",
                         asList(create("date", "2011-01-01").put("quantity", "20").map())))));
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
@@ -116,30 +113,59 @@ public class ECServiceTest {
 
     @Test
     public void shouldUpdateCurrentFPMethodOfECWhenFPMethodIsChanged() throws Exception {
-        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1").withDetails(create("currentMethod", "ocp").put("caste", "c_others").map());
+        List<CondomFPDetails> condomFPDetails = new ArrayList<>();
+        condomFPDetails.add(new CondomFPDetails(
+                "2010-01-01", asList(create("date", "2010-01-01").put("quantity", "20").map())));
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1")
+                .withDetails(create("currentMethod", "ocp").put("caste", "c_others").map())
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(condomFPDetails)
+                .withOCPFPDetails(asList(new OCPFPDetails(
+                        "2010-06-01", asList(create("date", "2011-06-01").put("quantity", "20").map()), "2011-06-01", "negative")))
+                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList());
+
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("fp_change")
                 .addFormField("currentMethod", "ocp")
                 .addFormField("newMethod", "condom")
+                .addFormField("familyPlanningMethodChangeDate", "2011-01-01")
+                .addFormField("numberOfCondomsSupplied", "20")
                 .build();
-
-        ecService.reportFPChange(submission);
         EligibleCouple expectedEc = new EligibleCouple("entity id 1", "EC Number 1")
                 .withDetails(create("currentMethod", "condom")
                         .put("caste", "c_others")
-                        .map());
+                        .map())
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withOCPFPDetails(asList(new OCPFPDetails(
+                        "2010-06-01", asList(create("date", "2011-06-01").put("quantity", "20").map()), "2011-06-01", "negative")))
+                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList())
+                .withCondomFPDetails(asList(new CondomFPDetails(
+                        "2010-01-01", asList(create("date", "2010-01-01").put("quantity", "20").map())),
+                        new CondomFPDetails("2011-01-01",
+                                asList(create("date", "2011-01-01").put("quantity", "20").map()))));
+
+        ecService.reportFPChange(submission);
 
         verify(allEligibleCouples).update(expectedEc);
     }
 
     @Test
     public void shouldSendDataToReportingServiceDuringReportFPChange() throws Exception {
-        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1").withDetails(create("caste", "sc").put("economicStatus", "bpl").map());
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1").withDetails(create("caste", "sc").put("economicStatus", "bpl").map())
+                .withIUDFPDetails(new ArrayList<IUDFPDetails>())
+                .withCondomFPDetails(new ArrayList<CondomFPDetails>())
+                .withOCPFPDetails(new ArrayList<OCPFPDetails>())
+                .withFemaleSterilizationFPDetails(new ArrayList<FemaleSterilizationFPDetails>())
+                .withMaleSterilizationFPDetails(new ArrayList<MaleSterilizationFPDetails>());
+
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("fp_change")
                 .addFormField("someKey", "someValue")
+                .addFormField("newMethod", "condom")
                 .build();
         when(reportFieldsDefinition.get("fp_change")).thenReturn(asList("someKey"));
 
