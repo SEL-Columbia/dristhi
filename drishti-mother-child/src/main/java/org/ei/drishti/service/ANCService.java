@@ -66,8 +66,7 @@ public class ANCService {
     public void registerANC(FormSubmission submission) {
         String motherId = submission.getField(AllConstants.ANCFormFields.MOTHER_ID);
 
-        EligibleCouple eligibleCouple = eligibleCouples.findByCaseId(submission.entityId());
-        if (eligibleCouple == null) {
+        if (!eligibleCouples.exists(submission.entityId())) {
             logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}",
                     submission.entityId(), motherId, submission.anmId()));
             return;
@@ -75,7 +74,6 @@ public class ANCService {
 
         Mother mother = allMothers.findByCaseId(motherId);
         allMothers.update(mother.withAnm(submission.anmId()));
-        eligibleCouples.update(eligibleCouple.withLMPDate(submission.getField(REFERENCE_DATE)));
 
         ancSchedulesService.enrollMother(motherId, parse(submission.getField(REFERENCE_DATE)));
 
