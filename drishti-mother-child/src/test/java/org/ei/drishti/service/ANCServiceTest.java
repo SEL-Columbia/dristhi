@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -120,7 +119,7 @@ public class ANCServiceTest {
     @Test
     public void shouldRegisterOutOfAreaANC() {
         LocalDate lmp = today();
-        EligibleCouple eligibleCouple = new EligibleCouple("ec id 1", "1234");
+
         FormSubmission submission = create()
                 .withFormName("anc_registration_oa")
                 .withANMId("anm id 1")
@@ -132,12 +131,11 @@ public class ANCServiceTest {
                 .addFormField("isOutOfArea", "true")
                 .build();
         Mother mother = new Mother("Mother 1", "ec id 1", "thayi 1").withLMP(lmp);
-        when(eligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
+        when(eligibleCouples.exists("ec id 1")).thenReturn(true);
         when(allMothers.findByCaseId("Mother 1")).thenReturn(mother);
 
         service.registerOutOfAreaANC(submission);
 
-        verify(eligibleCouples).update(eligibleCouple.withLMPDate(lmp.toString()));
         verify(allMothers).update(mother.withAnm("anm id 1"));
         verify(ancSchedulesService).enrollMother(eq("Mother 1"), eq(lmp));
     }
@@ -149,7 +147,7 @@ public class ANCServiceTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .build();
-        when(eligibleCouples.findByCaseId("ec id 1")).thenReturn(null);
+        when(eligibleCouples.exists("ec id 1")).thenReturn(false);
 
         service.registerOutOfAreaANC(submission);
 

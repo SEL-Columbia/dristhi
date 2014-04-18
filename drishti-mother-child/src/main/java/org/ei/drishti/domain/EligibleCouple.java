@@ -43,10 +43,6 @@ public class EligibleCouple extends MotechBaseDataObject {
     @JsonProperty
     private Map<String, String> details;
     @JsonProperty
-    private String lmpDate;
-    @JsonProperty
-    private String uptResult;
-    @JsonProperty
     private List<IUDFPDetails> iudFPDetails;
     @JsonProperty
     private List<CondomFPDetails> condomFPDetails;
@@ -87,15 +83,6 @@ public class EligibleCouple extends MotechBaseDataObject {
 
     public EligibleCouple withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
-        return this;
-    }
-
-    public EligibleCouple withLMPDate(String lmpDate) {
-        this.lmpDate = lmpDate;
-        return this;
-    }
-    public EligibleCouple withUPTResult(String uptResult) {
-        this.uptResult = uptResult;
         return this;
     }
 
