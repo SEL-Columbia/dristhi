@@ -30,4 +30,10 @@ public class AllSP_ANMsRepository {
         return (List<SP_ANM>) dataAccessTemplate.findByNamedQueryAndNamedParam(SP_ANM.FIND_ANMS_IN_SAME_SC,
                 new String[]{"anmIdentifier"}, new Object[]{anmIdentifier});
     }
+
+    @Transactional("service_provided")
+    public List<SP_ANM> fetchAllANMSInSamePHC(String anmIdentifier) {
+        return (List<SP_ANM>) dataAccessTemplate.findByNamedQueryAndNamedParam(SP_ANM.FIND_ANMS_IN_SAME_PHC,
+                new String[]{"anmIdentifier"}, new Object[]{anmIdentifier});
+    }
 }

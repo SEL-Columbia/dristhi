@@ -1,5 +1,6 @@
 package org.ei.drishti.web.controller;
 
+import org.ei.drishti.common.domain.UserDetail;
 import org.ei.drishti.domain.DrishtiUser;
 import org.ei.drishti.web.security.DrishtiAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import static org.ei.drishti.web.HttpHeaderFactory.allowOrigin;
 import static org.springframework.http.HttpStatus.OK;
@@ -36,4 +38,11 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return drishtiAuthenticationProvider.getDrishtiUser(authentication);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/user-details")
+    public ResponseEntity<UserDetail> userDetail(@RequestParam("anm-id") String anmIdentifier) {
+        DrishtiUser user = drishtiAuthenticationProvider.getDrishtiUser(anmIdentifier);
+        return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(drishtiSiteUrl), OK);
+    }
+
 }

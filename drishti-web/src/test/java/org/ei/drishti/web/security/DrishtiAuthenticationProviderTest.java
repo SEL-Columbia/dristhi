@@ -20,6 +20,7 @@ import java.util.UUID;
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -75,6 +76,13 @@ public class DrishtiAuthenticationProviderTest {
         exception.expectMessage("The user has been registered but not activated. Please contact your local administrator.");
 
         authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken("user 1", "password 1"));
+    }
+
+    @Test
+    public void shouldFetchDrishtiUserByUsername() throws Exception {
+        authenticationProvider.getDrishtiUser("user 1");
+
+        verify(allDrishtiUsers).findByUsername("user 1");
     }
 
     @Test

@@ -81,4 +81,15 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
         }
         return user;
     }
+
+    public DrishtiUser getDrishtiUser(String username) {
+        DrishtiUser user;
+        try {
+            user = allDrishtiUsers.findByUsername(username);
+        } catch (Exception e) {
+            logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
+            throw new BadCredentialsException(INTERNAL_ERROR);
+        }
+        return user;
+    }
 }

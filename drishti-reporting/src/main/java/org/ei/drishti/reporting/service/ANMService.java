@@ -43,4 +43,9 @@ public class ANMService {
     public List<SP_ANM> anmsInTheSameSC(String anmIdentifier) {
         return allANMsRepository.fetchAllANMSInSameSC(anmIdentifier);
     }
+
+    @Transactional("service_provided")
+    public List<SP_ANM> anmsInTheSamePHC(String anmIdentifier) {
+        return allANMsRepository.fetchAllANMSInSamePHC(anmIdentifier);
+    }
 }
