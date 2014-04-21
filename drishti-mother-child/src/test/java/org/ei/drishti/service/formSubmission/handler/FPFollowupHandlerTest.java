@@ -27,6 +27,6 @@ public class FPFollowupHandlerTest {
 
         handler.handle(submission);
 
-        verify(ecService).reportFPFollowup(submission);
+        verify(ecService).handleFPFollowup(submission);
     }
 }

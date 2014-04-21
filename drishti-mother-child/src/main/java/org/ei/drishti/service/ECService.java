@@ -10,15 +10,13 @@ import org.ei.drishti.service.formSubmission.handler.ReportFieldsDefinition;
 import org.ei.drishti.service.reporting.ECReportingService;
 import org.ei.drishti.service.scheduling.ECSchedulingService;
 import org.ei.drishti.util.SafeMap;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
@@ -72,8 +70,8 @@ public class ECService {
         List<IUDFPDetails> iudFPDetails = eligibleCouple.iudFPDetails();
         List<CondomFPDetails> condomFPDetails = eligibleCouple.condomFPDetails();
         List<OCPFPDetails> ocpFPDetails = eligibleCouple.ocpFPDetails();
-        List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = eligibleCouple.femaleSterilizationFPDetails();
-        List<MaleSterilizationFPDetails> maleSterilizationFPDetails = eligibleCouple.maleSterilizationFPDetails();
+        List<SterilizationFPDetails> femaleSterilizationFPDetails = eligibleCouple.femaleSterilizationFPDetails();
+        List<SterilizationFPDetails> maleSterilizationFPDetails = eligibleCouple.maleSterilizationFPDetails();
         return getEligibleCoupleWithFPDetailsUpdated(eligibleCouple, submission, fpMethod, iudFPDetails, condomFPDetails, ocpFPDetails, femaleSterilizationFPDetails, maleSterilizationFPDetails);
     }
 
@@ -81,8 +79,8 @@ public class ECService {
         List<IUDFPDetails> iudFPDetails = new ArrayList<>();
         List<CondomFPDetails> condomFPDetails = new ArrayList<>();
         List<OCPFPDetails> ocpFPDetails = new ArrayList<>();
-        List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
-        List<MaleSterilizationFPDetails> maleSterilizationFPDetails = new ArrayList<>();
+        List<SterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
+        List<SterilizationFPDetails> maleSterilizationFPDetails = new ArrayList<>();
         return getEligibleCoupleWithFPDetailsUpdated(eligibleCouple, submission, fpMethod,
                 iudFPDetails, condomFPDetails, ocpFPDetails, femaleSterilizationFPDetails, maleSterilizationFPDetails);
     }
@@ -91,8 +89,8 @@ public class ECService {
                                                                  String fpMethod,
                                                                  List<IUDFPDetails> iudFPDetails,
                                                                  List<CondomFPDetails> condomFPDetails,
-                                                                 List<OCPFPDetails> ocpFPDetails, List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails,
-                                                                 List<MaleSterilizationFPDetails> maleSterilizationFPDetails) {
+                                                                 List<OCPFPDetails> ocpFPDetails, List<SterilizationFPDetails> femaleSterilizationFPDetails,
+                                                                 List<SterilizationFPDetails> maleSterilizationFPDetails) {
         String fpAcceptanceDate = submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME);
         if (fpMethod.equalsIgnoreCase(IUD_FP_METHOD_VALUE)) {
             iudFPDetails.add(new IUDFPDetails(fpAcceptanceDate, submission.getField(IUD_PLACE), submission.getField(LMP_DATE), submission.getField(UPT_RESULT)));
@@ -212,12 +210,14 @@ public class ECService {
         schedulingService.renewFPProduct(fpProductInformation);
     }
 
-    public void reportFPFollowup(FormSubmission submission) {
+    public void handleFPFollowup(FormSubmission submission) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(submission.entityId());
         if (couple == null) {
             logger.warn("Tried to report FP follow up of a non-existing EC, with submission: " + submission);
             return;
         }
+        couple = updateECWithFPFollowUp(couple, submission, submission.getField(FP_FOLLOWUP_DATE_FIELD_NAME));
+        allEligibleCouples.update(couple);
 
         FPProductInformation fpProductInformation = new FPProductInformation(
                 submission.entityId(), submission.anmId(),
@@ -226,6 +226,57 @@ public class ECService {
                 submission.getField(SUBMISSION_DATE_FIELD_NAME),
                 null, submission.getField(FP_FOLLOWUP_DATE_FIELD_NAME), submission.getField(NEEDS_FOLLOWUP_FIELD_NAME), submission.getField(NEEDS_REFERRAL_FOLLOWUP_FIELD_NAME));
         schedulingService.fpFollowup(fpProductInformation);
+    }
+
+    private EligibleCouple updateECWithFPFollowUp(EligibleCouple couple, FormSubmission submission, String date) {
+        String fpMethod = submission.getField(CURRENT_FP_METHOD_FIELD_NAME);
+        if (fpMethod.equalsIgnoreCase(FEMALE_STERILIZATION_FP_METHOD_VALUE)) {
+            return updateFemaleSterilizationDetailsWithFollowUpDate(date, couple);
+        }
+        if (fpMethod.equalsIgnoreCase(MALE_STERILIZATION_FP_METHOD_VALUE)) {
+            return updateMaleSterilizationDetailsWithFollowUpDate(date, couple);
+        }
+        return couple;
+    }
+
+    private EligibleCouple updateMaleSterilizationDetailsWithFollowUpDate(String followUpDate, EligibleCouple couple) {
+        List<SterilizationFPDetails> maleSterilizationFPDetails = couple.maleSterilizationFPDetails();
+        sortSterilizationDetails(maleSterilizationFPDetails);
+        SterilizationFPDetails requiredMaleSterilizationFPDetail = getRequiredSterilizationFPDetails(followUpDate, maleSterilizationFPDetails);
+        int indexOfFPDetailToBeUpdated = maleSterilizationFPDetails.indexOf(requiredMaleSterilizationFPDetail);
+        requiredMaleSterilizationFPDetail.followupVisitDates().add(followUpDate);
+        couple.maleSterilizationFPDetails().set(indexOfFPDetailToBeUpdated, requiredMaleSterilizationFPDetail);
+        return couple;
+    }
+
+    private void sortSterilizationDetails(List<SterilizationFPDetails> sterilizationDetails) {
+        Collections.sort(sterilizationDetails, new Comparator<SterilizationFPDetails>() {
+            @Override
+            public int compare(SterilizationFPDetails detail1, SterilizationFPDetails detail2) {
+                return LocalDate.parse(detail1.sterilizationDate()).compareTo(LocalDate.parse(detail2.sterilizationDate()));
+            }
+        });
+    }
+
+    private SterilizationFPDetails getRequiredSterilizationFPDetails(String followUpDate, List<SterilizationFPDetails> sterilizationFPDetails) {
+        List<SterilizationFPDetails> requiredSterilizationFPDetails = new ArrayList<>();
+        for (SterilizationFPDetails sterilizationFPDetail : sterilizationFPDetails) {
+            LocalDate date = LocalDate.parse(sterilizationFPDetail.sterilizationDate());
+            if (LocalDate.parse(followUpDate).isAfter(date)) {
+                requiredSterilizationFPDetails.add(sterilizationFPDetail);
+            }
+        }
+        return requiredSterilizationFPDetails.get(requiredSterilizationFPDetails.size() - 1);
+    }
+
+    private EligibleCouple updateFemaleSterilizationDetailsWithFollowUpDate(String followUpDate, EligibleCouple couple) {
+        List<SterilizationFPDetails> femaleSterilizationFPDetails = couple.femaleSterilizationFPDetails();
+        sortSterilizationDetails(femaleSterilizationFPDetails);
+        SterilizationFPDetails requiredFemaleSterilizationFPDetail = getRequiredSterilizationFPDetails(followUpDate, femaleSterilizationFPDetails);
+        int indexOfFPDetailToBeUpdated = femaleSterilizationFPDetails.indexOf(requiredFemaleSterilizationFPDetail);
+        requiredFemaleSterilizationFPDetail.followupVisitDates().add(followUpDate);
+        couple.femaleSterilizationFPDetails().set(indexOfFPDetailToBeUpdated, requiredFemaleSterilizationFPDetail);
+        return couple;
     }
 
     public void reportReferralFollowup(FormSubmission submission) {

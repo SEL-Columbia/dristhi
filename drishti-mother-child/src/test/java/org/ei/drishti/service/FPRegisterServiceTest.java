@@ -82,18 +82,18 @@ public class FPRegisterServiceTest {
                 .withCouple("Saranya", "Manjunatha")
                 .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
                 .withDetails(details)
-                .withMaleSterilizationFPDetails(asList(new MaleSterilizationFPDetails("nsv", "2014-05-01",
+                .withMaleSterilizationFPDetails(asList(new SterilizationFPDetails("nsv", "2014-05-01",
                         asList("2014-05-06", "2014-05-10")),
-                        new MaleSterilizationFPDetails("conventional_vasectomy", "2014-05-01",
+                        new SterilizationFPDetails("conventional_vasectomy", "2014-05-01",
                                 asList("2014-05-06", "2014-05-10"))));
         EligibleCouple fifthEligibleCouple = new EligibleCouple("ec id5", "94")
                 .withCouple("Saranya", "Manjunatha")
                 .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
                 .withDetails(details)
                 .withFemaleSterilizationFPDetails(asList(
-                        new FemaleSterilizationFPDetails("minilap", "2014-06-02",
+                        new SterilizationFPDetails("minilap", "2014-06-02",
                                 asList("2014-06-06", "2014-06-10", "2014-07-10")),
-                        new FemaleSterilizationFPDetails("laparoscopic", "2014-06-02",
+                        new SterilizationFPDetails("laparoscopic", "2014-06-02",
                                 asList("2014-06-06", "2014-06-10", "2014-07-10"))));
         IUDRegisterEntry iudRegisterEntry = new IUDRegisterEntry()
                 .withEcNumber("90")

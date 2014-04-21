@@ -16,6 +16,6 @@ public class FPFollowupHandler implements FormSubmissionHandler {
 
     @Override
     public void handle(FormSubmission submission) {
-        ecService.reportFPFollowup(submission);
+        ecService.handleFPFollowup(submission);
     }
 }

@@ -72,8 +72,8 @@ public class ECServiceTest {
                 .withIUDFPDetails(asList(new IUDFPDetails("2011-01-01", "phc", "2011-01-01", "negative")))
                 .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
                 .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
-                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
-                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
         ));
         verify(reportingService).registerEC(new SafeMap(mapOf("someKey", "someValue")));
         verify(schedulingService).registerEC(new FPProductInformation("entity id 1", "anm id 1", "iud", null, "2010-12-20", "1", "2010-12-25"
@@ -122,8 +122,8 @@ public class ECServiceTest {
                 .withCondomFPDetails(condomFPDetails)
                 .withOCPFPDetails(asList(new OCPFPDetails(
                         "2010-06-01", asList(create("date", "2011-06-01").put("quantity", "20").map()), "2011-06-01", "negative")))
-                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
-                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList());
+                .withFemaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList());
 
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
@@ -140,8 +140,8 @@ public class ECServiceTest {
                 .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
                 .withOCPFPDetails(asList(new OCPFPDetails(
                         "2010-06-01", asList(create("date", "2011-06-01").put("quantity", "20").map()), "2011-06-01", "negative")))
-                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
-                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
                 .withCondomFPDetails(asList(new CondomFPDetails(
                         "2010-01-01", asList(create("date", "2010-01-01").put("quantity", "20").map())),
                         new CondomFPDetails("2011-01-01",
@@ -158,8 +158,8 @@ public class ECServiceTest {
                 .withIUDFPDetails(new ArrayList<IUDFPDetails>())
                 .withCondomFPDetails(new ArrayList<CondomFPDetails>())
                 .withOCPFPDetails(new ArrayList<OCPFPDetails>())
-                .withFemaleSterilizationFPDetails(new ArrayList<FemaleSterilizationFPDetails>())
-                .withMaleSterilizationFPDetails(new ArrayList<MaleSterilizationFPDetails>());
+                .withFemaleSterilizationFPDetails(new ArrayList<SterilizationFPDetails>())
+                .withMaleSterilizationFPDetails(new ArrayList<SterilizationFPDetails>());
 
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
@@ -263,22 +263,81 @@ public class ECServiceTest {
     }
 
     @Test
-    public void shouldUpdateECSchedulesWhenFPFollowupOccurs() throws Exception {
-        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
+    public void shouldUpdateECAndECSchedulesWhenFPFollowupOccurs() throws Exception {
+        ArrayList<SterilizationFPDetails> maleSterilizationFPDetails = new ArrayList<>();
+        maleSterilizationFPDetails.add(new MaleSterilizationFPDetails("nsv", "2010-01-01", null));
+        List<String> followUpVisitDates = new ArrayList<>();
+        followUpVisitDates.add("2010-10-20");
+        maleSterilizationFPDetails.add(new MaleSterilizationFPDetails("nsv", "2010-10-01", followUpVisitDates));
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1")
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(maleSterilizationFPDetails)
+                .withFemaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList());
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("fp_followup")
                 .withANMId("anm id 1")
-                .addFormField("currentMethod", "fp method")
+                .addFormField("currentMethod", "male_sterilization")
                 .addFormField("submissionDate", "2011-01-01")
                 .addFormField("fpFollowupDate", "2010-12-20")
                 .addFormField("needsFollowup", "yes")
                 .addFormField("needsReferralFollowup", "no")
                 .build();
 
-        ecService.reportFPFollowup(submission);
+        ecService.handleFPFollowup(submission);
 
-        verify(schedulingService).fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "fp method", null, null, null, null, null, "2011-01-01", null, "2010-12-20", "yes", "no"));
+        ArrayList<SterilizationFPDetails> expectedMaleSterilizationDetails = new ArrayList<>();
+        expectedMaleSterilizationDetails.add(new MaleSterilizationFPDetails("nsv", "2010-01-01", null));
+        expectedMaleSterilizationDetails.add(new MaleSterilizationFPDetails("nsv", "2010-10-01", asList("2010-10-20", "2010-12-20")));
+        EligibleCouple expectedEC = new EligibleCouple("entity id 1", "EC Number 1")
+                .withMaleSterilizationFPDetails(expectedMaleSterilizationDetails)
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList());
+        verify(schedulingService).fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "male_sterilization", null, null, null, null, null, "2011-01-01", null, "2010-12-20", "yes", "no"));
+        verify(allEligibleCouples).update(eq(expectedEC));
+    }
+
+    @Test
+    public void shouldUpdateECAndECSchedulesWhenFPFollowupOccursForFemaleSterilization() throws Exception {
+        ArrayList<SterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
+        femaleSterilizationFPDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-01-01", null));
+        List<String> followUpVisitDates = new ArrayList<>();
+        followUpVisitDates.add("2010-10-20");
+        femaleSterilizationFPDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-10-01", followUpVisitDates));
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1")
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(femaleSterilizationFPDetails);
+        when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("fp_followup")
+                .withANMId("anm id 1")
+                .addFormField("currentMethod", "female_sterilization")
+                .addFormField("submissionDate", "2011-01-01")
+                .addFormField("fpFollowupDate", "2010-12-20")
+                .addFormField("needsFollowup", "yes")
+                .addFormField("needsReferralFollowup", "no")
+                .build();
+
+        ecService.handleFPFollowup(submission);
+
+        List<SterilizationFPDetails> expectedFemaleSterilizationDetails = new ArrayList<>();
+        expectedFemaleSterilizationDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-01-01", null));
+        expectedFemaleSterilizationDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-10-01", asList("2010-10-20", "2010-12-20")));
+        EligibleCouple expectedEC = new EligibleCouple("entity id 1", "EC Number 1")
+                .withMaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(femaleSterilizationFPDetails);
+        verify(schedulingService).fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "female_sterilization", null, null, null, null, null, "2011-01-01", null, "2010-12-20", "yes", "no"));
+        verify(allEligibleCouples).update(eq(expectedEC));
     }
 
     @Test
@@ -286,7 +345,7 @@ public class ECServiceTest {
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(null);
         FormSubmission submission = FormSubmissionBuilder.create().build();
 
-        ecService.reportFPFollowup(submission);
+        ecService.handleFPFollowup(submission);
 
         verify(allEligibleCouples).findByCaseId("entity id 1");
         verifyZeroInteractions(reportingService);
