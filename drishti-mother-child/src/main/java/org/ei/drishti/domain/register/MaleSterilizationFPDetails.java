@@ -7,4 +7,8 @@ public class MaleSterilizationFPDetails extends SterilizationFPDetails {
     public MaleSterilizationFPDetails(String typeOfSterilization, String sterilizationDate, List<String> followupVisitDates) {
         super(typeOfSterilization, sterilizationDate, followupVisitDates);
     }
+
+    public MaleSterilizationFPDetails(String typeOfSterilization, String sterilizationDate) {
+        super(typeOfSterilization, sterilizationDate);
+    }
 }

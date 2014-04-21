@@ -3,6 +3,7 @@ package org.ei.drishti.service;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.domain.register.*;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -16,19 +17,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.text.MessageFormat.format;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_MOTHER_SURVIVE;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_WOMAN_SURVIVE;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_OF_MOTHER_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.PERMANENT_RELOCATION_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATES_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.PPFPFormFields.*;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.QUANTITY;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATE;
 
 @Service
 public class PNCService {
@@ -158,5 +166,87 @@ public class PNCService {
                 : mother.getDetail(VISIT_DATES_FIELD_NAME) + " " + visitDate;
         mother.details().put(VISIT_DATES_FIELD_NAME, pncVisitDates);
         allMothers.update(mother);
+    }
+
+    public void reportPPFamilyPlanning(FormSubmission submission) {
+        Mother mother = allMothers.findByCaseId(submission.entityId());
+        EligibleCouple eligibleCouple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+
+        EligibleCouple updatedEligibleCouple = updateECWithFPMethod(submission, eligibleCouple);
+        allEligibleCouples.update(updatedEligibleCouple);
+    }
+
+    private EligibleCouple updateECWithFPMethod(FormSubmission submission, EligibleCouple eligibleCouple) {
+        String fpMethod = submission.getField(FP_METHOD_1_FIELD);
+        String date = submission.getField(FP_METHOD_1_START_DATE);
+        if (fpMethod == FEMALE_STERILIZATION_FP_METHOD_VALUE) {
+            String type = submission.getField(FP_METHOD_1_FS_TYPE);
+            eligibleCouple = updateECWithFemaleSterilizationFPDetails(eligibleCouple, type, date);
+            return eligibleCouple;
+        }
+        if (fpMethod == IUD_FP_METHOD_VALUE) {
+            String place = submission.getField(FP_METHOD_1_IUD_PLACE);
+            eligibleCouple = updateECWithIUDFPDetails(eligibleCouple, place, date);
+            return eligibleCouple;
+        }
+        fpMethod = submission.getField(FP_METHOD_2_FIELD);
+        date = submission.getField(FP_METHOD_2_START_DATE);
+        if (fpMethod == FEMALE_STERILIZATION_FP_METHOD_VALUE) {
+            String type = submission.getField(FP_METHOD_2_FS_TYPE);
+            eligibleCouple = updateECWithFemaleSterilizationFPDetails(eligibleCouple, type, date);
+            return eligibleCouple;
+        }
+        if (fpMethod == IUD_FP_METHOD_VALUE) {
+            String place = submission.getField(FP_METHOD_2_IUD_PLACE);
+            eligibleCouple = updateECWithIUDFPDetails(eligibleCouple, place, date);
+            return eligibleCouple;
+        }
+        if (fpMethod == MALE_STERILIZATION_FP_METHOD_VALUE) {
+            String type = submission.getField(MALE_STERILIZATION_TYPE);
+            List<MaleSterilizationFPDetails> maleSterilizationFPDetails = eligibleCouple.maleSterilizationFPDetails();
+            maleSterilizationFPDetails.add(new MaleSterilizationFPDetails(type, date));
+            return eligibleCouple.withMaleSterilizationFPDetails(maleSterilizationFPDetails);
+        }
+        if (fpMethod == OCP_FP_METHOD_VALUE) {
+            List<OCPFPDetails> ocpFPDetails = eligibleCouple.ocpFPDetails();
+            ocpFPDetails.add(getOCPFPDetails(submission, date));
+            eligibleCouple.withOCPFPDetails(ocpFPDetails);
+        }
+        if (fpMethod.equalsIgnoreCase(CONDOM_FP_METHOD_VALUE)) {
+            List<CondomFPDetails> condomFPDetails = eligibleCouple.condomFPDetails();
+            condomFPDetails.add(getCondomFPDetails(submission, date));
+            eligibleCouple.withCondomFPDetails(condomFPDetails);
+        }
+        return eligibleCouple;
+    }
+
+    private EligibleCouple updateECWithIUDFPDetails(EligibleCouple eligibleCouple, String place, String date) {
+        List<IUDFPDetails> iudFPDetails = eligibleCouple.iudFPDetails();
+        iudFPDetails.add(new IUDFPDetails(date, place));
+        return eligibleCouple.withIUDFPDetails(iudFPDetails);
+    }
+
+    private EligibleCouple updateECWithFemaleSterilizationFPDetails(EligibleCouple eligibleCouple, String type, String date) {
+        List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = eligibleCouple.femaleSterilizationFPDetails();
+        femaleSterilizationFPDetails.add(new FemaleSterilizationFPDetails(type, date));
+        return eligibleCouple.withFemaleSterilizationFPDetails(femaleSterilizationFPDetails);
+    }
+
+    private OCPFPDetails getOCPFPDetails(FormSubmission submission, String fpAcceptanceDate) {
+        Map<String, String> refill = new HashMap<>();
+        refill.put(SERVICE_PROVIDED_DATE, fpAcceptanceDate);
+        refill.put(QUANTITY, submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME));
+        List<Map<String, String>> refills = new ArrayList<>();
+        refills.add(refill);
+        return new OCPFPDetails(fpAcceptanceDate, refills);
+    }
+
+    private CondomFPDetails getCondomFPDetails(FormSubmission submission, String fpAcceptanceDate) {
+        Map<String, String> refill = new HashMap<>();
+        refill.put(SERVICE_PROVIDED_DATE, fpAcceptanceDate);
+        refill.put(QUANTITY, submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME));
+        List<Map<String, String>> refills = new ArrayList<>();
+        refills.add(refill);
+        return new CondomFPDetails(fpAcceptanceDate, refills);
     }
 }

@@ -182,6 +182,17 @@ public class AllConstants {
         public static final String BILE_PIGMENTS = "bilePigments";
     }
 
+    public static class PPFPFormFields {
+        public static final String FP_METHOD_1_FIELD = "ppFPMethod1";
+        public static final String FP_METHOD_1_START_DATE = "ppFPMethod1StartDate";
+        public static final String FP_METHOD_1_FS_TYPE = "femaleSterilizationType1";
+        public static final String FP_METHOD_1_IUD_PLACE = "iudPlace1";
+        public static final String FP_METHOD_2_FIELD = "ppFPMethod2";
+        public static final String FP_METHOD_2_START_DATE = "ppFPMethod2StartDate";
+        public static final String FP_METHOD_2_FS_TYPE = "femaleSterilizationType2";
+        public static final String FP_METHOD_2_IUD_PLACE = "iudPlace2";
+    }
+
     public static class PNCVisitFormFields {
         public static final String VISIT_DATE_FIELD_NAME = "pncVisitDate";
         public static final String VISIT_DATES_FIELD_NAME = "pncVisitDates";

@@ -17,6 +17,11 @@ public class SterilizationFPDetails extends FPDetails {
         this.followupVisitDates = followupVisitDates;
     }
 
+  public SterilizationFPDetails(String typeOfSterilization, String sterilizationDate) {
+        this.typeOfSterilization = typeOfSterilization;
+        this.sterilizationDate = sterilizationDate;
+    }
+
     public String typeOfSterilization() {
         return typeOfSterilization;
     }

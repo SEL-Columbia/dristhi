@@ -13,6 +13,10 @@ public class OCPFPDetails extends RefillableFPDetails {
         this.uptResult = uptResult;
     }
 
+    public OCPFPDetails(String fpAcceptanceDate, List<Map<String, String>> refills) {
+        super(fpAcceptanceDate, refills);
+    }
+
     public String lmpDate() {
         return lmpDate;
     }

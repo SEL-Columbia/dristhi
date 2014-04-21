@@ -3,6 +3,7 @@ package org.ei.drishti.service;
 import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.domain.register.*;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -20,6 +21,7 @@ import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
 import org.motechproject.util.DateUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import static java.util.Arrays.asList;
@@ -154,7 +156,7 @@ public class PNCServiceTest extends BaseUnitTest {
         verify(pncSchedulesService).unEnrollFromSchedules("mother id 1");
         verifyZeroInteractions(pncSchedulesService);
     }
- 
+
     @Test
     public void shouldCloseMotherAndECDuringDeliveryOutcomeIfWomanDied() {
         DateTime currentTime = DateUtil.now();
@@ -444,4 +446,137 @@ public class PNCServiceTest extends BaseUnitTest {
         SafeMap reportFields = new SafeMap(mapOf("some-key", "value"));
         verify(motherReportingService).pncRegistrationOA(reportFields);
     }
+
+    @Test
+    public void shouldUpdateMotherWithNewFamilyPlanningWhenPPFPIsSubmitted() throws Exception {
+        FormSubmission submission = create()
+                .withFormName("postpartum_family_planning")
+                .withEntityId("mother id 1")
+                .addFormField("some-key", "value")
+                .addFormField("ppFPMethod1", "female_sterilization")
+                .addFormField("ppFPMethod1StartDate", "2010-01-01")
+//                .addFormField("iudPlace1", "phc")
+                .addFormField("femaleSterilizationType1", "minilap")
+//                .addFormField("ppFPMethod2", "phc")
+//                .addFormField("ppFPMethod2StartDate", "phc")
+//                .addFormField("iudPlace2", "phc")
+//                .addFormField("femaleSterilizationType2", "phc")
+//                .addFormField("maleSterilizationType", "phc")
+//                .addFormField("numberOfCondomsSupplied", "phc")
+//                .addFormField("numberOfOCPDelivered", "phc")
+                .build();
+        Mother mother = new Mother("mother id 1", "ec id 1", "thayi card number 1");
+        EligibleCouple eligibleCouple = new EligibleCouple("ec id 1", "ec number 1")
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(new ArrayList<FemaleSterilizationFPDetails>())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList());
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
+
+        service.reportPPFamilyPlanning(submission);
+
+        ArrayList<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
+        femaleSterilizationFPDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-01-01"));
+        EligibleCouple expectedEC = eligibleCouple.withFemaleSterilizationFPDetails(femaleSterilizationFPDetails);
+        verify(allEligibleCouples).update(expectedEC);
+    }
+
+    @Test
+    public void shouldUpdateMotherWithNewFamilyPlanningIUDWhenPPFPIsSubmitted() throws Exception {
+        FormSubmission submission = create()
+                .withFormName("postpartum_family_planning")
+                .withEntityId("mother id 1")
+                .addFormField("some-key", "value")
+                .addFormField("ppFPMethod1", "iud")
+                .addFormField("ppFPMethod1StartDate", "2010-01-01")
+                .addFormField("iudPlace1", "phc")
+                .build();
+        Mother mother = new Mother("mother id 1", "ec id 1", "thayi card number 1");
+        EligibleCouple eligibleCouple = new EligibleCouple("ec id 1", "ec number 1")
+                .withIUDFPDetails(new ArrayList<IUDFPDetails>())
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList());
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
+
+        service.reportPPFamilyPlanning(submission);
+
+        ArrayList<IUDFPDetails> iudFPDetails = new ArrayList<>();
+        iudFPDetails.add(new IUDFPDetails("2010-01-01", "phc", null, null));
+        EligibleCouple expectedEC = eligibleCouple.withIUDFPDetails(iudFPDetails);
+        verify(allEligibleCouples).update(expectedEC);
+    }
+
+    @Test
+    public void shouldUpdateMotherWithNewFamilyPlanningFSWhenPPFPIsSubmitted() throws Exception {
+        FormSubmission submission = create()
+                .withFormName("postpartum_family_planning")
+                .withEntityId("mother id 1")
+                .addFormField("some-key", "value")
+                .addFormField("ppFPMethod2", "female_sterilization")
+                .addFormField("ppFPMethod2StartDate", "2010-01-01")
+                .addFormField("femaleSterilizationType2", "minilap")
+                .build();
+        Mother mother = new Mother("mother id 1", "ec id 1", "thayi card number 1");
+        EligibleCouple eligibleCouple = new EligibleCouple("ec id 1", "ec number 1")
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(new ArrayList<FemaleSterilizationFPDetails>())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList());
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
+
+        service.reportPPFamilyPlanning(submission);
+
+        ArrayList<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
+        femaleSterilizationFPDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-01-01"));
+        EligibleCouple expectedEC = new EligibleCouple("ec id 1", "ec number 1")
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(femaleSterilizationFPDetails);
+        verify(allEligibleCouples).update(expectedEC);
+    }
+
+    @Test
+    public void shouldUpdateMotherWithNewFamilyPlanningCondomWhenPPFPIsSubmitted() throws Exception {
+        FormSubmission submission = create()
+                .withFormName("postpartum_family_planning")
+                .withEntityId("mother id 1")
+                .addFormField("some-key", "value")
+                .addFormField("ppFPMethod2", "condom")
+                .addFormField("ppFPMethod2StartDate", "2010-01-01")
+                .addFormField("numberOfCondomsSupplied", "20")
+                .build();
+        Mother mother = new Mother("mother id 1", "ec id 1", "thayi card number 1");
+        EligibleCouple eligibleCouple = new EligibleCouple("ec id 1", "ec number 1")
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(new ArrayList<CondomFPDetails>())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList());
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
+
+        service.reportPPFamilyPlanning(submission);
+
+        ArrayList<CondomFPDetails> condomFPDetails = new ArrayList<>();
+        condomFPDetails.add(new CondomFPDetails("2010-01-01", asList(EasyMap.create("date", "2010-01-01").put("quantity", "20").map())));
+        EligibleCouple expectedEC = new EligibleCouple("ec id 1", "ec number 1")
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
+                .withCondomFPDetails(condomFPDetails);
+        verify(allEligibleCouples).update(expectedEC);
+    }
+
+
 }

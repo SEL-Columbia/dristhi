@@ -16,5 +16,6 @@ public class PostpartumFamilyPlanningHandler implements FormSubmissionHandler {
 
     @Override
     public void handle(FormSubmission submission) {
+        pncService.reportPPFamilyPlanning(submission);
     }
 }
