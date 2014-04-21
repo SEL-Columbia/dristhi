@@ -279,12 +279,14 @@ public class ECService {
         return couple;
     }
 
-    public void reportReferralFollowup(FormSubmission submission) {
+    public void handleReferralFollowup(FormSubmission submission) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(submission.entityId());
         if (couple == null) {
             logger.warn("Tried to report FP Referral follow-up of a non-existing EC, with submission: " + submission);
             return;
         }
+        couple = updateECWithFPFollowUp(couple, submission, submission.getField(REFERRAL_FOLLOW_UP_DATE_FIELD_NAME));
+        allEligibleCouples.update(couple);
 
         FPProductInformation fpProductInformation = new FPProductInformation(
                 submission.entityId(), submission.anmId(),

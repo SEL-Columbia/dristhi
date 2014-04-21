@@ -388,7 +388,7 @@ public class ECServiceTest {
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(null);
         FormSubmission submission = FormSubmissionBuilder.create().withFormName("fp_referral_followup").build();
 
-        ecService.reportReferralFollowup(submission);
+        ecService.handleReferralFollowup(submission);
 
         verify(allEligibleCouples).findByCaseId("entity id 1");
         verifyZeroInteractions(reportingService);
@@ -397,20 +397,41 @@ public class ECServiceTest {
 
     @Test
     public void shouldUpdateECSchedulesWhenFPReferralFollowupIsReported() throws Exception {
-        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1");
+        ArrayList<SterilizationFPDetails> maleSterilizationFPDetails = new ArrayList<>();
+        maleSterilizationFPDetails.add(new MaleSterilizationFPDetails("nsv", "2010-01-01", null));
+        List<String> followUpVisitDates = new ArrayList<>();
+        followUpVisitDates.add("2010-10-20");
+        maleSterilizationFPDetails.add(new MaleSterilizationFPDetails("nsv", "2010-10-01", followUpVisitDates));
+        EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1")
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(maleSterilizationFPDetails)
+                .withFemaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList());
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(ec);
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("fp_referral_followup")
                 .withANMId("anm id 1")
-                .addFormField("referralFollowupDate", "2010-12-25")
+                .addFormField("currentMethod", "male_sterilization")
+                .addFormField("referralFollowupDate", "2010-12-20")
                 .addFormField("submissionDate", "2010-12-24")
                 .addFormField("needsFollowup", "yes")
                 .addFormField("needsReferralFollowup", "no")
                 .build();
 
-        ecService.reportReferralFollowup(submission);
+        ecService.handleReferralFollowup(submission);
 
-        verify(schedulingService).reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2010-12-24", null, "2010-12-25", "yes", "no"));
+        ArrayList<SterilizationFPDetails> expectedMaleSterilizationDetails = new ArrayList<>();
+        expectedMaleSterilizationDetails.add(new MaleSterilizationFPDetails("nsv", "2010-01-01", null));
+        expectedMaleSterilizationDetails.add(new MaleSterilizationFPDetails("nsv", "2010-10-01", asList("2010-10-20", "2010-12-20")));
+        EligibleCouple expectedEC = new EligibleCouple("entity id 1", "EC Number 1")
+                .withMaleSterilizationFPDetails(expectedMaleSterilizationDetails)
+                .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
+                .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
+                .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList());
+        verify(schedulingService).reportReferralFollowup(new FPProductInformation("entity id 1", "anm id 1", null, null, null, null, null, null, "2010-12-24", null, "2010-12-20", "yes", "no"));
+        verify(allEligibleCouples).update(eq(expectedEC));
     }
 
     @Test
