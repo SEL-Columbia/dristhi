@@ -3,13 +3,20 @@ package org.ei.drishti.domain.register;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
 
 public class SterilizationFPDetails extends FPDetails {
+    @JsonProperty
     private String typeOfSterilization;
+    @JsonProperty
     private String sterilizationDate;
+    @JsonProperty
     private List<String> followupVisitDates;
+
+    protected SterilizationFPDetails() {
+    }
 
     public SterilizationFPDetails(String typeOfSterilization, String sterilizationDate, List<String> followupVisitDates) {
         this.typeOfSterilization = typeOfSterilization;
@@ -17,7 +24,7 @@ public class SterilizationFPDetails extends FPDetails {
         this.followupVisitDates = followupVisitDates;
     }
 
-  public SterilizationFPDetails(String typeOfSterilization, String sterilizationDate) {
+    public SterilizationFPDetails(String typeOfSterilization, String sterilizationDate) {
         this.typeOfSterilization = typeOfSterilization;
         this.sterilizationDate = sterilizationDate;
     }
