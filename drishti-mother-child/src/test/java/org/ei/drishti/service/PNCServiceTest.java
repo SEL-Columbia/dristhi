@@ -4,7 +4,9 @@ import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.domain.register.*;
+import org.ei.drishti.domain.PNCVisit;
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.domain.SubFormData;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
@@ -24,6 +26,7 @@ import org.motechproject.util.DateUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.EasyMap.mapOf;
@@ -71,6 +74,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didWomanSurvive", "yes")
                 .addFormField("didMotherSurvive", "")
+                .withSubForm(new SubFormData("child_registration", Collections.<Map<String, String>>emptyList()))
                 .build();
         service.deliveryOutcome(submission);
 
@@ -88,6 +92,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didWomanSurvive", "no")
+                .withSubForm(new SubFormData("child_registration", Collections.<Map<String, String>>emptyList()))
                 .build();
         service.deliveryOutcome(submission);
 
@@ -106,6 +111,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didWomanSurvive", "no")
                 .addFormField("didMotherSurvive", "")
+                .withSubForm(new SubFormData("child_registration", Collections.<Map<String, String>>emptyList()))
                 .build();
         service.deliveryOutcome(submission);
 
@@ -124,6 +130,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didWomanSurvive", "")
                 .addFormField("didMotherSurvive", "no")
+                .withSubForm(new SubFormData("child_registration", Collections.<Map<String, String>>emptyList()))
                 .build();
         service.deliveryOutcome(submission);
 
@@ -145,6 +152,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didWomanSurvive", "")
                 .addFormField("didMotherSurvive", "no")
+                .withSubForm(new SubFormData("child_registration", Collections.<Map<String, String>>emptyList()))
                 .build();
         service.deliveryOutcome(submission);
 
@@ -173,6 +181,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didWomanSurvive", "")
                 .addFormField("didMotherSurvive", "no")
+                .withSubForm(new SubFormData("child_registration", Collections.<Map<String, String>>emptyList()))
                 .build();
         service.deliveryOutcome(submission);
 
@@ -197,11 +206,130 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didWomanSurvive", "yes")
+                .withSubForm(new SubFormData("child_registration_oa", Collections.<Map<String, String>>emptyList()))
                 .build();
 
         service.pncRegistrationOA(submission);
 
         verify(allMothers).update(new Mother("mother id 1", "ec id 1", "tc 1").withAnm("anm id 1"));
+    }
+
+    @Test
+    public void shouldUpdateMotherWithChildrenDetailsWhenDeliveryOutcome() {
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "ec id 1", "tc 1"));
+        FormSubmission submission = create()
+                .withFormName("delivery_outcome")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .addFormField("didWomanSurvive", "yes")
+                .withSubForm(new SubFormData("child_registration",
+                        asList(EasyMap.create("id", "child id 1")
+                                        .put("gender", "male")
+                                        .put("weight", "2")
+                                        .put("immunizationsGiven", "bcg")
+                                        .map(),
+                                EasyMap.create("id", "child id 2")
+                                        .put("gender", "female")
+                                        .put("weight", "3")
+                                        .map()
+                        )
+                ))
+                .build();
+
+        service.deliveryOutcome(submission);
+
+        verify(allMothers).update(new Mother("mother id 1", "ec id 1", "tc 1")
+                .withChildrenDetails(asList(EasyMap.create("id", "child id 1")
+                                .put("gender", "male")
+                                .put("weight", "2")
+                                .put("immunizationsAtBirth", "bcg")
+                                .map(),
+                        EasyMap.create("id", "child id 2")
+                                .put("gender", "female")
+                                .put("weight", "3")
+                                .put("immunizationsAtBirth", null)
+                                .map()
+                )));
+    }
+
+    @Test
+    public void shouldUpdateMotherWithChildrenDetailsWhenPNCRegistrationOA() {
+        when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
+        FormSubmission submission = create()
+                .withFormName("pnc_registration_oa")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .addFormField("didWomanSurvive", "yes")
+                .withSubForm(new SubFormData("child_registration_oa",
+                        asList(EasyMap.create("id", "child id 1")
+                                        .put("gender", "male")
+                                        .put("weight", "2")
+                                        .map(),
+                                EasyMap.create("id", "child id 2")
+                                        .put("gender", "female")
+                                        .put("weight", "3")
+                                        .map()
+                        )
+                ))
+                .build();
+
+        service.pncRegistrationOA(submission);
+
+        verify(allMothers).update(new Mother("mother id 1", "ec id 1", "tc 1")
+                .withAnm("anm id 1")
+                .withChildrenDetails(asList(EasyMap.create("id", "child id 1")
+                                        .put("gender", "male")
+                                        .put("weight", "2")
+                                        .put("immunizationsAtBirth", null)
+                                        .map(),
+                                EasyMap.create("id", "child id 2")
+                                        .put("gender", "female")
+                                        .put("weight", "3")
+                                        .put("immunizationsAtBirth", null)
+                                        .map()
+                        )
+                ));
+    }
+
+    @Test
+    public void shouldNotAddChildrenDetailsInTheCaseOfStillBirthDuringPNCRegistrationOA() throws Exception {
+        when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
+        FormSubmission submission = create()
+                .withFormName("pnc_registration_oa")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .addFormField("deliveryOutcome", "still_birth")
+                .addFormField("didWomanSurvive", "yes")
+                .withSubForm(new SubFormData("child_registration_oa",
+                        asList(EasyMap.create("id", "child id 1").map())))
+                .build();
+
+        service.pncRegistrationOA(submission);
+
+        verify(allMothers).update(new Mother("mother id 1", "ec id 1", "tc 1")
+                .withAnm("anm id 1"));
+    }
+
+    @Test
+    public void shouldNotAddChildrenDetailsInTheCaseOfStillBirthDuringDeliveryOutcome() throws Exception {
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "ec id 1", "tc 1"));
+        FormSubmission submission = create()
+                .withFormName("delivery_outcome")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .addFormField("deliveryOutcome", "still_birth")
+                .addFormField("didWomanSurvive", "yes")
+                .withSubForm(new SubFormData("child_registration",
+                        asList(EasyMap.create("id", "child id 1").map())))
+                .build();
+
+        service.deliveryOutcome(submission);
+
+        verify(allMothers).update(new Mother("mother id 1", "ec id 1", "tc 1"));
     }
 
     @Test
@@ -215,6 +343,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didWomanSurvive", "yes")
+                .withSubForm(new SubFormData("child_registration_oa", Collections.<Map<String, String>>emptyList()))
                 .build();
 
         service.pncRegistrationOA(submission);
@@ -233,6 +362,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didWomanSurvive", "")
+                .withSubForm(new SubFormData("child_registration", Collections.<Map<String, String>>emptyList()))
                 .build();
 
         service.pncRegistrationOA(submission);
@@ -251,6 +381,7 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withEntityId("ec id 1")
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("didWomanSurvive", "no")
+                .withSubForm(new SubFormData("child_registration_oa", Collections.<Map<String, String>>emptyList()))
                 .build();
 
         service.pncRegistrationOA(submission);
@@ -361,6 +492,7 @@ public class PNCServiceTest extends BaseUnitTest {
         FormSubmission submission = create()
                 .withFormName("pnc_visit")
                 .addFormField("some-key", "value")
+                .withSubForm(new SubFormData("child_pnc_visit", Collections.<Map<String, String>>emptyList()))
                 .build();
         service.pncVisitHappened(submission);
 
@@ -378,12 +510,65 @@ public class PNCServiceTest extends BaseUnitTest {
         FormSubmission submission = create()
                 .withFormName("pnc_visit")
                 .addFormField("pncVisitDate", "2013-01-01")
+                .withSubForm(new SubFormData("child_pnc_visit", Collections.<Map<String, String>>emptyList()))
                 .build();
         service.pncVisitHappened(submission);
 
         Mother updatedMother = new Mother("mother id 1", "ec id 1", "TC1")
                 .withDetails(EasyMap.create("some-key", "some-value")
-                        .put("pncVisitDates", "2013-01-01").map());
+                        .put("pncVisitDates", "2013-01-01").map())
+                .withPNCVisits(asList(new PNCVisit().withDate("2013-01-01").withChildrenDetails(Collections.<Map<String, String>>emptyList())));
+        verify(allMothers).update(updatedMother);
+    }
+
+    @Test
+    public void shouldUpdateMotherWithPNCVisitDetails() throws Exception {
+        Mother mother = new Mother("mother id 1", "ec id 1", "TC1")
+                .withDetails(EasyMap.mapOf("some-key", "some-value"));
+        when(allMothers.findByCaseId("entity id 1")).thenReturn(mother);
+
+        FormSubmission submission = create()
+                .withFormName("pnc_visit")
+                .addFormField("pncVisitDate", "2013-01-01")
+                .addFormField("pncVisitPerson", "ASHA")
+                .addFormField("pncVisitPlace", "phc")
+                .addFormField("difficulties1", "difficulties 1")
+                .addFormField("abdominalProblems", "abdominal Problems")
+                .addFormField("vaginalProblems", "vaginal Problems")
+                .addFormField("difficulties2", "difficulties 2")
+                .addFormField("breastProblems", "breast Problems")
+                .withSubForm(new SubFormData("child_pnc_visit",
+                        asList(EasyMap.create("id", "child id 1")
+                                .put("urineStoolProblems", "vomiting diarrhea")
+                                .put("activityProblems", "convulsions")
+                                .put("breathingProblems", "breathing_too_fast")
+                                .put("skinProblems", "jaundice")
+                                .map())
+                ))
+                .build();
+        service.pncVisitHappened(submission);
+
+        Mother updatedMother = new Mother("mother id 1", "ec id 1", "TC1")
+                .withDetails(EasyMap.create("some-key", "some-value")
+                        .put("pncVisitDates", "2013-01-01")
+                        .map())
+                .withPNCVisits(asList(new PNCVisit()
+                                .withDate("2013-01-01")
+                                .withPerson("ASHA")
+                                .withPlace("phc")
+                                .withDifficulties("difficulties 1")
+                                .withAbdominalProblems("abdominal Problems")
+                                .withVaginalProblems("vaginal Problems")
+                                .withUrinalProblems("difficulties 2")
+                                .withBreastProblems("breast Problems")
+                                .withChildrenDetails(asList(EasyMap.create("id", "child id 1")
+                                                .put("urineStoolProblems", "vomiting diarrhea")
+                                                .put("activityProblems", "convulsions")
+                                                .put("breathingProblems", "breathing_too_fast")
+                                                .put("skinProblems", "jaundice")
+                                                .map())
+                                )
+                ));
         verify(allMothers).update(updatedMother);
     }
 
@@ -397,13 +582,17 @@ public class PNCServiceTest extends BaseUnitTest {
         FormSubmission submission = create()
                 .withFormName("pnc_visit")
                 .addFormField("pncVisitDate", "2013-01-02")
+                .withSubForm(new SubFormData("child_pnc_visit", Collections.<Map<String, String>>emptyList()))
                 .build();
         service.pncVisitHappened(submission);
 
-        Mother updatedMother = new Mother("mother id 1", "ec id 1", "TC1").withDetails(
-                EasyMap.create("some-key", "some-value")
-                        .put("pncVisitDates", "2013-01-01 2013-01-02")
-                        .map());
+        Mother updatedMother = new Mother("mother id 1", "ec id 1", "TC1")
+                .withDetails(
+                        EasyMap.create("some-key", "some-value")
+                                .put("pncVisitDates", "2013-01-01 2013-01-02")
+                                .map()
+                )
+                .withPNCVisits(asList(new PNCVisit().withDate("2013-01-02").withChildrenDetails(Collections.<Map<String, String>>emptyList())));
         verify(allMothers).update(updatedMother);
     }
 
@@ -441,6 +630,7 @@ public class PNCServiceTest extends BaseUnitTest {
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .addFormField("some-key", "value")
+                .withSubForm(new SubFormData("child_registration_oa", Collections.<Map<String, String>>emptyList()))
                 .build();
         service.pncRegistrationOA(submission);
 

@@ -1,10 +1,13 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.common.AllConstants;
+import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
 import org.ei.drishti.domain.register.*;
+import org.ei.drishti.domain.PNCVisit;
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.domain.SubFormData;
 import org.ei.drishti.repository.AllChildren;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.repository.AllMothers;
@@ -23,9 +26,12 @@ import java.util.List;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.ei.drishti.common.AllConstants.ANCVisitFormFields.WEIGHT;
+import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.IMMUNIZATIONS_GIVEN_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.CommonChildFormFields.GENDER;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
-import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_MOTHER_SURVIVE;
-import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_WOMAN_SURVIVE;
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
@@ -37,6 +43,9 @@ import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_F
 import static org.ei.drishti.common.AllConstants.PPFPFormFields.*;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.QUANTITY;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATE;
+import static org.ei.drishti.common.AllConstants.Form.*;
+import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.*;
+import static org.ei.drishti.common.util.EasyMap.create;
 
 @Service
 public class PNCService {
@@ -80,11 +89,30 @@ public class PNCService {
                 || BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_MOTHER_SURVIVE))) {
             pncSchedulesService.deliveryOutcome(submission.entityId(), submission.getField(REFERENCE_DATE));
         }
+        SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
+
+        addChildrenDetailsToMother(submission, subFormData, mother);
+        allMothers.update(mother);
     }
+
+    private void addChildrenDetailsToMother(FormSubmission submission, SubFormData subFormData, Mother mother) {
+        ArrayList<Map<String, String>> childrenDetails = new ArrayList<>();
+        if (!handleStillBirth(submission, subFormData)) {
+            for (Map<String, String> childFields : subFormData.instances()) {
+                Map<String, String> child = create(ID, childFields.get(ID))
+                        .put(GENDER, childFields.get(GENDER))
+                        .put(WEIGHT, childFields.get(WEIGHT))
+                        .put(IMMUNIZATIONS_AT_BIRTH, childFields.get(IMMUNIZATIONS_GIVEN_FIELD_NAME))
+                        .map();
+                childrenDetails.add(child);
+            }
+        }
+        mother.withChildrenDetails(childrenDetails);
+    }
+
 
     private void closeMother(Mother mother) {
         mother.setIsClosed(true);
-        allMothers.update(mother);
         actionService.markAllAlertsAsInactive(mother.caseId());
         pncSchedulesService.unEnrollFromSchedules(mother.caseId());
 
@@ -103,11 +131,11 @@ public class PNCService {
 
         Mother mother = mothers.get(0);
         mother.withAnm(submission.anmId());
+        addChildrenDetailsToMother(submission, submission.getSubFormByName(CHILD_REGISTRATION_OA), mother);
         allMothers.update(mother);
         if (BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE))) {
             pncSchedulesService.deliveryOutcome(mother.caseId(), submission.getField(REFERENCE_DATE));
         }
-
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         motherReportingService.pncRegistrationOA(new SafeMap(submission.getFields(reportFields)));
     }
@@ -154,9 +182,39 @@ public class PNCService {
         }
 
         updatePNCVisitDatesOfMother(submission, mother);
+        updatePNCVisitDetails(submission, mother);
+        allMothers.update(mother);
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         motherReportingService.pncVisitHappened(new SafeMap(submission.getFields(reportFields)));
+    }
+
+    private void updatePNCVisitDetails(FormSubmission submission, Mother mother) {
+        mother.addPNCVisit(new PNCVisit()
+                .withDate(submission.getField(VISIT_DATE_FIELD_NAME))
+                .withPerson(submission.getField(VISIT_PERSON_FIELD_NAME))
+                .withPlace(submission.getField(VISIT_PLACE_FIELD_NAME))
+                .withDifficulties(submission.getField(DIFFICULTIES_FIELD_NAME))
+                .withAbdominalProblems(submission.getField(ABDOMINAL_PROBLEMS_FIELD_NAME))
+                .withVaginalProblems(submission.getField(VAGINAL_PROBLEMS_FIELD_NAME))
+                .withUrinalProblems(submission.getField(URINAL_PROBLEMS_FIELD_NAME))
+                .withBreastProblems(submission.getField(BREAST_PROBLEMS))
+                .withChildrenDetails(getChildVisitDetails(submission.getSubFormByName(PNC_VISIT_CHILD_SUB_FORM_NAME))));
+    }
+
+    private List<Map<String, String>> getChildVisitDetails(SubFormData subFormData) {
+        List<Map<String, String>> childVisitDetails = new ArrayList<>();
+        for (Map<String, String> childFields : subFormData.instances()) {
+            Map<String, String> child = EasyMap.create(ID, childFields.get(ID))
+                    .put(ID, childFields.get(ID))
+                    .put(URINE_STOOL_PROBLEMS, childFields.get(URINE_STOOL_PROBLEMS))
+                    .put(ACTIVITY_PROBLEMS, childFields.get(ACTIVITY_PROBLEMS))
+                    .put(BREATHING_PROBLEMS, childFields.get(BREATHING_PROBLEMS))
+                    .put(SKIN_PROBLEMS, childFields.get(SKIN_PROBLEMS))
+                    .map();
+            childVisitDetails.add(child);
+        }
+        return childVisitDetails;
     }
 
     private void updatePNCVisitDatesOfMother(FormSubmission submission, Mother mother) {
@@ -165,7 +223,6 @@ public class PNCService {
                 ? visitDate
                 : mother.getDetail(VISIT_DATES_FIELD_NAME) + " " + visitDate;
         mother.details().put(VISIT_DATES_FIELD_NAME, pncVisitDates);
-        allMothers.update(mother);
     }
 
     public void reportPPFamilyPlanning(FormSubmission submission) {
@@ -248,5 +305,20 @@ public class PNCService {
         List<Map<String, String>> refills = new ArrayList<>();
         refills.add(refill);
         return new CondomFPDetails(fpAcceptanceDate, refills);
+    }
+
+    private boolean handleStillBirth(FormSubmission submission, SubFormData subFormData) {
+        if (!isDeliveryOutcomeStillBirth(submission)) {
+            return false;
+        }
+        if (!subFormData.instances().isEmpty()) {
+            String childId = subFormData.instances().get(0).get(ID);
+            allChildren.remove(childId);
+        }
+        return true;
+    }
+
+    private boolean isDeliveryOutcomeStillBirth(FormSubmission submission) {
+        return AllConstants.DeliveryOutcomeFields.STILL_BIRTH_VALUE.equalsIgnoreCase(submission.getField(AllConstants.DeliveryOutcomeFields.DELIVERY_OUTCOME));
     }
 }

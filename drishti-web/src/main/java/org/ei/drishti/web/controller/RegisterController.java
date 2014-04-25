@@ -87,6 +87,6 @@ public class RegisterController {
     @ResponseBody
     public ResponseEntity<PNCRegisterDTO> getPNCRegister(@RequestParam("anm-id") String anmIdentifier) {
         PNCRegister pncRegister = pncRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(pncRegisterMapper.mapToDTO(pncRegister), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
+        return new ResponseEntity<>(pncRegisterMapper.mapToDTO(pncRegister), HttpStatus.OK);
     }
 }
