@@ -65,18 +65,20 @@ public class AllMothers extends MotechBaseRepository<Mother> {
             map = "function(doc) { if (doc.type === 'Mother' && doc.isClosed === 'false' && doc.ecCaseId) { emit(doc.ecCaseId); } }")
     public List<Mother> findAllOpenMothersByECCaseId(List<String> ecIds) {
         return db.queryView(createQuery("all_open_mothers_by_ec_caseId")
-                .keys(ecIds)
-                .includeDocs(true),
-                Mother.class);
+                        .keys(ecIds)
+                        .includeDocs(true),
+                Mother.class
+        );
     }
 
     @View(name = "all_open_anc_by_ec_caseId",
             map = "function(doc) { if (doc.type === 'Mother' && doc.isClosed === 'false' && doc.details.type === 'ANC' && doc.ecCaseId) { emit(doc.ecCaseId); } }")
     public List<Mother> findAllOpenANCByECCaseId(String ecId) {
         return db.queryView(createQuery("all_open_anc_by_ec_caseId")
-                .key(ecId)
-                .includeDocs(true),
-                Mother.class);
+                        .key(ecId)
+                        .includeDocs(true),
+                Mother.class
+        );
     }
 
     @View(name = "all_open_mothers_by_anmId",
@@ -123,8 +125,18 @@ public class AllMothers extends MotechBaseRepository<Mother> {
             map = "function(doc) { if (doc.type === 'Mother' && doc.caseId) { emit(doc.caseId); } }")
     public List<Mother> findAll(List<String> motherIds) {
         return db.queryView(createQuery("all_mothers_by_CaseIDs")
-                .keys(motherIds)
-                .includeDocs(true),
-                Mother.class);
+                        .keys(motherIds)
+                        .includeDocs(true),
+                Mother.class
+        );
+    }
+
+    @View(name = "all_open_pncs_by_anmId",
+            map = "function(doc) { if (doc.type === 'Mother' && doc.isClosed === 'false' && doc.anmIdentifier && doc.details.type === 'PNC') { emit(doc.anmIdentifier); } }")
+    public List<Mother> findAllOpenPNCsForANM(String anmIdentifier) {
+        return db.queryView(createQuery("all_open_pncs_by_anmId")
+                .key(anmIdentifier)
+                .includeDocs(true), Mother.class);
+
     }
 }

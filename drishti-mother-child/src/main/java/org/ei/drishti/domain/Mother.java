@@ -50,6 +50,10 @@ public class Mother extends MotechBaseDataObject {
     private List<Map<String, String>> hbTests;
     @JsonProperty
     private List<Map<String, String>> ancInvestigations;
+    @JsonProperty
+    private List<PNCVisit> pncVisits;
+    @JsonProperty
+    private List<Map<String, String>> childrenDetails;
 
     private Mother() {
     }
@@ -60,6 +64,8 @@ public class Mother extends MotechBaseDataObject {
         this.thayiCardNumber = thayiCardNumber;
         this.details = new HashMap<>();
         this.setIsClosed(false);
+        this.pncVisits = new ArrayList<>();
+        this.childrenDetails = new ArrayList<>();
     }
 
     public Mother withAnm(String identifier) {
@@ -157,6 +163,14 @@ public class Mother extends MotechBaseDataObject {
         return ancInvestigations;
     }
 
+    public List<Map<String, String>> childrenDetails() {
+        return childrenDetails;
+    }
+
+    public List<PNCVisit> pncVisits() {
+        return pncVisits;
+    }
+
     public Mother setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);
         return this;
@@ -234,6 +248,23 @@ public class Mother extends MotechBaseDataObject {
             this.ancInvestigations = new ArrayList<>();
         }
         this.ancInvestigations.add(ancInvestigations);
+    }
+
+    public Mother withPNCVisits(List<PNCVisit> pncVisits) {
+        this.pncVisits = pncVisits;
+        return this;
+    }
+
+    public void addPNCVisit(PNCVisit pncVisit) {
+        if (this.pncVisits == null) {
+            this.pncVisits = new ArrayList<>();
+        }
+        this.pncVisits.add(pncVisit);
+    }
+
+    public Mother withChildrenDetails(List<Map<String, String>> childrenDetails) {
+        this.childrenDetails = childrenDetails;
+        return this;
     }
 
     public String thirdPNCVisitDate() {

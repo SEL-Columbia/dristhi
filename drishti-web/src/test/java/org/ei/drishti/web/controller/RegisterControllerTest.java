@@ -1,15 +1,10 @@
 package org.ei.drishti.web.controller;
 
+import org.ei.drishti.domain.PNCVisit;
 import org.ei.drishti.domain.register.*;
 import org.ei.drishti.dto.register.*;
-import org.ei.drishti.mapper.ANCRegisterMapper;
-import org.ei.drishti.mapper.ChildRegisterMapper;
-import org.ei.drishti.mapper.ECRegisterMapper;
-import org.ei.drishti.mapper.FPRegisterMapper;
-import org.ei.drishti.service.ANCRegisterService;
-import org.ei.drishti.service.ChildRegisterService;
-import org.ei.drishti.service.ECRegisterService;
-import org.ei.drishti.service.FPRegisterService;
+import org.ei.drishti.mapper.*;
+import org.ei.drishti.service.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -29,6 +24,8 @@ public class RegisterControllerTest {
     @Mock
     private ANCRegisterService ancRegisterService;
     @Mock
+    private PNCRegisterService pncRegisterService;
+    @Mock
     private ECRegisterService ecRegisterService;
     @Mock
     private ChildRegisterService childRegisterService;
@@ -42,77 +39,79 @@ public class RegisterControllerTest {
     private FPRegisterMapper fpRegisterMapper;
     @Mock
     private ChildRegisterMapper childRegisterMapper;
+    @Mock
+    private PNCRegisterMapper pncRegisterMapper;
     private RegisterController controller;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
         controller = new RegisterController(
-                ancRegisterService, ecRegisterService, childRegisterService, fpRegisterService,
-                ancRegisterMapper, ecRegisterMapper, childRegisterMapper, fpRegisterMapper, "http://dristhi_site_url");
+                ancRegisterService, pncRegisterService, ecRegisterService, childRegisterService, fpRegisterService,
+                ancRegisterMapper, ecRegisterMapper, childRegisterMapper, fpRegisterMapper, pncRegisterMapper, "http://dristhi_site_url");
     }
 
     @Test
     public void shouldGetECRegisterForGivenANM() throws Exception {
         ECRegister ecRegister = new ECRegister(asList(new ECRegisterEntry()
-                .withECNumber("123")
-                .withRegistrationDate("2013-01-01")
-                .withWifeName("wifeName")
-                .withHusbandName("husbandName")
-                .withVillage("village")
-                .withSubCenter("sc")
-                .withPHC("phc")
-                .withWifeAge("23")
-                .withHusbandAge("32")
-                .withHouseholdNumber("22")
-                .withHouseholdAddress("HH Address")
-                .withHeadOfHousehold("Head of HH")
-                .withReligion("religion")
-                .withCaste("caste")
-                .withEconomicStatus("bpl")
-                .withWifeEducationLevel("wife education level")
-                .withHusbandEducationLevel("husband education level")
-                .withGravida("2")
-                .withParity("1")
-                .withNumberOfLivingChildren("1")
-                .withNumberOfLivingMaleChildren("0")
-                .withNumberOfLivingFemaleChildren("1")
-                .withNumberOfStillBirths("0")
-                .withNumberOfAbortions("1")
-                .withYoungestChildAge("1")
-                .withCurrentFPMethod("ocp")
-                .withCurrentFPMethodStartDate("2012-01-01")
-                .withPregnancyStatus(false)
+                        .withECNumber("123")
+                        .withRegistrationDate("2013-01-01")
+                        .withWifeName("wifeName")
+                        .withHusbandName("husbandName")
+                        .withVillage("village")
+                        .withSubCenter("sc")
+                        .withPHC("phc")
+                        .withWifeAge("23")
+                        .withHusbandAge("32")
+                        .withHouseholdNumber("22")
+                        .withHouseholdAddress("HH Address")
+                        .withHeadOfHousehold("Head of HH")
+                        .withReligion("religion")
+                        .withCaste("caste")
+                        .withEconomicStatus("bpl")
+                        .withWifeEducationLevel("wife education level")
+                        .withHusbandEducationLevel("husband education level")
+                        .withGravida("2")
+                        .withParity("1")
+                        .withNumberOfLivingChildren("1")
+                        .withNumberOfLivingMaleChildren("0")
+                        .withNumberOfLivingFemaleChildren("1")
+                        .withNumberOfStillBirths("0")
+                        .withNumberOfAbortions("1")
+                        .withYoungestChildAge("1")
+                        .withCurrentFPMethod("ocp")
+                        .withCurrentFPMethodStartDate("2012-01-01")
+                        .withPregnancyStatus(false)
         ));
         ECRegisterDTO expectedECRegisterDTO = new ECRegisterDTO(asList(new ECRegisterEntryDTO()
-                .withECNumber("123")
-                .withRegistrationDate("2013-01-01")
-                .withWifeName("wifeName")
-                .withHusbandName("husbandName")
-                .withVillage("village")
-                .withSubCenter("sc")
-                .withPHC("phc")
-                .withWifeAge("23")
-                .withHusbandAge("32")
-                .withHouseholdNumber("22")
-                .withHouseholdAddress("HH Address")
-                .withHeadOfHousehold("Head of HH")
-                .withReligion("religion")
-                .withCaste("caste")
-                .withEconomicStatus("bpl")
-                .withWifeEducationLevel("wife education level")
-                .withHusbandEducationLevel("husband education level")
-                .withGravida("2")
-                .withParity("1")
-                .withNumberOfLivingChildren("1")
-                .withNumberOfLivingMaleChildren("0")
-                .withNumberOfLivingFemaleChildren("1")
-                .withNumberOfStillBirths("0")
-                .withNumberOfAbortions("1")
-                .withYoungestChildAge("1")
-                .withCurrentFPMethod("ocp")
-                .withCurrentFPMethodStartDate("2012-01-01")
-                .withPregnancyStatus("no")
+                        .withECNumber("123")
+                        .withRegistrationDate("2013-01-01")
+                        .withWifeName("wifeName")
+                        .withHusbandName("husbandName")
+                        .withVillage("village")
+                        .withSubCenter("sc")
+                        .withPHC("phc")
+                        .withWifeAge("23")
+                        .withHusbandAge("32")
+                        .withHouseholdNumber("22")
+                        .withHouseholdAddress("HH Address")
+                        .withHeadOfHousehold("Head of HH")
+                        .withReligion("religion")
+                        .withCaste("caste")
+                        .withEconomicStatus("bpl")
+                        .withWifeEducationLevel("wife education level")
+                        .withHusbandEducationLevel("husband education level")
+                        .withGravida("2")
+                        .withParity("1")
+                        .withNumberOfLivingChildren("1")
+                        .withNumberOfLivingMaleChildren("0")
+                        .withNumberOfLivingFemaleChildren("1")
+                        .withNumberOfStillBirths("0")
+                        .withNumberOfAbortions("1")
+                        .withYoungestChildAge("1")
+                        .withCurrentFPMethod("ocp")
+                        .withCurrentFPMethodStartDate("2012-01-01")
+                        .withPregnancyStatus("no")
         ));
 
         when(ecRegisterService.getRegisterForANM("anm1")).thenReturn(ecRegister);
@@ -190,6 +189,144 @@ public class RegisterControllerTest {
         ResponseEntity<ANCRegisterDTO> response = controller.getANCRegister("anm1");
 
         assertEquals(expectedANCRegisterDTO, response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void shouldGetPNCRegisterForGivenANM() throws Exception {
+        PNCRegister pncRegister = new PNCRegister(asList(new PNCRegisterEntry()
+                .withRegistrationDate("2014-01-01")
+                .withThayiCardNumber("thayi card number 1")
+                .withWifeName("name1")
+                .withHusbandName("name2")
+                .withWifeDOB("1989-01-01")
+                .withAddress("address1")
+                .withDateOfDelivery("2014-01-01")
+                .withPlaceOfDelivery("phc")
+                .withTypeOfDelivery("normal")
+                .withDischargeDate("2014-01-01")
+                .withFPMethodName("female_sterilization")
+                .withFPMethodDate("2014-01-01")
+                .withDeliveryComplications("difficulty breathing")
+                .withChildrenDetails(asList(create("id", "123")
+                                        .put("sex", "male")
+                                        .put("birthWeight", "2")
+                                        .put("breastFeedingInOneHour", "yes")
+                                        .map(),
+                                create("id", "234")
+                                        .put("sex", "male")
+                                        .put("birthWeight", "2")
+                                        .put("breastFeedingInOneHour", "yes")
+                                        .map()
+                        )
+                ).withPNCVisits(asList(new PNCVisit()
+                                .withDate("2014-01-01")
+                                .withPerson("ASHA")
+                                .withPlace("phc")
+                                .withDifficulties("difficulty 1")
+                                .withAbdominalProblems("abdominal problem")
+                                .withVaginalProblems("vaginal problem")
+                                .withUrinalProblems("urinal problem")
+                                .withBreastProblems("breast problem")
+                                .withChildrenDetails(asList(create("id", "123")
+                                                        .put("complications 1", "complication 1 value")
+                                                        .put("complications 2", "complications 2 value")
+                                                        .map(),
+                                                create("id", "234")
+                                                        .put("complications 1", "complication 1 value")
+                                                        .put("complications 2", "complications 2 value")
+                                                        .map()
+                                        )
+                                ),
+                        new PNCVisit()
+                                .withDate("2014-01-02")
+                                .withPerson("ASHA")
+                                .withPlace("phc")
+                                .withDifficulties("difficulty 1")
+                                .withAbdominalProblems("abdominal problem")
+                                .withVaginalProblems("vaginal problem")
+                                .withUrinalProblems("urinal problem")
+                                .withBreastProblems("breast problem")
+                                .withChildrenDetails(asList(create("id", "123")
+                                                        .put("complications 1", "complication 1 value")
+                                                        .put("complications 2", "complications 2 value")
+                                                        .map(),
+                                                create("id", "234")
+                                                        .put("complications 1", "complication 1 value")
+                                                        .put("complications 2", "complications 2 value")
+                                                        .map()
+                                        )
+                                )
+                ))));
+
+        PNCRegisterDTO expectedPNCRegisterDTO = new PNCRegisterDTO(asList(new PNCRegisterEntryDTO().withRegistrationDate("2014-01-01")
+                        .withThayiCardNumber("thayi card number 1")
+                        .withWifeName("name1")
+                        .withHusbandName("name2")
+                        .withWifeDOB("1989-01-01")
+                        .withAddress("address1")
+                        .withDateOfDelivery("2014-01-01")
+                        .withPlaceOfDelivery("phc")
+                        .withTypeOfDelivery("normal")
+                        .withDischargeDate("2014-01-01")
+                        .withFPMethodName("female_sterilization")
+                        .withFPMethodDate("2014-01-01")
+                        .withDeliveryComplications("difficulty breathing")
+                        .withChildrenDetails(asList(create("id", "123")
+                                                .put("sex", "male")
+                                                .put("birthWeight", "2")
+                                                .put("breastFeedingInOneHour", "yes")
+                                                .map(),
+                                        create("id", "234")
+                                                .put("sex", "male")
+                                                .put("birthWeight", "2")
+                                                .put("breastFeedingInOneHour", "yes")
+                                                .map()
+                                )
+                        ).withPNCVisits(asList(new PNCVisitDTO()
+                                .withDate("2014-01-01")
+                                .withPerson("ASHA")
+                                .withPlace("phc")
+                                .withDifficulties("difficulty 1")
+                                .withAbdominalProblems("abdominal problem")
+                                .withVaginalProblems("vaginal problem")
+                                .withUrinalProblems("urinal problem")
+                                .withBreastProblems("breast problem")
+                                .withChildrenDetails(asList(create("id", "123")
+                                                        .put("complications 1", "complication 1 value")
+                                                        .put("complications 2", "complications 2 value")
+                                                        .map(),
+                                                create("id", "234")
+                                                        .put("complications 1", "complication 1 value")
+                                                        .put("complications 2", "complications 2 value")
+                                                        .map()
+                                        )
+                                ), new PNCVisitDTO()
+                                .withDate("2014-01-02")
+                                .withPerson("ASHA")
+                                .withPlace("phc")
+                                .withDifficulties("difficulty 1")
+                                .withAbdominalProblems("abdominal problem")
+                                .withVaginalProblems("vaginal problem")
+                                .withUrinalProblems("urinal problem")
+                                .withBreastProblems("breast problem")
+                                .withChildrenDetails(asList(create("id", "123")
+                                                        .put("complications 1", "complication 1 value")
+                                                        .put("complications 2", "complications 2 value")
+                                                        .map(),
+                                                create("id", "234")
+                                                        .put("complications 1", "complication 1 value")
+                                                        .put("complications 2", "complications 2 value")
+                                                        .map()
+                                        )
+                                )))
+        ));
+        when(pncRegisterService.getRegisterForANM("anm1")).thenReturn(pncRegister);
+        when(pncRegisterMapper.mapToDTO(pncRegister)).thenReturn(expectedPNCRegisterDTO);
+
+        ResponseEntity<PNCRegisterDTO> response = controller.getPNCRegister("anm1");
+
+        assertEquals(expectedPNCRegisterDTO, response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
@@ -436,4 +573,4 @@ public class RegisterControllerTest {
         assertEquals(expectedFPRegisterDTO, response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
-};
+}

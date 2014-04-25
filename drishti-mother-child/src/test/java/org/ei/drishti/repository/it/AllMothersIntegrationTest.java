@@ -53,7 +53,8 @@ public class AllMothersIntegrationTest {
                                 .put("weight", "72")
                                 .put("bpSystolic", "120")
                                 .put("bpDiastolic", "80")
-                                .map()))
+                                .map()
+                ))
                 .withDetails(details);
 
         allMothers.add(mother);
@@ -134,6 +135,30 @@ public class AllMothersIntegrationTest {
         assertFalse(mothers.contains(closedMother));
         assertFalse(mothers.contains(motherServicedByDifferentANM));
         assertFalse(mothers.contains(pnc));
+    }
+
+    @Test
+    public void shouldFindOpenPNCsForANM() {
+        Mother anc = new Mother("mother id 1", "ec id 1", "thayi 1")
+                .withAnm("demo1")
+                .withDetails(EasyMap.mapOf("type", "ANC"));
+        Mother closedMother = new Mother("mother id 2", "ec id 1", "thayi 2").withAnm("demo1").setIsClosed(true);
+        Mother motherServicedByDifferentANM = new Mother("mother id 3", "ec id 2", "thayi 2").withAnm("demo2");
+        Mother pnc = new Mother("mother id 4", "ec id 4", "thayi 4")
+                .withAnm("demo1")
+                .withDetails(EasyMap.mapOf("type", "PNC"));
+
+        allMothers.add(anc);
+        allMothers.add(closedMother);
+        allMothers.add(motherServicedByDifferentANM);
+        allMothers.add(pnc);
+
+        List<Mother> mothers = allMothers.findAllOpenPNCsForANM("demo1");
+
+        assertFalse(mothers.contains(anc));
+        assertFalse(mothers.contains(closedMother));
+        assertFalse(mothers.contains(motherServicedByDifferentANM));
+        assertTrue(mothers.contains(pnc));
     }
 
     @Test

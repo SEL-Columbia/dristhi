@@ -125,6 +125,7 @@ public class AllConstants {
         public static final String DID_WOMAN_SURVIVE = "didWomanSurvive";
         public static final String DID_MOTHER_SURVIVE = "didMotherSurvive";
         public static final String DID_BREAST_FEEDING_START = "didBreastfeedingStart";
+        public static final String DELIVERY_COMPLICATIONS = "deliveryComplications";
         public static final String LIVE_BIRTH_FIELD_VALUE = "live_birth";
         public static final String PHC_FIELD_VALUE = "phc";
         public static final String CHC_FIELD_VALUE = "chc";
@@ -136,6 +137,7 @@ public class AllConstants {
         public static final String DELIVERY_TYPE = "deliveryType";
         public static final String CESAREAN_VALUE = "cesarean";
         public static final String IS_SKILLED_DELIVERY = "isSkilledDelivery";
+        public static final String IMMUNIZATIONS_AT_BIRTH = "immunizationsAtBirth";
     }
 
     public static class ANCRegistrationFormFields {
@@ -197,8 +199,17 @@ public class AllConstants {
         public static final String VISIT_DATE_FIELD_NAME = "pncVisitDate";
         public static final String VISIT_DATES_FIELD_NAME = "pncVisitDates";
         public static final String VISIT_PLACE_FIELD_NAME = "pncVisitPlace";
+        public static final String VISIT_PERSON_FIELD_NAME = "pncVisitPerson";
         public static final String VISIT_NUMBER_FIELD_NAME = "pncVisitNumber";
         public static final String URINE_STOOL_PROBLEMS = "urineStoolProblems";
+        public static final String ACTIVITY_PROBLEMS = "activityProblems";
+        public static final String BREATHING_PROBLEMS = "breathingProblems";
+        public static final String SKIN_PROBLEMS = "skinProblems";
+        public static final String DIFFICULTIES_FIELD_NAME = "difficulties1";
+        public static final String ABDOMINAL_PROBLEMS_FIELD_NAME = "abdominalProblems";
+        public static final String VAGINAL_PROBLEMS_FIELD_NAME = "vaginalProblems";
+        public static final String URINAL_PROBLEMS_FIELD_NAME = "difficulties2";
+        public static final String BREAST_PROBLEMS = "breastProblems";
         public static final String DISCHARGE_DATE = "dischargeDate";
     }
 
@@ -321,8 +332,6 @@ public class AllConstants {
         public static final String IUD_PLACE = "iudPlace";
         public static final String FEMALE_STERILIZATION_TYPE = "femaleSterilizationType";
         public static final String MALE_STERILIZATION_TYPE = "maleSterilizationType";
-
-
     }
 
     public static class ChildImmunizationFields {
