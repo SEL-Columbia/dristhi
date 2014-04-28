@@ -376,7 +376,7 @@ public class ECServiceTest {
                 .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
                 .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList());
 
-        ecService.handleFPFollowup(submission);
+        ecService.followupOnFPMethod(submission);
 
         verify(schedulingService).fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "male_sterilization", null, null, null, null, null, "2011-01-01", null, "2010-12-20", "yes", "no"));
         verify(allEligibleCouples).update(eq(expectedEC));
@@ -415,7 +415,7 @@ public class ECServiceTest {
                 .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
                 .withFemaleSterilizationFPDetails(femaleSterilizationFPDetails);
 
-        ecService.handleFPFollowup(submission);
+        ecService.followupOnFPMethod(submission);
 
         verify(schedulingService).fpFollowup(new FPProductInformation("entity id 1", "anm id 1", "female_sterilization", null, null, null, null, null, "2011-01-01", null, "2010-12-20", "yes", "no"));
         verify(allEligibleCouples).update(eq(expectedEC));
@@ -426,7 +426,7 @@ public class ECServiceTest {
         when(allEligibleCouples.findByCaseId("entity id 1")).thenReturn(null);
         FormSubmission submission = FormSubmissionBuilder.create().build();
 
-        ecService.handleFPFollowup(submission);
+        ecService.followupOnFPMethod(submission);
 
         verify(allEligibleCouples).findByCaseId("entity id 1");
         verifyZeroInteractions(reportingService);

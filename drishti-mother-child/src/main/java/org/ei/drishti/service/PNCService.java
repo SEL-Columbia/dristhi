@@ -40,7 +40,6 @@ import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_OF_MOTHER_
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.PERMANENT_RELOCATION_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATES_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.PPFPFormFields.*;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.QUANTITY;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATE;
 import static org.ei.drishti.common.AllConstants.Form.*;
@@ -234,42 +233,30 @@ public class PNCService {
     }
 
     private EligibleCouple updateECWithFPMethod(FormSubmission submission, EligibleCouple eligibleCouple) {
-        String fpMethod = submission.getField(FP_METHOD_1_FIELD);
-        String date = submission.getField(FP_METHOD_1_START_DATE);
-        if (fpMethod == FEMALE_STERILIZATION_FP_METHOD_VALUE) {
-            String type = submission.getField(FP_METHOD_1_FS_TYPE);
+        String fpMethod = submission.getField(CURRENT_FP_METHOD_FIELD_NAME);
+        String date = submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME);
+        if (FEMALE_STERILIZATION_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
+            String type = submission.getField(FEMALE_STERILIZATION_TYPE);
             eligibleCouple = updateECWithFemaleSterilizationFPDetails(eligibleCouple, type, date);
             return eligibleCouple;
         }
-        if (fpMethod == IUD_FP_METHOD_VALUE) {
-            String place = submission.getField(FP_METHOD_1_IUD_PLACE);
+        if (IUD_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
+            String place = submission.getField(IUD_PLACE);
             eligibleCouple = updateECWithIUDFPDetails(eligibleCouple, place, date);
             return eligibleCouple;
         }
-        fpMethod = submission.getField(FP_METHOD_2_FIELD);
-        date = submission.getField(FP_METHOD_2_START_DATE);
-        if (fpMethod == FEMALE_STERILIZATION_FP_METHOD_VALUE) {
-            String type = submission.getField(FP_METHOD_2_FS_TYPE);
-            eligibleCouple = updateECWithFemaleSterilizationFPDetails(eligibleCouple, type, date);
-            return eligibleCouple;
-        }
-        if (fpMethod == IUD_FP_METHOD_VALUE) {
-            String place = submission.getField(FP_METHOD_2_IUD_PLACE);
-            eligibleCouple = updateECWithIUDFPDetails(eligibleCouple, place, date);
-            return eligibleCouple;
-        }
-        if (fpMethod == MALE_STERILIZATION_FP_METHOD_VALUE) {
+        if (MALE_STERILIZATION_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
             String type = submission.getField(MALE_STERILIZATION_TYPE);
             List<MaleSterilizationFPDetails> maleSterilizationFPDetails = eligibleCouple.maleSterilizationFPDetails();
             maleSterilizationFPDetails.add(new MaleSterilizationFPDetails(type, date));
             return eligibleCouple.withMaleSterilizationFPDetails(maleSterilizationFPDetails);
         }
-        if (fpMethod == OCP_FP_METHOD_VALUE) {
+        if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
             List<OCPFPDetails> ocpFPDetails = eligibleCouple.ocpFPDetails();
             ocpFPDetails.add(getOCPFPDetails(submission, date));
             eligibleCouple.withOCPFPDetails(ocpFPDetails);
         }
-        if (fpMethod.equalsIgnoreCase(CONDOM_FP_METHOD_VALUE)) {
+        if (CONDOM_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
             List<CondomFPDetails> condomFPDetails = eligibleCouple.condomFPDetails();
             condomFPDetails.add(getCondomFPDetails(submission, date));
             eligibleCouple.withCondomFPDetails(condomFPDetails);

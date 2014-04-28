@@ -20,7 +20,6 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class RegisterControllerTest {
-
     @Mock
     private ANCRegisterService ancRegisterService;
     @Mock

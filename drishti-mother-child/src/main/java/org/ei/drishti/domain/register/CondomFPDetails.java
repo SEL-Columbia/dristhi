@@ -3,14 +3,18 @@ package org.ei.drishti.domain.register;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.List;
 import java.util.Map;
 
+@JsonSerialize
 public class CondomFPDetails {
+    @JsonProperty
     private String fpAcceptanceDate;
+    @JsonProperty
     private List<Map<String, String>> refills;
-
 
     private CondomFPDetails() {
     }

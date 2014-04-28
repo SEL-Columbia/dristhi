@@ -10,6 +10,7 @@ import org.ei.drishti.domain.register.*;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -174,22 +175,32 @@ public class EligibleCouple extends MotechBaseDataObject {
     }
 
     public List<IUDFPDetails> iudFPDetails() {
+        if(this.iudFPDetails == null)
+            this.iudFPDetails = new ArrayList<>();
         return iudFPDetails;
     }
 
     public List<CondomFPDetails> condomFPDetails() {
+        if (this.condomFPDetails == null)
+            this.condomFPDetails = new ArrayList<>();
         return condomFPDetails;
     }
 
     public List<OCPFPDetails> ocpFPDetails() {
+        if (this.ocpFPDetails == null)
+            this.ocpFPDetails = new ArrayList<>();
         return ocpFPDetails;
     }
 
     public List<MaleSterilizationFPDetails> maleSterilizationFPDetails() {
+        if (this.maleSterilizationFPDetails == null)
+            this.maleSterilizationFPDetails = new ArrayList<>();
         return maleSterilizationFPDetails;
     }
 
     public List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails() {
+        if (this.femaleSterilizationFPDetails == null)
+            this.femaleSterilizationFPDetails = new ArrayList<>();
         return femaleSterilizationFPDetails;
     }
 

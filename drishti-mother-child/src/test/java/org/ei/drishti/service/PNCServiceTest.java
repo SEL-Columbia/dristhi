@@ -644,17 +644,9 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withFormName("postpartum_family_planning")
                 .withEntityId("mother id 1")
                 .addFormField("some-key", "value")
-                .addFormField("ppFPMethod1", "female_sterilization")
-                .addFormField("ppFPMethod1StartDate", "2010-01-01")
-//                .addFormField("iudPlace1", "phc")
-                .addFormField("femaleSterilizationType1", "minilap")
-//                .addFormField("ppFPMethod2", "phc")
-//                .addFormField("ppFPMethod2StartDate", "phc")
-//                .addFormField("iudPlace2", "phc")
-//                .addFormField("femaleSterilizationType2", "phc")
-//                .addFormField("maleSterilizationType", "phc")
-//                .addFormField("numberOfCondomsSupplied", "phc")
-//                .addFormField("numberOfOCPDelivered", "phc")
+                .addFormField("currentMethod", "female_sterilization")
+                .addFormField("familyPlanningMethodChangeDate", "2010-01-01")
+                .addFormField("femaleSterilizationType", "minilap")
                 .build();
         Mother mother = new Mother("mother id 1", "ec id 1", "thayi card number 1");
         EligibleCouple eligibleCouple = new EligibleCouple("ec id 1", "ec number 1")
@@ -680,9 +672,9 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withFormName("postpartum_family_planning")
                 .withEntityId("mother id 1")
                 .addFormField("some-key", "value")
-                .addFormField("ppFPMethod1", "iud")
-                .addFormField("ppFPMethod1StartDate", "2010-01-01")
-                .addFormField("iudPlace1", "phc")
+                .addFormField("currentMethod", "iud")
+                .addFormField("familyPlanningMethodChangeDate", "2010-01-01")
+                .addFormField("iudPlace", "phc")
                 .build();
         Mother mother = new Mother("mother id 1", "ec id 1", "thayi card number 1");
         EligibleCouple eligibleCouple = new EligibleCouple("ec id 1", "ec number 1")
@@ -708,9 +700,9 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withFormName("postpartum_family_planning")
                 .withEntityId("mother id 1")
                 .addFormField("some-key", "value")
-                .addFormField("ppFPMethod2", "female_sterilization")
-                .addFormField("ppFPMethod2StartDate", "2010-01-01")
-                .addFormField("femaleSterilizationType2", "minilap")
+                .addFormField("currentMethod", "female_sterilization")
+                .addFormField("familyPlanningMethodChangeDate", "2010-01-01")
+                .addFormField("femaleSterilizationType", "minilap")
                 .build();
         Mother mother = new Mother("mother id 1", "ec id 1", "thayi card number 1");
         EligibleCouple eligibleCouple = new EligibleCouple("ec id 1", "ec number 1")
@@ -741,8 +733,8 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withFormName("postpartum_family_planning")
                 .withEntityId("mother id 1")
                 .addFormField("some-key", "value")
-                .addFormField("ppFPMethod2", "condom")
-                .addFormField("ppFPMethod2StartDate", "2010-01-01")
+                .addFormField("currentMethod", "condom")
+                .addFormField("familyPlanningMethodChangeDate", "2010-01-01")
                 .addFormField("numberOfCondomsSupplied", "20")
                 .build();
         Mother mother = new Mother("mother id 1", "ec id 1", "thayi card number 1");
@@ -768,6 +760,4 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withCondomFPDetails(condomFPDetails);
         verify(allEligibleCouples).update(expectedEC);
     }
-
-
 }
