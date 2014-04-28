@@ -49,9 +49,9 @@ public class EligibleCouple extends MotechBaseDataObject {
     @JsonProperty
     private List<OCPFPDetails> ocpFPDetails;
     @JsonProperty
-    private List<SterilizationFPDetails> maleSterilizationFPDetails;
+    private List<MaleSterilizationFPDetails> maleSterilizationFPDetails;
     @JsonProperty
-    private List<SterilizationFPDetails> femaleSterilizationFPDetails;
+    private List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails;
 
     public EligibleCouple() {
     }
@@ -101,12 +101,12 @@ public class EligibleCouple extends MotechBaseDataObject {
         return this;
     }
 
-    public EligibleCouple withMaleSterilizationFPDetails(List<SterilizationFPDetails> maleSterilizationFPDetails) {
+    public EligibleCouple withMaleSterilizationFPDetails(List<MaleSterilizationFPDetails> maleSterilizationFPDetails) {
         this.maleSterilizationFPDetails = maleSterilizationFPDetails;
         return this;
     }
 
-    public EligibleCouple withFemaleSterilizationFPDetails(List<SterilizationFPDetails> femaleSterilizationFPDetails) {
+    public EligibleCouple withFemaleSterilizationFPDetails(List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails) {
         this.femaleSterilizationFPDetails = femaleSterilizationFPDetails;
         return this;
     }
@@ -185,11 +185,11 @@ public class EligibleCouple extends MotechBaseDataObject {
         return ocpFPDetails;
     }
 
-    public List<SterilizationFPDetails> maleSterilizationFPDetails() {
+    public List<MaleSterilizationFPDetails> maleSterilizationFPDetails() {
         return maleSterilizationFPDetails;
     }
 
-    public List<SterilizationFPDetails> femaleSterilizationFPDetails() {
+    public List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails() {
         return femaleSterilizationFPDetails;
     }
 

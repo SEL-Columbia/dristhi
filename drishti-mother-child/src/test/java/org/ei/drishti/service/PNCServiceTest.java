@@ -661,14 +661,14 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
                 .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
                 .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
-                .withFemaleSterilizationFPDetails(new ArrayList<SterilizationFPDetails>())
-                .withMaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList());
+                .withFemaleSterilizationFPDetails(new ArrayList<FemaleSterilizationFPDetails>())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList());
         when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
 
         service.reportPPFamilyPlanning(submission);
 
-        List<SterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
+        List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
         femaleSterilizationFPDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-01-01"));
         EligibleCouple expectedEC = eligibleCouple.withFemaleSterilizationFPDetails(femaleSterilizationFPDetails);
         verify(allEligibleCouples).update(expectedEC);
@@ -689,8 +689,8 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withIUDFPDetails(new ArrayList<IUDFPDetails>())
                 .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
                 .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
-                .withFemaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
-                .withMaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList());
+                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList());
         when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
 
@@ -717,20 +717,20 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
                 .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
                 .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
-                .withFemaleSterilizationFPDetails(new ArrayList<SterilizationFPDetails>())
-                .withMaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList());
+                .withFemaleSterilizationFPDetails(new ArrayList<FemaleSterilizationFPDetails>())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList());
         when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
 
         service.reportPPFamilyPlanning(submission);
 
-        ArrayList<SterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
+        ArrayList<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
         femaleSterilizationFPDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-01-01"));
         EligibleCouple expectedEC = new EligibleCouple("ec id 1", "ec number 1")
                 .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
                 .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
                 .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
-                .withMaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList())
                 .withFemaleSterilizationFPDetails(femaleSterilizationFPDetails);
         verify(allEligibleCouples).update(expectedEC);
     }
@@ -750,21 +750,21 @@ public class PNCServiceTest extends BaseUnitTest {
                 .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
                 .withCondomFPDetails(new ArrayList<CondomFPDetails>())
                 .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
-                .withFemaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
-                .withMaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList());
+                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList());
         when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(eligibleCouple);
 
         service.reportPPFamilyPlanning(submission);
 
-        ArrayList<CondomFPDetails> condomFPDetails = new ArrayList<>();
+        List<CondomFPDetails> condomFPDetails = new ArrayList<>();
         condomFPDetails.add(new CondomFPDetails("2010-01-01", asList(EasyMap.create("date", "2010-01-01").put("quantity", "20").map())));
         EligibleCouple expectedEC = new EligibleCouple("ec id 1", "ec number 1")
                 .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
                 .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
                 .withOCPFPDetails(Collections.<OCPFPDetails>emptyList())
-                .withMaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
-                .withFemaleSterilizationFPDetails(Collections.<SterilizationFPDetails>emptyList())
+                .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList())
+                .withFemaleSterilizationFPDetails(Collections.<FemaleSterilizationFPDetails>emptyList())
                 .withCondomFPDetails(condomFPDetails);
         verify(allEligibleCouples).update(expectedEC);
     }

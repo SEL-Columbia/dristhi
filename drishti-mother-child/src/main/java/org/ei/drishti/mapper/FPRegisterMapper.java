@@ -152,7 +152,7 @@ public class FPRegisterMapper {
 
     public List<FemaleSterilizationRegisterEntry> mapToFemaleSterilizationRegistryEntries(EligibleCouple ec) {
         List<FemaleSterilizationRegisterEntry> femaleSterilizationEntries = new ArrayList<>();
-        for (SterilizationFPDetails femaleSterilizationFPDetails : ec.femaleSterilizationFPDetails()) {
+        for (FemaleSterilizationFPDetails femaleSterilizationFPDetails : ec.femaleSterilizationFPDetails()) {
             FemaleSterilizationRegisterEntry femaleSterilizationRegisterEntry = new FemaleSterilizationRegisterEntry()
                     .withEcNumber(ec.ecNumber())
                     .withWifeName(ec.wifeName())
@@ -179,7 +179,7 @@ public class FPRegisterMapper {
 
     public List<MaleSterilizationRegisterEntry> mapToMaleSterilizationRegistryEntries(EligibleCouple ec) {
         List<MaleSterilizationRegisterEntry> maleSterilizationEntries = new ArrayList<>();
-        for (SterilizationFPDetails maleSterilizationFPDetails : ec.maleSterilizationFPDetails()) {
+        for (MaleSterilizationFPDetails maleSterilizationFPDetails : ec.maleSterilizationFPDetails()) {
             MaleSterilizationRegisterEntry maleSterilizationRegisterEntry = new MaleSterilizationRegisterEntry()
                     .withEcNumber(ec.ecNumber())
                     .withWifeName(ec.wifeName())

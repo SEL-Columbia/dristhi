@@ -260,7 +260,7 @@ public class PNCService {
         }
         if (fpMethod == MALE_STERILIZATION_FP_METHOD_VALUE) {
             String type = submission.getField(MALE_STERILIZATION_TYPE);
-            List<SterilizationFPDetails> maleSterilizationFPDetails = eligibleCouple.maleSterilizationFPDetails();
+            List<MaleSterilizationFPDetails> maleSterilizationFPDetails = eligibleCouple.maleSterilizationFPDetails();
             maleSterilizationFPDetails.add(new MaleSterilizationFPDetails(type, date));
             return eligibleCouple.withMaleSterilizationFPDetails(maleSterilizationFPDetails);
         }
@@ -284,7 +284,7 @@ public class PNCService {
     }
 
     private EligibleCouple updateECWithFemaleSterilizationFPDetails(EligibleCouple eligibleCouple, String type, String date) {
-        List<SterilizationFPDetails> femaleSterilizationFPDetails = eligibleCouple.femaleSterilizationFPDetails();
+        List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = eligibleCouple.femaleSterilizationFPDetails();
         femaleSterilizationFPDetails.add(new FemaleSterilizationFPDetails(type, date));
         return eligibleCouple.withFemaleSterilizationFPDetails(femaleSterilizationFPDetails);
     }

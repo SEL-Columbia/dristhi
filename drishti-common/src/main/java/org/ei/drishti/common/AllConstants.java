@@ -332,6 +332,7 @@ public class AllConstants {
         public static final String IUD_PLACE = "iudPlace";
         public static final String FEMALE_STERILIZATION_TYPE = "femaleSterilizationType";
         public static final String MALE_STERILIZATION_TYPE = "maleSterilizationType";
+        public static final String FP_RENEW_METHOD_VISIT_DATE = "fpRenewMethodVisitDate";
     }
 
     public static class ChildImmunizationFields {

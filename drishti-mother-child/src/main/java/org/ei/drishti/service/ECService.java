@@ -70,8 +70,8 @@ public class ECService {
         List<IUDFPDetails> iudFPDetails = eligibleCouple.iudFPDetails();
         List<CondomFPDetails> condomFPDetails = eligibleCouple.condomFPDetails();
         List<OCPFPDetails> ocpFPDetails = eligibleCouple.ocpFPDetails();
-        List<SterilizationFPDetails> femaleSterilizationFPDetails = eligibleCouple.femaleSterilizationFPDetails();
-        List<SterilizationFPDetails> maleSterilizationFPDetails = eligibleCouple.maleSterilizationFPDetails();
+        List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = eligibleCouple.femaleSterilizationFPDetails();
+        List<MaleSterilizationFPDetails> maleSterilizationFPDetails = eligibleCouple.maleSterilizationFPDetails();
         return getEligibleCoupleWithFPDetailsUpdated(eligibleCouple, submission, fpMethod, iudFPDetails, condomFPDetails, ocpFPDetails, femaleSterilizationFPDetails, maleSterilizationFPDetails);
     }
 
@@ -79,8 +79,8 @@ public class ECService {
         List<IUDFPDetails> iudFPDetails = new ArrayList<>();
         List<CondomFPDetails> condomFPDetails = new ArrayList<>();
         List<OCPFPDetails> ocpFPDetails = new ArrayList<>();
-        List<SterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
-        List<SterilizationFPDetails> maleSterilizationFPDetails = new ArrayList<>();
+        List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
+        List<MaleSterilizationFPDetails> maleSterilizationFPDetails = new ArrayList<>();
         return getEligibleCoupleWithFPDetailsUpdated(eligibleCouple, submission, fpMethod,
                 iudFPDetails, condomFPDetails, ocpFPDetails, femaleSterilizationFPDetails, maleSterilizationFPDetails);
     }
@@ -89,8 +89,8 @@ public class ECService {
                                                                  String fpMethod,
                                                                  List<IUDFPDetails> iudFPDetails,
                                                                  List<CondomFPDetails> condomFPDetails,
-                                                                 List<OCPFPDetails> ocpFPDetails, List<SterilizationFPDetails> femaleSterilizationFPDetails,
-                                                                 List<SterilizationFPDetails> maleSterilizationFPDetails) {
+                                                                 List<OCPFPDetails> ocpFPDetails, List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails,
+                                                                 List<MaleSterilizationFPDetails> maleSterilizationFPDetails) {
         String fpAcceptanceDate = submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME);
         if (fpMethod.equalsIgnoreCase(IUD_FP_METHOD_VALUE)) {
             iudFPDetails.add(new IUDFPDetails(fpAcceptanceDate, submission.getField(IUD_PLACE), submission.getField(LMP_DATE), submission.getField(UPT_RESULT)));
@@ -199,6 +199,8 @@ public class ECService {
             return;
         }
 
+        allEligibleCouples.update(updateECWithRefills(submission, couple));
+
         FPProductInformation fpProductInformation = new FPProductInformation(
                 submission.entityId(), submission.anmId(),
                 submission.getField(CURRENT_FP_METHOD_FIELD_NAME),
@@ -208,6 +210,44 @@ public class ECService {
                 submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME),
                 submission.getField(SUBMISSION_DATE_FIELD_NAME), null, null, null, null);
         schedulingService.renewFPProduct(fpProductInformation);
+    }
+
+    private EligibleCouple updateECWithRefills(FormSubmission submission, EligibleCouple couple) {
+        String fpMethod = submission.getField(CURRENT_FP_METHOD_FIELD_NAME);
+        String date = submission.getField(FP_RENEW_METHOD_VISIT_DATE);
+        if (fpMethod.equalsIgnoreCase(OCP_FP_METHOD_VALUE)) {
+            return updateOCPDetailsWithRefills(date, submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME), couple);
+        }
+        if (fpMethod.equalsIgnoreCase(CONDOM_FP_METHOD_VALUE)) {
+            return updateCondomDetailsWithRefills(date, submission.getField(NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME), couple);
+        }
+        return null;
+    }
+
+    private EligibleCouple updateOCPDetailsWithRefills(String date, String quantity, EligibleCouple couple) {
+        List<OCPFPDetails> ocpFPDetails = couple.ocpFPDetails();
+        sortOCPFPDetails(ocpFPDetails);
+        OCPFPDetails requiredOCPFPDetail = getRequiredOCPFPDetails(date, ocpFPDetails);
+        int indexOfFPDetailToBeUpdated = ocpFPDetails.indexOf(requiredOCPFPDetail);
+        Map<String, String> refill = new HashMap<>();
+        refill.put(SERVICE_PROVIDED_DATE, date);
+        refill.put(QUANTITY, quantity);
+        requiredOCPFPDetail.refills().add(refill);
+        couple.ocpFPDetails().set(indexOfFPDetailToBeUpdated, requiredOCPFPDetail);
+        return couple;
+    }
+
+    private EligibleCouple updateCondomDetailsWithRefills(String date, String quantity, EligibleCouple couple) {
+        List<CondomFPDetails> condomFPDetails = couple.condomFPDetails();
+        sortCondomFPDetails(condomFPDetails);
+        CondomFPDetails requiredCondomFPDetail = getRequiredCondomFPDetails(date, condomFPDetails);
+        int indexOfFPDetailToBeUpdated = condomFPDetails.indexOf(requiredCondomFPDetail);
+        Map<String, String> refill = new HashMap<>();
+        refill.put(SERVICE_PROVIDED_DATE, date);
+        refill.put(QUANTITY, quantity);
+        requiredCondomFPDetail.refills().add(refill);
+        couple.condomFPDetails().set(indexOfFPDetailToBeUpdated, requiredCondomFPDetail);
+        return couple;
     }
 
     public void handleFPFollowup(FormSubmission submission) {
@@ -240,39 +280,97 @@ public class ECService {
     }
 
     private EligibleCouple updateMaleSterilizationDetailsWithFollowUpDate(String followUpDate, EligibleCouple couple) {
-        List<SterilizationFPDetails> maleSterilizationFPDetails = couple.maleSterilizationFPDetails();
-        sortSterilizationDetails(maleSterilizationFPDetails);
-        SterilizationFPDetails requiredMaleSterilizationFPDetail = getRequiredSterilizationFPDetails(followUpDate, maleSterilizationFPDetails);
+        List<MaleSterilizationFPDetails> maleSterilizationFPDetails = couple.maleSterilizationFPDetails();
+        sortMaleSterilizationDetails(maleSterilizationFPDetails);
+        MaleSterilizationFPDetails requiredMaleSterilizationFPDetail = getRequiredMaleSterilizationFPDetails(followUpDate, maleSterilizationFPDetails);
         int indexOfFPDetailToBeUpdated = maleSterilizationFPDetails.indexOf(requiredMaleSterilizationFPDetail);
         requiredMaleSterilizationFPDetail.followupVisitDates().add(followUpDate);
         couple.maleSterilizationFPDetails().set(indexOfFPDetailToBeUpdated, requiredMaleSterilizationFPDetail);
         return couple;
     }
 
-    private void sortSterilizationDetails(List<SterilizationFPDetails> sterilizationDetails) {
-        Collections.sort(sterilizationDetails, new Comparator<SterilizationFPDetails>() {
+    private void sortOCPFPDetails(List<OCPFPDetails> ocpFPDetails) {
+        Collections.sort(ocpFPDetails, new Comparator<OCPFPDetails>() {
             @Override
-            public int compare(SterilizationFPDetails detail1, SterilizationFPDetails detail2) {
+            public int compare(OCPFPDetails detail1, OCPFPDetails detail2) {
+                return LocalDate.parse(detail1.fpAcceptanceDate()).compareTo(LocalDate.parse(detail2.fpAcceptanceDate()));
+            }
+        });
+    }
+
+    private void sortCondomFPDetails(List<CondomFPDetails> condomFPDetails) {
+        Collections.sort(condomFPDetails, new Comparator<CondomFPDetails>() {
+            @Override
+            public int compare(CondomFPDetails detail1, CondomFPDetails detail2) {
+                return LocalDate.parse(detail1.fpAcceptanceDate()).compareTo(LocalDate.parse(detail2.fpAcceptanceDate()));
+            }
+        });
+    }
+
+    private void sortFemaleSterilizationDetails(List<FemaleSterilizationFPDetails> femaleSterilizationDetails) {
+        Collections.sort(femaleSterilizationDetails, new Comparator<FemaleSterilizationFPDetails>() {
+            @Override
+            public int compare(FemaleSterilizationFPDetails detail1, FemaleSterilizationFPDetails detail2) {
+                return LocalDate.parse(detail1.sterilizationDate()).compareTo(LocalDate.parse(detail2.sterilizationDate()));
+            }
+        });
+    }
+    private void sortMaleSterilizationDetails(List<MaleSterilizationFPDetails> maleSterilizationDetails) {
+        Collections.sort(maleSterilizationDetails, new Comparator<MaleSterilizationFPDetails>() {
+            @Override
+            public int compare(MaleSterilizationFPDetails detail1, MaleSterilizationFPDetails detail2) {
                 return LocalDate.parse(detail1.sterilizationDate()).compareTo(LocalDate.parse(detail2.sterilizationDate()));
             }
         });
     }
 
-    private SterilizationFPDetails getRequiredSterilizationFPDetails(String followUpDate, List<SterilizationFPDetails> sterilizationFPDetails) {
-        List<SterilizationFPDetails> requiredSterilizationFPDetails = new ArrayList<>();
-        for (SterilizationFPDetails sterilizationFPDetail : sterilizationFPDetails) {
-            LocalDate date = LocalDate.parse(sterilizationFPDetail.sterilizationDate());
-            if (LocalDate.parse(followUpDate).isAfter(date)) {
-                requiredSterilizationFPDetails.add(sterilizationFPDetail);
+    private OCPFPDetails getRequiredOCPFPDetails(String refillDate, List<OCPFPDetails> ocpFPDetails) {
+        List<OCPFPDetails> requiredOCPFPDetails = new ArrayList<>();
+        for (OCPFPDetails ocpFPDetail : ocpFPDetails) {
+            LocalDate date = LocalDate.parse(ocpFPDetail.fpAcceptanceDate());
+            if (!LocalDate.parse(refillDate).isBefore(date)) {
+                requiredOCPFPDetails.add(ocpFPDetail);
             }
         }
-        return requiredSterilizationFPDetails.get(requiredSterilizationFPDetails.size() - 1);
+        return requiredOCPFPDetails.get(requiredOCPFPDetails.size() - 1);
+    }
+
+    private CondomFPDetails getRequiredCondomFPDetails(String refillDate, List<CondomFPDetails> condomFPDetails) {
+        List<CondomFPDetails> requiredCondomFPDetails = new ArrayList<>();
+        for (CondomFPDetails condomFPDetail : condomFPDetails) {
+            LocalDate date = LocalDate.parse(condomFPDetail.fpAcceptanceDate());
+            if (!LocalDate.parse(refillDate).isBefore(date)) {
+                requiredCondomFPDetails.add(condomFPDetail);
+            }
+        }
+        return requiredCondomFPDetails.get(requiredCondomFPDetails.size() - 1);
+    }
+
+    private FemaleSterilizationFPDetails getRequiredFemaleSterilizationFPDetails(String followUpDate, List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails) {
+        List<FemaleSterilizationFPDetails> requiredFemaleSterilizationFPDetails = new ArrayList<>();
+        for (FemaleSterilizationFPDetails femaleSterilizationFPDetail : femaleSterilizationFPDetails) {
+            LocalDate date = LocalDate.parse(femaleSterilizationFPDetail.sterilizationDate());
+            if (!LocalDate.parse(followUpDate).isBefore(date)) {
+                requiredFemaleSterilizationFPDetails.add(femaleSterilizationFPDetail);
+            }
+        }
+        return requiredFemaleSterilizationFPDetails.get(requiredFemaleSterilizationFPDetails.size() - 1);
+    }
+    private MaleSterilizationFPDetails getRequiredMaleSterilizationFPDetails(String followUpDate, List<MaleSterilizationFPDetails> sterilizationFPDetails) {
+        List<MaleSterilizationFPDetails> requiredMaleSterilizationFPDetails = new ArrayList<>();
+        for (MaleSterilizationFPDetails maleSterilizationFPDetail : sterilizationFPDetails) {
+            LocalDate date = LocalDate.parse(maleSterilizationFPDetail.sterilizationDate());
+            if (!LocalDate.parse(followUpDate).isBefore(date)) {
+                requiredMaleSterilizationFPDetails.add(maleSterilizationFPDetail);
+            }
+        }
+        return requiredMaleSterilizationFPDetails.get(requiredMaleSterilizationFPDetails.size() - 1);
     }
 
     private EligibleCouple updateFemaleSterilizationDetailsWithFollowUpDate(String followUpDate, EligibleCouple couple) {
-        List<SterilizationFPDetails> femaleSterilizationFPDetails = couple.femaleSterilizationFPDetails();
-        sortSterilizationDetails(femaleSterilizationFPDetails);
-        SterilizationFPDetails requiredFemaleSterilizationFPDetail = getRequiredSterilizationFPDetails(followUpDate, femaleSterilizationFPDetails);
+        List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = couple.femaleSterilizationFPDetails();
+        sortFemaleSterilizationDetails(femaleSterilizationFPDetails);
+        FemaleSterilizationFPDetails requiredFemaleSterilizationFPDetail = getRequiredFemaleSterilizationFPDetails(followUpDate, femaleSterilizationFPDetails);
         int indexOfFPDetailToBeUpdated = femaleSterilizationFPDetails.indexOf(requiredFemaleSterilizationFPDetail);
         requiredFemaleSterilizationFPDetail.followupVisitDates().add(followUpDate);
         couple.femaleSterilizationFPDetails().set(indexOfFPDetailToBeUpdated, requiredFemaleSterilizationFPDetail);

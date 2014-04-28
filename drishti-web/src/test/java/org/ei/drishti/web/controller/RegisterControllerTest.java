@@ -420,7 +420,7 @@ public class RegisterControllerTest {
                 .withNumberOfLivingFemaleChildren("1")
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
-                .withFpDetails(new RefillableFPDetails("2014-02-23", asList(refill1, refill2)));
+                .withFpDetails(new CondomFPDetails("2014-02-23", asList(refill1, refill2)));
         Map<String, String> refill3 = create("date", "2014-10-22")
                 .put("pieces", "10")
                 .map();
@@ -440,7 +440,7 @@ public class RegisterControllerTest {
                 .withNumberOfLivingFemaleChildren("1")
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
-                .withFpDetails(new RefillableFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4)));
+                .withFpDetails(new OCPFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4)));
         MaleSterilizationRegisterEntry maleSterilizationRegisterEntry = new MaleSterilizationRegisterEntry()
                 .withEcNumber("90")
                 .withWifeName("Saranya")
@@ -455,7 +455,7 @@ public class RegisterControllerTest {
                 .withNumberOfLivingFemaleChildren("1")
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
-                .withFpDetails(new SterilizationFPDetails("nsv", "2014-05-01", asList("2014-05-06",
+                .withFpDetails(new MaleSterilizationFPDetails("nsv", "2014-05-01", asList("2014-05-06",
                         "2014-05-10")));
         FemaleSterilizationRegisterEntry femaleSterilizationRegisterEntry = new FemaleSterilizationRegisterEntry()
                 .withEcNumber("90")
@@ -471,7 +471,7 @@ public class RegisterControllerTest {
                 .withNumberOfLivingFemaleChildren("1")
                 .withWifeEducationLevel("illiterate")
                 .withHusbandEducationLevel("illiterate")
-                .withFpDetails(new SterilizationFPDetails("minilap", "2014-06-02", asList("2014-06-06",
+                .withFpDetails(new FemaleSterilizationFPDetails("minilap", "2014-06-02", asList("2014-06-06",
                         "2014-06-10",
                         "2014-07-10"
                 )));

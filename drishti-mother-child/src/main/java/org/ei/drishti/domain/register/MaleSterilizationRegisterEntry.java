@@ -18,7 +18,7 @@ public class MaleSterilizationRegisterEntry {
     private String numberOfLivingFemaleChildren;
     private String wifeEducationLevel;
     private String husbandEducationLevel;
-    private SterilizationFPDetails fpDetails;
+    private MaleSterilizationFPDetails fpDetails;
 
     public String ecNumber() {
         return ecNumber;
@@ -72,7 +72,7 @@ public class MaleSterilizationRegisterEntry {
         return husbandEducationLevel;
     }
 
-    public SterilizationFPDetails fpDetails() {
+    public MaleSterilizationFPDetails fpDetails() {
         return fpDetails;
     }
 
@@ -141,7 +141,7 @@ public class MaleSterilizationRegisterEntry {
         return this;
     }
 
-    public MaleSterilizationRegisterEntry withFpDetails(SterilizationFPDetails fpDetails) {
+    public MaleSterilizationRegisterEntry withFpDetails(MaleSterilizationFPDetails fpDetails) {
         this.fpDetails = fpDetails;
         return this;
     }

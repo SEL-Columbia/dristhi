@@ -4,8 +4,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-public class IUDFPDetails extends FPDetails {
+@JsonSerialize
+public class IUDFPDetails {
     @JsonProperty
     private String fpAcceptanceDate;
     @JsonProperty
