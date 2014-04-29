@@ -47,7 +47,7 @@ public class RegisterControllerTest {
         initMocks(this);
         controller = new RegisterController(
                 ancRegisterService, pncRegisterService, ecRegisterService, childRegisterService, fpRegisterService,
-                ancRegisterMapper, ecRegisterMapper, childRegisterMapper, fpRegisterMapper, pncRegisterMapper, "http://dristhi_site_url");
+                ancRegisterMapper, ecRegisterMapper, childRegisterMapper, fpRegisterMapper, pncRegisterMapper);
     }
 
     @Test

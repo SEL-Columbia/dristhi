@@ -5,7 +5,6 @@ import org.ei.drishti.dto.register.*;
 import org.ei.drishti.mapper.*;
 import org.ei.drishti.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,7 +26,6 @@ public class RegisterController {
     private ChildRegisterMapper childRegisterMapper;
     private FPRegisterMapper fpRegisterMapper;
     private PNCRegisterMapper pncRegisterMapper;
-    private final String drishtiSiteUrl;
 
     @Autowired
     public RegisterController(ANCRegisterService ancRegisterService,
@@ -39,8 +37,7 @@ public class RegisterController {
                               ECRegisterMapper ecRegisterMapper,
                               ChildRegisterMapper childRegisterMapper,
                               FPRegisterMapper fpRegisterMapper,
-                              PNCRegisterMapper pncRegisterMapper,
-                              @Value("#{drishti['drishti.site.url']}") String drishtiSiteUrl) {
+                              PNCRegisterMapper pncRegisterMapper) {
         this.ancRegisterService = ancRegisterService;
         this.ecRegisterService = ecRegisterService;
         this.pncRegisterService = pncRegisterService;
@@ -51,7 +48,6 @@ public class RegisterController {
         this.childRegisterMapper = childRegisterMapper;
         this.fpRegisterMapper = fpRegisterMapper;
         this.pncRegisterMapper = pncRegisterMapper;
-        this.drishtiSiteUrl = drishtiSiteUrl;
     }
 
     @RequestMapping(method = GET, value = "/registers/ec")
