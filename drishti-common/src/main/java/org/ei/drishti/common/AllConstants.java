@@ -7,6 +7,7 @@ import static java.util.Arrays.asList;
 
 public class AllConstants {
     public static final String DRISHTI_DATABASE_CONNECTOR = "drishtiDatabaseConnector";
+    public static final String DRISHTI_MCTS_DATABASE_CONNECTOR = "drishtiMCTSDatabaseConnector";
     public static final String SPACE = " ";
     public static final String BOOLEAN_TRUE_VALUE = "true";
     public static final String BOOLEAN_FALSE_VALUE = "false";

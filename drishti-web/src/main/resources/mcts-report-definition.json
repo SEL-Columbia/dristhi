@@ -15,7 +15,8 @@
                         "type": "mother",
                         "idField": "id",
                         "fields": [
-                            "thayiCardNumber"
+                            "thayiCardNumber",
+                            "registrationDate"
                         ]
                     },
                     "reportWhen": [

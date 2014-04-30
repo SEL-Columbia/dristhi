@@ -46,7 +46,7 @@
             {
                 "name": "numberOfPregnancies",
                 "bind": "/model/instance/ANC_Registration_EngKan/num_pregnancies",
-                "source":"eligible_couple.numberOfPregnancies"
+                "source": "eligible_couple.numberOfPregnancies"
             },
             {
                 "name": "thayiCardNumber",

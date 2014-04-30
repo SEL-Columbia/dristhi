@@ -13,12 +13,13 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+import static org.ei.drishti.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.THAYI_CARD_NUMBER;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 
 @Component
 public class MCTSReportService {
-    public static final String SUBJECT = "SEND-MCTS-SMS";
+    public static final String SUBJECT = "SEND-MCTS-REPORT";
     private static Logger logger = LoggerFactory.getLogger(MCTSReportService.class);
 
     private IRulesFactory rulesFactory;
@@ -61,7 +62,7 @@ public class MCTSReportService {
                 entityId,
                 referenceDataFields.get(THAYI_CARD_NUMBER),
                 reportIndicator.indicator(),
-                serviceProvidedDate);
+                referenceDataFields.get(REGISTRATION_DATE), serviceProvidedDate);
     }
 
     private boolean processRules(List<String> rules, SafeMap reportFields, String indicator) {
