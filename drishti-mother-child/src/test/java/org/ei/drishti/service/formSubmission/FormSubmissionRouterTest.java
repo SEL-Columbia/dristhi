@@ -4,6 +4,7 @@ import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.ei.drishti.service.formSubmission.handler.*;
 import org.ei.drishti.service.reporting.FormSubmissionReportService;
+import org.ei.drishti.service.reporting.MCTSReportService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -75,6 +76,8 @@ public class FormSubmissionRouterTest {
     private ANCInvestigationsHandler ancInvestigationsHandler;
     @Mock
     private FormSubmissionReportService formSubmissionReportService;
+    @Mock
+    private MCTSReportService mctsReportService;
 
     private FormSubmissionRouter router;
 
@@ -111,7 +114,7 @@ public class FormSubmissionRouterTest {
                 recordECPsHandler,
                 ecEditHandler,
                 ancInvestigationsHandler,
-                formSubmissionReportService);
+                formSubmissionReportService, mctsReportService);
     }
 
     @Test

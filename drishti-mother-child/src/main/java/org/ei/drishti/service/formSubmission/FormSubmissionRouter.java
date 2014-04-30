@@ -5,6 +5,7 @@ import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.ei.drishti.service.formSubmission.handler.*;
 import org.ei.drishti.service.reporting.FormSubmissionReportService;
 import org.ei.drishti.common.util.EasyMap;
+import org.ei.drishti.service.reporting.MCTSReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class FormSubmissionRouter {
     private AllFormSubmissions formSubmissionsRepository;
     private final Map<String, FormSubmissionHandler> handlerMap;
     private FormSubmissionReportService formSubmissionReportService;
+    private MCTSReportService mctsReportService;
 
     @Autowired
     public FormSubmissionRouter(AllFormSubmissions formSubmissionsRepository,
@@ -54,9 +56,11 @@ public class FormSubmissionRouter {
                                 RecordECPsHandler recordECPsHandler,
                                 ECEditHandler ecEditHandler,
                                 ANCInvestigationsHandler ancInvestigationsHandler,
-                                FormSubmissionReportService formSubmissionReportService) {
+                                FormSubmissionReportService formSubmissionReportService,
+                                MCTSReportService mctsReportService) {
         this.formSubmissionsRepository = formSubmissionsRepository;
         this.formSubmissionReportService = formSubmissionReportService;
+        this.mctsReportService = mctsReportService;
         handlerMap = EasyMap.create(EC_REGISTRATION, (FormSubmissionHandler) ecRegistrationHandler)
                 .put(FP_COMPLICATIONS, fpComplicationsHandler)
                 .put(FP_CHANGE, fpChangeHandler)
@@ -104,6 +108,7 @@ public class FormSubmissionRouter {
         try {
             handler.handle(submission);
             formSubmissionReportService.reportFor(submission);
+            mctsReportService.reportFor(submission);
         } catch (Exception e) {
             logger.error(format("Handling {0} form submission with instance Id: {1} for entity: {2} failed with exception : {3}",
                     submission.formName(), submission.instanceId(), submission.entityId(), getFullStackTrace(e)));

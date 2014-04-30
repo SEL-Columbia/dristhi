@@ -6,28 +6,24 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
 
-public class ReportIndicator {
+public class MCTSReportIndicator {
     private String indicator;
     private String reportEntityType;
     private String serviceProvidedDateField;
-    private String serviceProvidedPlaceField;
-    private String quantityField;
     private List<String> formFields;
     private ReferenceData referenceData;
     private List<String> reportWhen;
     private String reportEntityIdField;
 
-    public ReportIndicator(String indicator) {
+    public MCTSReportIndicator(String indicator) {
         this.indicator = indicator;
     }
 
-    public ReportIndicator(String indicator, String reportEntityType, String quantityField, String serviceProvidedDateField,
-                           List<String> formFields, ReferenceData referenceData, List<String> reportWhen, String serviceProvidedPlaceField) {
+    public MCTSReportIndicator(String indicator, String reportEntityType, String serviceProvidedDateField,
+                               List<String> formFields, ReferenceData referenceData, List<String> reportWhen) {
         this.indicator = indicator;
         this.reportEntityType = reportEntityType;
         this.serviceProvidedDateField = serviceProvidedDateField;
-        this.serviceProvidedPlaceField = serviceProvidedPlaceField;
-        this.quantityField = quantityField;
         this.formFields = formFields;
         this.referenceData = referenceData;
         this.reportWhen = reportWhen;
@@ -43,14 +39,6 @@ public class ReportIndicator {
 
     public String serviceProvidedDateField() {
         return serviceProvidedDateField;
-    }
-
-    public String quantityField() {
-        return quantityField;
-    }
-
-    public String serviceProvidedPlaceField() {
-        return serviceProvidedPlaceField;
     }
 
     public List<String> formFields() {
@@ -69,7 +57,7 @@ public class ReportIndicator {
         return reportEntityIdField;
     }
 
-    public ReportIndicator withReportEntityIdField(String reportEntityIdField) {
+    public MCTSReportIndicator withReportEntityIdField(String reportEntityIdField) {
         this.reportEntityIdField = reportEntityIdField;
         return this;
     }

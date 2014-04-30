@@ -1,0 +1,28 @@
+{
+    "formIndicators": [
+        {
+            "form": "anc_visit",
+            "indicators": [
+                {
+                    "indicator": "ANC1",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ancVisitDate",
+                    "formFields": [
+                        "id",
+                        "ancVisitNumber"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsFirstANCVisitRule"
+                    ]
+                }
+            ]
+        }
+    ]
+}

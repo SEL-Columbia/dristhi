@@ -264,7 +264,10 @@ public class FormSubmissionReportServiceTest {
                                                 new ReferenceData("eligible_couple", "id", null),
                                                 asList("IsJsyBeneficiaryRule", "ServiceProvidedAtSubCenterRule"),
                                                 "registrationPlace").withReportEntityIdField("motherId")
-                                ))));
+                                )
+                        )
+                )
+        );
     }
 
     private ReportDefinition reportDefinition() {
@@ -280,7 +283,11 @@ public class FormSubmissionReportServiceTest {
                                                 asList("id", "closeReason", "submissionDate"),
                                                 new ReferenceData("child", "id", asList("dateOfBirth")),
                                                 asList("IsChildLessThanOneYearOldRule", "RelocationIsPermanentRule"),
-                                                null)))));
+                                                null)
+                                )
+                        )
+                )
+        );
     }
 
     private ReportDefinition reportDefinitionWithCondomQuantity() {
@@ -296,7 +303,11 @@ public class FormSubmissionReportServiceTest {
                                                 asList("id", "numberOfCondomsSupplied", "familyPlanningMethodChangeDate"),
                                                 new ReferenceData("eligible_couple", "caseId", asList("currentMethod")),
                                                 asList("CurrentFPMethodIsCondomRule"),
-                                                null)))));
+                                                null)
+                                )
+                        )
+                )
+        );
     }
 
     private ReportDefinition reportDefinitionWithReportEntityFieldSpecified() {
@@ -313,9 +324,11 @@ public class FormSubmissionReportServiceTest {
                                                 new ReferenceData("eligible_couple", "id", null),
                                                 asList("IsJsyBeneficiaryRule", "ServiceProvidedAtSubCenterRule"),
                                                 null).withReportEntityIdField("motherId")
-                                ))));
+                                )
+                        )
+                )
+        );
     }
-
 
 
     private ReportDefinition reportDefinitionWithoutReferenceDataDefinition() {
@@ -331,6 +344,10 @@ public class FormSubmissionReportServiceTest {
                                                 asList("id", "closeReason", "submissionDate"),
                                                 null,
                                                 asList("IsChildLessThanOneYearOldRule", "RelocationIsPermanentRule"),
-                                                null)))));
+                                                null)
+                                )
+                        )
+                )
+        );
     }
 }
