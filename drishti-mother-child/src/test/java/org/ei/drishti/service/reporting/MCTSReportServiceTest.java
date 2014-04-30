@@ -1,5 +1,6 @@
 package org.ei.drishti.service.reporting;
 
+import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.service.reporting.rules.IReferenceDataRepository;
 import org.ei.drishti.service.reporting.rules.IRule;
@@ -9,7 +10,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import static java.util.Arrays.asList;
-import static org.ei.drishti.common.util.EasyMap.mapOf;
 import static org.ei.drishti.util.FormSubmissionBuilder.create;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -65,12 +65,16 @@ public class MCTSReportServiceTest {
         when(reportDefinitionLoader.load()).thenReturn(reportDefinition());
         when(referenceDataRepository
                 .getReferenceData(any(FormSubmission.class), any(ReferenceData.class)))
-                .thenReturn(new SafeMap(mapOf("thayiCardNumber", "thayi card 1")));
+                .thenReturn(
+                        new SafeMap(EasyMap
+                                .create("thayiCardNumber", "thayi card 1")
+                                .put("registrationDate", "2012-02-01").map())
+                );
         when(rule.apply(any(SafeMap.class))).thenReturn(true);
 
         service.reportFor(submission);
 
-        verify(reporter).report("mother id 1", "thayi card 1", "ANC1", "2012-03-01");
+        verify(reporter).report("mother id 1", "thayi card 1", "ANC1", "2012-02-01", "2012-03-01");
     }
 
     private MCTSReportDefinition reportDefinition() {
@@ -80,8 +84,10 @@ public class MCTSReportServiceTest {
                                 asList(new MCTSReportIndicator(
                                         "ANC1", "mother", "ancVisitDate",
                                         asList("id", "ancVisitNumber"),
-                                        new ReferenceData("mother", "id", asList("thayiCardNumber")),
-                                        asList("IsChildLessThanOneYearOldRule")))
+                                        new ReferenceData("mother", "id",
+                                                asList("thayiCardNumber", "registrationDate")),
+                                        asList("IsChildLessThanOneYearOldRule")
+                                ))
                         )
                 )
         );

@@ -17,4 +17,9 @@
         <constructor-arg value="drishti"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
+
+    <bean id="drishtiMCTSDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="drishti-mcts"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
 </beans>

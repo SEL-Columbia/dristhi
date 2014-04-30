@@ -175,7 +175,7 @@ public class EligibleCouple extends MotechBaseDataObject {
     }
 
     public List<IUDFPDetails> iudFPDetails() {
-        if(this.iudFPDetails == null)
+        if (this.iudFPDetails == null)
             this.iudFPDetails = new ArrayList<>();
         return iudFPDetails;
     }
