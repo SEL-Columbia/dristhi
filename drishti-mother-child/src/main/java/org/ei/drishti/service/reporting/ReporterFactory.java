@@ -19,12 +19,12 @@ public class ReporterFactory implements IReporterFactory {
         this.motherReporter = motherReporter;
     }
 
-    public IReporter reporterFor(String bindType) {
-        if(bindType.equalsIgnoreCase(CHILD_TYPE))
+    public IReporter reporterFor(String entityType) {
+        if (entityType.equalsIgnoreCase(CHILD_TYPE))
             return childReporter;
-        if(bindType.equalsIgnoreCase(MOTHER_TYPE))
+        if (entityType.equalsIgnoreCase(MOTHER_TYPE))
             return motherReporter;
-        if(bindType.equalsIgnoreCase(ELIGIBLE_COUPLE_TYPE))
+        if (entityType.equalsIgnoreCase(ELIGIBLE_COUPLE_TYPE))
             return eligibleCoupleReporter;
         return null;
     }

@@ -25,4 +25,5 @@ public class MotherReporter implements IReporter {
         Mother mother = allMothers.findByCaseId(entityId);
         motherReportingService.reportToBoth(mother, Indicator.from(reportIndicator), serviceProvidedDate, location);
     }
+
 }

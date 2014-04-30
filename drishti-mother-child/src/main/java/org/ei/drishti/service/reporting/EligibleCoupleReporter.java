@@ -26,4 +26,5 @@ public class EligibleCoupleReporter implements IReporter {
         //#TODO: Pull out the reportIndicator method out of ecReportingService
         ecReportingService.reportIndicator(reportData, eligibleCouple, Indicator.from(reportIndicator), serviceProvidedDate);
     }
+
 }

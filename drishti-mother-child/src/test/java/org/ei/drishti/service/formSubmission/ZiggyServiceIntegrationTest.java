@@ -4,6 +4,7 @@ import org.ei.drishti.form.repository.AllFormSubmissions;
 import org.ei.drishti.repository.FormDataRepository;
 import org.ei.drishti.service.formSubmission.handler.*;
 import org.ei.drishti.service.reporting.FormSubmissionReportService;
+import org.ei.drishti.service.reporting.MCTSReportService;
 import org.ei.drishti.util.FormSubmissionBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -91,6 +92,8 @@ public class ZiggyServiceIntegrationTest {
     private ECEditHandler ecEditHandler;
     @Mock
     private ANCInvestigationsHandler ancInvestigationsHandler;
+    @Mock
+    private MCTSReportService mctsReportService;
 
     @Mock
     private FormSubmissionReportService formSubmissionReportService;
@@ -116,7 +119,7 @@ public class ZiggyServiceIntegrationTest {
                         pncCloseHandler, pncVisitHandler, childRegistrationECHandler, childRegistrationOAHandler, vitaminAHandler,
                         childImmunizationsHandler, childIllnessHandler, childCloseHandler,
                         deliveryPlanHandler, postpartumFamilyPlanningHandler, recordECPsHandler,
-                        ecEditHandler, ancInvestigationsHandler, formSubmissionReportService)
+                        ecEditHandler, ancInvestigationsHandler, formSubmissionReportService, mctsReportService)
         );
 
         service.saveForm(params, formInstance);
