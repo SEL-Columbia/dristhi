@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonSerialize
@@ -40,6 +41,9 @@ public class MaleSterilizationFPDetails {
     }
 
     public List<String> followupVisitDates() {
+        if (followupVisitDates == null) {
+            followupVisitDates = new ArrayList<>();
+        }
         return followupVisitDates;
     }
 

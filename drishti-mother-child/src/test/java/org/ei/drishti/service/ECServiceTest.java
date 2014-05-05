@@ -385,7 +385,7 @@ public class ECServiceTest {
     @Test
     public void shouldUpdateECAndECSchedulesWhenFPFollowupOccursForFemaleSterilization() throws Exception {
         List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails = new ArrayList<>();
-        femaleSterilizationFPDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-01-01", null));
+        femaleSterilizationFPDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-01-01", new ArrayList<String>()));
         List<String> followUpVisitDates = new ArrayList<>();
         followUpVisitDates.add("2010-10-20");
         femaleSterilizationFPDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-10-01", followUpVisitDates));
@@ -406,7 +406,7 @@ public class ECServiceTest {
                 .addFormField("needsReferralFollowup", "no")
                 .build();
         List<FemaleSterilizationFPDetails> expectedFemaleSterilizationDetails = new ArrayList<>();
-        expectedFemaleSterilizationDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-01-01", null));
+        expectedFemaleSterilizationDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-01-01", new ArrayList<String>()));
         expectedFemaleSterilizationDetails.add(new FemaleSterilizationFPDetails("minilap", "2010-10-01", asList("2010-10-20", "2010-12-20")));
         EligibleCouple expectedEC = new EligibleCouple("entity id 1", "EC Number 1")
                 .withMaleSterilizationFPDetails(Collections.<MaleSterilizationFPDetails>emptyList())
