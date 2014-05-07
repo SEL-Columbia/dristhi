@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "3",
+    "form_data_definition_version": "4",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/ANC_Registration_OA_EngKan/",
@@ -121,19 +121,32 @@
                 "source": "eligible_couple.mother.edd"
             },
             {
-                "name": "isFirstPregnancy",
-                "bind": "/model/instance/ANC_Registration_OA_EngKan/first_pregnancy",
-                "source": "eligible_couple.mother.isFirstPregnancy"
+                "name": "numberOfPregnancies",
+                "bind": "/model/instance/ANC_Registration_OA_EngKan/num_pregnancies1"
             },
             {
-                "name": "hadThreeOrMoreBirths",
-                "bind": "/model/instance/ANC_Registration_OA_EngKan/threeormore_births",
-                "source": "eligible_couple.mother.hadThreeOrMoreBirths"
+                "name": "numberOfPregnancies",
+                "bind": "/model/instance/ANC_Registration_OA_EngKan/num_pregnancies"
             },
             {
-                "name": "hadThreeOrMoreAbortions",
-                "bind": "/model/instance/ANC_Registration_OA_EngKan/threeormore_abortions",
-                "source": "eligible_couple.mother.hadThreeOrMoreAbortions"
+                "name": "numberOfAbortions",
+                "bind": "/model/instance/ANC_Registration_OA_EngKan/num_abortions"
+            },
+            {
+                "name": "numberOfLiveBirths",
+                "bind": "/model/instance/ANC_Registration_OA_EngKan/num_livebirths"
+            },
+            {
+                "name": "numberOfStillBirths",
+                "bind": "/model/instance/ANC_Registration_OA_EngKan/num_stillbirths"
+            },
+            {
+                "name": "parity",
+                "bind": "/model/instance/ANC_Registration_OA_EngKan/parity"
+            },
+            {
+                "name": "parity",
+                "bind": "/model/instance/ANC_Registration_OA_EngKan/num_livingchilren"
             },
             {
                 "name": "isYoungestChildUnderTwo",
@@ -155,29 +168,9 @@
                 "source": "eligible_couple.mother.medicalHistories"
             },
             {
-                "name": "otherMedicalHistories",
-                "bind": "/model/instance/ANC_Registration_OA_EngKan/other_medical_histories",
-                "source": "eligible_couple.mother.otherMedicalHistories"
-            },
-            {
                 "name": "bloodGroup",
                 "bind": "/model/instance/ANC_Registration_OA_EngKan/w_blood_group",
                 "source": "eligible_couple.mother.bloodGroup"
-            },
-            {
-                "name": "isRHNegative",
-                "bind": "/model/instance/ANC_Registration_OA_EngKan/w_rh_negative",
-                "source": "eligible_couple.mother.isRHNegative"
-            },
-            {
-                "name": "husbandBloodGroup",
-                "bind": "/model/instance/ANC_Registration_OA_EngKan/h_blood_group",
-                "source": "eligible_couple.mother.husbandBloodGroup"
-            },
-            {
-                "name": "isRHIncompatibleCouple",
-                "bind": "/model/instance/ANC_Registration_OA_EngKan/rh_incompatible_couple",
-                "source": "eligible_couple.mother.isRHIncompatibleCouple"
             },
             {
                 "name": "height",
@@ -187,16 +180,6 @@
                 "name": "weight",
                 "bind": "/model/instance/ANC_Registration_OA_EngKan/weight_startofpregnancy",
                 "source": "eligible_couple.mother.weight"
-            },
-            {
-                "name": "isTobaccoUsed",
-                "bind": "/model/instance/ANC_Registration_OA_EngKan/tobacco_use",
-                "source": "eligible_couple.mother.isTobaccoUsed"
-            },
-            {
-                "name": "tobaccoUser",
-                "bind": "/model/instance/ANC_Registration_OA_EngKan/tobacco_user",
-                "source": "eligible_couple.mother.tobaccoUser"
             },
             {
                 "name": "isHighRiskTillDelivery",

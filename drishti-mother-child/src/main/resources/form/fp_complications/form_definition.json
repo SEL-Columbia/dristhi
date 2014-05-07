@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "1",
+    "form_data_definition_version": "2",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Family_Planning_Complications_EngKan/",
@@ -47,10 +47,6 @@
                 "bind": "/model/instance/Family_Planning_Complications_EngKan/injectable_sideeffect"
             },
             {
-                "name": "otherSideEffect",
-                "bind": "/model/instance/Family_Planning_Complications_EngKan/other_sideeffect"
-            },
-            {
                 "name": "referCoupleFPMethodComplication",
                 "bind": "/model/instance/Family_Planning_Complications_EngKan/refer_couple_fp_method_complication"
             },
@@ -59,16 +55,8 @@
                 "bind": "/model/instance/Family_Planning_Complications_EngKan/refer_couple_fp_method_complication_place"
             },
             {
-                "name": "referCoupleFPMethodComplicationPlaceOther",
-                "bind": "/model/instance/Family_Planning_Complications_EngKan/refer_couple_fp_method_complication_place_other"
-            },
-            {
                 "name": "fpMethodComplicationTreatmentPlan",
                 "bind": "/model/instance/Family_Planning_Complications_EngKan/fp_method_complication_treatment_plan"
-            },
-            {
-                "name": "fpMethodComplicationTreatmentPlanOther",
-                "bind": "/model/instance/Family_Planning_Complications_EngKan/fp_method_complication_treatment_plan_other"
             },
             {
                 "name": "submissionDate",

@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "5",
+    "form_data_definition_version": "6",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Child_Registration_EC_EngKan/",
@@ -130,6 +130,11 @@
                 "name": "bloodGroup",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/child_blood_group",
                 "source": "eligible_couple.mother.child.bloodGroup"
+            },
+            {
+                "name": "birthWeight",
+                "bind": "/model/instance/Child_Registration_EC_EngKan/birthweight",
+                "source": "eligible_couple.mother.child.birthweight"
             },
             {
                 "name": "weight",
@@ -281,16 +286,6 @@
                 "name": "vitamin9Date",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/child_vitamin_a_history_group/vita9_date",
                 "source": "eligible_couple.mother.child.vitamin9Date"
-            },
-            {
-                "name": "isChildHighRisk",
-                "bind": "/model/instance/Child_Registration_EC_EngKan/is_child_high_risk",
-                "source": "eligible_couple.mother.child.isChildHighRisk"
-            },
-            {
-                "name": "childHighRiskReason",
-                "bind": "/model/instance/Child_Registration_EC_EngKan/child_high_risk_reasons",
-                "source": "eligible_couple.mother.child.childHighRiskReason"
             },
             {
                 "name": "isClosed",

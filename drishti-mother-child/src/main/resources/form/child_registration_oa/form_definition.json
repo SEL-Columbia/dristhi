@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "5",
+    "form_data_definition_version": "6",
     "form": {
         "bind_type": "child",
         "default_bind_path": "/model/instance/Child_Registration_EngKan/",
@@ -235,18 +235,6 @@
             {
                 "name": "vitamin9Date",
                 "bind": "/model/instance/Child_Registration_EngKan/child_vitamin_a_history_group/vita9_date"
-            },
-            {
-                "name": "isChildHighRisk",
-                "bind": "/model/instance/Child_Registration_EngKan/is_child_high_risk"
-            },
-            {
-                "name": "childHighRiskReason",
-                "bind": "/model/instance/Child_Registration_EngKan/child_high_risk_reasons"
-            },
-            {
-                "name": "stayInArea",
-                "bind": "/model/instance/Child_Registration_EngKan/stay_in_area"
             },
             {
                 "name": "ecId",

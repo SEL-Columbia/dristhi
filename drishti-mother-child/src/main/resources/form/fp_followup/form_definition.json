@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "1",
+    "form_data_definition_version": "2",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Family_Planning_Followup_EngKan/",
@@ -40,10 +40,6 @@
                 "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/sterilization_sideeffect"
             },
             {
-                "name": "otherSideEffect",
-                "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/other_sideeffect"
-            },
-            {
                 "name": "sideEffect",
                 "bind": "/model/instance/Family_Planning_Followup_EngKan/first_time_followup_group/side_effects"
             },
@@ -60,20 +56,12 @@
                 "bind": "/model/instance/Family_Planning_Followup_EngKan/refer_couple_fp_method_complication_place"
             },
             {
-                "name": "referCoupleFPMethodComplicationPlaceOther",
-                "bind": "/model/instance/Family_Planning_Followup_EngKan/refer_couple_fp_method_complication_place_other"
-            },
-            {
                 "name": "needsReferralFollowup",
                 "bind": "/model/instance/Family_Planning_Followup_EngKan/needs_referral_followup"
             },
             {
                 "name": "fpMethodComplicationTreatmentPlan",
                 "bind": "/model/instance/Family_Planning_Followup_EngKan/fp_method_complication_treatment_plan"
-            },
-            {
-                "name": "fpMethodComplicationTreatmentPlanOther",
-                "bind": "/model/instance/Family_Planning_Followup_EngKan/fp_method_complication_treatment_plan_other"
             },
             {
                 "name": "submissionDate",

@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "2",
+    "form_data_definition_version": "3",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/ANC_Registration_EngKan/",
@@ -32,6 +32,16 @@
                 "name": "numberOfPregnancies",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Registration_EngKan/case_num_pregnancies"
+            },
+            {
+                "name": "wouldBeHighRisk",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/ANC_Registration_EngKan/case_would_be_high_risk"
+            },
+            {
+                "name": "wouldBeHighRiskReason",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/ANC_Registration_EngKan/case_would_be_high_risk_reason"
             },
             {
                 "name": "numberOfPregnancies",
@@ -88,39 +98,14 @@
                 "source": "eligible_couple.mother.complications"
             },
             {
-                "name": "otherComplications",
-                "bind": "/model/instance/ANC_Registration_EngKan/other_complication",
-                "source": "eligible_couple.mother.otherComplication"
-            },
-            {
                 "name": "medicalHistories",
                 "bind": "/model/instance/ANC_Registration_EngKan/medical_histories",
                 "source": "eligible_couple.mother.medicalHistories"
             },
             {
-                "name": "otherMedicalHistories",
-                "bind": "/model/instance/ANC_Registration_EngKan/other_medical_histories",
-                "source": "eligible_couple.mother.otherMedicalHistories"
-            },
-            {
                 "name": "bloodGroup",
                 "bind": "/model/instance/ANC_Registration_EngKan/w_blood_group",
                 "source": "eligible_couple.mother.bloodGroup"
-            },
-            {
-                "name": "isRHNegative",
-                "bind": "/model/instance/ANC_Registration_EngKan/w_rh_negative",
-                "source": "eligible_couple.mother.isRHNegative"
-            },
-            {
-                "name": "husbandBloodGroup",
-                "bind": "/model/instance/ANC_Registration_EngKan/h_blood_group",
-                "source": "eligible_couple.mother.husbandBloodGroup"
-            },
-            {
-                "name": "isRHIncompatibleCouple",
-                "bind": "/model/instance/ANC_Registration_EngKan/rh_incompatible_couple",
-                "source": "eligible_couple.mother.isRHIncompatibleCouple"
             },
             {
                 "name": "height",
@@ -130,16 +115,6 @@
                 "name": "weight",
                 "bind": "/model/instance/ANC_Registration_EngKan/weight_startofpregnancy",
                 "source": "eligible_couple.mother.weight"
-            },
-            {
-                "name": "isTobaccoUsed",
-                "bind": "/model/instance/ANC_Registration_EngKan/tobacco_use",
-                "source": "eligible_couple.mother.isTobaccoUsed"
-            },
-            {
-                "name": "tobaccoUser",
-                "bind": "/model/instance/ANC_Registration_EngKan/tobacco_user",
-                "source": "eligible_couple.mother.tobaccoUser"
             },
             {
                 "name": "isHighRiskTillDelivery",

@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "3",
+    "form_data_definition_version": "4",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/EC_Registration_EngKan/",
@@ -79,10 +79,6 @@
             {
                 "name": "alternatePhoneNumber",
                 "bind": "/model/instance/EC_Registration_EngKan/phone_no2"
-            },
-            {
-                "name": "alternatePhoneOwner",
-                "bind": "/model/instance/EC_Registration_EngKan/phone_owner2"
             },
             {
                 "name": "economicStatus",
@@ -229,10 +225,6 @@
             {
                 "name": "uptResult",
                 "bind": "/model/instance/EC_Registration_EngKan/upt_result"
-            },
-            {
-                "name": "sterilizationDoctorName",
-                "bind": "/model/instance/EC_Registration_EngKan/sterilization_doctor_name"
             },
             {
                 "name": "maleSterilizationType",

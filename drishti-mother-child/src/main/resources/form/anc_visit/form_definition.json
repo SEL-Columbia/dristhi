@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "2",
+    "form_data_definition_version": "3",
     "form": {
         "bind_type": "mother",
         "default_bind_path": "/model/instance/ANC_Visit_EngKan/",
@@ -130,6 +130,27 @@
             {
                 "name": "malpresentationOfFetusReason",
                 "bind": "/model/instance/ANC_Visit_EngKan/malpresentation"
+            },
+            {
+                "name": "isHighRiskTillDelivery",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/ANC_Visit_EngKan/case_is_high_risk_till_delivery",
+                "source": "mother.isHighRiskTillDelivery"
+            },
+            {
+                "name": "highRiskTillDeliveryReason",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/ANC_Visit_EngKan/case_is_high_risk_till_delivery_reason"
+            },
+            {
+                "name": "isHighRiskTillPNCClose",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/ANC_Visit_EngKan/case_is_high_risk_till_pnc_close"
+            },
+            {
+                "name": "highRiskTillPNCCloseReason",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/ANC_Visit_EngKan/case_is_high_risk_till_pnc_close_reason"
             },
             {
                 "name": "isHighRiskTillDelivery",

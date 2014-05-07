@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "1",
+    "form_data_definition_version": "2",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Family_Planning_Referral_Followup_EngKan/",
@@ -36,10 +36,6 @@
             {
                 "name": "referralPlace",
                 "bind": "/model/instance/Family_Planning_Referral_Followup_EngKan/referral_place"
-            },
-            {
-                "name": "otherReferralPlace",
-                "bind": "/model/instance/Family_Planning_Referral_Followup_EngKan/referral_place_other"
             },
             {
                 "name": "needsReferralFollowup",
