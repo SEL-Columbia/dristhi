@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class DeliveryOutcomeHandlerTest {
+public class PNCRegistrationHandlerTest {
     @Mock
     private ANCService ancService;
     @Mock
@@ -19,17 +19,17 @@ public class DeliveryOutcomeHandlerTest {
     @Mock
     private ChildService childService;
 
-    private DeliveryOutcomeHandler handler;
+    private PNCRegistrationHandler handler;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        handler = new DeliveryOutcomeHandler(ancService, pncService, childService);
+        handler = new PNCRegistrationHandler(ancService, pncService, childService);
     }
 
     @Test
     public void shouldDelegateFormSubmissionHandlingToBothANCAndPNCService() throws Exception {
-        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "delivery_outcome", "entity id 1", 0L, "1", null, 0L);
+        FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "pnc_registration", "entity id 1", 0L, "1", null, 0L);
 
         handler.handle(submission);
 

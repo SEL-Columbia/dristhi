@@ -31,7 +31,7 @@ import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.IMMUNIZ
 import static org.ei.drishti.common.AllConstants.CommonChildFormFields.GENDER;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE;
-import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
+import static org.ei.drishti.common.AllConstants.PNCRegistrationFields.*;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
@@ -306,6 +306,6 @@ public class PNCService {
     }
 
     private boolean isDeliveryOutcomeStillBirth(FormSubmission submission) {
-        return AllConstants.DeliveryOutcomeFields.STILL_BIRTH_VALUE.equalsIgnoreCase(submission.getField(AllConstants.DeliveryOutcomeFields.DELIVERY_OUTCOME));
+        return AllConstants.PNCRegistrationFields.STILL_BIRTH_VALUE.equalsIgnoreCase(submission.getField(DELIVERY_OUTCOME));
     }
 }

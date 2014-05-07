@@ -28,8 +28,7 @@ import static org.ei.drishti.common.AllConstants.ANCFormFields.THAYI_CARD_NUMBER
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.*;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.*;
-import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DELIVERY_PLACE;
-import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DID_BREAST_FEEDING_START;
+import static org.ei.drishti.common.AllConstants.PNCRegistrationFields.*;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_PROBLEMS;
 import static org.ei.drishti.common.AllConstants.VitaminAFields.VITAMIN_A_DOSE_PREFIX;
 
@@ -64,7 +63,7 @@ public class ChildService {
             return;
         }
 
-        SubFormData subFormData = submission.getSubFormByName(AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME);
+        SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
         if (handleStillBirth(submission, subFormData)) return;
 
         String referenceDate = submission.getField(REFERENCE_DATE);
@@ -99,7 +98,7 @@ public class ChildService {
     }
 
     private boolean isDeliveryOutcomeStillBirth(FormSubmission submission) {
-        return AllConstants.DeliveryOutcomeFields.STILL_BIRTH_VALUE.equalsIgnoreCase(submission.getField(AllConstants.DeliveryOutcomeFields.DELIVERY_OUTCOME));
+        return AllConstants.PNCRegistrationFields.STILL_BIRTH_VALUE.equalsIgnoreCase(submission.getField(DELIVERY_OUTCOME));
     }
 
     public void registerChildrenForEC(FormSubmission submission) {

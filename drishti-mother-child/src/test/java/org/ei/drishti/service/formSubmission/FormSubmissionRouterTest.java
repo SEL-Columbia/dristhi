@@ -44,7 +44,7 @@ public class FormSubmissionRouterTest {
     @Mock
     private HbTestHandler hbTestHandler;
     @Mock
-    private DeliveryOutcomeHandler deliveryOutcomeHandler;
+    private PNCRegistrationHandler pncRegistrationHandler;
     @Mock
     private PNCRegistrationOAHandler pncRegistrationOAHandler;
     @Mock
@@ -96,7 +96,7 @@ public class FormSubmissionRouterTest {
                 ttHandler,
                 ifaHandler,
                 hbTestHandler,
-                deliveryOutcomeHandler,
+                pncRegistrationHandler,
                 pncRegistrationOAHandler,
                 pncCloseHandler,
                 pncVisitHandler,
@@ -279,13 +279,13 @@ public class FormSubmissionRouterTest {
 
     @Test
     public void shouldDelegateDeliveryOutcomeTestFormSubmissionHandlingToDeliveryOutcomeHandler() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "delivery_outcome", "entity id 1", 0L, "1", null, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "pnc_registration", "entity id 1", 0L, "1", null, 0L);
         when(formSubmissionsRepository.findByInstanceId("instance id 1")).thenReturn(formSubmission);
 
         router.route("instance id 1");
 
         verify(formSubmissionsRepository).findByInstanceId("instance id 1");
-        verify(deliveryOutcomeHandler).handle(formSubmission);
+        verify(pncRegistrationHandler).handle(formSubmission);
         verify(formSubmissionReportService).reportFor(formSubmission);
     }
 

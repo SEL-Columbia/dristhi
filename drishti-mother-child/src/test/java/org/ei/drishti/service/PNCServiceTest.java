@@ -68,7 +68,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "ec id 1", "1234567"));
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
@@ -87,7 +87,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         when(allMothers.exists("mother id 1")).thenReturn(false);
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
@@ -105,7 +105,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         when(allMothers.exists("mother id 1")).thenReturn(true);
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
@@ -124,7 +124,7 @@ public class PNCServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         when(allMothers.exists("mother id 1")).thenReturn(true);
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
@@ -146,7 +146,7 @@ public class PNCServiceTest extends BaseUnitTest {
         when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple("ec id 1", "123"));
 
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
@@ -175,7 +175,7 @@ public class PNCServiceTest extends BaseUnitTest {
         when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple("ec id 1", "123"));
 
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
@@ -218,7 +218,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldUpdateMotherWithChildrenDetailsWhenDeliveryOutcome() {
         when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "ec id 1", "tc 1"));
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
@@ -317,7 +317,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldNotAddChildrenDetailsInTheCaseOfStillBirthDuringDeliveryOutcome() throws Exception {
         when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "ec id 1", "tc 1"));
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")

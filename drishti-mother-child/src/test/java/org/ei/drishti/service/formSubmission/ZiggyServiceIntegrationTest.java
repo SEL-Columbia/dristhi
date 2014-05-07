@@ -62,7 +62,7 @@ public class ZiggyServiceIntegrationTest {
     @Mock
     private HbTestHandler hbTestHandler;
     @Mock
-    private DeliveryOutcomeHandler deliveryOutcomeHandler;
+    private PNCRegistrationHandler pncRegistrationHandler;
     @Mock
     private PNCRegistrationOAHandler pncRegistrationOAHandler;
     @Mock
@@ -112,7 +112,7 @@ public class ZiggyServiceIntegrationTest {
                 new FormSubmissionRouter(formSubmissionsRepository, ecRegistrationHandler, fpComplicationsHandler,
                         fpChangeHandler, renewFPProductHandler, fpFollowupHandler, fpReferralFollowupHandler,
                         ecCloseHandler, ancRegistrationHandler, ancRegistrationOAHandler, ancVisitHandler,
-                        ancCloseHandler, ttHandler, ifaHandler, hbTestHandler, deliveryOutcomeHandler, pncRegistrationOAHandler,
+                        ancCloseHandler, ttHandler, ifaHandler, hbTestHandler, pncRegistrationHandler, pncRegistrationOAHandler,
                         pncCloseHandler, pncVisitHandler, childRegistrationECHandler, childRegistrationOAHandler, vitaminAHandler,
                         childImmunizationsHandler, childIllnessHandler, childCloseHandler,
                         deliveryPlanHandler, postpartumFamilyPlanningHandler, recordECPsHandler,

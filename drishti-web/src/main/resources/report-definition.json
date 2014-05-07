@@ -1557,7 +1557,7 @@
             ]
         },
         {
-            "form": "delivery_outcome",
+            "form": "pnc_registration",
             "indicators": [
                 {
                     "indicator": "ANCS_AND_PNCS_WITH_BPL",

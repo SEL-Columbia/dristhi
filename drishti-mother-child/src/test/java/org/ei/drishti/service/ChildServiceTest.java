@@ -74,7 +74,7 @@ public class ChildServiceTest extends BaseUnitTest {
         when(allChildren.findByCaseId("child id 1")).thenReturn(firstChild);
         when(allChildren.findByCaseId("child id 2")).thenReturn(secondChild);
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
@@ -100,7 +100,7 @@ public class ChildServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("deliveryOutcome", "still_birth")
@@ -127,7 +127,7 @@ public class ChildServiceTest extends BaseUnitTest {
         when(allChildren.findByCaseId("child id 1")).thenReturn(firstChild);
         when(allChildren.findByCaseId("child id 2")).thenReturn(secondChild);
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")
@@ -153,7 +153,7 @@ public class ChildServiceTest extends BaseUnitTest {
         mockCurrentDate(currentTime);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(null);
         FormSubmission submission = create()
-                .withFormName("delivery_outcome")
+                .withFormName("pnc_registration")
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("referenceDate", "2012-01-01")

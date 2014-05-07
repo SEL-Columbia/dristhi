@@ -56,7 +56,7 @@
         "ttInjectionPlace",
         "ttDate"
     ],
-    "delivery_outcome": [
+    "pnc_registration": [
         "id",
         "deliveryOutcome",
         "referenceDate",
