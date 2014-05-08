@@ -73,7 +73,7 @@ public class RegisterController {
 
     @RequestMapping(method = GET, value = "/registers/fp")
     @ResponseBody
-    public ResponseEntity<FPRegisterDTO> getFPRegister(String anmIdentifier) {
+    public ResponseEntity<FPRegisterDTO> getFPRegister(@RequestParam("anm-id") String anmIdentifier) {
         FPRegister fpRegister = fpRegisterService.getRegisterForANM(anmIdentifier);
         return new ResponseEntity<>(fpRegisterMapper.mapToDTO(fpRegister), HttpStatus.OK);
 

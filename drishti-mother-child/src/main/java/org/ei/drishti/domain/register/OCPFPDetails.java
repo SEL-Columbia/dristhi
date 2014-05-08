@@ -31,11 +31,6 @@ public class OCPFPDetails {
         this.uptResult = uptResult;
     }
 
-    public OCPFPDetails(String fpAcceptanceDate, List<Map<String, String>> refills) {
-        this.fpAcceptanceDate = fpAcceptanceDate;
-        this.refills = refills;
-    }
-
     public String fpAcceptanceDate() {
         return fpAcceptanceDate;
     }

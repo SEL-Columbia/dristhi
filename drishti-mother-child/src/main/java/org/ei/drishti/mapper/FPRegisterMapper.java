@@ -41,7 +41,9 @@ public class FPRegisterMapper {
                                         .withHusbandEducationLevel(entry.husbandEducationLevel())
                                         .withFpDetails(new IUDFPDetailsDTO(
                                                 entry.fpDetails().fpAcceptanceDate(),
-                                                entry.fpDetails().iudPlace()
+                                                entry.fpDetails().iudPlace(),
+                                                entry.fpDetails().lmpDate(),
+                                                entry.fpDetails().uptResult()
                                         ));
                             }
                         });
@@ -62,7 +64,7 @@ public class FPRegisterMapper {
                                 .withNumberOfLivingFemaleChildren(entry.numberOfLivingFemaleChildren())
                                 .withWifeEducationLevel(entry.wifeEducationLevel())
                                 .withHusbandEducationLevel(entry.husbandEducationLevel())
-                                .withFpDetailsDTO(new RefillableFPDetailsDTO(
+                                .withFpDetails(new CondomFPDetailsDTO(
                                         entry.fpDetails().fpAcceptanceDate(),
                                         entry.fpDetails().refills())
                                 );
@@ -86,9 +88,11 @@ public class FPRegisterMapper {
                                 .withNumberOfLivingFemaleChildren(entry.numberOfLivingFemaleChildren())
                                 .withWifeEducationLevel(entry.wifeEducationLevel())
                                 .withHusbandEducationLevel(entry.husbandEducationLevel())
-                                .withFpDetailsDTO(new RefillableFPDetailsDTO(
+                                .withFpDetails(new OCPFPDetailsDTO(
                                         entry.fpDetails().fpAcceptanceDate(),
-                                        entry.fpDetails().refills())
+                                        entry.fpDetails().refills(),
+                                        entry.fpDetails().lmpDate(),
+                                        entry.fpDetails().uptResult())
                                 );
                     }
                 });
@@ -111,7 +115,7 @@ public class FPRegisterMapper {
                                 .withNumberOfLivingFemaleChildren(entry.numberOfLivingFemaleChildren())
                                 .withWifeEducationLevel(entry.wifeEducationLevel())
                                 .withHusbandEducationLevel(entry.husbandEducationLevel())
-                                .withFpDetailsDTO(new SterilizationFPDetailsDTO(
+                                .withFpDetails(new MaleSterilizationFPDetailsDTO(
                                         entry.fpDetails().typeOfSterilization(),
                                         entry.fpDetails().sterilizationDate(),
                                         entry.fpDetails().followupVisitDates()));
@@ -136,7 +140,7 @@ public class FPRegisterMapper {
                                 .withNumberOfLivingFemaleChildren(entry.numberOfLivingFemaleChildren())
                                 .withWifeEducationLevel(entry.wifeEducationLevel())
                                 .withHusbandEducationLevel(entry.husbandEducationLevel())
-                                .withFpDetailsDTO(new SterilizationFPDetailsDTO(
+                                .withFpDetails(new FemaleSterilizationFPDetailsDTO(
                                         entry.fpDetails().typeOfSterilization(),
                                         entry.fpDetails().sterilizationDate(),
                                         entry.fpDetails().followupVisitDates()

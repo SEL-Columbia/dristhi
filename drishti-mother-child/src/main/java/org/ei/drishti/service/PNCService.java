@@ -4,8 +4,8 @@ import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
-import org.ei.drishti.domain.register.*;
 import org.ei.drishti.domain.PNCVisit;
+import org.ei.drishti.domain.register.*;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.domain.SubFormData;
 import org.ei.drishti.repository.AllChildren;
@@ -34,16 +34,12 @@ import static org.ei.drishti.common.AllConstants.CommonFormFields.REFERENCE_DATE
 import static org.ei.drishti.common.AllConstants.PNCRegistrationFields.*;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
-import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
-import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
+import static org.ei.drishti.common.AllConstants.Form.*;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_OF_MOTHER_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.PERMANENT_RELOCATION_VALUE;
-import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATES_FIELD_NAME;
-import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.*;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.QUANTITY;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATE;
-import static org.ei.drishti.common.AllConstants.Form.*;
-import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.*;
 import static org.ei.drishti.common.util.EasyMap.create;
 
 @Service
@@ -266,7 +262,7 @@ public class PNCService {
 
     private EligibleCouple updateECWithIUDFPDetails(EligibleCouple eligibleCouple, String place, String date) {
         List<IUDFPDetails> iudFPDetails = eligibleCouple.iudFPDetails();
-        iudFPDetails.add(new IUDFPDetails(date, place));
+        iudFPDetails.add(new IUDFPDetails(date, place, null, null));
         return eligibleCouple.withIUDFPDetails(iudFPDetails);
     }
 
@@ -282,7 +278,7 @@ public class PNCService {
         refill.put(QUANTITY, submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME));
         List<Map<String, String>> refills = new ArrayList<>();
         refills.add(refill);
-        return new OCPFPDetails(fpAcceptanceDate, refills);
+        return new OCPFPDetails(fpAcceptanceDate, refills, null,null);
     }
 
     private CondomFPDetails getCondomFPDetails(FormSubmission submission, String fpAcceptanceDate) {

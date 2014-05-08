@@ -27,11 +27,6 @@ public class IUDFPDetails {
         this.uptResult = uptResult;
     }
 
-    public IUDFPDetails(String fpAcceptanceDate, String iudPlace) {
-        this.fpAcceptanceDate = fpAcceptanceDate;
-        this.iudPlace = iudPlace;
-    }
-
     public String fpAcceptanceDate() {
         return fpAcceptanceDate;
     }

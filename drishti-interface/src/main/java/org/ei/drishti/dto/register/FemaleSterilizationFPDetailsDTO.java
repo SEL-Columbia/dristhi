@@ -6,17 +6,19 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
-import java.util.Map;
 
-public class RefillableFPDetailsDTO {
+public class FemaleSterilizationFPDetailsDTO {
     @JsonProperty
-    private String fpAcceptanceDate;
+    private String typeOfSterilization;
     @JsonProperty
-    private List<Map<String, String>> refills;
+    private String sterilizationDate;
+    @JsonProperty
+    private List<String> followupVisitDates;
 
-    public RefillableFPDetailsDTO(String fpAcceptanceDate, List<Map<String, String>> refills) {
-        this.fpAcceptanceDate = fpAcceptanceDate;
-        this.refills = refills;
+    public FemaleSterilizationFPDetailsDTO(String typeOfSterilization, String sterilizationDate, List<String> followupVisitDates) {
+        this.typeOfSterilization = typeOfSterilization;
+        this.sterilizationDate = sterilizationDate;
+        this.followupVisitDates = followupVisitDates;
     }
 
     @Override

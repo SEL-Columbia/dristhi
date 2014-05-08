@@ -5,21 +5,18 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class IUDFPDetailsDTO {
+import java.util.List;
+import java.util.Map;
+
+public class CondomFPDetailsDTO {
     @JsonProperty
     private String fpAcceptanceDate;
     @JsonProperty
-    private String iudPlace;
-    @JsonProperty
-    private String lmpDate;
-    @JsonProperty
-    private String uptResult;
+    private List<Map<String, String>> refills;
 
-    public IUDFPDetailsDTO(String fpAcceptanceDate, String iudPlace, String lmpDate, String uptResult) {
+    public CondomFPDetailsDTO(String fpAcceptanceDate, List<Map<String, String>> refills) {
         this.fpAcceptanceDate = fpAcceptanceDate;
-        this.iudPlace = iudPlace;
-        this.lmpDate = lmpDate;
-        this.uptResult = uptResult;
+        this.refills = refills;
     }
 
     @Override

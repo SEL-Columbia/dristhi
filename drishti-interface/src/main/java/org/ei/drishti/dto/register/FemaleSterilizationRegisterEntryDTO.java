@@ -33,7 +33,7 @@ public class FemaleSterilizationRegisterEntryDTO {
     @JsonProperty
     private String husbandEducationLevel;
     @JsonProperty
-    private SterilizationFPDetailsDTO fpDetailsDTO;
+    private FemaleSterilizationFPDetailsDTO fpDetails;
 
     public String ecNumber() {
         return ecNumber;
@@ -87,8 +87,8 @@ public class FemaleSterilizationRegisterEntryDTO {
         return husbandEducationLevel;
     }
 
-    public SterilizationFPDetailsDTO fpDetails() {
-        return fpDetailsDTO;
+    public FemaleSterilizationFPDetailsDTO fpDetails() {
+        return fpDetails;
     }
 
     public FemaleSterilizationRegisterEntryDTO withEcNumber(String ecNumber) {
@@ -156,8 +156,8 @@ public class FemaleSterilizationRegisterEntryDTO {
         return this;
     }
 
-    public FemaleSterilizationRegisterEntryDTO withFpDetailsDTO(SterilizationFPDetailsDTO fpDetails) {
-        this.fpDetailsDTO = fpDetails;
+    public FemaleSterilizationRegisterEntryDTO withFpDetails(FemaleSterilizationFPDetailsDTO fpDetails) {
+        this.fpDetails = fpDetails;
         return this;
     }
 

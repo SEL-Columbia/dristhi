@@ -289,8 +289,8 @@ public class ECServiceTest {
         List<Map<String, String>> refillsForSecondOCPFPDetail = new ArrayList<>();
         refillsForSecondOCPFPDetail.add(create("date", "2011-01-01").put("quantity", "10").map());
         List<OCPFPDetails> ocpFPDetails = new ArrayList<>();
-        ocpFPDetails.add(new OCPFPDetails("2010-01-01", refillsForFirstOCPFPDetail));
-        ocpFPDetails.add(new OCPFPDetails("2011-01-01", refillsForSecondOCPFPDetail));
+        ocpFPDetails.add(new OCPFPDetails("2010-01-01", refillsForFirstOCPFPDetail, null, null));
+        ocpFPDetails.add(new OCPFPDetails("2011-01-01", refillsForSecondOCPFPDetail, null, null));
         EligibleCouple ec = new EligibleCouple("entity id 1", "EC Number 1")
                 .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
                 .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
@@ -316,8 +316,8 @@ public class ECServiceTest {
         expectedRefillsForSecondOCPFPDetail.add(create("date", "2011-01-01").put("quantity", "10").map());
         expectedRefillsForSecondOCPFPDetail.add(create("date", "2011-01-01").put("quantity", "15").map());
         List<OCPFPDetails> expectedOCPDetails = new ArrayList<>();
-        expectedOCPDetails.add(new OCPFPDetails("2010-01-01", expectedRefillsForFirstOCPFPDetail));
-        expectedOCPDetails.add(new OCPFPDetails("2011-01-01", expectedRefillsForSecondOCPFPDetail));
+        expectedOCPDetails.add(new OCPFPDetails("2010-01-01", expectedRefillsForFirstOCPFPDetail,null,null));
+        expectedOCPDetails.add(new OCPFPDetails("2011-01-01", expectedRefillsForSecondOCPFPDetail,null,null));
         EligibleCouple expectedEC = new EligibleCouple("entity id 1", "EC Number 1")
                 .withIUDFPDetails(Collections.<IUDFPDetails>emptyList())
                 .withCondomFPDetails(Collections.<CondomFPDetails>emptyList())
