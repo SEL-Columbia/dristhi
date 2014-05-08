@@ -128,11 +128,20 @@ public class PNCService {
         mother.withAnm(submission.anmId());
         addChildrenDetailsToMother(submission, submission.getSubFormByName(CHILD_REGISTRATION_OA), mother);
         allMothers.update(mother);
+
+        updateEligibleCouple(submission, mother);
+
         if (BOOLEAN_TRUE_VALUE.equals(submission.getField(DID_WOMAN_SURVIVE))) {
             pncSchedulesService.deliveryOutcome(mother.caseId(), submission.getField(REFERENCE_DATE));
         }
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         motherReportingService.pncRegistrationOA(new SafeMap(submission.getFields(reportFields)));
+    }
+
+    private void updateEligibleCouple(FormSubmission submission, Mother mother) {
+        EligibleCouple eligibleCouple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        eligibleCouple.withANMIdentifier(submission.anmId());
+        allEligibleCouples.update(eligibleCouple);
     }
 
     public void close(FormSubmission submission) {

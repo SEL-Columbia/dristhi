@@ -200,6 +200,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple("ec id 1", "123"));
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .withANMId("anm id 1")
@@ -212,6 +213,26 @@ public class PNCServiceTest extends BaseUnitTest {
         service.pncRegistrationOA(submission);
 
         verify(allMothers).update(new Mother("mother id 1", "ec id 1", "tc 1").withAnm("anm id 1"));
+    }
+
+    @Test
+    public void shouldUpdateANMInformationOfEligibleCoupleWhenOAPNCIsRegistered() {
+        DateTime currentTime = DateUtil.now();
+        mockCurrentDate(currentTime);
+        when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple("ec id 1", "123"));
+        FormSubmission submission = create()
+                .withFormName("pnc_registration_oa")
+                .withANMId("anm id 1")
+                .withEntityId("ec id 1")
+                .addFormField("referenceDate", "2012-01-01")
+                .addFormField("didWomanSurvive", "yes")
+                .withSubForm(new SubFormData("child_registration_oa", Collections.<Map<String, String>>emptyList()))
+                .build();
+
+        service.pncRegistrationOA(submission);
+
+        verify(allEligibleCouples).update(new EligibleCouple("ec id 1", "123").withANMIdentifier("anm id 1"));
     }
 
     @Test
@@ -256,6 +277,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldUpdateMotherWithChildrenDetailsWhenPNCRegistrationOA() {
         when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple("ec id 1", "123"));
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .withANMId("anm id 1")
@@ -296,6 +318,7 @@ public class PNCServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotAddChildrenDetailsInTheCaseOfStillBirthDuringPNCRegistrationOA() throws Exception {
         when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple("ec id 1", "123"));
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .withANMId("anm id 1")
@@ -337,6 +360,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple("ec id 1", "123"));
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .withANMId("anm id 1")
@@ -375,6 +399,7 @@ public class PNCServiceTest extends BaseUnitTest {
         DateTime currentTime = DateUtil.now();
         mockCurrentDate(currentTime);
         when(allMothers.findByEcCaseId("ec id 1")).thenReturn(asList(new Mother("mother id 1", "ec id 1", "tc 1")));
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple("ec id 1", "123"));
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
                 .withANMId("anm id 1")
@@ -626,6 +651,7 @@ public class PNCServiceTest extends BaseUnitTest {
     public void shouldReportPNCRegistrationOA() throws Exception {
         when(reportFieldsDefinition.get("pnc_registration_oa")).thenReturn(asList("some-key"));
         when(allMothers.findByEcCaseId("entity id 1")).thenReturn(asList(new Mother("entity id 1", "ec id 1", "tc 1")));
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(new EligibleCouple("ec id 1", "123"));
 
         FormSubmission submission = create()
                 .withFormName("pnc_registration_oa")
