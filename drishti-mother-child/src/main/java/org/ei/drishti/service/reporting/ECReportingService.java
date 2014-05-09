@@ -57,7 +57,12 @@ public class ECReportingService {
             return;
         }
 
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(ec.anmIdentifier(), ec.ecNumber(),
+        String externalId = ec.ecNumber();
+        if (externalId == null) {
+            externalId = reportData.get(AllConstants.ReportDataParameters.EXTERNAL_ID);
+        }
+
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData(ec.anmIdentifier(), externalId,
                 indicator, serviceProvidedDate, new Location(ec.village(), ec.subCenter(), ec.phc()));
         ReportingData anmReportData = ReportingData.anmReportData(ec.anmIdentifier(), reportData.get(ID), indicator,
                 serviceProvidedDate);

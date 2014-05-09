@@ -1895,11 +1895,13 @@
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
                     "quantityField": "numberOfOCPDelivered",
+                    "externalIdField": "thayiCardNumber",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
                         "numberOfOCPDelivered",
-                        "currentMethod"
+                        "currentMethod",
+                        "thayiCardNumber"
                     ],
                     "reportWhen": [
                         "CurrentFPMethodIsOCPRule",
@@ -1912,11 +1914,13 @@
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
                     "quantityField": "numberOfCondomsSupplied",
+                    "externalIdField": "thayiCardNumber",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
                         "numberOfCondomsSupplied",
-                        "currentMethod"
+                        "currentMethod",
+                        "thayiCardNumber"
                     ],
                     "reportWhen": [
                         "CurrentFPMethodIsCondomRule",
@@ -1929,11 +1933,13 @@
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
                     "quantityField": "numberOfCentchromanPillsDelivered",
+                    "externalIdField": "thayiCardNumber",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
                         "numberOfCentchromanPillsDelivered",
-                        "currentMethod"
+                        "currentMethod",
+                        "thayiCardNumber"
                     ],
                     "reportWhen": [
                         "CurrentFPMethodIsCentchromanRule",
@@ -1945,10 +1951,12 @@
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
+                    "externalIdField": "thayiCardNumber",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
-                        "currentMethod"
+                        "currentMethod",
+                        "thayiCardNumber"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
@@ -1967,10 +1975,12 @@
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
+                    "externalIdField": "thayiCardNumber",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
-                        "currentMethod"
+                        "currentMethod",
+                        "thayiCardNumber"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
@@ -1989,10 +1999,12 @@
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
+                    "externalIdField": "thayiCardNumber",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
-                        "currentMethod"
+                        "currentMethod",
+                        "thayiCardNumber"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
@@ -2010,10 +2022,12 @@
                     "indicator": "FS_APL",
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "externalIdField": "thayiCardNumber",
                     "formFields": [
                         "id",
                         "currentMethod",
-                        "familyPlanningMethodChangeDate"
+                        "familyPlanningMethodChangeDate",
+                        "thayiCardNumber"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
@@ -2033,10 +2047,12 @@
                     "indicator": "FS_BPL",
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "externalIdField": "thayiCardNumber",
                     "formFields": [
                         "id",
                         "currentMethod",
-                        "familyPlanningMethodChangeDate"
+                        "familyPlanningMethodChangeDate",
+                        "thayiCardNumber"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",

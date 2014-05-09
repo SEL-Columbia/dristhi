@@ -301,4 +301,20 @@ public class ECReportingServiceTest {
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.CONDOM_QTY, "2013-01-01",
                 new Location("bherya", "Sub Center", "PHC X")).withQuantity("10"));
     }
+
+    @Test
+    public void shouldUseExternalIdIfECNumberIsNotAvailable() throws Exception {
+        EligibleCouple ec = new EligibleCouple("EC CASE 1", null).withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X");
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(ec);
+
+        SafeMap reportData = new SafeMap(
+                create("id", "EC CASE 1")
+                        .put("familyPlanningMethodChangeDate", "2013-01-01")
+                        .put("externalId", "external id 1")
+                        .map());
+        service.reportIndicator(reportData, ec, Indicator.CONDOM_QTY, reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
+
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "external id 1", Indicator.CONDOM_QTY, "2013-01-01",
+                new Location("bherya", "Sub Center", "PHC X")));
+    }
 }

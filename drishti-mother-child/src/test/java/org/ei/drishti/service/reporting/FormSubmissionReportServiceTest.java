@@ -166,6 +166,49 @@ public class FormSubmissionReportServiceTest {
     }
 
     @Test
+    public void shouldReportEWhenExternalIdFieldIsThereInTheIndicatorDefinition() throws Exception {
+        FormSubmission submission = create()
+                .withFormName("postpartum_family_planning")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("ecId", "ec id 1")
+                .addFormField("submissionDate", "2012-03-01")
+                .addFormField("numberOfCondomsSupplied", "10")
+                .addFormField("familyPlanningMethodChangeDate", "2013-01-01")
+                .addFormField("thayiCardNumber", "thayi card no 1")
+                .build();
+        Location location = new Location("bherya", "Sub Center", "PHC X");
+        SafeMap reportData = new SafeMap().put("submissionDate", submission.getField("submissionDate"))
+                .put("id", submission.entityId())
+                .put("externalId", "thayi card no 1")
+                .put("ecId", "ec id 1")
+                .put("thayiCardNumber", "thayi card no 1")
+                .put("externalId", submission.getField("thayiCardNumber"));
+
+        Map<String, String> expectedReportFields = EasyMap
+                .create("id", "mother id 1")
+                .put("serviceProvidedDate", "2012-03-01")
+                .put("externalId", "thayi card no 1")
+                .put("thayiCardNumber", "thayi card no 1")
+                .put("ecId", "ec id 1")
+                .map();
+
+        when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
+        when(rule.apply(any(SafeMap.class))).thenReturn(true);
+        when(reportDefinitionLoader.load()).thenReturn(reportDefinitionWithExternalId());
+        when(referenceDataRepository.getReferenceData(any(FormSubmission.class), any(ReferenceData.class)))
+                .thenReturn(new SafeMap());
+        when(reporterFactory.reporterFor("eligible_couple")).thenReturn(reporter);
+        when(locationLoader.loadLocationFor("eligible_couple", "ec id 1")).thenReturn(location);
+
+        service.reportFor(submission);
+
+        verify(rule).apply(new SafeMap(expectedReportFields));
+        verify(locationLoader).loadLocationFor("eligible_couple", "ec id 1");
+        verify(reporter).report("ec id 1", "CONDOM_QTY", location, "2012-03-01", reportData);
+    }
+
+    @Test
     public void shouldReportWhenReferenceDataDefinitionIsNotSpecified() throws Exception {
         FormSubmission submission = create()
                 .withFormName("child_close")
@@ -263,8 +306,11 @@ public class FormSubmissionReportServiceTest {
                                                 asList("id", "motherId"),
                                                 new ReferenceData("eligible_couple", "id", null),
                                                 asList("IsJsyBeneficiaryRule", "ServiceProvidedAtSubCenterRule"),
-                                                "registrationPlace").withReportEntityIdField("motherId")
-                                ))));
+                                                "registrationPlace", null).withReportEntityIdField("motherId")
+                                )
+                        )
+                )
+        );
     }
 
     private ReportDefinition reportDefinition() {
@@ -280,7 +326,11 @@ public class FormSubmissionReportServiceTest {
                                                 asList("id", "closeReason", "submissionDate"),
                                                 new ReferenceData("child", "id", asList("dateOfBirth")),
                                                 asList("IsChildLessThanOneYearOldRule", "RelocationIsPermanentRule"),
-                                                null)))));
+                                                null, null)
+                                )
+                        )
+                )
+        );
     }
 
     private ReportDefinition reportDefinitionWithCondomQuantity() {
@@ -296,7 +346,31 @@ public class FormSubmissionReportServiceTest {
                                                 asList("id", "numberOfCondomsSupplied", "familyPlanningMethodChangeDate"),
                                                 new ReferenceData("eligible_couple", "caseId", asList("currentMethod")),
                                                 asList("CurrentFPMethodIsCondomRule"),
-                                                null)))));
+                                                null, null)
+                                )
+                        )
+                )
+        );
+    }
+
+    private ReportDefinition reportDefinitionWithExternalId() {
+        return new ReportDefinition(
+                asList(
+                        new FormIndicator("postpartum_family_planning",
+                                asList(
+                                        new ReportIndicator(
+                                                "CONDOM_QTY",
+                                                "eligible_couple",
+                                                null,
+                                                null,
+                                                asList("id", "thayiCardNumber", "ecId"),
+                                                null,
+                                                asList("CurrentFPMethodIsCondomRule"),
+                                                null, "thayiCardNumber").withReportEntityIdField("ecId")
+                                )
+                        )
+                )
+        );
     }
 
     private ReportDefinition reportDefinitionWithReportEntityFieldSpecified() {
@@ -312,10 +386,12 @@ public class FormSubmissionReportServiceTest {
                                                 asList("id", "motherId"),
                                                 new ReferenceData("eligible_couple", "id", null),
                                                 asList("IsJsyBeneficiaryRule", "ServiceProvidedAtSubCenterRule"),
-                                                null).withReportEntityIdField("motherId")
-                                ))));
+                                                null, null).withReportEntityIdField("motherId")
+                                )
+                        )
+                )
+        );
     }
-
 
 
     private ReportDefinition reportDefinitionWithoutReferenceDataDefinition() {
@@ -331,6 +407,10 @@ public class FormSubmissionReportServiceTest {
                                                 asList("id", "closeReason", "submissionDate"),
                                                 null,
                                                 asList("IsChildLessThanOneYearOldRule", "RelocationIsPermanentRule"),
-                                                null)))));
+                                                null, null)
+                                )
+                        )
+                )
+        );
     }
 }

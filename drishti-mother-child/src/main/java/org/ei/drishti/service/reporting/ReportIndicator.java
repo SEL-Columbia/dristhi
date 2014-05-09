@@ -16,13 +16,14 @@ public class ReportIndicator {
     private ReferenceData referenceData;
     private List<String> reportWhen;
     private String reportEntityIdField;
+    private String externalIdField;
 
     public ReportIndicator(String indicator) {
         this.indicator = indicator;
     }
 
     public ReportIndicator(String indicator, String reportEntityType, String quantityField, String serviceProvidedDateField,
-                           List<String> formFields, ReferenceData referenceData, List<String> reportWhen, String serviceProvidedPlaceField) {
+                           List<String> formFields, ReferenceData referenceData, List<String> reportWhen, String serviceProvidedPlaceField, String externalIdField) {
         this.indicator = indicator;
         this.reportEntityType = reportEntityType;
         this.serviceProvidedDateField = serviceProvidedDateField;
@@ -31,6 +32,7 @@ public class ReportIndicator {
         this.formFields = formFields;
         this.referenceData = referenceData;
         this.reportWhen = reportWhen;
+        this.externalIdField = externalIdField;
     }
 
     public String indicator() {
@@ -69,7 +71,11 @@ public class ReportIndicator {
         return reportEntityIdField;
     }
 
-    public ReportIndicator  withReportEntityIdField(String reportEntityIdField) {
+    public String externalIdField() {
+        return externalIdField;
+    }
+
+    public ReportIndicator withReportEntityIdField(String reportEntityIdField) {
         this.reportEntityIdField = reportEntityIdField;
         return this;
     }
