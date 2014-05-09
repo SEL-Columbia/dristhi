@@ -22,7 +22,7 @@ import static java.lang.Integer.parseInt;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.*;
-import static org.ei.drishti.common.AllConstants.PNCRegistrationFields.*;
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;

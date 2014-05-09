@@ -426,13 +426,13 @@ public class ANCServiceTest {
     @Test
     public void shouldHandleDeliveryOutcome() {
         FormSubmission submission = create()
-                .withFormName("pnc_registration")
+                .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
                 .withEntityId("entity id 1")
                 .addFormField("someKey", "someValue")
                 .build();
         when(allMothers.exists("entity id 1")).thenReturn(true);
-        when(reportFieldsDefinition.get("pnc_registration")).thenReturn(asList("someKey"));
+        when(reportFieldsDefinition.get("delivery_outcome")).thenReturn(asList("someKey"));
 
         service.deliveryOutcome(submission);
 

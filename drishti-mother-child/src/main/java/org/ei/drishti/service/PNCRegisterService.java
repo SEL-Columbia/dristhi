@@ -15,7 +15,7 @@ import java.util.List;
 
 import static ch.lambdaj.Lambda.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
-import static org.ei.drishti.common.AllConstants.PNCRegistrationFields.*;
+import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.*;
 import static org.ei.drishti.common.AllConstants.ECRegistrationFields.HOUSEHOLD_ADDRESS;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;

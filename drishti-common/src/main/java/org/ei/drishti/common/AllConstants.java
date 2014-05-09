@@ -34,7 +34,7 @@ public class AllConstants {
         public static final String ANC_CLOSE = "anc_close";
         public static final String IFA = "ifa";
         public static final String HB_TEST = "hb_test";
-        public static final String PNC_REGISTRATION = "pnc_registration";
+        public static final String DELIVERY_OUTCOME = "delivery_outcome";
         public static final String DELIVERY_PLAN = "delivery_plan";
         public static final String PNC_REGISTRATION_OA = "pnc_registration_oa";
         public static final String PNC_CLOSE = "pnc_close";
@@ -119,7 +119,7 @@ public class AllConstants {
 
     }
 
-    public static class PNCRegistrationFields {
+    public static class DeliveryOutcomeFields {
         public static final String DELIVERY_OUTCOME = "deliveryOutcome";
         public static final String DELIVERY_PLACE = "deliveryPlace";
         public static final String DID_WOMAN_SURVIVE = "didWomanSurvive";

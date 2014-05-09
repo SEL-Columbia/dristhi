@@ -39,7 +39,7 @@ public class FormSubmissionRouter {
                                 TTHandler ttHandler,
                                 IFAHandler ifaHandler,
                                 HbTestHandler hbTestHandler,
-                                PNCRegistrationHandler pncRegistrationHandler,
+                                DeliveryOutcomeHandler deliveryOutcomeHandler,
                                 PNCRegistrationOAHandler pncRegistrationOAHandler,
                                 PNCCloseHandler pncCloseHandler,
                                 PNCVisitHandler pncVisitHandler,
@@ -74,7 +74,7 @@ public class FormSubmissionRouter {
                 .put(TT_2, ttHandler)
                 .put(IFA, ifaHandler)
                 .put(HB_TEST, hbTestHandler)
-                .put(PNC_REGISTRATION, pncRegistrationHandler)
+                .put(DELIVERY_OUTCOME, deliveryOutcomeHandler)
                 .put(DELIVERY_PLAN, deliveryPlanHandler)
                 .put(PNC_REGISTRATION_OA, pncRegistrationOAHandler)
                 .put(PNC_CLOSE, pncCloseHandler)

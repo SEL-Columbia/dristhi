@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PNCRegistrationHandler implements FormSubmissionHandler {
+public class DeliveryOutcomeHandler implements FormSubmissionHandler {
     private ANCService ancService;
     private PNCService pncService;
     private ChildService childService;
 
     @Autowired
-    public PNCRegistrationHandler(ANCService ancService, PNCService pncService, ChildService childService) {
+    public DeliveryOutcomeHandler(ANCService ancService, PNCService pncService, ChildService childService) {
         this.ancService = ancService;
         this.pncService = pncService;
         this.childService = childService;
