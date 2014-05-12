@@ -2022,6 +2022,7 @@
                     "indicator": "FS_APL",
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
                     "externalIdField": "thayiCardNumber",
                     "formFields": [
                         "id",
@@ -2047,6 +2048,7 @@
                     "indicator": "FS_BPL",
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
                     "externalIdField": "thayiCardNumber",
                     "formFields": [
                         "id",
