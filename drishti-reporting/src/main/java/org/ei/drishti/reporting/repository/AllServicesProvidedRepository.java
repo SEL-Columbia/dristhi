@@ -21,8 +21,8 @@ public class AllServicesProvidedRepository {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 
-    public void save(ServiceProvider serviceProvider, String externalId, Indicator indicator, Date date, Location location) {
-        dataAccessTemplate.save(new ServiceProvided(serviceProvider, externalId, indicator, date, location));
+    public void save(ServiceProvider serviceProvider, String externalId, Indicator indicator, Date date, Location location, String dristhiEntityId) {
+        dataAccessTemplate.save(new ServiceProvided(serviceProvider, externalId, indicator, date, location, dristhiEntityId));
     }
 
     public void delete(String indicator, String startDate, String endDate) {

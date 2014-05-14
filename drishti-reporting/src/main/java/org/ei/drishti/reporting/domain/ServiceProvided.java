@@ -54,6 +54,9 @@ public class ServiceProvided {
     public String date() {
         return date.toString();
     }
+    public String dristhiEntityId() {
+        return this.dristhiEntityId;
+    }
 
     public org.ei.drishti.domain.Location location() {
         return new org.ei.drishti.domain.Location(location.village(), location.subCenter(), location.phc().phcIdentifier());
@@ -62,6 +65,9 @@ public class ServiceProvided {
     @Column(name = "date_")
     private Date date;
 
+    @Column(name = "dristhi_entity_id")
+    private String dristhiEntityId;
+
     @ManyToOne
     @JoinColumn(name = "location")
     private Location location;
@@ -69,12 +75,13 @@ public class ServiceProvided {
     private ServiceProvided() {
     }
 
-    public ServiceProvided(ServiceProvider serviceProvider, String externalId, Indicator indicator, Date date, Location location) {
+    public ServiceProvided(ServiceProvider serviceProvider, String externalId, Indicator indicator, Date date, Location location, String dristhiEntityId) {
         this.serviceProvider = serviceProvider;
         this.externalId = externalId;
         this.indicator = indicator;
         this.date = date;
         this.location = location;
+        this.dristhiEntityId = dristhiEntityId;
     }
 
     @Override

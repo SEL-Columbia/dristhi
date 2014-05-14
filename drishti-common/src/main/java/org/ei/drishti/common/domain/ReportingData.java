@@ -22,7 +22,7 @@ public class ReportingData implements Serializable {
     @JsonProperty
     private Map<String, String> data;
 
-    public static ReportingData serviceProvidedData(String anmIdentifier, String externalId, Indicator indicator, String date, Location location) {
+    public static ReportingData serviceProvidedData(String anmIdentifier, String externalId, Indicator indicator, String date, Location location, String dristhiEntityId) {
         return new ReportingData(SERVICE_PROVIDED_DATA_TYPE)
                 .with(ANM_IDENTIFIER, anmIdentifier)
                 .with(INDICATOR, indicator.value())
@@ -31,6 +31,7 @@ public class ReportingData implements Serializable {
                 .with(SUB_CENTER, location.subCenter())
                 .with(PHC, location.phc())
                 .with(SERVICE_PROVIDED_DATE, date)
+                .with(DRISTHI_ENTITY_ID, dristhiEntityId)
                 .with(SERVICE_PROVIDER_TYPE, SERVICE_PROVIDER_ANM);
     }
 
@@ -92,6 +93,7 @@ public class ReportingData implements Serializable {
         addToMissingDataIfFieldValueIsMissing(VILLAGE, missingData);
         addToMissingDataIfFieldValueIsMissing(SUB_CENTER, missingData);
         addToMissingDataIfFieldValueIsMissing(PHC, missingData);
+        addToMissingDataIfFieldValueIsMissing(DRISTHI_ENTITY_ID, missingData);
         return missingData;
     }
 

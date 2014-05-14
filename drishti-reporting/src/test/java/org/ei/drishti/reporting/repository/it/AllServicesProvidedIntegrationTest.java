@@ -31,6 +31,7 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
         Date dates = LocalDate.now().toDate();
         Indicator indicator = new Indicator("ANC indicator");
         Location location = new Location("Bherya", "Sub Center", phc, "taluka", "mysore", "karnataka");
+        String dristhiEntityId = "entity id 1";
         List<ServiceProviderType> serviceProviderTypes = template.loadAll(ServiceProviderType.class);
         ServiceProviderType anmServiceProvider = selectUnique(serviceProviderTypes, having(on(ServiceProviderType.class).type(), equalTo(ANM.type())));
         ServiceProvider serviceProvider = new ServiceProvider(anm.id(), anmServiceProvider);
@@ -38,10 +39,10 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
         template.save(indicator);
         template.save(serviceProvider);
 
-        repository.save(serviceProvider, "123", indicator, dates, location);
+        repository.save(serviceProvider, "123", indicator, dates, location, dristhiEntityId);
 
         List<ServiceProvided> servicesProvided = template.loadAll(ServiceProvided.class);
-        assertTrue(servicesProvided.contains(new ServiceProvided(serviceProvider, "123", indicator, dates, location)));
+        assertTrue(servicesProvided.contains(new ServiceProvided(serviceProvider, "123", indicator, dates, location, dristhiEntityId)));
     }
 
     @Test
@@ -56,6 +57,7 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
         Indicator otherIndicator = new Indicator("INDICATOR 2");
         Location location = new Location("Bherya", "Sub Center", phc, "taluka", "mysore", "karnataka");
         Date startDate = LocalDate.parse("2013-01-26").toDate();
+        String dristhiEntityId = "entity id 1";
         List<ServiceProviderType> serviceProviderTypes = template.loadAll(ServiceProviderType.class);
         ServiceProviderType anmServiceProvider = selectUnique(serviceProviderTypes, having(on(ServiceProviderType.class).type(), equalTo(ANM.type())));
         ServiceProvider serviceProvider = new ServiceProvider(anm.id(), anmServiceProvider);
@@ -63,14 +65,14 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
         template.save(indicatorToDelete);
         template.save(otherIndicator);
         template.save(serviceProvider);
-        repository.save(serviceProvider, "123", indicatorToDelete, startDate, location);
+        repository.save(serviceProvider, "123", indicatorToDelete, startDate, location, dristhiEntityId);
 
         repository.delete("INDICATOR 1", "2013-01-26", "2013-02-02");
 
         List<ServiceProvided> servicesProvided = template.loadAll(ServiceProvided.class);
         assertFalse(
                 servicesProvided.contains(
-                        new ServiceProvided(serviceProvider, null, indicatorToDelete, startDate, location)));
+                        new ServiceProvided(serviceProvider, null, indicatorToDelete, startDate, location, dristhiEntityId)));
 
     }
 
@@ -151,13 +153,14 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
         Indicator indicator = new Indicator("INDICATOR");
         Location location = new Location("Bherya", "Sub Center", phc, "taluka", "mysore", "karnataka");
         Date date = LocalDate.parse("2013-01-26").toDate();
+        String dristhiEntityId = "entity id 1";
         List<ServiceProviderType> serviceProviderTypes = template.loadAll(ServiceProviderType.class);
         ServiceProviderType anmServiceProvider = selectUnique(serviceProviderTypes, having(on(ServiceProviderType.class).type(), equalTo(ANM.type())));
         ServiceProvider serviceProvider = new ServiceProvider(anm.id(), anmServiceProvider);
         template.save(location);
         template.save(indicator);
         template.save(serviceProvider);
-        repository.save(serviceProvider, "1", indicator, date, location);
+        repository.save(serviceProvider, "1", indicator, date, location, dristhiEntityId);
     }
 
     private void createMultipleServiceProvidedData() {
@@ -170,6 +173,7 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
         Indicator indicator = new Indicator("INDICATOR");
         Location location = new Location("Bherya", "Sub Center", phc, "taluka", "mysore", "karnataka");
         Date date = LocalDate.parse("2013-01-26").toDate();
+        String dristhiEntityId = "entity id 1";
         List<ServiceProviderType> serviceProviderTypes = template.loadAll(ServiceProviderType.class);
         ServiceProviderType anmServiceProvider = selectUnique(serviceProviderTypes, having(on(ServiceProviderType.class).type(), equalTo(ANM.type())));
         ServiceProvider serviceProvider = new ServiceProvider(anm.id(), anmServiceProvider);
@@ -179,7 +183,7 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
         template.save(serviceProvider);
         template.save(anotherServiceProvider);
 
-        repository.save(serviceProvider, "1", indicator, date, location);
-        repository.save(anotherServiceProvider, "2", indicator, date, location);
+        repository.save(serviceProvider, "1", indicator, date, location, dristhiEntityId);
+        repository.save(anotherServiceProvider, "2", indicator, date, location, dristhiEntityId);
     }
 }

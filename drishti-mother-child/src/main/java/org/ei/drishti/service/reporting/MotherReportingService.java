@@ -78,13 +78,13 @@ public class MotherReportingService {
     }
 
     public void ancVisit(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(ID));
         Location location = loadLocationFromEC(mother);
         reportANC4Visit(reportData, mother, location);
     }
 
     public void ttProvided(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(ID));
         Location location = loadLocationFromEC(mother);
         reportTTVisit(reportData.get(TT_DOSE_FIELD), reportData.get(TT_DATE_FIELD), mother, location);
     }
@@ -112,7 +112,7 @@ public class MotherReportingService {
     }
 
     public void pncVisitHappened(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(ID));
         Location location = loadLocationFromEC(mother);
         String thirdVisitDate = mother.thirdPNCVisitDate();
         String visitDate = reportData.get(AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME);
@@ -122,7 +122,7 @@ public class MotherReportingService {
     }
 
     public void closeANC(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(ID));
         Location location = loadLocationFromEC(mother);
 
         if (DEATH_OF_WOMAN_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME)) &&
@@ -134,7 +134,7 @@ public class MotherReportingService {
     }
 
     public void closePNC(SafeMap reportData) {
-        Mother mother = allMothers.findByCaseId(reportData.get(AllConstants.CommonFormFields.ID));
+        Mother mother = allMothers.findByCaseId(reportData.get(ID));
         Location location = loadLocationFromEC(mother);
 
         if (DEATH_OF_MOTHER_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME))
@@ -239,7 +239,7 @@ public class MotherReportingService {
     }
 
     public void reportToBoth(Mother mother, Indicator indicator, String date, Location location) {
-        ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thayiCardNumber(), indicator, date, location);
+        ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thayiCardNumber(), indicator, date, location, mother.caseId());
         reportingService.sendReportData(serviceProvided);
 
         ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);

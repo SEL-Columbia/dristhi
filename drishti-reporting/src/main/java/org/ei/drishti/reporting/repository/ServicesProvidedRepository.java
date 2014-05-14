@@ -50,7 +50,7 @@ public class ServicesProvidedRepository {
 
     @Transactional("service_provided")
     public void save(String serviceProviderIdentifier, String serviceProviderType, String externalId, String indicator,
-                     String date, String village, String subCenter, String phcIdentifier, String quantity) {
+                     String date, String village, String subCenter, String phcIdentifier, String quantity, String dristhiEntityId) {
         Probe probeForCache = monitor.start(REPORTING_SERVICE_PROVIDED_CACHE_TIME);
         Indicator fetchedIndicator = cachedIndicators.fetch(new Indicator(indicator));
         Date dates = LocalDate.parse(date).toDate();
@@ -62,7 +62,7 @@ public class ServicesProvidedRepository {
         Probe probeForInsert = monitor.start(REPORTING_SERVICE_PROVIDED_INSERT_TIME);
         for (int i = 0; i < count; i++) {
             try {
-                servicesProvidedRepository.save(serviceProvider, externalId, fetchedIndicator, dates, location);
+                servicesProvidedRepository.save(serviceProvider, externalId, fetchedIndicator, dates, location, dristhiEntityId);
             } catch (Exception e) {
                 cachedIndicators.clear(fetchedIndicator);
             }
@@ -86,7 +86,8 @@ public class ServicesProvidedRepository {
                     data.get(AllConstants.ReportDataParameters.VILLAGE),
                     data.get(AllConstants.ReportDataParameters.SUB_CENTER),
                     data.get(AllConstants.ReportDataParameters.PHC),
-                    data.get(AllConstants.ReportDataParameters.QUANTITY)
+                    data.get(AllConstants.ReportDataParameters.QUANTITY),
+                    data.get(AllConstants.ReportDataParameters.DRISTHI_ENTITY_ID)
             );
         }
     }

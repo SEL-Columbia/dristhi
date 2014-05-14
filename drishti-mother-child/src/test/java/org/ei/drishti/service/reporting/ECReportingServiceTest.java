@@ -41,7 +41,7 @@ public class ECReportingServiceTest {
         service.registerEC(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_IUD, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -57,7 +57,7 @@ public class ECReportingServiceTest {
         service.registerEC(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_ST, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_ST, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_ST, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class ECReportingServiceTest {
         service.registerEC(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_SC, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_SC, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_SC, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class ECReportingServiceTest {
         service.registerEC(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_CASTE_OTHERS, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_CASTE_OTHERS, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_CASTE_OTHERS, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class ECReportingServiceTest {
         service.registerEC(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -119,7 +119,7 @@ public class ECReportingServiceTest {
         service.fpChange(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_IUD, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_IUD, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -136,7 +136,7 @@ public class ECReportingServiceTest {
         service.fpChange(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_CASTE_OTHERS, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_CASTE_OTHERS, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_CASTE_OTHERS, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
     }
 
     @Test
@@ -152,7 +152,7 @@ public class ECReportingServiceTest {
         service.fpChange(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_ST, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_ST, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_ST, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
     }
 
     @Test
@@ -169,7 +169,7 @@ public class ECReportingServiceTest {
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_OCP_SC, "2012-01-01"));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_OCP_SC, "2012-01-01",
-                new Location("bherya", "Sub Center", "PHC X")));
+                new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
     }
 
     @Test
@@ -197,7 +197,7 @@ public class ECReportingServiceTest {
         service.registerEC(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_FEMALE_STERILIZATION_APL, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION_APL, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION_APL, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
     }
 
     @Test
@@ -213,7 +213,7 @@ public class ECReportingServiceTest {
         service.registerEC(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_FEMALE_STERILIZATION_BPL, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION_BPL, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION_BPL, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
     }
 
     @Test
@@ -229,7 +229,7 @@ public class ECReportingServiceTest {
         service.registerEC(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -247,7 +247,7 @@ public class ECReportingServiceTest {
         service.fpChange(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_FEMALE_STERILIZATION_BPL, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION_BPL, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION_BPL, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
     }
 
     @Test
@@ -264,7 +264,7 @@ public class ECReportingServiceTest {
         service.fpChange(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_FEMALE_STERILIZATION_APL, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION_APL, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION_APL, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
     }
 
     @Test
@@ -281,7 +281,7 @@ public class ECReportingServiceTest {
         service.fpChange(reportData);
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01"));
-        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+        verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.FP_FEMALE_STERILIZATION, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
         verifyNoMoreInteractions(reportingService);
     }
 
@@ -299,7 +299,7 @@ public class ECReportingServiceTest {
 
         verify(reportingService).sendReportData(ReportingData.anmReportData("ANM X", "EC CASE 1", Indicator.CONDOM_QTY, "2013-01-01").withQuantity("10"));
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "EC NUMBER 1", Indicator.CONDOM_QTY, "2013-01-01",
-                new Location("bherya", "Sub Center", "PHC X")).withQuantity("10"));
+                new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1").withQuantity("10"));
     }
 
     @Test
@@ -315,6 +315,6 @@ public class ECReportingServiceTest {
         service.reportIndicator(reportData, ec, Indicator.CONDOM_QTY, reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
 
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "external id 1", Indicator.CONDOM_QTY, "2013-01-01",
-                new Location("bherya", "Sub Center", "PHC X")));
+                new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
     }
 }

@@ -51,11 +51,11 @@ public class ReportDataControllerTest {
 
     @Test
     public void shouldSaveServiceProvidedInDB() throws Exception {
-        ReportingData data = serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")).withQuantity("40");
+        ReportingData data = serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "entity id 1").withQuantity("40");
 
         controller.submit(data);
 
-        verify(servicesProvidedRepository).save("ANM X", "ANM", "TC 1", "BCG", "2012-01-01", "bherya", "Sub Center", "PHC X", "40");
+        verify(servicesProvidedRepository).save("ANM X", "ANM", "TC 1", "BCG", "2012-01-01", "bherya", "Sub Center", "PHC X", "40", "entity id 1");
     }
 
     @Test
@@ -76,7 +76,7 @@ public class ReportDataControllerTest {
 
     @Test(expected = ReportDataMissingException.class)
     public void shouldThrowExceptionWhenServiceProvidedReportDataDoesNotHaveAllTheNecessaryInformation() throws Exception {
-        ReportingData data = serviceProvidedData("", null, BCG, null, new Location(null, null, null));
+        ReportingData data = serviceProvidedData("", null, BCG, null, new Location(null, null, null), null);
 
         controller.submit(data);
     }
@@ -106,6 +106,7 @@ public class ReportDataControllerTest {
         data.put(QUANTITY, "1");
         data.put(INDICATOR, "INDICATOR 1");
         data.put(ANM_IDENTIFIER, "anm id 1");
+        data.put(DRISTHI_ENTITY_ID, "entity id 1");
         ReportingData reportingData = new ReportingData("serviceProvided", data);
 
         ReportDataUpdateRequest reportDataUpdateRequest = new ReportDataUpdateRequest()

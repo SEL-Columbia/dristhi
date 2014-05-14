@@ -49,7 +49,8 @@ public class ReportDataController {
                     reportingData.get(ReportDataParameters.VILLAGE),
                     reportingData.get(ReportDataParameters.SUB_CENTER),
                     reportingData.get(ReportDataParameters.PHC),
-                    reportingData.get(ReportDataParameters.QUANTITY));
+                    reportingData.get(ReportDataParameters.QUANTITY),
+                    reportingData.get(ReportDataParameters.DRISTHI_ENTITY_ID));
         } else if (ReportDataParameters.ANM_REPORT_DATA_TYPE.equals(reportingData.type())) {
             throwExceptionIfMandatoryDataIsNotPresentForANMReport(reportingData);
             anmReportsRepository.save(

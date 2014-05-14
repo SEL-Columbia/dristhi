@@ -77,6 +77,7 @@ public class AllConstants {
         public static final String EXTERNAL_ID = "externalId";
         public static final String INDICATOR = "indicator";
         public static final String SERVICE_PROVIDED_DATE = "date";
+        public static final String DRISTHI_ENTITY_ID = "dristhiEntityId";
         public static final String VILLAGE = "village";
         public static final String SUB_CENTER = "subCenter";
         public static final String PHC = "phc";

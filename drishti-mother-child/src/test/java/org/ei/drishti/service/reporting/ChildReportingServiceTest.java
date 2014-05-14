@@ -1303,7 +1303,7 @@ public class ChildReportingServiceTest {
         childReportingService.immunizationProvided(reportingData, new ArrayList<String>());
 
         for (Indicator expectedIndicator : expectedIndicators) {
-            verify(fakeReportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", expectedIndicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X")));
+            verify(fakeReportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "TC 1", expectedIndicator, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "CASE X"));
             verify(fakeReportingService).sendReportData(ReportingData.anmReportData("ANM X", "CASE X", expectedIndicator, "2012-01-01"));
         }
         verifyNoMoreInteractions(fakeReportingService);
@@ -1343,19 +1343,19 @@ public class ChildReportingServiceTest {
         verifyBothReportingCalls(indicator, date, "CASE X", "TC 1");
     }
 
-    private void verifyBothReportingCalls(Indicator indicator, String date, String externalIdForANMReport, String externalIdForServiceProvidedReport) {
+    private void verifyBothReportingCalls(Indicator indicator, String date, String childEntityId, String externalId) {
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X",
-                externalIdForServiceProvidedReport, indicator, date, new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", externalIdForANMReport, indicator, date);
+                externalId, indicator, date, new Location("bherya", "Sub Center", "PHC X"), childEntityId);
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", childEntityId, indicator, date);
         verify(reportingService).sendReportData(serviceProvidedData);
         verify(reportingService).sendReportData(anmReportData);
     }
 
-    private void verifyBothUpdateReportCalls(Indicator indicator, String date, String externalIdForANMReport,
+    private void verifyBothUpdateReportCalls(Indicator indicator, String date, String childEntityId,
                                              String externalIdForServiceProvidedReport, String startDate, String endDate) {
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X",
-                externalIdForServiceProvidedReport, indicator, date, new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", externalIdForANMReport, indicator, date);
+                externalIdForServiceProvidedReport, indicator, date, new Location("bherya", "Sub Center", "PHC X"), childEntityId);
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", childEntityId, indicator, date);
         ReportDataUpdateRequest serviceProvidedUpdateRequest = new ReportDataUpdateRequest()
                 .withType(SERVICE_PROVIDED_DATA_TYPE)
                 .withStartDate(startDate)
@@ -1392,9 +1392,9 @@ public class ChildReportingServiceTest {
         verifyNoReportingCalls(indicator, date, "TC 1", "CASE X");
     }
 
-    private void verifyNoReportingCalls(Indicator indicator, String date, String externalIdForANMReport, String externalIdForServiceProvidedReport) {
-        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", externalIdForServiceProvidedReport, indicator, date, new Location("bherya", "Sub Center", "PHC X"));
-        ReportingData anmReportData = ReportingData.anmReportData("ANM X", externalIdForANMReport, indicator, date);
+    private void verifyNoReportingCalls(Indicator indicator, String date, String childEntityId, String externalId) {
+        ReportingData serviceProvidedData = ReportingData.serviceProvidedData("ANM X", externalId, indicator, date, new Location("bherya", "Sub Center", "PHC X"), childEntityId);
+        ReportingData anmReportData = ReportingData.anmReportData("ANM X", childEntityId, indicator, date);
         verify(reportingService, times(0)).sendReportData(serviceProvidedData);
         verify(reportingService, times(0)).sendReportData(anmReportData);
     }

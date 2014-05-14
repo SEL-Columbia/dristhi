@@ -56,7 +56,7 @@ public class ServicesProvidedRepositoryTest {
         String subCenter = "Sub Center";
         Date date = LocalDate.parse("2012-04-04").toDate();
         PHC phc = new PHC(34, "PHC X", "PHC");
-
+        String dristhiEntityId = "entity id 1";
         ServiceProvider serviceProvider = new ServiceProvider(2, 2, ANM);
         Indicator fetchedIndicator = new Indicator(2, indicator);
         Location location = new Location(2, village, subCenter, phc, "taluka", "mysore", "karnataka");
@@ -64,13 +64,13 @@ public class ServicesProvidedRepositoryTest {
         when(indicatorRepository.fetch(new Indicator(indicator))).thenReturn(fetchedIndicator);
         when(locationRepository.fetchBy(village, subCenter, phc.phcIdentifier())).thenReturn(location);
 
-        repository.save(anmIdentifier, "ANM", externalId, indicator, "2012-04-04", village, subCenter, phc.phcIdentifier(), null);
-        repository.save(anmIdentifier, "ANM", externalId, indicator, "2012-04-04", village, subCenter, phc.phcIdentifier(), null);
+        repository.save(anmIdentifier, "ANM", externalId, indicator, "2012-04-04", village, subCenter, phc.phcIdentifier(), null, dristhiEntityId);
+        repository.save(anmIdentifier, "ANM", externalId, indicator, "2012-04-04", village, subCenter, phc.phcIdentifier(), null, dristhiEntityId);
 
         verifyCallsToReadOnlyCachedRepository(indicatorRepository, new Indicator(indicator));
         verify(locationRepository, times(2)).fetchBy(village, subCenter, phc.phcIdentifier());
         verify(serviceProvidersRepository, times(2)).fetchBy(anmIdentifier, ANM);
-        verify(servicesProvidedRepository, times(2)).save(serviceProvider, "12345", fetchedIndicator, date, location);
+        verify(servicesProvidedRepository, times(2)).save(serviceProvider, "12345", fetchedIndicator, date, location, dristhiEntityId);
     }
 
     @Test
@@ -80,6 +80,7 @@ public class ServicesProvidedRepositoryTest {
         String indicator = "ANC";
         String village = "Bherya";
         String subCenter = "Sub Center";
+        String dristhiEntityId = "entity id 1";
         Date date = LocalDate.parse("2012-04-04").toDate();
         PHC phc = new PHC(34, "PHC X", "PHC");
 
@@ -90,9 +91,9 @@ public class ServicesProvidedRepositoryTest {
         when(indicatorRepository.fetch(new Indicator(indicator))).thenReturn(fetchedIndicator);
         when(locationRepository.fetchBy(village, subCenter, phc.phcIdentifier())).thenReturn(location);
 
-        repository.save(anmIdentifier, "ANM", externalId, indicator, "2012-04-04", village, subCenter, phc.phcIdentifier(), "40");
+        repository.save(anmIdentifier, "ANM", externalId, indicator, "2012-04-04", village, subCenter, phc.phcIdentifier(), "40", dristhiEntityId);
 
-        verify(servicesProvidedRepository, times(40)).save(serviceProvider, "12345", fetchedIndicator, date, location);
+        verify(servicesProvidedRepository, times(40)).save(serviceProvider, "12345", fetchedIndicator, date, location, dristhiEntityId);
     }
 
     @Test
@@ -115,6 +116,7 @@ public class ServicesProvidedRepositoryTest {
         data.put(QUANTITY, "1");
         data.put(INDICATOR, indicator);
         data.put(ANM_IDENTIFIER, anmIdentifier);
+        data.put(DRISTHI_ENTITY_ID, "entity id 1");
         ReportingData reportingData = new ReportingData("type", data);
 
         ReportDataUpdateRequest request = new ReportDataUpdateRequest()
@@ -137,7 +139,7 @@ public class ServicesProvidedRepositoryTest {
         repository.update(request);
 
         verify(servicesProvidedRepository).delete(indicator, startDate, endDate);
-        verify(servicesProvidedRepository).save(serviceProvider, "12345", fetchedIndicator, date, location);
+        verify(servicesProvidedRepository).save(serviceProvider, "12345", fetchedIndicator, date, location, "entity id 1");
     }
 
     @Test

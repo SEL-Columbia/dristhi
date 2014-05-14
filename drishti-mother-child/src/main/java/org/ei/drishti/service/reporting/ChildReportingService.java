@@ -344,7 +344,7 @@ public class ChildReportingService {
             EligibleCouple ec = allEligibleCouples.findByCaseId(mother.ecCaseId());
             externalId = ec.ecNumber();
         }
-        ReportingData serviceProvidedData = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location);
+        ReportingData serviceProvidedData = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location, child.caseId());
         reportingService.sendReportData(serviceProvidedData);
         ReportingData anmReportData = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
         reportingService.sendReportData(anmReportData);
@@ -454,7 +454,7 @@ public class ChildReportingService {
         List<ReportingData> anmReportData = new ArrayList<>();
         for (Child child : children) {
             Location location = loadLocationOfChild(child);
-            ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
+            ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location, child.caseId());
             ReportingData anmReportDataForChild = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
             serviceProvidedData.add(serviceProvidedDataForChild);
             anmReportData.add(anmReportDataForChild);
@@ -471,7 +471,7 @@ public class ChildReportingService {
             Mother mother = selectFirst(mothers, having(on(Mother.class).caseId(), equalTo(child.motherCaseId())));
             EligibleCouple ec = selectFirst(ecs, having(on(EligibleCouple.class).caseId(), equalTo(mother.ecCaseId())));
             Location location = ec.location();
-            ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location);
+            ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location, child.caseId());
             ReportingData anmReportDataForChild = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
             serviceProvidedData.add(serviceProvidedDataForChild);
             anmReportData.add(anmReportDataForChild);
