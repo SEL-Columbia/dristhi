@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "2",
+    "form_data_definition_version": "3",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Family_Planning_Referral_Followup_EngKan/",
@@ -7,11 +7,6 @@
             {
                 "name": "id",
                 "shouldLoadValue": true
-            },
-            {
-                "name": "currentMethod",
-                "shouldLoadValue": true,
-                "bind": "/model/instance/Family_Planning_Referral_Followup_EngKan/case_familyplanning_method"
             },
             {
                 "name": "referralFollowupDate",
