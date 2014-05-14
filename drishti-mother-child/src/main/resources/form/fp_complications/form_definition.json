@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "2",
+    "form_data_definition_version": "3",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Family_Planning_Complications_EngKan/",
@@ -12,11 +12,6 @@
                 "name": "currentMethod",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/Family_Planning_Complications_EngKan/case_familyplanning_method"
-            },
-            {
-                "name": "currentMethodNote",
-                "shouldLoadValue": true,
-                "bind": "/model/instance/Family_Planning_Complications_EngKan/case_familyplanning_method_note"
             },
             {
                 "name": "complicationDate",
