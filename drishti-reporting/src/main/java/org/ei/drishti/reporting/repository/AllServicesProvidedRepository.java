@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public class AllServicesProvidedRepository {
+public class  AllServicesProvidedRepository {
     private DataAccessTemplate dataAccessTemplate;
 
     protected AllServicesProvidedRepository() {
@@ -35,6 +35,10 @@ public class AllServicesProvidedRepository {
         return dataAccessTemplate.findByNamedQuery(ServiceProvidedReport.FIND_NEW_SERVICE_PROVIDED, token);
     }
 
+    public List<ServiceProvided> getAllReportsForDristhiEntityID(String dristhiEntityID) {
+        return dataAccessTemplate.findByNamedQuery(ServiceProvided.FIND_SERVICE_PROVIDED_FOR_DRISTHI_ENTITY_ID, dristhiEntityID);
+    }
+
     public List<ServiceProvidedReport> getNewReports(Integer token, int numberOfRowsToFetch) {
         return dataAccessTemplate.getSessionFactory()
                 .getCurrentSession()
@@ -43,5 +47,9 @@ public class AllServicesProvidedRepository {
                 .setMaxResults(numberOfRowsToFetch)
                 .list();
 
+    }
+
+    public void deleteReportsFor(String dristhiEntityId) {
+        dataAccessTemplate.deleteAll(getAllReportsForDristhiEntityID(dristhiEntityId));
     }
 }

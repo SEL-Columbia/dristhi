@@ -16,12 +16,15 @@ import java.util.Date;
         @NamedQuery(name = ServiceProvided.FIND_SERVICE_PROVIDED_FOR_REPORTING_MONTH,
                 query = "select r from ServiceProvided r, Indicator i,ServiceProvider p, ServiceProviderType spt" +
                         " where r.indicator = i.id and r.serviceProvider = p.id and p.type = spt.id" +
-                        " and r.date >= ? and r.date < ?")
+                        " and r.date >= ? and r.date < ?"),
+        @NamedQuery(name = ServiceProvided.FIND_SERVICE_PROVIDED_FOR_DRISTHI_ENTITY_ID,
+                query = "select r from ServiceProvided r where r.dristhiEntityId = ?")
 })
 
 public class ServiceProvided {
     public static final String FIND_BY_ANM_IDENTIFIER_WITH_INDICATOR_FOR_MONTH = "find.service.provided.by.anm.identifier.with.indicator.for.month";
     public static final String FIND_SERVICE_PROVIDED_FOR_REPORTING_MONTH = "find.service.provided.for.reporting.month";
+    public static final String FIND_SERVICE_PROVIDED_FOR_DRISTHI_ENTITY_ID = "find.service.provided.for.dristhi.entity.id";
 
     @Id
     @Column(name = "id")

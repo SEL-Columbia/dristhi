@@ -72,7 +72,8 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
         List<ServiceProvided> servicesProvided = template.loadAll(ServiceProvided.class);
         assertFalse(
                 servicesProvided.contains(
-                        new ServiceProvided(serviceProvider, null, indicatorToDelete, startDate, location, dristhiEntityId)));
+                        new ServiceProvided(serviceProvider, null, indicatorToDelete, startDate, location, dristhiEntityId))
+        );
 
     }
 
@@ -88,7 +89,9 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
                 reports.contains(
                         new ServiceProvidedReport(1, "ANM X", ANM.type(), "INDICATOR",
                                 LocalDate.parse("2013-01-26").toDate(), "Bherya", "Sub Center", "bhe",
-                                "taluka", "mysore", "karnataka")));
+                                "taluka", "mysore", "karnataka")
+                )
+        );
     }
 
     @Test
@@ -107,7 +110,9 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
                 reports.contains(
                         new ServiceProvidedReport(1, "ANM X", ANM.type(), "INDICATOR",
                                 LocalDate.parse("2013-01-26").toDate(), "Bherya", "Sub Center", "bhe",
-                                "taluka", "mysore", "karnataka")));
+                                "taluka", "mysore", "karnataka")
+                )
+        );
     }
 
     @Test
@@ -126,7 +131,9 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
                 reports.contains(
                         new ServiceProvidedReport(1, "ANM X", ANM.type(), "INDICATOR",
                                 LocalDate.parse("2013-01-26").toDate(), "Bherya", "Sub Center", "bhe",
-                                "taluka", "mysore", "karnataka")));
+                                "taluka", "mysore", "karnataka")
+                )
+        );
     }
 
     @Test
@@ -142,7 +149,9 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
                 reports.contains(
                         new ServiceProvidedReport(1, "ANM X", ANM.type(), "INDICATOR",
                                 LocalDate.parse("2013-01-26").toDate(), "Bherya", "Sub Center", "bhe",
-                                "taluka", "mysore", "karnataka")));
+                                "taluka", "mysore", "karnataka")
+                )
+        );
     }
 
     private void createServiceProvidedData() {
@@ -185,5 +194,27 @@ public class AllServicesProvidedIntegrationTest extends ServicesProvidedIntegrat
 
         repository.save(serviceProvider, "1", indicator, date, location, dristhiEntityId);
         repository.save(anotherServiceProvider, "2", indicator, date, location, dristhiEntityId);
+    }
+
+    @Test
+    @Transactional("service_provided")
+    @Rollback
+    public void shouldDeleteServiceProvidedReportForAGivenEntityID() throws Exception {
+        createMultipleServiceProvidedData();
+
+        repository.deleteReportsFor("entity id 1");
+
+        assertEquals(0, repository.getAllReportsForDristhiEntityID("entity id 1").size());
+    }
+
+    @Test
+    @Transactional("service_provided")
+    @Rollback
+    public void shouldFetchAllServiceProvidedReportForAGivenEntityID() throws Exception {
+        createMultipleServiceProvidedData();
+
+        List<ServiceProvided> reports = repository.getAllReportsForDristhiEntityID("entity id 1");
+
+        assertEquals(2, reports.size());
     }
 }

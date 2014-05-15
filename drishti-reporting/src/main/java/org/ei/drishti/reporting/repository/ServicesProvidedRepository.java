@@ -1,6 +1,7 @@
 package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.common.AllConstants;
+import org.ei.drishti.common.domain.ReportDataDeleteRequest;
 import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.monitor.Monitor;
@@ -104,5 +105,10 @@ public class ServicesProvidedRepository {
     @Transactional("service_provided")
     public List<ServiceProvidedReport> getNewReports(Integer token, int numberOfRowsToFetch) {
        return servicesProvidedRepository.getNewReports(token, numberOfRowsToFetch);
+    }
+
+    @Transactional("service_provided")
+    public void delete(ReportDataDeleteRequest request) {
+        servicesProvidedRepository.deleteReportsFor(request.dristhiEntityId());
     }
 }

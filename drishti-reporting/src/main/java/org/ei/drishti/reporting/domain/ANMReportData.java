@@ -18,12 +18,15 @@ import java.util.Date;
                         "where r.anm=a.id and r.indicator = i.id  and i.indicator = ? and r.date >= ? and r.date < ?"),
         @NamedQuery(name = ANMReportData.FIND_BY_ANM_IDENTIFIER_FOR_REPORTING_MONTH,
                 query = "select r from ANMReportData r, ANM a, Indicator i " +
-                        "where r.anm=a.id and r.indicator = i.id and a.anmIdentifier = ? and r.date >= ? and r.date < ?")
+                        "where r.anm=a.id and r.indicator = i.id and a.anmIdentifier = ? and r.date >= ? and r.date < ?"),
+        @NamedQuery(name = ANMReportData.FIND_BY_EXTERNAL_IDENTIFIER,
+                query = "select r from ANMReportData r where r.externalId = ?")
 })
 public class ANMReportData {
     public static final String FIND_BY_ANM_IDENTIFIER_AND_DATE = "find.by.anm.identifier.and.date";
     public static final String FIND_BY_ANM_IDENTIFIER_WITH_INDICATOR_FOR_MONTH = "find.by.anm.identifier.with.indicator.for.month";
     public static final String FIND_BY_ANM_IDENTIFIER_FOR_REPORTING_MONTH = "find.by.anm.identifier.for.reporting.month";
+    public static final String FIND_BY_EXTERNAL_IDENTIFIER = "find.by.external.identifier";
 
     public String id() {
         return id.toString();

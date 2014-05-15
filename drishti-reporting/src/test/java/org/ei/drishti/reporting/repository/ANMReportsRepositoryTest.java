@@ -299,6 +299,15 @@ public class ANMReportsRepositoryTest {
         verify(anmReportDataRepository).getReportsFor("ANM X", "2013-10-26", "2013-11-25");
     }
 
+    @Test
+    public void shouldDeleteANMReportsForGivenExternalId() {
+        ReportDataDeleteRequest request = new ReportDataDeleteRequest()
+                .withType("type")
+                .withDristhiEntityId("entity id 1");
+        repository.delete(request);
+        verify(anmReportDataRepository).deleteReportsForExternalId("entity id 1");
+    }
+
     private <T> void verifyCallsToReadOnlyCachedRepository(ReadOnlyCacheableRepository<T> repo, T object) {
         verify(repo, times(1)).fetch(object);
         verifyNoMoreInteractions(repo);

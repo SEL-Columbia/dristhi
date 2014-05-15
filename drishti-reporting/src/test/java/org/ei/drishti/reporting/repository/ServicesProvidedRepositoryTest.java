@@ -1,5 +1,6 @@
 package org.ei.drishti.reporting.repository;
 
+import org.ei.drishti.common.domain.ReportDataDeleteRequest;
 import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.monitor.Monitor;
@@ -140,6 +141,17 @@ public class ServicesProvidedRepositoryTest {
 
         verify(servicesProvidedRepository).delete(indicator, startDate, endDate);
         verify(servicesProvidedRepository).save(serviceProvider, "12345", fetchedIndicator, date, location, "entity id 1");
+    }
+
+    @Test
+    public void shouldDeleteAllReportsForGivenDristhiEntityID() throws Exception {
+        ReportDataDeleteRequest request = new ReportDataDeleteRequest()
+                .withType("type")
+                .withDristhiEntityId("entity id 1");
+
+        repository.delete(request);
+
+        verify(servicesProvidedRepository).deleteReportsFor("entity id 1");
     }
 
     @Test

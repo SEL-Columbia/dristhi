@@ -1,9 +1,11 @@
 package org.ei.drishti.reporting.controller;
 
 import org.ei.drishti.common.domain.ANMReport;
+import org.ei.drishti.common.domain.ReportDataDeleteRequest;
 import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.Location;
+import org.ei.drishti.reporting.DristhiEntityIdMissingException;
 import org.ei.drishti.reporting.ReportDataMissingException;
 import org.ei.drishti.reporting.domain.ANMReportData;
 import org.ei.drishti.reporting.domain.ServiceProvided;
@@ -26,6 +28,7 @@ import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
 import static org.ei.drishti.common.util.ANMIndicatorSummaryFactory.createSummaryForANC;
 import static org.ei.drishti.common.util.ANMIndicatorSummaryFactory.createSummaryForIUD;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -119,6 +122,39 @@ public class ReportDataControllerTest {
 
         verify(servicesProvidedRepository).update(reportDataUpdateRequest);
         assertEquals("Success.", result);
+    }
+
+    @Test
+    public void shouldDeleteAllServiceProvidedReportsGivenAnEntityID() throws Exception {
+        ReportDataDeleteRequest deleteRequest = new ReportDataDeleteRequest()
+                .withType("serviceProvided")
+                .withDristhiEntityId("entity id 1");
+
+        String result = controller.deleteReports(deleteRequest);
+
+        verify(servicesProvidedRepository).delete(deleteRequest);
+        verifyZeroInteractions(anmReportsRepository);
+        assertEquals("Success.", result);
+    }
+
+    @Test
+    public void shouldDeleteAllANMReportsGivenAnEntityID() throws Exception {
+        ReportDataDeleteRequest deleteRequest = new ReportDataDeleteRequest()
+                .withType("anmReportData")
+                .withDristhiEntityId("entity id 1");
+
+        String result = controller.deleteReports(deleteRequest);
+
+        verify(anmReportsRepository).delete(deleteRequest);
+        verifyZeroInteractions(servicesProvidedRepository);
+        assertEquals("Success.", result);
+    }
+
+    @Test(expected = DristhiEntityIdMissingException.class)
+    public void shouldThrowExceptionWhenDristhiEntityIdIsNotPresent() throws Exception {
+        ReportDataDeleteRequest deleteRequestWithoutDristhiEntityId = new ReportDataDeleteRequest()
+                .withType("serviceProvided");
+        controller.deleteReports(deleteRequestWithoutDristhiEntityId);
     }
 
     @Test

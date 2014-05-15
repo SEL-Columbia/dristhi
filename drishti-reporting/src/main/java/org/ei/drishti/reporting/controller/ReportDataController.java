@@ -1,8 +1,10 @@
 package org.ei.drishti.reporting.controller;
 
 import org.ei.drishti.common.domain.ANMReport;
+import org.ei.drishti.common.domain.ReportDataDeleteRequest;
 import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.reporting.DristhiEntityIdMissingException;
 import org.ei.drishti.reporting.ReportDataMissingException;
 import org.ei.drishti.reporting.repository.ANMReportsRepository;
 import org.ei.drishti.reporting.repository.ServicesProvidedRepository;
@@ -19,6 +21,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters;
 
 @Controller
@@ -79,6 +82,20 @@ public class ReportDataController {
         return "Success.";
     }
 
+    @RequestMapping(headers = {"Accept=application/json"}, value = "/report/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteReports(@RequestBody ReportDataDeleteRequest request) throws DristhiEntityIdMissingException {
+        logger.info(MessageFormat.format("Deleting {0} reports for entity with entity id: {1}",
+                request.type(), request.dristhiEntityId()));
+        throwExceptionIfDristhiEntityIdIsNotPresent(request);
+        if (ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE.equals(request.type())) {
+            servicesProvidedRepository.delete(request);
+        } else if (ReportDataParameters.ANM_REPORT_DATA_TYPE.equals(request.type())) {
+            anmReportsRepository.delete(request);
+        }
+        return "Success.";
+    }
+
     @RequestMapping(value = "/report/fetchForAllANMs", method = RequestMethod.GET)
     @ResponseBody
     public List<ANMReport> getAllANMsIndicatorSummaries() {
@@ -110,5 +127,12 @@ public class ReportDataController {
             throwExceptionIfMandatoryDataIsNotPresentForServiceProvidedReport(data);
         }
     }
+
+    private void throwExceptionIfDristhiEntityIdIsNotPresent(ReportDataDeleteRequest request) throws DristhiEntityIdMissingException {
+        if(isBlank(request.dristhiEntityId())) {
+            throw new DristhiEntityIdMissingException(request);
+        }
+    }
+
 }
 

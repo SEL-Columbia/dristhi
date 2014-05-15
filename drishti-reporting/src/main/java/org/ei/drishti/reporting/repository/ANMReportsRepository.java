@@ -155,4 +155,9 @@ public class ANMReportsRepository {
     public List getReportsFor(String anmId, String startDate, String endDate) {
         return anmReportDataRepository.getReportsFor(anmId, startDate, endDate);
     }
+
+    @Transactional("anm_report")
+    public void delete(ReportDataDeleteRequest request) {
+        anmReportDataRepository.deleteReportsForExternalId(request.dristhiEntityId());
+    }
 }

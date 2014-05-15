@@ -11,9 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
-import static org.ei.drishti.reporting.domain.ANMReportData.FIND_BY_ANM_IDENTIFIER_AND_DATE;
-import static org.ei.drishti.reporting.domain.ANMReportData.FIND_BY_ANM_IDENTIFIER_FOR_REPORTING_MONTH;
-import static org.ei.drishti.reporting.domain.ANMReportData.FIND_BY_ANM_IDENTIFIER_WITH_INDICATOR_FOR_MONTH;
+import static org.ei.drishti.reporting.domain.ANMReportData.*;
 
 @Repository
 public class AllANMReportDataRepository {
@@ -46,5 +44,13 @@ public class AllANMReportDataRepository {
     public List getReportsFor(String anmId, String startDate, String endDate) {
         return dataAccessTemplate.findByNamedQuery(FIND_BY_ANM_IDENTIFIER_FOR_REPORTING_MONTH,
                 new Object[]{anmId, LocalDate.parse(startDate).toDate(), LocalDate.parse(endDate).toDate()});
+    }
+
+    public List getReportsForExternalId(String externalId) {
+        return dataAccessTemplate.findByNamedQuery(FIND_BY_EXTERNAL_IDENTIFIER, externalId);
+    }
+
+    public void deleteReportsForExternalId(String externalId) {
+        dataAccessTemplate.deleteAll(getReportsForExternalId(externalId));
     }
 }

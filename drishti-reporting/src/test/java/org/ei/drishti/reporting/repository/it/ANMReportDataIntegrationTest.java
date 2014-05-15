@@ -120,7 +120,6 @@ public class ANMReportDataIntegrationTest extends ANMReportsIntegrationTestBase 
     public void shouldFetchANMReportDataForReportingMonth() throws Exception {
         ANM anm = new ANM("ANM X");
         Date startDate = LocalDate.parse("2012-10-26").toDate();
-        Date endDate = LocalDate.parse("2012-11-25").toDate();
         Indicator indicator = new Indicator("INDICATOR 1");
         template.save(anm);
         template.save(indicator);
@@ -129,5 +128,41 @@ public class ANMReportDataIntegrationTest extends ANMReportsIntegrationTestBase 
         List result = repository.getReportsFor("ANM X", "2012-10-26", "2012-11-25");
 
         assertEquals(1, result.size());
+    }
+
+    @Test
+    @Transactional("anm_report")
+    @Rollback
+    public void shouldFetchAllReportDataForGivenExternalId() throws Exception {
+        ANM anm = new ANM("ANM X");
+        Date startDate = LocalDate.parse("2012-10-26").toDate();
+        Indicator indicator = new Indicator("INDICATOR 1");
+        String externalId = "entity id 1";
+        template.save(anm);
+        template.save(indicator);
+        repository.save(anm, externalId, indicator, startDate);
+
+        List result = repository.getReportsForExternalId("entity id 1");
+
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    @Transactional("anm_report")
+    @Rollback
+    public void shouldDeleteAllReportDataForGivenExternalId() throws Exception {
+        ANM anm = new ANM("ANM X");
+        Date startDate = LocalDate.parse("2012-10-26").toDate();
+        Indicator indicator = new Indicator("INDICATOR 1");
+        String externalId = "entity id 1";
+        String anotherExternalId = "entity id 2";
+        template.save(anm);
+        template.save(indicator);
+        repository.save(anm, externalId, indicator, startDate);
+        repository.save(anm, anotherExternalId, indicator, startDate);
+
+        repository.deleteReportsForExternalId("entity id 1");
+
+        assertEquals(0, repository.getReportsForExternalId("entity id 1").size());
     }
 }
