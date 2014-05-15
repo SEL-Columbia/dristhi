@@ -3,6 +3,7 @@ package org.ei.drishti.service.reporting;
 import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
+import org.ei.drishti.common.domain.ReportDataDeleteRequest;
 import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.EligibleCouple;
@@ -29,6 +30,8 @@ import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.PNCCloseFields.DEATH_OF_MOTHER_VALUE;
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.ei.drishti.common.domain.ReportDataDeleteRequest.anmReportDataDeleteRequest;
+import static org.ei.drishti.common.domain.ReportDataDeleteRequest.serviceProvidedDataDeleteRequest;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
 import static org.joda.time.LocalDate.parse;
@@ -124,13 +127,17 @@ public class MotherReportingService {
     public void closeANC(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(ID));
         Location location = loadLocationFromEC(mother);
-
-        if (DEATH_OF_WOMAN_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME)) &&
+        String closeReason = reportData.get(CLOSE_REASON_FIELD_NAME);
+        if (WRONG_ENTRY_VALUE.equalsIgnoreCase(closeReason)) {
+            deleteReports(reportData.get(ID));
+            return;
+        }
+        if (DEATH_OF_WOMAN_VALUE.equals(closeReason) &&
                 BOOLEAN_TRUE_VALUE.equalsIgnoreCase(reportData.get(IS_MATERNAL_LEAVE_FIELD_NAME))) {
             reportDeath(mother, MMA, reportData.get(ANC_DEATH_DATE_FIELD_NAME), location);
-        } else {
-            reportAbortion(reportData, mother, location);
+            return;
         }
+        reportAbortion(reportData, mother, location);
     }
 
     public void closePNC(SafeMap reportData) {
@@ -254,5 +261,10 @@ public class MotherReportingService {
         reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), location);
         reportPlaceOfDelivery(reportData, mother, location);
         reportCesareans(reportData, mother, location);
+    }
+
+    public void deleteReports(String motherCaseId) {
+        reportingService.deleteReportData(serviceProvidedDataDeleteRequest(motherCaseId));
+        reportingService.deleteReportData(anmReportDataDeleteRequest(motherCaseId));
     }
 }

@@ -475,6 +475,7 @@ public class ANCServiceTest {
         service.close(create().build());
 
         verify(ancSchedulesService).unEnrollFromSchedules("entity id 1");
+        verify(motherReportingService, never()).deleteReports(anyString());
     }
 
     @Test
