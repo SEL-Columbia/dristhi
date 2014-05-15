@@ -1,9 +1,6 @@
 package org.ei.drishti.service.reporting;
 
-import org.ei.drishti.common.domain.Indicator;
-import org.ei.drishti.common.domain.ReportDataUpdateRequest;
-import org.ei.drishti.common.domain.ReportMonth;
-import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.common.domain.*;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.*;
@@ -25,6 +22,8 @@ import static org.ei.drishti.common.AllConstants.ReportDataParameters.ANM_REPORT
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDER_TYPE;
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.ei.drishti.common.domain.ReportDataDeleteRequest.anmReportDataDeleteRequest;
+import static org.ei.drishti.common.domain.ReportDataDeleteRequest.serviceProvidedDataDeleteRequest;
 import static org.joda.time.LocalDate.parse;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -784,6 +783,7 @@ public class ChildReportingServiceTest {
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
 
         verifyBothReportingCalls(INFANT_MORTALITY, "2012-03-05");
+        verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
     }
 
     @Test
@@ -795,6 +795,7 @@ public class ChildReportingServiceTest {
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-07"));
 
         verifyBothReportingCalls(ENM, "2012-01-07");
+        verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
     }
 
     @Test
@@ -817,6 +818,7 @@ public class ChildReportingServiceTest {
         service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-28"));
 
         verifyBothReportingCalls(NM, "2012-01-28");
+        verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
     }
 
     @Test
@@ -841,6 +843,7 @@ public class ChildReportingServiceTest {
 
         verifyBothReportingCalls(LNM, "2012-01-29");
         verifyBothReportingCalls(LNM, "2012-12-31");
+        verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
     }
 
     @Test
@@ -878,6 +881,7 @@ public class ChildReportingServiceTest {
         service.closeChild(reportDataForCloseChild("death_of_child", "2016-12-31"));
 
         verifyBothReportingCalls(CHILD_MORTALITY, "2016-12-31");
+        verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
     }
 
     @Test
@@ -911,6 +915,20 @@ public class ChildReportingServiceTest {
         service.closeChild(reportDataForCloseChild("death_of_child", "2016-12-31", "diarrhea"));
 
         verifyBothReportingCalls(CHILD_MORTALITY_DUE_TO_DIARRHEA, "2016-12-31");
+        verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
+    }
+
+    @Test
+    public void shouldDeleteReportsWhenCloseReasonIsWrongEntry() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        service.closeChild(reportDataForCloseChild("wrong_entry", "2016-12-31"));
+
+        verify(reportingService).deleteReportData(serviceProvidedDataDeleteRequest("CASE X"));
+        verify(reportingService).deleteReportData(anmReportDataDeleteRequest("CASE X"));
+        verifyNoMoreInteractions(reportingService);
     }
 
     @Test

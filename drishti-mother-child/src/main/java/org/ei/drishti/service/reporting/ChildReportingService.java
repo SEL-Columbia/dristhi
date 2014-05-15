@@ -29,15 +29,17 @@ import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.BF_POSTBIRTH;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.*;
 import static org.ei.drishti.common.AllConstants.DeliveryOutcomeFields.DELIVERY_PLACE;
+import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.WRONG_ENTRY_VALUE;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_PROBLEMS;
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.*;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.ANM_REPORT_DATA_TYPE;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE;
-import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDER_TYPE;
 import static org.ei.drishti.common.AllConstants.VitaminAFields.*;
 import static org.ei.drishti.common.domain.Indicator.*;
+import static org.ei.drishti.common.domain.ReportDataDeleteRequest.anmReportDataDeleteRequest;
+import static org.ei.drishti.common.domain.ReportDataDeleteRequest.serviceProvidedDataDeleteRequest;
 import static org.ei.drishti.common.domain.ReportDataUpdateRequest.buildReportDataRequest;
 import static org.ei.drishti.common.domain.ReportingData.anmReportData;
 import static org.ei.drishti.common.domain.ReportingData.serviceProvidedData;
@@ -200,7 +202,13 @@ public class ChildReportingService {
     }
 
     public void closeChild(SafeMap reportData) {
-        if (!DEATH_OF_CHILD_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME))) {
+        String closeReason = reportData.get(CLOSE_REASON_FIELD_NAME);
+        if (WRONG_ENTRY_VALUE.equalsIgnoreCase(closeReason)) {
+            deleteReports(reportData.get(ID));
+            return;
+        }
+
+        if (!DEATH_OF_CHILD_VALUE.equals(closeReason)) {
             return;
         }
 
@@ -487,5 +495,10 @@ public class ChildReportingService {
         String reportingMonthEndDate = reportMonth.endOfCurrentReportMonth(reportingDate).toString();
         reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDED_DATA_TYPE, indicator, reportingMonthStartDate, reportingMonthEndDate, serviceProvidedData));
         reportingService.updateReportData(buildReportDataRequest(ANM_REPORT_DATA_TYPE, indicator, reportingMonthStartDate, reportingMonthEndDate, anmReportData));
+    }
+
+    private void deleteReports(String childCaseId) {
+        reportingService.deleteReportData(serviceProvidedDataDeleteRequest(childCaseId));
+        reportingService.deleteReportData(anmReportDataDeleteRequest(childCaseId));
     }
 }
