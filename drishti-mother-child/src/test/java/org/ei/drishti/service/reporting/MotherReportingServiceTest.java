@@ -649,6 +649,23 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         verifyBothReportingCalls(MMP, "2012-02-01", "CASE-1");
         verifyBothReportingCalls(MOTHER_MORTALITY, "2012-02-01", "CASE-1");
+        verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
+    }
+
+    @Test
+    public void shouldDeleteReportsWhenPNCCloseReasonIsWrongEntry() {
+        when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER.withDeliveryOutCome("2012-01-01"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        Map<String, String> reportData = create("id", "CASE-1")
+                .put("closeReason", "wrong_entry")
+                .map();
+
+        service.closePNC(new SafeMap(reportData));
+
+        verify(reportingService).deleteReportData(serviceProvidedDataDeleteRequest("CASE-1"));
+        verify(reportingService).deleteReportData(anmReportDataDeleteRequest("CASE-1"));
+        verifyNoMoreInteractions(reportingService);
     }
 
     @Test
@@ -665,6 +682,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         verifyNoReportingCalls(MMP, "2012-02-01", "CASE-1");
         verifyNoReportingCalls(MOTHER_MORTALITY, "2012-02-01", "CASE-1");
+        verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
     }
 
     @Test
@@ -681,6 +699,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         verifyNoReportingCalls(MMP, "2012-02-01", "CASE-1");
         verifyNoReportingCalls(MOTHER_MORTALITY, "2012-02-01", "CASE-1");
+        verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
     }
 
     @Test
@@ -697,6 +716,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         verifyNoReportingCalls(MMP, "2012-02-01", "CASE-1");
         verifyNoReportingCalls(MOTHER_MORTALITY, "2012-02-01", "CASE-1");
+        verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
     }
 
     @Test

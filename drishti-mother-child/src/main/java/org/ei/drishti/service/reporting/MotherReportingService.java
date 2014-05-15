@@ -143,12 +143,17 @@ public class MotherReportingService {
     public void closePNC(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(ID));
         Location location = loadLocationFromEC(mother);
-
+        String closeReason = reportData.get(CLOSE_REASON_FIELD_NAME);
+        if (WRONG_ENTRY_VALUE.equalsIgnoreCase(closeReason)) {
+            deleteReports(reportData.get(ID));
+            return;
+        }
         if (DEATH_OF_MOTHER_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME))
                 && BOOLEAN_TRUE_VALUE.equals(reportData.get(IS_MATERNAL_LEAVE_FIELD_NAME))
                 && mother.dateOfDelivery().plusDays(NUMBER_OF_DAYS_IN_PNC_PERIOD)
                 .isAfter(parse(reportData.get(DEATH_DATE_FIELD_NAME)))) {
             reportDeath(mother, MMP, reportData.get(DEATH_DATE_FIELD_NAME), location);
+            return;
         }
     }
 
