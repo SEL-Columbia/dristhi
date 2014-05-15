@@ -34,6 +34,7 @@ import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.URINE_STOOL_
 import static org.ei.drishti.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.Report.*;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.ANM_REPORT_DATA_TYPE;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDER_TYPE;
 import static org.ei.drishti.common.AllConstants.VitaminAFields.*;
 import static org.ei.drishti.common.domain.Indicator.*;
@@ -484,7 +485,7 @@ public class ChildReportingService {
         LocalDate reportingDate = LocalDate.parse(date);
         String reportingMonthStartDate = reportMonth.startOfCurrentReportMonth(reportingDate).toString();
         String reportingMonthEndDate = reportMonth.endOfCurrentReportMonth(reportingDate).toString();
-        reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDER_TYPE, indicator, reportingMonthStartDate, reportingMonthEndDate, serviceProvidedData));
+        reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDED_DATA_TYPE, indicator, reportingMonthStartDate, reportingMonthEndDate, serviceProvidedData));
         reportingService.updateReportData(buildReportDataRequest(ANM_REPORT_DATA_TYPE, indicator, reportingMonthStartDate, reportingMonthEndDate, anmReportData));
     }
 }

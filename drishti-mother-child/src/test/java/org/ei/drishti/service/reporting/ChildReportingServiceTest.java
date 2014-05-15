@@ -22,6 +22,7 @@ import java.util.Collections;
 
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.ANM_REPORT_DATA_TYPE;
+import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDER_TYPE;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.joda.time.LocalDate.parse;
@@ -1356,7 +1357,7 @@ public class ChildReportingServiceTest {
                 externalIdForServiceProvidedReport, indicator, date, new Location("bherya", "Sub Center", "PHC X"));
         ReportingData anmReportData = ReportingData.anmReportData("ANM X", externalIdForANMReport, indicator, date);
         ReportDataUpdateRequest serviceProvidedUpdateRequest = new ReportDataUpdateRequest()
-                .withType(SERVICE_PROVIDER_TYPE)
+                .withType(SERVICE_PROVIDED_DATA_TYPE)
                 .withStartDate(startDate)
                 .withEndDate(endDate)
                 .withReportingData(asList(serviceProvidedData))
