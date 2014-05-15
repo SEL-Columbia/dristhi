@@ -1,10 +1,7 @@
 package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.AllConstants;
-import org.ei.drishti.common.domain.Caste;
-import org.ei.drishti.common.domain.EconomicStatus;
-import org.ei.drishti.common.domain.Indicator;
-import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.common.domain.*;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.repository.AllEligibleCouples;
@@ -14,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
+import static org.ei.drishti.common.domain.ReportDataDeleteRequest.anmReportDataDeleteRequest;
+import static org.ei.drishti.common.domain.ReportDataDeleteRequest.serviceProvidedDataDeleteRequest;
 
 @Service
 public class ECReportingService {
@@ -73,5 +72,10 @@ public class ECReportingService {
 
         service.sendReportData(serviceProvidedData);
         service.sendReportData(anmReportData);
+    }
+
+    public void deleteReportsForEC(String ecCaseId) {
+        service.deleteReportData(serviceProvidedDataDeleteRequest(ecCaseId));
+        service.deleteReportData(anmReportDataDeleteRequest(ecCaseId));
     }
 }

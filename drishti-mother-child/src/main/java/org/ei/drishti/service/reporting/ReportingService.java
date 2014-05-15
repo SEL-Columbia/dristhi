@@ -1,7 +1,9 @@
 package org.ei.drishti.service.reporting;
 
+import org.ei.drishti.common.domain.ReportDataDeleteRequest;
 import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
+import org.ei.drishti.event.ReportDeleteEvent;
 import org.ei.drishti.event.ReportEvent;
 import org.ei.drishti.event.ReportUpdateEvent;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
@@ -23,5 +25,9 @@ public class ReportingService {
 
     public void updateReportData(ReportDataUpdateRequest dataRequest) {
         gateway.sendEventMessage(new ReportUpdateEvent(dataRequest).toEvent());
+    }
+
+    public void deleteReportData(ReportDataDeleteRequest deleteRequest) {
+        gateway.sendEventMessage(new ReportDeleteEvent(deleteRequest).toEvent());
     }
 }

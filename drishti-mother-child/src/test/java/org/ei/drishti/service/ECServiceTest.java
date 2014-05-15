@@ -516,16 +516,33 @@ public class ECServiceTest {
     }
 
     @Test
-    public void shouldCloseEC() throws Exception {
+    public void shouldCloseECWithoutDeletingReportsWhenCloseReasonIsNotWrongEntry() throws Exception {
         when(allEligibleCouples.exists("entity id 1")).thenReturn(true);
 
         FormSubmission submission = FormSubmissionBuilder.create()
                 .withFormName("ec_close")
                 .addFormField("isECCloseConfirmed", "yes")
+                .addFormField("closeReason", "permanent_relocation")
                 .build();
         ecService.closeEligibleCouple(submission);
 
         verify(allEligibleCouples).close("entity id 1");
+        verifyZeroInteractions(reportingService);
+    }
+
+    @Test
+    public void shouldCloseECAsWrongEntryAndDeleteAllReports() throws Exception {
+        when(allEligibleCouples.exists("entity id 1")).thenReturn(true);
+
+        FormSubmission submission = FormSubmissionBuilder.create()
+                .withFormName("ec_close")
+                .addFormField("isECCloseConfirmed", "yes")
+                .addFormField("closeReason", "wrong_entry")
+                .build();
+        ecService.closeEligibleCouple(submission);
+
+        verify(allEligibleCouples).close("entity id 1");
+        verify(reportingService).deleteReportsForEC("entity id 1");
     }
 
     @Test

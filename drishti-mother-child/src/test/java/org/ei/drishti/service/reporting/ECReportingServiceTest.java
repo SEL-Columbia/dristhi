@@ -1,6 +1,7 @@
 package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
+import org.ei.drishti.common.domain.ReportDataDeleteRequest;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
@@ -316,5 +317,13 @@ public class ECReportingServiceTest {
 
         verify(reportingService).sendReportData(ReportingData.serviceProvidedData("ANM X", "external id 1", Indicator.CONDOM_QTY, "2013-01-01",
                 new Location("bherya", "Sub Center", "PHC X"), "EC CASE 1"));
+    }
+
+    @Test
+    public void shouldDeleteReports() throws Exception {
+        service.deleteReportsForEC("entity id 1");
+
+        verify(reportingService).deleteReportData(ReportDataDeleteRequest.serviceProvidedDataDeleteRequest("entity id 1"));
+        verify(reportingService).deleteReportData(ReportDataDeleteRequest.anmReportDataDeleteRequest("entity id 1"));
     }
 }

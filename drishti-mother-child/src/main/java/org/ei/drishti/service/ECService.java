@@ -21,6 +21,8 @@ import java.util.*;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ECCloseFields.IS_EC_CLOSE_CONFIRMED_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.WRONG_ENTRY_VALUE;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
 import static org.ei.drishti.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.QUANTITY;
@@ -83,7 +85,7 @@ public class ECService {
     }
 
     private void updateECWithFPDetails(EligibleCouple eligibleCouple, FormSubmission submission,
-                                                 String fpMethod) {
+                                       String fpMethod) {
         List<IUDFPDetails> iudFPDetails = eligibleCouple.iudFPDetails();
         List<CondomFPDetails> condomFPDetails = eligibleCouple.condomFPDetails();
         List<OCPFPDetails> ocpFPDetails = eligibleCouple.ocpFPDetails();
@@ -323,7 +325,7 @@ public class ECService {
             }
         });
     }
-    
+
     private void sortMaleSterilizationDetails(List<MaleSterilizationFPDetails> maleSterilizationDetails) {
         Collections.sort(maleSterilizationDetails, new Comparator<MaleSterilizationFPDetails>() {
             @Override
@@ -401,6 +403,11 @@ public class ECService {
         if (!allEligibleCouples.exists(submission.entityId())) {
             logger.warn("Cannot close EC as it does not exist! Form Submission: " + submission);
             return;
+        }
+
+        if (WRONG_ENTRY_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_FIELD_NAME))) {
+            logger.info("Deleting Reports for EC with Entity Id: " + submission.entityId());
+            reportingService.deleteReportsForEC(submission.entityId());
         }
 
         logger.info("Closing EC : " + submission);

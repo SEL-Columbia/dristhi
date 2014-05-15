@@ -2,6 +2,7 @@ package org.ei.drishti.listener;
 
 import com.google.gson.Gson;
 import org.ei.drishti.common.domain.ANMReport;
+import org.ei.drishti.common.domain.ReportDataDeleteRequest;
 import org.ei.drishti.common.domain.ReportDataUpdateRequest;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.util.HttpAgent;
@@ -109,5 +110,18 @@ public class ReportingEventListenerTest {
 
         verify(agent).get("http://drishti/fetchForAllANMs");
         verify(anmReportingService, times(0)).processReports(anyList());
+    }
+
+    @Test
+    public void shouldDeleteReportingData() throws Exception {
+        Map<String, Object> data = new HashMap<>();
+        ReportDataDeleteRequest dataRequest = new ReportDataDeleteRequest().withType("Boo")
+                .withDristhiEntityId("entity id 1");
+        data.put("data", dataRequest);
+        when(agent.post(eq("http://drishti/delete"), any(String.class), eq("application/json"))).thenReturn(new HttpResponse(true, null));
+
+        listener.deleteReportingData(new MotechEvent("SUBJECT", data));
+
+        verify(agent).post("http://drishti/delete", "{\"type\":\"Boo\",\"dristhiEntityId\":\"entity id 1\"}", "application/json");
     }
 }

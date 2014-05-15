@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import org.ei.drishti.common.domain.ANMReport;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
+import org.ei.drishti.event.ReportDeleteEvent;
 import org.ei.drishti.event.ReportEvent;
 import org.ei.drishti.event.ReportUpdateEvent;
 import org.ei.drishti.service.reporting.ANMReportingService;
@@ -26,6 +27,7 @@ public class ReportingEventListener {
     public static final String FETCH_REPORTS_FOR_ALL_ANMS_ACTION = "fetchForAllANMs";
     public static final String SUBMIT_REPORT_ACTION = "submit";
     public static final String UPDATE_REPORT_ACTION = "update";
+    public static final String DELETE_REPORT_ACTION = "delete";
     private ANMReportingService anmReportService;
     private HttpAgent httpAgent;
     private String url;
@@ -44,7 +46,7 @@ public class ReportingEventListener {
         String data = new Gson().toJson(event.getParameters().get("data"));
         HttpResponse response = httpAgent.post(url + "/" + SUBMIT_REPORT_ACTION, data, MediaType.APPLICATION_JSON_VALUE);
         if (!response.isSuccess()) {
-            logger.error("Reporting data post failed. URL: " + url + "/" + SUBMIT_REPORT_ACTION +". Data: " + data + ". Response: " + response.body());
+            logger.error("Reporting data post failed. URL: " + url + "/" + SUBMIT_REPORT_ACTION + ". Data: " + data + ". Response: " + response.body());
         }
     }
 
@@ -57,6 +59,15 @@ public class ReportingEventListener {
         }
     }
 
+    @MotechListener(subjects = ReportDeleteEvent.SUBJECT)
+    public void deleteReportingData(MotechEvent event) {
+        String data = new Gson().toJson(event.getParameters().get("data"));
+        HttpResponse response = httpAgent.post(url + "/" + DELETE_REPORT_ACTION, data, MediaType.APPLICATION_JSON_VALUE);
+        if (!response.isSuccess()) {
+            logger.error("Reporting data post failed. URL: " + url + "/" + DELETE_REPORT_ACTION + ". Data: " + data + ". Response: " + response.body());
+        }
+    }
+
     @MotechListener(subjects = SUBJECT)
     public void fetchANMReports(MotechEvent event) throws Exception {
         logger.info("Fetching ANM reports...");
@@ -64,7 +75,7 @@ public class ReportingEventListener {
         anmReportService.reportFromEntityData();
         HttpResponse response = httpAgent.get(url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION);
         if (!response.isSuccess()) {
-            logger.error("ANM Reports fetch failed. URL: " + url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION +". Response body: " + response.body());
+            logger.error("ANM Reports fetch failed. URL: " + url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION + ". Response body: " + response.body());
             return;
         }
         List<ANMReport> anmReports = new Gson().fromJson(response.body(), new TypeToken<List<ANMReport>>() {

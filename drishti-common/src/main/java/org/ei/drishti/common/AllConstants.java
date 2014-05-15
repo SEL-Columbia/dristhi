@@ -260,6 +260,7 @@ public class AllConstants {
         public static final String CLOSE_REASON_FIELD_NAME = "closeReason";
         public static final String ANC_DEATH_DATE_FIELD_NAME = "maternalDeathDate";
         public static final String IS_MATERNAL_LEAVE_FIELD_NAME = "isMaternalDeath";
+        public static final String WRONG_ENTRY_VALUE = "wrong_entry";
     }
 
     public static class ANCCloseFields {
