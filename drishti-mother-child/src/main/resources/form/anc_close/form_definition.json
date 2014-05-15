@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "3",
+    "form_data_definition_version": "2",
     "form": {
         "bind_type": "mother",
         "default_bind_path": "/model/instance/ANC_Close_EngKan/",
@@ -111,6 +111,10 @@
             {
                 "name": "isANCCloseConfirmed",
                 "bind": "/model/instance/ANC_Close_EngKan/confirm_anc_close"
+            },
+            {
+                "name": "hasANCLeftPlace",
+                "bind": "/model/instance/ANC_Close_EngKan/confirm_anc_left"
             },
             {
                 "name": "submissionDate",
