@@ -113,4 +113,10 @@ public class AllChildren extends MotechBaseRepository<Child> {
                         .key(anmIdentifier)
                         .includeDocs(true), Child.class);
     }
+
+    @View(name = "all_children",
+            map = "function(doc) { if (doc.type === 'Child' && doc.isClosed === 'false') { emit(doc.caseId); }}")
+    public List<Child> all() {
+        return db.queryView(createQuery("all_children").includeDocs(true), Child.class);
+    }
 }

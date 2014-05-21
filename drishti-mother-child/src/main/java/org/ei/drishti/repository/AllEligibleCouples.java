@@ -115,4 +115,11 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
         }
         return fpCount;
     }
+
+    @View(name = "all_ecs",
+            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false') { emit(doc.caseId); } }")
+    public List<EligibleCouple> all() {
+        return db.queryView(createQuery("all_ecs").includeDocs(true), EligibleCouple.class);
+    }
+
 }

@@ -139,4 +139,12 @@ public class AllMothers extends MotechBaseRepository<Mother> {
                 .includeDocs(true), Mother.class);
 
     }
+
+    @View(name = "all_open_mothers",
+            map = "function(doc) { if (doc.type === 'Mother' && doc.isClosed === 'false') { emit(doc.caseId); } }")
+    public List<Mother> all() {
+        return db.queryView(createQuery("all_open_mothers")
+                .includeDocs(true), Mother.class);
+    }
+
 }
