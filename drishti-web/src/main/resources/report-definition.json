@@ -1895,13 +1895,14 @@
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
                     "quantityField": "numberOfOCPDelivered",
-                    "externalIdField": "thayiCardNumber",
+                    "externalIdField": "ecId",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
                         "numberOfOCPDelivered",
                         "currentMethod",
-                        "thayiCardNumber"
+                        "thayiCardNumber",
+                        "ecId"
                     ],
                     "reportWhen": [
                         "CurrentFPMethodIsOCPRule",
@@ -1914,13 +1915,14 @@
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
                     "quantityField": "numberOfCondomsSupplied",
-                    "externalIdField": "thayiCardNumber",
+                    "externalIdField": "ecId",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
                         "numberOfCondomsSupplied",
                         "currentMethod",
-                        "thayiCardNumber"
+                        "thayiCardNumber",
+                        "ecId"
                     ],
                     "reportWhen": [
                         "CurrentFPMethodIsCondomRule",
@@ -1933,13 +1935,14 @@
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
                     "quantityField": "numberOfCentchromanPillsDelivered",
-                    "externalIdField": "thayiCardNumber",
+                    "externalIdField": "ecId",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
                         "numberOfCentchromanPillsDelivered",
                         "currentMethod",
-                        "thayiCardNumber"
+                        "thayiCardNumber",
+                        "ecId"
                     ],
                     "reportWhen": [
                         "CurrentFPMethodIsCentchromanRule",
@@ -1951,12 +1954,13 @@
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
-                    "externalIdField": "thayiCardNumber",
+                    "externalIdField": "ecId",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
                         "currentMethod",
-                        "thayiCardNumber"
+                        "thayiCardNumber",
+                        "ecId"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
@@ -1975,12 +1979,13 @@
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
-                    "externalIdField": "thayiCardNumber",
+                    "externalIdField": "ecId",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
                         "currentMethod",
-                        "thayiCardNumber"
+                        "thayiCardNumber",
+                        "ecId"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
@@ -1999,12 +2004,13 @@
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
-                    "externalIdField": "thayiCardNumber",
+                    "externalIdField": "ecId",
                     "formFields": [
                         "id",
                         "familyPlanningMethodChangeDate",
                         "currentMethod",
-                        "thayiCardNumber"
+                        "thayiCardNumber",
+                        "ecId"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
@@ -2023,12 +2029,13 @@
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
-                    "externalIdField": "thayiCardNumber",
+                    "externalIdField": "ecId",
                     "formFields": [
                         "id",
                         "currentMethod",
                         "familyPlanningMethodChangeDate",
-                        "thayiCardNumber"
+                        "thayiCardNumber",
+                        "ecId"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
@@ -2049,12 +2056,13 @@
                     "reportEntityType": "eligible_couple",
                     "serviceProvidedDateField": "familyPlanningMethodChangeDate",
                     "reportEntityIdField": "ecId",
-                    "externalIdField": "thayiCardNumber",
+                    "externalIdField": "ecId",
                     "formFields": [
                         "id",
                         "currentMethod",
                         "familyPlanningMethodChangeDate",
-                        "thayiCardNumber"
+                        "thayiCardNumber",
+                        "ecId"
                     ],
                     "referenceData": {
                         "type": "eligible_couple",
