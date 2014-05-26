@@ -40,7 +40,7 @@ public class MCTSReportService {
 
     public void reportFor(FormSubmission submission) throws Exception {
         if (reportDefinition == null) {
-            logger.info("Loading report definition.");
+            logger.info("Loading MCTS report definition.");
             reportDefinition = reportDefinitionLoader.load();
         }
 
@@ -51,6 +51,7 @@ public class MCTSReportService {
             SafeMap referenceDataFields = referenceDataRepository.getReferenceData(submission, reportIndicator.referenceData());
             boolean didAllRulesSucceed = processRules(reportIndicator.reportingRules(), reportFields, reportIndicator.indicator());
             if (didAllRulesSucceed) {
+                logger.info(MessageFormat.format("Sending MCTS Report for indicator: {0} for entity with id {1} ", reportIndicator, submission.entityId()));
                 reportToMCTS(submission.entityId(), referenceDataFields, reportIndicator, getServiceProvidedDate(submission, reportIndicator));
             }
         }

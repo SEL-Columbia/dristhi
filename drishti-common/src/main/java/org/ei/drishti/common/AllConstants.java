@@ -12,6 +12,7 @@ public class AllConstants {
     public static final String BOOLEAN_TRUE_VALUE = "true";
     public static final String BOOLEAN_FALSE_VALUE = "false";
     public static final String AUTO_CLOSE_PNC_CLOSE_REASON = "Auto Close PNC";
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
     public static class Form {
         public static final String ENTITY_ID = "entityId";
@@ -416,6 +417,7 @@ public class AllConstants {
         public static final String CHILD_TYPE = "child";
         public static final String MOTHER_TYPE = "mother";
         public static final String ELIGIBLE_COUPLE_TYPE = "eligible_couple";
+        public static final String MCTS_REPORT_TYPE = "MCTSReport";
     }
 
     public static class HTTP {
