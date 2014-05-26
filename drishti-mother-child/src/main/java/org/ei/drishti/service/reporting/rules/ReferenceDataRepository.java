@@ -40,6 +40,7 @@ public class ReferenceDataRepository implements IReferenceDataRepository {
         designDocMap.put(ELIGIBLE_COUPLE_TYPE, "EligibleCouple");
         designDocMap.put(MOTHER_TYPE, "Mother");
         designDocMap.put(CHILD_TYPE, "Child");
+        designDocMap.put(MCTS_REPORT_TYPE, "MCTSReport");
     }
 
     public SafeMap getReferenceData(FormSubmission submission, ReferenceData referenceData) {

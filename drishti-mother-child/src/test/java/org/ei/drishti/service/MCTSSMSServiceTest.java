@@ -33,4 +33,11 @@ public class MCTSSMSServiceTest {
 
         verify(smsService).sendSMS("9986048731", "ANMPW 1234567 ANC1 080312");
     }
+
+    @Test
+    public void shouldSendSMSWithGivenText() {
+        mctsSMSService.send("SMS Text");
+
+        verify(smsService).sendSMS("9986048731", "SMS Text");
+    }
 }

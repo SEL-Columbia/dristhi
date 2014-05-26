@@ -21,4 +21,8 @@ public class MCTSSMSService {
         smsService.sendSMS(mctsPhoneNumber, typeOfService.messageFor(thayiCardNumber, date));
     }
 
+    public void send(String smsText) {
+        smsService.sendSMS(mctsPhoneNumber, smsText);
+    }
+
 }

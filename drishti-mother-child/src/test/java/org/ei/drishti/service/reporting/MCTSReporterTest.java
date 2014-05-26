@@ -26,23 +26,15 @@ public class MCTSReporterTest {
     public void shouldSaveMCTSReportAfterTenDaysWhenServiceIsProvidedWithinTenDaysOfRegistration() {
         reporter.report("mother id 1", "7777777", "ANC1", "2014-01-01", "2014-01-05");
 
-        verify(allMCTSReports)
-                .add(new MCTSReport("mother id 1",
-                        "ANMPW 7777777 ANC1 050114",
-                        "2014-01-01",
-                        "2014-01-05",
-                        "2014-01-11"));
+        verify(allMCTSReports).add(new MCTSReport("mother id 1",
+                "ANMPW 7777777 ANC1 050114", "2014-01-01", "2014-01-05", "2014-01-15"));
     }
 
     @Test
-    public void shouldSaveMCTSReportOnTheSameDayAsServiceProvidedWhenServiceIsProvidedAfterTenDaysOfRegistration() {
-        reporter.report("mother id 1", "7777777", "ANC1", "2014-01-01", "2014-01-11");
+    public void shouldSaveMCTSReportWithSendDateAsTenDaysFromServiceProvidedDate() {
+        reporter.report("mother id 1", "7777777", "ANC1", "2014-01-01", "2014-01-05");
 
-        verify(allMCTSReports)
-                .add(new MCTSReport("mother id 1",
-                        "ANMPW 7777777 ANC1 110114",
-                        "2014-01-01",
-                        "2014-01-11",
-                        "2014-01-11"));
+        verify(allMCTSReports).add(new MCTSReport("mother id 1",
+                "ANMPW 7777777 ANC1 050114", "2014-01-01", "2014-01-05", "2014-01-15"));
     }
 }

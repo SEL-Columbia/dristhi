@@ -19,7 +19,7 @@ public class MCTSReporter {
     private String mctsReportDelay;
 
     @Autowired
-    public MCTSReporter(AllMCTSReports reports, @Value("#{drishti['mcts-report-delay']}") String mctsReportDelay) {
+    public MCTSReporter(AllMCTSReports reports, @Value("#{drishti['mcts-report-delay-in-days']}") String mctsReportDelay) {
         this.reports = reports;
         this.mctsReportDelay = mctsReportDelay;
     }
@@ -28,16 +28,12 @@ public class MCTSReporter {
                        String registrationDate, String serviceProvidedDate) {
         MCTSReport report = new MCTSReport(entityId,
                 MCTSServiceCode.valueOf(indicator).messageFor(thayiCardNumber, LocalDate.parse(serviceProvidedDate)),
-                registrationDate,
-                serviceProvidedDate,
-                getSendDate(LocalDate.parse(registrationDate), LocalDate.parse(serviceProvidedDate)));
+                registrationDate, serviceProvidedDate, getSendDate(LocalDate.parse(serviceProvidedDate)));
         reports.add(report);
     }
 
-    private String getSendDate(LocalDate registrationDate, LocalDate serviceProvidedDate) {
+    private String getSendDate(LocalDate serviceProvidedDate) {
         int delay = IntegerUtil.tryParse(mctsReportDelay, DEFAULT_MCTS_REPORT_DELAY);
-        return registrationDate.plusDays(delay).isBefore(serviceProvidedDate)
-                ? serviceProvidedDate.toString()
-                : registrationDate.plusDays(delay).toString();
+        return serviceProvidedDate.plusDays(delay).toString();
     }
 }

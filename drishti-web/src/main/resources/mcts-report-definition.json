@@ -9,7 +9,8 @@
                     "serviceProvidedDateField": "ancVisitDate",
                     "formFields": [
                         "id",
-                        "ancVisitNumber"
+                        "ancVisitNumber",
+                        "ancVisitDate"
                     ],
                     "referenceData": {
                         "type": "mother",
