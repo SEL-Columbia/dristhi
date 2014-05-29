@@ -20,7 +20,7 @@ INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('user39');
 INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('user40');
 
 
-INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('trainer5');
+INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('trainer6');
 INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('trainer7');
 INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('trainer8');
 INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('trainer9');
