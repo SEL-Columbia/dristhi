@@ -72,6 +72,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("registrationDate", "2012-01-01");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         service.registerANC(reportData);
 
@@ -87,6 +88,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("registrationDate", "2011-12-15");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2011-12-15"))).thenReturn(true);
 
         service.registerANC(reportData);
 
@@ -98,6 +100,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportMTPIndicatorBasedOnMTPTime() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("greater_12wks", "spontaneous_abortion", null));
 
@@ -108,6 +111,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportMaternalDeath() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("", "death_of_woman", "yes"));
 
@@ -119,6 +123,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldDeleteReportsIfCloseReasonIsWrongEntry() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("", "wrong_entry", "no"));
 
@@ -131,6 +136,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldNotReportMaternalDeathIfItIsNot() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("", "death_of_woman", "no"));
 
@@ -141,6 +147,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldNotReportIfReasonIsNotDeath() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("greater_12wks", null, null));
 
@@ -151,6 +158,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportIfReasonIsSpontaneousAbortion() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("", "spontaneous_abortion", null));
 
@@ -165,6 +173,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("ttDate", "2012-01-23");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-23"))).thenReturn(true);
 
         service.ttProvided(reportData);
 
@@ -179,6 +188,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("ttDate", "2012-01-23");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-23"))).thenReturn(true);
 
         service.ttProvided(reportData);
 
@@ -194,6 +204,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("ttDate", "2012-01-23");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-23"))).thenReturn(true);
 
         service.ttProvided(reportData);
 
@@ -228,6 +239,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("ancVisitNumber", "4");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse(visitDate))).thenReturn(true);
 
         service.ancVisit(reportData);
 
@@ -366,6 +378,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportDeliveryWhenDeliveryOutcomeIsUpdatedWithOutcome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("didWomanSurvive", "yes")
@@ -386,6 +399,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportInstitutionalDeliveryAndNotReportLiveBirthWhenPlaceOfDeliveryIsNotHome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("didWomanSurvive", "yes")
@@ -406,6 +420,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldNotReportInstitutionalDeliveryAndReportLiveBirthAndNRHMLiveBirthWhenPlaceOfDeliveryIsHome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("didWomanSurvive", "yes")
@@ -426,6 +441,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportLiveBirthAndNRHMLiveBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsLiveBirthAndDeliveryPlaceIsSubCenter() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("didWomanSurvive", "yes")
@@ -445,6 +461,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportStillBirthAndNRHMStillBirthWhenDeliveryOutcomeIsUpdatedWithOutcomeAsStillBirthAndDeliveryPlaceIsSubCenter() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("didWomanSurvive", "yes")
@@ -464,6 +481,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportMotherDeathDuringPregnancyOutcome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("didMotherSurvive", "no")
@@ -483,6 +501,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportWomanDeathDuringPregnancyOutcome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("didWomanSurvive", "no")
@@ -501,6 +520,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportCesareanWhenDeliveryOutcomeIsHandledAndDeliveryTypeIsCesarean() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("didWomanSurvive", "no")
@@ -517,6 +537,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportCesareanPrivateFacilityWhenDeliveryOutcomeIsHandledAndDeliveryTypeIsCesareanAndDeliveryPlaceIsPrivateFacility() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("didWomanSurvive", "yes")
@@ -534,6 +555,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportCesareanGovernmentFacilityWhenDeliveryOutcomeIsHandledAndDeliveryTypeIsCesareanAndDeliveryPlaceIsNotPrivateFacility() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("didWomanSurvive", "yes")
@@ -552,6 +574,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportCesareanAndInstitutionalDeliveryWhenOAPNCIsRegisteredAndDeliveryTypeIsCesareanAndAtPHC() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("motherId", "CASE-1")
                 .put("referenceDate", "2012-01-01")
@@ -571,6 +594,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportCesareanPrivateFacilityAndInstitutionalDeliveryWhenOAPNCIsRegisteredAndDeliveryTypeIsCesareanAndDeliveryPlaceIsPrivateFacility() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("motherId", "CASE-1")
                 .put("referenceDate", "2012-01-01")
@@ -589,6 +613,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportCesareanGovernmentFacilityWhenOAPNCIsRegisteredAndDeliveryTypeIsCesareanAndPlaceNotPrivateFacility() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("motherId", "CASE-1")
                 .put("referenceDate", "2012-01-01")
@@ -605,6 +630,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportLiveBirthAndNRHMLiveBirthAndNotReportInstitutionalDeliveryWhenOAPNCIsRegisteredWithDeliveryOutcomeAsLiveBirthAndAtHome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("motherId", "CASE-1")
                 .put("referenceDate", "2012-01-01")
@@ -625,6 +651,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportPlaceOfDeliveryDuringPregnancyOutcome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-05-01"))).thenReturn(true);
 
         testPlaceOfDeliveryIsReported("home", D_HOM);
         testPlaceOfDeliveryIsReported("subcenter", D_SC);
@@ -639,6 +666,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportMotherDeathDuringPNCClose() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER.withDeliveryOutCome("2012-01-01"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-02-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("closeReason", "death_of_mother")
@@ -732,6 +760,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("pncVisitDate", "2012-01-01");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         service.pncVisitHappened(reportData);
 
@@ -789,6 +818,16 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
     }
 
+    @Test
+    public void shouldNotReportWhenServiceProvidedDateIsNotInCurrentReportingMonth() throws Exception {
+        Mother mother = new Mother("CASE-1", "EC-CASE-1", "TC 1");
+        Location location = new Location("village", "sc", "phc");
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(false);
+        service.reportToBoth(mother, Indicator.ANC, "2012-01-01", location);
+
+        verifyZeroInteractions(reportingService);
+    }
+
     private void verifyBothReportingCalls(Indicator indicator, String date, String dristhiEntityId) {
         verify(reportingService).sendReportData(serviceProvided(indicator, date, dristhiEntityId));
         verify(reportingService).sendReportData(anmReport(indicator, date));
@@ -816,6 +855,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("registrationDate", "2012-01-01");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
 
         ReportingService fakeReportingService = mock(ReportingService.class);
         MotherReportingService motherReportingService = new MotherReportingService(fakeReportingService, allMothers, allEligibleCouples, reportMonth);

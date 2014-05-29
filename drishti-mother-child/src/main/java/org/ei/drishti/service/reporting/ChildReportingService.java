@@ -346,6 +346,8 @@ public class ChildReportingService {
     }
 
     public void reportToBoth(Child child, Indicator indicator, String date, Location location) {
+        if(!reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
+            return;
         String externalId = child.thayiCardNumber();
         if (StringUtils.isBlank(externalId)) {
             Mother mother = allMothers.findByCaseId(child.motherCaseId());
@@ -491,6 +493,8 @@ public class ChildReportingService {
 
     private void updateBothReports(Indicator indicator, String date, List<ReportingData> serviceProvidedData, List<ReportingData> anmReportData) {
         LocalDate reportingDate = LocalDate.parse(date);
+        if(!reportMonth.isDateWithinCurrentReportMonth(reportingDate))
+            return;
         String reportingMonthStartDate = reportMonth.startOfCurrentReportMonth(reportingDate).toString();
         String reportingMonthEndDate = reportMonth.endOfCurrentReportMonth(reportingDate).toString();
         reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDED_DATA_TYPE, indicator, reportingMonthStartDate, reportingMonthEndDate, serviceProvidedData));

@@ -2,11 +2,13 @@ package org.ei.drishti.service.reporting;
 
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportDataDeleteRequest;
+import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.util.SafeMap;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -21,19 +23,21 @@ public class ECReportingServiceTest {
     private ReportingService reportingService;
     @Mock
     private AllEligibleCouples allEligibleCouples;
+    @Mock
+    private ReportMonth reportMonth;
 
     private ECReportingService service;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ECReportingService(reportingService, allEligibleCouples);
+        service = new ECReportingService(reportingService, allEligibleCouples, reportMonth);
     }
 
     @Test
     public void shouldReportFPMethodChangeWhenECIsRegistered() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
-
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "iud")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
@@ -49,6 +53,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldReportOCPSTWhenECIsRegisteredAndCurrentMethodIsOCPAndCasteIsST() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "ocp")
@@ -64,6 +69,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldReportOCPSCWhenECIsRegisteredAndCurrentMethodIsOCPAndCasteIsSC() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "ocp")
@@ -79,6 +85,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldReportOCPC_OthersWhenECIsRegisteredAndCurrentMethodIsOCPAndCasteIsOthers() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "ocp")
@@ -94,6 +101,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldNotReportOCPCasteIndicatorsWhenECIsRegisteredAndCasteIsNotSpecified() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "ocp")
@@ -110,6 +118,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldReportFPMethodChange() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "ocp")
@@ -127,6 +136,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldReportOCPC_OthersWhenFPMethodChangeAndCasteIsOthers() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "iud")
@@ -143,6 +153,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldReportOCPSTWhenFPMethodChangeAndCasteIsST() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "iud")
@@ -159,6 +170,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldReportOCPSCWhenFPMethodChangeAndCasteIsSC() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "iud")
@@ -175,6 +187,8 @@ public class ECReportingServiceTest {
 
     @Test
     public void shouldNotReportFPMethodChangeWhenNoIndicatorIsFoundForTheCurrentFPMethod() throws Exception {
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(false);
+
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "none")
                 .put("familyPlanningMethodChangeDate", "2012-01-01")
@@ -188,6 +202,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldReportFemaleSterilizationAPLWhenECIsRegisteredAndEconomicStatusIsAPL() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "female_sterilization")
@@ -204,6 +219,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldReportFemaleSterilizationBPLWhenECIsRegisteredAndEconomicStatusIsBPL() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "female_sterilization")
@@ -220,6 +236,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldNotReportFemaleSterilizationWhenECIsRegisteredAndEconomicStatusIsNotSpecified() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "female_sterilization")
@@ -237,6 +254,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldReportFemaleSterilizationBPLWhenFPMethodIsChangedAndEconomicStatusIsBPL() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "iud")
@@ -254,6 +272,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldReportFemaleSterilizationAPLWhenFPMethodIsChangedAndEconomicStatusIsAPL() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "iud")
@@ -271,6 +290,7 @@ public class ECReportingServiceTest {
     @Test
     public void shouldNotReportFemaleSterilizationEconomicStatusWhenFPMethodIsChangedAndEconomicStatusIsNotSpecified() throws Exception {
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
                 .put("currentMethod", "iud")
@@ -290,6 +310,7 @@ public class ECReportingServiceTest {
     public void shouldReportQuantityWhenProvided() throws Exception {
         EligibleCouple ec = new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X");
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(ec);
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2013-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(
                 create("id", "EC CASE 1")
@@ -307,6 +328,7 @@ public class ECReportingServiceTest {
     public void shouldUseExternalIdIfECNumberIsNotAvailable() throws Exception {
         EligibleCouple ec = new EligibleCouple("EC CASE 1", null).withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X");
         when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(ec);
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2013-01-01"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap(
                 create("id", "EC CASE 1")
@@ -325,5 +347,23 @@ public class ECReportingServiceTest {
 
         verify(reportingService).deleteReportData(ReportDataDeleteRequest.serviceProvidedDataDeleteRequest("entity id 1"));
         verify(reportingService).deleteReportData(ReportDataDeleteRequest.anmReportDataDeleteRequest("entity id 1"));
+    }
+
+    @Test
+    public void shouldNotReportIfServiceProvidedDateIsNotInCurrentReportingMonth() throws Exception {
+        when(allEligibleCouples.findByCaseId("EC CASE 1")).thenReturn(new EligibleCouple("EC CASE 1", "EC NUMBER 1").withANMIdentifier("ANM X").withLocation("bherya", "Sub Center", "PHC X"));
+        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(false);
+
+        SafeMap reportData = new SafeMap(create("id", "EC CASE 1")
+                .put("currentMethod", "iud")
+                .put("newMethod", "female_sterilization")
+                .put("familyPlanningMethodChangeDate", "2012-01-01")
+                .put("caste", "")
+                .put("economicStatus", "")
+                .map());
+
+        service.reportIndicator(reportData, null, Indicator.CONDOM_QTY, "2012-01-01");
+
+        verifyZeroInteractions(reportingService);
     }
 }

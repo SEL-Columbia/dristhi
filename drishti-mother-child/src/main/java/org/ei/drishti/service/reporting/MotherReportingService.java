@@ -251,6 +251,8 @@ public class MotherReportingService {
     }
 
     public void reportToBoth(Mother mother, Indicator indicator, String date, Location location) {
+        if(!reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
+            return;
         ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thayiCardNumber(), indicator, date, location, mother.caseId());
         reportingService.sendReportData(serviceProvided);
 

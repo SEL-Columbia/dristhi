@@ -6,6 +6,7 @@ import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Location;
 import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.util.SafeMap;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,13 @@ import static org.ei.drishti.common.domain.ReportDataDeleteRequest.serviceProvid
 public class ECReportingService {
     private ReportingService service;
     private AllEligibleCouples allEligibleCouples;
+    private final ReportMonth reportMonth;
 
     @Autowired
-    public ECReportingService(ReportingService service, AllEligibleCouples allEligibleCouples) {
+    public ECReportingService(ReportingService service, AllEligibleCouples allEligibleCouples, ReportMonth reportMonth) {
         this.service = service;
         this.allEligibleCouples = allEligibleCouples;
+        this.reportMonth = reportMonth;
     }
 
     public void registerEC(SafeMap reportData) {
@@ -52,9 +55,8 @@ public class ECReportingService {
     }
 
     public void reportIndicator(SafeMap reportData, EligibleCouple ec, Indicator indicator, String serviceProvidedDate) {
-        if (indicator == null) {
+        if (!reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(serviceProvidedDate)) || indicator == null)
             return;
-        }
 
         String externalId = ec.ecNumber();
         if (externalId == null) {
