@@ -117,9 +117,11 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
     }
 
     @View(name = "all_ecs",
-            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false') { emit(doc.caseId); } }")
-    public List<EligibleCouple> all() {
-        return db.queryView(createQuery("all_ecs").includeDocs(true), EligibleCouple.class);
+            map = "function(doc) { if (doc.type === 'EligibleCouple') { emit(doc.anmIdentifier); } }")
+    public List<EligibleCouple> all(String anmIdentifier) {
+        return db.queryView(createQuery("all_ecs")
+                .key(anmIdentifier)
+                .includeDocs(true), EligibleCouple.class);
     }
 
 }

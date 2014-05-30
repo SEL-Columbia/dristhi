@@ -30,16 +30,16 @@ public class EntitiesService {
         this.allEligibleCouples = allEligibleCouples;
     }
 
-    public List<EntityDetail> entities() {
+    public List<EntityDetail> entities(String anmIdentifier) {
         List<EntityDetail> entityDetails = new ArrayList<>();
-        updateWithECDetails(entityDetails);
-        updateWithMotherDetails(entityDetails);
-        updateWithChildDetails(entityDetails);
+        updateWithECDetails(entityDetails, anmIdentifier);
+        updateWithMotherDetails(entityDetails, anmIdentifier);
+        updateWithChildDetails(entityDetails, anmIdentifier);
         return entityDetails;
     }
 
-    private void updateWithChildDetails(List<EntityDetail> entityDetails) {
-        List<Child> children = allChildren.all();
+    private void updateWithChildDetails(List<EntityDetail> entityDetails, String anmIdentifier) {
+        List<Child> children = allChildren.all(anmIdentifier);
         for (Child child : children) {
             EntityDetail entity = new EntityDetail()
                     .withEntityID(child.caseId())
@@ -59,8 +59,8 @@ public class EntitiesService {
         return allEligibleCouples.findByCaseId(mother.ecCaseId()).ecNumber();
     }
 
-    private void updateWithMotherDetails(List<EntityDetail> entityDetails) {
-        List<Mother> mothers = allMothers.all();
+    private void updateWithMotherDetails(List<EntityDetail> entityDetails, String anmIdentifier) {
+        List<Mother> mothers = allMothers.all(anmIdentifier);
         for (Mother mother : mothers) {
             EntityDetail entity = new EntityDetail()
                     .withEntityID(mother.caseId())
@@ -72,8 +72,8 @@ public class EntitiesService {
         }
     }
 
-    private void updateWithECDetails(List<EntityDetail> entityDetails) {
-        List<EligibleCouple> allECs = allEligibleCouples.all();
+    private void updateWithECDetails(List<EntityDetail> entityDetails, String anmIdentifier) {
+        List<EligibleCouple> allECs = allEligibleCouples.all(anmIdentifier);
         for (EligibleCouple ec : allECs) {
             EntityDetail entity = new EntityDetail()
                     .withEntityID(ec.caseId())
