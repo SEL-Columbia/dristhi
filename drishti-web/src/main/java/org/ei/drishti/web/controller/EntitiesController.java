@@ -39,13 +39,9 @@ public class EntitiesController {
 
     @RequestMapping(method = GET, value = "/entities-as-json")
     @ResponseBody
-    public ResponseEntity<List<EntityDetailDTO>> allEntities() {
+    public ResponseEntity<List<EntityDetailDTO>> allEntities((@RequestParam("anmIdentifier") String anmIdentifier) {
         try {
-            List<DrishtiUser> drishtiUsers = allDrishtiUsers.getAll();
-            List<EntityDetail> entityDetails = new ArrayList<>();
-            for (DrishtiUser drishtiUser : drishtiUsers) {
-                entityDetails.addAll(service.entities(drishtiUser.getUsername()));
-            }
+            List<EntityDetail> entityDetails = service.entities(anmIdentifier);
             logger.info("JSON map of all entities");
             return new ResponseEntity<>(mapToDTO(entityDetails), HttpStatus.OK);
         } catch (Exception exception) {
