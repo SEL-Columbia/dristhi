@@ -39,7 +39,7 @@ public class EntitiesController {
 
     @RequestMapping(method = GET, value = "/entities-as-json")
     @ResponseBody
-    public ResponseEntity<List<EntityDetailDTO>> allEntities((@RequestParam("anmIdentifier") String anmIdentifier) {
+    public ResponseEntity<List<EntityDetailDTO>> allEntities(@RequestParam("anmIdentifier") String anmIdentifier) {
         try {
             List<EntityDetail> entityDetails = service.entities(anmIdentifier);
             logger.info("JSON map of all entities");
