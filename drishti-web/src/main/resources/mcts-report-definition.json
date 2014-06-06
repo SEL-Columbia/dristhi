@@ -84,6 +84,61 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "ifa",
+            "indicators": [
+                {
+                    "indicator": "IFA",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ifaTabletsDate",
+                    "formFields": [
+                        "numberOfIFATabletsGiven",
+                        "ifaTabletsDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "totalNumberOfIFATabletsGiven",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "MoreThan100IFATabletsAreProvidedRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "tt",
+            "indicators": [
+                {
+                    "indicator": "TT1",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ttDate",
+                    "formFields": [
+                        "ttDose",
+                        "ttDate"
+                    ],
+                    "reportWhen": [
+                        "IsTT1DoseGivenForMother"
+                    ]
+                },
+                {
+                    "indicator": "TT2",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ttDate",
+                    "formFields": [
+                        "ttDose",
+                        "ttDate"
+                    ],
+                    "reportWhen": [
+                        "IsTT2DoseGivenForMother"
+                    ]
+                }
+            ]
         }
     ]
 }
