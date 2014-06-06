@@ -1,4 +1,89 @@
 {
     "formIndicators": [
+        {
+            "form": "anc_visit",
+            "indicators": [
+                {
+                    "indicator": "ANC1",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ancVisitDate",
+                    "formFields": [
+                        "ancVisitDate",
+                        "ancVisitNumber"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsFirstANCVisitRule"
+                    ]
+                },
+                {
+                    "indicator": "ANC2",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ancVisitDate",
+                    "formFields": [
+                        "ancVisitDate",
+                        "ancVisitNumber"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsSecondANCVisitRule"
+                    ]
+                },
+                {
+                    "indicator": "ANC3",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ancVisitDate",
+                    "formFields": [
+                        "ancVisitDate",
+                        "ancVisitNumber"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsThirdANCVisitRule"
+                    ]
+                },
+                {
+                    "indicator": "ANC4",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ancVisitDate",
+                    "formFields": [
+                        "ancVisitDate",
+                        "ancVisitNumber"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsFourthANCVisitRule"
+                    ]
+                }
+            ]
+        }
     ]
 }
