@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import static org.joda.time.DateTimeConstants.MILLIS_PER_HOUR;
+import static org.joda.time.DateTimeConstants.MILLIS_PER_MINUTE;
 
 @Component
 public class MCTSReportScheduler {
@@ -21,12 +22,16 @@ public class MCTSReportScheduler {
     private static final int START_DELAY = 10;
     private final MotechSchedulerService schedulerService;
     private static Logger logger = LoggerFactory.getLogger(MCTSReportScheduler.class.toString());
-    private long pollInterval;
+    private long pollIntervalInHours;
+    private long pollIntervalInMinutes;
 
     @Autowired
-    public MCTSReportScheduler(MotechSchedulerService schedulerService, @Value("#{drishti['mcts.poll.time.interval.in.hours']}") Long pollInterval) {
+    public MCTSReportScheduler(MotechSchedulerService schedulerService,
+                               @Value("#{drishti['mcts.poll.time.interval.in.hours']}") Long pollIntervalInHours,
+                               @Value("#{drishti['mcts.poll.time.interval.in.minutes']}") Long pollIntervalInMinutes) {
         this.schedulerService = schedulerService;
-        this.pollInterval = pollInterval;
+        this.pollIntervalInHours = pollIntervalInHours;
+        this.pollIntervalInMinutes = pollIntervalInMinutes;
     }
 
     public void startTimedScheduler() {
@@ -34,7 +39,8 @@ public class MCTSReportScheduler {
 
         Date startTime = DateTime.now().plusMinutes(START_DELAY).toDate();
         MotechEvent event = new MotechEvent(SUBJECT, new HashMap<String, Object>());
-        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, pollInterval * MILLIS_PER_HOUR);
+        long repeatIntervalInMilliSeconds = (pollIntervalInHours * MILLIS_PER_HOUR) + (pollIntervalInMinutes * MILLIS_PER_MINUTE);
+        RepeatingSchedulableJob job = new RepeatingSchedulableJob(event, startTime, null, repeatIntervalInMilliSeconds);
 
         schedulerService.safeScheduleRepeatingJob(job);
     }
