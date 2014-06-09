@@ -77,6 +77,37 @@ public class MCTSReportServiceTest {
         verify(reporter).report("mother id 1", "thayi card 1", "ANC1", "2012-02-01", "2012-03-01");
     }
 
+    @Test
+    public void shouldAddReferenceFieldsToReportData() throws Exception {
+        FormSubmission submission = create()
+                .withFormName("anc_visit")
+                .withANMId("anm id 1")
+                .withEntityId("mother id 1")
+                .addFormField("submissionDate", "2012-03-02")
+                .addFormField("ancVisitDate", "2012-03-01")
+                .addFormField("ancVisitNumber", "1")
+                .build();
+        when(rulesFactory.ruleByName(any(String.class))).thenReturn(rule);
+        when(reportDefinitionLoader.load()).thenReturn(reportDefinition());
+        when(referenceDataRepository
+                .getReferenceData(any(FormSubmission.class), any(ReferenceData.class)))
+                .thenReturn(
+                        new SafeMap(EasyMap
+                                .create("thayiCardNumber", "thayi card 1")
+                                .put("registrationDate", "2012-02-01").map())
+                );
+
+        service.reportFor(submission);
+
+        verify(rule).apply(new SafeMap(EasyMap
+                .create("thayiCardNumber", "thayi card 1")
+                .put("id", "mother id 1")
+                .put("registrationDate", "2012-02-01")
+                .put("ancVisitNumber", "1")
+                .put("submissionDate", "2012-03-02")
+                .map()));
+    }
+
     private MCTSReportDefinition reportDefinition() {
         return new MCTSReportDefinition(
                 asList(

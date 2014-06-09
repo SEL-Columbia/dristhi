@@ -48,22 +48,21 @@ public class MCTSReportService {
 
         for (MCTSReportIndicator reportIndicator : reportIndicators) {
             SafeMap reportFields = createReportFields(submission, reportIndicator);
-            SafeMap referenceDataFields = referenceDataRepository.getReferenceData(submission, reportIndicator.referenceData());
             boolean didAllRulesSucceed = processRules(reportIndicator.reportingRules(), reportFields, reportIndicator.indicator());
             if (didAllRulesSucceed) {
                 logger.info(MessageFormat.format("Sending MCTS Report for indicator: {0} for entity with id {1} ", reportIndicator, submission.entityId()));
-                reportToMCTS(submission.entityId(), referenceDataFields, reportIndicator, getServiceProvidedDate(submission, reportIndicator));
+                reportToMCTS(submission.entityId(), reportFields, reportIndicator, getServiceProvidedDate(submission, reportIndicator));
             }
         }
     }
 
-    private void reportToMCTS(String entityId, SafeMap referenceDataFields,
+    private void reportToMCTS(String entityId, SafeMap reportFields,
                               MCTSReportIndicator reportIndicator, String serviceProvidedDate) {
         reporter.report(
                 entityId,
-                referenceDataFields.get(THAYI_CARD_NUMBER),
+                reportFields.get(THAYI_CARD_NUMBER),
                 reportIndicator.indicator(),
-                referenceDataFields.get(REGISTRATION_DATE), serviceProvidedDate);
+                reportFields.get(REGISTRATION_DATE), serviceProvidedDate);
     }
 
     private boolean processRules(List<String> rules, SafeMap reportFields, String indicator) {
@@ -86,6 +85,10 @@ public class MCTSReportService {
     private SafeMap createReportFields(FormSubmission submission, MCTSReportIndicator reportIndicator) {
         SafeMap reportData = new SafeMap(submission.getFields(reportIndicator.formFields()));
         reportData.put(SUBMISSION_DATE_FIELD_NAME, submission.getField(SUBMISSION_DATE_FIELD_NAME));
+
+        SafeMap referenceDataFields = referenceDataRepository.getReferenceData(submission, reportIndicator.referenceData());
+        reportData.putAll(referenceDataFields);
+
         return reportData;
     }
 
