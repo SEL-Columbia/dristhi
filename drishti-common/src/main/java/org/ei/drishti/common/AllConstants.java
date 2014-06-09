@@ -231,6 +231,7 @@ public class AllConstants {
         public static final String DATE = "Date";
         public static final String VITAMIN = "vitamin";
         public static final String SHOULD_CLOSE_MOTHER = "shouldCloseMother";
+        public static final String THAYI_CARD= "thayiCard";
     }
 
     public static class ChildCloseFormFields {

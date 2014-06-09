@@ -15,6 +15,7 @@ import java.util.List;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.THAYI_CARD_NUMBER;
+import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.THAYI_CARD;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 
 @Component
@@ -88,6 +89,9 @@ public class MCTSReportService {
 
         SafeMap referenceDataFields = referenceDataRepository.getReferenceData(submission, reportIndicator.referenceData());
         reportData.putAll(referenceDataFields);
+
+        if (!reportData.has(THAYI_CARD_NUMBER))
+            reportData.put(THAYI_CARD_NUMBER, referenceDataFields.get(THAYI_CARD));
 
         return reportData;
     }
