@@ -175,6 +175,165 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "child_immunizations",
+            "indicators": [
+                {
+                    "indicator": "DPT_BOOSTER_1",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsDPTBoosterImmunizationGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "DPT_BOOSTER_2",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsDPTBooster2ImmunizationGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "JE",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsJEImmunizationGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "OPV1",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsOPV1ImmunizationGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "OPV2",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsOPV2ImmunizationGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "OPV3",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsOPV3ImmunizationGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "OPVB",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsOPVBoosterImmunizationGivenRule"
+                    ]
+                }
+            ]
         }
     ]
 }

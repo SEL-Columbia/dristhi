@@ -23,8 +23,8 @@ public enum MCTSServiceCode {
     Complication_None("COM N"),
     RTI_Yes("RTI Y"),
     RTI_No("RTI N"),
-    PNC_7_Days("PNC 7"),
-    PNC_48_Hours("PNC 48"),
+    PNC_7_DAYS("PNC 7"),
+    PNC_48_HOURS("PNC 48"),
     PNC_Complication_None("PNCC N"),
     PNC_Complication_PPH("PNCC P"),
     PNC_Complication_Sepsis("PNCC S"),
@@ -35,7 +35,15 @@ public enum MCTSServiceCode {
     PPC_IUD("PPC I"),
     PPC_Injectibles("PPC J"),
     PNC_Checkup_Y("PNCH Y"),
-    PNC_Checkup_N("PNCH N");
+    PNC_Checkup_N("PNCH N"),
+    DPT_BOOSTER_1("DPTB"),
+    DPT_BOOSTER_2("DT5"),
+    JE("JE"),
+    OPV1("OPV1"),
+    OPV2("OPV2"),
+    OPV3("OPV3"),
+    OPVB("OPVB"),
+    VITA1("VITA1");
 
     private final String codeForMCTS;
 
