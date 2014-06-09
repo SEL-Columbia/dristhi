@@ -12,7 +12,7 @@ public enum MCTSServiceCode {
     IFA("IFA"),
     TT_1("TT1"),
     TT_2("TT2"),
-    TT_Booster("TTB"),
+    TT_BOOSTER("TTB"),
     Anaemia_Normal("ANM N"),
     Anaemia_Moderate("ANM M"),
     Anaemia_Severe("ANM S"),

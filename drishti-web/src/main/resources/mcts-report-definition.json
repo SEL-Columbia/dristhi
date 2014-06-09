@@ -115,27 +115,63 @@
             "form": "tt",
             "indicators": [
                 {
-                    "indicator": "TT1",
+                    "indicator": "TT_1",
                     "reportEntityType": "mother",
                     "serviceProvidedDateField": "ttDate",
                     "formFields": [
                         "ttDose",
                         "ttDate"
                     ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
                     "reportWhen": [
                         "IsTT1DoseGivenForMother"
                     ]
                 },
                 {
-                    "indicator": "TT2",
+                    "indicator": "TT_2",
                     "reportEntityType": "mother",
                     "serviceProvidedDateField": "ttDate",
                     "formFields": [
                         "ttDose",
                         "ttDate"
                     ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
                     "reportWhen": [
                         "IsTT2DoseGivenForMother"
+                    ]
+                },
+                {
+                    "indicator": "TT_BOOSTER",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ttDate",
+                    "formFields": [
+                        "ttDose",
+                        "ttDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsTTBoosterDoseGivenForMother"
                     ]
                 }
             ]
