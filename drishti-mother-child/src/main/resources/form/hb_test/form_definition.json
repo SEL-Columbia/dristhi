@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "2",
+    "form_data_definition_version": "3",
     "form": {
         "bind_type": "mother",
         "default_bind_path": "/model/instance/Hb_Test_EngKan/",
@@ -19,6 +19,11 @@
             {
                 "name": "hbLevel",
                 "bind": "/model/instance/Hb_Test_EngKan/hb_level"
+            },
+            {
+                "name": "previousAnaemicStatus",
+                "shouldLoadValue": true,
+                "source": "mother.anaemicStatus"
             },
             {
                 "name": "anaemicStatus",
