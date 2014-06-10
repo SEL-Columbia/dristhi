@@ -334,6 +334,80 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "vitamin_a",
+            "indicators": [
+                {
+                    "indicator": "VITA1",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "formFields": [
+                        "vitaminADose",
+                        "vitaminADate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsVitaminA1DoseGivenRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "pnc_visit",
+            "indicators": [
+                {
+                    "indicator": "PNC_7_DAYS",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "pncVisitDate",
+                    "formFields": [
+                        "pncVisitDate",
+                        "referenceDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "pncVisitDates",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsPNCVisitFirstRule",
+                        "IsPNCVisitBetween2And7DaysOfDeliveryRule"
+                    ]
+                },
+                {
+                    "indicator": "PNC_48_HOURS",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "pncVisitDate",
+                    "formFields": [
+                        "pncVisitDate",
+                        "referenceDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "pncVisitDates",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsPNCVisitFirstRule",
+                        "IsPNCVisit48HoursOfDeliveryRule"
+                    ]
+                }
+            ]
         }
     ]
 }
