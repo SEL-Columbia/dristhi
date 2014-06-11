@@ -43,7 +43,9 @@ public enum MCTSServiceCode {
     OPV2("OPV2"),
     OPV3("OPV3"),
     OPVB("OPVB"),
-    VITA1("VITA1");
+    VITA1("VITA1"),
+    BCG("BCG"),
+    OPV0("OPV0");
 
     private final String codeForMCTS;
 

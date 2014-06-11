@@ -23,6 +23,7 @@ import java.util.*;
 
 import static ch.lambdaj.Lambda.*;
 import static java.util.Arrays.asList;
+import static org.ei.drishti.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
 import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.ChildIllnessFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
@@ -56,18 +57,20 @@ public class ChildReportingService {
     private final AllEligibleCouples allEligibleCouples;
     private final AllInfantBalanceOnHandReportTokens allInfantBalanceOnHandReportTokens;
     private final ReportMonth reportMonth;
+    private MCTSReporter mctsReporter;
     private Map<String, List<Indicator>> immunizationToIndicator;
 
     @Autowired
     public ChildReportingService(ReportingService reportingService, AllChildren allChildren, AllMothers allMothers,
                                  AllEligibleCouples allEligibleCouples,
-                                 AllInfantBalanceOnHandReportTokens allInfantBalanceOnHandReportTokens, ReportMonth reportMonth) {
+                                 AllInfantBalanceOnHandReportTokens allInfantBalanceOnHandReportTokens, ReportMonth reportMonth, MCTSReporter mctsReporter) {
         this.reportingService = reportingService;
         this.allChildren = allChildren;
         this.allMothers = allMothers;
         this.allEligibleCouples = allEligibleCouples;
         this.allInfantBalanceOnHandReportTokens = allInfantBalanceOnHandReportTokens;
         this.reportMonth = reportMonth;
+        this.mctsReporter = mctsReporter;
 
         immunizationToIndicator = new HashMap<>();
 
@@ -108,6 +111,16 @@ public class ChildReportingService {
         reportToBoth(child, INFANT_REGISTRATION, child.dateOfBirth(), location);
         reportLiveBirthByGender(reportData, child, location);
         reportToBoth(child, INFANT_BALANCE_TOTAL, child.dateOfBirth(), location);
+        reportMCTSIndicators(reportData, child, immunizations);
+    }
+
+    private void reportMCTSIndicators(SafeMap reportData, Child child, List<String> immunizations) {
+        if (immunizations.contains(BCG_VALUE)) {
+           mctsReporter.report(child.caseId(), child.thayiCardNumber(), MCTSServiceCode.BCG.toString(), reportData.get(REGISTRATION_DATE), child.dateOfBirth());
+        }
+        if (immunizations.contains(OPV_0_VALUE)) {
+            mctsReporter.report(child.caseId(), child.thayiCardNumber(), MCTSServiceCode.OPV0.toString(), reportData.get(REGISTRATION_DATE), child.dateOfBirth());
+        }
     }
 
     private void reportNRHMImmunizations(SafeMap reportData, Child child, List<String> immunizations, Location location) {

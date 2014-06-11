@@ -20,7 +20,6 @@ import java.util.Collections;
 import static java.util.Arrays.asList;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.ANM_REPORT_DATA_TYPE;
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE;
-import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDER_TYPE;
 import static org.ei.drishti.common.domain.Indicator.*;
 import static org.ei.drishti.common.domain.ReportDataDeleteRequest.anmReportDataDeleteRequest;
 import static org.ei.drishti.common.domain.ReportDataDeleteRequest.serviceProvidedDataDeleteRequest;
@@ -41,6 +40,8 @@ public class ChildReportingServiceTest {
     private AllInfantBalanceOnHandReportTokens allInfantBalanceOnHandTokens;
     @Mock
     private ReportMonth reportMonth;
+    @Mock
+    private MCTSReporter mctsReporter;
 
     private ChildReportingService service;
 
@@ -53,7 +54,7 @@ public class ChildReportingServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ChildReportingService(reportingService, allChildren, allMothers, allEligibleCouples, allInfantBalanceOnHandTokens, reportMonth);
+        service = new ChildReportingService(reportingService, allChildren, allMothers, allEligibleCouples, allInfantBalanceOnHandTokens, reportMonth, mctsReporter);
     }
 
     @Test
@@ -284,6 +285,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("registrationDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -306,6 +308,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "subcenter");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("registrationDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -328,6 +331,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "subcenter");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("registrationDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -350,10 +354,57 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "subcenter");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("registrationDate", "2012-01-01");
 
         service.registerChild(reportData);
 
         verifyBothReportingCalls(NRHM_BCG_1YR, "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportMCTSBCGChildImmunizationDataWhenChildIsRegistered() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1").withDetails(EasyMap.create("registrtationDate", "2012-01-01").map()));
+
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "subcenter");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("registrationDate", "2012-01-02");
+
+        service.registerChild(reportData);
+
+        verify(mctsReporter).report("CASE X", "TC 1", "BCG", "2012-01-02", "2012-01-01");
+    }
+
+    @Test
+    public void shouldReportMCTSOPV0ChildImmunizationDataWhenChildIsRegistered() throws Exception {
+        when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "opv_0", "5", "female")
+                .withAnm("ANM X")
+                .withDateOfBirth("2012-01-01")
+                .withThayiCard("TC 1").withDetails(EasyMap.create("registrtationDate", "2012-01-01").map()));
+
+        when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
+        when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
+
+        SafeMap reportData = new SafeMap();
+        reportData.put("childId", "CASE X");
+        reportData.put("didBreastfeedingStart", "");
+        reportData.put("deliveryPlace", "subcenter");
+        reportData.put("deliveryDate", "2012-01-01");
+        reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("registrationDate", "2012-01-02");
+
+        service.registerChild(reportData);
+
+        verify(mctsReporter).report("CASE X", "TC 1", "OPV0", "2012-01-02", "2012-01-01");
     }
 
     @Test
@@ -394,6 +445,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("registrationDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -416,6 +468,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("registrationDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -1380,7 +1433,7 @@ public class ChildReportingServiceTest {
 
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator... expectedIndicators) {
         ReportingService fakeReportingService = mock(ReportingService.class);
-        ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, allChildren, allMothers, allEligibleCouples, allInfantBalanceOnHandTokens, reportMonth);
+        ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, allChildren, allMothers, allEligibleCouples, allInfantBalanceOnHandTokens, reportMonth, mctsReporter);
         SafeMap reportingData = reportDataForImmunization(immunizationProvided, "");
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));

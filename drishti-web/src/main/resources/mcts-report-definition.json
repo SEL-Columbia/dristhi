@@ -332,6 +332,50 @@
                     "reportWhen": [
                         "IsOPVBoosterImmunizationGivenRule"
                     ]
+                },
+                {
+                    "indicator": "BCG",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsBCGImmunizationGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "OPV0",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsOPV0ImmunizationGivenRule"
+                    ]
                 }
             ]
         },

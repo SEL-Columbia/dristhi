@@ -23,8 +23,7 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.ei.drishti.common.AllConstants.ANCFormFields.MOTHER_ID;
-import static org.ei.drishti.common.AllConstants.ANCFormFields.THAYI_CARD_NUMBER;
+import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.ChildImmunizationFields.*;
 import static org.ei.drishti.common.AllConstants.ChildRegistrationFormFields.*;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.*;
@@ -81,6 +80,7 @@ public class ChildService {
             reportingData.put(ChildReportingService.CHILD_ID_FIELD, child.caseId());
             reportingData.put(DELIVERY_PLACE, submission.getField(DELIVERY_PLACE));
             reportingData.put(BF_POSTBIRTH, submission.getField(DID_BREAST_FEEDING_START));
+            reportingData.put(REGISTRATION_DATE, referenceDate);
             childReportingService.registerChild(reportingData);
 
             childSchedulesService.enrollChild(child);
@@ -276,6 +276,7 @@ public class ChildService {
             reportingData.put(ChildReportingService.CHILD_ID_FIELD, child.caseId());
             reportingData.put(DELIVERY_PLACE, submission.getField(DELIVERY_PLACE));
             reportingData.put(BF_POSTBIRTH, childFields.get(DID_BREAST_FEEDING_START));
+            reportingData.put(REGISTRATION_DATE, referenceDate);
             childReportingService.registerChild(reportingData);
 
             childSchedulesService.enrollChild(child);
