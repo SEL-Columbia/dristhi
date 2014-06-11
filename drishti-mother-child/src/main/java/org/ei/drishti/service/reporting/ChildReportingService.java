@@ -1,6 +1,5 @@
 package org.ei.drishti.service.reporting;
 
-import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
 import org.ei.drishti.common.domain.ReportMonth;
@@ -23,6 +22,7 @@ import java.util.*;
 
 import static ch.lambdaj.Lambda.*;
 import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
 import static org.ei.drishti.common.AllConstants.ChildCloseFormFields.*;
 import static org.ei.drishti.common.AllConstants.ChildIllnessFields.*;
@@ -116,7 +116,7 @@ public class ChildReportingService {
 
     private void reportMCTSIndicators(SafeMap reportData, Child child, List<String> immunizations) {
         if (immunizations.contains(BCG_VALUE)) {
-           mctsReporter.report(child.caseId(), child.thayiCardNumber(), MCTSServiceCode.BCG.toString(), reportData.get(REGISTRATION_DATE), child.dateOfBirth());
+            mctsReporter.report(child.caseId(), child.thayiCardNumber(), MCTSServiceCode.BCG.toString(), reportData.get(REGISTRATION_DATE), child.dateOfBirth());
         }
         if (immunizations.contains(OPV_0_VALUE)) {
             mctsReporter.report(child.caseId(), child.thayiCardNumber(), MCTSServiceCode.OPV0.toString(), reportData.get(REGISTRATION_DATE), child.dateOfBirth());
@@ -194,7 +194,7 @@ public class ChildReportingService {
 
     private void reportDIarrhea(SafeMap reportData, Child child, Location location) {
         String problems = reportData.get(URINE_STOOL_PROBLEMS);
-        if (!StringUtils.isBlank(problems) && problems.contains(AllConstants.CommonChildFormFields.DIARRHEA_VALUE)) {
+        if (!isBlank(problems) && problems.contains(AllConstants.CommonChildFormFields.DIARRHEA_VALUE)) {
             reportToBoth(child, CHILD_DIARRHEA, reportData.get(VISIT_DATE_FIELD_NAME), location);
         }
     }
@@ -206,9 +206,9 @@ public class ChildReportingService {
         Location location = loadLocationOfChild(child);
         LocalDate childDateOfBirth = parse(child.dateOfBirth());
         if (childDateOfBirth.plusYears(CHILD_DIARRHEA_THRESHOLD_IN_YEARS).isAfter(LocalDate.parse(reportData.get(AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME)))) {
-            if (!StringUtils.isBlank(reportData.get(CHILD_SIGNS)) && reportData.get(CHILD_SIGNS).contains(AllConstants.CommonChildFormFields.DIARRHEA_VALUE)) {
+            if (!isBlank(reportData.get(CHILD_SIGNS)) && reportData.get(CHILD_SIGNS).contains(AllConstants.CommonChildFormFields.DIARRHEA_VALUE)) {
                 reportToBoth(child, CHILD_DIARRHEA, reportData.get(SICK_VISIT_DATE), location);
-            } else if (!StringUtils.isBlank(reportData.get(REPORT_CHILD_DISEASE)) && reportData.get(REPORT_CHILD_DISEASE).contains(AllConstants.ChildIllnessFields.DIARRHEA_DEHYDRATION_VALUE)) {
+            } else if (!isBlank(reportData.get(REPORT_CHILD_DISEASE)) && reportData.get(REPORT_CHILD_DISEASE).contains(AllConstants.ChildIllnessFields.DIARRHEA_DEHYDRATION_VALUE)) {
                 reportToBoth(child, CHILD_DIARRHEA, reportData.get(REPORT_CHILD_DISEASE_DATE), location);
             }
         }
@@ -359,10 +359,10 @@ public class ChildReportingService {
     }
 
     public void reportToBoth(Child child, Indicator indicator, String date, Location location) {
-        if(!reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
+        if (!reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
             return;
         String externalId = child.thayiCardNumber();
-        if (StringUtils.isBlank(externalId)) {
+        if (isBlank(externalId)) {
             Mother mother = allMothers.findByCaseId(child.motherCaseId());
             EligibleCouple ec = allEligibleCouples.findByCaseId(mother.ecCaseId());
             externalId = ec.ecNumber();
@@ -505,9 +505,9 @@ public class ChildReportingService {
     }
 
     private void updateBothReports(Indicator indicator, String date, List<ReportingData> serviceProvidedData, List<ReportingData> anmReportData) {
-        LocalDate reportingDate = LocalDate.parse(date);
-        if(!reportMonth.isDateWithinCurrentReportMonth(reportingDate))
+        if (!isBlank(date) && !reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
             return;
+        LocalDate reportingDate = LocalDate.parse(date);
         String reportingMonthStartDate = reportMonth.startOfCurrentReportMonth(reportingDate).toString();
         String reportingMonthEndDate = reportMonth.endOfCurrentReportMonth(reportingDate).toString();
         reportingService.updateReportData(buildReportDataRequest(SERVICE_PROVIDED_DATA_TYPE, indicator, reportingMonthStartDate, reportingMonthEndDate, serviceProvidedData));

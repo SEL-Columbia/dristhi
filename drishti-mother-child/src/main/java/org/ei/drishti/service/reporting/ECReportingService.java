@@ -10,6 +10,7 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
 import static org.ei.drishti.common.domain.ReportDataDeleteRequest.anmReportDataDeleteRequest;
@@ -55,7 +56,7 @@ public class ECReportingService {
     }
 
     public void reportIndicator(SafeMap reportData, EligibleCouple ec, Indicator indicator, String serviceProvidedDate) {
-        if (!reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(serviceProvidedDate)) || indicator == null)
+        if ((!isBlank(serviceProvidedDate) && !reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(serviceProvidedDate))) || indicator == null)
             return;
 
         String externalId = ec.ecNumber();

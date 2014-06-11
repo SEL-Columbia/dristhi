@@ -3,7 +3,6 @@ package org.ei.drishti.service.reporting;
 import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.domain.Indicator;
-import org.ei.drishti.common.domain.ReportDataDeleteRequest;
 import org.ei.drishti.common.domain.ReportMonth;
 import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.domain.EligibleCouple;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.ANCCloseFields.*;
 import static org.ei.drishti.common.AllConstants.ANCFormFields.*;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.*;
@@ -223,8 +223,8 @@ public class MotherReportingService {
                 reportToBoth(mother, ANC4, reportData.get(ANC_VISIT_DATE_FIELD), location);
             }
         } catch (NumberFormatException e) {
-            logger.warn("Not reporting ANC visit for mother: " + mother.ecCaseId() + " a" +
-                    "s visit number is invalid, visit number:" + reportData.get(ANC_VISIT_NUMBER_FIELD));
+            logger.warn("Not reporting ANC visit for mother: " + mother.ecCaseId() +
+                    " as visit number is invalid, visit number:" + reportData.get(ANC_VISIT_NUMBER_FIELD));
         }
     }
 
@@ -251,7 +251,7 @@ public class MotherReportingService {
     }
 
     public void reportToBoth(Mother mother, Indicator indicator, String date, Location location) {
-        if(!reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
+        if (!isBlank(date) && !reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
             return;
         ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thayiCardNumber(), indicator, date, location, mother.caseId());
         reportingService.sendReportData(serviceProvided);
