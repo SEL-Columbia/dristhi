@@ -10,11 +10,11 @@ import static org.ei.drishti.common.util.EasyMap.create;
 
 public class IsPersonModerateAnaemicRuleTest {
 
-    private IsPersonNormalAnaemicRule rule;
+    private IsPersonModerateAnaemicRule rule;
 
     @Before
     public void setUp() throws Exception {
-        rule = new IsPersonNormalAnaemicRule();
+        rule = new IsPersonModerateAnaemicRule();
     }
 
     @Test

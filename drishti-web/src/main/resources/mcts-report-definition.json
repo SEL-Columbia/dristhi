@@ -408,6 +408,80 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "hb_test",
+            "indicators": [
+                {
+                    "indicator": "ANAEMIA_NORMAL",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "hbTestDate",
+                    "formFields": [
+                        "hbTestDate",
+                        "hbLevel",
+                        "previousAnaemicStatus",
+                        "anaemicStatus"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsPersonAnaemicStatusChangedRule",
+                        "IsPersonNormalAnaemicRule"
+                    ]
+                },
+                {
+                    "indicator": "ANAEMIA_MODERATE",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "hbTestDate",
+                    "formFields": [
+                        "hbTestDate",
+                        "hbLevel",
+                        "previousAnaemicStatus",
+                        "anaemicStatus"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsPersonAnaemicStatusChangedRule",
+                        "IsPersonModerateAnaemicRule"
+                    ]
+                },
+                {
+                    "indicator": "ANAEMIA_SEVERE",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "hbTestDate",
+                    "formFields": [
+                        "hbTestDate",
+                        "hbLevel",
+                        "previousAnaemicStatus",
+                        "anaemicStatus"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsPersonAnaemicStatusChangedRule",
+                        "IsPersonSevereAnaemicRule"
+                    ]
+                }
+            ]
         }
     ]
 }

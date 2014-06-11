@@ -18,26 +18,19 @@ public class IsPersonNormalAnaemicRuleTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenHBLevelIsGreaterThanOrEqualToSevenAndLessThanEleven() throws Exception {
-        boolean rulePassed = rule.apply(new SafeMap(create("hbLevel", "7").map()));
+    public void shouldReturnTrueWhenHBLevelIsGreaterThanOrEqualToEleven() throws Exception {
+        boolean rulePassed = rule.apply(new SafeMap(create("hbLevel", "11").map()));
 
         assertTrue(rulePassed);
 
-        rulePassed = rule.apply(new SafeMap(create("hbLevel", "10.9").map()));
+        rulePassed = rule.apply(new SafeMap(create("hbLevel", "12").map()));
 
         assertTrue(rulePassed);
     }
 
     @Test
-    public void shouldReturnFalseWhenHBLevelIsLessThanSeven() throws Exception {
+    public void shouldReturnFalseWhenHBLevelIsLessThanEleven() throws Exception {
         boolean rulePassed = rule.apply(new SafeMap(create("hbLevel", "6").map()));
-
-        assertFalse(rulePassed);
-    }
-
-    @Test
-    public void shouldReturnFalseWhenHBLevelIsGreaterThanEleven() throws Exception {
-        boolean rulePassed = rule.apply(new SafeMap(create("hbLevel", "12").map()));
 
         assertFalse(rulePassed);
     }

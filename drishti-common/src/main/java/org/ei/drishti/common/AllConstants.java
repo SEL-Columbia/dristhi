@@ -141,6 +141,7 @@ public class AllConstants {
         public static final String CESAREAN_VALUE = "cesarean";
         public static final String IS_SKILLED_DELIVERY = "isSkilledDelivery";
         public static final String IMMUNIZATIONS_AT_BIRTH = "immunizationsAtBirth";
+        public static final String DELIVERY_REGISTRATION_DATE = "deliveryRegistrationDate";
     }
 
     public static class ANCRegistrationFormFields {
@@ -175,6 +176,7 @@ public class AllConstants {
         public static final String HB_TEST_DATE_FIELD = "hbTestDate";
         public static final String HB_LEVEL_FIELD = "hbLevel";
         public static final String ANAEMIC_STATUS_FIELD = "anaemicStatus";
+        public static final String PREVIOUS_ANAEMIC_STATUS_FIELD = "previousAnaemicStatus";
     }
 
     public static class ANCInvestigationsFormFields {
@@ -231,7 +233,7 @@ public class AllConstants {
         public static final String DATE = "Date";
         public static final String VITAMIN = "vitamin";
         public static final String SHOULD_CLOSE_MOTHER = "shouldCloseMother";
-        public static final String THAYI_CARD= "thayiCard";
+        public static final String THAYI_CARD = "thayiCard";
     }
 
     public static class ChildCloseFormFields {
