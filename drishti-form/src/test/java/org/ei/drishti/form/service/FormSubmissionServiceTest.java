@@ -92,4 +92,16 @@ public class FormSubmissionServiceTest {
 
         assertEquals(asList(firstFormSubmissionDTO, secondFormSubmissionDTO), formSubmissionDTOs);
     }
+
+    @Test
+    public void shouldFetchAllFormSubmissions() throws Exception {
+        long baseTimeStamp = DateUtil.now().getMillis();
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", baseTimeStamp, "1", null, 0L);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", baseTimeStamp + 1, "1", null, 1L);
+        when(allFormSubmissions.allFormSubmissions(0, 2)).thenReturn(asList(firstFormSubmission, secondFormSubmission));
+
+        List<FormSubmission> formSubmissions = formSubmissionService.getAllSubmissions(0L, 2);
+
+        assertEquals(asList(firstFormSubmission, secondFormSubmission), formSubmissions);
+    }
 }

@@ -40,6 +40,20 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         return db.queryView(createQuery("formSubmission_by_server_version").startKey(startKey).endKey(endKey).includeDocs(true), FormSubmission.class);
     }
 
+    public List<FormSubmission> allFormSubmissions(long serverVersion, Integer batchSize) {
+        ComplexKey startKey = ComplexKey.of(serverVersion + 1);
+        ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
+        ViewQuery query = createQuery("formSubmission_by_server_version")
+                .startKey(startKey)
+                .endKey(endKey)
+                .includeDocs(true);
+
+        if (batchSize != null) {
+            query.limit(batchSize);
+        }
+        return db.queryView(query, FormSubmission.class);
+    }
+
     @View(
             name = "formSubmission_by_anm_and_server_version",
             map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.serverVersion], null); } }")

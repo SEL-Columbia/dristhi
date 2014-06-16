@@ -53,6 +53,26 @@ public class AllSubmissionsIntegrationTest {
     }
 
     @Test
+    public void shouldFetchAllFormSubmissions() throws Exception {
+        long baseTimeStamp = DateUtil.now().getMillis();
+
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", 0L, "1", null, baseTimeStamp);
+        formSubmissions.add(firstFormSubmission);
+
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
+        formSubmissions.add(secondFormSubmission);
+
+        FormSubmission thirdFormSubmission = new FormSubmission("anm id 3", "instance id 3", "form name 1", "entity id 3", 2L, "1", null, baseTimeStamp + 2);
+        formSubmissions.add(thirdFormSubmission);
+
+        assertEquals(asList(firstFormSubmission, secondFormSubmission, thirdFormSubmission), formSubmissions.allFormSubmissions(0, 3));
+        assertEquals(asList(firstFormSubmission, secondFormSubmission), formSubmissions.allFormSubmissions(0, 2));
+        assertEquals(asList(firstFormSubmission, secondFormSubmission, thirdFormSubmission), formSubmissions.allFormSubmissions(0, 3));
+        assertEquals(asList(secondFormSubmission, thirdFormSubmission), formSubmissions.allFormSubmissions(firstFormSubmission.serverVersion(), 3));
+
+    }
+
+    @Test
     public void shouldFetchFormSubmissionsBasedOnANMIDTimeStampAndBatchSize() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
         FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "instance id 1", "form name 1", "entity id 1", 0L, "1", null, baseTimeStamp);

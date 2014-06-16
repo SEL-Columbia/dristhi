@@ -27,7 +27,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
-@RequestMapping(value = "/form-submissions")
 public class FormSubmissionController {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionController.class.toString());
     private FormSubmissionService formSubmissionService;
@@ -39,7 +38,7 @@ public class FormSubmissionController {
         this.gateway = gateway;
     }
 
-    @RequestMapping(method = GET)
+    @RequestMapping(method = GET, value = "/form-submissions")
     @ResponseBody
     private List<FormSubmissionDTO> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier,
                                                             @RequestParam("timestamp") Long timeStamp,
@@ -55,7 +54,22 @@ public class FormSubmissionController {
         });
     }
 
-    @RequestMapping(headers = {"Accept=application/json"}, method = POST)
+    @RequestMapping(method = GET, value="/all-form-submissions")
+    @ResponseBody
+    private List<FormSubmissionDTO> getAllFormSubmissions(@RequestParam("timestamp") Long timeStamp,
+                                                          @RequestParam(value = "batch-size", required = false)
+                                                          Integer batchSize) {
+        List<FormSubmission> allSubmissions = formSubmissionService
+                .getAllSubmissions(timeStamp, batchSize);
+        return with(allSubmissions).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
+            @Override
+            public FormSubmissionDTO convert(FormSubmission submission) {
+                return FormSubmissionConverter.from(submission);
+            }
+        });
+    }
+
+    @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/form-submissions")
     public ResponseEntity<HttpStatus> submitForms(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
         try {
             if (formSubmissionsDTO.isEmpty()) {

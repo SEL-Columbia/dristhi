@@ -40,6 +40,10 @@ public class FormSubmissionService {
         return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
     }
 
+    public List<FormSubmission> getAllSubmissions(Long version, Integer batchSize) {
+        return allFormSubmissions.allFormSubmissions(version, batchSize);
+    }
+
     public void submit(List<FormSubmissionDTO> formSubmissionsDTO) {
         List<FormSubmission> formSubmissions = with(formSubmissionsDTO).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
             @Override
