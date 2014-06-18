@@ -51,7 +51,7 @@ public class MCTSReportEventListener {
 
             sendSMS(reports);
 
-            logger.info(format("Sent {0} new MCTS  found. Export token: {1}", reports.size()));
+            logger.info(format("Sent {0} new MCTS  found.", reports.size()));
         } catch (Exception e) {
             logger.error(MessageFormat.format("{0} occurred while trying to fetch forms. Message: {1} with stack trace {2}",
                     e.toString(), e.getMessage(), getFullStackTrace(e)));
