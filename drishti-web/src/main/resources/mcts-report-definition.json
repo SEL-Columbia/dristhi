@@ -401,6 +401,46 @@
                     "reportWhen": [
                         "IsVitaminA1DoseGivenRule"
                     ]
+                },
+                {
+                    "indicator": "VITA2",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "formFields": [
+                        "vitaminADose",
+                        "vitaminADate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsVitaminA2DoseGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "VITA3",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "formFields": [
+                        "vitaminADose",
+                        "vitaminADate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsVitaminA3DoseGivenRule"
+                    ]
                 }
             ]
         },

@@ -44,6 +44,8 @@ public enum MCTSServiceCode {
     OPV3("OPV3"),
     OPVB("OPVB"),
     VITA1("VITA1"),
+    VITA2("VITA2"),
+    VITA3("VITA3"),
     BCG("BCG"),
     OPV0("OPV0");
 

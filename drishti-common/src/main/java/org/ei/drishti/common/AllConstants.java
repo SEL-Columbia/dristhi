@@ -390,6 +390,7 @@ public class AllConstants {
         public static final String VITAMIN_A_DATE = "vitaminADate";
         public static final String VITAMIN_A_DOSE_1_VALUE = "1";
         public static final String VITAMIN_A_DOSE_2_VALUE = "2";
+        public static final String VITAMIN_A_DOSE_3_VALUE = "3";
         public static final String VITAMIN_A_DOSE_5_VALUE = "5";
         public static final String VITAMIN_A_DOSE_9_VALUE = "9";
         public static final List<String> VITAMIN_A_DOSES_1_2_5_9 =
