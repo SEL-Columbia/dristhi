@@ -566,6 +566,31 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "child_close",
+            "indicators": [
+                {
+                    "indicator": "CHILD_DEATH",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "closeReason",
+                        "deathDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildClosedDueToDeathRule"
+                    ]
+                }
+            ]
         }
     ]
 }
