@@ -116,7 +116,7 @@ public class RegisterControllerTest {
         when(ecRegisterService.getRegisterForANM("anm1")).thenReturn(ecRegister);
         when(ecRegisterMapper.mapToDTO(ecRegister)).thenReturn(expectedECRegisterDTO);
 
-        ResponseEntity<ECRegisterDTO> response = controller.getECRegister("anm1");
+        ResponseEntity<ECRegisterDTO> response = controller.ecRegister("anm1");
 
         assertEquals(expectedECRegisterDTO, response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -185,7 +185,7 @@ public class RegisterControllerTest {
         when(ancRegisterService.getRegisterForANM("anm1")).thenReturn(ancRegister);
         when(ancRegisterMapper.mapToDTO(ancRegister)).thenReturn(expectedANCRegisterDTO);
 
-        ResponseEntity<ANCRegisterDTO> response = controller.getANCRegister("anm1");
+        ResponseEntity<ANCRegisterDTO> response = controller.ancRegister("anm1");
 
         assertEquals(expectedANCRegisterDTO, response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -323,7 +323,7 @@ public class RegisterControllerTest {
         when(pncRegisterService.getRegisterForANM("anm1")).thenReturn(pncRegister);
         when(pncRegisterMapper.mapToDTO(pncRegister)).thenReturn(expectedPNCRegisterDTO);
 
-        ResponseEntity<PNCRegisterDTO> response = controller.getPNCRegister("anm1");
+        ResponseEntity<PNCRegisterDTO> response = controller.pncRegister("anm1");
 
         assertEquals(expectedPNCRegisterDTO, response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -377,7 +377,7 @@ public class RegisterControllerTest {
         when(childRegisterService.getRegisterForANM("anm1")).thenReturn(childRegister);
         when(childRegisterMapper.mapToDTO(childRegister)).thenReturn(expectedChildRegisterDTO);
 
-        ResponseEntity<ChildRegisterDTO> response = controller.getChildRegister("anm1");
+        ResponseEntity<ChildRegisterDTO> response = controller.childRegister("anm1");
 
         assertEquals(expectedChildRegisterDTO, response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -567,7 +567,7 @@ public class RegisterControllerTest {
         when(fpRegisterService.getRegisterForANM("anm1")).thenReturn(fpRegister);
         when(fpRegisterMapper.mapToDTO(fpRegister)).thenReturn(expectedFPRegisterDTO);
 
-        ResponseEntity<FPRegisterDTO> response = controller.getFPRegister("anm1");
+        ResponseEntity<FPRegisterDTO> response = controller.fpRegister("anm1");
 
         assertEquals(expectedFPRegisterDTO, response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());

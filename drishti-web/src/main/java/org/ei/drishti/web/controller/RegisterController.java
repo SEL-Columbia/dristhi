@@ -52,28 +52,28 @@ public class RegisterController {
 
     @RequestMapping(method = GET, value = "/registers/ec")
     @ResponseBody
-    public ResponseEntity<ECRegisterDTO> getECRegister(@RequestParam("anm-id") String anmIdentifier) {
+    public ResponseEntity<ECRegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
         ECRegister ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier);
         return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
     }
 
     @RequestMapping(method = GET, value = "/registers/anc")
     @ResponseBody
-    public ResponseEntity<ANCRegisterDTO> getANCRegister(@RequestParam("anm-id") String anmIdentifier) {
+    public ResponseEntity<ANCRegisterDTO> ancRegister(@RequestParam("anm-id") String anmIdentifier) {
         ANCRegister ancRegister = ancRegisterService.getRegisterForANM(anmIdentifier);
         return new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister), HttpStatus.OK);
     }
 
     @RequestMapping(method = GET, value = "/registers/child")
     @ResponseBody
-    public ResponseEntity<ChildRegisterDTO> getChildRegister(@RequestParam("anm-id") String anmIdentifier) {
+    public ResponseEntity<ChildRegisterDTO> childRegister(@RequestParam("anm-id") String anmIdentifier) {
         ChildRegister childRegister = childRegisterService.getRegisterForANM(anmIdentifier);
         return new ResponseEntity<>(childRegisterMapper.mapToDTO(childRegister), HttpStatus.OK);
     }
 
     @RequestMapping(method = GET, value = "/registers/fp")
     @ResponseBody
-    public ResponseEntity<FPRegisterDTO> getFPRegister(@RequestParam("anm-id") String anmIdentifier) {
+    public ResponseEntity<FPRegisterDTO> fpRegister(@RequestParam("anm-id") String anmIdentifier) {
         FPRegister fpRegister = fpRegisterService.getRegisterForANM(anmIdentifier);
         return new ResponseEntity<>(fpRegisterMapper.mapToDTO(fpRegister), HttpStatus.OK);
 
@@ -81,7 +81,7 @@ public class RegisterController {
 
     @RequestMapping(method = GET, value = "/registers/pnc")
     @ResponseBody
-    public ResponseEntity<PNCRegisterDTO> getPNCRegister(@RequestParam("anm-id") String anmIdentifier) {
+    public ResponseEntity<PNCRegisterDTO> pncRegister(@RequestParam("anm-id") String anmIdentifier) {
         PNCRegister pncRegister = pncRegisterService.getRegisterForANM(anmIdentifier);
         return new ResponseEntity<>(pncRegisterMapper.mapToDTO(pncRegister), HttpStatus.OK);
     }
