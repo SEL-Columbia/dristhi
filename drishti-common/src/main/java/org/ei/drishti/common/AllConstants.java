@@ -205,6 +205,10 @@ public class AllConstants {
         public static final String URINAL_PROBLEMS_FIELD_NAME = "difficulties2";
         public static final String BREAST_PROBLEMS = "breastProblems";
         public static final String DISCHARGE_DATE = "dischargeDate";
+        public static final String HEAVY_BLEEDING_VALUE = "heavy_bleeding";
+        public static final String BAD_SMELL_LOCHEA_VALUE = "bad_smell_lochea";
+        public static final String HAS_FEVER_FIELD = "hasFever";
+        public static final String IMMEDIATE_REFERRAL = "immediateReferral";
     }
 
     public static class CommonFormFields {

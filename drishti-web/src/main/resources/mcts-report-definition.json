@@ -490,6 +490,73 @@
                         "IsPNCVisitFirstRule",
                         "IsPNCVisit48HoursOfDeliveryRule"
                     ]
+                },
+                {
+                    "indicator": "PNC_COMPLICATION_PPH",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "pncVisitDate",
+                    "formFields": [
+                        "pncVisitDate",
+                        "vaginalProblems"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMotherHasHemorrhageRule"
+                    ]
+                },
+                {
+                    "indicator": "PNC_COMPLICATION_SEPSIS",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "pncVisitDate",
+                    "formFields": [
+                        "pncVisitDate",
+                        "vaginalProblems",
+                        "hasFever"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMotherHasBadSmellLocheaRule",
+                        "IsMotherHasFeverRule"
+                    ]
+                },
+                {
+                    "indicator": "PNC_COMPLICATION_OTHERS",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "pncVisitDate",
+                    "formFields": [
+                        "pncVisitDate",
+                        "vaginalProblems",
+                        "hasFever",
+                        "immediateReferral"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "ShouldMotherBeReferredImmediatelyRule",
+                        "IsMotherDoesNotHaveHemorrhageRule",
+                        "IsMotherDoesNotHaveBadSmellLocheaRule",
+                        "IsMotherDoesNotHaveFeverRule"
+                    ]
                 }
             ]
         },
@@ -588,6 +655,31 @@
                     },
                     "reportWhen": [
                         "IsChildClosedDueToDeathRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "pnc_close",
+            "indicators": [
+                {
+                    "indicator": "PNC_COMPLICATION_DEATH",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "closeReason",
+                        "deathDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMotherClosedDueToDeathRule"
                     ]
                 }
             ]
