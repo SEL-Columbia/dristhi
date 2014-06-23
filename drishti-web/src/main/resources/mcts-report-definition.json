@@ -683,6 +683,71 @@
                     ]
                 }
             ]
+        },
+        {
+            "form": "postpartum_family_planning",
+            "indicators": [
+                {
+                    "indicator": "PPC_STERILIZATION",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "formFields": [
+                        "familyPlanningMethodChangeDate",
+                        "currentMethod"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "PPC_IUD",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "formFields": [
+                        "familyPlanningMethodChangeDate",
+                        "currentMethod"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsIUDRule"
+                    ]
+                },
+                {
+                    "indicator": "PPC_INJECTIBLES",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "formFields": [
+                        "familyPlanningMethodChangeDate",
+                        "currentMethod"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsDMPAInjectableRule"
+                    ]
+                }
+            ]
         }
     ]
 }
