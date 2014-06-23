@@ -187,6 +187,8 @@ public class AllConstants {
         public static final String TESTS_POSITIVE_RESULTS = "testsResultPositive";
         public static final String BILE_SALTS = "bileSalts";
         public static final String BILE_PIGMENTS = "bilePigments";
+        public static final String URINE_SUGAR_VALUE = "urine_sugar";
+        public static final String MALARIA_VALUE = "mp";
     }
 
     public static class PNCVisitFormFields {

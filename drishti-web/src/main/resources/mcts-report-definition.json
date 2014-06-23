@@ -685,6 +685,71 @@
             ]
         },
         {
+            "form": "anc_investigations",
+            "indicators": [
+                {
+                    "indicator": "COMPLICATION_DIABETES",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "testDate",
+                    "formFields": [
+                        "testDate",
+                        "testsResultPositive"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMotherHavingDiabeticRule"
+                    ]
+                },
+                {
+                    "indicator": "COMPLICATION_MALARIA",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "testDate",
+                    "formFields": [
+                        "testDate",
+                        "testsResultPositive"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMotherHavingMalariaParasiteRule"
+                    ]
+                },
+                {
+                    "indicator": "RTI_YES",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "testDate",
+                    "formFields": [
+                        "testDate",
+                        "testsResultPositive"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMotherHavingMalariaParasiteRule"
+                    ]
+                }
+            ]
+        },
+        {
             "form": "postpartum_family_planning",
             "indicators": [
                 {
