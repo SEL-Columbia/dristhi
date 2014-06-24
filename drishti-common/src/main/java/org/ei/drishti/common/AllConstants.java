@@ -167,8 +167,12 @@ public class AllConstants {
 
     public static class ANCVisitFormFields {
         public static final String BP_DIASTOLIC = "bpDiastolic";
+        public static final String PREVIOUS_BP_DIASTOLIC = "previousBpDiastolic";
+        public static final String PREVIOUS_BP_SYSTOLIC = "previousBpSystolic";
         public static final String BP_SYSTOLIC = "bpSystolic";
         public static final String IS_HYPERTENSION_DETECTED_FOR_FIRST_TIME = "isHypertensionDetectedForFirstTime";
+        public static final String RISK_OBSERVED_DURING_ANC = "riskObservedDuringANC";
+        public static final String BLEEDING_VALUE = "bleeding";
         public static final String WEIGHT = "weight";
     }
 

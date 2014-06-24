@@ -82,6 +82,50 @@
                     "reportWhen": [
                         "IsFourthANCVisitRule"
                     ]
+                },
+                {
+                    "indicator": "COMPLICATION_APH",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ancVisitDate",
+                    "formFields": [
+                        "ancVisitDate",
+                        "riskObservedDuringANC"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsRiskObservedBleedingRule"
+                    ]
+                },
+                {
+                    "indicator": "COMPLICATION_HYPERTENSIVE",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ancVisitDate",
+                    "formFields": [
+                        "ancVisitDate",
+                        "bpDiastolic",
+                        "previousBpDiastolic",
+                        "bpSystolic",
+                        "previousBpSystolic"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsHypertensionDetectedRule",
+                        "IsHypertensionStateChangedRule"
+                    ]
                 }
             ]
         },
