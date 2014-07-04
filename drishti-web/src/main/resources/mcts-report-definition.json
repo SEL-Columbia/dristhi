@@ -617,6 +617,126 @@
                     "reportWhen": [
                         "IsVitaminA3DoseGivenRule"
                     ]
+                },
+                {
+                    "indicator": "VITA4",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "formFields": [
+                        "vitaminADose",
+                        "vitaminADate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsVitaminA4DoseGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "VITA5",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "formFields": [
+                        "vitaminADose",
+                        "vitaminADate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsVitaminA5DoseGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "VITA6",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "formFields": [
+                        "vitaminADose",
+                        "vitaminADate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsVitaminA6DoseGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "VITA7",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "formFields": [
+                        "vitaminADose",
+                        "vitaminADate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsVitaminA7DoseGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "VITA8",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "formFields": [
+                        "vitaminADose",
+                        "vitaminADate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsVitaminA8DoseGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "VITA9",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "formFields": [
+                        "vitaminADose",
+                        "vitaminADate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsVitaminA9DoseGivenRule"
+                    ]
                 }
             ]
         },
