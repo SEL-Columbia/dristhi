@@ -34,7 +34,7 @@ public enum MCTSServiceCode {
     PPC_STERILIZATION("PPC S"),
     PPC_IUD("PPC I"),
     PPC_INJECTIBLES("PPC J"),
-    PNC_Checkup_Y("PNCH Y"),
+    PNC_CHECKUP_Y("PNCH Y"),
     PNC_Checkup_N("PNCH N"),
     DPT_BOOSTER_1("DPTB"),
     DPT_BOOSTER_2("DT5"),
@@ -54,13 +54,14 @@ public enum MCTSServiceCode {
     VITA9("VITA9"),
     BCG("BCG"),
     OPV0("OPV0"),
-    CHILD_DEATH("CD Y"),
+    CHILD_DEATH("CD"),
     PENT1("PENT1"),
     PENT2("PENT2"),
     PENT3("PENT3"),
     MEASLES("M1"),
     MEASLES_BOOSTER("M2"),
-    MR("MR");
+    MR("MR"),
+    MATERNAL_DEATH("MD");
 
     private final String codeForMCTS;
 

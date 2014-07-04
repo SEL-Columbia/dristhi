@@ -853,6 +853,26 @@
                         "IsMotherDoesNotHaveBadSmellLocheaRule",
                         "IsMotherDoesNotHaveFeverRule"
                     ]
+                },
+                {
+                    "indicator": "PNC_CHECKUP_Y",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "pncVisitDate",
+                    "formFields": [
+                        "pncVisitDate",
+                        "pncVisitDay"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsPNCVisitHappenedWithin42DaysOfDeliveryRule"
+                    ]
                 }
             ]
         },
@@ -976,6 +996,51 @@
                     },
                     "reportWhen": [
                         "IsMotherClosedDueToDeathRule"
+                    ]
+                },
+                {
+                    "indicator": "MATERNAL_DEATH",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "closeReason",
+                        "deathDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMotherClosedDueToDeathOfWomanRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "anc_close",
+            "indicators": [
+                {
+                    "indicator": "MATERNAL_DEATH",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "closeReason",
+                        "maternalDeathDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMotherClosedDueToDeathOfWomanRule"
                     ]
                 }
             ]
@@ -1106,6 +1171,32 @@
                     },
                     "reportWhen": [
                         "CurrentFPMethodIsDMPAInjectableRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "delivery_outcome",
+            "indicators": [
+                {
+                    "indicator": "MATERNAL_DEATH",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "didWomanSurvive",
+                        "didMotherSurvive",
+                        "referenceDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCardNumber",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMotherDidNotSurvivedOnDeliveryRule"
                     ]
                 }
             ]

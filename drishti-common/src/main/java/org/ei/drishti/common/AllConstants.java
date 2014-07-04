@@ -197,6 +197,7 @@ public class AllConstants {
 
     public static class PNCVisitFormFields {
         public static final String VISIT_DATE_FIELD_NAME = "pncVisitDate";
+        public static final String VISIT_DAY_FIELD_NAME = "pncVisitDay";
         public static final String VISIT_DATES_FIELD_NAME = "pncVisitDates";
         public static final String VISIT_PLACE_FIELD_NAME = "pncVisitPlace";
         public static final String VISIT_PERSON_FIELD_NAME = "pncVisitPerson";
