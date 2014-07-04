@@ -486,6 +486,72 @@
                     "reportWhen": [
                         "IsPentavalent3ImmunizationGivenRule"
                     ]
+                },
+                {
+                    "indicator": "MEASLES",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMeaslesImmunizationGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "MEASLES_BOOSTER",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMeaslesBoosterImmunizationGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "MR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsMMRImmunizationGivenRule"
+                    ]
                 }
             ]
         },

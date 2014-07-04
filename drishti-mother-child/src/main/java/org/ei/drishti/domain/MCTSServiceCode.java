@@ -51,7 +51,10 @@ public enum MCTSServiceCode {
     CHILD_DEATH("CD Y"),
     PENT1("PENT1"),
     PENT2("PENT2"),
-    PENT3("PENT3");
+    PENT3("PENT3"),
+    MEASLES("M1"),
+    MEASLES_BOOSTER("M2"),
+    MR("MR");
 
     private final String codeForMCTS;
 
