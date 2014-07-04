@@ -48,7 +48,10 @@ public enum MCTSServiceCode {
     VITA3("VITA3"),
     BCG("BCG"),
     OPV0("OPV0"),
-    CHILD_DEATH("CD Y");
+    CHILD_DEATH("CD Y"),
+    PENT1("PENT1"),
+    PENT2("PENT2"),
+    PENT3("PENT3");
 
     private final String codeForMCTS;
 

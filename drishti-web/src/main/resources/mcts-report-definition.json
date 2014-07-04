@@ -420,6 +420,72 @@
                     "reportWhen": [
                         "IsOPV0ImmunizationGivenRule"
                     ]
+                },
+                {
+                    "indicator": "PENT1",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsPentavalent1ImmunizationGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "PENT2",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsPentavalent2ImmunizationGivenRule"
+                    ]
+                },
+                {
+                    "indicator": "PENT3",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsPentavalent3ImmunizationGivenRule"
+                    ]
                 }
             ]
         },
