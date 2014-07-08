@@ -121,6 +121,9 @@ public class ChildReportingService {
         if (immunizations.contains(OPV_0_VALUE)) {
             mctsReporter.report(child.caseId(), child.thayiCardNumber(), MCTSServiceCode.OPV0.toString(), reportData.get(REGISTRATION_DATE), child.dateOfBirth());
         }
+        if (immunizations.contains(HEPATITIS_0_VALUE)) {
+            mctsReporter.report(child.caseId(), child.thayiCardNumber(), MCTSServiceCode.HEPB0.toString(), reportData.get(REGISTRATION_DATE), child.dateOfBirth());
+        }
     }
 
     private void reportNRHMImmunizations(SafeMap reportData, Child child, List<String> immunizations, Location location) {

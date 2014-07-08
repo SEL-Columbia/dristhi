@@ -1,5 +1,6 @@
 package org.ei.drishti.service.reporting.rules;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.util.SafeMap;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,6 @@ public class IsMotherHasBadSmellLocheaRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {
-        return reportFields.get(VAGINAL_PROBLEMS_FIELD_NAME).contains(BAD_SMELL_LOCHEA_VALUE);
+        return StringUtils.contains(reportFields.get(VAGINAL_PROBLEMS_FIELD_NAME), BAD_SMELL_LOCHEA_VALUE);
     }
 }

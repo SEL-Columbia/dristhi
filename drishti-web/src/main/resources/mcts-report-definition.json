@@ -552,6 +552,28 @@
                     "reportWhen": [
                         "IsMMRImmunizationGivenRule"
                     ]
+                },
+                {
+                    "indicator": "HEPB0",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "formFields": [
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationsReceived"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "thayiCard",
+                            "registrationDate"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsHepB0ImmunizationGivenRule"
+                    ]
                 }
             ]
         },
@@ -1015,7 +1037,7 @@
                         ]
                     },
                     "reportWhen": [
-                        "IsMotherClosedDueToDeathOfWomanRule"
+                        "IsMotherClosedDueToDeathRule"
                     ]
                 }
             ]

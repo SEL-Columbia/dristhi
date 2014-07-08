@@ -61,7 +61,8 @@ public enum MCTSServiceCode {
     MEASLES("M1"),
     MEASLES_BOOSTER("M2"),
     MR("MR"),
-    MATERNAL_DEATH("MD");
+    MATERNAL_DEATH("MD"),
+    HEPB0("HEPB0");
 
     private final String codeForMCTS;
 
