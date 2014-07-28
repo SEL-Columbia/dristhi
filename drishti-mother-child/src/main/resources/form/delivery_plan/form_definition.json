@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "2",
+    "form_data_definition_version": "3",
     "form": {
         "bind_type": "mother",
         "default_bind_path": "/model/instance/Delivery_Plan_EngKan/",
@@ -16,6 +16,7 @@
             {
                 "name": "phoneNumber",
                 "shouldLoadValue": true,
+                "source": "mother.eligible_couple.phoneNumber",
                 "bind": "/model/instance/Delivery_Plan_EngKan/entity_phone_no"
             },
             {
@@ -83,6 +84,7 @@
             },
             {
                 "name": "phoneNumber",
+                "source": "mother.eligible_couple.phoneNumber",
                 "bind": "/model/instance/Delivery_Plan_EngKan/phone_no"
             },
             {
