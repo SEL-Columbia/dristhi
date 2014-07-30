@@ -33,5 +33,7 @@ public class IsMotherClosedDueToDeathOfWomanRuleTest {
         didRuleApply = rule.apply(new SafeMap(create("closeReason", "death_of_mother").map()));
         assertFalse(didRuleApply);
 
+        didRuleApply = rule.apply(new SafeMap().put("closeReason", null));
+        assertFalse(didRuleApply);
     }
 }
