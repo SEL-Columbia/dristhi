@@ -12,7 +12,9 @@ public class IsMotherDidNotSurvivedOnDeliveryRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {
-        return reportFields.get(DID_WOMAN_SURVIVE).equalsIgnoreCase(BOOLEAN_FALSE_VALUE)
-                || reportFields.get(DID_MOTHER_SURVIVE).equalsIgnoreCase(BOOLEAN_FALSE_VALUE);
+        String didWomanSurvive = reportFields.get(DID_WOMAN_SURVIVE);
+        String didMotherSurvive = reportFields.get(DID_MOTHER_SURVIVE);
+        return (didWomanSurvive != null ? didWomanSurvive.equalsIgnoreCase(BOOLEAN_FALSE_VALUE) : false)
+                || (didMotherSurvive != null ? didMotherSurvive.equalsIgnoreCase(BOOLEAN_FALSE_VALUE) : false);
     }
 }

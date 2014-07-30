@@ -37,6 +37,20 @@ public class IsMotherDidNotSurvivedOnDeliveryRuleTest {
         didRuleApply = rule.apply(safeMap);
 
         assertTrue(didRuleApply);
+
+        safeMap = new SafeMap().put("didWomanSurvive", "no")
+                .put("didMotherSurvive", null);
+
+        didRuleApply = rule.apply(safeMap);
+
+        assertTrue(didRuleApply);
+
+        safeMap = new SafeMap().put("didWomanSurvive", null)
+                .put("didMotherSurvive", "no");
+
+        didRuleApply = rule.apply(safeMap);
+
+        assertTrue(didRuleApply);
     }
 
     @Test
@@ -46,6 +60,20 @@ public class IsMotherDidNotSurvivedOnDeliveryRuleTest {
                 .put("didMotherSurvive", "yes").map());
 
         boolean didRuleApply = rule.apply(safeMap);
+
+        assertFalse(didRuleApply);
+
+        safeMap = new SafeMap().put("didWomanSurvive", null)
+                .put("didMotherSurvive", "yes");
+
+        didRuleApply = rule.apply(safeMap);
+
+        assertFalse(didRuleApply);
+
+        safeMap = new SafeMap().put("didWomanSurvive", "yes")
+                .put("didMotherSurvive", null);
+
+        didRuleApply = rule.apply(safeMap);
 
         assertFalse(didRuleApply);
     }
