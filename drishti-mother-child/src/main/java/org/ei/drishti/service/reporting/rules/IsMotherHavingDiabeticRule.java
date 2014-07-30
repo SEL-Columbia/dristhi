@@ -11,6 +11,7 @@ public class IsMotherHavingDiabeticRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {
-        return reportFields.get(TESTS_POSITIVE_RESULTS).contains(URINE_SUGAR_VALUE);
+        String testsWithPositiveResult = reportFields.get(TESTS_POSITIVE_RESULTS);
+        return testsWithPositiveResult != null ? testsWithPositiveResult.contains(URINE_SUGAR_VALUE) : false;
     }
 }
