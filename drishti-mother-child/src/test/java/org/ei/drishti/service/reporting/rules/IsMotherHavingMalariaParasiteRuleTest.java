@@ -31,5 +31,8 @@ public class IsMotherHavingMalariaParasiteRuleTest {
 
         didRuleApply = rule.apply(new SafeMap().put("testsResultPositive", "urine_albumin"));
         assertFalse(didRuleApply);
+
+        didRuleApply = rule.apply(new SafeMap().put("testsResultPositive", null));
+        assertFalse(didRuleApply);
     }
 }

@@ -11,6 +11,7 @@ public class IsMotherHavingMalariaParasiteRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {
-        return reportFields.get(TESTS_POSITIVE_RESULTS).contains(MALARIA_VALUE);
+        String testsWithPositiveResult = reportFields.get(TESTS_POSITIVE_RESULTS);
+        return testsWithPositiveResult != null ? testsWithPositiveResult.contains(MALARIA_VALUE) : false;
     }
 }
