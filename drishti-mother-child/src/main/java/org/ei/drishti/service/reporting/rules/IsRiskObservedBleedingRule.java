@@ -11,7 +11,8 @@ public class IsRiskObservedBleedingRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {
-        return reportFields.get(RISK_OBSERVED_DURING_ANC).contains(BLEEDING_VALUE);
+        String risksObserved = reportFields.get(RISK_OBSERVED_DURING_ANC);
+        return (risksObserved != null) ? risksObserved.contains(BLEEDING_VALUE) : false;
     }
 
 }
