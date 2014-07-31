@@ -47,4 +47,16 @@ public class IsChildLessThanFourWeeksOldRuleTest {
 
         assertFalse(didRuleApply);
     }
+
+    @Test
+    public void shouldReturnFalseWhenAgeIsNotKnown() {
+        SafeMap safeMap = new SafeMap();
+        safeMap.put("entityId", "child id 1");
+        safeMap.put("serviceProvidedDate", null);
+        safeMap.put("dateOfBirth", "2012-01-01");
+
+        boolean didRuleApply = rule.apply(safeMap);
+
+        assertFalse(didRuleApply);
+    }
 }

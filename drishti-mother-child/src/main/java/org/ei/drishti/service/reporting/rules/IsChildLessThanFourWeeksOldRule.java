@@ -13,8 +13,8 @@ public class IsChildLessThanFourWeeksOldRule implements IRule {
     @Override
     public boolean apply(SafeMap reportFields) {
         LocalDate dateOfBirth = LocalDate.parse(reportFields.get(DATE_OF_BIRTH));
-        LocalDate serviceProvidedDate = LocalDate.parse(reportFields.get(SERVICE_PROVIDED_DATE));
+        String serviceProvidedDate = reportFields.get(SERVICE_PROVIDED_DATE);
 
-        return dateOfBirth.plusWeeks(4).isAfter(serviceProvidedDate);
+        return serviceProvidedDate != null ? dateOfBirth.plusWeeks(4).isAfter(LocalDate.parse(serviceProvidedDate)) : false;
     }
 }
