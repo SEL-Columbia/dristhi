@@ -307,8 +307,7 @@ public class ChildReportingService {
     }
 
     private Location loadLocationOfChild(Child child) {
-        Mother mother = allMothers.findByCaseId(child.motherCaseId());
-        EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
+        EligibleCouple couple = getEligibleCouple(child);
         return new Location(couple.village(), couple.subCenter(), couple.phc());
     }
 
@@ -365,9 +364,10 @@ public class ChildReportingService {
         if (!reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
             return;
         String externalId = child.thayiCardNumber();
+
+        //#TODO: Refactor to avoid DB calls
         if (isBlank(externalId)) {
-            Mother mother = allMothers.findByCaseId(child.motherCaseId());
-            EligibleCouple ec = allEligibleCouples.findByCaseId(mother.ecCaseId());
+            EligibleCouple ec = getEligibleCouple(child);
             externalId = ec.ecNumber();
         }
         ReportingData serviceProvidedData = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location, child.caseId());
@@ -479,8 +479,12 @@ public class ChildReportingService {
         List<ReportingData> serviceProvidedData = new ArrayList<>();
         List<ReportingData> anmReportData = new ArrayList<>();
         for (Child child : children) {
-            Location location = loadLocationOfChild(child);
-            ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location, child.caseId());
+
+            //#TODO: Refactor to remove the DB calls
+            EligibleCouple couple = getEligibleCouple(child);
+            String externalId = getExternalId(child, couple);
+            Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+            ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location, child.caseId());
             ReportingData anmReportDataForChild = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
             serviceProvidedData.add(serviceProvidedDataForChild);
             anmReportData.add(anmReportDataForChild);
@@ -490,6 +494,11 @@ public class ChildReportingService {
         updateBothReports(indicator, date, serviceProvidedData, anmReportData);
     }
 
+    private EligibleCouple getEligibleCouple(Child child) {
+        Mother mother = allMothers.findByCaseId(child.motherCaseId());
+        return allEligibleCouples.findByCaseId(mother.ecCaseId());
+    }
+
     private void updateInfantBalanceOAChildren(List<Child> children, List<Mother> mothers, List<EligibleCouple> ecs, Indicator indicator, String date) {
         List<ReportingData> serviceProvidedData = new ArrayList<>();
         List<ReportingData> anmReportData = new ArrayList<>();
@@ -497,7 +506,8 @@ public class ChildReportingService {
             Mother mother = selectFirst(mothers, having(on(Mother.class).caseId(), equalTo(child.motherCaseId())));
             EligibleCouple ec = selectFirst(ecs, having(on(EligibleCouple.class).caseId(), equalTo(mother.ecCaseId())));
             Location location = ec.location();
-            ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), child.thayiCardNumber(), indicator, date, location, child.caseId());
+            String externalId = getExternalId(child, ec);
+            ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location, child.caseId());
             ReportingData anmReportDataForChild = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
             serviceProvidedData.add(serviceProvidedDataForChild);
             anmReportData.add(anmReportDataForChild);
@@ -505,6 +515,14 @@ public class ChildReportingService {
                     date, child));
         }
         updateBothReports(indicator, date, serviceProvidedData, anmReportData);
+    }
+
+    private String getExternalId(Child child, EligibleCouple ec) {
+        String externalId = child.thayiCardNumber();
+        if(isBlank(externalId )) {
+            externalId = ec.ecNumber();
+        }
+        return externalId;
     }
 
     private void updateBothReports(Indicator indicator, String date, List<ReportingData> serviceProvidedData, List<ReportingData> anmReportData) {

@@ -1415,6 +1415,64 @@ public class ChildReportingServiceTest {
     }
 
     @Test
+    public void shouldReportTotalNumberOfOAChildrenWithExternalIdAsECNumberIfThayiCardNumberIsNotPresent() throws Exception {
+        DateUtil.fakeIt(parse("2013-02-01"));
+        Mother mother = new Mother("mother id 1", "ec id 1", null);
+        Child child = new Child("child id 1", "mother id 1", "bcg", "3", "female").withAnm("ANM X");
+        EligibleCouple ec = new EligibleCouple("ec id 1", "123").withLocation("bherya", "Sub Center", "PHC X").asOutOfArea();
+        when(allEligibleCouples.findAllOutOfAreaCouples()).thenReturn(asList(ec));
+        when(allMothers.findAllOpenMothersByECCaseId(asList("ec id 1"))).thenReturn(asList(mother));
+        when(allMothers.findAllOpenMothersByECCaseId(asList("ec id 1"))).thenReturn(asList(mother));
+        when(allChildren.findAllOpenChildrenByMotherId(asList("mother id 1"))).thenReturn(asList(child));
+        when(reportMonth.startOfCurrentReportMonth(parse("2013-02-01"))).thenReturn(parse("2013-01-26"));
+        when(reportMonth.endOfCurrentReportMonth(parse("2013-02-01"))).thenReturn(parse("2013-02-25"));
+        when(reportMonth.isDateWithinCurrentReportMonth(any(LocalDate.class))).thenReturn(true);
+
+        service.reportInfantBalanceTotalNumberOfOAChildren();
+
+        verifyBothUpdateReportCalls(Indicator.INFANT_BALANCE_OA_CHILDREN, "2013-02-01", "child id 1", "123",
+                "2013-01-26", "2013-02-25");
+    }
+
+    @Test
+    public void shouldReportInfantBalanceTurningOneYear() throws Exception {
+        DateUtil.fakeIt(parse("2013-02-01"));
+        Mother mother = new Mother("mother id 1", "ec id 1", "thayi card 1");
+        Child child = new Child("child id 1", "mother id 1", "bcg", "3", "female").withThayiCard("thayi card 1").withAnm("ANM X").withDateOfBirth("2012-01-15");
+        EligibleCouple ec = new EligibleCouple("ec id 1", "123").withLocation("bherya", "Sub Center", "PHC X").asOutOfArea();
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(ec);
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
+        when(allChildren.findAllChildrenWhoTurnedOneYearOld(any(LocalDate.class))).thenReturn(asList(child));
+        when(reportMonth.startOfCurrentReportMonth(any(LocalDate.class))).thenReturn(parse("2013-01-26"));
+        when(reportMonth.endOfCurrentReportMonth(any(LocalDate.class))).thenReturn(parse("2013-02-25"));
+        when(reportMonth.isDateWithinCurrentReportMonth(any(LocalDate.class))).thenReturn(true);
+
+        service.reportInfantBalanceTurningOneYearOld();
+
+        verifyBothUpdateReportCalls(Indicator.INFANT_BALANCE_TURNING_ONE_YEAR, "2013-01-26", "child id 1", "thayi card 1",
+                "2013-01-26", "2013-02-25");
+    }
+
+    @Test
+    public void shouldReportInfantBalanceTurningOneYearWithExternalIdAsECNumberIfThayiCardNumberIsNotPresent() throws Exception {
+        DateUtil.fakeIt(parse("2013-02-01"));
+        Mother mother = new Mother("mother id 1", "ec id 1", null);
+        Child child = new Child("child id 1", "mother id 1", "bcg", "3", "female").withAnm("ANM X").withDateOfBirth("2012-01-15");
+        EligibleCouple ec = new EligibleCouple("ec id 1", "123").withLocation("bherya", "Sub Center", "PHC X").asOutOfArea();
+        when(allMothers.findByCaseId("mother id 1")).thenReturn(mother);
+        when(allEligibleCouples.findByCaseId("ec id 1")).thenReturn(ec);
+        when(allChildren.findAllChildrenWhoTurnedOneYearOld(any(LocalDate.class))).thenReturn(asList(child));
+        when(reportMonth.startOfCurrentReportMonth(any(LocalDate.class))).thenReturn(parse("2013-01-26"));
+        when(reportMonth.endOfCurrentReportMonth(any(LocalDate.class))).thenReturn(parse("2013-02-25"));
+        when(reportMonth.isDateWithinCurrentReportMonth(any(LocalDate.class))).thenReturn(true);
+
+        service.reportInfantBalanceTurningOneYearOld();
+
+        verifyBothUpdateReportCalls(Indicator.INFANT_BALANCE_TURNING_ONE_YEAR, "2013-01-26", "child id 1", "123",
+                "2013-01-26", "2013-02-25");
+    }
+
+    @Test
     public void shouldReportTotalNumberOfChildrenLessThanOneYearOldWhenInfantBalanceIsReported()
             throws Exception {
         LocalDate today = parse("2013-02-01");
