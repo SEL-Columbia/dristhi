@@ -66,7 +66,7 @@ public class ECReportingService {
 
         ReportingData serviceProvidedData = ReportingData.serviceProvidedData(ec.anmIdentifier(), externalId,
                 indicator, serviceProvidedDate, new Location(ec.village(), ec.subCenter(), ec.phc()), ec.caseId());
-        ReportingData anmReportData = ReportingData.anmReportData(ec.anmIdentifier(), reportData.get(ID), indicator,
+        ReportingData anmReportData = ReportingData.anmReportData(ec.anmIdentifier(), ec.caseId(), indicator,
                 serviceProvidedDate);
         if (reportData.has(AllConstants.ReportDataParameters.QUANTITY)) {
             serviceProvidedData.withQuantity(reportData.get(AllConstants.ReportDataParameters.QUANTITY));
