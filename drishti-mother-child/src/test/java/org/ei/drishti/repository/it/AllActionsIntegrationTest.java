@@ -155,6 +155,19 @@ public class AllActionsIntegrationTest {
         assertTrue(allActions.contains(newAlert.getId()));
     }
 
+    @Test
+    public void shouldUpdateAlertAsAnInactive() {
+        Action firstAction = new Action("Case X", "ANM 1", alert("schedule1", "milestone1"));
+        Action secondAction = new Action("Case X", "ANM 1", alert("schedule2", "milestone2"));
+        allActions.add(firstAction);
+        allActions.add(secondAction);
+
+        allActions.markAlertAsInactiveFor("ANM 1", "Case X", "schedule1");
+
+        assertEquals(asList(firstAction.markAsInActive()), allActions.findAlertByANMIdEntityIdScheduleName("ANM 1", "Case X", "schedule1"));
+        assertEquals(asList(secondAction), allActions.findAlertByANMIdEntityIdScheduleName("ANM 1", "Case X", "schedule2"));
+    }
+
     private ActionData alert() {
         return ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3));
     }

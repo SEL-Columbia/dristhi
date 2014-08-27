@@ -55,6 +55,10 @@ public class ActionService {
         allActions.markAllAsInActiveFor(entityId);
     }
 
+    public void markAlertAsInactive(String anmId, String entityId, String scheduleName) {
+        allActions.markAlertAsInactiveFor(anmId, entityId, scheduleName);
+    }
+
     public void markAlertAsClosed(String caseId, String anmIdentifier, String visitCode, String completionDate) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
     }

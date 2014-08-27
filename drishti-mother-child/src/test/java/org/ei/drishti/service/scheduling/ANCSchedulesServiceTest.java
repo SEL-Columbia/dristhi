@@ -14,9 +14,9 @@ import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.testing.utils.BaseUnitTest;
 
-import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.ei.drishti.common.util.DateUtil.fakeIt;
 import static org.ei.drishti.common.util.DateUtil.today;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
@@ -161,10 +161,8 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
         ancSchedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "ttbooster", "2012-01-01");
 
-        verify(trackingService).fulfillCurrentMilestone(eq("entity id 1"), eq("TT 1"), eq(today()), any(Time.class));
-        verify(trackingService).fulfillCurrentMilestone(eq("entity id 1"), eq("TT 2"), eq(today()), any(Time.class));
-        verify(actionService).markAlertAsClosed("entity id 1", "ANM 1", "TT 1", "2012-01-01");
-        verify(actionService).markAlertAsClosed("entity id 1", "ANM 1", "TT 2", "2012-01-01");
+        verify(actionService).markAlertAsInactive("ANM 1", "entity id 1", "TT 1");
+        verify(trackingService).unenroll("entity id 1", asList("TT 1"));
         verifyZeroInteractions(scheduleService);
     }
 
@@ -199,14 +197,14 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     public void shouldUnenrollAMotherFromAllOpenSchedulesAndRaiseDeleteAllAlertActionDuringClose() {
         EnrollmentRecord record1 = new EnrollmentRecord("Case X", "Schedule 1", null, null, null, null, null, null, null, null);
         EnrollmentRecord record2 = new EnrollmentRecord("Case X", "Schedule 2", null, null, null, null, null, null, null, null);
-        List<EnrollmentRecord> records = Arrays.asList(record1, record2);
+        List<EnrollmentRecord> records = asList(record1, record2);
 
         when(trackingService.search(queryFor("Case X"))).thenReturn(records);
 
-        ancSchedulesService.unEnrollFromSchedules("Case X");
+        ancSchedulesService.unEnrollFromAllSchedules("Case X");
 
-        verify(trackingService).unenroll("Case X", Arrays.asList("Schedule 1"));
-        verify(trackingService).unenroll("Case X", Arrays.asList("Schedule 2"));
+        verify(trackingService).unenroll("Case X", asList("Schedule 1"));
+        verify(trackingService).unenroll("Case X", asList("Schedule 2"));
         verify(actionService).markAllAlertsAsInactive("Case X");
     }
 

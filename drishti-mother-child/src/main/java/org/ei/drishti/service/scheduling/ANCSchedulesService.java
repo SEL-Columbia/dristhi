@@ -61,8 +61,7 @@ public class ANCSchedulesService {
 
     public void ttVisitHasHappened(String entityId, String anmId, String ttDose, String ttDate) {
         if (AllConstants.ANCFormFields.TT_BOOSTER_DOSE_VALUE.equals(ttDose)) {
-            fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_1, SCHEDULE_TT_1, parse(ttDate));
-            fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_2, SCHEDULE_TT_2, parse(ttDate));
+            unEnrollFromSchedule(entityId, anmId, SCHEDULE_TT_1);
         } else if (AllConstants.ANCFormFields.TT1_DOSE_VALUE.equals(ttDose)) {
             fulfillMilestoneIfPossible(entityId, anmId, SCHEDULE_TT_1, SCHEDULE_TT_1, parse(ttDate));
             scheduleService.enroll(entityId, SCHEDULE_TT_2, ttDate);
@@ -119,7 +118,7 @@ public class ANCSchedulesService {
         trackingService.fulfillCurrentMilestone(externalId, scheduleName, today(), new Time(now()));
     }
 
-    public void unEnrollFromSchedules(String entityId) {
+    public void unEnrollFromAllSchedules(String entityId) {
         List<EnrollmentRecord> openEnrollments = trackingService.search(new EnrollmentsQuery().havingExternalId(entityId).havingState(ACTIVE));
 
         for (EnrollmentRecord enrollment : openEnrollments) {
@@ -127,6 +126,12 @@ public class ANCSchedulesService {
             trackingService.unenroll(entityId, asList(enrollment.getScheduleName()));
         }
         actionService.markAllAlertsAsInactive(entityId);
+    }
+
+    private void unEnrollFromSchedule(String entityId, String anmId, String scheduleName) {
+        logger.info(format("Un-enrolling ANC with Entity id:{0} from schedule: {1}", entityId, scheduleName));
+        trackingService.unenroll(entityId, asList(scheduleName));
+        actionService.markAlertAsInactive(anmId, entityId, scheduleName);
     }
 
     private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule) {

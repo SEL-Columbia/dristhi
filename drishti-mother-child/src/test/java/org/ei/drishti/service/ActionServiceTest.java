@@ -119,6 +119,13 @@ public class ActionServiceTest {
     }
 
     @Test
+    public void shouldMarkAnAlertAsInactive() throws Exception {
+        service.markAlertAsInactive("ANM 1","Case X", "Schedule 1");
+
+        verify(allActions).markAlertAsInactiveFor("ANM 1","Case X", "Schedule 1");
+    }
+
+    @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
         List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3))));
         when(allActions.findByANMIDAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);

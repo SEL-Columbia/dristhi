@@ -436,7 +436,7 @@ public class ANCServiceTest {
 
         service.deliveryOutcome(submission);
 
-        verify(ancSchedulesService).unEnrollFromSchedules("entity id 1");
+        verify(ancSchedulesService).unEnrollFromAllSchedules("entity id 1");
         verify(motherReportingService).deliveryOutcome(new SafeMap(mapOf("someKey", "someValue")));
     }
 
@@ -474,7 +474,7 @@ public class ANCServiceTest {
 
         service.close(create().build());
 
-        verify(ancSchedulesService).unEnrollFromSchedules("entity id 1");
+        verify(ancSchedulesService).unEnrollFromAllSchedules("entity id 1");
         verify(motherReportingService, never()).deleteReports(anyString());
     }
 

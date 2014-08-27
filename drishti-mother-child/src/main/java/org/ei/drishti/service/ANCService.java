@@ -211,7 +211,7 @@ public class ANCService {
             return;
         }
 
-        ancSchedulesService.unEnrollFromSchedules(submission.entityId());
+        ancSchedulesService.unEnrollFromAllSchedules(submission.entityId());
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.deliveryOutcome(new SafeMap(submission.getFields(reportFields)));
@@ -228,7 +228,7 @@ public class ANCService {
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         reportingService.closeANC(new SafeMap(submission.getFields(reportFields)));
 
-        ancSchedulesService.unEnrollFromSchedules(submission.entityId());
+        ancSchedulesService.unEnrollFromAllSchedules(submission.entityId());
         actionService.markAllAlertsAsInactive(submission.entityId());
 
         if (DEATH_OF_WOMAN_VALUE.equalsIgnoreCase(submission.getField(CLOSE_REASON_FIELD_NAME))

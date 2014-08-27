@@ -85,4 +85,16 @@ public class AllActions extends MotechBaseRepository<Action> {
         }
         add(alertAction);
     }
+
+    public void markAlertAsInactiveFor(String anmIdentifier, String caseId, String scheduleName) {
+        List<Action> existingAlerts = findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseId, scheduleName);
+        if (existingAlerts.size() > 1) {
+            logger.warn(MessageFormat.format("Found more than one alert for the combination of anmId: {0}, entityId: {1} and scheduleName : {2}. Alerts : {3}",
+                    anmIdentifier, caseId, scheduleName, existingAlerts));
+        }
+        for (Action existingAlert : existingAlerts) {
+            existingAlert.markAsInActive();
+        }
+        db.executeBulk(existingAlerts);
+    }
 }
