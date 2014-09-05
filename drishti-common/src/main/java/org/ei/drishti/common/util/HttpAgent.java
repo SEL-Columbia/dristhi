@@ -19,6 +19,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -82,6 +83,17 @@ public class HttpAgent {
     public HttpResponse get(String url) {
         HttpGet request = new HttpGet(url);
         try {
+            org.apache.http.HttpResponse response = httpClient.execute(request);
+            return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public HttpResponse getWithSocketTimeout(String url) {
+        HttpGet request = new HttpGet(url);
+        try {
+            httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 180000);
             org.apache.http.HttpResponse response = httpClient.execute(request);
             return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
         } catch (Exception e) {

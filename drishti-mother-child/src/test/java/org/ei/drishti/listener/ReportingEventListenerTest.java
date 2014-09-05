@@ -71,18 +71,18 @@ public class ReportingEventListenerTest {
         Map<String, Object> data = new HashMap<>();
         List<ANMReport> anmReports = new ArrayList<>();
         anmReports.add(new ANMReport("ANM X", asList(createSummaryForIUD())));
-        when(agent.get(eq("http://drishti/fetchForAllANMs"))).thenReturn(new HttpResponse(true, new Gson().toJson(anmReports)));
+        when(agent.getWithSocketTimeout(eq("http://drishti/fetchForAllANMs"))).thenReturn(new HttpResponse(true, new Gson().toJson(anmReports)));
 
         listener.fetchANMReports(new MotechEvent("SUBJECT", data));
 
-        verify(agent).get("http://drishti/fetchForAllANMs");
+        verify(agent).getWithSocketTimeout("http://drishti/fetchForAllANMs");
         verify(anmReportingService).processReports(anmReports);
     }
 
     @Test
     public void shouldAddANMReportsThatAreGeneratedFromEntities() throws Exception {
         Map<String, Object> data = new HashMap<>();
-        when(agent.get(eq("http://drishti/fetchForAllANMs"))).thenReturn(new HttpResponse(true, new Gson().toJson(new ArrayList<ANMReport>())));
+        when(agent.getWithSocketTimeout(eq("http://drishti/fetchForAllANMs"))).thenReturn(new HttpResponse(true, new Gson().toJson(new ArrayList<ANMReport>())));
 
         listener.fetchANMReports(new MotechEvent("SUBJECT", data));
 
@@ -92,11 +92,11 @@ public class ReportingEventListenerTest {
     @Test
     public void shouldNotPassDataToANMReportServiceIfRequestFailed() throws Exception {
         Map<String, Object> data = new HashMap<>();
-        when(agent.get(eq("http://drishti/fetchForAllANMs"))).thenReturn(new HttpResponse(false, null));
+        when(agent.getWithSocketTimeout(eq("http://drishti/fetchForAllANMs"))).thenReturn(new HttpResponse(false, null));
 
         listener.fetchANMReports(new MotechEvent("SUBJECT", data));
 
-        verify(agent).get("http://drishti/fetchForAllANMs");
+        verify(agent).getWithSocketTimeout("http://drishti/fetchForAllANMs");
         verify(anmReportingService, times(0)).processReports(anyList());
     }
 
@@ -104,11 +104,11 @@ public class ReportingEventListenerTest {
     @Test
     public void shouldNotPassDataToANMReportServiceIfNoReportIsFetched() throws Exception {
         Map<String, Object> data = new HashMap<>();
-        when(agent.get(eq("http://drishti/fetchForAllANMs"))).thenReturn(new HttpResponse(true, new Gson().toJson(new ArrayList<ANMReport>())));
+        when(agent.getWithSocketTimeout(eq("http://drishti/fetchForAllANMs"))).thenReturn(new HttpResponse(true, new Gson().toJson(new ArrayList<ANMReport>())));
 
         listener.fetchANMReports(new MotechEvent("SUBJECT", data));
 
-        verify(agent).get("http://drishti/fetchForAllANMs");
+        verify(agent).getWithSocketTimeout("http://drishti/fetchForAllANMs");
         verify(anmReportingService, times(0)).processReports(anyList());
     }
 

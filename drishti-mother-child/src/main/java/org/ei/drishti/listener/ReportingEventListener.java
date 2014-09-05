@@ -73,7 +73,7 @@ public class ReportingEventListener {
         logger.info("Fetching ANM reports...");
 
         anmReportService.reportFromEntityData();
-        HttpResponse response = httpAgent.get(url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION);
+        HttpResponse response = httpAgent.getWithSocketTimeout(url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION);
         if (!response.isSuccess()) {
             logger.error("ANM Reports fetch failed. URL: " + url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION + ". Response body: " + response.body());
             return;
