@@ -91,13 +91,6 @@ public class ChildService {
         return new ArrayList<>(asList(immunizationsGivenField.split(IMMUNIZATIONS_SEPARATOR)));
     }
 
-    private Child getChild(FormSubmission submission, Mother mother, String referenceDate, Map<String, String> childFields) {
-        Child child = allChildren.findByCaseId(childFields.get(ID));
-        child = child.withAnm(submission.anmId()).withDateOfBirth(referenceDate).withThayiCard(mother.thayiCardNumber());
-        allChildren.update(child);
-        return child;
-    }
-
     private boolean isDeliveryOutcomeStillBirth(FormSubmission submission) {
         return AllConstants.DeliveryOutcomeFields.STILL_BIRTH_VALUE.equalsIgnoreCase(submission.getField(AllConstants.DeliveryOutcomeFields.DELIVERY_OUTCOME));
     }
