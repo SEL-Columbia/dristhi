@@ -200,7 +200,7 @@
             },
             {
                 "name": "registrationDate",
-                "bind": "/model/instance/EC_Registration_EngKan/today"
+                "bind": "/model/instance/EC_Registration_EngKan/reg_date"
             },
             {
                 "name": "parity",
