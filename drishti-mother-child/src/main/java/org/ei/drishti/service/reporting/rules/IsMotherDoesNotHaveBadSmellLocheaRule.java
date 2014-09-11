@@ -11,6 +11,9 @@ public class IsMotherDoesNotHaveBadSmellLocheaRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {
-        return !reportFields.get(VAGINAL_PROBLEMS_FIELD_NAME).contains(BAD_SMELL_LOCHEA_VALUE);
+        String vaginalProblemsValue = reportFields.get(VAGINAL_PROBLEMS_FIELD_NAME) != null
+                ? reportFields.get(VAGINAL_PROBLEMS_FIELD_NAME) : "";
+
+        return !vaginalProblemsValue.contains(BAD_SMELL_LOCHEA_VALUE);
     }
 }

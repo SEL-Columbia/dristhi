@@ -22,6 +22,9 @@ public class IsMotherDoesNotHaveHemorrhageRuleTest {
 
         boolean didRuleApply = rule.apply(safeMap);
         assertTrue(didRuleApply);
+
+        didRuleApply = rule.apply(new SafeMap().put("vaginalProblems", null));
+        assertTrue(didRuleApply);
     }
 
     @Test

@@ -29,5 +29,8 @@ public class IsMotherDoesNotHaveBadSmellLocheaRuleTest {
 
         boolean didRuleApply = rule.apply(new SafeMap(create("vaginalProblems", "heavy_bleeding").map()));
         assertTrue(didRuleApply);
+        
+        didRuleApply = rule.apply(new SafeMap().put("vaginalProblems", null));
+        assertTrue(didRuleApply);
     }
 }

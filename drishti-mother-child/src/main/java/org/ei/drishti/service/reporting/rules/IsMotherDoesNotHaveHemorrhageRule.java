@@ -11,6 +11,10 @@ public class IsMotherDoesNotHaveHemorrhageRule implements IRule {
 
     @Override
     public boolean apply(SafeMap reportFields) {
-        return !reportFields.get(VAGINAL_PROBLEMS_FIELD_NAME).contains(HEAVY_BLEEDING_VALUE);
+
+        String vaginalProblemValue = reportFields.get(VAGINAL_PROBLEMS_FIELD_NAME) != null ?
+                reportFields.get(VAGINAL_PROBLEMS_FIELD_NAME) : "";
+
+        return !vaginalProblemValue.contains(HEAVY_BLEEDING_VALUE);
     }
 }
