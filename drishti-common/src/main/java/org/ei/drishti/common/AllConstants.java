@@ -118,7 +118,6 @@ public class AllConstants {
         public static final String SC_VALUE = "sc";
         public static final String ST_VALUE = "st";
         public static final String C_OTHERS_VALUE = "c_others";
-        public static final String IS_OUT_OF_AREA_TRUE = "true";
         public static final String IS_OUT_OF_AREA_FALSE = "false";
         public static final String IS_OUT_OF_AREA = "isOutOfArea";
 
@@ -143,7 +142,6 @@ public class AllConstants {
         public static final String CESAREAN_VALUE = "cesarean";
         public static final String IS_SKILLED_DELIVERY = "isSkilledDelivery";
         public static final String IMMUNIZATIONS_AT_BIRTH = "immunizationsAtBirth";
-        public static final String DELIVERY_REGISTRATION_DATE = "deliveryRegistrationDate";
     }
 
     public static class ANCRegistrationFormFields {
@@ -203,7 +201,6 @@ public class AllConstants {
         public static final String VISIT_DATES_FIELD_NAME = "pncVisitDates";
         public static final String VISIT_PLACE_FIELD_NAME = "pncVisitPlace";
         public static final String VISIT_PERSON_FIELD_NAME = "pncVisitPerson";
-        public static final String VISIT_NUMBER_FIELD_NAME = "pncVisitNumber";
         public static final String URINE_STOOL_PROBLEMS = "urineStoolProblems";
         public static final String ACTIVITY_PROBLEMS = "activityProblems";
         public static final String BREATHING_PROBLEMS = "breathingProblems";
@@ -290,7 +287,6 @@ public class AllConstants {
         public static final String DEATH_OF_WOMAN_VALUE = "death_of_woman";
         public static final String PERMANENT_RELOCATION_VALUE = "relocation_permanent";
         public static final String SPONTANEOUS_ABORTION_VALUE = "spontaneous_abortion";
-        public static final String SPONTANEOUS_ABORTION_PLACE_FIELD_NAME = "placeOfSpontaneousAbortion";
     }
 
     public static class PNCCloseFields {
@@ -348,7 +344,6 @@ public class AllConstants {
         public static final String IMMUNIZATIONS_GIVEN_FIELD_NAME = "immunizationsGiven";
         public static final String PREVIOUS_IMMUNIZATIONS_FIELD_NAME = "previousImmunizations";
         public static final String IMMUNIZATION_DATE_FIELD_NAME = "immunizationDate";
-        public static final String IMMUNIZATION_RECEIVED_FIELD_NAME = "immunizationsReceived";
 
         public static final String BCG_VALUE = "bcg";
 
