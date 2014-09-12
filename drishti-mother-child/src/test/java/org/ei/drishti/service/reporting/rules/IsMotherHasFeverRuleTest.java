@@ -18,7 +18,7 @@ public class IsMotherHasFeverRuleTest {
 
     @Test
     public void shouldReturnTrueIfMotherHasFever() {
-        SafeMap safeMap = new SafeMap(create("hasFever", "yes").map());
+        SafeMap safeMap = new SafeMap(create("hasFever", "High Fever").map());
 
         boolean didRuleApply = rule.apply(safeMap);
         assertTrue(didRuleApply);
@@ -26,11 +26,7 @@ public class IsMotherHasFeverRuleTest {
 
     @Test
     public void shouldReturnFalseIfMotherDoesNotHaveFever() {
-
         boolean didRuleApply = rule.apply(new SafeMap(create("hasFever", "").map()));
-        assertFalse(didRuleApply);
-
-        didRuleApply = rule.apply(new SafeMap(create("hasFever", "no").map()));
         assertFalse(didRuleApply);
     }
 }

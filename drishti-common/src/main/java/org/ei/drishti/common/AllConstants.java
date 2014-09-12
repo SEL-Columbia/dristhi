@@ -13,6 +13,8 @@ public class AllConstants {
     public static final String BOOLEAN_FALSE_VALUE = "false";
     public static final String AUTO_CLOSE_PNC_CLOSE_REASON = "Auto Close PNC";
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String EMPTY_STRING = "";
+
 
     public static class Form {
         public static final String ENTITY_ID = "entityId";
