@@ -91,7 +91,7 @@ public class PNCService {
     }
 
     private void addChildrenDetailsToMother(FormSubmission submission, SubFormData subFormData, Mother mother) {
-        ArrayList<Map<String, String>> childrenDetails = new ArrayList<>();
+        List<Map<String, String>> childrenDetails = new ArrayList<>(mother.childrenDetails());
         if (!handleStillBirth(submission, subFormData)) {
             for (Map<String, String> childFields : subFormData.instances()) {
                 Map<String, String> child = create(ID, childFields.get(ID))
@@ -287,7 +287,7 @@ public class PNCService {
         refill.put(QUANTITY, submission.getField(NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME));
         List<Map<String, String>> refills = new ArrayList<>();
         refills.add(refill);
-        return new OCPFPDetails(fpAcceptanceDate, refills, null,null);
+        return new OCPFPDetails(fpAcceptanceDate, refills, null, null);
     }
 
     private CondomFPDetails getCondomFPDetails(FormSubmission submission, String fpAcceptanceDate) {

@@ -3,8 +3,8 @@ package org.ei.drishti.service;
 import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
-import org.ei.drishti.domain.register.*;
 import org.ei.drishti.domain.PNCVisit;
+import org.ei.drishti.domain.register.*;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.domain.SubFormData;
 import org.ei.drishti.repository.AllChildren;
@@ -237,7 +237,13 @@ public class PNCServiceTest extends BaseUnitTest {
 
     @Test
     public void shouldUpdateMotherWithChildrenDetailsWhenDeliveryOutcome() {
-        when(allMothers.findByCaseId("mother id 1")).thenReturn(new Mother("mother id 1", "ec id 1", "tc 1"));
+        when(allMothers.findByCaseId("mother id 1"))
+                .thenReturn(new Mother("mother id 1", "ec id 1", "tc 1")
+                        .withChildrenDetails(asList(EasyMap.create("id", "child id")
+                                .put("gender", "female")
+                                .put("weight", "2.5")
+                                .put("immunizationsGiven", "bcg")
+                                .map())));
         FormSubmission submission = create()
                 .withFormName("delivery_outcome")
                 .withANMId("anm id 1")
@@ -261,7 +267,12 @@ public class PNCServiceTest extends BaseUnitTest {
         service.deliveryOutcome(submission);
 
         verify(allMothers).update(new Mother("mother id 1", "ec id 1", "tc 1")
-                .withChildrenDetails(asList(EasyMap.create("id", "child id 1")
+                .withChildrenDetails(asList(EasyMap.create("id", "child id")
+                                .put("gender", "female")
+                                .put("weight", "2.5")
+                                .put("immunizationsGiven", "bcg")
+                                .map(),
+                        EasyMap.create("id", "child id 1")
                                 .put("gender", "male")
                                 .put("weight", "2")
                                 .put("immunizationsAtBirth", "bcg")

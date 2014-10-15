@@ -164,6 +164,9 @@ public class Mother extends MotechBaseDataObject {
     }
 
     public List<Map<String, String>> childrenDetails() {
+        if (childrenDetails == null) {
+            childrenDetails = new ArrayList<>();
+        }
         return childrenDetails;
     }
 

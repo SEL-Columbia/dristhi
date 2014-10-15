@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "7",
+    "form_data_definition_version": "8",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Child_Registration_EC_EngKan/",
@@ -10,7 +10,6 @@
             },
             {
                 "name": "motherId",
-                "shouldLoadValue": true,
                 "source": "eligible_couple.mother.id"
             },
             {
