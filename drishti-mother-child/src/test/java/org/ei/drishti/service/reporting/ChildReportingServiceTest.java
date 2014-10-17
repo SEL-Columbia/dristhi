@@ -100,12 +100,12 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportFirstVitaminDoseDuringImmunizationProvidedForFemaleChild() throws Exception {
-        SafeMap reportingData = reportDataForVitaminA("1", "2012-01-02");
+        SafeMap reportingData = reportDataForVitaminA("1", "2012-01-02", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-02"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-02"), LocalDate.parse("2012-01-02"))).thenReturn(true);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.vitaminAProvided(reportingData);
@@ -118,13 +118,13 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportSecondVitaminDoseDuringImmunizationProvidedForFemaleChild() throws Exception {
-        SafeMap reportingData = reportDataForVitaminA("2", "2012-01-02");
+        SafeMap reportingData = reportDataForVitaminA("2", "2012-01-02", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-02"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-02"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         service.vitaminAProvided(reportingData);
 
@@ -136,13 +136,13 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportFifthVitaminDoseDuringImmunizationProvidedForFemaleChild() throws Exception {
-        SafeMap reportingData = reportDataForVitaminA("5", "2012-01-02");
+        SafeMap reportingData = reportDataForVitaminA("5", "2012-01-02", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-02"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-02"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         service.vitaminAProvided(reportingData);
 
@@ -153,13 +153,13 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportNinthVitaminDoseDuringImmunizationProvidedForFemaleChild() throws Exception {
-        SafeMap reportingData = reportDataForVitaminA("9", "2012-01-02");
+        SafeMap reportingData = reportDataForVitaminA("9", "2012-01-02", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-02"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-02"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         service.vitaminAProvided(reportingData);
 
@@ -170,13 +170,13 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportFirstVitaminDoseDuringImmunizationProvidedForMaleChild() throws Exception {
-        SafeMap reportingData = reportDataForVitaminA("1", "2012-01-02");
+        SafeMap reportingData = reportDataForVitaminA("1", "2012-01-02", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "male")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-02"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-02"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         service.vitaminAProvided(reportingData);
 
@@ -188,13 +188,13 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportSecondVitaminDoseDuringImmunizationProvidedForMaleChild() throws Exception {
-        SafeMap reportingData = reportDataForVitaminA("2", "2012-01-02");
+        SafeMap reportingData = reportDataForVitaminA("2", "2012-01-02", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "male")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-02"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-02"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         service.vitaminAProvided(reportingData);
 
@@ -206,13 +206,13 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportFifthVitaminDoseDuringImmunizationProvidedForMaleChild() throws Exception {
-        SafeMap reportingData = reportDataForVitaminA("5", "2012-01-02");
+        SafeMap reportingData = reportDataForVitaminA("5", "2012-01-02", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "male")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-02"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-02"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         service.vitaminAProvided(reportingData);
 
@@ -223,13 +223,13 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldReportNinthVitaminDoseDuringImmunizationProvidedForMaleChild() throws Exception {
-        SafeMap reportingData = reportDataForVitaminA("9", "2012-01-02");
+        SafeMap reportingData = reportDataForVitaminA("9", "2012-01-02", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "male")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-02"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-02"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         service.vitaminAProvided(reportingData);
 
@@ -240,13 +240,13 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldNotReportThirdVitaminDoseDuringImmunizationProvidedForMaleChild() throws Exception {
-        SafeMap reportingData = reportDataForVitaminA("3", "2012-01-02");
+        SafeMap reportingData = reportDataForVitaminA("3", "2012-01-02", "2012-01-02");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "male")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-02"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-02"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         service.vitaminAProvided(reportingData);
 
@@ -1012,7 +1012,7 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"),LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2017-01-01", "2017-01-01"));
 
@@ -1024,7 +1024,7 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-03-05"),LocalDate.parse("2012-03-05"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-03-05"), LocalDate.parse("2012-03-05"))).thenReturn(true);
 
         service.closeChild(reportDataForCloseChild("child_over5", "2012-03-05", "2012-03-05"));
 
@@ -1036,7 +1036,7 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"),LocalDate.parse("2016-12-31"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"), LocalDate.parse("2016-12-31"))).thenReturn(true);
 
         service.closeChild(reportDataForCloseChild("death_of_child", "2016-12-31", "diarrhea", "2016-12-31"));
 
@@ -1049,7 +1049,7 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"),LocalDate.parse("2016-12-31"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"), LocalDate.parse("2016-12-31"))).thenReturn(true);
 
         service.closeChild(reportDataForCloseChild("wrong_entry", "2016-12-31", "2016-12-31"));
 
@@ -1063,7 +1063,7 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"),LocalDate.parse("2016-12-31"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"), LocalDate.parse("2016-12-31"))).thenReturn(true);
 
         service.closeChild(reportDataForCloseChild("other_reason", "2016-12-31", "diarrhea", "2016-12-31"));
 
@@ -1075,7 +1075,7 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"),LocalDate.parse("2016-12-31"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"), LocalDate.parse("2016-12-31"))).thenReturn(true);
 
         service.closeChild(reportDataForCloseChild("other_reason", "2016-12-31", "sepsis", "2016-12-31"));
 
@@ -1540,11 +1540,12 @@ public class ChildReportingServiceTest {
         return reportingData;
     }
 
-    private SafeMap reportDataForVitaminA(String vitaminADose, String vitaminADate) {
+    private SafeMap reportDataForVitaminA(String vitaminADose, String vitaminADate, String submissionDate) {
         SafeMap reportingData = new SafeMap();
         reportingData.put("id", "CASE X");
         reportingData.put("vitaminADose", vitaminADose);
         reportingData.put("vitaminADate", vitaminADate);
+        reportingData.put("submissionDate", submissionDate);
         return reportingData;
     }
 

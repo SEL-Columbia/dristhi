@@ -108,6 +108,7 @@
     "vitamin_a": [
         "id",
         "vitaminADose",
-        "vitaminADate"
+        "vitaminADate",
+        "submissionDate"
     ]
 }
