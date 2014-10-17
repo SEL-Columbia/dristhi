@@ -62,8 +62,7 @@ public class ReportMonth {
     }
 
     public boolean isDateWithinCurrentReportMonth(LocalDate lastReportedDate) {
-        return !(lastReportedDate.isBefore(startOfCurrentReportMonth(DateUtil.today())) ||
-                lastReportedDate.isAfter(endOfCurrentReportMonth(DateUtil.today())));
+        return areDatesBelongToSameReportingMonth(lastReportedDate, DateUtil.today());
     }
 
     private int previousMonth(LocalDate today) {
@@ -88,6 +87,11 @@ public class ReportMonth {
 
     public int reportingYear(LocalDate date) {
         return endOfCurrentReportMonth(date).getYear();
+    }
+
+    public boolean areDatesBelongToSameReportingMonth(LocalDate date, LocalDate anotherDate) {
+        return !(date.isBefore(startOfCurrentReportMonth(anotherDate)) ||
+                date.isAfter(endOfCurrentReportMonth(anotherDate)));
     }
 }
 

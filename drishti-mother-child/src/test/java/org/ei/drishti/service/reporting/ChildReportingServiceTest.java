@@ -892,9 +892,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-03-05"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-03-05"), LocalDate.parse("2012-03-10"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-03-05", "2012-03-10"));
 
         verifyBothReportingCalls(INFANT_MORTALITY, "2012-03-05");
         verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
@@ -905,9 +905,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-07"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-07"), LocalDate.parse("2012-01-17"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-07"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-07", "2012-01-17"));
 
         verifyBothReportingCalls(ENM, "2012-01-07");
         verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
@@ -918,9 +918,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-08"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-08"), LocalDate.parse("2012-01-08"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-08"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-08", "2012-01-08"));
 
         verifyNoReportingCalls(ENM, "2012-01-08");
     }
@@ -930,9 +930,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-28"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-28"), LocalDate.parse("2012-01-28"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-28"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-28", "2012-01-28"));
 
         verifyBothReportingCalls(NM, "2012-01-28");
         verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
@@ -943,9 +943,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-29"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-29"), LocalDate.parse("2012-01-29"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-29"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-29", "2012-01-29"));
 
         verifyNoReportingCalls(NM, "2012-01-29");
     }
@@ -955,11 +955,11 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-29"))).thenReturn(true);
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-12-31"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-29"), LocalDate.parse("2012-01-29"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-12-31"), LocalDate.parse("2012-12-31"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-29"));
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-12-31"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-29", "2012-01-29"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-12-31", "2012-12-31"));
 
         verifyBothReportingCalls(LNM, "2012-01-29");
         verifyBothReportingCalls(LNM, "2012-12-31");
@@ -971,10 +971,10 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-28"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-28"), LocalDate.parse("2012-01-28"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-28"));
-        service.closeChild(reportDataForCloseChild("death_of_child", "2013-01-01"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-28", "2012-01-28"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2013-01-01", "2013-01-01"));
 
         verifyNoReportingCalls(LNM, "2012-01-28");
         verifyNoReportingCalls(LNM, "2013-12-31");
@@ -985,10 +985,10 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-08"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-08"), LocalDate.parse("2012-01-08"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-08"));
-        service.closeChild(reportDataForCloseChild("death_of_child", "2012-12-31"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-01-08", "2012-01-08"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2012-12-31", "2012-12-31"));
 
         verifyNoReportingCalls(INFANT_MORTALITY, "2012-01-07");
         verifyNoReportingCalls(INFANT_MORTALITY, "2013-01-01");
@@ -999,9 +999,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2016-12-31"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"), LocalDate.parse("2016-12-31"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2016-12-31"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2016-12-31", "2016-12-31"));
 
         verifyBothReportingCalls(CHILD_MORTALITY, "2016-12-31");
         verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
@@ -1012,9 +1012,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"),LocalDate.parse("2012-01-01"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2017-01-01"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2017-01-01", "2017-01-01"));
 
         verifyNoReportingCalls(CHILD_MORTALITY, "2017-01-01");
     }
@@ -1024,9 +1024,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-03-05"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-03-05"),LocalDate.parse("2012-03-05"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("child_over5", "2012-03-05"));
+        service.closeChild(reportDataForCloseChild("child_over5", "2012-03-05", "2012-03-05"));
 
         verifyZeroInteractions(reportingService);
     }
@@ -1036,9 +1036,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2016-12-31"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"),LocalDate.parse("2016-12-31"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("death_of_child", "2016-12-31", "diarrhea"));
+        service.closeChild(reportDataForCloseChild("death_of_child", "2016-12-31", "diarrhea", "2016-12-31"));
 
         verifyBothReportingCalls(CHILD_MORTALITY_DUE_TO_DIARRHEA, "2016-12-31");
         verify(reportingService, never()).deleteReportData(any(ReportDataDeleteRequest.class));
@@ -1049,9 +1049,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2016-12-31"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"),LocalDate.parse("2016-12-31"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("wrong_entry", "2016-12-31"));
+        service.closeChild(reportDataForCloseChild("wrong_entry", "2016-12-31", "2016-12-31"));
 
         verify(reportingService).deleteReportData(serviceProvidedDataDeleteRequest("CASE X"));
         verify(reportingService).deleteReportData(anmReportDataDeleteRequest("CASE X"));
@@ -1063,9 +1063,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2016-12-31"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"),LocalDate.parse("2016-12-31"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("other_reason", "2016-12-31", "diarrhea"));
+        service.closeChild(reportDataForCloseChild("other_reason", "2016-12-31", "diarrhea", "2016-12-31"));
 
         verifyNoReportingCalls(CHILD_MORTALITY_DUE_TO_DIARRHEA, "2016-12-31");
     }
@@ -1075,9 +1075,9 @@ public class ChildReportingServiceTest {
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2016-12-31"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2016-12-31"),LocalDate.parse("2016-12-31"))).thenReturn(true);
 
-        service.closeChild(reportDataForCloseChild("other_reason", "2016-12-31", "sepsis"));
+        service.closeChild(reportDataForCloseChild("other_reason", "2016-12-31", "sepsis", "2016-12-31"));
 
         verifyNoReportingCalls(CHILD_MORTALITY_DUE_TO_DIARRHEA, "2016-12-31");
     }
@@ -1548,16 +1548,17 @@ public class ChildReportingServiceTest {
         return reportingData;
     }
 
-    private SafeMap reportDataForCloseChild(String closeReason, String closeDate) {
-        return reportDataForCloseChild(closeReason, closeDate, null);
+    private SafeMap reportDataForCloseChild(String closeReason, String closeDate, String submissionDate) {
+        return reportDataForCloseChild(closeReason, closeDate, null, submissionDate);
     }
 
-    private SafeMap reportDataForCloseChild(String closeReason, String closeDate, String deathCause) {
+    private SafeMap reportDataForCloseChild(String closeReason, String closeDate, String deathCause, String submissionDate) {
         SafeMap reportingData = new SafeMap();
         reportingData.put("id", "CASE X");
         reportingData.put("closeReason", closeReason);
         reportingData.put("deathDate", closeDate);
         reportingData.put("deathCause", deathCause);
+        reportingData.put("submissionDate", submissionDate);
         return reportingData;
     }
 
@@ -1612,14 +1613,13 @@ public class ChildReportingServiceTest {
     }
 
     @Test
-    public void shouldNotReportWhenServiceProvidedDateIsNotInCurrentReportingMonth() throws Exception {
-        DateUtil.fakeIt(parse("2013-02-01"));
+    public void shouldNotReportWhenServiceProvidedDateAndFormSubmissionDateBelongToDifferentReportingMonth() throws Exception {
         Child child = new Child("child id 1", "mother id 1", "bcg", "3", "female").withAnm("ANM X");
         Location location = new Location("bherya", "Sub Center", "PHC X");
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2013-01-01"))).thenReturn(false);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2013-01-01"), parse("2013-01-26"))).thenReturn(false);
 
-        service.reportToBoth(child, Indicator.FP_IUD, "2013-01-01", location);
-
+        service.reportToBoth(child, Indicator.FP_IUD, "2013-01-01", "2013-01-26", location);
+        verify(reportMonth).areDatesBelongToSameReportingMonth(parse("2013-01-01"), parse("2013-01-26"));
         verifyZeroInteractions(reportingService);
     }
 

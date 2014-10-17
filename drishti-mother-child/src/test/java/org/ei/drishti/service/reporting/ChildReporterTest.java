@@ -44,6 +44,6 @@ public class ChildReporterTest {
 
         reporter.report(submission.entityId(), "INFANT_LEFT", location, "2012-03-01", safeMap);
 
-        verify(childReportingService).reportToBoth(child, Indicator.from("INFANT_LEFT"), submission.getField("submissionDate"), location);
+        verify(childReportingService).reportToBoth(child, Indicator.from("INFANT_LEFT"), submission.getField("submissionDate"), submission.getField("submissionDate"), location);
     }
 }

@@ -94,7 +94,8 @@
         "id",
         "closeReason",
         "deathDate",
-        "deathCause"
+        "deathCause",
+        "submissionDate"
     ],
     "child_illness": [
         "id",

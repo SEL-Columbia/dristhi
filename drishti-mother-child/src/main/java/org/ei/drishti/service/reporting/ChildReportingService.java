@@ -235,22 +235,22 @@ public class ChildReportingService {
         LocalDate diedOnDate = parse(diedOn);
 
         if (childDateOfBirth.plusDays(CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS).isAfter(diedOnDate)) {
-            reportToBoth(child, ENM, diedOn, location);
+            reportToBoth(child, ENM, diedOn, reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
         if (childDateOfBirth.plusDays(CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS).isAfter(diedOnDate)) {
-            reportToBoth(child, NM, diedOn, location);
-            reportToBoth(child, INFANT_MORTALITY, diedOn, location);
+            reportToBoth(child, NM, diedOn, reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
+            reportToBoth(child, INFANT_MORTALITY, diedOn, reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         } else if (childDateOfBirth.plusYears(INFANT_MORTALITY_THRESHOLD_IN_YEARS).isAfter(diedOnDate)) {
-            reportToBoth(child, LNM, diedOn, location);
-            reportToBoth(child, INFANT_MORTALITY, diedOn, location);
+            reportToBoth(child, LNM, diedOn, reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
+            reportToBoth(child, INFANT_MORTALITY, diedOn, reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
         if (childDateOfBirth.plusYears(CHILD_MORTALITY_THRESHOLD_IN_YEARS).isAfter(diedOnDate)) {
-            reportToBoth(child, CHILD_MORTALITY, diedOn, location);
+            reportToBoth(child, CHILD_MORTALITY, diedOn, reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         } else {
             logger.warn("Not reporting for child with CaseID" + child.caseId() + "because child's age is more than " + CHILD_MORTALITY_THRESHOLD_IN_YEARS + " years.");
         }
         if (AllConstants.CommonChildFormFields.DIARRHEA_VALUE.equalsIgnoreCase(reportData.get(DEATH_CAUSE))) {
-            reportToBoth(child, CHILD_MORTALITY_DUE_TO_DIARRHEA, diedOn, location);
+            reportToBoth(child, CHILD_MORTALITY_DUE_TO_DIARRHEA, diedOn, reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
     }
 
@@ -360,9 +360,19 @@ public class ChildReportingService {
         }
     }
 
+    public void reportToBoth(Child child, Indicator indicator, String date, String submissionDate, Location location) {
+        if (!reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse(date), LocalDate.parse(submissionDate)))
+            return;
+        report(child, indicator, date, location);
+    }
+
     public void reportToBoth(Child child, Indicator indicator, String date, Location location) {
         if (!reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
             return;
+        report(child, indicator, date, location);
+    }
+
+    private void report(Child child, Indicator indicator, String date, Location location) {
         String externalId = child.thayiCardNumber();
 
         //#TODO: Refactor to avoid DB calls

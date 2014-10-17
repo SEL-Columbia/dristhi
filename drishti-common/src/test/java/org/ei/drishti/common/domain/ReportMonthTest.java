@@ -73,5 +73,18 @@ public class ReportMonthTest {
         assertTrue(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2013-01-01")));
         assertTrue(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2013-01-25")));
     }
+
+    @Test
+    public void shouldCheckWhetherBothTheDatesAreWithinSameReportingMonth() {
+        assertTrue(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2013-01-26"), LocalDate.parse("2013-01-26")));
+        assertTrue(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2013-02-01"), LocalDate.parse("2013-02-15")));
+        assertTrue(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2013-02-01"), LocalDate.parse("2013-02-25")));
+        assertTrue(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2013-02-25"), LocalDate.parse("2013-02-25")));
+        assertTrue(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-12-26"), LocalDate.parse("2013-01-01")));
+        assertTrue(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-12-26"), LocalDate.parse("2013-01-25")));
+
+        assertFalse(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2013-01-25"), LocalDate.parse("2013-01-26")));
+        assertFalse(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2013-01-26"), LocalDate.parse("2013-02-26")));
+    }
 }
 
