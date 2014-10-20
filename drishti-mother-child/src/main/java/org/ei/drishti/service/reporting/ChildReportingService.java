@@ -208,11 +208,12 @@ public class ChildReportingService {
 
         Location location = loadLocationOfChild(child);
         LocalDate childDateOfBirth = parse(child.dateOfBirth());
-        if (childDateOfBirth.plusYears(CHILD_DIARRHEA_THRESHOLD_IN_YEARS).isAfter(LocalDate.parse(reportData.get(SUBMISSION_DATE_FIELD_NAME)))) {
+        String submissionDate = reportData.get(SUBMISSION_DATE_FIELD_NAME);
+        if (childDateOfBirth.plusYears(CHILD_DIARRHEA_THRESHOLD_IN_YEARS).isAfter(LocalDate.parse(submissionDate))) {
             if (!isBlank(reportData.get(CHILD_SIGNS)) && reportData.get(CHILD_SIGNS).contains(AllConstants.CommonChildFormFields.DIARRHEA_VALUE)) {
-                reportToBoth(child, CHILD_DIARRHEA, reportData.get(SICK_VISIT_DATE), location);
+                reportToBoth(child, CHILD_DIARRHEA, reportData.get(SICK_VISIT_DATE), submissionDate, location);
             } else if (!isBlank(reportData.get(REPORT_CHILD_DISEASE)) && reportData.get(REPORT_CHILD_DISEASE).contains(AllConstants.ChildIllnessFields.DIARRHEA_DEHYDRATION_VALUE)) {
-                reportToBoth(child, CHILD_DIARRHEA, reportData.get(REPORT_CHILD_DISEASE_DATE), location);
+                reportToBoth(child, CHILD_DIARRHEA, reportData.get(REPORT_CHILD_DISEASE_DATE), submissionDate, location);
             }
         }
     }

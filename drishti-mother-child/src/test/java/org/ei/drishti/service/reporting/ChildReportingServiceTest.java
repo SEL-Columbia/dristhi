@@ -1244,7 +1244,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         service.sickVisitHappened(new SafeMap(EasyMap.create("sickVisitDate", "2012-01-01")
                 .put("id", "CASE X")
@@ -1263,7 +1263,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         service.sickVisitHappened(new SafeMap(EasyMap.create("sickVisitDate", "2012-01-01")
                 .put("id", "CASE X")
@@ -1283,7 +1283,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         service.sickVisitHappened(new SafeMap(EasyMap.create("reportChildDiseaseDate", "2012-01-01")
                 .put("id", "CASE X")
@@ -1303,7 +1303,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         service.sickVisitHappened(new SafeMap(EasyMap.create("reportChildDiseaseDate", "2012-01-01")
                 .put("id", "CASE X")
