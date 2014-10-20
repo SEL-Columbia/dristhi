@@ -134,7 +134,7 @@ public class MotherReportingService {
         }
         if (DEATH_OF_WOMAN_VALUE.equals(closeReason) &&
                 BOOLEAN_TRUE_VALUE.equalsIgnoreCase(reportData.get(IS_MATERNAL_LEAVE_FIELD_NAME))) {
-            reportDeath(mother, MMA, reportData.get(ANC_DEATH_DATE_FIELD_NAME), location);
+            reportDeath(mother, MMA, reportData.get(ANC_DEATH_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
             return;
         }
         reportAbortion(reportData, mother, location);
@@ -196,21 +196,26 @@ public class MotherReportingService {
         }
     }
 
-    private void reportDeath(Mother mother, Indicator indicator, String date, Location location) {
-        reportToBoth(mother, indicator, date, location);
-        reportToBoth(mother, MOTHER_MORTALITY, date, location);
+    private void reportDeath(Mother mother, Indicator indicator, String deathDate, Location location) {
+        reportToBoth(mother, indicator, deathDate, location);
+        reportToBoth(mother, MOTHER_MORTALITY, deathDate, location);
+    }
+
+    private void reportDeath(Mother mother, Indicator indicator, String deathDate, String submissionDate, Location location) {
+        reportToBoth(mother, indicator, deathDate, submissionDate, location);
+        reportToBoth(mother, MOTHER_MORTALITY, deathDate, submissionDate, location);
     }
 
     private void reportAbortion(SafeMap reportData, Mother mother, Location location) {
         if (SPONTANEOUS_ABORTION_VALUE.equals(reportData.get(CLOSE_REASON_FIELD_NAME))) {
-            reportToBoth(mother, SPONTANEOUS_ABORTION, reportData.get(CLOSE_SPONTANEOUS_ABORTION_DATE_FIELD_NAME), location);
+            reportToBoth(mother, SPONTANEOUS_ABORTION, reportData.get(CLOSE_SPONTANEOUS_ABORTION_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
 
         if (MTP_GREATER_THAN_12_WEEKS_FIELD_NAME.equals(reportData.get(CLOSE_MTP_TIME_FIELD_NAME))) {
-            reportToBoth(mother, MTP_GREATER_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_FIELD_NAME), location);
+            reportToBoth(mother, MTP_GREATER_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
         if (MTP_LESS_THAN_12_WEEKS_FIELD_NAME.equals(reportData.get(CLOSE_MTP_TIME_FIELD_NAME))) {
-            reportToBoth(mother, MTP_LESS_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_FIELD_NAME), location);
+            reportToBoth(mother, MTP_LESS_THAN_12_WEEKS, reportData.get(CLOSE_MTP_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
     }
 
@@ -250,9 +255,19 @@ public class MotherReportingService {
         }
     }
 
+    public void reportToBoth(Mother mother, Indicator indicator, String date, String submissionDate, Location location) {
+        if (!isBlank(date) && !reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse(date), LocalDate.parse(submissionDate)))
+            return;
+        report(mother, indicator, date, location);
+    }
+
     public void reportToBoth(Mother mother, Indicator indicator, String date, Location location) {
         if (!isBlank(date) && !reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
             return;
+        report(mother, indicator, date, location);
+    }
+
+    private void report(Mother mother, Indicator indicator, String date, Location location) {
         ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thayiCardNumber(), indicator, date, location, mother.caseId());
         reportingService.sendReportData(serviceProvided);
 

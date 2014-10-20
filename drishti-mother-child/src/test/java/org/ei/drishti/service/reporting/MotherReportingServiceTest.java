@@ -100,7 +100,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportMTPIndicatorBasedOnMTPTime() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-12-12"), parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("greater_12wks", "spontaneous_abortion", null));
 
@@ -111,7 +111,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportMaternalDeath() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-12-12"), parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("", "death_of_woman", "yes"));
 
@@ -123,7 +123,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldDeleteReportsIfCloseReasonIsWrongEntry() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-12-12"), parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("", "wrong_entry", "no"));
 
@@ -136,7 +136,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldNotReportMaternalDeathIfItIsNot() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-12-12"), parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("", "death_of_woman", "no"));
 
@@ -147,7 +147,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldNotReportIfReasonIsNotDeath() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-12-12"), parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("greater_12wks", null, null));
 
@@ -158,7 +158,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportIfReasonIsSpontaneousAbortion() throws Exception {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-12-12"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-12-12"), parse("2012-12-12"))).thenReturn(true);
 
         service.closeANC(reportDataForANCClose("", "spontaneous_abortion", null));
 
@@ -828,6 +828,17 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         verifyZeroInteractions(reportingService);
     }
 
+    @Test
+    public void shouldNotReportWhenServiceProvidedDateAndFormSubmissionDateBelongToDifferentReportingMonth() throws Exception {
+        Mother mother = new Mother("CASE-1", "EC-CASE-1", "TC 1");
+        Location location = new Location("village", "sc", "phc");
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-01"))).thenReturn(false);
+        service.reportToBoth(mother, Indicator.ANC, "2012-01-01", "2012-01-01", location);
+
+        verifyZeroInteractions(reportingService);
+        verify(reportMonth).areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-01"));
+    }
+
     private void verifyBothReportingCalls(Indicator indicator, String date, String dristhiEntityId) {
         verify(reportingService).sendReportData(serviceProvided(indicator, date, dristhiEntityId));
         verify(reportingService).sendReportData(anmReport(indicator, date));
@@ -893,6 +904,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("dateOfInducedAbortion", "2012-12-12");
         reportData.put("isMaternalDeath", isMaternalDeath);
         reportData.put("maternalDeathDate", "2012-12-12");
+        reportData.put("submissionDate", "2012-12-12");
         return reportData;
     }
 }

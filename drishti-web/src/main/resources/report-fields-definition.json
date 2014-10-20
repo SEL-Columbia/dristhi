@@ -30,7 +30,8 @@
         "closeReason",
         "dateOfSpontaneousAbortion",
         "isMaternalDeath",
-        "maternalDeathDate"
+        "maternalDeathDate",
+        "submissionDate"
     ],
     "tt": [
         "id",
