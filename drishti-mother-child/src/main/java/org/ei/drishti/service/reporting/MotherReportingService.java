@@ -69,14 +69,14 @@ public class MotherReportingService {
     public void registerANC(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(MOTHER_ID));
         Location location = loadLocationFromEC(mother);
-        reportToBoth(mother, ANC, reportData.get(REGISTRATION_DATE), location);
+        reportToBoth(mother, ANC, reportData.get(REGISTRATION_DATE), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
 
         boolean isRegisteredWithinTwelveWeeks = !(parse(reportData.get(REGISTRATION_DATE)).minusDays(NUMBER_OF_DAYS_IN_12_WEEKS)
                 .isAfter(parse(reportData.get(REFERENCE_DATE))));
         if (isRegisteredWithinTwelveWeeks) {
-            reportToBoth(mother, ANC_BEFORE_12_WEEKS, reportData.get(REGISTRATION_DATE), location);
+            reportToBoth(mother, ANC_BEFORE_12_WEEKS, reportData.get(REGISTRATION_DATE), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         } else {
-            reportToBoth(mother, ANC_AFTER_12_WEEKS, reportData.get(REGISTRATION_DATE), location);
+            reportToBoth(mother, ANC_AFTER_12_WEEKS, reportData.get(REGISTRATION_DATE), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
     }
 

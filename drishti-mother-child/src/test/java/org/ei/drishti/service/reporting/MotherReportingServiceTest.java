@@ -70,9 +70,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("referenceDate", "2011-10-08");
         reportData.put("motherId", "CASE-1");
         reportData.put("registrationDate", "2012-01-01");
+        reportData.put("submissionDate", "2012-01-01");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-01"))).thenReturn(true);
 
         service.registerANC(reportData);
 
@@ -86,9 +87,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("referenceDate", "2011-10-08");
         reportData.put("motherId", "CASE-1");
         reportData.put("registrationDate", "2011-12-15");
+        reportData.put("submissionDate", "2011-12-15");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2011-12-15"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2011-12-15"), parse("2011-12-15"))).thenReturn(true);
 
         service.registerANC(reportData);
 
@@ -874,9 +876,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("referenceDate", lmp);
         reportData.put("motherId", "CASE-1");
         reportData.put("registrationDate", "2012-01-01");
+        reportData.put("submissionDate", "2012-01-01");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-01"))).thenReturn(true);
 
         ReportingService fakeReportingService = mock(ReportingService.class);
         MotherReportingService motherReportingService = new MotherReportingService(fakeReportingService, allMothers, allEligibleCouples, reportMonth);
