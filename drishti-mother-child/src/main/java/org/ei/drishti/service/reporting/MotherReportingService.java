@@ -225,7 +225,7 @@ public class MotherReportingService {
             String ancVisitDate = getFourthAncVisitDate(mother.ancVisits());
             if ((visitNumber == 4 && StringUtils.equalsIgnoreCase(ancVisitDate, reportData.get(ANC_VISIT_DATE_FIELD)))
                     && (!parse(reportData.get(ANC_VISIT_DATE_FIELD)).minusWeeks(36).isBefore(mother.lmp()))) {
-                reportToBoth(mother, ANC4, reportData.get(ANC_VISIT_DATE_FIELD), location);
+                reportToBoth(mother, ANC4, reportData.get(ANC_VISIT_DATE_FIELD), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
             }
         } catch (NumberFormatException e) {
             logger.warn("Not reporting ANC visit for mother: " + mother.ecCaseId() +

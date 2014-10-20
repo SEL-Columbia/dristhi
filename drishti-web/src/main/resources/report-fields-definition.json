@@ -21,8 +21,9 @@
     "anc_visit": [
         "id",
         "ancVisitDate",
-        "ancVisitNumber"
-    ],
+        "ancVisitNumber",
+        "submissionDate"
+        ],
     "anc_close": [
         "id",
         "timeOfInducedAbortion",

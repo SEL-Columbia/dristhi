@@ -215,6 +215,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldReportANC4ProvidedWhenANCVisitIsAfter36WeeksAndAlready3ANCVisitsHappened() {
         String visitDate = parse("2012-01-01").plusWeeks(36).toString();
+        String submissionDate = visitDate;
         Map<String, String> ancVisit1 = create("ancVisitDate", "2012-03-04")
                 .put("ancVisitNumber", "1")
                 .map();
@@ -237,9 +238,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("id", "CASE-1");
         reportData.put("ancVisitDate", visitDate);
         reportData.put("ancVisitNumber", "4");
+        reportData.put("submissionDate", submissionDate);
         when(allMothers.findByCaseId("CASE-1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse(visitDate))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse(visitDate), parse(submissionDate))).thenReturn(true);
 
         service.ancVisit(reportData);
 
@@ -249,7 +251,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotReportANC4WhenANCVisitHappenedIs4ButDoesNotHave3ANCVisitsAlready() {
         String visitDate = parse("2012-01-01").plusWeeks(36).toString();
-
+        String submissionDate = visitDate;
         Map<String, String> ancVisit4 = create("ancVisitDate", visitDate)
                 .put("ancVisitNumber", "4")
                 .map();
@@ -261,6 +263,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         SafeMap reportData = new SafeMap();
         reportData.put("id", "CASE-1");
         reportData.put("ancVisitDate", visitDate);
+        reportData.put("submissionDate", submissionDate);
         reportData.put("ancVisitNumber", "4");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
@@ -286,6 +289,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("id", "CASE-1");
         reportData.put("ancVisitDate", visitDate);
         reportData.put("ancVisitNumber", "4");
+        reportData.put("submissionDate", submissionDate);
         when(allMothers.findByCaseId("CASE-1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -313,10 +317,12 @@ public class MotherReportingServiceTest extends BaseUnitTest {
                 .withANCVisits(ancVisits);
 
         String visitDate = parse("2012-01-01").plusWeeks(36).toString();
+        String submissionDate = visitDate;
         SafeMap reportData = new SafeMap();
         reportData.put("id", "CASE-1");
         reportData.put("ancVisitDate", visitDate);
         reportData.put("ancVisitNumber", "3");
+        reportData.put("submissionDate", submissionDate);
         when(allMothers.findByCaseId("CASE-1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -328,6 +334,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotReportANC4WhenANCVisitIsBefore36Weeks() {
         String visitDate = parse("2012-01-01").plusWeeks(36).minusDays(1).toString();
+        String submissionDate = visitDate;
         Map<String, String> ancVisit1 = create("ancVisitDate", "2012-03-04")
                 .put("ancVisitNumber", "1")
                 .map();
@@ -351,6 +358,7 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("id", "CASE-1");
         reportData.put("ancVisitDate", visitDate);
         reportData.put("ancVisitNumber", "4");
+        reportData.put("submissionDate", submissionDate);
         when(allMothers.findByCaseId("CASE-1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
@@ -362,10 +370,12 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     @Test
     public void shouldNotReportANC4WhenVisitNumberIsInvalid() {
         String visitDate = parse("2012-01-01").plusWeeks(36).toString();
+        String submissionDate = visitDate;
         SafeMap reportData = new SafeMap();
         reportData.put("id", "CASE-1");
         reportData.put("ancVisitDate", visitDate);
         reportData.put("ancVisitNumber", "");
+        reportData.put("submissionDate", submissionDate);
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
