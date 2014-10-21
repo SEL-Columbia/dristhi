@@ -66,7 +66,8 @@
         "deliveryPlace",
         "didWomanSurvive",
         "didMotherSurvive",
-        "deliveryType"
+        "deliveryType",
+        "submissionDate"
     ],
     "pnc_close": [
         "id",
@@ -79,7 +80,8 @@
         "deliveryType",
         "deliveryPlace",
         "referenceDate",
-        "deliveryOutcome"
+        "deliveryOutcome",
+        "submissionDate"
     ],
     "pnc_visit": [
         "id",

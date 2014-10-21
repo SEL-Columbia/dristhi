@@ -97,7 +97,7 @@ public class MotherReportingService {
         Location location = loadLocationFromEC(mother);
         reportPregnancyOutcome(reportData, mother, location);
         reportIfInstitutionalDelivery(reportData, mother, location);
-        reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), location);
+        reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         reportMotherMortality(reportData, mother, location);
         reportPlaceOfDelivery(reportData, mother, location);
         reportCesareans(reportData, mother, location);
@@ -105,12 +105,14 @@ public class MotherReportingService {
 
     private void reportCesareans(SafeMap reportData, Mother mother, Location location) {
         if (CESAREAN_VALUE.equalsIgnoreCase(reportData.get(DELIVERY_TYPE))) {
-            reportToBoth(mother, CESAREAN, reportData.get(REFERENCE_DATE), location);
+            String submissionDate = reportData.get(SUBMISSION_DATE_FIELD_NAME);
+            String referenceDate = reportData.get(REFERENCE_DATE);
+            reportToBoth(mother, CESAREAN, referenceDate, submissionDate, location);
             Indicator cesareanFacilityIndicator =
                     PRIVATE_FACILITY_FIELD_VALUE.equalsIgnoreCase(reportData.get(DELIVERY_PLACE))
                             ? CESAREAN_PRIVATE_FACILITY
                             : CESAREAN_GOVERNMENT_FACILITY;
-            reportToBoth(mother, cesareanFacilityIndicator, reportData.get(REFERENCE_DATE), location);
+            reportToBoth(mother, cesareanFacilityIndicator, referenceDate, submissionDate, location);
         }
     }
 
@@ -164,32 +166,33 @@ public class MotherReportingService {
 
     private void reportIfInstitutionalDelivery(SafeMap reportData, Mother mother, Location location) {
         if (!HOME_FIELD_VALUE.equals(reportData.get(DELIVERY_PLACE))) {
-            reportToBoth(mother, INSTITUTIONAL_DELIVERY, reportData.get(REFERENCE_DATE), location);
+            reportToBoth(mother, INSTITUTIONAL_DELIVERY, reportData.get(REFERENCE_DATE), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
     }
 
     private void reportPregnancyOutcome(SafeMap reportData, Mother mother, Location location) {
+        String submissionDate = reportData.get(SUBMISSION_DATE_FIELD_NAME);
         Indicator stateIndicator = LIVE_BIRTH_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME)) ? LIVE_BIRTH : STILL_BIRTH;
-        reportToBoth(mother, stateIndicator, reportData.get(REFERENCE_DATE), location);
+        reportToBoth(mother, stateIndicator, reportData.get(REFERENCE_DATE), submissionDate, location);
 
         String deliveryPlace = reportData.get(DELIVERY_PLACE);
         if (HOME_FIELD_VALUE.equalsIgnoreCase(deliveryPlace)
                 || SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE.equalsIgnoreCase(deliveryPlace)) {
             Indicator nrhmIndicator = LIVE_BIRTH_FIELD_VALUE.equals(reportData.get(DELIVERY_OUTCOME)) ? NRHM_LIVE_BIRTH : NRHM_STILL_BIRTH;
-            reportToBoth(mother, nrhmIndicator, reportData.get(REFERENCE_DATE), location);
+            reportToBoth(mother, nrhmIndicator, reportData.get(REFERENCE_DATE), submissionDate, location);
         }
     }
 
     private void reportMotherMortality(SafeMap reportData, Mother mother, Location location) {
         if (BOOLEAN_FALSE_VALUE.equals(reportData.get(DID_WOMAN_SURVIVE)) || BOOLEAN_FALSE_VALUE.equals(reportData.get(DID_MOTHER_SURVIVE))) {
-            reportDeath(mother, MMD, reportData.get(REFERENCE_DATE), location);
+            reportDeath(mother, MMD, reportData.get(REFERENCE_DATE), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
     }
 
     private void reportPlaceOfDelivery(SafeMap reportData, Mother mother, Location location) {
         Indicator indicator = placeOfDeliveryToIndicator.get(reportData.get(DELIVERY_PLACE));
         if (indicator != null) {
-            reportToBoth(mother, indicator, reportData.get(REFERENCE_DATE), location);
+            reportToBoth(mother, indicator, reportData.get(REFERENCE_DATE), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         } else {
             logger.warn("Not reporting: Invalid place of delivery: " + reportData.get(DELIVERY_PLACE) + " for mother: " +
                     mother.caseId());
@@ -280,7 +283,7 @@ public class MotherReportingService {
         Location location = loadLocationFromEC(mother);
         reportPregnancyOutcome(reportData, mother, location);
         reportIfInstitutionalDelivery(reportData, mother, location);
-        reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), location);
+        reportToBoth(mother, DELIVERY, reportData.get(REFERENCE_DATE), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         reportPlaceOfDelivery(reportData, mother, location);
         reportCesareans(reportData, mother, location);
     }
