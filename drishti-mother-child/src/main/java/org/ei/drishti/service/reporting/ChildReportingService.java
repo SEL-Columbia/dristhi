@@ -193,14 +193,14 @@ public class ChildReportingService {
 
         if (HOME_FIELD_VALUE.equalsIgnoreCase(reportData.get(DELIVERY_PLACE))
                 && (pncVisitDate.equals(deliveryDate) || pncVisitDate.equals(deliveryDate.plusDays(1)))) {
-            reportToBoth(child, NRHM_PNC24, reportData.get(VISIT_DATE_FIELD_NAME), location);
+            reportToBoth(child, NRHM_PNC24, reportData.get(VISIT_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
     }
 
     private void reportDIarrhea(SafeMap reportData, Child child, Location location) {
         String problems = reportData.get(URINE_STOOL_PROBLEMS);
         if (!isBlank(problems) && problems.contains(AllConstants.CommonChildFormFields.DIARRHEA_VALUE)) {
-            reportToBoth(child, CHILD_DIARRHEA, reportData.get(VISIT_DATE_FIELD_NAME), location);
+            reportToBoth(child, CHILD_DIARRHEA, reportData.get(VISIT_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
     }
 

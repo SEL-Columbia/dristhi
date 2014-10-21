@@ -300,6 +300,7 @@ public class ChildService {
             SafeMap reportingData = new SafeMap(reportFieldsMap);
             reportingData.put(ChildReportingService.CHILD_ID_FIELD, childFields.get(ID));
             reportingData.put(URINE_STOOL_PROBLEMS, childFields.get(URINE_STOOL_PROBLEMS));
+            reportingData.put(SUBMISSION_DATE_FIELD_NAME, submission.getField(SUBMISSION_DATE_FIELD_NAME));
             childReportingService.pncVisitHappened(reportingData);
         }
     }

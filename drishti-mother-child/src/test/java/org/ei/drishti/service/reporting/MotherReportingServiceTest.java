@@ -788,9 +788,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("id", "CASE-1");
         reportData.put("pncVisitDates", "2011-12-25 2011-12-28 2012-01-01");
         reportData.put("pncVisitDate", "2012-01-01");
+        reportData.put("submissionDate", "2012-01-02");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(mother);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-02"))).thenReturn(true);
 
         service.pncVisitHappened(reportData);
 

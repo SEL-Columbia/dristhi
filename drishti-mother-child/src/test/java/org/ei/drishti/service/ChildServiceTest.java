@@ -631,6 +631,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .withANMId("anm id 1")
                 .withEntityId("mother id 1")
                 .addFormField("pncVisitDate", "2012-01-01")
+                .addFormField("submissionDate", "2012-01-01")
                 .withSubForm(new SubFormData("child_pnc_visit",
                         asList(EasyMap.create("id", "child id 1").put("urineStoolProblems", "diarrhea").map())))
                 .build();
@@ -643,6 +644,7 @@ public class ChildServiceTest extends BaseUnitTest {
                         .put("id", "mother id 1")
                         .put("childId", "child id 1")
                         .put("urineStoolProblems", "diarrhea")
+                        .put("submissionDate", "2012-01-01")
                         .map()));
     }
 

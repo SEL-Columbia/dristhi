@@ -1119,7 +1119,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-02"))).thenReturn(true);
 
         service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
                 .put("id", "MOTHER-CASE-1")
@@ -1128,6 +1128,7 @@ public class ChildReportingServiceTest {
                 .put("deliveryPlace", "home")
                 .put("referenceDate", "2012-01-01")
                 .put("pncVisitDate", "2012-01-01")
+                .put("submissionDate", "2012-01-02")
                 .map()));
 
         verifyBothReportingCalls(CHILD_DIARRHEA, "2012-01-01");
@@ -1141,7 +1142,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-02"))).thenReturn(true);
 
         service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
                 .put("id", "MOTHER-CASE-1")
@@ -1150,6 +1151,7 @@ public class ChildReportingServiceTest {
                 .put("deliveryPlace", "home")
                 .put("referenceDate", "2012-01-01")
                 .put("pncVisitDate", "2012-01-01")
+                .put("submissionDate", "2012-01-02")
                 .map()));
 
         verifyNoReportingCalls(CHILD_DIARRHEA, "2012-01-01");
@@ -1163,7 +1165,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-02"))).thenReturn(true);
 
         service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
                 .put("id", "MOTHER-CASE-1")
@@ -1172,6 +1174,7 @@ public class ChildReportingServiceTest {
                 .put("deliveryPlace", "home")
                 .put("referenceDate", "2012-01-01")
                 .put("pncVisitDate", "2012-01-01")
+                .put("submissionDate", "2012-01-02")
                 .map()));
 
         verifyNoReportingCalls(CHILD_DIARRHEA, "2012-01-01");
@@ -1185,7 +1188,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-02"))).thenReturn(true);
 
         service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
                 .put("id", "MOTHER-CASE-1")
@@ -1194,6 +1197,7 @@ public class ChildReportingServiceTest {
                 .put("deliveryPlace", "home")
                 .put("referenceDate", "2012-01-01")
                 .put("pncVisitDate", "2012-01-01")
+                .put("submissionDate", "2012-01-02")
                 .map()));
 
         verifyBothReportingCalls(NRHM_PNC24, "2012-01-01");
@@ -1207,7 +1211,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-02"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-02"), parse("2012-01-02"))).thenReturn(true);
 
         service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
                 .put("id", "MOTHER-CASE-1")
@@ -1216,6 +1220,7 @@ public class ChildReportingServiceTest {
                 .put("deliveryPlace", "home")
                 .put("referenceDate", "2012-01-01")
                 .put("pncVisitDate", "2012-01-02")
+                .put("submissionDate", "2012-01-02")
                 .map()));
 
         verifyBothReportingCalls(NRHM_PNC24, "2012-01-02");
@@ -1229,7 +1234,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-02"))).thenReturn(true);
 
         service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
                 .put("id", "MOTHER-CASE-1")
@@ -1238,6 +1243,7 @@ public class ChildReportingServiceTest {
                 .put("deliveryPlace", "home")
                 .put("referenceDate", "2012-01-01")
                 .put("pncVisitDate", "2012-01-03")
+                .put("submissionDate", "2012-01-02")
                 .map()));
 
         verifyNoReportingCalls(NRHM_PNC24, "2012-01-01");
@@ -1251,7 +1257,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-02"))).thenReturn(true);
 
         service.pncVisitHappened(new SafeMap(EasyMap.create("pncVisitDate", "2012-01-01")
                 .put("id", "MOTHER-CASE-1")
@@ -1260,6 +1266,7 @@ public class ChildReportingServiceTest {
                 .put("deliveryPlace", "phc")
                 .put("referenceDate", "2012-01-01")
                 .put("pncVisitDate", "2012-01-03")
+                .put("submissionDate", "2012-01-02")
                 .map()));
 
         verifyNoReportingCalls(NRHM_PNC24, "2012-01-01");

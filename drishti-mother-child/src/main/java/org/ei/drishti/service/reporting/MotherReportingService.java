@@ -122,7 +122,7 @@ public class MotherReportingService {
         String thirdVisitDate = mother.thirdPNCVisitDate();
         String visitDate = reportData.get(AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME);
         if (thirdVisitDate != null && parse(visitDate).isEqual(parse(thirdVisitDate))) {
-            reportToBoth(mother, PNC3, visitDate, location);
+            reportToBoth(mother, PNC3, visitDate, reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
         }
     }
 

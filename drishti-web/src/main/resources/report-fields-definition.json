@@ -90,7 +90,8 @@
         "pncVisitNumber",
         "pncVisitDate",
         "deliveryPlace",
-        "referenceDate"
+        "referenceDate",
+        "submissionDate"
     ],
     "child_immunizations": [
         "id",
