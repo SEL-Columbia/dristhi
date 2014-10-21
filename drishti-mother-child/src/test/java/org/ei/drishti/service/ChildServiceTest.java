@@ -81,6 +81,7 @@ public class ChildServiceTest extends BaseUnitTest {
                 .addFormField("didBreastfeedingStart", "no")
                 .addFormField("deliveryPlace", "phc")
                 .addFormField("deliveryRegistrationDate", "2012-01-02")
+                .addFormField("submissionDate", "2012-01-02")
                 .withSubForm(new SubFormData("child_registration",
                         asList(mapOf("id", "child id 1"), mapOf("id", "child id 2"))))
                 .build();
@@ -88,9 +89,9 @@ public class ChildServiceTest extends BaseUnitTest {
         service.registerChildren(submission);
 
         InOrder inOrder = inOrder(childReportingService, childSchedulesService);
-        inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "no").put("childId", "child id 1").put("deliveryPlace", "phc").put("registrationDate", "2012-01-01").map()));
+        inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "no").put("childId", "child id 1").put("deliveryPlace", "phc").put("registrationDate", "2012-01-01").put("submissionDate", "2012-01-02").map()));
         inOrder.verify(childSchedulesService).enrollChild(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
-        inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "no").put("childId", "child id 2").put("deliveryPlace", "phc").put("registrationDate", "2012-01-01").map()));
+        inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "no").put("childId", "child id 2").put("deliveryPlace", "phc").put("registrationDate", "2012-01-01").put("submissionDate", "2012-01-02").map()));
         inOrder.verify(childSchedulesService).enrollChild(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
         assertFalse(firstChild.isClosed());
         assertFalse(secondChild.isClosed());
@@ -485,9 +486,10 @@ public class ChildServiceTest extends BaseUnitTest {
                 .addFormField("referenceDate", "2012-01-01")
                 .addFormField("deliveryPlace", "phc")
                 .addFormField("registrationDate", "2012-01-02")
+                .addFormField("submissionDate", "2012-01-02")
                 .withSubForm(new SubFormData("child_registration_oa",
-                        asList(EasyMap.create("id", "child id 1").put("didBreastfeedingStart", "no").map(),
-                                EasyMap.create("id", "child id 2").put("didBreastfeedingStart", "yes").map()))
+                                asList(EasyMap.create("id", "child id 1").put("didBreastfeedingStart", "no").map(),
+                                        EasyMap.create("id", "child id 2").put("didBreastfeedingStart", "yes").map()))
                 )
                 .build();
 
@@ -498,12 +500,14 @@ public class ChildServiceTest extends BaseUnitTest {
                 .put("childId", "child id 1")
                 .put("deliveryPlace", "phc")
                 .put("registrationDate", "2012-01-01")
+                .put("submissionDate", "2012-01-02")
                 .map()));
         inOrder.verify(childSchedulesService).enrollChild(firstChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
         inOrder.verify(childReportingService).registerChild(new SafeMap(create("didBreastfeedingStart", "yes")
                 .put("childId", "child id 2")
                 .put("deliveryPlace", "phc")
                 .put("registrationDate", "2012-01-01")
+                .put("submissionDate", "2012-01-02")
                 .map()));
         inOrder.verify(childSchedulesService).enrollChild(secondChild.withAnm("anm id 1").withDateOfBirth("2012-01-01").withThayiCard("TC1"));
     }

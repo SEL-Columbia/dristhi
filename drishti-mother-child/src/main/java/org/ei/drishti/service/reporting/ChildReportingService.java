@@ -104,13 +104,14 @@ public class ChildReportingService {
         List<String> immunizations = child.immunizationsGiven();
 
         Location location = loadLocationOfChild(child);
-        reportImmunizations(child, immunizations, location, child.dateOfBirth());
+        String submissionDate = reportData.get(SUBMISSION_DATE_FIELD_NAME);
+        reportImmunizations(child, immunizations, location, child.dateOfBirth(), submissionDate);
         reportNRHMImmunizations(reportData, child, immunizations, location);
-        reportBirthWeight(child, location);
-        reportBFPostBirth(reportData.get(BF_POSTBIRTH), child, location, reportData.get(DELIVERY_PLACE));
-        reportToBoth(child, INFANT_REGISTRATION, child.dateOfBirth(), location);
+        reportBirthWeight(child, submissionDate, location);
+        reportBFPostBirth(reportData.get(BF_POSTBIRTH), child, location, reportData.get(DELIVERY_PLACE), submissionDate);
+        reportToBoth(child, INFANT_REGISTRATION, child.dateOfBirth(), submissionDate, location);
         reportLiveBirthByGender(reportData, child, location);
-        reportToBoth(child, INFANT_BALANCE_TOTAL, child.dateOfBirth(), location);
+        reportToBoth(child, INFANT_BALANCE_TOTAL, child.dateOfBirth(), submissionDate, location);
         reportMCTSIndicators(reportData, child, immunizations);
     }
 
@@ -128,14 +129,15 @@ public class ChildReportingService {
 
     private void reportNRHMImmunizations(SafeMap reportData, Child child, List<String> immunizations, Location location) {
         if (reportData.get(DELIVERY_PLACE).equalsIgnoreCase(SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE)) {
+            String submissionDate = reportData.get(SUBMISSION_DATE_FIELD_NAME);
             if (immunizations.contains(OPV_0_VALUE)) {
-                reportToBoth(child, NRHM_OPV_0_1YR, child.dateOfBirth(), location);
+                reportToBoth(child, NRHM_OPV_0_1YR, child.dateOfBirth(), submissionDate, location);
             }
             if (immunizations.contains(BCG_VALUE)) {
-                reportToBoth(child, NRHM_BCG_1YR, child.dateOfBirth(), location);
+                reportToBoth(child, NRHM_BCG_1YR, child.dateOfBirth(), submissionDate, location);
             }
             if (immunizations.contains(HEPATITIS_0_VALUE)) {
-                reportToBoth(child, NRHM_HEPB_0_1YR, child.dateOfBirth(), location);
+                reportToBoth(child, NRHM_HEPB_0_1YR, child.dateOfBirth(), submissionDate, location);
             }
 
         }
@@ -148,7 +150,7 @@ public class ChildReportingService {
         immunizations.removeAll(previousImmunizations);
 
         Location location = loadLocationOfChild(child);
-        reportImmunizations(child, immunizations, location, reportData.get(IMMUNIZATION_DATE_FIELD_NAME));
+        reportImmunizations(child, immunizations, location, reportData.get(IMMUNIZATION_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME));
     }
 
     public void vitaminAProvided(SafeMap reportData) {
@@ -312,41 +314,42 @@ public class ChildReportingService {
         return new Location(couple.village(), couple.subCenter(), couple.phc());
     }
 
-    private void reportBirthWeight(Child child, Location location) {
+    private void reportBirthWeight(Child child, String submissionDate, Location location) {
         try {
             double birthWeight = Double.parseDouble(child.weight());
             if (birthWeight < LOW_BIRTH_WEIGHT_THRESHOLD) {
-                reportToBoth(child, LBW, child.dateOfBirth(), location);
+                reportToBoth(child, LBW, child.dateOfBirth(), submissionDate, location);
             }
-            reportToBoth(child, WEIGHED_AT_BIRTH, child.dateOfBirth(), location);
+            reportToBoth(child, WEIGHED_AT_BIRTH, child.dateOfBirth(), submissionDate, location);
         } catch (NumberFormatException e) {
             logger.warn("Not reporting: Invalid value received for childWeight : " + child.weight() + " for childId : " + child.caseId());
         }
     }
 
-    private void reportBFPostBirth(String bfPostBirth, Child child, Location location, String deliveryPlace) {
+    private void reportBFPostBirth(String bfPostBirth, Child child, Location location, String deliveryPlace, String submissionDate) {
         if (BOOLEAN_TRUE_VALUE.equalsIgnoreCase(bfPostBirth)) {
-            reportToBoth(child, BF_POST_BIRTH, child.dateOfBirth(), location);
+            reportToBoth(child, BF_POST_BIRTH, child.dateOfBirth(), submissionDate, location);
             if (SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE.equalsIgnoreCase(deliveryPlace)
                     || HOME_FIELD_VALUE.equalsIgnoreCase(deliveryPlace)) {
-                reportToBoth(child, NRHM_BF_POST_BIRTH, child.dateOfBirth(), location);
+                reportToBoth(child, NRHM_BF_POST_BIRTH, child.dateOfBirth(), submissionDate, location);
             }
         }
     }
 
     private void reportLiveBirthByGender(SafeMap reportData, Child child, Location location) {
         String deliveryPlace = reportData.get(DELIVERY_PLACE);
+        String submissionDate = reportData.get(SUBMISSION_DATE_FIELD_NAME);
         if (HOME_FIELD_VALUE.equalsIgnoreCase(deliveryPlace)
                 || SUBCENTER_SERVICE_PROVIDED_PLACE_VALUE.equalsIgnoreCase(deliveryPlace)) {
             if (child.isMale()) {
-                reportToBoth(child, MALE_LIVE_BIRTH, child.dateOfBirth(), location);
+                reportToBoth(child, MALE_LIVE_BIRTH, child.dateOfBirth(), submissionDate, location);
             } else {
-                reportToBoth(child, FEMALE_LIVE_BIRTH, child.dateOfBirth(), location);
+                reportToBoth(child, FEMALE_LIVE_BIRTH, child.dateOfBirth(), submissionDate, location);
             }
         }
     }
 
-    private void reportImmunizations(Child child, List<String> immunizations, Location location, String date) {
+    private void reportImmunizations(Child child, List<String> immunizations, Location location, String immunizationDate, String submissionDate) {
         for (String immunizationProvidedThisTime : immunizations) {
             List<Indicator> indicators = immunizationToIndicator.get(immunizationProvidedThisTime);
             if (indicators == null) {
@@ -356,24 +359,24 @@ public class ChildReportingService {
             }
 
             for (Indicator indicator : indicators) {
-                reportToBoth(child, indicator, date, location);
+                reportToBoth(child, indicator, immunizationDate, submissionDate, location);
             }
         }
     }
 
-    public void reportToBoth(Child child, Indicator indicator, String date, String submissionDate, Location location) {
-        if (!reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse(date), LocalDate.parse(submissionDate)))
+    public void reportToBoth(Child child, Indicator indicator, String serviceProvidedDate, String submissionDate, Location location) {
+        if (!reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse(serviceProvidedDate), LocalDate.parse(submissionDate)))
             return;
-        report(child, indicator, date, location);
+        report(child, indicator, serviceProvidedDate, location);
     }
 
-    public void reportToBoth(Child child, Indicator indicator, String date, Location location) {
-        if (!reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
+    public void reportToBoth(Child child, Indicator indicator, String serviceProvidedDate, Location location) {
+        if (!reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(serviceProvidedDate)))
             return;
-        report(child, indicator, date, location);
+        report(child, indicator, serviceProvidedDate, location);
     }
 
-    private void report(Child child, Indicator indicator, String date, Location location) {
+    private void report(Child child, Indicator indicator, String serviceProvidedDate, Location location) {
         String externalId = child.thayiCardNumber();
 
         //#TODO: Refactor to avoid DB calls
@@ -381,9 +384,9 @@ public class ChildReportingService {
             EligibleCouple ec = getEligibleCouple(child);
             externalId = ec.ecNumber();
         }
-        ReportingData serviceProvidedData = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location, child.caseId());
+        ReportingData serviceProvidedData = serviceProvidedData(child.anmIdentifier(), externalId, indicator, serviceProvidedDate, location, child.caseId());
         reportingService.sendReportData(serviceProvidedData);
-        ReportingData anmReportData = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
+        ReportingData anmReportData = anmReportData(child.anmIdentifier(), child.caseId(), indicator, serviceProvidedDate);
         reportingService.sendReportData(anmReportData);
     }
 

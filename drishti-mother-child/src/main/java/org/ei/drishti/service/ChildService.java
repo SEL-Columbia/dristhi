@@ -81,6 +81,7 @@ public class ChildService {
             reportingData.put(DELIVERY_PLACE, submission.getField(DELIVERY_PLACE));
             reportingData.put(BF_POSTBIRTH, submission.getField(DID_BREAST_FEEDING_START));
             reportingData.put(REGISTRATION_DATE, referenceDate);
+            reportingData.put(SUBMISSION_DATE_FIELD_NAME, submission.getField(SUBMISSION_DATE_FIELD_NAME));
             childReportingService.registerChild(reportingData);
 
             childSchedulesService.enrollChild(child);
@@ -270,6 +271,7 @@ public class ChildService {
             reportingData.put(DELIVERY_PLACE, submission.getField(DELIVERY_PLACE));
             reportingData.put(BF_POSTBIRTH, childFields.get(DID_BREAST_FEEDING_START));
             reportingData.put(REGISTRATION_DATE, referenceDate);
+            reportingData.put(SUBMISSION_DATE_FIELD_NAME, submission.getField(SUBMISSION_DATE_FIELD_NAME));
             childReportingService.registerChild(reportingData);
 
             childSchedulesService.enrollChild(child);

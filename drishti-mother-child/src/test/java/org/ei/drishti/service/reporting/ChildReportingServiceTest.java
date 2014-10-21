@@ -82,13 +82,13 @@ public class ChildReportingServiceTest {
 
     @Test
     public void shouldMakeAReportingCallForEachNewlyProvidedImmunization() throws Exception {
-        SafeMap reportingData = reportDataForImmunization("opv_1 bcg measles", "");
+        SafeMap reportingData = reportDataForImmunization("opv_1 bcg measles", "", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(new Child("CASE X", "MOTHER-CASE-1", "bcg", "3", "female")
                 .withLocation("bherya", "Sub Center", "PHC X")
                 .withAnm("ANM X")
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-01"))).thenReturn(true);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
 
         service.immunizationProvided(reportingData, asList("opv_1"));
@@ -258,12 +258,13 @@ public class ChildReportingServiceTest {
         SafeMap reportingData = new SafeMap();
         reportingData.put("anmIdentifier", "ANM X");
         reportingData.put("immunizationDate", "2012-01-01");
+        reportingData.put("submissionDate", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-01"))).thenReturn(true);
 
-        service.immunizationProvided(reportDataForImmunization("NON_EXISTENT_IMMUNIZATION bcg", ""), new ArrayList<String>());
+        service.immunizationProvided(reportDataForImmunization("NON_EXISTENT_IMMUNIZATION bcg", "", "2012-01-01"), new ArrayList<String>());
 
         verifyBothReportingCalls(BCG, "2012-01-01");
         verifyNoMoreInteractions(reportingService);
@@ -277,7 +278,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -286,6 +287,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
         reportData.put("registrationDate", "2012-01-02");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -300,7 +302,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -309,6 +311,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
         reportData.put("registrationDate", "2012-01-02");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -323,7 +326,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -332,6 +335,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
         reportData.put("registrationDate", "2012-01-02");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -346,7 +350,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -355,6 +359,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
         reportData.put("registrationDate", "2012-01-01");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -378,6 +383,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
         reportData.put("registrationDate", "2012-01-02");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -401,6 +407,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
         reportData.put("registrationDate", "2012-01-02");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -424,6 +431,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
         reportData.put("registrationDate", "2012-01-02");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -438,7 +446,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -447,6 +455,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
         reportData.put("registrationDate", "2012-01-02");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -461,7 +470,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -470,6 +479,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
         reportData.put("registrationDate", "2012-01-02");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -484,7 +494,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -493,6 +503,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
         reportData.put("registrationDate", "2012-01-02");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -508,7 +519,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -516,6 +527,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -530,7 +542,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -538,6 +550,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -552,7 +565,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -560,6 +573,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "home");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -574,7 +588,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -582,6 +596,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "subcenter");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -596,7 +611,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -604,6 +619,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -618,7 +634,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -626,6 +642,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -640,7 +657,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -648,6 +665,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -662,7 +680,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -670,6 +688,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -684,7 +703,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -692,6 +711,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -706,7 +726,7 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
 
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
@@ -714,6 +734,7 @@ public class ChildReportingServiceTest {
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -728,13 +749,14 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         reportData.put("deliveryPlace", "home");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -749,13 +771,14 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         reportData.put("deliveryPlace", "subcenter");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -770,13 +793,14 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         reportData.put("deliveryPlace", "subcenter");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -791,13 +815,14 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -812,13 +837,14 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         reportData.put("deliveryPlace", "home");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -833,13 +859,14 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         reportData.put("deliveryPlace", "subcenter");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -854,13 +881,14 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         reportData.put("deliveryPlace", "subcenter");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
 
         service.registerChild(reportData);
 
@@ -875,13 +903,14 @@ public class ChildReportingServiceTest {
                 .withThayiCard("TC 1"));
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-02"))).thenReturn(true);
         SafeMap reportData = new SafeMap();
         reportData.put("childId", "CASE X");
         reportData.put("didBreastfeedingStart", "");
         reportData.put("deliveryPlace", "phc");
         reportData.put("deliveryDate", "2012-01-01");
         reportData.put("deliveryOutcome", "live_birth");
+        reportData.put("submissionDate", "2012-01-02");
         service.registerChild(reportData);
 
         verifyNoReportingCalls(FEMALE_LIVE_BIRTH, "2012-01-01");
@@ -1516,11 +1545,11 @@ public class ChildReportingServiceTest {
     private void assertIndicatorBasedOnImmunization(String immunizationProvided, Indicator... expectedIndicators) {
         ReportingService fakeReportingService = mock(ReportingService.class);
         ChildReportingService childReportingService = new ChildReportingService(fakeReportingService, allChildren, allMothers, allEligibleCouples, allInfantBalanceOnHandTokens, reportMonth, mctsReporter);
-        SafeMap reportingData = reportDataForImmunization(immunizationProvided, "");
+        SafeMap reportingData = reportDataForImmunization(immunizationProvided, "", "2012-01-01");
         when(allChildren.findByCaseId("CASE X")).thenReturn(CHILD);
         when(allMothers.findByCaseId("MOTHER-CASE-1")).thenReturn(new Mother("MOTHER-CASE-1", "EC-CASE-1", "TC 1"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse("2012-01-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2012-01-01"), LocalDate.parse("2012-01-01"))).thenReturn(true);
 
         childReportingService.immunizationProvided(reportingData, new ArrayList<String>());
 
@@ -1531,12 +1560,13 @@ public class ChildReportingServiceTest {
         verifyNoMoreInteractions(fakeReportingService);
     }
 
-    private SafeMap reportDataForImmunization(String immunizationProvided, String vitaminADose) {
+    private SafeMap reportDataForImmunization(String immunizationProvided, String vitaminADose, String submissionDate) {
         SafeMap reportingData = new SafeMap();
         reportingData.put("id", "CASE X");
         reportingData.put("immunizationsGiven", immunizationProvided);
         reportingData.put("immunizationDate", "2012-01-01");
         reportingData.put("vitaminADose", vitaminADose);
+        reportingData.put("submissionDate", submissionDate);
         return reportingData;
     }
 
