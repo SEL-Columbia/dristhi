@@ -154,7 +154,7 @@ public class MotherReportingService {
                 && BOOLEAN_TRUE_VALUE.equals(reportData.get(IS_MATERNAL_LEAVE_FIELD_NAME))
                 && mother.dateOfDelivery().plusDays(NUMBER_OF_DAYS_IN_PNC_PERIOD)
                 .isAfter(parse(reportData.get(DEATH_DATE_FIELD_NAME)))) {
-            reportDeath(mother, MMP, reportData.get(DEATH_DATE_FIELD_NAME), location);
+            reportDeath(mother, MMP, reportData.get(DEATH_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME), location);
             return;
         }
     }
@@ -197,11 +197,6 @@ public class MotherReportingService {
             logger.warn("Not reporting: Invalid place of delivery: " + reportData.get(DELIVERY_PLACE) + " for mother: " +
                     mother.caseId());
         }
-    }
-
-    private void reportDeath(Mother mother, Indicator indicator, String deathDate, Location location) {
-        reportToBoth(mother, indicator, deathDate, location);
-        reportToBoth(mother, MOTHER_MORTALITY, deathDate, location);
     }
 
     private void reportDeath(Mother mother, Indicator indicator, String deathDate, String submissionDate, Location location) {

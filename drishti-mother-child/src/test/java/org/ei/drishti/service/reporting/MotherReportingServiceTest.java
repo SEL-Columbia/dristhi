@@ -696,12 +696,13 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportMotherDeathDuringPNCClose() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER.withDeliveryOutCome("2012-01-01"));
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-02-01"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-02-01"), parse("2012-02-01"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
                 .put("closeReason", "death_of_mother")
                 .put("isMaternalDeath", "yes")
                 .put("deathDate", "2012-02-01")
+                .put("submissionDate", "2012-02-01")
                 .map();
         service.closePNC(new SafeMap(reportData));
 

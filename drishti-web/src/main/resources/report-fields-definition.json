@@ -75,7 +75,8 @@
         "id",
         "closeReason",
         "isMaternalDeath",
-        "deathDate"
+        "deathDate",
+        "submissionDate"
     ],
     "pnc_registration_oa": [
         "motherId",
