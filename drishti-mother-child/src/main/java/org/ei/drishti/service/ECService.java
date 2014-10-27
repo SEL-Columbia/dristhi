@@ -1,6 +1,5 @@
 package org.ei.drishti.service;
 
-import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.FPProductInformation;
 import org.ei.drishti.domain.register.*;
@@ -21,6 +20,8 @@ import java.util.*;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.ECCloseFields.IS_EC_CLOSE_CONFIRMED_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ECRegistrationFields.CASTE;
+import static org.ei.drishti.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.ei.drishti.common.AllConstants.EntityCloseFormFields.WRONG_ENTRY_VALUE;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
@@ -171,8 +172,8 @@ public class ECService {
 
         List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         Map<String, String> reportFieldsMap = submission.getFields(reportFields);
-        reportFieldsMap.put(AllConstants.ECRegistrationFields.CASTE, couple.details().get(AllConstants.ECRegistrationFields.CASTE));
-        reportFieldsMap.put(AllConstants.ECRegistrationFields.ECONOMIC_STATUS, couple.details().get(AllConstants.ECRegistrationFields.ECONOMIC_STATUS));
+        reportFieldsMap.put(CASTE, couple.details().get(CASTE));
+        reportFieldsMap.put(ECONOMIC_STATUS, couple.details().get(ECONOMIC_STATUS));
         reportingService.fpChange(new SafeMap(reportFieldsMap));
 
         String fpMethodChangeDate = submission.getField(FP_METHOD_CHANGE_DATE_FIELD_NAME);

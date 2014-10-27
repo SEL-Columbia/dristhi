@@ -37,6 +37,7 @@ public class EligibleCoupleReporterTest {
         FormSubmission submission = create()
                 .withEntityId("ec id 1")
                 .addFormField("familyPlanningMethodChangeDate", "2012-03-01")
+                .addFormField("submissionDate", "2012-03-01")
                 .build();
         ArrayList<String> fieldNames = new ArrayList<>();
         fieldNames.add("submissionDate");
@@ -47,6 +48,6 @@ public class EligibleCoupleReporterTest {
 
         reporter.report(submission.entityId(), "OCP", location, "2012-03-01", reportData);
 
-        verify(ecReportingService).reportIndicator(reportData, eligibleCouple, Indicator.from("OCP"), "2012-03-01");
+        verify(ecReportingService).reportIndicator(reportData, eligibleCouple, Indicator.from("OCP"), "2012-03-01", "2012-03-01");
     }
 }

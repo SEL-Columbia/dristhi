@@ -4,14 +4,16 @@
         "currentMethod",
         "familyPlanningMethodChangeDate",
         "caste",
-        "economicStatus"
+        "economicStatus",
+        "submissionDate"
     ],
     "fp_complications": [
     ],
     "fp_change": [
         "id",
         "newMethod",
-        "familyPlanningMethodChangeDate"
+        "familyPlanningMethodChangeDate",
+        "submissionDate"
     ],
     "anc_registration": [
         "motherId",

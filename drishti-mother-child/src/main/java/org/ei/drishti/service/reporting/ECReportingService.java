@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.ei.drishti.common.AllConstants.CommonFormFields.ID;
+import static org.ei.drishti.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
+import static org.ei.drishti.common.AllConstants.ECRegistrationFields.CASTE;
+import static org.ei.drishti.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS;
 import static org.ei.drishti.common.AllConstants.FamilyPlanningFormFields.*;
 import static org.ei.drishti.common.domain.ReportDataDeleteRequest.anmReportDataDeleteRequest;
 import static org.ei.drishti.common.domain.ReportDataDeleteRequest.serviceProvidedDataDeleteRequest;
@@ -31,32 +34,40 @@ public class ECReportingService {
 
     public void registerEC(SafeMap reportData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
-        reportIndicator(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)), reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
+        reportIndicator(reportData, couple, Indicator.from(reportData.get(CURRENT_FP_METHOD_FIELD_NAME)),
+                reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME));
         reportOCPCasteBasedIndicators(reportData, couple, reportData.get(CURRENT_FP_METHOD_FIELD_NAME));
         reportFemaleSterilizationEconomicStatusBasedIndicators(reportData, couple, reportData.get(CURRENT_FP_METHOD_FIELD_NAME));
     }
 
     public void fpChange(SafeMap reportData) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(reportData.get(ID));
-        reportIndicator(reportData, couple, Indicator.from(reportData.get(NEW_FP_METHOD_FIELD_NAME)), reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
+        reportIndicator(reportData, couple, Indicator.from(reportData.get(NEW_FP_METHOD_FIELD_NAME)),
+                reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME));
         reportOCPCasteBasedIndicators(reportData, couple, reportData.get(NEW_FP_METHOD_FIELD_NAME));
         reportFemaleSterilizationEconomicStatusBasedIndicators(reportData, couple, reportData.get(NEW_FP_METHOD_FIELD_NAME));
     }
 
     private void reportOCPCasteBasedIndicators(SafeMap reportData, EligibleCouple ec, String fpMethod) {
         if (OCP_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
-            reportIndicator(reportData, ec, Caste.from(reportData.get(AllConstants.ECRegistrationFields.CASTE)).indicator(), reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
+            reportIndicator(reportData, ec, Caste.from(reportData.get(CASTE)).indicator(),
+                    reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME));
         }
     }
 
     private void reportFemaleSterilizationEconomicStatusBasedIndicators(SafeMap reportData, EligibleCouple couple, String fpMethod) {
         if (FEMALE_STERILIZATION_FP_METHOD_VALUE.equalsIgnoreCase(fpMethod)) {
-            reportIndicator(reportData, couple, EconomicStatus.from(reportData.get(AllConstants.ECRegistrationFields.ECONOMIC_STATUS)).indicator(), reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME));
+            reportIndicator(reportData, couple, EconomicStatus.from(reportData.get(ECONOMIC_STATUS)).indicator(),
+                    reportData.get(FP_METHOD_CHANGE_DATE_FIELD_NAME), reportData.get(SUBMISSION_DATE_FIELD_NAME));
         }
     }
 
-    public void reportIndicator(SafeMap reportData, EligibleCouple ec, Indicator indicator, String serviceProvidedDate) {
-        if ((!isBlank(serviceProvidedDate) && !reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(serviceProvidedDate))) || indicator == null)
+    public void reportIndicator(SafeMap reportData, EligibleCouple ec, Indicator indicator, String serviceProvidedDate,
+                                String submissionDate) {
+        if ((!isBlank(serviceProvidedDate) &&
+                !reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse(serviceProvidedDate),
+                        LocalDate.parse(submissionDate)))
+                || indicator == null)
             return;
 
         String externalId = ec.ecNumber();
