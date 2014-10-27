@@ -44,6 +44,7 @@ public class MotherReporterTest {
 
         motherReporter.report(submission.entityId(), "MMA", location, "2012-03-01", safeMap);
 
-        verify(motherReportingService).reportToBoth(mother, Indicator.from("MMA"), safeMap.get("submissionDate"), location);
+        verify(motherReportingService).reportToBoth(mother, Indicator.from("MMA"), safeMap.get("submissionDate"),
+                safeMap.get("submissionDate"), location);
     }
 }

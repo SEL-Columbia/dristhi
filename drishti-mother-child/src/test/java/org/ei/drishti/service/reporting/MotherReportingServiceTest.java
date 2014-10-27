@@ -173,9 +173,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("id", "CASE-1");
         reportData.put("ttDose", "tt1");
         reportData.put("ttDate", "2012-01-23");
+        reportData.put("submissionDate", "2012-01-23");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-23"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-23"), parse("2012-01-23"))).thenReturn(true);
 
         service.ttProvided(reportData);
 
@@ -188,9 +189,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("id", "CASE-1");
         reportData.put("ttDose", "tt2");
         reportData.put("ttDate", "2012-01-23");
+        reportData.put("submissionDate", "2012-01-23");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-23"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-23"), parse("2012-01-23"))).thenReturn(true);
 
         service.ttProvided(reportData);
 
@@ -204,9 +206,10 @@ public class MotherReportingServiceTest extends BaseUnitTest {
         reportData.put("id", "CASE-1");
         reportData.put("ttDose", "ttbooster");
         reportData.put("ttDate", "2012-01-23");
+        reportData.put("submissionDate", "2012-01-23");
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-23"))).thenReturn(true);
+        when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-23"), parse("2012-01-23"))).thenReturn(true);
 
         service.ttProvided(reportData);
 
@@ -412,7 +415,6 @@ public class MotherReportingServiceTest extends BaseUnitTest {
     public void shouldReportInstitutionalDeliveryAndNotReportLiveBirthWhenPlaceOfDeliveryIsNotHome() {
         when(allMothers.findByCaseId("CASE-1")).thenReturn(MOTHER);
         when(allEligibleCouples.findByCaseId("EC-CASE-1")).thenReturn(new EligibleCouple().withLocation("bherya", "Sub Center", "PHC X"));
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(true);
         when(reportMonth.areDatesBelongToSameReportingMonth(parse("2012-01-01"), parse("2012-01-02"))).thenReturn(true);
 
         Map<String, String> reportData = create("id", "CASE-1")
@@ -848,16 +850,6 @@ public class MotherReportingServiceTest extends BaseUnitTest {
 
         verifyNoReportingCalls(PNC3, "2012-01-01", "CASE-1");
 
-    }
-
-    @Test
-    public void shouldNotReportWhenServiceProvidedDateIsNotInCurrentReportingMonth() throws Exception {
-        Mother mother = new Mother("CASE-1", "EC-CASE-1", "TC 1");
-        Location location = new Location("village", "sc", "phc");
-        when(reportMonth.isDateWithinCurrentReportMonth(parse("2012-01-01"))).thenReturn(false);
-        service.reportToBoth(mother, Indicator.ANC, "2012-01-01", location);
-
-        verifyZeroInteractions(reportingService);
     }
 
     @Test

@@ -89,7 +89,7 @@ public class MotherReportingService {
     public void ttProvided(SafeMap reportData) {
         Mother mother = allMothers.findByCaseId(reportData.get(ID));
         Location location = loadLocationFromEC(mother);
-        reportTTVisit(reportData.get(TT_DOSE_FIELD), reportData.get(TT_DATE_FIELD), mother, location);
+        reportTTVisit(reportData.get(TT_DOSE_FIELD), reportData.get(TT_DATE_FIELD), reportData.get(SUBMISSION_DATE_FIELD_NAME), mother, location);
     }
 
     public void deliveryOutcome(SafeMap reportData) {
@@ -241,26 +241,20 @@ public class MotherReportingService {
         return (ancVisits.size() >= 4) ? ancVisits.get(3).get("ancVisitDate") : null;
     }
 
-    private void reportTTVisit(String ttDose, String ttDate, Mother mother, Location location) {
+    private void reportTTVisit(String ttDose, String ttDate, String submissionDate, Mother mother, Location location) {
         if (TT1_DOSE_VALUE.equalsIgnoreCase(ttDose)) {
-            reportToBoth(mother, TT1, ttDate, location);
+            reportToBoth(mother, TT1, ttDate, submissionDate, location);
         } else if (TT2_DOSE_VALUE.equalsIgnoreCase(ttDose)) {
-            reportToBoth(mother, TT2, ttDate, location);
-            reportToBoth(mother, SUB_TT, ttDate, location);
+            reportToBoth(mother, TT2, ttDate, submissionDate, location);
+            reportToBoth(mother, SUB_TT, ttDate, submissionDate, location);
         } else if (TT_BOOSTER_DOSE_VALUE.equalsIgnoreCase(ttDose)) {
-            reportToBoth(mother, TTB, ttDate, location);
-            reportToBoth(mother, SUB_TT, ttDate, location);
+            reportToBoth(mother, TTB, ttDate, submissionDate, location);
+            reportToBoth(mother, SUB_TT, ttDate, submissionDate, location);
         }
     }
 
     public void reportToBoth(Mother mother, Indicator indicator, String date, String submissionDate, Location location) {
         if (!isBlank(date) && !reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse(date), LocalDate.parse(submissionDate)))
-            return;
-        report(mother, indicator, date, location);
-    }
-
-    public void reportToBoth(Mother mother, Indicator indicator, String date, Location location) {
-        if (!isBlank(date) && !reportMonth.isDateWithinCurrentReportMonth(LocalDate.parse(date)))
             return;
         report(mother, indicator, date, location);
     }

@@ -41,25 +41,29 @@
         "id",
         "ttDose",
         "ttInjectionPlace",
-        "ttDate"
+        "ttDate",
+        "submissionDate"
     ],
     "tt_1": [
         "id",
         "ttDose",
         "ttInjectionPlace",
-        "ttDate"
+        "ttDate",
+        "submissionDate"
     ],
     "tt_2": [
         "id",
         "ttDose",
         "ttInjectionPlace",
-        "ttDate"
+        "ttDate",
+        "submissionDate"
     ],
     "tt_booster": [
         "id",
         "ttDose",
         "ttInjectionPlace",
-        "ttDate"
+        "ttDate",
+        "submissionDate"
     ],
     "delivery_outcome": [
         "id",
