@@ -93,7 +93,8 @@
     "child_immunizations": [
         "id",
         "immunizationsGiven",
-        "immunizationDate"
+        "immunizationDate",
+        "submissionDate"
     ],
     "child_close": [
         "id",
