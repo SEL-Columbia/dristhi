@@ -59,6 +59,6 @@ public class ANMReportingServiceTest {
     public void shouldReportEntityDataToServices() throws Exception {
         anmReportingService.reportFromEntityData();
 
-        verify(childReportingService).reportInfantBalance();
+        verify(childReportingService).reportInfantAndChildBalance();
     }
 }

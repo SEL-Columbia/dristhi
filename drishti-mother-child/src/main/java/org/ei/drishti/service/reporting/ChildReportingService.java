@@ -390,9 +390,12 @@ public class ChildReportingService {
         reportingService.sendReportData(anmReportData);
     }
 
-    public void reportInfantBalance() {
+    public void reportInfantAndChildBalance() {
         reportInfantBalanceOnHand();
         reportInfantBalanceTurningOneYearOld();
+        reportInfantBalanceTotalNumberOfOAChildren();
+        reportInfantBalanceLessThanOneYearOld();
+        reportChildBalanceLessThanFiveYearOld();
     }
 
     public void reportInfantBalanceOnHand() {
@@ -464,7 +467,7 @@ public class ChildReportingService {
                 startOfCurrentReportMonth.toString());
     }
 
-    public void reportInfantBalanceLessThanFiveYearOld() {
+    public void reportChildBalanceLessThanFiveYearOld() {
         LocalDate today = DateUtil.today();
 
         List<Child> childrenLessThanFiveYearOld = allChildren.findAllChildrenLessThanFiveYearOldAsOfDate(today);

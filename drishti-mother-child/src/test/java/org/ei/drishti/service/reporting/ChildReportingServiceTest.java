@@ -1544,7 +1544,7 @@ public class ChildReportingServiceTest {
         when(reportMonth.endOfCurrentReportMonth(parse("2013-01-26"))).thenReturn(parse("2013-02-25"));
         when(reportMonth.isDateWithinCurrentReportMonth(parse("2013-01-26"))).thenReturn(true);
 
-        service.reportInfantBalanceLessThanFiveYearOld();
+        service.reportChildBalanceLessThanFiveYearOld();
 
         verifyBothUpdateReportCalls(Indicator.INFANT_BALANCE_LESS_THAN_FIVE_YEAR, "2013-01-26", "child id 1", "thayi card 1", "2013-01-26", "2013-02-25");
     }
