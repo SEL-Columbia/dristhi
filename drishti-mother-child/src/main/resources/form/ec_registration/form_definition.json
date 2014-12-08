@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "4",
+    "form_data_definition_version": "5",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/EC_Registration_EngKan/",
@@ -233,6 +233,14 @@
             {
                 "name": "femaleSterilizationType",
                 "bind": "/model/instance/EC_Registration_EngKan/female_sterilization_type"
+            },
+            {
+                "name": "wouldBeHighRisk",
+                "bind": "/model/instance/EC_Registration_EngKan/would_be_high_risk"
+            },
+            {
+                "name":"wouldBeHighRiskReason",
+                "bind": "/model/instance/EC_Registration_EngKan/would_be_high_risk_reason"
             }
         ]
     }
