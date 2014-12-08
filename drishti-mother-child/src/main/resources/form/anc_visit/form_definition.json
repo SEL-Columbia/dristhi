@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "3",
+    "form_data_definition_version": "5",
     "form": {
         "bind_type": "mother",
         "default_bind_path": "/model/instance/ANC_Visit_EngKan/",
@@ -54,8 +54,18 @@
                 "bind": "/model/instance/ANC_Visit_EngKan/vitals_taken"
             },
             {
+                "name": "previousBpSystolic",
+                "shouldLoadValue": true,
+                "source": "mother.bpSystolic"
+            },
+            {
                 "name": "bpSystolic",
                 "bind": "/model/instance/ANC_Visit_EngKan/bp_systolic"
+            },
+            {
+                "name": "previousBpDiastolic",
+                "shouldLoadValue": true,
+                "source": "mother.bpDiastolic"
             },
             {
                 "name": "bpDiastolic",
@@ -124,6 +134,11 @@
                 "bind": "/model/instance/ANC_Visit_EngKan/pih"
             },
             {
+                "name": "anaemicStatus",
+                "shouldLoadValue": true,
+                "bind": "/model/instance/ANC_Visit_EngKan/case_anaemic_status"
+            },
+            {
                 "name": "multiplePregnancyReason",
                 "bind": "/model/instance/ANC_Visit_EngKan/multiple_preg"
             },
@@ -151,22 +166,6 @@
                 "name": "highRiskTillPNCCloseReason",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Visit_EngKan/case_is_high_risk_till_pnc_close_reason"
-            },
-            {
-                "name": "isHighRiskTillDelivery",
-                "bind": "/model/instance/ANC_Visit_EngKan/is_high_risk_till_delivery"
-            },
-            {
-                "name": "highRiskTillDeliveryReason",
-                "bind": "/model/instance/ANC_Visit_EngKan/is_high_risk_till_delivery_reason"
-            },
-            {
-                "name": "isHighRiskTillPNCClose",
-                "bind": "/model/instance/ANC_Visit_EngKan/is_high_risk_till_pnc_close"
-            },
-            {
-                "name": "highRiskTillPNCCloseReason",
-                "bind": "/model/instance/ANC_Visit_EngKan/is_high_risk_till_pnc_close_reason"
             },
             {
                 "name": "highRiskReason",
