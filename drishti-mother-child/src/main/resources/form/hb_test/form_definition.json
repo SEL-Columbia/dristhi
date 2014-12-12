@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "4",
+    "form_data_definition_version": "5",
     "form": {
         "bind_type": "mother",
         "default_bind_path": "/model/instance/Hb_Test_EngKan/",
@@ -31,18 +31,22 @@
             },
             {
                 "name": "pih",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Hb_Test_EngKan/case_pih"
             },
             {
                 "name": "jaundice",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Hb_Test_EngKan/case_jaundice"
             },
             {
                 "name": "multiplePregnancy",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Hb_Test_EngKan/case_multiple_preg"
             },
             {
                 "name": "malPresentation",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/Hb_Test_EngKan/case_malpresentation"
             },
             {

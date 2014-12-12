@@ -138,6 +138,7 @@
             },
             {
                 "name": "numberOfStillBirths",
+                "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Registration_OA_EngKan/num_stillbirths"
             },
             {
