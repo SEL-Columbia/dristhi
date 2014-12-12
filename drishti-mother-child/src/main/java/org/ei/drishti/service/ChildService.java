@@ -284,7 +284,9 @@ public class ChildService {
         }
         if (!subFormData.instances().isEmpty()) {
             String childId = subFormData.instances().get(0).get(ID);
-            allChildren.remove(childId);
+            if (childId != null) {
+                allChildren.remove(childId);
+            }
         }
         return true;
     }
