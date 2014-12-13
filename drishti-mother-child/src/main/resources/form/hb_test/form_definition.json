@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "5",
+    "form_data_definition_version": "6",
     "form": {
         "bind_type": "mother",
         "default_bind_path": "/model/instance/Hb_Test_EngKan/",
@@ -69,7 +69,7 @@
                 "bind": "/model/instance/Hb_Test_EngKan/case_is_high_risk_till_pnc_close"
             },
             {
-                "name": "isHighRiskTillPNCCloseReason",
+                "name": "highRiskTillPNCCloseReason",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/Hb_Test_EngKan/case_is_high_risk_till_pnc_close_reason"
             },
