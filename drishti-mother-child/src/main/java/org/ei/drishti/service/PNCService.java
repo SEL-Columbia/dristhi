@@ -1,5 +1,6 @@
 package org.ei.drishti.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.common.util.EasyMap;
 import org.ei.drishti.domain.EligibleCouple;
@@ -306,7 +307,9 @@ public class PNCService {
         }
         if (!subFormData.instances().isEmpty()) {
             String childId = subFormData.instances().get(0).get(ID);
-            allChildren.remove(childId);
+            if(!StringUtils.isEmpty(childId)){
+                allChildren.remove(childId);
+            }
         }
         return true;
     }

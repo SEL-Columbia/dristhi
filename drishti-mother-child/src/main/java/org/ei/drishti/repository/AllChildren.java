@@ -48,16 +48,17 @@ public class AllChildren extends MotechBaseRepository<Child> {
 
     public void remove(String id) {
         Child child = findByCaseId(id);
-        remove(child);
+        if (child != null)
+            remove(child);
     }
 
     @View(name = "by_date_of_birth",
             map = "function(doc) { if (doc.type === 'Child' && doc.isClosed === 'false' && doc.dateOfBirth) { emit(doc.dateOfBirth); } }")
     public List<Child> findAllChildrenLessThanOneYearOldAsOfDate(LocalDate date) {
         return db.queryView(createQuery("by_date_of_birth")
-                .startKey(date.minusYears(1))
-                .endKey(date.minusDays(1))
-                .includeDocs(true),
+                        .startKey(date.minusYears(1))
+                        .endKey(date.minusDays(1))
+                        .includeDocs(true),
                 Child.class);
     }
 
@@ -65,9 +66,9 @@ public class AllChildren extends MotechBaseRepository<Child> {
         LocalDate startKey = date.minusYears(1);
         LocalDate endKey = startKey.plusMonths(1);
         List<Child> children_turned_one_year_old_as_of_date = db.queryView(createQuery("by_date_of_birth")
-                .startKey(startKey)
-                .endKey(endKey)
-                .includeDocs(true),
+                        .startKey(startKey)
+                        .endKey(endKey)
+                        .includeDocs(true),
                 Child.class);
         return children_turned_one_year_old_as_of_date;
     }
@@ -76,16 +77,16 @@ public class AllChildren extends MotechBaseRepository<Child> {
             map = "function(doc) { if (doc.type === 'Child' && doc.isClosed === 'false' && doc.motherCaseId) { emit(doc.motherCaseId); } }")
     public List<Child> findAllOpenChildrenByMotherId(List<String> motherIds) {
         return db.queryView(createQuery("all_open_children_by_mother_id")
-                .keys(motherIds)
-                .includeDocs(true),
+                        .keys(motherIds)
+                        .includeDocs(true),
                 Child.class);
     }
 
     public List<Child> findAllChildrenLessThanFiveYearOldAsOfDate(LocalDate date) {
         return db.queryView(createQuery("by_date_of_birth")
-                .startKey(date.minusYears(5))
-                .endKey(date)
-                .includeDocs(true),
+                        .startKey(date.minusYears(5))
+                        .endKey(date)
+                        .includeDocs(true),
                 Child.class);
     }
 
