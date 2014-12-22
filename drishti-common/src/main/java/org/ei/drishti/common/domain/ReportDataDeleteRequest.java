@@ -12,7 +12,6 @@ import static org.ei.drishti.common.AllConstants.ReportDataParameters.ANM_REPORT
 import static org.ei.drishti.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE;
 
 public class ReportDataDeleteRequest implements Serializable {
-
     @JsonProperty
     private String type;
     @JsonProperty
@@ -51,7 +50,6 @@ public class ReportDataDeleteRequest implements Serializable {
         this.type = type;
         return this;
     }
-
 
     public ReportDataDeleteRequest withDristhiEntityId(String dristhiEntityId) {
         this.dristhiEntityId = dristhiEntityId;

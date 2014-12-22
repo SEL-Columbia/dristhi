@@ -10,7 +10,6 @@ import static org.ei.drishti.common.AllConstants.Report.*;
 
 @Component
 public class ReportMonth {
-
     private static final int JANUARY = 1;
     private static final int DECEMBER = 12;
 

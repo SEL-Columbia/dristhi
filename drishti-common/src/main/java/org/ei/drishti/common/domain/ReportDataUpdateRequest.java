@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.List;
 
 public class ReportDataUpdateRequest implements Serializable {
-
     @JsonProperty
     private String startDate;
     @JsonProperty

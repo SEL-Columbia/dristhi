@@ -7,7 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class ReportMonthTest {
-
     private final ReportMonth reportMonth = new ReportMonth();
 
     @Test
