@@ -1,4 +1,4 @@
-package org.ei.drishti.common;
+package org.ei.drishti.common.audit;
 
 import org.ei.drishti.common.audit.AuditMessage;
 import org.ei.drishti.common.audit.Auditor;
