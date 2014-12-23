@@ -93,7 +93,7 @@ public class HttpAgent {
     public HttpResponse getWithSocketTimeout(String url) {
         HttpGet request = new HttpGet(url);
         try {
-            httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 180000);
+            httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 0);
             org.apache.http.HttpResponse response = httpClient.execute(request);
             return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
         } catch (Exception e) {

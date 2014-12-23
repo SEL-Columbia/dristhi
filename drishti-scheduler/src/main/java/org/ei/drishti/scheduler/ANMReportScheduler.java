@@ -17,8 +17,8 @@ import static org.joda.time.DateTimeConstants.MILLIS_PER_HOUR;
 @Component
 public class ANMReportScheduler {
     public static final String SUBJECT = "DRISHTI-ANM-REPORT-FETCH-SCHEDULE";
-    public static final int START_DELAY_IN_MINUTES = 5;
-    public static final long REPEAT_INTERVAL_IN_HOUR = 1L;
+    public static final int START_DELAY_IN_MINUTES = 10;
+    public static final long REPEAT_INTERVAL_IN_HOUR = 6L;
     private MotechSchedulerService schedulerService;
     private static Logger logger = LoggerFactory.getLogger(ANMReportScheduler.class.toString());
 
