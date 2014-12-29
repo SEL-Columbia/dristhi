@@ -174,6 +174,7 @@ public class PNCService {
 
         logger.info(format("Auto closing mother case with entity id {0} as the Post-pregnancy period has elapsed.", entityId));
         allMothers.close(entityId);
+        pncSchedulesService.fulfillPNCAutoCloseMilestone(entityId, mother.anmIdentifier());
         actionService.markAllAlertsAsInactive(entityId);
         actionService.closeMother(entityId, mother.anmIdentifier(), AllConstants.AUTO_CLOSE_PNC_CLOSE_REASON);
     }

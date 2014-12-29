@@ -1,5 +1,8 @@
 package org.ei.drishti.service.scheduling;
 
+import org.ei.drishti.service.ActionService;
+import org.joda.time.LocalDate;
+import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
@@ -13,6 +16,7 @@ import java.util.List;
 import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
 import static org.ei.drishti.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
+import static org.joda.time.LocalTime.now;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
 
 @Service
@@ -21,11 +25,13 @@ public class PNCSchedulesService {
 
     private final ScheduleTrackingService trackingService;
     private final ScheduleService scheduleService;
+    private ActionService actionService;
 
     @Autowired
-    public PNCSchedulesService(ScheduleTrackingService trackingService, ScheduleService scheduleService) {
+    public PNCSchedulesService(ScheduleTrackingService trackingService, ScheduleService scheduleService, ActionService actionService) {
         this.trackingService = trackingService;
         this.scheduleService = scheduleService;
+        this.actionService = actionService;
     }
 
     public void deliveryOutcome(String entityId, String date) {
@@ -33,6 +39,22 @@ public class PNCSchedulesService {
 
         scheduleService.enroll(entityId,
                 SCHEDULE_AUTO_CLOSE_PNC, date);
+    }
+
+    private boolean fulfillMilestoneIfPossible(String entityId, String anmId, String scheduleName, String milestone, LocalDate fulfillmentDate) {
+        if (isNotEnrolled(entityId, scheduleName)) {
+            logger.warn(format("Tried to fulfill milestone {0} of {1} for entity id: {2}", milestone, scheduleName, entityId));
+            return false;
+        }
+
+        logger.warn(format("Fulfilling milestone {0} of {1} for entity id: {2}", milestone, scheduleName, entityId));
+        trackingService.fulfillCurrentMilestone(entityId, scheduleName, fulfillmentDate, new Time(now()));
+        actionService.markAlertAsClosed(entityId, anmId, milestone, fulfillmentDate.toString());
+        return true;
+    }
+
+    private boolean isNotEnrolled(String caseId, String scheduleName) {
+        return trackingService.getEnrollment(caseId, scheduleName) == null;
     }
 
     public void unEnrollFromSchedules(String entityId) {
@@ -43,5 +65,10 @@ public class PNCSchedulesService {
 
             trackingService.unenroll(entityId, asList(enrollment.getScheduleName()));
         }
+    }
+
+    public void fulfillPNCAutoCloseMilestone(String entityId, String anmIdentifier) {
+        fulfillMilestoneIfPossible(entityId, anmIdentifier,
+                SCHEDULE_AUTO_CLOSE_PNC, SCHEDULE_AUTO_CLOSE_PNC, new LocalDate());
     }
 }
