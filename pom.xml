@@ -38,15 +38,15 @@
 
     <distributionManagement>
         <repository>
-            <id>motech.nexus</id>
-            <name>Motech Releases Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/releases</url>
+            <id>dristhi.nexus</id>
+            <name>Dristhi Releases Repository</name>
+            <url>http://ci.smartregistries.org:8081/nexus/content/repositories/releases</url>
             <uniqueVersion>false</uniqueVersion>
         </repository>
         <snapshotRepository>
-            <id>motech.nexus</id>
-            <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/drishti</url>
+            <id>dristhi.nexus</id>
+            <name>Dristhi Snapshots Repository</name>
+            <url>http://ci.smartregistries.org:8081/nexus/content/repositories/dristhi</url>
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
