@@ -36,6 +36,17 @@ public class Person extends MotechBaseDataObject {
 	@JsonProperty
 	private String patientType;
 	
+	@JsonProperty
+	private String anmIdentifier;
+	
+	public String getAnmIdentifier() {
+		return anmIdentifier;
+	}
+
+	public void setAnmIdentifier(String anmIdentifier) {
+		this.anmIdentifier = anmIdentifier;
+	}
+
 	private Person()
 	{
 		
@@ -203,6 +214,11 @@ public class Person extends MotechBaseDataObject {
         this.village = village;
         this.subCenter = subCenter;
         this.phc = phc;
+        return this;
+    }
+	
+	public Person withANMIdentifier(String anmIdentifier) {
+        this.anmIdentifier = anmIdentifier;
         return this;
     }
 }

@@ -1,17 +1,9 @@
 [
     {
-      "parent": "person",
-      "child": "mother",
-      "field": "wife",
-      "kind": "one_to_one",
-      "from": "eligible_couple.id",
-      "to": "mother.ecCaseId"
-    },
-    {
         "parent": "eligible_couple",
         "child": "mother",
         "field": "wife",
-        "kind": "one_to_one",
+        "kind": "one_to_many",
         "from": "eligible_couple.id",
         "to": "mother.ecCaseId"
     },

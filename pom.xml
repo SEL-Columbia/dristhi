@@ -199,7 +199,7 @@
                 </configuration>
 
                 <executions>
-                    <execution>
+                 <!--    <execution>
                         <id>drop-quartz-db</id>
                         <phase>pre-integration-test</phase>
                         <goals>
@@ -269,7 +269,7 @@
                             </srcFiles>
                         </configuration>
                     </execution>
-                </executions>
+ -->                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

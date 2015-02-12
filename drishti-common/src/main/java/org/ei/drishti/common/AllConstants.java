@@ -433,6 +433,7 @@ public class AllConstants {
         public static final String CHILD_TYPE = "child";
         public static final String MOTHER_TYPE = "mother";
         public static final String ELIGIBLE_COUPLE_TYPE = "eligible_couple";
+        public static final String PERSON_TYPE = "person";
         public static final String MCTS_REPORT_TYPE = "MCTSReport";
     }
 

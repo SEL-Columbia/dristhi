@@ -9,6 +9,7 @@ import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Child;
 import org.ei.drishti.domain.EligibleCouple;
 import org.ei.drishti.domain.Mother;
+import org.ei.drishti.domain.Person;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
 import org.ektorp.ViewResult;
@@ -45,9 +46,11 @@ public class FormDataRepository {
         designDocMap = new HashMap<>();
         fieldSetMap = new HashMap<>();
         designDocMap.put(AllConstants.FormEntityTypes.ELIGIBLE_COUPLE_TYPE, "EligibleCouple");
+        designDocMap.put(AllConstants.FormEntityTypes.PERSON_TYPE, "Person");
         designDocMap.put(AllConstants.FormEntityTypes.MOTHER_TYPE, "Mother");
         designDocMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, "Child");
         fieldSetMap.put(AllConstants.FormEntityTypes.ELIGIBLE_COUPLE_TYPE, EligibleCouple.class.getDeclaredFields());
+        fieldSetMap.put(AllConstants.FormEntityTypes.PERSON_TYPE, Person.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.MOTHER_TYPE, Mother.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, Child.class.getDeclaredFields());
     }

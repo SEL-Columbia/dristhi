@@ -4,6 +4,7 @@ import ch.lambdaj.Lambda;
 import ch.lambdaj.function.convert.Converter;
 import org.ei.drishti.domain.DrishtiUser;
 import org.ei.drishti.repository.AllDrishtiUsers;
+import org.ei.drishti.web.service.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.util.List;
 import static java.text.MessageFormat.format;
 
 @Component
-public class DrishtiAuthenticationProvider implements AuthenticationProvider {
+public class DrishtiAuthenticationProvider implements AuthenticationProvider, AuthenticationService {
     private static Logger logger = LoggerFactory.getLogger(DrishtiAuthenticationProvider.class.toString());
     public static final String USER_NOT_FOUND = "The username or password you entered is incorrect. Please enter the correct credentials.";
     public static final String USER_NOT_ACTIVATED = "The user has been registered but not activated. Please contact your local administrator.";
