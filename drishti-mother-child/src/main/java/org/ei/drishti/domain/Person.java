@@ -12,13 +12,21 @@ public class Person extends MotechBaseDataObject {
 	@JsonProperty
 	private String caseId;
 	@JsonProperty
+	private String anm;
+	@JsonProperty
+	private String village;
+	@JsonProperty
+	private String subCenter;
+	@JsonProperty
+	private String phc;
+	@JsonProperty
 	private String tbId;
 	@JsonProperty
 	private String name;
 	@JsonProperty
 	private String dob;
 	@JsonProperty
-	private String gender;
+	private String sex;
 	@JsonProperty
 	private String address;
 	@JsonProperty
@@ -27,6 +35,15 @@ public class Person extends MotechBaseDataObject {
 	private Integer height;
 	@JsonProperty
 	private String patientType;
+	
+	private Person()
+	{
+		
+	}
+
+	public Person(String caseId) {
+		this.caseId = caseId;
+	}
 
 	public String getCaseId() {
 		return caseId;
@@ -36,8 +53,40 @@ public class Person extends MotechBaseDataObject {
 		this.caseId = caseId;
 	}
 
+	public String getAnm() {
+		return anm;
+	}
+
+	public void setAnm(String anm) {
+		this.anm = anm;
+	}
+
 	public String getTbId() {
 		return tbId;
+	}
+
+	public String getVillage() {
+		return village;
+	}
+
+	public void setVillage(String village) {
+		this.village = village;
+	}
+
+	public String getSubCenter() {
+		return subCenter;
+	}
+
+	public void setSubCenter(String subCenter) {
+		this.subCenter = subCenter;
+	}
+
+	public String getPhc() {
+		return phc;
+	}
+
+	public void setPhc(String phc) {
+		this.phc = phc;
 	}
 
 	public void setTbId(String tbId) {
@@ -60,12 +109,12 @@ public class Person extends MotechBaseDataObject {
 		this.dob = dob;
 	}
 
-	public String getGender() {
-		return gender;
+	public String getSex() {
+		return sex;
 	}
 
-	public void setGender(String gender) {
-		this.gender = gender;
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 
 	public String getAddress() {
@@ -115,4 +164,45 @@ public class Person extends MotechBaseDataObject {
 		return ToStringBuilder.reflectionToString(this);
 	}
 
+	public Person withName(String name) {
+		setName(name);
+		return this;
+	}
+
+	public Person withDob(String dob) {
+		setDob(dob);
+		return this;
+	}
+
+	public Person withSex(String sex) {
+		setSex(sex);
+		return this;
+	}
+
+	public Person withAddress(String address) {
+		setAddress(address);
+		return this;
+	}
+
+	public Person withContactNumber(String contactNumber) {
+		setContactNumber(contactNumber);
+		return this;
+	}
+
+	public Person withHeight(Integer height) {
+		setHeight(height);
+		return this;
+	}
+
+	public Person withAnm(String anm) {
+		setAnm(anm);
+		return this;
+	}
+
+	public Person withLocation(String village, String subCenter, String phc) {
+        this.village = village;
+        this.subCenter = subCenter;
+        this.phc = phc;
+        return this;
+    }
 }
