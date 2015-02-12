@@ -1,5 +1,6 @@
 package org.ei.drishti.domain;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -132,7 +133,10 @@ public class Child extends MotechBaseDataObject {
     }
 
     public List<String> immunizationsGiven() {
-        return new ArrayList<>(Arrays.asList(immunizationsGiven.split(" ")));
+        if (!StringUtils.isEmpty(immunizationsGiven)) {
+            return new ArrayList<>(Arrays.asList(immunizationsGiven.split(" ")));
+        }
+        return new ArrayList<String>();
     }
 
     public Map<String, String> details() {

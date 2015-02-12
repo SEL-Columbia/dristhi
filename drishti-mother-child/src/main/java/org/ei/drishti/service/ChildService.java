@@ -110,6 +110,8 @@ public class ChildService {
         child.withImmunizations(getChildImmunizationDetails(submission, child, immunizationsGiven));
         child.withVitaminADoses(getVitaminDoseDetails(submission, child, vitaminHistory));
         allChildren.update(child);
+
+        childSchedulesService.enrollChild(child);
     }
 
     private void closeMother(String field) {
@@ -153,6 +155,8 @@ public class ChildService {
         child.withVitaminADoses(getVitaminDoseDetails(submission, child, vitaminHistory));
 
         allChildren.update(child);
+
+        childSchedulesService.enrollChild(child);
     }
 
     public void updateChildImmunization(FormSubmission submission) {
