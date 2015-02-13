@@ -226,7 +226,7 @@
                 <version>2.0.2</version>
                 <configuration>
                     <user>postgres</user>
-                    <password>password</password>
+                    <password>VA1913wm</password>
                 </configuration>
             </plugin>
         </plugins>

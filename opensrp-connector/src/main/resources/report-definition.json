@@ -1,0 +1,2214 @@
+{
+    "formIndicators": [
+        {
+            "form": "child_close",
+            "indicators": [
+                {
+                    "indicator": "INFANT_LEFT",
+                    "reportEntityType": "child",
+                    "formFields": [
+                        "id",
+                        "closeReason",
+                        "submissionDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "RelocationIsPermanentRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ID_24HRS",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWithin24HoursRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ID_SEPSIS",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWasCausedBySepsisRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ID_ASPHYXIA",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWasCausedByAsphyxiaRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_IMMUNIZATION_DEATH",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "isImmunizationDeath",
+                        "deathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathCausedByImmunizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ID_DIARRHEA",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWasCausedByDiarrheaRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ID_LBW",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanFourWeeksOldRule",
+                        "IsDeathWasCausedByLBWRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ID_PNEUMONIA",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWasCausedByPneumoniaRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ID_FEVER_RELATED",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWasCausedByFeverRelatedRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ID_MEASLES",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWasCausedByMeaslesRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ID_OTHERS",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "deathCause",
+                        "deathDate",
+                        "serviceProvidedDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsDeathWasCausedByOthersRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "ec_registration",
+            "indicators": [
+                {
+                    "indicator": "CONDOM_QTY",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "quantityField": "numberOfCondomsSupplied",
+                    "formFields": [
+                        "id",
+                        "numberOfCondomsSupplied",
+                        "familyPlanningMethodChangeDate",
+                        "currentMethod"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsCondomRule",
+                        "MoreThanZeroCondomsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OCP_STRIPS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "quantityField": "numberOfOCPDelivered",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "numberOfOCPDelivered",
+                        "currentMethod"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_CENTCHROMAN_PILLS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "quantityField": "numberOfCentchromanPillsDelivered",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "numberOfCentchromanPillsDelivered",
+                        "currentMethod"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsCentchromanRule",
+                        "MoreThanZeroCentchromanPillsSuppliedRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "record_ecps",
+            "indicators": [
+                {
+                    "indicator": "NRHM_ECP",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "ecpDate",
+                    "quantityField": "numberOfECPsGiven",
+                    "formFields": [
+                        "id",
+                        "numberOfECPsGiven",
+                        "ecpDate"
+                    ],
+                    "reportWhen": [
+                        "MoreThanZeroECPsSuppliedRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "fp_change",
+            "indicators": [
+                {
+                    "indicator": "CONDOM_QTY",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "quantityField": "numberOfCondomsSupplied",
+                    "formFields": [
+                        "id",
+                        "numberOfCondomsSupplied",
+                        "familyPlanningMethodChangeDate",
+                        "newMethod"
+                    ],
+                    "reportWhen": [
+                        "NewFPMethodIsCondomRule",
+                        "MoreThanZeroCondomsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_IUDREM",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "iudRemovalDate",
+                    "formFields": [
+                        "id",
+                        "iudRemovalDate",
+                        "iudRemovalPlace"
+                    ],
+                    "reportWhen": [
+                        "IUDRemovedAtHomeAtHomeOrSubCenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OCP_STRIPS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "quantityField": "numberOfOCPDelivered",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "numberOfOCPDelivered",
+                        "newMethod"
+                    ],
+                    "reportWhen": [
+                        "NewFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_CENTCHROMAN_PILLS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "quantityField": "numberOfCentchromanPillsDelivered",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "numberOfCentchromanPillsDelivered",
+                        "newMethod"
+                    ],
+                    "reportWhen": [
+                        "NewFPMethodIsCentchromanPillsRule",
+                        "MoreThanZeroCentchromanPillsSuppliedRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "renew_fp_product",
+            "indicators": [
+                {
+                    "indicator": "CONDOM_QTY",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "quantityField": "numberOfCondomsSupplied",
+                    "formFields": [
+                        "id",
+                        "numberOfCondomsSupplied",
+                        "currentMethod",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsCondomRule",
+                        "MoreThanZeroCondomsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OCP_STRIPS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "quantityField": "numberOfOCPDelivered",
+                    "formFields": [
+                        "id",
+                        "fpRenewMethodVisitDate",
+                        "numberOfOCPDelivered",
+                        "currentMethod"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_CENTCHROMAN_PILLS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "quantityField": "numberOfCentchromanPillsDelivered",
+                    "formFields": [
+                        "id",
+                        "fpRenewMethodVisitDate",
+                        "numberOfCentchromanPillsDelivered",
+                        "currentMethod"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsCentchromanRule",
+                        "MoreThanZeroCentchromanPillsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "CONDOM",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "numberOfCondomsSupplied",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsCondomRule",
+                        "MoreThanZeroCondomsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "OCP",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "numberOfOCPDelivered",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "OCP_SC",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "numberOfOCPDelivered",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "caste"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule",
+                        "CasteIsSCRule"
+                    ]
+                },
+                {
+                    "indicator": "OCP_ST",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "numberOfOCPDelivered",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "caste"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule",
+                        "CasteIsSTRule"
+                    ]
+                },
+                {
+                    "indicator": "OCP_C_OTHERS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpRenewMethodVisitDate",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "numberOfOCPDelivered",
+                        "fpRenewMethodVisitDate"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "caste"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule",
+                        "CasteIsOthersRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "fp_complications",
+            "indicators": [
+                {
+                    "indicator": "NRHM_M_S_COMP",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "complicationDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationSideEffect",
+                        "currentMethod",
+                        "complicationDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsMaleSterilizationRule",
+                        "IsSideEffectDueToSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_F_S_COMP",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "complicationDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationSideEffect",
+                        "currentMethod",
+                        "complicationDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsSideEffectDueToSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_S_COMP",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "complicationDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationSideEffect",
+                        "currentMethod",
+                        "complicationDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsEitherMaleOrFemaleSterilizationRule",
+                        "IsSideEffectDueToSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_M_S_FAILURE",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "complicationDate",
+                    "formFields": [
+                        "id",
+                        "isSterilizationFailure",
+                        "currentMethod",
+                        "complicationDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsMaleSterilizationRule",
+                        "IsSterilizationFailureRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_F_S_FAILURE",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "complicationDate",
+                    "formFields": [
+                        "id",
+                        "isSterilizationFailure",
+                        "currentMethod",
+                        "complicationDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsSterilizationFailureRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_S_FAILURE",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "complicationDate",
+                    "formFields": [
+                        "id",
+                        "isSterilizationFailure",
+                        "currentMethod",
+                        "complicationDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsEitherMaleOrFemaleSterilizationRule",
+                        "IsSterilizationFailureRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "fp_followup",
+            "indicators": [
+                {
+                    "indicator": "NRHM_M_S_COMP",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpFollowupDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationSideEffect",
+                        "currentMethod",
+                        "fpFollowupDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsMaleSterilizationRule",
+                        "IsSideEffectDueToSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_F_S_COMP",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpFollowupDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationSideEffect",
+                        "currentMethod",
+                        "fpFollowupDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsSideEffectDueToSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_S_COMP",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpFollowupDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationSideEffect",
+                        "currentMethod",
+                        "fpFollowupDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsEitherMaleOrFemaleSterilizationRule",
+                        "IsSideEffectDueToSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_M_S_FAILURE",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpFollowupDate",
+                    "formFields": [
+                        "id",
+                        "isSterilizationFailure",
+                        "currentMethod",
+                        "fpFollowupDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsMaleSterilizationRule",
+                        "IsSterilizationFailureRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_F_S_FAILURE",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpFollowupDate",
+                    "formFields": [
+                        "id",
+                        "isSterilizationFailure",
+                        "currentMethod",
+                        "fpFollowupDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsSterilizationFailureRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_S_FAILURE",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "fpFollowupDate",
+                    "formFields": [
+                        "id",
+                        "isSterilizationFailure",
+                        "currentMethod",
+                        "fpFollowupDate"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsEitherMaleOrFemaleSterilizationRule",
+                        "IsSterilizationFailureRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "child_registration_oa",
+            "indicators": [
+                {
+                    "indicator": "INFANT_REG",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "registrationDate",
+                    "formFields": [
+                        "id",
+                        "registrationDate",
+                        "dateOfBirth",
+                        "submissionDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "child_illness",
+            "indicators": [
+                {
+                    "indicator": "NRHM_MEASLES",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "reportChildDiseaseDate",
+                    "serviceProvidedPlaceField": "reportChildDiseasePlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "reportChildDisease",
+                        "reportChildDiseaseDate"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSub_CenterRule",
+                        "IsChildDiseaseReportedAsMeaslesRule",
+                        "IsChildBelowFiveYearsRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_DIARRHEA_DEHYDRATION",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "reportChildDiseaseDate",
+                    "serviceProvidedPlaceField": "reportChildDiseasePlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "reportChildDisease",
+                        "reportChildDiseaseDate"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSub_CenterRule",
+                        "IsChildDiseaseReportedAsDiarrheaDehydrationRule",
+                        "IsChildBelowFiveYearsRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MALARIA",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "reportChildDiseaseDate",
+                    "serviceProvidedPlaceField": "reportChildDiseasePlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "reportChildDisease",
+                        "reportChildDiseaseDate"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSub_CenterRule",
+                        "IsChildDiseaseReportedAsMalariaRule",
+                        "IsChildBelowFiveYearsRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "child_immunizations",
+            "indicators": [
+                {
+                    "indicator": "NRHM_BCG_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsBCGImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_PENT_1_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsPentavalent1ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_PENT_2_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsPentavalent2ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_PENT_3_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsPentavalent3ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OPV_0_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsOPV0ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OPV_1_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsOPV1ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OPV_2_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsOPV2ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OPV_3_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsOPV3ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_HEPB_0_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsHepB0ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MEASLES_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "IsMeaslesImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MEASLES_BOOSTER_1YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildAgeGreaterThanOrEqualTo16MonthsRule",
+                        "IsMeaslesBoosterImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_DPTBOOSTER_2_>5YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "previousImmunizations",
+                        "immunizationsGiven",
+                        "immunizationDate"
+                    ],
+                    "reportWhen": [
+                        "IsChildMoreThan5YearsOldRule",
+                        "IsDPTBooster2ImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_M_ALL_VAC",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "gender"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThan23MonthsRule",
+                        "IsAllImmunizationsGivenRule",
+                        "ServiceProvidedAtSub_CenterRule",
+                        "IsChildMaleRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_F_ALL_VAC",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "gender"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThan23MonthsRule",
+                        "IsAllImmunizationsGivenRule",
+                        "ServiceProvidedAtSub_CenterRule",
+                        "IsChildFemaleRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ALL_VAC",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven"
+                    ],
+                    "reportWhen": [
+                        "IsChildLessThan23MonthsRule",
+                        "IsAllImmunizationsGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_DPT",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven"
+                    ],
+                    "reportWhen": [
+                        "IsChildMoreThan16MonthsRule",
+                        "IsDPTBoosterImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_OPV",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "previousImmunizations",
+                        "immunizationsGiven"
+                    ],
+                    "reportWhen": [
+                        "IsChildMoreThan16MonthsRule",
+                        "IsOPVBoosterImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MMR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven"
+                    ],
+                    "reportWhen": [
+                        "IsChildMoreThan16MonthsRule",
+                        "IsMMRImmunizationGivenRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_M_ALL_VACC_2Y",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "gender"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildBetween12And23MonthsRule",
+                        "IsAllImmunizationsGivenEitherWithMeaslesOrMMRRule",
+                        "IsChildMaleRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_F_ALL_VACC_2Y",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "gender"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildBetween12And23MonthsRule",
+                        "IsAllImmunizationsGivenEitherWithMeaslesOrMMRRule",
+                        "IsChildFemaleRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ALL_VACC_2Y",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "immunizationDate",
+                    "serviceProvidedPlaceField": "immunizationPlace",
+                    "formFields": [
+                        "id",
+                        "dateOfBirth",
+                        "immunizationDate",
+                        "immunizationsGiven"
+                    ],
+                    "reportWhen": [
+                        "IsChildBetween12And23MonthsRule",
+                        "IsAllImmunizationsGivenEitherWithMeaslesOrMMRRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "ec_close",
+            "indicators": [
+                {
+                    "indicator": "NRHM_M_S_DEATH",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "sterilizationDeathDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationDeathDate",
+                        "isSterilizationDeath"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "currentMethod"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsMaleSterilizationRule",
+                        "IsDeathDueToSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_F_S_DEATH",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "sterilizationDeathDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationDeathDate",
+                        "isSterilizationDeath"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "currentMethod"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsDeathDueToSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_S_DEATH",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "sterilizationDeathDate",
+                    "formFields": [
+                        "id",
+                        "sterilizationDeathDate",
+                        "isSterilizationDeath"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "currentMethod"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsEitherMaleOrFemaleSterilizationRule",
+                        "IsDeathDueToSterilizationRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_ABORTION",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToAbortionRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_LABOR",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToProlongedObstructedLaborRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_FITS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToSevereHyperTensionOrFitsRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_BLEEDING",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToBleedingRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_H_FEVER",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToHighFeverRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_OTHER",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToOtherReasonsRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "anc_visit",
+            "indicators": [
+                {
+                    "indicator": "NRHM_ANC3",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ancVisitDate",
+                    "serviceProvidedPlaceField": "ancVisitPlace",
+                    "formFields": [
+                        "id",
+                        "referenceDate",
+                        "ancVisitDate",
+                        "ancVisitNumber"
+                    ],
+                    "reportWhen": [
+                        "MinimumThreeANCVisitsHappenedOnTimeRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_HYPERTENSION",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ancVisitDate",
+                    "serviceProvidedPlaceField": "ancVisitPlace",
+                    "formFields": [
+                        "id",
+                        "bpSystolic",
+                        "bpDiastolic",
+                        "ancVisitDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": ["isHypertensionDetectedForFirstTime"]
+                    },
+                    "reportWhen": [
+                        "IsHypertensionDetectedRule",
+                        "IsHypertensionDetectedForFirstTimeRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "anc_close",
+            "indicators": [
+                {
+                    "indicator": "NRHM_MD_ABORTION",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToAbortionRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_FITS",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToSevereHyperTensionOrFitsRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_BLEEDING",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToBleedingRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_H_FEVER",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToHighFeverRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_OTHER",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "maternalDeathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "maternalDeathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToOtherReasonsRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_SPONTANEOUS_ABORTION",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "dateOfSpontaneousAbortion",
+                    "serviceProvidedPlaceField": "placeOfSpontaneousAbortion",
+                    "formFields": [
+                        "id",
+                        "closeReason"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToSpontaneousAbortionRule",
+                        "SpontaneousAbortionAtHomeAtHomeOrSubCenterRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "anc_registration",
+            "indicators": [
+                {
+                    "indicator": "ANCS_AND_PNCS_WITH_BPL",
+                    "reportEntityType": "mother",
+                    "reportEntityIdField": "motherId",
+                    "formFields": [
+                        "id",
+                        "motherId"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "id",
+                        "fields": [
+                            "economicStatus"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsEconomicStatusBPLRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_JSY_REG",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "registrationDate",
+                    "reportEntityIdField": "motherId",
+                    "serviceProvidedPlaceField": "registrationPlace",
+                    "formFields": [
+                        "id",
+                        "motherId",
+                        "isJSYBeneficiary"
+                    ],
+                    "reportWhen": [
+                        "IsJsyBeneficiaryRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ANC",
+                    "reportEntityType": "mother",
+                    "reportEntityIdField": "motherId",
+                    "serviceProvidedDateField": "registrationDate",
+                    "serviceProvidedPlaceField": "registrationPlace",
+                    "formFields": [
+                        "id",
+                        "motherId"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_ANC_LT_12",
+                    "reportEntityType": "mother",
+                    "reportEntityIdField": "motherId",
+                    "serviceProvidedDateField": "registrationDate",
+                    "serviceProvidedPlaceField": "registrationPlace",
+                    "formFields": [
+                        "id",
+                        "motherId",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "IsANCRegisteredWithinTwelveWeeksOfPregnancy",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "anc_registration_oa",
+            "indicators": [
+                {
+                    "indicator": "ANCS_AND_PNCS_WITH_BPL",
+                    "reportEntityType": "mother",
+                    "reportEntityIdField": "motherId",
+                    "formFields": [
+                        "motherId",
+                        "economicStatus"
+                    ],
+                    "reportWhen": [
+                        "IsEconomicStatusBPLRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "delivery_outcome",
+            "indicators": [
+                {
+                    "indicator": "ANCS_AND_PNCS_WITH_BPL",
+                    "reportEntityType": "mother",
+                    "formFields": [
+                        "id"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "ecId",
+                        "fields": [
+                            "economicStatus"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsEconomicStatusBPLRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_SBA",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "isSkilledDelivery",
+                        "deliveryPlace",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "DeliveryHappenedAtHomeRule",
+                        "DeliveryIsAttendedBySBATrainedPersonRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_NON_SBA",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "isSkilledDelivery",
+                        "deliveryPlace",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "DeliveryHappenedAtHomeRule",
+                        "DeliveryIsAttendedByNonSBATrainedPersonRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_SC_DEL",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
+                    "formFields": [
+                        "id",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSubCenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_LABOR",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToProlongedObstructedLaborRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_FITS",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToSevereHyperTensionOrFitsRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_BLEEDING",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToBleedingRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_H_FEVER",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToHighFeverRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_OTHER",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToOtherReasonsRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "pnc_registration_oa",
+            "indicators": [
+                {
+                    "indicator": "ANCS_AND_PNCS_WITH_BPL",
+                    "reportEntityType": "mother",
+                    "reportEntityIdField": "motherId",
+                    "formFields": [
+                        "motherId",
+                        "economicStatus"
+                    ],
+                    "reportWhen": [
+                        "IsEconomicStatusBPLRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_SBA",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "reportEntityIdField": "motherId",
+                    "formFields": [
+                        "id",
+                        "isSkilledDelivery",
+                        "deliveryPlace",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "DeliveryHappenedAtHomeRule",
+                        "DeliveryIsAttendedBySBATrainedPersonRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_NON_SBA",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "reportEntityIdField": "motherId",
+                    "formFields": [
+                        "id",
+                        "isSkilledDelivery",
+                        "deliveryPlace",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "DeliveryHappenedAtHomeRule",
+                        "DeliveryIsAttendedByNonSBATrainedPersonRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_SC_DEL",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "referenceDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
+                    "reportEntityIdField": "motherId",
+                    "formFields": [
+                        "id",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSubCenterRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "hb_test",
+            "indicators": [
+                {
+                    "indicator": "NRHM_HB_LEVEL",
+                    "reportEntityType": "mother",
+                    "serviceProvidedPlaceField": "hbTestPlace",
+                    "serviceProvidedDateField": "hbTestDate",
+                    "formFields": [
+                        "id",
+                        "hbLevel"
+                    ],
+                    "reportWhen": [
+                        "IsPersonAnaemicRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "vitamin_a",
+            "indicators": [
+                {
+                    "indicator": "NRHM_VIT_A_5_3YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "serviceProvidedPlaceField": "vitaminAPlace",
+                    "formFields": [
+                        "id",
+                        "vitaminADose",
+                        "vitaminADate",
+                        "dateOfBirth"
+                    ],
+                    "reportWhen": [
+                        "IsVitaminA5DoseGivenRule",
+                        "IsChildBelowThreeYearsRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_VIT_A_9_3YR",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "serviceProvidedPlaceField": "vitaminAPlace",
+                    "formFields": [
+                        "id",
+                        "vitaminADose",
+                        "vitaminADate",
+                        "dateOfBirth"
+                    ],
+                    "reportWhen": [
+                        "IsVitaminA9DoseGivenRule",
+                        "IsChildBelowThreeYearsRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_VIT_A_1",
+                    "reportEntityType": "child",
+                    "serviceProvidedDateField": "vitaminADate",
+                    "serviceProvidedPlaceField": "vitaminAPlace",
+                    "formFields": [
+                        "id",
+                        "vitaminADose",
+                        "vitaminADate",
+                        "dateOfBirth"
+                    ],
+                    "reportWhen": [
+                        "IsVitaminA1DoseGivenRule",
+                        "IsChildBetween6to12MonthsRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "pnc_visit",
+            "indicators": [
+                {
+                    "indicator": "NRHM_48HRS",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "dischargeDate",
+                    "serviceProvidedPlaceField": "deliveryPlace",
+                    "formFields": [
+                        "id",
+                        "dischargeDate",
+                        "referenceDate"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSubCenterRule",
+                        "WomanIsDischargedWithin48HoursOfDeliveryRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_PNC_V_2D",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "pncVisitDate",
+                    "formFields": [
+                        "id",
+                        "pncVisitPlace",
+                        "pncVisitDate",
+                        "referenceDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": ["pncVisitDates"]
+                    },
+                    "reportWhen": [
+                        "PNCVisitHappenedAtSubCenterOrHomeRule",
+                        "PNCVisitHappenedWithin2DaysOfDeliveryRule",
+                        "IsPNCVisitFirstRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_PNC_V_14D",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "pncVisitDate",
+                    "formFields": [
+                        "id",
+                        "pncVisitPlace",
+                        "pncVisitDate",
+                        "referenceDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": ["pncVisitDates"]
+                    },
+                    "reportWhen": [
+                        "PNCVisitHappenedAtSubCenterOrHomeRule",
+                        "PNCVisitHappenedBetween2And14DaysOfDeliveryRule",
+                        "IsPNCVisitFirstBetween2And14DaysOfDeliveryRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "postpartum_family_planning",
+            "indicators": [
+                {
+                    "indicator": "NRHM_OCP_STRIPS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
+                    "quantityField": "numberOfOCPDelivered",
+                    "externalIdField": "ecId",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "numberOfOCPDelivered",
+                        "currentMethod",
+                        "thayiCardNumber",
+                        "ecId"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsOCPRule",
+                        "MoreThanZeroOCPStripsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "CONDOM_QTY",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
+                    "quantityField": "numberOfCondomsSupplied",
+                    "externalIdField": "ecId",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "numberOfCondomsSupplied",
+                        "currentMethod",
+                        "thayiCardNumber",
+                        "ecId"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsCondomRule",
+                        "MoreThanZeroCondomsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_CENTCHROMAN_PILLS",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
+                    "quantityField": "numberOfCentchromanPillsDelivered",
+                    "externalIdField": "ecId",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "numberOfCentchromanPillsDelivered",
+                        "currentMethod",
+                        "thayiCardNumber",
+                        "ecId"
+                    ],
+                    "reportWhen": [
+                        "CurrentFPMethodIsCentchromanRule",
+                        "MoreThanZeroCentchromanPillsSuppliedRule"
+                    ]
+                },
+                {
+                    "indicator": "IUD",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
+                    "externalIdField": "ecId",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "currentMethod",
+                        "thayiCardNumber",
+                        "ecId"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "ecId",
+                        "fields": [
+                            "isOutOfArea"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsIUDRule",
+                        "IsNotOutOfAreaRule"
+                    ]
+                },
+                {
+                    "indicator": "MALE_STERILIZATION",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
+                    "externalIdField": "ecId",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "currentMethod",
+                        "thayiCardNumber",
+                        "ecId"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "ecId",
+                        "fields": [
+                            "isOutOfArea"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsMaleSterilizationRule",
+                        "IsNotOutOfAreaRule"
+                    ]
+                },
+                {
+                    "indicator": "FEMALE_STERILIZATION",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
+                    "externalIdField": "ecId",
+                    "formFields": [
+                        "id",
+                        "familyPlanningMethodChangeDate",
+                        "currentMethod",
+                        "thayiCardNumber",
+                        "ecId"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "ecId",
+                        "fields": [
+                            "isOutOfArea"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsNotOutOfAreaRule"
+                    ]
+                },
+                {
+                    "indicator": "FS_APL",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
+                    "externalIdField": "ecId",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "familyPlanningMethodChangeDate",
+                        "thayiCardNumber",
+                        "ecId"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "ecId",
+                        "fields": [
+                            "isOutOfArea",
+                            "economicStatus"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsNotOutOfAreaRule",
+                        "IsEconomicStatusAPLRule"
+                    ]
+                },
+                {
+                    "indicator": "FS_BPL",
+                    "reportEntityType": "eligible_couple",
+                    "serviceProvidedDateField": "familyPlanningMethodChangeDate",
+                    "reportEntityIdField": "ecId",
+                    "externalIdField": "ecId",
+                    "formFields": [
+                        "id",
+                        "currentMethod",
+                        "familyPlanningMethodChangeDate",
+                        "thayiCardNumber",
+                        "ecId"
+                    ],
+                    "referenceData": {
+                        "type": "eligible_couple",
+                        "idField": "ecId",
+                        "fields": [
+                            "isOutOfArea",
+                            "economicStatus"
+                        ]
+                    },
+                    "reportWhen": [
+                        "CurrentFPMethodIsFemaleSterilizationRule",
+                        "IsNotOutOfAreaRule",
+                        "IsEconomicStatusBPLRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "pnc_close",
+            "indicators": [
+                {
+                    "indicator": "NRHM_MD_LABOR",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "deathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToProlongedObstructedLaborRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_FITS",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "deathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToSevereHyperTensionOrFitsRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_BLEEDING",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "deathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToBleedingRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_H_FEVER",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "deathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToHighFeverRule"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_MD_OTHER",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "deathDate",
+                    "formFields": [
+                        "id",
+                        "maternalDeathCause",
+                        "deathDate"
+                    ],
+                    "reportWhen": [
+                        "IsDeathDueToOtherReasonsRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "ifa",
+            "indicators": [
+                {
+                    "indicator": "NRHM_IFA_100",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ifaTabletsDate",
+                    "serviceProvidedPlaceField": "ifaTabletsPlace",
+                    "formFields": [
+                        "id",
+                        "numberOfIFATabletsGiven",
+                        "ifaTabletsDate"
+                    ],
+                    "referenceData": {
+                        "type": "mother",
+                        "idField": "id",
+                        "fields": [
+                            "totalNumberOfIFATabletsGiven"
+                        ]
+                    },
+                    "reportWhen": [
+                        "MoreThan100IFATabletsAreProvidedRule",
+                        "ServiceProvidedAtSub_CenterRule"
+                    ]
+                }
+            ]
+        },
+        {
+            "form": "tt",
+            "indicators": [
+                {
+                    "indicator": "NRHM_TT1",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ttDate",
+                    "serviceProvidedPlaceField": "ttInjectionPlace",
+                    "formFields": [
+                        "id",
+                        "ttDose"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSub_CenterRule",
+                        "IsTT1DoseGivenForMother"
+                    ]
+                },
+                {
+                    "indicator": "NRHM_SUB_TT",
+                    "reportEntityType": "mother",
+                    "serviceProvidedDateField": "ttDate",
+                    "serviceProvidedPlaceField": "ttInjectionPlace",
+                    "formFields": [
+                        "id",
+                        "ttDose"
+                    ],
+                    "reportWhen": [
+                        "ServiceProvidedAtSub_CenterRule",
+                        "IsTT2OrTTBoosterDoseGivenForMother"
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,128 @@
+{
+    "ec_registration": [
+        "id",
+        "currentMethod",
+        "familyPlanningMethodChangeDate",
+        "caste",
+        "economicStatus",
+        "submissionDate"
+    ],
+    "fp_complications": [
+    ],
+    "fp_change": [
+        "id",
+        "newMethod",
+        "familyPlanningMethodChangeDate",
+        "submissionDate"
+    ],
+    "anc_registration": [
+        "motherId",
+        "referenceDate",
+        "registrationDate",
+        "submissionDate"
+    ],
+    "anc_visit": [
+        "id",
+        "ancVisitDate",
+        "ancVisitNumber",
+        "submissionDate"
+    ],
+    "anc_close": [
+        "id",
+        "timeOfInducedAbortion",
+        "dateOfInducedAbortion",
+        "closeReason",
+        "dateOfSpontaneousAbortion",
+        "isMaternalDeath",
+        "maternalDeathDate",
+        "submissionDate"
+    ],
+    "tt": [
+        "id",
+        "ttDose",
+        "ttInjectionPlace",
+        "ttDate",
+        "submissionDate"
+    ],
+    "tt_1": [
+        "id",
+        "ttDose",
+        "ttInjectionPlace",
+        "ttDate",
+        "submissionDate"
+    ],
+    "tt_2": [
+        "id",
+        "ttDose",
+        "ttInjectionPlace",
+        "ttDate",
+        "submissionDate"
+    ],
+    "tt_booster": [
+        "id",
+        "ttDose",
+        "ttInjectionPlace",
+        "ttDate",
+        "submissionDate"
+    ],
+    "delivery_outcome": [
+        "id",
+        "deliveryOutcome",
+        "referenceDate",
+        "deliveryPlace",
+        "didWomanSurvive",
+        "didMotherSurvive",
+        "deliveryType",
+        "submissionDate"
+    ],
+    "pnc_close": [
+        "id",
+        "closeReason",
+        "isMaternalDeath",
+        "deathDate",
+        "submissionDate"
+    ],
+    "pnc_registration_oa": [
+        "motherId",
+        "deliveryType",
+        "deliveryPlace",
+        "referenceDate",
+        "deliveryOutcome",
+        "submissionDate"
+    ],
+    "pnc_visit": [
+        "id",
+        "pncVisitNumber",
+        "pncVisitDate",
+        "deliveryPlace",
+        "referenceDate",
+        "submissionDate"
+    ],
+    "child_immunizations": [
+        "id",
+        "immunizationsGiven",
+        "immunizationDate",
+        "submissionDate"
+    ],
+    "child_close": [
+        "id",
+        "closeReason",
+        "deathDate",
+        "deathCause",
+        "submissionDate"
+    ],
+    "child_illness": [
+        "id",
+        "childSigns",
+        "sickVisitDate",
+        "reportChildDisease",
+        "reportChildDiseaseDate",
+        "submissionDate"
+    ],
+    "vitamin_a": [
+        "id",
+        "vitaminADose",
+        "vitaminADate",
+        "submissionDate"
+    ]
+}
