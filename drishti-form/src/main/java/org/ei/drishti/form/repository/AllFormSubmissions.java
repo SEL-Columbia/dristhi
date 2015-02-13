@@ -69,4 +69,24 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         }
         return db.queryView(query, FormSubmission.class);
     }
+    
+    @View(name = "formSubmission_by_form_name_and_server_version", 
+    		map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.formName, doc.serverVersion]); } }")
+    public List<FormSubmission> findByFormName(String formName, long version) {
+    	ComplexKey startKey = ComplexKey.of(formName, version + 1);
+        ComplexKey endKey = ComplexKey.of(formName, Long.MAX_VALUE);
+        return db.queryView(createQuery("formSubmission_by_form_name_and_server_version")
+        		.startKey(startKey)
+                .endKey(endKey)
+                .includeDocs(true), FormSubmission.class);
+    }
+
+    @View(name = "formSubmission_by_form_name_not_openmrs_synced", 
+    		map = "function(doc) { if (doc.type === 'FormSubmission') { try{ if(doc.formMetaData.openmrsSynced === true){return;} }catch(e){} emit(doc.formName); }}")
+    public List<FormSubmission> findByOpenmrsNotSynced(String formName) {
+        return db.queryView(createQuery("formSubmission_by_form_name_not_openmrs_synced")
+                .key(formName)
+                .includeDocs(true), FormSubmission.class);
+    }
+    
 }
