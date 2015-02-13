@@ -64,6 +64,19 @@ public class FormSubmissionService {
             allFormSubmissions.add(submission);
         }
     }
+    
+    public List<FormSubmission> getSubmissionByFormName(String formName, long serverVersion) {
+        return allFormSubmissions.findByFormName(formName, serverVersion);
+    }
+    
+    public List<FormSubmission> getSubmissionByOpenmrsNotSynced(String formName) {
+        return allFormSubmissions.findByOpenmrsNotSynced(formName);
+    }
+    
+    public void update(FormSubmission fs) {
+		allFormSubmissions.update(fs);
+	}
+
 
     private Comparator<FormSubmission> timeStampComparator() {
         return new Comparator<FormSubmission>() {
