@@ -29,6 +29,9 @@ public class FormSubmission extends MotechBaseDataObject {
     private FormInstance formInstance;
     @JsonProperty
     private long serverVersion;
+    
+    @JsonProperty
+    private Map<String, Object> formMetaData = new HashMap<String, Object>();
 
     public FormSubmission() {
     }
@@ -104,7 +107,15 @@ public class FormSubmission extends MotechBaseDataObject {
         return formInstance.getSubFormByName(name);
     }
 
-    @Override
+    public Map<String, Object> getFormMetaData() {
+		return formMetaData;
+	}
+
+	public void setFormMetaData(Map<String, Object> formMetaData) {
+		this.formMetaData = formMetaData;
+	}
+
+	@Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(o, this);
     }
