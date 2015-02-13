@@ -18,6 +18,7 @@
         <module>drishti-reporting</module>
         <module>drishti-interface</module>
         <module>drishti-form</module>
+        <module>opensrp-connector</module>
     </modules>
 
     <properties>
