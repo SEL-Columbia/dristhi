@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(1).draw();
+schedule.addAlertsStartingWith("Auto Close PNC", "Auto Close PNC - due (Will continue till service is delivered)", [new Date("Feb 26, 2012"), new Date("Feb 27, 2012"), new Date("Feb 28, 2012"), new Date("Feb 29, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>Auto Close PNC</center></body></html>

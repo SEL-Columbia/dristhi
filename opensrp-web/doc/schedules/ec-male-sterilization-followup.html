@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(1).draw();
+schedule.addAlerts("Male sterilization Followup 1", "Male sterilization Followup 1 - due", [new Date("Jan 01, 2012"), new Date("Jan 02, 2012"), ]);
+schedule.addAlertsStartingWith("Male sterilization Followup 1", "Male sterilization Followup 1 - late (Will continue till service is delivered)", [new Date("Jan 03, 2012"), new Date("Jan 04, 2012"), new Date("Jan 05, 2012"), new Date("Jan 06, 2012"), new Date("Jan 07, 2012"), new Date("Jan 08, 2012"), new Date("Jan 09, 2012"), ]);
+schedule.addAlertsStartingWith("Male sterilization Followup 2", "Male sterilization Followup 2 - due (Will continue till service is delivered)", [new Date("Apr 01, 2012"), new Date("Apr 02, 2012"), new Date("Apr 03, 2012"), ]);
+schedule.addAlertsStartingWith("Male sterilization Followup 2", "Male sterilization Followup 2 - late (Will continue till service is delivered)", [new Date("Apr 08, 2012"), new Date("Apr 09, 2012"), new Date("Apr 10, 2012"), new Date("Apr 11, 2012"), new Date("Apr 12, 2012"), new Date("Apr 13, 2012"), new Date("Apr 14, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>Male sterilization Followup</center></body></html>

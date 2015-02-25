@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(3).draw();
+schedule.addAlertsStartingWith("ANC 1", "ANC 1 - due (Will continue till service is delivered)", [new Date("Jan 01, 2012"), new Date("Jan 02, 2012"), new Date("Jan 03, 2012"), new Date("Jan 04, 2012"), new Date("Jan 05, 2012"), new Date("Jan 06, 2012"), new Date("Jan 07, 2012"), new Date("Jan 08, 2012"), new Date("Jan 09, 2012"), ]);
+schedule.addAlertsStartingWith("ANC 1", "ANC 1 - late (Will continue till service is delivered)", [new Date("Mar 25, 2012"), new Date("Mar 26, 2012"), new Date("Mar 27, 2012"), new Date("Mar 28, 2012"), new Date("Mar 29, 2012"), new Date("Mar 30, 2012"), new Date("Mar 31, 2012"), new Date("Apr 01, 2012"), ]);
+schedule.addAlertsStartingWith("ANC 2", "ANC 2 - due (Will continue till service is delivered)", [new Date("Apr 08, 2012"), new Date("Apr 09, 2012"), new Date("Apr 10, 2012"), new Date("Apr 11, 2012"), new Date("Apr 12, 2012"), new Date("Apr 13, 2012"), new Date("Apr 14, 2012"), new Date("Apr 15, 2012"), new Date("Apr 16, 2012"), new Date("Apr 17, 2012"), new Date("Apr 18, 2012"), new Date("Apr 19, 2012"), ]);
+schedule.addAlertsStartingWith("ANC 2", "ANC 2 - late (Will continue till service is delivered)", [new Date("Jul 01, 2012"), new Date("Jul 02, 2012"), new Date("Jul 03, 2012"), new Date("Jul 04, 2012"), new Date("Jul 05, 2012"), new Date("Jul 06, 2012"), new Date("Jul 07, 2012"), new Date("Jul 08, 2012"), ]);
+schedule.addAlertsStartingWith("ANC 3", "ANC 3 - due (Will continue till service is delivered)", [new Date("Jul 15, 2012"), new Date("Jul 16, 2012"), new Date("Jul 17, 2012"), new Date("Jul 18, 2012"), new Date("Jul 19, 2012"), new Date("Jul 20, 2012"), ]);
+schedule.addAlertsStartingWith("ANC 3", "ANC 3 - late (Will continue till service is delivered)", [new Date("Aug 26, 2012"), new Date("Aug 27, 2012"), new Date("Aug 28, 2012"), new Date("Aug 29, 2012"), new Date("Aug 30, 2012"), ]);
+schedule.addAlertsStartingWith("ANC 4", "ANC 4 - due (Will continue till service is delivered)", [new Date("Sep 09, 2012"), new Date("Sep 10, 2012"), new Date("Sep 11, 2012"), new Date("Sep 12, 2012"), new Date("Sep 13, 2012"), new Date("Sep 14, 2012"), new Date("Sep 15, 2012"), new Date("Sep 16, 2012"), new Date("Sep 17, 2012"), ]);
+schedule.addAlertsStartingWith("ANC 4", "ANC 4 - late (Will continue till service is delivered)", [new Date("Sep 30, 2012"), new Date("Oct 01, 2012"), new Date("Oct 02, 2012"), new Date("Oct 03, 2012"), new Date("Oct 04, 2012"), new Date("Oct 05, 2012"), new Date("Oct 06, 2012"), new Date("Oct 07, 2012"), new Date("Oct 08, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>Ante Natal Care - Normal</center></body></html>

@@ -3,21 +3,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.ei.drishti</groupId>
-    <artifactId>drishti</artifactId>
+    <groupId>org.opensrp</groupId>
+    <artifactId>opensrp</artifactId>
     <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
-    <name>Drishti</name>
-    <url>http://github.com/modilabs/dristhi</url>
+    <name>OpenSRP</name>
+    <url>http://github.com/modilabs/opensrp</url>
 
     <modules>
-        <module>drishti-mother-child</module>
-        <module>drishti-web</module>
-        <module>drishti-scheduler</module>
-        <module>drishti-common</module>
-        <module>drishti-reporting</module>
-        <module>drishti-interface</module>
-        <module>drishti-form</module>
+        <module>opensrp-mother-child</module>
+        <module>opensrp-web</module>
+        <module>opensrp-scheduler</module>
+        <module>opensrp-common</module>
+        <module>opensrp-reporting</module>
+        <module>opensrp-interface</module>
+        <module>opensrp-form</module>
     </modules>
 
     <properties>
@@ -38,15 +38,15 @@
 
     <distributionManagement>
         <repository>
-            <id>dristhi.nexus</id>
-            <name>Dristhi Releases Repository</name>
+            <id>opensrp.nexus</id>
+            <name>OpenSRP Releases Repository</name>
             <url>http://ci.smartregistries.org:8081/nexus/content/repositories/releases</url>
             <uniqueVersion>false</uniqueVersion>
         </repository>
         <snapshotRepository>
-            <id>dristhi.nexus</id>
-            <name>Dristhi Snapshots Repository</name>
-            <url>http://ci.smartregistries.org:8081/nexus/content/repositories/dristhi</url>
+            <id>opensrp.nexus</id>
+            <name>OpenSRP Snapshots Repository</name>
+            <url>http://ci.smartregistries.org:8081/nexus/content/repositories/opensrp</url>
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
@@ -79,9 +79,9 @@
             <url>http://maven.springframework.org/milestone</url>
         </repository>
         <repository>
-            <id>motech.drishti</id>
+            <id>motech.opensrp</id>
             <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/drishti</url>
+            <url>http://nexus.motechproject.org/content/repositories/opensrp</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>${drishti.updatePolicy}</updatePolicy>
@@ -104,6 +104,7 @@
     </repositories>
 
     <build>
+        <pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -303,5 +304,6 @@
                 </configuration>
             </plugin>
         </plugins>
+        </pluginManagement>
     </build>
 </project>

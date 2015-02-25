@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <security:http auto-config="true" realm="Dristhi" create-session="stateless">
+        <security:intercept-url pattern="/index.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/user-details" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/**" access="ROLE_USER, ROLE_PHC_USER"/>
+        <security:http-basic/>
+    </security:http>
+
+    <bean id="shaPasswordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder"/>
+    <bean id="drishtiAuthenticationProvider" class="org.opensrp.web.security.DrishtiAuthenticationProvider"/>
+
+    <security:authentication-manager>
+        <security:authentication-provider ref="drishtiAuthenticationProvider"/>
+    </security:authentication-manager>
+
+</beans>

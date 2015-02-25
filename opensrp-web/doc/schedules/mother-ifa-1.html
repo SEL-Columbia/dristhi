@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script src="schedule.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var schedule = new Schedule(1).draw();
+schedule.addAlertsStartingWith("IFA 1", "IFA 1 - earliest (Will continue till service is delivered)", [new Date("Jan 01, 2012"), new Date("Jan 02, 2012"), new Date("Jan 03, 2012"), ]);
+schedule.addAlertsStartingWith("IFA 1", "IFA 1 - due (Will continue till service is delivered)", [new Date("Apr 08, 2012"), new Date("Apr 09, 2012"), new Date("Apr 10, 2012"), new Date("Apr 11, 2012"), ]);
+schedule.addAlertsStartingWith("IFA 1", "IFA 1 - late (Will continue till service is delivered)", [new Date("Apr 22, 2012"), new Date("Apr 23, 2012"), new Date("Apr 24, 2012"), new Date("Apr 25, 2012"), ]);
+      };
+    </script>
+  </head>
+<body><center>IFA 1</center></body></html>

@@ -1,0 +1,73 @@
+span.title {
+    font-size: 24pt;
+    font-style: italic;
+}
+
+span.formStatus {
+    color: #0000ff;
+    clear: left;
+    float: left;
+    margin-bottom: 20px;
+}
+
+form {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+div.formDiv {
+    margin-bottom: 40px;
+    margin-left: 20px;
+    clear: left;
+}
+
+label {
+    width: 200px;
+    clear: left;
+    float: left;
+    margin-bottom: 15px;
+}
+
+input {
+    float: left;
+    margin-bottom: 15px;
+}
+
+span.extraDataTitle {
+    float: left;
+    clear: left;
+    font-size: 16pt;
+    font-style: italic;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+span.extraDataKey {
+    float: left;
+    clear: left;
+    font-size: 14pt;
+    font-style: italic;
+    color: #660000;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+div.extraData {
+    margin-left: 30px;
+}
+
+input[type="text"] {
+    width: 200px;
+}
+
+input[type="submit"] {
+    font-size: 24pt;
+    clear: left;
+    margin-left: -2px;
+}
+
+div#information {
+    float: right;
+    margin-right: 100px;
+    margin-top: 10px;
+}
