@@ -10,13 +10,14 @@ import org.opensrp.form.domain.FormSubmission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.opensrp.common.AllConstants;
 
 import java.util.List;
 
 @Repository
 public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
     @Autowired
-    protected AllFormSubmissions(@Qualifier("drishtiFormDatabaseConnector") CouchDbConnector db) {
+    protected AllFormSubmissions(@Qualifier(AllConstants.OPENSRP_FORM_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(FormSubmission.class, db);
     }
 

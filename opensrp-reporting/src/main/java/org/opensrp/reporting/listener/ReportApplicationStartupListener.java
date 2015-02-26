@@ -18,14 +18,14 @@ public class ReportApplicationStartupListener implements ApplicationListener<Con
     private AggregateReportsScheduler aggregateReportsScheduler;
 
     @Autowired
-    public ReportApplicationStartupListener(@Value("#{drishti['application.context']}") String applicationContext, AggregateReportsScheduler aggregateReportsScheduler) {
+    public ReportApplicationStartupListener(@Value("#{opensrp['application.context']}") String applicationContext, AggregateReportsScheduler aggregateReportsScheduler) {
         APPLICATION_ID = applicationContext;
         this.aggregateReportsScheduler = aggregateReportsScheduler;
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        logger.info(MessageFormat.format("Dristhi report service is starting. Application id: {0}",
+        logger.info(MessageFormat.format("OpenSRP report service is starting. Application id: {0}",
                 contextRefreshedEvent.getApplicationContext().getId()));
         if (APPLICATION_ID.equals(contextRefreshedEvent.getApplicationContext().getId())) {
             aggregateReportsScheduler.startTimedScheduler();

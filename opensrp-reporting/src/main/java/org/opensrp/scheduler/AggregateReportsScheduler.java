@@ -24,7 +24,7 @@ public class AggregateReportsScheduler {
     private MotechSchedulerService schedulerService;
 
     @Autowired
-    public AggregateReportsScheduler(@Value("#{drishti['batch.update.time.interval']}") long batchUpdateTimeInterval, MotechSchedulerService schedulerService) {
+    public AggregateReportsScheduler(@Value("#{opensrp['batch.update.time.interval']}") long batchUpdateTimeInterval, MotechSchedulerService schedulerService) {
         this.schedulerService = schedulerService;
         REPEAT_INTERVAL_IN_MINUTES = batchUpdateTimeInterval;
     }

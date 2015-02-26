@@ -7,7 +7,7 @@
     <bean id="serviceProvidedSessionFactory"
           class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
         <property name="dataSource" ref="serviceProvidedDataSource"/>
-        <property name="packagesToScan" value="org.ei.drishti.reporting.domain"/>
+        <property name="packagesToScan" value="org.opensrp.reporting.domain"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>

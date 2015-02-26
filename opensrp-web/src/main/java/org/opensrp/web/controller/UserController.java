@@ -19,30 +19,30 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Controller
 public class UserController {
-    private String drishtiSiteUrl;
-    private DrishtiAuthenticationProvider drishtiAuthenticationProvider;
+    private String opensrpSiteUrl;
+    private DrishtiAuthenticationProvider opensrpAuthenticationProvider;
 
     @Autowired
-    public UserController(@Value("#{drishti['drishti.site.url']}") String drishtiSiteUrl,
-                          DrishtiAuthenticationProvider drishtiAuthenticationProvider) {
-        this.drishtiSiteUrl = drishtiSiteUrl;
-        this.drishtiAuthenticationProvider = drishtiAuthenticationProvider;
+    public UserController(@Value("#{opensrp['drishti.site.url']}") String opensrpSiteUrl,
+                          DrishtiAuthenticationProvider opensrpAuthenticationProvider) {
+        this.opensrpSiteUrl = opensrpSiteUrl;
+        this.opensrpAuthenticationProvider = opensrpAuthenticationProvider;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/authenticate-user")
     public ResponseEntity<HttpStatus> authenticateUser() {
-        return new ResponseEntity<>(null, allowOrigin(drishtiSiteUrl), OK);
+        return new ResponseEntity<>(null, allowOrigin(opensrpSiteUrl), OK);
     }
 
     public DrishtiUser currentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return drishtiAuthenticationProvider.getDrishtiUser(authentication);
+        return opensrpAuthenticationProvider.getDrishtiUser(authentication);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/user-details")
     public ResponseEntity<UserDetail> userDetail(@RequestParam("anm-id") String anmIdentifier) {
-        DrishtiUser user = drishtiAuthenticationProvider.getDrishtiUser(anmIdentifier);
-        return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(drishtiSiteUrl), OK);
+        DrishtiUser user = opensrpAuthenticationProvider.getDrishtiUser(anmIdentifier);
+        return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(opensrpSiteUrl), OK);
     }
 
 }

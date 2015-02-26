@@ -31,7 +31,7 @@ import static org.motechproject.scheduletracking.api.domain.WindowName.*;
 import static org.motechproject.util.DateUtil.newDate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring/applicationContext-drishti-web.xml")
+@ContextConfiguration("classpath:spring/applicationContext-opensrp-web.xml")
 public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     private static final int JANUARY = 1;
     private static final int FEBRUARY = 2;
@@ -546,8 +546,8 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         });
 
         String outputDir = null;
-        if (new File("drishti-web").exists()) {
-            outputDir = "drishti-web/doc/schedules/";
+        if (new File("opensrp-web").exists()) {
+            outputDir = "opensrp-web/doc/schedules/";
         } else if (new File("doc").exists()) {
             outputDir = "doc/schedules/";
         }

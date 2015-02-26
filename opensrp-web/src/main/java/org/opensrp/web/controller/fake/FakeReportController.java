@@ -17,7 +17,7 @@ public class FakeReportController {
 
     @Autowired
     public FakeReportController(ReportingEventListener reportingEventListener, HttpAgent httpAgent,
-                                @Value("#{drishti['drishti.reporting.url']}") String reportURL) {
+                                @Value("#{opensrp['drishti.reporting.url']}") String reportURL) {
         this.reportingEventListener = reportingEventListener;
         this.httpAgent = httpAgent;
         this.reportURL = reportURL;

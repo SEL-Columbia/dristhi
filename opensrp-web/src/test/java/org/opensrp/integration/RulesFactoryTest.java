@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring/applicationContext-drishti-web.xml")
+@ContextConfiguration("classpath:spring/applicationContext-opensrp-web.xml")
 public class RulesFactoryTest {
 
     @Autowired

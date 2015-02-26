@@ -26,7 +26,7 @@ public class Auditor {
     private static Logger logger = LoggerFactory.getLogger(Auditor.class.toString());
 
     @Autowired
-    public Auditor(@Value("#{drishti['number.of.audit.messages']}") int numberOfAuditMessagesToHoldOnTo) {
+    public Auditor(@Value("#{opensrp['number.of.audit.messages']}") int numberOfAuditMessagesToHoldOnTo) {
         this.messages = new ArrayList<>();
         this.numberOfAuditMessagesToHoldOnTo = numberOfAuditMessagesToHoldOnTo;
     }

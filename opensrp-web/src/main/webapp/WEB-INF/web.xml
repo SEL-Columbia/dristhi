@@ -2,7 +2,7 @@
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.4"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
-    <display-name>drishti</display-name>
+    <display-name>opensrp-server</display-name>
 
     <description>OpenSRP Web Application</description>
 
@@ -14,7 +14,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath*:spring/applicationContext-drishti-web.xml</param-value>
+        <param-value>classpath*:spring/applicationContext-opensrp-web.xml</param-value>
     </context-param>
 
     <filter>
@@ -72,7 +72,7 @@
 
     <!-- Handles Spring requests -->
     <servlet>
-        <servlet-name>drishti</servlet-name>
+        <servlet-name>opensrp</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
@@ -82,7 +82,7 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>drishti</servlet-name>
+        <servlet-name>opensrp</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 

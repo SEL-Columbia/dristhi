@@ -24,7 +24,7 @@ public class DrishtiFormScheduler {
     private long formPollInterval;
 
     @Autowired
-    public DrishtiFormScheduler(MotechSchedulerService schedulerService, @Value("#{drishti['form.poll.time.interval']}") Long formPollInterval) {
+    public DrishtiFormScheduler(MotechSchedulerService schedulerService, @Value("#{opensrp['form.poll.time.interval']}") Long formPollInterval) {
         this.schedulerService = schedulerService;
         this.formPollInterval = formPollInterval;
     }

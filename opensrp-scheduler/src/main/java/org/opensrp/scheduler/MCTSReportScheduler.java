@@ -27,8 +27,8 @@ public class MCTSReportScheduler {
 
     @Autowired
     public MCTSReportScheduler(MotechSchedulerService schedulerService,
-                               @Value("#{drishti['mcts.poll.time.interval.in.hours']}") Long pollIntervalInHours,
-                               @Value("#{drishti['mcts.poll.time.interval.in.minutes']}") Long pollIntervalInMinutes) {
+                               @Value("#{opensrp['mcts.poll.time.interval.in.hours']}") Long pollIntervalInHours,
+                               @Value("#{opensrp['mcts.poll.time.interval.in.minutes']}") Long pollIntervalInMinutes) {
         this.schedulerService = schedulerService;
         this.pollIntervalInHours = pollIntervalInHours;
         this.pollIntervalInMinutes = pollIntervalInMinutes;

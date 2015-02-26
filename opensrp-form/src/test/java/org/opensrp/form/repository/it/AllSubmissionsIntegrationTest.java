@@ -14,7 +14,7 @@ import static java.util.Arrays.asList;
 import static junit.framework.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:applicationContext-drishti-form.xml")
+@ContextConfiguration("classpath:applicationContext-opensrp-form.xml")
 public class AllSubmissionsIntegrationTest {
     @Autowired
     private AllFormSubmissions formSubmissions;

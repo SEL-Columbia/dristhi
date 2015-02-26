@@ -1,0 +1,10 @@
+{
+  "username": "demo1",
+  "password": "77ba08ff5832b6c4143c51160b7e9bab7b72d98a",
+  "salt": "1efa26b9-9cc9-40df-aecb-14836069a8f8",
+  "roles": [
+ 	 "ROLE_USER"
+  ],
+  "active": true,
+  "type": "DrishtiUser"
+}

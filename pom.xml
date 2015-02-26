@@ -8,10 +8,10 @@
     <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
     <name>OpenSRP</name>
-    <url>http://github.com/modilabs/opensrp</url>
+    <url>http://github.com/modilabs/opensrp-server</url>
 
     <modules>
-        <module>opensrp-mother-child</module>
+        <module>opensrp-core</module>
         <module>opensrp-web</module>
         <module>opensrp-scheduler</module>
         <module>opensrp-common</module>
@@ -23,8 +23,8 @@
     <properties>
         <db.server>localhost</db.server>
         <db.port>5984</db.port>
-        <db.name.drishti>drishti</db.name.drishti>
-        <db.name.drishti-form>drishti-form</db.name.drishti-form>
+        <db.name.opensrp>drishti</db.name.opensrp>
+        <db.name.opensrp-form>drishti-form</db.name.opensrp-form>
         <db.name.motech-scheduletracking>motech-scheduletracking</db.name.motech-scheduletracking>
         <main.basedir>${project.basedir}</main.basedir>
         <motech.version>0.11</motech.version>
@@ -33,7 +33,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.1.0.RELEASE</spring.version>
         <jackson.version>1.9.7</jackson.version>
-        <drishti.updatePolicy>always</drishti.updatePolicy>
+        <opensrp.updatePolicy>always</opensrp.updatePolicy>
     </properties>
 
     <distributionManagement>
@@ -46,7 +46,7 @@
         <snapshotRepository>
             <id>opensrp.nexus</id>
             <name>OpenSRP Snapshots Repository</name>
-            <url>http://ci.smartregistries.org:8081/nexus/content/repositories/opensrp</url>
+            <url>http://ci.smartregistries.org:8081/nexus/content/repositories/opensrp-server</url>
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
@@ -81,10 +81,10 @@
         <repository>
             <id>motech.opensrp</id>
             <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/opensrp</url>
+            <url>http://nexus.motechproject.org/content/repositories/opensrp-server</url>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>${drishti.updatePolicy}</updatePolicy>
+                <updatePolicy>${opensrp.updatePolicy}</updatePolicy>
             </snapshots>
         </repository>
         <repository>
@@ -93,7 +93,7 @@
             <url>http://nexus.motechproject.org/content/repositories/snapshots</url>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>${drishti.updatePolicy}</updatePolicy>
+                <updatePolicy>${opensrp.updatePolicy}</updatePolicy>
             </snapshots>
         </repository>
         <repository>
@@ -164,8 +164,8 @@
                                     <arg value="-S"/>
                                     <arg value="-X"/>
                                     <arg value="DELETE"/>
-                                    <arg value="http://${db.server}:${db.port}/${db.name.drishti}"/>
-                                    <arg value="http://${db.server}:${db.port}/${db.name.drishti-form}"/>
+                                    <arg value="http://${db.server}:${db.port}/${db.name.opensrp}"/>
+                                    <arg value="http://${db.server}:${db.port}/${db.name.opensrp-form}"/>
                                     <arg value="http://${db.server}:${db.port}/${db.name.motech-scheduletracking}"/>
                                 </exec>
                                 <echo message="Dropping DB: END"/>

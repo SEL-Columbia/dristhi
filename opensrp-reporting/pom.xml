@@ -13,7 +13,7 @@
     <artifactId>opensrp-reporting</artifactId>
     <name>opensrp-reporting</name>
     <packaging>war</packaging>
-    <url>http://github.com/modilabs/opensrp</url>
+    <url>http://github.com/modilabs/opensrp-server</url>
 
     <properties>
         <jetty.port>9980</jetty.port>

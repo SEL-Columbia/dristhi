@@ -7,7 +7,7 @@
           http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-    <security:http auto-config="true" realm="Dristhi" create-session="stateless">
+    <security:http auto-config="true" realm="OpenSRP" create-session="stateless">
         <security:intercept-url pattern="/index.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/user-details" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
@@ -16,10 +16,10 @@
     </security:http>
 
     <bean id="shaPasswordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder"/>
-    <bean id="drishtiAuthenticationProvider" class="org.opensrp.web.security.DrishtiAuthenticationProvider"/>
+    <bean id="opensrpAuthenticationProvider" class="org.opensrp.web.security.DrishtiAuthenticationProvider"/>
 
     <security:authentication-manager>
-        <security:authentication-provider ref="drishtiAuthenticationProvider"/>
+        <security:authentication-provider ref="opensrpAuthenticationProvider"/>
     </security:authentication-manager>
 
 </beans>

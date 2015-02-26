@@ -34,19 +34,19 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class ANMDetailsController {
     private static Logger logger = LoggerFactory.getLogger(ANMDetailsController.class.toString());
     private ANMDetailsService anmDetailsService;
-    private final String drishtiSiteUrl;
-    private String drishtiANMDetailsUrl;
+    private final String opensrpSiteUrl;
+    private String opensrpANMDetailsUrl;
     private UserController userController;
     private HttpAgent httpAgent;
 
     @Autowired
     public ANMDetailsController(ANMDetailsService anmDetailsService,
-                                @Value("#{drishti['drishti.site.url']}") String drishtiSiteUrl,
-                                @Value("#{drishti['drishti.anm.details.url']}") String drishtiANMDetailsUrl,
+                                @Value("#{opensrp['drishti.site.url']}") String opensrpSiteUrl,
+                                @Value("#{opensrp['drishti.anm.details.url']}") String opensrpANMDetailsUrl,
                                 UserController userController, HttpAgent httpAgent) {
         this.anmDetailsService = anmDetailsService;
-        this.drishtiSiteUrl = drishtiSiteUrl;
-        this.drishtiANMDetailsUrl = drishtiANMDetailsUrl;
+        this.opensrpSiteUrl = opensrpSiteUrl;
+        this.opensrpANMDetailsUrl = opensrpANMDetailsUrl;
         this.userController = userController;
         this.httpAgent = httpAgent;
     }
@@ -57,16 +57,16 @@ public class ANMDetailsController {
         HttpResponse response = new HttpResponse(false, null);
         try {
             String anmIdentifier = userController.currentUser().getUsername();
-            response = httpAgent.get(drishtiANMDetailsUrl + "?anm-id=" + anmIdentifier);
+            response = httpAgent.get(opensrpANMDetailsUrl + "?anm-id=" + anmIdentifier);
             List<ANMDTO> anmBasicDetails = new Gson().fromJson(response.body(),
                     new TypeToken<List<ANMDTO>>() {
                     }.getType());
             ANMDetails anmDetails = anmDetailsService.anmDetails(anmBasicDetails);
             logger.info("Fetched ANM details with beneficiary count.");
-            return new ResponseEntity<>(mapToDTO(anmDetails), allowOrigin(drishtiSiteUrl), HttpStatus.OK);
+            return new ResponseEntity<>(mapToDTO(anmDetails), allowOrigin(opensrpSiteUrl), HttpStatus.OK);
         } catch (Exception exception) {
             logger.error(MessageFormat.format("{0} occurred while fetching ANM Details. StackTrace: \n {1}", exception.getMessage(), ExceptionUtils.getFullStackTrace(exception)));
-            logger.error(MessageFormat.format("Response with status {0} and body: {1} was obtained from {2}", response.isSuccess(), response.body(), drishtiANMDetailsUrl));
+            logger.error(MessageFormat.format("Response with status {0} and body: {1} was obtained from {2}", response.isSuccess(), response.body(), opensrpANMDetailsUrl));
         }
         return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
     }

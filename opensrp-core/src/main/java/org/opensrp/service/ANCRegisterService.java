@@ -1,0 +1,83 @@
+package org.opensrp.service;
+
+import org.opensrp.domain.EligibleCouple;
+import org.opensrp.domain.Mother;
+import org.opensrp.domain.register.ANCRegister;
+import org.opensrp.domain.register.ANCRegisterEntry;
+import org.opensrp.repository.AllEligibleCouples;
+import org.opensrp.repository.AllMothers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static ch.lambdaj.Lambda.*;
+import static org.opensrp.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.*;
+import static org.opensrp.common.AllConstants.CommonFormFields.IS_HIGH_RISK;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.*;
+import static org.hamcrest.Matchers.equalTo;
+
+@Service
+public class ANCRegisterService {
+    private final AllMothers allMothers;
+    private final AllEligibleCouples allEligibleCouples;
+
+    @Autowired
+    public ANCRegisterService(AllMothers allMothers,
+                              AllEligibleCouples allEligibleCouples) {
+        this.allMothers = allMothers;
+        this.allEligibleCouples = allEligibleCouples;
+    }
+
+    public ANCRegister getRegisterForANM(String anmIdentifier) {
+        ArrayList<ANCRegisterEntry> ancRegisterEntries = new ArrayList<>();
+        List<Mother> mothers = allMothers.findAllOpenMothersForANM(anmIdentifier);
+        Collection<String> ecIDs = selectDistinct(collect(mothers, on(Mother.class).ecCaseId()));
+        List<String> ecIdsList = new ArrayList<>();
+        ecIdsList.addAll(ecIDs);
+        List<EligibleCouple> ecs = allEligibleCouples.findAll(ecIdsList);
+        for (Mother mother : mothers) {
+            EligibleCouple ec = selectUnique(ecs,
+                    having(on(EligibleCouple.class).caseId(), equalTo(mother.ecCaseId())));
+            ANCRegisterEntry entry = new ANCRegisterEntry()
+                    .withANCNumber(mother.getDetail(ANC_NUMBER))
+                    .withRegistrationDate(mother.getDetail(REGISTRATION_DATE))
+                    .withECNumber(ec.ecNumber())
+                    .withThayiCardNumber(mother.thayiCardNumber())
+                    .withAadharCardNumber(ec.getDetail(AADHAR_NUMBER))
+                    .withWifeName(ec.wifeName())
+                    .withHusbandName(ec.husbandName())
+                    .withAddress(ec.getDetail(HOUSEHOLD_ADDRESS))
+                    .withWifeDOB(ec.wifeDOB())
+                    .withPhoneNumber(ec.getDetail(PHONE_NUMBER))
+                    .withWifeEducationLevel(ec.getDetail(WIFE_EDUCATIONAL_LEVEL))
+                    .withHusbandEducationLevel(ec.getDetail(HUSBAND_EDUCATION_LEVEL))
+                    .withCaste(ec.getDetail(CASTE))
+                    .withReligion(ec.getDetail(RELIGION))
+                    .withEconomicStatus(ec.getDetail(ECONOMIC_STATUS))
+                    .withBPLCardNumber(ec.getDetail(BPL_CARD_NUMBER))
+                    .withJSYBeneficiary(mother.getDetail(JSY_BENEFICIARY))
+                    .withGravida(ec.getDetail(NUMBER_OF_PREGNANCIES))
+                    .withParity(ec.getDetail(PARITY))
+                    .withNumberOfLivingChildren(ec.getDetail(NUMBER_OF_LIVING_CHILDREN))
+                    .withNumberOfStillBirths(ec.getDetail(NUMBER_OF_STILL_BIRTHS))
+                    .withNumberOfAbortions(ec.getDetail(NUMBER_OF_ABORTIONS))
+                    .withYoungestChildDOB(ec.getDetail(YOUNGEST_CHILD_DOB))
+                    .withLMP(mother.lmp().toString())
+                    .withEDD(mother.getDetail(EDD))
+                    .withHeight(mother.getDetail(HEIGHT))
+                    .withBloodGroup(mother.getDetail(BLOOD_GROUP))
+                    .withIsHRP(mother.getDetail(IS_HIGH_RISK))
+                    .withHBTests(mother.hbTests())
+                    .withANCInvestigations(mother.ancInvestigations())
+                    .withANCVisits(mother.ancVisits())
+                    .withIFATablets(mother.ifaTablets())
+                    .withTTDoses(mother.ttDoses());
+            ancRegisterEntries.add(entry);
+        }
+        return new ANCRegister(ancRegisterEntries);
+    }
+}

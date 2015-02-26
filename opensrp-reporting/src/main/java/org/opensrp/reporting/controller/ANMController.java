@@ -29,18 +29,18 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Controller
 public class ANMController {
-    private String drishtiSiteUrl;
-    private String dristhiUserDetailsUrl;
+    private String opensrpSiteUrl;
+    private String opensrpUserDetailsUrl;
     private ANMService anmService;
     private HttpAgent httpAgent;
     private DetailsFetcherFactory detailsFetcherFactory;
 
     @Autowired
-    public ANMController(@Value("#{drishti['drishti.site.url']}") String drishtiSiteUrl,
-                         @Value("#{drishti['drishti.user.details.url']}") String dristhiUserDetailsUrl,
+    public ANMController(@Value("#{opensrp['drishti.site.url']}") String opensrpSiteUrl,
+                         @Value("#{opensrp['drishti.user.details.url']}") String opensrpUserDetailsUrl,
                          ANMService anmService, HttpAgent httpAgent, DetailsFetcherFactory detailsFetcherFactory) {
-        this.drishtiSiteUrl = drishtiSiteUrl;
-        this.dristhiUserDetailsUrl = dristhiUserDetailsUrl;
+        this.opensrpSiteUrl = opensrpSiteUrl;
+        this.opensrpUserDetailsUrl = opensrpUserDetailsUrl;
         this.anmService = anmService;
         this.httpAgent = httpAgent;
         this.detailsFetcherFactory = detailsFetcherFactory;
@@ -51,7 +51,7 @@ public class ANMController {
     public ResponseEntity<List<ANMDTO>> all(@RequestParam("anm-id") String anmIdentifier) {
         HttpResponse response;
         try {
-            response = httpAgent.get(dristhiUserDetailsUrl + "?anm-id=" + anmIdentifier);
+            response = httpAgent.get(opensrpUserDetailsUrl + "?anm-id=" + anmIdentifier);
             UserDetail userDetail = new Gson().fromJson(response.body(),
                     new TypeToken<UserDetail>() {
                     }.getType()
@@ -59,11 +59,11 @@ public class ANMController {
             ANMDetailsFetcher anmDetailsFetcher = detailsFetcherFactory.detailsFetcher(userDetail.roles());
 
             List<ANMDTO> anmDTOList = convertToDTO(anmDetailsFetcher.fetchDetails(anmIdentifier));
-            return new ResponseEntity<>(anmDTOList, allowOrigin(drishtiSiteUrl), OK);
+            return new ResponseEntity<>(anmDTOList, allowOrigin(opensrpSiteUrl), OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(null, allowOrigin(drishtiSiteUrl), OK);
+        return new ResponseEntity<>(null, allowOrigin(opensrpSiteUrl), OK);
     }
 
     private List<ANMDTO> convertToDTO(List<SP_ANM> anms) {

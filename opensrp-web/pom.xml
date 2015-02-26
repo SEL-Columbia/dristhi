@@ -13,7 +13,7 @@
     <artifactId>opensrp-web</artifactId>
     <packaging>war</packaging>
     <name>opensrp-web</name>
-    <url>http://github.com/modilabs/opensrp</url>
+    <url>http://github.com/modilabs/opensrp-server</url>
 
     <properties>
         <jetty.port>9979</jetty.port>
@@ -30,7 +30,7 @@
                 <directory>../assets/config</directory>
             </resource>
             <resource>
-                <directory>../opensrp-mother-child/src/main/resources</directory>
+                <directory>../opensrp-core/src/main/resources</directory>
             </resource>
         </resources>
         <plugins>

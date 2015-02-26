@@ -12,7 +12,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath*:spring/applicationContext-drishti-reporting.xml</param-value>
+        <param-value>classpath*:spring/applicationContext-opensrp-reporting.xml</param-value>
     </context-param>
 
     <listener>
@@ -20,7 +20,7 @@
     </listener>
 
     <servlet>
-        <servlet-name>drishti</servlet-name>
+        <servlet-name>opensrp</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
@@ -30,7 +30,7 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>drishti</servlet-name>
+        <servlet-name>opensrp</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 

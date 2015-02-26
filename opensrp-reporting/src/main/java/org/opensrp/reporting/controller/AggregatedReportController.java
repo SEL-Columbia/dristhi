@@ -27,15 +27,15 @@ import static org.springframework.http.HttpStatus.OK;
 @Controller
 public class AggregatedReportController {
     private final AggregateReportsService aggregateReportsService;
-    private final String drishtiSiteUrl;
+    private final String opensrpSiteUrl;
     private final ANMService anmService;
 
     @Autowired
     public AggregatedReportController(AggregateReportsService aggregateReportsService,
-                                      @Value("#{drishti['drishti.site.url']}") String drishtiSiteUrl,
+                                      @Value("#{opensrp['drishti.site.url']}") String opensrpSiteUrl,
                                       ANMService anmService) {
         this.aggregateReportsService = aggregateReportsService;
-        this.drishtiSiteUrl = drishtiSiteUrl;
+        this.opensrpSiteUrl = opensrpSiteUrl;
         this.anmService = anmService;
     }
 
@@ -44,7 +44,7 @@ public class AggregatedReportController {
     public ResponseEntity<AggregatedReportsDTO> get(@RequestParam("anm-id") String anmIdentifier, @RequestParam("month") int month, @RequestParam("year") int year) {
         Map<String, Integer> indicatorSummary = buildIndicatorSummary(anmIdentifier, month, year);
         LocationDTO locationDTO = getLocation(anmIdentifier);
-        return new ResponseEntity<>(new AggregatedReportsDTO(indicatorSummary, locationDTO), allowOrigin(drishtiSiteUrl), OK);
+        return new ResponseEntity<>(new AggregatedReportsDTO(indicatorSummary, locationDTO), allowOrigin(opensrpSiteUrl), OK);
     }
 
     private LocationDTO getLocation(String anmIdentifier) {

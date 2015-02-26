@@ -24,15 +24,15 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @Controller
 public class ANMLocationController {
     private static Logger logger = LoggerFactory.getLogger(ANMLocationController.class.toString());
-    private final String drishtiANMVillagesURL;
+    private final String opensrpANMVillagesURL;
     private UserController userController;
     private HttpAgent httpAgent;
 
     @Autowired
-    public ANMLocationController(@Value("#{drishti['drishti.anm.villages.url']}") String drishtiANMVillagesURL,
+    public ANMLocationController(@Value("#{opensrp['drishti.anm.villages.url']}") String opensrpANMVillagesURL,
                                  UserController userController,
                                  HttpAgent httpAgent) {
-        this.drishtiANMVillagesURL = drishtiANMVillagesURL;
+        this.opensrpANMVillagesURL = opensrpANMVillagesURL;
         this.userController = userController;
         this.httpAgent = httpAgent;
     }
@@ -43,7 +43,7 @@ public class ANMLocationController {
         HttpResponse response = new HttpResponse(false, null);
         try {
             String anmIdentifier = userController.currentUser().getUsername();
-            response = httpAgent.get(drishtiANMVillagesURL + "?anm-id=" + anmIdentifier);
+            response = httpAgent.get(opensrpANMVillagesURL + "?anm-id=" + anmIdentifier);
             VillagesDTO villagesDTOs = new Gson().fromJson(response.body(),
                     new TypeToken<VillagesDTO>() {
                     }.getType());
@@ -51,7 +51,7 @@ public class ANMLocationController {
             return new ResponseEntity<>(villagesDTOs, HttpStatus.OK);
         } catch (Exception exception) {
             logger.error(MessageFormat.format("{0} occurred while fetching Village Details for anm. StackTrace: \n {1}", exception.getMessage(), ExceptionUtils.getFullStackTrace(exception)));
-            logger.error(MessageFormat.format("Response with status {0} and body: {1} was obtained from {2}", response.isSuccess(), response.body(), drishtiANMVillagesURL));
+            logger.error(MessageFormat.format("Response with status {0} and body: {1} was obtained from {2}", response.isSuccess(), response.body(), opensrpANMVillagesURL));
         }
         return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
     }

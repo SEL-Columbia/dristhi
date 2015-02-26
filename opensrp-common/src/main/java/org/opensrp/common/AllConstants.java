@@ -6,8 +6,9 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 public class AllConstants {
-    public static final String DRISHTI_DATABASE_CONNECTOR = "drishtiDatabaseConnector";
-    public static final String DRISHTI_MCTS_DATABASE_CONNECTOR = "drishtiMCTSDatabaseConnector";
+	public static final String OPENSRP_FORM_DATABASE_CONNECTOR = "opensrpFormDatabaseConnector";
+    public static final String OPENSRP_DATABASE_CONNECTOR = "opensrpDatabaseConnector";
+    public static final String OPENSRP_MCTS_DATABASE_CONNECTOR = "opensrpMCTSDatabaseConnector";
     public static final String SPACE = " ";
     public static final String BOOLEAN_TRUE_VALUE = "true";
     public static final String BOOLEAN_FALSE_VALUE = "false";

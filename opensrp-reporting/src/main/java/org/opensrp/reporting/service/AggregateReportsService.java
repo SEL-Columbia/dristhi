@@ -47,9 +47,9 @@ public class AggregateReportsService {
     }
 
     @Autowired
-    public AggregateReportsService(@Value("#{drishti['aggregator.dataset.url']}") String aggregatorDataSetUrl,
-                                   @Value("#{drishti['aggregated.dataset.url']}") String aggregatedDataSetUrl,
-                                   @Value("#{drishti['number.of.reports.sent.in.a.batch']}") int numberOfReportsSentInABatch,
+    public AggregateReportsService(@Value("#{opensrp['aggregator.dataset.url']}") String aggregatorDataSetUrl,
+                                   @Value("#{opensrp['aggregated.dataset.url']}") String aggregatedDataSetUrl,
+                                   @Value("#{opensrp['number.of.reports.sent.in.a.batch']}") int numberOfReportsSentInABatch,
                                    HttpAgent httpAgent, AllTokensRepository tokenRepository,
                                    ServicesProvidedRepository servicesProvidedRepository, ReportMonth reportMonth) {
         this.aggregatorDataSetUrl = aggregatorDataSetUrl;

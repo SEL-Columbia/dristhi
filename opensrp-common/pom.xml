@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
 
     <name>opensrp-common</name>
-    <url>http://github.com/modilabs/opensrp</url>
+    <url>http://github.com/modilabs/opensrp-server</url>
 
     <properties>
         <main.basedir>${project.basedir}/..</main.basedir>
