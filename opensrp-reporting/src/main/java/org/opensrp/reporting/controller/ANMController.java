@@ -36,8 +36,8 @@ public class ANMController {
     private DetailsFetcherFactory detailsFetcherFactory;
 
     @Autowired
-    public ANMController(@Value("#{opensrp['drishti.site.url']}") String opensrpSiteUrl,
-                         @Value("#{opensrp['drishti.user.details.url']}") String opensrpUserDetailsUrl,
+    public ANMController(@Value("#{opensrp['opensrp.site.url']}") String opensrpSiteUrl,
+                         @Value("#{opensrp['opensrp.user.details.url']}") String opensrpUserDetailsUrl,
                          ANMService anmService, HttpAgent httpAgent, DetailsFetcherFactory detailsFetcherFactory) {
         this.opensrpSiteUrl = opensrpSiteUrl;
         this.opensrpUserDetailsUrl = opensrpUserDetailsUrl;

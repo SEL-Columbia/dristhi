@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class AllDrishtiUsers extends MotechBaseRepository<DrishtiUser> {
+public class AllOpenSRPUsers extends MotechBaseRepository<DrishtiUser> {
     @Autowired
-    protected AllDrishtiUsers(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+    protected AllOpenSRPUsers(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(DrishtiUser.class, db);
     }
 

@@ -8,60 +8,60 @@
           class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
           depends-on="serviceProvidedFlywayMigrations">
         <property name="dataSource" ref="serviceProvidedDataSource"/>
-        <property name="packagesToScan" value="org.ei.drishti.reporting.domain"/>
+        <property name="packagesToScan" value="org.opensrp.reporting.domain"/>
 
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
-                <prop key="hibernate.connection.autocommit">${hibernate.auto_commit}</prop>
-                <prop key="hibernate.default_schema">${hibernate.default_schema}</prop>
+                <prop key="hibernate.dialect">#{opensrp['hibernate.dialect']}</prop>
+                <prop key="hibernate.show_sql">#{opensrp['hibernate.show_sql']}</prop>
+                <prop key="hibernate.format_sql">#{opensrp['hibernate.format_sql']}</prop>
+                <prop key="hibernate.connection.autocommit">#{opensrp['hibernate.auto_commit']}</prop>
+                <prop key="hibernate.default_schema">#{opensrp['hibernate.default_schema']}</prop>
             </props>
         </property>
     </bean>
 
     <bean id="serviceProvidedDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.driverClassName}"/>
-        <property name="jdbcUrl" value="${jdbc.url}"/>
-        <property name="user" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-        <property name="maxPoolSize" value="${hibernate.c3p0.max_size}"/>
-        <property name="minPoolSize" value="${hibernate.c3p0.min_size}"/>
-        <property name="checkoutTimeout" value="${hibernate.c3p0.timeout}"/>
-        <property name="maxStatements" value="${hibernate.c3p0.max_statements}"/>
-        <property name="idleConnectionTestPeriod" value="${hibernate.c3p0.idle_test_period}"/>
-        <property name="acquireIncrement" value="${hibernate.c3p0.acquire_increment}"/>
+        <property name="driverClass" value="#{opensrp['postgres.driverClassName']}"/>
+        <property name="jdbcUrl" value="#{opensrp['postgres.url']}"/>
+        <property name="user" value="#{opensrp['postgres.user']}"/>
+        <property name="password" value="#{opensrp['postgres.password']}"/>
+        <property name="maxPoolSize" value="#{opensrp['hibernate.c3p0.max_size']}"/>
+        <property name="minPoolSize" value="#{opensrp['hibernate.c3p0.min_size']}"/>
+        <property name="checkoutTimeout" value="#{opensrp['hibernate.c3p0.timeout']}"/>
+        <property name="maxStatements" value="${opensrp['hibernate.c3p0.max_statements']}"/>
+        <property name="idleConnectionTestPeriod" value="${opensrp['hibernate.c3p0.idle_test_period']}"/>
+        <property name="acquireIncrement" value="${opensrp['hibernate.c3p0.acquire_increment']}"/>
     </bean>
 
     <bean id="anmReportsSessionFactory"
           class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
           depends-on="anmReportFlywayMigrations">
         <property name="dataSource" ref="anmReportDataSource"/>
-        <property name="packagesToScan" value="org.ei.drishti.reporting.domain"/>
+        <property name="packagesToScan" value="org.opensrp.reporting.domain"/>
 
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
-                <prop key="hibernate.connection.autocommit">${hibernate.auto_commit}</prop>
-                <prop key="hibernate.default_schema">${hibernate.anm_report_schema}</prop>
+                <prop key="hibernate.dialect">#{opensrp['hibernate.dialect']}</prop>
+                <prop key="hibernate.show_sql">#{opensrp['hibernate.show_sql']}</prop>
+                <prop key="hibernate.format_sql">#{opensrp['hibernate.format_sql']}</prop>
+                <prop key="hibernate.connection.autocommit">#{opensrp['hibernate.auto_commit']}</prop>
+                <prop key="hibernate.default_schema">#{opensrp['hibernate.anm_report_schema']}</prop>
             </props>
         </property>
     </bean>
 
     <bean id="anmReportDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.driverClassName}"/>
-        <property name="jdbcUrl" value="${jdbc.url}"/>
-        <property name="user" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-        <property name="maxPoolSize" value="${hibernate.c3p0.max_size}"/>
-        <property name="minPoolSize" value="${hibernate.c3p0.min_size}"/>
-        <property name="checkoutTimeout" value="${hibernate.c3p0.timeout}"/>
-        <property name="maxStatements" value="${hibernate.c3p0.max_statements}"/>
-        <property name="idleConnectionTestPeriod" value="${hibernate.c3p0.idle_test_period}"/>
-        <property name="acquireIncrement" value="${hibernate.c3p0.acquire_increment}"/>
+        <property name="driverClass" value="#{opensrp['postgres.driverClassName']}"/>
+        <property name="jdbcUrl" value="#{opensrp['postgres.url']}"/>
+        <property name="user" value="#{opensrp['postgres.user']}"/>
+        <property name="password" value="#{opensrp['postgres.password']}"/>
+        <property name="maxPoolSize" value="#{opensrp['hibernate.c3p0.max_size']}"/>
+        <property name="minPoolSize" value="#{opensrp['hibernate.c3p0.min_size']}"/>
+        <property name="checkoutTimeout" value="#{opensrp['hibernate.c3p0.timeout']}"/>
+        <property name="maxStatements" value="${opensrp['hibernate.c3p0.max_statements']}"/>
+        <property name="idleConnectionTestPeriod" value="${opensrp['hibernate.c3p0.idle_test_period']}"/>
+        <property name="acquireIncrement" value="${opensrp['hibernate.c3p0.acquire_increment']}"/>
     </bean>
 
     <bean id="serviceProvidedTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">

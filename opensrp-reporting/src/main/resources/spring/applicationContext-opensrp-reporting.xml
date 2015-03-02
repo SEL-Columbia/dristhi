@@ -22,6 +22,7 @@
     <import resource="classpath:applicationPlatformServerAPI.xml"/>
 
     <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
+    
 
     <context:component-scan base-package="org.opensrp.scheduler, org.opensrp.reporting, org.opensrp.common"/>
     <mvc:default-servlet-handler/>

@@ -3,7 +3,7 @@ package org.opensrp.web.security;
 import ch.lambdaj.Lambda;
 import ch.lambdaj.function.convert.Converter;
 import org.opensrp.domain.DrishtiUser;
-import org.opensrp.repository.AllDrishtiUsers;
+import org.opensrp.repository.AllOpenSRPUsers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +28,12 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
     public static final String USER_NOT_ACTIVATED = "The user has been registered but not activated. Please contact your local administrator.";
     public static final String INTERNAL_ERROR = "Failed to authenticate user due to internal server error.";
 
-    private AllDrishtiUsers allDrishtiUsers;
+    private AllOpenSRPUsers allOpenSRPUsers;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public DrishtiAuthenticationProvider(AllDrishtiUsers allDrishtiUsers, @Qualifier("shaPasswordEncoder") PasswordEncoder passwordEncoder) {
-        this.allDrishtiUsers = allDrishtiUsers;
+    public DrishtiAuthenticationProvider(AllOpenSRPUsers allDrishtiUsers, @Qualifier("shaPasswordEncoder") PasswordEncoder passwordEncoder) {
+        this.allOpenSRPUsers = allDrishtiUsers;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -74,7 +74,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
     public DrishtiUser getDrishtiUser(Authentication authentication) {
         DrishtiUser user;
         try {
-            user = allDrishtiUsers.findByUsername((String) authentication.getPrincipal());
+            user = allOpenSRPUsers.findByUsername((String) authentication.getPrincipal());
         } catch (Exception e) {
             logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
             throw new BadCredentialsException(INTERNAL_ERROR);
@@ -85,7 +85,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
     public DrishtiUser getDrishtiUser(String username) {
         DrishtiUser user;
         try {
-            user = allDrishtiUsers.findByUsername(username);
+            user = allOpenSRPUsers.findByUsername(username);
         } catch (Exception e) {
             logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
             throw new BadCredentialsException(INTERNAL_ERROR);

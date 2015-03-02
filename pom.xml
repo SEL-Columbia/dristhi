@@ -1,309 +1,359 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.opensrp</groupId>
-    <artifactId>opensrp</artifactId>
-    <packaging>pom</packaging>
-    <version>0.1-SNAPSHOT</version>
-    <name>OpenSRP</name>
-    <url>http://github.com/modilabs/opensrp-server</url>
+	<groupId>org.opensrp</groupId>
+	<artifactId>opensrp</artifactId>
+	<packaging>pom</packaging>
+	<version>0.1-SNAPSHOT</version>
+	<name>OpenSRP</name>
+	<url>http://github.com/modilabs/opensrp-server</url>
 
-    <modules>
-        <module>opensrp-core</module>
-        <module>opensrp-web</module>
-        <module>opensrp-scheduler</module>
-        <module>opensrp-common</module>
-        <module>opensrp-reporting</module>
-        <module>opensrp-interface</module>
-        <module>opensrp-form</module>
-    </modules>
+	<modules>
+		<module>opensrp-core</module>
+		<module>opensrp-web</module>
+		<module>opensrp-scheduler</module>
+		<module>opensrp-common</module>
+		<module>opensrp-reporting</module>
+		<module>opensrp-interface</module>
+		<module>opensrp-form</module>
+	</modules>
 
-    <properties>
-        <db.server>localhost</db.server>
-        <db.port>5984</db.port>
-        <db.name.opensrp>drishti</db.name.opensrp>
-        <db.name.opensrp-form>drishti-form</db.name.opensrp-form>
-        <db.name.motech-scheduletracking>motech-scheduletracking</db.name.motech-scheduletracking>
-        <main.basedir>${project.basedir}</main.basedir>
-        <motech.version>0.11</motech.version>
-        <motech.contrib.group>org.motechproject.contrib-drishti</motech.contrib.group>
-        <motech.contrib.version>0.1-SNAPSHOT</motech.contrib.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.1.0.RELEASE</spring.version>
-        <jackson.version>1.9.7</jackson.version>
-        <opensrp.updatePolicy>always</opensrp.updatePolicy>
-    </properties>
+	<properties>
+		<couchdb.server>localhost</couchdb.server>
+		<couchdb.port>5984</couchdb.port>
+		<couchdb.name.opensrp>drishti</couchdb.name.opensrp>
+		<couch.name.opensrp-form>drishti-form</couch.name.opensrp-form>
+		<couchdb.name.motech-scheduletracking>motech-scheduletracking</couchdb.name.motech-scheduletracking>
+		<main.basedir>${project.basedir}</main.basedir>
+		<motech.version>0.11</motech.version>
+		<motech.contrib.group>org.motechproject.contrib-drishti</motech.contrib.group>
+		<motech.contrib.version>0.1-SNAPSHOT</motech.contrib.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>3.1.0.RELEASE</spring.version>
+		<jackson.version>1.9.7</jackson.version>
+		<opensrp.updatePolicy>always</opensrp.updatePolicy>
+	</properties>
 
-    <distributionManagement>
-        <repository>
-            <id>opensrp.nexus</id>
-            <name>OpenSRP Releases Repository</name>
-            <url>http://ci.smartregistries.org:8081/nexus/content/repositories/releases</url>
-            <uniqueVersion>false</uniqueVersion>
-        </repository>
-        <snapshotRepository>
-            <id>opensrp.nexus</id>
-            <name>OpenSRP Snapshots Repository</name>
-            <url>http://ci.smartregistries.org:8081/nexus/content/repositories/opensrp-server</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
-    </distributionManagement>
+	<distributionManagement>
+		<repository>
+			<id>opensrp.nexus</id>
+			<name>OpenSRP Releases Repository</name>
+			<url>http://ci.smartregistries.org:8081/nexus/content/repositories/releases</url>
+			<uniqueVersion>false</uniqueVersion>
+		</repository>
+		<snapshotRepository>
+			<id>opensrp.nexus</id>
+			<name>OpenSRP Snapshots Repository</name>
+			<url>http://ci.smartregistries.org:8081/nexus/content/repositories/opensrp-server</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>jasmine-js-bdd</id>
-            <name>Jasmine JavaScript BDD Repository</name>
-            <url>http://searls-maven-repository.googlecode.com/svn/trunk/snapshots</url>
-        </pluginRepository>
-    </pluginRepositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jasmine-js-bdd</id>
+			<name>Jasmine JavaScript BDD Repository</name>
+			<url>http://searls-maven-repository.googlecode.com/svn/trunk/snapshots</url>
+		</pluginRepository>
+	</pluginRepositories>
 
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>http://repo1.maven.org/maven2</url>
-            <name>Repository for dependencies</name>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-maven-release</id>
-            <name>Spring Maven Release Repository</name>
-            <url>http://maven.springframework.org/release</url>
-        </repository>
-        <repository>
-            <id>spring-maven-milestone</id>
-            <name>Spring Maven Milestone Repository</name>
-            <url>http://maven.springframework.org/milestone</url>
-        </repository>
-        <repository>
-            <id>motech.opensrp</id>
-            <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/opensrp-server</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>${opensrp.updatePolicy}</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>motech.nexus</id>
-            <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>${opensrp.updatePolicy}</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>motech.nexus.release</id>
-            <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/releases</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>http://repo1.maven.org/maven2</url>
+			<name>Repository for dependencies</name>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-maven-release</id>
+			<name>Spring Maven Release Repository</name>
+			<url>http://maven.springframework.org/release</url>
+		</repository>
+		<repository>
+			<id>spring-maven-milestone</id>
+			<name>Spring Maven Milestone Repository</name>
+			<url>http://maven.springframework.org/milestone</url>
+		</repository>
+		<repository>
+			<id>motech.opensrp</id>
+			<name>Motech Snapshots Repository</name>
+			<url>http://nexus.motechproject.org/content/repositories/opensrp-server</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>${opensrp.updatePolicy}</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>motech.nexus</id>
+			<name>Motech Snapshots Repository</name>
+			<url>http://nexus.motechproject.org/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>${opensrp.updatePolicy}</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>motech.nexus.release</id>
+			<name>Motech Snapshots Repository</name>
+			<url>http://nexus.motechproject.org/content/repositories/releases</url>
+		</repository>
+	</repositories>
 
-    <build>
-        <pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <outputDirectory/>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.5</version>
-            </plugin>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.5.1</version>
+					<configuration>
+						<source>1.7</source>
+						<target>1.7</target>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+						<outputDirectory />
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.5</version>
+				</plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0-alpha-2</version>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>read-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>${main.basedir}/build/maven.properties</file>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>Drop DB Before Unit and Repository Tests</id>
-                        <phase>process-test-classes</phase>
-                        <configuration>
-                            <target>
-                                <echo message="Dropping DBs: START"/>
-                                <exec executable="curl">
-                                    <arg value="-s"/>
-                                    <arg value="-S"/>
-                                    <arg value="-X"/>
-                                    <arg value="DELETE"/>
-                                    <arg value="http://${db.server}:${db.port}/${db.name.opensrp}"/>
-                                    <arg value="http://${db.server}:${db.port}/${db.name.opensrp-form}"/>
-                                    <arg value="http://${db.server}:${db.port}/${db.name.motech-scheduletracking}"/>
-                                </exec>
-                                <echo message="Dropping DB: END"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>properties-maven-plugin</artifactId>
+					<version>1.0-alpha-2</version>
+					<executions>
+						<execution>
+							<phase>initialize</phase>
+							<goals>
+								<goal>read-project-properties</goal>
+							</goals>
+							<configuration>
+								<files>
+									<file>${main.basedir}/build/maven.properties</file>
+									<file>${main.basedir}/assets/config/opensrp.properties</file>
+								</files>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.6</version>
+					<executions>
+						<execution>
+							<id>Drop DB Before Unit and Repository Tests</id>
+							<phase>process-test-classes</phase>
+							<configuration>
+								<target>
+									<echo message="Dropping CouchDBs: START" />
+									<exec executable="curl">
+										<arg value="-s" />
+										<arg value="-S" />
+										<arg value="-X" />
+										<arg value="DELETE" />
+										<arg
+											value="http://${couchdb.server}:${couchdb.port}/${couchdb.name.opensrp}" />
+										<arg
+											value="http://${couchdb.server}:${couchdb.port}/${couchdb.name.opensrp-form}" />
+										<arg
+											value="http://${couchdb.server}:${couchdb.port}/${couchdb.name.motech-scheduletracking}" />
+									</exec>
+									<echo message="Dropping CouchDB: END" />
+								</target>
+							</configuration>
+							<goals>
+								<goal>run</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>CREATE DB DRISHTI</id>
+							<phase>pre-integration-test</phase>
+							<configuration>
+								<target>
+									<echo message="CREATING DRISHTI START" />
+									<exec executable="curl">
+										<arg value="-X" />
+										<arg value="PUT" />
+										<arg
+											value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.drishti}" />
+									</exec>
+									<echo message="CREATED DRISHTI END" />
+								</target>
+							</configuration>
+							<goals>
+								<goal>run</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>ADD DEMO1</id>
+							<phase>post-integration-test</phase>
+							<configuration>
+								<target>
+									<echo message="ADDING DEMO1 START" />
+									<exec executable="curl">
+										<arg value="-H" />
+										<arg value="&quot;Content-Type: application/json&quot;" />
+										<arg value="-X" />
+										<arg value="POST" />
+										<arg
+											value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
+										<arg value="-d" />
+										<arg
+											value="@${main.basedir}/build/couch-seed-data/opensrp_users.json" />
+									</exec>
+									<echo message="ADDED DEMO1 END" />
+								</target>
+							</configuration>
+							<goals>
+								<goal>run</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>sql-maven-plugin</artifactId>
-                <version>1.5</version>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>sql-maven-plugin</artifactId>
+					<version>1.5</version>
 
-                <dependencies>
-                    <dependency>
-                        <groupId>postgresql</groupId>
-                        <artifactId>postgresql</artifactId>
-                        <version>9.1-901.jdbc4</version>
-                    </dependency>
-                </dependencies>
+					<dependencies>
+						<dependency>
+							<groupId>postgresql</groupId>
+							<artifactId>postgresql</artifactId>
+							<version>9.1-901.jdbc4</version>
+						</dependency>
+					</dependencies>
 
-                <configuration>
-                    <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://${postgres.server}:${postgres.port}:postgres</url>
-                    <username>${postgres.other.user}</username>
-                    <password>${postgres.other.password}</password>
-                    <skip>${maven.test.skip}</skip>
-                </configuration>
+					<configuration>
+						<driver>${jdbc.driverClassName}</driver>
+						<url>jdbc:postgresql://${postgres.server}:${postgres.port}:postgres</url>
+						<username>${postgres.user}</username>
+						<password>${postgres.password}</password>
+						<skip>${maven.test.skip}</skip>
+					</configuration>
 
-                <executions>
-                    <execution>
-                        <id>drop-quartz-db</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <url>jdbc:postgresql://${postgres.server}:${postgres.port}/postgres</url>
-                            <autocommit>true</autocommit>
-                            <sqlCommand> drop database if exists ${reporting.db}; drop database if exists ${quartz.db};</sqlCommand>
-                            <onError>abort</onError>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>create-quartz-db</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <url>jdbc:postgresql://${postgres.server}:${postgres.port}/postgres</url>
-                            <username>${postgres.other.user}</username>
-                            <password>${postgres.other.password}</password>
-                            <autocommit>true</autocommit>
-                            <sqlCommand>
-                                create database ${reporting.db};
-                                create database ${quartz.db};
-                            </sqlCommand>
-                            <onError>abort</onError>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>create-reporting-schema</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <url>jdbc:postgresql://${postgres.server}:${postgres.port}/${reporting.db}</url>
-                            <username>${postgres.other.user}</username>
-                            <password>${postgres.other.password}</password>
-                            <autocommit>true</autocommit>
-                            <sqlCommand>
-                                DROP SCHEMA IF EXISTS ${service.provided.reporting.schema} CASCADE;
-                                DROP SCHEMA IF EXISTS ${anm.reporting.schema} CASCADE;
-                                CREATE SCHEMA ${service.provided.reporting.schema} AUTHORIZATION ${postgres.user};
-                                CREATE SCHEMA ${anm.reporting.schema} AUTHORIZATION ${postgres.user};
-                                GRANT ALL ON SCHEMA ${service.provided.reporting.schema} TO ${postgres.user};
-                                GRANT ALL ON SCHEMA ${anm.reporting.schema} TO ${postgres.user};
-                            </sqlCommand>
-                            <onError>abort</onError>
-                        </configuration>
-                    </execution>
+					<executions>
+						<execution>
+							<id>drop-quartz-db</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>execute</goal>
+							</goals>
+							<configuration>
+								<url>jdbc:postgresql://${postgres.server}:${postgres.port}/postgres</url>
+								<autocommit>true</autocommit>
+								<sqlCommand> drop database if exists ${postgres.db.reporting}; drop
+									database if exists ${postgres.db.quartz};</sqlCommand>
+								<onError>abort</onError>
+							</configuration>
+						</execution>
+						<execution>
+							<id>create-quartz-db</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>execute</goal>
+							</goals>
+							<configuration>
+								<url>jdbc:postgresql://${postgres.server}:${postgres.port}/postgres</url>
+								<username>${postgres.user}</username>
+								<password>${postgres.password}</password>
+								<autocommit>true</autocommit>
+								<sqlCommand>
+									create database ${postgres.db.reporting};
+									create database ${postgres.db.quartz};
+								</sqlCommand>
+								<onError>abort</onError>
+							</configuration>
+						</execution>
+						<execution>
+							<id>create-reporting-schema</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>execute</goal>
+							</goals>
+							<configuration>
+								<url>jdbc:postgresql://${postgres.server}:${postgres.port}/${postgres.db.reporting}</url>
+								<username>${postgres.user}</username>
+								<password>${postgres.password}</password>
+								<autocommit>true</autocommit>
+								<sqlCommand>
+									DROP SCHEMA IF EXISTS ${service.provided.reporting.schema} CASCADE;
+									DROP SCHEMA IF EXISTS ${anm.reporting.schema} CASCADE;
+									CREATE SCHEMA ${service.provided.reporting.schema} AUTHORIZATION
+									${postgres.user};
+									CREATE SCHEMA ${anm.reporting.schema} AUTHORIZATION ${postgres.user};
+									GRANT ALL ON SCHEMA ${service.provided.reporting.schema} TO
+									${postgres.user};
+									GRANT ALL ON SCHEMA ${anm.reporting.schema} TO ${postgres.user};
+								</sqlCommand>
+								<onError>abort</onError>
+							</configuration>
+						</execution>
 
-                    <execution>
-                        <id>create-schema</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <url>jdbc:postgresql://${postgres.server}:${postgres.port}/${quartz.db}</url>
-                            <username>${postgres.user}</username>
-                            <password>${postgres.password}</password>
-                            <autocommit>true</autocommit>
-                            <srcFiles>
-                                <srcFile>../build/sql/tables_quartz.sql</srcFile>
-                            </srcFiles>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.9</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                        <configuration>
-                            <argLine>-XX:MaxPermSize=1024M</argLine>
-                            <includes>
-                                <include>**/*IntegrationTest.java</include>
-                            </includes>
-                            <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.9</version>
-                <configuration>
-                    <printSummary>true</printSummary>
-                    <excludes>
-                        <exclude>**/*IntegrationTest.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-        </pluginManagement>
-    </build>
+						<execution>
+							<id>create-schema</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>execute</goal>
+							</goals>
+							<configuration>
+								<url>jdbc:postgresql://${postgres.server}:${postgres.port}/${postgres.db.quartz}</url>
+								<username>${postgres.user}</username>
+								<password>${postgres.password}</password>
+								<autocommit>true</autocommit>
+								<srcFiles>
+									<srcFile>../build/sql/tables_quartz.sql</srcFile>
+								</srcFiles>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.9</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+							<configuration>
+								<argLine>-XX:MaxPermSize=1024M</argLine>
+								<includes>
+									<include>**/*IntegrationTest.java</include>
+								</includes>
+								<redirectTestOutputToFile>true</redirectTestOutputToFile>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.9</version>
+					<configuration>
+						<printSummary>true</printSummary>
+						<excludes>
+							<exclude>**/*IntegrationTest.java</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>

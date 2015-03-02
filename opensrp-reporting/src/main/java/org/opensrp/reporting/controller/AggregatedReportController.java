@@ -32,7 +32,7 @@ public class AggregatedReportController {
 
     @Autowired
     public AggregatedReportController(AggregateReportsService aggregateReportsService,
-                                      @Value("#{opensrp['drishti.site.url']}") String opensrpSiteUrl,
+                                      @Value("#{opensrp['opensrp.site.url']}") String opensrpSiteUrl,
                                       ANMService anmService) {
         this.aggregateReportsService = aggregateReportsService;
         this.opensrpSiteUrl = opensrpSiteUrl;

@@ -29,7 +29,7 @@ public class ANMLocationController {
     private HttpAgent httpAgent;
 
     @Autowired
-    public ANMLocationController(@Value("#{opensrp['drishti.anm.villages.url']}") String opensrpANMVillagesURL,
+    public ANMLocationController(@Value("#{opensrp['opensrp.anm.villages.url']}") String opensrpANMVillagesURL,
                                  UserController userController,
                                  HttpAgent httpAgent) {
         this.opensrpANMVillagesURL = opensrpANMVillagesURL;

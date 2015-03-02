@@ -23,7 +23,7 @@ public class UserController {
     private DrishtiAuthenticationProvider opensrpAuthenticationProvider;
 
     @Autowired
-    public UserController(@Value("#{opensrp['drishti.site.url']}") String opensrpSiteUrl,
+    public UserController(@Value("#{opensrp['opensrp.site.url']}") String opensrpSiteUrl,
                           DrishtiAuthenticationProvider opensrpAuthenticationProvider) {
         this.opensrpSiteUrl = opensrpSiteUrl;
         this.opensrpAuthenticationProvider = opensrpAuthenticationProvider;

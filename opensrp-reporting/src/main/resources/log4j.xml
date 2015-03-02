@@ -3,22 +3,23 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
+    
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="[REPORT] %d{ddMMyyyy HH:mm:ss,SSS} %-5p [%t] [%c{1}] %m%n"/>
         </layout>
     </appender>
 
-    <appender name="RollingLog" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="drishtiReporting.log"/>
+    <appender name="ReportingRollingLog" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="opensrpReporting.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ddMMyyyy HH:mm:ss,SSS} %-5p [%t] [%c{1}] %m%n"/>
         </layout>
     </appender>
 
-    <appender name="MonitorLog" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="drishtiReportingMonitoring.log"/>
+    <appender name="ReportingMonitorLog" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="opensrpReportingMonitoring.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ddMMyyyy HH:mm:ss,SSS} %m%n"/>
@@ -41,11 +42,11 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="org.ei">
+    <logger name="org.opensrp">
         <level value="INFO"/>
     </logger>
-
-    <logger name="DRISHTI_MONITOR">
+    
+    <logger name="OPENSRP_REPORT_MONITOR">
         <!--<appender-ref ref="MonitorLog"/>-->
         <appender-ref ref="CONSOLE"/>
     </logger>

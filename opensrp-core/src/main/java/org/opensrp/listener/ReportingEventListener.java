@@ -35,7 +35,7 @@ public class ReportingEventListener {
 
     @Autowired
     public ReportingEventListener(ANMReportingService anmReportService, HttpAgent httpAgent,
-                                  @Value("#{opensrp['drishti.reporting.url']}") String url) {
+                                  @Value("#{opensrp['opensrp.reporting.url']}") String url) {
         this.anmReportService = anmReportService;
         this.httpAgent = httpAgent;
         this.url = url;

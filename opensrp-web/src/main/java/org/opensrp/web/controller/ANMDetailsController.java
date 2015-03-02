@@ -41,8 +41,8 @@ public class ANMDetailsController {
 
     @Autowired
     public ANMDetailsController(ANMDetailsService anmDetailsService,
-                                @Value("#{opensrp['drishti.site.url']}") String opensrpSiteUrl,
-                                @Value("#{opensrp['drishti.anm.details.url']}") String opensrpANMDetailsUrl,
+                                @Value("#{opensrp['opensrp.site.url']}") String opensrpSiteUrl,
+                                @Value("#{opensrp['opensrp.anm.details.url']}") String opensrpANMDetailsUrl,
                                 UserController userController, HttpAgent httpAgent) {
         this.anmDetailsService = anmDetailsService;
         this.opensrpSiteUrl = opensrpSiteUrl;

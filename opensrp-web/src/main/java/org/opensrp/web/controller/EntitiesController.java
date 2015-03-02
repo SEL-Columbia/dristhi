@@ -4,7 +4,7 @@ import ch.lambdaj.function.convert.Converter;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.opensrp.domain.DrishtiUser;
 import org.opensrp.domain.EntityDetail;
-import org.opensrp.repository.AllDrishtiUsers;
+import org.opensrp.repository.AllOpenSRPUsers;
 import org.opensrp.service.EntitiesService;
 import org.opensrp.dto.register.EntityDetailDTO;
 import org.slf4j.Logger;
@@ -29,12 +29,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class EntitiesController {
     private static Logger logger = LoggerFactory.getLogger(EntitiesController.class.toString());
     private EntitiesService service;
-    private AllDrishtiUsers allDrishtiUsers;
+    private AllOpenSRPUsers allOpenSRPUsers;
 
     @Autowired
-    public EntitiesController(EntitiesService service, AllDrishtiUsers allDrishtiUsers) {
+    public EntitiesController(EntitiesService service, AllOpenSRPUsers allOpenSRPUsers) {
         this.service = service;
-        this.allDrishtiUsers = allDrishtiUsers;
+        this.allOpenSRPUsers = allOpenSRPUsers;
     }
 
     @RequestMapping(method = GET, value = "/entities-as-json")
