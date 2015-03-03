@@ -13,7 +13,7 @@
     <artifactId>opensrp-reporting</artifactId>
     <name>opensrp-reporting</name>
     <packaging>war</packaging>
-    <url>http://github.com/modilabs/opensrp-server</url>
+    <url>http://github.com/OpenSRP/opensrp-server</url>
 
     <properties>
         <jetty.port>9980</jetty.port>
@@ -167,6 +167,13 @@
             <resource>
                 <directory>../assets/config</directory>
             </resource>
+            <resource>
+                <directory>../build</directory>
+                <filtering>true</filtering>
+                <includes>
+                	<include>maven.properties</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>
@@ -185,7 +192,7 @@
                         </systemProperty>
                         <systemProperty>
                             <name>log4j.configuration</name>
-                            <value>file:${project.basedir}/src/main/resources/log4j.xml</value>
+                            <value>file:${main.basedir}/assets/config/log4j.xml</value>
                         </systemProperty>
                     </systemProperties>
                     <webAppConfig>
@@ -225,8 +232,8 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>2.0.2</version>
                 <configuration>
-                    <user>postgres</user>
-                    <password>password</password>
+                    <user>${jdbc.username}</user>
+                    <password>${jdbc.password}</password>
                 </configuration>
             </plugin>
         </plugins>
