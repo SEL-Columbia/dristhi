@@ -12,7 +12,7 @@
 
     <artifactId>opensrp-interface</artifactId>
     <name>opensrp-interface</name>
-    <url>http://github.com/modilabs/opensrp-server</url>
+    <url>http://github.com/OpenSRP/opensrp-server</url>
 
     <properties>
         <main.basedir>${project.basedir}/..</main.basedir>
