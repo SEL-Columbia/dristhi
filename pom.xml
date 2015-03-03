@@ -7,8 +7,8 @@
 	<artifactId>opensrp</artifactId>
 	<packaging>pom</packaging>
 	<version>0.1-SNAPSHOT</version>
-	<name>OpenSRP</name>
-	<url>http://github.com/modilabs/opensrp-server</url>
+	<name>opensrp</name>
+    <url>http://github.com/OpenSRP/opensrp-server</url>
 
 	<modules>
 		<module>opensrp-core</module>
@@ -21,18 +21,13 @@
 	</modules>
 
 	<properties>
-		<couchdb.server>localhost</couchdb.server>
-		<couchdb.port>5984</couchdb.port>
-		<couchdb.name.opensrp>drishti</couchdb.name.opensrp>
-		<couch.name.opensrp-form>drishti-form</couch.name.opensrp-form>
-		<couchdb.name.motech-scheduletracking>motech-scheduletracking</couchdb.name.motech-scheduletracking>
 		<main.basedir>${project.basedir}</main.basedir>
-		<motech.version>0.11</motech.version>
-		<motech.contrib.group>org.motechproject.contrib-drishti</motech.contrib.group>
-		<motech.contrib.version>0.1-SNAPSHOT</motech.contrib.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>3.1.0.RELEASE</spring.version>
-		<jackson.version>1.9.7</jackson.version>
+        <motech.version>0.11</motech.version>
+        <motech.contrib.group>org.motechproject.contrib-drishti</motech.contrib.group>
+        <motech.contrib.version>0.1-SNAPSHOT</motech.contrib.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.version>3.1.0.RELEASE</spring.version>
+        <jackson.version>1.9.7</jackson.version>
 		<opensrp.updatePolicy>always</opensrp.updatePolicy>
 	</properties>
 
@@ -104,7 +99,7 @@
 	</repositories>
 
 	<build>
-		<pluginManagement>
+		<!-- <pluginManagement> -->
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -159,20 +154,17 @@
 							<phase>process-test-classes</phase>
 							<configuration>
 								<target>
-									<echo message="Dropping CouchDBs: START" />
+									<echo message="Dropping Couch DBs: START" />
 									<exec executable="curl">
 										<arg value="-s" />
 										<arg value="-S" />
 										<arg value="-X" />
 										<arg value="DELETE" />
-										<arg
-											value="http://${couchdb.server}:${couchdb.port}/${couchdb.name.opensrp}" />
-										<arg
-											value="http://${couchdb.server}:${couchdb.port}/${couchdb.name.opensrp-form}" />
-										<arg
-											value="http://${couchdb.server}:${couchdb.port}/${couchdb.name.motech-scheduletracking}" />
+										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
+										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.form}" />
+										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.motech-scheduletracking}" />
 									</exec>
-									<echo message="Dropping CouchDB: END" />
+									<echo message="Dropping Couch DBs: END" />
 								</target>
 							</configuration>
 							<goals>
@@ -180,18 +172,17 @@
 							</goals>
 						</execution>
 						<execution>
-							<id>CREATE DB DRISHTI</id>
+							<id>CREATE DB OPENSRP</id>
 							<phase>pre-integration-test</phase>
 							<configuration>
 								<target>
-									<echo message="CREATING DRISHTI START" />
+									<echo message="CREATING OPENSRP START" />
 									<exec executable="curl">
 										<arg value="-X" />
 										<arg value="PUT" />
-										<arg
-											value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.drishti}" />
+										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
 									</exec>
-									<echo message="CREATED DRISHTI END" />
+									<echo message="CREATED OPENSRP END" />
 								</target>
 							</configuration>
 							<goals>
@@ -209,11 +200,9 @@
 										<arg value="&quot;Content-Type: application/json&quot;" />
 										<arg value="-X" />
 										<arg value="POST" />
-										<arg
-											value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
+										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
 										<arg value="-d" />
-										<arg
-											value="@${main.basedir}/build/couch-seed-data/opensrp_users.json" />
+										<arg value="@${main.basedir}/build/couch-seed-data/opensrp_users.json" />
 									</exec>
 									<echo message="ADDED DEMO1 END" />
 								</target>
@@ -240,9 +229,9 @@
 
 					<configuration>
 						<driver>${jdbc.driverClassName}</driver>
-						<url>jdbc:postgresql://${postgres.server}:${postgres.port}:postgres</url>
-						<username>${postgres.user}</username>
-						<password>${postgres.password}</password>
+						<url>${jdbc.url-wo-db}/postgres</url>
+						<username>${jdbc.username}</username>
+						<password>${jdbc.password}</password>
 						<skip>${maven.test.skip}</skip>
 					</configuration>
 
@@ -254,10 +243,10 @@
 								<goal>execute</goal>
 							</goals>
 							<configuration>
-								<url>jdbc:postgresql://${postgres.server}:${postgres.port}/postgres</url>
+								<url>${jdbc.url-wo-db}/postgres</url>
 								<autocommit>true</autocommit>
-								<sqlCommand> drop database if exists ${postgres.db.reporting}; drop
-									database if exists ${postgres.db.quartz};</sqlCommand>
+								<sqlCommand> drop database if exists ${db.reporting}; 
+								drop database if exists ${db.quartz};</sqlCommand>
 								<onError>abort</onError>
 							</configuration>
 						</execution>
@@ -268,13 +257,13 @@
 								<goal>execute</goal>
 							</goals>
 							<configuration>
-								<url>jdbc:postgresql://${postgres.server}:${postgres.port}/postgres</url>
-								<username>${postgres.user}</username>
-								<password>${postgres.password}</password>
+								<url>${jdbc.url-wo-db}/postgres</url>
+								<username>${jdbc.username}</username>
+								<password>${jdbc.password}</password>
 								<autocommit>true</autocommit>
 								<sqlCommand>
-									create database ${postgres.db.reporting};
-									create database ${postgres.db.quartz};
+									create database ${db.reporting};
+									create database ${db.quartz};
 								</sqlCommand>
 								<onError>abort</onError>
 							</configuration>
@@ -286,19 +275,17 @@
 								<goal>execute</goal>
 							</goals>
 							<configuration>
-								<url>jdbc:postgresql://${postgres.server}:${postgres.port}/${postgres.db.reporting}</url>
-								<username>${postgres.user}</username>
-								<password>${postgres.password}</password>
+								<url>${jdbc.url-wo-db}/${db.reporting}</url>
+								<username>${jdbc.username}</username>
+								<password>${jdbc.password}</password>
 								<autocommit>true</autocommit>
 								<sqlCommand>
-									DROP SCHEMA IF EXISTS ${service.provided.reporting.schema} CASCADE;
-									DROP SCHEMA IF EXISTS ${anm.reporting.schema} CASCADE;
-									CREATE SCHEMA ${service.provided.reporting.schema} AUTHORIZATION
-									${postgres.user};
-									CREATE SCHEMA ${anm.reporting.schema} AUTHORIZATION ${postgres.user};
-									GRANT ALL ON SCHEMA ${service.provided.reporting.schema} TO
-									${postgres.user};
-									GRANT ALL ON SCHEMA ${anm.reporting.schema} TO ${postgres.user};
+									DROP SCHEMA IF EXISTS ${db.reporting.report} CASCADE;
+									DROP SCHEMA IF EXISTS ${db.reporting.anm} CASCADE;
+									CREATE SCHEMA ${db.reporting.report} AUTHORIZATION ${jdbc.username};
+									CREATE SCHEMA ${db.reporting.anm} AUTHORIZATION ${jdbc.username};
+									GRANT ALL ON SCHEMA ${db.reporting.report} TO	${jdbc.username};
+									GRANT ALL ON SCHEMA ${db.reporting.anm} TO ${jdbc.username};
 								</sqlCommand>
 								<onError>abort</onError>
 							</configuration>
@@ -311,9 +298,9 @@
 								<goal>execute</goal>
 							</goals>
 							<configuration>
-								<url>jdbc:postgresql://${postgres.server}:${postgres.port}/${postgres.db.quartz}</url>
-								<username>${postgres.user}</username>
-								<password>${postgres.password}</password>
+								<url>${jdbc.url-wo-db}/${db.quartz}</url>
+								<username>${jdbc.username}</username>
+								<password>${jdbc.password}</password>
 								<autocommit>true</autocommit>
 								<srcFiles>
 									<srcFile>../build/sql/tables_quartz.sql</srcFile>
@@ -354,6 +341,6 @@
 					</configuration>
 				</plugin>
 			</plugins>
-		</pluginManagement>
+		<!-- </pluginManagement> -->
 	</build>
 </project>
