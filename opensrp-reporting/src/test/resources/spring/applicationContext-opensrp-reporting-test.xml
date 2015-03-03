@@ -14,7 +14,7 @@
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
     </bean>
 
-    <context:property-placeholder location="classpath*:opensrp-report.properties"/>
+    <context:property-placeholder location="classpath*:maven.properties,classpath*:opensrp.properties"/>
     <context:annotation-config/>
     <context:component-scan base-package="org.opensrp.scheduler, org.opensrp.reporting, org.opensrp.common"/>
 
