@@ -1,18 +1,13 @@
 package org.opensrp.service.formSubmission;
 
-import org.opensrp.form.repository.AllFormSubmissions;
-import org.opensrp.service.formSubmission.handler.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.repository.FormDataRepository;
 import org.opensrp.service.formSubmission.handler.ANCCloseHandler;
 import org.opensrp.service.formSubmission.handler.ANCInvestigationsHandler;
@@ -46,19 +41,23 @@ import org.opensrp.service.formSubmission.handler.VitaminAHandler;
 import org.opensrp.service.reporting.FormSubmissionReportService;
 import org.opensrp.service.reporting.MCTSReportService;
 import org.opensrp.util.FormSubmissionBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-drishti.xml")
+@ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
 public class ZiggyServiceIntegrationTest {
     @Autowired
     private FormDataRepository formDataRepository;
 
     @Autowired
-    @Value("#{drishti['form.directory.name']}")
+    @Value("#{opensrp['form.directory.name']}")
     private String formFilePath;
 
     @Autowired
-    @Value("#{drishti['js.directory.name']}")
+    @Value("#{opensrp['js.directory.name']}")
     private String jsDirectoryName;
 
     @Mock
