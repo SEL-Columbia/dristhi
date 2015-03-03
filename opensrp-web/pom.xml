@@ -13,7 +13,7 @@
     <artifactId>opensrp-web</artifactId>
     <packaging>war</packaging>
     <name>opensrp-web</name>
-    <url>http://github.com/modilabs/opensrp-server</url>
+    <url>http://github.com/OpenSRP/opensrp-server</url>
 
     <properties>
         <jetty.port>9979</jetty.port>
@@ -22,12 +22,20 @@
     </properties>
 
     <build>
+    	<finalName>opensrp-web</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
             <resource>
                 <directory>../assets/config</directory>
+            </resource>
+            <resource>
+                <directory>../build</directory>
+                <filtering>true</filtering>
+                <includes>
+                	<include>maven.properties</include>
+                </includes>
             </resource>
             <resource>
                 <directory>../opensrp-core/src/main/resources</directory>
@@ -50,7 +58,7 @@
                         </systemProperty>
                         <systemProperty>
                             <name>log4j.configuration</name>
-                            <value>file:${project.basedir}/src/main/resources/log4j.xml</value>
+                            <value>file:${main.basedir}/assets/config/log4j.xml</value>
                         </systemProperty>
                     </systemProperties>
                     <webAppConfig>
