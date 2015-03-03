@@ -12,7 +12,7 @@
     <artifactId>opensrp-form</artifactId>
     <packaging>jar</packaging>
     <name>opensrp-form</name>
-    <url>http://github.com/modilabs/opensrp-server</url>
+    <url>http://github.com/OpenSRP/opensrp-server</url>
 
     <properties>
         <main.basedir>${project.basedir}/..</main.basedir>
@@ -89,4 +89,19 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
+    <build>
+        <resources>
+            <resource>
+                <directory>../build</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>maven.properties</include>
+				</includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
 </project>
