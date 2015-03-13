@@ -10,7 +10,7 @@ import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.event.ReportDeleteEvent;
 import org.opensrp.event.ReportEvent;
 import org.opensrp.event.ReportUpdateEvent;
-import org.opensrp.service.reporting.ANMReportingService;
+import org.opensrp.service.reporting.IProviderReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +28,15 @@ public class ReportingEventListener {
     public static final String SUBMIT_REPORT_ACTION = "submit";
     public static final String UPDATE_REPORT_ACTION = "update";
     public static final String DELETE_REPORT_ACTION = "delete";
-    private ANMReportingService anmReportService;
+    private IProviderReporter providerReporter;
     private HttpAgent httpAgent;
     private String url;
     private static Logger logger = LoggerFactory.getLogger(ReportingEventListener.class);
 
     @Autowired
-    public ReportingEventListener(ANMReportingService anmReportService, HttpAgent httpAgent,
+    public ReportingEventListener(IProviderReporter providerReporter, HttpAgent httpAgent,
                                   @Value("#{opensrp['opensrp.reporting.url']}") String url) {
-        this.anmReportService = anmReportService;
+        this.providerReporter = providerReporter;
         this.httpAgent = httpAgent;
         this.url = url;
     }
@@ -72,7 +72,7 @@ public class ReportingEventListener {
     public void fetchANMReports(MotechEvent event) throws Exception {
         logger.info("Fetching ANM reports...");
 
-        anmReportService.reportFromEntityData();
+        providerReporter.reportFromEntityData();
         HttpResponse response = httpAgent.getWithSocketTimeout(url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION);
         if (!response.isSuccess()) {
             logger.error("ANM Reports fetch failed. URL: " + url + "/" + FETCH_REPORTS_FOR_ALL_ANMS_ACTION + ". Response body: " + response.body());
@@ -84,7 +84,7 @@ public class ReportingEventListener {
             logger.info("No ANM Reports fetched");
             return;
         }
-        anmReportService.processReports(anmReports);
+        providerReporter.processReports(anmReports);
 
         logger.info("Done fetching ANM reports.");
     }

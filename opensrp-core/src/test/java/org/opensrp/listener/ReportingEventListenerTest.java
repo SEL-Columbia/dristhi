@@ -22,20 +22,20 @@ import static org.opensrp.common.util.ANMIndicatorSummaryFactory.createSummaryFo
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import org.opensrp.listener.ReportingEventListener;
-import org.opensrp.service.reporting.ANMReportingService;
+import org.opensrp.service.reporting.IProviderReporter;
 
 public class ReportingEventListenerTest {
     @Mock
     private HttpAgent agent;
     @Mock
-    private ANMReportingService anmReportingService;
+    private IProviderReporter providerReportingService;
 
     private ReportingEventListener listener;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        listener = new ReportingEventListener(anmReportingService, agent, "http://drishti");
+        listener = new ReportingEventListener(providerReportingService, agent, "http://drishti");
     }
 
     @Test
@@ -77,7 +77,7 @@ public class ReportingEventListenerTest {
         listener.fetchANMReports(new MotechEvent("SUBJECT", data));
 
         verify(agent).getWithSocketTimeout("http://drishti/fetchForAllANMs");
-        verify(anmReportingService).processReports(anmReports);
+        verify(providerReportingService).processReports(anmReports);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class ReportingEventListenerTest {
 
         listener.fetchANMReports(new MotechEvent("SUBJECT", data));
 
-        verify(anmReportingService).reportFromEntityData();
+        verify(providerReportingService).reportFromEntityData();
     }
 
     @Test
@@ -98,7 +98,7 @@ public class ReportingEventListenerTest {
         listener.fetchANMReports(new MotechEvent("SUBJECT", data));
 
         verify(agent).getWithSocketTimeout("http://drishti/fetchForAllANMs");
-        verify(anmReportingService, times(0)).processReports(anyList());
+        verify(providerReportingService, times(0)).processReports(anyList());
     }
 
 
@@ -110,7 +110,7 @@ public class ReportingEventListenerTest {
         listener.fetchANMReports(new MotechEvent("SUBJECT", data));
 
         verify(agent).getWithSocketTimeout("http://drishti/fetchForAllANMs");
-        verify(anmReportingService, times(0)).processReports(anyList());
+        verify(providerReportingService, times(0)).processReports(anyList());
     }
 
     @Test
