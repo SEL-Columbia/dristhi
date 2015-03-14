@@ -18,6 +18,7 @@
 		<module>opensrp-reporting</module>
 		<module>opensrp-interface</module>
 		<module>opensrp-form</module>
+		<module>opensrp-api</module>
 	</modules>
 
 	<properties>
