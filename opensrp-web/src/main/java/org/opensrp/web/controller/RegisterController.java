@@ -1,8 +1,12 @@
 package org.opensrp.web.controller;
 
-import org.opensrp.domain.register.*;
-import org.opensrp.mapper.*;
-import org.opensrp.service.*;
+import org.opensrp.register.*;
+import org.opensrp.register.mapper.*;
+import org.opensrp.register.service.ANCRegisterService;
+import org.opensrp.register.service.ChildRegisterService;
+import org.opensrp.register.service.ECRegisterService;
+import org.opensrp.register.service.FPRegisterService;
+import org.opensrp.register.service.PNCRegisterService;
 import org.opensrp.dto.register.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

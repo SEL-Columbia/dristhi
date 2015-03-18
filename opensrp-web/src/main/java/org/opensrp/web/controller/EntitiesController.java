@@ -5,7 +5,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.opensrp.domain.DrishtiUser;
 import org.opensrp.domain.EntityDetail;
 import org.opensrp.repository.AllOpenSRPUsers;
-import org.opensrp.service.EntitiesService;
+import org.opensrp.register.service.EntitiesService;
 import org.opensrp.dto.register.EntityDetailDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

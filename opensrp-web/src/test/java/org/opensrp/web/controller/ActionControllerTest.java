@@ -1,6 +1,6 @@
 package org.opensrp.web.controller;
 
-import org.opensrp.service.ActionService;
+import org.opensrp.register.service.ActionService;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;

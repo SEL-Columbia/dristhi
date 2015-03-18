@@ -1,7 +1,7 @@
 package org.opensrp.web.controller;
 
 import ch.lambdaj.function.convert.Converter;
-import org.opensrp.service.ActionService;
+import org.opensrp.register.service.ActionService;
 import org.opensrp.dto.Action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

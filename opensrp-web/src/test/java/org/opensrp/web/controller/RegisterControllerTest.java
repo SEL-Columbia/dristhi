@@ -1,8 +1,13 @@
 package org.opensrp.web.controller;
 
-import org.opensrp.domain.PNCVisit;
-import org.opensrp.domain.register.*;
-import org.opensrp.mapper.*;
+import org.opensrp.register.domain.PNCVisit;
+import org.opensrp.register.*;
+import org.opensrp.register.mapper.*;
+import org.opensrp.register.service.ANCRegisterService;
+import org.opensrp.register.service.ChildRegisterService;
+import org.opensrp.register.service.ECRegisterService;
+import org.opensrp.register.service.FPRegisterService;
+import org.opensrp.register.service.PNCRegisterService;
 import org.opensrp.service.*;
 import org.junit.Before;
 import org.junit.Test;

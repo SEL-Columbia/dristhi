@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import org.opensrp.common.util.HttpAgent;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.domain.DrishtiUser;
-import org.opensrp.service.ANMDetailsService;
+import org.opensrp.register.service.ANMDetailsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

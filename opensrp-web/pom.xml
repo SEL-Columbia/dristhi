@@ -149,9 +149,9 @@
             <artifactId>jackson-core-asl</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-        <dependency>
+         <dependency>
             <groupId>org.opensrp</groupId>
-            <artifactId>opensrp-core</artifactId>
+            <artifactId>opensrp-register</artifactId>
             <version>${release.version}</version>
         </dependency>
         <dependency>

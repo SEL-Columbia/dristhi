@@ -5,7 +5,7 @@ import org.opensrp.common.util.HttpResponse;
 import org.opensrp.domain.ANMDetail;
 import org.opensrp.domain.ANMDetails;
 import org.opensrp.domain.DrishtiUser;
-import org.opensrp.service.ANMDetailsService;
+import org.opensrp.register.service.ANMDetailsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
