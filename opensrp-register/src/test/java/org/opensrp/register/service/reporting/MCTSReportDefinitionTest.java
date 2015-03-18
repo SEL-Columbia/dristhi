@@ -9,9 +9,9 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import org.opensrp.service.reporting.MCTSFormIndicator;
-import org.opensrp.service.reporting.MCTSReportDefinition;
-import org.opensrp.service.reporting.MCTSReportIndicator;
+import org.opensrp.register.service.reporting.MCTSFormIndicator;
+import org.opensrp.register.service.reporting.MCTSReportDefinition;
+import org.opensrp.register.service.reporting.MCTSReportIndicator;
 
 public class MCTSReportDefinitionTest {
     @Test(expected = NotUniqueItemException.class)

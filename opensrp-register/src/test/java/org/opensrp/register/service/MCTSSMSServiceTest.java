@@ -1,6 +1,6 @@
 package org.opensrp.register.service;
 
-import org.opensrp.domain.MCTSServiceCode;
+import org.opensrp.register.domain.MCTSServiceCode;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
