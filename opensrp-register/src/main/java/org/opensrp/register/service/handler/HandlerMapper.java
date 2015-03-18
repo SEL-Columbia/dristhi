@@ -9,10 +9,12 @@ import org.opensrp.service.formSubmission.handler.FormSubmissionHandler;
 import org.opensrp.service.formSubmission.handler.IHandlerMapper;
 import org.opensrp.service.reporting.FormSubmissionReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 import static org.opensrp.common.AllConstants.Form.*;
 
+@Service
 public class HandlerMapper implements IHandlerMapper {
 
 	private final Map<String, FormSubmissionHandler> handlerMap;
@@ -52,6 +54,8 @@ public class HandlerMapper implements IHandlerMapper {
             ANCInvestigationsHandler ancInvestigationsHandler,
             MCTSReportService mctsReportService)
 	{
+		
+		
 		handlerMap = EasyMap.create(EC_REGISTRATION, (FormSubmissionHandler) ecRegistrationHandler)
                 .put(FP_COMPLICATIONS, fpComplicationsHandler)
                 .put(FP_CHANGE, fpChangeHandler)

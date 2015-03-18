@@ -1,4 +1,4 @@
-package org.opensrp.service.reporting;
+package org.opensrp.register.service.reporting;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

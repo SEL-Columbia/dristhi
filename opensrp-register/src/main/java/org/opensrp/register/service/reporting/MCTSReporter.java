@@ -3,7 +3,7 @@ package org.opensrp.register.service.reporting;
 
 import org.opensrp.common.util.IntegerUtil;
 import org.opensrp.register.domain.MCTSReport;
-import org.opensrp.domain.MCTSServiceCode;
+import org.opensrp.register.domain.MCTSServiceCode;
 import org.joda.time.LocalDate;
 import org.opensrp.register.repository.AllMCTSReports;
 import org.springframework.beans.factory.annotation.Autowired;

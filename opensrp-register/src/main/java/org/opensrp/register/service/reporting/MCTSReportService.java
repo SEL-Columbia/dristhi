@@ -2,17 +2,18 @@ package org.opensrp.register.service.reporting;
 
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.util.SafeMap;
-import org.opensrp.service.reporting.IMCTSReportDefinitionLoader;
+import org.opensrp.register.service.reporting.IMCTSReportDefinitionLoader;
 import org.opensrp.service.reporting.IMCTSReportService;
 import org.opensrp.service.reporting.IRulesFactory;
-import org.opensrp.service.reporting.MCTSReportDefinition;
-import org.opensrp.service.reporting.MCTSReportIndicator;
+import org.opensrp.register.service.reporting.MCTSReportDefinition;
+import org.opensrp.register.service.reporting.MCTSReportIndicator;
 import org.opensrp.service.reporting.rules.IReferenceDataRepository;
 import org.opensrp.service.reporting.rules.IRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -23,7 +24,7 @@ import static org.opensrp.common.AllConstants.ANCFormFields.THAYI_CARD_NUMBER;
 import static org.opensrp.common.AllConstants.ChildRegistrationFormFields.THAYI_CARD;
 import static org.opensrp.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 
-@Component
+@Service
 public class MCTSReportService implements IMCTSReportService{
     public static final String SUBJECT = "SEND-MCTS-REPORT";
     private static Logger logger = LoggerFactory.getLogger(MCTSReportService.class);

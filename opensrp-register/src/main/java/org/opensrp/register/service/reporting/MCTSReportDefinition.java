@@ -1,4 +1,4 @@
-package org.opensrp.service.reporting;
+package org.opensrp.register.service.reporting;
 
 import ch.lambdaj.util.NotUniqueItemException;
 import org.apache.commons.lang3.builder.EqualsBuilder;

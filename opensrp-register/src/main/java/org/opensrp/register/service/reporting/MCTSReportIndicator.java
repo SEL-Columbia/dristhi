@@ -1,8 +1,9 @@
-package org.opensrp.service.reporting;
+package org.opensrp.register.service.reporting;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.opensrp.service.reporting.ReferenceData;
 
 import java.util.List;
 
