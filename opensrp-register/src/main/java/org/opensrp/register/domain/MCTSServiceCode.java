@@ -1,4 +1,4 @@
-package org.opensrp.domain;
+package org.opensrp.register.domain;
 
 import org.joda.time.LocalDate;
 

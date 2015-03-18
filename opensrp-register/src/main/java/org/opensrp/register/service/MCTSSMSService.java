@@ -1,6 +1,6 @@
 package org.opensrp.register.service;
 
-import org.opensrp.domain.MCTSServiceCode;
+import org.opensrp.register.domain.MCTSServiceCode;
 import org.opensrp.service.DrishtiSMSService;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
