@@ -18,7 +18,7 @@ public class AllConstants {
 
 
     public static class Form {
-        public static final String ENTITY_ID = "entityId";
+        public static String ENTITY_ID = "entityId";
         public static final String ANM_ID = "anmId";
         public static final String FORM_NAME = "formName";
         public static final String INSTANCE_ID = "instanceId";

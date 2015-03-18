@@ -1,0 +1,29 @@
+{
+    "formIndicators": [
+        {
+            "form": "child_close",
+            "indicators": [
+                {
+                    "indicator": "INFANT_LEFT",
+                    "formFields": [
+                        "id",
+                        "closeReason",
+                        "submissionDate"
+                    ],
+                    "referenceData": {
+                        "type": "child",
+                        "idField": "id",
+                        "fields": [
+                            "dateOfBirth"
+                        ]
+                    },
+                    "reportWhen": [
+                        "IsChildLessThanOneYearOldRule",
+                        "RelocationIsPermanentRule"
+                    ],
+                    "bindType": "child"
+                }
+            ]
+        }
+    ]
+}
