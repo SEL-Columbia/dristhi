@@ -5,12 +5,12 @@ import java.util.Map;
 
 import org.opensrp.api.domain.Location;
 
-public class LocationTree extends Tree<String, Location>{
+public class LocationTree {
 
 	private Tree<String, Location> locationsHierarchy;
 	
 	public LocationTree() {	
-		this.locationsHierarchy = new Tree<>();
+		this.locationsHierarchy = new Tree<String, Location>();
 	}
 	
 	public void addLocation(Location l){

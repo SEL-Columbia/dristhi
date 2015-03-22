@@ -9,16 +9,16 @@ public class TreeNode<K, T> {
 	private String label;
 	private T node;
 	private Map<K, TreeNode<K, T>> children;
-	private TreeNode<K, T> parent;
+	private K parent;
 	
-	public TreeNode(K id, String label, T node, TreeNode<K, T> parent) {
+	public TreeNode(K id, String label, T node, K parent) {
 		this.id = id;
 		this.label = label;
 		this.node = node;
 		this.parent = parent;
 	}
 	
-	public TreeNode(K id, String label, T node, TreeNode<K, T> parent, Map<K, TreeNode<K, T>> children) {
+	public TreeNode(K id, String label, T node, K parent, Map<K, TreeNode<K, T>> children) {
 		this.id = id;
 		this.label = label;
 		this.node = node;
@@ -64,7 +64,7 @@ public class TreeNode<K, T> {
 		return node;
 	}
 
-	public TreeNode<K, T> getParent() {
+	public K getParent() {
 		return parent;
 	}
 

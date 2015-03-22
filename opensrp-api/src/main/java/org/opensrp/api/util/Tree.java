@@ -36,7 +36,7 @@ public class Tree<K,T>{
 				throw new IllegalArgumentException("No node with Parent ID "+parentId+" found in tree");
 			}
 			
-			TreeNode<K, T> n = new TreeNode<K, T>(id, label, node, p);
+			TreeNode<K, T> n = new TreeNode<K, T>(id, label, node, p.getId());
 			p.addChild(n);
 		}
 	}
