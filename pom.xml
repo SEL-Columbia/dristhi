@@ -12,13 +12,14 @@
 
 	<modules>
 		<module>opensrp-core</module>
-		<module>opensrp-web</module>
 		<module>opensrp-scheduler</module>
 		<module>opensrp-common</module>
-		<module>opensrp-reporting</module>
 		<module>opensrp-interface</module>
 		<module>opensrp-form</module>
 		<module>opensrp-api</module>
+		<module>opensrp-connector</module>
+		<module>opensrp-reporting</module>
+		<module>opensrp-web</module>
 	</modules>
 
 	<properties>
