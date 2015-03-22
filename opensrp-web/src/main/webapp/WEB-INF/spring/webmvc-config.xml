@@ -7,6 +7,7 @@
     <context:component-scan base-package="org.opensrp.web" use-default-filters="false">
         <context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
     </context:component-scan>
+    <context:component-scan base-package="org.opensrp.connector"/>
     <mvc:annotation-driven/>
     <mvc:resources location="/" mapping="/resources/**"/>
     <mvc:default-servlet-handler/>
