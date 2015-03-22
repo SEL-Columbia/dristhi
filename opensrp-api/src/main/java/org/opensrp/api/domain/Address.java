@@ -174,7 +174,7 @@ public class Address{
 	 * @return
 	 */
 	public int durationInDays() {
-		return (int) (durationInMillis()==-1?durationInMillis():(durationInMillis()/(1000*60*60*24)));
+		return (int) (durationInMillis()==-1?durationInMillis():(durationInMillis()/(1000*60*60*24L)));
 	}
 	/**
 	 * If startDate is not specified returns -1. If endDate is not specified duration is from startDate to current date 
