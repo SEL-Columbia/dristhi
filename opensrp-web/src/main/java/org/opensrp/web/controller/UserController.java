@@ -1,10 +1,18 @@
 package org.opensrp.web.controller;
 
+import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
+import static org.springframework.http.HttpStatus.OK;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.opensrp.api.domain.Location;
+import org.opensrp.api.domain.User;
 import org.opensrp.common.domain.UserDetail;
-import org.opensrp.domain.DrishtiUser;
+import org.opensrp.connector.openmrs.LocationService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,19 +21,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
-import static org.springframework.http.HttpStatus.OK;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class UserController {
     private String opensrpSiteUrl;
     private DrishtiAuthenticationProvider opensrpAuthenticationProvider;
-
+	private LocationService openmrsLocationService;
+	
     @Autowired
-    public UserController(@Value("#{opensrp['opensrp.site.url']}") String opensrpSiteUrl,
-                          DrishtiAuthenticationProvider opensrpAuthenticationProvider) {
-        this.opensrpSiteUrl = opensrpSiteUrl;
+    public UserController(LocationService openmrsLocationService,
+            DrishtiAuthenticationProvider opensrpAuthenticationProvider) {
+		this.openmrsLocationService = openmrsLocationService;
         this.opensrpAuthenticationProvider = opensrpAuthenticationProvider;
     }
 
@@ -34,15 +41,26 @@ public class UserController {
         return new ResponseEntity<>(null, allowOrigin(opensrpSiteUrl), OK);
     }
 
-    public DrishtiUser currentUser() {
+    public User currentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return opensrpAuthenticationProvider.getDrishtiUser(authentication);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/user-details")
     public ResponseEntity<UserDetail> userDetail(@RequestParam("anm-id") String anmIdentifier) {
-        DrishtiUser user = opensrpAuthenticationProvider.getDrishtiUser(anmIdentifier);
+        User user = opensrpAuthenticationProvider.getDrishtiUser(anmIdentifier);
         return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(opensrpSiteUrl), OK);
     }
 
+	@RequestMapping("/security/authenticate")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> authenticate() throws JSONException {
+        User u = currentUser();
+
+		Location l = openmrsLocationService.getLocation((String) u.getBaseEntity().getAttribute("Location"));
+		Map<String, Object> map = new HashMap<>();
+		map.put("user", u);
+		map.put("location", l);
+        return new ResponseEntity<>(map, allowOrigin(opensrpSiteUrl), OK);
+	}
 }
