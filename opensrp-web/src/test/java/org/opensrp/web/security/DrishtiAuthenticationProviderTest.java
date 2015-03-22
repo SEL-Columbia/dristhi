@@ -35,7 +35,7 @@ public class DrishtiAuthenticationProviderTest {
 
     private DrishtiAuthenticationProvider authenticationProvider;
 
-    @Before
+    /*@Before
     public void setUp() throws Exception {
         initMocks(this);
         authenticationProvider = new DrishtiAuthenticationProvider(allOpenSRPUsers, passwordEncoder);
@@ -84,7 +84,7 @@ public class DrishtiAuthenticationProviderTest {
         authenticationProvider.getDrishtiUser("user 1");
 
         verify(allOpenSRPUsers).findByUsername("user 1");
-    }
+    }*/
 
     @Test
     @Ignore
