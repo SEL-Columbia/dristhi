@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.json.JSONException;
 import org.opensrp.api.domain.User;
-import org.opensrp.connector.openmrs.UserService;
+import org.opensrp.connector.openmrs.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
