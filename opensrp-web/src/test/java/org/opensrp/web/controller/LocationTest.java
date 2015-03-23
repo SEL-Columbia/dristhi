@@ -7,17 +7,17 @@ import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.api.util.LocationTree;
-import org.opensrp.connector.openmrs.LocationService;
+import org.opensrp.connector.openmrs.service.LocationService;
 import org.springframework.http.ResponseEntity;
 
 public class LocationTest {
 
 	private LocationService locationservice;
 	private LocationController controller;
-	private String openmrsOpenmrsUrl = "http://46.101.51.199:8080/openmrs/";
-	private String openmrsUsername = "admin";
-	private String openmrsPassword = "5rpAdmin";
-	
+	String openmrsOpenmrsUrl = "http://46.101.51.199:8080/openmrs/";
+	String openmrsUsername = "admin";
+	String openmrsPassword = "5rpAdmin";
+
 	@Before
     public void setUp() throws Exception {
 		this.locationservice = new LocationService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
