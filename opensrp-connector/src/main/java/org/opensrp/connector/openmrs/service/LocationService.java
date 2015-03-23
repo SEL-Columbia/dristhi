@@ -1,4 +1,4 @@
-package org.opensrp.connector.openmrs;
+package org.opensrp.connector.openmrs.service;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -7,31 +7,22 @@ import org.opensrp.api.domain.Location;
 import org.opensrp.api.util.LocationTree;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.HttpUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.StringUtils;
 
 @Service
-public class LocationService {
-
+public class LocationService extends OpenmrsService{
 	private static final String LOCATION_URL = "ws/rest/v1/location";
-	private String openmrsWebUrl;
-	private String openmrsUser;
-	private String openmrsPwd;
-	
-	@Autowired
-    public LocationService(@Value("#{opensrp['openmrs.url']}") String openmrsOpenmrsUrl,
-    		@Value("#{opensrp['openmrs.username']}") String openmrsUsername,
-    		@Value("#{opensrp['openmrs.password']}") String openmrsPassword) {
-        openmrsWebUrl = openmrsOpenmrsUrl;
-        openmrsUser = openmrsUsername;
-        openmrsPwd = openmrsPassword;
-    }
+
+	public LocationService() {	}
+
+	public LocationService(String openmrsUrl, String user, String password) {
+    	super(openmrsUrl, user, password);
+	}
 
 	public Location getLocation(String locationIdOrName) throws JSONException {
-		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(openmrsWebUrl)+"/"+LOCATION_URL+"/"+(locationIdOrName.replaceAll(" ", "%20")), "v=full", openmrsUser, openmrsPwd);
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+LOCATION_URL+"/"+(locationIdOrName.replaceAll(" ", "%20")), "v=full", OPENMRS_USER, OPENMRS_PWD);
 		
 		if(!StringUtils.isEmptyOrWhitespaceOnly(op.body())){
 			return makeLocation(op.body());
@@ -70,7 +61,7 @@ public class LocationService {
 	
 	public LocationTree getLocationTree() throws JSONException {
 		LocationTree ltr = new LocationTree();
-		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(openmrsWebUrl)+"/"+LOCATION_URL, "v=full", openmrsUser, openmrsPwd);
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+LOCATION_URL, "v=full", OPENMRS_USER, OPENMRS_PWD);
 		
 		JSONArray res = new JSONObject(op.body()).getJSONArray("results");
 		if(res.length() == 0){
@@ -92,7 +83,7 @@ public class LocationService {
 	}
 	
 	private void fillTreeWithHierarchy(LocationTree ltr, String locationIdOrName) throws JSONException{
-		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(openmrsWebUrl)+"/"+LOCATION_URL+"/"+(locationIdOrName.replaceAll(" ", "%20")), "v=full", openmrsUser, openmrsPwd);
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+LOCATION_URL+"/"+(locationIdOrName.replaceAll(" ", "%20")), "v=full", OPENMRS_USER, OPENMRS_PWD);
 
 		JSONObject lo = new JSONObject(op.body());
 		Location l = makeLocation(op.body());

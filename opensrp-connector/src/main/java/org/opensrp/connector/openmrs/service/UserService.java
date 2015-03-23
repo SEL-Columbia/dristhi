@@ -1,4 +1,4 @@
-package org.opensrp.connector.openmrs;
+package org.opensrp.connector.openmrs.service;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -6,35 +6,27 @@ import org.json.JSONObject;
 import org.opensrp.api.domain.User;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.HttpUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService extends OpenmrsService{
 
 	private static final String AUTHENTICATION_URL = "ws/rest/v1/session";
 	private static final String USER_URL = "ws/rest/v1/user";
-	private String openmrsWebUrl;
-	private String openmrsUser;
-	private String openmrsPwd;
 	
-	@Autowired
-    public UserService(@Value("#{opensrp['openmrs.url']}") String openmrsOpenmrsUrl,
-    		@Value("#{opensrp['openmrs.username']}") String openmrsUsername,
-    		@Value("#{opensrp['openmrs.password']}") String openmrsPassword) {
-        openmrsWebUrl = openmrsOpenmrsUrl;
-        openmrsUser = openmrsUsername;
-        openmrsPwd = openmrsPassword;
+    public UserService() { }
+
+    public UserService(String openmrsUrl, String user, String password) {
+    	super(openmrsUrl, user, password);
     }
 
 	public boolean authenticate(String username, String password) throws JSONException {
-		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(openmrsWebUrl)+"/"+AUTHENTICATION_URL, "", username, password);
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+AUTHENTICATION_URL, "", username, password);
 		return new JSONObject(op.body()).getBoolean("authenticated");
 	}
 
 	public User getUser(String username) throws JSONException {
-		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(openmrsWebUrl)+"/"+USER_URL, "v=full&username="+username, openmrsUser, openmrsPwd);
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+USER_URL, "v=full&username="+username, OPENMRS_USER, OPENMRS_PWD);
 		JSONArray res = new JSONObject(op.body()).getJSONArray("results");
 		if(res.length() == 0){
 			return null;
