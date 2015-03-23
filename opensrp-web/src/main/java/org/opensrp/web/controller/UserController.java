@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.opensrp.api.domain.Location;
 import org.opensrp.api.domain.User;
 import org.opensrp.common.domain.UserDetail;
-import org.opensrp.connector.openmrs.LocationService;
+import org.opensrp.connector.openmrs.service.LocationService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
