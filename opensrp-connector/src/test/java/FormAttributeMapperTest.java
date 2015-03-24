@@ -4,6 +4,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +51,9 @@ public class FormAttributeMapperTest {
 	@Test
     public void shouldParseModelXMLDocAndFormDefJSONToGetOpenMRSConcept() {
 		
-       formSubmission = build();
-       openMRSConceptParser.getAttributesForField(fieldName, formSubmission);
+       formSubmission = build();       
+       Map<String,String> attributeMap = openMRSConceptParser.getAttributesForField(fieldName, formSubmission);
+       openMRSConceptParser.getFieldName(attributeMap, formSubmission);
+       
     }
 }

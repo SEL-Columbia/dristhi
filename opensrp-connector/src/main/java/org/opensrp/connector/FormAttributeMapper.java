@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.google.gson.JsonArray;
@@ -29,7 +30,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class FormAttributeMapper {
 	
 	private String jsonFilePath;
@@ -41,6 +42,144 @@ public class FormAttributeMapper {
 		this.jsonFilePath = jsonFilePath;
 		this.xmlFilePath = xmlFilePath;
 	}
+	
+	public String getFieldName(Map<String, String> attributeMap,FormSubmission formSubmission)
+	{
+		String fieldName = "";
+		Node fieldTag = getFieldTagFromModel(attributeMap,formSubmission);
+		String bind =getXPath(fieldTag);
+		fieldName = getFieldNameFromFormDefinition(bind,formSubmission);
+		return fieldName;
+	}
+	public String getFieldNameFromFormDefinition(String bind,FormSubmission formSubmission)
+	{
+		String fieldAttribute = "";
+		String formName = formSubmission.formName();
+		JsonParser parser = new JsonParser();
+		String filePath = this.jsonFilePath+"/"+formName+"/form_definition.json";
+		try
+		{
+			Object obj = parser.parse(new FileReader(filePath));
+			JsonObject jsonObject = (JsonObject)obj;
+			JsonElement formElement = jsonObject.get("form");
+			JsonElement subformElement = null;
+			JsonObject fields = null;
+			JsonObject individualField = null;
+			JsonElement individualBindObj = null;
+			JsonElement individualNameObj = null;
+			JsonArray fieldArray = null;
+			JsonArray subFormArray = null;
+			if(formElement!=null)
+			{
+				fields = formElement.getAsJsonObject();
+			
+				for(Entry<String, JsonElement> element:fields.entrySet())
+				{
+					if(element.getKey().equalsIgnoreCase("fields"))
+					{
+						fieldArray = element.getValue().getAsJsonArray();
+					}
+					if(element.getKey().equalsIgnoreCase("sub_forms"))
+					{						
+						subFormArray = element.getValue().getAsJsonArray();
+					}
+				}
+				for(JsonElement fieldElement:fieldArray)
+				{
+					individualField = fieldElement.getAsJsonObject();
+					individualBindObj = individualField.get("bind");
+					individualNameObj = individualField.get("name");
+					if(individualBindObj!=null)
+					{
+						if(individualBindObj.getAsString().equalsIgnoreCase(bind))
+						{
+							fieldAttribute = individualNameObj.getAsString();
+							return fieldAttribute;
+						}						
+					}					
+				}
+				for(JsonElement fieldElement:subFormArray)
+				{
+					individualField = fieldElement.getAsJsonObject();
+					subformElement = individualField.get("fields");
+				}
+				for(JsonElement fieldElement:subformElement.getAsJsonArray())
+				{
+					individualField = fieldElement.getAsJsonObject();
+					individualNameObj = individualField.get("name");
+					individualBindObj = individualField.get("bind");
+					if(individualBindObj!=null)
+					{
+						if(individualNameObj.getAsString().equalsIgnoreCase(bind))
+						{
+							fieldAttribute = individualNameObj.getAsString();
+							return fieldAttribute;
+						}						
+					}					
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.getMessage();
+		}
+    	
+    	return null;
+	}
+	public Node getFieldTagFromModel(Map<String,String> attributeMapForm,FormSubmission formSubmission)
+	{
+		Node lastNode = null;
+		String formName = formSubmission.formName();
+		String filePath = this.xmlFilePath+"/"+formName+"/model.xml";
+    	File file = new File(filePath);
+    	try {
+    		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(file);
+			XPathFactory xPathFactory = XPathFactory.newInstance();
+			XPath xpath = xPathFactory.newXPath();
+			String expression = "//*[";
+			String expressionQuery = "";
+			NodeList nodeList;
+			for(String key:attributeMapForm.keySet())
+			{				
+				if(expressionQuery.length()>0)
+				{
+					expressionQuery += " and ";
+				}
+				expressionQuery += "@"+key+"='"+attributeMapForm.get(key)+"'";
+			}
+			
+			expression += expressionQuery;
+			expression += "]";
+			nodeList = (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
+			lastNode = nodeList.item(0);			
+    	}
+    	catch (ParserConfigurationException e) {
+ 			// TODO Auto-generated catch block	
+ 			e.printStackTrace();
+ 		} catch (SAXException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		} catch (IOException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lastNode;
+	}
+	
+	private static String getXPath(Node node) {
+	    if(node == null || node.getNodeType() != Node.ELEMENT_NODE) {
+	        return "";
+	    }
+
+	    return getXPath(node.getParentNode()) + "/" + node.getNodeName();
+	}
+	
 	public Map<String, String> getAttributesForField (String fieldName,FormSubmission formSubmission){
 	
 		String formBindForField = "";
