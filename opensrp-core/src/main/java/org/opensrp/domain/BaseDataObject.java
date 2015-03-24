@@ -5,7 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.motechproject.model.MotechBaseDataObject;
-import org.opensrp.api.domain.User;
+
 
 public abstract class BaseDataObject extends MotechBaseDataObject {
 

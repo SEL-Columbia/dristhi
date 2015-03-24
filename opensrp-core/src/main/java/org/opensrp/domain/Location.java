@@ -10,13 +10,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
-import org.opensrp.api.domain.Address;
 
 @TypeDiscriminator("doc.type == 'Location'")
 public class Location extends BaseDataObject{
 
-	@JsonProperty
-    private String caseId;
 	@JsonProperty
 	private String locationId;
 	@JsonProperty
@@ -31,8 +28,6 @@ public class Location extends BaseDataObject{
 	private Set<String> tags;
 	@JsonProperty
 	private Map<String, Object> attributes;
-	@JsonProperty
-    private String isClosed;
 	
 	public Location() {	}
 

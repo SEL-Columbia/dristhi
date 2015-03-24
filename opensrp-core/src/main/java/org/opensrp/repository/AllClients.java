@@ -1,13 +1,17 @@
 package org.opensrp.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -22,27 +26,35 @@ public class AllClients extends MotechBaseRepository<Client> {
 	}
 
 	@GenerateView
-	public Client findByCaseId(String caseId) {
-		List<Client> clients = queryView("by_caseId", caseId);
+	public Client findByBaseEntityId(String baseEntityId) {
+		List<Client> clients = queryView("by_baseEntityId", baseEntityId);
 		if (clients == null || clients.isEmpty()) {
 			return null;
 		}
 		return clients.get(0);
 	}
 
-	public boolean exists(String caseId) {
-		return findByCaseId(caseId) != null;
-	}
-
-	@View(name = "all_clients", map = "function(doc) { if (doc.type === 'Client') { emit(doc.caseId); } }")
+	@View(name = "all_clients", map = "function(doc) { if (doc.type === 'Client') { emit(doc.baseEntityId); } }")
 	public List<Client> findAllClients() {
 		return db.queryView(createQuery("all_clients").includeDocs(true),
 				Client.class);
 	}
 
-	@View(name = "all_clients_by_CaseIDs", map = "function(doc) { if (doc.type === 'Client' && doc.caseId) { emit(doc.caseId); } }")
-	public List<Client> findAll(List<String> ecIds) {
-		return db.queryView(createQuery("all_clients_by_CaseIDs").keys(ecIds)
-				.includeDocs(true), Client.class);
-	}
+	/*@View(name = "all_clients_by_IDs", map = "function(doc) { if (doc.type === 'Client') { emit(doc.baseEntityId); } }")
+	public Client findClientByIds(Map<String,String> keyIds) {
+		List<ViewResult.Row> rows = db.queryView(createQuery("all_open_pncs")
+                .group(true)
+                .reduce(true)
+                .cacheOk(true)).getRows();
+		
+		 Map<String, Integer> openMotherCount = new HashMap<>();
+	        for (ViewResult.Row row : rows) {
+	            openMotherCount.put(row.getKey(), row.getValueAsInt());
+	        }
+		
+		if (clients == null || clients.isEmpty()) {
+			return null;
+		}
+		return clients.get(0);
+	}*/
 }

@@ -8,16 +8,14 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.opensrp.api.constants.Gender;
-import org.opensrp.api.domain.Address;
-import org.opensrp.api.domain.BaseEntity;
 
 @TypeDiscriminator("doc.type == 'User'")
 public class User extends BaseDataObject {
-	@JsonProperty
-    private String caseId;
+
 	@JsonProperty
 	private String username;
 	@JsonProperty
@@ -34,8 +32,7 @@ public class User extends BaseDataObject {
 	private String baseEntityId;
 	@JsonProperty
 	private BaseEntity baseEntity;
-	@JsonProperty
-    private String isClosed;
+	
 	
 	public User() {	}
 
@@ -120,18 +117,19 @@ public class User extends BaseDataObject {
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
-
+	@JsonIgnore
 	public void addRole(String role) {
 		if(roles == null){
 			roles = new ArrayList<>();
 		}
 		roles.add(role);
 	}
-	
+	@JsonIgnore
 	public boolean removeRole(String role) {
 		return roles.remove(role);
 	}
 	
+	@JsonIgnore
 	public boolean hasRole(String role) {
 		if(roles != null)
 		for (String r : roles) {
@@ -141,7 +139,7 @@ public class User extends BaseDataObject {
 		}
 		return false;
 	}
-	
+	@JsonIgnore
 	public boolean isDefaultAdmin() {
 		if((baseEntity.getFirstName().equalsIgnoreCase("admin") || baseEntity.getFirstName().equalsIgnoreCase("administrator")) 
 				&& (hasRole("admin") || hasRole("administrator"))){
@@ -149,7 +147,7 @@ public class User extends BaseDataObject {
 		}
 		return false;
 	}
-	
+	@JsonIgnore
 	public boolean hasAdminRights() {
 		if(isDefaultAdmin() || hasRole("admin") || hasRole("administrator")){
 			return true;
@@ -170,6 +168,7 @@ public class User extends BaseDataObject {
 		this.permissions = permissions;
 	}
 	
+	@JsonIgnore
 	public void addPermission(String permission) {
 		if(permissions == null){
 			permissions = new ArrayList<>();
@@ -180,6 +179,7 @@ public class User extends BaseDataObject {
 	public boolean removePermission(String permission) {
 		return permissions.remove(permission);
 	}
+	@JsonIgnore
 	public boolean hasPermission(String permission) {
 		if(permissions != null)
 		for (String p : permissions) {

@@ -11,22 +11,15 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.opensrp.api.constants.Gender;
-import org.opensrp.api.domain.Address;
-import org.opensrp.api.domain.BaseEntity;
 
 @TypeDiscriminator("doc.type == 'Client'")
 public class Client extends BaseDataObject {
 	
 	@JsonProperty
-    private String caseId;
-	@JsonProperty
 	private Map<String, String> identifiers;
 	@JsonProperty
 	private String baseEntityId;
-	@JsonProperty
 	private BaseEntity baseEntity;
-	@JsonProperty
-    private String isClosed;
 
 	public Client() {}
 	

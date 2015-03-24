@@ -11,21 +11,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.opensrp.api.constants.Gender;
-import org.opensrp.api.domain.Address;
-import org.opensrp.api.domain.BaseEntity;
+
 
 @TypeDiscriminator("doc.type == 'Provider'")
 public class Provider extends BaseDataObject {
-	@JsonProperty
-    private String caseId;
 	@JsonProperty
 	private Map<String, String> identifiers;
 	@JsonProperty
 	private String baseEntityId;
 	@JsonProperty
 	private BaseEntity baseEntity;
-	@JsonProperty
-    private String isClosed;
 
 	public Provider() {
 	}
@@ -63,20 +58,6 @@ public class Provider extends BaseDataObject {
 		this.identifiers = identifiers;
 	}
 
-	/**
-	 * Allows to instantiate from a list of predefined genders in {@link Gender}
-	 * 
-	 * @param clientId
-	 * @param firstName
-	 * @param lastName
-	 * @param birthdate
-	 * @param deathdate
-	 * @param birthdateApprox
-	 * @param deathdateApprox
-	 * @param gender
-	 * @param addresses
-	 * @param attributes
-	 */
 	public Provider(String baseEntityId, String firstName, String middleName,
 			String lastName, Date birthdate, Date deathdate,
 			Boolean birthdateApprox, Boolean deathdateApprox, Gender gender,

@@ -22,8 +22,8 @@ public class AllUsers extends MotechBaseRepository<User> {
 	}
 
 	@GenerateView
-	public User findByCaseId(String caseId) {
-		List<User> users = queryView("by_caseId", caseId);
+	public User findByBaseEntityId(String baseEntityId) {
+		List<User> users = queryView("by_baseEntityId", baseEntityId);
 		if (users == null || users.isEmpty()) {
 			return null;
 		}
@@ -31,18 +31,18 @@ public class AllUsers extends MotechBaseRepository<User> {
 	}
 
 	public boolean exists(String caseId) {
-		return findByCaseId(caseId) != null;
+		return findByBaseEntityId(caseId) != null;
 	}
 	
-	@View(name = "all_users", map = "function(doc) { if (doc.type === 'User') { emit(doc.caseId); } }")
+	@View(name = "all_users", map = "function(doc) { if (doc.type === 'User') { emit(doc.baseEntityId); } }")
 	public List<User> findAllUsers() {
 		return db.queryView(createQuery("all_users").includeDocs(true),
 				User.class);
 	}
 
-	@View(name = "all_users_by_CaseIDs", map = "function(doc) { if (doc.type === 'User' && doc.caseId) { emit(doc.caseId); } }")
-	public List<User> findAll(List<String> ecIds) {
-		return db.queryView(createQuery("all_users_by_CaseIDs").keys(ecIds)
+	@View(name = "all_users_by_CaseIDs", map = "function(doc) { if (doc.type === 'User' && doc.baseEntityId) { emit(doc.baseEntityId); } }")
+	public List<User> findAllByUserByIds(List<String> Ids) {
+		return db.queryView(createQuery("all_users_by_CaseIDs").keys(Ids)
 				.includeDocs(true), User.class);
 	}
 
