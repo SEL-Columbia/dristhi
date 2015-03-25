@@ -4,7 +4,6 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.opensrp.domain.Location;
 
 import java.io.Serializable;
 import java.util.ArrayList;

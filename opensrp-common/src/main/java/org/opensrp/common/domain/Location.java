@@ -1,4 +1,4 @@
-package org.opensrp.domain;
+package org.opensrp.common.domain;
 
 public class Location {
     private final String village;

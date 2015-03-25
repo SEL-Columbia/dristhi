@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
+import org.opensrp.domain.Location;
 
 @TypeDiscriminator("doc.type == 'Location'")
 public class Location extends BaseDataObject{

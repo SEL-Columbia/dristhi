@@ -1,10 +1,10 @@
 package org.opensrp.reporting.controller;
 
 import org.opensrp.common.domain.ANMReport;
+import org.opensrp.common.domain.Location;
 import org.opensrp.common.domain.ReportDataDeleteRequest;
 import org.opensrp.common.domain.ReportDataUpdateRequest;
 import org.opensrp.common.domain.ReportingData;
-import org.opensrp.domain.Location;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

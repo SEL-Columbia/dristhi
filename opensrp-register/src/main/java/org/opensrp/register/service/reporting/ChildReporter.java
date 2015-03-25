@@ -1,8 +1,8 @@
 package org.opensrp.register.service.reporting;
 
 import org.opensrp.common.domain.Indicator;
+import org.opensrp.common.domain.Location;
 import org.opensrp.register.domain.Child;
-import org.opensrp.domain.Location;
 import org.opensrp.util.SafeMap;
 import org.opensrp.register.repository.AllChildren;
 import org.opensrp.service.reporting.IReporter;

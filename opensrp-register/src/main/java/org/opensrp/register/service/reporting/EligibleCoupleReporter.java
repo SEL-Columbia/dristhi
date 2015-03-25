@@ -1,8 +1,8 @@
 package org.opensrp.register.service.reporting;
 
 import org.opensrp.common.domain.Indicator;
+import org.opensrp.common.domain.Location;
 import org.opensrp.register.domain.EligibleCouple;
-import org.opensrp.domain.Location;
 import org.opensrp.util.SafeMap;
 import org.opensrp.register.repository.AllEligibleCouples;
 import org.opensrp.service.reporting.IReporter;

@@ -1,7 +1,7 @@
 package org.opensrp.service.reporting;
 
 import org.opensrp.common.AllConstants;
-import org.opensrp.domain.Location;
+import org.opensrp.common.domain.Location;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.util.SafeMap;
 import org.opensrp.service.reporting.rules.IReferenceDataRepository;

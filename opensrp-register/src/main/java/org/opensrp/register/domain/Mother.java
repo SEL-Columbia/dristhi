@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.opensrp.common.AllConstants;
+import org.opensrp.common.domain.Location;
 import org.opensrp.common.util.IntegerUtil;
 import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.LocalDate;
@@ -17,7 +18,6 @@ import java.util.Map;
 
 import static java.lang.String.valueOf;
 import static org.opensrp.common.AllConstants.IFAFields.TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN;
-import org.opensrp.domain.Location;
 
 @TypeDiscriminator("doc.type === 'Mother'")
 public class Mother extends MotechBaseDataObject {

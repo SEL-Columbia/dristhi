@@ -1,6 +1,7 @@
 package org.opensrp.register.service.reporting;
 
 import org.opensrp.common.domain.*;
+import org.opensrp.common.domain.Location;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.EasyMap;
 import org.opensrp.domain.*;

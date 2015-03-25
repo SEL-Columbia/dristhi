@@ -1,7 +1,7 @@
 package org.opensrp.register.service.reporting;
 
+import org.opensrp.common.domain.Location;
 import org.opensrp.common.util.EasyMap;
-import org.opensrp.domain.Location;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.util.SafeMap;
 import org.junit.Before;

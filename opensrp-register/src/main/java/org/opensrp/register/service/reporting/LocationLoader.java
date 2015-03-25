@@ -2,7 +2,7 @@ package org.opensrp.register.service.reporting;
 
 import org.opensrp.register.domain.Child;
 import org.opensrp.register.domain.EligibleCouple;
-import org.opensrp.domain.Location;
+import org.opensrp.common.domain.Location;
 import org.opensrp.register.domain.Mother;
 import org.opensrp.register.repository.AllChildren;
 import org.opensrp.register.repository.AllEligibleCouples;

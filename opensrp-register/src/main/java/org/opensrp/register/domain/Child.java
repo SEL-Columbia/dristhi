@@ -7,13 +7,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.opensrp.common.AllConstants;
+import org.opensrp.common.domain.Location;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
 import java.util.*;
 
 import static org.opensrp.common.AllConstants.ChildImmunizationFields.IMMUNIZATION_DATE_FIELD_NAME;
-import org.opensrp.domain.Location;
 
 @TypeDiscriminator("doc.type === 'Child'")
 public class Child extends MotechBaseDataObject {

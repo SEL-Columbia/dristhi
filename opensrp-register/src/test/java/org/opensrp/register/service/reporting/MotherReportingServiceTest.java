@@ -1,11 +1,11 @@
 package org.opensrp.register.service.reporting;
 
 import org.opensrp.common.domain.Indicator;
+import org.opensrp.common.domain.Location;
 import org.opensrp.common.domain.ReportDataDeleteRequest;
 import org.opensrp.common.domain.ReportMonth;
 import org.opensrp.common.domain.ReportingData;
 import org.opensrp.register.domain.EligibleCouple;
-import org.opensrp.domain.Location;
 import org.opensrp.register.domain.Mother;
 import org.opensrp.util.SafeMap;
 import org.junit.Before;

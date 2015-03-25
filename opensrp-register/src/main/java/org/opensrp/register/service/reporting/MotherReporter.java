@@ -1,7 +1,7 @@
 package org.opensrp.register.service.reporting;
 
 import org.opensrp.common.domain.Indicator;
-import org.opensrp.domain.Location;
+import org.opensrp.common.domain.Location;
 import org.opensrp.register.domain.Mother;
 import org.opensrp.util.SafeMap;
 import org.opensrp.register.repository.AllMothers;

@@ -1,6 +1,6 @@
 package org.opensrp.service.reporting;
 
-import org.opensrp.domain.Location;
+import org.opensrp.common.domain.Location;
 import org.opensrp.util.SafeMap;
 
 public interface IReporter {

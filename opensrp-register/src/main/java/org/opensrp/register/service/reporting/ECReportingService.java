@@ -3,7 +3,6 @@ package org.opensrp.register.service.reporting;
 import org.opensrp.common.AllConstants;
 import org.opensrp.common.domain.*;
 import org.opensrp.register.domain.EligibleCouple;
-import org.opensrp.domain.Location;
 import org.opensrp.util.SafeMap;
 import org.joda.time.LocalDate;
 import org.opensrp.register.repository.AllEligibleCouples;
