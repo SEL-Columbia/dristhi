@@ -1,5 +1,7 @@
 package org.opensrp.connector.openmrs.service;
 
+import java.text.SimpleDateFormat;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ public abstract class OpenmrsService {
 	@Value("#{opensrp['openmrs.password']}")
 	protected String OPENMRS_PWD;
 	
+	public static final SimpleDateFormat OPENMRS_DATE = new SimpleDateFormat("yyyy-MM-dd");
 	public OpenmrsService() {	}
 	
 	public OpenmrsService(String openmrsUrl, String user, String password) {
