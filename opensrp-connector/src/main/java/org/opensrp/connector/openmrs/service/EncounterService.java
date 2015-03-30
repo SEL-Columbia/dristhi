@@ -13,19 +13,18 @@ import org.opensrp.api.domain.Obs;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.StringUtils;
 
+@Service
 public class EncounterService extends OpenmrsService{
 	private static final String ENCOUNTER_URL = "ws/rest/v1/encounter";
 	private static final String ENCOUNTER__TYPE_URL = "ws/rest/v1/encountertype";
 	private PatientService patientService;
 
-	@Autowired
-	public EncounterService(PatientService patientService) {
-		this.patientService = patientService;
-	}
-
+	public EncounterService() {	}
+	
 	public EncounterService(String openmrsUrl, String user, String password) {
     	super(openmrsUrl, user, password);
 	}
