@@ -23,9 +23,9 @@ public class EncounterTest {
 	@Before
 	public void setup(){
 		s = new EncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
-		FormAttributeMapper fam = new FormAttributeMapper("C:\\Users\\Maimoona\\Downloads\\formsubmissionsamples", 
-				"C:\\Users\\Maimoona\\Downloads\\formsubmissionsamples");
-		oc = new OpenmrsConnector(s, null, null, null, null, fam);
+        String filename = this.getClass().getClassLoader().getResource("formsubmissionsamples/").getFile();
+		FormAttributeMapper fam = new FormAttributeMapper(filename, filename);
+		oc = new OpenmrsConnector(s, null, null, null, fam);
 	}
 	
 	@Test
