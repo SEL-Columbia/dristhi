@@ -21,20 +21,18 @@ import org.springframework.stereotype.Service;
 public class OpenmrsConnector {
 
 	private EncounterService encounterService;
-	private HouseholdService householdService; 
+	//private HouseholdService householdService; 
 	private PatientService patientService;
 	private LocationService locationService;
 	private UserService userService;
 	private FormAttributeMapper formAttributeMapper;
-	
-	public OpenmrsConnector() {	}
-	
+		
 	@Autowired
 	public OpenmrsConnector(EncounterService encounterService,
-			HouseholdService householdService, PatientService patientService,
+			/*HouseholdService householdService,*/ PatientService patientService,
 			LocationService locationService, UserService userService, FormAttributeMapper formAttributeMapper) {
 		this.encounterService = encounterService;
-		this.householdService = householdService;
+		//this.householdService = householdService;
 		this.patientService = patientService;
 		this.locationService = locationService;
 		this.userService = userService;
