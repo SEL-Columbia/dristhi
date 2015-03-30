@@ -1,16 +1,15 @@
 
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.opensrp.connector.FormAttributeMapper;
 import org.opensrp.form.domain.FormData;
 import org.opensrp.form.domain.FormField;
@@ -24,7 +23,7 @@ public class FormAttributeMapperTest {
 	private String anmId = "anmId";
     private String instanceId = "instance id 1";
     private String entityId = "entity id 1";
-    private String formName = "form name 1";
+    private String formName = "form_1";
     private String bind_type = "entity 1";
     private String default_bind_path = "bind path 1";
     private String formDataDefinitionVersion = "1";
@@ -37,7 +36,8 @@ public class FormAttributeMapperTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        openMRSConceptParser = new FormAttributeMapper("/home/wahid/Downloads/form_submission_samples/", "/home/wahid/Downloads/form_submission_samples/");
+        String filename = this.getClass().getClassLoader().getResource("formsubmissionsamples/").getFile();
+        openMRSConceptParser = new FormAttributeMapper(filename, filename);
     }
     
     public FormSubmission build() {
@@ -53,7 +53,7 @@ public class FormAttributeMapperTest {
 		
        formSubmission = build();       
        Map<String,String> attributeMap = openMRSConceptParser.getAttributesForField(fieldName, formSubmission);
-       openMRSConceptParser.getFieldName(attributeMap, formSubmission);
+       assertTrue(openMRSConceptParser.getFieldName(attributeMap, formSubmission).equalsIgnoreCase(fieldName));
        
     }
 }
