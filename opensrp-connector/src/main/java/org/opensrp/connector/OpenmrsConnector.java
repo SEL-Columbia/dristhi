@@ -1,13 +1,14 @@
 package org.opensrp.connector;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.opensrp.api.domain.Event;
 import org.opensrp.api.domain.Obs;
 import org.opensrp.connector.openmrs.service.EncounterService;
-import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.LocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
 import org.opensrp.connector.openmrs.service.PatientService;
@@ -46,15 +47,15 @@ public class OpenmrsConnector {
 		String encounterDateField = formAttributeMapper.getFieldName(m , fs);
 
 		m.clear();
-		m.put("openmrsForm" , "encounter");
-		m.put("openmrs_entity_id" , "encounter_date");
-		String eventType = formAttributeMapper.getFieldName(m , fs);//???????????? BY ATTRIB only
+		List<String> a = new ArrayList<>();
+		a .add("openmrsForm");
+		String eventType = formAttributeMapper.getUniqueAttributeValue(a , fs).get("openmrsForm");
 		Event e = new Event()
-			.withBaseEntityId("4f363c0d-485f-4753-8735-617d6a3454e6")
+			.withBaseEntityId(fs.entityId())
 			.withEventDate(OpenmrsService.OPENMRS_DATE.parse(fs.getField(encounterDateField)))
-			.withEventType("anc visit")
+			.withEventType(eventType)
 			.withLocationId("testloc")
-			.withProviderId("010700cc-1656-483d-b54d-785de49d293c")
+			.withProviderId(fs.anmId())
 			;
 		
 		for (FormField fl : fs.instance().form().fields()) {
