@@ -1,6 +1,9 @@
 package org.opensrp.connector.openmrs.service;
 
+import java.util.Collection;
+
 import org.opensrp.common.util.HttpResponse;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.domain.Client;
@@ -41,14 +44,22 @@ public class PatientService extends OpenmrsService{
     {
     	Client client = null;
     	HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)
-    			+"/"+PERSON_URL+"/"+uuID+"/name/"+name, "v=full&username="+OPENMRS_USER, OPENMRS_USER, OPENMRS_PWD);
+    			+"/"+PERSON_URL+"/"+uuID+"/name/"+name, "v=full", OPENMRS_USER, OPENMRS_PWD);
     	return client;    	
     }
     
     public void getPatientIdentifier(String parentUUID,String uuId)
     {
     	HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)
-    			+"/"+PATIENT_URL+"/"+parentUUID+PATIENT_IDENTIFIER_URL+"/"+uuId, "v=full&username="+OPENMRS_USER, OPENMRS_USER, OPENMRS_PWD);
+    			+"/"+PATIENT_URL+"/"+parentUUID+PATIENT_IDENTIFIER_URL+"/"+uuId, "v=full", OPENMRS_USER, OPENMRS_PWD);
+    }
+    
+    public JSONObject getPatientByIdentifier(String identifier) throws JSONException
+    {
+    	JSONArray p = new JSONObject(HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)
+    			+"/"+PATIENT_URL, "v=full&identifier="+identifier, OPENMRS_USER, OPENMRS_PWD).body())
+    			.getJSONArray("results");
+    	return p.length()>0?p.getJSONObject(0):null;
     }
     
     public Location getLocation(String uuId) throws JSONException
@@ -152,8 +163,13 @@ public class PatientService extends OpenmrsService{
 		HttpUtil.post(OPENMRS_BASE_URL+PATIENT_URL+"/"+parentUUID+"/identifier", payload, requestData, OPENMRS_USER, OPENMRS_PWD);
 	}
 	
-	public void createPatient()
+	public void createPatient(Client c) throws JSONException
 	{
+		JSONObject p = new JSONObject();
+		Collection per = null;
+		p.put("person", per);
+		Collection ids = null;
+		p.put("identifiers", ids);
 		String requestData = "";
 		String payload = "";
 		HttpUtil.post(OPENMRS_BASE_URL+PATIENT_URL, payload, requestData, OPENMRS_USER, OPENMRS_PWD);
