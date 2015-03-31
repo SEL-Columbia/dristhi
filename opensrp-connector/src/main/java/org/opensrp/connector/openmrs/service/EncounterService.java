@@ -23,17 +23,30 @@ public class EncounterService extends OpenmrsService{
 	private static final String ENCOUNTER__TYPE_URL = "ws/rest/v1/encountertype";
 	private PatientService patientService;
 
-	public EncounterService() {	}
+	@Autowired
+	public EncounterService(PatientService patientService) {
+		this.patientService = patientService;
+	}
 	
 	public EncounterService(String openmrsUrl, String user, String password) {
     	super(openmrsUrl, user, password);
 	}
 	
-	public String createEncounter(Event e, String uuid) throws JSONException{
-		//uuid = patientService.findpatient(e.getBaseEntityId());//TODO
+	public PatientService getPatientService() {
+		return patientService;
+	}
+
+	public void setPatientService(PatientService patientService) {
+		this.patientService = patientService;
+	}
+
+	public String createEncounter(Event e) throws JSONException{
+		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
+		//TODO
 		JSONObject enc = new JSONObject();
+		
 		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate()));
-		enc.put("patient", uuid);
+		enc.put("patient", pt.getString("uuid"));
 		enc.put("encounterType", e.getEventType());
 		enc.put("location", e.getLocationId());
 		enc.put("provider", e.getProviderId());
