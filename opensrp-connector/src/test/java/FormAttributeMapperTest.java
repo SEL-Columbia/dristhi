@@ -1,6 +1,6 @@
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class FormAttributeMapperTest {
 	private String anmId = "anmId";
     private String instanceId = "instance id 1";
     private String entityId = "entity id 1";
-    private String formName = "form_1";
+    private String formName = "delivery_outcome";
     private String bind_type = "entity 1";
     private String default_bind_path = "bind path 1";
     private String formDataDefinitionVersion = "1";
@@ -32,12 +32,16 @@ public class FormAttributeMapperTest {
     private Long timestamp = 0L;
     private long serverVersion = 0L;
 		
+    private String fieldName = "didWomanSurvive";
+    private FormSubmission formSubmission;
 	FormAttributeMapper openMRSConceptParser;
-    @Before
+
+	@Before
     public void setUp() throws Exception {
         initMocks(this);
-        String filename = this.getClass().getClassLoader().getResource("formsubmissionsamples/").getFile();
-        openMRSConceptParser = new FormAttributeMapper(filename, filename);
+        fields.add(new FormField(fieldName, "yes", null));
+        String filename = "form/";
+        openMRSConceptParser = new FormAttributeMapper(filename);
     }
     
     public FormSubmission build() {
@@ -45,15 +49,14 @@ public class FormAttributeMapperTest {
         return new FormSubmission(anmId, instanceId, formName, entityId, timestamp, formDataDefinitionVersion, formInstance, serverVersion);
     }
     
-	private String fieldName = "didMotherSurvive";
-	private FormSubmission formSubmission;
-	
 	@Test
     public void shouldParseModelXMLDocAndFormDefJSONToGetOpenMRSConcept() {
 		
        formSubmission = build();       
        Map<String,String> attributeMap = openMRSConceptParser.getAttributesForField(fieldName, formSubmission);
        assertTrue(openMRSConceptParser.getFieldName(attributeMap, formSubmission).equalsIgnoreCase(fieldName));
-       
+       List<String> atl = new ArrayList<>();
+       atl.add("openmrsForm");
+       assertNotNull(openMRSConceptParser.getUniqueAttributeValue(atl, formSubmission).get("openmrsForm"));
     }
 }
