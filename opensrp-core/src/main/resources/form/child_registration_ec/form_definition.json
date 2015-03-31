@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "8",
+    "form_data_definition_version": "6",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/Child_Registration_EC_EngKan/",
@@ -10,6 +10,7 @@
             },
             {
                 "name": "motherId",
+                "shouldLoadValue": true,
                 "source": "eligible_couple.mother.id"
             },
             {
@@ -123,7 +124,7 @@
             {
                 "name": "thayiCardNumber",
                 "bind": "/model/instance/Child_Registration_EC_EngKan/thayi_card_number",
-                "source": "eligible_couple.mother.thayiCardNumber"
+                "source": "eligible_couple.mother.child.thayiCardNumber"
             },
             {
                 "name": "bloodGroup",

@@ -3,7 +3,7 @@
         "parent": "eligible_couple",
         "child": "mother",
         "field": "wife",
-        "kind": "one_to_many",
+        "kind": "one_to_one",
         "from": "eligible_couple.id",
         "to": "mother.ecCaseId"
     },

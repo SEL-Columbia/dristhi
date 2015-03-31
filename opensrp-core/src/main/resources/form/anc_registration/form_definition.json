@@ -1,5 +1,5 @@
 {
-    "form_data_definition_version": "4",
+    "form_data_definition_version": "3",
     "form": {
         "bind_type": "eligible_couple",
         "default_bind_path": "/model/instance/ANC_Registration_EngKan/",
@@ -10,6 +10,7 @@
             },
             {
                 "name": "motherId",
+                "shouldLoadValue": true,
                 "source": "eligible_couple.mother.id"
             },
             {
@@ -45,7 +46,7 @@
             {
                 "name": "numberOfPregnancies",
                 "bind": "/model/instance/ANC_Registration_EngKan/num_pregnancies",
-                "source": "eligible_couple.numberOfPregnancies"
+                "source":"eligible_couple.numberOfPregnancies"
             },
             {
                 "name": "thayiCardNumber",
