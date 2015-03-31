@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -19,6 +20,8 @@ import javax.xml.xpath.XPathFactory;
 import org.opensrp.form.domain.FormSubmission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -37,11 +40,12 @@ public class FormAttributeMapper {
 	private String jsonFilePath;
 	private String xmlFilePath;
 	@Autowired
-	public FormAttributeMapper(@Value("#{opensrp['form.def.json.file.path']}") String jsonFilePath,
-			@Value("#{opensrp['model.xml.file.path']}") String xmlFilePath)
+	public FormAttributeMapper(@Value("#{opensrp['form.directory.name']}") String formDirPath) throws IOException
 	{
-		this.jsonFilePath = jsonFilePath;
-		this.xmlFilePath = xmlFilePath;
+		ResourceLoader loader=new DefaultResourceLoader();
+		formDirPath = loader.getResource(formDirPath).getURI().getPath();
+		this.jsonFilePath = formDirPath;
+		this.xmlFilePath = formDirPath;
 	}
 	
 	public String getFieldName(Map<String, String> attributeMap,FormSubmission formSubmission)
@@ -158,19 +162,65 @@ public class FormAttributeMapper {
 			lastNode = nodeList.item(0);			
     	}
     	catch (ParserConfigurationException e) {
- 			// TODO Auto-generated catch block	
  			e.printStackTrace();
  		} catch (SAXException e) {
- 			// TODO Auto-generated catch block
  			e.printStackTrace();
  		} catch (IOException e) {
- 			// TODO Auto-generated catch block
  			e.printStackTrace();
  		} catch (XPathExpressionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return lastNode;
+	}
+	
+	public Map<String, String> getUniqueAttributeValue(List<String> attributeName, FormSubmission formSubmission)
+	{
+		Map<String, String> map = new HashMap<>();
+
+		Node lastNode = null;
+		String formName = formSubmission.formName();
+		String filePath = this.xmlFilePath+"/"+formName+"/model.xml";
+    	File file = new File(filePath);
+    	try {
+    		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(file);
+			XPathFactory xPathFactory = XPathFactory.newInstance();
+			XPath xpath = xPathFactory.newXPath();
+			String expression = "//*[";
+			String expressionQuery = "";
+			NodeList nodeList;
+			for(String att:attributeName)
+			{				
+				if(expressionQuery.length()>0)
+				{
+					expressionQuery += " and ";
+				}
+				expressionQuery += "@"+att;
+			}
+			
+			expression += expressionQuery;
+			expression += "]";
+			nodeList = (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
+			lastNode = nodeList.item(0);
+			
+			NamedNodeMap attributes = lastNode.getAttributes();
+	    	for(int i=0;i<attributes.getLength();i++)
+	    	{
+	    		Node attributeNode = attributes.item(i);
+	    		map.put(attributeNode.getNodeName(), attributeNode.getNodeValue());
+	    	}
+    	}
+    	catch (ParserConfigurationException e) {
+ 			e.printStackTrace();
+ 		} catch (SAXException e) {
+ 			e.printStackTrace();
+ 		} catch (IOException e) {
+ 			e.printStackTrace();
+ 		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
+		return map;
 	}
 	
 	private static String getXPath(Node node) {
