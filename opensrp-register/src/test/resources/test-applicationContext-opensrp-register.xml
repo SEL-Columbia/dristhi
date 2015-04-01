@@ -13,9 +13,9 @@
     <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
 
     <context:annotation-config/>
-    <context:component-scan base-package="org.opensrp.form.repository"/>
+    <context:component-scan base-package="org.opensrp.register.repository"/>
     
-    <bean id="handlerMapper" class="org.opensrp.register.service.handler.HandlerMapper"></bean>
+    <!-- <bean id="handlerMapper" class="org.opensrp.register.service.handler.HandlerMapper"></bean> -->
 
     <bean id="opensrpDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="${couchdb.db.opensrp}"/>
