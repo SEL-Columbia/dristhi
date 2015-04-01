@@ -162,7 +162,6 @@ public class ClientService {
 						  apiClient.withVoidReason(client.getRevision());*/
 								
 							apiClients.add(apiClient);
-			
 								
 		}
 		return apiClients;

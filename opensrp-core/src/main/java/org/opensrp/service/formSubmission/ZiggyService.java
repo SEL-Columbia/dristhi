@@ -1,7 +1,6 @@
 package org.opensrp.service.formSubmission;
 
-//import org.opensrp.repository.FormDataRepository;
-import org.opensrp.repository.IFormDataRepository;
+import org.opensrp.repository.FormDataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +27,14 @@ public class ZiggyService {
     private static final String FORM_SUBMISSION_ROUTER = "formSubmissionRouter";
 
     private ZiggyFileLoader ziggyFileLoader;
-    private IFormDataRepository dataRepository;
+    private FormDataRepository dataRepository;
     private FormSubmissionRouter formSubmissionRouter;
     private Object ziggyFormController;
     private Invocable invocable;
 
+    public ZiggyService(){}
     @Autowired
-    public ZiggyService(ZiggyFileLoader ziggyFileLoader,IFormDataRepository dataRepository,FormSubmissionRouter formSubmissionRouter) throws Exception {
+    public ZiggyService(ZiggyFileLoader ziggyFileLoader,FormDataRepository dataRepository,FormSubmissionRouter formSubmissionRouter) throws Exception {
         this.ziggyFileLoader = ziggyFileLoader;
         this.dataRepository = dataRepository;
         this.formSubmissionRouter = formSubmissionRouter;
