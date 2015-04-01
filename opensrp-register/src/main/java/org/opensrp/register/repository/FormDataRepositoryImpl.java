@@ -9,7 +9,7 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.register.domain.Child;
 import org.opensrp.register.domain.EligibleCouple;
 import org.opensrp.register.domain.Mother;
-import org.opensrp.repository.IFormDataRepository;
+import org.opensrp.repository.FormDataRepository;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
 import org.ektorp.ViewResult;
@@ -26,7 +26,7 @@ import java.util.Map;
 import static java.util.UUID.randomUUID;
 
 @Repository
-public class FormDataRepository implements IFormDataRepository{
+public class FormDataRepositoryImpl extends FormDataRepository{
     private static final String ID = "id";
     private static final String DETAILS = "details";
     private static final String DOCUMENT_TYPE = "type";
@@ -37,7 +37,7 @@ public class FormDataRepository implements IFormDataRepository{
     private Map<String, String> designDocMap;
 
     @Autowired
-    public FormDataRepository(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+    public FormDataRepositoryImpl(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
         this.db = db;
         initMaps();
     }
