@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -31,12 +32,15 @@ public class FormDownLoadController {
 	private String FORMS_DIR;
 	private String FORMS_DEFINITION_FILE_NAME = "form_definition.json";
 	private static final String DS = "/"; 
-
+	private String FILES_TO_DOWNLOAD;
+	
 	@Autowired
-	public FormDownLoadController(@Value("#{opensrp['form.directory.name']}") String FORMS_DIR) throws IOException 
+	public FormDownLoadController(@Value("#{opensrp['form.directory.name']}") String FORMS_DIR, 
+			@Value("#{opensrp['form.download.files']}") String FILES_TO_DOWNLOAD) throws IOException 
 	{
 		ResourceLoader loader=new DefaultResourceLoader();
 		this.FORMS_DIR = loader.getResource(FORMS_DIR).getURI().getPath();
+		this.FILES_TO_DOWNLOAD = FILES_TO_DOWNLOAD.replace(" ", "");
 		System.out.println(FORMS_DIR);
 	}
 
@@ -71,18 +75,20 @@ public class FormDownLoadController {
  
         String[] fl = directory.list();
         for (String fileName : fl) {
-            FileInputStream fis = new FileInputStream(directory.getPath() + DS + fileName);
-            BufferedInputStream bis = new BufferedInputStream(fis);
- 
-            zos.putNextEntry(new ZipEntry(fileName));
- 
-            int bytesRead;
-            while ((bytesRead = bis.read(bytes)) != -1) {
-                zos.write(bytes, 0, bytesRead);
-            }
-            zos.closeEntry();
-            bis.close();
-            fis.close();
+        	if(FILES_TO_DOWNLOAD.matches("(.+,)?"+fileName+"(,.+)?$")){
+	            FileInputStream fis = new FileInputStream(directory.getPath() + DS + fileName);
+	            BufferedInputStream bis = new BufferedInputStream(fis);
+	 
+	            zos.putNextEntry(new ZipEntry(fileName));
+	 
+	            int bytesRead;
+	            while ((bytesRead = bis.read(bytes)) != -1) {
+	                zos.write(bytes, 0, bytesRead);
+	            }
+	            zos.closeEntry();
+	            bis.close();
+	            fis.close();
+        	}
         }
         zos.flush();
         baos.flush();
@@ -91,6 +97,7 @@ public class FormDownLoadController {
  
         return baos.toByteArray();
     }	
+    
 	/*
 	 * Utility method read Forms directories 
 	 * recursively find name of available forms 
