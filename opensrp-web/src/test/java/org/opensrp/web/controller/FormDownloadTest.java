@@ -22,7 +22,7 @@ public class FormDownloadTest
 	{
         String filename = "form/";
 
-		FormDownLoadController formDownLoadController = new FormDownLoadController(filename);
+		FormDownLoadController formDownLoadController = new FormDownLoadController(filename, "model.xml,form.xml,form_definition.json");
 		
 		String versions = formDownLoadController.getAllAvailableVersion();
 		System.out.println("available version:::"+versions);
