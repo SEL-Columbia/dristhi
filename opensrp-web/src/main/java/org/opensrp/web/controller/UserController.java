@@ -58,8 +58,12 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<String> authenticate() throws JSONException {
         User u = currentUser();
-
-		Location l = openmrsLocationService.getLocation((String) u.getBaseEntity().getAttribute("Location"));
+        
+        String lid = (String) u.getBaseEntity().getAttribute("Location");
+        if(lid == null){
+        	throw new RuntimeException("User not mapped on any location. Make sure that user have a person attribute Location with uuid of a valid OpenMRS Location");
+        }
+		Location l = openmrsLocationService.getLocation(lid);
 		Map<String, Object> map = new HashMap<>();
 		map.put("user", u);
 		map.put("location", l);
