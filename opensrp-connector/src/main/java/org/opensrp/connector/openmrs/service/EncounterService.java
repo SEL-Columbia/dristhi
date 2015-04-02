@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.domain.Event;
 import org.opensrp.api.domain.Obs;
+import org.opensrp.api.domain.User;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,12 @@ public class EncounterService extends OpenmrsService{
 	private static final String ENCOUNTER_URL = "ws/rest/v1/encounter";
 	private static final String ENCOUNTER__TYPE_URL = "ws/rest/v1/encountertype";
 	private PatientService patientService;
+	private UserService userService;
 
 	@Autowired
-	public EncounterService(PatientService patientService) {
+	public EncounterService(PatientService patientService, UserService userService) {
 		this.patientService = patientService;
+		this.userService = userService;
 	}
 	
 	public EncounterService(String openmrsUrl, String user, String password) {
@@ -40,16 +43,26 @@ public class EncounterService extends OpenmrsService{
 		this.patientService = patientService;
 	}
 
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
 	public String createEncounter(Event e) throws JSONException{
 		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
-		//TODO
 		JSONObject enc = new JSONObject();
 		
+		JSONObject pr = userService.getPersonByUser(e.getProviderId());
+		
 		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate()));
+		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
 		enc.put("patient", pt.getString("uuid"));
 		enc.put("encounterType", e.getEventType());
 		enc.put("location", e.getLocationId());
-		enc.put("provider", e.getProviderId());
+		enc.put("provider", pr.getString("uuid"));
 
 		List<Obs> ol = e.getObs();
 		Map<String, JSONObject> p = new HashMap<>();
