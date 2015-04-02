@@ -88,7 +88,8 @@ public class HttpUtil {
         if(url.endsWith("/")){
         	url = url.substring(0, url.lastIndexOf("/"));
         }
-    	URL urlo = new URL(url+(StringUtils.isEmptyOrWhitespaceOnly(payload)?"":("?"+payload)));
+        url = (url+(StringUtils.isEmptyOrWhitespaceOnly(payload)?"":("?"+payload))).replaceAll(" ", "%20");
+    	URL urlo = new URL(url);
 		HttpURLConnection conn = (HttpURLConnection) urlo.openConnection();
 		conn.setRequestProperty("Accept-Charset", charset);
 		
