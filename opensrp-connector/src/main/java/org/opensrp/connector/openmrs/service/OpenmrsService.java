@@ -3,6 +3,7 @@ package org.opensrp.connector.openmrs.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.opensrp.connector.HttpUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,14 @@ public abstract class OpenmrsService {
     	OPENMRS_PWD = password;
 	}
 
+	/**
+	 * returns url after trimming ending slash
+	 * @return
+	 */
+	public String getURL() {
+		return HttpUtil.removeEndingSlash(OPENMRS_BASE_URL);
+	}
+	
 public static void main(String[] args) {
 	System.out.println(OPENMRS_DATE.format(new Date()));
 }
