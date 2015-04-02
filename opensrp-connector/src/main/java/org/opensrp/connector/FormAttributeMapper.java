@@ -259,6 +259,42 @@ public class FormAttributeMapper {
 	    
 	    return attributeMap; 
 	}
+	
+	public String getInstanceAttributesForFormFieldAndValue(String fieldName, String fieldVal, FormSubmission formSubmission)
+	{		
+		String formName = formSubmission.formName();
+		JsonParser parser = new JsonParser();
+		String filePath = this.jsonFilePath+"/"+formName+"/form.json";
+		try
+		{
+			Object obj = parser.parse(new FileReader(filePath));
+			JsonObject jsonObject = (JsonObject)obj;
+			JsonArray formElement = jsonObject.getAsJsonArray("children");
+			if(formElement!=null)
+			{
+				for (int i = 0; i < formElement.size(); i++) {
+					JsonObject el = formElement.get(i).getAsJsonObject();
+					if(el.get("name").getAsString().equalsIgnoreCase(fieldName)){
+						JsonArray ar = el.get("children").getAsJsonArray();
+						for (int j = 0; j < ar.size(); j++) {
+							JsonObject option = ar.get(j).getAsJsonObject();
+							if(option.get("name").getAsString().equalsIgnoreCase(fieldVal)){
+								return option.get("instance").getAsJsonObject().get("openmrs_code").getAsString();
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.getMessage();
+		}
+    	
+    	return null;
+	}
+	
 	/*
 	 * read form_definition.json for given formSubmission from disk 
 	 * bindAttribute = get bind attribute for provided fieldName
