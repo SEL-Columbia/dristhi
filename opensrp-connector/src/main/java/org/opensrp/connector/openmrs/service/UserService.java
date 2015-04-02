@@ -57,4 +57,15 @@ public class UserService extends OpenmrsService{
 		
 		return u;
 	}
+	
+	public JSONObject getPersonByUser(String username) throws JSONException {
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+USER_URL, "v=full&username="+username, OPENMRS_USER, OPENMRS_PWD);
+		JSONArray res = new JSONObject(op.body()).getJSONArray("results");
+		if(res.length() == 0){
+			return null;
+		}
+		JSONObject obj = res.getJSONObject(0);
+		JSONObject p = obj.getJSONObject("person");
+		return p;
+	}
 }
