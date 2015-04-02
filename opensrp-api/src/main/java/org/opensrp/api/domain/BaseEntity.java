@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.opensrp.api.constants.Gender;
@@ -168,7 +169,12 @@ public class BaseEntity extends BaseDataObject{
 	}
 	
 	public Object getAttribute(String name) {
-		return attributes.get(name);
+		for (Entry<String, Object> a : attributes.entrySet()) {
+			if(a.getKey().equalsIgnoreCase(name)){
+				return a.getValue();
+			}
+		}
+		return null;
 	}
 
 	/**
