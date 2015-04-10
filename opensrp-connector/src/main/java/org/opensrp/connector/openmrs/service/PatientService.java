@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.mysql.jdbc.StringUtils;
+
 @Service
 public class PatientService extends OpenmrsService{
 	
@@ -129,13 +131,28 @@ public class PatientService extends OpenmrsService{
 		for (Address ad : adl) {
 			JSONObject jao = new JSONObject();
 			if(ad.getAddressFields() != null){
-				jao.put("address1", ad.getAddressField(AddressField.HOUSE_NUMBER));
-				jao.put("address2", ad.getAddressField(AddressField.STREET));
-				jao.put("address3", ad.getAddressField(AddressField.SECTOR));
-				jao.put("address4", ad.getAddressField(AddressField.MUNICIPALITY));
-				jao.put("address5", ad.getAddressField(AddressField.REGION));
-				jao.put("countyDistrict", ad.getAddressField(AddressField.DISTRICT));
-				jao.put("cityVillage", ad.getAddressField(AddressField.CITY));
+				jao.put("address1", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS1|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO)"));
+				jao.put("address2", ad.getAddressField("(?i)(ADDRESS2|STREET|STREET_NUMBER|STREET_NO|LANE)"));
+				jao.put("address3", ad.getAddressField("(?i)(ADDRESS3|SECTOR|AREA)"));
+				jao.put("address4", ad.getAddressField("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)"));
+				jao.put("countyDistrict", ad.getAddressField("(?i)(county_district|countyDistrict|COUNTY|DISTRICT)"));
+				jao.put("cityVillage", ad.getAddressField("(?i)(cityVillage|city_village|CITY|VILLAGE)"));
+
+				String ad5V = "";
+				for (Entry<String, String> af : ad.getAddressFields().entrySet()) {
+					if(!af.getKey().matches("(?i)(ADDRESS1|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO|"
+							+ "ADDRESS2|STREET|STREET_NUMBER|STREET_NO|LANE|"
+							+ "ADDRESS3|SECTOR|AREA|"
+							+ "ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION|"
+							+ "countyDistrict|county_district|COUNTY|DISTRICT|"
+							+ "cityVillage|city_village|CITY|VILLAGE)")){
+						ad5V += af.getKey()+":"+af.getValue()+";";
+					}
+				}
+				if(!StringUtils.isEmptyOrWhitespaceOnly(ad5V)){
+					jao.put("address5", ad5V);
+				}
+				
 			}
 			jao.put("address6", ad.getAddressType());
 			jao.put("stateProvince", ad.getState());
