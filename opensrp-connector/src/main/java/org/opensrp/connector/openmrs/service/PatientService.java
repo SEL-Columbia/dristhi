@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.api.constants.AddressField;
 import org.opensrp.api.domain.Address;
 import org.opensrp.api.domain.BaseEntity;
 import org.opensrp.api.domain.Client;
