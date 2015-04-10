@@ -12,6 +12,7 @@ import org.opensrp.api.domain.BaseEntity;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
 import org.opensrp.api.domain.Obs;
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.LocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
@@ -90,6 +91,14 @@ public class OpenmrsConnector {
 		return formAttributeMapper.getFieldName(m , fs);
 	}
 	
+	public String getFieldName(String entity, String entityId, String entityParentId, FormSubmission fs) {
+		Map<String, String> m = new HashMap<String, String>();
+		m.put("openmrs_entity" , entity);
+		m.put("openmrs_entity_id" , entityId);
+		m.put("openmrs_entity_parent" , entityId);
+		return formAttributeMapper.getFieldName(m , fs);
+	}
+	
 	public Client getClientFromFormSubmission(FormSubmission fs) throws ParseException {
 		String firstName = fs.getField(getFieldName("person", "first_name", fs));
 		String middleName = fs.getField(getFieldName("person", "middle_name", fs));
@@ -100,7 +109,49 @@ public class OpenmrsConnector {
 		Boolean birthdateApprox = true;
 		Boolean deathdateApprox = true;
 		String gender = fs.getField(getFieldName("person", "gender", fs));
-		List<Address> addresses = null;//TODO
+		
+		Map<String, Address> paddr = new HashMap<>();
+		for (FormField fl : fs.instance().form().fields()) {
+			Map<String, String> att = formAttributeMapper.getAttributesForField(fl.name(), fs);
+			if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("person_address")){
+				String addressType = att.get("openmrs_entity_parent");
+				String addressField = att.get("openmrs_entity_id");
+				Address ad = paddr.get(addressType);
+				if(ad == null){
+					ad = new Address(addressType, null, null, null, null, null, null, null, null);
+				}
+
+				if(addressField.equalsIgnoreCase("startDate")||addressField.equalsIgnoreCase("start_date")){
+					ad.setStartDate(DateUtil.parseDate(fl.value()));
+				}
+				else if(addressField.equalsIgnoreCase("endDate")||addressField.equalsIgnoreCase("end_date")){
+					ad.setEndDate(DateUtil.parseDate(fl.value()));
+				}
+				else if(addressField.equalsIgnoreCase("latitude")){
+					ad.setLatitude(fl.value());
+				}
+				else if(addressField.equalsIgnoreCase("longitute")){
+					ad.setLongitute(fl.value());
+				}
+				else if(addressField.equalsIgnoreCase("postalCode")||addressField.equalsIgnoreCase("postal_code")){
+					ad.setPostalCode(fl.value());
+				}
+				else if(addressField.equalsIgnoreCase("state")||addressField.equalsIgnoreCase("state_province")){
+					ad.setState(fl.value());
+				}
+				else if(addressField.equalsIgnoreCase("country")){
+					ad.setCountry(fl.value());
+				}
+				else {
+					ad.addAddressField(addressField, fl.value());
+				}
+				
+				paddr.put(addressType, ad);
+			}
+		}
+
+		List<Address> addresses = new ArrayList<>(paddr.values());
+		
 		Map<String, Object> pattributes = new HashMap<>();
 		for (FormField fl : fs.instance().form().fields()) {
 			Map<String, String> att = formAttributeMapper.getAttributesForField(fl.name(), fs);

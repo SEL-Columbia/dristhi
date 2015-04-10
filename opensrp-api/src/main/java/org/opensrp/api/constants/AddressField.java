@@ -10,6 +10,7 @@ public enum AddressField {
 	MUNICIPALITY,
 	VILLAGE,
 	TOWN,
+	SUB_DISTRICT,
 	COUNTY,
 	DISTRICT,
 	CITY,

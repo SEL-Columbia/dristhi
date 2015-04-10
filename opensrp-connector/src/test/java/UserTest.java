@@ -1,16 +1,19 @@
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.connector.openmrs.service.UserService;
 
 
-public class UserTest {
+public class UserTest extends TestResourceLoader{
 
-	String openmrsOpenmrsUrl = "http://46.101.51.199:8080/openmrs/";
-	String openmrsUsername = "admin";
-	String openmrsPassword = "5rpAdmin";
+	public UserTest() throws IOException {
+		super();
+	}
+
 	UserService ls;
 
 	@Before

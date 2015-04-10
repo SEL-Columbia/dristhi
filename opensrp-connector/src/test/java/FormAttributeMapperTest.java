@@ -3,6 +3,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.connector.FormAttributeMapper;
 import org.opensrp.form.domain.FormSubmission;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import com.google.gson.Gson;
 
@@ -19,12 +24,12 @@ public class FormAttributeMapperTest {
 	
     private FormSubmission formSubmission;
 	FormAttributeMapper openMRSConceptParser;
+	String formDirPath = "form/";
 
 	@Before
     public void setUp() throws Exception {
         initMocks(this);
-        String filename = "form/";
-        openMRSConceptParser = new FormAttributeMapper(filename);
+        openMRSConceptParser = new FormAttributeMapper(formDirPath);
         
         String fsStr = "{\"anmId\": \"admin\",   \"clientVersion\": \"1427951221623\", "
     			+ " \"entityId\": \"b6d2751f-3c44-48d0-822c-734ee03c8aa2\","
@@ -53,4 +58,15 @@ public class FormAttributeMapperTest {
        atl.add(etypr);
        assertNotNull(openMRSConceptParser.getUniqueAttributeValue(atl, formSubmission).get("encounter_type"));
     }
+	
+	@Test
+	public void shouldMapAddressWithClient() throws IOException{
+		String field = "birthplace_street";
+
+		ResourceLoader loader=new DefaultResourceLoader();
+		formDirPath = loader.getResource(formDirPath).getURI().getPath();
+		File fsfile = new File(formDirPath+"basic_reg/formSubmission.json");
+		FormSubmission fs = new Gson().fromJson(new FileReader(fsfile), FormSubmission.class);
+		assertNotNull(openMRSConceptParser.getAttributesForField(field, fs));
+	}
 }

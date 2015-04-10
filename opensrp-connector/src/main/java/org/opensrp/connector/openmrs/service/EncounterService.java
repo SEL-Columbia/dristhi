@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.domain.Event;
 import org.opensrp.api.domain.Obs;
-import org.opensrp.api.domain.User;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
