@@ -15,6 +15,9 @@ import static org.motechproject.util.DateUtil.inRange;
 public class DateUtil {
     private static DateUtility dateUtility = new RealDate();
     static DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    public static DateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
+    public static DateFormat yyyyMMddHHmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static DateFormat yyyyMMddTHHmmssSSSZ = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
     public static void fakeIt(LocalDate fakeDayAsToday) {
         dateUtility = new MockDate(fakeDayAsToday);
     }
@@ -35,6 +38,26 @@ public class DateUtil {
         return referenceDateForSchedule.toDateTime(new LocalTime(0, 0));
     }
 
+    /**
+     * Parses dates of following formats 
+     * - yyyy-MM-dd
+     * - yyyy-MM-dd HH:mm:ss
+     * - yyyy-MM-dd'T'HH:mm:ss.SSSZ
+     * @return
+     * @throws ParseException 
+     */
+    public static Date parseDate(String date) throws ParseException{
+    	try{
+    		return yyyyMMdd.parse(date);
+    	}
+    	catch(ParseException e){}
+    	try {
+			return yyyyMMddHHmmss.parse(date);
+		} catch (ParseException e) {}
+		
+    	return yyyyMMddTHHmmssSSSZ.parse(date);
+    }
+    
     public static LocalDate tryParse(String value, LocalDate defaultValue) {
         try {
             return LocalDate.parse(value);
