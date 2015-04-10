@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -13,19 +15,23 @@ import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.connector.openmrs.service.UserService;
 import org.opensrp.form.domain.FormSubmission;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import com.google.gson.Gson;
 
 
-public class EncounterTest {
-	String openmrsOpenmrsUrl = "http://46.101.51.199:8080/openmrs/";
-	String openmrsUsername = "admin";
-	String openmrsPassword = "5rpAdmin";
+public class EncounterTest extends TestResourceLoader{
+	public EncounterTest() throws IOException {
+		super();
+	}
+
 	EncounterService s;
 	OpenmrsConnector oc;
 	PatientService ps;
 	UserService us;
 
+	String formDirPath = "form/";
 	
 	@Before
 	public void setup() throws IOException{
@@ -34,8 +40,7 @@ public class EncounterTest {
 		s = new EncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		s.setPatientService(ps);
 		s.setUserService(us);
-        String filename = "form/";
-		FormAttributeMapper fam = new FormAttributeMapper(filename);
+		FormAttributeMapper fam = new FormAttributeMapper(formDirPath);
 		oc = new OpenmrsConnector(s, ps, null, null, fam);
 	}
 	
@@ -61,9 +66,24 @@ public class EncounterTest {
 		System.out.println(s.createEncounter(e));
 	}
 	
-	/*@Test159915
-	public void testEncounterType() throws JSONException {
-		System.out.println(s.createEncounterType("test encounter type", "encounter type description"));
-	}*/
+	@Test
+	public void shouldMapAddressWithClient() throws IOException, ParseException, JSONException{
+		String field = "birthplace_street";
+
+		ResourceLoader loader=new DefaultResourceLoader();
+		formDirPath  = loader.getResource(formDirPath).getURI().getPath();
+		File fsfile = new File(formDirPath+"basic_reg/formSubmission.json");
+		FormSubmission fs = new Gson().fromJson(new FileReader(fsfile), FormSubmission.class);
+		System.out.println(oc.isOpenmrsForm(fs));
+		
+		JSONObject p = ps.getPatientByIdentifier(fs.entityId());
+		if(p == null){
+			Client c = oc.getClientFromFormSubmission(fs);
+			System.out.println(ps.createPatient(c));
+		}
+		Event e = oc.getEventFromFormSubmission(fs);
+		
+		System.out.println(s.createEncounter(e));
+	}
 	
 }

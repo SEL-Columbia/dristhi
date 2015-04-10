@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,15 +9,15 @@ import org.opensrp.connector.openmrs.service.LocationService;
 
 import com.google.gson.Gson;
 
+public class LocationTest extends TestResourceLoader{
+	public LocationTest() throws IOException {
+		super();
+	}
 
-public class LocationTest {
-	String openmrsOpenmrsUrl = "http://46.101.51.199:8080/openmrs/";
-	String openmrsUsername = "admin";
-	String openmrsPassword = "5rpAdmin";
 	LocationService ls;
 
 	@Before
-	public void setup(){
+	public void setup() throws IOException{
 		ls = new LocationService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 	}
 	

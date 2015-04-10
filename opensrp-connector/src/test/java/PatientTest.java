@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,12 +16,13 @@ import org.opensrp.api.domain.Client;
 import org.opensrp.connector.openmrs.service.PatientService;
 
 
-public class PatientTest {
-	String openmrsOpenmrsUrl = "http://46.101.51.199:8080/openmrs/";
-	String openmrsUsername = "admin";
-	String openmrsPassword = "5rpAdmin";
+public class PatientTest extends TestResourceLoader{
 	PatientService s;
 
+	public PatientTest() throws IOException {
+		super();
+	}
+	
 	@Before
 	public void setup(){
 		s = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
@@ -38,7 +40,7 @@ public class PatientTest {
 					true, false, "MALE", addresses , attribs ))
 			.withIdentifier("Birth Reg Num", "b-8912819"+new Random().nextInt(99))
 			.withIdentifier("Death Reg Num", "d-ewj-js3u2"+new Random().nextInt(99));
-		System.out.println(s.createPatient(c));
+		//System.out.println(s.createPatient(c));
 	}
 	
 	@Test
