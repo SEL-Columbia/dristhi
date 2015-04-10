@@ -3,6 +3,7 @@ package org.opensrp.api.domain;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.opensrp.api.constants.AddressField;
@@ -63,11 +64,36 @@ public class Address{
 	}
 	
 	public String getAddressField(String addressField) {
-		return addressFields.get(addressField);
+		for (Entry<String, String> a : addressFields.entrySet()) {
+			if(a.getKey().equalsIgnoreCase(addressField)){
+				return a.getValue();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns field matching the regex. Note that incase of multiple fields matching criteria 
+	 * function would return first match. The must be well formed to find out a single value
+	 * @param regex
+	 * @return
+	 */
+	public String getAddressFieldMatchingRegex(String regex) {
+		for (Entry<String, String> a : addressFields.entrySet()) {
+			if(a.getKey().matches(regex)){
+				return a.getValue();
+			}
+		}
+		return null;
 	}
 
 	public String getAddressField(AddressField addressField) {
-		return addressFields.get(addressField.name());
+		for (Entry<String, String> a : addressFields.entrySet()) {
+			if(a.getKey().equalsIgnoreCase(addressField.name())){
+				return a.getValue();
+			}
+		}
+		return null;
 	}
 	
 	/**
