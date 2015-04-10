@@ -1,24 +1,23 @@
 package org.opensrp.web.controller;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import java.io.IOException;
 
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opensrp.api.util.LocationTree;
 import org.opensrp.connector.openmrs.service.LocationService;
 import org.springframework.http.ResponseEntity;
 
 import com.google.gson.Gson;
 
-public class LocationTest {
+public class LocationTest extends TestResourceLoader{
+
+	public LocationTest() throws IOException {
+		super();
+	}
 
 	private LocationService locationservice;
 	private LocationController controller;
-	String openmrsOpenmrsUrl = "http://46.101.51.199:8080/openmrs/";
-	String openmrsUsername = "admin";
-	String openmrsPassword = "5rpAdmin";
 
 	@Before
     public void setUp() throws Exception {
