@@ -1,24 +1,23 @@
 package org.opensrp.listener;
 
-import org.opensrp.common.util.DateUtil;
-import org.opensrp.common.util.HttpAgent;
-import org.opensrp.domain.MCTSReport;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.motechproject.scheduler.domain.MotechEvent;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-import org.opensrp.listener.MCTSReportEventListener;
+import org.opensrp.common.util.DateUtil;
+import org.opensrp.common.util.HttpAgent;
+import org.opensrp.domain.MCTSReport;
 import org.opensrp.service.MCTSSMSService;
 import org.opensrp.service.formSubmission.MCTSSMSReportService;
 
