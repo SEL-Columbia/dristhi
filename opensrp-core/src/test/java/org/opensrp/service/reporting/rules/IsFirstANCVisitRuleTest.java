@@ -1,15 +1,14 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.common.util.EasyMap;
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.opensrp.service.reporting.rules.IsFirstANCVisitRule;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
+import org.opensrp.common.util.EasyMap;
+import org.opensrp.util.SafeMap;
 
 
 public class IsFirstANCVisitRuleTest {

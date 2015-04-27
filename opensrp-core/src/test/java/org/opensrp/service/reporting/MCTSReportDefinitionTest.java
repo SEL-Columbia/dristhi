@@ -1,17 +1,15 @@
 package org.opensrp.service.reporting;
 
-import ch.lambdaj.util.NotUniqueItemException;
-import org.junit.Test;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import org.opensrp.service.reporting.MCTSFormIndicator;
-import org.opensrp.service.reporting.MCTSReportDefinition;
-import org.opensrp.service.reporting.MCTSReportIndicator;
+import org.junit.Test;
+
+import ch.lambdaj.util.NotUniqueItemException;
 
 public class MCTSReportDefinitionTest {
     @Test(expected = NotUniqueItemException.class)

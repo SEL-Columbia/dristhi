@@ -1,10 +1,10 @@
 package org.opensrp.util;
 
+import static org.mockito.Matchers.argThat;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hamcrest.Description;
 import org.mockito.ArgumentMatcher;
-
-import static org.mockito.Matchers.argThat;
 
 public class Matcher {
     public static <T> T objectWithSameFieldsAs(final T other) {

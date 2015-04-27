@@ -1,29 +1,30 @@
 package org.opensrp.repository.it;
 
-import org.opensrp.common.util.EasyMap;
-import org.opensrp.domain.Mother;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.motechproject.util.DateUtil;
-import org.opensrp.repository.AllMothers;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.common.util.EasyMap.mapOf;
+import static org.opensrp.util.Matcher.hasSameFieldsAs;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.opensrp.util.Matcher.hasSameFieldsAs;
-import static java.util.Arrays.asList;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.motechproject.util.DateUtil;
+import org.opensrp.common.util.EasyMap;
+import org.opensrp.domain.Mother;
+import org.opensrp.repository.AllMothers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")

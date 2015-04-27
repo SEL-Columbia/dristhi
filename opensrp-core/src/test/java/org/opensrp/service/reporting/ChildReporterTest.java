@@ -1,22 +1,19 @@
 package org.opensrp.service.reporting;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.util.FormSubmissionBuilder.create;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
 import org.opensrp.common.domain.Indicator;
 import org.opensrp.domain.Child;
 import org.opensrp.domain.Location;
 import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 import org.opensrp.repository.AllChildren;
-import org.opensrp.service.reporting.ChildReporter;
-import org.opensrp.service.reporting.ChildReportingService;
-import org.opensrp.service.reporting.IReporter;
-import  static org.opensrp.util.FormSubmissionBuilder.create;
+import org.opensrp.util.SafeMap;
 
 public class ChildReporterTest {
 

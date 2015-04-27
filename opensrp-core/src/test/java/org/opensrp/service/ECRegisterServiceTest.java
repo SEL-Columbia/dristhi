@@ -1,22 +1,21 @@
 package org.opensrp.service;
 
-import org.opensrp.domain.EligibleCouple;
-import org.opensrp.domain.Mother;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.EasyMap.create;
+
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-
-import static java.util.Arrays.asList;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.opensrp.domain.EligibleCouple;
+import org.opensrp.domain.Mother;
 import org.opensrp.domain.register.ECRegister;
 import org.opensrp.domain.register.ECRegisterEntry;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
-import org.opensrp.service.ECRegisterService;
 
 public class ECRegisterServiceTest {
 

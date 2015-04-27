@@ -1,20 +1,19 @@
 package org.opensrp.service.reporting;
 
-import org.opensrp.common.domain.Indicator;
-import org.opensrp.common.domain.ReportDataDeleteRequest;
-import org.opensrp.common.domain.ReportDataUpdateRequest;
-import org.opensrp.common.domain.ReportingData;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.opensrp.common.domain.Indicator;
+import org.opensrp.common.domain.ReportDataDeleteRequest;
+import org.opensrp.common.domain.ReportDataUpdateRequest;
+import org.opensrp.common.domain.ReportingData;
 import org.opensrp.event.ReportDeleteEvent;
 import org.opensrp.event.ReportEvent;
 import org.opensrp.event.ReportUpdateEvent;
-import org.opensrp.service.reporting.ReportingService;
 
 public class ReportingServiceTest {
     @Mock

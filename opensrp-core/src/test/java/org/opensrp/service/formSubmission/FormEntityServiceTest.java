@@ -1,23 +1,31 @@
 package org.opensrp.service.formSubmission;
 
-import com.google.gson.Gson;
-import org.opensrp.domain.FormExportToken;
-import org.opensrp.form.domain.FormSubmission;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.AllConstants.Form.ANM_ID;
+import static org.opensrp.common.AllConstants.Form.CLIENT_VERSION;
+import static org.opensrp.common.AllConstants.Form.ENTITY_ID;
+import static org.opensrp.common.AllConstants.Form.FORM_NAME;
+import static org.opensrp.common.AllConstants.Form.INSTANCE_ID;
+import static org.opensrp.common.AllConstants.Form.SERVER_VERSION;
+import static org.opensrp.common.util.EasyMap.create;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.motechproject.util.DateUtil;
-
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.opensrp.common.AllConstants.Form.*;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.opensrp.domain.FormExportToken;
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.repository.AllFormExportTokens;
 import org.opensrp.util.FormSubmissionBuilder;
+
+import com.google.gson.Gson;
 
 public class FormEntityServiceTest {
     @Mock

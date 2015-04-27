@@ -1,14 +1,13 @@
 package org.opensrp.service.reporting;
 
-import org.opensrp.domain.MCTSReport;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.opensrp.domain.MCTSReport;
 import org.opensrp.repository.AllMCTSReports;
-import org.opensrp.service.reporting.MCTSReporter;
 
 public class MCTSReporterTest {
 

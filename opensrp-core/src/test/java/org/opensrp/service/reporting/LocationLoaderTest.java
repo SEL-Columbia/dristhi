@@ -1,20 +1,18 @@
 package org.opensrp.service.reporting;
 
-import org.opensrp.domain.Child;
-import org.opensrp.domain.EligibleCouple;
-import org.opensrp.domain.Mother;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.opensrp.domain.Child;
+import org.opensrp.domain.EligibleCouple;
+import org.opensrp.domain.Mother;
 import org.opensrp.repository.AllChildren;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
-import org.opensrp.service.reporting.ILocationLoader;
-import org.opensrp.service.reporting.LocationLoader;
 
 public class LocationLoaderTest {
     @Mock

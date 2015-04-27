@@ -1,25 +1,26 @@
 package org.opensrp.service.reporting;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
+import static org.opensrp.common.util.EasyMap.create;
+
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
 import org.opensrp.common.domain.Indicator;
 import org.opensrp.common.domain.ReportDataDeleteRequest;
 import org.opensrp.common.domain.ReportMonth;
 import org.opensrp.common.domain.ReportingData;
 import org.opensrp.domain.EligibleCouple;
 import org.opensrp.domain.Location;
-import org.opensrp.util.SafeMap;
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-
-import static org.opensrp.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
-import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 import org.opensrp.repository.AllEligibleCouples;
-import org.opensrp.service.reporting.ECReportingService;
-import org.opensrp.service.reporting.ReportingService;
+import org.opensrp.util.SafeMap;
 
 public class ECReportingServiceTest {
     @Mock

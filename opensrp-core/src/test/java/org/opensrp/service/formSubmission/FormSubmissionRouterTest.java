@@ -1,15 +1,14 @@
 package org.opensrp.service.formSubmission;
 
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.form.repository.AllFormSubmissions;
-import org.opensrp.service.formSubmission.handler.*;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.service.formSubmission.handler.ANCCloseHandler;
 import org.opensrp.service.formSubmission.handler.ANCInvestigationsHandler;
 import org.opensrp.service.formSubmission.handler.ANCRegistrationHandler;

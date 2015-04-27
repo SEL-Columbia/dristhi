@@ -1,15 +1,14 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.opensrp.service.reporting.rules.IsChildAgeGreaterThanOrEqualTo16MonthsRule;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.opensrp.common.util.EasyMap.create;
 
 import java.util.Map;
 
-import static org.opensrp.common.util.EasyMap.create;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
+import org.opensrp.util.SafeMap;
 
 
 

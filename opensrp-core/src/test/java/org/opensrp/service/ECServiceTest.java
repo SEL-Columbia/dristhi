@@ -1,36 +1,38 @@
 package org.opensrp.service;
 
-import org.opensrp.domain.EligibleCouple;
-import org.opensrp.domain.FPProductInformation;
-import org.opensrp.domain.register.*;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Matchers;
-import org.mockito.Mock;
+import static java.util.Arrays.asList;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.common.util.EasyMap.mapOf;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Arrays.asList;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.Mock;
+import org.opensrp.domain.EligibleCouple;
+import org.opensrp.domain.FPProductInformation;
 import org.opensrp.domain.register.CondomFPDetails;
 import org.opensrp.domain.register.FemaleSterilizationFPDetails;
 import org.opensrp.domain.register.IUDFPDetails;
 import org.opensrp.domain.register.MaleSterilizationFPDetails;
 import org.opensrp.domain.register.OCPFPDetails;
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.repository.AllEligibleCouples;
-import org.opensrp.service.ECService;
 import org.opensrp.service.formSubmission.handler.ReportFieldsDefinition;
 import org.opensrp.service.reporting.ECReportingService;
 import org.opensrp.service.scheduling.ECSchedulingService;
 import org.opensrp.util.FormSubmissionBuilder;
+import org.opensrp.util.SafeMap;
 
 public class ECServiceTest {
     @Mock

@@ -1,12 +1,11 @@
 package org.opensrp.domain;
 
-import org.opensrp.common.util.DateUtil;
-import org.opensrp.common.util.EasyMap;
+import static org.junit.Assert.assertEquals;
+
 import org.joda.time.LocalDate;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import org.opensrp.domain.EligibleCouple;
+import org.opensrp.common.util.DateUtil;
+import org.opensrp.common.util.EasyMap;
 
 public class EligibleCoupleTest {
 

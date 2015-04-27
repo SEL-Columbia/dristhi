@@ -1,11 +1,21 @@
 package org.opensrp.service;
 
-import org.opensrp.common.util.EasyMap;
-import org.opensrp.domain.Child;
-import org.opensrp.domain.Mother;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.form.domain.SubFormData;
-import org.opensrp.util.SafeMap;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.common.util.EasyMap.mapOf;
+import static org.opensrp.util.FormSubmissionBuilder.create;
+
+import java.util.Collections;
+import java.util.Map;
+
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,27 +23,21 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.motechproject.testing.utils.BaseUnitTest;
 import org.motechproject.util.DateUtil;
-
-import java.util.Collections;
-import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.junit.Assert.assertFalse;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.opensrp.util.FormSubmissionBuilder.create;
+import org.opensrp.common.util.EasyMap;
+import org.opensrp.domain.Child;
+import org.opensrp.domain.Mother;
+import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.domain.SubFormData;
 import org.opensrp.repository.AllChildren;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
-import org.opensrp.service.ActionService;
-import org.opensrp.service.ChildService;
+import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.service.formSubmission.handler.ReportFieldsDefinition;
 import org.opensrp.service.reporting.ChildReportingService;
 import org.opensrp.service.reporting.MotherReportingService;
 import org.opensrp.service.scheduling.ChildSchedulesService;
 import org.opensrp.service.scheduling.PNCSchedulesService;
+import org.opensrp.util.SafeMap;
 
 public class ChildServiceTest extends BaseUnitTest {
     @Mock

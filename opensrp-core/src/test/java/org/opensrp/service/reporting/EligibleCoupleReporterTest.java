@@ -1,24 +1,21 @@
 package org.opensrp.service.reporting;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.util.FormSubmissionBuilder.create;
+
+import java.util.ArrayList;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
 import org.opensrp.common.domain.Indicator;
 import org.opensrp.domain.EligibleCouple;
 import org.opensrp.domain.Location;
 import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-
-import java.util.ArrayList;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 import org.opensrp.repository.AllEligibleCouples;
-import org.opensrp.service.reporting.ECReportingService;
-import org.opensrp.service.reporting.EligibleCoupleReporter;
-import org.opensrp.service.reporting.IReporter;
-import static org.opensrp.util.FormSubmissionBuilder.create;
+import org.opensrp.util.SafeMap;
 
 public class EligibleCoupleReporterTest {
     @Mock

@@ -1,15 +1,14 @@
 package org.opensrp.service.reporting.rules;
 
-import junit.framework.Assert;
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.opensrp.service.reporting.rules.IsAllImmunizationsGivenEitherWithMeaslesOrMMRRule;
-
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.junit.Assert.assertFalse;
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.opensrp.util.SafeMap;
 
 
 public class IsAllImmunizationsGivenEitherWithMeaslesOrMMRRuleTest {

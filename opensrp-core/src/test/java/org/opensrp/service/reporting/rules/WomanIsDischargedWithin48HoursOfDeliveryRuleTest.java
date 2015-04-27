@@ -1,16 +1,15 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
-import org.opensrp.service.reporting.rules.WomanIsDischargedWithin48HoursOfDeliveryRule;
-
-import java.util.Map;
-
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.opensrp.common.util.EasyMap.create;
+
+import java.util.Map;
+
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+import org.opensrp.util.SafeMap;
 
 public class WomanIsDischargedWithin48HoursOfDeliveryRuleTest {
 

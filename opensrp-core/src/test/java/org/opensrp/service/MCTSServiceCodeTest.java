@@ -1,11 +1,11 @@
 package org.opensrp.service;
 
-import org.opensrp.domain.MCTSServiceCode;
-import org.junit.Test;
-import org.motechproject.util.DateUtil;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+
+import org.junit.Test;
+import org.motechproject.util.DateUtil;
+import org.opensrp.domain.MCTSServiceCode;
 
 public class MCTSServiceCodeTest {
     @Test

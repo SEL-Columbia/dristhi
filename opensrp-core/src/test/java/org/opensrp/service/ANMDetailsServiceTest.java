@@ -1,23 +1,22 @@
 package org.opensrp.service;
 
-import org.opensrp.domain.ANMDetail;
-import org.opensrp.domain.ANMDetails;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.EasyMap.mapOf;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.opensrp.domain.ANMDetail;
+import org.opensrp.domain.ANMDetails;
 import org.opensrp.dto.ANMDTO;
 import org.opensrp.repository.AllChildren;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
-import org.opensrp.service.ANMDetailsService;
-
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ANMDetailsServiceTest {
 

@@ -1,12 +1,11 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.opensrp.service.reporting.rules.IsDeliveryDateOneYearInThePastRule;
-
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.opensrp.util.SafeMap;
 
 
 public class IsDeliveryDateOneYearInThePastRuleTest {

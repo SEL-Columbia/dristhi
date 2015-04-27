@@ -1,11 +1,16 @@
 package org.opensrp.repository.it;
 
-import com.google.gson.Gson;
-import org.opensrp.domain.EligibleCouple;
-import org.opensrp.domain.Mother;
+import static org.junit.Assert.assertEquals;
+import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.common.util.EasyMap.mapOf;
+
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opensrp.domain.EligibleCouple;
+import org.opensrp.domain.Mother;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
 import org.opensrp.repository.FormDataRepository;
@@ -13,11 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Map;
-
-import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.junit.Assert.assertEquals;
+import com.google.gson.Gson;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")

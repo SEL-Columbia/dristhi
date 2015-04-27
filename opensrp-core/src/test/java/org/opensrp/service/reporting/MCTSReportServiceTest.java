@@ -1,26 +1,21 @@
 package org.opensrp.service.reporting;
 
-import org.opensrp.common.util.EasyMap;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.util.SafeMap;
+import static java.util.Arrays.asList;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.util.FormSubmissionBuilder.create;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-
-import static java.util.Arrays.asList;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
-import org.opensrp.service.reporting.IMCTSReportDefinitionLoader;
-import org.opensrp.service.reporting.IRulesFactory;
-import org.opensrp.service.reporting.MCTSFormIndicator;
-import org.opensrp.service.reporting.MCTSReportDefinition;
-import org.opensrp.service.reporting.MCTSReportIndicator;
-import org.opensrp.service.reporting.MCTSReportService;
-import org.opensrp.service.reporting.MCTSReporter;
-import org.opensrp.service.reporting.ReferenceData;
+import org.opensrp.common.util.EasyMap;
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.service.reporting.rules.IReferenceDataRepository;
 import org.opensrp.service.reporting.rules.IRule;
-import static org.opensrp.util.FormSubmissionBuilder.create;
+import org.opensrp.util.SafeMap;
 
 public class MCTSReportServiceTest {
     @Mock
