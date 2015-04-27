@@ -14,6 +14,7 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="org.opensrp.repository"/>
+    <context:component-scan base-package="org.opensrp.scheduler.repository"/>
     <context:component-scan base-package="org.opensrp.service.reporting.rules"/>
 
     <bean id="opensrpDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
