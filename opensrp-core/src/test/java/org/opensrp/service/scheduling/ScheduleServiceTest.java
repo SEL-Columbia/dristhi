@@ -1,6 +1,11 @@
 package org.opensrp.service.scheduling;
 
-import org.opensrp.common.util.DateUtil;
+import static org.joda.time.LocalDate.parse;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import org.joda.time.Period;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,13 +16,8 @@ import org.motechproject.scheduletracking.api.domain.Schedule;
 import org.motechproject.scheduletracking.api.repository.AllSchedules;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
-
-import static org.joda.time.LocalDate.parse;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-import org.opensrp.service.scheduling.ScheduleService;
+import org.opensrp.common.util.DateUtil;
+import org.opensrp.scheduler.service.ScheduleService;
 
 public class ScheduleServiceTest {
 

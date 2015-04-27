@@ -1,53 +1,39 @@
 package org.opensrp.service.scheduling;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentMatcher;
-import org.mockito.Mock;
-import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
-import org.motechproject.testing.utils.BaseUnitTest;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
-
-import org.opensrp.service.ActionService;
-import org.opensrp.service.scheduling.PNCSchedulesService;
-import org.opensrp.service.scheduling.ScheduleService;
-
-import static org.powermock.api.mockito.PowerMockito.when;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
+import org.motechproject.testing.utils.BaseUnitTest;
+import org.opensrp.scheduler.HealthSchedulerService;
 
 public class PNCSchedulesServiceTest extends BaseUnitTest {
     @Mock
-    private ScheduleTrackingService scheduleTrackingService;
-    @Mock
-    private ActionService actionService;
-    @Mock
-    private ScheduleService scheduleService;
+    private HealthSchedulerService scheduler;
 
     private PNCSchedulesService schedulesService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        schedulesService = new PNCSchedulesService(scheduleTrackingService, scheduleService, actionService);
+        schedulesService = new PNCSchedulesService(scheduler);
     }
 
     @Test
     public void shouldEnrollMotherIntoSchedulesWhileDeliveryOutcome() {
         schedulesService.deliveryOutcome("mother id 1", "2012-01-01");
 
-        verify(scheduleService).enroll("mother id 1", SCHEDULE_AUTO_CLOSE_PNC, "2012-01-01");
-        verifyNoMoreInteractions(scheduleTrackingService);
+        verify(scheduler).enrollIntoSchedule("mother id 1", SCHEDULE_AUTO_CLOSE_PNC, "2012-01-01");
+        verifyNoMoreInteractions(scheduler);
     }
 
     @Test
@@ -56,15 +42,12 @@ public class PNCSchedulesServiceTest extends BaseUnitTest {
         EnrollmentRecord record2 = new EnrollmentRecord("Case X", "Schedule 2", null, null, null, null, null, null, null, null);
         List<EnrollmentRecord> records = Arrays.asList(record1, record2);
 
-        when(scheduleTrackingService.search(queryFor("Case X"))).thenReturn(records);
+        when(scheduler.findActiveEnrollments("Case X")).thenReturn(records);
 
         schedulesService.unEnrollFromSchedules("Case X");
-
-        verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 1"));
-        verify(scheduleTrackingService).unenroll("Case X", Arrays.asList("Schedule 2"));
     }
 
-    private EnrollmentsQuery queryFor(final String externalId) {
+    /*private EnrollmentsQuery queryFor(final String externalId) {
         return argThat(new ArgumentMatcher<EnrollmentsQuery>() {
             @Override
             public boolean matches(Object o) {
@@ -72,5 +55,5 @@ public class PNCSchedulesServiceTest extends BaseUnitTest {
                 return EqualsBuilder.reflectionEquals(expectedQuery.getCriteria(), ((EnrollmentsQuery) o).getCriteria());
             }
         });
-    }
+    }*/
 }
