@@ -1,14 +1,14 @@
 package org.opensrp.service.reporting;
 
+import static org.opensrp.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
+
 import org.opensrp.common.domain.Indicator;
 import org.opensrp.domain.EligibleCouple;
 import org.opensrp.domain.Location;
-import org.opensrp.util.SafeMap;
 import org.opensrp.repository.AllEligibleCouples;
+import org.opensrp.util.SafeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import static org.opensrp.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 
 @Component
 public class EligibleCoupleReporter implements IReporter {

@@ -1,22 +1,22 @@
 package org.opensrp.service.reporting;
 
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.util.SafeMap;
-import org.opensrp.service.reporting.rules.IReferenceDataRepository;
-import org.opensrp.service.reporting.rules.IRule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.text.MessageFormat;
-import java.util.List;
-
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.opensrp.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
 import static org.opensrp.common.AllConstants.ANCFormFields.THAYI_CARD_NUMBER;
 import static org.opensrp.common.AllConstants.ChildRegistrationFormFields.THAYI_CARD;
 import static org.opensrp.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
+
+import java.text.MessageFormat;
+import java.util.List;
+
+import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.service.reporting.rules.IReferenceDataRepository;
+import org.opensrp.service.reporting.rules.IRule;
+import org.opensrp.util.SafeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class MCTSReportService {

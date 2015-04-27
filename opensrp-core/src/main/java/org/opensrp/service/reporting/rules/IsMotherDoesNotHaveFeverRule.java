@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.EMPTY_STRING;
 import static org.opensrp.common.AllConstants.PNCVisitFormFields.HAS_FEVER_FIELD;
+
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsMotherDoesNotHaveFeverRule implements IRule {

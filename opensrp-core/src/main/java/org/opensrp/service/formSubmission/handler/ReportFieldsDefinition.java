@@ -1,13 +1,14 @@
 package org.opensrp.service.formSubmission.handler;
 
-import com.google.gson.reflect.TypeToken;
+import java.util.List;
+import java.util.Map;
+
 import org.motechproject.dao.MotechJsonReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
+import com.google.gson.reflect.TypeToken;
 
 @Component
 public class ReportFieldsDefinition {

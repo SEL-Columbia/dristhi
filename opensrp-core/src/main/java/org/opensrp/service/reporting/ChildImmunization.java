@@ -1,13 +1,16 @@
 package org.opensrp.service.reporting;
 
-import org.opensrp.common.AllConstants;
-import org.opensrp.util.SafeMap;
+import static java.util.Arrays.asList;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.IMMUNIZATIONS_GIVEN_FIELD_NAME;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.IMMUNIZATIONS_VALUE_LIST;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.IMMUNIZATIONS_WITH_MMR_VALUE_LIST;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.PREVIOUS_IMMUNIZATIONS_FIELD_NAME;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-import static org.opensrp.common.AllConstants.ChildImmunizationFields.*;
+import org.opensrp.common.AllConstants;
+import org.opensrp.util.SafeMap;
 
 public class ChildImmunization {
     public boolean isImmunizedWith(String immunization, SafeMap reportFields) {

@@ -1,5 +1,12 @@
 package org.opensrp.service;
 
+import static ch.lambdaj.Lambda.collect;
+import static ch.lambdaj.Lambda.on;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.opensrp.domain.ANMDetail;
 import org.opensrp.domain.ANMDetails;
 import org.opensrp.dto.ANMDTO;
@@ -10,13 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static ch.lambdaj.Lambda.collect;
-import static ch.lambdaj.Lambda.on;
 
 @Service
 public class ANMDetailsService {

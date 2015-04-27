@@ -1,6 +1,9 @@
 package org.opensrp.service.reporting;
 
-import com.google.gson.reflect.TypeToken;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+
+import java.text.MessageFormat;
+
 import org.motechproject.dao.MotechJsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
-
-import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+import com.google.gson.reflect.TypeToken;
 
 @Component
 public class ReportDefinitionLoader implements IReportDefinitionLoader {

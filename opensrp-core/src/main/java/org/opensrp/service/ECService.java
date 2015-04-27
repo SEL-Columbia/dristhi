@@ -1,27 +1,5 @@
 package org.opensrp.service;
 
-import org.opensrp.domain.EligibleCouple;
-import org.opensrp.domain.FPProductInformation;
-import org.opensrp.domain.register.*;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.util.SafeMap;
-import org.joda.time.LocalDate;
-import org.opensrp.domain.register.CondomFPDetails;
-import org.opensrp.domain.register.FemaleSterilizationFPDetails;
-import org.opensrp.domain.register.IUDFPDetails;
-import org.opensrp.domain.register.MaleSterilizationFPDetails;
-import org.opensrp.domain.register.OCPFPDetails;
-import org.opensrp.repository.AllEligibleCouples;
-import org.opensrp.service.formSubmission.handler.ReportFieldsDefinition;
-import org.opensrp.service.reporting.ECReportingService;
-import org.opensrp.service.scheduling.ECSchedulingService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
-
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.opensrp.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 import static org.opensrp.common.AllConstants.ECCloseFields.IS_EC_CLOSE_CONFIRMED_FIELD_NAME;
@@ -29,10 +7,60 @@ import static org.opensrp.common.AllConstants.ECRegistrationFields.CASTE;
 import static org.opensrp.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS;
 import static org.opensrp.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.opensrp.common.AllConstants.EntityCloseFormFields.WRONG_ENTRY_VALUE;
-import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.*;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.COMPLICATION_DATE_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CONDOM_FP_METHOD_VALUE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.DMPA_INJECTION_DATE_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FEMALE_STERILIZATION_FP_METHOD_VALUE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FEMALE_STERILIZATION_TYPE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FP_FOLLOWUP_DATE_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FP_RENEW_METHOD_VISIT_DATE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.IUD_FP_METHOD_VALUE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.IUD_PLACE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.LMP_DATE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.MALE_STERILIZATION_FP_METHOD_VALUE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.MALE_STERILIZATION_TYPE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.NEEDS_FOLLOWUP_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.NEEDS_REFERRAL_FOLLOWUP_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.NEW_FP_METHOD_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.NUMBER_OF_CONDOMS_SUPPLIED_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.NUMBER_OF_OCP_STRIPS_SUPPLIED_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.OCP_FP_METHOD_VALUE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.OCP_REFILL_DATE_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.PREVIOUS_FP_METHOD_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.REFERRAL_FOLLOW_UP_DATE_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.UPT_RESULT;
 import static org.opensrp.common.AllConstants.Form.BOOLEAN_TRUE_VALUE;
 import static org.opensrp.common.AllConstants.ReportDataParameters.QUANTITY;
 import static org.opensrp.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATE;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.joda.time.LocalDate;
+import org.opensrp.domain.EligibleCouple;
+import org.opensrp.domain.FPProductInformation;
+import org.opensrp.domain.register.CondomFPDetails;
+import org.opensrp.domain.register.FemaleSterilizationFPDetails;
+import org.opensrp.domain.register.IUDFPDetails;
+import org.opensrp.domain.register.MaleSterilizationFPDetails;
+import org.opensrp.domain.register.OCPFPDetails;
+import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.repository.AllEligibleCouples;
+import org.opensrp.scheduler.service.ActionService;
+import org.opensrp.service.formSubmission.handler.ReportFieldsDefinition;
+import org.opensrp.service.reporting.ECReportingService;
+import org.opensrp.service.scheduling.ECSchedulingService;
+import org.opensrp.util.SafeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ECService {

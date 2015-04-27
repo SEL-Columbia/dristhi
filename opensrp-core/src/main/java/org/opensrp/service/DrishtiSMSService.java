@@ -1,15 +1,15 @@
 package org.opensrp.service;
 
-import org.opensrp.common.audit.Auditor;
+import static java.text.MessageFormat.format;
+import static org.opensrp.common.audit.AuditMessageType.SMS;
+
 import org.motechproject.sms.api.service.SmsService;
+import org.opensrp.common.audit.Auditor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import static java.text.MessageFormat.format;
-import static org.opensrp.common.audit.AuditMessageType.SMS;
 
 @Service
 public class DrishtiSMSService {

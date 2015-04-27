@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
+import static org.opensrp.common.AllConstants.HbTestFormFields.HB_LEVEL_FIELD;
+
 import org.opensrp.common.util.DoubleUtil;
 import org.opensrp.util.SafeMap;
 import org.springframework.stereotype.Component;
-
-import static org.opensrp.common.AllConstants.HbTestFormFields.HB_LEVEL_FIELD;
 
 @Component
 public class IsPersonSevereAnaemicRule implements IRule {

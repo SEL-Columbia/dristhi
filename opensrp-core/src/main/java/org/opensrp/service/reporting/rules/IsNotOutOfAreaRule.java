@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.ECRegistrationFields.IS_OUT_OF_AREA;
 import static org.opensrp.common.AllConstants.ECRegistrationFields.IS_OUT_OF_AREA_FALSE;
+
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsNotOutOfAreaRule implements IRule {

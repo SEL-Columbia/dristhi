@@ -1,8 +1,10 @@
 package org.opensrp.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opensrp.common.domain.ReportMonth;
 import org.opensrp.domain.EligibleCouple;
-import org.opensrp.domain.register.*;
 import org.opensrp.domain.register.CondomRegisterEntry;
 import org.opensrp.domain.register.FPRegister;
 import org.opensrp.domain.register.FemaleSterilizationRegisterEntry;
@@ -13,9 +15,6 @@ import org.opensrp.mapper.FPRegisterMapper;
 import org.opensrp.repository.AllEligibleCouples;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class FPRegisterService {

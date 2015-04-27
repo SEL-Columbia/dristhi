@@ -1,11 +1,11 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.joda.time.LocalDate;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.ChildIllnessFields.REPORT_CHILD_DISEASE_DATE;
 import static org.opensrp.common.AllConstants.ChildRegistrationFormFields.DATE_OF_BIRTH;
+
+import org.joda.time.LocalDate;
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsChildBelowFiveYearsRule implements IRule {

@@ -1,11 +1,11 @@
 package org.opensrp.service.reporting.rules;
 
+import static org.opensrp.common.AllConstants.ANCVisitFormFields.BP_DIASTOLIC;
+import static org.opensrp.common.AllConstants.ANCVisitFormFields.BP_SYSTOLIC;
+
 import org.opensrp.common.util.IntegerUtil;
 import org.opensrp.util.SafeMap;
 import org.springframework.stereotype.Component;
-
-import static org.opensrp.common.AllConstants.ANCVisitFormFields.BP_DIASTOLIC;
-import static org.opensrp.common.AllConstants.ANCVisitFormFields.BP_SYSTOLIC;
 
 @Component
 public class IsHypertensionDetectedRule implements IRule {

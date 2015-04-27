@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.ChildCloseFormFields.DEATH_CAUSE;
 import static org.opensrp.common.AllConstants.ChildCloseFormFields.WITHIN_24HRS_VALUE;
+
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsDeathWithin24HoursRule implements IRule {

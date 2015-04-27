@@ -1,5 +1,24 @@
 package org.opensrp.service;
 
+import static ch.lambdaj.Lambda.collect;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.selectDistinct;
+import static ch.lambdaj.Lambda.selectUnique;
+import static org.hamcrest.Matchers.equalTo;
+import static org.opensrp.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
+import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.DELIVERY_COMPLICATIONS;
+import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.DELIVERY_PLACE;
+import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.DELIVERY_TYPE;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HOUSEHOLD_ADDRESS;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
+import static org.opensrp.common.AllConstants.PNCVisitFormFields.DISCHARGE_DATE;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.opensrp.domain.EligibleCouple;
 import org.opensrp.domain.Mother;
 import org.opensrp.domain.register.PNCRegister;
@@ -8,18 +27,6 @@ import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static ch.lambdaj.Lambda.*;
-import static org.opensrp.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
-import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.*;
-import static org.opensrp.common.AllConstants.ECRegistrationFields.HOUSEHOLD_ADDRESS;
-import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.*;
-import static org.opensrp.common.AllConstants.PNCVisitFormFields.DISCHARGE_DATE;
-import static org.hamcrest.Matchers.equalTo;
 
 @Service
 public class PNCRegisterService {

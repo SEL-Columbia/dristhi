@@ -1,23 +1,31 @@
 package org.opensrp.service.reporting;
 
-import org.opensrp.common.AllConstants;
-import org.opensrp.common.domain.*;
-import org.opensrp.domain.EligibleCouple;
-import org.opensrp.domain.Location;
-import org.opensrp.util.SafeMap;
-import org.joda.time.LocalDate;
-import org.opensrp.repository.AllEligibleCouples;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 import static org.opensrp.common.AllConstants.ECRegistrationFields.CASTE;
 import static org.opensrp.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS;
-import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.*;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FEMALE_STERILIZATION_FP_METHOD_VALUE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.NEW_FP_METHOD_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.OCP_FP_METHOD_VALUE;
 import static org.opensrp.common.domain.ReportDataDeleteRequest.anmReportDataDeleteRequest;
 import static org.opensrp.common.domain.ReportDataDeleteRequest.serviceProvidedDataDeleteRequest;
+
+import org.joda.time.LocalDate;
+import org.opensrp.common.AllConstants;
+import org.opensrp.common.domain.Caste;
+import org.opensrp.common.domain.EconomicStatus;
+import org.opensrp.common.domain.Indicator;
+import org.opensrp.common.domain.ReportMonth;
+import org.opensrp.common.domain.ReportingData;
+import org.opensrp.domain.EligibleCouple;
+import org.opensrp.domain.Location;
+import org.opensrp.repository.AllEligibleCouples;
+import org.opensrp.util.SafeMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ECReportingService {

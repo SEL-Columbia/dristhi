@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.HbTestFormFields.ANAEMIC_STATUS_FIELD;
 import static org.opensrp.common.AllConstants.HbTestFormFields.PREVIOUS_ANAEMIC_STATUS_FIELD;
+
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsPersonAnaemicStatusChangedRule implements IRule {

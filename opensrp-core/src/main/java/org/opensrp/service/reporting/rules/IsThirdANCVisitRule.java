@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
+import static org.opensrp.common.AllConstants.ANCFormFields.ANC_VISIT_NUMBER_FIELD;
+
 import org.opensrp.common.util.IntegerUtil;
 import org.opensrp.util.SafeMap;
 import org.springframework.stereotype.Component;
-
-import static org.opensrp.common.AllConstants.ANCFormFields.ANC_VISIT_NUMBER_FIELD;
 
 @Component
 public class IsThirdANCVisitRule implements IRule {

@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.ANCInvestigationsFormFields.MALARIA_VALUE;
 import static org.opensrp.common.AllConstants.ANCInvestigationsFormFields.TESTS_POSITIVE_RESULTS;
+
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsMotherHavingMalariaParasiteRule implements IRule {
