@@ -9,6 +9,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.opensrp.api.domain.Provider;
 
+/**
+ * 
+ */
 public class FormSubmission {
 
 	private String providerId;

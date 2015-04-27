@@ -8,6 +8,10 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.opensrp.api.constants.Gender;
 
+/**
+ * Client is the main beneficiary, the system facilitates to capture data for. The entity inherits all of the generic 
+ * data from {@link BaseEntity}.
+ */
 public class Client extends BaseDataObject{
 
 	private Map<String, String> identifiers;

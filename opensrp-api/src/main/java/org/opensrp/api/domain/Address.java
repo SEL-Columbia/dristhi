@@ -125,11 +125,19 @@ public class Address{
 	}
 	
 	public void removeAddressField(AddressField field) {
-		addressFields.remove(field.name());
+		for (Entry<String, String> a : addressFields.entrySet()) {
+			if(a.getKey().equalsIgnoreCase(field.name())){
+				addressFields.remove(a.getKey());
+			}
+		}
 	}
 	
 	public void removeAddressField(String field) {
-		addressFields.remove(field);
+		for (Entry<String, String> a : addressFields.entrySet()) {
+			if(a.getKey().equalsIgnoreCase(field)){
+				addressFields.remove(a.getKey());
+			}
+		}
 	}
 	
 	public String getLatitude() {

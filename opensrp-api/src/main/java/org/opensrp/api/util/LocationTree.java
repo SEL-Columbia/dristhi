@@ -5,6 +5,13 @@ import java.util.Map;
 
 import org.opensrp.api.domain.Location;
 
+/**
+ * {@link LocationTree} is an specification of {@link Tree} which provides helper methods for creating a Tree for 
+ * {@link Location}. The key is the locationId and label is name of {@link Location} and the data for tree node 
+ * is location object itself. Each node has locationId if its parent location and has a {@link TreeNode} map of 
+ * children of the location. This way it allows to create a complete tree of location starting from root nodes to 
+ * the end or lowest level in the form of tree. A root node is one with parent location null.
+ */
 public class LocationTree {
 
 	Tree<String, Location> locationsHierarchy;

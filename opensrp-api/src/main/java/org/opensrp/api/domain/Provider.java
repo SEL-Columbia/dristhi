@@ -8,6 +8,9 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.opensrp.api.constants.Gender;
 
+/**
+ * The person who provided data for {@link Event}
+ */
 public class Provider extends BaseDataObject{
 	private Map<String, String> identifiers;
 	private String baseEntityId;
