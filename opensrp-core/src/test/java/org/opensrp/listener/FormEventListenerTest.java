@@ -1,26 +1,28 @@
 package org.opensrp.listener;
 
-import com.google.gson.Gson;
-import org.opensrp.domain.FormExportToken;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.form.service.FormSubmissionService;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.opensrp.dto.form.FormSubmissionDTO;
-import org.opensrp.event.FormSubmissionEvent;
-import org.opensrp.listener.FormEventListener;
-import org.opensrp.repository.AllFormExportTokens;
-import org.opensrp.service.formSubmission.FormEntityService;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.EasyMap.mapOf;
 
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.opensrp.domain.FormExportToken;
+import org.opensrp.dto.form.FormSubmissionDTO;
+import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.service.FormSubmissionService;
+import org.opensrp.repository.AllFormExportTokens;
+import org.opensrp.scheduler.DrishtiScheduleConstants.OpenSRPEvent;
+import org.opensrp.service.formSubmission.FormEntityService;
+
+import com.google.gson.Gson;
 
 public class FormEventListenerTest {
     @Mock
@@ -43,7 +45,7 @@ public class FormEventListenerTest {
         List<FormSubmissionDTO> formSubmissions = asList(new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name", null, "0", "1"),
                 new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name", null, "0", "1"));
 
-        listener.submitForms(new MotechEvent(FormSubmissionEvent.SUBJECT, mapOf("data", (Object) new Gson().toJson(formSubmissions))));
+        listener.submitForms(new MotechEvent(OpenSRPEvent.FORM_SUBMISSION, mapOf("data", (Object) new Gson().toJson(formSubmissions))));
 
         verify(formSubmissionService).submit(formSubmissions);
     }
