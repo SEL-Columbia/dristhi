@@ -1,36 +1,32 @@
 package org.opensrp.service.scheduling.fpMethodStrategy;
 
+import static java.text.MessageFormat.format;
+import static java.util.Arrays.asList;
+import static org.joda.time.LocalDate.parse;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP_MILESTONE_1;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP_MILESTONE_2;
+
 import org.opensrp.domain.FPProductInformation;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
-import org.opensrp.contract.Schedule;
-import org.opensrp.service.ActionService;
-import org.opensrp.service.scheduling.ScheduleService;
+import org.opensrp.scheduler.HealthSchedulerService;
+import org.opensrp.scheduler.Schedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static java.text.MessageFormat.format;
-import static java.util.Arrays.asList;
-import static org.opensrp.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.*;
-import static org.joda.time.LocalDate.parse;
-
 @Component
 public class MaleSterilizationStrategy implements FPMethodStrategy {
     private static Logger logger = LoggerFactory.getLogger(MaleSterilizationStrategy.class.toString());
-    private final ScheduleTrackingService scheduleTrackingService;
-    private final ActionService actionService;
-    private final ScheduleService scheduleService;
+    private HealthSchedulerService scheduler;
+
     private final Schedule maleSterilizationFollowupSchedule = new Schedule(EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP,
             asList(EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP_MILESTONE_1,
                     EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP_MILESTONE_2));
 
     @Autowired
-    public MaleSterilizationStrategy(ScheduleTrackingService scheduleTrackingService, ActionService actionService,
-                                     ScheduleService scheduleService) {
-        this.scheduleTrackingService = scheduleTrackingService;
-        this.actionService = actionService;
-        this.scheduleService = scheduleService;
+    public MaleSterilizationStrategy(HealthSchedulerService scheduler) {
+        this.scheduler = scheduler;
     }
 
     @Override
@@ -59,21 +55,19 @@ public class MaleSterilizationStrategy implements FPMethodStrategy {
         String currentMilestone = getCurrentMilestone(fpInfo);
         logger.info(format("Fulfilling current milestone For Male sterilization Followup schedule. entityId: {0}, Ref date: {1}, currentMilestone: {2}",
                 fpInfo.entityId(), fpInfo.submissionDate(), currentMilestone));
-        scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), maleSterilizationFollowupSchedule.name(), parse(fpInfo.fpFollowupDate()));
-        actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), currentMilestone, fpInfo.fpFollowupDate());
+        scheduler.fullfillMilestoneAndCloseAlert(fpInfo.entityId(), fpInfo.anmId(), maleSterilizationFollowupSchedule.name(), currentMilestone, parse(fpInfo.fpFollowupDate()));
     }
 
     private void enrollECToMaleSterilizationSchedule(String entityId, String referenceDate) {
         logger.info(format("Enrolling EC to Male sterilization Followup schedule. entityId: {0}, Ref date: {1}", entityId, referenceDate));
-        scheduleService.enroll(entityId, maleSterilizationFollowupSchedule.name(), referenceDate);
+        scheduler.enrollIntoSchedule(entityId, maleSterilizationFollowupSchedule.name(), referenceDate);
     }
 
     private void unEnrollECFromMaleSterilizationSchedule(String entityId, String anmId, String submissionDate) {
-        scheduleTrackingService.unenroll(entityId, asList(maleSterilizationFollowupSchedule.name()));
-        actionService.markAlertAsClosed(entityId, anmId, maleSterilizationFollowupSchedule.name(), submissionDate);
+        scheduler.unEnrollAndCloseSchedule(entityId, anmId, maleSterilizationFollowupSchedule.name(), parse(submissionDate));
     }
 
     private String getCurrentMilestone(FPProductInformation fpInfo) {
-        return scheduleTrackingService.getEnrollment(fpInfo.entityId(), maleSterilizationFollowupSchedule.name()).getCurrentMilestoneName();
+        return scheduler.getEnrollment(fpInfo.entityId(), maleSterilizationFollowupSchedule.name()).getCurrentMilestoneName();
     }
 }
