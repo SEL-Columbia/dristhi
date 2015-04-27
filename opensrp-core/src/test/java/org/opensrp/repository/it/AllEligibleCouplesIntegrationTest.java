@@ -1,25 +1,27 @@
 package org.opensrp.repository.it;
 
-import org.opensrp.domain.EligibleCouple;
-import org.opensrp.domain.Mother;
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.common.util.EasyMap.mapOf;
+
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opensrp.domain.EligibleCouple;
+import org.opensrp.domain.Mother;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
@@ -114,9 +116,9 @@ public class AllEligibleCouplesIntegrationTest {
 
     @Test
     public void shouldFindAllECsByCaseId() throws Exception {
-        EligibleCouple couple1 = new EligibleCouple("case 1", "EC Number 1");
-        EligibleCouple couple2 = new EligibleCouple("case 2", "EC Number 2");
-        EligibleCouple couple3 = new EligibleCouple("case 3", "EC Number 3");
+        EligibleCouple couple1 = new EligibleCouple("case 1", "EC Number 1").withANMIdentifier("demo1");
+        EligibleCouple couple2 = new EligibleCouple("case 2", "EC Number 2").withANMIdentifier("demo1");
+        EligibleCouple couple3 = new EligibleCouple("case 3", "EC Number 3").withANMIdentifier("demo1");
         eligibleCouples.add(couple1);
         eligibleCouples.add(couple2);
         eligibleCouples.add(couple3);
