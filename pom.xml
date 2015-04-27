@@ -12,7 +12,6 @@
 
 	<modules>
 		<module>opensrp-core</module>
-		<module>opensrp-scheduler</module>
 		<module>opensrp-common</module>
 		<module>opensrp-interface</module>
 		<module>opensrp-form</module>
