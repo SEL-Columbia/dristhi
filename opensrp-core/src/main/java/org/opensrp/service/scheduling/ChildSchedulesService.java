@@ -1,50 +1,68 @@
 package org.opensrp.service.scheduling;
 
-import org.opensrp.domain.Child;
+import static java.text.MessageFormat.format;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.unmodifiableMap;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.BCG_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.DPT_BOOSTER_1_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.DPT_BOOSTER_2_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.MEASLES_BOOSTER_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.MEASLES_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.OPV_0_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.OPV_1_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.OPV_2_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.OPV_3_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.OPV_BOOSTER_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.PENTAVALENT_1_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.PENTAVALENT_2_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.PENTAVALENT_3_VALUE;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_BCG;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_DPT_BOOSTER1;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_DPT_BOOSTER2;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_MEASLES;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_MEASLES_BOOSTER;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_OPV_0_AND_1;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_OPV_2;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_OPV_3;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_OPV_BOOSTER;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_PENTAVALENT_1;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_PENTAVALENT_2;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_PENTAVALENT_3;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.joda.time.LocalDate;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.opensrp.domain.Child;
+import org.opensrp.repository.AllChildren;
+import org.opensrp.scheduler.HealthSchedulerService;
+import org.opensrp.scheduler.Schedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
-import static java.text.MessageFormat.format;
-import static java.util.Arrays.asList;
-import static java.util.Collections.unmodifiableList;
-import static java.util.Collections.unmodifiableMap;
-import static org.opensrp.common.AllConstants.ChildImmunizationFields.*;
-import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
-import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
-import org.opensrp.contract.Schedule;
-import org.opensrp.repository.AllChildren;
-import org.opensrp.service.ActionService;
-
 @Service
 public class ChildSchedulesService {
     private static Logger logger = LoggerFactory.getLogger(ChildSchedulesService.class.toString());
 
-    private final ScheduleTrackingService scheduleTrackingService;
     private final AllChildren allChildren;
-    private final ScheduleService scheduleService;
-    private ActionService actionService;
     private Map<String, Schedule> childSchedules;
+    private HealthSchedulerService scheduler;
 
     @Autowired
-    public ChildSchedulesService(ScheduleTrackingService scheduleTrackingService, AllChildren allChildren,
-                                 ScheduleService scheduleService, ActionService actionService) {
-        this.scheduleTrackingService = scheduleTrackingService;
+    public ChildSchedulesService(AllChildren allChildren, HealthSchedulerService scheduler) {
+        this.scheduler = scheduler;
         this.allChildren = allChildren;
-        this.scheduleService = scheduleService;
-        this.actionService = actionService;
         initializeSchedules();
     }
 
     public void enrollChild(Child child) {
-        enrollNonDependentModules(child.caseId(), LocalDate.parse(child.dateOfBirth()));
+        enrollNonDependentModules(child.caseId(), child.dateOfBirth());
         enrollDependentModulesIfRequired(child.caseId(), Collections.<String>emptyList(), child.immunizationsGiven(), child.dateOfBirth());
         updateMilestonesForEnrolledSchedules(child.caseId(), child.anmIdentifier(), child.immunizationsGiven(), child.dateOfBirth());
     }
@@ -56,20 +74,16 @@ public class ChildSchedulesService {
     }
 
     //#TODO: Remove this duplicated code
+    //TODO MAIMOONA: CHANGED IT SO VERIFY WITH KIRRRRNNNNN
     public void unenrollChild(String id) {
-        List<EnrollmentRecord> openEnrollments = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(id).havingState(ACTIVE));
-
-        for (EnrollmentRecord enrollment : openEnrollments) {
-            logger.info(format("Un-enrolling child from schedule: {0}, entityId: {1}", enrollment.getScheduleName(), id));
-            scheduleTrackingService.unenroll(id, Arrays.asList(enrollment.getScheduleName()));
-        }
+    	scheduler.unEnrollFromAllSchedules(id);
     }
 
-    private void enrollNonDependentModules(String id, LocalDate dateOfBirth) {
+    private void enrollNonDependentModules(String id, String dateOfBirth) {
         for (Schedule schedule : childSchedules.values()) {
             if (!schedule.hasDependency()) {
                 logger.info(format("Enrolling child to schedule: {0}, entityId: {1}, referenceDate: {2}", schedule.name(), id, dateOfBirth));
-                scheduleService.enroll(id, schedule.name(), dateOfBirth.toString());
+                scheduler.enrollIntoSchedule(id, schedule.name(), dateOfBirth);
             }
         }
     }
@@ -81,7 +95,7 @@ public class ChildSchedulesService {
                 if (immunizationsGiven.contains(dependsOn.getLastMilestone())
                         && isNotEnrolled(id, schedule.name())) {
                     logger.info(format("Enrolling child to schedule: {0}, entityId: {1}, referenceDate: {2}", schedule.name(), id, immunizationDate));
-                    scheduleService.enroll(id, schedule.name(), immunizationDate);
+                    scheduler.enrollIntoSchedule(id, schedule.name(), immunizationDate);
                 }
             }
         }
@@ -99,7 +113,7 @@ public class ChildSchedulesService {
     private void updateMilestonesForEnrolledSchedules(String id, String anmIdentifier, List<String> immunizationsGiven, String immunizationDate) {
         for (Schedule schedule : childSchedules.values()) {
             for (String mileStoneName : schedule.getMileStones()) {
-                EnrollmentRecord record = scheduleTrackingService.getEnrollment(id, schedule.name());
+                EnrollmentRecord record = scheduler.getEnrollment(id, schedule.name());
                 if (record == null)
                     break;
                 String currentMilestoneName = record.getCurrentMilestoneName();
@@ -109,15 +123,14 @@ public class ChildSchedulesService {
                 if (isProvided && currentMilestoneName.equals(mileStoneName)) {
                     logger.info(format("Fulfilling current milestone of schedule: {0}, milestone: {1}, entityId: {2}, completionDate: {3}", schedule.name(),
                             mileStoneName, id, immunizationDate));
-                    scheduleTrackingService.fulfillCurrentMilestone(id, schedule.name(), LocalDate.parse(immunizationDate));
-                    actionService.markAlertAsClosed(id, anmIdentifier, mileStoneName, immunizationDate);
+                    scheduler.fullfillMilestoneAndCloseAlert(id, anmIdentifier, schedule.name(), mileStoneName, LocalDate.parse(immunizationDate));
                 }
             }
         }
     }
 
     private boolean isNotEnrolled(String entityId, String scheduleName) {
-        return scheduleTrackingService.getEnrollment(entityId, scheduleName) == null;
+        return scheduler.isNotEnrolled(entityId, scheduleName);
     }
 
     private void initializeSchedules() {
@@ -161,7 +174,10 @@ public class ChildSchedulesService {
         final Schedule pentavalent3 = new Schedule(CHILD_SCHEDULE_PENTAVALENT_3, pentavalent3Milestone).withDependencyOn(pentavalent2);
 
 
-        childSchedules = unmodifiableMap(new HashMap<String, Schedule>() {{
+        childSchedules = unmodifiableMap(new TreeMap<String, Schedule>() {
+			private static final long serialVersionUID = 1L;
+
+		{
             put(CHILD_SCHEDULE_BCG, bcg);
             put(CHILD_SCHEDULE_DPT_BOOSTER1, dptBooster1);
             put(CHILD_SCHEDULE_DPT_BOOSTER2, dptBooster2);
