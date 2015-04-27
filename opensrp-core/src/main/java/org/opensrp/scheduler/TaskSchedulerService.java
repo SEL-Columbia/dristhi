@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.motechproject.scheduler.MotechSchedulerService;
+import org.motechproject.scheduler.domain.CronSchedulableJob;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduler.domain.RepeatingSchedulableJob;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
@@ -37,6 +38,14 @@ public class TaskSchedulerService {
 		}
         MotechEvent event = new MotechEvent(job.SUBJECT, data);
         startJob(new RepeatingSchedulableJob(event, startTime, job.getEndTime(), job.getRepeatIntervalMilis()));
+    }
+	
+	public void startJob(final String subject, String cronExpression, Date startTime, Date endTime, Map<String, Object> data) {
+		if(data == null){
+			data = new HashMap<>();
+		}
+        MotechEvent event = new MotechEvent(subject, data);
+        motechSchedulerService.safeScheduleJob(new CronSchedulableJob(event, cronExpression, startTime, endTime));
     }
 	
 	public void notifyEvent(SystemEvent<?> event){
