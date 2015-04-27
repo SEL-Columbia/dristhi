@@ -1,20 +1,5 @@
 package org.opensrp.service;
 
-import com.google.gson.Gson;
-import org.opensrp.domain.Action;
-import org.opensrp.domain.Child;
-import org.opensrp.domain.EligibleCouple;
-import org.opensrp.domain.Mother;
-import org.joda.time.DateTime;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.opensrp.dto.ActionData;
-import org.opensrp.dto.MonthSummaryDatum;
-
-import java.util.Arrays;
-import java.util.List;
-
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -22,12 +7,30 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.opensrp.dto.AlertStatus.normal;
 import static org.opensrp.dto.AlertStatus.urgent;
-import static org.opensrp.dto.BeneficiaryType.*;
-import org.opensrp.repository.AllActions;
+import static org.opensrp.dto.BeneficiaryType.child;
+import static org.opensrp.dto.BeneficiaryType.ec;
+import static org.opensrp.dto.BeneficiaryType.mother;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.joda.time.DateTime;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.opensrp.domain.Child;
+import org.opensrp.domain.EligibleCouple;
+import org.opensrp.domain.Mother;
+import org.opensrp.dto.ActionData;
+import org.opensrp.dto.MonthSummaryDatum;
 import org.opensrp.repository.AllChildren;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
-import org.opensrp.service.ActionService;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.service.ActionService;
+
+import com.google.gson.Gson;
 
 public class ActionServiceTest {
     @Mock
@@ -44,7 +47,7 @@ public class ActionServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ActionService(allActions, allMothers, allChildren, allEligibleCouples);
+        service = new ActionService(allActions);
     }
 
     @Test
@@ -53,7 +56,7 @@ public class ActionServiceTest {
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(mother, "Case X", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
+        service.alertForBeneficiary(mother, "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
 
         verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID M", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate)));
     }
@@ -64,7 +67,7 @@ public class ActionServiceTest {
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(mother, "Case X", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
+        service.alertForBeneficiary(mother, "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
 
         verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID M", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate)));
     }
@@ -75,7 +78,7 @@ public class ActionServiceTest {
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(child, "Case X", "OPV", "OPV", normal, dueDate, expiryDate);
+        service.alertForBeneficiary(child, "Case X", "ANM ID C", "OPV", "OPV", normal, dueDate, expiryDate);
 
         verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID C", ActionData.createAlert(child, "OPV", "OPV", normal, dueDate, expiryDate)));
     }
@@ -86,14 +89,14 @@ public class ActionServiceTest {
 
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(ec, "Case X", "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate);
+        service.alertForBeneficiary(ec, "Case X", "ANM ID C", "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate);
 
         verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID C", ActionData.createAlert(ec, "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate)));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionIfBeneficiaryTypeIsUnknown() throws Exception {
-        service.alertForBeneficiary(null, "Case X", "Schedule name", "FP Complications", urgent, null, null);
+        service.alertForBeneficiary(null, "Case X", "ANM ID C", "Schedule name", "FP Complications", urgent, null, null);
     }
 
     @Test
