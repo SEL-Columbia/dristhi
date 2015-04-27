@@ -1,19 +1,22 @@
 package org.opensrp.domain;
 
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.IMMUNIZATION_DATE_FIELD_NAME;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.opensrp.common.AllConstants;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
-
-import java.util.*;
-
-import static org.opensrp.common.AllConstants.ChildImmunizationFields.IMMUNIZATION_DATE_FIELD_NAME;
-import org.opensrp.domain.Location;
+import org.opensrp.common.AllConstants;
 
 @TypeDiscriminator("doc.type === 'Child'")
 public class Child extends MotechBaseDataObject {

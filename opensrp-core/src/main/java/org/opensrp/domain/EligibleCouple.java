@@ -1,29 +1,27 @@
 package org.opensrp.domain;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.opensrp.common.util.DateUtil;
-import org.opensrp.common.util.IntegerUtil;
-import org.opensrp.domain.Location;
-import org.opensrp.domain.register.*;
-import org.ektorp.support.TypeDiscriminator;
-import org.motechproject.model.MotechBaseDataObject;
-import org.opensrp.domain.register.CondomFPDetails;
-import org.opensrp.domain.register.FemaleSterilizationFPDetails;
-import org.opensrp.domain.register.IUDFPDetails;
-import org.opensrp.domain.register.MaleSterilizationFPDetails;
-import org.opensrp.domain.register.OCPFPDetails;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.WIFE_AGE;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.WIFE_DOB;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.opensrp.common.AllConstants.ECRegistrationFields.WIFE_AGE;
-import static org.opensrp.common.AllConstants.ECRegistrationFields.WIFE_DOB;
-import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.ektorp.support.TypeDiscriminator;
+import org.motechproject.model.MotechBaseDataObject;
+import org.opensrp.common.util.DateUtil;
+import org.opensrp.common.util.IntegerUtil;
+import org.opensrp.domain.register.CondomFPDetails;
+import org.opensrp.domain.register.FemaleSterilizationFPDetails;
+import org.opensrp.domain.register.IUDFPDetails;
+import org.opensrp.domain.register.MaleSterilizationFPDetails;
+import org.opensrp.domain.register.OCPFPDetails;
 
 @TypeDiscriminator("doc.type === 'EligibleCouple'")
 public class EligibleCouple extends MotechBaseDataObject {

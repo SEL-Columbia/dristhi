@@ -1,16 +1,16 @@
 package org.opensrp.domain;
 
+import static org.opensrp.common.AllConstants.BOOLEAN_FALSE_VALUE;
+import static org.opensrp.common.AllConstants.BOOLEAN_TRUE_VALUE;
+
+import java.util.UUID;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
-
-import java.util.UUID;
-
-import static org.opensrp.common.AllConstants.BOOLEAN_FALSE_VALUE;
-import static org.opensrp.common.AllConstants.BOOLEAN_TRUE_VALUE;
 
 @TypeDiscriminator("doc.type === 'MCTSReport'")
 public class MCTSReport extends MotechBaseDataObject {

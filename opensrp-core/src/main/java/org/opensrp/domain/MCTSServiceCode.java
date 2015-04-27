@@ -1,8 +1,8 @@
 package org.opensrp.domain;
 
-import org.joda.time.LocalDate;
-
 import static java.text.MessageFormat.format;
+
+import org.joda.time.LocalDate;
 
 public enum MCTSServiceCode {
     ANC1("ANC1"),
