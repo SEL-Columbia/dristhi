@@ -30,6 +30,10 @@ public class TaskSchedulerService {
 		motechSchedulerService.safeScheduleRepeatingJob(job);
     }
 	
+	public void startJob(CronSchedulableJob job) {
+		motechSchedulerService.safeScheduleJob(job);
+    }
+	
 	public void startJob(RepeatingSchedule job) {
 		Date startTime = DateTime.now().plusMillis((int) job.getStartDelayMilis()).toDate();
 		Map<String, Object> data = job.getData();
@@ -40,12 +44,14 @@ public class TaskSchedulerService {
         startJob(new RepeatingSchedulableJob(event, startTime, job.getEndTime(), job.getRepeatIntervalMilis()));
     }
 	
-	public void startJob(final String subject, String cronExpression, Date startTime, Date endTime, Map<String, Object> data) {
+	public void startJob(RepeatingCronSchedule job) {
+		Date startTime = DateTime.now().plusMillis((int) job.getStartDelayMilis()).toDate();
+		Map<String, Object> data = job.getData();
 		if(data == null){
 			data = new HashMap<>();
 		}
-        MotechEvent event = new MotechEvent(subject, data);
-        motechSchedulerService.safeScheduleJob(new CronSchedulableJob(event, cronExpression, startTime, endTime));
+        MotechEvent event = new MotechEvent(job.SUBJECT, data);
+        startJob(new CronSchedulableJob(event, job.CRON, startTime, job.getEndTime()));
     }
 	
 	public void notifyEvent(SystemEvent<?> event){
