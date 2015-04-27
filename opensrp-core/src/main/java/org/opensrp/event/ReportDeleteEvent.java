@@ -1,10 +1,9 @@
 package org.opensrp.event;
 
-import org.opensrp.common.domain.ReportDataDeleteRequest;
-import org.opensrp.common.domain.ReportDataUpdateRequest;
-import org.motechproject.scheduler.domain.MotechEvent;
-
 import java.util.HashMap;
+
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.opensrp.common.domain.ReportDataDeleteRequest;
 
 public class ReportDeleteEvent {
     public static final String SUBJECT = "DELETEREPORT";

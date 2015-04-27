@@ -1,9 +1,9 @@
 package org.opensrp.event;
 
-import org.opensrp.common.domain.ReportDataUpdateRequest;
-import org.motechproject.scheduler.domain.MotechEvent;
-
 import java.util.HashMap;
+
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.opensrp.common.domain.ReportDataUpdateRequest;
 
 public class ReportUpdateEvent {
     public static final String SUBJECT = "UPDATEREPORT";
