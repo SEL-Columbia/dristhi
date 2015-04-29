@@ -1,7 +1,7 @@
-package org.opensrp.scheduler.router;
+package org.opensrp.scheduler;
 
 import java.util.Map;
 
-public interface Action {
+public interface HookedEvent {
     void invoke(MilestoneEvent event, Map<String, String> extraData);
 }

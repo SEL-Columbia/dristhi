@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS;
 import static org.opensrp.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS_APL_VALUE;
+
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsEconomicStatusAPLRule implements IRule {

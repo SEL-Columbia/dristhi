@@ -1,14 +1,13 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.opensrp.service.reporting.rules.SpontaneousAbortionAtHomeAtHomeOrSubCenterRule;
-
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static org.opensrp.common.util.EasyMap.mapOf;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.EasyMap.mapOf;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.opensrp.util.SafeMap;
 
 
 public class SpontaneousAbortionAtHomeAtHomeOrSubCenterRuleTest {

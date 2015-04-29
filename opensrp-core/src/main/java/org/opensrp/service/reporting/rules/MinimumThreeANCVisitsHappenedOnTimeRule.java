@@ -1,15 +1,15 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.common.AllConstants;
-import org.opensrp.domain.Mother;
-import org.opensrp.util.SafeMap;
-import org.joda.time.LocalDate;
-import org.opensrp.repository.AllMothers;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.CommonFormFields.REFERENCE_DATE;
+
+import org.joda.time.LocalDate;
+import org.opensrp.common.AllConstants;
+import org.opensrp.domain.Mother;
+import org.opensrp.repository.AllMothers;
+import org.opensrp.util.SafeMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class MinimumThreeANCVisitsHappenedOnTimeRule implements IRule {

@@ -1,31 +1,33 @@
 package org.opensrp.listener;
 
-import ch.lambdaj.function.convert.Converter;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import static ch.lambdaj.collection.LambdaCollections.with;
+import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
+
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.domain.FormExportToken;
+import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
-import org.opensrp.scheduler.DrishtiFormScheduler;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.server.event.annotations.MotechListener;
-import org.opensrp.dto.form.FormSubmissionDTO;
-import org.opensrp.event.FormSubmissionEvent;
 import org.opensrp.repository.AllFormExportTokens;
+import org.opensrp.scheduler.DrishtiScheduleConstants;
+import org.opensrp.scheduler.DrishtiScheduleConstants.OpenSRPEvent;
 import org.opensrp.service.formSubmission.FormEntityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
+import ch.lambdaj.function.convert.Converter;
 
-import static ch.lambdaj.collection.LambdaCollections.with;
-import static java.text.MessageFormat.format;
-import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @Component
 public class FormEventListener {
@@ -42,14 +44,14 @@ public class FormEventListener {
         this.allFormExportTokens = allFormExportTokens;
     }
 
-    @MotechListener(subjects = FormSubmissionEvent.SUBJECT)
+    @MotechListener(subjects = OpenSRPEvent.FORM_SUBMISSION)
     public void submitForms(MotechEvent event) {
         List<FormSubmissionDTO> formSubmissions = new Gson().fromJson((String) event.getParameters().get("data"), new TypeToken<List<FormSubmissionDTO>>() {
         }.getType());
         formSubmissionService.submit(formSubmissions);
     }
 
-    @MotechListener(subjects = DrishtiFormScheduler.SUBJECT)
+    @MotechListener(subjects = DrishtiScheduleConstants.FORM_SCHEDULE_SUBJECT)
     public void fetchForms(MotechEvent event) {
         if (!lock.tryLock()) {
             logger.warn("Not fetching forms from Message Queue. It is already in progress.");

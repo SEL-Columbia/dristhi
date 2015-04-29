@@ -1,35 +1,28 @@
 package org.opensrp.service.reporting;
 
-import org.opensrp.common.util.EasyMap;
-import org.opensrp.domain.Location;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
+import static java.util.Arrays.asList;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.util.FormSubmissionBuilder.create;
 
 import java.util.Map;
 
-import static java.util.Arrays.asList;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.opensrp.common.util.EasyMap;
+import org.opensrp.domain.Location;
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.repository.AllChildren;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
-import org.opensrp.service.reporting.FormIndicator;
-import org.opensrp.service.reporting.FormSubmissionReportService;
-import org.opensrp.service.reporting.ILocationLoader;
-import org.opensrp.service.reporting.IReportDefinitionLoader;
-import org.opensrp.service.reporting.IReporter;
-import org.opensrp.service.reporting.IReporterFactory;
-import org.opensrp.service.reporting.IRulesFactory;
-import org.opensrp.service.reporting.ReferenceData;
-import org.opensrp.service.reporting.ReportDefinition;
-import org.opensrp.service.reporting.ReportIndicator;
-import org.opensrp.service.reporting.ReportingService;
 import org.opensrp.service.reporting.rules.IReferenceDataRepository;
 import org.opensrp.service.reporting.rules.IRule;
-import static org.opensrp.util.FormSubmissionBuilder.create;
+import org.opensrp.util.SafeMap;
 
 public class FormSubmissionReportServiceTest {
     @Mock

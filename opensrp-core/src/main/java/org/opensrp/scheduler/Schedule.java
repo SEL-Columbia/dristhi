@@ -1,10 +1,10 @@
-package org.opensrp.contract;
+package org.opensrp.scheduler;
+
+import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-
-import java.util.List;
 
 public class Schedule {
     private String name;

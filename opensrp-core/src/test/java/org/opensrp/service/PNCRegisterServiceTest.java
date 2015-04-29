@@ -1,22 +1,21 @@
 package org.opensrp.service;
 
-import org.opensrp.domain.EligibleCouple;
-import org.opensrp.domain.Mother;
-import org.opensrp.domain.PNCVisit;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-
 import static java.util.Arrays.asList;
-import static org.opensrp.common.util.EasyMap.create;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.EasyMap.create;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.opensrp.domain.EligibleCouple;
+import org.opensrp.domain.Mother;
+import org.opensrp.domain.PNCVisit;
 import org.opensrp.domain.register.PNCRegister;
 import org.opensrp.domain.register.PNCRegisterEntry;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
-import org.opensrp.service.PNCRegisterService;
 
 public class PNCRegisterServiceTest {
 

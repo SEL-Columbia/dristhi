@@ -1,6 +1,14 @@
 package org.opensrp.scheduler;
 
 public class DrishtiScheduleConstants {
+	public static class OpenSRPEvent{
+		public static final String FORM_SUBMISSION = "FORM_SUBMISSION";
+	}
+    public static final String PROVIDER_REPORT_SCHEDULE_SUBJECT = "PROVIDER-REPORT-SCHEDULE";
+    public static final String FORM_SCHEDULE_SUBJECT = "FORM-SCHEDULE";
+    public static final String MCTS_REPORT_SCHEDULE_SUBJECT = "MCTS-REPORT-SCHEDULE";
+    public static final String ANM_REPORT_SCHEDULE_SUBJECT = "DRISHTI-ANM-REPORT-FETCH-SCHEDULE";
+
     public static class ChildScheduleConstants {
         public static final String CHILD_SCHEDULE_BCG = "BCG";
 

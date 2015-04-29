@@ -1,16 +1,19 @@
 package org.opensrp.util;
 
-import org.joda.time.DateTime;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.scheduletracking.api.domain.MilestoneAlert;
-import org.motechproject.scheduletracking.api.domain.WindowName;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.EXTERNAL_ID;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.MILESTONE_NAME;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.SCHEDULE_NAME;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.WINDOW_NAME;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.*;
+import org.joda.time.DateTime;
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.motechproject.scheduletracking.api.domain.MilestoneAlert;
+import org.motechproject.scheduletracking.api.domain.WindowName;
 
 public class EventBuilder {
     private String scheduleName;

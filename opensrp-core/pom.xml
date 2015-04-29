@@ -73,11 +73,6 @@
         </dependency>
         <dependency>
             <groupId>org.opensrp</groupId>
-            <artifactId>opensrp-scheduler</artifactId>
-            <version>0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.opensrp</groupId>
             <artifactId>opensrp-form</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
@@ -85,6 +80,11 @@
             <groupId>org.opensrp</groupId>
             <artifactId>opensrp-interface</artifactId>
             <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.motechproject</groupId>
+            <artifactId>motech-scheduletracking-api</artifactId>
+            <version>${motech.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>

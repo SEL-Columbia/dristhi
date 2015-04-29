@@ -10,6 +10,15 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.opensrp.api.constants.Gender;
 
+/**
+ * The BaseEntity is the parent entity that contains basic information for all other business entities. 
+ * The class generalizes the demographic data, addresses, and attributes for other entities. 
+ * The class is the generic representation of all other business entities those have different business roles in system.
+ * 
+ *  For example: A user in system can also be data provider. The {@link User} would have basic data into {@link BaseEntity} 
+ *  and specific information in {@link User}. The {@link BaseEntity} would also be referred by {@link Provider} to represent 
+ *  and link roles. This helps in getting reports for any dimension for any entity into the system.
+ */
 public class BaseEntity extends BaseDataObject{
 	private String id;
 	private String firstName;
@@ -195,7 +204,11 @@ public class BaseEntity extends BaseDataObject{
 	}
 
 	public void removeAttribute(String name) {
-		attributes.remove(name);
+		for (Entry<String, Object> a : attributes.entrySet()) {
+			if(a.getKey().equalsIgnoreCase(name)){
+				attributes.remove(a.getKey());
+			}
+		}
 	}
 	
 	public BaseEntity withFirstName(String firstName) {

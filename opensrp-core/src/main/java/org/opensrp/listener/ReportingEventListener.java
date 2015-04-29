@@ -1,15 +1,16 @@
 package org.opensrp.listener;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import java.util.List;
+
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.common.domain.ANMReport;
 import org.opensrp.common.util.HttpAgent;
 import org.opensrp.common.util.HttpResponse;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.event.ReportDeleteEvent;
 import org.opensrp.event.ReportEvent;
 import org.opensrp.event.ReportUpdateEvent;
+import org.opensrp.scheduler.DrishtiScheduleConstants;
 import org.opensrp.service.reporting.ANMReportingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-import static org.opensrp.scheduler.ANMReportScheduler.SUBJECT;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @Component
 public class ReportingEventListener {
@@ -68,7 +68,7 @@ public class ReportingEventListener {
         }
     }
 
-    @MotechListener(subjects = SUBJECT)
+    @MotechListener(subjects = DrishtiScheduleConstants.ANM_REPORT_SCHEDULE_SUBJECT)
     public void fetchANMReports(MotechEvent event) throws Exception {
         logger.info("Fetching ANM reports...");
 

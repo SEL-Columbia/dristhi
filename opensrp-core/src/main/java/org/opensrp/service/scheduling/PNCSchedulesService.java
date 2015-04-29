@@ -1,45 +1,30 @@
 package org.opensrp.service.scheduling;
 
+import static java.text.MessageFormat.format;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
+
 import org.joda.time.LocalDate;
-import org.motechproject.model.Time;
-import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.opensrp.scheduler.HealthSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-import static java.text.MessageFormat.format;
-import static java.util.Arrays.asList;
-import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
-import static org.joda.time.LocalTime.now;
-import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
-
-import org.opensrp.service.ActionService;
-
 @Service
 public class PNCSchedulesService {
     private static Logger logger = LoggerFactory.getLogger(PNCSchedulesService.class.toString());
 
-    private final ScheduleTrackingService trackingService;
-    private final ScheduleService scheduleService;
-    private ActionService actionService;
+    private HealthSchedulerService scheduler;
 
     @Autowired
-    public PNCSchedulesService(ScheduleTrackingService trackingService, ScheduleService scheduleService, ActionService actionService) {
-        this.trackingService = trackingService;
-        this.scheduleService = scheduleService;
-        this.actionService = actionService;
+    public PNCSchedulesService(HealthSchedulerService scheduler) {
+        this.scheduler = scheduler;
     }
 
     public void deliveryOutcome(String entityId, String date) {
         logger.info(format("Enrolling mother into Auto Close PNC schedule. Id: ", entityId));
 
-        scheduleService.enroll(entityId,
-                SCHEDULE_AUTO_CLOSE_PNC, date);
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_AUTO_CLOSE_PNC, date);
     }
 
     private boolean fulfillMilestoneIfPossible(String entityId, String anmId, String scheduleName, String milestone, LocalDate fulfillmentDate) {
@@ -49,23 +34,16 @@ public class PNCSchedulesService {
         }
 
         logger.warn(format("Fulfilling milestone {0} of {1} for entity id: {2}", milestone, scheduleName, entityId));
-        trackingService.fulfillCurrentMilestone(entityId, scheduleName, fulfillmentDate, new Time(now()));
-        actionService.markAlertAsClosed(entityId, anmId, milestone, fulfillmentDate.toString());
+        scheduler.fullfillMilestoneAndCloseAlert(entityId, anmId, scheduleName, milestone, fulfillmentDate);
         return true;
     }
 
     private boolean isNotEnrolled(String caseId, String scheduleName) {
-        return trackingService.getEnrollment(caseId, scheduleName) == null;
+        return scheduler.isNotEnrolled(caseId, scheduleName);
     }
 
     public void unEnrollFromSchedules(String entityId) {
-        List<EnrollmentRecord> openEnrollments = trackingService.search(new EnrollmentsQuery().havingExternalId(entityId).havingState(ACTIVE));
-
-        for (EnrollmentRecord enrollment : openEnrollments) {
-            logger.info(format("Un-enrolling PNC with Entity id:{0} from schedule: {1}.", entityId, enrollment.getScheduleName()));
-
-            trackingService.unenroll(entityId, asList(enrollment.getScheduleName()));
-        }
+    	scheduler.unEnrollFromAllSchedules(entityId);
     }
 
     public void fulfillPNCAutoCloseMilestone(String entityId, String anmIdentifier) {

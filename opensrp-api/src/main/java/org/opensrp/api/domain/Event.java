@@ -5,7 +5,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.opensrp.api.domain.form.FormSubmission;
 
+/**
+ * An {@link Event} is a logical happening or experience of {@link BaseEntity} with the system as defined by the 
+ * program workflow. The difference of an {@link Event} and other activities in system is that the data of {@link Event} 
+ * is meaningful for business clients of system and also the data links back with international standard dictionaries. 
+ * An {@link Event} in system is recorded via a form filled by data {@link Provider}. The form data is represented by 
+ * {@link FormSubmission}
+ */
 public class Event extends BaseDataObject{
 
 	private String baseEntityId;

@@ -1,28 +1,33 @@
 package org.opensrp.listener;
 
-import com.google.gson.Gson;
-import org.opensrp.common.domain.ANMReport;
-import org.opensrp.common.domain.ReportDataDeleteRequest;
-import org.opensrp.common.domain.ReportDataUpdateRequest;
-import org.opensrp.common.domain.ReportingData;
-import org.opensrp.common.util.HttpAgent;
-import org.opensrp.common.util.HttpResponse;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.motechproject.scheduler.domain.MotechEvent;
+import static java.util.Arrays.asList;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.ANMIndicatorSummaryFactory.createSummaryForIUD;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Arrays.asList;
-import static org.opensrp.common.util.ANMIndicatorSummaryFactory.createSummaryForIUD;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
-import org.opensrp.listener.ReportingEventListener;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.opensrp.common.domain.ANMReport;
+import org.opensrp.common.domain.ReportDataDeleteRequest;
+import org.opensrp.common.domain.ReportDataUpdateRequest;
+import org.opensrp.common.domain.ReportingData;
+import org.opensrp.common.util.HttpAgent;
+import org.opensrp.common.util.HttpResponse;
 import org.opensrp.service.reporting.ANMReportingService;
+
+import com.google.gson.Gson;
 
 public class ReportingEventListenerTest {
     @Mock

@@ -1,11 +1,11 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.DID_MOTHER_SURVIVE;
 import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.DID_WOMAN_SURVIVE;
 import static org.opensrp.common.AllConstants.Form.BOOLEAN_FALSE_VALUE;
+
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsMotherDidNotSurvivedOnDeliveryRule implements IRule {

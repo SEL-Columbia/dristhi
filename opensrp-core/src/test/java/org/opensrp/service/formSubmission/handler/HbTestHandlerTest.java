@@ -1,15 +1,13 @@
 package org.opensrp.service.formSubmission.handler;
 
-import org.opensrp.form.domain.FormSubmission;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.service.ANCService;
-import org.opensrp.service.formSubmission.handler.HbTestHandler;
 
 public class HbTestHandlerTest {
     @Mock

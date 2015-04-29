@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
+import static org.opensrp.common.AllConstants.PNCVisitFormFields.IMMEDIATE_REFERRAL;
+
 import org.opensrp.common.AllConstants;
 import org.opensrp.util.SafeMap;
 import org.springframework.stereotype.Component;
-
-import static org.opensrp.common.AllConstants.PNCVisitFormFields.IMMEDIATE_REFERRAL;
 
 @Component
 public class ShouldMotherBeReferredImmediatelyRule implements IRule {

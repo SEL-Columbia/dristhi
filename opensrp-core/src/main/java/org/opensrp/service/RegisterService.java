@@ -1,5 +1,46 @@
 package org.opensrp.service;
 
+import static ch.lambdaj.Lambda.collect;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.selectUnique;
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.equalTo;
+import static org.opensrp.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.ANC_NUMBER;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.BLOOD_GROUP;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.EDD;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.HEIGHT;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.JSY_BENEFICIARY;
+import static org.opensrp.common.AllConstants.CommonFormFields.IS_HIGH_RISK;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.AADHAR_NUMBER;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.BPL_CARD_NUMBER;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.CASTE;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HEAD_OF_HOUSEHOLD;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HOUSEHOLD_ADDRESS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HOUSEHOLD_NUMBER;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HUSBAND_AGE;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HUSBAND_EDUCATION_LEVEL;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_ABORTIONS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_LIVING_CHILDREN;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_LIVING_FEMALE_CHILDREN;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_LIVING_MALE_CHILDREN;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_PREGNANCIES;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_STILL_BIRTHS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.PARITY;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.PHONE_NUMBER;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.RELIGION;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.WIFE_AGE;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.WIFE_EDUCATIONAL_LEVEL;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.YOUNGEST_CHILD_AGE;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.YOUNGEST_CHILD_DOB;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opensrp.domain.EligibleCouple;
 import org.opensrp.domain.Mother;
 import org.opensrp.domain.register.ANCRegister;
@@ -12,19 +53,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static ch.lambdaj.Lambda.*;
-import static java.util.Arrays.asList;
-import static org.opensrp.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
-import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.*;
-import static org.opensrp.common.AllConstants.CommonFormFields.IS_HIGH_RISK;
-import static org.opensrp.common.AllConstants.ECRegistrationFields.*;
-import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
-import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
-import static org.hamcrest.Matchers.equalTo;
 
 @Service
 public class RegisterService {

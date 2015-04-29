@@ -1,6 +1,19 @@
 package org.opensrp.service.formSubmission;
 
-import com.google.gson.Gson;
+import static java.lang.String.valueOf;
+import static java.text.MessageFormat.format;
+import static java.util.Collections.sort;
+import static org.opensrp.common.AllConstants.Form.ANM_ID;
+import static org.opensrp.common.AllConstants.Form.CLIENT_VERSION;
+import static org.opensrp.common.AllConstants.Form.ENTITY_ID;
+import static org.opensrp.common.AllConstants.Form.FORM_NAME;
+import static org.opensrp.common.AllConstants.Form.INSTANCE_ID;
+import static org.opensrp.common.AllConstants.Form.SERVER_VERSION;
+import static org.opensrp.common.util.EasyMap.create;
+
+import java.util.Comparator;
+import java.util.List;
+
 import org.opensrp.domain.FormExportToken;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.repository.AllFormExportTokens;
@@ -9,14 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-
-import static java.lang.String.valueOf;
-import static java.text.MessageFormat.format;
-import static java.util.Collections.sort;
-import static org.opensrp.common.AllConstants.Form.*;
-import static org.opensrp.common.util.EasyMap.create;
+import com.google.gson.Gson;
 
 @Service
 public class FormEntityService {

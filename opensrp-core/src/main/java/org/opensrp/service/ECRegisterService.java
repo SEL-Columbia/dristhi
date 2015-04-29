@@ -1,5 +1,31 @@
 package org.opensrp.service;
 
+import static org.opensrp.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.CASTE;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HEAD_OF_HOUSEHOLD;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HOUSEHOLD_ADDRESS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HOUSEHOLD_NUMBER;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HUSBAND_AGE;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HUSBAND_EDUCATION_LEVEL;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_ABORTIONS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_LIVING_CHILDREN;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_LIVING_FEMALE_CHILDREN;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_LIVING_MALE_CHILDREN;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_PREGNANCIES;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_STILL_BIRTHS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.PARITY;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.RELIGION;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.WIFE_AGE;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.WIFE_EDUCATIONAL_LEVEL;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.YOUNGEST_CHILD_AGE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
+import static org.opensrp.common.util.IntegerUtil.parseValidIntegersAndDefaultInvalidOnesToEmptyString;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opensrp.domain.EligibleCouple;
 import org.opensrp.domain.Mother;
 import org.opensrp.domain.register.ECRegister;
@@ -8,15 +34,6 @@ import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.opensrp.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
-import static org.opensrp.common.AllConstants.ECRegistrationFields.*;
-import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
-import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FP_METHOD_CHANGE_DATE_FIELD_NAME;
-import static org.opensrp.common.util.IntegerUtil.parseValidIntegersAndDefaultInvalidOnesToEmptyString;
 
 @Service
 public class ECRegisterService {

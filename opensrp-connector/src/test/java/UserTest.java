@@ -28,6 +28,6 @@ public class UserTest extends TestResourceLoader{
 	
 	@Test
 	public void testUser() throws JSONException {
-		assertTrue(ls.getUser("test2").getUsername().equalsIgnoreCase("test2"));
+		assertTrue(ls.getUser("admin").getUsername().equalsIgnoreCase("admin"));
 	}
 }

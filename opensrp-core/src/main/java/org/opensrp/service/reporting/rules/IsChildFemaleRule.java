@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.CommonChildFormFields.FEMALE_VALUE;
 import static org.opensrp.common.AllConstants.CommonChildFormFields.GENDER;
+
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsChildFemaleRule implements IRule {

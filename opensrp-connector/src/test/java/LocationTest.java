@@ -3,6 +3,7 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.opensrp.api.domain.Location;
 import org.opensrp.api.util.LocationTree;
 import org.opensrp.connector.openmrs.service.LocationService;
@@ -23,28 +24,26 @@ public class LocationTest extends TestResourceLoader{
 	
 	@Test
 	public void testLocation() throws JSONException {
-		Location l = ls.getLocation("testloc4");
-		System.out.println(l);
+		Location l = ls.getLocation("unknown location");
+		assertNotNull(l);
 	}
 	
 	@Test
 	public void testLocationTree() throws JSONException {
-		LocationTree l = ls.getLocationTree();
-		String tj = new Gson().toJson(l, LocationTree.class);
-		System.out.println(tj);
-		LocationTree l2 = new Gson().fromJson(tj, LocationTree.class);
-		String tj1 = new Gson().toJson(l2, LocationTree.class);
-		System.out.println(tj1);
+		LocationTree ltree = ls.getLocationTree();
+		String ltreestr = new Gson().toJson(ltree, LocationTree.class);
+		System.out.println(ltreestr);
+		assertNotNull(ltreestr);
+		LocationTree lconverted = new Gson().fromJson(ltreestr, LocationTree.class);
+		assertNotNull(lconverted);
+		String lconvertedstr = new Gson().toJson(lconverted, LocationTree.class);
+		System.out.println(lconvertedstr);
+		assertEquals(ltreestr, lconvertedstr);
 	}
 	
 	@Test
 	public void testLocationTreeOf() throws JSONException {
-		System.out.println("/////////////////////testloc");
-		LocationTree l = ls.getLocationTreeOf("testloc");
-		String tj = new Gson().toJson(l, LocationTree.class);
-		System.out.println(tj);
-		LocationTree l2 = new Gson().fromJson(tj, LocationTree.class);
-		String tj1 = new Gson().toJson(l2, LocationTree.class);
-		System.out.println(tj1);
+		LocationTree l = ls.getLocationTreeOf("unknown location");
+		assertNotNull(l);
 	}
 }

@@ -1,9 +1,14 @@
 package org.opensrp.service.scheduling.fpMethodStrategy;
 
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CONDOM_FP_METHOD_VALUE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.DMPA_INJECTABLE_FP_METHOD_VALUE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.FEMALE_STERILIZATION_FP_METHOD_VALUE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.IUD_FP_METHOD_VALUE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.MALE_STERILIZATION_FP_METHOD_VALUE;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.OCP_FP_METHOD_VALUE;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.*;
 
 @Component
 public class FPMethodStrategyFactory {

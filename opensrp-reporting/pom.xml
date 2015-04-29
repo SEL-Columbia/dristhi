@@ -147,9 +147,15 @@
             <version>${motech.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.opensrp</groupId>
-            <artifactId>opensrp-scheduler</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <groupId>org.motechproject</groupId>
+            <artifactId>motech-scheduletracking-api</artifactId>
+            <version>${motech.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.motechproject</groupId>
+            <artifactId>motech-testing-utils</artifactId>
+            <version>${motech.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.opensrp</groupId>

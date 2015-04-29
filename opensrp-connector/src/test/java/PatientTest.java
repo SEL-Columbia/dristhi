@@ -42,9 +42,4 @@ public class PatientTest extends TestResourceLoader{
 			.withIdentifier("Death Reg Num", "d-ewj-js3u2"+new Random().nextInt(99));
 		//System.out.println(s.createPatient(c));
 	}
-	
-	@Test
-	public void shouldFetchPersonAttribute() throws JSONException {
-		System.out.println(s.getPersonAttributeType("Household ID"));
-	}
 }

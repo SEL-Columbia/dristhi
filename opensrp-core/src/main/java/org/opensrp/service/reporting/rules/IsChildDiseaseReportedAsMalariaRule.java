@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.ChildIllnessFields.MALARIA_VALUE;
 import static org.opensrp.common.AllConstants.ChildIllnessFields.REPORT_CHILD_DISEASE;
+
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsChildDiseaseReportedAsMalariaRule implements IRule {

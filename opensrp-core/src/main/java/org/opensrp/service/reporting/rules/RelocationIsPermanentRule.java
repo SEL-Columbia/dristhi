@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.ChildCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.opensrp.common.AllConstants.ChildCloseFormFields.PERMANENT_RELOCATION_VALUE;
+
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class RelocationIsPermanentRule implements IRule {

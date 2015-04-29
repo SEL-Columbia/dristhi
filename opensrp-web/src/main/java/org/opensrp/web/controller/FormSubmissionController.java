@@ -1,19 +1,28 @@
 package org.opensrp.web.controller;
 
-import ch.lambdaj.function.convert.Converter;
+import static ch.lambdaj.collection.LambdaCollections.with;
+import static java.text.MessageFormat.format;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import org.opensrp.event.FormSubmissionEvent;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.form.service.FormSubmissionConverter;
-import org.opensrp.form.service.FormSubmissionService;
+import java.util.List;
+
 import org.json.JSONObject;
-import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
 import org.opensrp.connector.OpenmrsConnector;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.dto.form.FormSubmissionDTO;
+import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.service.FormSubmissionConverter;
+import org.opensrp.form.service.FormSubmissionService;
+import org.opensrp.scheduler.DrishtiScheduleConstants.OpenSRPEvent;
+import org.opensrp.scheduler.SystemEvent;
+import org.opensrp.scheduler.TaskSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,32 +34,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ch.lambdaj.function.convert.Converter;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import java.util.List;
-
-import static ch.lambdaj.collection.LambdaCollections.with;
-import static java.text.MessageFormat.format;
-import static org.springframework.http.HttpStatus.*;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 public class FormSubmissionController {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionController.class.toString());
     private FormSubmissionService formSubmissionService;
-    private OutboundEventGateway gateway;
-    
+    private TaskSchedulerService scheduler;
     private EncounterService encounterService;
     private OpenmrsConnector openmrsConnector;
     private PatientService patientService;
 
     @Autowired
-    public FormSubmissionController(FormSubmissionService formSubmissionService, OutboundEventGateway gateway,
+    public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService) {
         this.formSubmissionService = formSubmissionService;
-        this.gateway = gateway;
+        this.scheduler = scheduler;
         
         this.encounterService = encounterService;
         this.openmrsConnector = openmrsConnector;
@@ -95,7 +97,7 @@ public class FormSubmissionController {
                 return new ResponseEntity<>(BAD_REQUEST);
             }
 
-            gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO).toEvent());
+            scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
             
             try{
             ////////TODO MAIMOONA : SHOULD BE IN EVENT but event needs to be moved to web so for now kept here

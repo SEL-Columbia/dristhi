@@ -1,22 +1,24 @@
 package org.opensrp.service.reporting;
 
-import org.opensrp.common.AllConstants;
-import org.opensrp.domain.Location;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.util.SafeMap;
-import org.opensrp.service.reporting.rules.IReferenceDataRepository;
-import org.opensrp.service.reporting.rules.IRule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.opensrp.common.AllConstants.CommonFormFields.SERVICE_PROVIDED_DATE;
+import static org.opensrp.common.AllConstants.CommonFormFields.SERVICE_PROVIDED_PLACE;
+import static org.opensrp.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 
 import java.text.MessageFormat;
 import java.util.List;
 
-import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.opensrp.common.AllConstants.CommonFormFields.*;
+import org.opensrp.common.AllConstants;
+import org.opensrp.domain.Location;
+import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.service.reporting.rules.IReferenceDataRepository;
+import org.opensrp.service.reporting.rules.IRule;
+import org.opensrp.util.SafeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class FormSubmissionReportService {

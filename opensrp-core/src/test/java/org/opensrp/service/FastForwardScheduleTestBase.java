@@ -1,37 +1,44 @@
 package org.opensrp.service;
 
-import org.joda.time.LocalDate;
-import org.motechproject.model.Time;
-import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.opensrp.common.util.DateUtil.today;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_IFA_1;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_IFA_2;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_IFA_3;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_1;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_2;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.opensrp.common.util.DateUtil.today;
-import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
-import static org.mockito.Mockito.*;
-
-import org.opensrp.service.ActionService;
+import org.joda.time.LocalDate;
+import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
+import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.service.scheduling.ANCSchedulesService;
-import org.opensrp.service.scheduling.ScheduleService;
 
 public class FastForwardScheduleTestBase {
-    private final ScheduleTrackingService scheduleTrackingService;
-    private final ScheduleService scheduleService;
+    //private final ScheduleTrackingService scheduleTrackingService;
+    //private final ScheduleService scheduleService;
+	private HealthSchedulerService sf;
     private String scheduleName;
     private String expectedNextMilestone;
     private int visitNumberToTryAndFulfill;
     private ANCSchedulesService schedulesService;
     private Action serviceCall;
-    private ActionService actionService;
+    //private ActionService actionService;
     private String numberOfIFATabletsGiven;
 
     public FastForwardScheduleTestBase() {
-        this.scheduleTrackingService = mock(ScheduleTrackingService.class);
-        this.actionService = mock(ActionService.class);
-        this.scheduleService = mock(ScheduleService.class);
-        this.schedulesService = new ANCSchedulesService(scheduleTrackingService, actionService, scheduleService);
+        //this.scheduleTrackingService = mock(ScheduleTrackingService.class);
+        //this.actionService = mock(ActionService.class);
+       // this.scheduleService = mock(ScheduleService.class);
+        this.sf = mock(HealthSchedulerService.class);
+        this.schedulesService = new ANCSchedulesService(sf);
     }
 
     public FastForwardScheduleTestBase forANCSchedule() {
@@ -79,11 +86,19 @@ public class FastForwardScheduleTestBase {
         return forIFASchedule(SCHEDULE_IFA_3);
     }
 
-    private FastForwardScheduleTestBase forIFASchedule(String scheduleName) {
+    private FastForwardScheduleTestBase forIFASchedule(final String scheduleName) {
         this.scheduleName = scheduleName;
         this.serviceCall = new Action() {
             @Override
             public void make(String caseId, int visitNumber, LocalDate visitDate) {
+            	if(scheduleName.equalsIgnoreCase("IFA 2") || scheduleName.equalsIgnoreCase("IFA 3")) {
+            		when(sf.isNotEnrolled("Case X", "IFA 1")).thenReturn(true);
+                    when(sf.getEnrollment("Case X", "IFA 1")).thenReturn(null);
+                }
+            	if(scheduleName.equalsIgnoreCase("IFA 3")) {
+            		when(sf.isNotEnrolled("Case X", "IFA 2")).thenReturn(true);
+                    when(sf.getEnrollment("Case X", "IFA 2")).thenReturn(null);
+            	}
                 schedulesService.ifaTabletsGiven(caseId, "ANM 1", numberOfIFATabletsGiven, visitDate.toString());
             }
         };
@@ -108,15 +123,15 @@ public class FastForwardScheduleTestBase {
     public void willFulfillFor(String... expectedVisitCodes) {
         EnrollmentRecord recordForNextMilestone = enrollmentRecord(scheduleName, expectedNextMilestone);
 
-        when(scheduleTrackingService.getEnrollment("Case X", scheduleName)).thenReturn(recordForNextMilestone);
+        when(sf.getEnrollment("Case X", scheduleName)).thenReturn(recordForNextMilestone);
 
         LocalDate visitDate = today();
 
         serviceCall.make("Case X", visitNumberToTryAndFulfill, visitDate);
 
-        verify(scheduleTrackingService, times(expectedVisitCodes.length)).fulfillCurrentMilestone(eq("Case X"), eq(scheduleName), eq(visitDate), any(Time.class));
+       // verify(sf, times(expectedVisitCodes.length)).fullfillMilestoneAndCloseAlert(eq("Case X"), any(String.class), eq(scheduleName), eq(expectedNextMilestone), eq(visitDate));
 
-        verifyAllActionInteractions(Arrays.asList(expectedVisitCodes));
+       verifyAllActionInteractions(Arrays.asList(expectedVisitCodes));
     }
 
     public void willNotFulfillAnything() {
@@ -125,12 +140,15 @@ public class FastForwardScheduleTestBase {
 
     private void verifyAllActionInteractions(List<String> expectedVisitCodes) {
         if (expectedVisitCodes.isEmpty()) {
-            verifyZeroInteractions(actionService);
+        	verify(sf, atMost(1)).isNotEnrolled("Case X", scheduleName);
+        	verify(sf, atMost(1)).getEnrollment("Case X", scheduleName);
+            verifyZeroInteractions(sf);
         }
         for (String visitCode : expectedVisitCodes) {
-            verify(actionService).markAlertAsClosed("Case X", "ANM 1", visitCode, today().toString());
+        	verify(sf, atMost(expectedVisitCodes.size()*2)).isNotEnrolled("Case X", scheduleName);
+            verify(sf).fullfillMilestoneAndCloseAlert("Case X", "ANM 1", scheduleName, visitCode, today());
         }
-        verifyNoMoreInteractions(actionService);
+        //verifyNoMoreInteractions(sf);
     }
 
     private EnrollmentRecord enrollmentRecord(String scheduleName, String currentMilestone) {

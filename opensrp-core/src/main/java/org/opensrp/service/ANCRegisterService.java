@@ -1,5 +1,38 @@
 package org.opensrp.service;
 
+import static ch.lambdaj.Lambda.collect;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.selectDistinct;
+import static ch.lambdaj.Lambda.selectUnique;
+import static org.hamcrest.Matchers.equalTo;
+import static org.opensrp.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.ANC_NUMBER;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.BLOOD_GROUP;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.EDD;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.HEIGHT;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.JSY_BENEFICIARY;
+import static org.opensrp.common.AllConstants.CommonFormFields.IS_HIGH_RISK;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.AADHAR_NUMBER;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.BPL_CARD_NUMBER;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.CASTE;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.ECONOMIC_STATUS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HOUSEHOLD_ADDRESS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.HUSBAND_EDUCATION_LEVEL;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_ABORTIONS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_LIVING_CHILDREN;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_PREGNANCIES;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.NUMBER_OF_STILL_BIRTHS;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.PARITY;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.PHONE_NUMBER;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.RELIGION;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.WIFE_EDUCATIONAL_LEVEL;
+import static org.opensrp.common.AllConstants.ECRegistrationFields.YOUNGEST_CHILD_DOB;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.opensrp.domain.EligibleCouple;
 import org.opensrp.domain.Mother;
 import org.opensrp.domain.register.ANCRegister;
@@ -8,17 +41,6 @@ import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static ch.lambdaj.Lambda.*;
-import static org.opensrp.common.AllConstants.ANCFormFields.REGISTRATION_DATE;
-import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.*;
-import static org.opensrp.common.AllConstants.CommonFormFields.IS_HIGH_RISK;
-import static org.opensrp.common.AllConstants.ECRegistrationFields.*;
-import static org.hamcrest.Matchers.equalTo;
 
 @Service
 public class ANCRegisterService {

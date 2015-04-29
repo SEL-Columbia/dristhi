@@ -1,5 +1,61 @@
 package org.opensrp.service.reporting;
 
+import static java.util.Arrays.asList;
+import static org.joda.time.LocalDate.parse;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.domain.Indicator.ANC;
+import static org.opensrp.common.domain.Indicator.ANC4;
+import static org.opensrp.common.domain.Indicator.ANC_AFTER_12_WEEKS;
+import static org.opensrp.common.domain.Indicator.ANC_BEFORE_12_WEEKS;
+import static org.opensrp.common.domain.Indicator.CESAREAN;
+import static org.opensrp.common.domain.Indicator.CESAREAN_GOVERNMENT_FACILITY;
+import static org.opensrp.common.domain.Indicator.CESAREAN_PRIVATE_FACILITY;
+import static org.opensrp.common.domain.Indicator.DELIVERY;
+import static org.opensrp.common.domain.Indicator.D_CHC;
+import static org.opensrp.common.domain.Indicator.D_DH;
+import static org.opensrp.common.domain.Indicator.D_HOM;
+import static org.opensrp.common.domain.Indicator.D_PHC;
+import static org.opensrp.common.domain.Indicator.D_PRI;
+import static org.opensrp.common.domain.Indicator.D_SC;
+import static org.opensrp.common.domain.Indicator.D_SDH;
+import static org.opensrp.common.domain.Indicator.INSTITUTIONAL_DELIVERY;
+import static org.opensrp.common.domain.Indicator.LIVE_BIRTH;
+import static org.opensrp.common.domain.Indicator.MMA;
+import static org.opensrp.common.domain.Indicator.MMD;
+import static org.opensrp.common.domain.Indicator.MMP;
+import static org.opensrp.common.domain.Indicator.MOTHER_MORTALITY;
+import static org.opensrp.common.domain.Indicator.MTP_GREATER_THAN_12_WEEKS;
+import static org.opensrp.common.domain.Indicator.NRHM_LIVE_BIRTH;
+import static org.opensrp.common.domain.Indicator.NRHM_STILL_BIRTH;
+import static org.opensrp.common.domain.Indicator.PNC3;
+import static org.opensrp.common.domain.Indicator.SPONTANEOUS_ABORTION;
+import static org.opensrp.common.domain.Indicator.STILL_BIRTH;
+import static org.opensrp.common.domain.Indicator.SUB_TT;
+import static org.opensrp.common.domain.Indicator.TT1;
+import static org.opensrp.common.domain.Indicator.TT2;
+import static org.opensrp.common.domain.Indicator.TTB;
+import static org.opensrp.common.domain.ReportDataDeleteRequest.anmReportDataDeleteRequest;
+import static org.opensrp.common.domain.ReportDataDeleteRequest.serviceProvidedDataDeleteRequest;
+import static org.opensrp.common.domain.ReportingData.anmReportData;
+import static org.opensrp.common.domain.ReportingData.serviceProvidedData;
+import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.common.util.EasyMap.mapOf;
+
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.motechproject.testing.utils.BaseUnitTest;
 import org.opensrp.common.domain.Indicator;
 import org.opensrp.common.domain.ReportDataDeleteRequest;
 import org.opensrp.common.domain.ReportMonth;
@@ -7,30 +63,9 @@ import org.opensrp.common.domain.ReportingData;
 import org.opensrp.domain.EligibleCouple;
 import org.opensrp.domain.Location;
 import org.opensrp.domain.Mother;
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.motechproject.testing.utils.BaseUnitTest;
-
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static org.opensrp.common.domain.Indicator.*;
-import static org.opensrp.common.domain.ReportDataDeleteRequest.anmReportDataDeleteRequest;
-import static org.opensrp.common.domain.ReportDataDeleteRequest.serviceProvidedDataDeleteRequest;
-import static org.opensrp.common.domain.ReportingData.anmReportData;
-import static org.opensrp.common.domain.ReportingData.serviceProvidedData;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.joda.time.LocalDate.parse;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
-import org.opensrp.service.reporting.MotherReportingService;
-import org.opensrp.service.reporting.ReportingService;
+import org.opensrp.util.SafeMap;
 
 public class MotherReportingServiceTest extends BaseUnitTest {
     @Mock

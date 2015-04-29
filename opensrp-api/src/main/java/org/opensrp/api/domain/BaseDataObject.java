@@ -3,7 +3,9 @@ package org.opensrp.api.domain;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
+/**
+ * The Base Object for keeping audit data for any business entity.
+ */
 public abstract class BaseDataObject {
 
 	private User creator;
@@ -40,18 +42,32 @@ public abstract class BaseDataObject {
 		this.dateCreated = dateCreated;
 	}
 
+	/**
+	 * The last User who edited the data
+	 * @return
+	 */
 	public User getEditor() {
 		return editor;
 	}
 
+	/**
+	 * The last User who edited the data
+	 */
 	public void setEditor(User editor) {
 		this.editor = editor;
 	}
 
+	/**
+	 * The last edited date of the data
+	 * @return
+	 */
 	public Date getDateEdited() {
 		return dateEdited;
 	}
 
+	/**
+	 * The last edited date of the data
+	 */
 	public void setDateEdited(Date dateEdited) {
 		this.dateEdited = dateEdited;
 	}

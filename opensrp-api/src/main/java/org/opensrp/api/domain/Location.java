@@ -7,6 +7,10 @@ import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * The registered location which needs to be identified uniquely across the system
+ *
+ */
 public class Location extends BaseDataObject{
 
 	private String locationId;

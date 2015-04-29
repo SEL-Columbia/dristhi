@@ -1,16 +1,13 @@
 package org.opensrp.service;
 
-import org.opensrp.domain.MCTSServiceCode;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.util.DateUtil;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import org.opensrp.service.DrishtiSMSService;
-import org.opensrp.service.MCTSSMSService;
+import org.opensrp.domain.MCTSServiceCode;
 
 public class MCTSSMSServiceTest {
     @Mock

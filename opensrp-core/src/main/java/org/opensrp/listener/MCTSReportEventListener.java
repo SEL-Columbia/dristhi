@@ -1,25 +1,24 @@
 package org.opensrp.listener;
 
-import org.opensrp.common.AllConstants;
-import org.opensrp.common.util.DateUtil;
-import org.opensrp.domain.MCTSReport;
-import org.opensrp.scheduler.MCTSReportScheduler;
+import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+import static org.opensrp.common.AllConstants.DEFAULT_DATE_FORMAT;
+
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
+import org.opensrp.common.util.DateUtil;
+import org.opensrp.domain.MCTSReport;
+import org.opensrp.scheduler.DrishtiScheduleConstants;
 import org.opensrp.service.MCTSSMSService;
 import org.opensrp.service.formSubmission.MCTSSMSReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
-
-import static java.text.MessageFormat.format;
-import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
-import static org.opensrp.common.AllConstants.DEFAULT_DATE_FORMAT;
 
 @Component
 public class MCTSReportEventListener {
@@ -34,7 +33,7 @@ public class MCTSReportEventListener {
         this.mctsSMSReportService = mctsSMSReportService;
     }
 
-    @MotechListener(subjects = MCTSReportScheduler.SUBJECT)
+    @MotechListener(subjects = DrishtiScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT)
     public void fetchReports(MotechEvent event) {
         if (!lock.tryLock()) {
             logger.warn("Not fetching MCTS Reports. It is already in progress.");

@@ -1,15 +1,14 @@
 package org.opensrp.action;
 
-import org.opensrp.scheduler.router.MilestoneEvent;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.scheduletracking.api.domain.WindowName;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
-import org.opensrp.action.AutoClosePNCAction;
+import org.opensrp.scheduler.MilestoneEvent;
 import org.opensrp.service.PNCService;
 import org.opensrp.util.Event;
 

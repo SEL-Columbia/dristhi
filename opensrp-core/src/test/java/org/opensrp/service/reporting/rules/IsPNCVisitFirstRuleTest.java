@@ -1,12 +1,11 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.opensrp.service.reporting.rules.IsPNCVisitFirstRule;
-
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.opensrp.util.SafeMap;
 
 public class IsPNCVisitFirstRuleTest {
 

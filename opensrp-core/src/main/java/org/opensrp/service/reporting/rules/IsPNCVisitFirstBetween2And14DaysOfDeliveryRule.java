@@ -1,12 +1,12 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.joda.time.LocalDate;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.CommonFormFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.PNCVisitFormFields.VISIT_DATES_FIELD_NAME;
 import static org.opensrp.common.AllConstants.PNCVisitFormFields.VISIT_DATE_FIELD_NAME;
+
+import org.joda.time.LocalDate;
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsPNCVisitFirstBetween2And14DaysOfDeliveryRule implements IRule {

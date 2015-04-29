@@ -1,9 +1,11 @@
 package org.opensrp.service.reporting;
 
+import static org.opensrp.common.AllConstants.FormEntityTypes.CHILD_TYPE;
+import static org.opensrp.common.AllConstants.FormEntityTypes.ELIGIBLE_COUPLE_TYPE;
+import static org.opensrp.common.AllConstants.FormEntityTypes.MOTHER_TYPE;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import static org.opensrp.common.AllConstants.FormEntityTypes.*;
 
 @Component
 public class ReporterFactory implements IReporterFactory {

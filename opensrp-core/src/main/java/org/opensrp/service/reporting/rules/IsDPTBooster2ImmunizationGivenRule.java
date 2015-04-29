@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.opensrp.service.reporting.ChildImmunization;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.ChildImmunizationFields.DPT_BOOSTER_2_VALUE;
+
+import org.opensrp.service.reporting.ChildImmunization;
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsDPTBooster2ImmunizationGivenRule implements IRule {

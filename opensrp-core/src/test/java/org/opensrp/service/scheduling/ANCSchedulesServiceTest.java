@@ -1,51 +1,45 @@
 package org.opensrp.service.scheduling;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentMatcher;
-import org.mockito.Mock;
-import org.motechproject.model.Time;
-import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
-import org.motechproject.testing.utils.BaseUnitTest;
-
-import java.util.List;
-
 import static java.util.Arrays.asList;
-import static org.opensrp.common.util.DateUtil.fakeIt;
-import static org.opensrp.common.util.DateUtil.today;
-import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.*;
 import static org.joda.time.LocalDate.parse;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
+import static org.opensrp.common.util.DateUtil.fakeIt;
+import static org.opensrp.common.util.DateUtil.today;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_DELIVERY_PLAN;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_EDD;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_HB_TEST_1;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_IFA_1;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_LAB;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_1;
+import static org.powermock.api.mockito.PowerMockito.verifyNoMoreInteractions;
+import static org.powermock.api.mockito.PowerMockito.verifyZeroInteractions;
+import static org.powermock.api.mockito.PowerMockito.when;
 
-import org.opensrp.service.ActionService;
+import java.util.List;
+
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
+import org.motechproject.testing.utils.BaseUnitTest;
+import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.service.FastForwardScheduleTestBase;
-import org.opensrp.service.scheduling.ANCSchedulesService;
-import org.opensrp.service.scheduling.ScheduleService;
-
-import static org.powermock.api.mockito.PowerMockito.*;
 
 public class ANCSchedulesServiceTest extends BaseUnitTest {
     @Mock
-    private ScheduleTrackingService trackingService;
-    @Mock
-    private ActionService actionService;
-    @Mock
-    private ScheduleService scheduleService;
-
+    private HealthSchedulerService scheduler;
+    
     private ANCSchedulesService ancSchedulesService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        ancSchedulesService = new ANCSchedulesService(trackingService, actionService, scheduleService);
+        ancSchedulesService = new ANCSchedulesService(scheduler);
     }
 
     @Test
@@ -55,9 +49,9 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
 
         ancSchedulesService.enrollMother("Case X", lmp);
 
-        verify(scheduleService).enroll("Case X", SCHEDULE_ANC, "ANC 1", lmp.toString());
         verifyNonANCScheduleEnrollments(lmp);
-        verifyNoMoreInteractions(trackingService);
+        verify(scheduler).enrollIntoSchedule("Case X", SCHEDULE_ANC, "ANC 1", lmp.toString());
+        verifyNoMoreInteractions(scheduler);
     }
 
     @Test
@@ -145,56 +139,55 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     @Test
     public void shouldEnrollMotherInTT2ScheduleIfTT1IsProvided() throws Exception {
         fakeIt(parse("2012-01-01"));
-        when(trackingService.getEnrollment("entity id 1", "TT 1")).thenReturn(
+        when(scheduler.getEnrollment("entity id 1", "TT 1")).thenReturn(
                 new EnrollmentRecord("entity id 1", "TT 1", "TT 1", null, null, null, null, null, null, null));
 
         ancSchedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "tt1", "2012-01-01");
 
-        verify(trackingService).fulfillCurrentMilestone(eq("entity id 1"), eq("TT 1"), eq(today()), any(Time.class));
-        verify(actionService).markAlertAsClosed("entity id 1", "ANM 1", "TT 1", "2012-01-01");
-        verify(scheduleService).enroll("entity id 1", "TT 2", "2012-01-01");
+        verify(scheduler).fullfillMilestoneAndCloseAlert(eq("entity id 1"), eq("ANM 1"), eq("TT 1"), eq("TT 1"), eq(today())/*, any(Time.class)*/);
+        verify(scheduler).enrollIntoSchedule("entity id 1", "TT 2", "2012-01-01");
     }
 
     @Test
     public void shouldFullFillTT1AndTT2IfTTBoosterIsProvided() throws Exception {
         fakeIt(parse("2012-01-01"));
-        when(trackingService.getEnrollment("entity id 1", "TT 1")).thenReturn(
+        when(scheduler.getEnrollment("entity id 1", "TT 1")).thenReturn(
                 new EnrollmentRecord("entity id 1", "TT 1", "TT 1", null, null, null, null, null, null, null));
-        when(trackingService.getEnrollment("entity id 1", "TT 2")).thenReturn(
+        when(scheduler.getEnrollment("entity id 1", "TT 2")).thenReturn(
                 new EnrollmentRecord("entity id 1", "TT 2", "TT 2", null, null, null, null, null, null, null));
 
         ancSchedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "ttbooster", "2012-01-01");
 
-        verify(actionService).markAlertAsInactive("ANM 1", "entity id 1", "TT 1");
-        verify(trackingService).unenroll("entity id 1", asList("TT 1"));
-        verifyZeroInteractions(scheduleService);
+//       / verify(actionService).markAlertAsInactive("ANM 1", "entity id 1", "TT 1");
+        verify(scheduler).unEnrollFromSchedule("entity id 1", "ANM 1", "TT 1");
+        verifyZeroInteractions(scheduler);
     }
 
     @Test
     public void shouldNotEnrollMotherInTT2ScheduleIfSomeOtherThingIsProvided() throws Exception {
         ancSchedulesService.ttVisitHasHappened("entity id 1", "ANM 1", "some other", "2012-01-01");
 
-        verifyZeroInteractions(trackingService);
+        verifyZeroInteractions(scheduler);
     }
 
     @Test
     public void shouldNotFulfillANCIfANCScheduleIsAlreadyOver() throws Exception {
-        when(trackingService.getEnrollment("Entity X", SCHEDULE_ANC)).thenReturn(null);
+        when(scheduler.isNotEnrolled("Entity X", SCHEDULE_ANC)).thenReturn(true);
+        when(scheduler.getEnrollment("Entity X", SCHEDULE_ANC)).thenReturn(null);
 
         ancSchedulesService.ancVisitHasHappened("Entity X", "ANM 1", 2, "2012-01-23");
 
-        verify(trackingService).getEnrollment("Entity X", SCHEDULE_ANC);
-        verifyNoMoreInteractions(trackingService);
-        verifyZeroInteractions(actionService);
+        verify(scheduler).isNotEnrolled("Entity X", SCHEDULE_ANC);
+        verifyNoMoreInteractions(scheduler);
     }
 
     @Test
-    public void shouldFulfillCurrentMilestoneForGivenExternalIdWhenVisitHasBeenMissed() {
+    public void shouldfullfillMilestoneAndCloseAlertForGivenExternalIdWhenVisitHasBeenMissed() {
         fakeIt(parse("2012-01-01"));
 
         ancSchedulesService.forceFulfillMilestone("Case X", "Schedule 1");
 
-        verify(trackingService).fulfillCurrentMilestone(eq("Case X"), eq("Schedule 1"), eq(today()), any(Time.class));
+        //TODO verify(scheduler).fullfillMilestoneAndCloseAlert(eq("Case X"), eq("Schedule 1"), eq(today()), any(Time.class));
     }
 
     @Test
@@ -203,103 +196,107 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         EnrollmentRecord record2 = new EnrollmentRecord("Case X", "Schedule 2", null, null, null, null, null, null, null, null);
         List<EnrollmentRecord> records = asList(record1, record2);
 
-        when(trackingService.search(queryFor("Case X"))).thenReturn(records);
+        when(scheduler.findActiveEnrollments("Case X")).thenReturn(records);
 
         ancSchedulesService.unEnrollFromAllSchedules("Case X");
 
-        verify(trackingService).unenroll("Case X", asList("Schedule 1"));
-        verify(trackingService).unenroll("Case X", asList("Schedule 2"));
-        verify(actionService).markAllAlertsAsInactive("Case X");
+        verify(scheduler).unEnrollFromAllSchedules("Case X");
     }
 
     @Test
     public void shouldFulfillHbTest1WhenHbTestIsDone() {
-        when(trackingService.getEnrollment("Case X", "Hb Test 1"))
+        when(scheduler.getEnrollment("Case X", "Hb Test 1"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 1", "HB Test 1", null, null, null, null, null, null, null));
 
         ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", null, parse("2012-09-01"));
 
-        verify(trackingService).fulfillCurrentMilestone(eq("Case X"), eq("Hb Test 1"), eq(parse("2013-01-01")), any(Time.class));
+        verify(scheduler).fullfillMilestoneAndCloseAlert(eq("Case X"), eq("ANM 1"), eq("Hb Test 1"), eq("Hb Test 1"), eq(parse("2013-01-01")));
     }
 
     @Test
     public void shouldEnrollANCToHbFollowupTestWhenHbTestIsDoneAndSheIsAnaemic() {
-        when(trackingService.getEnrollment("Case X", "Hb Test 1"))
+        when(scheduler.getEnrollment("Case X", "Hb Test 1"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 1", "HB Test 1", null, null, null, null, null, null, null));
 
         ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", "Anaemic", null);
 
-        verify(scheduleService).enroll("Case X", "Hb Followup Test", "2013-01-01");
+        verify(scheduler).enrollIntoSchedule("Case X", "Hb Followup Test", "2013-01-01");
     }
 
     @Test
     public void shouldEnrollANCToHbTest2WhenHbTestIsDoneAndSheIsNotAnaemic() {
-        when(trackingService.getEnrollment("Case X", "Hb Test 1"))
+        when(scheduler.getEnrollment("Case X", "Hb Test 1"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 1", "HB Test 1", null, null, null, null, null, null, null));
 
         ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", null, parse("2012-09-01"));
 
-        verify(scheduleService).enroll("Case X", "Hb Test 2", "2012-09-01");
+        verify(scheduler).enrollIntoSchedule("Case X", "Hb Test 2", "2012-09-01");
     }
 
     @Test
     public void shouldFulfillHbFollowupTestWhenHbTestIsDone() {
-        when(trackingService.getEnrollment("Case X", "Hb Test 1")).thenReturn(null);
-        when(trackingService.getEnrollment("Case X", "Hb Followup Test"))
+        when(scheduler.isNotEnrolled("Case X", "Hb Test 1")).thenReturn(true);
+        when(scheduler.getEnrollment("Case X", "Hb Test 1")).thenReturn(null);
+        when(scheduler.getEnrollment("Case X", "Hb Followup Test"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Followup Test", "Hb Followup Test", null, null, null, null, null, null, null));
 
         ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-01-01", "Anaemic", parse("2012-09-01"));
 
-        verify(trackingService).fulfillCurrentMilestone(eq("Case X"), eq("Hb Followup Test"), eq(parse("2013-01-01")), any(Time.class));
+        verify(scheduler).fullfillMilestoneAndCloseAlert(eq("Case X"), eq("ANM 1"), eq("Hb Followup Test"), eq("Hb Followup Test"), eq(parse("2013-01-01")));
     }
 
     @Test
     public void shouldFulfillHbTest2WhenHbTestIsDoneAndFollowupIsFulfilledAndDateIs28WeeksAfterLMP() {
-        when(trackingService.getEnrollment("Case X", "Hb Test 1")).thenReturn(null);
-        when(trackingService.getEnrollment("Case X", "Hb Followup Test"))
+        when(scheduler.isNotEnrolled("Case X", "Hb Test 1")).thenReturn(true);
+        when(scheduler.getEnrollment("Case X", "Hb Test 1")).thenReturn(null);
+        when(scheduler.isNotEnrolled("Case X", "Hb Followup Test")).thenReturn(true);
+        when(scheduler.getEnrollment("Case X", "Hb Followup Test"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Followup Test", "Hb Followup Test", null, null, null, null, null, null, null));
-        when(trackingService.getEnrollment("Case X", "Hb Test 2"))
+        when(scheduler.getEnrollment("Case X", "Hb Test 2"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 2", "Hb Test 2", null, null, null, null, null, null, null));
 
         ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-04-16", "Anaemic", parse("2012-09-01"));
 
-        verify(trackingService).fulfillCurrentMilestone(eq("Case X"), eq("Hb Test 2"), eq(parse("2013-04-16")), any(Time.class));
+        verify(scheduler).fullfillMilestoneAndCloseAlert(eq("Case X"), eq("ANM 1"), eq("Hb Test 2"), eq("Hb Test 2"), eq(parse("2013-04-16")));
     }
 
     @Test
     public void shouldFulfillScheduleWhenDeliveryHasBeenPlanned() {
-        when(trackingService.getEnrollment("Case X", "Delivery Plan"))
+        when(scheduler.getEnrollment("Case X", "Delivery Plan"))
                 .thenReturn(new EnrollmentRecord("Case X", "Delivery Plan", "Delivery Plan", null, null, null, null, null, null, null));
 
-        ancSchedulesService.deliveryHasBeenPlanned("Case X", "ANM id 1", "2013-01-01");
+        ancSchedulesService.deliveryHasBeenPlanned("Case X", "ANM 1", "2013-01-01");
 
-        verify(trackingService).fulfillCurrentMilestone(eq("Case X"), eq("Delivery Plan"), eq(parse("2013-01-01")), any(Time.class));
+        verify(scheduler).fullfillMilestoneAndCloseAlert(eq("Case X"), eq("ANM 1"), eq("Delivery Plan"), eq("Delivery Plan"), eq(parse("2013-01-01")));
     }
 
     @Test
     public void shouldEnrollToHbTest2WhenHbTestIsDoneAndFollowupIsFulfilledAndDateIsNot28WeeksAfterLMP() {
-        when(trackingService.getEnrollment("Case X", "Hb Test 1")).thenReturn(null);
-        when(trackingService.getEnrollment("Case X", "Hb Followup Test"))
+        when(scheduler.isNotEnrolled("Case X", "Hb Test 1")).thenReturn(true);
+        when(scheduler.getEnrollment("Case X", "Hb Test 1")).thenReturn(null);
+        when(scheduler.getEnrollment("Case X", "Hb Followup Test"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Followup Test", "Hb Followup Test", null, null, null, null, null, null, null));
-        when(trackingService.getEnrollment("Case X", "Hb Test 2"))
+        when(scheduler.getEnrollment("Case X", "Hb Test 2"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 2", "Hb Test 2", null, null, null, null, null, null, null));
 
         ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-02-16", "Anaemic", parse("2012-09-01"));
 
-        verify(trackingService, times(0)).fulfillCurrentMilestone(eq("Case X"), eq("Hb Test 2"), eq(parse("2013-04-16")), any(Time.class));
-        verify(scheduleService).enroll("Case X", "Hb Test 2", "2012-09-01");
+        verify(scheduler, times(0)).fullfillMilestoneAndCloseAlert(eq("Case X"), eq("ANM 1"), eq("Hb Test 2"), eq(parse("2013-04-16")));
+        verify(scheduler).enrollIntoSchedule("Case X", "Hb Test 2", "2012-09-01");
     }
 
     @Test
     public void shouldFulfillHbTest2WhenHbTestIsDoneAndItsTheActiveMilestone() {
-        when(trackingService.getEnrollment("Case X", "Hb Test 1")).thenReturn(null);
-        when(trackingService.getEnrollment("Case X", "Hb Followup Test")).thenReturn(null);
-        when(trackingService.getEnrollment("Case X", "Hb Test 2"))
+        when(scheduler.isNotEnrolled("Case X", "Hb Test 1")).thenReturn(true);
+        when(scheduler.getEnrollment("Case X", "Hb Test 1")).thenReturn(null);
+        when(scheduler.isNotEnrolled("Case X", "Hb Followup Test")).thenReturn(true);
+        when(scheduler.getEnrollment("Case X", "Hb Followup Test")).thenReturn(null);
+        when(scheduler.getEnrollment("Case X", "Hb Test 2"))
                 .thenReturn(new EnrollmentRecord("Case X", "Hb Test 2", "Hb Test 2", null, null, null, null, null, null, null));
 
         ancSchedulesService.hbTestDone("Case X", "ANM 1", "2013-04-16", "Anaemic", parse("2012-09-01"));
 
-        verify(trackingService).fulfillCurrentMilestone(eq("Case X"), eq("Hb Test 2"), eq(parse("2013-04-16")), any(Time.class));
+        verify(scheduler).fullfillMilestoneAndCloseAlert(eq("Case X"), eq("ANM 1"), eq("Hb Test 2"), eq("Hb Test 2"), eq(parse("2013-04-16")));
     }
 
     private void assertEnrollmentIntoMilestoneBasedOnDate(LocalDate enrollmentDate, String expectedMilestone) throws Exception {
@@ -318,10 +315,10 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
         ancSchedulesService.enrollMother("Case X", lmp);
 
         verifyNonANCScheduleEnrollments(lmp);
-        verify(scheduleService, times(wantedNumberOfInvocations)).enroll("Case X", SCHEDULE_ANC, expectedMilestone, lmp.toString());
+        verify(scheduler, times(wantedNumberOfInvocations)).enrollIntoSchedule("Case X", SCHEDULE_ANC, expectedMilestone, lmp.toString());
     }
 
-    private EnrollmentsQuery queryFor(final String externalId) {
+   /* private EnrollmentsQuery queryFor(final String externalId) {
         return argThat(new ArgumentMatcher<EnrollmentsQuery>() {
             @Override
             public boolean matches(Object o) {
@@ -329,13 +326,14 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
                 return EqualsBuilder.reflectionEquals(expectedQuery.getCriteria(), ((EnrollmentsQuery) o).getCriteria());
             }
         });
-    }
+    }*/
 
     private void verifyNonANCScheduleEnrollments(LocalDate lmp) {
-        verify(scheduleService).enroll("Case X", SCHEDULE_EDD, lmp.toString());
-        verify(scheduleService).enroll("Case X", SCHEDULE_LAB, lmp.toString());
-        verify(scheduleService).enroll("Case X", SCHEDULE_TT_1, lmp.toString());
-        verify(scheduleService).enroll("Case X", SCHEDULE_IFA_1, lmp.toString());
-        verify(scheduleService).enroll("Case X", SCHEDULE_HB_TEST_1, lmp.toString());
+        verify(scheduler).enrollIntoSchedule("Case X", SCHEDULE_EDD, lmp);
+        verify(scheduler).enrollIntoSchedule("Case X", SCHEDULE_LAB, lmp);
+        verify(scheduler).enrollIntoSchedule("Case X", SCHEDULE_TT_1, lmp);
+        verify(scheduler).enrollIntoSchedule("Case X", SCHEDULE_IFA_1, lmp);
+        verify(scheduler).enrollIntoSchedule("Case X", SCHEDULE_HB_TEST_1, lmp);
+        verify(scheduler).enrollIntoSchedule("Case X", SCHEDULE_DELIVERY_PLAN, lmp);
     }
 }

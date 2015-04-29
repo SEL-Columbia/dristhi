@@ -1,23 +1,22 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.domain.Mother;
-import org.opensrp.util.SafeMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
+import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.common.util.EasyMap.mapOf;
 
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Arrays.asList;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.opensrp.domain.Mother;
 import org.opensrp.repository.AllMothers;
-import org.opensrp.service.reporting.rules.MinimumThreeANCVisitsHappenedOnTimeRule;
+import org.opensrp.util.SafeMap;
 
 public class MinimumThreeANCVisitsHappenedOnTimeRuleTest {
 

@@ -1,22 +1,24 @@
 package org.opensrp.repository.it;
 
-import org.opensrp.domain.Action;
+import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static org.opensrp.dto.AlertStatus.normal;
+import static org.opensrp.dto.BeneficiaryType.mother;
+
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.dto.ActionData;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static junit.framework.Assert.*;
-import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.BeneficiaryType.mother;
-import org.opensrp.repository.AllActions;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")

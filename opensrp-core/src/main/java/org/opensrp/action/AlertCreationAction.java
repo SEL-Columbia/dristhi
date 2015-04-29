@@ -1,41 +1,56 @@
 package org.opensrp.action;
 
-import org.opensrp.scheduler.router.Action;
-import org.opensrp.scheduler.router.MilestoneEvent;
-import org.opensrp.service.ActionService;
-import org.motechproject.scheduletracking.api.domain.WindowName;
+import static org.opensrp.dto.BeneficiaryType.child;
+import static org.opensrp.dto.BeneficiaryType.ec;
+import static org.opensrp.dto.BeneficiaryType.mother;
+
+import java.util.Map;
+
 import org.opensrp.dto.BeneficiaryType;
+import org.opensrp.repository.AllChildren;
+import org.opensrp.repository.AllEligibleCouples;
+import org.opensrp.repository.AllMothers;
+import org.opensrp.scheduler.HealthSchedulerService;
+import org.opensrp.scheduler.HookedEvent;
+import org.opensrp.scheduler.MilestoneEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
-import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.AlertStatus.upcoming;
-import static org.opensrp.dto.AlertStatus.urgent;
-
 
 @Component
 @Qualifier("AlertCreationAction")
-public class AlertCreationAction implements Action {
-    ActionService actionService;
+public class AlertCreationAction implements HookedEvent {
+    private HealthSchedulerService scheduler;
+    private AllMothers allMothers;
+    private AllChildren allChildren;
+    private AllEligibleCouples allEligibleCouples;
 
     @Autowired
-    public AlertCreationAction(ActionService actionService) {
-        this.actionService = actionService;
+    public AlertCreationAction(HealthSchedulerService scheduler, AllMothers allMothers, AllChildren allChildren, AllEligibleCouples allEligibleCouples) {
+        this.scheduler = scheduler;
+        this.allMothers = allMothers;
+        this.allChildren = allChildren;
+        this.allEligibleCouples = allEligibleCouples;
     }
 
     @Override
     public void invoke(MilestoneEvent event, Map<String, String> extraData) {
         BeneficiaryType beneficiaryType = BeneficiaryType.from(extraData.get("beneficiaryType"));
 
-        if (WindowName.late.toString().equals(event.windowName())) {
-            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.scheduleName(), event.milestoneName(), urgent, event.startOfLateWindow(), event.startOfMaxWindow());
-        } else if (WindowName.earliest.toString().equals(event.windowName())) {
-            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.scheduleName(), event.milestoneName(), upcoming, event.startOfDueWindow(), event.startOfLateWindow());
+     // TODO: Get rid of this horrible if-else after Motech-Platform fixes the bug related to metadata in motech-schedule-tracking.
+        String anmIdentifier;
+        String caseID = event.externalId();
+		if (mother.equals(beneficiaryType)) {
+            anmIdentifier = allMothers.findByCaseId(caseID ).anmIdentifier();
+        } else if (child.equals(beneficiaryType)) {
+            anmIdentifier = allChildren.findByCaseId(caseID).anmIdentifier();
+        } else if (ec.equals(beneficiaryType)) {
+            anmIdentifier = allEligibleCouples.findByCaseId(caseID).anmIdentifier();
         } else {
-            actionService.alertForBeneficiary(beneficiaryType, event.externalId(), event.scheduleName(), event.milestoneName(), normal, event.startOfDueWindow(), event.startOfLateWindow());
+            throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
+        
+		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, anmIdentifier, event.scheduleName(), event.milestoneName(), event.startOfDueWindow(), event.startOfLateWindow(), event.startOfMaxWindow());
     }
 }

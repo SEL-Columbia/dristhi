@@ -1,34 +1,40 @@
 package org.opensrp.scheduler.router;
 
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.MILESTONE_NAME;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.SCHEDULE_NAME;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.WINDOW_NAME;
+import static org.opensrp.scheduler.Matcher.any;
+import static org.opensrp.scheduler.Matcher.eq;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduletracking.api.domain.MilestoneAlert;
-import org.opensrp.scheduler.router.Action;
-import org.opensrp.scheduler.router.AlertRouter;
-import org.opensrp.scheduler.router.MilestoneEvent;
-import org.opensrp.scheduler.router.NoRoutesMatchException;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.*;
-import static org.opensrp.scheduler.router.Matcher.any;
-import static org.opensrp.scheduler.router.Matcher.eq;
+import org.opensrp.scheduler.AlertRouter;
+import org.opensrp.scheduler.HookedEvent;
+import org.opensrp.scheduler.MilestoneEvent;
+import org.opensrp.scheduler.NoRoutesMatchException;
 
 public class AlertRouterTest {
     @Mock
-    private Action firstAction;
+    private HookedEvent firstAction;
 
     @Mock
-    private Action secondAction;
+    private HookedEvent secondAction;
 
     @Mock
-    private Action thirdAction;
+    private HookedEvent thirdAction;
 
     private AlertRouter router;
 
@@ -119,7 +125,7 @@ public class AlertRouterTest {
         router.handle(event("scheduleName", "milestoneName", "windowName"));
     }
 
-    private void assertRouteMatches(String schedule, String milestone, String window, Action action, HashMap<String, String> extraData) {
+    private void assertRouteMatches(String schedule, String milestone, String window, HookedEvent action, HashMap<String, String> extraData) {
         MotechEvent event = handleEvent(schedule, milestone, window);
         verify(action, times(1)).invoke(new MilestoneEvent(event), extraData);
     }

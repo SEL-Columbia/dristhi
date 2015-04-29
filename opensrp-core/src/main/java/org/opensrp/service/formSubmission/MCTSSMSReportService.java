@@ -1,17 +1,16 @@
 package org.opensrp.service.formSubmission;
 
+import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+
+import java.util.List;
+
 import org.opensrp.domain.MCTSReport;
 import org.opensrp.repository.AllMCTSReports;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-
-import static ch.lambdaj.collection.LambdaCollections.with;
-import static java.text.MessageFormat.format;
-import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
 @Component
 public class MCTSSMSReportService {

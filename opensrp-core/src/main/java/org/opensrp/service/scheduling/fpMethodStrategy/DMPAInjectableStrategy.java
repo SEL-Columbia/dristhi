@@ -1,36 +1,31 @@
 package org.opensrp.service.scheduling.fpMethodStrategy;
 
+import static java.text.MessageFormat.format;
+import static java.util.Arrays.asList;
+import static org.joda.time.LocalDate.parse;
+import static org.opensrp.common.util.DateUtil.tryParse;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_DMPA_INJECTABLE_REFILL;
+import static org.opensrp.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_DMPA_INJECTABLE_REFILL_MILESTONE;
+
 import org.opensrp.domain.FPProductInformation;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
-import org.opensrp.contract.Schedule;
-import org.opensrp.service.ActionService;
-import org.opensrp.service.scheduling.ScheduleService;
+import org.opensrp.scheduler.HealthSchedulerService;
+import org.opensrp.scheduler.Schedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static java.text.MessageFormat.format;
-import static java.util.Arrays.asList;
-import static org.opensrp.common.util.DateUtil.tryParse;
-import static org.opensrp.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_DMPA_INJECTABLE_REFILL;
-import static org.opensrp.scheduler.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_DMPA_INJECTABLE_REFILL_MILESTONE;
-import static org.joda.time.LocalDate.parse;
-
 @Component
 public class DMPAInjectableStrategy implements FPMethodStrategy {
     private static Logger logger = LoggerFactory.getLogger(DMPAInjectableStrategy.class.toString());
 
-    private final ScheduleTrackingService scheduleTrackingService;
-    private final ActionService actionService;
-    private final ScheduleService scheduleService;
+    private HealthSchedulerService scheduler;
+
     private final Schedule dmpaInjectableRefillSchedule = new Schedule(EC_SCHEDULE_DMPA_INJECTABLE_REFILL, asList(EC_SCHEDULE_DMPA_INJECTABLE_REFILL_MILESTONE));
 
     @Autowired
-    public DMPAInjectableStrategy(ScheduleTrackingService scheduleTrackingService, ActionService actionService, ScheduleService scheduleService) {
-        this.scheduleTrackingService = scheduleTrackingService;
-        this.actionService = actionService;
-        this.scheduleService = scheduleService;
+    public DMPAInjectableStrategy(HealthSchedulerService scheduler) {
+        this.scheduler = scheduler;
     }
 
     @Override
@@ -41,8 +36,7 @@ public class DMPAInjectableStrategy implements FPMethodStrategy {
     @Override
     public void unEnrollFromPreviousScheduleAsFPMethodChanged(FPProductInformation fpInfo) {
         logger.info(format("Un-enrolling EC from DMPA Injectable Refill schedule as FP method changed. entityId: {0}, new fp method: {1}", fpInfo.entityId(), fpInfo.currentFPMethod()));
-        scheduleTrackingService.unenroll(fpInfo.entityId(), asList(dmpaInjectableRefillSchedule.name()));
-        actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), dmpaInjectableRefillSchedule.name(), fpInfo.fpMethodChangeDate());
+        scheduler.unEnrollAndCloseSchedule(fpInfo.entityId(), fpInfo.anmId(), dmpaInjectableRefillSchedule.name(), parse(fpInfo.fpMethodChangeDate()));
     }
 
     @Override
@@ -57,8 +51,7 @@ public class DMPAInjectableStrategy implements FPMethodStrategy {
         }
 
         logger.info(format("Fulfilling DMPA Injectable Refill schedule as FP product was renewed. entityId: {0}, DMPA injection date: {1}", fpInfo.entityId(), fpInfo.dmpaInjectionDate()));
-        scheduleTrackingService.fulfillCurrentMilestone(fpInfo.entityId(), dmpaInjectableRefillSchedule.name(), parse(fpInfo.submissionDate()));
-        actionService.markAlertAsClosed(fpInfo.entityId(), fpInfo.anmId(), dmpaInjectableRefillSchedule.name(), fpInfo.dmpaInjectionDate());
+        scheduler.fullfillMilestoneAndCloseAlert(fpInfo.entityId(), fpInfo.anmId(), dmpaInjectableRefillSchedule.name(), parse(fpInfo.submissionDate()));
         enrollECToDMPAInjectableSchedule(fpInfo.entityId(), fpInfo.dmpaInjectionDate());
     }
 
@@ -68,7 +61,7 @@ public class DMPAInjectableStrategy implements FPMethodStrategy {
 
     private void enrollECToDMPAInjectableSchedule(String entityId, String dmpaInjectionDate) {
         logger.info(format("Enrolling EC to DMPA Injectable Refill schedule. entityId: {0}, Injection date: {1}", entityId, dmpaInjectionDate));
-        scheduleService.enroll(entityId, dmpaInjectableRefillSchedule.name(), dmpaInjectionDate);
+        scheduler.enrollIntoSchedule(entityId, dmpaInjectableRefillSchedule.name(), dmpaInjectionDate);
     }
 
 }

@@ -1,19 +1,18 @@
 package org.opensrp.service;
 
-import org.opensrp.common.domain.ReportMonth;
-import org.opensrp.domain.EligibleCouple;
-import org.opensrp.domain.register.*;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
+import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.EasyMap.create;
 
 import java.util.Map;
 
-import static java.util.Arrays.asList;
-import static junit.framework.Assert.assertEquals;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.opensrp.common.domain.ReportMonth;
+import org.opensrp.domain.EligibleCouple;
 import org.opensrp.domain.register.CondomFPDetails;
 import org.opensrp.domain.register.CondomRegisterEntry;
 import org.opensrp.domain.register.FPRegister;
@@ -27,7 +26,6 @@ import org.opensrp.domain.register.OCPFPDetails;
 import org.opensrp.domain.register.OCPRegisterEntry;
 import org.opensrp.mapper.FPRegisterMapper;
 import org.opensrp.repository.AllEligibleCouples;
-import org.opensrp.service.FPRegisterService;
 
 public class FPRegisterServiceTest {
 

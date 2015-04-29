@@ -8,6 +8,11 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.opensrp.api.constants.Gender;
 
+/**
+ * The person who actually entered or modified data into system. The {@link User} before getting access to any 
+ * service in system have to be authenticated by system. 
+ * A user may also be linked with a {@link Provider} by {@link BaseEntity}
+ */
 public class User extends BaseDataObject{
 	private String username;
 	private String password;

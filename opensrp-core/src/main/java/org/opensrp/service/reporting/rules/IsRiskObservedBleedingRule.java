@@ -1,10 +1,10 @@
 package org.opensrp.service.reporting.rules;
 
-import org.opensrp.util.SafeMap;
-import org.springframework.stereotype.Component;
-
 import static org.opensrp.common.AllConstants.ANCVisitFormFields.BLEEDING_VALUE;
 import static org.opensrp.common.AllConstants.ANCVisitFormFields.RISK_OBSERVED_DURING_ANC;
+
+import org.opensrp.util.SafeMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IsRiskObservedBleedingRule implements IRule {

@@ -1,13 +1,12 @@
 package org.opensrp.contract;
 
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+
+import java.util.ArrayList;
+
+import org.junit.Test;
+import org.opensrp.scheduler.Schedule;
 
 public class ScheduleTest {
 

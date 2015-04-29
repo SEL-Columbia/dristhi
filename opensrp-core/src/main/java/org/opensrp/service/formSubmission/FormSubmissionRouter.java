@@ -1,9 +1,45 @@
 package org.opensrp.service.formSubmission;
 
+import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+import static org.opensrp.common.AllConstants.Form.ANC_CLOSE;
+import static org.opensrp.common.AllConstants.Form.ANC_INVESTIGATIONS;
+import static org.opensrp.common.AllConstants.Form.ANC_REGISTRATION;
+import static org.opensrp.common.AllConstants.Form.ANC_REGISTRATION_OA;
+import static org.opensrp.common.AllConstants.Form.ANC_VISIT;
+import static org.opensrp.common.AllConstants.Form.CHILD_CLOSE;
+import static org.opensrp.common.AllConstants.Form.CHILD_ILLNESS;
+import static org.opensrp.common.AllConstants.Form.CHILD_IMMUNIZATIONS;
+import static org.opensrp.common.AllConstants.Form.CHILD_REGISTRATION_EC;
+import static org.opensrp.common.AllConstants.Form.CHILD_REGISTRATION_OA;
+import static org.opensrp.common.AllConstants.Form.DELIVERY_OUTCOME;
+import static org.opensrp.common.AllConstants.Form.DELIVERY_PLAN;
+import static org.opensrp.common.AllConstants.Form.EC_CLOSE;
+import static org.opensrp.common.AllConstants.Form.EC_EDIT;
+import static org.opensrp.common.AllConstants.Form.EC_REGISTRATION;
+import static org.opensrp.common.AllConstants.Form.FP_CHANGE;
+import static org.opensrp.common.AllConstants.Form.FP_COMPLICATIONS;
+import static org.opensrp.common.AllConstants.Form.FP_FOLLOWUP_PRODUCT;
+import static org.opensrp.common.AllConstants.Form.FP_REFERRAL_FOLLOWUP;
+import static org.opensrp.common.AllConstants.Form.HB_TEST;
+import static org.opensrp.common.AllConstants.Form.IFA;
+import static org.opensrp.common.AllConstants.Form.PNC_CLOSE;
+import static org.opensrp.common.AllConstants.Form.PNC_REGISTRATION_OA;
+import static org.opensrp.common.AllConstants.Form.PNC_VISIT;
+import static org.opensrp.common.AllConstants.Form.PPFP;
+import static org.opensrp.common.AllConstants.Form.RECORD_ECPS;
+import static org.opensrp.common.AllConstants.Form.RENEW_FP_PRODUCT;
+import static org.opensrp.common.AllConstants.Form.TT;
+import static org.opensrp.common.AllConstants.Form.TT_1;
+import static org.opensrp.common.AllConstants.Form.TT_2;
+import static org.opensrp.common.AllConstants.Form.TT_BOOSTER;
+import static org.opensrp.common.AllConstants.Form.VITAMIN_A;
+
+import java.util.Map;
+
+import org.opensrp.common.util.EasyMap;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
-import org.opensrp.service.formSubmission.handler.*;
-import org.opensrp.common.util.EasyMap;
 import org.opensrp.service.formSubmission.handler.ANCCloseHandler;
 import org.opensrp.service.formSubmission.handler.ANCInvestigationsHandler;
 import org.opensrp.service.formSubmission.handler.ANCRegistrationHandler;
@@ -40,12 +76,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-
-import static java.text.MessageFormat.format;
-import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
-import static org.opensrp.common.AllConstants.Form.*;
 
 @Component
 public class FormSubmissionRouter {

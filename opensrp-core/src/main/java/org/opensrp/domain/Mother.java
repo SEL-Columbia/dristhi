@@ -1,23 +1,22 @@
 package org.opensrp.domain;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.opensrp.common.AllConstants;
-import org.opensrp.common.util.IntegerUtil;
-import org.ektorp.support.TypeDiscriminator;
-import org.joda.time.LocalDate;
-import org.motechproject.model.MotechBaseDataObject;
+import static java.lang.String.valueOf;
+import static org.opensrp.common.AllConstants.IFAFields.TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.String.valueOf;
-import static org.opensrp.common.AllConstants.IFAFields.TOTAL_NUMBER_OF_IFA_TABLETS_GIVEN;
-import org.opensrp.domain.Location;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.ektorp.support.TypeDiscriminator;
+import org.joda.time.LocalDate;
+import org.motechproject.model.MotechBaseDataObject;
+import org.opensrp.common.AllConstants;
+import org.opensrp.common.util.IntegerUtil;
 
 @TypeDiscriminator("doc.type === 'Mother'")
 public class Mother extends MotechBaseDataObject {

@@ -1,4 +1,4 @@
-package org.opensrp.scheduler.router;
+package org.opensrp.scheduler;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,17 +1,15 @@
 package org.opensrp.service.reporting;
 
-import ch.lambdaj.util.NotUniqueItemException;
-import org.junit.Test;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import org.opensrp.service.reporting.FormIndicator;
-import org.opensrp.service.reporting.ReportDefinition;
-import org.opensrp.service.reporting.ReportIndicator;
+import org.junit.Test;
+
+import ch.lambdaj.util.NotUniqueItemException;
 
 public class ReportDefinitionTest {
 

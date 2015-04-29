@@ -1,26 +1,25 @@
 package org.opensrp.service;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.EasyMap.mapOf;
+
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
 import org.opensrp.common.util.EasyMap;
 import org.opensrp.domain.Child;
 import org.opensrp.domain.EligibleCouple;
 import org.opensrp.domain.Mother;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-
-import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 import org.opensrp.domain.register.ChildRegister;
 import org.opensrp.domain.register.ChildRegisterEntry;
 import org.opensrp.repository.AllChildren;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
-import org.opensrp.service.ChildRegisterService;
 
 public class ChildRegisterServiceTest {
 

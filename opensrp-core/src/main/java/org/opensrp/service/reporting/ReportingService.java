@@ -1,9 +1,9 @@
 package org.opensrp.service.reporting;
 
+import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.opensrp.common.domain.ReportDataDeleteRequest;
 import org.opensrp.common.domain.ReportDataUpdateRequest;
 import org.opensrp.common.domain.ReportingData;
-import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.opensrp.event.ReportDeleteEvent;
 import org.opensrp.event.ReportEvent;
 import org.opensrp.event.ReportUpdateEvent;

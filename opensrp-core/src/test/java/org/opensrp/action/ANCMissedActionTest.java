@@ -1,19 +1,18 @@
 package org.opensrp.action;
 
-import org.opensrp.scheduler.router.MilestoneEvent;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.motechproject.scheduler.domain.MotechEvent;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.EXTERNAL_ID;
 import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.SCHEDULE_NAME;
-import org.opensrp.action.ForceFulfillAction;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.opensrp.scheduler.MilestoneEvent;
 import org.opensrp.service.scheduling.ANCSchedulesService;
 
 public class ANCMissedActionTest {

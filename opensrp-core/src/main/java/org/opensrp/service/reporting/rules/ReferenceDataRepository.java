@@ -1,26 +1,29 @@
 package org.opensrp.service.reporting.rules;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ObjectNode;
-import org.opensrp.common.AllConstants;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.util.SafeMap;
-import org.ektorp.CouchDbConnector;
-import org.ektorp.ViewQuery;
-import org.ektorp.ViewResult;
-import org.opensrp.service.reporting.ReferenceData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
+import static org.opensrp.common.AllConstants.FormEntityTypes.CHILD_TYPE;
+import static org.opensrp.common.AllConstants.FormEntityTypes.ELIGIBLE_COUPLE_TYPE;
+import static org.opensrp.common.AllConstants.FormEntityTypes.MCTS_REPORT_TYPE;
+import static org.opensrp.common.AllConstants.FormEntityTypes.MOTHER_TYPE;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.opensrp.common.AllConstants.FormEntityTypes.*;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
+import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewQuery;
+import org.ektorp.ViewResult;
+import org.opensrp.common.AllConstants;
+import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.service.reporting.ReferenceData;
+import org.opensrp.util.SafeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class ReferenceDataRepository implements IReferenceDataRepository {

@@ -1,18 +1,12 @@
 package org.opensrp.service.reporting;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
-import org.opensrp.service.reporting.ChildReporter;
-import org.opensrp.service.reporting.EligibleCoupleReporter;
-import org.opensrp.service.reporting.IReporter;
-import org.opensrp.service.reporting.IReporterFactory;
-import org.opensrp.service.reporting.MotherReporter;
-import org.opensrp.service.reporting.ReporterFactory;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
 
 public class ReporterFactoryTest {
 

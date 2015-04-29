@@ -1,34 +1,36 @@
 package org.opensrp.service;
 
-import org.opensrp.domain.Mother;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.util.SafeMap;
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
+import static java.util.Arrays.asList;
+import static org.joda.time.LocalDate.parse;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.DateUtil.today;
+import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.common.util.EasyMap.mapOf;
+import static org.opensrp.util.FormSubmissionBuilder.create;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Arrays.asList;
-import static org.opensrp.util.FormSubmissionBuilder.create;
-import static org.opensrp.common.util.DateUtil.today;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.common.util.EasyMap.mapOf;
-import static org.joda.time.LocalDate.parse;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.joda.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.opensrp.domain.Mother;
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.repository.AllEligibleCouples;
 import org.opensrp.repository.AllMothers;
-import org.opensrp.service.ANCService;
-import org.opensrp.service.ActionService;
-import org.opensrp.service.ECService;
+import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.service.formSubmission.handler.ReportFieldsDefinition;
 import org.opensrp.service.reporting.MotherReportingService;
 import org.opensrp.service.scheduling.ANCSchedulesService;
+import org.opensrp.util.SafeMap;
 
 public class ANCServiceTest {
     @Mock

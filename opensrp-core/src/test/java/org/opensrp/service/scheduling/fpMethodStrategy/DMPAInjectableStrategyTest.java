@@ -1,35 +1,29 @@
 package org.opensrp.service.scheduling.fpMethodStrategy;
 
-import org.opensrp.domain.FPProductInformation;
+import static org.joda.time.LocalDate.parse;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.MockitoAnnotations.initMocks;
+
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
-
-import static java.util.Arrays.asList;
-import static org.joda.time.LocalDate.parse;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import org.opensrp.service.ActionService;
-import org.opensrp.service.scheduling.ScheduleService;
-import org.opensrp.service.scheduling.fpMethodStrategy.DMPAInjectableStrategy;
+import org.opensrp.domain.FPProductInformation;
+import org.opensrp.scheduler.HealthSchedulerService;
 
 public class DMPAInjectableStrategyTest {
-    @Mock
-    private ScheduleTrackingService scheduleTrackingService;
-    @Mock
-    private ActionService actionService;
-    @Mock
-    private ScheduleService scheduleService;
+	@Mock
+    private HealthSchedulerService scheduler;
 
     private DMPAInjectableStrategy strategy;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        strategy = new DMPAInjectableStrategy(scheduleTrackingService, actionService, scheduleService);
+        strategy = new DMPAInjectableStrategy(scheduler);
     }
 
     @Test
@@ -37,44 +31,40 @@ public class DMPAInjectableStrategyTest {
         strategy.registerEC(new FPProductInformation("entity id 1", "anm id 1", "dmpa_injectable", null, "2012-01-01", null, null
                 , "20", "2012-03-01", null, null, null, null));
 
-        verify(scheduleService).enroll("entity id 1", "DMPA Injectable Refill", "2012-01-01");
+        verify(scheduler).enrollIntoSchedule("entity id 1", "DMPA Injectable Refill", "2012-01-01");
     }
 
     @Test
     public void shouldUnEnrollECFromPreviousRefillSchedule() {
         strategy.unEnrollFromPreviousScheduleAsFPMethodChanged(new FPProductInformation("entity id 1", "anm id 1", "condom", "dmpa_injectable", null, null, null, null, null, "2012-01-01", null, null, null));
 
-        verify(scheduleTrackingService).unenroll("entity id 1", asList("DMPA Injectable Refill"));
-        verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "DMPA Injectable Refill", "2012-01-01");
+        verify(scheduler).unEnrollAndCloseSchedule("entity id 1", "anm id 1", "DMPA Injectable Refill", LocalDate.parse("2012-01-01"));
     }
 
     @Test
     public void shouldEnrollECIntoDMPAInjectableRefillScheduleWhenFPMethodIsChanged() {
         strategy.enrollToNewScheduleForNewFPMethod(new FPProductInformation("entity id 1", "anm id 1", "dmpa_injectable", "condom", null, null, null, null, null, "2012-01-01", null, null, null));
 
-        verify(scheduleService).enroll("entity id 1", "DMPA Injectable Refill", "2012-01-01");
+        verify(scheduler).enrollIntoSchedule("entity id 1", "DMPA Injectable Refill", "2012-01-01");
     }
 
     @Test
     public void shouldUpdateDMPAInjectableRefillScheduleWhenDMPAIsReinjected() {
         strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "dmpa_injectable", null, "2012-01-01", null, null, null, "2011-01-12", "", null, null, null));
 
-        InOrder inOrder = inOrder(scheduleTrackingService, actionService, scheduleService);
-        inOrder.verify(scheduleTrackingService).fulfillCurrentMilestone("entity id 1", "DMPA Injectable Refill", parse("2011-01-12"));
-        inOrder.verify(actionService).markAlertAsClosed("entity id 1", "anm id 1", "DMPA Injectable Refill", "2012-01-01");
-        inOrder.verify(scheduleService).enroll("entity id 1", "DMPA Injectable Refill", "2012-01-01");
+        InOrder inOrder = inOrder(scheduler);
+        inOrder.verify(scheduler).fullfillMilestoneAndCloseAlert("entity id 1", "anm id 1", "DMPA Injectable Refill", parse("2011-01-12"));
+        inOrder.verify(scheduler).enrollIntoSchedule("entity id 1", "DMPA Injectable Refill", "2012-01-01");
     }
 
     @Test
     public void shouldDoNothingWhenDMPANotInjected() {
         strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "dmpa_injectable", null, "", null, null, null, "2011-01-12", "", null, null, null));
 
-        verifyZeroInteractions(scheduleTrackingService);
-        verifyZeroInteractions(actionService);
+        verifyZeroInteractions(scheduler);
 
         strategy.renewFPProduct(new FPProductInformation("entity id 1", "anm id 1", "dmpa_injectable", null, null, null, null, null, "2011-01-12", "", null, null, null));
 
-        verifyZeroInteractions(scheduleTrackingService);
-        verifyZeroInteractions(actionService);
+        verifyZeroInteractions(scheduler);
     }
 }

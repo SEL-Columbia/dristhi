@@ -1,11 +1,11 @@
 package org.opensrp.service.reporting.rules;
 
+import static org.opensrp.common.AllConstants.CommonFormFields.REFERENCE_DATE;
+
+import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
 import org.opensrp.util.SafeMap;
-import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
-
-import static org.opensrp.common.AllConstants.CommonFormFields.REFERENCE_DATE;
 
 @Component
 public class WomanIsDischargedWithin48HoursOfDeliveryRule implements IRule {

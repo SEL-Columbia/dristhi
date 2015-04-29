@@ -1,13 +1,17 @@
 package org.opensrp.util;
 
-import org.opensrp.form.domain.*;
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Arrays.asList;
+import org.opensrp.form.domain.FormData;
+import org.opensrp.form.domain.FormField;
+import org.opensrp.form.domain.FormInstance;
+import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.domain.SubFormData;
 
 public class FormSubmissionBuilder {
     private String anmId = "anmId";
