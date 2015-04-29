@@ -185,8 +185,22 @@ public class ANCSchedulesServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void shouldFulfillCurrentMilestoneForGivenExternalIdWhenVisitHasBeenMissed() {
+    public void shouldNotFulfillCurrentMilestoneForGivenExternalIdWhenVisitHasBeenMissed() {
         fakeIt(parse("2012-01-01"));
+        when(trackingService.getEnrollment("Case X", "Schedule 1"))
+                .thenReturn(null);
+
+        ancSchedulesService.forceFulfillMilestone("Case X", "Schedule 1");
+
+        verify(trackingService).getEnrollment("Case X", "Schedule 1");
+        verifyNoMoreInteractions(trackingService);
+    }
+
+    @Test
+    public void shouldFulfillCurrentMilestoneForGivenExternalIdWhenVisitHasNotBeenMissed() {
+        fakeIt(parse("2012-01-01"));
+        when(trackingService.getEnrollment("Case X", "Schedule 1"))
+                .thenReturn(new EnrollmentRecord("Case X", "Lab Reminders", "Lab Reminders", null, null, null, null, null, null, null));
 
         ancSchedulesService.forceFulfillMilestone("Case X", "Schedule 1");
 

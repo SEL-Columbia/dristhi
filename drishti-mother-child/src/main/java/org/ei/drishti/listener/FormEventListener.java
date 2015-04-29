@@ -46,6 +46,7 @@ public class FormEventListener {
     public void submitForms(MotechEvent event) {
         List<FormSubmissionDTO> formSubmissions = new Gson().fromJson((String) event.getParameters().get("data"), new TypeToken<List<FormSubmissionDTO>>() {
         }.getType());
+        logger.info("Submitting Forms");
         formSubmissionService.submit(formSubmissions);
     }
 

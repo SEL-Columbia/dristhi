@@ -115,6 +115,12 @@ public class ANCSchedulesService {
     }
 
     public void forceFulfillMilestone(String externalId, String scheduleName) {
+        if (isNotEnrolled(externalId, scheduleName)) {
+            logger.warn(format("Tried to fulfill a milestone of {0} for entity id: {1}", scheduleName, externalId));
+            return;
+        }
+
+        logger.warn(format("Tried to fulfill milestone of {0} for entity id: {1}", scheduleName, externalId));
         trackingService.fulfillCurrentMilestone(externalId, scheduleName, today(), new Time(now()));
     }
 
