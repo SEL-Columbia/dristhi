@@ -81,7 +81,7 @@
         <repository>
             <id>motech.drishti</id>
             <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/drishti</url>
+            <url>http://ci.smartregistries.org:8081/nexus/content/repositories/drishti</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>${drishti.updatePolicy}</updatePolicy>
@@ -90,7 +90,7 @@
         <repository>
             <id>motech.nexus</id>
             <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/snapshots</url>
+            <url>http://ci.smartregistries.org:8081/nexus/content/repositories/snapshots</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>${drishti.updatePolicy}</updatePolicy>
@@ -99,7 +99,7 @@
         <repository>
             <id>motech.nexus.release</id>
             <name>Motech Snapshots Repository</name>
-            <url>http://nexus.motechproject.org/content/repositories/releases</url>
+            <url>http://ci.smartregistries.org:8081/nexus/content/repositories/releases</url>
         </repository>
     </repositories>
 
