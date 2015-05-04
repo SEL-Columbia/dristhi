@@ -99,7 +99,7 @@ public class PatientService extends OpenmrsService{
 		}
 		
 		String fn = be.getFirstName();
-		String mn = be.getMiddleName();
+		String mn = be.getMiddleName()==null?"":be.getMiddleName();
 		String ln = be.getLastName()==null?".":be.getLastName();
 		per.put("names", new JSONArray("[{\"givenName\":\""+fn+"\",\"middleName\":\""+mn+"\", \"familyName\":\""+ln+"\"}]"));
 		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
