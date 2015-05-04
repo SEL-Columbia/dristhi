@@ -1,3 +1,4 @@
+package org.opensrp.connector.openmrs.service;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -5,7 +6,6 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opensrp.connector.openmrs.service.UserService;
 
 
 public class UserTest extends TestResourceLoader{

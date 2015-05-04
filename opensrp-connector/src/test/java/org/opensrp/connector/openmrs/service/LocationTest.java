@@ -1,12 +1,14 @@
+package org.opensrp.connector.openmrs.service;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.opensrp.api.domain.Location;
 import org.opensrp.api.util.LocationTree;
-import org.opensrp.connector.openmrs.service.LocationService;
 
 import com.google.gson.Gson;
 
