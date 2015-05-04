@@ -59,6 +59,10 @@ public class FormData {
         throw new RuntimeException(MessageFormat.format("No sub form with the given name: {0}, in formData: {1}", name, this));
     }
 
+    public List<SubFormData> subForms() {
+        return sub_forms;
+    }
+    
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
