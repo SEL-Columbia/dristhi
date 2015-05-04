@@ -1,5 +1,7 @@
 package org.opensrp.form.domain;
 
+import java.util.List;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -29,6 +31,10 @@ public class FormInstance {
 
     public SubFormData getSubFormByName(String name) {
         return form.getSubFormByName(name);
+    }
+    
+    public List<SubFormData> subForms() {
+        return form.subForms();
     }
 
     @Override

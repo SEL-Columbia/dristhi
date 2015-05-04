@@ -1,7 +1,8 @@
-import java.io.File;
-import java.io.FileReader;
+package org.opensrp.connector.openmrs.service;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,14 +12,7 @@ import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
 import org.opensrp.connector.FormAttributeMapper;
 import org.opensrp.connector.OpenmrsConnector;
-import org.opensrp.connector.openmrs.service.EncounterService;
-import org.opensrp.connector.openmrs.service.PatientService;
-import org.opensrp.connector.openmrs.service.UserService;
 import org.opensrp.form.domain.FormSubmission;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.ResourceLoader;
-
-import com.google.gson.Gson;
 
 
 public class EncounterTest extends TestResourceLoader{
@@ -72,6 +66,28 @@ public class EncounterTest extends TestResourceLoader{
 		Event e = oc.getEventFromFormSubmission(fs);
 		
 		//System.out.println(s.createEncounter(e));
+	}
+	
+	@Test
+	public void shouldHandleSubform() throws IOException, ParseException, JSONException{
+		FormSubmission fs = getFormSubmissionFor("repeatform");
+
+		System.out.println(oc.isOpenmrsForm(fs));
+		
+		JSONObject p = ps.getPatientByIdentifier(fs.entityId());
+		if(p == null){
+			Client c = oc.getClientFromFormSubmission(fs);
+			//System.out.println(ps.createPatient(c));
+		}
+		Event e = oc.getEventFromFormSubmission(fs);
+		
+		//System.out.println(s.createEncounter(e));
+		
+		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
+		for (Entry<String, Map<String, Object>> map : dc.entrySet()) {
+			
+
+		}
 	}
 	
 }

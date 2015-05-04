@@ -103,6 +103,10 @@ public class FormSubmission extends MotechBaseDataObject {
     public SubFormData getSubFormByName(String name) {
         return formInstance.getSubFormByName(name);
     }
+    
+    public List<SubFormData> subForms() {
+        return formInstance.subForms();
+    }
 
     @Override
     public boolean equals(Object o) {

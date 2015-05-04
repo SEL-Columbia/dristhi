@@ -1,0 +1,25 @@
+Date of Release: 29-Apr-2015
+
+New Features
+============
+- Allows adding geopoint as instance::openmrs_entity_id in person_address xls mapping. This would extract and save latitude, and longitude into corresponding fields and logs complete geopoint as a separate field too.
+- Extended FormSubmission to return all subforms
+- Extended FormAttributeMapper to return attributes from model.xml for specified subform
+- Extended FormAttributeMapper to return fieldName from bind path from form_definition.json and model.xml for subforms
+- Extended FormAttributeMapper to find out bind concept/attributes for selected options in form submission from form.json of any level or group
+- Extended OpenmrsConnector to handle data submitted via repeat for creation of new entities and events. Now it parses inner/chid entities` events and person data too.
+
+Changes
+=======
+- Added new class OpenmrsConstants with Enums and helper methods to centralize and standardize Openmrs specific person and event attributes
+- Refactored OpenmrsConnector to handle entity from Enum to better manage and centralize code. Removed duplications in code.
+- Moved opensrp-connector tests to proper package
+- Extended and added test cases for repeat group handling
+
+Fixes
+=====
+- Modified FormAttributeMapper method getInstanceAttributesForFormFieldAndValue to find out correct bind concept/attributes for selected options in form submission from form.json irrespective of the level of node
+
+Known Issues
+============
+- Test cases and code not fully depicting the creation of new entities and events via form submission and neither it is tested for Household since no real form or form submission was available

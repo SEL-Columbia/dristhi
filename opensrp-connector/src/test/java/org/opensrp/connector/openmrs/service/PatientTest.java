@@ -1,3 +1,4 @@
+package org.opensrp.connector.openmrs.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +14,6 @@ import org.junit.Test;
 import org.opensrp.api.domain.Address;
 import org.opensrp.api.domain.BaseEntity;
 import org.opensrp.api.domain.Client;
-import org.opensrp.connector.openmrs.service.PatientService;
 
 
 public class PatientTest extends TestResourceLoader{
