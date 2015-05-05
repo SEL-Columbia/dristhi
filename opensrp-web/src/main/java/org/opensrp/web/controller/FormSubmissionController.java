@@ -20,7 +20,7 @@ import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
-import org.opensrp.scheduler.DrishtiScheduleConstants.OpenSRPEvent;
+import org.opensrp.register.DrishtiScheduleConstants.OpenSRPEvent;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.slf4j.Logger;

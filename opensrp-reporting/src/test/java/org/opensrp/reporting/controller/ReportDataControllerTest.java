@@ -4,7 +4,7 @@ import org.opensrp.common.domain.ANMReport;
 import org.opensrp.common.domain.ReportDataDeleteRequest;
 import org.opensrp.common.domain.ReportDataUpdateRequest;
 import org.opensrp.common.domain.ReportingData;
-import org.opensrp.domain.Location;
+import org.opensrp.common.domain.Location;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -55,7 +55,8 @@ public class ReportDataControllerTest {
 
     @Test
     public void shouldSaveServiceProvidedInDB() throws Exception {
-        ReportingData data = serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", new Location("bherya", "Sub Center", "PHC X"), "entity id 1").withQuantity("40");
+        ReportingData data = serviceProvidedData("ANM X", "TC 1", BCG, "2012-01-01", 
+        		new Location("bherya", "Sub Center", "PHC X"), "entity id 1").withQuantity("40");
 
         controller.submit(data);
 

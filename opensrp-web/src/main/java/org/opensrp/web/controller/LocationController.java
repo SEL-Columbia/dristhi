@@ -1,7 +1,7 @@
 package org.opensrp.web.controller;
 
 import org.json.JSONException;
-import org.opensrp.connector.openmrs.service.LocationService;
+import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,10 @@ import com.google.gson.Gson;
 @RequestMapping("/location/")
 public class LocationController {
 	
-	private LocationService openmrsLocationService;
+	private OpenmrsLocationService openmrsLocationService;
 	
 	@Autowired
-	public LocationController(LocationService openmrsLocationService) {
+	public LocationController(OpenmrsLocationService openmrsLocationService) {
 		this.openmrsLocationService = openmrsLocationService;
 	}
 	

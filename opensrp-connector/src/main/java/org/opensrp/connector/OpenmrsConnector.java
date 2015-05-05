@@ -18,10 +18,10 @@ import org.opensrp.connector.openmrs.constants.OpenmrsConstants.Encounter;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants.OpenmrsEntity;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants.Person;
 import org.opensrp.connector.openmrs.service.EncounterService;
-import org.opensrp.connector.openmrs.service.LocationService;
+import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
 import org.opensrp.connector.openmrs.service.PatientService;
-import org.opensrp.connector.openmrs.service.UserService;
+import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.form.domain.FormField;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
@@ -36,14 +36,14 @@ public class OpenmrsConnector {
 	private EncounterService encounterService;
 	//private HouseholdService householdService; 
 	private PatientService patientService;
-	private LocationService locationService;
-	private UserService userService;
+	private OpenmrsLocationService locationService;
+	private OpenmrsUserService userService;
 	private FormAttributeMapper formAttributeMapper;
 		
 	@Autowired
 	public OpenmrsConnector(EncounterService encounterService,
 			/*HouseholdService householdService,*/ PatientService patientService,
-			LocationService locationService, UserService userService, FormAttributeMapper formAttributeMapper) {
+			OpenmrsLocationService locationService, OpenmrsUserService userService, FormAttributeMapper formAttributeMapper) {
 		this.encounterService = encounterService;
 		//this.householdService = householdService;
 		this.patientService = patientService;
@@ -257,7 +257,7 @@ public class OpenmrsConnector {
 		Map<String, Map<String, Object>> map = new HashMap<>();
 		for (SubFormData sbf : fs.subForms()) {
 			Map<String, String> att = formAttributeMapper.getAttributesForField(sbf.name(), fs);
-			if(att.get("openmrs_entity").equalsIgnoreCase("person")){
+			if(att.size() > 0 && att.get("openmrs_entity").equalsIgnoreCase("person")){
 				Map<String, Object> cne = new HashMap<>();
 				for (Map<String, String> sfdata : sbf.instances()) {
 					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));

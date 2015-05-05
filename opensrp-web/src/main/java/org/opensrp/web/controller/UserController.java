@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.opensrp.api.domain.Location;
 import org.opensrp.api.domain.User;
 import org.opensrp.common.domain.UserDetail;
-import org.opensrp.connector.openmrs.service.LocationService;
+import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,10 +29,10 @@ import com.google.gson.Gson;
 public class UserController {
     private String opensrpSiteUrl;
     private DrishtiAuthenticationProvider opensrpAuthenticationProvider;
-	private LocationService openmrsLocationService;
+	private OpenmrsLocationService openmrsLocationService;
 	
     @Autowired
-    public UserController(LocationService openmrsLocationService,
+    public UserController(OpenmrsLocationService openmrsLocationService,
             DrishtiAuthenticationProvider opensrpAuthenticationProvider) {
 		this.openmrsLocationService = openmrsLocationService;
         this.opensrpAuthenticationProvider = opensrpAuthenticationProvider;

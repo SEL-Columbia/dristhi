@@ -1,28 +1,12 @@
 package org.opensrp.web.controller;
 
-import org.opensrp.common.util.HttpAgent;
-import org.opensrp.common.util.HttpResponse;
-import org.opensrp.domain.ANMDetail;
-import org.opensrp.domain.ANMDetails;
-import org.opensrp.domain.DrishtiUser;
-import org.opensrp.service.ANMDetailsService;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.opensrp.dto.ANMDTO;
-import org.opensrp.dto.LocationDTO;
-import org.opensrp.dto.register.ANMDetailDTO;
-import org.opensrp.dto.register.ANMDetailsDTO;
-import org.opensrp.web.controller.ANMDetailsController;
-import org.opensrp.web.controller.UserController;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+
+import org.junit.Before;
+import org.mockito.Mock;
+import org.opensrp.common.util.HttpAgent;
+import org.opensrp.domain.DrishtiUser;
+import org.opensrp.register.service.ANMDetailsService;
 
 public class ANMDetailsControllerTest {
 

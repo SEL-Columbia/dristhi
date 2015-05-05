@@ -16,6 +16,7 @@
 		<module>opensrp-interface</module>
 		<module>opensrp-form</module>
 		<module>opensrp-api</module>
+		<module>opensrp-register</module>
 		<module>opensrp-connector</module>
 		<module>opensrp-reporting</module>
 		<module>opensrp-web</module>

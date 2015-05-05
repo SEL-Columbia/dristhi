@@ -1,17 +1,16 @@
 package org.opensrp.service;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.opensrp.common.audit.AuditMessageType.SMS;
-
+import org.opensrp.common.audit.Auditor;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.sms.api.service.SmsService;
-import org.opensrp.common.audit.Auditor;
+
+import static org.opensrp.common.audit.AuditMessageType.SMS;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
+
+import org.opensrp.service.DrishtiSMSService;
 
 public class DrishtiSMSServiceTest {
     @Mock

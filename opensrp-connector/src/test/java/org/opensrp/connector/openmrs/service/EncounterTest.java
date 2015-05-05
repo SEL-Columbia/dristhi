@@ -23,12 +23,12 @@ public class EncounterTest extends TestResourceLoader{
 	EncounterService s;
 	OpenmrsConnector oc;
 	PatientService ps;
-	UserService us;
+	OpenmrsUserService us;
 
 	@Before
 	public void setup() throws IOException{
 		ps = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
-		us = new UserService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
+		us = new OpenmrsUserService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		s = new EncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		s.setPatientService(ps);
 		s.setUserService(us);

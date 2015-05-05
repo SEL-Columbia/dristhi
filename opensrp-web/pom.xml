@@ -31,6 +31,14 @@
                 <directory>../assets/config</directory>
             </resource>
             <resource>
+                <directory>../assets/schedules</directory>
+                <targetPath>schedules</targetPath>
+            </resource>
+            <resource>
+                <directory>../assets/form</directory>
+                <targetPath>form</targetPath>
+            </resource>
+            <resource>
                 <directory>../build</directory>
                 <filtering>true</filtering>
                 <includes>
@@ -152,6 +160,11 @@
         <dependency>
             <groupId>org.opensrp</groupId>
             <artifactId>opensrp-core</artifactId>
+            <version>${release.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opensrp</groupId>
+            <artifactId>opensrp-register</artifactId>
             <version>${release.version}</version>
         </dependency>
         <dependency>

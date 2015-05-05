@@ -46,9 +46,9 @@ public class ActionService {
     public void markAlertAsClosed(String caseId, String anmIdentifier, String visitCode, String completionDate) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.markAlertAsClosed(visitCode, completionDate)));
     }
-
-    public void closeMother(String caseId, String anmIdentifier, String reasonForClose) {
-        allActions.add(new Action(caseId, anmIdentifier, ActionData.closeMother(reasonForClose)));
+    
+    public void closeBeneficiary(BeneficiaryType beneficiary, String caseId, String anmIdentifier, String reasonForClose) {
+        allActions.add(new Action(caseId, anmIdentifier, ActionData.closeBeneficiary(beneficiary.name(), reasonForClose)));
     }
 
     public void reportForIndicator(String anmIdentifier, ActionData actionData) {

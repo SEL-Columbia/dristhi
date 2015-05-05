@@ -64,7 +64,11 @@ public class HealthSchedulerService {
         List<String> activeSchedules = scheduleService.findOpenEnrollmentNames(entityId);
 
 		scheduleService.unenroll(entityId, activeSchedules);
-        actionService.markAllAlertsAsInactive(entityId);;
+        actionService.markAllAlertsAsInactive(entityId);
+    }
+	
+	public void closeBeneficiary(BeneficiaryType beneficiary, String caseId, String anmIdentifier, String reasonForClose) {
+		actionService.closeBeneficiary(beneficiary, caseId, anmIdentifier, reasonForClose);
     }
 	
 	public List<EnrollmentRecord> findActiveEnrollments(String entityId) {

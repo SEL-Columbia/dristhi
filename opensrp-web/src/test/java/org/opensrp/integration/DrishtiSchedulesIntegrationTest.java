@@ -26,7 +26,7 @@ import java.util.Date;
 
 import static org.opensrp.common.AllConstants.ChildImmunizationFields.*;
 import static org.opensrp.common.util.DateUtil.fakeIt;
-import static org.opensrp.scheduler.DrishtiScheduleConstants.ChildScheduleConstants.*;
+import static org.opensrp.register.DrishtiScheduleConstants.ChildScheduleConstants.*;
 import static org.motechproject.scheduletracking.api.domain.WindowName.*;
 import static org.motechproject.util.DateUtil.newDate;
 

@@ -1,7 +1,7 @@
 package org.opensrp.web.controller.fake;
 
 import org.opensrp.common.util.HttpAgent;
-import org.opensrp.listener.ReportingEventListener;
+import org.opensrp.register.listener.ReportingEventListener;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,9 +1,27 @@
 package org.opensrp.web.controller;
 
-import org.opensrp.domain.register.*;
-import org.opensrp.mapper.*;
-import org.opensrp.service.*;
-import org.opensrp.dto.register.*;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
+import org.opensrp.dto.register.ANCRegisterDTO;
+import org.opensrp.dto.register.ChildRegisterDTO;
+import org.opensrp.dto.register.ECRegisterDTO;
+import org.opensrp.dto.register.FPRegisterDTO;
+import org.opensrp.dto.register.PNCRegisterDTO;
+import org.opensrp.register.ANCRegister;
+import org.opensrp.register.ChildRegister;
+import org.opensrp.register.ECRegister;
+import org.opensrp.register.FPRegister;
+import org.opensrp.register.PNCRegister;
+import org.opensrp.register.mapper.ANCRegisterMapper;
+import org.opensrp.register.mapper.ChildRegisterMapper;
+import org.opensrp.register.mapper.ECRegisterMapper;
+import org.opensrp.register.mapper.FPRegisterMapper;
+import org.opensrp.register.mapper.PNCRegisterMapper;
+import org.opensrp.register.service.ANCRegisterService;
+import org.opensrp.register.service.ChildRegisterService;
+import org.opensrp.register.service.ECRegisterService;
+import org.opensrp.register.service.FPRegisterService;
+import org.opensrp.register.service.PNCRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +29,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 public class RegisterController {

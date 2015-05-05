@@ -2,7 +2,7 @@ package org.opensrp.web.listener;
 
 import java.util.concurrent.TimeUnit;
 
-import org.opensrp.scheduler.DrishtiScheduleConstants;
+import org.opensrp.register.DrishtiScheduleConstants;
 import org.opensrp.scheduler.RepeatingSchedule;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -37,8 +37,8 @@ public class ActionData {
                 .with("monthlySummaries", monthSummaries);
     }
 
-    public static ActionData closeMother(String reasonForClose) {
-        return new ActionData("mother", "close")
+    public static ActionData closeBeneficiary(String target, String reasonForClose) {
+        return new ActionData(target, "close")
                 .with("reasonForClose", reasonForClose);
     }
 
@@ -58,11 +58,6 @@ public class ActionData {
 
     private ActionData with(String key, String value) {
         data.put(key, value);
-        return this;
-    }
-
-    private ActionData withDetails(Map<String, String> details) {
-        this.details.putAll(details);
         return this;
     }
 

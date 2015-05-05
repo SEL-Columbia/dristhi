@@ -8,7 +8,7 @@ import org.opensrp.common.util.HttpAgent;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.domain.ANMDetail;
 import org.opensrp.domain.ANMDetails;
-import org.opensrp.service.ANMDetailsService;
+import org.opensrp.register.service.ANMDetailsService;
 import org.opensrp.dto.ANMDTO;
 import org.opensrp.dto.register.ANMDetailDTO;
 import org.opensrp.dto.register.ANMDetailsDTO;

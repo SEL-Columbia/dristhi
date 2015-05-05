@@ -23,7 +23,7 @@ public class ZiggyFileLoader {
     private String formDirectoryName;
 
     @Autowired
-    public ZiggyFileLoader(@Value("#{opensrp['js.directory.name']}") String jsDirectoryName, @Value("#{opensrp['form.directory.name']}") String formDirectoryName) {
+    public ZiggyFileLoader(@Value("#{opensrp['js.directory.name']}") String jsDirectoryName, @Value("#{opensrp['form.directory.name']}") String formDirectoryName) throws IOException {
         this.jsDirectoryName = jsDirectoryName;
         this.formDirectoryName = formDirectoryName;
     }

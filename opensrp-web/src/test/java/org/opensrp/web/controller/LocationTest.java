@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opensrp.connector.openmrs.service.LocationService;
+import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.springframework.http.ResponseEntity;
 
 import com.google.gson.Gson;
@@ -16,12 +16,12 @@ public class LocationTest extends TestResourceLoader{
 		super();
 	}
 
-	private LocationService locationservice;
+	private OpenmrsLocationService locationservice;
 	private LocationController controller;
 
 	@Before
     public void setUp() throws Exception {
-		this.locationservice = new LocationService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
+		this.locationservice = new OpenmrsLocationService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
         this.controller = new LocationController(locationservice);
 	}
 	

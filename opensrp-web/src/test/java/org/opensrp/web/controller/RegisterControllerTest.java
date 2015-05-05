@@ -1,24 +1,68 @@
 package org.opensrp.web.controller;
 
-import org.opensrp.domain.PNCVisit;
-import org.opensrp.domain.register.*;
-import org.opensrp.mapper.*;
-import org.opensrp.service.*;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.opensrp.dto.register.*;
-import org.opensrp.web.controller.RegisterController;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import java.util.Map;
-
 import static java.util.Arrays.asList;
-import static org.opensrp.common.util.EasyMap.create;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.common.util.EasyMap.create;
+
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.opensrp.dto.register.ANCRegisterDTO;
+import org.opensrp.dto.register.ANCRegisterEntryDTO;
+import org.opensrp.dto.register.ChildRegisterDTO;
+import org.opensrp.dto.register.ChildRegisterEntryDTO;
+import org.opensrp.dto.register.CondomFPDetailsDTO;
+import org.opensrp.dto.register.CondomRegisterEntryDTO;
+import org.opensrp.dto.register.ECRegisterDTO;
+import org.opensrp.dto.register.ECRegisterEntryDTO;
+import org.opensrp.dto.register.FPRegisterDTO;
+import org.opensrp.dto.register.FemaleSterilizationFPDetailsDTO;
+import org.opensrp.dto.register.FemaleSterilizationRegisterEntryDTO;
+import org.opensrp.dto.register.IUDFPDetailsDTO;
+import org.opensrp.dto.register.IUDRegisterEntryDTO;
+import org.opensrp.dto.register.MaleSterilizationFPDetailsDTO;
+import org.opensrp.dto.register.MaleSterilizationRegisterEntryDTO;
+import org.opensrp.dto.register.OCPFPDetailsDTO;
+import org.opensrp.dto.register.OCPRegisterEntryDTO;
+import org.opensrp.dto.register.PNCRegisterDTO;
+import org.opensrp.dto.register.PNCRegisterEntryDTO;
+import org.opensrp.dto.register.PNCVisitDTO;
+import org.opensrp.register.ANCRegister;
+import org.opensrp.register.ANCRegisterEntry;
+import org.opensrp.register.ChildRegister;
+import org.opensrp.register.ChildRegisterEntry;
+import org.opensrp.register.CondomFPDetails;
+import org.opensrp.register.CondomRegisterEntry;
+import org.opensrp.register.ECRegister;
+import org.opensrp.register.ECRegisterEntry;
+import org.opensrp.register.FPRegister;
+import org.opensrp.register.FemaleSterilizationFPDetails;
+import org.opensrp.register.FemaleSterilizationRegisterEntry;
+import org.opensrp.register.IUDFPDetails;
+import org.opensrp.register.IUDRegisterEntry;
+import org.opensrp.register.MaleSterilizationFPDetails;
+import org.opensrp.register.MaleSterilizationRegisterEntry;
+import org.opensrp.register.OCPFPDetails;
+import org.opensrp.register.OCPRegisterEntry;
+import org.opensrp.register.PNCRegister;
+import org.opensrp.register.PNCRegisterEntry;
+import org.opensrp.register.domain.PNCVisit;
+import org.opensrp.register.mapper.ANCRegisterMapper;
+import org.opensrp.register.mapper.ChildRegisterMapper;
+import org.opensrp.register.mapper.ECRegisterMapper;
+import org.opensrp.register.mapper.FPRegisterMapper;
+import org.opensrp.register.mapper.PNCRegisterMapper;
+import org.opensrp.register.service.ANCRegisterService;
+import org.opensrp.register.service.ChildRegisterService;
+import org.opensrp.register.service.ECRegisterService;
+import org.opensrp.register.service.FPRegisterService;
+import org.opensrp.register.service.PNCRegisterService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 public class RegisterControllerTest {
     @Mock
