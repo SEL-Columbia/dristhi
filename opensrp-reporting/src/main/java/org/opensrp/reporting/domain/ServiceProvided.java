@@ -61,8 +61,8 @@ public class ServiceProvided {
         return this.dristhiEntityId;
     }
 
-    public org.opensrp.domain.Location location() {
-        return new org.opensrp.domain.Location(location.village(), location.subCenter(), location.phc().phcIdentifier());
+    public org.opensrp.common.domain.Location location() {
+        return new org.opensrp.common.domain.Location(location.village(), location.subCenter(), location.phc().phcIdentifier());
     }
 
     @Column(name = "date_")
