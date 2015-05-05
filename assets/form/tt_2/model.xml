@@ -1,0 +1,16 @@
+<model>
+    <instance>
+        <TT2_EngKan id="TT2_EngKan">
+            <formhub>
+                <uuid/>
+            </formhub>
+            <today/>
+            <tt_dose/>
+            <tt2_injection_place/>
+            <tt2_date/>
+            <meta>
+                <instanceID/>
+            </meta>
+        </TT2_EngKan>
+    </instance>
+</model>
