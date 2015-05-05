@@ -394,14 +394,15 @@ public class FormAttributeMapper {
 			String nodeNameToFind = sps[sps.length-1];
 			Object obj = parser.parse(new FileReader(filePath));
 			JsonObject jsonObject = (JsonObject)obj;
-			JsonArray formElement = jsonObject.getAsJsonArray("children");
 			JsonObject node = getChildrenOfLevel(level, jsonObject, nodeNameToFind);
 			
-			JsonArray nodeChAr = node.getAsJsonObject().get("children").getAsJsonArray();
-			for (int j = 0; j < nodeChAr.size(); j++) {
-				JsonObject option = nodeChAr.get(j).getAsJsonObject();
-				if(option.get("name").getAsString().equalsIgnoreCase(fieldVal)){
-					return option.get("instance").getAsJsonObject().get("openmrs_code").getAsString();
+			if(node != null && node.getAsJsonObject().has("children")){
+				JsonArray nodeChAr = node.getAsJsonObject().get("children").getAsJsonArray();
+				for (int j = 0; j < nodeChAr.size(); j++) {
+					JsonObject option = nodeChAr.get(j).getAsJsonObject();
+					if(option.get("name").getAsString().equalsIgnoreCase(fieldVal)){
+						return option.get("instance").getAsJsonObject().get("openmrs_code").getAsString();
+					}
 				}
 			}
 		}
