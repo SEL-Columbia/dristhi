@@ -9,14 +9,14 @@ import org.opensrp.connector.HttpUtil;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService extends OpenmrsService{
+public class OpenmrsUserService extends OpenmrsService{
 
 	private static final String AUTHENTICATION_URL = "ws/rest/v1/session";
 	private static final String USER_URL = "ws/rest/v1/user";
 	
-    public UserService() { }
+    public OpenmrsUserService() { }
 
-    public UserService(String openmrsUrl, String user, String password) {
+    public OpenmrsUserService(String openmrsUrl, String user, String password) {
     	super(openmrsUrl, user, password);
     }
 

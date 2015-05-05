@@ -22,10 +22,10 @@ public class EncounterService extends OpenmrsService{
 	private static final String ENCOUNTER_URL = "ws/rest/v1/encounter";
 	private static final String ENCOUNTER__TYPE_URL = "ws/rest/v1/encountertype";
 	private PatientService patientService;
-	private UserService userService;
+	private OpenmrsUserService userService;
 
 	@Autowired
-	public EncounterService(PatientService patientService, UserService userService) {
+	public EncounterService(PatientService patientService, OpenmrsUserService userService) {
 		this.patientService = patientService;
 		this.userService = userService;
 	}
@@ -42,11 +42,11 @@ public class EncounterService extends OpenmrsService{
 		this.patientService = patientService;
 	}
 
-	public UserService getUserService() {
+	public OpenmrsUserService getUserService() {
 		return userService;
 	}
 
-	public void setUserService(UserService userService) {
+	public void setUserService(OpenmrsUserService userService) {
 		this.userService = userService;
 	}
 

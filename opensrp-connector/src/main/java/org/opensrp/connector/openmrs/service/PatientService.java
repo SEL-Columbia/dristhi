@@ -20,7 +20,7 @@ import com.mysql.jdbc.StringUtils;
 @Service
 public class PatientService extends OpenmrsService{
 	
-	private LocationService locationService;
+	private OpenmrsLocationService locationService;
 //TODO include everything for patient registration. i.e. person, person name, patient identifier
 	// include get for patient on different params like name, identifier, location, uuid, attribute,etc
 	//person methods should be separate
@@ -34,7 +34,7 @@ public class PatientService extends OpenmrsService{
 	private static final String OPENSRP_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
 	
 	@Autowired
-    public PatientService(LocationService actionService) {
+    public PatientService(OpenmrsLocationService actionService) {
         this.locationService = locationService;
     }
 	public PatientService() { }

@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import com.mysql.jdbc.StringUtils;
 
 @Service
-public class LocationService extends OpenmrsService{
+public class OpenmrsLocationService extends OpenmrsService{
 	private static final String LOCATION_URL = "ws/rest/v1/location";
 
-	public LocationService() {	}
+	public OpenmrsLocationService() {	}
 
-	public LocationService(String openmrsUrl, String user, String password) {
+	public OpenmrsLocationService(String openmrsUrl, String user, String password) {
     	super(openmrsUrl, user, password);
 	}
 
