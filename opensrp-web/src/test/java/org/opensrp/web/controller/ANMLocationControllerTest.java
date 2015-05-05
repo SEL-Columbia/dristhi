@@ -1,23 +1,12 @@
 package org.opensrp.web.controller;
 
-import com.google.gson.Gson;
-import org.opensrp.common.util.HttpAgent;
-import org.opensrp.common.util.HttpResponse;
-import org.opensrp.domain.DrishtiUser;
-import org.opensrp.service.ANMDetailsService;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.opensrp.dto.VillagesDTO;
-import org.opensrp.web.controller.ANMLocationController;
-import org.opensrp.web.controller.UserController;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+
+import org.junit.Before;
+import org.mockito.Mock;
+import org.opensrp.common.util.HttpAgent;
+import org.opensrp.domain.DrishtiUser;
+import org.opensrp.register.service.ANMDetailsService;
 
 public class ANMLocationControllerTest {
 

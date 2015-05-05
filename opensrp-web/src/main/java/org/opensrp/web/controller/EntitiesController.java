@@ -1,12 +1,17 @@
 package org.opensrp.web.controller;
 
-import ch.lambdaj.function.convert.Converter;
+import static ch.lambdaj.collection.LambdaCollections.with;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
+import java.text.MessageFormat;
+import java.util.List;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.opensrp.domain.DrishtiUser;
 import org.opensrp.domain.EntityDetail;
-import org.opensrp.repository.AllOpenSRPUsers;
-import org.opensrp.service.EntitiesService;
 import org.opensrp.dto.register.EntityDetailDTO;
+import org.opensrp.register.service.EntitiesService;
+import org.opensrp.repository.AllOpenSRPUsers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import static ch.lambdaj.collection.LambdaCollections.with;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import ch.lambdaj.function.convert.Converter;
 
 @Controller
 public class EntitiesController {

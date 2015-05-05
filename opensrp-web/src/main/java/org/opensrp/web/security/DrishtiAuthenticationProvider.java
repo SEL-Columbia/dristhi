@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.json.JSONException;
 import org.opensrp.api.domain.User;
-import org.opensrp.connector.openmrs.service.UserService;
+import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +32,11 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 
     //private AllOpenSRPUsers allOpenSRPUsers;
     private PasswordEncoder passwordEncoder;
-    private UserService openmrsUserService;
+    private OpenmrsUserService openmrsUserService;
 
 
     @Autowired
-    public DrishtiAuthenticationProvider(UserService openmrsUserService, @Qualifier("shaPasswordEncoder") PasswordEncoder passwordEncoder) {
+    public DrishtiAuthenticationProvider(OpenmrsUserService openmrsUserService, @Qualifier("shaPasswordEncoder") PasswordEncoder passwordEncoder) {
         this.openmrsUserService = openmrsUserService;
         this.passwordEncoder = passwordEncoder;
     }
