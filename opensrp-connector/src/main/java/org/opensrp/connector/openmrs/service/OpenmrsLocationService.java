@@ -30,13 +30,18 @@ public class OpenmrsLocationService extends OpenmrsService{
 		return null;
 	}
 	
+	public Location getParent(JSONObject locobj) throws JSONException {
+		JSONObject parentL = (locobj.has("parentLocation")&&!locobj.isNull("parentLocation"))?locobj.getJSONObject("parentLocation"):null;
+
+		if(parentL != null){
+			return new Location(parentL.getString("uuid"), parentL.getString("display"), null, getParent(parentL));
+		}
+		return null;
+	}
+	
 	private Location makeLocation(String locationJson) throws JSONException{
 		JSONObject obj = new JSONObject(locationJson);
-		JSONObject parentL = (obj.has("parentLocation")&&!obj.isNull("parentLocation"))?obj.getJSONObject("parentLocation"):null;
-		Location p = null;
-		if(parentL != null){
-			p = new Location(parentL.getString("uuid"), parentL.getString("display"), null, null);
-		}
+		Location p = getParent(obj);
 		Location l = new Location(obj.getString("uuid"), obj.getString("name"), 
 				null, null, p , null, null);
 		JSONArray t = obj.getJSONArray("tags");
@@ -78,27 +83,52 @@ public class OpenmrsLocationService extends OpenmrsService{
 		LocationTree ltr = new LocationTree();
 		
 		fillTreeWithHierarchy(ltr, locationIdOrName);
+		fillTreeWithUpperHierarchy(ltr, locationIdOrName);
 		
 		return ltr;
 	}
 	
-	private void fillTreeWithHierarchy(LocationTree ltr, String locationIdOrName) throws JSONException{
+	public LocationTree getLocationTreeOf(String[] locationIdsOrNames) throws JSONException {
+		LocationTree ltr = new LocationTree();
+		
+		for (String loc : locationIdsOrNames) {
+			String locTreeId = fillTreeWithHierarchy(ltr, loc);
+			Location lp = ltr.findLocation(locTreeId).getParentLocation();
+			if(lp != null){
+				fillTreeWithUpperHierarchy(ltr, lp.getLocationId());
+			}
+		}		
+		
+		return ltr;
+	}
+	
+	private String fillTreeWithHierarchy(LocationTree ltr, String locationIdOrName) throws JSONException{
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+LOCATION_URL+"/"+(locationIdOrName.replaceAll(" ", "%20")), "v=full", OPENMRS_USER, OPENMRS_PWD);
 
 		JSONObject lo = new JSONObject(op.body());
 		Location l = makeLocation(op.body());
 		ltr.addLocation(l);
 		
-		if(!lo.has("childLocations")){
-			return;
+		if(lo.has("childLocations")){
+			JSONArray lch = lo.getJSONArray("childLocations");
+	
+			for (int i = 0; i < lch.length(); i++) {
+	
+				JSONObject cj = lch.getJSONObject(i);
+				fillTreeWithHierarchy(ltr, cj.getString("uuid"));
+			}
 		}
-		JSONArray lch = lo.getJSONArray("childLocations");
-
-		for (int i = 0; i < lch.length(); i++) {
-
-			JSONObject cj = lch.getJSONObject(i);
-			fillTreeWithHierarchy(ltr, cj.getString("uuid"));
-		}
+		return l.getLocationId();
 	}
 
+	private void fillTreeWithUpperHierarchy(LocationTree ltr, String locationId) throws JSONException{
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+LOCATION_URL+"/"+(locationId.replaceAll(" ", "%20")), "v=full", OPENMRS_USER, OPENMRS_PWD);
+
+		Location l = makeLocation(op.body());
+		ltr.addLocation(l);
+		
+		if(l.getParentLocation() != null){
+			fillTreeWithUpperHierarchy(ltr, l.getParentLocation().getLocationId());
+		}
+	}
 }
