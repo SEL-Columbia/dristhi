@@ -9,6 +9,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.opensrp.api.domain.Location;
 import org.opensrp.api.domain.User;
+import org.opensrp.api.util.LocationTree;
 import org.opensrp.common.domain.UserDetail;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
@@ -61,12 +62,18 @@ public class UserController {
         
         String lid = (String) u.getBaseEntity().getAttribute("Location");
         if(lid == null){
-        	throw new RuntimeException("User not mapped on any location. Make sure that user have a person attribute Location with uuid of a valid OpenMRS Location");
+            String lids = (String) u.getBaseEntity().getAttribute("Locations");
+            
+            if(lids == null){
+            	throw new RuntimeException("User not mapped on any location. Make sure that user have a person attribute Location or Locations with uuid(s) of valid OpenMRS Location(s) separated by ;;");
+            }
+            
+            lid = lids;
         }
-		Location l = openmrsLocationService.getLocation(lid);
+		LocationTree l = openmrsLocationService.getLocationTreeOf(lid.split(";;"));
 		Map<String, Object> map = new HashMap<>();
 		map.put("user", u);
-		map.put("location", l);
+		map.put("locations", l);
         return new ResponseEntity<>(new Gson().toJson(map), allowOrigin(opensrpSiteUrl), OK);
 	}
 }
