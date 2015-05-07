@@ -26,15 +26,11 @@ public class LocationTree {
 	    		locationsHierarchy.addNode(l.getLocationId(), l.getName(), l, null);
 	    	}
 	    	else {
-	    		if(!locationsHierarchy.hasNode(l.getParentLocation().getLocationId())){
-	    			addLocation(l.getParentLocation());
-	    		}
-	
 	    		locationsHierarchy.addNode(l.getLocationId(), l.getName(), l, l.getParentLocation().getLocationId());
 	    	}
     	}
     }
-
+	
 	/**
 	 * WARNING: Overrides existing locations
 	 * @param locations
