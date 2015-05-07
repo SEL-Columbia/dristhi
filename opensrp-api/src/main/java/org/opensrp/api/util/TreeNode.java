@@ -33,10 +33,6 @@ public class TreeNode<K, T> {
 		children.put(node.getId(), node);
 	}
 
-	public void removeChild(K id){
-		children.remove(id);
-	}
-	
 	public TreeNode<K, T> findChild(K id){
 		if(children != null){
 			for (TreeNode<K, T> child : children.values()) {
@@ -45,6 +41,21 @@ public class TreeNode<K, T> {
 				}
 				else if(child.getChildren() != null){
 					TreeNode<K, T> node = child.findChild(id);
+					if(node != null) return node;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public TreeNode<K, T> removeChild(K id){
+		if(children != null){
+			for (TreeNode<K, T> child : children.values()) {
+				if(child.getId().equals(id)){
+					return children.remove(id);
+				}
+				else if(child.getChildren() != null){
+					TreeNode<K, T> node = child.removeChild(id);
 					if(node != null) return node;
 				}
 			}
@@ -71,5 +82,16 @@ public class TreeNode<K, T> {
 	public Map<K, TreeNode<K, T>> getChildren() {
 		return children;
 	}
+
+	void setLabel(String label) {
+		this.label = label;
+	}
+
+	void setNode(T node) {
+		this.node = node;
+	}
 	
+	void setParent(K parent) {
+		this.parent = parent;
+	}
 }
