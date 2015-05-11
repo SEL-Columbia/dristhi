@@ -20,8 +20,8 @@ import org.opensrp.connector.openmrs.constants.OpenmrsConstants.Person;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
-import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.form.domain.FormField;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
@@ -76,6 +76,7 @@ public class OpenmrsConnector {
 			.withEventType(eventType)
 			.withLocationId(fs.getField(encounterLocation))
 			.withProviderId(fs.anmId())
+			.withFormSubmissionId(fs.getInstanceId());
 			;
 		
 		for (FormField fl : fs.instance().form().fields()) {
@@ -83,7 +84,7 @@ public class OpenmrsConnector {
 			if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("concept")){
 				String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.name(), fl.value(), null, fs);
 				e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
-						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val, null, null));
+						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val, null, fl.name()));
 			}
 		}
 		return e;
@@ -145,10 +146,10 @@ public class OpenmrsConnector {
 		for (FormField fl : fs.instance().form().fields()) {
 			Map<String, String> att = new HashMap<>();
 			if(StringUtils.isEmptyOrWhitespaceOnly(subform)){
-				formAttributeMapper.getAttributesForField(fl.name(), fs);
+				att = formAttributeMapper.getAttributesForField(fl.name(), fs);
 			}
 			else {
-				formAttributeMapper.getAttributesForSubform(subform, fl.name(), fs);
+				att = formAttributeMapper.getAttributesForSubform(subform, fl.name(), fs);
 			}
 			if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("person_address")){
 				String addressType = att.get("openmrs_entity_parent");
@@ -199,35 +200,58 @@ public class OpenmrsConnector {
 		return paddr;
 	}
 	
-	public Map<String, String> extractIdentifiers(FormSubmission fs, String subform) {
+	public Map<String, String> extractIdentifiers(FormSubmission fs) {
 		Map<String, String> pids = new HashMap<>();
 		for (FormField fl : fs.instance().form().fields()) {
-			Map<String, String> att = new HashMap<>();
-			if(StringUtils.isEmptyOrWhitespaceOnly(subform)){
-				formAttributeMapper.getAttributesForField(fl.name(), fs);
-			}
-			else {
-				formAttributeMapper.getAttributesForSubform(subform, fl.name(), fs);
-			}
-			if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("person_identifier")){
-				pids.put(att.get("openmrs_entity_id"), fl.value());
+			if(!StringUtils.isEmptyOrWhitespaceOnly(fl.value())){
+				Map<String, String> att = new HashMap<>();
+				att = formAttributeMapper.getAttributesForField(fl.name(), fs);
+				
+				if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("person_identifier")){
+					pids.put(att.get("openmrs_entity_id"), fl.value());
+				}
 			}
 		}
 		return pids;
 	}
 	
-	public Map<String, Object> extractAttributes(FormSubmission fs, String subform) {
+	public Map<String, String> extractIdentifiers(Map<String, String> subformInstanceData, String subform, FormSubmission fs) {
+		Map<String, String> pids = new HashMap<>();
+		for (Entry<String, String> fl : subformInstanceData.entrySet()) {
+			if(!StringUtils.isEmptyOrWhitespaceOnly(fl.getValue())){
+				Map<String, String> att = new HashMap<>();
+				att = formAttributeMapper.getAttributesForSubform(subform, fl.getKey(), fs);
+				if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("person_identifier")){
+					pids.put(att.get("openmrs_entity_id"), fl.getValue());
+				}
+			}
+		}
+		return pids;
+	}
+	
+	public Map<String, Object> extractAttributes(FormSubmission fs) {
 		Map<String, Object> pattributes = new HashMap<>();
 		for (FormField fl : fs.instance().form().fields()) {
-			Map<String, String> att = new HashMap<>();
-			if(StringUtils.isEmptyOrWhitespaceOnly(subform)){
-				formAttributeMapper.getAttributesForField(fl.name(), fs);
+			if(!StringUtils.isEmptyOrWhitespaceOnly(fl.value())){
+				Map<String, String> att = new HashMap<>();
+				att = formAttributeMapper.getAttributesForField(fl.name(), fs);
+				if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("person_attribute")){
+					pattributes.put(att.get("openmrs_entity_id"), fl.value());
+				}
 			}
-			else {
-				formAttributeMapper.getAttributesForSubform(subform, fl.name(), fs);
-			}
-			if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("person_attribute")){
-				pattributes.put(att.get("openmrs_entity_id"), fl.value());
+		}
+		return pattributes;
+	}
+	
+	public Map<String, Object> extractAttributes(Map<String, String> subformInstanceData, String subform, FormSubmission fs) {
+		Map<String, Object> pattributes = new HashMap<>();
+		for (Entry<String, String> fl : subformInstanceData.entrySet()) {
+			if(!StringUtils.isEmptyOrWhitespaceOnly(fl.getValue())){
+				Map<String, String> att = new HashMap<>();
+				att = formAttributeMapper.getAttributesForSubform(subform, fl.getKey(), fs);
+				if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("person_attribute")){
+					pattributes.put(att.get("openmrs_entity_id"), fl.getValue());
+				}
 			}
 		}
 		return pattributes;
@@ -248,18 +272,19 @@ public class OpenmrsConnector {
 		
 		Client c = new Client()
 			.withBaseEntity(new BaseEntity(fs.entityId(), firstName, middleName, lastName, birthdate, deathdate, 
-					birthdateApprox, deathdateApprox, gender, addresses, extractAttributes(fs, null)))
-			.withIdentifiers(extractIdentifiers(fs, null));
+					birthdateApprox, deathdateApprox, gender, addresses, extractAttributes(fs)))
+			.withIdentifiers(extractIdentifiers(fs));
 		return c;
 	}
 	
 	public Map<String, Map<String, Object>> getDependentClientsFromFormSubmission(FormSubmission fs) throws ParseException {
 		Map<String, Map<String, Object>> map = new HashMap<>();
 		for (SubFormData sbf : fs.subForms()) {
-			Map<String, String> att = formAttributeMapper.getAttributesForField(sbf.name(), fs);
+			Map<String, String> att = formAttributeMapper.getAttributesForSubform(sbf.name(), fs);
 			if(att.size() > 0 && att.get("openmrs_entity").equalsIgnoreCase("person")){
-				Map<String, Object> cne = new HashMap<>();
 				for (Map<String, String> sfdata : sbf.instances()) {
+					Map<String, Object> cne = new HashMap<>();
+					
 					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
 					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
@@ -274,8 +299,8 @@ public class OpenmrsConnector {
 					
 					Client c = new Client()
 					.withBaseEntity(new BaseEntity(sfdata.get("id"), firstName, middleName, lastName, birthdate, deathdate, 
-							birthdateApprox, deathdateApprox, gender, addresses, extractAttributes(fs, sbf.name())))
-					.withIdentifiers(extractIdentifiers(fs, sbf.name()));
+							birthdateApprox, deathdateApprox, gender, addresses, extractAttributes(sfdata, sbf.name(), fs)))
+					.withIdentifiers(extractIdentifiers(sfdata, sbf.name(), fs));
 					
 					cne.put("client", c);
 					cne.put("event", getEventForSubform(fs, sbf.name(), att.get("openmrs_entity_id"), sfdata));
