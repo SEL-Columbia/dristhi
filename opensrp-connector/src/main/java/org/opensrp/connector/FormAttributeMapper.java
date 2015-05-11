@@ -496,7 +496,7 @@ public class FormAttributeMapper {
 				if(jsonElement.getAsJsonObject().get("name").getAsString().equalsIgnoreCase(subformName)){
 					JsonArray flarr = jsonElement.getAsJsonObject().get("fields").getAsJsonArray();
 					for (JsonElement fl : flarr) {
-						if(fl.getAsJsonObject().get("name").getAsString().equalsIgnoreCase(field)){
+						if(fl.getAsJsonObject().get("name").getAsString().equalsIgnoreCase(field)&&fl.getAsJsonObject().has("bind")){
 							return fl.getAsJsonObject().get("bind").getAsString();
 						}
 					}
