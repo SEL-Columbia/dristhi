@@ -50,7 +50,7 @@ public class EncounterService extends OpenmrsService{
 		this.userService = userService;
 	}
 
-	public String createEncounter(Event e) throws JSONException{
+	public JSONObject createEncounter(Event e) throws JSONException{
 		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
 		JSONObject enc = new JSONObject();
 		
@@ -102,7 +102,7 @@ public class EncounterService extends OpenmrsService{
 		enc.put("obs", obar);
 		
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
-		return op.body();
+		return new JSONObject(op.body());
 	}
 	
 	private JSONObject convertObsToJson(Obs o) throws JSONException{
