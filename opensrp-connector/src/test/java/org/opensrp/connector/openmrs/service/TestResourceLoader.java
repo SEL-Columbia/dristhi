@@ -31,10 +31,14 @@ public class TestResourceLoader {
 		formDirPath = props.getProperty("form.directory.name");
 	}
 	
-	protected FormSubmission getFormSubmissionFor(String formName) throws JsonSyntaxException, JsonIOException, IOException{
+	protected FormSubmission getFormSubmissionFor(String formName, Integer number) throws JsonSyntaxException, JsonIOException, IOException{
 		ResourceLoader loader=new DefaultResourceLoader();
-		formDirPath = loader.getResource(formDirPath).getURI().getPath();
-		File fsfile = new File(formDirPath+"/"+formName+"/formSubmission.json");
+		String path = loader.getResource(formDirPath).getURI().getPath();
+		File fsfile = new File(path+"/"+formName+"/form_submission"+(number==null?"":number)+".json");
 		return new Gson().fromJson(new FileReader(fsfile), FormSubmission.class);		
+	}
+	
+	protected FormSubmission getFormSubmissionFor(String formName) throws JsonSyntaxException, JsonIOException, IOException{
+		return getFormSubmissionFor(formName, null);		
 	}
 }

@@ -1,15 +1,20 @@
-Date of Release: 07-May-2015
+Date of Release: 11-May-2015
 
 New Features
 ============
 - Allows to get complete location hierarchy for user during authentication
+- Complete HH registration form tested and working with relationships b/w HHHead and other members
 
 Changes
 =======
-- Refactoring in Tree, TreeNode and LocationTree classes for maintaining parent-child relation separately for better performance
+- Renamed formSubmission to form_submission to conform file naming for other files in form resources
+- Subforms and rest of form submission dealt differently to improve performance i.e. not traverse all fields incase of subforms
+- createEncounter() in EncounterService returns Json instead of string
 
 Fixes
 =====
+- Fixed to make sure that form doesnot throw NPE incase no bind is found for field
+- Fix to make sure that formDirName is not overridden to make it accessible n times in tests
 
 Known Issues
 ============
