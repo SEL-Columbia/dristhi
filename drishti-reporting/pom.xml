@@ -199,7 +199,7 @@
                         </connector>
                     </connectors>
                 </configuration>
-                <executions>
+<!--                <executions>
                     <execution>
                         <id>start-jetty</id>
                         <phase>pre-integration-test</phase>
@@ -218,7 +218,7 @@
                             <goal>stop</goal>
                         </goals>
                     </execution>
-                </executions>
+                </executions>-->
             </plugin>
             <plugin>
                 <groupId>com.googlecode.flyway</groupId>
