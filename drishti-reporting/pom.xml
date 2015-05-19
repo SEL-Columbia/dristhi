@@ -16,7 +16,7 @@
     <url>http://github.com/modilabs/dristhi</url>
 
     <properties>
-        <jetty.port>9980</jetty.port>
+        <jetty.port>9990</jetty.port>
         <release.version>0.1-SNAPSHOT</release.version>
         <main.basedir>${project.basedir}/..</main.basedir>
     </properties>

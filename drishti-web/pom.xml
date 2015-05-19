@@ -16,7 +16,7 @@
     <url>http://github.com/modilabs/dristhi</url>
 
     <properties>
-        <jetty.port>9979</jetty.port>
+        <jetty.port>9989</jetty.port>
         <release.version>0.1-SNAPSHOT</release.version>
         <main.basedir>${project.basedir}/..</main.basedir>
     </properties>
@@ -63,7 +63,7 @@
                             <port>${jetty.port}</port>
                         </connector>
                         <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
-                            <port>8443</port>
+                            <port>8453</port>
                             <keystore>${main.basedir}/assets/security/drishti_server.keystore</keystore>
                             <keyPassword>mouse monitor cube</keyPassword>
                             <password>mouse monitor cube</password>
