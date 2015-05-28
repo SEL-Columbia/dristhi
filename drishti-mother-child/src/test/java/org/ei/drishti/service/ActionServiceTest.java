@@ -24,6 +24,7 @@ import static junit.framework.Assert.assertEquals;
 import static org.ei.drishti.dto.AlertStatus.normal;
 import static org.ei.drishti.dto.AlertStatus.urgent;
 import static org.ei.drishti.dto.BeneficiaryType.*;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -58,6 +59,17 @@ public class ActionServiceTest {
     }
 
     @Test
+    public void shouldNotSaveAlertActionIfThereIsNoMotherForTheCaseId() throws Exception {
+        when(allMothers.findByCaseId("Case X")).thenReturn(null);
+
+        DateTime dueDate = DateTime.now().minusDays(1);
+        DateTime expiryDate = dueDate.plusWeeks(2);
+        service.alertForBeneficiary(mother, "Case X", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
+
+        verify(allActions, never()).addOrUpdateAlert(new Action("Case X", "ANM ID M", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate)));
+    }
+
+    @Test
     public void shouldDeleteExistingAlertBeforeCreatingNewOne() throws Exception {
         when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thayi 1").withAnm("ANM ID M"));
 
@@ -80,6 +92,17 @@ public class ActionServiceTest {
     }
 
     @Test
+    public void shouldNotSaveAlertActionIfThereIsNoChildForTheCaseId() throws Exception {
+        when(allChildren.findByCaseId("Case X")).thenReturn(null);
+
+        DateTime dueDate = DateTime.now().minusDays(1);
+        DateTime expiryDate = dueDate.plusWeeks(2);
+        service.alertForBeneficiary(child, "Case X", "OPV", "OPV", normal, dueDate, expiryDate);
+
+        verify(allActions, never()).addOrUpdateAlert(new Action("Case X", "ANM ID C", ActionData.createAlert(child, "OPV", "OPV", normal, dueDate, expiryDate)));
+    }
+
+    @Test
     public void shouldSaveAlertActionForEC() throws Exception {
         when(allEligibleCouples.findByCaseId("Case X")).thenReturn(new EligibleCouple("Case X", "EC-CASE-1").withANMIdentifier("ANM ID C"));
 
@@ -88,6 +111,17 @@ public class ActionServiceTest {
         service.alertForBeneficiary(ec, "Case X", "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate);
 
         verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID C", ActionData.createAlert(ec, "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate)));
+    }
+
+    @Test
+    public void shouldNotSaveAlertActionIfThereIsNoECForTheCaseId() throws Exception {
+        when(allEligibleCouples.findByCaseId("Case X")).thenReturn(null);
+
+        DateTime dueDate = DateTime.now().minusDays(1);
+        DateTime expiryDate = dueDate.plusWeeks(2);
+        service.alertForBeneficiary(ec, "Case X", "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate);
+
+        verify(allActions, never()).addOrUpdateAlert(new Action("Case X", "ANM ID C", ActionData.createAlert(ec, "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate)));
     }
 
     @Test(expected = IllegalArgumentException.class)

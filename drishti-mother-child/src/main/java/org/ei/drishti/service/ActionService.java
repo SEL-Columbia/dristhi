@@ -1,6 +1,9 @@
 package org.ei.drishti.service;
 
 import org.ei.drishti.domain.Action;
+import org.ei.drishti.domain.Child;
+import org.ei.drishti.domain.EligibleCouple;
+import org.ei.drishti.domain.Mother;
 import org.ei.drishti.dto.ActionData;
 import org.ei.drishti.dto.AlertStatus;
 import org.ei.drishti.dto.BeneficiaryType;
@@ -39,16 +42,22 @@ public class ActionService {
         // TODO: Get rid of this horrible if-else after Motech-Platform fixes the bug related to metadata in motech-schedule-tracking.
         String anmIdentifier;
         if (mother.equals(beneficiaryType)) {
-            anmIdentifier = allMothers.findByCaseId(caseID).anmIdentifier();
+            Mother mother = allMothers.findByCaseId(caseID);
+            anmIdentifier = mother == null ? null : mother.anmIdentifier();
         } else if (child.equals(beneficiaryType)) {
-            anmIdentifier = allChildren.findByCaseId(caseID).anmIdentifier();
+            Child child = allChildren.findByCaseId(caseID);
+            anmIdentifier = child == null ? null : child.anmIdentifier();
         } else if (ec.equals(beneficiaryType)) {
-            anmIdentifier = allEligibleCouples.findByCaseId(caseID).anmIdentifier();
+            EligibleCouple eligibleCouple = allEligibleCouples.findByCaseId(caseID);
+            anmIdentifier = eligibleCouple == null ? null : eligibleCouple.anmIdentifier();
+
         } else {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
 
-        allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+        if (anmIdentifier != null) {
+            allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+        }
     }
 
     public void markAllAlertsAsInactive(String entityId) {
