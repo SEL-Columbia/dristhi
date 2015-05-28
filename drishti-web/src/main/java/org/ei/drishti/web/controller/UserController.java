@@ -1,5 +1,6 @@
 package org.ei.drishti.web.controller;
 
+
 import org.ei.drishti.common.domain.UserDetail;
 import org.ei.drishti.domain.DrishtiUser;
 import org.ei.drishti.web.security.DrishtiAuthenticationProvider;
@@ -38,11 +39,21 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return drishtiAuthenticationProvider.getDrishtiUser(authentication);
     }
+ 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/user-details")
+    @RequestMapping(method = RequestMethod.GET, value = "/user-details/anm")
     public ResponseEntity<UserDetail> userDetail(@RequestParam("anm-id") String anmIdentifier) {
         DrishtiUser user = drishtiAuthenticationProvider.getDrishtiUser(anmIdentifier);
         return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(drishtiSiteUrl), OK);
     }
+    
+    
+    /*
+    @RequestMapping(method=RequestMethod.GET, value="/user-details/doctor")
+    public ResponseEntity<DoctorDetail>doctordetail(@RequestParam("doctor-id") String Doctoridentifier){
+    	DrishtiUser user = drishtiAuthenticationProvider.getDrishtiUser(Doctoridentifier);
+    	return new ResponseEntity<>(new DoctorDetail(user.getUsername(), user.getRoles()),allowOrigin(drishtiSiteUrl), OK);
+    	*/
+   // }
 
 }

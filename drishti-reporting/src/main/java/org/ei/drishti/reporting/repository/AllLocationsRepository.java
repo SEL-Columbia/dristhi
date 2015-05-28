@@ -1,6 +1,7 @@
 package org.ei.drishti.reporting.repository;
 
 import org.ei.drishti.reporting.domain.Location;
+import org.ei.drishti.reporting.domain.PHC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -25,6 +26,9 @@ public class AllLocationsRepository {
                 subCenter, phcIdentifier});
 
     }
+   
+    
+    
 
     public Location fetchByANMIdentifier(String anmIdentifier) {
         return (Location) dataAccessTemplate.findByNamedQueryAndNamedParam(Location.FIND_BY_ANM_IDENTIFIER,

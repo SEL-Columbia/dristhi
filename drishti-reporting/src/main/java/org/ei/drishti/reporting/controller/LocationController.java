@@ -1,5 +1,6 @@
 package org.ei.drishti.reporting.controller;
 
+
 import org.ei.drishti.dto.VillagesDTO;
 import org.ei.drishti.reporting.domain.Location;
 import org.ei.drishti.reporting.service.ANMService;
@@ -26,18 +27,41 @@ public class LocationController {
     }
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS}, value = "/villages")
-    public ResponseEntity<VillagesDTO> villagesForANM(@RequestParam("anm-id") String anmIdentifier) {
+    public ResponseEntity<VillagesDTO> villagesForANM(@RequestParam("anm-id") String anmIdentifier
+    		) {
         List villagesForANM = anmService.getVillagesForANM(anmIdentifier);
-        VillagesDTO villagesDTO = null;
+       VillagesDTO villagesDTO = null;
         if (villagesForANM != null) {
             Location anmLocation = (Location) villagesForANM.get(0);
             List<String> villages = collect(villagesForANM, on(Location.class).village());
             villagesDTO = new VillagesDTO(anmLocation.district().toLowerCase(),
                     anmLocation.phcName(),
                     anmLocation.phc().phcIdentifier(),
-                    anmLocation.subCenter(),
+                    anmLocation.subCenter(),  
                     villages);
         }
         return new ResponseEntity<>(villagesDTO, OK);
     }
-}
+    
+   /* @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS}, value = "/doc-villages")
+    public ResponseEntity<VillagesDTO> villagesForDOC(@RequestParam("doc-id") String docIdentifier
+    		) {
+        List villagesForDOC = anmService.getVillagesForDOC(docIdentifier);
+        VillagesDTO villagesDTO = null;
+        if (villagesForDOC != null) {
+            Location anmLocation = (Location) villagesForDOC.get(0);
+            List<String> villages = collect(villagesForDOC, on(Location.class).village());
+            villagesDTO = new VillagesDTO(anmLocation.district().toLowerCase(),
+                    anmLocation.phcName(),
+                    anmLocation.phc().phcIdentifier(),
+                    anmLocation.subCenter(),  
+                    villages);
+        }
+        return new ResponseEntity<>(villagesDTO, OK);
+    }
+    
+    */
+   
+    }
+
+

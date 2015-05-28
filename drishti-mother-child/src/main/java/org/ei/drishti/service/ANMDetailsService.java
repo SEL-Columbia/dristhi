@@ -31,7 +31,7 @@ public class ANMDetailsService {
         this.allMothers = allMothers;
         this.allEligibleCouples = allEligibleCouples;
     }
-
+//new change
     public ANMDetails anmDetails(List<ANMDTO> anms) {
         List<String> anmIdentifiers = collect(anms, on(ANMDTO.class).identifier());
         Map<String, Integer> ecCount = allEligibleCouples.allOpenECs(anmIdentifiers);
@@ -46,7 +46,7 @@ public class ANMDetailsService {
             int ancCountForANM = ancCount.get(anm.identifier()) == null ? 0 : ancCount.get(anm.identifier());
             int pncCountForANM = pncCount.get(anm.identifier()) == null ? 0 : pncCount.get(anm.identifier());
             int childCountForANM = childCount.get(anm.identifier()) == null ? 0 : childCount.get(anm.identifier());
-            anmDetails.add(new ANMDetail(anm.identifier(), anm.name(), anm.location(),
+            anmDetails.add(new ANMDetail(anm.identifier(), anm.name(),anm.location(),
                     ecCountForANM, fpCountForANM, ancCountForANM, pncCountForANM, childCountForANM));
         }
         return new ANMDetails(anmDetails);

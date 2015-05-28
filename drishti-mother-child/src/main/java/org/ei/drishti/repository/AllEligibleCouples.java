@@ -95,7 +95,9 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
     @View(name = "all_open_ecs_for_anm",
             map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && doc.isOutOfArea === 'false' && doc.anmIdentifier) { emit(doc.anmIdentifier); } }")
     public List<EligibleCouple> allOpenECsForANM(String anmIdentifier) {
-        return db.queryView(createQuery("all_open_ecs_for_anm")
+    	logger.warn("Unable to find eligible couple with anmId: " + anmIdentifier+ "all_open_ecs_for_anm");
+     
+    	return db.queryView(createQuery("all_open_ecs_for_anm")
                 .key(anmIdentifier)
                 .includeDocs(true), EligibleCouple.class);
     }

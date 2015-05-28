@@ -70,6 +70,7 @@ public class ANMDetailsController {
         }
         return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
     }
+    //new change
 
     private ANMDetailsDTO mapToDTO(ANMDetails anmDetails) {
         List<ANMDetailDTO> anmDetailsDTO =
@@ -80,6 +81,7 @@ public class ANMDetailsController {
                                 return new ANMDetailDTO(entry.identifier(),
                                         entry.name(),
                                         entry.location(),
+                                 
                                         entry.ecCount(),
                                         entry.fpCount(),
                                         entry.ancCount(),
