@@ -1,15 +1,17 @@
-Date of Release: 11-May-2015
+Date of Release: 27-May-2015
 
 New Features
 ============
-- Allows to get complete location hierarchy for user during authentication
-- Complete HH registration form tested and working with relationships b/w HHHead and other members
+- Allows to get list of all report definitions in openmrs
+- Allows to fetch complete report definition and data for that report
+- Added latest form files for houdehold and census registration form to opensrp-server assets.
+- Household data is also pushed to openmrs
 
 Changes
 =======
-- Renamed formSubmission to form_submission to conform file naming for other files in form resources
-- Subforms and rest of form submission dealt differently to improve performance i.e. not traverse all fields incase of subforms
-- createEncounter() in EncounterService returns Json instead of string
+- Refactored HttpUtil to throw specific exception
+- Household doesnot try saving empty repeat group sent by client
+- Locations returned from Team management module as well as person attribute if not found in team module
 
 Fixes
 =====
