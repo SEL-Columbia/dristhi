@@ -9,6 +9,8 @@ import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold.HouseholdMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mysql.jdbc.StringUtils;
+
 @Service
 public class HouseholdService extends OpenmrsService{
 	private static final String RELATIONSHIP_URL = "ws/rest/v1/relationship";
@@ -77,10 +79,16 @@ public class HouseholdService extends OpenmrsService{
 		JSONObject hhe = encounterService.createEncounter(household.getHouseholdHead().getEvent().get(0));
 		
 		for (HouseholdMember m : household.getMembers()) {
-			JSONObject mp = patientService.createPatient(m.getClient());
-			JSONObject me = encounterService.createEncounter(m.getEvent().get(0));
-			
-			createRelationship(hhp.getString("uuid"), hhrel, mp.getString("uuid"));
+			if(StringUtils.isEmptyOrWhitespaceOnly(m.getClient().getBaseEntity().getFirstName())
+					&& m.getClient().getIdentifiers().size()==0){
+				//skip Data push for now
+			}
+			else{
+				JSONObject mp = patientService.createPatient(m.getClient());
+				JSONObject me = encounterService.createEncounter(m.getEvent().get(0));
+				
+				createRelationship(hhp.getString("uuid"), hhrel, mp.getString("uuid"));
+			}
 		}
 	}
 
