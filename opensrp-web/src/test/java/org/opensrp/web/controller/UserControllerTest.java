@@ -46,7 +46,8 @@ public class UserControllerTest extends TestResourceLoader{
     public void setUp() throws Exception {
 		initMocks(this);
 		this.locationservice = new OpenmrsLocationService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
-        this.controller = new UserController(locationservice, auth);
+		this.userservice = new OpenmrsUserService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
+        this.controller = new UserController(locationservice, userservice, auth);
 	}
 	
 	@Test

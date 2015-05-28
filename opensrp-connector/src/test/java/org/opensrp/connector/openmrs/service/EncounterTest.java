@@ -70,7 +70,7 @@ public class EncounterTest extends TestResourceLoader{
 	
 	@Test
 	public void shouldHandleSubform() throws IOException, ParseException, JSONException{
-		FormSubmission fs = getFormSubmissionFor("repeatform");
+		FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
 
 		System.out.println(oc.isOpenmrsForm(fs));
 		

@@ -13,6 +13,7 @@ public class OpenmrsUserService extends OpenmrsService{
 
 	private static final String AUTHENTICATION_URL = "ws/rest/v1/session";
 	private static final String USER_URL = "ws/rest/v1/user";
+	private static final String TEAM_MEMBER_URL = "ws/rest/v1/teammodule/member";
 	
     public OpenmrsUserService() { }
 
@@ -55,6 +56,7 @@ public class OpenmrsUserService extends OpenmrsService{
 			u.addRole(rol.getJSONObject(i).getString("name"));
 		}
 		
+		u.getBaseEntity().addAttribute("_PERSON_UUID", p.getString("uuid"));
 		return u;
 	}
 	
@@ -67,5 +69,10 @@ public class OpenmrsUserService extends OpenmrsService{
 		JSONObject obj = res.getJSONObject(0);
 		JSONObject p = obj.getJSONObject("person");
 		return p;
+	}
+	
+	public JSONObject getTeamMember(String uuid) throws JSONException{
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+TEAM_MEMBER_URL+"/"+uuid, "v=full", OPENMRS_USER, OPENMRS_PWD);
+		return new JSONObject(op.body());
 	}
 }
