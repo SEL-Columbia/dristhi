@@ -9,12 +9,15 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
 import org.opensrp.connector.OpenmrsConnector;
+import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.EncounterService;
+import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.form.domain.FormSubmission;
@@ -47,16 +50,19 @@ public class FormSubmissionController {
     private EncounterService encounterService;
     private OpenmrsConnector openmrsConnector;
     private PatientService patientService;
+    private HouseholdService householdService;
 
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
-    		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService) {
+    		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, 
+    		HouseholdService householdService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         
         this.encounterService = encounterService;
         this.openmrsConnector = openmrsConnector;
         this.patientService = patientService;
+        this.householdService = householdService;
     }
 
     @RequestMapping(method = GET, value = "/form-submissions")
@@ -114,13 +120,31 @@ public class FormSubmissionController {
             for (FormSubmission formSubmission : fsl) {
             	if(openmrsConnector.isOpenmrsForm(formSubmission)){
 	            	JSONObject p = patientService.getPatientByIdentifier(formSubmission.entityId());
-	        		if(p == null){
-	        			Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
-	        			System.out.println(patientService.createPatient(c));
-	        		}
-	        		Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-	        		
-	        		System.out.println(encounterService.createEncounter(e));
+	            	
+	            	if(p != null){	            		
+	            		Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
+		        		System.out.println(encounterService.createEncounter(e));
+	            	}
+	            	else {
+	            		Map<String, Map<String, Object>> dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
+	            		
+	            		if(dep.size()>0){
+	            			Client hhhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);
+	            			Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
+	            			OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
+	    	    			for (Map<String, Object> cm : dep.values()) {
+	    	    				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
+	    	    			}
+	    	    			
+	    	    			householdService.saveHH(hh);
+	            		}
+	            		else {
+	            			Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
+	            			System.out.println(patientService.createPatient(c));
+	            			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
+			        		System.out.println(encounterService.createEncounter(e));
+	            		}
+	            	}
             	}
     		}
             }
