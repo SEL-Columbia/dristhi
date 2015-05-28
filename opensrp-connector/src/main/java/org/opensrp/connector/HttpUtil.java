@@ -77,7 +77,10 @@ public class HttpUtil {
         catch(FileNotFoundException e){
         	return new HttpResponse(true, "");
         }
-        catch (Exception e) {
+        catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(e);
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
