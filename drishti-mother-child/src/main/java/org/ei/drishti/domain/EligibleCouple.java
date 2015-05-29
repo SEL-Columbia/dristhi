@@ -169,6 +169,12 @@ public class EligibleCouple extends MotechBaseDataObject {
     private String getCaseId() {
         return caseId;
     }
+    
+    //add new get method
+    private String getPhc() {
+        return phc;
+    }
+    
 
     public String getDetail(String name) {
         return details.get(name);
