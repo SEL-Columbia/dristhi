@@ -32,7 +32,8 @@ public class ECRegisterService {
 
     public ECRegister getRegisterForANM(String anmIdentifier) {
         ArrayList<ECRegisterEntry> ecRegisterEntries = new ArrayList<>();
-        List<EligibleCouple> ecs = allEligibleCouples.allOpenECsForANM(anmIdentifier);
+        //just changed method name in allopenecsforanm
+        List<EligibleCouple> ecs = allEligibleCouples.all(anmIdentifier);
         for (EligibleCouple ec : ecs) {
             List<Mother> mothers = allMothers.findAllOpenANCByECCaseId(ec.caseId());
             boolean isPregnant = mothers.size() > 0;

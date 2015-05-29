@@ -36,6 +36,18 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
         }
         return couples.get(0);
     }
+    //new generateview
+    @GenerateView
+    public EligibleCouple findByPhc(String phc){
+    	List<EligibleCouple> phcs =queryView("by_phc", phc);
+    	if(phcs==null || phcs.isEmpty()){
+    		return null;
+    		
+    	}
+    	return phcs.get(0);
+    	
+    }
+    
 
     public boolean exists(String caseId) {
         return findByCaseId(caseId) != null;
