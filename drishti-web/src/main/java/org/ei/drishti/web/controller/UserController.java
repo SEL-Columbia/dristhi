@@ -1,8 +1,11 @@
 package org.ei.drishti.web.controller;
 
 
+import org.ei.drishti.common.domain.PhcDetail;
 import org.ei.drishti.common.domain.UserDetail;
 import org.ei.drishti.domain.DrishtiUser;
+import org.ei.drishti.domain.EligibleCouple;
+import org.ei.drishti.repository.AllEligibleCouples;
 import org.ei.drishti.web.security.DrishtiAuthenticationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +28,7 @@ public class UserController {
 	 private static Logger logger = LoggerFactory.getLogger(UserController.class.toString());
     private String drishtiSiteUrl;
     private DrishtiAuthenticationProvider drishtiAuthenticationProvider;
-   
+   private AllEligibleCouples allEligibleCouple;
     @Autowired
     public UserController(@Value("#{drishti['drishti.site.url']}") String drishtiSiteUrl,
                           DrishtiAuthenticationProvider drishtiAuthenticationProvider) {
@@ -54,6 +57,45 @@ public class UserController {
     	
     	return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(drishtiSiteUrl), OK);
     }
+    
+    
+   //new method 
+    @RequestMapping(method = RequestMethod.GET, value = "/phc-details")
+    public ResponseEntity<PhcDetail> phcDetail(@RequestParam("phc") String phcIdentifier)
+    
+    {
+    
+    	EligibleCouple phc = allEligibleCouple.findByPhc(phcIdentifier);
+        logger.info("fetched details for phc" + phc);
+
+    	
+    	return new ResponseEntity<>(new PhcDetail(phc.ecNumber(), phc.caseId()), allowOrigin(drishtiSiteUrl), OK);
+    
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     /*
