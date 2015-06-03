@@ -47,6 +47,11 @@ public class FormSubmissionController {
         List<FormSubmission> newSubmissionsForANM = formSubmissionService
                 .getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
         logger.info("Hello++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
+        FormSubmission formSubmission=newSubmissionsForANM.get(0);
+        logger.info("Hello++++++++++++++++++++++++++++++++++++++"+formSubmission.getField("id")+"***********"+formSubmission.getField("isConsultDoctor"));
+        
+        
+        
         return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
