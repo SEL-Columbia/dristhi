@@ -34,6 +34,8 @@ public class UserController {
                           DrishtiAuthenticationProvider drishtiAuthenticationProvider) {
         this.drishtiSiteUrl = drishtiSiteUrl;
         this.drishtiAuthenticationProvider = drishtiAuthenticationProvider;
+        this.allEligibleCouple = allEligibleCouple;
+        
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/authenticate-user")
@@ -61,15 +63,15 @@ public class UserController {
     
    //new method 
     @RequestMapping(method = RequestMethod.GET, value = "/phc-details")
-    public ResponseEntity<PhcDetail> phcDetail(@RequestParam("phc") String phcIdentifier)
+    public ResponseEntity<PhcDetail> phcDetail(@RequestParam("phc") String phcidentifier)
     
     {
     
-    	EligibleCouple phc = allEligibleCouple.findByPhc(phcIdentifier);
+    	EligibleCouple phc = allEligibleCouple.findByPhc(phcidentifier);
         logger.info("fetched details for phc" + phc);
-logger.warn(" unable to print " +phc);
+         logger.warn(" unable to print " +phc);
     	
-    	return new ResponseEntity<>(new PhcDetail(phc.ecNumber(), phc.caseId()), allowOrigin(drishtiSiteUrl), OK);
+    	return new ResponseEntity<>(new PhcDetail(phc.id(), phc.name()), allowOrigin(drishtiSiteUrl), OK);
     
     }
     

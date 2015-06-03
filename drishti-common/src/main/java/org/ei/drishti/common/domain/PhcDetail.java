@@ -1,27 +1,29 @@
 package org.ei.drishti.common.domain;
 
 import java.io.Serializable;
-import java.util.List;
+
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class PhcDetail implements Serializable {
-	     @JsonProperty
-	    private String ecNumber;
+	     
+	
+		@JsonProperty
+	    private String id;
 	    @JsonProperty
-	    private String caseId;
+	    private String name;
 
-	    public PhcDetail(String ecNumber, String caseId) {
-	        this.ecNumber = ecNumber;
-	        this.caseId = caseId;
+	    public PhcDetail(String ecNumber, String name) {
+	        this.id = id;
+	        this.name = name;
 	    }
 
-	    public String ecNumber() {
-	        return ecNumber;
+	    public String id() {
+	        return id;
 	    }
 
-	    public String caseId() {
-	        return caseId;
+	    public String name() {
+	        return name;
 	    }
 
 }

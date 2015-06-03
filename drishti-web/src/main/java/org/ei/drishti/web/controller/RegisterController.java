@@ -4,6 +4,8 @@ import org.ei.drishti.domain.register.*;
 import org.ei.drishti.dto.register.*;
 import org.ei.drishti.mapper.*;
 import org.ei.drishti.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 public class RegisterController {
+	 private static Logger logger = LoggerFactory.getLogger(RegisterController.class.toString());
     private ANCRegisterService ancRegisterService;
     private PNCRegisterService pncRegisterService;
     private ECRegisterService ecRegisterService;
@@ -54,6 +57,8 @@ public class RegisterController {
     @ResponseBody
     public ResponseEntity<ECRegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
         ECRegister ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier);
+        
+        logger.info("fetched ecregisters for " + anmIdentifier);
         return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
     }
 
