@@ -46,6 +46,7 @@ public class FormSubmissionController {
                                                             Integer batchSize) {
         List<FormSubmission> newSubmissionsForANM = formSubmissionService
                 .getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
+        logger.info("Hello++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
         return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
@@ -53,6 +54,7 @@ public class FormSubmissionController {
             }
         });
     }
+   
 
     @RequestMapping(method = GET, value="/all-form-submissions")
     @ResponseBody
