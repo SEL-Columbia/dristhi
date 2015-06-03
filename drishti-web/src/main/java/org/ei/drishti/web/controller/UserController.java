@@ -67,7 +67,7 @@ public class UserController {
     
     	EligibleCouple phc = allEligibleCouple.findByPhc(phcIdentifier);
         logger.info("fetched details for phc" + phc);
-
+logger.warn(" unable to print " +phc);
     	
     	return new ResponseEntity<>(new PhcDetail(phc.ecNumber(), phc.caseId()), allowOrigin(drishtiSiteUrl), OK);
     
