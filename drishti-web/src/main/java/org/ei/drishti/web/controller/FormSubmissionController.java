@@ -1,6 +1,7 @@
 package org.ei.drishti.web.controller;
 
 import ch.lambdaj.function.convert.Converter;
+
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
@@ -46,19 +48,41 @@ public class FormSubmissionController {
                                                             Integer batchSize) {
         List<FormSubmission> newSubmissionsForANM = formSubmissionService
                 .getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
-        logger.info("Hello++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
+        logger.info("Hello1++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
         FormSubmission formSubmission=newSubmissionsForANM.get(0);
-        logger.info("Hello++++++++++++++++++++++++++++++++++++++"+formSubmission.getField("id")+"***********"+formSubmission.getField("isConsultDoctor"));
+        logger.info("Hello2++++++++++++++++++++++++++++++++++++++"+formSubmission.getField("formName")+"***********"+formSubmission.getField("isConsultDoctor"));
+        
+        String formname =formSubmission.getField("formName");
+        String isconsultdoctor=formSubmission.getField("isConsultDoctor");
+        if(formname == "anc-visit" && isconsultdoctor == "yes"){
+        	
+        String entityid= formSubmission.getField("entityId");
+        logger.info("anc -visit entityid3=====================" +entityid);
+        	List<String> l=new ArrayList<String>();
+        	l.add(entityid);
+        
+        	
+        	
+        }
         
         
         
-        return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
+        
+        return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() 
+        		
+        		
+        		{
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
                 return FormSubmissionConverter.from(submission);
             }
         });
     }
+    
+   
+  
+    
+    
    
 
     @RequestMapping(method = GET, value="/all-form-submissions")
