@@ -57,10 +57,10 @@ public class FormSubmissionController {
         logger.info("form name++++++"  +formname);
         String isconsultdoctor=formSubmission.getField("isConsultDoctor");
         logger.info("isconsultdoctor"     +isconsultdoctor);
-        if(formname == "anc-visit" && isconsultdoctor == "yes"){
+        if(formname.equalsIgnoreCase("anc_visit") && isconsultdoctor.equalsIgnoreCase("yes")){
         	
         String entityid= formSubmission.entityId();
-       // String ecId =formSubmission.getField("ecid");
+       // String ecId =formSubmission.getField("ecid")
          
         logger.info("anc -visit entityid 3=====================" +entityid);
         	List<String> l=new ArrayList<String>();
