@@ -48,12 +48,15 @@ public class FormSubmissionController {
                                                             Integer batchSize) {
         List<FormSubmission> newSubmissionsForANM = formSubmissionService
                 .getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
-        logger.info("Hello 1++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
+        //logger.info("Hello 1++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
         FormSubmission formSubmission=newSubmissionsForANM.get(0);
-        logger.info(formSubmission.entityId()+"Hello 2++++++++++++++++++++++++++++++++++++++"+formSubmission.formName() +"***********"+formSubmission.getField("isConsultDoctor"));
+       // logger.info(formSubmission.entityId()+"Hello 2++++++++++++++++++++++++++++++++++++++"+formSubmission.formName() +"***********"+formSubmission.getField("isConsultDoctor"));
         
         String formname =formSubmission.formName();
+        
+        logger.info("form name++++++"  +formname);
         String isconsultdoctor=formSubmission.getField("isConsultDoctor");
+        logger.info("isconsultdoctor"     +isconsultdoctor);
         if(formname == "anc-visit" && isconsultdoctor == "yes"){
         	
         String entityid= formSubmission.entityId();
