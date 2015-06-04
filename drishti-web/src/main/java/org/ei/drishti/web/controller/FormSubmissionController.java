@@ -48,19 +48,27 @@ public class FormSubmissionController {
                                                             Integer batchSize) {
         List<FormSubmission> newSubmissionsForANM = formSubmissionService
                 .getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
-        logger.info("Hello1++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
+        logger.info("Hello 1++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
         FormSubmission formSubmission=newSubmissionsForANM.get(0);
-        logger.info("Hello2++++++++++++++++++++++++++++++++++++++"+formSubmission.getField("formName")+"***********"+formSubmission.getField("isConsultDoctor"));
+        logger.info(formSubmission.entityId()+"Hello 2++++++++++++++++++++++++++++++++++++++"+formSubmission.getField("anmId")+"***********"+formSubmission.getField("isConsultDoctor"));
         
         String formname =formSubmission.getField("formName");
         String isconsultdoctor=formSubmission.getField("isConsultDoctor");
         if(formname == "anc-visit" && isconsultdoctor == "yes"){
         	
         String entityid= formSubmission.getField("entityId");
-        logger.info("anc -visit entityid3=====================" +entityid);
+       // String ecId =formSubmission.getField("ecid");
+         
+        logger.info("anc -visit entityid 3=====================" +entityid);
         	List<String> l=new ArrayList<String>();
+        	
         	l.add(entityid);
-        
+        for(int i=1; i<l.size(); i++){
+        	String s1=l.get(i);
+        	//operation for db two queries
+        	
+        }
+
         	
         	
         }
