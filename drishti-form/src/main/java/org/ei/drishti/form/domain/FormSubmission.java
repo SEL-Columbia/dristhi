@@ -30,7 +30,7 @@ public class FormSubmission extends MotechBaseDataObject {
     @JsonProperty
     private long serverVersion;
 
-    public FormSubmission() {
+    public FormSubmission() { 
     }
 
     public FormSubmission(String anmId, String instanceId, String formName, String entityId, long clientVersion, String formDataDefinitionVersion, FormInstance formInstance, long serverVersion) {
