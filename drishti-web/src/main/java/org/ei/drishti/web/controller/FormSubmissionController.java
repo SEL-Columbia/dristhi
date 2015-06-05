@@ -67,11 +67,11 @@ public class FormSubmissionController {
 				String entityid = formSubmission2.entityId();
 				String anmid = formSubmission2.anmId();
 				String entityEcId = formSubmission2.getField("ecId");
-
+				formSubmissionService.insertDatas(entityid,entityEcId,anmid,formName);
 			}
 			logger.info("started print into table");
-			List<FormSubmission> newSubmissionsForAN = formSubmissionService
-					.insertData(formSubmission2);
+//			List<FormSubmission> newSubmissionsForAN = formSubmissionService
+//					.insertData(formSubmission2);
 		}
 
 		return with(newSubmissionsForANM).convert(
