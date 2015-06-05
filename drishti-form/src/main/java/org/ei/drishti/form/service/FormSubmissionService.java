@@ -52,29 +52,31 @@ public class FormSubmissionService {
     	try{
     		Class.forName("org.postgresql.Driver");
             } catch (ClassNotFoundException e) {
+            	
+            	logger.debug("connection creation failed");
 			e.printStackTrace();
 			}
              Connection con = null;try {
             con = DriverManager.getConnection(
 					"jdbc:postgresql://127.0.0.1:5432/drishti", "postgres",
 					"password");
-            String stm = "INSERT INTO poc_table(formName, entityid, anmid, entityEcId  ) VALUES(?, ?, ?, ?)";
+            String stm = "insert into report.poc_table(formName, entityid, anmid, entityEcId  ) VALUES(?, ?, ?, ?)";
             pst = con.prepareStatement(stm);
             pst.setString(1, "formName");
             pst.setString(2, "entityId");
-            pst.setString(2, "anmid");
-            pst.setString(2, "entityEcId");
+            pst.setString(3, "anmid");
+            pst.setString(4, "entityEcId");
             pst.executeUpdate();
 
 		    } catch (SQLException e) {
-		    	logger.info("connection created");
+		    	logger.info("table created");
             e.printStackTrace();
 			
 		}
          if (con != null) {
-			System.out.println("You made it, take control your database now!");
+			logger.debug("You made it, take control your database now!");
 		} else {
-			System.out.println("Failed to make connection!");
+			logger.info("Failed to make connection!");
 		}
          //return List<formSubmission2>;
 		return (List<FormSubmission>) formsubmission2;
