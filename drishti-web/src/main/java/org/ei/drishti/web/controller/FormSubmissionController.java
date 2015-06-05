@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
@@ -30,100 +31,96 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 public class FormSubmissionController {
-    private static Logger logger = LoggerFactory.getLogger(FormSubmissionController.class.toString());
-    private FormSubmissionService formSubmissionService;
-    private OutboundEventGateway gateway;
+	private static Logger logger = LoggerFactory
+			.getLogger(FormSubmissionController.class.toString());
+	private FormSubmissionService formSubmissionService;
+	private OutboundEventGateway gateway;
 
-    @Autowired
-    public FormSubmissionController(FormSubmissionService formSubmissionService, OutboundEventGateway gateway) {
-        this.formSubmissionService = formSubmissionService;
-        this.gateway = gateway;
-    }
+	@Autowired
+	public FormSubmissionController(
+			FormSubmissionService formSubmissionService,
+			OutboundEventGateway gateway) {
+		this.formSubmissionService = formSubmissionService;
+		this.gateway = gateway;
+	}
 
-    @RequestMapping(method = GET, value = "/form-submissions")
-    @ResponseBody
-    private List<FormSubmissionDTO> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier,
-                                                            @RequestParam("timestamp") Long timeStamp,
-                                                            @RequestParam(value = "batch-size", required = false)
-                                                            Integer batchSize) {
-        List<FormSubmission> newSubmissionsForANM = formSubmissionService
-                .getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
-        //logger.info("Hello 1++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
-        FormSubmission formSubmission=newSubmissionsForANM.get(0);
-       // logger.info(formSubmission.entityId()+"Hello 2++++++++++++++++++++++++++++++++++++++"+formSubmission.formName() +"***********"+formSubmission.getField("isConsultDoctor"));
-        
-        String formname =formSubmission.formName();
-        
-        logger.info("form name++++++"  +formname);
-        String isconsultdoctor=formSubmission.getField("isConsultDoctor");
-        logger.info("isconsultdoctor"     +isconsultdoctor);
-        if(formname.equalsIgnoreCase("anc_visit") && isconsultdoctor.equalsIgnoreCase("yes")){
-        	
-        String entityid= formSubmission.entityId();
-       // String ecId =formSubmission.getField("ecid")
-         
-        logger.info("anc -visit entityid 3=====================" +entityid);
-        	List<String> l=new ArrayList<String>();
-        	
-        	l.add(entityid);
-        for(int i=1; i<l.size(); i++){
-        	String s1=l.get(i);
-        	//operation for db two queries
-        	
-        }
+	@RequestMapping(method = GET, value = "/form-submissions")
+	@ResponseBody
+	private List<FormSubmissionDTO> getNewSubmissionsForANM(
+			@RequestParam("anm-id") String anmIdentifier,
+			@RequestParam("timestamp") Long timeStamp,
+			@RequestParam(value = "batch-size", required = false) Integer batchSize) {
+		List<FormSubmission> newSubmissionsForANM = formSubmissionService
+				.getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
+		// logger.info("Hello 1++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
+		FormSubmission formSubmission = newSubmissionsForANM.get(0);
+		// logger.info(formSubmission.entityId()+"Hello 2++++++++++++++++++++++++++++++++++++++"+formSubmission.formName()
+		// +"***********"+formSubmission.getField("isConsultDoctor"));
+		for (Iterator iterator = newSubmissionsForANM.iterator(); iterator
+				.hasNext();) {
+			FormSubmission formSubmission2 = (FormSubmission) iterator.next();
+			if (formSubmission2.formName().equals("anc_visit")
+					&& formSubmission2.getField("isConsultDoctor").equals("yes")) {
 
-        	
-        	
-        }
-        
-        
-        
-        
-        return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() 
-        		
-        		
-        		{
-            @Override
-            public FormSubmissionDTO convert(FormSubmission submission) {
-                return FormSubmissionConverter.from(submission);
-            }
-        });
-    }
-    
-   
-  
-    
-    
-   
+				logger.info("form name++++++" + formSubmission2.formName());
+				String formName = formSubmission2.formName();
+				String entityid = formSubmission2.entityId();
+				String anmid = formSubmission2.anmId();
+				String entityEcId = formSubmission2.getField("ecId");
 
-    @RequestMapping(method = GET, value="/all-form-submissions")
-    @ResponseBody
-    private List<FormSubmissionDTO> getAllFormSubmissions(@RequestParam("timestamp") Long timeStamp,
-                                                          @RequestParam(value = "batch-size", required = false)
-                                                          Integer batchSize) {
-        List<FormSubmission> allSubmissions = formSubmissionService
-                .getAllSubmissions(timeStamp, batchSize);
-        return with(allSubmissions).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
-            @Override
-            public FormSubmissionDTO convert(FormSubmission submission) {
-                return FormSubmissionConverter.from(submission);
-            }
-        });
-    }
+			}
+			logger.info("started print into table");
+			List<FormSubmission> newSubmissionsForAN = formSubmissionService
+					.insertData(formSubmission2);
+		}
 
-    @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/form-submissions")
-    public ResponseEntity<HttpStatus> submitForms(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
-        try {
-            if (formSubmissionsDTO.isEmpty()) {
-                return new ResponseEntity<>(BAD_REQUEST);
-            }
+		return with(newSubmissionsForANM).convert(
+				new Converter<FormSubmission, FormSubmissionDTO>()
 
-            gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO).toEvent());
-            logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
-        } catch (Exception e) {
-            logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e, formSubmissionsDTO));
-            return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(CREATED);
-    }
+				{
+					@Override
+					public FormSubmissionDTO convert(FormSubmission submission) {
+						return FormSubmissionConverter.from(submission);
+					}
+				});
+	}
+	
+
+	@RequestMapping(method = GET, value = "/all-form-submissions")
+	@ResponseBody
+	private List<FormSubmissionDTO> getAllFormSubmissions(
+			@RequestParam("timestamp") Long timeStamp,
+			@RequestParam(value = "batch-size", required = false) Integer batchSize) {
+		List<FormSubmission> allSubmissions = formSubmissionService
+				.getAllSubmissions(timeStamp, batchSize);
+		return with(allSubmissions).convert(
+				new Converter<FormSubmission, FormSubmissionDTO>() {
+					@Override
+					public FormSubmissionDTO convert(FormSubmission submission) {
+						return FormSubmissionConverter.from(submission);
+					}
+				});
+	}
+
+	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/form-submissions")
+	public ResponseEntity<HttpStatus> submitForms(
+			@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
+		try {
+			if (formSubmissionsDTO.isEmpty()) {
+				return new ResponseEntity<>(BAD_REQUEST);
+			}
+
+			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
+					.toEvent());
+			logger.debug(format(
+					"Added Form submissions to queue.\nSubmissions: {0}",
+					formSubmissionsDTO));
+		} catch (Exception e) {
+			logger.error(format(
+					"Form submissions processing failed with exception {0}.\nSubmissions: {1}",
+					e, formSubmissionsDTO));
+			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(CREATED);
+	}
 }

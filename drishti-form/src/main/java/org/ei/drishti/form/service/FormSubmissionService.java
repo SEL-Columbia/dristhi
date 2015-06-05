@@ -1,6 +1,7 @@
 package org.ei.drishti.form.service;
 
 import ch.lambdaj.function.convert.Converter;
+
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -10,6 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -21,6 +26,7 @@ import static java.util.Collections.sort;
 public class FormSubmissionService {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionService.class.toString());
     private AllFormSubmissions allFormSubmissions;
+   
 
     @Autowired
     public FormSubmissionService(AllFormSubmissions allFormSubmissions) {
@@ -39,6 +45,43 @@ public class FormSubmissionService {
     public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version, Integer batchSize) {
         return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
     }
+    //new method
+    @SuppressWarnings("unchecked")
+	public List<FormSubmission> insertData(FormSubmission formsubmission2){
+    	 PreparedStatement pst = null;
+    	try{
+    		Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			}
+             Connection con = null;try {
+            con = DriverManager.getConnection(
+					"jdbc:postgresql://127.0.0.1:5432/drishti", "postgres",
+					"password");
+            String stm = "INSERT INTO poc_table(formName, entityid, anmid, entityEcId  ) VALUES(?, ?, ?, ?)";
+            pst = con.prepareStatement(stm);
+            pst.setString(1, "formName");
+            pst.setString(2, "entityId");
+            pst.setString(2, "anmid");
+            pst.setString(2, "entityEcId");
+            pst.executeUpdate();
+
+		    } catch (SQLException e) {
+		    	logger.info("connection created");
+            e.printStackTrace();
+			
+		}
+         if (con != null) {
+			System.out.println("You made it, take control your database now!");
+		} else {
+			System.out.println("Failed to make connection!");
+		}
+         //return List<formSubmission2>;
+		return (List<FormSubmission>) formsubmission2;
+	}
+    	
+    
+
 
     public List<FormSubmission> getAllSubmissions(Long version, Integer batchSize) {
         return allFormSubmissions.allFormSubmissions(version, batchSize);
