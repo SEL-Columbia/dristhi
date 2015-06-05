@@ -59,7 +59,7 @@ public class FormSubmissionService {
              con = DriverManager.getConnection(
  					"jdbc:postgresql://127.0.0.1:5432/drishti", "postgres",
  					"password");
-             String stm = "insert into report.poc_table(formName, entityid, anmid, entityEcId  ) VALUES(?, ?, ?, ?)";
+             String stm = "insert into report.poc_table(formname, entityId, anmid, entityEcId) VALUES(?, ?, ?, ?)";
              pst = con.prepareStatement(stm);
              pst.setString(1, formName);
              pst.setString(2, entityid);
