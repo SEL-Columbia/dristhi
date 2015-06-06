@@ -7,6 +7,8 @@ import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.service.FormSubmissionConverter;
 import org.ei.drishti.form.service.FormSubmissionService;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -53,28 +58,9 @@ public class FormSubmissionController {
 		List<FormSubmission> newSubmissionsForANM = formSubmissionService
 				.getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
 		// logger.info("Hello 1++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
-//		FormSubmission formSubmission = newSubmissionsForANM.get(0);
+		// FormSubmission formSubmission = newSubmissionsForANM.get(0);
 		// logger.info(formSubmission.entityId()+"Hello 2++++++++++++++++++++++++++++++++++++++"+formSubmission.formName()
 		// +"***********"+formSubmission.getField("isConsultDoctor"));
-		logger.info(newSubmissionsForANM.size()+"-----------");
-		
-		for (Iterator iterator = newSubmissionsForANM.iterator(); iterator
-				.hasNext();) {
-			FormSubmission formSubmission2 = (FormSubmission) iterator.next();
-			if (formSubmission2.formName().equals("anc_visit")
-					&& formSubmission2.getField("isConsultDoctor").equals("yes")) {
-
-				logger.info("form name++++++" + formSubmission2.formName());
-				String formName = formSubmission2.formName();
-				String entityId = formSubmission2.entityId();
-				String anmid = formSubmission2.anmId();
-				String entityEcId = formSubmission2.getField("ecId");
-				//formSubmissionService.insertDatas(entityId,entityEcId,anmid,formName);
-			}
-			logger.info("started print into table");
-//			List<FormSubmission> newSubmissionsForAN = formSubmissionService
-//					.insertData(formSubmission2);
-		}
 
 		return with(newSubmissionsForANM).convert(
 				new Converter<FormSubmission, FormSubmissionDTO>()
@@ -86,7 +72,6 @@ public class FormSubmissionController {
 					}
 				});
 	}
-	
 
 	@RequestMapping(method = GET, value = "/all-form-submissions")
 	@ResponseBody
@@ -112,6 +97,52 @@ public class FormSubmissionController {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
 
+			logger.info(formSubmissionsDTO.size() + "-----------");
+
+			for (Iterator iterator = formSubmissionsDTO.iterator(); iterator
+					.hasNext();) {
+				FormSubmissionDTO formSubmission2 = (FormSubmissionDTO) iterator
+						.next();
+
+				JSONObject json = new JSONObject(formSubmission2.instance());
+				logger.info("++++++++++++++++" + json.getString("formName"));
+				JSONObject formInstanceJson = json
+						.getJSONObject("formInstance");
+				JSONArray infoArray = formInstanceJson.getJSONObject("form")
+						.getJSONArray("fields");
+				String result = infoArray.toString();
+				logger.info("String ++++++++++++++++" + result);
+				for (int i = 0; i < infoArray.length(); i++) {
+
+					JSONObject jsonObject = infoArray.getJSONObject(i);
+					if (jsonObject.getString("name").equals("wifeName")) {
+						logger.info("Wife Name+++++++++"
+								+ jsonObject.getString("value"));
+					}
+
+					/*
+					 * if (formSubmission2.formName().equals("anc_visit") &&
+					 * formSubmission2
+					 * .getField("isConsultDoctor").equals("yes")) {
+					 */
+					// logger.info("form name++++++" +
+					// formSubmissionsDTO.formName());
+					// String formName = formSubmissionsDTO.formName();
+					// String entityId = formSubmissionsDTO.entityId();
+					// String anmid = formSubmissionsDTO.anmId();
+					// String entityEcId = formSubmissionsDTO.getField("ecId");
+					// //formSubmissionService.insertDatas(entityId,entityEcId,anmid,formName);
+					// }
+					// logger.info("started print into table");
+					// // List<FormSubmission> newSubmissionsForAN =
+					// formSubmissionService
+					// // .insertData(formSubmission2);
+					//
+					// }
+					// }
+					//
+				}
+			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
 			logger.debug(format(
