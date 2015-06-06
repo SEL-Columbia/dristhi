@@ -107,7 +107,7 @@ public class FormSubmissionController {
 			iterator.hasNext();) {
 				FormSubmissionDTO formSubmission2 = (FormSubmissionDTO) iterator
 						.next();
-				logger.info(formSubmission2.instance() + "++++++");
+				logger.info(formSubmission2.anmId().toString() + "++++++");
 
 				JSONObject json = new JSONObject(formSubmission2.instance());
 
