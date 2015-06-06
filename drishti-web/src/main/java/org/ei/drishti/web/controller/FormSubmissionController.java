@@ -64,10 +64,10 @@ public class FormSubmissionController {
 
 				logger.info("form name++++++" + formSubmission2.formName());
 				String formName = formSubmission2.formName();
-				String entityid = formSubmission2.entityId();
+				String entityId = formSubmission2.entityId();
 				String anmid = formSubmission2.anmId();
 				String entityEcId = formSubmission2.getField("ecId");
-				formSubmissionService.insertDatas(entityid,entityEcId,anmid,formName);
+				//formSubmissionService.insertDatas(entityId,entityEcId,anmid,formName);
 			}
 			logger.info("started print into table");
 //			List<FormSubmission> newSubmissionsForAN = formSubmissionService

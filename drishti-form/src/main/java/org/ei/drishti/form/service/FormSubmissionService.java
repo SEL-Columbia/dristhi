@@ -46,7 +46,7 @@ public class FormSubmissionService {
         return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
     }
     
-    public void insertDatas(String entityid,String entityEcId,String anmid,String formName) {
+   /* public void insertDatas(String entityid,String entityEcId,String anmid,String formName) {
     	 PreparedStatement pst = null;
      	try{
      		Class.forName("org.postgresql.Driver");
@@ -55,11 +55,14 @@ public class FormSubmissionService {
              	logger.debug("connection creation failed");
  			e.printStackTrace();
  			}
-              Connection con = null;try {
+              Connection con = null;
+              try {
              con = DriverManager.getConnection(
  					"jdbc:postgresql://127.0.0.1:5432/drishti", "postgres",
  					"password");
-             String stm = "insert into report.poc_table(formname, entityId, anmid, entityEcId) VALUES(?, ?, ?, ?)";
+            // String stm = "insert into report.poc_table(formname, entityId, anmid, entityEcId) VALUES(?, ?, ?, ?)";
+             String stm = "insert into report.poc_table VALUES(?, ?, ?, ?)";
+             
              pst = con.prepareStatement(stm);
              pst.setString(1, formName);
              pst.setString(2, entityid);
@@ -73,12 +76,12 @@ public class FormSubmissionService {
  			
  		}
           if (con != null) {
- 			logger.debug("You made it, take control your database now!");
+ 			logger.info("You made it, take control your database now!");
  		} else {
- 			logger.info("Failed to make connection!");
+ 			logger.debug("Failed to make connection!");
  		}
 		
-	}
+	}*/
 //    //new method
 //    @SuppressWarnings("unchecked")
 //	public List<FormSubmission> insertData(FormSubmission formsubmission2){

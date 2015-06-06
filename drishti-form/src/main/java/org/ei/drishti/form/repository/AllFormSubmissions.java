@@ -1,8 +1,5 @@
 package org.ei.drishti.form.repository;
-
 import org.ei.drishti.form.domain.FormSubmission;
-
-
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
@@ -12,15 +9,11 @@ import org.motechproject.dao.MotechBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
 public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
-	
-	
-	
     @Autowired
     protected AllFormSubmissions(@Qualifier("drishtiFormDatabaseConnector") CouchDbConnector db) {
         super(FormSubmission.class, db);
@@ -75,12 +68,4 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         }
         return db.queryView(query, FormSubmission.class);
     }
-    
-   /* //new method
-    @Transactional("service_provided")
-    public List<poc_table> insertIntotable(String anmIdentifier){
-    	
-		return (List<poc_table>) dataAccessTemplate.saveOrUpdate(entity);
-    }
-    */
 }
