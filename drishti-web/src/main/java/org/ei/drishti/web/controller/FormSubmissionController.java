@@ -53,9 +53,11 @@ public class FormSubmissionController {
 		List<FormSubmission> newSubmissionsForANM = formSubmissionService
 				.getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
 		// logger.info("Hello 1++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
-		FormSubmission formSubmission = newSubmissionsForANM.get(0);
+//		FormSubmission formSubmission = newSubmissionsForANM.get(0);
 		// logger.info(formSubmission.entityId()+"Hello 2++++++++++++++++++++++++++++++++++++++"+formSubmission.formName()
 		// +"***********"+formSubmission.getField("isConsultDoctor"));
+		logger.info(newSubmissionsForANM.size()+"-----------");
+		
 		for (Iterator iterator = newSubmissionsForANM.iterator(); iterator
 				.hasNext();) {
 			FormSubmission formSubmission2 = (FormSubmission) iterator.next();
