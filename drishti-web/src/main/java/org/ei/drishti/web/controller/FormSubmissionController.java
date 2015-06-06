@@ -2,6 +2,7 @@ package org.ei.drishti.web.controller;
 
 import ch.lambdaj.function.convert.Converter;
 
+import org.ei.drishti.dto.VillagesDTO;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -97,51 +100,65 @@ public class FormSubmissionController {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
 
-			logger.info(formSubmissionsDTO.size() + "-----------");
+			logger.info(formSubmissionsDTO.size() + " : -----------");
 
-			for (Iterator iterator = formSubmissionsDTO.iterator(); iterator
-					.hasNext();) {
+			for (Iterator iterator = formSubmissionsDTO.iterator();
+
+			iterator.hasNext();) {
 				FormSubmissionDTO formSubmission2 = (FormSubmissionDTO) iterator
 						.next();
+				logger.info(formSubmission2.instance() + "++++++");
 
 				JSONObject json = new JSONObject(formSubmission2.instance());
-				logger.info("++++++++++++++++" + json.getString("formName"));
-				JSONObject formInstanceJson = json
-						.getJSONObject("formInstance");
-				JSONArray infoArray = formInstanceJson.getJSONObject("form")
-						.getJSONArray("fields");
-				String result = infoArray.toString();
-				logger.info("String ++++++++++++++++" + result);
-				for (int i = 0; i < infoArray.length(); i++) {
 
-					JSONObject jsonObject = infoArray.getJSONObject(i);
-					if (jsonObject.getString("name").equals("wifeName")) {
-						logger.info("Wife Name+++++++++"
-								+ jsonObject.getString("value"));
-					}
+				// JsonParser jsonParser = new JsonParser();
+				// DataObject obj = gson.fromJson(br, DataObject.class);
 
-					/*
-					 * if (formSubmission2.formName().equals("anc_visit") &&
-					 * formSubmission2
-					 * .getField("isConsultDoctor").equals("yes")) {
-					 */
-					// logger.info("form name++++++" +
-					// formSubmissionsDTO.formName());
-					// String formName = formSubmissionsDTO.formName();
-					// String entityId = formSubmissionsDTO.entityId();
-					// String anmid = formSubmissionsDTO.anmId();
-					// String entityEcId = formSubmissionsDTO.getField("ecId");
-					// //formSubmissionService.insertDatas(entityId,entityEcId,anmid,formName);
-					// }
-					// logger.info("started print into table");
-					// // List<FormSubmission> newSubmissionsForAN =
-					// formSubmissionService
-					// // .insertData(formSubmission2);
-					//
-					// }
-					// }
-					//
-				}
+				/*
+				 * VillagesDTO villagesDTOs = new
+				 * Gson().fromJson(response.body(), new TypeToken<VillagesDTO>()
+				 * { }.getType());
+				 */
+				// FormSubmissionDTO formSubmissionDTO = new
+				// Gson().fromJson("formName", FormSubmissionDTO.class);
+				//
+				// logger.info("++++++++++++++++" +
+				// formSubmissionDTO("formName").getAsString());
+				// JSONObject formInstanceJson =
+				// json.getJSONObject("formInstance");
+				// JSONArray infoArray = formInstanceJson.getJSONObject("form")
+				// .getJSONArray("fields");
+				// String result = infoArray.toString();
+				// logger.info("String ++++++++++++++++" + result);
+				// for (int i = 0; i < infoArray.length(); i++) {
+				//
+				// JSONObject jsonObject = infoArray.getJSONObject(i);
+				// if (jsonObject.getString("name").equals("wifeName")) {
+				// logger.info("Wife Name+++++++++"
+				// + jsonObject.getString("value"));
+				// }
+
+				/*
+				 * if (formSubmission2.formName().equals("anc_visit") &&
+				 * formSubmission2 .getField("isConsultDoctor").equals("yes")) {
+				 */
+				// logger.info("form name++++++" +
+				// formSubmissionsDTO.formName());
+				// String formName = formSubmissionsDTO.formName();
+				// String entityId = formSubmissionsDTO.entityId();
+				// String anmid = formSubmissionsDTO.anmId();
+				// String entityEcId = formSubmissionsDTO.getField("ecId");
+				// //formSubmissionService.insertDatas(entityId,entityEcId,anmid,formName);
+				// }
+				// logger.info("started print into table");
+				// // List<FormSubmission> newSubmissionsForAN =
+				// formSubmissionService
+				// // .insertData(formSubmission2);
+				//
+				// }
+				// }
+				//
+				// }
 			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
