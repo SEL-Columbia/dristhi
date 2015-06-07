@@ -127,9 +127,9 @@ public class FormSubmissionController {
 			//JSONArray s=m.getAsJsonObject().get("formInstance");
 				JsonElement m1 = gson.toJsonTree(s);
 				
-				logger.info("convert to json ----------" + s);
-				s.
-				logger.info("getting data from json++++++++++"   +s);
+				//logger.info("convert to json ----------" + s);
+				
+				//logger.info("getting data from json++++++++++"   +s);
 				
 
 				{
