@@ -116,11 +116,17 @@ public class FormSubmissionController {
 				// logger.info("convert to json ----------" + m);
 
 				JsonObject jo = (JsonObject) gson.toJsonTree(object);
-
-				JsonArray ja = (JsonArray) jo.get("formInstance");
+				
+				JsonElement je = jo.get("anmId");
+				JsonElement je2 = jo.get("formInstance");
+				
 
 				logger.info("+++Json Tree +++     " + jo);
-				logger.info("+++value of formInstance +++     " + ja);
+				logger.info("+++anmId +++ " + je);
+				logger.info("value of formInstance +++ " + je2);
+				
+				JsonArray ja = jo.getAsJsonArray("formInstance");
+				logger.info("value of formInstance +++ " + ja);
 
 			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
