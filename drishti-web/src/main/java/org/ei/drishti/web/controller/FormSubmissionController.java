@@ -101,15 +101,26 @@ public class FormSubmissionController {
 			}
 
 			logger.info(formSubmissionsDTO.size() + " : -----------");
+			
+	      for(FormSubmissionDTO fdto:formSubmissionsDTO){
+	   String anmid=fdto.anmId();
+	    	  String eid=fdto.entityId();
+	   String fname=fdto.formName();
+	   
+	    	  
+			logger.info("++++++++++====" + fname);
+			logger.info("++++++++++====" + eid);	
+			logger.info("++++++++++====" + anmid );
+			
 
-			for (Iterator iterator = formSubmissionsDTO.iterator();
+		/*	for (Iterator iterator = formSubmissionsDTO.iterator();
 
 			iterator.hasNext();) {
 				FormSubmissionDTO formSubmission2 = (FormSubmissionDTO) iterator
 						.next();
-				logger.info(formSubmission2.anmId().toString() + "++++++");
+				logger.info(formSubmission2.anmId() + "++++++");
 
-				JSONObject json = new JSONObject(formSubmission2.instance());
+				JSONObject json = new JSONObject(formSubmission2.instance());*/
 
 				// JsonParser jsonParser = new JsonParser();
 				// DataObject obj = gson.fromJson(br, DataObject.class);
