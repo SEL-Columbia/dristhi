@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -111,11 +112,23 @@ public class FormSubmissionController {
 				logger.info("value of +++     " + object);
 				// if(object.equals("anc_visit"))
 				Gson gson = new Gson();
-				JsonElement m = gson.toJsonTree(object);
-				logger.info("convert to json ----------" + m);
+				//JsonElement m = gson.toJsonTree(object);
+				//logger.info("convert to json ----------" + m);
 				
-				Object s=m.getAsJsonObject().get("formInstance");
+				JsonArray ja=(JsonArray) gson.toJsonTree(object);
+				JsonElement s=ja.getAsJsonObject().get("formInstance");
+				logger.info("value of formInstance +++     " + s);
 				
+				JsonElement s2 = s.getAsJsonObject().get("fields");
+				
+				logger.info("value of feilds +++     " + s2);
+				//JsonArray innerja =(JsonArray)gson((JsonArray) s);
+				
+			//JSONArray s=m.getAsJsonObject().get("formInstance");
+				JsonElement m1 = gson.toJsonTree(s);
+				
+				logger.info("convert to json ----------" + s);
+				s.
 				logger.info("getting data from json++++++++++"   +s);
 				
 
@@ -136,5 +149,10 @@ public class FormSubmissionController {
 			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>(CREATED);
+	}
+
+	private JsonArray gson(JsonArray ja) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
