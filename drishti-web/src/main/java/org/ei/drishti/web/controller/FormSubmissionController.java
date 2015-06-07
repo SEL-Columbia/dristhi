@@ -105,8 +105,19 @@ public class FormSubmissionController {
 		Iterator itr =formSubmissionsDTO.iterator();
 		
 			while (itr.hasNext()) {
-				Object object = (Object) itr.next();
+				Object[] object = (Object[]) itr.next();
 				logger.info("value of +++     "+object);
+				//if(object.equals("anc_visit"))
+				//Gson gson = new Gson();
+				 String firstValue = (String) object[0];
+		            System.out.println("isbillpayable"   +firstValue);
+		{
+			
+		}
+				
+				
+			
+			
 		
 
 			}
