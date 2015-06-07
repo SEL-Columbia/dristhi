@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -30,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
 import static java.text.MessageFormat.format;
@@ -105,12 +107,14 @@ public class FormSubmissionController {
 		Iterator itr =formSubmissionsDTO.iterator();
 		
 			while (itr.hasNext()) {
-				Object[] object = (Object[]) itr.next();
+				Object object = (Object) itr.next();
 				logger.info("value of +++     "+object);
 				//if(object.equals("anc_visit"))
-				//Gson gson = new Gson();
-				 String firstValue = (String) object[0];
-		            System.out.println("isbillpayable"   +firstValue);
+				Gson gson = new Gson();
+			JsonElement m=	gson.toJsonTree(object);
+	
+				
+				logger.info("convert to json" +m);
 		{
 			
 		}
