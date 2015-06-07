@@ -105,36 +105,22 @@ public class FormSubmissionController {
 
 			logger.info(formSubmissionsDTO.size() + " : -----------");
 
-			Iterator itr = formSubmissionsDTO.iterator();
+			Iterator<FormSubmissionDTO> itr = formSubmissionsDTO.iterator();
 
 			while (itr.hasNext()) {
 				Object object = (Object) itr.next();
 				logger.info("value of +++     " + object);
 				// if(object.equals("anc_visit"))
 				Gson gson = new Gson();
-				//JsonElement m = gson.toJsonTree(object);
-				//logger.info("convert to json ----------" + m);
-				
-				JsonArray ja=(JsonArray) gson.toJsonTree(object);
-				JsonElement s=ja.getAsJsonObject().get("formInstance");
-				logger.info("value of formInstance +++     " + s);
-				
-				JsonElement s2 = s.getAsJsonObject().get("fields");
-				
-				logger.info("value of feilds +++     " + s2);
-				//JsonArray innerja =(JsonArray)gson((JsonArray) s);
-				
-			//JSONArray s=m.getAsJsonObject().get("formInstance");
-				JsonElement m1 = gson.toJsonTree(s);
-				
-				//logger.info("convert to json ----------" + s);
-				
-				//logger.info("getting data from json++++++++++"   +s);
-				
+				// JsonElement m = gson.toJsonTree(object);
+				// logger.info("convert to json ----------" + m);
 
-				{
+				JsonObject jo = (JsonObject) gson.toJsonTree(object);
 
-				}
+				JsonArray ja = (JsonArray) jo.get("formInstance");
+
+				logger.info("+++Json Tree +++     " + jo);
+				logger.info("+++value of formInstance +++     " + ja);
 
 			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
