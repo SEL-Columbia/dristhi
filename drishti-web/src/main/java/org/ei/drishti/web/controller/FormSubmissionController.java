@@ -125,9 +125,11 @@ public class FormSubmissionController {
 				logger.info("+++anmId +++ " + je);
 				logger.info("value of formInstance +++ " + je2);
 				
-				JsonArray ja = jo.getAsJsonArray("formInstance");
-				logger.info("value of formInstance +++ " + ja);
-
+				JsonElement je3 = je2.getAsJsonArray();
+				
+				logger.info("value of formInstance +++ " + je3);
+				JsonElement je4 = jo.get("formInstance").getAsJsonArray();
+				logger.info("value of formInstance +++ " + je4);
 			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
