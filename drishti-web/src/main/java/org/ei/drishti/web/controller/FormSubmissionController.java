@@ -120,16 +120,18 @@ public class FormSubmissionController {
 				JsonElement je = jo.get("anmId");
 				JsonElement je2 = jo.get("formInstance");
 				
+				JsonObject je3 = (JsonObject) jo.get("formInstance");
+				JsonElement je4 = je3.get("fields");
 
 				logger.info("+++Json Tree +++     " + jo);
 				logger.info("+++anmId +++ " + je);
 				logger.info("value of formInstance +++ " + je2);
+				logger.info("value of formInstance JSON Object +++ " + je3);
+				logger.info("value of fields +++ " + je4);
 				
-				JsonElement je3 = je2.getAsJsonArray();
 				
-				logger.info("value of formInstance +++ " + je3);
-				JsonElement je4 = jo.get("formInstance").getAsJsonArray();
-				logger.info("value of formInstance +++ " + je4);
+				
+				
 			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
