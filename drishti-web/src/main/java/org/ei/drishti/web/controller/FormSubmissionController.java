@@ -104,25 +104,24 @@ public class FormSubmissionController {
 
 			logger.info(formSubmissionsDTO.size() + " : -----------");
 
-		Iterator itr =formSubmissionsDTO.iterator();
-		
+			Iterator itr = formSubmissionsDTO.iterator();
+
 			while (itr.hasNext()) {
 				Object object = (Object) itr.next();
-				logger.info("value of +++     "+object);
-				//if(object.equals("anc_visit"))
+				logger.info("value of +++     " + object);
+				// if(object.equals("anc_visit"))
 				Gson gson = new Gson();
-			JsonElement m=	gson.toJsonTree(object);
-	
+				JsonElement m = gson.toJsonTree(object);
+				logger.info("convert to json ----------" + m);
 				
-				logger.info("convert to json" +m);
-		{
-			
-		}
+				Object s=m.getAsJsonObject().get("formInstance");
 				
+				logger.info("getting data from json++++++++++"   +s);
 				
-			
-			
-		
+
+				{
+
+				}
 
 			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
