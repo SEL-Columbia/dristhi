@@ -101,75 +101,14 @@ public class FormSubmissionController {
 			}
 
 			logger.info(formSubmissionsDTO.size() + " : -----------");
-			
-	      for(FormSubmissionDTO fdto:formSubmissionsDTO){
-	   String anmid=fdto.anmId();
-	    	  String eid=fdto.entityId();
-	   String fname=fdto.formName();
-	   
-	    	  
-			logger.info("++++++++++====" + fname);
-			logger.info("++++++++++====" + eid);	
-			logger.info("++++++++++====" + anmid );
-			
 
-		/*	for (Iterator iterator = formSubmissionsDTO.iterator();
+		Iterator itr =formSubmissionsDTO.iterator();
+		
+			while (itr.hasNext()) {
+				Object object = (Object) itr.next();
+				logger.info("value of +++     "+object);
+		
 
-			iterator.hasNext();) {
-				FormSubmissionDTO formSubmission2 = (FormSubmissionDTO) iterator
-						.next();
-				logger.info(formSubmission2.anmId() + "++++++");
-
-				JSONObject json = new JSONObject(formSubmission2.instance());*/
-
-				// JsonParser jsonParser = new JsonParser();
-				// DataObject obj = gson.fromJson(br, DataObject.class);
-
-				/*
-				 * VillagesDTO villagesDTOs = new
-				 * Gson().fromJson(response.body(), new TypeToken<VillagesDTO>()
-				 * { }.getType());
-				 */
-				// FormSubmissionDTO formSubmissionDTO = new
-				// Gson().fromJson("formName", FormSubmissionDTO.class);
-				//
-				// logger.info("++++++++++++++++" +
-				// formSubmissionDTO("formName").getAsString());
-				// JSONObject formInstanceJson =
-				// json.getJSONObject("formInstance");
-				// JSONArray infoArray = formInstanceJson.getJSONObject("form")
-				// .getJSONArray("fields");
-				// String result = infoArray.toString();
-				// logger.info("String ++++++++++++++++" + result);
-				// for (int i = 0; i < infoArray.length(); i++) {
-				//
-				// JSONObject jsonObject = infoArray.getJSONObject(i);
-				// if (jsonObject.getString("name").equals("wifeName")) {
-				// logger.info("Wife Name+++++++++"
-				// + jsonObject.getString("value"));
-				// }
-
-				/*
-				 * if (formSubmission2.formName().equals("anc_visit") &&
-				 * formSubmission2 .getField("isConsultDoctor").equals("yes")) {
-				 */
-				// logger.info("form name++++++" +
-				// formSubmissionsDTO.formName());
-				// String formName = formSubmissionsDTO.formName();
-				// String entityId = formSubmissionsDTO.entityId();
-				// String anmid = formSubmissionsDTO.anmId();
-				// String entityEcId = formSubmissionsDTO.getField("ecId");
-				// //formSubmissionService.insertDatas(entityId,entityEcId,anmid,formName);
-				// }
-				// logger.info("started print into table");
-				// // List<FormSubmission> newSubmissionsForAN =
-				// formSubmissionService
-				// // .insertData(formSubmission2);
-				//
-				// }
-				// }
-				//
-				// }
 			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
