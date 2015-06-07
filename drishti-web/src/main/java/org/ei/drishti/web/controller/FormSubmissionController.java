@@ -111,16 +111,24 @@ public class FormSubmissionController {
 				Object object = (Object) itr.next();
 				String jsonstr=object.toString();
 				logger.info("value of +++     " + jsonstr);
-				JSONObject jsonObject=new JSONObject(jsonstr);
+				JSONObject dataObject=new JSONObject(jsonstr);
 				
-				logger.info("value of +++     " + jsonObject.getString("formInstance"));
+//				logger.info("value of +++     " + jsonObject.getString("formInstance"));
+				JSONArray fieldsJsonArray=dataObject.getJSONObject("formInstance").getJSONObject("form").getJSONArray("fields");
+				for (int i = 0; i < fieldsJsonArray.length(); i++) {
+					JSONObject jsonObject=fieldsJsonArray.getJSONObject(i);
+					if(jsonObject.getString("name").equals("id")){
+						logger.info("res" +jsonObject.getString("value"));
+					}
+				}
+				
 				// if(object.equals("anc_visit"))
 //				Gson gson = new Gson();
 //				// JsonElement m = gson.toJsonTree(object);
 //				// logger.info("convert to json ----------" + m);
 //
 //				JsonObject jo = (JsonObject) gson.toJsonTree(object);
-//				
+////				
 //				JsonElement je = jo.get("anmId");
 //				JsonElement je2 = jo.get("formInstance");
 //				
