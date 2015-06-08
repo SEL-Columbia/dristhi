@@ -136,8 +136,8 @@ public class FormSubmissionController {
 				for (int i = 0; i < fieldsJsonArray.length(); i++) {
 
 					JSONObject jsonObject = fieldsJsonArray.getJSONObject(i);
-					if (jsonObject.getString("name").equals("ecId")) {	
-					if (jsonObject.getString("name").equals("isConsultDoctor")) {
+					if (jsonObject.getString("name").contains("ecId")) {	
+					if (jsonObject.getString("name").contains("isConsultDoctor")) {
 						
 						String str=jsonObject.getString("value");
 						logger.info("res+++++" + jsonObject.getString("value"));
