@@ -128,7 +128,7 @@ public class FormSubmissionController {
 				String formName = dataObject.getString("formName");
 				logger.info("value of formname " + formName);
 				if (formName.equalsIgnoreCase("anc_visit")) {
-
+				
 					JSONArray fieldsJsonArray = dataObject
 							.getJSONObject("formInstance")
 							.getJSONObject("form").getJSONArray("fields");
@@ -139,9 +139,10 @@ public class FormSubmissionController {
 
 						JSONObject jsonObject = fieldsJsonArray
 								.getJSONObject(i);
+						logger.info("name+++++++++++++++++++");
 						
 						if (jsonObject.getString("name").equals(
-								"isConsultDoctor")) {
+								"ecId")) {
 
 						String	isCon = jsonObject.getString("value");
 							logger.info("res+++++" + isCon);
