@@ -128,7 +128,7 @@ public class FormSubmissionController {
 				// String anmid= dataObject.getString("anmId");
 			String	formName = dataObject.getString("formName");
 				logger.info("value of formname "
-						+ dataObject.getString("formName"));
+						+ formName);
 				// logger.info("value of +++     " +
 				// jsonObject.getString("formInstance"));
 
@@ -136,7 +136,7 @@ public class FormSubmissionController {
 						.getJSONObject("formInstance").getJSONObject("form")
 						.getJSONArray("fields");
 
-				// logger.info("value of feilds ++++++++++" + fieldsJsonArray);
+				logger.info("value of feilds ++++++++++" + fieldsJsonArray);
 				// String entityEcId,ancVisitEntityId,anmId,isCon;
 				for (int i = 0; i < fieldsJsonArray.length(); i++) {
 
