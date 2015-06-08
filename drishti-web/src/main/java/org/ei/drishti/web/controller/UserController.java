@@ -28,13 +28,13 @@ public class UserController {
 	 private static Logger logger = LoggerFactory.getLogger(UserController.class.toString());
     private String drishtiSiteUrl;
     private DrishtiAuthenticationProvider drishtiAuthenticationProvider;
-   private AllEligibleCouples allEligibleCouple;
+  // private AllEligibleCouples allEligibleCouple;
     @Autowired
     public UserController(@Value("#{drishti['drishti.site.url']}") String drishtiSiteUrl,
                           DrishtiAuthenticationProvider drishtiAuthenticationProvider) {
         this.drishtiSiteUrl = drishtiSiteUrl;
         this.drishtiAuthenticationProvider = drishtiAuthenticationProvider;
-        this.allEligibleCouple = allEligibleCouple;
+       // this.allEligibleCouple = allEligibleCouple;
         
     }
 
@@ -62,7 +62,7 @@ public class UserController {
     
     
    //new method 
-    @RequestMapping(method = RequestMethod.GET, value = "/phc-details")
+   /* @RequestMapping(method = RequestMethod.GET, value = "/phc-details")
     public ResponseEntity<PhcDetail> phcDetail(@RequestParam("phc") String phcidentifier)
     
     {
@@ -73,7 +73,7 @@ public class UserController {
     	
     	return new ResponseEntity<>(new PhcDetail(phc.id(), phc.name()), allowOrigin(drishtiSiteUrl), OK);
     
-    }
+    }*/
     
     
     

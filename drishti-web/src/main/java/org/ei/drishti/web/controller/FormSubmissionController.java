@@ -109,41 +109,56 @@ public class FormSubmissionController {
 
 			while (itr.hasNext()) {
 				Object object = (Object) itr.next();
-				String jsonstr=object.toString();
+				String jsonstr = object.toString();
+
 				logger.info("value of +++     " + jsonstr);
-				JSONObject dataObject=new JSONObject(jsonstr);
-				
-//				logger.info("value of +++     " + jsonObject.getString("formInstance"));
-				JSONArray fieldsJsonArray=dataObject.getJSONObject("formInstance").getJSONObject("form").getJSONArray("fields");
+
+				JSONObject dataObject = new JSONObject(jsonstr);
+
+				logger.info("value of dataobject" + dataObject);
+
+				// logger.info("value of +++     " +
+				// jsonObject.getString("formInstance"));
+
+				JSONArray fieldsJsonArray = dataObject
+						.getJSONObject("formInstance").getJSONObject("form")
+						.getJSONArray("fields");
+
+				logger.info("value of feilds ++++++++++" + fieldsJsonArray);
+
 				for (int i = 0; i < fieldsJsonArray.length(); i++) {
-					JSONObject jsonObject=fieldsJsonArray.getJSONObject(i);
-					if(jsonObject.getString("name").equals("id")){
-						logger.info("res" +jsonObject.getString("value"));
+
+					JSONObject jsonObject = fieldsJsonArray.getJSONObject(i);
+
+					if (jsonObject.getString("name").equals("isHighRisk")) {
+						logger.info("res+++++" + jsonObject.getString("value"));
+
+						// if(fieldsJsonArray.getString(""))
 					}
 				}
-				
+
 				// if(object.equals("anc_visit"))
-//				Gson gson = new Gson();
-//				// JsonElement m = gson.toJsonTree(object);
-//				// logger.info("convert to json ----------" + m);
-//
-//				JsonObject jo = (JsonObject) gson.toJsonTree(object);
-////				
-//				JsonElement je = jo.get("anmId");
-//				JsonElement je2 = jo.get("formInstance");
-//				
-//				JsonObject je3 = (JsonObject) jo.get("formInstance");
-//				JsonElement je4 = je3.get("fields");
-//
-//				logger.info("+++Json Tree +++     " + jo);
-//				logger.info("+++anmId +++ " + je);
-//				logger.info("value of formInstance +++ " + je2);
-//				logger.info("value of formInstance JSON Object +++ " + je3);
-//				logger.info("value of fields +++ " + je4);
-//				
-//				
-//				
-				
+				// Gson gson = new Gson();
+				// // JsonElement m = gson.toJsonTree(object);
+				// // logger.info("convert to json ----------" + m);
+				//
+				// JsonObject jo = (JsonObject) gson.toJsonTree(object);
+				// //
+				// JsonElement je = jo.get("anmId");
+				// JsonElement je2 = jo.get("formInstance");
+				//
+				// JsonObject je3 = (JsonObject) jo.get("formInstance");
+				// JsonElement je4 = je3.get("fields");
+				//
+				// logger.info("+++Json Tree +++     " + jo);
+				// logger.info("+++anmId +++ " + je);
+				// logger.info("value of formInstance +++ " + je2);
+				// logger.info("value of formInstance JSON Object +++ " + je3);
+				// logger.info("value of fields +++ " + je4);
+				//
+				//
+				//
+
 			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
