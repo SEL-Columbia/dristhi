@@ -42,7 +42,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 public class FormSubmissionController {
-	
+
 	private static Logger logger = LoggerFactory
 			.getLogger(FormSubmissionController.class.toString());
 	private FormSubmissionService formSubmissionService;
@@ -100,7 +100,7 @@ public class FormSubmissionController {
 	public ResponseEntity<HttpStatus> submitForms(
 			@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
 
-		String isCon=null;
+	
 		try {
 			if (formSubmissionsDTO.isEmpty()) {
 				return new ResponseEntity<>(BAD_REQUEST);
@@ -120,67 +120,33 @@ public class FormSubmissionController {
 
 				// logger.info("value of dataobject" + dataObject);
 
-			
 				// logger.info("value of entityid "+
 				// dataObject.getString("entityId"));
 				// String formName=dataObject.getString("formName");
 				// String entityId= dataObject.getString("entityId");
 				// String anmid= dataObject.getString("anmId");
-			String	formName = dataObject.getString("formName");
-				logger.info("value of formname "
-						+ formName);
-				// logger.info("value of +++     " +
-				// jsonObject.getString("formInstance"));
+				String formName = dataObject.getString("formName");
+				logger.info("value of formname " + formName);
+				if (formName.equalsIgnoreCase("anc_visit")) {
 
-				JSONArray fieldsJsonArray = dataObject
-						.getJSONObject("formInstance").getJSONObject("form")
-						.getJSONArray("fields");
+					JSONArray fieldsJsonArray = dataObject
+							.getJSONObject("formInstance")
+							.getJSONObject("form").getJSONArray("fields");
 
-				logger.info("value of feilds ++++++++++" + fieldsJsonArray);
-				// String entityEcId,ancVisitEntityId,anmId,isCon;
-				for (int i = 0; i < fieldsJsonArray.length(); i++) {
+					logger.info("value of feilds ++++++++++" + fieldsJsonArray);
+					// String entityEcId,ancVisitEntityId,anmId,isCon;
+					for (int i = 0; i < fieldsJsonArray.length(); i++) {
 
-					JSONObject jsonObject = fieldsJsonArray.getJSONObject(i);
+						JSONObject jsonObject = fieldsJsonArray
+								.getJSONObject(i);
+						
+						if (jsonObject.getString("name").equals(
+								"isConsultDoctor")) {
 
-					if (jsonObject.getString("name").equals("isConsultDoctor")) {
-
-						isCon = jsonObject.getString("value");
-						 logger.info("res+++++" +isCon);
+						String	isCon = jsonObject.getString("value");
+							logger.info("res+++++" + isCon);
+						}
 					}
-					/*
-					 * switch (jsonObject.getString("name")) { case "ecId":
-					 * entityEcId=jsonObject.getString("value");
-					 * logger.info("res+++++" + jsonObject.getString("value"));
-					 * case "isConsultDoctor":
-					 * isCon=jsonObject.getString("value");
-					 * logger.info("res+++++" + jsonObject.getString("value"));
-					 * 
-					 * break;
-					 * 
-					 * default: break;
-					 */
-					// }
-					/*
-					 * String entityEcId ;
-					 * 
-					 * if (jsonObject.getString("name").equals("ecid")) {
-					 * entityEcId=jsonObject.getString("value"); }
-					 * 
-					 * if
-					 * (jsonObject.getString("name").equals("isConsultDoctor"))
-					 * {
-					 * 
-					 * 
-					 * isCon=jsonObject.getString("value"); }
-					 */
-					if (formName.equalsIgnoreCase("anc_visit")
-							&& isCon.equals(
-									"yes")) {
-logger.info("yes++++++++++++++");
-					}
-
-					// formSubmissionService.insertDatas(entityId,entityEcId,anmid,formName);
-
 				}
 
 			}
