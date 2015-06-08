@@ -121,7 +121,7 @@ public class FormSubmissionController {
 				
 				logger.info("value of formname "+ dataObject.getString("formName"));
 				logger.info("value of entityid "+ dataObject.getString("entityId"));
-                String formname=dataObject.getString("formnNmae");
+                String formname=dataObject.getString("formnName");
 
 				// logger.info("value of +++     " +
 				// jsonObject.getString("formInstance"));
