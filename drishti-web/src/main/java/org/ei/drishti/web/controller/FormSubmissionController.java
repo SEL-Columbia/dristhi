@@ -42,6 +42,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 public class FormSubmissionController {
+	String formName;
+	String isCon;
 	private static Logger logger = LoggerFactory
 			.getLogger(FormSubmissionController.class.toString());
 	private FormSubmissionService formSubmissionService;
@@ -98,6 +100,8 @@ public class FormSubmissionController {
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/form-submissions")
 	public ResponseEntity<HttpStatus> submitForms(
 			@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
+
+		
 		try {
 			if (formSubmissionsDTO.isEmpty()) {
 				return new ResponseEntity<>(BAD_REQUEST);
@@ -111,19 +115,21 @@ public class FormSubmissionController {
 				Object object = (Object) itr.next();
 				String jsonstr = object.toString();
 
-				//logger.info("value of +++     " + jsonstr);
-				
-				
+				// logger.info("value of +++     " + jsonstr);
 
 				JSONObject dataObject = new JSONObject(jsonstr);
 
-				//logger.info("value of dataobject" + dataObject);
-				
-				logger.info("value of formname "+ dataObject.getString("formName"));
-				logger.info("value of entityid "+ dataObject.getString("entityId"));
-               // String formName=dataObject.getString("formName");
-                String entityId=     dataObject.getString("entityId");
-                String anmid=     dataObject.getString("anmId");
+				// logger.info("value of dataobject" + dataObject);
+
+				logger.info("value of formname "
+						+ dataObject.getString("formName"));
+				// logger.info("value of entityid "+
+				// dataObject.getString("entityId"));
+				// String formName=dataObject.getString("formName");
+				// String entityId= dataObject.getString("entityId");
+				// String anmid= dataObject.getString("anmId");
+				formName = dataObject.getString("formName");
+
 				// logger.info("value of +++     " +
 				// jsonObject.getString("formInstance"));
 
@@ -131,42 +137,54 @@ public class FormSubmissionController {
 						.getJSONObject("formInstance").getJSONObject("form")
 						.getJSONArray("fields");
 
-				//logger.info("value of feilds ++++++++++" + fieldsJsonArray);
-
+				// logger.info("value of feilds ++++++++++" + fieldsJsonArray);
+				// String entityEcId,ancVisitEntityId,anmId,isCon;
 				for (int i = 0; i < fieldsJsonArray.length(); i++) {
 
 					JSONObject jsonObject = fieldsJsonArray.getJSONObject(i);
-					if (jsonObject.getString("name").contains("ecId")) {	
-					if (jsonObject.getString("name").contains("isConsultDoctor")) {
-						
-						String str=jsonObject.getString("value");
-						logger.info("res+++++" + jsonObject.getString("value"));
-					
-							
-							logger.info("ecid+++++" + jsonObject.getString("value"));
-							
-							String entityEcId=jsonObject.getString("value");
-							 String formName=dataObject.getString("formName");
-						if(formName.equalsIgnoreCase("anc_visit")&&str.equalsIgnoreCase("yes")){
-							
-							
-							
-					logger.info("formname+++++"+formName);
-					logger.info("isconsultdoctor"+str);
-							
-					formSubmissionService.insertDatas(entityId,entityEcId,anmid,formName);	
-							
-						}
-						
-						
-						
-					
+
+					if (jsonObject.getString("name").equals("isConsultDoctor")) {
+
+						isCon = jsonObject.getString("value");
 					}
-				}
+					/*
+					 * switch (jsonObject.getString("name")) { case "ecId":
+					 * entityEcId=jsonObject.getString("value");
+					 * logger.info("res+++++" + jsonObject.getString("value"));
+					 * case "isConsultDoctor":
+					 * isCon=jsonObject.getString("value");
+					 * logger.info("res+++++" + jsonObject.getString("value"));
+					 * 
+					 * break;
+					 * 
+					 * default: break;
+					 */
+					// }
+					/*
+					 * String entityEcId ;
+					 * 
+					 * if (jsonObject.getString("name").equals("ecid")) {
+					 * entityEcId=jsonObject.getString("value"); }
+					 * 
+					 * if
+					 * (jsonObject.getString("name").equals("isConsultDoctor"))
+					 * {
+					 * 
+					 * 
+					 * isCon=jsonObject.getString("value"); }
+					 */
+					if (formName.equalsIgnoreCase("anc_visit")
+							&& isCon.equals(
+									"yes")) {
+logger.info("yes++++++++++++++");
+					}
+
+					// formSubmissionService.insertDatas(entityId,entityEcId,anmid,formName);
 
 				}
 
 			}
+
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
 			logger.debug(format(
