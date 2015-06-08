@@ -112,10 +112,15 @@ public class FormSubmissionController {
 				String jsonstr = object.toString();
 
 				logger.info("value of +++     " + jsonstr);
+				
+				
 
 				JSONObject dataObject = new JSONObject(jsonstr);
 
 				logger.info("value of dataobject" + dataObject);
+				
+				logger.info("value of formname "+ dataObject.getString("formName"));
+				logger.info("value of formname "+ dataObject.getString("entityId"));
 
 				// logger.info("value of +++     " +
 				// jsonObject.getString("formInstance"));
@@ -130,10 +135,12 @@ public class FormSubmissionController {
 
 					JSONObject jsonObject = fieldsJsonArray.getJSONObject(i);
 
-					if (jsonObject.getString("name").equals("isHighRisk")) {
+					if (jsonObject.getString("name").equals("isConsultDoctor")) {
+						
+						String str=jsonObject.getString("value");
+						
 						logger.info("res+++++" + jsonObject.getString("value"));
-
-						// if(fieldsJsonArray.getString(""))
+					
 					}
 				}
 
