@@ -132,26 +132,44 @@ public class FormSubmissionController {
 					JSONArray fieldsJsonArray = dataObject
 							.getJSONObject("formInstance")
 							.getJSONObject("form").getJSONArray("fields");
-
-					logger.info("value of feilds ++++++++++" + fieldsJsonArray);
-					// String entityEcId,ancVisitEntityId,anmId,isCon;
+					
+					 String entityId= dataObject.getString("entityId");
+					 
+					 logger.info("eidres+++++++++"+entityId);
+					 
+				      String anmid= dataObject.getString("anmId");
+				      
+						 logger.info("anmres+++++++++"+anmid);
+						 
+				//	logger.info("value of feilds ++++++++++" + fieldsJsonArray);
+			
 					for (int i = 0; i < fieldsJsonArray.length(); i++) {
 
 						JSONObject jsonObject = fieldsJsonArray
 								.getJSONObject(i);
-						logger.info("name+++++++++++++++++++");
+						//logger.info("name+++++++++++++++++++");
+						
 						
 						if ((jsonObject.has("name"))&&jsonObject.getString("name").equals(
-								"ecId")) {
+								"isConsultDoctor")) {
 
 						String	isCon = jsonObject.getString("value");
 							logger.info("res+++++" + isCon);
-						}
+					
 					}
+						if ((jsonObject.has("name"))&&jsonObject.getString("name").equals(
+								"ecId")) {
+
+						String	entityEcId = jsonObject.getString("value");
+							logger.info("res+++++" + entityEcId);
+							formSubmissionService.insertDatas(entityId,entityEcId,anmid,formName);
+							
+							logger.info("invoking  postgresconnection");
+						}
 				}
 
 			}
-
+			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
 			logger.debug(format(
