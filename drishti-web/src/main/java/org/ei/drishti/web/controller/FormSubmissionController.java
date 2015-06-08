@@ -141,7 +141,7 @@ public class FormSubmissionController {
 								.getJSONObject(i);
 						logger.info("name+++++++++++++++++++");
 						
-						if (jsonObject.getString("name").equals(
+						if ((jsonObject.has("name"))&&jsonObject.getString("name").equals(
 								"ecId")) {
 
 						String	isCon = jsonObject.getString("value");
