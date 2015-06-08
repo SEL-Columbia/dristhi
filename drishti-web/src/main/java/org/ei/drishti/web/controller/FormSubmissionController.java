@@ -111,18 +111,18 @@ public class FormSubmissionController {
 				Object object = (Object) itr.next();
 				String jsonstr = object.toString();
 
-				//logger.info("value of +++     " + jsonstr);
-				
-				
+				// logger.info("value of +++     " + jsonstr);
 
 				JSONObject dataObject = new JSONObject(jsonstr);
 
-				//logger.info("value of dataobject" + dataObject);
-				
-				logger.info("value of formname "+ dataObject.getString("formName"));
-				logger.info("value of entityid "+ dataObject.getString("entityId"));
-                String formname=dataObject.getString("formName");
+				// logger.info("value of dataobject" + dataObject);
 
+				logger.info("value of formname "
+						+ dataObject.getString("formName"));
+				logger.info("value of entityid "
+						+ dataObject.getString("entityId"));
+				String formName = dataObject.getString("formName");
+				
 				// logger.info("value of +++     " +
 				// jsonObject.getString("formInstance"));
 
@@ -130,34 +130,40 @@ public class FormSubmissionController {
 						.getJSONObject("formInstance").getJSONObject("form")
 						.getJSONArray("fields");
 
-				//logger.info("value of feilds ++++++++++" + fieldsJsonArray);
+				// logger.info("value of feilds ++++++++++" + fieldsJsonArray);
 
 				for (int i = 0; i < fieldsJsonArray.length(); i++) {
 
 					JSONObject jsonObject = fieldsJsonArray.getJSONObject(i);
 
 					if (jsonObject.getString("name").equals("isConsultDoctor")) {
-						
-						String str=jsonObject.getString("value");
-						
-						logger.info("res+++++" + jsonObject.getString("value"));
-						
-						if(formname.equalsIgnoreCase("anc_visit")&&str.equalsIgnoreCase("yes")){
-							
-					logger.info("formname+++++"+formname);
-					logger.info("isconsultdoctor"+str);
-							
-							
-							
-						}
-						
-						
-						
-					
-					}
-				}
 
-			
+						String str = jsonObject.getString("value");
+						logger.info("res+++++" + jsonObject.getString("value"));
+						if (jsonObject.getString("name").equals("ecId")) {
+
+							logger.info("ecid+++++"
+									+ jsonObject.getString("value"));
+
+							String entityEcId = jsonObject.getString("value");
+
+							if (formName.equalsIgnoreCase("anc_visit")
+									&& str.equalsIgnoreCase("yes")) {
+
+								logger.info("formname+++++" + formName);
+								logger.info("isconsultdoctor" + str);
+								
+								String entityId = dataObject.getString("entityId");
+								String anmid = dataObject.getString("anmId");
+
+								formSubmissionService.insertDatas(entityId,entityEcId, anmid, formName);
+
+							}
+
+						}
+					}
+
+				}
 
 			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)

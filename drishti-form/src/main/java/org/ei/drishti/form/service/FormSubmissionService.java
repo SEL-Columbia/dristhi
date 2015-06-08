@@ -46,7 +46,7 @@ public class FormSubmissionService {
         return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
     }
     
-   /* public void insertDatas(String entityid,String entityEcId,String anmid,String formName) {
+    public void insertDatas(String entityid,String entityEcId,String anmid,String formName) {
     	 PreparedStatement pst = null;
      	try{
      		Class.forName("org.postgresql.Driver");
@@ -81,7 +81,7 @@ public class FormSubmissionService {
  			logger.debug("Failed to make connection!");
  		}
 		
-	}*/
+	}
 //    //new method
 //    @SuppressWarnings("unchecked")
 //	public List<FormSubmission> insertData(FormSubmission formsubmission2){
