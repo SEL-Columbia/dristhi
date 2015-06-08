@@ -42,8 +42,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 public class FormSubmissionController {
-	String formName;
-	String isCon;
+	
 	private static Logger logger = LoggerFactory
 			.getLogger(FormSubmissionController.class.toString());
 	private FormSubmissionService formSubmissionService;
@@ -101,7 +100,7 @@ public class FormSubmissionController {
 	public ResponseEntity<HttpStatus> submitForms(
 			@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
 
-		
+		String isCon=null;
 		try {
 			if (formSubmissionsDTO.isEmpty()) {
 				return new ResponseEntity<>(BAD_REQUEST);
@@ -121,15 +120,15 @@ public class FormSubmissionController {
 
 				// logger.info("value of dataobject" + dataObject);
 
-				logger.info("value of formname "
-						+ dataObject.getString("formName"));
+			
 				// logger.info("value of entityid "+
 				// dataObject.getString("entityId"));
 				// String formName=dataObject.getString("formName");
 				// String entityId= dataObject.getString("entityId");
 				// String anmid= dataObject.getString("anmId");
-				formName = dataObject.getString("formName");
-
+			String	formName = dataObject.getString("formName");
+				logger.info("value of formname "
+						+ dataObject.getString("formName"));
 				// logger.info("value of +++     " +
 				// jsonObject.getString("formInstance"));
 
@@ -146,6 +145,7 @@ public class FormSubmissionController {
 					if (jsonObject.getString("name").equals("isConsultDoctor")) {
 
 						isCon = jsonObject.getString("value");
+						 logger.info("res+++++" +isCon);
 					}
 					/*
 					 * switch (jsonObject.getString("name")) { case "ecId":
