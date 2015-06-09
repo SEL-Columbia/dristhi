@@ -64,7 +64,7 @@ public class FormSubmissionService {
 	 */
 
 	public void requestConsultationTest(String visitentityid, String entityidEC,
-			String anmid, String visittype, String clientversion,String serverversion) {
+			String anmid, String visittype) {
 		PreparedStatement pst = null;
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -80,7 +80,7 @@ public class FormSubmissionService {
 					"postgres", "password");
 
 			String stm1 = "select phc FROM report.dim_anm WHERE anmidentifier='anmid'";
-
+			//String stm2 = "select name FROM report.dim_phc WHERE id='phc'";
 			PreparedStatement stmt = con.prepareStatement(stm1);
 
 			System.out.println("Inside Select");
@@ -90,7 +90,7 @@ public class FormSubmissionService {
 
 				
 				String phc = resultSet.getString("phc");
-				
+			
 				String stm = "insert into report.poc_table VALUES(?, ?, ?, ?, ?)";
 				pst = con.prepareStatement(stm);
 				pst.setString(1, visittype);
@@ -98,8 +98,7 @@ public class FormSubmissionService {
 				pst.setString(3, anmid);
 				pst.setString(4, entityidEC);
 				pst.setString(5, phc);
-				pst.setString(6, clientversion);
-				pst.setString(7, serverversion);
+				
 				
 				pst.executeUpdate();
 			}

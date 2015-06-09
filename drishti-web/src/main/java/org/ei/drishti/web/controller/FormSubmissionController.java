@@ -130,13 +130,7 @@ public class FormSubmissionController {
 					
 
 				
-					String serverversion = dataObject.getString("serverVersion");
-					
-					logger.info("ser+++++++++" +serverversion );
-					
-					
-					String clientversion = dataObject.getString("clientVersion");
-					logger.info("clie+++++++++" +clientversion);
+				
 					
 
 					for (int i = 0; i < fieldsJsonArray.length(); i++) {
@@ -159,7 +153,7 @@ public class FormSubmissionController {
 											.getString("value");
 									logger.info("res+++++" + entityidEC);
 									formSubmissionService.requestConsultationTest(visitentityid,
-											entityidEC, anmid, visittype, serverversion, clientversion );
+											entityidEC, anmid, visittype );
 
 									logger.info("invoking  postgresconnection");
 								}
