@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
@@ -24,107 +25,138 @@ import static java.util.Collections.sort;
 
 @Service
 public class FormSubmissionService {
-    private static Logger logger = LoggerFactory.getLogger(FormSubmissionService.class.toString());
-    private AllFormSubmissions allFormSubmissions;
-   
+	private static Logger logger = LoggerFactory
+			.getLogger(FormSubmissionService.class.toString());
+	private AllFormSubmissions allFormSubmissions;
 
-    @Autowired
-    public FormSubmissionService(AllFormSubmissions allFormSubmissions) {
-        this.allFormSubmissions = allFormSubmissions;
-    }
-
-    public List<FormSubmissionDTO> fetch(long formFetchToken) {
-        return with(allFormSubmissions.findByServerVersion(formFetchToken)).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
-            @Override
-            public FormSubmissionDTO convert(FormSubmission submission) {
-                return FormSubmissionConverter.from(submission);
-            }
-        });
-    }
-
-    public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version, Integer batchSize) {
-        return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
-    }
-    
-    public void insertDatas(String entityid,String entityEcId,String anmid,String formName) {
-    	 PreparedStatement pst = null;
-     	try{
-     		Class.forName("org.postgresql.Driver");
-             } catch (ClassNotFoundException e) {
-             	
-             	logger.debug("connection creation failed");
- 			e.printStackTrace();
- 			}
-              Connection con = null;
-              try {
-             con = DriverManager.getConnection(
- 					"jdbc:postgresql://127.0.0.1:5432/drishti", "postgres",
- 					"password");
-            // String stm = "insert into report.poc_table(formname, entityId, anmid, entityEcId) VALUES(?, ?, ?, ?)";
-             String stm = "insert into report.poc_table VALUES(?, ?, ?, ?)";
-             
-             pst = con.prepareStatement(stm);
-             pst.setString(1, formName);
-             pst.setString(2, entityid);
-             pst.setString(3, anmid);
-             pst.setString(4, entityEcId);
-             pst.executeUpdate();
-
- 		    } catch (SQLException e) {
- 		    	logger.info("Record not inserted");
-             e.printStackTrace();
- 			
- 		}
-          if (con != null) {
- 			logger.info("You made it, take control your database now!");
- 		} else {
- 			logger.debug("Failed to make connection!");
- 		}
-		
+	@Autowired
+	public FormSubmissionService(AllFormSubmissions allFormSubmissions) {
+		this.allFormSubmissions = allFormSubmissions;
 	}
-//    //new method
-//    @SuppressWarnings("unchecked")
-//	public List<FormSubmission> insertData(FormSubmission formsubmission2){
-//    	
-//         //return List<formSubmission2>;
-//		return (List<FormSubmission>) formsubmission2;
-//	}
-//    	
-    
 
+	public List<FormSubmissionDTO> fetch(long formFetchToken) {
+		return with(allFormSubmissions.findByServerVersion(formFetchToken))
+				.convert(new Converter<FormSubmission, FormSubmissionDTO>() {
+					@Override
+					public FormSubmissionDTO convert(FormSubmission submission) {
+						return FormSubmissionConverter.from(submission);
+					}
+				});
+	}
 
-    public List<FormSubmission> getAllSubmissions(Long version, Integer batchSize) {
-        return allFormSubmissions.allFormSubmissions(version, batchSize);
-    }
+	public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier,
+			Long version, Integer batchSize) {
+		return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier,
+				version, batchSize);
+	}
 
-    public void submit(List<FormSubmissionDTO> formSubmissionsDTO) {
-        List<FormSubmission> formSubmissions = with(formSubmissionsDTO).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
-            @Override
-            public FormSubmission convert(FormSubmissionDTO submission) {
-                return FormSubmissionConverter.toFormSubmission(submission);
-            }
-        });
+	/**
+	 * @author Suneel.S
+	 * 
+	 * @param entityid
+	 * @param entityEcId
+	 * @param anmid
+	 * @param formName
+	 * 
+	 * 
+	 *            Description: Test method to save isConsultation = true for
+	 *            ANC, PNC and Child visits
+	 */
 
-        sort(formSubmissions, timeStampComparator());
-        for (FormSubmission submission : formSubmissions) {
-            if (allFormSubmissions.exists(submission.instanceId())) {
-                logger.warn(format("Received form submission that already exists. Skipping. Submission: {0}", submission));
-                continue;
-            }
-            logger.info(format("Saving form {0} with instance Id: {1} and for entity Id: {2}",
-                    submission.formName(), submission.instanceId(), submission.entityId()));
-            submission.setServerVersion(DateUtil.millis());
-            allFormSubmissions.add(submission);
-        }
-    }
+	public void requestConsultationTest(String visitentityid, String entityidEC,
+			String anmid, String visittype, String clientversion,String serverversion) {
+		PreparedStatement pst = null;
+		try {
+			Class.forName("org.postgresql.Driver");
+		} catch (ClassNotFoundException e) {
 
-    private Comparator<FormSubmission> timeStampComparator() {
-        return new Comparator<FormSubmission>() {
-            public int compare(FormSubmission firstSubmission, FormSubmission secondSubmission) {
-                long firstTimestamp = firstSubmission.clientVersion();
-                long secondTimestamp = secondSubmission.clientVersion();
-                return firstTimestamp == secondTimestamp ? 0 : firstTimestamp < secondTimestamp ? -1 : 1;
-            }
-        };
-    }
+			logger.debug("connection creation failed");
+			e.printStackTrace();
+		}
+		Connection con = null;
+		try {
+			con = DriverManager.getConnection(
+					"jdbc:postgresql://http://192.168.90.158:5432/drishti",
+					"postgres", "password");
+
+			String stm1 = "select phc FROM report.dim_anm WHERE anmidentifier='anmid'";
+
+			PreparedStatement stmt = con.prepareStatement(stm1);
+
+			System.out.println("Inside Select");
+
+			ResultSet resultSet = stmt.executeQuery();
+			while (resultSet.next()) {
+
+				
+				String phc = resultSet.getString("phc");
+				
+				String stm = "insert into report.poc_table VALUES(?, ?, ?, ?, ?)";
+				pst = con.prepareStatement(stm);
+				pst.setString(1, visittype);
+				pst.setString(2, visitentityid);
+				pst.setString(3, anmid);
+				pst.setString(4, entityidEC);
+				pst.setString(5, phc);
+				pst.setString(6, clientversion);
+				pst.setString(7, serverversion);
+				
+				pst.executeUpdate();
+			}
+		} catch (SQLException e) {
+			logger.info("Record not inserted");
+			e.printStackTrace();
+
+		}
+		if (con != null) {
+			logger.info("You made it, take control your database now!");
+		} else {
+			logger.debug("Failed to make connection!");
+		}
+
+	}
+
+	public List<FormSubmission> getAllSubmissions(Long version,
+			Integer batchSize) {
+		return allFormSubmissions.allFormSubmissions(version, batchSize);
+	}
+
+	public void submit(List<FormSubmissionDTO> formSubmissionsDTO) {
+		List<FormSubmission> formSubmissions = with(formSubmissionsDTO)
+				.convert(new Converter<FormSubmissionDTO, FormSubmission>() {
+					@Override
+					public FormSubmission convert(FormSubmissionDTO submission) {
+						return FormSubmissionConverter
+								.toFormSubmission(submission);
+					}
+				});
+
+		sort(formSubmissions, timeStampComparator());
+		for (FormSubmission submission : formSubmissions) {
+			if (allFormSubmissions.exists(submission.instanceId())) {
+				logger.warn(format(
+						"Received form submission that already exists. Skipping. Submission: {0}",
+						submission));
+				continue;
+			}
+			logger.info(format(
+					"Saving form {0} with instance Id: {1} and for entity Id: {2}",
+					submission.formName(), submission.instanceId(),
+					submission.entityId()));
+			submission.setServerVersion(DateUtil.millis());
+			allFormSubmissions.add(submission);
+		}
+	}
+
+	private Comparator<FormSubmission> timeStampComparator() {
+		return new Comparator<FormSubmission>() {
+			public int compare(FormSubmission firstSubmission,
+					FormSubmission secondSubmission) {
+				long firstTimestamp = firstSubmission.clientVersion();
+				long secondTimestamp = secondSubmission.clientVersion();
+				return firstTimestamp == secondTimestamp ? 0
+						: firstTimestamp < secondTimestamp ? -1 : 1;
+			}
+		};
+	}
 }

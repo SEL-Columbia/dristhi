@@ -42,7 +42,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 public class FormSubmissionController {
-
+	String isCon = null;
 	private static Logger logger = LoggerFactory
 			.getLogger(FormSubmissionController.class.toString());
 	private FormSubmissionService formSubmissionService;
@@ -64,10 +64,7 @@ public class FormSubmissionController {
 			@RequestParam(value = "batch-size", required = false) Integer batchSize) {
 		List<FormSubmission> newSubmissionsForANM = formSubmissionService
 				.getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
-		// logger.info("Hello 1++++++++++++++++++++++++++++++++++++++"+newSubmissionsForANM.size()+"---------------");
-		// FormSubmission formSubmission = newSubmissionsForANM.get(0);
-		// logger.info(formSubmission.entityId()+"Hello 2++++++++++++++++++++++++++++++++++++++"+formSubmission.formName()
-		// +"***********"+formSubmission.getField("isConsultDoctor"));
+	
 
 		return with(newSubmissionsForANM).convert(
 				new Converter<FormSubmission, FormSubmissionDTO>()
@@ -100,7 +97,6 @@ public class FormSubmissionController {
 	public ResponseEntity<HttpStatus> submitForms(
 			@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
 
-	
 		try {
 			if (formSubmissionsDTO.isEmpty()) {
 				return new ResponseEntity<>(BAD_REQUEST);
@@ -114,61 +110,69 @@ public class FormSubmissionController {
 				Object object = (Object) itr.next();
 				String jsonstr = object.toString();
 
-				// logger.info("value of +++     " + jsonstr);
-
 				JSONObject dataObject = new JSONObject(jsonstr);
 
-				// logger.info("value of dataobject" + dataObject);
+				String visittype = dataObject.getString("formName");
+				logger.info("value of formname " + visittype);
+				if (visittype.equalsIgnoreCase("anc_visit")||visittype.equalsIgnoreCase("pnc_visit")||visittype.equalsIgnoreCase("child")) {
 
-				// logger.info("value of entityid "+
-				// dataObject.getString("entityId"));
-				// String formName=dataObject.getString("formName");
-				// String entityId= dataObject.getString("entityId");
-				// String anmid= dataObject.getString("anmId");
-				String formName = dataObject.getString("formName");
-				logger.info("value of formname " + formName);
-				if (formName.equalsIgnoreCase("anc_visit")) {
-				
 					JSONArray fieldsJsonArray = dataObject
 							.getJSONObject("formInstance")
 							.getJSONObject("form").getJSONArray("fields");
+
+					String visitentityid = dataObject.getString("entityId");
+
+					logger.info("eidres+++++++++" + visitentityid);
+
+					String anmid = dataObject.getString("anmId");
+
+					logger.info("anmres+++++++++" + anmid);
 					
-					 String entityId= dataObject.getString("entityId");
-					 
-					 logger.info("eidres+++++++++"+entityId);
-					 
-				      String anmid= dataObject.getString("anmId");
-				      
-						 logger.info("anmres+++++++++"+anmid);
-						 
-				//	logger.info("value of feilds ++++++++++" + fieldsJsonArray);
-			
+
+				
+					String serverversion = dataObject.getString("serverversion");
+					
+					logger.info("ser+++++++++" +serverversion );
+					
+					
+					String clientversion = dataObject.getString("clientversion");
+					logger.info("clie+++++++++" +clientversion);
+					
+
 					for (int i = 0; i < fieldsJsonArray.length(); i++) {
 
 						JSONObject jsonObject = fieldsJsonArray
-								.getJSONObject(i);
-						//logger.info("name+++++++++++++++++++");
-						
-						
-						if ((jsonObject.has("name"))&&jsonObject.getString("name").equals(
-								"isConsultDoctor")) {
+								.getJSONObject(i); 
 
-						String	isCon = jsonObject.getString("value");
-							logger.info("res+++++" + isCon);
-					
-					}
-						if ((jsonObject.has("name"))&&jsonObject.getString("name").equals(
-								"ecId")) {
+						if ((jsonObject.has("name"))
+								&& jsonObject.getString("name").equals(
+										"isConsultDoctor")) {
 
-						String	entityEcId = jsonObject.getString("value");
-							logger.info("res+++++" + entityEcId);
-							formSubmissionService.insertDatas(entityId,entityEcId,anmid,formName);
-							
-							logger.info("invoking  postgresconnection");
+							isCon = jsonObject.getString("value");
+							if (isCon.equalsIgnoreCase("yes")) {
+
+								if ((jsonObject.has("name"))
+										&& jsonObject.getString("name").equals(
+												"ecId")) {
+
+									String entityidEC = jsonObject
+											.getString("value");
+									logger.info("res+++++" + entityidEC);
+									formSubmissionService.requestConsultationTest(visitentityid,
+											entityidEC, anmid, visittype, serverversion, clientversion );
+
+									logger.info("invoking  postgresconnection");
+								}
+
+							} else {
+
+							}
+
 						}
-				}
 
-			}
+					}
+
+				}
 			}
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
