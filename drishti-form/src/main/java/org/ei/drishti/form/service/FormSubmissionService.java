@@ -83,7 +83,7 @@ public class FormSubmissionService {
 			PreparedStatement phcNameQuery = con.prepareStatement(phcName);
 			ResultSet resultSet = phcNameQuery.executeQuery();
 			while (resultSet.next()) {
-				String phc = resultSet.getString("phc");
+				String phc_name = resultSet.getString("name");
 			
 				String stm = "insert into report.poc_table VALUES(?,?,?,?,?,?)";
 				String defaultLevel = "level1";
@@ -94,7 +94,7 @@ public class FormSubmissionService {
 				pst.setString(4, anmid);
 				pst.setString(5, defaultLevel);
 				pst.setString(9, visittype);
-				pst.setString(10, phc);
+				pst.setString(10,phc_name);
 				
 				
 				pst.executeUpdate();
