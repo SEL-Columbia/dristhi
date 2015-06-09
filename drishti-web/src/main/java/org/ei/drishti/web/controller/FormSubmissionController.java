@@ -138,7 +138,9 @@ public class FormSubmissionController {
 								&& jsonObject.getString("name").equals(
 										"isConsultDoctor")) {
 
-							isCon = jsonObject.getString("value");
+							isCon = (jsonObject.has("value") && jsonObject
+									.getString("value") != null) ? jsonObject
+									.getString("value") : "";
 
 							logger.info("res+++++" + isCon);
 						}
