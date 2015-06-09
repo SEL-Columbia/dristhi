@@ -76,28 +76,25 @@ public class FormSubmissionService {
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection(
-					"jdbc:postgresql://http://192.168.90.158:5432/drishti",
+					"jdbc:postgresql://http://192.168.90.151:5432/drishti",
 					"postgres", "password");
 
-			String stm1 = "select phc FROM report.dim_anm WHERE anmidentifier='anmid'";
-			//String stm2 = "select name FROM report.dim_phc WHERE id='phc'";
-			PreparedStatement stmt = con.prepareStatement(stm1);
-
-			System.out.println("Inside Select");
-
-			ResultSet resultSet = stmt.executeQuery();
+			String phcName = "select name from report.dim_phc where id=(select phc from report.dim_anm where anmidentifier = '"+anmid+"')";
+			PreparedStatement phcNameQuery = con.prepareStatement(phcName);
+			ResultSet resultSet = phcNameQuery.executeQuery();
 			while (resultSet.next()) {
-
-				
 				String phc = resultSet.getString("phc");
 			
-				String stm = "insert into report.poc_table VALUES(?, ?, ?, ?, ?)";
+				String stm = "insert into report.poc_table VALUES(?,?,?,?,?,?)";
+				String defaultLevel = "level1";
 				pst = con.prepareStatement(stm);
-				pst.setString(1, visittype);
+				
 				pst.setString(2, visitentityid);
-				pst.setString(3, anmid);
-				pst.setString(4, entityidEC);
-				pst.setString(5, phc);
+				pst.setString(3, entityidEC);
+				pst.setString(4, anmid);
+				pst.setString(5, defaultLevel);
+				pst.setString(9, visittype);
+				pst.setString(10, phc);
 				
 				
 				pst.executeUpdate();
