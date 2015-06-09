@@ -145,7 +145,7 @@ public class FormSubmissionController {
 							isCon = jsonObject.getString("value");
 							
 							logger.info("res+++++" + isCon);
-							
+						}
 
 								if ((jsonObject.has("name"))
 										&& jsonObject.getString("name").equals(
@@ -160,7 +160,7 @@ public class FormSubmissionController {
 									logger.info("invoking  postgresconnection");
 								}
 
-							} else {
+							}  {
 
 							}
 
@@ -168,7 +168,7 @@ public class FormSubmissionController {
 
 					}
 
-				}
+				
 			
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
