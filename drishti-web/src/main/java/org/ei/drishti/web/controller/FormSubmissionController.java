@@ -130,12 +130,12 @@ public class FormSubmissionController {
 					
 
 				
-					String serverversion = dataObject.getString("serverversion");
+					String serverversion = dataObject.getString("serverVersion");
 					
 					logger.info("ser+++++++++" +serverversion );
 					
 					
-					String clientversion = dataObject.getString("clientversion");
+					String clientversion = dataObject.getString("clientVersion");
 					logger.info("clie+++++++++" +clientversion);
 					
 
