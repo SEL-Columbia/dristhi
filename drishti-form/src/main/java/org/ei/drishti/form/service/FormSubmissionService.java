@@ -63,8 +63,8 @@ public class FormSubmissionService {
 	 *            ANC, PNC and Child visits
 	 */
 
-	public void requestConsultationTest(String visitentityid, String entityidEC,
-			String anmid, String visittype) {
+	public void requestConsultationTest(String visitentityid,
+			String entityidEC, String anmid, String visittype) {
 		PreparedStatement pst = null;
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -78,30 +78,33 @@ public class FormSubmissionService {
 			con = DriverManager.getConnection(
 					"jdbc:postgresql://http://192.168.90.151:5432/drishti",
 					"postgres", "password");
-
-			String phcName = "select name from report.dim_phc where id=(select phc from report.dim_anm where anmidentifier = '"+anmid+"')";
-			PreparedStatement phcNameQuery = con.prepareStatement(phcName);
-			ResultSet resultSet = phcNameQuery.executeQuery();
+			String phc_name = null;
+			logger.info("connection created");
+			String phcNameQuery = "select name from report.dim_phc where id=(select phc from report.dim_anm where anmidentifier = '"
+					+ anmid + "')";
+			PreparedStatement phcNamestmt = con.prepareStatement(phcNameQuery);
+			ResultSet resultSet = phcNamestmt.executeQuery();
+			logger.info("resultset created" + resultSet.getFetchSize());
 			while (resultSet.next()) {
-				String phc_name = resultSet.getString("name");
-			
-				String stm = "insert into report.poc_table VALUES(?,?,?,?,?,?)";
-				String defaultLevel = "level1";
-				pst = con.prepareStatement(stm);
-				pst.setInt(1, 5);
-				pst.setString(2, visitentityid);
-				pst.setString(3, entityidEC);
-				pst.setString(4, anmid);
-				pst.setString(5, defaultLevel);
-				pst.setInt(6,2);
-				pst.setString(7," ");
-				pst.setString(8," ");
-				pst.setString(9, visittype);
-				pst.setString(10,phc_name);
-				
-				
-				pst.executeUpdate();
+				phc_name = resultSet.getString("name");
 			}
+logger.info("phc_name+++++++++++" +phc_name);
+			String stm = "insert into report.poc_table VALUES(?,?,?,?,?,?,?,?,?,?)";
+			String defaultLevel = "level1";
+			pst = con.prepareStatement(stm);
+			pst.setInt(1, 5);
+			pst.setString(2, visitentityid);
+			pst.setString(3, entityidEC);
+			pst.setString(4, anmid);
+			pst.setString(5, defaultLevel);
+			pst.setInt(6, 2);
+			pst.setString(7, " ");
+			pst.setString(8, " ");
+			pst.setString(9, visittype);
+			pst.setString(10, phc_name);
+
+			pst.executeUpdate();
+
 		} catch (SQLException e) {
 			logger.info("Record not inserted");
 			e.printStackTrace();
