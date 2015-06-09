@@ -160,9 +160,9 @@ public class FormSubmissionController {
 									logger.info("invoking  postgresconnection");
 								}
 
-							}  {
+							}  
 
-							}
+							
 
 						}
 
