@@ -88,11 +88,14 @@ public class FormSubmissionService {
 				String stm = "insert into report.poc_table VALUES(?,?,?,?,?,?)";
 				String defaultLevel = "level1";
 				pst = con.prepareStatement(stm);
-				
+				pst.setInt(1, 5);
 				pst.setString(2, visitentityid);
 				pst.setString(3, entityidEC);
 				pst.setString(4, anmid);
 				pst.setString(5, defaultLevel);
+				pst.setInt(6,2);
+				pst.setString(7," ");
+				pst.setString(8," ");
 				pst.setString(9, visittype);
 				pst.setString(10,phc_name);
 				

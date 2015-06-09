@@ -64,7 +64,6 @@ public class FormSubmissionController {
 			@RequestParam(value = "batch-size", required = false) Integer batchSize) {
 		List<FormSubmission> newSubmissionsForANM = formSubmissionService
 				.getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
-	
 
 		return with(newSubmissionsForANM).convert(
 				new Converter<FormSubmission, FormSubmissionDTO>()
@@ -114,7 +113,9 @@ public class FormSubmissionController {
 
 				String visittype = dataObject.getString("formName");
 				logger.info("value of formname " + visittype);
-				if (visittype.equalsIgnoreCase("anc_visit")||visittype.equalsIgnoreCase("pnc_visit")||visittype.equalsIgnoreCase("child")) {
+				if (visittype.equalsIgnoreCase("anc_visit")
+						|| visittype.equalsIgnoreCase("pnc_visit")
+						|| visittype.equalsIgnoreCase("child")) {
 
 					JSONArray fieldsJsonArray = dataObject
 							.getJSONObject("formInstance")
@@ -127,49 +128,41 @@ public class FormSubmissionController {
 					String anmid = dataObject.getString("anmId");
 
 					logger.info("anmres+++++++++" + anmid);
-					
-
-				
-				
-					
 
 					for (int i = 0; i < fieldsJsonArray.length(); i++) {
 
 						JSONObject jsonObject = fieldsJsonArray
-								.getJSONObject(i); 
+								.getJSONObject(i);
 
 						if ((jsonObject.has("name"))
 								&& jsonObject.getString("name").equals(
 										"isConsultDoctor")) {
 
 							isCon = jsonObject.getString("value");
-							
+
 							logger.info("res+++++" + isCon);
 						}
 
-								if ((jsonObject.has("name"))
-										&& jsonObject.getString("name").equals(
-												"ecId")) {
+						if ((jsonObject.has("name"))
+								&& jsonObject.getString("name").equals("ecId")) {
 
-									String entityidEC = jsonObject
-											.getString("value");
-									logger.info("res+++++" + entityidEC);
-									formSubmissionService.requestConsultationTest(visitentityid,
-											entityidEC, anmid, visittype );
+							String entityidEC = (jsonObject.has("value") && jsonObject
+									.getString("value") != null) ? jsonObject
+									.getString("value") : "";
+							logger.info("res+++++" + entityidEC);
+							formSubmissionService
+									.requestConsultationTest(visitentityid,
+											entityidEC, anmid, visittype);
 
-									logger.info("invoking  postgresconnection");
-								}
-
-							}  
-
-							
-
+							logger.info("invoking  postgresconnection");
 						}
 
 					}
 
-				
-			
+				}
+
+			}
+
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
 			logger.debug(format(
