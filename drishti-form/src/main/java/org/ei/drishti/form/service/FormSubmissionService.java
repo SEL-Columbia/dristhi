@@ -77,7 +77,7 @@ public class FormSubmissionService {
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection(
-					"jdbc:postgresql://http://192.168.90.151:5432/drishti",
+					"jdbc:postgresql://192.168.90.151:5432/drishti",
 					"postgres", "password");
 			String phc_name = null;
 			logger.info("connection created");
