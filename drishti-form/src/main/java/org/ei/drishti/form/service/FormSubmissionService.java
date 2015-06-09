@@ -66,6 +66,7 @@ public class FormSubmissionService {
 	public void requestConsultationTest(String visitentityid,
 			String entityidEC, String anmid, String visittype) {
 		PreparedStatement pst = null;
+		logger.info("invoking  postgresconnection");
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {

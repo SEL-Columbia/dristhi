@@ -156,7 +156,7 @@ public class FormSubmissionController {
 									.requestConsultationTest(visitentityid,
 											entityidEC, anmid, visittype);
 
-							logger.info("invoking  postgresconnection");
+					
 						}
 
 					}
