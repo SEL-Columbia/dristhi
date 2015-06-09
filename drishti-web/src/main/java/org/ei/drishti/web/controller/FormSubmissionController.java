@@ -143,6 +143,8 @@ public class FormSubmissionController {
 										"isConsultDoctor")) {
 
 							isCon = jsonObject.getString("value");
+							
+							logger.info("res+++++" + isCon);
 							if (isCon.equalsIgnoreCase("yes")) {
 
 								if ((jsonObject.has("name"))
