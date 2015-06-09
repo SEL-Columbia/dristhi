@@ -145,7 +145,7 @@ public class FormSubmissionController {
 							isCon = jsonObject.getString("value");
 							
 							logger.info("res+++++" + isCon);
-							if (isCon.equalsIgnoreCase("yes")) {
+							
 
 								if ((jsonObject.has("name"))
 										&& jsonObject.getString("name").equals(
@@ -169,7 +169,7 @@ public class FormSubmissionController {
 					}
 
 				}
-			}
+			
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
 			logger.debug(format(
