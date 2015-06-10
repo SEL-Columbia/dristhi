@@ -95,7 +95,7 @@ public class FormSubmissionController {
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/form-submissions")
 	public ResponseEntity<HttpStatus> submitForms(
 			@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
-
+String entityidEC=null;
 		try {
 			if (formSubmissionsDTO.isEmpty()) {
 				return new ResponseEntity<>(BAD_REQUEST);
@@ -133,43 +133,48 @@ public class FormSubmissionController {
 
 						JSONObject jsonObject = fieldsJsonArray
 								.getJSONObject(i);
+						
+
+						if ((jsonObject.has("name"))
+								&& jsonObject.getString("name").equals(
+										"ecId")) {
+
+						 entityidEC = (jsonObject
+									.has("value") && jsonObject
+									.getString("value") != null) ? jsonObject
+									.getString("value") : "";
+							logger.info("res+++++" + entityidEC);
+							
+
+						}
+						
 
 						if ((jsonObject.has("name"))
 								&& jsonObject.getString("name").equals(
 										"isConsultDoctor")) {
 
-							isCon = (jsonObject.has("value") && jsonObject
+						String	 isCon = (jsonObject.has("value") && jsonObject
 									.getString("value") != null) ? jsonObject
 									.getString("value") : "";
 
 							logger.info("res1+++++" + isCon);
-						/*	if (isCon.equalsIgnoreCase("yes")) {
+							if (isCon.equalsIgnoreCase("yes")) {
 
 								logger.info(" invoking a service");
-								logger.info("res2+++++" + isCon);*/
+								logger.info("res2+++++" + isCon);
 								
-								if ((jsonObject.has("name"))
-										&& jsonObject.getString("name").equals(
-												"ecId")) {
-
-									String entityidEC = (jsonObject
-											.has("value") && jsonObject
-											.getString("value") != null) ? jsonObject
-											.getString("value") : "";
-									logger.info("res+++++" + entityidEC);
-									formSubmissionService
-											.requestConsultationTest(
-													visitentityid, entityidEC,
-													anmid, visittype);
-
-								}
+								formSubmissionService
+								.requestConsultationTest(
+										visitentityid, entityidEC,
+										anmid, visittype);
+								
 							}
 
 						}
 					}
 				}
 
-			//}
+			}
 
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
