@@ -123,11 +123,11 @@ String entityidEC=null;
 
 					String visitentityid = dataObject.getString("entityId");
 
-					logger.info("eidres+++++++++" + visitentityid);
+					
 
 					String anmid = dataObject.getString("anmId");
 
-					logger.info("anmres+++++++++" + anmid);
+				
 
 					for (int i = 0; i < fieldsJsonArray.length(); i++) {
 
@@ -143,7 +143,7 @@ String entityidEC=null;
 									.has("value") && jsonObject
 									.getString("value") != null) ? jsonObject
 									.getString("value") : "";
-							logger.info("res+++++" + entityidEC);
+						
 							
 
 						}

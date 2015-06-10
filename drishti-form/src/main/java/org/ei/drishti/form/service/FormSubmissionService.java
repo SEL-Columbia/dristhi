@@ -53,10 +53,10 @@ public class FormSubmissionService {
 	/**
 	 * @author Suneel.S
 	 * 
-	 * @param entityid
-	 * @param entityEcId
+	 * @param  entityidEC
+	 * @param visittype
 	 * @param anmid
-	 * @param formName
+	 * @param visitentityid
 	 * 
 	 * 
 	 *            Description: Test method to save isConsultation = true for
@@ -66,22 +66,23 @@ public class FormSubmissionService {
 	public void requestConsultationTest(String visitentityid,
 			String entityidEC, String anmid, String visittype) {
 		PreparedStatement pst = null;
-		logger.info("invoking  postgresconnection");
+	
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {
 
-			logger.debug("connection creation failed");
+			
 			e.printStackTrace();
 		}
 		Connection con = null;
 		try {
-			logger.info("connection creation start");
+			
+			String url="jdbc:postgresql://192.168.90.151:5432/drishti";
+			
 			con = DriverManager.getConnection(
-					"jdbc:postgresql://192.168.90.151:5432/drishti",
-					"postgres", "password");
+					url,"postgres", "password");
 			String phc_name = null;
-			logger.info("connection created");
+			
 			String phcNameQuery = "select name from report.dim_phc where id=(select phc from report.dim_anm where anmidentifier = '"
 					+ anmid + "')";
 			PreparedStatement phcNamestmt = con.prepareStatement(phcNameQuery);
