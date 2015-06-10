@@ -54,9 +54,9 @@ public class FormSubmissionService {
 	 * @author Suneel.S
 	 * 
 	 * @param  entityidEC
-	 * @param visittype
-	 * @param anmid
-	 * @param visitentityid
+	 * @param  visittype
+	 * @param  anmid
+	 * @param  visitentityid
 	 * 
 	 * 
 	 *            Description: Test method to save isConsultation = true for
@@ -77,7 +77,7 @@ public class FormSubmissionService {
 		Connection con = null;
 		try {
 			
-			String url="jdbc:postgresql://192.168.90.151:5432/drishti";
+			String url="jdbc:postgresql://202.153.34.169:5432/drishti";
 			
 			con = DriverManager.getConnection(
 					url,"postgres", "password");
