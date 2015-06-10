@@ -66,18 +66,18 @@ public class FormSubmissionService {
 	public void requestConsultationTest(String visitentityid,
 			String entityidEC, String anmid, String visittype) {
 		PreparedStatement pst = null;
-	
+	logger.info("invoking a service");
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {
 
-			
+		
 			e.printStackTrace();
 		}
 		Connection con = null;
 		try {
-			
-			String url="jdbc:postgresql://202.153.34.169:5432/drishti";
+		
+			String url="jdbc:postgresql://localhost:5432/drishti";
 			
 			con = DriverManager.getConnection(
 					url,"postgres", "password");
