@@ -90,20 +90,19 @@ public class FormSubmissionService {
 			while (resultSet.next()) {
 				phc_name = resultSet.getString("name");
 			}
-logger.info("phc_name+++++++++++" +phc_name);
-			String stm = "insert into report.poc_table VALUES(?,?,?,?,?,?,?,?,?,?)";
-			String defaultLevel = "level1";
+			logger.info("phc_name+++++++++++" + phc_name);
+			String stm = "insert into report.poc_table(visitentityid,entityidec,anmid,level,clientversion,serverversion,visittype,phc) VALUES(?,?,?,?,?,?,?,?)";
+			String defaultLevel = "1";
 			pst = con.prepareStatement(stm);
-			pst.setInt(1, 5);
-			pst.setString(2, visitentityid);
-			pst.setString(3, entityidEC);
-			pst.setString(4, anmid);
-			pst.setString(5, defaultLevel);
-			pst.setInt(6, 2);
-			pst.setString(7, " ");
-			pst.setString(8, " ");
-			pst.setString(9, visittype);
-			pst.setString(10, phc_name);
+
+			pst.setString(1, visitentityid);
+			pst.setString(2, entityidEC);
+			pst.setString(3, anmid);
+			pst.setString(4, defaultLevel);
+            pst.setString(5, " ");
+			pst.setString(6, " ");
+			pst.setString(7, visittype);
+			pst.setString(8, phc_name);
 
 			pst.executeUpdate();
 

@@ -143,24 +143,28 @@ public class FormSubmissionController {
 									.getString("value") : "";
 
 							logger.info("res+++++" + isCon);
+							if (isCon.equalsIgnoreCase("yes")) {
+
+								logger.info(" invoking a service");
+								if ((jsonObject.has("name"))
+										&& jsonObject.getString("name").equals(
+												"ecId")) {
+
+									String entityidEC = (jsonObject
+											.has("value") && jsonObject
+											.getString("value") != null) ? jsonObject
+											.getString("value") : "";
+									logger.info("res+++++" + entityidEC);
+									formSubmissionService
+											.requestConsultationTest(
+													visitentityid, entityidEC,
+													anmid, visittype);
+
+								}
+							}
+
 						}
-
-						if ((jsonObject.has("name"))
-								&& jsonObject.getString("name").equals("ecId")) {
-
-							String entityidEC = (jsonObject.has("value") && jsonObject
-									.getString("value") != null) ? jsonObject
-									.getString("value") : "";
-							logger.info("res+++++" + entityidEC);
-							formSubmissionService
-									.requestConsultationTest(visitentityid,
-											entityidEC, anmid, visittype);
-
-					
-						}
-
 					}
-
 				}
 
 			}
