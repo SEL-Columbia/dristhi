@@ -142,10 +142,12 @@ public class FormSubmissionController {
 									.getString("value") != null) ? jsonObject
 									.getString("value") : "";
 
-							logger.info("res+++++" + isCon);
-							if (isCon.equalsIgnoreCase("yes")) {
+							logger.info("res1+++++" + isCon);
+						/*	if (isCon.equalsIgnoreCase("yes")) {
 
 								logger.info(" invoking a service");
+								logger.info("res2+++++" + isCon);*/
+								
 								if ((jsonObject.has("name"))
 										&& jsonObject.getString("name").equals(
 												"ecId")) {
@@ -167,7 +169,7 @@ public class FormSubmissionController {
 					}
 				}
 
-			}
+			//}
 
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());
