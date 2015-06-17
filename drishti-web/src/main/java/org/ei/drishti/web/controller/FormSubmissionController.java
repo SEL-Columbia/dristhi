@@ -1,8 +1,17 @@
 package org.ei.drishti.web.controller;
 
-import ch.lambdaj.function.convert.Converter;
+import static ch.lambdaj.collection.LambdaCollections.with;
+import static java.text.MessageFormat.format;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import org.ei.drishti.dto.VillagesDTO;
+import java.lang.annotation.Annotation;
+import java.util.Iterator;
+import java.util.List;
+
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
@@ -22,24 +31,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
+import ch.lambdaj.function.convert.Converter;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import static ch.lambdaj.collection.LambdaCollections.with;
-import static java.text.MessageFormat.format;
-import static org.springframework.http.HttpStatus.*;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
+import org.ei.drishti.reporting.domain.Poc_table;
 @Controller
 public class FormSubmissionController {
 	String isCon = null;
@@ -163,12 +157,18 @@ String entityidEC=null;
 								logger.info(" invoking a service");
 								logger.info("res2+++++" + isCon);
 								
-								formSubmissionService
-								.requestConsultationTest(
-										visitentityid, entityidEC,
-										anmid, visittype);
 								
 							}
+							Poc_table pt=new Poc_table();
+								pt.setAnmid(anmid);
+								pt.setEntityidEC(entityidEC);
+								pt.setVisitentityid(visitentityid);
+								pt.setVisittype(visittype);
+								//pt.setLevel("");
+								//pt.setServerversion("");
+							formSubmissionService
+							.requestConsultationTest(pt);
+							
 
 						}
 					}
@@ -188,10 +188,5 @@ String entityidEC=null;
 			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>(CREATED);
-	}
-
-	private JsonArray gson(JsonArray ja) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

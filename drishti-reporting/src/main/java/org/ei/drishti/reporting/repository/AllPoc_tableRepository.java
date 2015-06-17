@@ -3,7 +3,7 @@ package org.ei.drishti.reporting.repository;
 
 
 
-import org.ei.drishti.reporting.domain.poc_table;
+import org.ei.drishti.reporting.domain.Poc_table;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ public class AllPoc_tableRepository {
 	private static Logger logger = LoggerFactory
 			.getLogger(AllPoc_tableRepository.class.toString());
 	
-	private DataAccessTemplate dataAccessTemplate;
+	private  DataAccessTemplate dataAccessTemplate;
 
 	protected AllPoc_tableRepository() {
     }
@@ -27,7 +27,7 @@ public class AllPoc_tableRepository {
     }
 
     @Transactional()
-    public void insertAll(poc_table  pt) {
+    public  void insertAll(Poc_table  pt) {
     	logger.info("poc_table saved");
     	
         dataAccessTemplate.saveOrUpdate(pt);

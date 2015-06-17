@@ -6,6 +6,8 @@ import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.repository.AllFormSubmissions;
+import org.ei.drishti.reporting.domain.Poc_table;
+import org.ei.drishti.reporting.repository.AllPoc_tableRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +30,11 @@ public class FormSubmissionService {
 	private static Logger logger = LoggerFactory
 			.getLogger(FormSubmissionService.class.toString());
 	private AllFormSubmissions allFormSubmissions;
-
+private AllPoc_tableRepository allPoc_tableRepository;
 	@Autowired
-	public FormSubmissionService(AllFormSubmissions allFormSubmissions) {
+	public FormSubmissionService(AllFormSubmissions allFormSubmissions, AllPoc_tableRepository allPoc_tableRepository) {
 		this.allFormSubmissions = allFormSubmissions;
+		this.allPoc_tableRepository=allPoc_tableRepository;
 	}
 
 	public List<FormSubmissionDTO> fetch(long formFetchToken) {
@@ -63,9 +66,21 @@ public class FormSubmissionService {
 	 *            ANC, PNC and Child visits
 	 */
 
-	public void requestConsultationTest(String visitentityid,
-			String entityidEC, String anmid, String visittype) {
-		PreparedStatement pst = null;
+	public void requestConsultationTest(Poc_table  pt) {
+		
+		logger.info("invoking a repository method");
+		
+		allPoc_tableRepository.insertAll( pt);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*PreparedStatement pst = null;
 	logger.info("invoking a service");
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -117,7 +132,7 @@ public class FormSubmissionService {
 		} else {
 			logger.debug("Failed to make connection!");
 		}
-
+*/
 	}
 
 	public List<FormSubmission> getAllSubmissions(Long version,
