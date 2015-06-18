@@ -1,10 +1,7 @@
-package org.ei.drishti.reporting.repository;
+package org.ei.drishti.form.repository;
 
 
-
-
-import org.ei.drishti.reporting.domain.Poc_table;
-
+import org.ei.drishti.reporting.repository.DataAccessTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +29,6 @@ public class AllPoc_tableRepository {
     	
         dataAccessTemplate.saveOrUpdate(pt);
     }
+
 
 }

@@ -189,5 +189,12 @@
             <artifactId>spring-security-config</artifactId>
             <version>${spring.version}</version>
         </dependency>
+       <dependency>
+       <!-- new changes -->
+   <groupId>org.hibernate</groupId>
+   <artifactId>hibernate-annotations</artifactId>
+   <version>3.4.0.GA</version>
+</dependency> 
+        
     </dependencies>
 </project>

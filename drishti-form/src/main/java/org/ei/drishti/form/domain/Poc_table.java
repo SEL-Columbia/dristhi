@@ -1,4 +1,4 @@
-package org.ei.drishti.reporting.domain;
+package org.ei.drishti.form.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
+
 
 @Entity
 @Table(name = "poc_table")
@@ -147,4 +149,6 @@ public class Poc_table {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
+
+
 }
