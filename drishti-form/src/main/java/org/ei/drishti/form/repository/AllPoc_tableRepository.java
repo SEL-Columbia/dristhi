@@ -1,7 +1,8 @@
 package org.ei.drishti.form.repository;
 
 
-import org.ei.drishti.reporting.repository.DataAccessTemplate;
+import org.ei.drishti.form.domain.Poc_table;
+import org.ei.drishti.form.repository.DataAccessTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

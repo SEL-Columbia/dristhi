@@ -5,9 +5,9 @@ import ch.lambdaj.function.convert.Converter;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.domain.Poc_table;
 import org.ei.drishti.form.repository.AllFormSubmissions;
-import org.ei.drishti.reporting.domain.Poc_table;
-import org.ei.drishti.reporting.repository.AllPoc_tableRepository;
+import org.ei.drishti.form.repository.AllPoc_tableRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +70,7 @@ private AllPoc_tableRepository allPoc_tableRepository;
 		
 		logger.info("invoking a repository method");
 		
-		allPoc_tableRepository.insertAll( pt);
+		allPoc_tableRepository.insertAll(pt);
 		
 		
 		

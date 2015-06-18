@@ -14,4 +14,8 @@
         <constructor-arg value="drishti-form"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
+    <bean id="serviceProvidedDataAccessTemplate" class="org.ei.drishti.form.repository.DataAccessTemplate">
+        <constructor-arg name="sessionFactory" ref="serviceProvidedSessionFactory1"/>
+    </bean>
+    
 </beans>

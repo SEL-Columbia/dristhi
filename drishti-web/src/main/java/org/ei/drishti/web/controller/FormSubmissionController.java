@@ -14,6 +14,7 @@ import java.util.List;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
+import org.ei.drishti.form.domain.Poc_table;
 import org.ei.drishti.form.service.FormSubmissionConverter;
 import org.ei.drishti.form.service.FormSubmissionService;
 import org.json.JSONArray;
@@ -32,7 +33,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.lambdaj.function.convert.Converter;
 
-import org.ei.drishti.reporting.domain.Poc_table;
 @Controller
 public class FormSubmissionController {
 	String isCon = null;

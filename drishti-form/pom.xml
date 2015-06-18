@@ -89,7 +89,12 @@
             <scope>test</scope>
         </dependency>
         <!-- new changes -->
-         <dependency>
+          <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+           <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate</artifactId>
             <version>3.3.1.GA</version>
