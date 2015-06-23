@@ -101,7 +101,7 @@ public class OpenmrsConnector {
 		List<String> a = new ArrayList<>();
 		a .add("encounter_type");
 		Event e = new Event()
-			.withBaseEntityId(fs.entityId())
+			.withBaseEntityId(subformInstance.get("id"))
 			.withEventDate(OpenmrsService.OPENMRS_DATE.parse(fs.getField(encounterDateField)))
 			.withEventType(eventType)
 			.withLocationId(fs.getField(encounterLocation))

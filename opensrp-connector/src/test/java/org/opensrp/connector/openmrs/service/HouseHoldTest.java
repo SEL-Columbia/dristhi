@@ -18,7 +18,6 @@ import java.util.Map;
 
 import org.hamcrest.Matchers;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.api.domain.Client;
@@ -108,12 +107,11 @@ public class HouseHoldTest extends TestResourceLoader{
 				assertFalse(depe.getObs().isEmpty());
 				assertEquals(2, depe.getObs().size());
 			}
-			
 		}
 	}
 	
 	@Test
-	public void shouldTestHHRegistationIntegration() throws JsonSyntaxException, JsonIOException, IOException, ParseException, JSONException {
+	public void shouldTestHHRegistrationIntegration() throws JsonSyntaxException, JsonIOException, IOException, ParseException, JSONException {
 		for (int i = 1; i <= 4; i++) {
 			FormSubmission fs = getFormSubmissionFor(hhRegistrationformName, i);
 			Client hhhClient = oc.getClientFromFormSubmission(fs);
@@ -128,7 +126,7 @@ public class HouseHoldTest extends TestResourceLoader{
 				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
 			}
 			
-//			hhs.saveHH(hh);
+			assertEquals(hh.getHouseholdHead().getClient().getBaseEntityId(), datamap.get(i)[0]);
 		}
 	}
 	
@@ -161,13 +159,4 @@ public class HouseHoldTest extends TestResourceLoader{
 			assertThat(client.getBaseEntity(), hasProperty("firstName", equalToIgnoringCase(firstName)));
 		}
 	}
-	
-	@Test
-	public void shouldFindRelationship() throws JSONException{
-		JSONObject rel = hhs.getRelationshipType("doctor");
-		assertNotNull(rel);
-		assertEquals(rel.getString("aIsToB").toLowerCase(), "doctor");
-		assertTrue(rel.getString("display").toLowerCase().contains("doctor"));
-	}
-	
 }
