@@ -73,7 +73,7 @@ public class UserController {
 			}
         }
         catch(Exception e){
-        	e.printStackTrace();
+        	System.out.println("USER Location info not mapped in team management module. Now trying Person Attribute");;
         }
         if(StringUtils.isEmptyOrWhitespaceOnly(lid)){
 	        lid = (String) u.getBaseEntity().getAttribute("Location");

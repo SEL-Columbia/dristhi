@@ -19,7 +19,7 @@
             <FWHOHBIRTHDATE openmrs_entity="person" openmrs_entity_id="birthdate"/>
             <FWHOHGENDER openmrs_entity="person" openmrs_entity_id="gender"/>
             <FWNHHMBRNUM openmrs_entity="concept" openmrs_entity_id="5611AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-            <FWNHHMWRA openmrs_entity="concept"/>
+            <FWNHHMWRA/>
             <woman template="" openmrs_entity="person" openmrs_entity_id="Census and New Woman Registration">
                 <GOBHHID/>
                 <JiVitAHHID/>

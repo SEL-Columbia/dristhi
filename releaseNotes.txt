@@ -1,22 +1,19 @@
-Date of Release: 27-May-2015
+Date of Release: 23-Jun-2015
 
 New Features
 ============
-- Allows to get list of all report definitions in openmrs
-- Allows to fetch complete report definition and data for that report
-- Added latest form files for houdehold and census registration form to opensrp-server assets.
-- Household data is also pushed to openmrs
+- Added power mock api in pom to handle static class mocks
 
 Changes
 =======
-- Refactored HttpUtil to throw specific exception
-- Household doesnot try saving empty repeat group sent by client
-- Locations returned from Team management module as well as person attribute if not found in team module
+- Removed all calls to live server in connector tests and now using only mock objects and mock calls
+- Using mocks only instead of calls to server in opensrp web tests
+- Printing message in UserController when team member mapping fails instead of stacktrace as it is ignorable
 
 Fixes
 =====
-- Fixed to make sure that form doesnot throw NPE incase no bind is found for field
-- Fix to make sure that formDirName is not overridden to make it accessible n times in tests
+- Fixed the issue where code was assigning wrong ID to subform entities
+- 
 
 Known Issues
 ============

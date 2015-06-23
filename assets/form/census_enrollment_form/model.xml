@@ -12,7 +12,7 @@
             <existing_GOBHHID/>
             <existing_JiVitAHHID/>
             <FWCENDATE openmrs_entity="concept" openmrs_entity_id="160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-            <FWCENSTAT openmrs_entity="concept"/>
+            <FWCENSTAT/>
             <woman template="" openmrs_entity="person" openmrs_entity_id="Census and New Woman Registration">
                 <GOBHHID/>
                 <JiVitAHHID/>
