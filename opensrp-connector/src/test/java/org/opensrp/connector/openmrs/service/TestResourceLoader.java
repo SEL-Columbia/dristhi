@@ -13,7 +13,6 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 
 
 public class TestResourceLoader {
@@ -31,14 +30,14 @@ public class TestResourceLoader {
 		formDirPath = props.getProperty("form.directory.name");
 	}
 	
-	protected FormSubmission getFormSubmissionFor(String formName, Integer number) throws JsonSyntaxException, JsonIOException, IOException{
+	protected FormSubmission getFormSubmissionFor(String formName, Integer number) throws JsonIOException, IOException{
 		ResourceLoader loader=new DefaultResourceLoader();
 		String path = loader.getResource(formDirPath).getURI().getPath();
 		File fsfile = new File(path+"/"+formName+"/form_submission"+(number==null?"":number)+".json");
 		return new Gson().fromJson(new FileReader(fsfile), FormSubmission.class);		
 	}
 	
-	protected FormSubmission getFormSubmissionFor(String formName) throws JsonSyntaxException, JsonIOException, IOException{
+	protected FormSubmission getFormSubmissionFor(String formName) throws JsonIOException, IOException{
 		return getFormSubmissionFor(formName, null);		
 	}
 }
