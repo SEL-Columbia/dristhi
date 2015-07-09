@@ -283,9 +283,15 @@ public class OpenmrsConnector {
 			Map<String, String> att = formAttributeMapper.getAttributesForSubform(sbf.name(), fs);
 			if(att.size() > 0 && att.get("openmrs_entity").equalsIgnoreCase("person")){
 				for (Map<String, String> sfdata : sbf.instances()) {
+					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
+					Map<String, String> idents = extractIdentifiers(sfdata, sbf.name(), fs);
+					if(StringUtils.isEmptyOrWhitespaceOnly(firstName)
+							&& idents.size() < 2){//we need to ignore uuid of entity
+						// if empty repeat group leave this entry and move to next
+						continue;
+					}
 					Map<String, Object> cne = new HashMap<>();
 					
-					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
 					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
 					Date birthdate = OpenmrsService.OPENMRS_DATE.parse(sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs)));
@@ -300,7 +306,7 @@ public class OpenmrsConnector {
 					Client c = new Client()
 					.withBaseEntity(new BaseEntity(sfdata.get("id"), firstName, middleName, lastName, birthdate, deathdate, 
 							birthdateApprox, deathdateApprox, gender, addresses, extractAttributes(sfdata, sbf.name(), fs)))
-					.withIdentifiers(extractIdentifiers(sfdata, sbf.name(), fs));
+					.withIdentifiers(idents);
 					
 					cne.put("client", c);
 					cne.put("event", getEventForSubform(fs, sbf.name(), att.get("openmrs_entity_id"), sfdata));
