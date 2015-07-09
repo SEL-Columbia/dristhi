@@ -49,6 +49,10 @@
                 "bind": "/model/instance/ANC_Visit_EngKan/jaundice"
             },
             {
+                "name": "convulsions",
+                "bind": "/model/instance/ANC_Visit_EngKan/convulsions"
+            },
+            {
                 "name": "vitalsTaken",
                 "shouldLoadValue": true,
                 "bind": "/model/instance/ANC_Visit_EngKan/vitals_taken"
