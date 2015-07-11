@@ -2,7 +2,7 @@ Date of Release: 10-Jul-2015
 
 New Features
 ============
--
+- #64 - Code made compatible with postgres and mysql both with changing of few settings only with in 4 steps
 
 Changes
 =======
