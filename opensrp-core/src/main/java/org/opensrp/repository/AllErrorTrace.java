@@ -9,7 +9,7 @@ import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.ErrorTrace;
-
+import org.opensrp.domain.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -28,13 +28,17 @@ public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> {
 		super(ErrorTrace.class, db);
 	}
 
-	@GenerateView
-	public ErrorTrace findById(String id) {
-		List<ErrorTrace> errors = queryView("id", id);
-		if (errors == null || errors.isEmpty()) {
+//	@GenerateView
+	public ErrorTrace findById(String _id) {
+		
+		/*db.queryView(createQuery("_id").keys(_id)
+				.includeDocs(true), ErrorTrace.class);*/
+	ErrorTrace errors=	get(_id);
+		//List<ErrorTrace> errors = queryView("_id", _id);
+		if (errors == null ) {
 			return null;
 		}
-		return errors.get(0);
+		return errors;
 	}
 	public boolean exists(String id) {
 		return findById(id) != null;

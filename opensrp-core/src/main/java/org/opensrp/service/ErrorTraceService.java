@@ -42,7 +42,7 @@ public class ErrorTraceService {
 		ArrayList<ErrorTrace> errors=new ArrayList<ErrorTrace>();
 		
 		for(ErrorTrace e: allErrorList){
-			ErrorTrace object=new ErrorTrace(e.getId(),e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
+			ErrorTrace object=new ErrorTrace(e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
 			errors.add(object);
 		}
 		
@@ -55,7 +55,7 @@ public class ErrorTraceService {
 		ArrayList<ErrorTrace> errors=new ArrayList<ErrorTrace>();
 		
 		for(ErrorTrace e: allErrorList){
-			ErrorTrace object=new ErrorTrace(e.getId(),e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
+			ErrorTrace object=new ErrorTrace(e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
 			errors.add(object);
 		}
 		
@@ -69,11 +69,17 @@ public class ErrorTraceService {
 		ArrayList<ErrorTrace> errors=new ArrayList<ErrorTrace>();
 		
 		for(ErrorTrace e: allErrorList){
-			ErrorTrace object=new ErrorTrace(e.getId(),e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
+			ErrorTrace object=new ErrorTrace(e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
 			errors.add(object);
 		}
 		
 		return errors;
+	}
+	
+	public ErrorTrace getError(String id){
+		
+		return allErrorTrace.findById(id);
+		
 	}
 
 	
