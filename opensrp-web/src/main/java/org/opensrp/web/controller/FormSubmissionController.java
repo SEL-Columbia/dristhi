@@ -8,9 +8,12 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
@@ -19,6 +22,7 @@ import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.PatientService;
+import org.opensrp.domain.ErrorTrace;
 import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
@@ -51,6 +55,7 @@ public class FormSubmissionController {
     private OpenmrsConnector openmrsConnector;
     private PatientService patientService;
     private HouseholdService householdService;
+    
 
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
@@ -120,7 +125,9 @@ public class FormSubmissionController {
                 }
             });
             for (FormSubmission formSubmission : fsl) {
-            	if(openmrsConnector.isOpenmrsForm(formSubmission)){
+            	 addFormToOpenMRS(formSubmission);
+            	
+         /*   	if(openmrsConnector.isOpenmrsForm(formSubmission)){
 	            	JSONObject p = patientService.getPatientByIdentifier(formSubmission.entityId());
 	            	
 	            	if(p != null){	            		
@@ -147,7 +154,7 @@ public class FormSubmissionController {
 			        		System.out.println(encounterService.createEncounter(e));
 	            		}
 	            	}
-            	}
+            	}*/
     		}
             }
             catch(Exception e){
@@ -159,5 +166,68 @@ public class FormSubmissionController {
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(CREATED);
+    }
+    
+    private void addFormToOpenMRS(FormSubmission formSubmission){
+    	if(openmrsConnector.isOpenmrsForm(formSubmission)){
+        	JSONObject p = null;
+			try {
+				p = patientService.getPatientByIdentifier(formSubmission.entityId());
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        	
+        	if(p != null){	            		
+        		Event e;
+				try {
+					e = openmrsConnector.getEventFromFormSubmission(formSubmission);
+					System.out.println(encounterService.createEncounter(e));
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					ErrorTrace errorTrace=new ErrorTrace(new Date(), "Parse Exception", "", e1.getStackTrace().toString(), "Unsolved", formSubmission.formName());
+					
+					e1.printStackTrace();
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        		
+        	}
+        	else {
+        		Map<String, Map<String, Object>> dep;
+				try {
+					dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
+					if(dep.size()>0){
+	        			Client hhhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);
+	        			Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
+	        			OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
+		    			for (Map<String, Object> cm : dep.values()) {
+		    				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
+		    			}
+		    			
+		    			householdService.saveHH(hh);
+				}
+					else {
+	        			Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
+	        			System.out.println(patientService.createPatient(c));
+	        			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
+		        		System.out.println(encounterService.createEncounter(e));
+	        		}
+				
+				
+        	}catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
+        	}
+        		
+        	
+    	}
+    	
     }
 }
