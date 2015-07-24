@@ -26,7 +26,7 @@ INSERT INTO report.dim_phc(phcIdentifier, name) VALUES ('phc_irkalgada', 'PHC Ir
 INSERT INTO report.dim_phc(phcIdentifier, name) VALUES ('phc_mudenoor', 'PHC Mudenoor');
 INSERT INTO report.dim_phc(phcIdentifier, name) VALUES ('phc_mudhol', 'PHC Mudhol');
 INSERT INTO report.dim_phc(phcIdentifier, name) VALUES ('phc_mushtur', 'PHC Mushtur');
-INSERT INTO report.dim_phc(phcIdentifier, name) VALUES ('phc_muslapur', 'PHC Muslapur');
+INSERT INTO report.dim_phc(phcIdentifier, name) VALUES ('phc_muslimpur', 'PHC muslimpur');
 INSERT INTO report.dim_phc(phcIdentifier, name) VALUES ('phc_navali', 'PHC Navali');
 INSERT INTO report.dim_phc(phcIdentifier, name) VALUES ('phc_sanganhal', 'PHC Sanganhal');
 INSERT INTO report.dim_phc(phcIdentifier, name) VALUES ('phc_vajra_bandi', 'PHC Vajra Bandi');
@@ -102,23 +102,23 @@ INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village
 INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_mushtur'), 'danapur', 'hebbal');
 INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_mushtur'), 'danapur', 'majjigi_camp');
 
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'basarihal', 'bailakampur');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'basarihal', 'basrihal');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'basarihal', 'chikka_wadderkal');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'basarihal', 'devlapur');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'basarihal', 'gouripur');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'basarihal', 'bailakampur');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'basarihal', 'basrihal');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'basarihal', 'chikka_wadderkal');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'basarihal', 'devlapur');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'basarihal', 'gouripur');
 
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'obalbanda', 'hulejali');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'obalbanda', 'kannermadu');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'obalbanda', 'naglapur');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'obalbanda', 'obalbanda');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'obalbanda', 'ramdurg');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'obalbanda', 'rampur');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'obalbanda', 'hulejali');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'obalbanda', 'kannermadu');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'obalbanda', 'naglapur');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'obalbanda', 'obalbanda');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'obalbanda', 'ramdurg');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'obalbanda', 'rampur');
 
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'somsagara', 'a_b_chiktanda');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'somsagara', 'a_b_doddatanda');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'somsagara', 'advibhavi');
-INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'somsagara', 'somsagara');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'somsagara', 'a_b_chiktanda');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'somsagara', 'a_b_doddatanda');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'somsagara', 'advibhavi');
+INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'somsagara', 'somsagara');
 
 INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_navali'), 'jeeral', 'chikka_dankankal');
 INSERT INTO report.dim_location(state, district, taluka, phc, subCenter, village) VALUES ('Karnataka', 'Koppal', 'Gangavati', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_navali'), 'jeeral', 'gandhi_nagar');
@@ -318,9 +318,9 @@ INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'bud1',
 INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'hosa1', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_hosakera'), 'Mulimani Khadarbi', 'heroor' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='hosa1');
 INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'mush1', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_mushtur'), 'Gnaneswari', 'chikka_jantkal' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='mush1');
 INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'mush2', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_mushtur'), 'Kavita', 'danapur' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='mush2');
-INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'musl1', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'Kanaakava ( Kamalamma)', 'basarihal' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='musl1');
-INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'musl2', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'Aswani C', 'obalbanda' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='musl2');
-INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'musl3', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslapur'), 'Mahadevakka', 'somsagara' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='musl3');
+INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'musl1', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'Kanaakava ( Kamalamma)', 'basarihal' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='musl1');
+INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'musl2', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'Aswani C', 'obalbanda' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='musl2');
+INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'musl3', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_muslimpur'), 'Mahadevakka', 'somsagara' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='musl3');
 INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'nava1', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='phc_navali'), 'Mangalabai', 'jeeral' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='nava1');
 INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'here1', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='chc_heresindogi'), 'Rose Henna', 'bahaddurbandi' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='here1');
 INSERT INTO report.dim_anm (anmIdentifier, phc, name, subcenter)  SELECT 'here2', (SELECT ID FROM report.dim_phc WHERE phcIdentifier='chc_heresindogi'), 'Hasena Begum', 'gondabal' WHERE NOT EXISTS (SELECT dim_anm FROM report.dim_anm WHERE anmIdentifier='here2');

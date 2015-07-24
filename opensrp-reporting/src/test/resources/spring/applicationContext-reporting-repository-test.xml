@@ -76,13 +76,13 @@
     <bean id="serviceProvidedFlywayMigrations" class="com.googlecode.flyway.core.Flyway" init-method="migrate">
         <property name="dataSource" ref="serviceProvidedDataSource"/>
         <property name="schemas" value="${db.reporting.report}"/>
-        <property name="locations" value="/migrations/serviceProvided"/>
+        <property name="locations" value="/migrations/${jdbc.backend}/serviceProvided"/>
     </bean>
 
     <bean id="anmReportFlywayMigrations" class="com.googlecode.flyway.core.Flyway" init-method="migrate">
         <property name="dataSource" ref="serviceProvidedDataSource"/>
         <property name="schemas" value="${db.reporting.anm}"/>
-        <property name="locations" value="/migrations/anmReport"/>
+        <property name="locations" value="/migrations/${jdbc.backend}/anmReport"/>
     </bean>
 
     <tx:annotation-driven transaction-manager="serviceProvidedTransactionManager"/>

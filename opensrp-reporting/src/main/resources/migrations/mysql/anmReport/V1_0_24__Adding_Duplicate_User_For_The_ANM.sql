@@ -1,0 +1,1 @@
+INSERT INTO anm_report.dim_anm (anmIdentifier)  VALUES('muslim3');
