@@ -18,8 +18,8 @@
 		<module>opensrp-api</module>
 		<module>opensrp-register</module>
 		<module>opensrp-connector</module>
-		<module>opensrp-reporting</module>
 		<module>opensrp-web</module>
+		<module>opensrp-reporting</module>
 	</modules>
 
 	<properties>
@@ -191,28 +191,6 @@
 								<goal>run</goal>
 							</goals>
 						</execution>
-						<execution>
-							<id>ADD DEMO1</id>
-							<phase>post-integration-test</phase>
-							<configuration>
-								<target>
-									<echo message="ADDING DEMO1 START" />
-									<exec executable="curl">
-										<arg value="-H" />
-										<arg value="&quot;Content-Type: application/json&quot;" />
-										<arg value="-X" />
-										<arg value="POST" />
-										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
-										<arg value="-d" />
-										<arg value="@${main.basedir}/build/couch-seed-data/opensrp_users.json" />
-									</exec>
-									<echo message="ADDED DEMO1 END" />
-								</target>
-							</configuration>
-							<goals>
-								<goal>run</goal>
-							</goals>
-						</execution>
 					</executions>
 				</plugin>
 
@@ -227,74 +205,60 @@
 							<artifactId>postgresql</artifactId>
 							<version>9.1-901.jdbc4</version>
 						</dependency>
+						<!-- <dependency>
+							<groupId>mysql</groupId>
+							<artifactId>mysql-connector-java</artifactId>
+							<version>5.1.13</version>
+						</dependency> -->
 					</dependencies>
 
 					<configuration>
 						<driver>${jdbc.driverClassName}</driver>
-						<url>${jdbc.url-wo-db}/postgres</url>
+						<url>${jdbc.url-wo-db}</url>
 						<username>${jdbc.username}</username>
 						<password>${jdbc.password}</password>
 						<skip>${maven.test.skip}</skip>
 					</configuration>
 
 					<executions>
+					<!-- Database init scripts for DBMS specific configuration -->
 						<execution>
-							<id>drop-quartz-db</id>
+							<id>drop-create-relational-db</id>
 							<phase>pre-integration-test</phase>
 							<goals>
 								<goal>execute</goal>
 							</goals>
 							<configuration>
-								<url>${jdbc.url-wo-db}/postgres</url>
+								<url>${jdbc.url-wo-db}</url>
 								<autocommit>true</autocommit>
-								<sqlCommand> drop database if exists ${db.reporting}; 
-								drop database if exists ${db.quartz};</sqlCommand>
-								<onError>abort</onError>
-							</configuration>
-						</execution>
-						<execution>
-							<id>create-quartz-db</id>
-							<phase>pre-integration-test</phase>
-							<goals>
-								<goal>execute</goal>
-							</goals>
-							<configuration>
-								<url>${jdbc.url-wo-db}/postgres</url>
-								<username>${jdbc.username}</username>
-								<password>${jdbc.password}</password>
-								<autocommit>true</autocommit>
-								<sqlCommand>
-									create database ${db.reporting};
-									create database ${db.quartz};
+								<sqlCommand> 
+								drop database if exists ${db.quartz};
+								drop database if exists ${db.reporting};
+								create database ${db.quartz};
+								create database ${db.reporting};
 								</sqlCommand>
 								<onError>abort</onError>
 							</configuration>
 						</execution>
 						<execution>
-							<id>create-reporting-schema</id>
+							<id>create-opensrp-schemas</id>
 							<phase>pre-integration-test</phase>
 							<goals>
 								<goal>execute</goal>
 							</goals>
 							<configuration>
 								<url>${jdbc.url-wo-db}/${db.reporting}</url>
-								<username>${jdbc.username}</username>
-								<password>${jdbc.password}</password>
 								<autocommit>true</autocommit>
-								<sqlCommand>
-									DROP SCHEMA IF EXISTS ${db.reporting.report} CASCADE;
-									DROP SCHEMA IF EXISTS ${db.reporting.anm} CASCADE;
-									CREATE SCHEMA ${db.reporting.report} AUTHORIZATION ${jdbc.username};
-									CREATE SCHEMA ${db.reporting.anm} AUTHORIZATION ${jdbc.username};
-									GRANT ALL ON SCHEMA ${db.reporting.report} TO	${jdbc.username};
-									GRANT ALL ON SCHEMA ${db.reporting.anm} TO ${jdbc.username};
+								<sqlCommand> 
+								CREATE SCHEMA ${db.reporting.report} ;
+								CREATE SCHEMA ${db.reporting.anm} ;
 								</sqlCommand>
 								<onError>abort</onError>
 							</configuration>
 						</execution>
-
+						<!-- END: Database init scripts for DBMS specific configuration -->
 						<execution>
-							<id>create-schema</id>
+							<id>create-quartz-tables</id>
 							<phase>pre-integration-test</phase>
 							<goals>
 								<goal>execute</goal>
@@ -305,7 +269,7 @@
 								<password>${jdbc.password}</password>
 								<autocommit>true</autocommit>
 								<srcFiles>
-									<srcFile>../build/sql/tables_quartz.sql</srcFile>
+									<srcFile>../build/sql/tables_quartz_${jdbc.backend}.sql</srcFile>
 								</srcFiles>
 							</configuration>
 						</execution>
