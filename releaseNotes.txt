@@ -1,16 +1,20 @@
-Date of Release: 08-Jul-2015
+Date of Release: 10-Jul-2015
 
 New Features
 ============
+- #64 - Code made compatible with postgres and mysql both with changing of few settings only with in 4 steps
 
 Changes
 =======
+- Removed commented out snippets to clean code
+- Organized migration scripts in separate folder in reporting resources w.r.t. DBMS
+- Organized quartz db init scripts in opensrp-server/build/sql w.r.t DBMS
+- Moved schedule-tracking.properties from opensrp-web to opensrp-server/assets/config
+- removed couchdb-seed-data folder from opensrp-server as this is not needed 
 
 Fixes
 =====
-- Fixed #65. HH now submits with empty repeat group. 
-Note: This is not a solution but a hack because actual change should be in client/mobile app. 
-The code only guess empty group by empty first name not identifier assigned
+- 
 
 Known Issues
 ============
