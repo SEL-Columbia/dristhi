@@ -96,26 +96,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- MAIMOONA <plugin>
-                <groupId>com.github.searls</groupId>
-                <artifactId>jasmine-maven-plugin</artifactId>
-                <version>1.0.2-beta-5</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <jsSrcDir>
-                        ${project.basedir}/src/main/webapp/js/domain
-                    </jsSrcDir>
-                    <jsTestSrcDir>
-                        ${project.basedir}/src/test/js
-                    </jsTestSrcDir>
-                </configuration>
-            </plugin> -->
         </plugins>
     </build>
 
@@ -198,42 +178,10 @@
 		   <artifactId>javassist</artifactId>
 		   <version>3.18.1-GA</version>
 		</dependency>
-        <!-- MAIMOONA <dependency>
-            <groupId>org.motechproject</groupId>
-            <artifactId>motech-testing-utils</artifactId>
-            <version>${motech.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.motechproject</groupId>
-            <artifactId>motech-schedule-testing</artifactId>
-            <version>0.12-DRISTHI-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency> -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.6.0</version>
         </dependency>
-        <!-- MAIMOONA <dependency>
-            <groupId>postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.1-901.jdbc4</version>
-        </dependency> -->
-        <!-- MAIMOONA <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>${spring.version}</version>
-        </dependency> -->
     </dependencies>
 </project>
