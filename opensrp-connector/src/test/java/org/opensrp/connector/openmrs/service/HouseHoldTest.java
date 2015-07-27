@@ -72,7 +72,7 @@ public class HouseHoldTest extends TestResourceLoader{
 		hhs.setPatientService(ps);
 		hhs.setEncounterService(es);
 		FormAttributeMapper fam = new FormAttributeMapper(formDirPath);
-		oc = new OpenmrsConnector(es, ps, null, null, fam);
+		oc = new OpenmrsConnector(fam);
 	}
 	
 	@Test
