@@ -1,5 +1,8 @@
 package org.opensrp.connector.openmrs.constants;
 
+/**
+ * Mappings in OpenSRP for OpenMRS entities and properties
+ */
 public class OpenmrsConstants {
 
 	public interface OpenmrsEntity {
