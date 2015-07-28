@@ -1,0 +1,6 @@
+language: java
+scripts:
+    - javac -version
+    - java -version
+    - mvn --version
+    - mvn test
