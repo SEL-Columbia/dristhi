@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.json.JSONException;
 import org.junit.Before;
@@ -38,7 +37,7 @@ public class EncounterTest extends TestResourceLoader{
 		s.setPatientService(ps);
 		s.setUserService(us);
 		FormAttributeMapper fam = new FormAttributeMapper(formDirPath);
-		oc = new OpenmrsConnector(s, ps, null, null, fam);
+		oc = new OpenmrsConnector(fam);
 	}
 	
 	@Test
@@ -98,5 +97,39 @@ public class EncounterTest extends TestResourceLoader{
 			assertEquals(cl.getBaseEntityId(), id);
 			assertEquals(ev.getBaseEntityId(), id);
 		}
+	}	
+	
+	@Test
+	public void shouldHandleEmptyRepeatGroup() throws IOException, ParseException, JSONException{
+		FormSubmission fs = getFormSubmissionFor("new_household_registration", 5);
+
+		assertTrue(oc.isOpenmrsForm(fs));
+		
+		Client c = oc.getClientFromFormSubmission(fs);
+		assertEquals(c.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
+		assertEquals(c.getBaseEntity().getFirstName(), "test");
+		assertEquals(c.getBaseEntity().getGender(), "male");
+		assertEquals(c.getBaseEntity().getBirthdate(), sd.parse("1900-01-01"));
+		assertEquals(c.getBaseEntity().getAddresses().get(0).getAddressField("landmark"), "nothing");
+		assertEquals(c.getBaseEntity().getAddresses().get(0).getAddressType(), "usual_residence");
+		assertEquals(c.getIdentifiers().get("GOB HHID"), "1234");
+		assertEquals(c.getIdentifiers().get("JiVitA HHID"), "1234");
+		
+		Event e = oc.getEventFromFormSubmission(fs);
+		assertEquals(e.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
+		assertEquals(e.getEventDate(), sd.parse("2015-05-07"));
+		assertEquals(e.getLocationId(), "KUPTALA");
+		assertEquals(e.getFormSubmissionId(), "88c0e824-10b4-44c2-9429-754b8d823776");
+
+		assertEquals(e.getObs().get(0).getFieldCode(), "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		assertEquals(e.getObs().get(0).getFormSubmissionField(), "FWNHREGDATE");
+		assertEquals(e.getObs().get(0).getValue(), "2015-05-07");
+
+		assertEquals(e.getObs().get(1).getFieldCode(), "5611AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		assertEquals(e.getObs().get(1).getFormSubmissionField(), "FWNHHMBRNUM");
+		assertEquals(e.getObs().get(1).getValue(), "2");
+				
+		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
+		assertTrue(dc.isEmpty());
 	}	
 }

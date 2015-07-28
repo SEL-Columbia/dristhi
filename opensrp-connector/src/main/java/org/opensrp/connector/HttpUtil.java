@@ -10,47 +10,33 @@ import java.net.URL;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
 import org.opensrp.common.util.HttpResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 import com.mysql.jdbc.StringUtils;
 
+/**
+ * The class is a gateway to connect to external system via http for reading and writing data. All get and post 
+ * requests use Basic Authorization.
+ */
 @Component
 public class HttpUtil {
 
     public HttpUtil() {
-        BasicHttpParams basicHttpParams = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(basicHttpParams, 30000);
-        HttpConnectionParams.setSoTimeout(basicHttpParams, 60000);
-
-        SchemeRegistry registry = new SchemeRegistry();
-        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-
-        ClientConnectionManager connectionManager = new ThreadSafeClientConnManager(basicHttpParams, registry);
     }
 
+    /**
+     * Posts the data using Http POST.
+     * @param url The complete http url of remote server service
+     * @param payload The query param to send along with request (could be null if not applicable)
+     * @param data JSON Data to write to input stream
+     * @param username Username authorized for request (uses Basic Authorization)
+     * @param password Password authorized for request (uses Basic Authorization)
+     * @return
+     */
     public static HttpResponse post(String url, String payload, String data, String username,String password) {
         try {
-//			String boundary = Long.toHexString(System.currentTimeMillis()); // Just generate some unique random value.
-	        String CRLF = "\r\n"; // Line separator required by multipart/form-data.
-
-      //      conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-		//	conn.setRequestProperty("Accept-Charset", charset);
-
-            //con.setFixedLengthStreamingMode(request.toString().length());
-			//con.addRequestProperty("Referer", "http://blog.dahanne.net");
-			// Start the query
-//			conn.connect();
-			//OutputStream output = con.getOutputStream();
-        	
         	HttpURLConnection con = makeConnection(url, payload, HttpMethod.POST, true, username, password);
         	con.setDoOutput(true);
         	con.setRequestProperty("Content-Type", "application/json");
@@ -69,6 +55,14 @@ public class HttpUtil {
         }
     }
     
+    /**
+     * Gets the data using Http GET
+     * @param url The complete http url of remote server service
+     * @param payload The query param to send along with request (could be null if not applicable)
+     * @param username Username authorized for request (uses Basic Authorization)
+     * @param password Password authorized for request (uses Basic Authorization)
+     * @return
+     */
     public static HttpResponse get(String url, String payload, String username, String password) {
         try {
             HttpURLConnection con = makeConnection(url, payload, HttpMethod.GET, true, username, password);
@@ -85,7 +79,7 @@ public class HttpUtil {
         }
     }
     
-    public static HttpURLConnection makeConnection(String url, String payload, HttpMethod requestMethod, boolean useBasicAuth, String username, String password) throws IOException {
+    static HttpURLConnection makeConnection(String url, String payload, HttpMethod requestMethod, boolean useBasicAuth, String username, String password) throws IOException {
     	String charset = "UTF-8";
 
         if(url.endsWith("/")){
