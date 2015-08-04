@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +80,8 @@
   
 	
 		<td>${i.errorType}</td> 
-	<td>${i.dateOccurred}</td> 
+	<td><fmt:formatDate pattern="yyyy-MM-dd" 
+            value="${error.dateOccurred}"/></td> 
 	<td>${i.status}</td> 
 	
 	</tr>
