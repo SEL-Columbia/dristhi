@@ -28,15 +28,10 @@ public class ErrorTraceService {
 	}
 	
 	public void addError(ErrorTrace entity){
-		SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-		
-		entity.setDateOccurred(new Date (sdf.format(entity.getDateOccurred())));
 		allErrorTrace.add(entity);
 	}
 	
 	public void updateError(ErrorTrace entity){
-		SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-		entity.setDateClosed(new Date (sdf.format(entity.getDateClosed())));
 		allErrorTrace.update(entity);
 	}
 	
