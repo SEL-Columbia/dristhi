@@ -31,12 +31,14 @@ public class ErrorTrace extends MotechBaseDataObject {
 
 	@JsonProperty
 	private Date dateClosed;
-
+	
 	@JsonProperty
 	private String documentType;
 	@JsonProperty
 	private String retryUrl;
 
+	// dateoccured , dateclosed , errortype =name, documenttype , submiturl
+	
 	public ErrorTrace() {
 		// TODO Auto-generated constructor stub
 	}
@@ -108,7 +110,7 @@ public class ErrorTrace extends MotechBaseDataObject {
 		this.retryUrl = retryUrl;
 	}
 
-	// dateoccured , dateclosed , errortype =name, documenttype , submiturl
+
 	public String getRecordId() {
 
 		return recordId;
@@ -127,13 +129,7 @@ public class ErrorTrace extends MotechBaseDataObject {
 		this.dateOccurred = date;
 	}
 
-	public String getName() {
-		return errorType;
-	}
-
-	public void setName(String name) {
-		this.errorType = name;
-	}
+	
 
 	public String getOccurredAt() {
 		return occurredAt;

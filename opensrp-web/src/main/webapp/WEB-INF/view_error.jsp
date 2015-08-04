@@ -37,14 +37,14 @@
 	<div class="row">
 		<div class="col-md-3">
 		<ul class="nav nav-stacked nav-tabs">
-				<li class="active">
-					<a href="/errortrace" >All Errors</a>
+				<li >
+					<a href="/errorhandler/errortrace" >All Errors</a>
 				</li>
 				<li class="active">
-					<a href="/solvederrors" >Solved Errors</a>
+					<a href="/errorhandler/solvederrors" >Solved Errors</a>
 				</li>
 				<li  >
-					<a href="/unsolvederrors">Unsolved Errors</a>
+					<a href="/errorhandler/unsolvederrors">Unsolved Errors</a>
 				</li>
 				<li class="dropdown pull-right">
 					 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Options<strong class="caret"></strong></a>
@@ -62,7 +62,7 @@
 		<table style="width:100%" class="table" >
   <tr>
     <th>Name:</th>
-    <td>${error.name}</td>
+    <td>${error.errorType}</td>
   </tr>
   <tr>
     <th>Record Id</th>
@@ -74,7 +74,7 @@
   </tr>
     <tr>
     <th>Date</th>
-    <td>${error.date}</td>
+    <td>${error.dateOccurred}</td>
   </tr>
     <tr>
     <th>Stack Trace</th>
@@ -84,11 +84,11 @@
     <th>Status</th>
     <td>${error.status}</td>
   </tr>
-   </tr>
+
     <tr>
     <th>Action</th>
     <td><button >Retry</button></td>
-  </tr>
+  	</tr>
   
 </table>
 			

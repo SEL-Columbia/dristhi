@@ -30,6 +30,7 @@ import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.register.DrishtiScheduleConstants.OpenSRPEvent;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
+import org.opensrp.service.ErrorTraceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,15 +56,16 @@ public class FormSubmissionController {
     private OpenmrsConnector openmrsConnector;
     private PatientService patientService;
     private HouseholdService householdService;
+    private ErrorTraceService errorTraceService;
     
 
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, 
-    		HouseholdService householdService) {
+    		HouseholdService householdService, ErrorTraceService errorTraceService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
-        
+        this.errorTraceService=errorTraceService;
         this.encounterService = encounterService;
         this.openmrsConnector = openmrsConnector;
         this.patientService = patientService;
@@ -113,6 +115,7 @@ public class FormSubmissionController {
             scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
             
             try{
+          
             ////////TODO MAIMOONA : SHOULD BE IN EVENT but event needs to be moved to web so for now kept here
             String json = new Gson().toJson(formSubmissionsDTO);
             System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::"+json);
@@ -125,8 +128,10 @@ public class FormSubmissionController {
                 }
             });
             for (FormSubmission formSubmission : fsl) {
+            	
             	 addFormToOpenMRS(formSubmission);
             	
+            	 //this fucntionality is moved to addFormToOpenMRS();
          /*   	if(openmrsConnector.isOpenmrsForm(formSubmission)){
 	            	JSONObject p = patientService.getPatientByIdentifier(formSubmission.entityId());
 	            	
@@ -174,7 +179,9 @@ public class FormSubmissionController {
 			try {
 				p = patientService.getPatientByIdentifier(formSubmission.entityId());
 			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
+				
+				ErrorTrace errorTrace=new ErrorTrace(new Date(), "JSON Exception", "", e1.getStackTrace().toString(), "Unsolved", formSubmission.formName());
+				errorTrace.setRecordId(formSubmission.instanceId());
 				e1.printStackTrace();
 			}
         	
@@ -184,12 +191,17 @@ public class FormSubmissionController {
 					e = openmrsConnector.getEventFromFormSubmission(formSubmission);
 					System.out.println(encounterService.createEncounter(e));
 				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
+				
 					ErrorTrace errorTrace=new ErrorTrace(new Date(), "Parse Exception", "", e1.getStackTrace().toString(), "Unsolved", formSubmission.formName());
-					
+					errorTrace.setRecordId(formSubmission.instanceId());
+					//errorTrace
+					errorTraceService.addError(errorTrace);
 					e1.printStackTrace();
 				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
+				
+					ErrorTrace errorTrace=new ErrorTrace(new Date(), "JSON Exception", "", e1.getStackTrace().toString(), "Unsolved", formSubmission.formName());
+					errorTrace.setRecordId(formSubmission.instanceId());
+					errorTraceService.addError(errorTrace);
 					e1.printStackTrace();
 				}
         		
@@ -217,10 +229,15 @@ public class FormSubmissionController {
 				
 				
         	}catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+        		ErrorTrace errorTrace=new ErrorTrace(new Date(), "Parse Exception", "", e1.getStackTrace().toString(), "Unsolved", formSubmission.formName());
+        		errorTrace.setRecordId(formSubmission.instanceId());
+        		errorTraceService.addError(errorTrace);
+        		e1.printStackTrace();
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+			
+				ErrorTrace errorTrace=new ErrorTrace(new Date(), "JSON Exception", "", e.getStackTrace().toString(), "Unsolved", formSubmission.formName());
+				errorTrace.setRecordId(formSubmission.instanceId());
+				errorTraceService.addError(errorTrace);
 				e.printStackTrace();
 			}
         	

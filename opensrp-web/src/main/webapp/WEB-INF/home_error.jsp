@@ -18,8 +18,6 @@
     <link href="<c:url value='/resources/css/bootstrap.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/resources/css/style.css'/>" rel="stylesheet">
     
-        <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
 
   </head>
   <body>
@@ -38,16 +36,15 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-3">
-			<ul class="nav nav-stacked nav-tabs">
+		<ul class="nav nav-stacked nav-tabs">
 				<li class="active">
-					<a href="/errortrace" class="active">All Errors</a>
-				</li>
-				<li>
-					<a href="/solvederrors">Solved Errors</a>
+					<a href="/errorhandler/errortrace" >All Errors</a>
 				</li>
 				<li >
-					<a href="/unsolvederrors">Unsolved Errors</a>
+					<a href="/errorhandler/solvederrors" >Solved Errors</a>
+				</li>
+				<li  >
+					<a href="/errorhandler/unsolvederrors">Unsolved Errors</a>
 				</li>
 				<li class="dropdown pull-right">
 					 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Options<strong class="caret"></strong></a>
@@ -82,10 +79,10 @@
 				<tr>
   
 	
-	<td>${i.name}</td> 
-	<td>${i.date}</td> 
+	<td>${i.errorType}</td> 
+	<td>${i.dateOccurred}</td> 
 	<td>${i.status}</td> 
-	<td><a href="">View</a></td>
+	<td><a href="/errorhandler/viewerror?id=${i.getId()}" >View</a></td>
 	</tr>
 </c:forEach>
 				

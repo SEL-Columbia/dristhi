@@ -30,11 +30,12 @@ public class AllErrorTraceIntegrationTest {
 	{
 		//ErrorTrace error=new ErrorTrace(new Date(), "Error Testing" , "not availalbe","this is an Testing Error", "unsolved");
 		ErrorTrace error=new ErrorTrace();
-		error.setName("error loggging test");
+		error.setErrorType("error loggging test");
 		error.setDate(new Date());
 		error.setStackTrace("Complete Stack Trace :");
 		error.setStatus("unsolved");
-		error.setName("test Error");
+		error.setDocumentType("Test Document");
+	//	error.setErrorType("test Error");
 		allErrorTrace.add(error);
 		
 	}
