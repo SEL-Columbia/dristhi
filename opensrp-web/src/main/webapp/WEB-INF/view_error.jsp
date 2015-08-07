@@ -45,7 +45,7 @@
 				<li >
 					<a href="/errorhandler/errortrace" >All Errors</a>
 				</li>
-				<li class="active">
+				<li >
 					<a href="/errorhandler/solvederrors" >Solved Errors</a>
 				</li>
 				<li  >

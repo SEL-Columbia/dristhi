@@ -37,6 +37,7 @@
 		</div>
 	</div>
 	<div class="row">
+	<div class="col-md-3">
 		<ul class="nav nav-stacked nav-tabs">
 				<li class="active">
 					<a href="/errorhandler/errortrace" >All Errors</a>

@@ -68,7 +68,7 @@ public class ErrorTraceController {
 	public ModelAndView  showUnsolved(){
 	//	ModelAndView  map=new ModelAndView ();
 		Map<String, Object> model = new HashMap<String, Object>();
-		List<ErrorTrace> list=errorTraceService.getAllErrors();
+		List<ErrorTrace> list=errorTraceService.getAllUnsolvedErrors();
 		model.put("errors",list );
 		
 		return new ModelAndView("unsolvederrors", model);
@@ -80,7 +80,7 @@ public class ErrorTraceController {
 	public ModelAndView  showSolved(){
 	//	ModelAndView  map=new ModelAndView ();
 		Map<String, Object> model = new HashMap<String, Object>();
-		List<ErrorTrace> list=errorTraceService.getAllErrors();
+		List<ErrorTrace> list=errorTraceService.getAllSolvedErrors();
 		model.put("errors",list );
 		
 		return new ModelAndView("home_error", model);
