@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+  
+    
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,40 +64,82 @@
 		</div>
 		<div class="col-md-9">
 		
-		<table style="width:100%" class="table" >
+	<table style="width:100%" class="table" >
+		<form:form  class="form-horizontal" 
+		method="POST" action="/errorhandler/update_errortrace" modelAttribute="errorTraceForm">
   <tr>
+  
     <th>Name:</th>
-    <td>${error.errorType}</td>
-  </tr>
-  <tr>
-    <th>Record Id</th>
-    <td>${error.recordId}</td>
-  </tr>
-  <tr>
-    <th>Occurred At</th>
-    <td>${error.occurredAt}</td>
-  </tr>
-    <tr>
-    <th>Date</th>
     <td>
-    <fmt:formatDate pattern="yyyy-MM-dd" 
-            value="${error.dateOccurred}"/>
+    <spring:bind path="errorTrace.errorType">
+    <form:input type="text" path="errorTrace.errorType" name="errorType" readonly="true"/>
+    </spring:bind>
+    </td>
+  </tr>
+     <tr>
+    <th>Record Id</th>
+    <td>
+     <spring:bind path="errorTrace.recordId">
+    
+    <form:input type="text" path="errorTrace.recordId" id="recordId" name="recordId" readonly="true" />
+    </spring:bind>
+    </td>
+  </tr>
+ 
+	    <tr>
+    <th>Occurred Date</th>
+    <td>
+     <fmt:formatDate pattern="yyyy-MM-dd" 
+            value="${errorTraceForm.getErrorTrace().dateOccurred}" var="dateString"/>
+             <spring:bind path="errorTrace.dateOccurred">
+    <form:input type="date" path="errorTrace.dateOccurred" value="${dateString}" id="dateOccurred" name="dateOccurred" readonly="true"  />
+   </spring:bind>
+    </td>
+  </tr>
+ 	<form:input path="errorTrace.id" type="hidden" value="${errorTrace.getId()}"   />
+    <tr>
+    <th>Stack Trace</th>
+    <td>
+     <spring:bind path="errorTrace.stackTrace">
+    <form:textarea rows="20" cols="100" path="errorTrace.stackTrace" readonly="true" />
+    </spring:bind>
     </td>
   </tr>
     <tr>
-    <th>Stack Trace</th>
-    <td>${error.stackTrace}</td>
-  </tr>
-    <tr>
     <th>Status</th>
-    <td>${error.status}</td>
-  </tr>
+    <td>
 
+      <spring:bind path="errorTrace.status">
+    <form:select path="errorTrace.status" >
+                  <c:forEach var="option" items="${errorTraceForm.statusOptions}">
+
+                    <form:option value="${option}" label="${option}" />
+                  </c:forEach>
+
+                </form:select>
+                </spring:bind>
+    </td>
+  </tr>
+ 	<tr>
+ 	<th>URL </th>
+    <td>
+     <spring:bind path="errorTrace.retryUrl">
+    <form:input type="text" path="errorTrace.retryUrl" readonly="true" />
+    </spring:bind>
+     </td>
+ 	</tr>
     <tr>
     <th>Action</th>
-    <td><button >Retry</button></td>
+    <td><a class="btn btn-primary btn-md" role="button" href="${errorTrace.retryUrl}">Retry</a>
+	
+  
+     <input class="btn btn-success btn-md" role="button"  type="submit" value="Update"/>
+     </td>
   	</tr>
   
+  
+   
+  </form:form>
 </table>
 			
 		</div>

@@ -80,9 +80,10 @@
   
 	
 		<td>${i.errorType}</td> 
-	<td> <fmt:formatDate pattern="yyyy-MM-dd" 
-            value="${error.dateOccurred}"/></td> 
+	<td> <fmt:formatDate pattern="dd-MM-yyyy" 
+            value="${i.dateOccurred}"/></td> 
 	<td>${i.status}</td> 
+		<td><a class="btn btn-primary btn-md" role="button" href="/errorhandler/viewerror?id=${i.getId()}" >View</a></td>
 	
 	</tr>
 </c:forEach>
