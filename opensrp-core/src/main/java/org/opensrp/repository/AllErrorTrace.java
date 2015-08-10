@@ -28,18 +28,21 @@ public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> {
 		super(ErrorTrace.class, db);
 	}
 
-//	@GenerateView
+	//@GenerateView
 	public ErrorTrace findById(String _id) {
 		
 		/*db.queryView(createQuery("_id").keys(_id)
 				.includeDocs(true), ErrorTrace.class);*/
-	ErrorTrace errors=	get(_id);
+	ErrorTrace errors=	(ErrorTrace)get(_id);
 		//List<ErrorTrace> errors = queryView("_id", _id);
 		if (errors == null ) {
+			System.out.println("Error by id : =  found nothing !");
 			return null;
 		}
+		System.out.println("Error by id : = "+errors);
 		return errors;
 	}
+	
 	public boolean exists(String id) {
 		return findById(id) != null;
 	}
