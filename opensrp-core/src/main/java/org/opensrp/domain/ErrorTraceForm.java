@@ -16,7 +16,7 @@ public class ErrorTraceForm {
 		}
 		statusOptions.add("solved");
 		statusOptions.add("unsolved");
-		statusOptions.add("pending");
+		statusOptions.add("failed");
 		statusOptions.add("closed");
 		statusOptions.add("acknowledged");
 	}

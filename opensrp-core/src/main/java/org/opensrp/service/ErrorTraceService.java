@@ -23,7 +23,7 @@ public class ErrorTraceService {
 	
 	
 	@Autowired
-	public ErrorTraceService(AllErrorTrace allErrorTrace) {
+	public ErrorTraceService(AllErrorTrace allErrorTrace)  {
 		this.allErrorTrace=allErrorTrace;
 	}
 	
@@ -31,20 +31,49 @@ public class ErrorTraceService {
 		allErrorTrace.add(entity);
 	}
 	
+	/**
+	 * 
+	 * @param errorType
+	 * @param documentType
+	 * @param recordId
+	 * @param stackTrace
+	 * @param retryURL
+	 */
+	public void log(String errorType , String documentType, String recordId ,String stackTrace, String retryURL){
+		ErrorTrace error=new ErrorTrace();
+		error.setErrorType(errorType);
+		error.setDocumentType(documentType);
+		error.setRecordId(recordId);
+		error.setStackTrace(stackTrace);
+		error.setRetryUrl(retryURL);
+		error.setDateOccurred(new Date());
+		addError(error);
+		
+	}
+	
 	public void updateError(ErrorTrace entity){
 		allErrorTrace.update(entity);
 	}
 	
-	public List<ErrorTrace> getAllErrors(){
+	public List<ErrorTrace> getAllErrors() throws DocumentNotFoundException{
+		ArrayList<ErrorTrace> errors=null;
+		
 		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllErrors();
-		if(allErrorList.isEmpty()){
+		if(null==allErrorList){
 			return null;
 			
 		}
-		ArrayList<ErrorTrace> errors=new ArrayList<ErrorTrace>();
+		else if(allErrorList.isEmpty()){
+			return null;
+			
+		}
+		errors=new ArrayList<ErrorTrace>();
 		
 		for(ErrorTrace e: allErrorList){
 			//ErrorTrace object=new ErrorTrace(e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
+		//	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			//dateFormat.setLenient(false);
+			//e.setDateOccurred(new Date(dateFormat.format(e.getDateOccurred())));
 			errors.add(e);
 		}
 		
@@ -52,9 +81,19 @@ public class ErrorTraceService {
 		
 	}
 	
-	public List<ErrorTrace> getAllSolvedErrors(){
+	public List<ErrorTrace> getAllSolvedErrors() throws DocumentNotFoundException{
+		ArrayList<ErrorTrace> errors=null;
+		
 		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllSolvedErrors();
-		ArrayList<ErrorTrace> errors=new ArrayList<ErrorTrace>();
+		if(null==allErrorList){
+			return null;
+			
+		}
+		else if(allErrorList.isEmpty()){
+			return null;
+			
+		}
+		errors=new ArrayList<ErrorTrace>();
 		
 		for(ErrorTrace e: allErrorList){
 			//rrorTrace object=new ErrorTrace(e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
@@ -65,27 +104,34 @@ public class ErrorTraceService {
 		
 	}
  
-	public List<ErrorTrace> getAllUnsolvedErrors(){
+	public List<ErrorTrace> getAllUnsolvedErrors() throws DocumentNotFoundException{
+		ArrayList<ErrorTrace> errors=null;
 		
 		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllUnSolvedErrors();
-		ArrayList<ErrorTrace> errors=new ArrayList<ErrorTrace>();
+		if(null==allErrorList){
+			return null;
+			
+		}
+		else if(allErrorList.isEmpty()){
+			return null;
+			
+		}
+	 errors=new ArrayList<ErrorTrace>();
 		
 		for(ErrorTrace e: allErrorList){
 			//ErrorTrace object=new ErrorTrace(e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
 			errors.add(e);
 		}
 		
+	
 		return errors;
 	}
 	
-	public ErrorTrace getError(String id){
-		try{
+	public ErrorTrace getError(String id) throws DocumentNotFoundException{
+		
 		return allErrorTrace.findById(id);
-		}catch(DocumentNotFoundException e){
-			e.printStackTrace();
-			
-		}
-		return null;
+		
+		
 	}
 
 	

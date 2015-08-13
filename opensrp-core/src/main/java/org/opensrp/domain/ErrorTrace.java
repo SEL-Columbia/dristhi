@@ -24,7 +24,7 @@ public class ErrorTrace extends MotechBaseDataObject {
 	@JsonProperty
 	private String stackTrace;
 	@JsonProperty
-	private String status; // solved , unsolved , closed ,pending ,
+	private String status; // solved , unsolved , closed ,failed
 							// acknowledged,
 	@JsonProperty
 	private String recordId;

@@ -4,6 +4,7 @@ package org.opensrp.repository;
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
+import org.ektorp.DocumentNotFoundException;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
@@ -29,7 +30,7 @@ public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> {
 	}
 
 	//@GenerateView
-	public ErrorTrace findById(String _id) {
+	public ErrorTrace findById(String _id) throws DocumentNotFoundException{
 		
 		/*db.queryView(createQuery("_id").keys(_id)
 				.includeDocs(true), ErrorTrace.class);*/
@@ -48,19 +49,19 @@ public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> {
 	}
 	
 	@View(name = "all_errors", map = "function(doc) {  emit(doc.id);  }")
-	public List<ErrorTrace> findAllErrors() {
+	public List<ErrorTrace> findAllErrors()  throws DocumentNotFoundException{
 		return db.queryView(createQuery("all_errors").includeDocs(true),
 				ErrorTrace.class);
 	}
 
 	@View(name = "all_unsolved_errors", map = "function(doc) { if (doc.status === 'unsolved') { emit(doc.id); } }")
-	public List<ErrorTrace> findAllUnSolvedErrors() {
+	public List<ErrorTrace> findAllUnSolvedErrors() throws DocumentNotFoundException {
 		return db.queryView(createQuery("all_unsolved_errors").includeDocs(true),
 				ErrorTrace.class);
 	}
 	
 	@View(name = "all_solved_errors", map = "function(doc) { if (doc.status === 'solved') { emit(doc.id); } }")
-	public List<ErrorTrace> findAllSolvedErrors() {
+	public List<ErrorTrace> findAllSolvedErrors() throws DocumentNotFoundException {
 		return db.queryView(createQuery("all_solved__errors").includeDocs(true),
 				ErrorTrace.class);
 	}
