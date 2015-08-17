@@ -35,9 +35,12 @@
 
 	<script type="text/javascript" language="javascript" class="init">
 
-
-var statusOptions;
+//alert([[${statusOptions}]]);
+var statusOptions =${statusOptions};
+//statusOptions=statusOptions.toString();
+alert(statusOptions);
 var table;
+
 function viewError(id) {
 	$.get( "/errorhandler/viewerror?id="+id, function( data , status) {
 		
@@ -61,17 +64,91 @@ function viewError(id) {
 };
 
 
-	$(document).ready(function() {
-		//$.fn.dataTable.moment( 'HH:mm MMM D, YY' );
+function getUnSolvedErrors(){
+	//start of unsolved error method for datatable . 
+	if(table!=null){
+		table.destroy();
 		
-		
-			$.get( "/errorhandler/getstatusoptions", function( data , status) {
-				setInterval(5000);	
-				statusOptions=data;
-					
-				//	console.log(statusOptions);
-					});
+	}
+	table =$('#example').DataTable({
+		"ajax" : {
+			"url" : "/errorhandler/unsolvederrors",
+			"dataSrc" : ""
+		},
+		"columns" : [ {
+			"data" : "errorType"
+		}, {
+			"data" : "documentType"
+		}, {
+			"data" : "recordId",
+			"defaultContent": ""
+		}, {
+			"data" : "dateOccurred",
+			 "type": "date"
 			
+		}, {
+			"data" : "status"
+		},
+		{
+			"data": "_id"
+			
+		}
+		
+		],
+		"aoColumnDefs": [{
+		      "mRender":function ( data, type, full ) {
+		    	  var d = new Date(data);
+		    	    var curr_date = d.getDate();
+		    	    var curr_month = d.getMonth() + 1; //Months are zero based
+		    	    var curr_year = d.getFullYear();
+		    	    //console.log(curr_date + "-" + curr_month + "-" + curr_year);
+		    	  
+		    	  return curr_date + "-" + curr_month + "-" + curr_year;
+		      },
+    			"aTargets": [ 3]
+		      
+		},{
+			"mRender": function ( data, type, full ) {
+	    //   return '<a data-toggle="modal" class="btn btn-info" href="/errorhandler/viewerror?id='+data+'" data-target="#myModal">Click me !</a>';
+				return "<button onclick='viewError(&quot;"+data+"&quot;) ;' >View StackTrace</button> <a  >Update</a> ";
+	      },
+				"aTargets": [ 5]
+	},
+	{
+		
+		"mRender": function ( data, type, full ) {
+   				
+			var options="<select id='status'>";
+			for(i=0;i<statusOptions.length;i++){
+				if(data==statusOptions[i]){
+					options+="<option value='"+statusOptions[i]+"' selected>"+statusOptions[i]+"</options>";
+				}else{
+				options+="<option value='"+statusOptions[i]+"'>"+statusOptions[i]+"</options>";
+				}
+			}
+			
+			options+="</select>";
+			//   return '<a data-toggle="modal" class="btn btn-info" href="/errorhandler/viewerror?id='+data+'" data-target="#myModal">Click me !</a>';
+			//console.log(options);
+			return options;
+      },
+			"aTargets": [4]
+}
+
+	]
+
+		
+	});//end of unsolved error method for data table 
+}//end of method 
+
+
+	function getAllErrors(){
+	
+	if(table!=null){
+		table.destroy();
+		
+	}
+		// start of all error method for data table.	
 		table =$('#example').DataTable({
 			"ajax" : {
 				"url" : "/errorhandler/errortrace",
@@ -82,7 +159,8 @@ function viewError(id) {
 			}, {
 				"data" : "documentType"
 			}, {
-				"data" : "recordId"
+				"data" : "recordId",
+				"defaultContent": ""
 			}, {
 				"data" : "dateOccurred",
 				 "type": "date"
@@ -106,7 +184,7 @@ function viewError(id) {
 			    	  
 			    	  return curr_date + "-" + curr_month + "-" + curr_year;
 			      },
-        			"aTargets": [ 3]
+        			"aTargets": [3]
 			      
 			},{
 				"mRender": function ( data, type, full ) {
@@ -139,7 +217,103 @@ function viewError(id) {
 		]
 
 			
-		});
+		});//end of all error method for data table 
+}//end of method
+
+function getSolvedErrors(){
+	
+	if(table!=null){
+		table.destroy();
+		
+	}
+		// start of all error method for data table.	
+		table =$('#example').DataTable({
+			"ajax" : {
+				"url" : "/errorhandler/solvederrors",
+				"dataSrc" : ""
+			},
+			"columns" : [ {
+				"data" : "errorType"
+			}, {
+				"data" : "documentType"
+			}, {
+				"data" : "recordId",
+				"defaultContent": ""
+			}, {
+				"data" : "dateOccurred",
+				 "type": "date"
+				
+			}, {
+				"data" : "status"
+			},
+			{
+				"data": "_id"
+				
+			}
+			
+			],
+			"aoColumnDefs": [{
+			      "mRender":function ( data, type, full ) {
+			    	  var d = new Date(data);
+			    	    var curr_date = d.getDate();
+			    	    var curr_month = d.getMonth() + 1; //Months are zero based
+			    	    var curr_year = d.getFullYear();
+			    	    //console.log(curr_date + "-" + curr_month + "-" + curr_year);
+			    	  
+			    	  return curr_date + "-" + curr_month + "-" + curr_year;
+			      },
+        			"aTargets": [3]
+			      
+			},{
+				"mRender": function ( data, type, full ) {
+		    //   return '<a data-toggle="modal" class="btn btn-info" href="/errorhandler/viewerror?id='+data+'" data-target="#myModal">Click me !</a>';
+					return "<button onclick='viewError(&quot;"+data+"&quot;) ;' >View StackTrace</button> <a  >Update</a> ";
+		      },
+    				"aTargets": [ 5]
+		},
+		{
+			
+			"mRender": function ( data, type, full ) {
+	   				
+				var options="<select id='status'>";
+				for(i=0;i<statusOptions.length;i++){
+					if(data==statusOptions[i]){
+						options+="<option value='"+statusOptions[i]+"' selected>"+statusOptions[i]+"</options>";
+					}else{
+					options+="<option value='"+statusOptions[i]+"'>"+statusOptions[i]+"</options>";
+					}
+					console.log(statusOptions[i]);
+				}
+				
+				options+="</select>";
+				//   return '<a data-toggle="modal" class="btn btn-info" href="/errorhandler/viewerror?id='+data+'" data-target="#myModal">Click me !</a>';
+				//console.log(options);
+				return options;
+	      },
+				"aTargets": [4]
+	}
+	
+		]
+
+			
+		});//end of all error method for data table 
+}//end of method
+
+
+	//called when 
+	$(document).ready(function() {
+		//$.fn.dataTable.moment( 'HH:mm MMM D, YY' );
+		
+/* 		
+			$.get( "/errorhandler/getstatusoptions", function( data , status) {
+				setInterval(5000);	
+				statusOptions=data;
+					
+				//	console.log(statusOptions);
+					}); */
+			
+			getAllErrors();
+		
 		
 		
 		 $('#example tbody').on( 'click', 'a', function () {
@@ -149,7 +323,7 @@ function viewError(id) {
 		        var selectedStatus=$(this).parents('tr').find('#status :selected');//.data(); 
 		        console.log(selectedStatus.text());
 		        $.get( "/errorhandler/update_status?id="+data['_id']+"&status="+selectedStatus.text(), function( data , status) {
-					
+				
 		        	
 		        		
 					console.log(selectedStatus);
@@ -171,9 +345,14 @@ function viewError(id) {
 		
 	});
 	
+	
+	
+	
 	 
 	
 </script>
+
+
 
 </head>
 <body>
@@ -195,10 +374,10 @@ function viewError(id) {
 	
 			<div class="col-md-3">
 				<ul class="nav nav-stacked nav-tabs">
-					<li class="active"><a href="/errorhandler/errortrace">All
+					<li ><a onclick="getAllErrors();">All
 							Errors</a></li>
-					<li><a href="/errorhandler/solvederrors">Solved Errors</a></li>
-					<li><a href="/errorhandler/unsolvederrors">Unsolved Errors</a></li>
+					<li><a onclick="getSolvedErrors();">Solved Errors</a></li>
+					<li><a onclick="getUnSolvedErrors();">Unsolved Errors</a></li>
 					<li class="dropdown pull-right"><a href="#"
 						data-toggle="dropdown" class="dropdown-toggle">Options<strong
 							class="caret"></strong></a>

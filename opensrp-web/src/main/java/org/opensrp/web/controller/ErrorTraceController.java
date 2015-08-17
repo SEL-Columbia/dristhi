@@ -38,6 +38,8 @@ import org.opensrp.domain.ErrorTraceForm;
 import org.opensrp.dto.VillagesDTO;
 import org.opensrp.service.ErrorTraceService;
 
+import com.google.gson.Gson;
+
 @Controller
 @RequestMapping("/errorhandler")
 public class ErrorTraceController {
@@ -66,6 +68,16 @@ public class ErrorTraceController {
 		Map<String, Object> model = new HashMap<String, Object>();
 		//List<ErrorTrace> list = errorTraceService.getAllErrors();
 		//model.put("errors", list);
+		ErrorTraceForm errorForm=new ErrorTraceForm();
+		
+		  Gson gson = new Gson();
+		  
+	        //
+	        // Convert numbers array into JSON string.
+	        //
+	        String optionsJson = gson.toJson(errorForm.getStatusOptions());
+		model.put("statusOptions",optionsJson);
+		
 		model.put("type", "all");
 
 		return new ModelAndView("home_error", model);
