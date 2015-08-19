@@ -35,23 +35,27 @@
 
 	<script type="text/javascript" language="javascript" class="init">
 
-//alert([[${statusOptions}]]);
+
 var statusOptions =${statusOptions};
-//statusOptions=statusOptions.toString();
-alert(statusOptions);
+
 var table;
 
 function viewError(id) {
+	
 	$.get( "/errorhandler/viewerror?id="+id, function( data , status) {
 		
 		$("#errorType").val(data.errorTrace.errorType);  
-		$("#documentType").val(data.errorTrace.documentType);  
-		$("#dateOccurred").val(data.errorTrace.dateOccurred); 
+		$("#documentType").val(data.errorTrace.documentType);
+		 var d = new Date(data.errorTrace.dateOccurred);
+ 	    var curr_date = d.getDate();
+ 	    var curr_month = d.getMonth() + 1; //Months are zero based
+ 	    var curr_year = d.getFullYear();
+		$("#dateOccurred").val(curr_date+"-"+curr_month+"-"+curr_year); 
 		$("#stackTrace").val(data.errorTrace.stackTrace);
 		$("#retryURL").val(data.errorTrace.retryURL);  
 		//$( ".result" ).html( data );
 	$('#myModal').modal('show')
-	console.log(data);
+	//console.log(data);
 		//alert( data.errorTrace.errorType );
 		});
 	
@@ -70,7 +74,7 @@ function getUnSolvedErrors(){
 		table.destroy();
 		
 	}
-	table =$('#example').DataTable({
+	table =$('#errorTable').DataTable({
 		"ajax" : {
 			"url" : "/errorhandler/unsolvederrors",
 			"dataSrc" : ""
@@ -149,7 +153,7 @@ function getUnSolvedErrors(){
 		
 	}
 		// start of all error method for data table.	
-		table =$('#example').DataTable({
+		table =$('#errorTable').DataTable({
 			"ajax" : {
 				"url" : "/errorhandler/errortrace",
 				"dataSrc" : ""
@@ -227,7 +231,7 @@ function getSolvedErrors(){
 		
 	}
 		// start of all error method for data table.	
-		table =$('#example').DataTable({
+		table =$('#errorTable').DataTable({
 			"ajax" : {
 				"url" : "/errorhandler/solvederrors",
 				"dataSrc" : ""
@@ -302,21 +306,12 @@ function getSolvedErrors(){
 
 	//called when 
 	$(document).ready(function() {
-		//$.fn.dataTable.moment( 'HH:mm MMM D, YY' );
-		
-/* 		
-			$.get( "/errorhandler/getstatusoptions", function( data , status) {
-				setInterval(5000);	
-				statusOptions=data;
-					
-				//	console.log(statusOptions);
-					}); */
-			
+
 			getAllErrors();
 		
 		
 		
-		 $('#example tbody').on( 'click', 'a', function () {
+		 $('#errorTable tbody').on( 'click', 'a', function () {
 		        var data = table.row( $(this).parents('tr') ).data();
 		        console.log(data);
 		      //  var st=table.row( $(this).parents('tr').find('#status') ).val(); //.data();
@@ -328,18 +323,7 @@ function getSolvedErrors(){
 		        		
 					console.log(selectedStatus);
 					setInterval(5000);
-					//location.reload();
-					//statusOptions=data;
-						
-					//	console.log(statusOptions);
-						});
-		        
-		        //console.log("s : "+ s.text());
-		       // console.log("st : "+st);
-		        //console.log(data);
-		        
-		        
-		        //alert( data[1]);
+					window.location.reload();
 		    } );
 		
 		
@@ -363,8 +347,8 @@ function getSolvedErrors(){
 				<img alt="OPENSRP" src="/resources/opensrp-logo.png">
 			</div>
 			<div class="col-md-8">
-				<h3 class="text-center text-success">Error Handling -- OpenSRP
-				</h3>
+				<h2 class="text-center text-success">Error Handling
+				</h2>
 			</div>
 			<div class="col-md-2"></div>
 		</div>
@@ -372,7 +356,7 @@ function getSolvedErrors(){
 		
 		
 	
-			<div class="col-md-3">
+			<div class="col-md-2">
 				<ul class="nav nav-stacked nav-tabs">
 					<li ><a onclick="getAllErrors();">All
 							Errors</a></li>
@@ -387,9 +371,8 @@ function getSolvedErrors(){
 						</ul></li>
 				</ul>
 			</div>
-			<div class="col-md-9">
-
-				<table id="example" class="display" cellspacing="0" width="100%">
+			<div class="col-md-10">
+				<table id="errorTable" class="display" cellspacing="0" width="100%">
 					<thead>
 						<tr>
 							<th>Error Type</th>
@@ -425,7 +408,7 @@ function getSolvedErrors(){
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Error Log</h4>
+								<h2 class="modal-title">Error Log</h2>
 							</div>
 							<div class="modal-body">
 							<table style="width:80%"  class="table" >
@@ -445,7 +428,7 @@ function getSolvedErrors(){
 
 									<tr>
 										<th>Date Occurred:</th>
-										<td><input type="Date" id="dateOccurred" readonly />
+										<td><input  id="dateOccurred" readonly />
 
 										</td>
 									</tr>
