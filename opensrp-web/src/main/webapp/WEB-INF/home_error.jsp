@@ -328,6 +328,8 @@ function getSolvedErrors(){
 		
 		
 	});
+		 
+	});
 	
 	
 	
@@ -344,7 +346,7 @@ function getSolvedErrors(){
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-2">
-				<img alt="OPENSRP" src="/resources/opensrp-logo.png">
+				<img alt="OPENSRP" src="/resources/opensrp_logo.png">
 			</div>
 			<div class="col-md-8">
 				<h2 class="text-center text-success">Error Handling
@@ -408,7 +410,7 @@ function getSolvedErrors(){
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h2 class="modal-title">Error Log</h2>
+								<h2 class="modal-title"><b>Error Log</b></h2>
 							</div>
 							<div class="modal-body">
 							<table style="width:80%"  class="table" >
