@@ -1,5 +1,5 @@
 {
-  "form_data_definition_version": "4",
+  "form_data_definition_version": "7",
   "form": {
     "default_bind_path": "/model/instance/FWNewHH",
     "bind_type": "household",
@@ -83,7 +83,7 @@
     ],
     "sub_forms": [
       {
-        "name": "elco_registration_hh",
+        "name": "elco_registration",
         "bind_type": "elco",
         "default_bind_path": "/model/instance/FWNewHH/woman",
         "fields": [
@@ -94,6 +94,10 @@
           {
             "name": "relationalid",
             "shouldLoadValue": true
+          },
+          {
+            "name": "WomanREGDATE",
+            "bind": "/model/instance/FWNewHH/woman/REGDATE"
           },
           {
             "name": "GOBHHID",
