@@ -114,7 +114,7 @@ function getUnSolvedErrors(){
 		},{
 			"mRender": function ( data, type, full ) {
 	    //   return '<a data-toggle="modal" class="btn btn-info" href="/errorhandler/viewerror?id='+data+'" data-target="#myModal">Click me !</a>';
-				return "<button onclick='viewError(&quot;"+data+"&quot;) ;' >View StackTrace</button> <a  >Update</a> ";
+				return "<button type='button' class='btn btn-primary' onclick='viewError(&quot;"+data+"&quot;) ;' >View StackTrace</button> <a type='button' class='btn btn-success' >Update</a> ";
 	      },
 				"aTargets": [ 5]
 	},
@@ -193,7 +193,7 @@ function getUnSolvedErrors(){
 			},{
 				"mRender": function ( data, type, full ) {
 		    //   return '<a data-toggle="modal" class="btn btn-info" href="/errorhandler/viewerror?id='+data+'" data-target="#myModal">Click me !</a>';
-					return "<button onclick='viewError(&quot;"+data+"&quot;) ;' >View StackTrace</button> <a  >Update</a> ";
+					return "<button  type='button' class='btn btn-primary'  onclick='viewError(&quot;"+data+"&quot;) ;' >View StackTrace</button> <a type='button' class='btn btn-success' >Update</a> ";
 		      },
     				"aTargets": [ 5]
 		},
@@ -271,7 +271,7 @@ function getSolvedErrors(){
 			},{
 				"mRender": function ( data, type, full ) {
 		    //   return '<a data-toggle="modal" class="btn btn-info" href="/errorhandler/viewerror?id='+data+'" data-target="#myModal">Click me !</a>';
-					return "<button onclick='viewError(&quot;"+data+"&quot;) ;' >View StackTrace</button> <a  >Update</a> ";
+					return "<button  type='button' class='btn btn-primary' onclick='viewError(&quot;"+data+"&quot;) ;' >View StackTrace</button> <a type='button' class='btn btn-success' >Update</a> ";
 		      },
     				"aTargets": [ 5]
 		},
