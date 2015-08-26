@@ -1,0 +1,15 @@
+
+language: java
+sudo: false
+addons:
+  postgresql: 9.3
+services:
+  - couchdb
+  - rabbitmq
+before_script:
+      - psql -c "ALTER USER postgres WITH PASSWORD 'VA1913wm'" -U postgres
+script:
+  - javac -version
+  - java -version
+  - mvn --version
+  - mvn test
