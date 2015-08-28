@@ -1,21 +1,28 @@
 package org.ei.drishti.form.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Entity;
 
 
 
 @Entity
-@Table(name = "poc_table")
+@Table(name="poc_table")
+@NamedQuery(name = Poc_table.FIND_BY_PHC_NAME, query = "select name from report.dim_phc dp where dp.id=(select phc from report.dim_anm da where da.anmidentifier = :anmid)")
+
 public class Poc_table {
+	
+	public static final String FIND_BY_PHC_NAME="find.by.phc.name";
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +31,8 @@ public class Poc_table {
 	@Column(name = "visitentityid")
 	private String visitentityid;
 
-	@Column(name = "phc",  nullable=false, columnDefinition="character varying(35) default ''")
-	private String phc;
+	@Column(name = "phc")
+	private List phc;
 	
 	@Column(name = "clientversion",  nullable=false, columnDefinition="character varying(35) default ''")
 	private String clientversion;
@@ -43,6 +50,7 @@ public class Poc_table {
 
 	@Column(name = "anmid")
 	private String anmid;
+	
 	@Column(name = "visittype")
 	private String visittype;
 
@@ -51,7 +59,7 @@ public class Poc_table {
 	}
 
 	public Poc_table(String visitentityid, String anmid, String entityidEC,
-			String phc, String visittype, String level, String clientversion, String serverversion) {
+			List phc, String visittype, String level, String clientversion, String serverversion) {
 		this.visitentityid = visitentityid;
 		this.entityidEC = entityidEC;
 		this.phc = phc;
@@ -79,12 +87,12 @@ public class Poc_table {
 		this.visitentityid = visitentityid;
 	}
 
-	public String getPhc() {
+	public List getPhc() {
 		return phc;
 	}
 
-	public void setPhc(String phc) {
-		this.phc = phc;
+	public void setPhc(List phc2) {
+		this.phc = phc2;
 	}
 
 	public String getClientversion() {

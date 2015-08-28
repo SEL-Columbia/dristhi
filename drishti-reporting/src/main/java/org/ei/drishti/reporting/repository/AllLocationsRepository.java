@@ -1,5 +1,6 @@
 package org.ei.drishti.reporting.repository;
 
+import org.ei.drishti.reporting.domain.ANMVillages;
 import org.ei.drishti.reporting.domain.Location;
 import org.ei.drishti.reporting.domain.PHC;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class AllLocationsRepository {
         this.dataAccessTemplate = dataAccessTemplate;
     }
 
-    public Location fetchBy(String village, String subCenter, String phcIdentifier) {
+    	public Location fetchBy(String village, String subCenter, String phcIdentifier) {
         return (Location) dataAccessTemplate.getUniqueResult(Location.FIND_BY_VILLAGE_SUBCENTER_AND_PHC_IDENTIFIER,
                 new String[]{"village", "subCenter", "phcIdentifier"}, new Object[]{village,
                 subCenter, phcIdentifier});
@@ -41,5 +42,14 @@ public class AllLocationsRepository {
             return null;
         return dataAccessTemplate.findByNamedQueryAndNamedParam(Location.FIND_VILLAGES_BY_PHC_AND_SUBCENTER,
                 new String[]{"phcIdentifier", "subCenter"}, new Object[]{location.phc().phcIdentifier(), location.subCenter()});
+    }
+    
+    public List fetchANMVillages(String anmIdentifier) {
+//        Location location = fetchByANMIdentifier(anmIdentifier);
+//        if (location == null)
+//            return null;
+    	String user_id=anmIdentifier;
+        return dataAccessTemplate.findByNamedQueryAndNamedParam(ANMVillages.FIND_BY_USER_ID,
+                new String[]{"user_id"}, new Object[]{user_id});
     }
 }

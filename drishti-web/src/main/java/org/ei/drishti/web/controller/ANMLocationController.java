@@ -45,6 +45,7 @@ public class ANMLocationController {
         try {
             String anmIdentifier = userController.currentUser().getUsername();
             response = httpAgent.get(drishtiANMVillagesURL + "?anm-id=" + anmIdentifier);
+            logger.info("*** response for anm-villages******"+response);
             VillagesDTO villagesDTOs = new Gson().fromJson(response.body(),
                     new TypeToken<VillagesDTO>() {
                     }.getType());

@@ -24,8 +24,8 @@
     <util:properties id="drishti" location="classpath:/drishti.properties"/>
 
     <context:component-scan base-package="org.ei.drishti.scheduler, org.ei.drishti.reporting, org.ei.drishti.common"/>
-    <mvc:default-servlet-handler/>
-
+    <!-- <mvc:default-servlet-handler/> -->
+ <mvc:default-servlet-handler/>
     <mvc:annotation-driven/>
 
     <bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl"/>
