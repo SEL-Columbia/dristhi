@@ -63,7 +63,7 @@ public class ErrorTraceService {
 		
 		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllErrors();
 		if(null==allErrorList || allErrorList.isEmpty()){
-			return allErrorList;
+			return null;
 			
 		}
 	
@@ -77,7 +77,7 @@ public class ErrorTraceService {
 		
 		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllSolvedErrors();
 		if(null==allErrorList || allErrorList.isEmpty()){
-			return allErrorList;
+			return null;
 			
 		}
 	
@@ -91,7 +91,7 @@ public class ErrorTraceService {
 		
 		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllUnSolvedErrors();
 		if(null==allErrorList || allErrorList.isEmpty()){
-			return allErrorList;
+			return null;
 			
 		}
 	
