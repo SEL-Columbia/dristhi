@@ -22,10 +22,9 @@ public class FormSubmissionDTO {
     private String serverVersion;
     @JsonProperty
     private String formDataDefinitionVersion;
-    @JsonProperty
-    private String village;
+    
 
-    public FormSubmissionDTO(String anmId, String instanceId, String entityId, String formName, String formInstance, String clientVersion, String formDataDefinitionVersion, String village) {
+    public FormSubmissionDTO(String anmId, String instanceId, String entityId, String formName, String formInstance, String clientVersion, String formDataDefinitionVersion) {
         this.anmId = anmId;
         this.instanceId = instanceId;
         this.entityId = entityId;
@@ -33,7 +32,7 @@ public class FormSubmissionDTO {
         this.formInstance = formInstance;
         this.clientVersion = clientVersion;
         this.formDataDefinitionVersion = formDataDefinitionVersion;
-        this.village = village;
+        
     }
 
     public FormSubmissionDTO withServerVersion(String version) {
@@ -68,10 +67,7 @@ public class FormSubmissionDTO {
     public String  formDataDefinitionVersion() {
         return this.formDataDefinitionVersion;
     }
-    public String  village() {
-        return this.village;
-    }
-
+    
     public String serverVersion() {
         return serverVersion;
     }

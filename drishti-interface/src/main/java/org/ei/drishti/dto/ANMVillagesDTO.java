@@ -18,9 +18,9 @@ public class ANMVillagesDTO {
     private String userrole;
 	
 	 @JsonProperty
-	    private List<String> villages;
+	    private String villages;
 	 
-	 public ANMVillagesDTO(String user_id, String userrole,List<String> villages){
+	 public ANMVillagesDTO(String user_id, String userrole,String villages){
 		 this.villages = villages; 
 		 this.user_id=user_id;
 		 this.userrole=userrole;
@@ -34,7 +34,7 @@ public class ANMVillagesDTO {
 	 public String user_id() {
 	        return user_id;
 	    }
-	 public List<String> villages() {
+	 public String villages() {
 	        return villages;
 	    }
 	 

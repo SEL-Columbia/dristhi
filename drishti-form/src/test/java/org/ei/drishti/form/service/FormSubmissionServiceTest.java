@@ -39,12 +39,12 @@ private AllPoc_tableRepository allPoc_tableRepository;
     @Test
     public void shouldSortAllSubmissionsAndSaveEachOne() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
-        FormSubmissionDTO earlierFormSubmissionDTO = new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name 1", null, valueOf(baseTimeStamp), "1","testvillage");
-        FormSubmissionDTO laterFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name 1", null, valueOf(baseTimeStamp + 1), "1","testvillage");
-        FormSubmissionDTO veryLateFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 3", "entity id 3", "form name 1", null, valueOf(baseTimeStamp + 2), "1","testvillage");
-        FormSubmission earlierFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", baseTimeStamp, "1","testvillage", null, serverVersion);
-        FormSubmission laterFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", baseTimeStamp + 1, "1","testvillage", null, serverVersion);
-        FormSubmission veryLateFormSubmission = new FormSubmission("anm id 2", "instance id 3", "form name 1", "entity id 3", baseTimeStamp + 2, "1","testvillage", null, serverVersion);
+        FormSubmissionDTO earlierFormSubmissionDTO = new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name 1", null, valueOf(baseTimeStamp), "1");
+        FormSubmissionDTO laterFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name 1", null, valueOf(baseTimeStamp + 1), "1");
+        FormSubmissionDTO veryLateFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 3", "entity id 3", "form name 1", null, valueOf(baseTimeStamp + 2), "1");
+        FormSubmission earlierFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", baseTimeStamp, "1", null, serverVersion);
+        FormSubmission laterFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", baseTimeStamp + 1, "1", null, serverVersion);
+        FormSubmission veryLateFormSubmission = new FormSubmission("anm id 2", "instance id 3", "form name 1", "entity id 3", baseTimeStamp + 2, "1", null, serverVersion);
         List<FormSubmissionDTO> formSubmissionsDTO = asList(laterFormSubmissionDTO, earlierFormSubmissionDTO, veryLateFormSubmissionDTO);
         when(allFormSubmissions.exists(anyString())).thenReturn(false);
 
@@ -63,10 +63,10 @@ private AllPoc_tableRepository allPoc_tableRepository;
     @Test
     public void shouldNotDelegateFormSubmissionIfAlreadyExists() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
-        FormSubmissionDTO firstFormSubmissionDTO = new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name 1", null, valueOf(baseTimeStamp), "1","testvillage");
-        FormSubmissionDTO secondFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name 1", null, valueOf(baseTimeStamp + 1), "1","testvillage");
-        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", baseTimeStamp, "1","testvillage", null, serverVersion);
-        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", baseTimeStamp + 1, "1","testvillage", null, serverVersion);
+        FormSubmissionDTO firstFormSubmissionDTO = new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name 1", null, valueOf(baseTimeStamp), "1");
+        FormSubmissionDTO secondFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name 1", null, valueOf(baseTimeStamp + 1), "1");
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", baseTimeStamp, "1", null, serverVersion);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", baseTimeStamp + 1, "1", null, serverVersion);
         when(allFormSubmissions.exists("instance id 1")).thenReturn(true);
         when(allFormSubmissions.exists("instance id 2")).thenReturn(false);
 
@@ -83,10 +83,10 @@ private AllPoc_tableRepository allPoc_tableRepository;
     @Test
     public void shouldFetchFormSubmissionsByGiven() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
-        FormSubmissionDTO firstFormSubmissionDTO = new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name 1", "", valueOf(baseTimeStamp), "1","testvillage").withServerVersion("0");
-        FormSubmissionDTO secondFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name 1", "", valueOf(baseTimeStamp + 1), "1","testvillage").withServerVersion("1");
-        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", baseTimeStamp, "1","testvillage", null, 0L);
-        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", baseTimeStamp + 1, "1","testvillage", null, 1L);
+        FormSubmissionDTO firstFormSubmissionDTO = new FormSubmissionDTO("anm id 1", "instance id 1", "entity id 1", "form name 1", "", valueOf(baseTimeStamp), "1").withServerVersion("0");
+        FormSubmissionDTO secondFormSubmissionDTO = new FormSubmissionDTO("anm id 2", "instance id 2", "entity id 2", "form name 1", "", valueOf(baseTimeStamp + 1), "1").withServerVersion("1");
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", baseTimeStamp, "1", null, 0L);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", baseTimeStamp + 1, "1", null, 1L);
         when(allFormSubmissions.findByServerVersion(0L)).thenReturn(asList(firstFormSubmission, secondFormSubmission));
 
         List<FormSubmissionDTO> formSubmissionDTOs = formSubmissionService.fetch(0L);
@@ -97,8 +97,8 @@ private AllPoc_tableRepository allPoc_tableRepository;
     @Test
     public void shouldFetchAllFormSubmissions() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
-        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", baseTimeStamp, "1","testvillage", null, 0L);
-        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", baseTimeStamp + 1, "1","testvillage", null, 1L);
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", baseTimeStamp, "1", null, 0L);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", baseTimeStamp + 1, "1", null, 1L);
         when(allFormSubmissions.allFormSubmissions(0, 2)).thenReturn(asList(firstFormSubmission, secondFormSubmission));
 
         List<FormSubmission> formSubmissions = formSubmissionService.getAllSubmissions(0L, 2);

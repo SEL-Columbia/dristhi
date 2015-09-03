@@ -44,11 +44,11 @@ public class AllLocationsRepository {
                 new String[]{"phcIdentifier", "subCenter"}, new Object[]{location.phc().phcIdentifier(), location.subCenter()});
     }
     
-    public List fetchANMVillages(String anmIdentifier) {
+    public List fetchANMVillages(String user_id) {
 //        Location location = fetchByANMIdentifier(anmIdentifier);
 //        if (location == null)
 //            return null;
-    	String user_id=anmIdentifier;
+    	//String user_id=anmIdentifier;
         return dataAccessTemplate.findByNamedQueryAndNamedParam(ANMVillages.FIND_BY_USER_ID,
                 new String[]{"user_id"}, new Object[]{user_id});
     }

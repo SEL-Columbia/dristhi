@@ -5,6 +5,7 @@ import org.ei.drishti.dto.ANMVillagesDTO;
 import org.ei.drishti.dto.VillagesDTO;
 import org.ei.drishti.reporting.domain.ANMVillages;
 import org.ei.drishti.reporting.domain.Location;
+import org.ei.drishti.reporting.repository.ANCVisitRepository;
 import org.ei.drishti.reporting.service.ANMService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +25,16 @@ import static org.springframework.http.HttpStatus.OK;
 @Controller
 public class LocationController {
     private ANMService anmService;
+    
+   
     private static Logger logger = LoggerFactory
 			.getLogger(LocationController.class.toString());
 
     @Autowired
     public LocationController(ANMService anmService) {
         this.anmService = anmService;
+        
+        
     }
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS}, value = "/villages")
@@ -48,6 +53,9 @@ public class LocationController {
                     anmLocation.phc().phcIdentifier(),
                     anmLocation.subCenter(),  
                     villages);
+            logger.info("^^^^^^^^^trying to insert data^^^^^^^");
+            
+           
         }
         return new ResponseEntity<>(villagesDTO, OK);
     }
@@ -58,14 +66,15 @@ public class LocationController {
         List villagesForANM = anmService.getANMVillages(anmIdentifier);
         logger.info("*****villages fetched******"+villagesForANM);
         ANMVillagesDTO anmvillagesDTO = null;
-        List<String> villages=null;
+        
            if (villagesForANM != null) {
             ANMVillages anmLocation = (ANMVillages) villagesForANM.get(0);
             logger.info("**** fetched anmLocation details***"+anmLocation);
-           villages = collect(villagesForANM, on(ANMVillages.class).villages());
-            logger.info("**** fetched villages***"+villages);
+          // villages = collect(villagesForANM, on(ANMVillages.class).villages());
+           
             
-            anmvillagesDTO = new ANMVillagesDTO(anmLocation.user_id(), anmLocation.userrole(), villages);
+            anmvillagesDTO = new ANMVillagesDTO(anmLocation.user_id(), anmLocation.userrole(), anmLocation.villages());
+            //anmvillagesDTO = new ANMVillagesDTO(anmLocation.user_id(), anmLocation.userrole(), villages);
                     }
            return new ResponseEntity<>(anmvillagesDTO, OK);
     }

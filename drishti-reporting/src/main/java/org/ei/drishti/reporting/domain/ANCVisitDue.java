@@ -1,0 +1,99 @@
+package org.ei.drishti.reporting.domain;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "anc_due")
+
+public class ANCVisitDue {
+	//Date date=new Date();
+	@Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "entityid")
+    private String entityid;
+    
+    @Column(name = "patientnum")
+    private String patientnum;
+    
+    @Column(name = "anmnum")
+    private String anmnum;
+    
+    @Column(name = "regdate")
+    private String regdate;
+    
+    @Column(name = "visitno")
+    private Integer visitno;
+    
+    @Column(name = "visitdate")
+    private String visitdate;
+
+    private ANCVisitDue() {
+    }
+
+    
+    public ANCVisitDue(String entityid,String patientnum,String anmnum,String regdate,Integer visitno,String visitdate) {
+        
+        this.entityid=entityid;
+        this.patientnum=patientnum;
+        this.anmnum=anmnum;
+        this.regdate=regdate;
+        this.visitno=visitno;
+        this.visitdate=visitdate;
+             
+    }
+
+    public Integer id() {
+        return id;
+    }
+
+    public String entityid() {
+        return entityid;
+    }   
+    public String patientnum() {
+        return patientnum;
+    }    
+    public String anmnum() {
+        return anmnum;
+    }  
+    public String regdate(){
+        return regdate;
+    }  
+     public Integer visitno() {
+        return visitno;
+     }
+     public String visitdate() {
+            return visitdate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o, new String[]{"id"});
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this, new String[]{"id"});
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+
+}

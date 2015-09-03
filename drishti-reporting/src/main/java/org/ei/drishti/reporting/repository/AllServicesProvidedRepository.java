@@ -1,6 +1,9 @@
 package org.ei.drishti.reporting.repository;
 
+import org.ei.drishti.reporting.controller.LocationController;
 import org.ei.drishti.reporting.domain.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +15,8 @@ import java.util.List;
 @Repository
 public class  AllServicesProvidedRepository {
     private DataAccessTemplate dataAccessTemplate;
+    private static Logger logger = LoggerFactory
+			.getLogger(AllServicesProvidedRepository.class.toString());
 
     protected AllServicesProvidedRepository() {
     }
@@ -52,4 +57,9 @@ public class  AllServicesProvidedRepository {
     public void deleteReportsFor(String dristhiEntityId) {
         dataAccessTemplate.deleteAll(getAllReportsForDristhiEntityID(dristhiEntityId));
     }
+    public void ancsave(String entityid,String patientnum,String anmnum,String regdate,Integer visitno,String visitdate) {
+    	logger.info("####### ancsave method invoked$$$$$");
+        dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,regdate,visitno,visitdate));
+    }
+    
 }

@@ -8,12 +8,15 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.http.util.EntityUtils;
 import org.ei.drishti.common.util.HttpResponse;
 import org.ei.drishti.dto.ANMVillagesDTO;
 import org.ei.drishti.dto.VillagesDTO;
@@ -22,6 +25,7 @@ import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.service.FormSubmissionConverter;
 import org.ei.drishti.form.service.FormSubmissionService;
+import org.ei.drishti.web.handler.FormDataHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
@@ -43,6 +47,8 @@ import com.google.gson.reflect.TypeToken;
 
 import ch.lambdaj.function.convert.Converter;
 
+
+
 @Controller
 public class FormSubmissionController {
 	String isCon = null;
@@ -52,19 +58,24 @@ public class FormSubmissionController {
 	private OutboundEventGateway gateway;
 	 private HttpAgent httpAgent;
 	 private final String drishtiANMVillagesURL;
+	 private FormDataHandler drishtiform;
 	 private SMSController smsController;
+	 
 
 	@Autowired
 	public FormSubmissionController(@Value("#{drishti['drishti.anm.village.url']}") String drishtiANMVillagesURL,
             HttpAgent httpAgent,
             SMSController smsController,
+            FormDataHandler drishtiform,
 			FormSubmissionService formSubmissionService,
 			OutboundEventGateway gateway) {
 		this.formSubmissionService = formSubmissionService;
 		this.gateway = gateway;
 		this.drishtiANMVillagesURL = drishtiANMVillagesURL;
 		this.httpAgent = httpAgent;
-		this.smsController = smsController;
+		this.smsController=smsController;
+		this.drishtiform=drishtiform;
+		
 	}
 
 //	@RequestMapping(method = GET, value = "/form-submissions")
@@ -95,6 +106,7 @@ public class FormSubmissionController {
 			@RequestParam(value = "batch-size", required = false) Integer batchSize) {
 		logger.info("***** from controller&&&&&");
 		HttpResponse response = new HttpResponse(false, null);
+		 String village="";
 		List<FormSubmission> newSubmissionsForANM=null;
 		List<FormSubmission> permnewSubmissionsForANM=new ArrayList<FormSubmission>();
 		
@@ -109,12 +121,15 @@ public class FormSubmissionController {
                     new TypeToken<ANMVillagesDTO>() {
                     }.getType());
             logger.info("Fetched Villages for the ANM"+anmvillagesDTOs);
+            String strvillages=anmvillagesDTOs.villages();
             
-          List<String> listvillages=anmvillagesDTOs.villages();
-          logger.info("list of villages"+listvillages);
-          Iterator<String> iterator = listvillages.iterator();
-          while(iterator.hasNext()){
-        	  String village=iterator.next();
+          String[] villageanm=strvillages.split(",");
+          logger.info("anmvillages"+villageanm);
+            
+          logger.info("list of villages"+villageanm);
+          
+          for(int i=0;i<villageanm.length;i++){
+        	village = villageanm[i];
         	  logger.info("one village from list*******  :"+village);
         	  
 //        	  String village="kandukur";
@@ -162,113 +177,18 @@ public class FormSubmissionController {
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/form-submissions")
 	public ResponseEntity<HttpStatus> submitForms(
 			@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
-		String entityidEC = null;
-		String village = null;
-		String phnum = null;
-		HttpResponse response = new HttpResponse(false, null);
+		
 		try {
 			if (formSubmissionsDTO.isEmpty()) {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
 			
 			logger.info("*****"+formSubmissionsDTO.size() + " : -----------");
-
-			Iterator<FormSubmissionDTO> itr = formSubmissionsDTO.iterator();
-
-			while (itr.hasNext()) {
-				Object object = (Object) itr.next();
-				String jsonstr = object.toString();
-
-				JSONObject dataObject = new JSONObject(jsonstr);
-
-				String visittype = dataObject.getString("formName");
-				logger.info("value of formname " + visittype);
-				
-				if(visittype.equalsIgnoreCase("anc_registration_oa")
-						|| visittype.equalsIgnoreCase("pnc_registration_oa")
-						|| visittype.equalsIgnoreCase("ec_registration")){
-					 smsController.sendSMS();
-				JSONArray fieldJsonArray = dataObject
-						.getJSONObject("formInstance")
-						.getJSONObject("form").getJSONArray("fields");
-				
-				for (int j = 0; j < fieldJsonArray.length(); j++) {
-
-					JSONObject jsonObject = fieldJsonArray
-							.getJSONObject(j);
-
-													
-						
-					
-					
-					if ((jsonObject.has("name"))
-							&& jsonObject.getString("name").equals("village")) {
-
-						village = (jsonObject.has("value") && jsonObject
-								.getString("value") != null) ? jsonObject
-								.getString("value") : "";
-						logger.info("*****village :"+village);
-					}
-				}
-				}
-				
-				
-				if (visittype.equalsIgnoreCase("anc_visit")
-						|| visittype.equalsIgnoreCase("pnc_visit")
-						|| visittype.equalsIgnoreCase("child_illness")) {
-
-					JSONArray fieldsJsonArray = dataObject
-							.getJSONObject("formInstance")
-							.getJSONObject("form").getJSONArray("fields");
-					
-					
-
-					String visitentityid = dataObject.getString("entityId");
-
-					String anmid = dataObject.getString("anmId");
-					
-
-					for (int i = 0; i < fieldsJsonArray.length(); i++) {
-
-						JSONObject jsonObject = fieldsJsonArray
-								.getJSONObject(i);
-
-						if ((jsonObject.has("name"))
-								&& jsonObject.getString("name").equals("ecId")) {
-
-							entityidEC = (jsonObject.has("value") && jsonObject
-									.getString("value") != null) ? jsonObject
-									.getString("value") : "";
-
-						}
-
-						if ((jsonObject.has("name"))
-								&& jsonObject.getString("name").equals(
-										"isConsultDoctor")) {
-
-							String isCon = (jsonObject.has("value") && jsonObject
-									.getString("value") != null) ? jsonObject
-									.getString("value") : "";
-
-							logger.info("res1+++++" + isCon);
-							if (isCon.equalsIgnoreCase("yes")) {
-
-								logger.info(" invoking a service");
-								logger.info("res2+++++" + isCon);
-								logger.info("anmid+++++" + anmid);
-
-								formSubmissionService.requestConsultationTest(
-										visittype, visitentityid, entityidEC,
-										anmid);
-
-								logger.info("invoking a service method");
-							}
-
-						}
-					}
-				}
-
-			}
+			
+			//smsController.sendSMSEC();
+			logger.info("** transfer data to handler*******");
+			drishtiform.formData(formSubmissionsDTO);
+			
 
 			gateway.sendEventMessage(new FormSubmissionEvent(formSubmissionsDTO)
 					.toEvent());

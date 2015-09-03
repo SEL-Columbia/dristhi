@@ -25,8 +25,7 @@ public class FormSubmission extends MotechBaseDataObject {
     private long clientVersion;
     @JsonProperty
     private String formDataDefinitionVersion;
-    @JsonProperty
-    private String village;
+    
     @JsonProperty
     private FormInstance formInstance;
     @JsonProperty
@@ -35,7 +34,7 @@ public class FormSubmission extends MotechBaseDataObject {
     public FormSubmission() { 
     }
 
-    public FormSubmission(String anmId, String instanceId, String formName, String entityId, long clientVersion, String formDataDefinitionVersion,String village, FormInstance formInstance, long serverVersion) {
+    public FormSubmission(String anmId, String instanceId, String formName, String entityId, long clientVersion, String formDataDefinitionVersion,FormInstance formInstance, long serverVersion) {
         this.instanceId = instanceId;
         this.formName = formName;
         this.anmId = anmId;
@@ -44,11 +43,11 @@ public class FormSubmission extends MotechBaseDataObject {
         this.formInstance = formInstance;
         this.serverVersion = serverVersion;
         this.formDataDefinitionVersion = formDataDefinitionVersion;
-        this.village=village;
+        
     }
 
-    public FormSubmission(String anmId, String instanceId, String formName, String entityId, String formDataDefinitionVersion,String village, long clientVersion, FormInstance formInstance) {
-        this(anmId, instanceId, formName, entityId, clientVersion, formDataDefinitionVersion,village, formInstance, 0L);
+    public FormSubmission(String anmId, String instanceId, String formName, String entityId, String formDataDefinitionVersion,long clientVersion, FormInstance formInstance) {
+        this(anmId, instanceId, formName, entityId, clientVersion, formDataDefinitionVersion,formInstance, 0L);
     }
 
     public String anmId() {
@@ -78,10 +77,7 @@ public class FormSubmission extends MotechBaseDataObject {
     public String  formDataDefinitionVersion() {
         return this.formDataDefinitionVersion;
     }
-    public String village(){
-    	return this.village;
-    }
-
+   
     public long serverVersion() {
         return serverVersion;
     }
