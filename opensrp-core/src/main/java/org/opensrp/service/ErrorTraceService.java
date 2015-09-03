@@ -38,6 +38,9 @@ public class ErrorTraceService {
 	 * @param recordId
 	 * @param stackTrace
 	 * @param retryURL
+	 * this method is used for logs and it should be called on Exception Catch .
+	 * retryURL should be given by developer, it is for resubmission or retry of that particular record . 
+	 * 
 	 */
 	public void log(String errorType , String documentType, String recordId ,String stackTrace, String retryURL){
 		ErrorTrace error=new ErrorTrace();
@@ -56,75 +59,45 @@ public class ErrorTraceService {
 	}
 	
 	public List<ErrorTrace> getAllErrors() throws DocumentNotFoundException{
-		ArrayList<ErrorTrace> errors=null;
+		
 		
 		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllErrors();
-		if(null==allErrorList){
-			return null;
+		if(null==allErrorList || allErrorList.isEmpty()){
+			return allErrorList;
 			
 		}
-		else if(allErrorList.isEmpty()){
-			return null;
-			
-		}
-		errors=new ArrayList<ErrorTrace>();
+	
 		
-		for(ErrorTrace e: allErrorList){
-			//ErrorTrace object=new ErrorTrace(e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
-		//	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			//dateFormat.setLenient(false);
-			//e.setDateOccurred(new Date(dateFormat.format(e.getDateOccurred())));
-			errors.add(e);
-		}
-		
-		return errors;
+		return allErrorList;
 		
 	}
 	
 	public List<ErrorTrace> getAllSolvedErrors() throws DocumentNotFoundException{
-		ArrayList<ErrorTrace> errors=null;
+		
 		
 		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllSolvedErrors();
-		if(null==allErrorList){
-			return null;
+		if(null==allErrorList || allErrorList.isEmpty()){
+			return allErrorList;
 			
 		}
-		else if(allErrorList.isEmpty()){
-			return null;
-			
-		}
-		errors=new ArrayList<ErrorTrace>();
+	
 		
-		for(ErrorTrace e: allErrorList){
-			//rrorTrace object=new ErrorTrace(e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
-			errors.add(e);
-		}
-		
-		return errors;
+		return allErrorList;
 		
 	}
  
 	public List<ErrorTrace> getAllUnsolvedErrors() throws DocumentNotFoundException{
-		ArrayList<ErrorTrace> errors=null;
+		
 		
 		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllUnSolvedErrors();
-		if(null==allErrorList){
-			return null;
+		if(null==allErrorList || allErrorList.isEmpty()){
+			return allErrorList;
 			
 		}
-		else if(allErrorList.isEmpty()){
-			return null;
-			
-		}
-	 errors=new ArrayList<ErrorTrace>();
-		
-		for(ErrorTrace e: allErrorList){
-			//ErrorTrace object=new ErrorTrace(e.getDate(),e.getName(), e.getOccurredAt(), e.getStackTrace(),e.getStatus());
-			errors.add(e);
-		}
-		
 	
-		return errors;
+		
+		return allErrorList;
+		
 	}
 	
 	public ErrorTrace getError(String id) throws DocumentNotFoundException{
