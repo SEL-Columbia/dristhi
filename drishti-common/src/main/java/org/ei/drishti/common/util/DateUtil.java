@@ -4,9 +4,12 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.stereotype.Component;
 
 import static org.motechproject.util.DateUtil.inRange;
-
+@Component
 public class DateUtil {
     private static DateUtility dateUtility = new RealDate();
 
@@ -37,6 +40,17 @@ public class DateUtil {
             return defaultValue;
         }
     }
+
+	public String dateFormat(String datetime) {
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'zzz");
+		// Parsing the date
+		DateTime jodatime = dtf.parseDateTime(datetime);
+		// Format for output
+		DateTimeFormatter dtfOut = DateTimeFormat.forPattern("yyyy-MM-dd");
+		// Printing the date
+		String date=dtfOut.print(jodatime.minusDays(250));
+    	return date;
+	}
 }
 
 interface DateUtility {
@@ -73,5 +87,6 @@ class MockDate implements DateUtility {
     public long millis() {
         return fakeDay.getMillis();
     }
+   
 }
 

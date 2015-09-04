@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -17,9 +18,11 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "anc_due")
-
+//@NamedQuery(name = ANCVisitDue.FIND_BY_ENTITY_ID, query = "select r from ANCVisitDue r where r.entityId=:entityId")
 public class ANCVisitDue {
 	//Date date=new Date();
+	//public static final String FIND_BY_ENTITY_ID = "find.by.entity.id";
+	
 	@Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +37,8 @@ public class ANCVisitDue {
     @Column(name = "anmnum")
     private String anmnum;
     
-    @Column(name = "regdate")
-    private String regdate;
+    @Column(name = "visittype")
+    private String visittype;
     
     @Column(name = "visitno")
     private Integer visitno;
@@ -47,12 +50,12 @@ public class ANCVisitDue {
     }
 
     
-    public ANCVisitDue(String entityid,String patientnum,String anmnum,String regdate,Integer visitno,String visitdate) {
+    public ANCVisitDue(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate) {
         
         this.entityid=entityid;
         this.patientnum=patientnum;
         this.anmnum=anmnum;
-        this.regdate=regdate;
+        this.visittype=visittype;
         this.visitno=visitno;
         this.visitdate=visitdate;
              
@@ -71,8 +74,8 @@ public class ANCVisitDue {
     public String anmnum() {
         return anmnum;
     }  
-    public String regdate(){
-        return regdate;
+    public String visittype(){
+        return visittype;
     }  
      public Integer visitno() {
         return visitno;

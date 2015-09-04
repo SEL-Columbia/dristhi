@@ -52,4 +52,12 @@ public class AllLocationsRepository {
         return dataAccessTemplate.findByNamedQueryAndNamedParam(ANMVillages.FIND_BY_USER_ID,
                 new String[]{"user_id"}, new Object[]{user_id});
     }
+    public List fetchANMphonenumber(String user_id) {
+//      Location location = fetchByANMIdentifier(anmIdentifier);
+//      if (location == null)
+//          return null;
+  	//String user_id=anmIdentifier;
+      return dataAccessTemplate.findByNamedQueryAndNamedParam(ANMVillages.FIND_PHONENUMBER_BY_USER_ID,
+              new String[]{"user_id"}, new Object[]{user_id});
+  }
 }

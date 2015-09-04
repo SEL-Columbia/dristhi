@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.common.util.HttpAgent;
+import org.ei.drishti.common.util.HttpResponse;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.web.controller.SMSController;
 import org.json.JSONArray;
@@ -29,6 +31,7 @@ public class FormDataHandler {
 	private final String drishtiformdataURL;
 	private SMSController smsController;
 	private HttpAgent httpAgent;
+	private DateUtil dateUtil;
 String entityidEC = null;
 String edd = null;
 String phoneNumber = null;
@@ -38,18 +41,18 @@ String edd1 = null;
 String edd2=null;
 String s=null;
 
+
 @Autowired
 public FormDataHandler(@Value("#{drishti['drishti.form.data.url']}") String drishtiformdataURL,FormSubmissionService formSubmissionService,SMSController smsController,
-		HttpAgent httpAgent){
+		HttpAgent httpAgent,DateUtil dateUtil){
 	this.formSubmissionService=formSubmissionService;
 	this.smsController=smsController;
 	this.httpAgent = httpAgent;
 	this.drishtiformdataURL=drishtiformdataURL;
+	this.dateUtil=dateUtil;
 }
     
 public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONException, ParseException{
-	
-	
 	Iterator<FormSubmissionDTO> itr = formSubmissionsDTO.iterator();
 	logger.info("***** form data received****");
 
@@ -63,69 +66,18 @@ public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONExce
 		logger.info("value of formname " + visittype);
 		
 		if(visittype.equalsIgnoreCase("anc_registration_oa")
-				|| visittype.equalsIgnoreCase("pnc_registration_oa")
-				|| visittype.equalsIgnoreCase("ec_registration")){
+				|| visittype.equalsIgnoreCase("anc_registration")
+				){
 			
-			String entityId = dataObject.getString("entityId");
-			logger.info("*****sms controller***");
-			
-			JSONArray fieldJsonArray = dataObject
-					.getJSONObject("formInstance")
-					.getJSONObject("form").getJSONArray("fields");
-			
-			for (int i = 0; i < fieldJsonArray.length(); i++) {
+			registration(dataObject);
+						//smsController.sendSMSEC();
+		}
 
-				JSONObject jsonObject = fieldJsonArray
-						.getJSONObject(i);
-
-				if ((jsonObject.has("name"))
-						&& jsonObject.getString("name").equals("entityId")) {
-
-					entityId1 = (jsonObject.has("value") && jsonObject
-							.getString("value") != null) ? jsonObject
-							.getString("value") : "";
-							
-
-				}
-				if ((jsonObject.has("name"))
-						&& jsonObject.getString("name").equals("edd")) {
-
-					edd1 = (jsonObject.has("value") && jsonObject
-							.getString("value") != null) ? jsonObject
-							.getString("value") : "";
-							logger.info("value of edd1"+edd1);
-									
-					
-					
-					
-						 
-					
-					
-							
-				}
-				if ((jsonObject.has("name"))
-						&& jsonObject.getString("name").equals("phoneNumber")) {
-
-					phoneNumber = (jsonObject.has("value") && jsonObject
-							.getString("value") != null) ? jsonObject
-							.getString("value") : "";
-				}
-			
-			
-				
-			}
-			
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			Date date=(Date)formatter.parse(edd1);
-			logger.info("value of date"+edd2);
-			
-			String edd=formatter.format(date);
-
-			logger.info("value of edd2"+edd);
-			logger.info("^^^^ form data entityId: "+entityId+ "^^^^^^^ edd: "+edd+"^^^phonenumber: "+phoneNumber);
-			httpAgent.get(drishtiformdataURL + "formdata?entityId=" + entityId+"&edd="+edd+"&phoneNumber="+phoneNumber);
-			
-			//smsController.sendSMSEC();
+		if(visittype.equalsIgnoreCase("child_registration")
+				|| visittype.equalsIgnoreCase("ec_registration")
+				|| visittype.equalsIgnoreCase("a_registration")){
+						
+						//smsController.sendSMSEC();
 		}
 	
 		if (visittype.equalsIgnoreCase("anc_visit")
@@ -135,8 +87,6 @@ public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONExce
 			JSONArray fieldsJsonArray = dataObject
 					.getJSONObject("formInstance")
 					.getJSONObject("form").getJSONArray("fields");
-			
-			
 
 			String visitentityid = dataObject.getString("entityId");
 
@@ -154,7 +104,6 @@ public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONExce
 					entityidEC = (jsonObject.has("value") && jsonObject
 							.getString("value") != null) ? jsonObject
 							.getString("value") : "";
-				
 
 				}
 
@@ -168,7 +117,7 @@ public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONExce
 
 					logger.info("res1+++++" + isCon);
 					if (isCon.equalsIgnoreCase("yes")) {
-						smsController.sendSMSPOC();
+						//smsController.sendSMSPOC();
 
 						logger.info(" invoking a service");
 						logger.info("res2+++++" + isCon);
@@ -179,6 +128,7 @@ public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONExce
 								anmid);
 
 						logger.info("invoking a service method");
+						visit(dataObject);
 					}
 
 				}
@@ -188,4 +138,88 @@ public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONExce
 	}
 
 }
+
+public void registration(JSONObject dataObject) throws JSONException{
+	String entityId = dataObject.getString("entityId");
+	HttpResponse response = new HttpResponse(false, null);
+	Integer visitno=1;
+	JSONArray fieldJsonArray = dataObject
+			.getJSONObject("formInstance")
+			.getJSONObject("form").getJSONArray("fields");
+	
+	for (int i = 0; i < fieldJsonArray.length(); i++) {
+
+		JSONObject jsonObject = fieldJsonArray
+				.getJSONObject(i);
+
+				if ((jsonObject.has("name"))
+				&& jsonObject.getString("name").equals("referenceDate")) {
+
+			edd = (jsonObject.has("value") && jsonObject
+					.getString("value") != null) ? jsonObject
+					.getString("value") : "";
+							
+			logger.info("reference date: "+edd);
+					//edd=dateUtil.dateFormat(edd1);
+			
+		}
+		if ((jsonObject.has("name"))
+				&& jsonObject.getString("name").equals("phoneNumber")) {
+
+			phoneNumber = (jsonObject.has("value") && jsonObject
+					.getString("value") != null) ? jsonObject
+					.getString("value") : "";
+		}
+			
+	}
+	logger.info("^^^^ form data entityId: "+entityId+ "^^^^^^^ edd: "+edd+"^^^phonenumber: "+phoneNumber);
+	response=httpAgent.get(drishtiformdataURL + "formdata?entityId=" + entityId+"&edd="+edd+"&phoneNumber="+phoneNumber+"visitnumber"+visitno);
+	response.toString();
+	logger.info("response from http"+response);
+ }
+	public void visit(JSONObject dataObject) throws JSONException{
+		String visitno="";
+		Integer visitnum = null;
+		String entityId = dataObject.getString("entityId");
+		
+	
+		JSONArray fieldJsonArray = dataObject
+				.getJSONObject("formInstance")
+				.getJSONObject("form").getJSONArray("fields");
+		
+		for (int i = 0; i < fieldJsonArray.length(); i++) {
+
+			JSONObject jsonObject = fieldJsonArray
+					.getJSONObject(i);
+
+			if ((jsonObject.has("name"))
+					&& jsonObject.getString("name").equals("entityId")) {
+
+				entityId1 = (jsonObject.has("value") && jsonObject
+						.getString("value") != null) ? jsonObject
+						.getString("value") : "";
+
+			}
+			if ((jsonObject.has("name"))
+					&& jsonObject.getString("name").equals("ancVisitNumber")) {
+
+				visitno = (jsonObject.has("value") && jsonObject
+						.getString("value") != null) ? jsonObject
+						.getString("value") : "";
+				
+						visitnum=Integer.parseInt(visitno);
+								
+				logger.info("reference date: "+edd);
+						//edd=dateUtil.dateFormat(edd1);
+				
+			}
+			phoneNumber="845123658";
+			edd="2015-09-06";
+		
+		
 }
+		logger.info("^^^^ form data entityId: "+entityId+ "^^^^^^^ edd: "+edd+"^^^phonenumber: "+phoneNumber+"visit number***"+visitnum);
+		httpAgent.get(drishtiformdataURL + "formdata?entityId=" + entityId+"&edd="+edd+"&phoneNumber="+phoneNumber+"visitnumber="+visitnum);
+	}
+}
+
