@@ -1,6 +1,8 @@
 package org.ei.drishti.common.util;
 
+
 import org.joda.time.DateTime;
+
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
@@ -9,12 +11,20 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Component;
 
 import static org.motechproject.util.DateUtil.inRange;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Component
 public class DateUtil {
     private static DateUtility dateUtility = new RealDate();
+    private static Logger logger = LoggerFactory
+			.getLogger(DateUtil.class.toString());
 
     public static void fakeIt(LocalDate fakeDayAsToday) {
         dateUtility = new MockDate(fakeDayAsToday);
+        
+    
     }
 
     public static LocalDate today() {
@@ -42,13 +52,16 @@ public class DateUtil {
     }
 
 	public String dateFormat(String datetime) {
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'zzz");
+		logger.info("converting date format");
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
 		// Parsing the date
 		DateTime jodatime = dtf.parseDateTime(datetime);
+		logger.info("date time format"+jodatime);
 		// Format for output
 		DateTimeFormatter dtfOut = DateTimeFormat.forPattern("yyyy-MM-dd");
 		// Printing the date
-		String date=dtfOut.print(jodatime.minusDays(250));
+		String date=dtfOut.print(jodatime.plusDays(30));
+		logger.info("converted date"+date);
     	return date;
 	}
 }

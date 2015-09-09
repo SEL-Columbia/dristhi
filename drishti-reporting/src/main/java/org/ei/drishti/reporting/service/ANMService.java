@@ -56,8 +56,8 @@ public class ANMService {
     }
     
     @Transactional("service_provided")
-    public List getanmPhoneNumber(String anmIdentifier) {
-        return allLocationsRepository.fetchANMVillages(anmIdentifier);
+    public List getanmPhoneNumber(String user_id) {
+        return allLocationsRepository.fetchANMphonenumber(user_id);
     }
     
 }

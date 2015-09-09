@@ -17,19 +17,22 @@ import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.common.util.HttpAgent;
 import org.ei.drishti.common.util.HttpResponse;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
-import org.ei.drishti.web.controller.SMSController;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.ei.drishti.form.service.FormSubmissionService;
 
+import com.google.gson.Gson;
+
 @Component
-public class FormDataHandler {
+public class FormsubmissionHandler {
 	private static Logger logger = LoggerFactory
-			.getLogger(FormDataHandler.class.toString());
+			.getLogger(FormsubmissionHandler.class.toString());
+	public static final String FORM_SUBMISSIONS = "formdata";
 	private FormSubmissionService formSubmissionService;
 	private final String drishtiformdataURL;
-	private SMSController smsController;
+	
 	private HttpAgent httpAgent;
 	private DateUtil dateUtil;
 String entityidEC = null;
@@ -43,10 +46,10 @@ String s=null;
 
 
 @Autowired
-public FormDataHandler(@Value("#{drishti['drishti.form.data.url']}") String drishtiformdataURL,FormSubmissionService formSubmissionService,SMSController smsController,
+public FormsubmissionHandler(@Value("#{drishti['drishti.form.data.url']}") String drishtiformdataURL,FormSubmissionService formSubmissionService,
 		HttpAgent httpAgent,DateUtil dateUtil){
 	this.formSubmissionService=formSubmissionService;
-	this.smsController=smsController;
+	
 	this.httpAgent = httpAgent;
 	this.drishtiformdataURL=drishtiformdataURL;
 	this.dateUtil=dateUtil;
@@ -55,7 +58,11 @@ public FormDataHandler(@Value("#{drishti['drishti.form.data.url']}") String dris
 public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONException, ParseException{
 	Iterator<FormSubmissionDTO> itr = formSubmissionsDTO.iterator();
 	logger.info("***** form data received****");
-
+	String url=drishtiformdataURL+"formdata";
+	String formdetails=new Gson().toJson(formSubmissionsDTO);
+	logger.info("post method url: url:"+url+"?"+formdetails);
+	httpAgent.post(url,formdetails,"application/json"); 
+	
 	while (itr.hasNext()) {
 		Object object = (Object) itr.next();
 		String jsonstr = object.toString();
@@ -64,21 +71,21 @@ public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONExce
 
 		String visittype = dataObject.getString("formName");
 		logger.info("value of formname " + visittype);
-		
-		if(visittype.equalsIgnoreCase("anc_registration_oa")
-				|| visittype.equalsIgnoreCase("anc_registration")
-				){
-			
-			registration(dataObject);
-						//smsController.sendSMSEC();
-		}
-
-		if(visittype.equalsIgnoreCase("child_registration")
-				|| visittype.equalsIgnoreCase("ec_registration")
-				|| visittype.equalsIgnoreCase("a_registration")){
-						
-						//smsController.sendSMSEC();
-		}
+//		
+//		if(visittype.equalsIgnoreCase("anc_registration_oa")
+//				|| visittype.equalsIgnoreCase("anc_registration")
+//				){
+//			
+//			registration(dataObject);
+//						//smsController.sendSMSEC();
+//		}
+//
+//		if(visittype.equalsIgnoreCase("child_registration")
+//				|| visittype.equalsIgnoreCase("ec_registration")
+//				|| visittype.equalsIgnoreCase("a_registration")){
+//						
+//						//smsController.sendSMSEC();
+//		}
 	
 		if (visittype.equalsIgnoreCase("anc_visit")
 				|| visittype.equalsIgnoreCase("pnc_visit")
@@ -128,7 +135,7 @@ public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONExce
 								anmid);
 
 						logger.info("invoking a service method");
-						visit(dataObject);
+						//visit(dataObject);
 					}
 
 				}
@@ -219,7 +226,7 @@ public void registration(JSONObject dataObject) throws JSONException{
 		
 }
 		logger.info("^^^^ form data entityId: "+entityId+ "^^^^^^^ edd: "+edd+"^^^phonenumber: "+phoneNumber+"visit number***"+visitnum);
-		httpAgent.get(drishtiformdataURL + "formdata?entityId=" + entityId+"&edd="+edd+"&phoneNumber="+phoneNumber+"visitnumber="+visitnum);
+		//httpAgent.get(drishtiformdataURL + "formvisitdata?entityId=" + entityId+"&edd="+edd+"visitnumber="+visitnum);
 	}
 }
 

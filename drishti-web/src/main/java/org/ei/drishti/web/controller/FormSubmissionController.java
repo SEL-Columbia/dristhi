@@ -25,7 +25,7 @@ import org.ei.drishti.event.FormSubmissionEvent;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.service.FormSubmissionConverter;
 import org.ei.drishti.form.service.FormSubmissionService;
-import org.ei.drishti.web.handler.FormDataHandler;
+import org.ei.drishti.web.handler.FormsubmissionHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
@@ -58,22 +58,20 @@ public class FormSubmissionController {
 	private OutboundEventGateway gateway;
 	 private HttpAgent httpAgent;
 	 private final String drishtiANMVillagesURL;
-	 private FormDataHandler drishtiform;
-	 private SMSController smsController;
+	 private FormsubmissionHandler drishtiform;
+	 
 	 
 
 	@Autowired
 	public FormSubmissionController(@Value("#{drishti['drishti.anm.village.url']}") String drishtiANMVillagesURL,
             HttpAgent httpAgent,
-            SMSController smsController,
-            FormDataHandler drishtiform,
+            FormsubmissionHandler drishtiform,
 			FormSubmissionService formSubmissionService,
 			OutboundEventGateway gateway) {
 		this.formSubmissionService = formSubmissionService;
 		this.gateway = gateway;
 		this.drishtiANMVillagesURL = drishtiANMVillagesURL;
 		this.httpAgent = httpAgent;
-		this.smsController=smsController;
 		this.drishtiform=drishtiform;
 		
 	}

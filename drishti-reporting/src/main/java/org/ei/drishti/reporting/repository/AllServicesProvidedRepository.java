@@ -1,9 +1,13 @@
 package org.ei.drishti.reporting.repository;
 
+import static ch.lambdaj.Lambda.collect;
+import static ch.lambdaj.Lambda.on;
+
 import org.ei.drishti.reporting.controller.LocationController;
 import org.ei.drishti.reporting.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.hibernate.Transaction;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +19,7 @@ import java.util.List;
 @Repository
 public class  AllServicesProvidedRepository {
     private DataAccessTemplate dataAccessTemplate;
+    private ANCVisitDue ancvisitDue;
     private static Logger logger = LoggerFactory
 			.getLogger(AllServicesProvidedRepository.class.toString());
 
@@ -22,8 +27,10 @@ public class  AllServicesProvidedRepository {
     }
 
     @Autowired
-    public AllServicesProvidedRepository(@Qualifier("serviceProvidedDataAccessTemplate") DataAccessTemplate dataAccessTemplate) {
+    public AllServicesProvidedRepository(@Qualifier("serviceProvidedDataAccessTemplate") DataAccessTemplate 
+    		dataAccessTemplate) {
         this.dataAccessTemplate = dataAccessTemplate;
+        
     }
 
     public void save(ServiceProvider serviceProvider, String externalId, Indicator indicator, Date date, Location location, String dristhiEntityId) {
@@ -59,8 +66,26 @@ public class  AllServicesProvidedRepository {
     }
     public void ancsave(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate) {
     	logger.info("####### ancsave method invoked$$$$$");
-        //dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate));
-    	dataAccessTemplate.saveOrUpdate(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate));
+        dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate));
+    	
+    }
+    
+    public void ancvisitupdate(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate) {
+    	logger.info(" ancsave method invoked$$$$$");
+//    	logger.info(" entity id$$$$$"+entityid);
+//        //dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate));
+    	List<ANCVisitDue> ancdetails=dataAccessTemplate.findByNamedQuery(ANCVisitDue.FIND_BY_ENTITY_ID,entityid);
+    	String date = collect(ancdetails, on(ANCVisitDue.class).visitdate()).toString();
+    	
+    	logger.info("anc details: "+ancdetails+"date"+date);
+    	ANCVisitDue ancupdate=ancdetails.get(0);
+    	logger.info("anc update: "+ancupdate);
+    	ancupdate.setvisitdate(visitdate);
+    	 logger.info("VISIT DATE"+visitdate);
+    	dataAccessTemplate.update(ancupdate);
+    	logger.info("visit date"+visitdate);
+    	//dataAccessTemplate.merge(entity);
+    	//dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate));
     }
     
 }

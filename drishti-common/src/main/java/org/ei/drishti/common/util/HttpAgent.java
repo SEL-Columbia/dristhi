@@ -64,6 +64,7 @@ public class HttpAgent {
             StringEntity entity = new StringEntity(data);
             entity.setContentEncoding(contentType);
             request.setEntity(entity);
+            logger.info("request to drishti-reporting"+request);
             org.apache.http.HttpResponse response = httpClient.execute(request);
             return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
         } catch (Exception e) {
