@@ -1,8 +1,16 @@
+
 package org.opensrp.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author muhammad.ahmed@ihsinformatics.com
+ * this is wrapper class .this class is mainly used for 
+ * adding status Options to the code. developer can add other possible status for 
+ * errorlog. 
+ */
 public class ErrorTraceForm {
 	
 	private ErrorTrace errorTrace;

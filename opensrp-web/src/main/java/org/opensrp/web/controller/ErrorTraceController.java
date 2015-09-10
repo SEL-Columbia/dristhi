@@ -1,10 +1,10 @@
 /**
- * @author engrmahmed14@gmail.com
+ * @author muhammad.ahmed@ihsinformatics@gmail.com
  */
 package org.opensrp.web.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,12 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.http.HttpRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -35,7 +34,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import org.opensrp.domain.ErrorTrace;
 import org.opensrp.domain.ErrorTraceForm;
-import org.opensrp.dto.VillagesDTO;
+
 import org.opensrp.service.ErrorTraceService;
 
 import com.google.gson.Gson;
@@ -63,11 +62,10 @@ public class ErrorTraceController {
 
 	@RequestMapping(method = GET, value = "/index")
 	public ModelAndView showPage() {
-		ModelAndView map = new ModelAndView();
+	
 
 		Map<String, Object> model = new HashMap<String, Object>();
-		//List<ErrorTrace> list = errorTraceService.getAllErrors();
-		//model.put("errors", list);
+		
 		ErrorTraceForm errorForm=new ErrorTraceForm();
 		
 		  Gson gson = new Gson();
@@ -89,14 +87,14 @@ public class ErrorTraceController {
 	@RequestMapping(method = GET, value = "/errortrace")
 	@ResponseBody
 	public ResponseEntity<List<ErrorTrace>> allErrors() {
-		// ModelAndView map=new ModelAndView ();
+		
 		try {
 			Map<String, Object> model = new HashMap<String, Object>();
 			List<ErrorTrace> list = errorTraceService.getAllErrors();
 			model.put("errors", list);
 			model.put("type", "all");
 
-			// return new ModelAndView("home_error", model);
+		
 
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		} catch (Exception e) {
@@ -109,14 +107,14 @@ public class ErrorTraceController {
 	@RequestMapping(method = GET, value = "/unsolvederrors")
 	@ResponseBody
 	public ResponseEntity<List<ErrorTrace>> showUnsolved() {
-		// ModelAndView map=new ModelAndView ();
+		
 		try {
 			Map<String, Object> model = new HashMap<String, Object>();
 			List<ErrorTrace> list = errorTraceService.getAllUnsolvedErrors();
 			model.put("errors", list);
 			model.put("type", "unsolved");
 
-			// return new ModelAndView("home_error", model);
+		
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,7 +125,7 @@ public class ErrorTraceController {
 	@RequestMapping(method = GET, value = "/solvederrors")
 	@ResponseBody
 	public ResponseEntity<List<ErrorTrace>> showSolved() {
-		// ModelAndView map=new ModelAndView ();
+		
 		try {
 			Map<String, Object> model = new HashMap<String, Object>();
 
@@ -136,7 +134,7 @@ public class ErrorTraceController {
 			model.put("type", "solved");
 
 			return new ResponseEntity<>(list, HttpStatus.OK);
-			// return new ModelAndView("home_error", model);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
@@ -147,19 +145,18 @@ public class ErrorTraceController {
 	
 	  @RequestMapping(method=GET,value="/viewerror") 
 	  @ResponseBody
-	  public/* ModelAndView*/ ResponseEntity<ErrorTraceForm>  showError(@RequestParam("id") String id){
+	  public ResponseEntity<ErrorTraceForm>  showError(@RequestParam("id") String id){
 	  try{
 	  ErrorTrace error=errorTraceService.getError(id); 
-	   ModelAndView map=new	  ModelAndView ();
+	  
 	  
 	   ErrorTraceForm errorTraceForm=new ErrorTraceForm();
 	  errorTraceForm.setErrorTrace(error);
 	  System.out.println("error ID :" +	  errorTraceForm.getErrorTrace().getId());
-	  Map<String, Object> model = new	  HashMap<String, Object>(); 
-	 // List<ErrorTrace>	  list=errorTraceService.getAllErrors();
+	  
+	
 	  return new ResponseEntity<>(errorTraceForm, HttpStatus.OK);
-	 // model.put("errorTraceForm",errorTraceForm ); model.put("type", "find");
-	  //return new ModelAndView("view_error", model);
+	
 	  } catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
@@ -189,24 +186,6 @@ public class ErrorTraceController {
 	 
 
 	
-	/* @RequestMapping(method=GET,value="/viewerror") public String
-	 showError(Model model,@RequestParam("id") String id){
-	 
-	 ErrorTrace error=errorTraceService.getError(id); 
-	 // ModelAndView map=new	 ModelAndView ();
-	 
-	 // error. // erro.ge 
-	 ErrorTraceForm errorTraceForm=new ErrorTraceForm();
-	 errorTraceForm.setErrorTrace(error); 
-	 System.out.println("error ID :" +errorTraceForm.getErrorTrace()); //
-	 Map<String, Object> model = new HashMap<String, Object>(); //
-	 List<ErrorTrace>list=errorTraceService.getAllErrors();
-	// model.addAttribute("errorTraceForm",errorTraceForm );
-	 
-	 return new ModelAndView("view_error","errorTraceForm",errorTraceForm);
-	 
-	 
-	 }*/
 	
 	  /**@author engrmahmed14@gmail.com
 	   * @return String , value of the view error page
