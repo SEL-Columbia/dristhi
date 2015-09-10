@@ -132,7 +132,7 @@ public class FormDatahandler {
 //        }
         if (visittype.equalsIgnoreCase("anc_registration_oa")){
         	smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"ANC");
-        	logger.info("wife name from db"+wifeName);
+        	logger.info("sms sent done");
         	ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber,edd,wifeName);
         }
         
@@ -153,7 +153,7 @@ public class FormDatahandler {
         logger.info("pnc registration");
         
         JSONArray fieldJsonArray = dataObject.getJSONObject("formInstance").getJSONObject("form").getJSONArray("fields");
-        Integer visitnumber = 1;
+        
         for (int i = 0; i < fieldJsonArray.length(); ++i) {
             JSONObject jsonObject = fieldJsonArray.getJSONObject(i);
             if (jsonObject.has("name") && 
@@ -204,14 +204,16 @@ public class FormDatahandler {
         if(visittype.equalsIgnoreCase("delivery_outcome")){
         	
         	List ancvisitdetails= visitService.getVisitDue(ecId);
-        	String womenName = collect(ancvisitdetails, on(ANCVisitDue.class).womenName()).toString();
+        	
+        	String womenName = collect(ancvisitdetails, on(ANCVisitDue.class).womenName()).get(0).toString();
+        	
         	logger.info("women Name from db"+womenName);
         	String womphoneNumber=collect(ancvisitdetails, on(ANCVisitDue.class).patientnum()).toString();
             logger.info("wom phone number from db"+womphoneNumber);
            smsController.sendSMSEC(womphoneNumber, regNumber, womenName,"PNC");
         }
         if(visittype.equalsIgnoreCase("pnc_registration_oa"))
-              
+            logger.info("phonenumber"+phoneNumber+"*** wife name"+wifeName+"***reg Number"+regNumber);  
        smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"PNC");
         logger.info("^^ transfer data from controller to repository****");
         //ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber, edd);
@@ -220,7 +222,7 @@ public class FormDatahandler {
     public void pncVisit() {
     }
 
-    public void childRegistration(JSONObject dataObject, String visittype, String anmNumber) throws JSONException {
+    public void childRegistration(JSONObject dataObject, String visittype) throws JSONException {
     	 String edd = "";
          String ecNumber="";
          String motherName="";
@@ -238,30 +240,16 @@ public class FormDatahandler {
              		.getString("value") != null ? jsonObject
              		.getString("value") : "";
              }
-             
-             if (jsonObject.has("name") &&
-             		jsonObject.getString("name").equals("ancNumber")){
-             
-             	regNumber = jsonObject.has("value") && 
-             			  jsonObject.getString("value") != null ? jsonObject
-             					  .getString("value") : "";
-         }
-             if (jsonObject.has("name") &&
-             		jsonObject.getString("name").equals("ecNumber")){
-             
-             	ecNumber = jsonObject.has("value") && 
-             			  jsonObject.getString("value") != null ? jsonObject
-             					  .getString("value") : "";
-         }
+                          
              if (jsonObject.has("name") &&
              		jsonObject.getString("name").equals("motherName")){
              
-            	 motherName = jsonObject.has("value") && 
+            motherName = jsonObject.has("value") && 
              			  jsonObject.getString("value") != null ? jsonObject
              					  .getString("value") : "";
          }
          }
-         smsController.sendSMSChild(phoneNumber,  motherName,regNumber);
+         smsController.sendSMSChild(phoneNumber,motherName);
     }
 
     public void childIllness() {

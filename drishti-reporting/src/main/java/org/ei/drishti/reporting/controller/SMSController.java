@@ -47,7 +47,7 @@ public FormSubmissionDTO formSubmissionsDTO;
 	        }
 	 		}
 	        
-	        public void sendSMSChild(String phoneNumber, String motherName, String regNumber) {
+	        public void sendSMSChild(String phoneNumber, String motherName) {
 		        //HttpResponse response = new HttpResponse(false, null);
 		        try {
 		        	logger.info("sms controller invoked");
@@ -56,7 +56,7 @@ public FormSubmissionDTO formSubmissionsDTO;
 		        	JSONArray obj1=new JSONArray();
 		            obj1.put("tel:"+phoneNumber);
 		            
-		            String message="Your%20Child%20have%20been%20registered%20with%20"+motherName+"%20and%20Childnumber"+regNumber+"%20";
+		            String message="Your%20Child%20have%20been%20registered%20with%20Mother%20Name"+motherName+"%20";
 		            logger.info("drishti sms url********"+drishtiSMSURL+"******* json obj value*****"+obj1);
 		            httpAgent.get(drishtiSMSURL + "/?tel=%5B%22tel:"+phoneNumber+"%22%5D&message=%22"+message+"%22");
 		        }
