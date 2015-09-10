@@ -27,7 +27,7 @@ public FormSubmissionDTO formSubmissionsDTO;
 			this.httpAgent = httpAgent;
 		}
 
-	 public void sendSMSEC(String phoneNumber,String ecNumber, String wifeName) {
+	 public void sendSMSEC(String phoneNumber,String ecNumber, String wifeName, String registrationType) {
 	        //HttpResponse response = new HttpResponse(false, null);
 		 
 	        try{
@@ -36,9 +36,10 @@ public FormSubmissionDTO formSubmissionsDTO;
 	            logger.info("trying to send sms");
 	        	JSONArray obj1=new JSONArray();
 	            obj1.put("tel:"+phoneNumber);
-	            String message="Dear%20"+wifeName+",%20you%20have%20been%20registered%20with%20EC%20number%20"+ecNumber+"%20";
+	            
+	            String message="Dear%20"+wifeName+",%20you%20have%20been%20registered%20with%20"+registrationType+"%20number%20"+ecNumber+"%20";
 	            logger.info("drishti sms url********"+drishtiSMSURL+"******* json obj value*****"+obj1);
-	            httpAgent.get(drishtiSMSURL + "/?tel=%5B%22tel:+91"+phoneNumber+"%22%5D&message=%22"+message+"%22");
+	            httpAgent.get(drishtiSMSURL + "/?tel=%5B%22tel:"+phoneNumber+"%22%5D&message=%22"+message+"%22");
 	            logger.info("drishti sms url********"+drishtiSMSURL+"******* success");     
 	        }catch(Exception e){
 	        	logger.error(format(
@@ -46,18 +47,18 @@ public FormSubmissionDTO formSubmissionsDTO;
 	        }
 	 		}
 	        
-	        public void sendSMSPOC() {
+	        public void sendSMSChild(String phoneNumber, String motherName, String regNumber) {
 		        //HttpResponse response = new HttpResponse(false, null);
 		        try {
 		        	logger.info("sms controller invoked");
-		        	String num= "+918121337675";
+		        	
 		            logger.info("trying to send sms");
 		        	JSONArray obj1=new JSONArray();
-		            obj1.put("tel:"+num);
+		            obj1.put("tel:"+phoneNumber);
+		            
+		            String message="Your%20Child%20have%20been%20registered%20with%20"+motherName+"%20and%20Childnumber"+regNumber+"%20";
 		            logger.info("drishti sms url********"+drishtiSMSURL+"******* json obj value*****"+obj1);
-		            httpAgent.get(drishtiSMSURL + "/?tel=%5B%22tel:"+num+"%22%5D&message=%22registration%20is%20successfull%22");
-		            logger.info("drishti sms url********"+drishtiSMSURL+"******* json obj value*****"+obj1);
-
+		            httpAgent.get(drishtiSMSURL + "/?tel=%5B%22tel:"+phoneNumber+"%22%5D&message=%22"+message+"%22");
 		        }
 		        catch(Exception e){
 		        	logger.error(format(

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -18,7 +19,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "anc_due")
-@NamedQuery(name = ANCVisitDue.FIND_BY_ENTITY_ID, query = "select w from ANCVisitDue w where w.entityid=:entityid")
+
+@NamedQuery(name = ANCVisitDue.FIND_BY_ENTITY_ID,
+					query = "select w from ANCVisitDue w where w.entityid=:entityid")
 public class ANCVisitDue {
 	//Date date=new Date();
 	public static final String FIND_BY_ENTITY_ID = "find.by.entity.id";
@@ -46,11 +49,14 @@ public class ANCVisitDue {
     @Column(name = "visitdate")
     private String visitdate;
 
+    @Column(name = "womenname") 
+    private String womenname;
+    
     private ANCVisitDue() {
     }
 
     
-    public ANCVisitDue(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate) {
+    public ANCVisitDue(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate, String womenname) {
         
         this.entityid=entityid;
         this.patientnum=patientnum;
@@ -58,6 +64,7 @@ public class ANCVisitDue {
         this.visittype=visittype;
         this.visitno=visitno;
         this.visitdate=visitdate;
+        this.womenname=womenname;
              
     }
 
@@ -89,6 +96,9 @@ public class ANCVisitDue {
      public String visitdate() {
             return visitdate;
     }
+     public String womenName() {
+         return womenname;
+ }
 
     @Override
     public boolean equals(Object o) {

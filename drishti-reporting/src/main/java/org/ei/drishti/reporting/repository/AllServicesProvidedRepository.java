@@ -64,9 +64,9 @@ public class  AllServicesProvidedRepository {
     public void deleteReportsFor(String dristhiEntityId) {
         dataAccessTemplate.deleteAll(getAllReportsForDristhiEntityID(dristhiEntityId));
     }
-    public void ancsave(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate) {
+    public void ancsave(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate,String womenname) {
     	logger.info("####### ancsave method invoked$$$$$");
-        dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate));
+        dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate,womenname));
     	
     }
     
@@ -86,6 +86,12 @@ public class  AllServicesProvidedRepository {
     	logger.info("visit date"+visitdate);
     	//dataAccessTemplate.merge(entity);
     	//dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate));
+    }
+    
+    public void ecsave(String entityid,String patientnum) {
+    	logger.info("####### ancsave method invoked$$$$$");
+        dataAccessTemplate.save(new EcRegDetails(entityid,patientnum));
+    	
     }
     
 }

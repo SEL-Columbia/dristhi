@@ -1,6 +1,8 @@
 package org.ei.drishti.reporting.repository;
 
+import org.ei.drishti.reporting.domain.ANCVisitDue;
 import org.ei.drishti.reporting.domain.ANMVillages;
+import org.ei.drishti.reporting.domain.EcRegDetails;
 import org.ei.drishti.reporting.domain.Location;
 import org.ei.drishti.reporting.domain.PHC;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,4 +62,13 @@ public class AllLocationsRepository {
       return dataAccessTemplate.findByNamedQueryAndNamedParam(ANMVillages.FIND_PHONENUMBER_BY_USER_ID,
               new String[]{"user_id"}, new Object[]{user_id});
   }
+    public List fetchphonenumber(String entityid) {
+//      Location location = fetchByANMIdentifier(anmIdentifier);
+//      if (location == null)
+//          return null;
+  	//String user_id=anmIdentifier;
+      return dataAccessTemplate.findByNamedQueryAndNamedParam(EcRegDetails.FIND_BY_ENTITYID,
+              new String[]{"entityid"}, new Object[]{entityid});
+  }
+
 }

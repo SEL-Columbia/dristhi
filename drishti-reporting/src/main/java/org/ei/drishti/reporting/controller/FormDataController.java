@@ -94,6 +94,16 @@ String ecId="";
 					formDataHandler.ancRegistration(dataObject,visittype,phoneNumber);
 					
 						}
+				if (visittype.equalsIgnoreCase("delivery_outcome")
+						|| visittype.equalsIgnoreCase("pnc_registration_oa"))
+						{
+					
+					logger.info("visit type"+visittype);
+					String phoneNumber=anmService.getanmPhoneNumber(user_id).toString();
+					//logger.info("value of anmphonenumber from db:"+visitnum);
+					formDataHandler.pncRegistration(dataObject,visittype,phoneNumber);
+					
+						}
 				if(visittype.equalsIgnoreCase("anc_visit")){
 					
 					JSONArray fieldJsonArray = dataObject

@@ -1,8 +1,16 @@
 package org.ei.drishti.reporting.handler;
 
 
+import static ch.lambdaj.Lambda.collect;
+import static ch.lambdaj.Lambda.on;
+
+import java.util.List;
+
 import org.ei.drishti.reporting.controller.SMSController;
+import org.ei.drishti.reporting.domain.ANCVisitDue;
 import org.ei.drishti.reporting.repository.ANCVisitRepository;
+import org.ei.drishti.reporting.service.ANMService;
+import org.ei.drishti.reporting.service.VisitService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,23 +19,28 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class FormDatahandler {
     private ANCVisitRepository ancVisitRepository;
     private SMSController smsController;
+    private ANMService anmService;
+    private VisitService visitService;
     private static Logger logger = LoggerFactory.getLogger((String)FormDatahandler.class.toString());
+    String regNumber="";
+    String wifeName="";
+    String phoneNumber="";
 
     @Autowired
-    public void FormDataHandler(ANCVisitRepository ancVisitRepository, SMSController smsController) {
+    public void FormDataHandler(ANCVisitRepository ancVisitRepository, ANMService anmService,SMSController smsController,VisitService visitService) {
         this.ancVisitRepository = ancVisitRepository;
         this.smsController = smsController;
+        this.anmService=anmService;
+        this.visitService=visitService;
     }
 
     public void ecRegistration(JSONObject dataObject, String anmPhoneNumber) throws JSONException {
         String entityId = dataObject.getString("entityId");
-        String phoneNumber = "";
-        String ecNumber = "";
-        String wifeName = "";
         logger.info("ecregistration method");
         JSONArray fieldJsonArray = dataObject.getJSONObject("formInstance").getJSONObject("form").getJSONArray("fields");
         for (int i = 0; i < fieldJsonArray.length(); i++) {
@@ -43,12 +56,12 @@ public class FormDatahandler {
             if (jsonObject.has("name") &&
             		jsonObject.getString("name").equals("ecNumber")){
             
-            ecNumber = jsonObject.has("value") && 
+            	regNumber = jsonObject.has("value") && 
             			  jsonObject.getString("value") != null ? jsonObject
             					  .getString("value") : "";
         }
             if (jsonObject.has("name") &&
-            		jsonObject.getString("name").equals("wifename")){
+            		jsonObject.getString("name").equals("wifeName")){
             
             wifeName = jsonObject.has("value") && 
             			  jsonObject.getString("value") != null ? jsonObject
@@ -57,7 +70,8 @@ public class FormDatahandler {
         
     }
         logger.info("invoke sms controller******" + phoneNumber);
-        this.smsController.sendSMSEC(phoneNumber, ecNumber, wifeName);
+        smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"EC");
+        ancVisitRepository.ecinsert(entityId, phoneNumber);
         logger.info("invoke sms eeeecontroller******");
     }
 
@@ -66,34 +80,188 @@ public class FormDatahandler {
 
     public void ancRegistration(JSONObject dataObject, String visittype, String anmNumber) throws JSONException {
         String edd = "";
-        String phoneNumber = "";
+        String ecNumber="";
+              
         String entityId = dataObject.getString("entityId");
+        //String ptphoneNumber=anmService.getPhoneNumber(entityId).toString();
+       // logger.info("patient number from db"+ptphoneNumber);
         JSONArray fieldJsonArray = dataObject.getJSONObject("formInstance").getJSONObject("form").getJSONArray("fields");
         Integer visitnumber = 1;
         for (int i = 0; i < fieldJsonArray.length(); ++i) {
             JSONObject jsonObject = fieldJsonArray.getJSONObject(i);
-            if (jsonObject.has("name") && jsonObject.getString("name").equals("referenceDate")) {
-                edd = jsonObject.has("value") && jsonObject.getString("value") != null ? jsonObject.getString("value") : "";
+            if (jsonObject.has("name") && 
+            		jsonObject.getString("name").equals("referenceDate")) {
+            	
+                edd = jsonObject.has("value") && jsonObject.
+                		getString("value") != null ? jsonObject
+                		.getString("value") : "";
+                
                 logger.info("reference date: " + edd);
             }
-            if (!jsonObject.has("name") || !jsonObject.getString("name").equals("phoneNumber")) continue;
-            phoneNumber = jsonObject.has("value") && jsonObject.getString("value") != null ? jsonObject.getString("value") : "";
+            if (jsonObject.has("name") && jsonObject.getString("name").equals("phoneNumber")) {;
+            phoneNumber = jsonObject.has("value") && jsonObject
+            		.getString("value") != null ? jsonObject
+            		.getString("value") : "";
+            }
+            
+            if (jsonObject.has("name") &&
+            		jsonObject.getString("name").equals("ancNumber")){
+            
+            	regNumber = jsonObject.has("value") && 
+            			  jsonObject.getString("value") != null ? jsonObject
+            					  .getString("value") : "";
         }
-        logger.info("^^ transfer data from conteroller to repository****");
-       // smsController.sendSMSEC(phoneNumber);
-        ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber, edd);
+            if (jsonObject.has("name") &&
+            		jsonObject.getString("name").equals("ecNumber")){
+            
+            	ecNumber = jsonObject.has("value") && 
+            			  jsonObject.getString("value") != null ? jsonObject
+            					  .getString("value") : "";
+        }
+            if (jsonObject.has("name") &&
+            		jsonObject.getString("name").equals("wifeName")){
+            
+            wifeName = jsonObject.has("value") && 
+            			  jsonObject.getString("value") != null ? jsonObject
+            					  .getString("value") : "";
+        }
+        }
+//        if (visittype.equalsIgnoreCase("anc_registration")){
+//        	smsController.sendSMSEC(ptphoneNumber, regNumber, wifeName,"ANC");
+//        	ancVisitRepository.insert(entityId, ptphoneNumber, anmNumber, visittype, visitnumber,edd,wifeName);
+//        }
+        if (visittype.equalsIgnoreCase("anc_registration_oa")){
+        	smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"ANC");
+        	logger.info("wife name from db"+wifeName);
+        	ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber,edd,wifeName);
+        }
+        
+       //smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"ANC");
+        logger.info("^^ transfer data from controller to repository****");
+        //ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber, edd);
     }
 
     public void ancVisit() {
     }
 
-    public void pncRegistration() {
+    public void pncRegistration(JSONObject dataObject, String visittype, String anmNumber) throws JSONException {
+    	String edd = "";
+        String ecNumber="";
+        String ptnumber="";  
+        String ecId="";
+        String entityId = dataObject.getString("entityId");
+        logger.info("pnc registration");
+        
+        JSONArray fieldJsonArray = dataObject.getJSONObject("formInstance").getJSONObject("form").getJSONArray("fields");
+        Integer visitnumber = 1;
+        for (int i = 0; i < fieldJsonArray.length(); ++i) {
+            JSONObject jsonObject = fieldJsonArray.getJSONObject(i);
+            if (jsonObject.has("name") && 
+            		jsonObject.getString("name").equals("referenceDate")) {
+            	
+                edd = jsonObject.has("value") && jsonObject.
+                		getString("value") != null ? jsonObject
+                		.getString("value") : "";
+                
+                logger.info("reference date: " + edd);
+            }
+            if (jsonObject.has("name") && jsonObject.getString("name").equals("phoneNumber")) {;
+            phoneNumber = jsonObject.has("value") && jsonObject
+            		.getString("value") != null ? jsonObject
+            		.getString("value") : "";
+            }
+            
+            if (jsonObject.has("name") &&
+            		jsonObject.getString("name").equals("pncNumber")){
+            
+            	regNumber = jsonObject.has("value") && 
+            			  jsonObject.getString("value") != null ? jsonObject
+            					  .getString("value") : "";
+        }
+            if (jsonObject.has("name") &&
+            		jsonObject.getString("name").equals("ecNumber")){
+            
+            	ecNumber = jsonObject.has("value") && 
+            			  jsonObject.getString("value") != null ? jsonObject
+            					  .getString("value") : "";
+        }
+            if (jsonObject.has("name") &&
+            		jsonObject.getString("name").equals("wifeName")){
+            
+            wifeName = jsonObject.has("value") && 
+            			  jsonObject.getString("value") != null ? jsonObject
+            					  .getString("value") : "";
+        }
+            if (jsonObject.has("name") &&
+            		jsonObject.getString("name").equals("ecId")){
+            
+            	ecId = jsonObject.has("value") && 
+            			  jsonObject.getString("value") != null ? jsonObject
+            					  .getString("value") : "";
+            
+        }
+        }
+        if(visittype.equalsIgnoreCase("delivery_outcome")){
+        	
+        	List ancvisitdetails= visitService.getVisitDue(ecId);
+        	String womenName = collect(ancvisitdetails, on(ANCVisitDue.class).womenName()).toString();
+        	logger.info("women Name from db"+womenName);
+        	String womphoneNumber=collect(ancvisitdetails, on(ANCVisitDue.class).patientnum()).toString();
+            logger.info("wom phone number from db"+womphoneNumber);
+           smsController.sendSMSEC(womphoneNumber, regNumber, womenName,"PNC");
+        }
+        if(visittype.equalsIgnoreCase("pnc_registration_oa"))
+              
+       smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"PNC");
+        logger.info("^^ transfer data from controller to repository****");
+        //ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber, edd);
     }
 
     public void pncVisit() {
     }
 
-    public void childRegistration() {
+    public void childRegistration(JSONObject dataObject, String visittype, String anmNumber) throws JSONException {
+    	 String edd = "";
+         String ecNumber="";
+         String motherName="";
+               
+         String entityId = dataObject.getString("entityId");
+         //String ptphoneNumber=anmService.getPhoneNumber(entityId).toString();
+        // logger.info("patient number from db"+ptphoneNumber);
+         JSONArray fieldJsonArray = dataObject.getJSONObject("formInstance").getJSONObject("form").getJSONArray("fields");
+         Integer visitnumber = 1;
+         for (int i = 0; i < fieldJsonArray.length(); ++i) {
+             JSONObject jsonObject = fieldJsonArray.getJSONObject(i);
+             
+             if (jsonObject.has("name") && jsonObject.getString("name").equals("phoneNumber")) {;
+             phoneNumber = jsonObject.has("value") && jsonObject
+             		.getString("value") != null ? jsonObject
+             		.getString("value") : "";
+             }
+             
+             if (jsonObject.has("name") &&
+             		jsonObject.getString("name").equals("ancNumber")){
+             
+             	regNumber = jsonObject.has("value") && 
+             			  jsonObject.getString("value") != null ? jsonObject
+             					  .getString("value") : "";
+         }
+             if (jsonObject.has("name") &&
+             		jsonObject.getString("name").equals("ecNumber")){
+             
+             	ecNumber = jsonObject.has("value") && 
+             			  jsonObject.getString("value") != null ? jsonObject
+             					  .getString("value") : "";
+         }
+             if (jsonObject.has("name") &&
+             		jsonObject.getString("name").equals("motherName")){
+             
+            	 motherName = jsonObject.has("value") && 
+             			  jsonObject.getString("value") != null ? jsonObject
+             					  .getString("value") : "";
+         }
+         }
+         smsController.sendSMSChild(phoneNumber,  motherName,regNumber);
     }
 
     public void childIllness() {
