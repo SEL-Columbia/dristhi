@@ -97,9 +97,9 @@ String ecId="";
 						{
 					
 					logger.info("visit type"+visittype);
-					String phoneNumber=anmService.getanmPhoneNumber(user_id).toString();
-					//logger.info("value of anmphonenumber from db:"+visitnum);
-					formDataHandler.ancRegistration(dataObject,visittype,phoneNumber);
+					//String phoneNumber=anmService.getanmPhoneNumber(user_id).toString();
+					//logger.info("anm phone number"+phoneNumber);
+					formDataHandler.ancRegistration(dataObject,visittype,anmphoneNumber);
 					
 						}
 				if (visittype.equalsIgnoreCase("delivery_outcome")

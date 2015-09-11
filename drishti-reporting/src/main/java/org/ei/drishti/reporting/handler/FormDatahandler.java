@@ -83,15 +83,15 @@ public class FormDatahandler {
     public void ancRegistration(JSONObject dataObject, String visittype, String anmNumber) throws JSONException {
         String edd = "";
         String ecNumber="";
-              
+         logger.info("anc_registration handler");     
         String entityId = dataObject.getString("entityId");
        // String ptphoneNumber=anmService.getPhoneNumber(entityId).toString();
         
-        List ancvisitdetails= anmService.getPhoneNumber(entityId);
-    	
-    	String ptphoneNumber = collect(ancvisitdetails, on(EcRegDetails.class).phonenumber()).get(0).toString();
+//        List ancvisitdetails= anmService.getPhoneNumber(entityId);
+//    	
+//    	String ptphoneNumber = collect(ancvisitdetails, on(EcRegDetails.class).phonenumber()).get(0).toString();
 
-        logger.info("patient number from EC db: "+ptphoneNumber);
+        //logger.info("patient number from EC db: "+ptphoneNumber);
         JSONArray fieldJsonArray = dataObject.getJSONObject("formInstance").getJSONObject("form").getJSONArray("fields");
         Integer visitnumber = 1;
         for (int i = 0; i < fieldJsonArray.length(); ++i) {
@@ -134,10 +134,14 @@ public class FormDatahandler {
         }
         }
        if (visittype.equalsIgnoreCase("anc_registration")){
+    	   List ancvisitdetails= anmService.getPhoneNumber(entityId);
+       	
+       	String ptphoneNumber = collect(ancvisitdetails, on(EcRegDetails.class).phonenumber()).get(0).toString();
 //        	smsController.sendSMSEC(ptphoneNumber, regNumber, wifeName,"ANC");
        	ancVisitRepository.insert(entityId, ptphoneNumber, anmNumber, visittype, visitnumber,edd,wifeName);
         }
         if (visittype.equalsIgnoreCase("anc_registration_oa")){
+        	logger.info("trying to send sms");
         	smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"ANC");
         	logger.info("sms sent done");
         	ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber,edd,wifeName);
@@ -215,9 +219,9 @@ public class FormDatahandler {
         	String womenName = collect(ancvisitdetails, on(ANCVisitDue.class).womenName()).get(0).toString();
         	
         	logger.info("women Name from db"+womenName);
-        	String womphoneNumber=collect(ancvisitdetails, on(ANCVisitDue.class).patientnum()).toString();
+        	String womphoneNumber=collect(ancvisitdetails, on(ANCVisitDue.class).patientnum()).get(0).toString();
             logger.info("wom phone number from db"+womphoneNumber);
-           smsController.sendSMSPNC(womphoneNumber, regNumber, womenName,"PNC");
+           smsController.sendSMSPNC(womphoneNumber,regNumber,womenName,"PNC");
         }
         if(visittype.equalsIgnoreCase("pnc_registration_oa"))
             logger.info("phonenumber"+phoneNumber+"*** wife name"+wifeName+"***reg Number"+regNumber);  
@@ -263,7 +267,7 @@ public class FormDatahandler {
              					  .getString("value") : "";
          }
      }
-         if (visittype.equalsIgnoreCase("child_registration")){
+         if (visittype.equalsIgnoreCase("child_registration_oa")){
          smsController.sendSMSChild(phoneNumber,motherName);}
          
          if (visittype.equalsIgnoreCase("child_registration_ec")){

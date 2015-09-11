@@ -35,7 +35,7 @@ public FormSubmissionDTO formSubmissionsDTO;
         	JSONArray obj1=new JSONArray();
             obj1.put("tel:"+phoneNumber);
             
-            String message="Dear%20"+wifeName+",%20you%20and%20your%child%have%20been%20registered%20with%20"+registrationType+"%20number%20"+ecNumber+"%20";
+            String message="Dear%20"+wifeName+"%2C%20you%20and%20your%child%have%20been%20registered%20with%20"+registrationType+"%20number%20"+ecNumber+"%20";
             logger.info("drishti sms url********"+drishtiSMSURL+"******* json obj value*****"+obj1);
             httpAgent.get(drishtiSMSURL + "/?tel=%5B%22tel:"+phoneNumber+"%22%5D&message=%22"+message+"%22");
             logger.info("drishti sms url********"+drishtiSMSURL+"******* success");     
@@ -54,7 +54,7 @@ public FormSubmissionDTO formSubmissionsDTO;
 	        	JSONArray obj1=new JSONArray();
 	            obj1.put("tel:"+phoneNumber);
 	            
-	            String message="Dear%20"+wifeName+",%20you%20have%20been%20registered%20with%20"+registrationType+"%20number%20"+ecNumber+"%20";
+	            String message="Dear%20"+wifeName+"%2C%20you%20have%20been%20registered%20with%20"+registrationType+"%20number%20"+ecNumber+"%20";
 	            logger.info("drishti sms url********"+drishtiSMSURL+"******* json obj value*****"+obj1);
 	            httpAgent.get(drishtiSMSURL + "/?tel=%5B%22tel:"+phoneNumber+"%22%5D&message=%22"+message+"%22");
 	            logger.info("drishti sms url********"+drishtiSMSURL+"******* success");     
