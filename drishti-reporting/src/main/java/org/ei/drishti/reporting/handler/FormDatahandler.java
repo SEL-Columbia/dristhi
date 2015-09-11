@@ -265,11 +265,14 @@ public class FormDatahandler {
      }
          if (visittype.equalsIgnoreCase("child_registration")){
          smsController.sendSMSChild(phoneNumber,motherName);}
+         
          if (visittype.equalsIgnoreCase("child_registration_ec")){
         	 List ancvisitdetails= anmService.getPhoneNumber(entityId);
          	
          	String ptphoneNumber = collect(ancvisitdetails, on(EcRegDetails.class).phonenumber()).get(0).toString();
-             smsController.sendSMSChild(ptphoneNumber,wifeName);}
+         	logger.info("phonenumber: "+ptphoneNumber);
+             smsController.sendSMSChild(ptphoneNumber,wifeName);
+             }
     }
 
     public void childIllness() {
