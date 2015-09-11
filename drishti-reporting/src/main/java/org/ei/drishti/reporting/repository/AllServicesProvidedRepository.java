@@ -88,9 +88,9 @@ public class  AllServicesProvidedRepository {
     	//dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate));
     }
     
-    public void ecsave(String entityid,String patientnum) {
+    public void ecsave(String entityid,String phonenumber) {
     	logger.info("####### ancsave method invoked$$$$$");
-        dataAccessTemplate.save(new EcRegDetails(entityid,patientnum));
+        dataAccessTemplate.save(new EcRegDetails(entityid,phonenumber));
     	
     }
     

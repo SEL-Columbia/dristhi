@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.ei.drishti.reporting.controller.SMSController;
 import org.ei.drishti.reporting.domain.ANCVisitDue;
+import org.ei.drishti.reporting.domain.EcRegDetails;
 import org.ei.drishti.reporting.repository.ANCVisitRepository;
 import org.ei.drishti.reporting.service.ANMService;
 import org.ei.drishti.reporting.service.VisitService;
@@ -25,6 +26,7 @@ public class FormDatahandler {
     private ANCVisitRepository ancVisitRepository;
     private SMSController smsController;
     private ANMService anmService;
+    private EcRegDetails ecRegDetails;
     private VisitService visitService;
     private static Logger logger = LoggerFactory.getLogger((String)FormDatahandler.class.toString());
     String regNumber="";
@@ -83,8 +85,13 @@ public class FormDatahandler {
         String ecNumber="";
               
         String entityId = dataObject.getString("entityId");
-        //String ptphoneNumber=anmService.getPhoneNumber(entityId).toString();
-       // logger.info("patient number from db"+ptphoneNumber);
+       // String ptphoneNumber=anmService.getPhoneNumber(entityId).toString();
+        
+        List ancvisitdetails= anmService.getPhoneNumber(entityId);
+    	
+    	String ptphoneNumber = collect(ancvisitdetails, on(EcRegDetails.class).phonenumber()).get(0).toString();
+
+        logger.info("patient number from EC db: "+ptphoneNumber);
         JSONArray fieldJsonArray = dataObject.getJSONObject("formInstance").getJSONObject("form").getJSONArray("fields");
         Integer visitnumber = 1;
         for (int i = 0; i < fieldJsonArray.length(); ++i) {
@@ -126,10 +133,10 @@ public class FormDatahandler {
             					  .getString("value") : "";
         }
         }
-//        if (visittype.equalsIgnoreCase("anc_registration")){
+       if (visittype.equalsIgnoreCase("anc_registration")){
 //        	smsController.sendSMSEC(ptphoneNumber, regNumber, wifeName,"ANC");
-//        	ancVisitRepository.insert(entityId, ptphoneNumber, anmNumber, visittype, visitnumber,edd,wifeName);
-//        }
+       	ancVisitRepository.insert(entityId, ptphoneNumber, anmNumber, visittype, visitnumber,edd,wifeName);
+        }
         if (visittype.equalsIgnoreCase("anc_registration_oa")){
         	smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"ANC");
         	logger.info("sms sent done");
@@ -210,7 +217,7 @@ public class FormDatahandler {
         	logger.info("women Name from db"+womenName);
         	String womphoneNumber=collect(ancvisitdetails, on(ANCVisitDue.class).patientnum()).toString();
             logger.info("wom phone number from db"+womphoneNumber);
-           smsController.sendSMSEC(womphoneNumber, regNumber, womenName,"PNC");
+           smsController.sendSMSPNC(womphoneNumber, regNumber, womenName,"PNC");
         }
         if(visittype.equalsIgnoreCase("pnc_registration_oa"))
             logger.info("phonenumber"+phoneNumber+"*** wife name"+wifeName+"***reg Number"+regNumber);  
@@ -248,8 +255,21 @@ public class FormDatahandler {
              			  jsonObject.getString("value") != null ? jsonObject
              					  .getString("value") : "";
          }
+             if (jsonObject.has("name") &&
+             		jsonObject.getString("name").equals("wifeName")){
+             
+             wifeName = jsonObject.has("value") && 
+             			  jsonObject.getString("value") != null ? jsonObject
+             					  .getString("value") : "";
          }
-         smsController.sendSMSChild(phoneNumber,motherName);
+     }
+         if (visittype.equalsIgnoreCase("child_registration")){
+         smsController.sendSMSChild(phoneNumber,motherName);}
+         if (visittype.equalsIgnoreCase("child_registration_ec")){
+        	 List ancvisitdetails= anmService.getPhoneNumber(entityId);
+         	
+         	String ptphoneNumber = collect(ancvisitdetails, on(EcRegDetails.class).phonenumber()).get(0).toString();
+             smsController.sendSMSChild(ptphoneNumber,wifeName);}
     }
 
     public void childIllness() {

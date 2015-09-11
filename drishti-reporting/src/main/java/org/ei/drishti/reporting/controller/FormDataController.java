@@ -76,6 +76,7 @@ String ecId="";
 				String user_id=dataObject.getString("anmId");
 				anmphoneNumber=anmService.getanmPhoneNumber(user_id).toString();
 				logger.info("value of anmphonenumber from db:"+anmphoneNumber);
+				
 				if (visittype.equalsIgnoreCase("ec_registration"))
 						{
 					logger.info("visit type"+visittype);
@@ -83,6 +84,13 @@ String ecId="";
 					formDataHandler.ecRegistration(dataObject,anmphoneNumber);
 					
 						}
+				if (visittype.equalsIgnoreCase("child_registration_ec"))
+				{
+			logger.info("visit type"+visittype);
+			//String anmphoneNumber=anmService.getanmPhoneNumber(user_id).toString();
+			formDataHandler.childRegistration(dataObject,visittype);
+			
+				}
 				
 				if (visittype.equalsIgnoreCase("anc_registration")
 						|| visittype.equalsIgnoreCase("anc_registration_oa"))

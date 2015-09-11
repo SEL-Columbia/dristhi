@@ -14,7 +14,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
 @Table(name = "ec_reg")
-@NamedQuery(name = EcRegDetails.FIND_BY_ENTITYID, query = "select e.phoneNumber from EcRegDetails e where e.entityid=:entityid")
+@NamedQuery(name = EcRegDetails.FIND_BY_ENTITYID, query = "select e from EcRegDetails e where e.entityid=:entityid")
 public class EcRegDetails {
 
 	public static final String FIND_BY_ENTITYID = "find.by.entityid";
@@ -27,18 +27,17 @@ public class EcRegDetails {
     @Column(name = "entityid")
     private String entityid;
     
-    @Column(name = "phoneNumber")
-    private String phoneNumber;
+    @Column(name = "phonenumber")
+    private String phonenumber;
     
     
     private EcRegDetails() {
     }
 
-    
-    public EcRegDetails(String entityid,String phoneNumber) {
+    public EcRegDetails(String entityid,String phonenumber) {
         
         this.entityid=entityid;
-        this.phoneNumber=phoneNumber;
+        this.phonenumber=phonenumber;
        }
 
     public Integer id() {
@@ -51,8 +50,8 @@ public class EcRegDetails {
     public String entityid() {
         return entityid;
     }   
-    public String phoneNumber() {
-        return phoneNumber;
+    public String phonenumber() {
+        return phonenumber;
     }    
     
     @Override

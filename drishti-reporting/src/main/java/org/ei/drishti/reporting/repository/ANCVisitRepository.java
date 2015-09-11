@@ -77,10 +77,11 @@ public class ANCVisitRepository {
 		servicesProvidedRepository.ancvisitupdate(entityId,phoneNumber,anmnum,visittype,visitnum,visitdate);
 
 		}
-	public void ecinsert(String entityId,String phoneNumber){
+	@Transactional("service_provided")
+	public void ecinsert(String entityId,String phonenumber){
 
 		logger.info("******ancvisitrepository**");
-		servicesProvidedRepository.ecsave(entityId,phoneNumber);
+		servicesProvidedRepository.ecsave(entityId,phonenumber);
 
 		}
 	}
