@@ -9,9 +9,11 @@ import static org.opensrp.common.util.DateUtil.today;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.motechproject.model.Time;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.Milestone;
 import org.motechproject.scheduletracking.api.domain.Schedule;
 import org.motechproject.scheduletracking.api.repository.AllSchedules;
@@ -27,13 +29,16 @@ import org.springframework.stereotype.Service;
 public class ScheduleService {
     private final ScheduleTrackingService scheduleTrackingService;
     private final AllSchedules allSchedules;
+    private final AllEnrollmentWrapper allEnrollments;
     private int preferredTime;
 
     @Autowired
-    public ScheduleService(ScheduleTrackingService scheduleTrackingService, AllSchedules allSchedules, @Value("#{opensrp['preferred.time']}") int preferredTime) {
+    public ScheduleService(ScheduleTrackingService scheduleTrackingService, AllSchedules allSchedules, 
+    		@Value("#{opensrp['preferred.time']}") int preferredTime, AllEnrollmentWrapper allEnrollments) {
         this.scheduleTrackingService = scheduleTrackingService;
         this.allSchedules = allSchedules;
         this.preferredTime = preferredTime;
+        this.allEnrollments = allEnrollments;
     }
 
     public void enroll(String entityId, String scheduleName, String referenceDate) {
@@ -74,6 +79,16 @@ public class ScheduleService {
         return scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(entityId).havingState(ACTIVE));
 	}
     
+    public List<Enrollment> findEnrollmentByStatusAndEnrollmentDate(String status, DateTime start, DateTime end) {
+        return allEnrollments.findByEnrollmentDate(status, start, end);
+	}
+    
+    public void updateEnrollmentWithMetadata(String enrollmentId, String key, String value) {
+    	Enrollment e = allEnrollments.get(enrollmentId);
+    	e.getMetadata().put(key, value);
+    	allEnrollments.update(e);
+
+	}
     public List<String> findOpenEnrollmentNames(String entityId) {
     	List<EnrollmentRecord> openEnrollments = findOpenEnrollments(entityId);
     	List<String> openSchedules = new ArrayList<>();
