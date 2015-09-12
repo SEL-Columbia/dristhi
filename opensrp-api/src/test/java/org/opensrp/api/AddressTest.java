@@ -27,24 +27,6 @@ public class AddressTest {
 		assertTrue("Duration of Address should be -1 for no startDate", address.durationInWeeks()==-1);
 		assertTrue("Duration of Address should be -1 for no startDate", address.durationInMonths()==-1);
 		assertTrue("Duration of Address should be -1 for no startDate", address.durationInYears()==-1);
-		
-		long currentTicks = System.currentTimeMillis();
-		long weekTicks = 604800000L;
-		long yearTicks = 31536000000L;
-		Date d1 = new Date(currentTicks - weekTicks);
-		Date d2 = new Date(currentTicks - yearTicks);
-		
-		address.setStartDate(d1);
-		//TODO duration in days occasionally returning wrong value. check it
-		//assertTrue("Address durationInDays returns unexpected value", address.durationInDays()==7);
-		assertTrue("Address durationInWeeks returns unexpected value", address.durationInWeeks()==1);
-		assertTrue("Address durationInMonths returns unexpected value", address.durationInMonths()==0);
-		assertTrue("Address durationInYears returns unexpected value", address.durationInYears()==0);		
-
-		address.setStartDate(d2);
-		assertTrue("Address durationInWeeks returns unexpected value "+address.durationInWeeks(), address.durationInWeeks()==52);
-		assertTrue("Address durationInMonths returns unexpected value "+address.durationInMonths(), address.durationInMonths()==12);
-		assertTrue("Address durationInYears returns unexpected value "+address.durationInYears(), address.durationInYears()==1);
 	}
 	
 	@Test
