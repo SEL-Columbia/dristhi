@@ -8,14 +8,11 @@ import org.json.JSONException;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
-import org.motechproject.scheduletracking.api.domain.WindowName;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants.ScheduleTrackerConfig;
 import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
 import org.opensrp.domain.AppStateToken;
-import org.opensrp.scheduler.HealthSchedulerService;
-import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.scheduler.service.ScheduleService;
 import org.opensrp.service.ConfigService;
@@ -41,6 +38,7 @@ public class OpenmrsSyncerListener {
 	
     @MotechListener(subjects = OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
 	public void scheduletrackerSyncer(MotechEvent event) {
+    	try{
     	AppStateToken lastsync = config.getAppStateTokenByName(ScheduleTrackerConfig.openmrs_syncer_last_timestamp_non_active_enrollment);
     	DateTime start = lastsync == null?new DateTime().minusYears(33):new DateTime(lastsync.getStringValue());
 		DateTime end = new DateTime().plusYears(2);
@@ -59,6 +57,10 @@ public class OpenmrsSyncerListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+    	}
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
     	}
 	}
 }

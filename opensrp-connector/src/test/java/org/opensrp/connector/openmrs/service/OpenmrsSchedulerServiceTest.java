@@ -47,7 +47,7 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 		List<Action> alertActions = new ArrayList<Action>();
 		alertActions.add(new Action("abc2831e-1e0d-4707-877b-22961e01e753", "admin", alert("Boosters", "REMINDER")));
 		alertActions.add(new Action("abc2831e-1e0d-4707-877b-22961e01e753", "admin", ActionData.markAlertAsClosed("REMINDER", "12-12-2015")));
-		ss.createTrack(e, alertActions);
+		//ss.createTrack(e, alertActions);
 	}
 	
 	private ActionData alert() {
