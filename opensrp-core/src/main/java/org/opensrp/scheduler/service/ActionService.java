@@ -27,6 +27,10 @@ public class ActionService {
     public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
         return allActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
     }
+    
+    public List<Action> findByCaseIdScheduleAndTimeStamp(String caseId, String schedule, DateTime start, DateTime end) {
+		return allActions.findByCaseIdScheduleAndTimeStamp(caseId, schedule, start, end);
+	}
 
     public void alertForBeneficiary(BeneficiaryType beneficiaryType, String caseID, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
     	if (!(mother.equals(beneficiaryType)||child.equals(beneficiaryType)||ec.equals(beneficiaryType))) {
