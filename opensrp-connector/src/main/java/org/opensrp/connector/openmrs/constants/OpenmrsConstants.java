@@ -6,6 +6,13 @@ package org.opensrp.connector.openmrs.constants;
  */
 public class OpenmrsConstants {
 
+	public static final String SCHEDULER_TRACKER_SYNCER_SUBJECT = "OpenMRS Scheduler Tracker Syncer";
+	public enum ScheduleTrackerConfig {
+		openmrs_syncer_last_timestamp_non_active_enrollment,
+		openmrs_syncer_sync_status,
+		openmrs_syncer_sync_timestamp
+	}
+	
 	public interface OpenmrsEntity {
 		public String entity();
 		public String entityId();
