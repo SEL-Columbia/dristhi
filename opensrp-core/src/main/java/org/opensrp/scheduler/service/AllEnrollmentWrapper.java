@@ -23,22 +23,31 @@ class AllEnrollmentWrapper extends AllEnrollments{
 		super(db);
 	}
 
-	 private static final String FUNCTION_DOC_EMIT_DOC_STATUS_AND_ENROLLED_ON = "function(doc) { if(doc.type === 'Enrollment') emit([doc.status,doc.enrolledOn], doc._id);}";
+	private static final String FUNCTION_DOC_EMIT_DOC_STATUS_AND_ENROLLED_ON = "function(doc) { if(doc.type === 'Enrollment') emit([doc.status,doc.enrolledOn], doc._id);}";
 
-	    @View(name = "by_status_date_enrolled", map = FUNCTION_DOC_EMIT_DOC_STATUS_AND_ENROLLED_ON)
-	    public List<Enrollment> findByEnrollmentDate(String status, DateTime start, DateTime end) {
-	        List<Enrollment> enrollments = queryView("by_status_date_enrolled", ComplexKey.of(status, start, end));
-	        return populateWithSchedule(enrollments);
-	    }
-	    
-	    private List<Enrollment> populateWithSchedule(List<Enrollment> enrollments) {
-	        for (Enrollment enrollment : enrollments)
-	            populateSchedule(enrollment);
-	        return enrollments;
-	    }
+    @View(name = "by_status_date_enrolled", map = FUNCTION_DOC_EMIT_DOC_STATUS_AND_ENROLLED_ON)
+    public List<Enrollment> findByEnrollmentDate(String status, DateTime start, DateTime end) {
+        List<Enrollment> enrollments = queryView("by_status_date_enrolled", ComplexKey.of(status, start, end));
+        return populateWithSchedule(enrollments);
+    }
 
-	    private Enrollment populateSchedule(Enrollment enrollment) {
-	        enrollment.setSchedule(allSchedules.getByName(enrollment.getScheduleName()));
-	        return enrollment;
-	    }
+    private static final String FUNCTION_DOC_EMIT_LAST_UPDATE = "function(doc) { if(doc.type === 'Enrollment') emit([doc.metadata.lastUpdate], doc._id);}";
+    
+    @View(name = "by_last_update", map = FUNCTION_DOC_EMIT_LAST_UPDATE)
+    public List<Enrollment> findByLastUpDate(DateTime start, DateTime end) {
+    	List<Enrollment> enrollments = queryView("by_last_update", ComplexKey.of(start, end));
+    	return populateWithSchedule(enrollments);
+    }
+    
+    private List<Enrollment> populateWithSchedule(List<Enrollment> enrollments) {
+        for (Enrollment enrollment : enrollments)
+            populateSchedule(enrollment);
+        return enrollments;
+    }
+
+    private Enrollment populateSchedule(Enrollment enrollment) {
+        enrollment.setSchedule(allSchedules.getByName(enrollment.getScheduleName()));
+        return enrollment;
+    }
+    
 }
