@@ -7,16 +7,20 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.motechproject.scheduletracking.api.domain.Schedule;
+import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.dto.ActionData;
 import org.opensrp.scheduler.Action;
 
@@ -47,7 +51,12 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 		List<Action> alertActions = new ArrayList<Action>();
 		alertActions.add(new Action("abc2831e-1e0d-4707-877b-22961e01e753", "admin", alert("Boosters", "REMINDER")));
 		alertActions.add(new Action("abc2831e-1e0d-4707-877b-22961e01e753", "admin", ActionData.markAlertAsClosed("REMINDER", "12-12-2015")));
-		//ss.createTrack(e, alertActions);
+		//JSONObject t = ss.createTrack(e, alertActions);
+		e.setStatus(EnrollmentStatus.COMPLETED);
+		Map<String, String> metadata = new HashMap<>();
+		//metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
+		e.setMetadata(metadata );
+		//ss.updateTrack(e, alertActions);
 	}
 	
 	private ActionData alert() {
