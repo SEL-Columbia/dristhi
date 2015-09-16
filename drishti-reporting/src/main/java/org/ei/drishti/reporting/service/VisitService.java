@@ -30,4 +30,10 @@ public class VisitService {
     	logger.info("get visit details****"+entityid);
 	        return allVisitDueRepository.fetchvisitDueDetails(entityid);
 	    }
+    
+     @Transactional("service_provided")
+	public List getVisitconf() {
+    	logger.info("get visit details****");
+	        return allVisitDueRepository.fetchvisitconf();
+	    }
 }

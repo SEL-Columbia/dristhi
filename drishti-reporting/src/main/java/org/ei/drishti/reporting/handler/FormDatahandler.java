@@ -10,6 +10,7 @@ import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.reporting.controller.SMSController;
 import org.ei.drishti.reporting.domain.ANCVisitDue;
 import org.ei.drishti.reporting.domain.EcRegDetails;
+import org.ei.drishti.reporting.domain.VisitConf;
 import org.ei.drishti.reporting.repository.ANCVisitRepository;
 import org.ei.drishti.reporting.service.ANMService;
 import org.ei.drishti.reporting.service.VisitService;
@@ -137,7 +138,11 @@ public class FormDatahandler {
             					  .getString("value") : "";
         }
         }
-        String lmpdate=dateUtil.dateFormat(edd,56);
+        List visitconf= visitService.getVisitconf();
+        String visittime=collect(visitconf, on(VisitConf.class).anc_visit1_from_week()).get(0).toString();
+        logger.info("visit time interval:"+visittime);
+        int visitti=Integer.parseInt(visittime)*7;
+        String lmpdate=dateUtil.dateFormat(edd,visitti);
        if (visittype.equalsIgnoreCase("anc_registration")){
     	   List ancvisitdetails= anmService.getPhoneNumber(entityId);
        	
@@ -160,7 +165,9 @@ public class FormDatahandler {
     public void ancVisit(JSONObject dataObject, String visittype) throws JSONException {
     	String ecId="";
     	String newdate="";
+    	String visittime="";
     	Integer visitno=null;
+    	Integer visitti=null;
     	    	
     	JSONArray fieldJsonArray = dataObject
 				.getJSONObject("formInstance")
@@ -180,22 +187,38 @@ public class FormDatahandler {
 		}
 		logger.info("entityid"+ecId);
 		List ancvisitdetails= visitService.getVisitDue(ecId);
+		List visitconf= visitService.getVisitconf();
 		logger.info("ancvisitpastdetails^^^^"+ancvisitdetails);
-		String datetime=collect(ancvisitdetails, on(ANCVisitDue.class).visitdate()).get(0).toString();
+		String datetime=collect(ancvisitdetails, on(ANCVisitDue.class).lmpdate()).get(0).toString();
 		String visit=collect(ancvisitdetails, on(ANCVisitDue.class).visitno()).get(0).toString();
 		int visitnum=Integer.parseInt(visit);
 		if(visitnum==1){
-			
-			newdate=dateUtil.dateFormat(datetime,100);
+			visittime=collect(visitconf, on(VisitConf.class).anc_visit2_from_week()).get(0).toString();
+			visitti=Integer.parseInt(visittime)*7;
+			newdate=dateUtil.dateFormat(datetime,visitti);
 			visitno=2;
 		}
 		if(visitnum==2){
-			newdate=dateUtil.dateFormat(datetime,120);
+			visittime=collect(visitconf, on(VisitConf.class).anc_visit3_from_week()).get(0).toString();
+			logger.info("visit time interval:"+visittime);
+			visitti=Integer.parseInt(visittime)*7;
+			newdate=dateUtil.dateFormat(datetime,visitti);
+			
 			visitno=3;
 		}
 		if(visitnum==3){
-			newdate=dateUtil.dateFormat(datetime,150);
+			visittime=collect(visitconf, on(VisitConf.class).anc_visit4_from_week()).get(0).toString();
+			logger.info("visit time interval:"+visittime);
+			visitti=Integer.parseInt(visittime)*7;
+			logger.info("visit time converted interval:"+visitti);
+			newdate=dateUtil.dateFormat(datetime,visitti);
+			logger.info("visit time converted time:"+newdate);
 			visitno=4;
+		}
+		if(visitnum==4){
+			newdate="";
+			logger.info("visit time converted time:"+newdate);
+			visitno=5;
 		}
 		
 		logger.info("new date"+newdate);

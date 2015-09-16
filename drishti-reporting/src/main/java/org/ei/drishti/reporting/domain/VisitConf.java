@@ -27,85 +27,47 @@ public class VisitConf {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "entityid")
-    private String entityid;
+    @Column(name = "anc_visit1_from_week")
+    private String anc_visit1_from_week;
     
-    @Column(name = "patientnum")
-    private String patientnum;
+    @Column(name = "anc_visit2_from_week")
+    private String anc_visit2_from_week;
     
-    @Column(name = "anmnum")
-    private String anmnum;
+    @Column(name = "anc_visit3_from_week")
+    private String anc_visit3_from_week;
     
-    @Column(name = "visittype")
-    private String visittype;
-    
-    @Column(name = "visitno")
-    private Integer visitno;
-    
-    @Column(name = "lmpdate")
-    private String lmpdate;
-
-    @Column(name = "womenname") 
-    private String womenname;
-    
-    @Column(name = "visitdate")
-    private String visitdate;
-    
+    @Column(name = "anc_visit4_from_week")
+    private String anc_visit4_from_week;
+   
     private VisitConf() {
     }
 
     
-    public VisitConf(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String lmpdate, String womenname,String visitdate) {
+    public VisitConf(String anc_visit1_from_week,String anc_visit2_from_week,String anc_visit3_from_week,String anc_visit4_from_week) {
         
-        this.entityid=entityid;
-        this.patientnum=patientnum;
-        this.anmnum=anmnum;
-        this.visittype=visittype;
-        this.visitno=visitno;
-        this.visitdate=visitdate;
-        this.womenname=womenname;
-        this.lmpdate=lmpdate;
+        this.anc_visit1_from_week=anc_visit1_from_week;
+        this.anc_visit2_from_week=anc_visit2_from_week;
+        this.anc_visit3_from_week=anc_visit3_from_week;
+        this.anc_visit4_from_week=anc_visit4_from_week;
              
     }
 
     public Integer id() {
         return id;
     }
-    public void setentityid(String entityid){
-   	 this.entityid=entityid;
-    }
-    
-    public String entityid() {
-        return entityid;
+        
+    public String anc_visit1_from_week() {
+        return anc_visit1_from_week;
     }   
-    public String patientnum() {
-        return patientnum;
+    public String anc_visit2_from_week() {
+        return anc_visit2_from_week;
     }    
-    public String anmnum() {
-        return anmnum;
+    public String anc_visit3_from_week() {
+        return anc_visit3_from_week;
     }  
-    public String visittype(){
-        return visittype;
+    public String anc_visit4_from_week(){
+        return anc_visit4_from_week;
     }  
-     public Integer visitno() {
-        return visitno;
-     }
-     public void setvisitno(Integer visitno) {
-         this.visitno=visitno;
-      }
-     
-     public String lmpdate() {
-            return lmpdate;
-    }
-     public void setvisitdate(String visitdate){
-    	 this.visitdate=visitdate;
-     }
-     public String womenName() {
-         return womenname;
- }
-     public String visitdate() {
-         return visitdate;
- }
 
     @Override
     public boolean equals(Object o) {
