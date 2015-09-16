@@ -49,7 +49,7 @@ public class ANCVisitRepository {
 	}
 	
 	@Transactional("service_provided")
-	public void insert(String entityId,String phoneNumber,String anmnum,String visittype,Integer visitno,String visitdate,String womenname){
+	public void insert(String entityId,String phoneNumber,String anmnum,String visittype,Integer visitno,String lmpdate,String womenname,String visitdate){
 //		String pattern = "yyyy-MM-dd";
 //	    SimpleDateFormat format = new SimpleDateFormat(pattern);
 //		Date date=new Date();
@@ -64,7 +64,7 @@ public class ANCVisitRepository {
 //		Integer visitno=1;
 //		String visitdate=format.format(visit);
 		logger.info("******ancvisitrepository**");
-		servicesProvidedRepository.ancsave( entityId, phoneNumber, anmnum, visittype, visitno, visitdate,womenname);
+		servicesProvidedRepository.ancsave( entityId, phoneNumber, anmnum, visittype, visitno, lmpdate,womenname,visitdate);
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
@@ -72,11 +72,11 @@ public class ANCVisitRepository {
 		
 	}
 	@Transactional("service_provided")
-	public void ancUpdate(String entityId,String phoneNumber,String anmnum,String visittype,Integer visitnum,String visitdate){
-//	public void ancUpdate(List<ANCVisitDue> ancvisitdetails){	
+	//public void ancUpdate(String entityId,String phoneNumber,String anmnum,String visittype,Integer visitnum,String visitdate){
+	public void ancUpdate(Integer id, String newdate, Integer visitno){	
 		logger.info("******ancvisitrepository invoked**");
 		
-		servicesProvidedRepository.ancvisitupdate(entityId,phoneNumber,anmnum,visittype,visitnum,visitdate);
+		servicesProvidedRepository.ancvisitupdate(id,newdate,visitno);
 
 		}
 	@Transactional("service_provided")

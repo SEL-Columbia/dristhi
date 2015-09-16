@@ -1,13 +1,10 @@
 package org.ei.drishti.reporting.domain;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -15,18 +12,15 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import javax.persistence.*;
-
 @Entity
-@Table(name = "anc_due")
+@Table(name = "visit_configuration")
 
 	
-@NamedQuery(name = ANCVisitDue.FIND_BY_ENTITY_ID,
-					query = "select w from ANCVisitDue w where w.entityid=:entityid")
-public class ANCVisitDue {
-	//Date date=new Date();
-	public static final String FIND_BY_ENTITY_ID = "find.by.entity.id";
+@NamedQuery(name = VisitConf.FIND_VISIT_CONF,
+					query = "select v from VisitConf v")
+public class VisitConf {
 	
+	public static final String FIND_VISIT_CONF = "find.visit.conf";
 	
 	@Id
     @Column(name = "id")
@@ -57,11 +51,11 @@ public class ANCVisitDue {
     @Column(name = "visitdate")
     private String visitdate;
     
-    private ANCVisitDue() {
+    private VisitConf() {
     }
 
     
-    public ANCVisitDue(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String lmpdate, String womenname,String visitdate) {
+    public VisitConf(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String lmpdate, String womenname,String visitdate) {
         
         this.entityid=entityid;
         this.patientnum=patientnum;
@@ -127,5 +121,6 @@ public class ANCVisitDue {
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
+
 
 }

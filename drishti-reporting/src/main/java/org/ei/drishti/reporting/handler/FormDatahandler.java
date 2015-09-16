@@ -6,6 +6,7 @@ import static ch.lambdaj.Lambda.on;
 
 import java.util.List;
 
+import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.reporting.controller.SMSController;
 import org.ei.drishti.reporting.domain.ANCVisitDue;
 import org.ei.drishti.reporting.domain.EcRegDetails;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
+
 @Component
 public class FormDatahandler {
     private ANCVisitRepository ancVisitRepository;
@@ -28,17 +30,19 @@ public class FormDatahandler {
     private ANMService anmService;
     private EcRegDetails ecRegDetails;
     private VisitService visitService;
+    private DateUtil dateUtil;
     private static Logger logger = LoggerFactory.getLogger((String)FormDatahandler.class.toString());
     String regNumber="";
     String wifeName="";
     String phoneNumber="";
 
     @Autowired
-    public void FormDataHandler(ANCVisitRepository ancVisitRepository, ANMService anmService,SMSController smsController,VisitService visitService) {
+    public void FormDataHandler(ANCVisitRepository ancVisitRepository,DateUtil dateUtil, ANMService anmService,SMSController smsController,VisitService visitService) {
         this.ancVisitRepository = ancVisitRepository;
         this.smsController = smsController;
         this.anmService=anmService;
         this.visitService=visitService;
+        this.dateUtil=dateUtil;
     }
 
     public void ecRegistration(JSONObject dataObject, String anmPhoneNumber) throws JSONException {
@@ -133,18 +137,19 @@ public class FormDatahandler {
             					  .getString("value") : "";
         }
         }
+        String lmpdate=dateUtil.dateFormat(edd,56);
        if (visittype.equalsIgnoreCase("anc_registration")){
     	   List ancvisitdetails= anmService.getPhoneNumber(entityId);
        	
        	String ptphoneNumber = collect(ancvisitdetails, on(EcRegDetails.class).phonenumber()).get(0).toString();
 //        	smsController.sendSMSEC(ptphoneNumber, regNumber, wifeName,"ANC");
-       	ancVisitRepository.insert(entityId, ptphoneNumber, anmNumber, "anc_visit", visitnumber,edd,wifeName);
+       	ancVisitRepository.insert(entityId, ptphoneNumber, anmNumber, "anc_visit", visitnumber,edd,wifeName,lmpdate);
         }
         if (visittype.equalsIgnoreCase("anc_registration_oa")){
         	logger.info("trying to send sms");
         	smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"ANC");
         	logger.info("sms sent done");
-        	ancVisitRepository.insert(entityId, phoneNumber, anmNumber, "anc_visit", visitnumber,edd,wifeName);
+        	ancVisitRepository.insert(entityId, phoneNumber, anmNumber, "anc_visit", visitnumber,edd,wifeName,lmpdate);
         }
         
        //smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"ANC");
@@ -152,7 +157,53 @@ public class FormDatahandler {
         //ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber, edd);
     }
 
-    public void ancVisit() {
+    public void ancVisit(JSONObject dataObject, String visittype) throws JSONException {
+    	String ecId="";
+    	String newdate="";
+    	Integer visitno=null;
+    	    	
+    	JSONArray fieldJsonArray = dataObject
+				.getJSONObject("formInstance")
+				.getJSONObject("form").getJSONArray("fields");
+							
+		for (int i = 0; i < fieldJsonArray.length(); i++) {
+
+			JSONObject jsonObject = fieldJsonArray
+					.getJSONObject(i);
+				if((jsonObject.has("name"))
+						&& jsonObject.getString("name").equals("ecId")) {
+
+					ecId = (jsonObject.has("value") && jsonObject
+							.getString("value") != null) ? jsonObject
+							.getString("value") : "";
+				}
+		}
+		logger.info("entityid"+ecId);
+		List ancvisitdetails= visitService.getVisitDue(ecId);
+		logger.info("ancvisitpastdetails^^^^"+ancvisitdetails);
+		String datetime=collect(ancvisitdetails, on(ANCVisitDue.class).visitdate()).get(0).toString();
+		String visit=collect(ancvisitdetails, on(ANCVisitDue.class).visitno()).get(0).toString();
+		int visitnum=Integer.parseInt(visit);
+		if(visitnum==1){
+			
+			newdate=dateUtil.dateFormat(datetime,100);
+			visitno=2;
+		}
+		if(visitnum==2){
+			newdate=dateUtil.dateFormat(datetime,120);
+			visitno=3;
+		}
+		if(visitnum==3){
+			newdate=dateUtil.dateFormat(datetime,150);
+			visitno=4;
+		}
+		
+		logger.info("new date"+newdate);
+		String sid = collect(ancvisitdetails, on(ANCVisitDue.class).id()).get(0).toString();
+		logger.info("id from db:"+sid);
+		int id= Integer.parseInt(sid);
+		logger.info("id from db:"+id);
+		ancVisitRepository.ancUpdate(id,newdate,visitno);
     }
 
     public void pncRegistration(JSONObject dataObject, String visittype, String anmNumber) throws JSONException {

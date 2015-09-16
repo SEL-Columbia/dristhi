@@ -107,10 +107,9 @@ String ecId="";
 					
 					logger.info("visit type"+visittype);
 					String phoneNumber=anmService.getanmPhoneNumber(user_id).toString();
-					//logger.info("value of anmphonenumber from db:"+visitnum);
 					formDataHandler.pncRegistration(dataObject,visittype,phoneNumber);
 					
-						}
+					}
 				if (visittype.equalsIgnoreCase("child_registration_oa")
 						)
 						{
@@ -123,51 +122,10 @@ String ecId="";
 						}
 				
 				if(visittype.equalsIgnoreCase("anc_visit")){
+					formDataHandler.ancVisit(dataObject,visittype);
 					
-					JSONArray fieldJsonArray = dataObject
-							.getJSONObject("formInstance")
-							.getJSONObject("form").getJSONArray("fields");
-										
-					for (int i = 0; i < fieldJsonArray.length(); i++) {
-
-						JSONObject jsonObject = fieldJsonArray
-								.getJSONObject(i);
-							if((jsonObject.has("name"))
-									&& jsonObject.getString("name").equals("ecId")) {
-
-								ecId = (jsonObject.has("value") && jsonObject
-										.getString("value") != null) ? jsonObject
-										.getString("value") : "";
-							}
-					}
-					logger.info("entityid"+ecId);
-					List ancvisitdetails= visitService.getVisitDue(ecId);
-					//ANCVisitDue ancvisitdetails= (ANCVisitDue) visitService.getVisitDue(ecId);
-					logger.info("ancvisitpastdetails^^^^"+ancvisitdetails);
-					
-									
-					logger.info("not null"+ancvisitdetails);
-					 date = collect(ancvisitdetails, on(ANCVisitDue.class).visitdate()).get(0).toString();
-					 logger.info("value of date from db:"+date);
-					 //dateUtil.dateFormat(date);
-					 //visitno = collect(ancvisitdetails, on(ANCVisitDue.class).visitno()).toString();				 
-					 Integer visitnum=2;
-							 //Integer.parseInt(visitno);
-					 logger.info("value of visitnum from db:"+visitnum);
-					 phoneNumber = collect(ancvisitdetails, on(ANCVisitDue.class).patientnum()).get(0).toString();
-					 logger.info("value of phonenumber from db:"+phoneNumber);
-					 newDate="2015-09-10";
-					 logger.info("value of date from new date:"+newDate);
-					 ancVisitRepository.ancUpdate(ecId,phoneNumber,anmphoneNumber,visittype,visitnum,date);
-					// ancVisitRepository.ancUpdate(ancvisitdetails);
-					 
-				
-					
-		  }
-		
-	
-	    }
-
-    }
+				}
+			}
+	}
 }
 

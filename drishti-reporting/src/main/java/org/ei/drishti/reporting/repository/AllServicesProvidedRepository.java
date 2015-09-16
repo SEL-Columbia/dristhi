@@ -67,66 +67,21 @@ public class  AllServicesProvidedRepository {
     public void deleteReportsFor(String dristhiEntityId) {
         dataAccessTemplate.deleteAll(getAllReportsForDristhiEntityID(dristhiEntityId));
     }
-    public void ancsave(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate,String womenname) {
+    public void ancsave(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String lmpdate,String womenname,String visitdate) {
     	logger.info("####### ancsave method invoked$$$$$");
-        dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate,womenname));
+        dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,lmpdate,womenname,visitdate));
     	
     }
     
-    public void ancvisitupdate(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate) {
-   // public void ancvisitupdate(ANCVisitDue ancvisit) {	
-   	String newvisitdate="2015-05-09";
-    	//ANCVisitDue ancvisit=(ANCVisitDue)dataAccessTemplate.get(ANCVisitDue.class,entityid);
-//    	logger.info(" ancsave method invoked$$$$$");
-//    	logger.info(" visit date: ");
-    	//ancvisit.setvisitdate("2015-05-09");
-    	//dataAccessTemplate.update(ancvisit);
-    	
-//    	ANCVisitDue anc=(ANCVisitDue)dataAccessTemplate.get(ANCVisitDue.class, entityid);
-//    	anc.setvisitdate(visitdate);
-    			
-    	//deleteANCFor(entityid);
-//    	logger.info(" delete done");
-//    	dataAccessTemplate.saveOrUpdate(ANCVisitDue.UPDATE_BY_ENTITY_ID);
-//    	ANCVisitDue entity =new ANCVisitDue(entityid, patientnum, anmnum, visittype, visitno, visitdate, "seruio");
-////    	ANCVisitDue entity1 = (ANCVisitDue) dataAccessTemplate.findByNamedQueryAndNamedParam(ANCVisitDue.FIND_BY_ENTITY_ID,
-////                new String[]{"entityid"}, new Object[]{entityid});
-//    	logger.info("entity: "+entity);
-//    	entity.setvisitdate(visitdate);
-//    	
-//    	logger.info("set visit date: ");
-//    	
-//    	dataAccessTemplate.update(entity);
-    	
-//    	String hqlquery="update ANCVisitDue a set a.visitdate=:visitdate where a.entityid=:entityid";
-//    	dataAccessTemplate.update(hqlquery,new ANCVisitDue(entityid, patientnum, anmnum, visittype, visitno, visitdate, "seruio"));
-    	//dataAccessTemplate.update(new ANCVisitDue(entityid, patientnum, anmnum, visittype, visitno, visitdate, "seruio"));
-       	
-    	   
-//  	anc.setvisitdate(visitdate);
+   // public void ancvisitupdate(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate) {
+    public void ancvisitupdate(Integer id,String newdate,Integer visitno) {	
+   	
+   	ANCVisitDue objectToUpdate = (ANCVisitDue) dataAccessTemplate.get(ANCVisitDue.class, id);
+   	objectToUpdate.setvisitdate(newdate);
+   	objectToUpdate.setvisitno(visitno);
+   	dataAccessTemplate.saveOrUpdate(objectToUpdate);
+   	logger.info(" visit date: "+objectToUpdate);
   	logger.info(" visit date2: ");
-//  	dataAccessTemplate
-  	
- //  int i=dataAccessTemplate.getSessionFactory().openSession().createQuery("update ANCVisitDue a set a.visitdate=:newvisitdate where a.visitdate=:visitdate").executeUpdate();
- //  	logger.info("query to update: "+i);
-//    	query.setParameter("visitdate", visitdate);
-//    	int result = query.executeUpdate();
-//    	logger.info("sucessfull: " +result);
-    	
-//    	logger.info(" entity id$$$$$"+entityid);
-//        //dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate));
-//    	List<ANCVisitDue> ancdetails=dataAccessTemplate.findByNamedQuery(ANCVisitDue.FIND_BY_ENTITY_ID,entityid);
-//    	String date = collect(ancdetails, on(ANCVisitDue.class).visitdate()).toString();
-//    	
-//    	logger.info("anc details: "+ancdetails+"date"+date);
-//    	ANCVisitDue ancupdate=ancdetails.get(0);
-//    	logger.info("anc update: "+ancupdate);
-//    	ancupdate.setvisitdate(visitdate);
-//    	 logger.info("VISIT DATE"+visitdate);
-//    	dataAccessTemplate.update(ancupdate);
-//    	logger.info("visit date"+visitdate);
-    	//dataAccessTemplate.merge(entity);
-    	//dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,visitdate));
     }
     
     public void ecsave(String entityid,String phonenumber) {

@@ -51,7 +51,7 @@ public class DateUtil {
         }
     }
 
-	public String dateFormat(String datetime) {
+	public String dateFormat(String datetime,int diff) {
 		logger.info("converting date format");
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
 		// Parsing the date
@@ -60,7 +60,7 @@ public class DateUtil {
 		// Format for output
 		DateTimeFormatter dtfOut = DateTimeFormat.forPattern("yyyy-MM-dd");
 		// Printing the date
-		String date=dtfOut.print(jodatime.plusDays(30));
+		String date=dtfOut.print(jodatime.plusDays(diff));
 		logger.info("converted date"+date);
     	return date;
 	}
