@@ -7,6 +7,7 @@ import org.ei.drishti.common.domain.ReportingData;
 import org.ei.drishti.common.monitor.Monitor;
 import org.ei.drishti.common.monitor.Probe;
 import org.ei.drishti.reporting.controller.FormDataController;
+import org.ei.drishti.reporting.domain.ANCVisitDue;
 import org.ei.drishti.reporting.domain.Indicator;
 import org.ei.drishti.reporting.domain.Location;
 import org.ei.drishti.reporting.domain.ServiceProvidedReport;
@@ -72,8 +73,9 @@ public class ANCVisitRepository {
 	}
 	@Transactional("service_provided")
 	public void ancUpdate(String entityId,String phoneNumber,String anmnum,String visittype,Integer visitnum,String visitdate){
-
-		logger.info("******ancvisitrepository**");
+//	public void ancUpdate(List<ANCVisitDue> ancvisitdetails){	
+		logger.info("******ancvisitrepository invoked**");
+		
 		servicesProvidedRepository.ancvisitupdate(entityId,phoneNumber,anmnum,visittype,visitnum,visitdate);
 
 		}

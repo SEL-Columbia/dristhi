@@ -4,7 +4,6 @@ package org.ei.drishti.reporting.controller;
 import java.util.Iterator;
 import java.util.List;
 
-
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.reporting.domain.ANCVisitDue;
@@ -12,6 +11,7 @@ import org.ei.drishti.reporting.handler.FormDatahandler;
 import org.ei.drishti.reporting.repository.ANCVisitRepository;
 import org.ei.drishti.reporting.service.ANMService;
 import org.ei.drishti.reporting.service.VisitService;
+import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 
 import static ch.lambdaj.Lambda.collect;
 import static ch.lambdaj.Lambda.on;
@@ -74,7 +73,7 @@ String ecId="";
 				String visittype = dataObject.getString("formName");
 				logger.info("value of formname " + visittype);
 				String user_id=dataObject.getString("anmId");
-				anmphoneNumber=anmService.getanmPhoneNumber(user_id).toString();
+				anmphoneNumber=anmService.getanmPhoneNumber(user_id).get(0).toString();
 				logger.info("value of anmphonenumber from db:"+anmphoneNumber);
 				
 				if (visittype.equalsIgnoreCase("ec_registration"))
@@ -143,27 +142,27 @@ String ecId="";
 					}
 					logger.info("entityid"+ecId);
 					List ancvisitdetails= visitService.getVisitDue(ecId);
+					//ANCVisitDue ancvisitdetails= (ANCVisitDue) visitService.getVisitDue(ecId);
 					logger.info("ancvisitpastdetails^^^^"+ancvisitdetails);
 					
-					
-					if(ancvisitdetails!=null){
+									
 					logger.info("not null"+ancvisitdetails);
-					 date = collect(ancvisitdetails, on(ANCVisitDue.class).visitdate()).toString();
+					 date = collect(ancvisitdetails, on(ANCVisitDue.class).visitdate()).get(0).toString();
 					 logger.info("value of date from db:"+date);
+					 //dateUtil.dateFormat(date);
 					 //visitno = collect(ancvisitdetails, on(ANCVisitDue.class).visitno()).toString();				 
 					 Integer visitnum=2;
 							 //Integer.parseInt(visitno);
 					 logger.info("value of visitnum from db:"+visitnum);
-					 phoneNumber = collect(ancvisitdetails, on(ANCVisitDue.class).patientnum()).toString();
+					 phoneNumber = collect(ancvisitdetails, on(ANCVisitDue.class).patientnum()).get(0).toString();
 					 logger.info("value of phonenumber from db:"+phoneNumber);
 					 newDate="2015-09-10";
 					 logger.info("value of date from new date:"+newDate);
-					 ancVisitRepository.ancUpdate(ecId,phoneNumber,anmphoneNumber,visittype,visitnum,newDate);
+					 ancVisitRepository.ancUpdate(ecId,phoneNumber,anmphoneNumber,visittype,visitnum,date);
+					// ancVisitRepository.ancUpdate(ancvisitdetails);
 					 
-					}
-					if(ancvisitdetails.isEmpty()){
-						logger.info("value is null");
-					}
+				
+					
 		  }
 		
 	

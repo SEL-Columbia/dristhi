@@ -138,13 +138,13 @@ public class FormDatahandler {
        	
        	String ptphoneNumber = collect(ancvisitdetails, on(EcRegDetails.class).phonenumber()).get(0).toString();
 //        	smsController.sendSMSEC(ptphoneNumber, regNumber, wifeName,"ANC");
-       	ancVisitRepository.insert(entityId, ptphoneNumber, anmNumber, visittype, visitnumber,edd,wifeName);
+       	ancVisitRepository.insert(entityId, ptphoneNumber, anmNumber, "anc_visit", visitnumber,edd,wifeName);
         }
         if (visittype.equalsIgnoreCase("anc_registration_oa")){
         	logger.info("trying to send sms");
         	smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"ANC");
         	logger.info("sms sent done");
-        	ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber,edd,wifeName);
+        	ancVisitRepository.insert(entityId, phoneNumber, anmNumber, "anc_visit", visitnumber,edd,wifeName);
         }
         
        //smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"ANC");
@@ -223,11 +223,12 @@ public class FormDatahandler {
             logger.info("wom phone number from db"+womphoneNumber);
            smsController.sendSMSPNC(womphoneNumber,regNumber,womenName,"PNC");
         }
-        if(visittype.equalsIgnoreCase("pnc_registration_oa"))
+        if(visittype.equalsIgnoreCase("pnc_registration_oa")){
             logger.info("phonenumber"+phoneNumber+"*** wife name"+wifeName+"***reg Number"+regNumber);  
        smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"PNC");
         logger.info("^^ transfer data from controller to repository****");
         //ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber, edd);
+    }
     }
 
     public void pncVisit() {

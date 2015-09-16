@@ -20,11 +20,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "anc_due")
 
+	
 @NamedQuery(name = ANCVisitDue.FIND_BY_ENTITY_ID,
 					query = "select w from ANCVisitDue w where w.entityid=:entityid")
 public class ANCVisitDue {
 	//Date date=new Date();
 	public static final String FIND_BY_ENTITY_ID = "find.by.entity.id";
+	
 	
 	@Id
     @Column(name = "id")
@@ -90,12 +92,13 @@ public class ANCVisitDue {
      public Integer visitno() {
         return visitno;
      }
-     public void setvisitdate(String visitdate){
-    	 this.visitdate=visitdate;
-     }
+     
      public String visitdate() {
             return visitdate;
     }
+     public void setvisitdate(String visitdate){
+    	 this.visitdate=visitdate;
+     }
      public String womenName() {
          return womenname;
  }
