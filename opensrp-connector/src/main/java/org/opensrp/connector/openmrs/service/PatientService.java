@@ -173,6 +173,7 @@ public class PatientService extends OpenmrsService{
 		JSONObject p = new JSONObject();
 		p.put("person", createPerson(c.getBaseEntity()).getString("uuid"));
 		JSONArray ids = new JSONArray();
+		if(c.getIdentifiers() != null){
 		for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
 			JSONObject jio = new JSONObject();
 			JSONObject idobj = getIdentifierType(id.getKey());
@@ -186,7 +187,7 @@ public class PatientService extends OpenmrsService{
 			//jio.put("preferred", true);
 
 			ids.put(jio);
-		}
+		}}
 		
 		JSONObject jio = new JSONObject();
 		JSONObject ido = getIdentifierType(OPENSRP_IDENTIFIER_TYPE);
