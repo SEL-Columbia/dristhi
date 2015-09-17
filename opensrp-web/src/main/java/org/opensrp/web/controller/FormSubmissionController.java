@@ -247,4 +247,26 @@ public class FormSubmissionController {
     	}
     	
     }
+    @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
+    @ResponseBody
+    public List<MultimediaDTO> getFiles(@RequestParam("anm-id") String providerId) {
+    	
+    	List<Multimedia> allMultimedias = multimediaService.getMultimediaFiles(providerId);
+    	
+    	return with(allMultimedias).convert(new Converter<Multimedia, MultimediaDTO>() {
+			@Override
+			public MultimediaDTO convert(Multimedia md) {
+				return new MultimediaDTO(md.getCaseId(), md.getProviderId(), md.getContentType(), md.getFilePath(), md.getFileCategory());
+			}
+		});
+    }
+    @RequestMapping(headers = {"Accept=multipart/form-data"}, method = POST, value = "/multimedia-file")
+    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId,@RequestParam("content-type") String contentType, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file) {
+    	
+    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
+    	
+    	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
+    	 
+    	 return new ResponseEntity<>(new Gson().toJson(status), OK);
+    }
 }
