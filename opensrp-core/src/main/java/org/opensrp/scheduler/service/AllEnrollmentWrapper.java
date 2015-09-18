@@ -27,15 +27,17 @@ class AllEnrollmentWrapper extends AllEnrollments{
 
     @View(name = "by_status_date_enrolled", map = FUNCTION_DOC_EMIT_DOC_STATUS_AND_ENROLLED_ON)
     public List<Enrollment> findByEnrollmentDate(String status, DateTime start, DateTime end) {
-        List<Enrollment> enrollments = queryView("by_status_date_enrolled", ComplexKey.of(status, start, end));
+    	ComplexKey s = ComplexKey.of(status, start);
+    	ComplexKey e = ComplexKey.of(status, end);
+        List<Enrollment> enrollments = db.queryView(createQuery("by_status_date_enrolled").startKey(s).endKey(e).includeDocs(true), Enrollment.class);
         return populateWithSchedule(enrollments);
     }
 
-    private static final String FUNCTION_DOC_EMIT_LAST_UPDATE = "function(doc) { if(doc.type === 'Enrollment') emit([doc.metadata.lastUpdate], doc._id);}";
+    private static final String FUNCTION_DOC_EMIT_LAST_UPDATE = "function(doc) { if(doc.type === 'Enrollment') emit(doc.metadata.lastUpdate, doc._id);}";
     
     @View(name = "by_last_update", map = FUNCTION_DOC_EMIT_LAST_UPDATE)
     public List<Enrollment> findByLastUpDate(DateTime start, DateTime end) {
-    	List<Enrollment> enrollments = queryView("by_last_update", ComplexKey.of(start, end));
+        List<Enrollment> enrollments = db.queryView(createQuery("by_last_update").startKey(start).endKey(end).includeDocs(true), Enrollment.class);
     	return populateWithSchedule(enrollments);
     }
     

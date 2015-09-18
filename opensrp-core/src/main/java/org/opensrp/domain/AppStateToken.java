@@ -49,27 +49,27 @@ public class AppStateToken extends MotechBaseDataObject {
 		return value;
 	}
 	
-	public long getLongValue() {
+	public long longValue() {
 		return Long.parseLong(value.toString());
 	}
 	
-	public int getIntValue() {
+	public int intValue() {
 		return Integer.parseInt(value.toString());
 	}
 	
-	public float getFloatValue() {
+	public float floatValue() {
 		return Float.parseFloat(value.toString());
 	}
 	
-	public double getDoubleValue() {
+	public double doubleValue() {
 		return Double.parseDouble(value.toString());
 	}
 	
-	public String getStringValue() {
+	public String stringValue() {
 		return value.toString();
 	}
 	
-	public boolean getBooleanValue() {
+	public boolean booleanValue() {
 		return Boolean.parseBoolean(value.toString());
 	}
 	
