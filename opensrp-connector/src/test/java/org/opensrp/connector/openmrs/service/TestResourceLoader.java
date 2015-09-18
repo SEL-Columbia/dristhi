@@ -13,6 +13,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
+import com.mysql.jdbc.StringUtils;
 
 
 public class TestResourceLoader {
@@ -20,6 +21,8 @@ public class TestResourceLoader {
 	protected String openmrsUsername;
 	protected String openmrsPassword;
 	protected String formDirPath;
+	protected boolean pushToOpenmrsForTest;
+
 
 	public TestResourceLoader() throws IOException {
 		Resource resource = new ClassPathResource("/opensrp.properties");
@@ -28,6 +31,8 @@ public class TestResourceLoader {
 		openmrsUsername = props.getProperty("openmrs.username");
 		openmrsPassword = props.getProperty("openmrs.password");
 		formDirPath = props.getProperty("form.directory.name");
+		String rc = props.getProperty("openmrs.test.make-rest-call");
+		pushToOpenmrsForTest = StringUtils.isEmptyOrWhitespaceOnly(rc)?false:Boolean.parseBoolean(rc);
 	}
 	
 	protected FormSubmission getFormSubmissionFor(String formName, Integer number) throws JsonIOException, IOException{
