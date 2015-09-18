@@ -106,7 +106,7 @@ public class HouseHoldTest extends TestResourceLoader{
 				
 				Event depe = (Event)cm.get("event");
 				assertFalse(depe.getObs().isEmpty());
-				assertEquals(2, depe.getObs().size());
+				assertEquals(1, depe.getObs().size());
 			}
 		}
 	}
