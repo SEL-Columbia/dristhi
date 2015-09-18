@@ -127,40 +127,17 @@ public class FormSubmissionController {
                     return FormSubmissionConverter.toFormSubmission(submission);
                 }
             });
-            for (FormSubmission formSubmission : fsl) {
-            	
-            	 addFormToOpenMRS(formSubmission);
-            	
-            	 //this fucntionality is moved to addFormToOpenMRS();
-         /*   	if(openmrsConnector.isOpenmrsForm(formSubmission)){
-	            	JSONObject p = patientService.getPatientByIdentifier(formSubmission.entityId());
-	            	
-	            	if(p != null){	            		
-	            		Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-		        		System.out.println(encounterService.createEncounter(e));
+	            for (FormSubmission formSubmission : fsl) {
+	            	try{
+	            		addFormToOpenMRS(formSubmission);
 	            	}
-	            	else {
-	            		Map<String, Map<String, Object>> dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
-	            		
-	            		if(dep.size()>0){
-	            			Client hhhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);
-	            			Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
-	            			OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
-	    	    			for (Map<String, Object> cm : dep.values()) {
-	    	    				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
-	    	    			}
-	    	    			
-	    	    			householdService.saveHH(hh);
-	            		}
-	            		else {
-	            			Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
-	            			System.out.println(patientService.createPatient(c));
-	            			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-			        		System.out.println(encounterService.createEncounter(e));
-	            		}
+	            	catch(Exception e){
+	            		e.printStackTrace();
+	            		ErrorTrace errorTrace=new ErrorTrace(new Date(), "Parse Exception", "", e.getStackTrace().toString(), "Unsolved", formSubmission.formName());
+						errorTrace.setRecordId(formSubmission.instanceId());
+						errorTraceService.addError(errorTrace);
 	            	}
-            	}*/
-    		}
+	    		}
             }
             catch(Exception e){
             	e.printStackTrace();
@@ -173,78 +150,41 @@ public class FormSubmissionController {
         return new ResponseEntity<>(CREATED);
     }
     
-    private void addFormToOpenMRS(FormSubmission formSubmission){
+    private void addFormToOpenMRS(FormSubmission formSubmission) throws ParseException, JSONException{
     	if(openmrsConnector.isOpenmrsForm(formSubmission)){
-        	JSONObject p = null;
-			try {
-				p = patientService.getPatientByIdentifier(formSubmission.entityId());
-			} catch (JSONException e1) {
-				
-				ErrorTrace errorTrace=new ErrorTrace(new Date(), "JSON Exception", "", e1.getStackTrace().toString(), "Unsolved", formSubmission.formName());
-				errorTrace.setRecordId(formSubmission.instanceId());
-				e1.printStackTrace();
-			}
+    		Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
+			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
+			Map<String, Map<String, Object>> dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
+
+    		// TODO temporary because not necessarily we register inner entity for Household only
+    		if(formSubmission.formName().toLowerCase().contains("household") 
+    				|| formSubmission.formName().toLowerCase().contains("census") ){
+    			OpenmrsHouseHold hh = new OpenmrsHouseHold(c, e);
+    			for (Map<String, Object> cm : dep.values()) {
+    				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
+    			}
+    			
+    			householdService.saveHH(hh, true);
+    		}
+    		else {
+    			JSONObject p = patientService.getPatientByIdentifier(c.getBaseEntityId());
+    			if(p == null){
+    				System.out.println(patientService.createPatient(c));
+    			}
         	
-        	if(p != null){	            		
-        		Event e;
-				try {
-					e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-					System.out.println(encounterService.createEncounter(e));
-				} catch (ParseException e1) {
-				
-					ErrorTrace errorTrace=new ErrorTrace(new Date(), "Parse Exception", "", e1.getStackTrace().toString(), "Unsolved", formSubmission.formName());
-					errorTrace.setRecordId(formSubmission.instanceId());
-					//errorTrace
-					errorTraceService.addError(errorTrace);
-					e1.printStackTrace();
-				} catch (JSONException e1) {
-				
-					ErrorTrace errorTrace=new ErrorTrace(new Date(), "JSON Exception", "", e1.getStackTrace().toString(), "Unsolved", formSubmission.formName());
-					errorTrace.setRecordId(formSubmission.instanceId());
-					errorTraceService.addError(errorTrace);
-					e1.printStackTrace();
-				}
-        		
-        	}
-        	else {
-        		Map<String, Map<String, Object>> dep;
-				try {
-					dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
-					if(dep.size()>0){
-	        			Client hhhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);
-	        			Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
-	        			OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
-		    			for (Map<String, Object> cm : dep.values()) {
-		    				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
-		    			}
-		    			
-		    			householdService.saveHH(hh);
-				}
-					else {
-	        			Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
-	        			System.out.println(patientService.createPatient(c));
-	        			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-		        		System.out.println(encounterService.createEncounter(e));
-	        		}
-				
-				
-        	}catch (ParseException e1) {
-        		ErrorTrace errorTrace=new ErrorTrace(new Date(), "Parse Exception", "", e1.getStackTrace().toString(), "Unsolved", formSubmission.formName());
-        		errorTrace.setRecordId(formSubmission.instanceId());
-        		errorTraceService.addError(errorTrace);
-        		e1.printStackTrace();
-			} catch (JSONException e) {
-			
-				ErrorTrace errorTrace=new ErrorTrace(new Date(), "JSON Exception", "", e.getStackTrace().toString(), "Unsolved", formSubmission.formName());
-				errorTrace.setRecordId(formSubmission.instanceId());
-				errorTraceService.addError(errorTrace);
-				e.printStackTrace();
-			}
-        	
-        	}
-        		
-        	
+    			System.out.println(encounterService.createEncounter(e));
+    			
+    			for (Map<String, Object> cm : dep.values()) {
+    				Client cin = (Client)cm.get("client");
+    				Event evin = (Event)cm.get("event");
+    				JSONObject pin = patientService.getPatientByIdentifier(cin.getBaseEntityId());
+        			if(pin == null){
+        				System.out.println(patientService.createPatient(cin));
+        			}
+            	
+        			System.out.println(encounterService.createEncounter(evin));
+    			}
+    		}
     	}
-    	
     }
 }
