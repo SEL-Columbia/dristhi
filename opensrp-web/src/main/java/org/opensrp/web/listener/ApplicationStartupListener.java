@@ -14,7 +14,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ApplicationStartupListener implements ApplicationListener<ContextRefreshedEvent> {
-    public static final String APPLICATION_ID = "org.springframework.web.context.WebApplicationContext:/opensrp";
+	public static final String APPLICATION_ID = "/opensrp";
+    public static final String APPLICATION_ID_FULL = "org.springframework.web.context.WebApplicationContext:"+APPLICATION_ID;
 
     private TaskSchedulerService scheduler;
     
@@ -37,11 +38,13 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        if (APPLICATION_ID.equals(contextRefreshedEvent.getApplicationContext().getId())) {
+    	System.out.println(contextRefreshedEvent.getApplicationContext().getId());
+        if (contextRefreshedEvent.getApplicationContext().getId().endsWith(APPLICATION_ID)) {
             scheduler.startJob(formSchedule);
             scheduler.startJob(anmReportScheduler);
             scheduler.startJob(mctsReportScheduler);
             scheduler.startJob(openmrsScheduleSyncerScheduler);
+        	System.out.println("STARTED ALL SCHEDULES");
         }
     }
 }
