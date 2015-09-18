@@ -13,6 +13,7 @@ public class OpenmrsUserService extends OpenmrsService{
 
 	private static final String AUTHENTICATION_URL = "ws/rest/v1/session";
 	private static final String USER_URL = "ws/rest/v1/user";
+	private static final String PROVIDER_URL = "ws/rest/v1/provider";
 	private static final String TEAM_MEMBER_URL = "ws/rest/v1/teammodule/member";
 	
     public OpenmrsUserService() { }
@@ -74,5 +75,23 @@ public class OpenmrsUserService extends OpenmrsService{
 	public JSONObject getTeamMember(String uuid) throws JSONException{
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+TEAM_MEMBER_URL+"/"+uuid, "v=full", OPENMRS_USER, OPENMRS_PWD);
 		return new JSONObject(op.body());
+	}
+	
+	public JSONObject getProvider(String identifier) throws JSONException{
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+PROVIDER_URL, "v=full&q="+identifier, OPENMRS_USER, OPENMRS_PWD);
+		JSONArray res = new JSONObject(op.body()).getJSONArray("results");
+		if(res.length() == 0){
+			return null;
+		}
+		JSONObject obj = res.getJSONObject(0);
+		return obj;
+	}
+	
+	public JSONObject createProvider(String existingUsername, String identifier) throws JSONException
+	{
+		JSONObject p = new JSONObject();
+		p.put("person", getPersonByUser(existingUsername).getString("uuid"));
+		p.put("identifier", identifier);
+		return new JSONObject(HttpUtil.post(getURL()+"/"+PROVIDER_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
 }
