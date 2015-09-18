@@ -36,13 +36,24 @@ public class OpenmrsSyncerListener {
 		this.actionService = actionService;
 		this.config = config;
 		this.errorTraceService = errorTraceService;
+		try{
+			AppStateToken at = this.config.getAppStateTokenByName(ScheduleTrackerConfig.openmrs_syncer_sync_by_last_update_enrollment);
+			if(at == null){
+				this.config.registerAppStateToken(ScheduleTrackerConfig.openmrs_syncer_sync_by_last_update_enrollment, 
+						null, "ScheduleTracker token to keep track of enrollment synced with OpenMRS");
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
     @MotechListener(subjects = OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
 	public void scheduletrackerSyncer(MotechEvent event) {
     	try{
+    		System.out.println("RUNNING SCHEDULER_TRACKER_SYNCER_SUBJECT");
 	    	AppStateToken lastsync = config.getAppStateTokenByName(ScheduleTrackerConfig.openmrs_syncer_sync_by_last_update_enrollment);
-	    	DateTime start = lastsync == null?new DateTime().minusYears(33):new DateTime(lastsync.getStringValue());
+	    	DateTime start = lastsync==null||lastsync.getValue()==null?new DateTime().minusYears(33):new DateTime(lastsync.stringValue());
 			DateTime end = new DateTime();
 			List<Enrollment> el = opensrpScheduleService.findEnrollmentByLastUpDate(start, end);
 	    	for (Enrollment e : el){
@@ -53,7 +64,7 @@ public class OpenmrsSyncerListener {
 				}
 	    		try {
 	    			if(e.getMetadata().get(OpenmrsConstants.ENROLLMENT_TRACK_UUID) != null){
-	    				
+	    				openmrsSchedulerService.updateTrack(e, actionService.findByCaseIdScheduleAndTimeStamp(e.getExternalId(), e.getScheduleName(), alertstart, alertend));
 	    			}
 	    			else{
 	    				JSONObject tr = openmrsSchedulerService.createTrack(e, actionService.findByCaseIdScheduleAndTimeStamp(e.getExternalId(), e.getScheduleName(), alertstart, alertend));
