@@ -174,10 +174,16 @@ public class BaseEntity extends BaseDataObject{
 	}
 
 	public Map<String, Object> getAttributes() {
+		if(attributes == null){
+			attributes = new HashMap<String, Object>();
+		}
 		return attributes;
 	}
 	
 	public Object getAttribute(String name) {
+		if(attributes == null){
+			attributes = new HashMap<String, Object>();
+		}
 		for (Entry<String, Object> a : attributes.entrySet()) {
 			if(a.getKey().equalsIgnoreCase(name)){
 				return a.getValue();
@@ -204,6 +210,9 @@ public class BaseEntity extends BaseDataObject{
 	}
 
 	public void removeAttribute(String name) {
+		if(attributes == null){
+			attributes = new HashMap<String, Object>();
+		}
 		for (Entry<String, Object> a : attributes.entrySet()) {
 			if(a.getKey().equalsIgnoreCase(name)){
 				attributes.remove(a.getKey());
