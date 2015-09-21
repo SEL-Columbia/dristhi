@@ -54,11 +54,7 @@ public class EligibleCouple extends MotechBaseDataObject {
     @JsonProperty
     private List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails;
     //new variables
-    @JsonProperty
-    private String id;
-    @JsonProperty
-    private String name;
-    
+       
 
     public EligibleCouple() {
     }
@@ -88,14 +84,7 @@ public class EligibleCouple extends MotechBaseDataObject {
         return this;
     }
     
-    //new data
-    public EligibleCouple withPhc(String id, String name) {
-        this.id = id;
-        this.name = name;
-       
-        return this;
-    }
-
+   
     public EligibleCouple withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
@@ -160,13 +149,7 @@ public class EligibleCouple extends MotechBaseDataObject {
         return phc;
     }
     //new data
-    public String id()
-    {
-    	return id;
-    }
-    public String name(){
-    	return name;
-    }
+   
     
 
     public Location location() {

@@ -86,7 +86,10 @@ public class ANCVisitDue {
     }   
     public String patientnum() {
         return patientnum;
-    }    
+    } 
+    public void setpatientnum(String patientnum){
+    	this.patientnum=patientnum;
+    }
     public String anmnum() {
         return anmnum;
     }  

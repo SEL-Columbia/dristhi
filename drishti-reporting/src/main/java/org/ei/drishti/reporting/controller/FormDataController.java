@@ -64,7 +64,6 @@ String ecId="";
 			String newDate="";
 			String anmphoneNumber="";
 			
-			
 			while (itr.hasNext()) {
 				Object object = (Object) itr.next();
 				String jsonstr = object.toString();
@@ -79,25 +78,39 @@ String ecId="";
 				if (visittype.equalsIgnoreCase("ec_registration"))
 						{
 					logger.info("visit type"+visittype);
-					//String anmphoneNumber=anmService.getanmPhoneNumber(user_id).toString();
 					formDataHandler.ecRegistration(dataObject,anmphoneNumber);
 					
 						}
-				if (visittype.equalsIgnoreCase("child_registration_ec"))
-				{
-			logger.info("visit type"+visittype);
-			//String anmphoneNumber=anmService.getanmPhoneNumber(user_id).toString();
-			formDataHandler.childRegistration(dataObject,visittype);
+				if (visittype.equalsIgnoreCase("ec_edit"))
+						{
+					logger.info("visit type"+visittype);
+					
+					formDataHandler.ecEdit(dataObject,anmphoneNumber);
 			
-				}
+						}
+				if (visittype.equalsIgnoreCase("anc_reg_edit_oa"))
+						{
+					logger.info("visit type"+visittype);
+			
+					formDataHandler.ancEdit(dataObject,anmphoneNumber);
+	
+						}
+				if (visittype.equalsIgnoreCase("child_registration_ec")
+						|| visittype.equalsIgnoreCase("child_registration_oa"))
+						{
+					logger.info("visit type"+visittype);
+					
+					formDataHandler.childRegistration(dataObject,visittype);
+			
+						}
 				
 				if (visittype.equalsIgnoreCase("anc_registration")
 						|| visittype.equalsIgnoreCase("anc_registration_oa"))
 						{
 					
 					logger.info("visit type"+visittype);
-					//String phoneNumber=anmService.getanmPhoneNumber(user_id).toString();
-					//logger.info("anm phone number"+phoneNumber);
+					
+					
 					formDataHandler.ancRegistration(dataObject,visittype,anmphoneNumber);
 					
 						}
@@ -109,22 +122,22 @@ String ecId="";
 					String phoneNumber=anmService.getanmPhoneNumber(user_id).toString();
 					formDataHandler.pncRegistration(dataObject,visittype,phoneNumber);
 					
-					}
-				if (visittype.equalsIgnoreCase("child_registration_oa")
-						)
-						{
-					
-					logger.info("visit type"+visittype);
-					//String phoneNumber=anmService.getanmPhoneNumber(user_id).toString();
-					//logger.info("value of anmphonenumber from db:"+visitnum);
-					formDataHandler.childRegistration(dataObject,visittype);
-					
 						}
+//				if (visittype.equalsIgnoreCase("child_registration_oa")
+//						)
+//						{
+//					
+//					logger.info("visit type"+visittype);
+//					//String phoneNumber=anmService.getanmPhoneNumber(user_id).toString();
+//					//logger.info("value of anmphonenumber from db:"+visitnum);
+//					formDataHandler.childRegistration(dataObject,visittype);
+//					
+//						}
 				
 				if(visittype.equalsIgnoreCase("anc_visit")){
-					formDataHandler.ancVisit(dataObject,visittype);
+					formDataHandler.ancVisit(dataObject,visittype,anmphoneNumber);
 					
-				}
+					}
 			}
 	}
 }

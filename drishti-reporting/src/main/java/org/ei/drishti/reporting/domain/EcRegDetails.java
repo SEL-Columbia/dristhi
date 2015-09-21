@@ -52,7 +52,10 @@ public class EcRegDetails {
     }   
     public String phonenumber() {
         return phonenumber;
-    }    
+    }
+    public void setphonenumber(String phonenumber) {
+        this.phonenumber=phonenumber;
+    }
     
     @Override
     public boolean equals(Object o) {

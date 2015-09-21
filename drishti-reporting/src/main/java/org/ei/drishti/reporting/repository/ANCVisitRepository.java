@@ -75,8 +75,19 @@ public class ANCVisitRepository {
 	//public void ancUpdate(String entityId,String phoneNumber,String anmnum,String visittype,Integer visitnum,String visitdate){
 	public void ancUpdate(Integer id, String newdate, Integer visitno){	
 		logger.info("******ancvisitrepository invoked**");
-		
 		servicesProvidedRepository.ancvisitupdate(id,newdate,visitno);
+
+		}
+	@Transactional("service_provided")
+	public void ancregUpdate(Integer id, String phoneNumber){	
+		logger.info("******ancvisitrepository invoked**");
+		servicesProvidedRepository.ancupdate(id,phoneNumber);
+
+		}
+	@Transactional("service_provided")
+	public void ecUpdate(Integer id, String phoneNumber){	
+		logger.info("******ancvisitrepository invoked**");
+		servicesProvidedRepository.ecupdate(id,phoneNumber);
 
 		}
 	@Transactional("service_provided")
