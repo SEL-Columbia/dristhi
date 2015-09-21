@@ -7,6 +7,7 @@ New Features
 - OpenMRS user service allows to get and create provide for test
 - Added a property to switch off/on the REST calls to OpenMRS from opensrp.properties to allow user choose whether to run integration test or not
 - SchduleTracker tested with HH schedule tests
+- Added provision to allow setting birthdate and deathdate approximation status from xlsform
 
 Changes
 =======
