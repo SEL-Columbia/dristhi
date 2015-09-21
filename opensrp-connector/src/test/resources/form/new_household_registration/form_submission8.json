@@ -80,11 +80,6 @@
                    "source": "household.FWHOHBIRTHDATE"
                },
                {
-                   "name": "FWHOHBIRTHDATEAPPROX",
-                   "value": "1",
-                   "source": "household.FWHOHBIRTHDATEAPPROX"
-               },
-               {
                    "name": "FWHOHGENDER",
                    "value": "male",
                    "source": "household.FWHOHGENDER"
@@ -196,7 +191,7 @@
                            "FWWOMBID": "",
                            "FWHUSNAME": "",
                            "FWBIRTHDATE": "2000-05-07",
-                           "FWBIRTHDATEAPPROX":"1",
+                           "FWBIRTHDATEAPPROX":"",
                            "FWGENDER": "Female",
                            "FWWOMAGE": "",
                            "display_age": "",

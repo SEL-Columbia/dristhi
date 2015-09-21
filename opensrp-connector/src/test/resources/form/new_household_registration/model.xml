@@ -16,7 +16,8 @@
             <FWHOHFNAME openmrs_entity="person" openmrs_entity_id="first_name"/>
             <FWHOHLNAME openmrs_entity="person" openmrs_entity_id="last_name"/>
             <FWHOHBIRTHDATE openmrs_entity="person" openmrs_entity_id="birthdate"/>
-            <FWHOHGENDER openmrs_entity="person" openmrs_entity_id="gender"/>
+            <FWHOHBIRTHDATE openmrs_entity="person" openmrs_entity_id="birthdate"/>
+            <FWHOHBIRTHDATEAPPROX openmrs_entity="person" openmrs_entity_id="birthdate_estimated"/>
             <FWNHHMBRNUM openmrs_entity="concept" openmrs_entity_id="5611AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <FWNHHMWRA/>
             <woman template="" openmrs_entity="person" openmrs_entity_id="Census and New Woman Registration">
@@ -28,6 +29,7 @@
                 <FWWOMBID openmrs_entity="person_identifier" openmrs_entity_id="Birth Registration ID"/>
                 <FWHUSNAME openmrs_entity="concept" openmrs_entity_id="161135AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <FWBIRTHDATE openmrs_entity="person" openmrs_entity_id="birthdate"/>
+            	<FWBIRTHDATEAPPROX openmrs_entity="person" openmrs_entity_id="birthdate_estimated"/>
                 <FWGENDER openmrs_entity="person" openmrs_entity_id="gender"/>
                 <FWWOMAGE/>
                 <display_age/>
