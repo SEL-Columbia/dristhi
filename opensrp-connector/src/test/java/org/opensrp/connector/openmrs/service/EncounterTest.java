@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
@@ -62,7 +63,7 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(e.getLocationId(), "unknown location");
 	}
 	
-	@Test
+	@Ignore @Test
 	public void shouldHandleSubform() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
 
@@ -101,7 +102,7 @@ public class EncounterTest extends TestResourceLoader{
 		}
 	}	
 	
-	@Test
+	@Ignore @Test
 	public void shouldHandleEmptyRepeatGroup() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 5);
 

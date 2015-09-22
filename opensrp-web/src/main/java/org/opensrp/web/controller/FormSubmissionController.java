@@ -23,7 +23,9 @@ import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.ErrorTrace;
+import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.FormSubmissionDTO;
+import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
@@ -31,6 +33,7 @@ import org.opensrp.register.DrishtiScheduleConstants.OpenSRPEvent;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.opensrp.service.ErrorTraceService;
+import org.opensrp.service.MultimediaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import ch.lambdaj.function.convert.Converter;
 
@@ -58,7 +62,9 @@ public class FormSubmissionController {
     private HouseholdService householdService;
     private ErrorTraceService errorTraceService;
     
-
+    @Autowired //TODO: Julkar Confirm this
+    private MultimediaService multimediaService;
+    
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, 
@@ -207,6 +213,6 @@ public class FormSubmissionController {
     	
     	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
     	 
-    	 return new ResponseEntity<>(new Gson().toJson(status), OK);
+    	 return new ResponseEntity<>(new Gson().toJson(status), HttpStatus.OK);
     }
 }
