@@ -16,7 +16,7 @@
             <FWHOHFNAME openmrs_entity="person" openmrs_entity_id="first_name"/>
             <FWHOHLNAME openmrs_entity="person" openmrs_entity_id="last_name"/>
             <FWHOHBIRTHDATE openmrs_entity="person" openmrs_entity_id="birthdate"/>
-            <FWHOHBIRTHDATE openmrs_entity="person" openmrs_entity_id="birthdate"/>
+            <FWHOHGENDER openmrs_entity="person" openmrs_entity_id="gender"/>
             <FWHOHBIRTHDATEAPPROX openmrs_entity="person" openmrs_entity_id="birthdate_estimated"/>
             <FWNHHMBRNUM openmrs_entity="concept" openmrs_entity_id="5611AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <FWNHHMWRA/>
