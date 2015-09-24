@@ -28,7 +28,7 @@ public class ANCVisitDue {
 	public static final String FIND_BY_ENTITY_ID = "find.by.entity.id";
 	
 	
-	@Id
+    @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -57,11 +57,14 @@ public class ANCVisitDue {
     @Column(name = "visitdate")
     private String visitdate;
     
+    @Column(name = "anmid")
+    private String anmid;
+    
     private ANCVisitDue() {
     }
 
     
-    public ANCVisitDue(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String lmpdate, String womenname,String visitdate) {
+    public ANCVisitDue(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String lmpdate, String womenname,String visitdate,String anmid) {
         
         this.entityid=entityid;
         this.patientnum=patientnum;
@@ -71,6 +74,7 @@ public class ANCVisitDue {
         this.visitdate=visitdate;
         this.womenname=womenname;
         this.lmpdate=lmpdate;
+        this.anmid=anmid;
              
     }
 
@@ -111,10 +115,13 @@ public class ANCVisitDue {
      }
      public String womenName() {
          return womenname;
- }
+    }
      public String visitdate() {
          return visitdate;
- }
+    }
+      public String anmid() {
+         return anmid;
+    }
 
     @Override
     public boolean equals(Object o) {

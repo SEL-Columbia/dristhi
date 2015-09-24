@@ -33,7 +33,7 @@ public class VisitService {
     
      @Transactional("service_provided")
 	public List getVisitconf() {
-    	logger.info("get visit details****");
+    	logger.info("get visit details****:");
 	        return allVisitDueRepository.fetchvisitconf();
 	    }
 }

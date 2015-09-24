@@ -180,10 +180,8 @@ public class FormSubmissionController {
 			if (formSubmissionsDTO.isEmpty()) {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
-			
 			logger.info("*****"+formSubmissionsDTO.size() + " : -----------");
-			
-			//smsController.sendSMSEC();
+					
 			logger.info("** transfer data to handler*******");
 			drishtiform.formData(formSubmissionsDTO);
 			

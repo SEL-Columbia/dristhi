@@ -47,28 +47,18 @@ public class AllLocationsRepository {
     }
     
     public List fetchANMVillages(String user_id) {
-//        Location location = fetchByANMIdentifier(anmIdentifier);
-//        if (location == null)
-//            return null;
-    	//String user_id=anmIdentifier;
+
         return dataAccessTemplate.findByNamedQueryAndNamedParam(ANMVillages.FIND_BY_USER_ID,
                 new String[]{"user_id"}, new Object[]{user_id});
     }
     public List fetchANMphonenumber(String user_id) {
-//      Location location = fetchByANMIdentifier(anmIdentifier);
-//      if (location == null)
-//          return null;
-  	//String user_id=anmIdentifier;
-      return dataAccessTemplate.findByNamedQueryAndNamedParam(ANMVillages.FIND_PHONENUMBER_BY_USER_ID,
+     return dataAccessTemplate.findByNamedQueryAndNamedParam(ANMVillages.FIND_PHONENUMBER_BY_USER_ID,
               new String[]{"user_id"}, new Object[]{user_id});
   }
     public List fetchphonenumber(String entityid) {
-//      Location location = fetchByANMIdentifier(anmIdentifier);
-//      if (location == null)
-//          return null;
-  	//String user_id=anmIdentifier;
       return dataAccessTemplate.findByNamedQueryAndNamedParam(EcRegDetails.FIND_BY_ENTITYID,
               new String[]{"entityid"}, new Object[]{entityid});
   }
+    
 
 }

@@ -2,7 +2,6 @@ package org.ei.drishti.form.repository;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.ei.drishti.form.domain.Poc_table;
 import org.hibernate.Query;
 import org.hibernate.Session;

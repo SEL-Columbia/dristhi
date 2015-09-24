@@ -1,6 +1,10 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package org.ei.drishti.reporting.controller;
-
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -76,53 +80,60 @@ String ecId="";
 				logger.info("value of anmphonenumber from db:"+anmphoneNumber);
 				
 				if (visittype.equalsIgnoreCase("ec_registration"))
-						{
+				{
 					logger.info("visit type"+visittype);
 					formDataHandler.ecRegistration(dataObject,anmphoneNumber);
 					
-						}
+				}
 				if (visittype.equalsIgnoreCase("ec_edit"))
-						{
+				{
 					logger.info("visit type"+visittype);
 					
 					formDataHandler.ecEdit(dataObject,anmphoneNumber);
 			
-						}
+				}
 				if (visittype.equalsIgnoreCase("anc_reg_edit_oa"))
-						{
+				{
 					logger.info("visit type"+visittype);
 			
 					formDataHandler.ancEdit(dataObject,anmphoneNumber);
 	
-						}
+				}
 				if (visittype.equalsIgnoreCase("child_registration_ec")
 						|| visittype.equalsIgnoreCase("child_registration_oa"))
-						{
+				{
 					logger.info("visit type"+visittype);
 					
-					formDataHandler.childRegistration(dataObject,visittype);
+					formDataHandler.childRegistration(dataObject,visittype,anmphoneNumber);
 			
-						}
+				}
+                                if (visittype.equalsIgnoreCase("child_immunizations"))
+				{
+					logger.info("visit type"+visittype);
+					
+					formDataHandler.childImmunization(dataObject,visittype,anmphoneNumber);
+			
+				}
 				
 				if (visittype.equalsIgnoreCase("anc_registration")
 						|| visittype.equalsIgnoreCase("anc_registration_oa"))
-						{
+				{
 					
 					logger.info("visit type"+visittype);
 					
 					
 					formDataHandler.ancRegistration(dataObject,visittype,anmphoneNumber);
 					
-						}
+				}
 				if (visittype.equalsIgnoreCase("delivery_outcome")
 						|| visittype.equalsIgnoreCase("pnc_registration_oa"))
-						{
+				{
 					
 					logger.info("visit type"+visittype);
 					String phoneNumber=anmService.getanmPhoneNumber(user_id).toString();
 					formDataHandler.pncRegistration(dataObject,visittype,phoneNumber);
 					
-						}
+				}
 //				if (visittype.equalsIgnoreCase("child_registration_oa")
 //						)
 //						{
@@ -137,7 +148,11 @@ String ecId="";
 				if(visittype.equalsIgnoreCase("anc_visit")){
 					formDataHandler.ancVisit(dataObject,visittype,anmphoneNumber);
 					
-					}
+				}
+//                                if(visittype.equalsIgnoreCase("anc_visit")){
+//					formDataHandler.ancVisit(dataObject,visittype,anmphoneNumber);
+//					
+//				}
 			}
 	}
 }

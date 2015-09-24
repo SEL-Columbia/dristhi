@@ -67,9 +67,9 @@ public class  AllServicesProvidedRepository {
     public void deleteReportsFor(String dristhiEntityId) {
         dataAccessTemplate.deleteAll(getAllReportsForDristhiEntityID(dristhiEntityId));
     }
-    public void ancsave(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String lmpdate,String womenname,String visitdate) {
+    public void ancsave(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String lmpdate,String womenname,String visitdate, String anmid) {
     	logger.info("####### ancsave method invoked$$$$$");
-        dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,lmpdate,womenname,visitdate));
+        dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,lmpdate,womenname,visitdate,anmid));
     	
     }
     
@@ -104,6 +104,18 @@ public class  AllServicesProvidedRepository {
     public void ecsave(String entityid,String phonenumber) {
     	logger.info("####### ancsave method invoked$$$$$");
         dataAccessTemplate.save(new EcRegDetails(entityid,phonenumber));
+    	
+    }
+    public void pocsave(Integer id,String visittype, String visitentityid,String entityidec,String anmid) {
+    	logger.info("####### pocsave method invoked$$$$$");
+        HealthCenter objectToUpdate = (HealthCenter) dataAccessTemplate.get(HealthCenter.class, id);
+        String phc=objectToUpdate.parent_hospital();
+        String hop_type="subcenter";
+        String hospital_type=objectToUpdate.hospital_type();
+        if(hop_type.equalsIgnoreCase(hospital_type)){
+            dataAccessTemplate.save(new POC_Table(visitentityid,entityidec,anmid,"1"," "," ", visittype, phc," ", " ", " "));
+        }
+        
     	
     }
     

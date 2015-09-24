@@ -32,13 +32,13 @@ public class FormSubmissionService {
 	private static Logger logger = LoggerFactory
 			.getLogger(FormSubmissionService.class.toString());
 	private AllFormSubmissions allFormSubmissions;
-	private AllPoc_tableRepository allPoc_tableRepository;
+	//private AllPoc_tableRepository allPoc_tableRepository;
 
 	@Autowired
-	public FormSubmissionService(AllFormSubmissions allFormSubmissions,
-			AllPoc_tableRepository allPoc_tableRepository) {
+	public FormSubmissionService(AllFormSubmissions allFormSubmissions
+			) {
 		this.allFormSubmissions = allFormSubmissions;
-		this.allPoc_tableRepository = allPoc_tableRepository;
+		
 	}
 
 	public List<FormSubmissionDTO> fetch(long formFetchToken) {
@@ -60,7 +60,7 @@ public class FormSubmissionService {
 	public List<FormSubmission> getNewSubmissionsForANM(String village,
 			Long version, Integer batchSize) {
 		logger.info("******getnew submissios******");
-		return allFormSubmissions.findByANMIDAndServerVersion(village,
+		return allFormSubmissions.findByVillageAndServerVersion(village,
 				version, batchSize);
 	}
 

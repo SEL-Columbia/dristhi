@@ -59,7 +59,7 @@ public class AllSubmissionsIntegrationTest {
         FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", 0L, "1", null, baseTimeStamp);
         formSubmissions.add(firstFormSubmission);
 
-        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", 1L, "1",null, baseTimeStamp + 1);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
         formSubmissions.add(secondFormSubmission);
 
         FormSubmission thirdFormSubmission = new FormSubmission("anm id 3", "instance id 3", "form name 1", "entity id 3", 2L, "1", null, baseTimeStamp + 2);

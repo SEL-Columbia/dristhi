@@ -66,8 +66,10 @@ public class HttpAgent {
             request.setEntity(entity);
             logger.info("request to drishti-reporting"+request);
             org.apache.http.HttpResponse response = httpClient.execute(request);
+            logger.info("Status Code"+response.getStatusLine().getStatusCode());
             return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
         } catch (Exception e) {
+            logger.info("failed to post the url");
             throw new RuntimeException(e);
         }
     }

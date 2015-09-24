@@ -58,27 +58,27 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         return db.queryView(query, FormSubmission.class);
     }
 
-//    @View(
-//            name = "formSubmission_by_anm_and_server_version",
-//            map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.serverVersion], null); } }")
-//    public List<FormSubmission> findByANMIDAndServerVersion(String anmId, long version, Integer batchSize) {
-//        ComplexKey startKey = ComplexKey.of(anmId, version + 1);
-//        ComplexKey endKey = ComplexKey.of(anmId, Long.MAX_VALUE);
-//        ViewQuery query = createQuery("formSubmission_by_anm_and_server_version")
-//                .startKey(startKey)
-//                .endKey(endKey)
-//                .includeDocs(true);
-//        if (batchSize != null) {
-//            query.limit(batchSize);
-//        }
-//        return db.queryView(query, FormSubmission.class);
-//    }
+    @View(
+            name = "formSubmission_by_anm_and_server_version",
+            map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.serverVersion], null); } }")
+    public List<FormSubmission> findByANMIDAndServerVersion(String anmId, long version, Integer batchSize) {
+        ComplexKey startKey = ComplexKey.of(anmId, version + 1);
+        ComplexKey endKey = ComplexKey.of(anmId, Long.MAX_VALUE);
+        ViewQuery query = createQuery("formSubmission_by_anm_and_server_version")
+                .startKey(startKey)
+                .endKey(endKey)
+                .includeDocs(true);
+        if (batchSize != null) {
+            query.limit(batchSize);
+        }
+        return db.queryView(query, FormSubmission.class);
+    }
     
     
     @View(
             name = "formSubmission_by_village_and_server_version",
             map = "function(doc) { if (doc.type === 'FormSubmission') { for(id in doc.formInstance.form.fields){if(doc.formInstance.form.fields[id].name ==='village'){emit([doc.formInstance.form.fields[id].value, doc.serverVersion], null); }}} }")
-    public List<FormSubmission> findByANMIDAndServerVersion(String village, long version, Integer batchSize) {
+    public List<FormSubmission> findByVillageAndServerVersion(String village, long version, Integer batchSize) {
         ComplexKey startKey = ComplexKey.of(village, version + 1);
         ComplexKey endKey = ComplexKey.of(village, Long.MAX_VALUE);
         ViewQuery query = createQuery("formSubmission_by_village_and_server_version")

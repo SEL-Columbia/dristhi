@@ -3,7 +3,7 @@ package org.ei.drishti.form.service;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.form.domain.FormSubmission;
 import org.ei.drishti.form.repository.AllFormSubmissions;
-import org.ei.drishti.form.repository.AllPoc_tableRepository;
+//import org.ei.drishti.form.repository.AllPoc_tableRepository;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,14 +23,16 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class FormSubmissionServiceTest {
     @Mock
     private AllFormSubmissions allFormSubmissions;
-private AllPoc_tableRepository allPoc_tableRepository;
+//private AllPoc_tableRepository allPoc_tableRepository;
     private FormSubmissionService formSubmissionService;
     private long serverVersion;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        formSubmissionService = new FormSubmissionService(allFormSubmissions,allPoc_tableRepository);
+        formSubmissionService = new FormSubmissionService(allFormSubmissions
+                //,allPoc_tableRepository
+        );
         LocalDate fakeDate = new LocalDate("2012-01-01");
         org.ei.drishti.common.util.DateUtil.fakeIt(fakeDate);
         serverVersion = fakeDate.toDateTimeAtStartOfDay().getMillis();

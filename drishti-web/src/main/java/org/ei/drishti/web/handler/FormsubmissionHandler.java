@@ -71,21 +71,6 @@ public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONExce
 
 		String visittype = dataObject.getString("formName");
 		logger.info("value of formname " + visittype);
-//		
-//		if(visittype.equalsIgnoreCase("anc_registration_oa")
-//				|| visittype.equalsIgnoreCase("anc_registration")
-//				){
-//			
-//			registration(dataObject);
-//						//smsController.sendSMSEC();
-//		}
-//
-//		if(visittype.equalsIgnoreCase("child_registration")
-//				|| visittype.equalsIgnoreCase("ec_registration")
-//				|| visittype.equalsIgnoreCase("a_registration")){
-//						
-//						//smsController.sendSMSEC();
-//		}
 	
 		if (visittype.equalsIgnoreCase("anc_visit")
 				|| visittype.equalsIgnoreCase("pnc_visit")

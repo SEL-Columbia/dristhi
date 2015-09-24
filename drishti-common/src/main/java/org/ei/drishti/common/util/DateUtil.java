@@ -50,6 +50,12 @@ public class DateUtil {
             return defaultValue;
         }
     }
+    public String datetimenow(){
+        DateTime date = DateTime.now();
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss.SSSZ");
+        String date1=dtf.print(date);
+        return "date1";
+    }
 
 	public String dateFormat(String datetime,int diff) {
 		logger.info("converting date format");
