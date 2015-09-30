@@ -13,7 +13,7 @@
     <bean id="drishtiFormDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="drishti-form"/>
         <constructor-arg ref="couchDbInstance"/>
-    </bean>
+<!--    </bean>
    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">  
      <property name="driverClassName" value="org.postgresql.Driver"></property>  
      <property name="url" value="jdbc:postgresql://localhost/drishti/"></property>  
@@ -34,7 +34,7 @@
       
       <bean class="org.springframework.orm.hibernate3.HibernateTransactionManager" id="hibernateTransactionManager">  
      <property name="sessionFactory" ref="sessionFactory"></property>  
-      </bean>  
+      </bean>  -->
     
       </beans>  
 

@@ -16,47 +16,47 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class AllPoc_tableRepository {
-	private static Logger logger = LoggerFactory
-			.getLogger(AllPoc_tableRepository.class.toString());
-
-	private SessionFactory sessionFactory;
-
-	protected AllPoc_tableRepository() {
-	}
-	//@Qualifier("serviceProvidedDataFormTemplate")
-	@Autowired
-	public AllPoc_tableRepository(
-			 SessionFactory sessionfactory) {
-		this.sessionFactory = sessionFactory;
-
-	}
-
-	@Transactional("service_provided")
-	public void insertAll(String anmid, String visittype, String visitentityid,
-			String entityidEC) {
-	
-		Session session = sessionFactory.openSession();
-
-		Query qry = session
-				.createQuery("select d.name from PHC d where d.id=(select da.phc from SP_ANM da where da.anmidentifier = '"
-						+ anmid + "')");
-		List phc = qry.list();
-
-		Poc_table pt = new Poc_table();
-
-		pt.setAnmid(anmid);
-		pt.setEntityidEC(entityidEC);
-		pt.setVisitentityid(visitentityid);
-		pt.setVisittype(visittype);
-		pt.setLevel("");
-		pt.setServerversion("");
-		pt.setClientversion("");
-		pt.setPhc(phc);
-		session.save(pt);
-		logger.info("poc_table saved");
-
-		session.close();
-		sessionFactory.close();
-	}
+//	private static Logger logger = LoggerFactory
+//			.getLogger(AllPoc_tableRepository.class.toString());
+//
+//	private SessionFactory sessionFactory;
+//
+//	protected AllPoc_tableRepository() {
+//	}
+//	//@Qualifier("serviceProvidedDataFormTemplate")
+//	@Autowired
+//	public AllPoc_tableRepository(
+//			 SessionFactory sessionfactory) {
+//		this.sessionFactory = sessionFactory;
+//
+//	}
+//
+//	@Transactional("service_provided")
+//	public void insertAll(String anmid, String visittype, String visitentityid,
+//			String entityidEC) {
+//	
+//		Session session = sessionFactory.openSession();
+//
+//		Query qry = session
+//				.createQuery("select d.name from PHC d where d.id=(select da.phc from SP_ANM da where da.anmidentifier = '"
+//						+ anmid + "')");
+//		List phc = qry.list();
+//
+//		Poc_table pt = new Poc_table();
+//
+//		pt.setAnmid(anmid);
+//		pt.setEntityidEC(entityidEC);
+//		pt.setVisitentityid(visitentityid);
+//		pt.setVisittype(visittype);
+//		pt.setLevel("");
+//		pt.setServerversion("");
+//		pt.setClientversion("");
+//		pt.setPhc(phc);
+//		session.save(pt);
+//		logger.info("poc_table saved");
+//
+//		session.close();
+//		sessionFactory.close();
+//	}
 
 }

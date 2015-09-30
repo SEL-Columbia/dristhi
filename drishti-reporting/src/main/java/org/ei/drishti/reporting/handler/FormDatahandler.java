@@ -393,17 +393,17 @@ public class FormDatahandler {
                                 
                                logger.info("anmid+++++" + anmid);
                                 List subcenterForANM = anmService.getANMVillages(anmid);
-                                String subid = collect(subcenterForANM, on(ANMVillages.class).subcenter()).get(0).toString();
-                                logger.info("subcenter from db:"+subid);
-                               
-                                List phcdetails=anmService.getPHCDetails(subid);
+                                String sid = collect(subcenterForANM, on(ANMVillages.class).id()).get(0).toString();
+                                logger.info("subcenter from db:"+sid);
+                                Integer id=Integer.parseInt(sid);
+                                List phcdetails=anmService.getPHCDetails(id);
                                 String phcname = collect(phcdetails, on(HealthCenter.class).parent_hospital()).get(0).toString();
                                 logger.info("phc name from healthcenters"+phcname);
                                 String hospitaltype = collect(phcdetails, on(HealthCenter.class).hospital_type()).get(0).toString();
                                 String date=dateUtil.datetimenow();
                                 logger.info("date time converted"+date);
                                 
-                                if(hospitaltype.equalsIgnoreCase("subcenter")){
+                                if(hospitaltype.equalsIgnoreCase("Subcenter")){
                                 ancVisitRepository.pocinsert(visittype, visitentityid,entityidEC,anmid,phcname,date);
                                 }
 
@@ -515,7 +515,7 @@ public class FormDatahandler {
         String sid = collect(ancvisitdetails, on(ANCVisitDue.class).id()).get(0).toString();
 	logger.info("id from db:"+sid);
 	int id= Integer.parseInt(sid);
-        String newdate="2015-10-10";
+        String newdate=" ";
         ancVisitRepository.ancUpdate(id,newdate,visitno);
         
     }

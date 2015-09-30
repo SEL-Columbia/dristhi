@@ -22,12 +22,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author administrator
  */
 @Entity
-@Table(name = "health_centers")
-@NamedQuery(name = HealthCenter.FIND_BY_HOSPITAL_NAME,
-                query = "select p from HealthCenter p where p.hospital_name=:hospital_name")
+@Table(name = "health_centers_new")
+@NamedQuery(name = HealthCenter.FIND_BY_ID,
+                query = "select p from HealthCenter p where p.id=:id")
 
 public class HealthCenter {
-    public static final String FIND_BY_HOSPITAL_NAME = "find.by.hospital_name";
+    public static final String FIND_BY_ID = "find.by.id";
     
     @Id
     @Column(name = "id")
@@ -50,16 +50,16 @@ public class HealthCenter {
     private String villages;
     
     @Column(name = "country_name")
-    private String country_name;
+    private Integer country_name;
     
     @Column(name = "county_name")
-    private String county_name;
+    private Integer county_name;
     
     @Column(name = "district_name")
-    private String district_name;
+    private Integer district_name;
     
     @Column(name = "subdistrict_name")
-    private String subdistrict_name;
+    private Integer subdistrict_name;
     
        
   
@@ -67,7 +67,7 @@ public class HealthCenter {
     }
 
     public HealthCenter(Integer id,String hospital_name, String hospital_type, String hospital_address,String parent_hospital,String villages,
-    		String country_name,String county_name,String district_name,String subdistrict_name) {
+    		Integer country_name,Integer county_name,Integer district_name,Integer subdistrict_name) {
         this.id=id;
         this.hospital_name = hospital_name;
         this.hospital_type = hospital_type;
@@ -84,7 +84,7 @@ public class HealthCenter {
     }
     
     public HealthCenter(String hospital_name, String hospital_type, String hospital_address,String parent_hospital,String villages,
-    		String country_name,String county_name,String district_name,String subdistrict_name) {
+    		Integer country_name,Integer county_name,Integer district_name,Integer subdistrict_name) {
         this(0, hospital_name, hospital_type, hospital_address, parent_hospital,villages,country_name,county_name,district_name,subdistrict_name);
     }
 
@@ -113,19 +113,19 @@ public class HealthCenter {
         return villages;
     }
     
-    public String country_name() {  
+    public Integer country_name() {  
         return country_name;
     }
     
-    public String county_name() {
+    public Integer county_name() {
         return county_name;
     }
     
-    public String district_name() {
+    public Integer district_name() {
         return district_name;
     }
     
-    public String subdistrict_name() {
+    public Integer subdistrict_name() {
         return subdistrict_name;
     }
        

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_masters")
+@Table(name = "user_masters_new")
 @NamedQueries({
         
         @NamedQuery(name = ANMVillages.FIND_BY_USER_ID,
@@ -48,29 +48,29 @@ public class ANMVillages {
     private String phone_number;
     
     @Column(name = "country")
-    private String country;
+    private Integer country;
     
     @Column(name = "county")
-    private String county;
+    private Integer county;
     
     @Column(name = "district")
-    private String district;
+    private Integer district;
     
     @Column(name = "subdistrict")
-    private String subdistrict;
+    private Integer subdistrict;
     
     @Column(name = "subcenter")
-    private String subcenter;
+    private Integer subcenter;
     
     @Column(name = "hospital")
-    private String hospital;
+    private Integer hospital;
     
   
     private ANMVillages() {
     }
 
     public ANMVillages(Integer id,String villages, String user_role, String user_id,String name,String phone_number,
-    		String country,String county,String district,String subdistrict,String subcenter,String hospital) {
+    		Integer country,Integer county,Integer district,Integer subdistrict,Integer subcenter,Integer hospital) {
         this.id=id;
         this.villages = villages;
         this.user_role = user_role;
@@ -88,7 +88,7 @@ public class ANMVillages {
     }
     
     public ANMVillages(String villages, String userrole, String user_id, String name,String phone_number,
-    		String country,String county,String district,String subdistrict,String subcenter,String hospital) {
+    		Integer country,Integer county,Integer district,Integer subdistrict,Integer subcenter,Integer hospital) {
         this(0, villages, userrole, user_id, name,phone_number,country,county,district,subdistrict,subcenter,hospital);
     }
 
@@ -117,27 +117,27 @@ public class ANMVillages {
         return phone_number;
     }
     
-    public String country() {  
+    public Integer country() {  
         return country;
     }
     
-    public String county() {
+    public Integer county() {
         return county;
     }
     
-    public String district() {
+    public Integer district() {
         return district;
     }
     
-    public String subdistrict() {
+    public Integer subdistrict() {
         return subdistrict;
     }
     
-    public String subcenter() {
+    public Integer subcenter() {
         return subcenter;
     }
     
-    public String hospital() {
+    public Integer hospital() {
         return hospital;
     }
    

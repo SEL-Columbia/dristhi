@@ -65,9 +65,9 @@ public class AllLocationsRepository {
               new String[]{"entityid"}, new Object[]{entityid});
   } 
     
-    public List fetchphc(String hospital_name) {
+    public List fetchphc(Integer id) {
         logger.info("try to fetch phc details");
-      return dataAccessTemplate.findByNamedQueryAndNamedParam(HealthCenter.FIND_BY_HOSPITAL_NAME,
-              new String[]{"hospital_name"}, new Object[]{hospital_name});
+      return dataAccessTemplate.findByNamedQueryAndNamedParam(HealthCenter.FIND_BY_ID,
+              new String[]{"id"}, new Object[]{id});
   }
 }

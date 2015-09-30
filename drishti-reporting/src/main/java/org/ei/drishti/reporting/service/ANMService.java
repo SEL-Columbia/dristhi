@@ -71,8 +71,8 @@ public class ANMService {
     }
 
     @Transactional("service_provided")
-    public List getPHCDetails(String subid) {
-        logger.info("fecth phc"+subid);
-        return allLocationsRepository.fetchphc(subid);
+    public List getPHCDetails(Integer id) {
+        logger.info("fecth phc"+id);
+        return allLocationsRepository.fetchphc(id);
     }
 }
