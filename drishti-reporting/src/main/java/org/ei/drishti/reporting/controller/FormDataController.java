@@ -147,12 +147,13 @@ String ecId="";
 				
 				if(visittype.equalsIgnoreCase("anc_visit")){
 					formDataHandler.ancVisit(dataObject,visittype,anmphoneNumber);
+                                        formDataHandler.visitpoc(dataObject, visittype, phoneNumber);
 					
 				}
-//                                if(visittype.equalsIgnoreCase("anc_visit")){
-//					formDataHandler.ancVisit(dataObject,visittype,anmphoneNumber);
-//					
-//				}
+                                if(visittype.equalsIgnoreCase("pnc_visit") || visittype.equalsIgnoreCase("child_illness")){
+					formDataHandler.visitpoc(dataObject, visittype, phoneNumber);
+					
+				}
 			}
 	}
 }

@@ -2,19 +2,19 @@ package org.ei.drishti.reporting.repository;
 
 import static ch.lambdaj.Lambda.collect;
 import static ch.lambdaj.Lambda.on;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 
 import org.ei.drishti.reporting.controller.LocationController;
 import org.ei.drishti.reporting.domain.*;
 import org.ei.drishti.reporting.service.VisitService;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-
-import java.util.Date;
-import java.util.List;
 
 
 
@@ -106,16 +106,14 @@ public class  AllServicesProvidedRepository {
         dataAccessTemplate.save(new EcRegDetails(entityid,phonenumber));
     	
     }
-    public void pocsave(Integer id,String visittype, String visitentityid,String entityidec,String anmid) {
-    	logger.info("####### pocsave method invoked$$$$$");
-        HealthCenter objectToUpdate = (HealthCenter) dataAccessTemplate.get(HealthCenter.class, id);
-        String phc=objectToUpdate.parent_hospital();
-        String hop_type="subcenter";
-        String hospital_type=objectToUpdate.hospital_type();
-        if(hop_type.equalsIgnoreCase(hospital_type)){
-            dataAccessTemplate.save(new POC_Table(visitentityid,entityidec,anmid,"1"," "," ", visittype, phc," ", " ", " "));
-        }
+    public void pocsave(String visittype, String visitentityid,String entityidec,String anmid, String phc, String timestamp) {
+    	logger.info("####### pocsave method invoked$$$$$"+phc);
         
+           java.util.Date date = new java.util.Date();
+			Timestamp timestamp1 = new Timestamp(date.getTime());  
+                        
+        dataAccessTemplate.save(new POC_Table(visitentityid,entityidec,anmid,"1"," "," ", visittype, phc," ", " ", timestamp1));
+       
     	
     }
     

@@ -1,19 +1,24 @@
 package org.ei.drishti.reporting.repository;
 
+import java.util.List;
 import org.ei.drishti.reporting.domain.ANCVisitDue;
 import org.ei.drishti.reporting.domain.ANMVillages;
 import org.ei.drishti.reporting.domain.EcRegDetails;
+import org.ei.drishti.reporting.domain.HealthCenter;
 import org.ei.drishti.reporting.domain.Location;
 import org.ei.drishti.reporting.domain.PHC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Repository
 public class AllLocationsRepository {
     private DataAccessTemplate dataAccessTemplate;
+    
+    private static Logger logger = LoggerFactory
+			.getLogger(AllLocationsRepository.class.toString());
 
     protected AllLocationsRepository() {
     }
@@ -58,7 +63,11 @@ public class AllLocationsRepository {
     public List fetchphonenumber(String entityid) {
       return dataAccessTemplate.findByNamedQueryAndNamedParam(EcRegDetails.FIND_BY_ENTITYID,
               new String[]{"entityid"}, new Object[]{entityid});
-  }
+  } 
     
-
+    public List fetchphc(String hospital_name) {
+        logger.info("try to fetch phc details");
+      return dataAccessTemplate.findByNamedQueryAndNamedParam(HealthCenter.FIND_BY_HOSPITAL_NAME,
+              new String[]{"hospital_name"}, new Object[]{hospital_name});
+  }
 }

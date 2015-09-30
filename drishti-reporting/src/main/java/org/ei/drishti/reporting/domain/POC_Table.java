@@ -6,6 +6,7 @@
 
 package org.ei.drishti.reporting.domain;
 
+import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *
  * @author administrator
  */
-
+@Entity
+@Table(name = "poc_table")
 public class POC_Table {
     @Id
     @Column(name = "id")
@@ -58,13 +60,13 @@ public class POC_Table {
     private String docid;
     
     @Column(name = "timestamp")
-    private String timestamp;
+    private Timestamp timestamp;
     
     private POC_Table() {
     }
 
     
-    public POC_Table(String visitentityid,String entityidec,String anmid,String level,String clientversion,String serverversion, String visittype,String phc,String pending, String docid, String timestamp) {
+    public POC_Table(String visitentityid,String entityidec,String anmid,String level,String clientversion,String serverversion, String visittype,String phc,String pending, String docid, Timestamp timestamp) {
         
         this.visitentityid=visitentityid;
         this.entityidec=entityidec;
@@ -114,14 +116,14 @@ public class POC_Table {
      public String phc() {
          return phc;
     }
-      public String pending() {
+     
+     public String pending() {
          return pending;
     }
-      
-       public String docid() {
+     public String docid() {
          return docid;
     }
-        public String timestamp() {
+    public Timestamp timestamp() {
          return timestamp;
     }
 

@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -22,8 +23,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 @Table(name = "health_centers")
+@NamedQuery(name = HealthCenter.FIND_BY_HOSPITAL_NAME,
+                query = "select p from HealthCenter p where p.hospital_name=:hospital_name")
+
 public class HealthCenter {
-    
+    public static final String FIND_BY_HOSPITAL_NAME = "find.by.hospital_name";
     
     @Id
     @Column(name = "id")

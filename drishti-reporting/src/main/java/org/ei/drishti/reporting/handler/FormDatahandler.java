@@ -11,6 +11,7 @@ import org.ei.drishti.reporting.controller.SMSController;
 import org.ei.drishti.reporting.domain.ANCVisitDue;
 import org.ei.drishti.reporting.domain.ANMVillages;
 import org.ei.drishti.reporting.domain.EcRegDetails;
+import org.ei.drishti.reporting.domain.HealthCenter;
 import org.ei.drishti.reporting.domain.VisitConf;
 import org.ei.drishti.reporting.repository.ANCVisitRepository;
 import org.ei.drishti.reporting.service.ANMService;
@@ -133,7 +134,7 @@ public class FormDatahandler {
             }
                             
         }
-        List ancregdetails= visitService.getVisitDue(ecId);
+        List ancregdetails= visitService.getVisitDue(entityId);
         String sid = collect(ancregdetails, on(ANCVisitDue.class).id()).get(0).toString();
        	String ptphoneNumber = collect(ancregdetails, on(ANCVisitDue.class).patientnum()).get(0).toString();
        	int id= Integer.parseInt(sid);
@@ -389,16 +390,22 @@ public class FormDatahandler {
 					.getString("value") : "";
 			logger.info("res1+++++" + isCon);
                         if (isCon.equalsIgnoreCase("yes")) {
-                                //smsController.sendSMSPOC();
-                                logger.info(" invoking a service");
-                                logger.info("res2+++++" + isCon);
-                                logger.info("anmid+++++" + anmid);
+                                
+                               logger.info("anmid+++++" + anmid);
                                 List subcenterForANM = anmService.getANMVillages(anmid);
                                 String subid = collect(subcenterForANM, on(ANMVillages.class).subcenter()).get(0).toString();
-                                logger.info("id from db:"+subid);
-                                int id= Integer.parseInt(subid);
-                                ancVisitRepository.pocinsert(id,visittype, visitentityid,entityidEC,anmid);
+                                logger.info("subcenter from db:"+subid);
+                               
+                                List phcdetails=anmService.getPHCDetails(subid);
+                                String phcname = collect(phcdetails, on(HealthCenter.class).parent_hospital()).get(0).toString();
+                                logger.info("phc name from healthcenters"+phcname);
+                                String hospitaltype = collect(phcdetails, on(HealthCenter.class).hospital_type()).get(0).toString();
+                                String date=dateUtil.datetimenow();
+                                logger.info("date time converted"+date);
                                 
+                                if(hospitaltype.equalsIgnoreCase("subcenter")){
+                                ancVisitRepository.pocinsert(visittype, visitentityid,entityidEC,anmid,phcname,date);
+                                }
 
                                 logger.info("invoking a service method");
                                 //visit(dataObject);

@@ -10,10 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class ANMService {
     private AllSP_ANMsRepository allANMsRepository;
     private AllLocationsRepository allLocationsRepository;
+    
+    private static Logger logger = LoggerFactory
+			.getLogger(ANMService.class.toString());
 
     protected ANMService() {
     }
@@ -64,5 +70,9 @@ public class ANMService {
         return allLocationsRepository.fetchphonenumber(entityid);
     }
 
-    
+    @Transactional("service_provided")
+    public List getPHCDetails(String subid) {
+        logger.info("fecth phc"+subid);
+        return allLocationsRepository.fetchphc(subid);
+    }
 }

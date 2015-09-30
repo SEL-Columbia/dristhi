@@ -58,10 +58,10 @@ public class ANCVisitRepository {
 
 		}
         @Transactional("service_provided")
-	public void pocinsert(Integer id,String visittype, String visitentityid,String entityidEC,String anmid){
+	public void pocinsert(String visittype, String visitentityid,String entityidEC,String anmid, String phc,String timestamp){
 
 		logger.info("******ancvisitrepository**");
-		servicesProvidedRepository.pocsave(id,visittype, visitentityid,entityidEC,anmid);
+		servicesProvidedRepository.pocsave(visittype, visitentityid,entityidEC,anmid,phc,timestamp);
 
 		}
 	}
