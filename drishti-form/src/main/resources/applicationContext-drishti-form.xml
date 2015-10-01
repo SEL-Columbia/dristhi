@@ -13,6 +13,7 @@
     <bean id="drishtiFormDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="drishti-form"/>
         <constructor-arg ref="couchDbInstance"/>
+     </bean>
 <!--    </bean>
    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">  
      <property name="driverClassName" value="org.postgresql.Driver"></property>  

@@ -393,7 +393,7 @@ public class FormDatahandler {
                                 
                                logger.info("anmid+++++" + anmid);
                                 List subcenterForANM = anmService.getANMVillages(anmid);
-                                String sid = collect(subcenterForANM, on(ANMVillages.class).id()).get(0).toString();
+                                String sid = collect(subcenterForANM, on(ANMVillages.class).subcenter()).get(0).toString();
                                 logger.info("subcenter from db:"+sid);
                                 Integer id=Integer.parseInt(sid);
                                 List phcdetails=anmService.getPHCDetails(id);

@@ -15,6 +15,7 @@ import static junit.framework.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext-drishti-form.xml")
+
 public class AllSubmissionsIntegrationTest {
     @Autowired
     private AllFormSubmissions formSubmissions;
