@@ -1,0 +1,107 @@
+/**
+  * Contributors: muhammad.ahmed@ihsinformatics.com
+ */
+package org.opensrp.util;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+ 
+public class NetClientGet {
+ 
+	// http://localhost:8080/RESTfulExample/json/product/get
+	public String  convertToString(String dataurl ,String username , String formId ) {
+ 
+	  try {
+
+		URL url = new URL("https://enketo.formhub.org/transform/get_html_form");
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("POST");
+		conn.setDoInput(true);
+		conn.setDoOutput(true);
+                String url1="server_url=https://ona.io/"+username+"&form_id="+formId;  //+dataurl;
+  //String url2="server_url=https://ona.io/"+username+"/forms/"+formId+"/form.json&callback=CALLBACKFN";            
+                
+          //    System.out.println(url2);
+//"server_url=https://ona.io/ahmedihs&form_id=crvs_birth_notification"
+        conn.getOutputStream().write(url1.getBytes());
+		if (conn.getResponseCode() != 200) {
+			throw new RuntimeException("Failed : HTTP error code : "
+					+ conn.getResponseCode());
+		}
+              //      System.out.println(conn.getResponseCode());
+		BufferedReader br = new BufferedReader(new InputStreamReader(
+			(conn.getInputStream())));
+ 
+		StringBuilder sb = new StringBuilder();
+		String output = null;
+	//	System.out.println("Output from Server .... \n");
+                
+		while ((output = br.readLine()) != null) {
+		//	System.out.println(output);
+			sb.append(output);
+		}
+ 
+		/*FileOutputStream fop = new FileOutputStream("d:\\tlocal201312161608.xml");
+		fop.write(sb.toString().getBytes());
+		conn.disconnect();*/
+                return sb.toString();
+ 
+	  } catch (MalformedURLException e) {
+ 
+		e.printStackTrace();
+ 
+	  } catch (IOException e) {
+ 
+		e.printStackTrace();
+ 
+	  }
+          return null;
+	}
+        
+        public byte[] downloadFile(String username, String formId) throws IOException {
+		 
+		
+		  //The file that you want to download
+		 String url2="https://ona.io/"+username+"/forms/"+formId+"/form.json";            
+           URL link = new URL(url2);
+                //Code to download
+		 InputStream in = new BufferedInputStream(link.openStream());
+		 ByteArrayOutputStream out = new ByteArrayOutputStream();
+		 byte[] buf = new byte[1024];
+		 int n = 0;
+		 while (-1!=(n=in.read(buf)))
+		 {
+		    out.write(buf, 0, n);
+		 }
+		 out.close();
+		 in.close();
+		 byte[] response = out.toByteArray();
+ 
+		
+		 
+		// System.out.println("Finished");
+                    return response;
+	}
+
+        public String getModel(String data){
+                     
+            return data.substring(data.indexOf("<model>") , data.indexOf("</model>")+8);
+            
+        }
+        
+        public String getForm(String data){
+       
+        return data.substring(data.indexOf("<form ") , data.indexOf("</form>")+7);
+        }
+        
+ 
+}
