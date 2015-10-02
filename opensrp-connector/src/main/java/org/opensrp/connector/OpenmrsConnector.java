@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.opensrp.api.domain.Address;
 import org.opensrp.api.domain.BaseEntity;
 import org.opensrp.api.domain.Client;
@@ -296,8 +297,28 @@ public class OpenmrsConnector {
 		Date birthdate = OpenmrsService.OPENMRS_DATE.parse(fs.getField(getFieldName(Person.birthdate, fs)));
 		String dd = fs.getField(getFieldName(Person.deathdate, fs));
 		Date deathdate = dd==null?null:OpenmrsService.OPENMRS_DATE.parse(dd);
+		String aproxbd = fs.getField(getFieldName(Person.birthdate_estimated, fs));
 		Boolean birthdateApprox = false;
+		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)){
+			int bde = 0;
+			try {
+				bde = Integer.parseInt(aproxbd);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			birthdateApprox = bde > 0 ? true:false;
+		}
+		String aproxdd = fs.getField(getFieldName(Person.deathdate_estimated, fs));
 		Boolean deathdateApprox = false;
+		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxdd) && NumberUtils.isNumber(aproxdd)){
+			int dde = 0;
+			try {
+				dde = Integer.parseInt(aproxdd);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			deathdateApprox = dde > 0 ? true:false;
+		}
 		String gender = fs.getField(getFieldName(Person.gender, fs));
 		
 		List<Address> addresses = new ArrayList<>(extractAddresses(fs, null).values());
@@ -342,8 +363,28 @@ public class OpenmrsConnector {
 					Date birthdate = OpenmrsService.OPENMRS_DATE.parse(sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs)));
 					String dd = sfdata.get(getFieldName(Person.deathdate, sbf.name(), fs));
 					Date deathdate = dd==null?null:OpenmrsService.OPENMRS_DATE.parse(dd);
-					Boolean birthdateApprox = true;
-					Boolean deathdateApprox = true;
+					String aproxbd = sfdata.get(getFieldName(Person.birthdate_estimated, sbf.name(), fs));
+					Boolean birthdateApprox = false;
+					if(!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)){
+						int bde = 0;
+						try {
+							bde = Integer.parseInt(aproxbd);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						birthdateApprox = bde > 0 ? true:false;
+					}
+					String aproxdd = sfdata.get(getFieldName(Person.deathdate_estimated, sbf.name(), fs));
+					Boolean deathdateApprox = false;
+					if(!StringUtils.isEmptyOrWhitespaceOnly(aproxdd) && NumberUtils.isNumber(aproxdd)){
+						int dde = 0;
+						try {
+							dde = Integer.parseInt(aproxdd);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						deathdateApprox = dde > 0 ? true:false;
+					}
 					String gender = sfdata.get(getFieldName(Person.gender, sbf.name(), fs));
 					
 					List<Address> addresses = new ArrayList<>(extractAddresses(fs, sbf.name()).values());

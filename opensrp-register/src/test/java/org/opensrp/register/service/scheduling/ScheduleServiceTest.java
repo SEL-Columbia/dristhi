@@ -38,7 +38,7 @@ public class ScheduleServiceTest {
         schedule = new Schedule("my_schedule");
         schedule.addMilestones(firstMilestone);
         schedule.addMilestones(secondMilestone);
-        scheduleService = new ScheduleService(scheduleTrackingService, allSchedules, 14);
+        scheduleService = new ScheduleService(scheduleTrackingService, allSchedules, 14, null);
     }
 
     @Test

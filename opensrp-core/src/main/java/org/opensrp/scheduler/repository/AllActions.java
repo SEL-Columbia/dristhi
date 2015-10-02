@@ -9,6 +9,7 @@ import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
+import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.scheduler.Action;
@@ -44,6 +45,13 @@ public class AllActions extends MotechBaseRepository<Action> {
         return db.queryView(createQuery("action_by_anm_entityId_scheduleName").key(key).includeDocs(true), Action.class);
     }
 
+    @View(name = "action_by_caseId_and_schedule_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.caseID, doc.data.scheduleName, doc.timeStamp], null); } }")
+    public List<Action> findByCaseIdScheduleAndTimeStamp(String caseId, String schedule, DateTime start, DateTime end) {
+        ComplexKey startKey = ComplexKey.of(caseId, schedule, start.getMillis() + 1);
+        ComplexKey endKey = ComplexKey.of(caseId, schedule, end.getMillis());
+        return db.queryView(createQuery("action_by_caseId_and_schedule_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
+    }
+    
     public void deleteAllByTarget(String target) {
         deleteAll(findByActionTarget(target));
     }

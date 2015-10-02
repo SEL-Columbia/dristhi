@@ -50,6 +50,32 @@ public class EncounterService extends OpenmrsService{
 		this.userService = userService;
 	}
 
+	public JSONObject getEncounterType(String encounterType) throws JSONException
+    {
+    	// we have to use this ugly approach because identifier not found throws exception and 
+    	// its hard to find whether it was network error or object not found or server error
+    	JSONArray res = new JSONObject(HttpUtil.get(getURL()+"/"+ENCOUNTER__TYPE_URL, "v=full", 
+    			OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
+    	for (int i = 0; i < res.length(); i++) {
+			if(res.getJSONObject(i).getString("display").equalsIgnoreCase(encounterType)){
+				return res.getJSONObject(i);
+			}
+		}
+    	return null;
+    }
+	
+    public JSONObject createEncounterType(String name, String description) throws JSONException{
+		JSONObject o = convertEncounterToOpenmrsJson(name, description);
+		return new JSONObject(HttpUtil.post(getURL()+"/"+ENCOUNTER__TYPE_URL, "", o.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
+    
+    public JSONObject convertEncounterToOpenmrsJson(String name, String description) throws JSONException {
+		JSONObject a = new JSONObject();
+		a.put("name", name);
+		a.put("description", description);
+		return a;
+	}
+	
 	public JSONObject createEncounter(Event e) throws JSONException{
 		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
 		JSONObject enc = new JSONObject();
@@ -67,6 +93,7 @@ public class EncounterService extends OpenmrsService{
 		Map<String, JSONObject> p = new HashMap<>();
 		Map<String, List<JSONObject>> pc = new HashMap<>();
 		
+		if(ol != null)
 		for (Obs obs : ol) {
 			//if no parent simply make it root obs
 			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){

@@ -57,6 +57,10 @@
         "bind": "/model/instance/FWNewHH/FWHOHBIRTHDATE"
       },
       {
+        "name": "FWHOHBIRTHDATEAPPROX",
+        "bind": "/model/instance/FWNewHH/FWHOHBIRTHDATEAPPROX"
+      },
+      {
         "name": "FWHOHGENDER",
         "bind": "/model/instance/FWNewHH/FWHOHGENDER"
       },
@@ -118,6 +122,10 @@
           {
             "name": "FWBIRTHDATE",
             "bind": "/model/instance/FWNewHH/woman/FWBIRTHDATE"
+          },
+          {
+            "name": "FWBIRTHDATEAPPROX",
+            "bind": "/model/instance/FWNewHH/woman/FWBIRTHDATEAPPROX"
           },
           {
             "name": "FWGENDER",

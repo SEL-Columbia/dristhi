@@ -1,39 +1,32 @@
-<<<<<<< HEAD
-Date of Release: 27-Jul-2015
+Date of Release: 18-Sep-2015
 
 New Features
 ============
-- Added javadoc for all important functions
-- Added testcase for empty repeat group handling
+- Added schedule tracker data sync that sync all enrollments keep updating if any changes occur later
+- A config manager added to handle system state at any point of time
+- OpenMRS user service allows to get and create provide for test
+- Added a property to switch off/on the REST calls to OpenMRS from opensrp.properties to allow user choose whether to run integration test or not
+- SchduleTracker tested with HH schedule tests
+- Added provision to allow setting birthdate and deathdate approximation status from xlsform
 
 Changes
 =======
 - Removed unnecessary and/or commented out code
+- Action repo and service was added a new method to fetch data by case, schedule, timestamp
+- Schedule syncer schedule added
+- Scheduletracker syncer property added
+- Allows to create Encounter Type for test
+- HHService for OpenMRS allows to switch the existing person ignore property. Now allows to update instead of creating new patient
+- Updated DB names to opensrp from drishti
+- FormSubmissionController in opensrp-web refactored to be optimized and to conform to saveHH method changes
 
 Fixes
 =====
-- Fixed a bug for wrong handling of entity parent id mapping of openmrs attributes in OpenmrsConnector
+- Removed part of addressTest causing test fail occasionally
+- Attributes list in BaseEntity in API would be instantiated automatically to prevent NPE
+- Check added in OpenMRS encounter create method to prevent NPE incase when no Obs is present in Event
+- HH Test wont throw exception for old MVP dictionary. Removed newer concepts from model.xml
+- Fixes for property methods, and couch queries
 
 Known Issues
 ============
-=======
-Date of Release: 23-Jun-2015
-
-New Features
-============
-- Added power mock api in pom to handle static class mocks
-
-Changes
-=======
-- Removed all calls to live server in connector tests and now using only mock objects and mock calls
-- Using mocks only instead of calls to server in opensrp web tests
-- Printing message in UserController when team member mapping fails instead of stacktrace as it is ignorable
-
-Fixes
-=====
-- Fixed the issue where code was assigning wrong ID to subform entities
-- 
-
-Known Issues
-============
->>>>>>> refs/remotes/origin/ErrorLogging
