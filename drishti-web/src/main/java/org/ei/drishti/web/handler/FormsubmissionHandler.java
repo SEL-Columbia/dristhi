@@ -47,73 +47,8 @@ public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONExce
 	logger.info("post method url: url:"+url+"?"+formdetails);
 	httpAgent.post(url,formdetails,"application/json"); 
         logger.info("try to call post multipart");
-        httpAgent.post("http://localhost:8080/drishti-web-0.1-SNAPSHOT/multimedia-file", "anm123", "application/json");
+        httpAgent.post("http://localhost:8080/drishti-web-0.1-SNAPSHOT/form-submission", "anm123", "application/json");
 	
-//	while (itr.hasNext()) {
-//		Object object = (Object) itr.next();
-//		String jsonstr = object.toString();
-//
-//		JSONObject dataObject = new JSONObject(jsonstr);
-//
-//		String visittype = dataObject.getString("formName");
-//		logger.info("value of formname " + visittype);
-//	
-//		if (visittype.equalsIgnoreCase("anc_visit")
-//				|| visittype.equalsIgnoreCase("pnc_visit")
-//				|| visittype.equalsIgnoreCase("child_illness")) {
-//
-//			JSONArray fieldsJsonArray = dataObject
-//					.getJSONObject("formInstance")
-//					.getJSONObject("form").getJSONArray("fields");
-//
-//			String visitentityid = dataObject.getString("entityId");
-//
-//			String anmid = dataObject.getString("anmId");
-//			
-//
-//			for (int i = 0; i < fieldsJsonArray.length(); i++) {
-//
-//				JSONObject jsonObject = fieldsJsonArray
-//						.getJSONObject(i);
-//
-//				if ((jsonObject.has("name"))
-//						&& jsonObject.getString("name").equals("ecId")) {
-//
-//					entityidEC = (jsonObject.has("value") && jsonObject
-//							.getString("value") != null) ? jsonObject
-//							.getString("value") : "";
-//				}
-//
-//				if ((jsonObject.has("name"))
-//						&& jsonObject.getString("name").equals(
-//								"isConsultDoctor")) {
-//
-//					String isCon = (jsonObject.has("value") && jsonObject
-//							.getString("value") != null) ? jsonObject
-//							.getString("value") : "";
-//
-//					logger.info("res1+++++" + isCon);
-//					if (isCon.equalsIgnoreCase("yes")) {
-//						
-//
-//						logger.info(" invoking a service");
-//						logger.info("res2+++++" + isCon);
-//						logger.info("anmid+++++" + anmid);
-//
-//						formSubmissionService.requestConsultationTest(
-//								visittype, visitentityid, entityidEC,
-//								anmid);
-//
-//						logger.info("invoking a service method");
-//						
-//					}
-//
-//				}
-//			}
-//		}
-//
-//	}
-
     }
 }
 

@@ -21,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_CACHE_TIME;
 import static org.ei.drishti.common.monitor.Metric.REPORTING_SERVICE_PROVIDED_INSERT_TIME;
 import static org.ei.drishti.reporting.domain.ServiceProviderType.parse;
@@ -30,7 +33,7 @@ public class ServicesProvidedRepository {
     private AllServiceProvidersRepository serviceProvidersRepository;
     private AllServicesProvidedRepository servicesProvidedRepository;
     private Monitor monitor;
-
+    private static final Logger logger = LoggerFactory.getLogger(ServicesProvidedRepository.class);
     private ReadOnlyCachingRepository<Indicator> cachedIndicators;
     private AllLocationsRepository locationRepository;
 
@@ -52,6 +55,7 @@ public class ServicesProvidedRepository {
     @Transactional("service_provided")
     public void save(String serviceProviderIdentifier, String serviceProviderType, String externalId, String indicator,
                      String date, String village, String subCenter, String phcIdentifier, String quantity, String dristhiEntityId) {
+        logger.info("Serviceprovided has been invoked");
         Probe probeForCache = monitor.start(REPORTING_SERVICE_PROVIDED_CACHE_TIME);
         Indicator fetchedIndicator = cachedIndicators.fetch(new Indicator(indicator));
         Date dates = LocalDate.parse(date).toDate();

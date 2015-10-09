@@ -257,7 +257,6 @@
                             <onError>abort</onError>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>create-schema</id>
                         <phase>pre-integration-test</phase>

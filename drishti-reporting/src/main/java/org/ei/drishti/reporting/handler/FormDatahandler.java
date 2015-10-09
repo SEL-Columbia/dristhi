@@ -223,11 +223,8 @@ public class FormDatahandler {
         
                 //smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"ANC");
                 logger.info("^^ transfer data from controller to repository****");
-                //ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber, edd);
+
     }
-//    public void insertANC(String entityId, String phoneNumber, String anmNumber, String visittype, Integer visitnumber,String edd,String wifeName,String lmpdate){
-//    	ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber,edd,wifeName,lmpdate);
-//    }
 
     public void ancVisit(JSONObject dataObject, String visittype, String anmnumber) throws JSONException {
         logger.info("anc_visit");
@@ -365,7 +362,7 @@ public class FormDatahandler {
             logger.info("phonenumber"+phoneNumber+"*** wife name"+wifeName+"***reg Number"+regNumber);  
             smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"PNC");
             logger.info("^^ transfer data from controller to repository****");
-            //ancVisitRepository.insert(entityId, phoneNumber, anmNumber, visittype, visitnumber, edd);
+           
             }
     }
 
@@ -424,7 +421,7 @@ public class FormDatahandler {
                
          String entityId = dataObject.getString("entityId");
          String anmid=dataObject.getString("anmId");
-        //String ptphoneNumber=anmService.getPhoneNumber(entityId).toString();
+        
          logger.info("child registration handler");
         JSONArray fieldJsonArray = dataObject.getJSONObject("formInstance").getJSONObject("form").getJSONArray("fields");
         Integer visitnumber = 1;
@@ -481,45 +478,6 @@ public class FormDatahandler {
             smsController.sendSMSChild(ptphoneNumber,wifeName);
             ancVisitRepository.insert(childId, ptphoneNumber, anmNumber, "child_Immunization", visitnumber,dateOfBirth,wifeName,edd,anmid);
             }
-    }
-    public void childImmunization(JSONObject dataObject, String visittype, String anmNumber)throws JSONException{
-        String entityid = dataObject.getString("entityId");
-        Integer visitno=null;
-        JSONArray fieldJsonArray = dataObject
-				.getJSONObject("formInstance")
-				.getJSONObject("form").getJSONArray("fields");
-							
-	for (int i = 0; i < fieldJsonArray.length(); i++) {
+   }
 
-		JSONObject jsonObject = fieldJsonArray
-				.getJSONObject(i);
-		if((jsonObject.has("name"))
-                	&& jsonObject.getString("name").equals("ecId")) {
-
-		    entityid = (jsonObject.has("value") && jsonObject
-				.getString("value") != null) ? jsonObject
-				.getString("value") : "";
-                    }
-                
-	}
-        logger.info("entity id of child"+entityid);
-        List ancvisitdetails= visitService.getVisitDue(entityid);
-	//List visitconf= visitService.getVisitconf("child");
-	logger.info("ancvisitpastdetails^^^^"+ancvisitdetails);
-	//String datetime=collect(ancvisitdetails, on(ANCVisitDue.class).lmpdate()).get(0).toString();
-	String visit=collect(ancvisitdetails, on(ANCVisitDue.class).visitno()).get(0).toString();
-	int visitnum=Integer.parseInt(visit);
-	if(visitnum==1){
-	visitno=2;
-	}
-        String sid = collect(ancvisitdetails, on(ANCVisitDue.class).id()).get(0).toString();
-	logger.info("id from db:"+sid);
-	int id= Integer.parseInt(sid);
-        String newdate=" ";
-        ancVisitRepository.ancUpdate(id,newdate,visitno);
-        
-    }
-
-    public void childIllness() {
-    }
 }

@@ -116,7 +116,7 @@ public class FormSubmissionController {
                     String strvillages=anmvillagesDTOs.villages();
             
                     String[] villageanm=strvillages.split(",");
-                    logger.info("anmvillages"+villageanm);
+                    logger.info("anmvillages"  +villageanm);
             
                     logger.info("list of villages"+villageanm);
                     for(int i=0;i<villageanm.length;i++){
@@ -210,12 +210,13 @@ public class FormSubmissionController {
    
     
    // @RequestMapping(headers = {"Accept=multipart/form-data"}, method = POST, value = "/multimedia-file")
-    @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/multimedia-file")
-    
-    public ResponseEntity<String> uploadFiles(@RequestParam("anmid") String providerId){
+   // @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/multimedia-file")
+        @RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/form-submission")
+	public ResponseEntity<String> upload(@RequestParam("anm-id") String id){
+        //public ResponseEntity<String> uploadFiles(@RequestParam("anmid") String providerId){
 //            , @RequestParam("entity-id") String entityId,
 //            @RequestParam("content-type") String contentType, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file) {
-        logger.info("Multimedia file");
+        logger.info("Post Multimedia file");
     	
 //    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
 //        

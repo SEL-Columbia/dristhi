@@ -5,9 +5,9 @@ import ch.lambdaj.function.convert.Converter;
 import org.ei.drishti.common.util.DateUtil;
 import org.ei.drishti.dto.form.FormSubmissionDTO;
 import org.ei.drishti.form.domain.FormSubmission;
-import org.ei.drishti.form.domain.Poc_table;
+
 import org.ei.drishti.form.repository.AllFormSubmissions;
-import org.ei.drishti.form.repository.AllPoc_tableRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,85 +51,12 @@ public class FormSubmissionService {
 				});
 	}
 
-//	public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier,
-//			Long version, Integer batchSize) {
-//		return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier,
-//				version, batchSize);
-//	}
 	
 	public List<FormSubmission> getNewSubmissionsForANM(String village,
 			Long version, Integer batchSize) {
 		logger.info("******getnew submissios******");
 		return allFormSubmissions.findByVillageAndServerVersion(village,
 				version, batchSize);
-	}
-
-	/**
-	 * @author Suneel.S
-	 * 
-	 * @param entityidEC
-	 * @param visittype
-	 * @param anmid
-	 * @param visitentityid
-	 * 
-	 * 
-	 *            Description: Test method to save isConsultation = true for
-	 *            ANC, PNC and Child visits
-	 */
-
-	public void requestConsultationTest(String visittype, String visitentityid,
-			String entityidEC, String anmid) {
-//		PreparedStatement pst = null;
-//		String subcenter = null;
-//		String parenthosp = null;
-//		
-//
-//		try {
-//			Class.forName("org.postgresql.Driver");
-//		} catch (ClassNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//		Connection con = null;
-//		try {
-//			String url = "jdbc:postgresql://localhost:5432/drishti";
-//			con = DriverManager.getConnection(url, "postgres", "password");
-//
-//			java.util.Date date = new java.util.Date();
-//			Timestamp timestamp = new Timestamp(date.getTime());
-//
-//			String hospitalname="select parent_hospital from report.health_centers where hospital_name=(select subcenter from report.user_masters where user_id='"+anmid+"') and hospital_type='Subcenter'";
-//			PreparedStatement hosNamestmt = con.prepareStatement(hospitalname);
-//			
-//			ResultSet hosresultSet = hosNamestmt.executeQuery();
-//			
-//			while (hosresultSet.next()) {
-//				parenthosp = hosresultSet.getString("parent_hospital");
-//				logger.info("*******parent_hospitalphc is *****"+parenthosp);
-//			}
-//				
-//		
-//			String stm = "insert into report.poc_table(visitentityid,entityidec,anmid,level,clientversion,serverversion,visittype,phc,timestamp) VALUES(?,?,?,?,?,?,?,?,?)";
-//			String defaultLevel = "1";
-//			pst = con.prepareStatement(stm);
-//			pst.setString(1, visitentityid);
-//			pst.setString(2, entityidEC);
-//			pst.setString(3, anmid);
-//			pst.setString(4, defaultLevel);
-//			pst.setString(5, " ");
-//			pst.setString(6, " ");
-//			pst.setString(7, visittype);
-//			pst.setString(8, parenthosp);
-//			pst.setTimestamp(9, timestamp);
-//			//pst.executeUpdate();
-//		} catch (SQLException e) {
-//			logger.info("Record not inserted");
-//			e.printStackTrace();
-//		}
-//		if (con != null) {
-//			logger.info("You made it, take control your database now!");
-//		} else {
-//			logger.debug("Failed to make connection!");
-//		}
 	}
 
 	public List<FormSubmission> getAllSubmissions(Long version,
