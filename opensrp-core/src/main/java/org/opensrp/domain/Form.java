@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_DEFAULT)
 public class Form {
     private String bind_type;
 

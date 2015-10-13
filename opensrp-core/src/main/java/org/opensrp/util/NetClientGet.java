@@ -13,6 +13,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+
+import org.apache.commons.codec.binary.Base64;
 
  
 public class NetClientGet {
@@ -67,29 +70,42 @@ public class NetClientGet {
           return null;
 	}
         
-        public byte[] downloadFile(String username, String formId) throws IOException {
+        public byte[] downloadJson(String username,String password, String formPk) throws IOException {
 		 
-		
+        	try{
+			String authString = username + ":" + password;
+			System.out.println("auth string: " + authString);
+			byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
+			String authStringEnc = new String(authEncBytes);
+			System.out.println("Base64 encoded auth string: " + authStringEnc);
 		  //The file that you want to download
-		 String url2="https://ona.io/"+username+"/forms/"+formId+"/form.json";            
+		 String url2="https://ona.io/api/v1/forms/"+formPk+"/form.json";            
            URL link = new URL(url2);
-                //Code to download
-		 InputStream in = new BufferedInputStream(link.openStream());
-		 ByteArrayOutputStream out = new ByteArrayOutputStream();
-		 byte[] buf = new byte[1024];
-		 int n = 0;
-		 while (-1!=(n=in.read(buf)))
-		 {
-		    out.write(buf, 0, n);
-		 }
-		 out.close();
-		 in.close();
-		 byte[] response = out.toByteArray();
- 
-		
-		 
-		// System.out.println("Finished");
-                    return response;
+           URLConnection urlConnection = link.openConnection();
+			urlConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
+			InputStream is = urlConnection.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is);
+
+			int numCharsRead;
+			char[] charArray = new char[1024];
+			StringBuffer sb = new StringBuffer();
+			while ((numCharsRead = isr.read(charArray)) > 0) {
+				sb.append(charArray, 0, numCharsRead);
+			}
+			String result = sb.toString();
+
+			System.out.println("*** BEGIN ***");
+			System.out.println(result);
+			System.out.println("*** END ***");
+			
+			return result.getBytes();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+                    return null;
 	}
 
         public String getModel(String data){

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
@@ -12,37 +12,33 @@
 
 <title>Error Handling</title>
 
-<%--     <script type="text/javascript" src="<c:url value="/resources/src/js/jquery.min.js"/>"></script> 
---%>
+
 <script type="text/javascript"
 	src="<c:url value='/resources/js/jquery.js'/>"></script>
-	<script type="text/javascript" src="<c:url value='/resources/js/jquery.dataTables.js'/>"></script>
-	<script type="text/javascript" src="<c:url value='/resources/js/bootstrap.min.js'/>"></script>
-	
+<script type="text/javascript"
+	src="<c:url value='/resources/js/jquery.dataTables.js'/>"></script>
+<script type="text/javascript"
+	src="<c:url value='/resources/js/bootstrap.min.js'/>"></script>
+
 
 <link href="<c:url value='/resources/css/jquery.dataTables.min.css'/>"
 	rel="stylesheet">
 <link href="<c:url value='/resources/css/bootstrap.min.css'/>"
 	rel="stylesheet">
-<link href="<c:url value='/resources/css/style.css'/>" rel="stylesheet">
-	<!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script  src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script> -->
+<link href="<c:url value='/resources/css/style.css'/>" 
+rel="stylesheet">
 
 
+<script type="text/javascript" language="JAVASCRIPT" class="init" >
 
-
-
-
-	<script type="text/javascript" language="javascript" class="init">
-
-
+var content =new String("<%=request.getContextPath()%>");
 var statusOptions =${statusOptions};
 
 var table;
 
 function viewError(id) {
 	
-	$.get( "/errorhandler/viewerror?id="+id, function( data , status) {
+	$.get( content+"/errorhandler/viewerror?id="+id, function( data , status) {
 		
 		$("#errorType").val(data.errorTrace.errorType);  
 		$("#documentType").val(data.errorTrace.documentType);
@@ -76,7 +72,7 @@ function getUnSolvedErrors(){
 	}
 	table =$('#errorTable').DataTable({
 		"ajax" : {
-			"url" : "/errorhandler/unsolvederrors",
+			"url" : content+"/errorhandler/unsolvederrors",
 			"dataSrc" : ""
 		},
 		"columns" : [ {
@@ -155,7 +151,7 @@ function getUnSolvedErrors(){
 		// start of all error method for data table.	
 		table =$('#errorTable').DataTable({
 			"ajax" : {
-				"url" : "/errorhandler/errortrace",
+				"url" : content+"/errorhandler/errortrace",
 				"dataSrc" : ""
 			},
 			"columns" : [ {
@@ -233,7 +229,7 @@ function getSolvedErrors(){
 		// start of all error method for data table.	
 		table =$('#errorTable').DataTable({
 			"ajax" : {
-				"url" : "/errorhandler/solvederrors",
+				"url" : content+"/errorhandler/solvederrors",
 				"dataSrc" : ""
 			},
 			"columns" : [ {
@@ -317,7 +313,7 @@ function getSolvedErrors(){
 		      //  var st=table.row( $(this).parents('tr').find('#status') ).val(); //.data();
 		        var selectedStatus=$(this).parents('tr').find('#status :selected');//.data(); 
 		        console.log(selectedStatus.text());
-		        $.get( "/errorhandler/update_status?id="+data['_id']+"&status="+selectedStatus.text(), function( data , status) {
+		        $.get( content+"/errorhandler/update_status?id="+data['_id']+"&status="+selectedStatus.text(), function( data , status) {
 				
 		        	
 		        		
@@ -346,7 +342,7 @@ function getSolvedErrors(){
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-2">
-				<img alt="OPENSRP" src="/resources/opensrp_logo.png">
+				<img alt="OPENSRP" src="<c:url value='/resources/opensrp_logo.png'/>">
 			</div>
 			<div class="col-md-8">
 				<h2 class="text-center text-success">Error Handling

@@ -26,13 +26,13 @@ public class XlsFormDownloaderService {
 	jsonParser=new JsonParser();
 	}
 	
-	public boolean downloadFormFiles(String directory,String username ,String formId, String formName ) throws IOException{
+	public boolean downloadFormFiles(String directory,String username ,String password,String formId, String formPk,String formName ) throws IOException{
 		
 		String xmlData=netClientGet.convertToString("", username, formId);
 	//	System.out.println("xml data"+xmlData);
 		String modelData=fileCreator.prettyFormat(netClientGet.getModel(xmlData),2);
 		String formData=fileCreator.prettyFormat(netClientGet.getForm(xmlData));
-		formJson=netClientGet.downloadFile(username, formId);
+		formJson=netClientGet.downloadJson(username,password,  formPk);
 	//	modelData=fileCreator.prettyFormat(modelData);
 		//formData=fileCreator.prettyFormat(formData);
 		

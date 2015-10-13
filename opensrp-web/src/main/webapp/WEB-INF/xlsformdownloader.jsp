@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+	 pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
@@ -7,6 +7,7 @@
 <html lang="en">
 
 <head>
+<c:set var="context" value='${pageContext.servletContext.contextPath}'  />
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,6 +39,7 @@
 <script type="text/javascript" language="javascript" class="init"></script>
 </head>
 <body>
+<c:out value="${context}" />
 <c:set var="c"  value="${check}"/>
 <c:if test="${c==true}">
 <div class="alert alert-success">
@@ -53,23 +55,16 @@
 
 <div class="row">
 <div class="col-md-6">
+<p><c:out value="${servletContext.contextPath}" /></p>
+<p><c:out value="${request.contextPath}"/></p>
+
 	<form class="form-horizontal" method="post" action="/xlsform/addfiles">
 		<fieldset>
 
 			<!-- Form Name -->
 			<legend>XLS Form Converter</legend>
 
-			<!-- Select Basic -->
-			<div class="form-group">
-				<label class="col-md-4 control-label" for="selectServer">Select
-					Server</label>
-				<div class="col-md-5">
-					<select id="selectServer" name="selectServer" class="form-control">
-						<option value="ona">Ona</option>
-						<option value="formhub">Form</option>
-					</select>
-				</div>
-			</div>
+	
 
 			<!-- Text input-->
 			<div class="form-group">
@@ -81,12 +76,30 @@
 
 				</div>
 			</div>
+				<!-- Text input-->
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="password">Password</label>
+				<div class="col-md-5">
+					<input id="password" name="password" placeholder="ahmedihs"
+						class="form-control input-md" required="" type="password">
+
+				</div>
+			</div>
 
 			<!-- Text input-->
 			<div class="form-group">
 				<label class="col-md-4 control-label" for="formId">Form ID</label>
 				<div class="col-md-5">
 					<input id="formid" name="formId" placeholder="household"
+						class="form-control input-md" required="" type="text">
+
+				</div>
+			</div>
+				<!-- Text input-->
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="formPk">Form PK</label>
+				<div class="col-md-5">
+					<input id="formPk" name="formPk" placeholder="12313"
 						class="form-control input-md" required="" type="text">
 
 				</div>
@@ -118,6 +131,7 @@
 <textarea rows="20" cols="100" name="definitionTextArea" id="definitionTextArea">
 <c:out value="${definition}"></c:out>
 </textarea>
+<button id="generateButton" name="generateButton" class="btn btn-success">Generate</button>
 </div>
 
 </div>
