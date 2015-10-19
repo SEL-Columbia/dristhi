@@ -45,7 +45,9 @@ public void formData(List<FormSubmissionDTO> formSubmissionsDTO) throws JSONExce
 	String url=drishtiformdataURL+"formdata";
 	String formdetails=new Gson().toJson(formSubmissionsDTO);
 	logger.info("post method url: url:"+url+"?"+formdetails);
-	httpAgent.post(url,formdetails,"application/json"); 
+	httpAgent.post(url,formdetails,"application/json");
+        logger.info("http request to post");
+        httpAgent.post("http://10.10.11.91:8080/drishti-reporting/formdatas","anm123","application/json");
         logger.info("try to call post multipart");
         httpAgent.post("http://localhost:8080/drishti-web-0.1-SNAPSHOT/form-submission", "anm123", "application/json");
 	

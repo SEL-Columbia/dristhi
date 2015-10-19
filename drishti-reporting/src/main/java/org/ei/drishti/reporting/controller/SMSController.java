@@ -78,8 +78,7 @@ public FormSubmissionDTO formSubmissionsDTO;
 		            httpAgent.get(drishtiSMSURL + "/?tel=%5B%22tel:"+phoneNumber+"%22%5D&message=%22"+message+"%22");
 		        }
 		        catch(Exception e){
-		        	logger.error(format(
-							"Form submissions processing failed with exception {0}",e));
+		        	logger.error(format("Form submissions processing failed with exception {0}",e));
 		        }
 			
 

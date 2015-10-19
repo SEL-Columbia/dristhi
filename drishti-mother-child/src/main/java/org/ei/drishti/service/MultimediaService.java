@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.ei.drishti.service;
 
 import java.io.BufferedOutputStream;
@@ -11,7 +10,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Properties;
-
 
 import org.ei.drishti.domain.Multimedia;
 import org.ei.drishti.dto.form.MultimediaDTO;
@@ -37,110 +35,135 @@ import org.slf4j.LoggerFactory;
 @Service
 public class MultimediaService {
 
-	private final MultimediaRepository multimediaRepository;
-	private String multimediaDirPath;
-        
-        private static Logger logger = LoggerFactory
-			.getLogger(MultimediaService.class.toString());
+    private final MultimediaRepository multimediaRepository;
+    private String multimediaDirPath;
+    private String path = "hs/";
+        //private String path="../assets/multimedia";
 
-	@Autowired
-	public MultimediaService(MultimediaRepository multimediaRepository, @Value("#{drishti['multimedia.directory.name']}") String baseMultimediaDirPath) {
-		this.multimediaRepository = multimediaRepository;
-	}
+    private static Logger logger = LoggerFactory
+            .getLogger(MultimediaService.class.toString());
 
-	public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
-		logger.info("Save Multimedia file");
-		boolean uploadStatus = uploadFile(multimediaDTO, file);
+    @Autowired
+    public MultimediaService(MultimediaRepository multimediaRepository, @Value("#{drishti['multimedia.directory.name']}") String baseMultimediaDirPath) {
+        this.multimediaRepository = multimediaRepository;
+    }
 
-		if (uploadStatus) {
-			try {
-                                logger.info("try to Save Multimedia file");
-				Multimedia multimediaFile = new Multimedia()
-						.withCaseId(multimediaDTO.caseId())
-						.withProviderId(multimediaDTO.providerId())
-						.withContentType(multimediaDTO.contentType())
-						.withFilePath(multimediaDirPath)
-						.withFileCategory(multimediaDTO.fileCategory());
+    public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
+        logger.info("Save Multimedia file");
+		//path =path+multimediaDTO.caseId();
 
-				multimediaRepository.add(multimediaFile);
+        boolean uploadStatus = uploadFile(multimediaDTO, file);
 
-				return "success";
+        if (uploadStatus) {
+            try {
+                logger.info("try to Save Multimedia file");
+                Multimedia multimediaFile = new Multimedia()
+                        .withCaseId(multimediaDTO.caseId())
+                        .withProviderId(multimediaDTO.providerId())
+                        .withContentType(multimediaDTO.contentType())
+                        .withFilePath(path)
+                        .withFileCategory(multimediaDTO.fileCategory());
 
-			} catch (Exception e) {
-				e.getMessage();
-			}
-		}
+                multimediaRepository.add(multimediaFile);
 
-		return "fail";
+                return "success";
 
-	}
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        }
 
-	public boolean uploadFile(MultimediaDTO multimediaDTO,
-			MultipartFile multimediaFile) {
-            logger.info("Upload file in location");
-		String baseMultimediaDirPath = "../assets/multimedia";
-		
+        return "fail";
+
+    }
+
+    public boolean uploadFile(MultimediaDTO multimediaDTO,
+            MultipartFile multimediaFile) {
+        logger.info("Upload file in location");
+        String baseMultimediaDirPath = "/webapps/drishti-web-0.1-SNAPSHOT";
+
+        logger.info("location: " + new File(" ").getAbsolutePath());
 		// String baseMultimediaDirPath = System.getProperty("user.home");
 
-		if (!multimediaFile.isEmpty()) {
-			try {
+        if (!multimediaFile.isEmpty()) {
+            try {
 
-				 multimediaDirPath = baseMultimediaDirPath
-						+ File.separator + multimediaDTO.providerId()
-						+ File.separator;
+//				 multimediaDirPath = baseMultimediaDirPath
+//						+ File.separator + multimediaDTO.providerId()
+//						+ File.separator;
+                multimediaDirPath = "/var/www/html/hs/";
 
-				switch (multimediaDTO.contentType()) {
-				
-				case "application/octet-stream":
-					multimediaDirPath += "videos" + File.separator
-							+ multimediaDTO.caseId() + ".mp4";
-					break;
+                switch (multimediaDTO.contentType()) {
 
-				case "image/jpeg":
-					multimediaDirPath += "images" + File.separator
-							+ multimediaDTO.caseId() + ".jpg";
-					break;
+                    case "application/octet-stream":
+                        multimediaDirPath += "videos" + File.separator
+                                + multimediaDTO.caseId() + ".mp4";
+                        path += "videos" + multimediaDTO.caseId() + ".mp4";
+                        break;
 
-				case "image/gif":
-					multimediaDirPath += "images" + File.separator
-							+ multimediaDTO.caseId() + ".gif";
-					break;
+                    case "image/jpeg":
+                        multimediaDirPath += "images" + File.separator
+                                + multimediaDTO.caseId() + ".jpg";
+                        path += "images" + multimediaDTO.caseId() + ".jpg";
+                        break;
 
-				case "image/png":
-					multimediaDirPath += "images" + File.separator
-							+ multimediaDTO.caseId() + ".png";
-					break;
+                    case "image/gif":
+                        multimediaDirPath += "images" + File.separator
+                                + multimediaDTO.caseId() + ".gif";
+                        path += "images" + multimediaDTO.caseId() + ".gif";
+                        break;
 
-				default:
-					multimediaDirPath += "images" + File.separator
-							+ multimediaDTO.caseId() + ".jpg";
-					break;
+                    case "image/png":
+                        multimediaDirPath += "images" + multimediaDTO.caseId() + ".png";
+                        path += "images" + multimediaDTO.caseId() + ".png";
+                        break;
 
-				}
-                                logger.info("uploded");    
-				File multimediaDir = new File(multimediaDirPath);
+                    default:
+                        multimediaDirPath += "images" + File.separator
+                                + multimediaDTO.caseId() + ".jpg";
+                        path += "images" + multimediaDTO.caseId() + ".jpg";
+                        break;
 
-				 multimediaFile.transferTo(multimediaDir);
+                }
+                logger.info("uploded");
+                logger.info("content-type: " + multimediaDTO.contentType());
+                logger.info("directory path: " + multimediaDirPath);
 
-			/*
-			 byte[] bytes = multimediaFile.getBytes();
-			 	
-			 BufferedOutputStream stream = new BufferedOutputStream(
-						new FileOutputStream(multimediaDirPath));
-				stream.write(bytes);
-				stream.close();*/
-				 
-				return true;
-				
-			} catch (Exception e) {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+//				File multimediaDir = new File(multimediaDirPath);
+//                                logger.info("Multimedia dir path: "+multimediaDir);
+//                                if(!multimediaDir.exists()){
+//                                    multimediaDir.mkdir();
+//                                    logger.info("file exists:");
+//				 }
+//                                else{
+//                                    logger.info("file not created");}
+//                                
+//                                if(multimediaDir.exists()){
+//                                    logger.info("file re exists:");
+//				 }
+//                                else{
+//                                    logger.info("file not re created");}
+//                                
+                //                               multimediaFile.transferTo(multimediaDir);
+                byte[] bytes = multimediaFile.getBytes();
 
-	public List<Multimedia> getMultimediaFiles(String providerId) {
-		return multimediaRepository.all(providerId);
-	}    
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream(new File(multimediaDirPath)));
+                logger.info("directory created");
+                stream.write(bytes);
+                stream.close();
+
+                return true;
+
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public List<Multimedia> getMultimediaFiles(String providerId) {
+        return multimediaRepository.all(providerId);
+    }
 }

@@ -19,8 +19,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import static org.ei.drishti.scheduler.ANMReportScheduler.SUBJECT;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @Component
 public class ReportingEventListener {
@@ -42,8 +45,18 @@ public class ReportingEventListener {
     }
 
     @MotechListener(subjects = ReportEvent.SUBJECT)
-    public void submitReportingData(MotechEvent event) {
+    public void submitReportingData(MotechEvent event) throws JSONException {
+        
         String data = new Gson().toJson(event.getParameters().get("data"));
+        logger.info("data parameters: "+data);
+//            JSONObject dataObject = new JSONObject(data);
+//            
+//            dataObject.put("externalId", "123456789");
+//            String data1=dataObject.toString();
+       
+        
+        
+        //logger.info("data1 parameters: "+data1);
         HttpResponse response = httpAgent.post(url + "/" + SUBMIT_REPORT_ACTION, data, MediaType.APPLICATION_JSON_VALUE);
         if (!response.isSuccess()) {
             logger.error("Reporting data post failed. URL: " + url + "/" + SUBMIT_REPORT_ACTION + ". Data: " + data + ". Response: " + response.body());

@@ -55,7 +55,11 @@ String ecId="";
 	this.formDataHandler=formDataHandler;
 	this.smsController=smsController;
 	}
-		
+        @RequestMapping (method = POST, value = "/formdatas")
+	public void form()
+        {
+           logger.info("post method"); 
+        }	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/formdata")
 	    public void formData(
 	    		@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) throws JSONException {
@@ -130,8 +134,9 @@ String ecId="";
 				}
 				
 				if(visittype.equalsIgnoreCase("anc_visit")){
-					formDataHandler.ancVisit(dataObject,visittype,anmphoneNumber);
-                                        formDataHandler.visitpoc(dataObject, visittype, phoneNumber);
+                                    formDataHandler.visitpoc(dataObject, visittype, phoneNumber);
+                                    formDataHandler.ancVisit(dataObject,visittype,anmphoneNumber);
+                                        
 					
 				}
                                 if(visittype.equalsIgnoreCase("pnc_visit") || visittype.equalsIgnoreCase("child_illness")){
