@@ -1,6 +1,5 @@
 package org.ei.drishti.reporting.controller;
 
-
 import org.ei.drishti.dto.ANMVillagesDTO;
 import org.ei.drishti.dto.VillagesDTO;
 import org.ei.drishti.reporting.domain.ANMVillages;
@@ -24,61 +23,56 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Controller
 public class LocationController {
+
     private ANMService anmService;
-    
-   
+
     private static Logger logger = LoggerFactory
-			.getLogger(LocationController.class.toString());
+            .getLogger(LocationController.class.toString());
 
     @Autowired
     public LocationController(ANMService anmService) {
         this.anmService = anmService;
-        
-        
+
     }
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS}, value = "/villages")
     public ResponseEntity<VillagesDTO> villagesForANM(@RequestParam("anm-id") String anmIdentifier
-    		) {
-    	logger.info("***** trying to fetch village details******");
+    ) {
+        logger.info("***** trying to fetch village details******");
         List villagesForANM = anmService.getVillagesForANM(anmIdentifier);
-       VillagesDTO villagesDTO = null;
+        VillagesDTO villagesDTO = null;
         if (villagesForANM != null) {
             Location anmLocation = (Location) villagesForANM.get(0);
-            logger.info("**** fetched anmLocation details***"+anmLocation);
+            logger.info("**** fetched anmLocation details***" + anmLocation);
             List<String> villages = collect(villagesForANM, on(Location.class).village());
-            logger.info("**** fetched villages***"+villages);
+            logger.info("**** fetched villages***" + villages);
             villagesDTO = new VillagesDTO(anmLocation.district().toLowerCase(),
                     anmLocation.phcName(),
                     anmLocation.phc().phcIdentifier(),
-                    anmLocation.subCenter(),  
+                    anmLocation.subCenter(),
                     villages);
             logger.info("^^^^^^^^^trying to insert data^^^^^^^");
-            
-           
+
         }
         return new ResponseEntity<>(villagesDTO, OK);
     }
-    
+
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.OPTIONS}, value = "/anmvillages")
-    public ResponseEntity<ANMVillagesDTO> anmVillages(@RequestParam("anm-id") String anmIdentifier ) {
-    	
+    public ResponseEntity<ANMVillagesDTO> anmVillages(@RequestParam("anm-id") String anmIdentifier) {
+
         List villagesForANM = anmService.getANMVillages(anmIdentifier);
-        logger.info("*****villages fetched******"+villagesForANM);
+        logger.info("*****villages fetched******" + villagesForANM);
         ANMVillagesDTO anmvillagesDTO = null;
-        
-           if (villagesForANM != null) {
+
+        if (villagesForANM != null) {
             ANMVillages anmLocation = (ANMVillages) villagesForANM.get(0);
-            logger.info("**** fetched anmLocation details***"+anmLocation);
+            logger.info("**** fetched anmLocation details***" + anmLocation);
           // villages = collect(villagesForANM, on(ANMVillages.class).villages());
-           
-            
+
             anmvillagesDTO = new ANMVillagesDTO(anmLocation.user_id(), anmLocation.user_role(), anmLocation.villages());
             //anmvillagesDTO = new ANMVillagesDTO(anmLocation.user_id(), anmLocation.userrole(), villages);
-                    }
-           return new ResponseEntity<>(anmvillagesDTO, OK);
-    }
-   
+        }
+        return new ResponseEntity<>(anmvillagesDTO, OK);
     }
 
-
+}
