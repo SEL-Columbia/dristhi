@@ -78,7 +78,7 @@ public class OpenmrsConnector {
 		
 		for (FormField fl : fs.instance().form().fields()) {
 			Map<String, String> att = formAttributeMapper.getAttributesForField(fl.name(), fs);
-			if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("concept")){
+			if(!StringUtils.isEmptyOrWhitespaceOnly(fl.value()) && att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("concept")){
 				String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.name(), fl.value(), null, fs);
 				e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
 						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val, null, fl.name()));
@@ -116,7 +116,7 @@ public class OpenmrsConnector {
 		
 		for (Entry<String, String> fl : subformInstance.entrySet()) {
 			Map<String, String> att = formAttributeMapper.getAttributesForSubform(subform, fl.getKey(), fs);
-			if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("concept")){
+			if(!StringUtils.isEmptyOrWhitespaceOnly(fl.getValue()) && att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("concept")){
 				String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.getKey(), fl.getValue(), subform, fs);
 				e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
 						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.getValue():val, null, fl.getKey()));
