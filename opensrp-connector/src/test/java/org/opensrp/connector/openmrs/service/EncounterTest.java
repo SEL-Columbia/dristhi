@@ -1,22 +1,25 @@
 
 package org.opensrp.connector.openmrs.service;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
+import org.hamcrest.Matchers;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
+import org.opensrp.api.domain.Obs;
 import org.opensrp.connector.FormAttributeMapper;
 import org.opensrp.connector.OpenmrsConnector;
+import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.form.domain.FormSubmission;
 
 
@@ -29,6 +32,7 @@ public class EncounterTest extends TestResourceLoader{
 	OpenmrsConnector oc;
 	PatientService ps;
 	OpenmrsUserService us;
+	HouseholdService hhs;
 
 	SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
 	
@@ -39,6 +43,9 @@ public class EncounterTest extends TestResourceLoader{
 		s = new EncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		s.setPatientService(ps);
 		s.setUserService(us);
+		hhs = new HouseholdService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
+		hhs.setPatientService(ps);
+		hhs.setEncounterService(s);
 		FormAttributeMapper fam = new FormAttributeMapper(formDirPath);
 		oc = new OpenmrsConnector(fam);
 	}
@@ -169,6 +176,73 @@ public class EncounterTest extends TestResourceLoader{
 			Client cl = (Client) dc.get(id).get("client");
 			assertEquals(cl.getBaseEntity().getBirthdate(), sd.parse("2000-05-07"));
 			assertFalse(cl.getBaseEntity().getBirthdateApprox());
+		}
+	}	
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void shouldGetDataSpecifiedInGroupInsideSubform() throws IOException, ParseException, JSONException{
+		FormSubmission fs = getFormSubmissionFor("new_household_registration_with_grouped_subform_data", 1);
+
+		assertTrue(oc.isOpenmrsForm(fs));
+		
+		Client c = oc.getClientFromFormSubmission(fs);
+		assertEquals(c.getBaseEntity().getBirthdate(), sd.parse("1900-01-01"));
+		assertFalse(c.getBaseEntity().getBirthdateApprox());
+		assertThat(c.getBaseEntity().getAttributes(), Matchers.<String, Object>hasEntry(equalTo("GoB_HHID"), equalTo((Object)"2322")));
+		assertThat(c.getBaseEntity().getAttributes(), Matchers.<String, Object>hasEntry(equalTo("JiVitA_HHID"), equalTo((Object)"9889")));
+		
+		Event e = (Event) oc.getEventFromFormSubmission(fs);
+		assertEquals(e.getBaseEntityId(), c.getBaseEntityId());
+		assertEquals(e.getEventType(), "New Household Registration");
+		assertEquals(e.getEventDate(), new SimpleDateFormat("yyyy-M-dd").parse("2015-10-11"));
+		assertEquals(e.getLocationId(), "2fc43738-ace5-g961-8e8f-ab7dg0e5bc63");
+		
+		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
+				Matchers.<Obs>hasProperty("fieldCode",equalTo("5611AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+				Matchers.<Obs>hasProperty("value",equalTo("23")),
+				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("FWNHHMBRNUM"))
+				)));
+		
+		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
+		for (String id : dc.keySet()) {
+			Client cl = (Client) dc.get(id).get("client");
+			assertEquals(cl.getBaseEntity().getBirthdate(), sd.parse("1988-10-08"));
+			assertFalse(cl.getBaseEntity().getBirthdateApprox());
+			assertEquals(cl.getBaseEntity().getFirstName(), "jackfruit");
+			assertEquals(cl.getBaseEntity().getAddresses().get(0).getCountry(), "Bangladesh");
+			assertEquals(cl.getBaseEntity().getAddresses().get(0).getAddressType(), "usual_residence");
+			assertEquals(cl.getBaseEntity().getAddresses().get(0).getState(), "RANGPUR");
+			assertThat(cl.getIdentifiers(), Matchers.<String, String>hasEntry(equalTo("NID"), equalTo("7675777777775")));
+			assertThat(cl.getIdentifiers(), Matchers.<String, String>hasEntry(equalTo("Birth Registration ID"), equalTo("99999998888888888")));
+			assertThat(cl.getBaseEntity().getAttributes(), Matchers.<String, Object>hasEntry(equalTo("GoB_HHID"), equalTo((Object)"2322")));
+			assertThat(cl.getBaseEntity().getAttributes(), Matchers.<String, Object>hasEntry(equalTo("JiVitA_HHID"), equalTo((Object)"9889")));
+		
+			Event ev = (Event) dc.get(id).get("event");
+			assertEquals(ev.getBaseEntityId(), cl.getBaseEntityId());
+			assertEquals(ev.getEventType(), "New Woman Registration");
+			assertEquals(ev.getEventDate(), new SimpleDateFormat("yyyy-M-dd").parse("2015-10-11"));
+			assertEquals(ev.getLocationId(), "2fc43738-ace5-g961-8e8f-ab7dg0e5bc63");
+			
+			assertThat(ev.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
+					Matchers.<Obs>hasProperty("fieldCode",equalTo("161135AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+					Matchers.<Obs>hasProperty("value",equalTo("zoom")),
+					Matchers.<Obs>hasProperty("formSubmissionField",equalTo("FWHUSNAME"))
+					)));
+			assertThat(ev.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
+					Matchers.<Obs>hasProperty("fieldCode",equalTo("163087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+					Matchers.<Obs>hasProperty("value",equalTo("1 2")),
+					Matchers.<Obs>hasProperty("formSubmissionField",equalTo("FWWOMANYID"))
+					)));
+		}
+		
+		if(pushToOpenmrsForTest){
+			OpenmrsHouseHold hh = new OpenmrsHouseHold(c, e);
+			for (Map<String, Object> cm : dc.values()) {
+				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
+			}
+			
+			hhs.saveHH(hh, true);
 		}
 	}	
 }

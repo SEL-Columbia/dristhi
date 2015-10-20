@@ -1,32 +1,16 @@
-Date of Release: 18-Sep-2015
+Date of Release: 20-Oct-2015
 
 New Features
 ============
-- Added schedule tracker data sync that sync all enrollments keep updating if any changes occur later
-- A config manager added to handle system state at any point of time
-- OpenMRS user service allows to get and create provide for test
-- Added a property to switch off/on the REST calls to OpenMRS from opensrp.properties to allow user choose whether to run integration test or not
-- SchduleTracker tested with HH schedule tests
-- Added provision to allow setting birthdate and deathdate approximation status from xlsform
 
 Changes
 =======
-- Removed unnecessary and/or commented out code
-- Action repo and service was added a new method to fetch data by case, schedule, timestamp
-- Schedule syncer schedule added
-- Scheduletracker syncer property added
-- Allows to create Encounter Type for test
-- HHService for OpenMRS allows to switch the existing person ignore property. Now allows to update instead of creating new patient
-- Updated DB names to opensrp from drishti
-- FormSubmissionController in opensrp-web refactored to be optimized and to conform to saveHH method changes
+- Added a testcase with new form designed by BD for Events generated from subforms in nested group tags in xlsforms
 
 Fixes
 =====
-- Removed part of addressTest causing test fail occasionally
-- Attributes list in BaseEntity in API would be instantiated automatically to prevent NPE
-- Check added in OpenMRS encounter create method to prevent NPE incase when no Obs is present in Event
-- HH Test wont throw exception for old MVP dictionary. Removed newer concepts from model.xml
-- Fixes for property methods, and couch queries
+- FormSubmissionField was not getting populated for dependent clients in Connector
+- Address Fields extraction from openmrs mapping refactored and fixed for subform clients
 
 Known Issues
 ============
