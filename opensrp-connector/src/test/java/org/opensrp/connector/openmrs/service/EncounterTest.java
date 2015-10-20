@@ -213,8 +213,8 @@ public class EncounterTest extends TestResourceLoader{
 			assertEquals(cl.getBaseEntity().getAddresses().get(0).getCountry(), "Bangladesh");
 			assertEquals(cl.getBaseEntity().getAddresses().get(0).getAddressType(), "usual_residence");
 			assertEquals(cl.getBaseEntity().getAddresses().get(0).getState(), "RANGPUR");
-			assertThat(cl.getIdentifiers(), Matchers.<String, String>hasEntry(equalTo("NID"), equalTo("7675777777775")));
-			assertThat(cl.getIdentifiers(), Matchers.<String, String>hasEntry(equalTo("Birth Registration ID"), equalTo("99999998888888888")));
+			assertThat(cl.getIdentifiers(), Matchers.<String, String>hasEntry(equalTo("NID"), equalTo("7675788777775")));
+			assertThat(cl.getIdentifiers(), Matchers.<String, String>hasEntry(equalTo("Birth Registration ID"), equalTo("98899998888888888")));
 			assertThat(cl.getBaseEntity().getAttributes(), Matchers.<String, Object>hasEntry(equalTo("GoB_HHID"), equalTo((Object)"2322")));
 			assertThat(cl.getBaseEntity().getAttributes(), Matchers.<String, Object>hasEntry(equalTo("JiVitA_HHID"), equalTo((Object)"9889")));
 		
@@ -231,7 +231,7 @@ public class EncounterTest extends TestResourceLoader{
 					)));
 			assertThat(ev.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
 					Matchers.<Obs>hasProperty("fieldCode",equalTo("163087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
-					Matchers.<Obs>hasProperty("value",equalTo("1 2")),
+					Matchers.<Obs>hasProperty("value",equalTo("163084AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
 					Matchers.<Obs>hasProperty("formSubmissionField",equalTo("FWWOMANYID"))
 					)));
 		}
