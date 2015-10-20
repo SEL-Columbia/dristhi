@@ -119,7 +119,7 @@ public class OpenmrsConnector {
 			if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("concept")){
 				String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.getKey(), fl.getValue(), subform, fs);
 				e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
-						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.getValue():val, null, null));
+						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.getValue():val, null, fl.getKey()));
 			}
 		}
 		return e;
@@ -168,64 +168,76 @@ public class OpenmrsConnector {
 		return formAttributeMapper.getFieldName(m , fs);
 	}
 	
-	Map<String, Address> extractAddresses(FormSubmission fs, String subform) throws ParseException {
+	Map<String, Address> extractAddresses(FormSubmission fs) throws ParseException {
 		Map<String, Address> paddr = new HashMap<>();
 		for (FormField fl : fs.instance().form().fields()) {
-			Map<String, String> att = new HashMap<>();
-			if(StringUtils.isEmptyOrWhitespaceOnly(subform)){
-				att = formAttributeMapper.getAttributesForField(fl.name(), fs);
-			}
-			else {
-				att = formAttributeMapper.getAttributesForSubform(subform, fl.name(), fs);
-			}
-			if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("person_address")){
-				String addressType = att.get("openmrs_entity_parent");
-				String addressField = att.get("openmrs_entity_id");
-				Address ad = paddr.get(addressType);
-				if(ad == null){
-					ad = new Address(addressType, null, null, null, null, null, null, null, null);
-				}
-
-				if(addressField.equalsIgnoreCase("startDate")||addressField.equalsIgnoreCase("start_date")){
-					ad.setStartDate(DateUtil.parseDate(fl.value()));
-				}
-				else if(addressField.equalsIgnoreCase("endDate")||addressField.equalsIgnoreCase("end_date")){
-					ad.setEndDate(DateUtil.parseDate(fl.value()));
-				}
-				else if(addressField.equalsIgnoreCase("latitude")){
-					ad.setLatitude(fl.value());
-				}
-				else if(addressField.equalsIgnoreCase("longitute")){
-					ad.setLongitute(fl.value());
-				}
-				else if(addressField.equalsIgnoreCase("geopoint")){
-					// example geopoint 34.044494 -84.695704 4 76 = lat lon alt prec
-					String geopoint = fl.value();
-					if(!StringUtils.isEmptyOrWhitespaceOnly(geopoint)){
-						String[] g = geopoint.split(" ");
-						ad.setLatitude(g[0]);
-						ad.setLongitute(g[1]);
-						ad.addAddressField(addressField, fl.value());
-					}
-				}
-				else if(addressField.equalsIgnoreCase("postalCode")||addressField.equalsIgnoreCase("postal_code")){
-					ad.setPostalCode(fl.value());
-				}
-				else if(addressField.equalsIgnoreCase("state")||addressField.equalsIgnoreCase("state_province")){
-					ad.setState(fl.value());
-				}
-				else if(addressField.equalsIgnoreCase("country")){
-					ad.setCountry(fl.value());
-				}
-				else {
-					ad.addAddressField(addressField, fl.value());
-				}
-				
-				paddr.put(addressType, ad);
-			}
+			fillAddressFields(fl, null, fs, paddr);
 		}
 		return paddr;
 	}
+	
+	Map<String, Address> extractAddressesForSubform(Map<String, String> instance, String subform, FormSubmission fs) throws ParseException {
+		Map<String, Address> paddr = new HashMap<>();
+		for (Entry<String, String> fl : instance.entrySet()) {
+			fillAddressFields(new FormField(fl.getKey(), fl.getValue(), null), null, fs, paddr);
+		}
+		return paddr;
+	}
+	
+	void fillAddressFields(FormField fl, String subform, FormSubmission fs, Map<String, Address> addresses) throws ParseException {
+		Map<String, String> att = new HashMap<>();
+		if(StringUtils.isEmptyOrWhitespaceOnly(subform)){
+			att = formAttributeMapper.getAttributesForField(fl.name(), fs);
+		}
+		else {
+			att = formAttributeMapper.getAttributesForSubform(subform, fl.name(), fs);
+		}
+		if(att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("person_address")){
+			String addressType = att.get("openmrs_entity_parent");
+			String addressField = att.get("openmrs_entity_id");
+			Address ad = addresses.get(addressType);
+			if(ad == null){
+				ad = new Address(addressType, null, null, null, null, null, null, null, null);
+			}
+
+			if(addressField.equalsIgnoreCase("startDate")||addressField.equalsIgnoreCase("start_date")){
+				ad.setStartDate(DateUtil.parseDate(fl.value()));
+			}
+			else if(addressField.equalsIgnoreCase("endDate")||addressField.equalsIgnoreCase("end_date")){
+				ad.setEndDate(DateUtil.parseDate(fl.value()));
+			}
+			else if(addressField.equalsIgnoreCase("latitude")){
+				ad.setLatitude(fl.value());
+			}
+			else if(addressField.equalsIgnoreCase("longitute")){
+				ad.setLongitute(fl.value());
+			}
+			else if(addressField.equalsIgnoreCase("geopoint")){
+				// example geopoint 34.044494 -84.695704 4 76 = lat lon alt prec
+				String geopoint = fl.value();
+				if(!StringUtils.isEmptyOrWhitespaceOnly(geopoint)){
+					String[] g = geopoint.split(" ");
+					ad.setLatitude(g[0]);
+					ad.setLongitute(g[1]);
+					ad.addAddressField(addressField, fl.value());
+				}
+			}
+			else if(addressField.equalsIgnoreCase("postalCode")||addressField.equalsIgnoreCase("postal_code")){
+				ad.setPostalCode(fl.value());
+			}
+			else if(addressField.equalsIgnoreCase("state")||addressField.equalsIgnoreCase("state_province")||addressField.equalsIgnoreCase("stateProvince")){
+				ad.setState(fl.value());
+			}
+			else if(addressField.equalsIgnoreCase("country")){
+				ad.setCountry(fl.value());
+			}
+			else {
+				ad.addAddressField(addressField, fl.value());
+			}
+			addresses.put(addressType, ad);
+		}
+	}
+	
 	
 	Map<String, String> extractIdentifiers(FormSubmission fs) {
 		Map<String, String> pids = new HashMap<>();
@@ -321,7 +333,7 @@ public class OpenmrsConnector {
 		}
 		String gender = fs.getField(getFieldName(Person.gender, fs));
 		
-		List<Address> addresses = new ArrayList<>(extractAddresses(fs, null).values());
+		List<Address> addresses = new ArrayList<>(extractAddresses(fs).values());
 		
 		Client c = new Client()
 			.withBaseEntity(new BaseEntity(fs.entityId(), firstName, middleName, lastName, birthdate, deathdate, 
@@ -387,7 +399,7 @@ public class OpenmrsConnector {
 					}
 					String gender = sfdata.get(getFieldName(Person.gender, sbf.name(), fs));
 					
-					List<Address> addresses = new ArrayList<>(extractAddresses(fs, sbf.name()).values());
+					List<Address> addresses = new ArrayList<>(extractAddressesForSubform(sfdata, sbf.name(), fs).values());
 					
 					Client c = new Client()
 					.withBaseEntity(new BaseEntity(sfdata.get("id"), firstName, middleName, lastName, birthdate, deathdate, 
