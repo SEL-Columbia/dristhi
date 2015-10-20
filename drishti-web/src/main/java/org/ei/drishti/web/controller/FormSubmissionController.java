@@ -202,39 +202,6 @@ public class FormSubmissionController {
         });
     }
 
-//    @RequestMapping(headers ={"Accept=multipart/form-data"},method =RequestMethod.POST, value = "/form-submission")
-//    
-//   // @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/multimedia-file")
-//   //     @RequestMapping(headers = { "Accept=application/json" }, value="/form-submission", method = RequestMethod.POST)
-//        
-//	//public ResponseEntity<String> upload(@RequestParam("anm-id") String id){
-//        public ResponseEntity<String> uploadFiles(@RequestParam("anmid") String providerId,
-//            @RequestParam("file") MultipartFile file) {
-//        logger.info("Post Multimedia file");
-////        
-////        if (!file.isEmpty()) {
-////            try {
-////                byte[] bytes = file.getBytes();
-////                BufferedOutputStream stream =
-////                        new BufferedOutputStream(new FileOutputStream(new File("/home/administrator/Documents/test1/"+providerId)));
-////                stream.write(bytes);
-////                stream.close();
-////                return new ResponseEntity<>(new Gson().toJson(""), HttpStatus.OK);
-////            } catch (Exception e) {
-////                return new ResponseEntity<>(new Gson().toJson(""), HttpStatus.OK);
-////            }
-////        } else {
-////            return new ResponseEntity<>(new Gson().toJson(""), HttpStatus.OK);
-////        }
-//    	
-////    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
-////        
-////        logger.info("Multimedia file upload");
-////    	
-////    	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
-//    	 
-//    	 return new ResponseEntity<>(new Gson().toJson(""), HttpStatus.OK);
-//    }  
     @RequestMapping(headers = {"Accept=multipart/form-data"}, method = RequestMethod.POST, value = "/multimedia-file")
     public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId, @RequestParam("content-type") String contentType, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file) {
         logger.info("post request method");

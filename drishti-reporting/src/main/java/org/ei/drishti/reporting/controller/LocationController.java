@@ -67,10 +67,9 @@ public class LocationController {
         if (villagesForANM != null) {
             ANMVillages anmLocation = (ANMVillages) villagesForANM.get(0);
             logger.info("**** fetched anmLocation details***" + anmLocation);
-          // villages = collect(villagesForANM, on(ANMVillages.class).villages());
 
             anmvillagesDTO = new ANMVillagesDTO(anmLocation.user_id(), anmLocation.user_role(), anmLocation.villages());
-            //anmvillagesDTO = new ANMVillagesDTO(anmLocation.user_id(), anmLocation.userrole(), villages);
+
         }
         return new ResponseEntity<>(anmvillagesDTO, OK);
     }

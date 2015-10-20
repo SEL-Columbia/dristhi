@@ -47,7 +47,6 @@ public class SMSController {
     }
 
     public void sendSMSEC(String phoneNumber, String ecNumber, String wifeName, String registrationType) {
-	        //HttpResponse response = new HttpResponse(false, null);
 
         try {
             logger.info("Reg sms controller invoked");
@@ -67,7 +66,7 @@ public class SMSController {
     }
 
     public void sendSMSChild(String phoneNumber, String motherName) {
-        //HttpResponse response = new HttpResponse(false, null);
+
         try {
             logger.info("sms controller invoked");
 

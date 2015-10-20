@@ -219,7 +219,6 @@ public class FormDatahandler {
             ancVisitRepository.insert(entityId, phoneNumber, anmNumber, "anc_visit", visitnumber, edd, wifeName, visitdate, anmid);
         }
 
-        //smsController.sendSMSEC(phoneNumber, regNumber, wifeName,"ANC");
         logger.info("^^ transfer data from controller to repository****");
 
     }
@@ -404,7 +403,7 @@ public class FormDatahandler {
                     }
 
                     logger.info("invoking a service method");
-                    //visit(dataObject);
+
                 }
             }
         }

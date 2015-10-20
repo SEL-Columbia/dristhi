@@ -38,7 +38,6 @@ public class MultimediaService {
     private final MultimediaRepository multimediaRepository;
     private String multimediaDirPath;
     private String path;
-        //private String path="../assets/multimedia";
 
     private static Logger logger = LoggerFactory
             .getLogger(MultimediaService.class.toString());
@@ -50,8 +49,8 @@ public class MultimediaService {
 
     public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
         logger.info("Save Multimedia file");
-		//path =path+multimediaDTO.caseId();
-        path=multimediaDTO.providerId();
+
+        path = multimediaDTO.providerId();
         boolean uploadStatus = uploadFile(multimediaDTO, file);
 
         if (uploadStatus) {
@@ -81,48 +80,43 @@ public class MultimediaService {
             MultipartFile multimediaFile) {
         logger.info("Upload file in location");
         String baseMultimediaDirPath = "/var/lib/tomcat7/webapps/drishti-web-0.1-SNAPSHOT";
-        
-        logger.info("location: " + new File(" ").getAbsolutePath());
-		// String baseMultimediaDirPath = System.getProperty("user.home");
-
         if (!multimediaFile.isEmpty()) {
             try {
 
-				 multimediaDirPath = baseMultimediaDirPath
-						+ File.separator + multimediaDTO.providerId()
-						+ File.separator;
-               // multimediaDirPath = "/var/www/html/hs/";
-                
-               
+                multimediaDirPath = baseMultimediaDirPath
+                        + File.separator + multimediaDTO.providerId()
+                        + File.separator;
+                // multimediaDirPath = "/var/www/html/hs/";
+
                 switch (multimediaDTO.contentType()) {
 
                     case "application/octet-stream":
                         multimediaDirPath += "audios" + File.separator
                                 + multimediaDTO.caseId() + ".wav";
-                        path += File.separator+"audios" +File.separator+ multimediaDTO.caseId() + ".wav";
+                        path += File.separator + "audios" + File.separator + multimediaDTO.caseId() + ".wav";
                         break;
 
                     case "image/jpeg":
                         multimediaDirPath += "images" + File.separator
                                 + multimediaDTO.caseId() + ".jpg";
-                        path += File.separator+"images" +File.separator+ multimediaDTO.caseId() + ".jpeg";
+                        path += File.separator + "images" + File.separator + multimediaDTO.caseId() + ".jpeg";
                         break;
 
                     case "image/gif":
                         multimediaDirPath += "images" + File.separator
                                 + multimediaDTO.caseId() + ".gif";
-                        path += File.separator+"images" +File.separator+ multimediaDTO.caseId() + ".gif";
+                        path += File.separator + "images" + File.separator + multimediaDTO.caseId() + ".gif";
                         break;
 
                     case "image/png":
-                        multimediaDirPath += "images"+ File.separator+multimediaDTO.caseId() + ".png";
-                        path+= File.separator+"images" +File.separator+ multimediaDTO.caseId() + ".png";
+                        multimediaDirPath += "images" + File.separator + multimediaDTO.caseId() + ".png";
+                        path += File.separator + "images" + File.separator + multimediaDTO.caseId() + ".png";
                         break;
 
                     default:
                         multimediaDirPath += "images" + File.separator
                                 + multimediaDTO.caseId() + ".jpg";
-                        path +=File.separator+"images" +File.separator+ multimediaDTO.caseId() + ".wav";
+                        path += File.separator + "images" + File.separator + multimediaDTO.caseId() + ".wav";
                         break;
 
                 }
@@ -130,26 +124,13 @@ public class MultimediaService {
                 logger.info("content-type: " + multimediaDTO.contentType());
                 logger.info("directory path: " + multimediaDirPath);
 
-				File multimediaDir = new File(multimediaDirPath);
-                                multimediaDir.mkdirs();
-                                logger.info("test directory created: "+multimediaDir);
-//                                logger.info("Multimedia dir path: "+multimediaDir);
-//                                if(!multimediaDir.exists()){
-//                                    multimediaDir.mkdir();
-//                                    logger.info("file exists:");
-//				 }
-//                                else{
-//                                    logger.info("file not created");}
-//                                
-//                                if(multimediaDir.exists()){
-//                                    logger.info("file re exists:");
-//				 }
-//                                else{
-//                                    logger.info("file not re created");}
-//                                
-                                logger.info("File created");
-                                multimediaFile.transferTo(multimediaDir);
-                                logger.info("file data transfer done");
+                File multimediaDir = new File(multimediaDirPath);
+                multimediaDir.mkdirs();
+                logger.info("test directory created: " + multimediaDir);
+
+                logger.info("File created");
+                multimediaFile.transferTo(multimediaDir);
+                logger.info("file data transfer done");
 //                byte[] bytes = multimediaFile.getBytes();
 //
 //                BufferedOutputStream stream = new BufferedOutputStream(

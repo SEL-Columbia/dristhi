@@ -46,8 +46,6 @@ public class FormsubmissionHandler {
         String formdetails = new Gson().toJson(formSubmissionsDTO);
         logger.info("post method url: url:" + url + "?" + formdetails);
         httpAgent.post(url, formdetails, "application/json");
-        logger.info("http request to post");
-        httpAgent.post("http://10.10.11.91:8080/drishti-reporting/formdatas", "anm123", "application/json");
 
     }
 }
