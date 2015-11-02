@@ -10,7 +10,7 @@
     </appender>
 
     <appender name="RollingLog" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="drishtiReporting.log"/>
+        <param name="File" value="/var/log/tomcat7/drishtiReporting.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ddMMyyyy HH:mm:ss,SSS} %-5p [%t] [%c{1}] %m%n"/>
@@ -18,7 +18,7 @@
     </appender>
 
     <appender name="MonitorLog" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="drishtiReportingMonitoring.log"/>
+        <param name="File" value="/var/log/tomcat7/drishtiReportingMonitoring.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ddMMyyyy HH:mm:ss,SSS} %m%n"/>
@@ -46,14 +46,14 @@
     </logger>
 
     <logger name="DRISHTI_MONITOR">
-        <!--<appender-ref ref="MonitorLog"/>-->
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="MonitorLog"/>
+        <!--<appender-ref ref="CONSOLE"/>-->
     </logger>
 
     <root>
         <priority value="INFO"/>
-        <!--<appender-ref ref="RollingLog"/>-->
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="RollingLog"/>
+        <!--<appender-ref ref="CONSOLE"/>-->
     </root>
 
 </log4j:configuration>

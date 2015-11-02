@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public class AllSP_ANMsRepository {
-    private DataAccessTemplate dataAccessTemplate;
+	private DataAccessTemplate dataAccessTemplate;
 
     protected AllSP_ANMsRepository() {
     }
@@ -36,4 +36,6 @@ public class AllSP_ANMsRepository {
         return (List<SP_ANM>) dataAccessTemplate.findByNamedQueryAndNamedParam(SP_ANM.FIND_ANMS_IN_SAME_PHC,
                 new String[]{"anmIdentifier"}, new Object[]{anmIdentifier});
     }
+   
+    
 }

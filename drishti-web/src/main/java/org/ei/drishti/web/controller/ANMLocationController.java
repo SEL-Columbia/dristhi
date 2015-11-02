@@ -36,6 +36,7 @@ public class ANMLocationController {
         this.userController = userController;
         this.httpAgent = httpAgent;
     }
+    
 
     @RequestMapping(method = GET, value = "/anm-villages")
     @ResponseBody
@@ -44,6 +45,7 @@ public class ANMLocationController {
         try {
             String anmIdentifier = userController.currentUser().getUsername();
             response = httpAgent.get(drishtiANMVillagesURL + "?anm-id=" + anmIdentifier);
+            logger.info("*** response for anm-villages******"+response);
             VillagesDTO villagesDTOs = new Gson().fromJson(response.body(),
                     new TypeToken<VillagesDTO>() {
                     }.getType());
@@ -55,4 +57,41 @@ public class ANMLocationController {
         }
         return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
     }
-}
+    
+   /* @RequestMapping(method = GET, value = "/doc-villages")
+    @ResponseBody
+    public ResponseEntity<VillagesDTO> villagesForDoc() {
+        HttpResponse response = new HttpResponse(false, null);
+        try {
+            String anmIdentifier = userController.currentUser().getUsername();
+            response = httpAgent.get(drishtiANMVillagesURL + "?doc-id=" + anmIdentifier);
+            VillagesDTO villagesDTOs = new Gson().fromJson(response.body(),
+                    new TypeToken<VillagesDTO>() {
+                    }.getType());
+            logger.info("Fetched Villages for the ANM");
+            return new ResponseEntity<>(villagesDTOs, HttpStatus.OK);
+        } catch (Exception exception) {
+            logger.error(MessageFormat.format("{0} occurred while fetching Village Details for anm. StackTrace: \n {1}", exception.getMessage(), ExceptionUtils.getFullStackTrace(exception)));
+            logger.error(MessageFormat.format("Response with status {0} and body: {1} was obtained from {2}", response.isSuccess(), response.body(), drishtiANMVillagesURL));
+        }
+        return new ResponseEntity<>(INTERNAL_SERVER_ERROR);*/
+    
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+

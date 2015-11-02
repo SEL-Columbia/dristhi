@@ -98,7 +98,9 @@ public class ChildReportingService {
     }
 
     public void registerChild(SafeMap reportData) {
+        logger.info("child reporting service");
         String id = reportData.get(ChildReportingService.CHILD_ID_FIELD);
+        logger.info("id: "+id);
         Child child = allChildren.findByCaseId(id);
 
         List<String> immunizations = child.immunizationsGiven();
@@ -144,6 +146,7 @@ public class ChildReportingService {
     }
 
     public void immunizationProvided(SafeMap reportData, List<String> previousImmunizations) {
+        logger.info("Immunization Provided");
         Child child = allChildren.findByCaseId(reportData.get(ID));
 
         List<String> immunizations = new ArrayList<>(asList(reportData.get(IMMUNIZATIONS_GIVEN_FIELD_NAME).split(" ")));
@@ -154,6 +157,7 @@ public class ChildReportingService {
     }
 
     public void vitaminAProvided(SafeMap reportData) {
+        logger.info("Vitamin A provided");
         Child child = allChildren.findByCaseId(reportData.get(ID));
         Location location = loadLocationOfChild(child);
         if (child.isFemale()) {
@@ -385,6 +389,7 @@ public class ChildReportingService {
             externalId = ec.ecNumber();
         }
         ReportingData serviceProvidedData = serviceProvidedData(child.anmIdentifier(), externalId, indicator, serviceProvidedDate, location, child.caseId());
+        //ReportingData serviceProvidedData = serviceProvidedData(child.anmIdentifier(), indicator, serviceProvidedDate, location, child.caseId());
         reportingService.sendReportData(serviceProvidedData);
         ReportingData anmReportData = anmReportData(child.anmIdentifier(), child.caseId(), indicator, serviceProvidedDate);
         reportingService.sendReportData(anmReportData);
@@ -502,6 +507,7 @@ public class ChildReportingService {
             String externalId = getExternalId(child, couple);
             Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
             ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location, child.caseId());
+          //  ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), indicator, date, location, child.caseId());
             ReportingData anmReportDataForChild = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
             serviceProvidedData.add(serviceProvidedDataForChild);
             anmReportData.add(anmReportDataForChild);
@@ -524,7 +530,8 @@ public class ChildReportingService {
             EligibleCouple ec = selectFirst(ecs, having(on(EligibleCouple.class).caseId(), equalTo(mother.ecCaseId())));
             Location location = ec.location();
             String externalId = getExternalId(child, ec);
-            ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location, child.caseId());
+           ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location, child.caseId());
+           // ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), indicator, date, location, child.caseId());
             ReportingData anmReportDataForChild = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
             serviceProvidedData.add(serviceProvidedDataForChild);
             anmReportData.add(anmReportDataForChild);

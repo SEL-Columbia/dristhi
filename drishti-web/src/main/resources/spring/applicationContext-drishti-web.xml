@@ -17,4 +17,11 @@
     <context:component-scan base-package="org.ei.drishti.web"/>
 
     <mvc:annotation-driven/>
+    
+    
+<!--    <bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />-->
+    
+    
+    
 </beans>

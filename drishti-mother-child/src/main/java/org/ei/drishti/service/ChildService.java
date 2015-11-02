@@ -57,6 +57,7 @@ public class ChildService {
     }
 
     public void registerChildren(FormSubmission submission) {
+        logger.info("Child register service");
         Mother mother = allMothers.findByCaseId(submission.entityId());
         if (mother == null) {
             logger.warn("Failed to handle children registration as there is no mother registered with id: " + submission.entityId());
@@ -176,6 +177,7 @@ public class ChildService {
 
         allChildren.update(child);
         SafeMap reportFieldsMap = new SafeMap(submission.getFields(reportFieldsDefinition.get(submission.formName())));
+        logger.info("Child register service immunization provided");
         childReportingService.immunizationProvided(reportFieldsMap, previousImmunizations);
 
         childSchedulesService.updateEnrollments(submission.entityId(), previousImmunizations);

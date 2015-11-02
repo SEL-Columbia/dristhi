@@ -1,5 +1,6 @@
 package org.ei.drishti.reporting.repository;
 
+import org.ei.drishti.reporting.controller.LocationController;
 import org.ei.drishti.reporting.domain.ANM;
 import org.ei.drishti.reporting.domain.ANMReportData;
 import org.ei.drishti.reporting.domain.Indicator;
@@ -7,6 +8,8 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +19,8 @@ import static org.ei.drishti.reporting.domain.ANMReportData.*;
 @Repository
 public class AllANMReportDataRepository {
     private DataAccessTemplate dataAccessTemplate;
+    private static Logger logger = LoggerFactory
+			.getLogger(AllANMReportDataRepository.class.toString());
 
     protected AllANMReportDataRepository() {
     }

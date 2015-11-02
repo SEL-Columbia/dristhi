@@ -10,10 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class ANMService {
     private AllSP_ANMsRepository allANMsRepository;
     private AllLocationsRepository allLocationsRepository;
+    
+    private static Logger logger = LoggerFactory
+			.getLogger(ANMService.class.toString());
 
     protected ANMService() {
     }
@@ -47,5 +53,26 @@ public class ANMService {
     @Transactional("service_provided")
     public List<SP_ANM> anmsInTheSamePHC(String anmIdentifier) {
         return allANMsRepository.fetchAllANMSInSamePHC(anmIdentifier);
+    }
+    
+    
+    @Transactional("service_provided")
+    public List getANMVillages(String anmIdentifier) {
+        return allLocationsRepository.fetchANMVillages(anmIdentifier);
+    }
+    
+    @Transactional("service_provided")
+    public List getanmPhoneNumber(String user_id) {
+        return allLocationsRepository.fetchANMphonenumber(user_id);
+    }
+    @Transactional("service_provided")
+    public List getPhoneNumber(String entityid) {
+        return allLocationsRepository.fetchphonenumber(entityid);
+    }
+
+    @Transactional("service_provided")
+    public List getPHCDetails(Integer id) {
+        logger.info("fecth phc"+id);
+        return allLocationsRepository.fetchphc(id);
     }
 }

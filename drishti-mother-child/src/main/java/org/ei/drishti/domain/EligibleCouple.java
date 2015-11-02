@@ -53,6 +53,8 @@ public class EligibleCouple extends MotechBaseDataObject {
     private List<MaleSterilizationFPDetails> maleSterilizationFPDetails;
     @JsonProperty
     private List<FemaleSterilizationFPDetails> femaleSterilizationFPDetails;
+    //new variables
+       
 
     public EligibleCouple() {
     }
@@ -81,7 +83,8 @@ public class EligibleCouple extends MotechBaseDataObject {
         this.phc = phc;
         return this;
     }
-
+    
+   
     public EligibleCouple withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
@@ -101,6 +104,7 @@ public class EligibleCouple extends MotechBaseDataObject {
         this.ocpFPDetails = ocpfpDetails;
         return this;
     }
+    
 
     public EligibleCouple withMaleSterilizationFPDetails(List<MaleSterilizationFPDetails> maleSterilizationFPDetails) {
         this.maleSterilizationFPDetails = maleSterilizationFPDetails;
@@ -144,6 +148,9 @@ public class EligibleCouple extends MotechBaseDataObject {
     public String phc() {
         return phc;
     }
+    //new data
+   
+    
 
     public Location location() {
         return new Location(village, subCenter, phc);
@@ -169,6 +176,12 @@ public class EligibleCouple extends MotechBaseDataObject {
     private String getCaseId() {
         return caseId;
     }
+    
+    //add new get method
+    private String getPhc() {
+        return phc;
+    }
+    
 
     public String getDetail(String name) {
         return details.get(name);

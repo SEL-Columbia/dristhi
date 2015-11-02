@@ -22,6 +22,7 @@ public class FormSubmissionDTO {
     private String serverVersion;
     @JsonProperty
     private String formDataDefinitionVersion;
+    
 
     public FormSubmissionDTO(String anmId, String instanceId, String entityId, String formName, String formInstance, String clientVersion, String formDataDefinitionVersion) {
         this.anmId = anmId;
@@ -31,6 +32,7 @@ public class FormSubmissionDTO {
         this.formInstance = formInstance;
         this.clientVersion = clientVersion;
         this.formDataDefinitionVersion = formDataDefinitionVersion;
+        
     }
 
     public FormSubmissionDTO withServerVersion(String version) {
@@ -65,7 +67,7 @@ public class FormSubmissionDTO {
     public String  formDataDefinitionVersion() {
         return this.formDataDefinitionVersion;
     }
-
+    
     public String serverVersion() {
         return serverVersion;
     }

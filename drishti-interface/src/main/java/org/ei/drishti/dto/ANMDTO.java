@@ -14,11 +14,16 @@ public class ANMDTO {
 
     @JsonProperty
     private LocationDTO location;
-
+    
+   //adding new variable
+   /* @JsonProperty
+    private VillagesDTO villages;
+*/
     public ANMDTO(String identifier, String name, LocationDTO location) {
         this.identifier = identifier;
         this.name = name;
         this.location = location;
+        //this.villages=villages;
     }
 
     public String identifier() {
@@ -32,6 +37,11 @@ public class ANMDTO {
     public LocationDTO location() {
         return location;
     }
+    //adding new method
+    /*public  VillagesDTO villages(){
+    	return villages;
+    }*/
+    
 
     @Override
     public boolean equals(Object o) {

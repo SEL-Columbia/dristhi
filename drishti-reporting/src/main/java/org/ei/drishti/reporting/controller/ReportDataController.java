@@ -41,12 +41,14 @@ public class ReportDataController {
     @ResponseBody
     public String submit(@RequestBody ReportingData reportingData) throws ReportDataMissingException {
         logger.info("Reporting on: " + reportingData);
+        logger.info("Reprting data type"+reportingData.type());
         if (ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE.equals(reportingData.type())) {
             throwExceptionIfMandatoryDataIsNotPresentForServiceProvidedReport(reportingData);
+            logger.info("reporting data transfer");
             servicesProvidedRepository.save(
                     reportingData.get(ReportDataParameters.ANM_IDENTIFIER),
                     reportingData.get(ReportDataParameters.SERVICE_PROVIDER_TYPE),
-                    reportingData.get(ReportDataParameters.EXTERNAL_ID),
+                    reportingData.get(ReportDataParameters.EXTERNAL_ID),              
                     reportingData.get(ReportDataParameters.INDICATOR),
                     reportingData.get(ReportDataParameters.SERVICE_PROVIDED_DATE),
                     reportingData.get(ReportDataParameters.VILLAGE),

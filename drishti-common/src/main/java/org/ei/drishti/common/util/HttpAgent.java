@@ -2,6 +2,7 @@ package org.ei.drishti.common.util;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -22,7 +23,9 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
@@ -32,10 +35,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Component
 public class HttpAgent {
 
     private final DefaultHttpClient httpClient;
+    private static Logger logger = LoggerFactory.getLogger(HttpAgent.class.toString());
 
     public HttpAgent() {
         BasicHttpParams basicHttpParams = new BasicHttpParams();
@@ -57,9 +64,12 @@ public class HttpAgent {
             StringEntity entity = new StringEntity(data);
             entity.setContentEncoding(contentType);
             request.setEntity(entity);
+            logger.info("request to drishti-reporting"+request);
             org.apache.http.HttpResponse response = httpClient.execute(request);
+            logger.info("Status Code"+response.getStatusLine().getStatusCode());
             return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
         } catch (Exception e) {
+            logger.info("failed to post the url");
             throw new RuntimeException(e);
         }
     }
@@ -82,8 +92,9 @@ public class HttpAgent {
 
     public HttpResponse get(String url) {
         HttpGet request = new HttpGet(url);
+        logger.info("http request"+request);
         try {
-            org.apache.http.HttpResponse response = httpClient.execute(request);
+            org.apache.http.HttpResponse response = httpClient.execute(request);       
             return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
         } catch (Exception e) {
             throw new RuntimeException(e);

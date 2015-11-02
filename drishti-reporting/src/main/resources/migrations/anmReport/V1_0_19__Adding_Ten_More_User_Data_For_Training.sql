@@ -23,3 +23,4 @@ INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('user18');
 INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('user19');
 
 INSERT INTO anm_report.dim_anm (anmIdentifier) VALUES ('user20');
+

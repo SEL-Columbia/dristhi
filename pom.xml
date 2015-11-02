@@ -151,7 +151,7 @@
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.6</version>
-                <executions>
+               <!-- <executions>
                     <execution>
                         <id>Drop DB Before Unit and Repository Tests</id>
                         <phase>process-test-classes</phase>
@@ -174,7 +174,7 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
-                </executions>
+                </executions>-->
             </plugin>
 
             <plugin>
@@ -188,6 +188,11 @@
                         <artifactId>postgresql</artifactId>
                         <version>9.1-901.jdbc4</version>
                     </dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4-1200-jdbc41</version>
+		</dependency>
                 </dependencies>
 
                 <configuration>
@@ -198,7 +203,7 @@
                     <skip>${maven.test.skip}</skip>
                 </configuration>
 
-                <executions>
+                <!--<executions>
                     <execution>
                         <id>drop-quartz-db</id>
                         <phase>pre-integration-test</phase>
@@ -252,7 +257,6 @@
                             <onError>abort</onError>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>create-schema</id>
                         <phase>pre-integration-test</phase>
@@ -269,7 +273,7 @@
                             </srcFiles>
                         </configuration>
                     </execution>
-                </executions>
+                </executions>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

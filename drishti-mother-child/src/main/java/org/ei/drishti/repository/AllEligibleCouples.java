@@ -37,7 +37,17 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
         return couples.get(0);
     }
 
-    public boolean exists(String caseId) {
+    @GenerateView
+    public EligibleCouple findByPhc(String phc){
+    	List<EligibleCouple> phcs =queryView("by_phc", phc);
+    	if(phcs==null || phcs.isEmpty()){
+    		return null;
+    		
+    	}
+    	return phcs.get(0);
+    	
+    }
+     public boolean exists(String caseId) {
         return findByCaseId(caseId) != null;
     }
 
@@ -91,11 +101,13 @@ public class AllEligibleCouples extends MotechBaseRepository<EligibleCouple> {
         }
         return ecCount;
     }
-
+//changed  eligiblecouple with FormSubmission
     @View(name = "all_open_ecs_for_anm",
-            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && doc.isOutOfArea === 'false' && doc.anmIdentifier) { emit(doc.anmIdentifier); } }")
+            map = "function(doc) { if (doc.type === 'EligibleCouple' && doc.isClosed === 'false' && doc.isOutOfArea === 'false' && doc.anmIdentifier) { emit(doc.anmIdentifier, null); } }")
     public List<EligibleCouple> allOpenECsForANM(String anmIdentifier) {
-        return db.queryView(createQuery("all_open_ecs_for_anm")
+    	logger.warn("Unable to find eligible couple with anmId: " + anmIdentifier+ "all_open_ecs_for_anm");
+     
+    	return db.queryView(createQuery("all_open_ecs_for_anm")
                 .key(anmIdentifier)
                 .includeDocs(true), EligibleCouple.class);
     }

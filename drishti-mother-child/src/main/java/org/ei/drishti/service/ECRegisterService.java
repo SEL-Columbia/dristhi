@@ -32,6 +32,7 @@ public class ECRegisterService {
 
     public ECRegister getRegisterForANM(String anmIdentifier) {
         ArrayList<ECRegisterEntry> ecRegisterEntries = new ArrayList<>();
+   
         List<EligibleCouple> ecs = allEligibleCouples.allOpenECsForANM(anmIdentifier);
         for (EligibleCouple ec : ecs) {
             List<Mother> mothers = allMothers.findAllOpenANCByECCaseId(ec.caseId());

@@ -156,6 +156,12 @@
             <artifactId>drishti-interface</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.1</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -199,7 +205,7 @@
                         </connector>
                     </connectors>
                 </configuration>
-                <executions>
+<!--                <executions>
                     <execution>
                         <id>start-jetty</id>
                         <phase>pre-integration-test</phase>
@@ -218,7 +224,7 @@
                             <goal>stop</goal>
                         </goals>
                     </execution>
-                </executions>
+                </executions>-->
             </plugin>
             <plugin>
                 <groupId>com.googlecode.flyway</groupId>

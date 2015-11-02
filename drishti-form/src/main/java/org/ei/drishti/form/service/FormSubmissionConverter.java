@@ -34,7 +34,7 @@ public class FormSubmissionConverter {
 
     public static FormSubmission toFormSubmissionWithVersion(FormSubmissionDTO formSubmissionDTO) {
         return new FormSubmission(formSubmissionDTO.anmId(), formSubmissionDTO.instanceId(), formSubmissionDTO.formName(),
-                formSubmissionDTO.entityId(), parseLong(formSubmissionDTO.clientVersion()), formSubmissionDTO.formDataDefinitionVersion(), new Gson().fromJson(formSubmissionDTO.instance(), FormInstance.class),
+                formSubmissionDTO.entityId(), parseLong(formSubmissionDTO.clientVersion()), formSubmissionDTO.formDataDefinitionVersion(),new Gson().fromJson(formSubmissionDTO.instance(), FormInstance.class),
                 parseLong(formSubmissionDTO.serverVersion()));
     }
 }

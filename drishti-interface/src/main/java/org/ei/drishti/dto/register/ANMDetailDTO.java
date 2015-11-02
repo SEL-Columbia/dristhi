@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ei.drishti.dto.LocationDTO;
+import org.ei.drishti.dto.VillagesDTO;
 
 public class ANMDetailDTO {
     @JsonProperty
@@ -15,6 +16,11 @@ public class ANMDetailDTO {
 
     @JsonProperty
     private LocationDTO location;
+    
+    //new village dto
+   /* @JsonProperty
+    private VillagesDTO villages;*/
+    
 
     @JsonProperty
     private int ecCount;
@@ -30,7 +36,7 @@ public class ANMDetailDTO {
 
     @JsonProperty
     private int childCount;
-
+//new change
     public ANMDetailDTO(String identifier, String name, LocationDTO location, int ecCount, int fpCount, int ancCount, int pncCount, int childCount) {
         this.identifier = identifier;
         this.name = name;

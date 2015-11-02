@@ -261,6 +261,7 @@ public class MotherReportingService {
 
     private void report(Mother mother, Indicator indicator, String date, Location location) {
         ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), mother.thayiCardNumber(), indicator, date, location, mother.caseId());
+      //  ReportingData serviceProvided = serviceProvidedData(mother.anmIdentifier(), indicator, date, location, mother.caseId());
         reportingService.sendReportData(serviceProvided);
 
         ReportingData anmReportData = anmReportData(mother.anmIdentifier(), mother.caseId(), indicator, date);

@@ -2,11 +2,14 @@ package org.ei.drishti.repository;
 
 import org.ei.drishti.common.AllConstants;
 import org.ei.drishti.domain.Mother;
+
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -17,6 +20,9 @@ import java.util.Map;
 
 @Repository
 public class AllMothers extends MotechBaseRepository<Mother> {
+	
+	
+	 private static Logger logger = LoggerFactory.getLogger(AllMothers.class.toString());
     @Autowired
     public AllMothers(@Qualifier(AllConstants.DRISHTI_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(Mother.class, db);
@@ -70,14 +76,17 @@ public class AllMothers extends MotechBaseRepository<Mother> {
                 Mother.class
         );
     }
-
+    
     @View(name = "all_open_anc_by_ec_caseId",
             map = "function(doc) { if (doc.type === 'Mother' && doc.isClosed === 'false' && doc.details.type === 'ANC' && doc.ecCaseId) { emit(doc.ecCaseId); } }")
     public List<Mother> findAllOpenANCByECCaseId(String ecId) {
+    	//changed
+        logger.info("fetched data from couchdb");
         return db.queryView(createQuery("all_open_anc_by_ec_caseId")
                         .key(ecId)
                         .includeDocs(true),
                 Mother.class
+        
         );
     }
 
@@ -139,11 +148,25 @@ public class AllMothers extends MotechBaseRepository<Mother> {
                 .includeDocs(true), Mother.class);
 
     }
+    
 
     @View(name = "all_mothers",
             map = "function(doc) { if (doc.type === 'Mother') { emit(doc.anmIdentifier); } }")
     public List<Mother> all(String anmIdentifier) {
         return db.queryView(createQuery("all_mothers")
+                .key(anmIdentifier)
+                .includeDocs(true), Mother.class);
+    }
+    
+    
+    
+    
+    @View(name = "all_mo",
+            map = "function(doc) { if (doc.type === 'Mother') { emit(doc.anmIdentifier); } }")
+    public List<Mother> all1(String anmIdentifier) {
+    	//create view
+        logger.info("create new view in couchdb");
+        return db.queryView(createQuery("all_mo")
                 .key(anmIdentifier)
                 .includeDocs(true), Mother.class);
     }
