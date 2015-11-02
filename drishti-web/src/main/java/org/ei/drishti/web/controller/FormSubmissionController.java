@@ -208,7 +208,13 @@ public class FormSubmissionController {
         MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
 
         String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
-
-        return new ResponseEntity<>(new Gson().toJson(status), HttpStatus.OK);
+        String[] status1=status.split(":");
+        
+        if((status1[0]).equalsIgnoreCase("success")){
+            return new ResponseEntity<>(new Gson().toJson(status1[1]), HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(new Gson().toJson("fail"), HttpStatus.OK);
+        }
     }
 }

@@ -16,24 +16,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-
-
 @Repository
-public class  AllServicesProvidedRepository {
+public class AllServicesProvidedRepository {
+
     private DataAccessTemplate dataAccessTemplate;
     private ANCVisitDue ancVisitDue;
     private VisitService visit;
     private static Logger logger = LoggerFactory
-			.getLogger(AllServicesProvidedRepository.class.toString());
+            .getLogger(AllServicesProvidedRepository.class.toString());
 
     protected AllServicesProvidedRepository() {
     }
 
     @Autowired
-    public AllServicesProvidedRepository(@Qualifier("serviceProvidedDataAccessTemplate") DataAccessTemplate 
-    		dataAccessTemplate) {
+    public AllServicesProvidedRepository(@Qualifier("serviceProvidedDataAccessTemplate") DataAccessTemplate dataAccessTemplate) {
         this.dataAccessTemplate = dataAccessTemplate;
-        
+
     }
 
     public void save(ServiceProvider serviceProvider, String externalId, Indicator indicator, Date date, Location location, String dristhiEntityId) {
@@ -67,65 +65,67 @@ public class  AllServicesProvidedRepository {
     public void deleteReportsFor(String dristhiEntityId) {
         dataAccessTemplate.deleteAll(getAllReportsForDristhiEntityID(dristhiEntityId));
     }
-    public void ancsave(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String lmpdate,String womenname,String visitdate, String anmid) {
-    	logger.info("####### ancsave method invoked$$$$$");
-        dataAccessTemplate.save(new ANCVisitDue(entityid,patientnum,anmnum,visittype,visitno,lmpdate,womenname,visitdate,anmid));
-    	
+
+    public void ancsave(String entityid, String patientnum, String anmnum, String visittype, Integer visitno, String lmpdate, String womenname, String visitdate, String anmid) {
+        logger.info("####### ancsave method invoked$$$$$");
+        dataAccessTemplate.save(new ANCVisitDue(entityid, patientnum, anmnum, visittype, visitno, lmpdate, womenname, visitdate, anmid));
+
     }
-    
-   // public void ancvisitupdate(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate) {
-    public void ancvisitupdate(Integer id,String newdate,Integer visitno) {	
-   	
-   	ANCVisitDue objectToUpdate = (ANCVisitDue) dataAccessTemplate.get(ANCVisitDue.class, id);
-   	objectToUpdate.setvisitdate(newdate);
-   	objectToUpdate.setvisitno(visitno);
-   	dataAccessTemplate.saveOrUpdate(objectToUpdate);
-   	logger.info(" visit date: "+objectToUpdate);
-  	logger.info(" visit date2: ");
+
+    // public void ancvisitupdate(String entityid,String patientnum,String anmnum,String visittype,Integer visitno,String visitdate) {
+    public void ancvisitupdate(Integer id, String newdate, Integer visitno) {
+
+        ANCVisitDue objectToUpdate = (ANCVisitDue) dataAccessTemplate.get(ANCVisitDue.class, id);
+        objectToUpdate.setvisitdate(newdate);
+        objectToUpdate.setvisitno(visitno);
+        dataAccessTemplate.saveOrUpdate(objectToUpdate);
+        logger.info(" visit date: " + objectToUpdate);
+        logger.info(" visit date2: ");
     }
-    
-    public void ancupdate(Integer id,String phonenumber) {	
-       	
-       	ANCVisitDue objectToUpdate = (ANCVisitDue) dataAccessTemplate.get(ANCVisitDue.class, id);
-       	objectToUpdate.setpatientnum(phonenumber);
-       	dataAccessTemplate.saveOrUpdate(objectToUpdate);
-       	logger.info(" visit date: "+objectToUpdate);
-      	logger.info(" visit date2: ");
-        }
-    public void ecupdate(Integer id,String phoneNumber) {	
-       	
-       	EcRegDetails objectToUpdate = (EcRegDetails) dataAccessTemplate.get(EcRegDetails.class, id);
-       	objectToUpdate.setphonenumber(phoneNumber);
-       	dataAccessTemplate.saveOrUpdate(objectToUpdate);
-       	logger.info(" visit date: "+objectToUpdate);
-      	logger.info(" visit date2: ");
-        }
-    
-    public void ecsave(String entityid,String phonenumber) {
-    	logger.info("####### ancsave method invoked$$$$$");
-        dataAccessTemplate.save(new EcRegDetails(entityid,phonenumber));
-    	
+
+    public void ancupdate(Integer id, String phonenumber) {
+
+        ANCVisitDue objectToUpdate = (ANCVisitDue) dataAccessTemplate.get(ANCVisitDue.class, id);
+        objectToUpdate.setpatientnum(phonenumber);
+        dataAccessTemplate.saveOrUpdate(objectToUpdate);
+        logger.info(" visit date: " + objectToUpdate);
+        logger.info(" visit date2: ");
     }
-    public void pocsave(String visittype, String visitentityid,String entityidec,String anmid, String phc, String timestamp) {
-    	logger.info("####### pocsave method invoked$$$$$"+phc);
-        
-           java.util.Date date = new java.util.Date();
-			Timestamp timestamp1 = new Timestamp(date.getTime());  
-                        
-        dataAccessTemplate.save(new POC_Table(visitentityid,entityidec,anmid,"1"," "," ", visittype, phc," ", " ", timestamp1));
-       
-    	
+
+    public void ecupdate(Integer id, String phoneNumber) {
+
+        EcRegDetails objectToUpdate = (EcRegDetails) dataAccessTemplate.get(EcRegDetails.class, id);
+        objectToUpdate.setphonenumber(phoneNumber);
+        dataAccessTemplate.saveOrUpdate(objectToUpdate);
+        logger.info(" visit date: " + objectToUpdate);
+        logger.info(" visit date2: ");
     }
-    
+
+    public void ecsave(String entityid, String phonenumber) {
+        logger.info("####### ancsave method invoked$$$$$");
+        dataAccessTemplate.save(new EcRegDetails(entityid, phonenumber));
+
+    }
+
+    public void pocsave(String visittype, String visitentityid, String entityidec, String anmid, String phc, String timestamp, String wifename) {
+        logger.info("####### pocsave method invoked$$$$$" + phc);
+
+        java.util.Date date = new java.util.Date();
+        Timestamp timestamp1 = new Timestamp(date.getTime());
+
+        dataAccessTemplate.save(new POC_Table(visitentityid, entityidec, anmid, "1", " ", " ", visittype, phc, " ", " ", timestamp1, wifename));
+
+    }
+
     public List<ANCVisitDue> getANCDristhiEntityID(String entityid) {
-    	logger.info("delete process started step 2");
+        logger.info("delete process started step 2");
         return dataAccessTemplate.findByNamedQuery(ANCVisitDue.FIND_BY_ENTITY_ID, entityid);
     }
-    
+
     public void deleteANCFor(String entityid) {
-    	logger.info("delete process started");
+        logger.info("delete process started");
         dataAccessTemplate.deleteAll(getANCDristhiEntityID(entityid));
         logger.info("delete done*****");
     }
-    
+
 }

@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Properties;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
 
 import org.ei.drishti.domain.Multimedia;
 import org.ei.drishti.dto.form.MultimediaDTO;
@@ -65,7 +68,7 @@ public class MultimediaService {
 
                 multimediaRepository.add(multimediaFile);
 
-                return "success";
+                return "success"+":"+path;
 
             } catch (Exception e) {
                 e.getMessage();
@@ -79,20 +82,26 @@ public class MultimediaService {
     public boolean uploadFile(MultimediaDTO multimediaDTO,
             MultipartFile multimediaFile) {
         logger.info("Upload file in location");
-        String baseMultimediaDirPath = "/var/lib/tomcat7/webapps/drishti-web-0.1-SNAPSHOT";
+       String baseMultimediaDirPath = "/var/lib/tomcat7/webapps/drishti-web-0.1-SNAPSHOT";
+       // String baseMultimediaDirPath = "/var/www/html/Downloads/test";
         if (!multimediaFile.isEmpty()) {
             try {
 
                 multimediaDirPath = baseMultimediaDirPath
                         + File.separator + multimediaDTO.providerId()
                         + File.separator;
-                // multimediaDirPath = "/var/www/html/hs/";
+                 //multimediaDirPath = "/var/www/html/hs/";
 
                 switch (multimediaDTO.contentType()) {
 
-                    case "application/octet-stream":
-                        multimediaDirPath += "audios" + File.separator
-                                + multimediaDTO.caseId() + ".wav";
+                    case "audio/x-wav":
+                        
+                        multimediaDirPath +=
+                                "audios" ;
+                        File file=new File(multimediaDirPath);
+                        if(!file.exists())
+                            file.mkdirs();
+                        multimediaDirPath += File.separator + multimediaDTO.caseId() + ".wav";
                         path += File.separator + "audios" + File.separator + multimediaDTO.caseId() + ".wav";
                         break;
 
@@ -116,21 +125,26 @@ public class MultimediaService {
                     default:
                         multimediaDirPath += "images" + File.separator
                                 + multimediaDTO.caseId() + ".jpg";
-                        path += File.separator + "images" + File.separator + multimediaDTO.caseId() + ".wav";
+                        path += File.separator + "images" + File.separator + multimediaDTO.caseId() + ".jpg";
                         break;
 
                 }
                 logger.info("uploded");
                 logger.info("content-type: " + multimediaDTO.contentType());
                 logger.info("directory path: " + multimediaDirPath);
-
-                File multimediaDir = new File(multimediaDirPath);
-                multimediaDir.mkdirs();
+                
+                if(multimediaDTO.contentType().equalsIgnoreCase("audio/x-wav")){
+                    saveAudio(multimediaFile, multimediaDirPath);
+                }
+                else{
+                    File multimediaDir = new File(multimediaDirPath);
+                    multimediaDir.mkdirs();
                 logger.info("test directory created: " + multimediaDir);
 
                 logger.info("File created");
                 multimediaFile.transferTo(multimediaDir);
                 logger.info("file data transfer done");
+                }
 //                byte[] bytes = multimediaFile.getBytes();
 //
 //                BufferedOutputStream stream = new BufferedOutputStream(
@@ -152,4 +166,22 @@ public class MultimediaService {
     public List<Multimedia> getMultimediaFiles(String providerId) {
         return multimediaRepository.all(providerId);
     }
+    
+    private void saveAudio(MultipartFile multimediaFile, String multimediaDirPath){
+        try{
+            
+        
+        byte[] bytes = multimediaFile.getBytes();
+
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream(new File(multimediaDirPath)));
+                logger.info("directory created");
+                stream.write(bytes);
+                stream.close();
+                
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    } 
 }

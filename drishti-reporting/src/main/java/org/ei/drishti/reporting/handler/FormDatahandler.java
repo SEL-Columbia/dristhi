@@ -368,6 +368,7 @@ public class FormDatahandler {
 
     public void visitpoc(JSONObject dataObject, String visittype, String anmNumber) throws JSONException {
         String entityidEC = "";
+        String motherName = "";
         JSONArray fieldsJsonArray = dataObject.getJSONObject("formInstance")
                 .getJSONObject("form").getJSONArray("fields");
         String visitentityid = dataObject.getString("entityId");
@@ -377,6 +378,20 @@ public class FormDatahandler {
             if ((jsonObject.has("name")) && jsonObject.getString("name").equals("ecId")) {
                 entityidEC = (jsonObject.has("value") && jsonObject
                         .getString("value") != null) ? jsonObject
+                        .getString("value") : "";
+            }
+            if (jsonObject.has("name")
+                    && jsonObject.getString("name").equals("wifeName")) {
+
+                wifeName = jsonObject.has("value")
+                        && jsonObject.getString("value") != null ? jsonObject
+                        .getString("value") : "";
+            }
+            if (jsonObject.has("name")
+                    && jsonObject.getString("name").equals("motherName")) {
+
+                motherName = jsonObject.has("value")
+                        && jsonObject.getString("value") != null ? jsonObject
                         .getString("value") : "";
             }
             if ((jsonObject.has("name")) && jsonObject.getString("name").equals("isConsultDoctor")) {
@@ -399,7 +414,13 @@ public class FormDatahandler {
                     logger.info("date time converted" + date);
 
                     if (hospitaltype.equalsIgnoreCase("Subcenter")) {
-                        ancVisitRepository.pocinsert(visittype, visitentityid, entityidEC, anmid, phcname, date);
+                        if (visittype.equalsIgnoreCase("child_illness")) {
+                            ancVisitRepository.pocinsert(visittype, visitentityid, entityidEC, anmid, phcname, date, motherName);
+                        }
+                        if (visittype.equalsIgnoreCase("anc_visit") || visittype.equalsIgnoreCase("pnc_visit")) {
+                            ancVisitRepository.pocinsert(visittype, visitentityid, entityidEC, anmid, phcname, date, wifeName);
+                        }
+
                     }
 
                     logger.info("invoking a service method");

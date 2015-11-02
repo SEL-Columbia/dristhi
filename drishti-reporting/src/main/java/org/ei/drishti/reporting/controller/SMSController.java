@@ -74,7 +74,7 @@ public class SMSController {
             JSONArray obj1 = new JSONArray();
             obj1.put("tel:" + phoneNumber);
 
-            String message = "Your%20Child%20have%20been%20registered%20with%20Mother%20Name" + motherName + "%20";
+            String message = "Your%20Child%20have%20been%20registered%20with%20Mother%20Name%20" + motherName + "%20";
             logger.info("drishti sms url********" + drishtiSMSURL + "******* json obj value*****" + obj1);
             httpAgent.get(drishtiSMSURL + "/?tel=%5B%22tel:" + phoneNumber + "%22%5D&message=%22" + message + "%22");
         } catch (Exception e) {
