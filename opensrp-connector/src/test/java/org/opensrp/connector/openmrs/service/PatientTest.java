@@ -41,6 +41,7 @@ public class PatientTest extends TestResourceLoader{
 			//.withIdentifier("Death Reg Num", "d-ewj-js3u2"+new Random().nextInt(99))
 			;
 		if(pushToOpenmrsForTest){
+			if(s.getPatientByIdentifier(c.getBaseEntityId()) == null)
 			System.out.println(s.createPatient(c));
 		}
 	}

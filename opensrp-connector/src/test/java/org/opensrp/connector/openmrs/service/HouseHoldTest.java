@@ -24,10 +24,10 @@ import org.junit.Test;
 import org.junit.Ignore;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
-import org.opensrp.connector.FormAttributeMapper;
-import org.opensrp.connector.OpenmrsConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.service.FormAttributeParser;
+import org.opensrp.service.formSubmission.FormEntityConverter;
 
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -38,7 +38,7 @@ public class HouseHoldTest extends TestResourceLoader{
 	}
 
 	EncounterService es;
-	OpenmrsConnector oc;
+	FormEntityConverter oc;
 	PatientService ps;
 	OpenmrsUserService us;
 	HouseholdService hhs;
@@ -73,8 +73,8 @@ public class HouseHoldTest extends TestResourceLoader{
 		hhs = new HouseholdService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		hhs.setPatientService(ps);
 		hhs.setEncounterService(es);
-		FormAttributeMapper fam = new FormAttributeMapper(formDirPath);
-		oc = new OpenmrsConnector(fam);
+		FormAttributeParser fam = new FormAttributeParser(formDirPath);
+		oc = new FormEntityConverter(fam);
 	}
 	
 	@Ignore @Test

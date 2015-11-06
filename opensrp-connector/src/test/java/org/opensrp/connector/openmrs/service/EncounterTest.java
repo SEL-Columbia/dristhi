@@ -6,7 +6,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 import org.hamcrest.Matchers;
@@ -17,10 +16,10 @@ import org.junit.Test;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
 import org.opensrp.api.domain.Obs;
-import org.opensrp.connector.FormAttributeMapper;
-import org.opensrp.connector.OpenmrsConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.service.FormAttributeParser;
+import org.opensrp.service.formSubmission.FormEntityConverter;
 
 
 public class EncounterTest extends TestResourceLoader{
@@ -29,7 +28,7 @@ public class EncounterTest extends TestResourceLoader{
 	}
 
 	EncounterService s;
-	OpenmrsConnector oc;
+	FormEntityConverter oc;
 	PatientService ps;
 	OpenmrsUserService us;
 	HouseholdService hhs;
@@ -46,8 +45,8 @@ public class EncounterTest extends TestResourceLoader{
 		hhs = new HouseholdService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		hhs.setPatientService(ps);
 		hhs.setEncounterService(s);
-		FormAttributeMapper fam = new FormAttributeMapper(formDirPath);
-		oc = new OpenmrsConnector(fam);
+		FormAttributeParser fam = new FormAttributeParser(formDirPath);
+		oc = new FormEntityConverter(fam);
 	}
 	
 	@Test
@@ -74,8 +73,6 @@ public class EncounterTest extends TestResourceLoader{
 	public void shouldHandleSubform() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
 
-		assertTrue(oc.isOpenmrsForm(fs));
-		
 		Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
 		assertEquals(c.getBaseEntity().getFirstName(), "test");
@@ -113,8 +110,6 @@ public class EncounterTest extends TestResourceLoader{
 	public void shouldHandleEmptyRepeatGroup() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 5);
 
-		assertTrue(oc.isOpenmrsForm(fs));
-		
 		Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
 		assertEquals(c.getBaseEntity().getFirstName(), "test");
@@ -147,8 +142,6 @@ public class EncounterTest extends TestResourceLoader{
 	public void shouldGetBirthdateNotEstimatedForMainAndApproxForRepeatGroup() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 7);
 
-		assertTrue(oc.isOpenmrsForm(fs));
-		
 		Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntity().getBirthdate(), sd.parse("1900-01-01"));
 		assertTrue(c.getBaseEntity().getBirthdateApprox());
@@ -165,8 +158,6 @@ public class EncounterTest extends TestResourceLoader{
 	public void shouldGetBirthdateNotEstimatedForMainAndRepeatGroupIfNotSpecified() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 8);
 
-		assertTrue(oc.isOpenmrsForm(fs));
-		
 		Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntity().getBirthdate(), sd.parse("1900-01-01"));
 		assertFalse(c.getBaseEntity().getBirthdateApprox());
@@ -184,8 +175,6 @@ public class EncounterTest extends TestResourceLoader{
 	public void shouldGetDataSpecifiedInGroupInsideSubform() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration_with_grouped_subform_data", 1);
 
-		assertTrue(oc.isOpenmrsForm(fs));
-		
 		Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntity().getBirthdate(), sd.parse("1900-01-01"));
 		assertFalse(c.getBaseEntity().getBirthdateApprox());
@@ -231,8 +220,40 @@ public class EncounterTest extends TestResourceLoader{
 					)));
 			assertThat(ev.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
 					Matchers.<Obs>hasProperty("fieldCode",equalTo("163087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
-					Matchers.<Obs>hasProperty("value",equalTo("163084AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+					Matchers.<Obs>hasProperty("values",hasItems(equalTo("163084AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),equalTo("163083AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))),
 					Matchers.<Obs>hasProperty("formSubmissionField",equalTo("FWWOMANYID"))
+					)));
+		}
+		
+		if(pushToOpenmrsForTest){
+			OpenmrsHouseHold hh = new OpenmrsHouseHold(c, e);
+			for (Map<String, Object> cm : dc.values()) {
+				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
+			}
+			
+			hhs.saveHH(hh, true);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void shouldGetDataSpecifiedInMultiselect() throws IOException, ParseException, JSONException{
+		FormSubmission fs = getFormSubmissionFor("new_household_registration_with_grouped_subform_data", 1);
+
+		Client c = oc.getClientFromFormSubmission(fs);
+		Event e = (Event) oc.getEventFromFormSubmission(fs);
+		
+		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
+		for (String id : dc.keySet()) {
+			Client cl = (Client) dc.get(id).get("client");
+			Event ev = (Event) dc.get(id).get("event");
+			
+			assertThat(ev.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
+					Matchers.<Obs>hasProperty("fieldCode",equalTo("163087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+					Matchers.<Obs>hasProperty("values",hasItems(equalTo("163084AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),equalTo("163083AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))),
+					Matchers.<Obs>hasProperty("formSubmissionField",equalTo("FWWOMANYID")),
+					Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
+					Matchers.<Obs>hasProperty("fieldDataType",startsWith("select all"))
 					)));
 		}
 		
