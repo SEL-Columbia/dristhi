@@ -100,6 +100,9 @@
 				</includes>
             </resource>
             <resource>
+                <directory>../assets/config</directory>
+            </resource>
+            <resource>
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
