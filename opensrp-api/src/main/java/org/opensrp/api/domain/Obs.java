@@ -1,5 +1,8 @@
 package org.opensrp.api.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opensrp.api.domain.form.FormField;
 import org.opensrp.api.domain.form.FormSubmission;
 
@@ -11,23 +14,33 @@ import org.opensrp.api.domain.form.FormSubmission;
  */
 public class Obs {
 
+	private String fieldType;
 	private String fieldDataType;
 	private String fieldCode;
 	private String parentCode;
-	private Object value;
+	private List<Object> values;
 	private String comments;
 	private String formSubmissionField;
 	
 	public Obs() { }
 
-	public Obs(String fieldDataType, String fieldCode, String parentCode,
-			Object value, String comments, String formSubmissionField) {
+	public Obs(String fieldType, String fieldDataType, String fieldCode, String parentCode,
+			List<Object> values, String comments, String formSubmissionField) {
+		this.setFieldType(fieldType);
 		this.fieldDataType = fieldDataType;
 		this.fieldCode = fieldCode;
 		this.parentCode = parentCode;
-		this.value = value;
+		this.values = values;
 		this.comments = comments;
 		this.formSubmissionField = formSubmissionField;
+	}
+
+	public String getFieldType() {
+		return fieldType;
+	}
+
+	public void setFieldType(String fieldType) {
+		this.fieldType = fieldType;
 	}
 
 	public String getFieldDataType() {
@@ -55,12 +68,28 @@ public class Obs {
 	}
 
 	public Object getValue() {
-		return value;
+		if(values.size() > 1){
+			throw new RuntimeException("Multiset values can not be handled like single valued fields. Use function getValues");
+		}
+		if(values == null || values.size() == 0){
+			return null;
+		}
+		
+		return values.get(0);
 	}
 
 	public void setValue(Object value) {
-		this.value = value;
+		addToValueList(value);
 	}
+	
+	public List<Object> getValues() {
+		return values;
+	}
+
+	public void setValues(List<Object> values) {
+		this.values = values;
+	}
+
 
 	public String getComments() {
 		return comments;
@@ -78,6 +107,11 @@ public class Obs {
 		this.formSubmissionField = formSubmissionField;
 	}
 
+	public Obs withFieldType(String fieldType) {
+		this.fieldType = fieldType;
+		return this;
+	}
+	
 	public Obs withFieldDataType(String fieldDataType) {
 		this.fieldDataType = fieldDataType;
 		return this;
@@ -94,7 +128,19 @@ public class Obs {
 	}
 
 	public Obs withValue(Object value) {
-		this.value = value;
+		return addToValueList(value);
+	}
+	
+	public Obs withValues(List<Object> values) {
+		this.values = values;
+		return this;
+	}
+	
+	public Obs addToValueList(Object value) {
+		if(values == null){
+			values = new ArrayList<>();
+		}
+		values.add(value);
 		return this;
 	}
 
