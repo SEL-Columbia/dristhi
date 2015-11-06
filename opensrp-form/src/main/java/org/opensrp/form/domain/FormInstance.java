@@ -29,6 +29,14 @@ public class FormInstance {
         return form.getField(name);
     }
 
+    public String bindType() {
+		return form.bindType();
+	}
+    
+    public String defaultBindPath() {
+		return form.defaultBindPath();
+	}
+    
     public SubFormData getSubFormByName(String name) {
         return form.getSubFormByName(name);
     }

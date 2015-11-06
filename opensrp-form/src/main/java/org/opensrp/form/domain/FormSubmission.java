@@ -64,6 +64,14 @@ public class FormSubmission extends MotechBaseDataObject {
         return this.formName;
     }
 
+    public String bindType() {
+		return formInstance.bindType();
+	}
+    
+    public String defaultBindPath() {
+		return formInstance.defaultBindPath();
+	}
+    
     public FormInstance instance() {
         return formInstance;
     }
