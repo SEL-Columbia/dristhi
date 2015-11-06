@@ -31,7 +31,7 @@
                 <usual_residence_lat openmrs_entity="person_address" openmrs_entity_id="latitude" openmrs_entity_parent="usual_residence"/>
                 <usual_residence_lon openmrs_entity="person_address" openmrs_entity_id="longitute" openmrs_entity_parent="usual_residence"/>
                 <usual_residence_postcode openmrs_entity="person_address" openmrs_entity_id="postalcode" openmrs_entity_parent="usual_residence"/>
-                <usual_residence_house openmrs_entity="person_address" openmrs_entity_id="uniit" openmrs_entity_parent="usual_residence"/>
+                <usual_residence_house openmrs_entity="person_address" openmrs_entity_id="unit" openmrs_entity_parent="usual_residence"/>
                 <usual_residence_street openmrs_entity="person_address" openmrs_entity_id="lane" openmrs_entity_parent="usual_residence"/>
                 <usual_residence_area openmrs_entity="person_address" openmrs_entity_id="sector" openmrs_entity_parent="usual_residence"/>
                 <usual_residence_town openmrs_entity="person_address" openmrs_entity_id="municipality" openmrs_entity_parent="usual_residence"/>

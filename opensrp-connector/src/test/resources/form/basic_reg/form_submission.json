@@ -1,8 +1,9 @@
 {
     "anmId": "admin",
+    "instanceId": "88ceee24-10b4-44c2-9429-754b8d823776",
     "clientVersion": "1426830449320",
     "entityId": "b716d938-1aea-40ae-a081-9ddddddcccc9",
-    "formDataDefinitionVersion": "5",
+    "formDataDefinitionVersion": "1",
     "formName": "basic_reg",
     "formInstance": {
         "form_data_definition_version": "1",
@@ -248,5 +249,6 @@
                 }
             ]
         }
-    }
+    },
+    "serverVersion": 1430998001293
 }
