@@ -17,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
-import org.opensrp.connector.OpenmrsConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
@@ -34,6 +33,7 @@ import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.opensrp.service.ErrorTraceService;
 import org.opensrp.service.MultimediaService;
+import org.opensrp.service.formSubmission.FormEntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class FormSubmissionController {
     private FormSubmissionService formSubmissionService;
     private TaskSchedulerService scheduler;
     private EncounterService encounterService;
-    private OpenmrsConnector openmrsConnector;
+    private FormEntityConverter formEntityConverter;
     private PatientService patientService;
     private HouseholdService householdService;
     private ErrorTraceService errorTraceService;
@@ -67,13 +67,13 @@ public class FormSubmissionController {
     
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
-    		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, 
+    		EncounterService encounterService, FormEntityConverter formEntityConverter, PatientService patientService, 
     		HouseholdService householdService, ErrorTraceService errorTraceService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         this.errorTraceService=errorTraceService;
         this.encounterService = encounterService;
-        this.openmrsConnector = openmrsConnector;
+        this.formEntityConverter = formEntityConverter;
         this.patientService = patientService;
         this.householdService = householdService;
     }
@@ -156,11 +156,11 @@ public class FormSubmissionController {
         return new ResponseEntity<>(CREATED);
     }
     
-    private void addFormToOpenMRS(FormSubmission formSubmission) throws ParseException, JSONException{
-    	if(openmrsConnector.isOpenmrsForm(formSubmission)){
-    		Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
-			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-			Map<String, Map<String, Object>> dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
+    private void addFormToOpenMRS(FormSubmission formSubmission) throws ParseException, IllegalStateException, JSONException{
+//    	if(formEntityConverter.isOpenmrsForm(formSubmission)){
+    		Client c = formEntityConverter.getClientFromFormSubmission(formSubmission);
+			Event e = formEntityConverter.getEventFromFormSubmission(formSubmission);
+			Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(formSubmission);
 
     		// TODO temporary because not necessarily we register inner entity for Household only
     		if(formSubmission.formName().toLowerCase().contains("household") 
@@ -191,7 +191,7 @@ public class FormSubmissionController {
         			System.out.println(encounterService.createEncounter(evin));
     			}
     		}
-    	}
+    	//}
     }
     @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
     @ResponseBody
