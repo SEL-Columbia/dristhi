@@ -1,16 +1,23 @@
-Date of Release: 20-Oct-2015
+Date of Release: 06-Nov-2015
 
 New Features
 ============
+- OpenSRP now allows multivalued Obs and also allows data o be pushed to OpenMRS
+- OpenSRP-core now allows to convert formSubmission to FormSubmissionMap that allows accessing all info related to formSubmission intelligently and in last IO operations with form files on disk
 
 Changes
 =======
-- Added a testcase with new form designed by BD for Events generated from subforms in nested group tags in xlsforms
+- Obs in API now allows multiple values
+- Test resources and Test cases added to opensrp-form module
+- opensrp.properties made accessible in opensrp-form
+- For FormSubmission added access to some more fields
+- Form Parser code refactored to reduce IO operations and make all data avilable in one entity and moved to opensrp-form
+- Form to Entity converter i.e. form to Client and Event converter moved to core and refactored
 
 Fixes
 =====
-- FormSubmissionField was not getting populated for dependent clients in Connector
-- Address Fields extraction from openmrs mapping refactored and fixed for subform clients
+- Inconsistent test forms were modified to conform to other form files
+
 
 Known Issues
 ============
