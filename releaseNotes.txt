@@ -1,23 +1,17 @@
-Date of Release: 06-Nov-2015
+Date of Release: 12-Nov-2015
 
 New Features
 ============
-- OpenSRP now allows multivalued Obs and also allows data o be pushed to OpenMRS
-- OpenSRP-core now allows to convert formSubmission to FormSubmissionMap that allows accessing all info related to formSubmission intelligently and in last IO operations with form files on disk
+- FormSubmission and its Service extended to allow handling server side metadata info associated and search on other parameters
 
 Changes
 =======
-- Obs in API now allows multiple values
-- Test resources and Test cases added to opensrp-form module
-- opensrp.properties made accessible in opensrp-form
-- For FormSubmission added access to some more fields
-- Form Parser code refactored to reduce IO operations and make all data avilable in one entity and moved to opensrp-form
-- Form to Entity converter i.e. form to Client and Event converter moved to core and refactored
+- Minor refactoring in Tree class and LocationTest in API
+- OpenSRP core constants moved in OpenSRPConstants from register DrishtiScheduleConstants
 
 Fixes
 =====
-- Inconsistent test forms were modified to conform to other form files
-
+- 
 
 Known Issues
 ============
