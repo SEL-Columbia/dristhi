@@ -28,7 +28,7 @@ import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
-import org.opensrp.register.DrishtiScheduleConstants.OpenSRPEvent;
+import org.opensrp.OpenSRPConstants.OpenSRPEvent;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.opensrp.service.ErrorTraceService;
