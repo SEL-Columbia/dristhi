@@ -37,7 +37,11 @@ public class FormSubmissionService {
             }
         });
     }
-
+    
+    public FormSubmission findByInstanceId(String instanceId) {
+        return allFormSubmissions.findByInstanceId(instanceId);
+    }
+    
     public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version, Integer batchSize) {
         return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
     }
@@ -46,6 +50,14 @@ public class FormSubmissionService {
         return allFormSubmissions.allFormSubmissions(version, batchSize);
     }
 
+    public List<FormSubmission> findByFormName(String formName, long version) {
+    	return allFormSubmissions.findByFormName(formName, version);
+    }
+    
+    public List<FormSubmission> findByMetadata(String key, Object value) {
+    	return allFormSubmissions.findByMetadata(key, value);
+    }
+    
     public void submit(List<FormSubmissionDTO> formSubmissionsDTO) {
         List<FormSubmission> formSubmissions = with(formSubmissionsDTO).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
             @Override

@@ -55,8 +55,7 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         return db.queryView(query, FormSubmission.class);
     }
 
-    @View(
-            name = "formSubmission_by_anm_and_server_version",
+    @View(name = "formSubmission_by_anm_and_server_version",
             map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.serverVersion], null); } }")
     public List<FormSubmission> findByANMIDAndServerVersion(String anmId, long version, Integer batchSize) {
         ComplexKey startKey = ComplexKey.of(anmId, version + 1);
@@ -70,4 +69,29 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         }
         return db.queryView(query, FormSubmission.class);
     }
+    
+    @View(name = "formSubmission_by_form_name_and_server_version", 
+    		map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.formName, doc.serverVersion]); } }")
+    public List<FormSubmission> findByFormName(String formName, long version) {
+    	ComplexKey startKey = ComplexKey.of(formName, version + 1);
+        ComplexKey endKey = ComplexKey.of(formName, Long.MAX_VALUE);
+        return db.queryView(createQuery("formSubmission_by_form_name_and_server_version")
+        		.startKey(startKey)
+                .endKey(endKey)
+                .includeDocs(true), FormSubmission.class);
+    }
+
+    @View(name = "formSubmission_by_metadata_keyval", 
+    		map = "function(doc) { if (doc.type === 'FormSubmission') { "
+    				+ "if(doc.metadata){"
+    				+ "for(var key in doc.metadata) {emit([key, doc.metadata[key]]);}"
+    				+ "}"
+    				+ "}}")
+    public List<FormSubmission> findByMetadata(String key, Object value) {
+        ComplexKey ckey = ComplexKey.of(key, value);
+        return db.queryView(createQuery("formSubmission_by_metadata_keyval")
+                .key(ckey)
+                .includeDocs(true), FormSubmission.class);
+    }
+
 }

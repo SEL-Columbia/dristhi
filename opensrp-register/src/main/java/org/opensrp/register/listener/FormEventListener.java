@@ -16,7 +16,8 @@ import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.register.DrishtiScheduleConstants;
-import org.opensrp.register.DrishtiScheduleConstants.OpenSRPEvent;
+import org.opensrp.OpenSRPConstants;
+import org.opensrp.OpenSRPConstants.OpenSRPEvent;
 import org.opensrp.repository.AllFormExportTokens;
 import org.opensrp.service.formSubmission.FormEntityService;
 import org.slf4j.Logger;
@@ -51,7 +52,7 @@ public class FormEventListener {
         formSubmissionService.submit(formSubmissions);
     }
 
-    @MotechListener(subjects = DrishtiScheduleConstants.FORM_SCHEDULE_SUBJECT)
+    @MotechListener(subjects = OpenSRPConstants.FORM_SCHEDULE_SUBJECT)
     public void fetchForms(MotechEvent event) {
         if (!lock.tryLock()) {
             logger.warn("Not fetching forms from Message Queue. It is already in progress.");
