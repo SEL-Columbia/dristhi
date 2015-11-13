@@ -23,6 +23,13 @@
             <groupId>org.motechproject</groupId>
             <version>${motech.version}</version>
         </dependency>
+<dependency>
+	<groupId>com.fasterxml.jackson.core</groupId>
+	<artifactId>jackson-core</artifactId>
+	<version>2.0.0</version>
+</dependency>
+
+        
         <dependency>
             <artifactId>motech-sms-api</artifactId>
             <groupId>org.motechproject</groupId>
@@ -33,6 +40,12 @@
             <groupId>org.motechproject</groupId>
             <version>${motech.version}</version>
         </dependency>
+         <dependency>
+	<groupId>org.codehaus.jackson</groupId>
+	<artifactId>jackson-core-asl</artifactId>
+	<version>1.9.0</version>
+</dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
