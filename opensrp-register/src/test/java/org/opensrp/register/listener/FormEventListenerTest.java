@@ -14,12 +14,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.scheduler.domain.MotechEvent;
+import org.opensrp.OpenSRPConstants.OpenSRPEvent;
 import org.opensrp.domain.FormExportToken;
 import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionService;
-import org.opensrp.register.DrishtiScheduleConstants.OpenSRPEvent;
-import org.opensrp.register.listener.FormEventListener;
 import org.opensrp.repository.AllFormExportTokens;
 import org.opensrp.service.formSubmission.FormEntityService;
 
