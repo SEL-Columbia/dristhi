@@ -29,6 +29,10 @@ public class FormField {
     public String value() {
         return value;
     }
+    
+    public String source() {
+        return source;
+    }
 
     @Override
     public boolean equals(Object o) {

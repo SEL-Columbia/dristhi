@@ -23,13 +23,13 @@ import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.motechproject.scheduletracking.api.domain.Schedule;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
-import org.opensrp.connector.FormAttributeMapper;
-import org.opensrp.connector.OpenmrsConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.dto.ActionData;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.service.FormAttributeParser;
 import org.opensrp.scheduler.Action;
+import org.opensrp.service.formSubmission.FormEntityConverter;
 
 import com.google.gson.JsonIOException;
 
@@ -42,7 +42,7 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 	OpenmrsUserService us;
 	
 	EncounterService es;
-	OpenmrsConnector oc;
+	FormEntityConverter oc;
 	PatientService ps;
 	HouseholdService hhs;
 
@@ -62,8 +62,8 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 		hhs = new HouseholdService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		hhs.setPatientService(ps);
 		hhs.setEncounterService(es);
-		FormAttributeMapper fam = new FormAttributeMapper(formDirPath);
-		oc = new OpenmrsConnector(fam);
+		FormAttributeParser fam = new FormAttributeParser(formDirPath);
+		oc = new FormEntityConverter(fam);
 	}
 	
 	@Test

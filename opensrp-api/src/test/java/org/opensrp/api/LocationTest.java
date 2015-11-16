@@ -97,7 +97,7 @@ public class LocationTest {
     	ll.add(new Location("20", "l20", null, null, null, null, null).withParentLocation(ll.get(17)));
 
     	LocationTree ltree = new LocationTree();
-    	ltree.buildTreeFromList(ll);;
+    	ltree.buildTreeFromList(ll);
     	
     	assertEquals("", ltree.findLocation("7"), ll.get(6));
     	assertTrue("", ltree.hasLocation("7"));

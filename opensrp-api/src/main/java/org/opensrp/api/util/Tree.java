@@ -92,13 +92,12 @@ public class Tree<K,T> {
 		// Check if id is any root node
 		if (map.containsKey(id)) {
 			return map.get(id);
-		} 
-		else {// means that we only need to check children of each root.
-				// neither root itself nor parent of root
-			for (TreeNode<K, T> root : map.values()) {
-				TreeNode<K, T> n = root.findChild(id);
-				if(n != null) return n;
-			}
+		}
+		
+		// neither root itself nor parent of root
+		for (TreeNode<K, T> root : map.values()) {
+			TreeNode<K, T> n = root.findChild(id);
+			if(n != null) return n;
 		}
 		return null;
 	}
@@ -107,14 +106,12 @@ public class Tree<K,T> {
 		// Check if id is any root node
 		if (map.containsKey(id)) {
 			return map.remove(id);
-		} 
-		else {// means that we only need to check children of each root.
-				// neither root itself nor parent of root
-			for (TreeNode<K, T> root : map.values()) {
-				TreeNode<K, T> n = root.removeChild(id);
-				if(n != null){
-					return n;
-				}
+		}
+		// neither root itself nor parent of root
+		for (TreeNode<K, T> root : map.values()) {
+			TreeNode<K, T> n = root.removeChild(id);
+			if(n != null){
+				return n;
 			}
 		}
 		return null;

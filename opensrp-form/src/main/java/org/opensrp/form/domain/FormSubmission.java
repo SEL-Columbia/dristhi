@@ -29,6 +29,8 @@ public class FormSubmission extends MotechBaseDataObject {
     private FormInstance formInstance;
     @JsonProperty
     private long serverVersion;
+    @JsonProperty
+    private Map<String, Object> metadata;
 
     public FormSubmission() {
     }
@@ -64,6 +66,14 @@ public class FormSubmission extends MotechBaseDataObject {
         return this.formName;
     }
 
+    public String bindType() {
+		return formInstance.bindType();
+	}
+    
+    public String defaultBindPath() {
+		return formInstance.defaultBindPath();
+	}
+    
     public FormInstance instance() {
         return formInstance;
     }
@@ -108,6 +118,28 @@ public class FormSubmission extends MotechBaseDataObject {
         return formInstance.subForms();
     }
 
+    public Map<String, Object> getMetadata() {
+		return metadata;
+	}
+
+    public Object getMetadata(String key) {
+    	if(metadata == null){
+    		return null;
+    	}
+		return metadata.get(key);
+	}
+    
+    void addMetadata(String key, Object value) {
+    	if(metadata == null){
+    		metadata = new HashMap<>();
+    	}
+		metadata.put(key, value);
+	}
+    
+	void setMetadata(Map<String, Object> metadata) {
+		this.metadata = metadata;
+	}
+	
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(o, this);
