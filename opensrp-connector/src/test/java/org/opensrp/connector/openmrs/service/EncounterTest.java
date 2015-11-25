@@ -13,9 +13,9 @@ import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opensrp.api.domain.Client;
-import org.opensrp.api.domain.Event;
-import org.opensrp.api.domain.Obs;
+import org.opensrp.domain.Client;
+import org.opensrp.domain.Event;
+import org.opensrp.domain.Obs;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormAttributeParser;
@@ -55,13 +55,13 @@ public class EncounterTest extends TestResourceLoader{
 		
 		Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntityId(), "b716d938-1aea-40ae-a081-9ddddddcccc9");
-		assertEquals(c.getBaseEntity().getFirstName(), "test woman_name");
-		assertEquals(c.getBaseEntity().getGender(), "FEMALE");
-		assertEquals(c.getBaseEntity().getAddresses().get(0).getAddressType(), "birthplace");
-		assertEquals(c.getBaseEntity().getAddresses().get(1).getAddressType(), "usual_residence");
-		assertEquals(c.getBaseEntity().getAddresses().get(2).getAddressType(), "previous_residence");
-		assertEquals(c.getBaseEntity().getAddresses().get(3).getAddressType(), "deathplace");
-		assertTrue(c.getBaseEntity().getAttributes().isEmpty());
+		assertEquals(c.getFirstName(), "test woman_name");
+		assertEquals(c.getGender(), "FEMALE");
+		assertEquals(c.getAddresses().get(0).getAddressType(), "birthplace");
+		assertEquals(c.getAddresses().get(1).getAddressType(), "usual_residence");
+		assertEquals(c.getAddresses().get(2).getAddressType(), "previous_residence");
+		assertEquals(c.getAddresses().get(3).getAddressType(), "deathplace");
+		assertTrue(c.getAttributes().isEmpty());
 		
 		Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getEventType(), "patient_register");
@@ -75,11 +75,11 @@ public class EncounterTest extends TestResourceLoader{
 
 		Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
-		assertEquals(c.getBaseEntity().getFirstName(), "test");
-		assertEquals(c.getBaseEntity().getGender(), "male");
-		assertEquals(c.getBaseEntity().getBirthdate(), sd.parse("1900-01-01"));
-		assertEquals(c.getBaseEntity().getAddresses().get(0).getAddressField("landmark"), "nothing");
-		assertEquals(c.getBaseEntity().getAddresses().get(0).getAddressType(), "usual_residence");
+		assertEquals(c.getFirstName(), "test");
+		assertEquals(c.getGender(), "male");
+		assertEquals(c.getBirthdate(), sd.parse("1900-01-01"));
+		assertEquals(c.getAddresses().get(0).getAddressField("landmark"), "nothing");
+		assertEquals(c.getAddresses().get(0).getAddressType(), "usual_residence");
 		assertEquals(c.getIdentifiers().get("GOB HHID"), "1234");
 		assertEquals(c.getIdentifiers().get("JiVitA HHID"), "1234");
 		
@@ -112,11 +112,11 @@ public class EncounterTest extends TestResourceLoader{
 
 		Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
-		assertEquals(c.getBaseEntity().getFirstName(), "test");
-		assertEquals(c.getBaseEntity().getGender(), "male");
-		assertEquals(c.getBaseEntity().getBirthdate(), sd.parse("1900-01-01"));
-		assertEquals(c.getBaseEntity().getAddresses().get(0).getAddressField("landmark"), "nothing");
-		assertEquals(c.getBaseEntity().getAddresses().get(0).getAddressType(), "usual_residence");
+		assertEquals(c.getFirstName(), "test");
+		assertEquals(c.getGender(), "male");
+		assertEquals(c.getBirthdate(), sd.parse("1900-01-01"));
+		assertEquals(c.getAddresses().get(0).getAddressField("landmark"), "nothing");
+		assertEquals(c.getAddresses().get(0).getAddressType(), "usual_residence");
 		assertEquals(c.getIdentifiers().get("GOB HHID"), "1234");
 		assertEquals(c.getIdentifiers().get("JiVitA HHID"), "1234");
 		
@@ -143,14 +143,14 @@ public class EncounterTest extends TestResourceLoader{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 7);
 
 		Client c = oc.getClientFromFormSubmission(fs);
-		assertEquals(c.getBaseEntity().getBirthdate(), sd.parse("1900-01-01"));
-		assertTrue(c.getBaseEntity().getBirthdateApprox());
+		assertEquals(c.getBirthdate(), sd.parse("1900-01-01"));
+		assertTrue(c.getBirthdateApprox());
 		
 		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
 		for (String id : dc.keySet()) {
 			Client cl = (Client) dc.get(id).get("client");
-			assertEquals(cl.getBaseEntity().getBirthdate(), sd.parse("2000-05-07"));
-			assertFalse(cl.getBaseEntity().getBirthdateApprox());
+			assertEquals(cl.getBirthdate(), sd.parse("2000-05-07"));
+			assertFalse(cl.getBirthdateApprox());
 		}
 	}	
 	
@@ -159,14 +159,14 @@ public class EncounterTest extends TestResourceLoader{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 8);
 
 		Client c = oc.getClientFromFormSubmission(fs);
-		assertEquals(c.getBaseEntity().getBirthdate(), sd.parse("1900-01-01"));
-		assertFalse(c.getBaseEntity().getBirthdateApprox());
+		assertEquals(c.getBirthdate(), sd.parse("1900-01-01"));
+		assertFalse(c.getBirthdateApprox());
 		
 		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
 		for (String id : dc.keySet()) {
 			Client cl = (Client) dc.get(id).get("client");
-			assertEquals(cl.getBaseEntity().getBirthdate(), sd.parse("2000-05-07"));
-			assertFalse(cl.getBaseEntity().getBirthdateApprox());
+			assertEquals(cl.getBirthdate(), sd.parse("2000-05-07"));
+			assertFalse(cl.getBirthdateApprox());
 		}
 	}	
 	
@@ -176,10 +176,10 @@ public class EncounterTest extends TestResourceLoader{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration_with_grouped_subform_data", 1);
 
 		Client c = oc.getClientFromFormSubmission(fs);
-		assertEquals(c.getBaseEntity().getBirthdate(), sd.parse("1900-01-01"));
-		assertFalse(c.getBaseEntity().getBirthdateApprox());
-		assertThat(c.getBaseEntity().getAttributes(), Matchers.<String, Object>hasEntry(equalTo("GoB_HHID"), equalTo((Object)"2322")));
-		assertThat(c.getBaseEntity().getAttributes(), Matchers.<String, Object>hasEntry(equalTo("JiVitA_HHID"), equalTo((Object)"9889")));
+		assertEquals(c.getBirthdate(), sd.parse("1900-01-01"));
+		assertFalse(c.getBirthdateApprox());
+		assertThat(c.getAttributes(), Matchers.<String, Object>hasEntry(equalTo("GoB_HHID"), equalTo((Object)"2322")));
+		assertThat(c.getAttributes(), Matchers.<String, Object>hasEntry(equalTo("JiVitA_HHID"), equalTo((Object)"9889")));
 		
 		Event e = (Event) oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), c.getBaseEntityId());
@@ -196,16 +196,16 @@ public class EncounterTest extends TestResourceLoader{
 		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
 		for (String id : dc.keySet()) {
 			Client cl = (Client) dc.get(id).get("client");
-			assertEquals(cl.getBaseEntity().getBirthdate(), sd.parse("1988-10-08"));
-			assertFalse(cl.getBaseEntity().getBirthdateApprox());
-			assertEquals(cl.getBaseEntity().getFirstName(), "jackfruit");
-			assertEquals(cl.getBaseEntity().getAddresses().get(0).getCountry(), "Bangladesh");
-			assertEquals(cl.getBaseEntity().getAddresses().get(0).getAddressType(), "usual_residence");
-			assertEquals(cl.getBaseEntity().getAddresses().get(0).getState(), "RANGPUR");
+			assertEquals(cl.getBirthdate(), sd.parse("1988-10-08"));
+			assertFalse(cl.getBirthdateApprox());
+			assertEquals(cl.getFirstName(), "jackfruit");
+			assertEquals(cl.getAddresses().get(0).getCountry(), "Bangladesh");
+			assertEquals(cl.getAddresses().get(0).getAddressType(), "usual_residence");
+			assertEquals(cl.getAddresses().get(0).getState(), "RANGPUR");
 			assertThat(cl.getIdentifiers(), Matchers.<String, String>hasEntry(equalTo("NID"), equalTo("7675788777775")));
 			assertThat(cl.getIdentifiers(), Matchers.<String, String>hasEntry(equalTo("Birth Registration ID"), equalTo("98899998888888888")));
-			assertThat(cl.getBaseEntity().getAttributes(), Matchers.<String, Object>hasEntry(equalTo("GoB_HHID"), equalTo((Object)"2322")));
-			assertThat(cl.getBaseEntity().getAttributes(), Matchers.<String, Object>hasEntry(equalTo("JiVitA_HHID"), equalTo((Object)"9889")));
+			assertThat(cl.getAttributes(), Matchers.<String, Object>hasEntry(equalTo("GoB_HHID"), equalTo((Object)"2322")));
+			assertThat(cl.getAttributes(), Matchers.<String, Object>hasEntry(equalTo("JiVitA_HHID"), equalTo((Object)"9889")));
 		
 			Event ev = (Event) dc.get(id).get("event");
 			assertEquals(ev.getBaseEntityId(), cl.getBaseEntityId());

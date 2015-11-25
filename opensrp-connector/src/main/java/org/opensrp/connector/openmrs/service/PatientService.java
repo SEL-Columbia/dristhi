@@ -8,10 +8,9 @@ import java.util.Map.Entry;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.api.domain.Address;
-import org.opensrp.api.domain.BaseEntity;
-import org.opensrp.api.domain.Client;
 import org.opensrp.connector.HttpUtil;
+import org.opensrp.domain.Address;
+import org.opensrp.domain.Client;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -79,12 +78,12 @@ public class PatientService extends OpenmrsService{
     	return p.length()>0?p.getJSONObject(0):null;
     }
 	
-	public JSONObject createPerson(BaseEntity be) throws JSONException{
+	public JSONObject createPerson(Client be) throws JSONException{
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
 		return new JSONObject(HttpUtil.post(getURL()+"/"+PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
 	
-	public JSONObject convertBaseEntityToOpenmrsJson(BaseEntity be) throws JSONException {
+	public JSONObject convertBaseEntityToOpenmrsJson(Client be) throws JSONException {
 		JSONObject per = new JSONObject();
 		per.put("gender", be.getGender());
 		per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate()));
@@ -170,7 +169,7 @@ public class PatientService extends OpenmrsService{
 	public JSONObject createPatient(Client c) throws JSONException
 	{
 		JSONObject p = new JSONObject();
-		p.put("person", createPerson(c.getBaseEntity()).getString("uuid"));
+		p.put("person", createPerson(c).getString("uuid"));
 		JSONArray ids = new JSONArray();
 		if(c.getIdentifiers() != null){
 		for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
@@ -181,7 +180,7 @@ public class PatientService extends OpenmrsService{
 			}
 			jio.put("identifierType", idobj.getString("uuid"));
 			jio.put("identifier", id.getValue());
-			Object cloc = c.getBaseEntity().getAttribute("Location");
+			Object cloc = c.getAttribute("Location");
 			jio.put("location", cloc == null?"Unknown Location":cloc);
 			//jio.put("preferred", true);
 
@@ -195,7 +194,7 @@ public class PatientService extends OpenmrsService{
 		}
 		jio.put("identifierType", ido.getString("uuid"));
 		jio.put("identifier", c.getBaseEntityId());
-		Object cloc = c.getBaseEntity().getAttribute("Location");
+		Object cloc = c.getAttribute("Location");
 		jio.put("location", cloc == null?"Unknown Location":cloc);
 		jio.put("preferred", true);
 		

@@ -81,7 +81,7 @@ public class HouseholdService extends OpenmrsService{
 		JSONObject hhe = encounterService.createEncounter(household.getHouseholdHead().getEvent().get(0));
 		
 		for (HouseholdMember m : household.getMembers()) {
-			if(StringUtils.isEmptyOrWhitespaceOnly(m.getClient().getBaseEntity().getFirstName())
+			if(StringUtils.isEmptyOrWhitespaceOnly(m.getClient().getFirstName())
 					&& m.getClient().getIdentifiers().size() < 2){//we need to ignore uuid of entity
 				//skip Data push for now
 			}

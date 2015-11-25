@@ -21,8 +21,8 @@ import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.motechproject.scheduletracking.api.domain.Schedule;
-import org.opensrp.api.domain.Client;
-import org.opensrp.api.domain.Event;
+import org.opensrp.domain.Client;
+import org.opensrp.domain.Event;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.dto.ActionData;
@@ -182,6 +182,6 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 	}
 	
     private ActionData alert(String schedule, String milestone) {
-        return ActionData.createAlert(mother, schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
+        return ActionData.createAlert(mother.value(), schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
     }
 }

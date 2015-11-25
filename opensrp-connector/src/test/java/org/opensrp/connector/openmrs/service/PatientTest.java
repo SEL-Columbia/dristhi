@@ -10,9 +10,8 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opensrp.api.domain.Address;
-import org.opensrp.api.domain.BaseEntity;
-import org.opensrp.api.domain.Client;
+import org.opensrp.domain.Address;
+import org.opensrp.domain.Client;
 
 
 public class PatientTest extends TestResourceLoader{
@@ -34,9 +33,16 @@ public class PatientTest extends TestResourceLoader{
 		addresses.add(new Address("DEATH", new Date(), new Date(), null, "LATd", "LONd", "dPCODE", "KPK", "PK"));
 		Map<String, Object> attribs = new HashMap<>();
 		//attribs.put("Household ID", "HH112");
-		Client c = new Client()
-			.withBaseEntity(new BaseEntity(UUID.randomUUID().toString(), "FN", "MN", "LN", new Date(), new Date(), 
-					true, false, "MALE", addresses , attribs ))
+		Client c = new Client(UUID.randomUUID().toString())
+			.withFirstName("FN")
+			.withMiddleName("MN")
+			.withLastName("LN")
+			.withBirthdate(new Date(), true)
+			.withDeathdate(new Date(), false)
+			.withGender("MALE");
+		
+		c.withAddresses(addresses)
+			.withAttributes(attribs )
 			//.withIdentifier("Birth Reg Num", "b-8912819"+new Random().nextInt(99))
 			//.withIdentifier("Death Reg Num", "d-ewj-js3u2"+new Random().nextInt(99))
 			;

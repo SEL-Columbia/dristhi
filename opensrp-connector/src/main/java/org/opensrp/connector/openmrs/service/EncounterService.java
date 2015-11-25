@@ -2,15 +2,14 @@ package org.opensrp.connector.openmrs.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.api.domain.Event;
-import org.opensrp.api.domain.Obs;
+import org.opensrp.domain.Event;
+import org.opensrp.domain.Obs;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
