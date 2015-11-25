@@ -2,6 +2,7 @@ package org.opensrp.repository;
 
 import java.util.List;
 
+import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
@@ -16,8 +17,7 @@ import org.springframework.stereotype.Repository;
 public class AllBaseEntities extends MotechBaseRepository<BaseEntity> {
 
 	@Autowired
-	protected AllBaseEntities(
-			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+	protected AllBaseEntities(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(BaseEntity.class, db);
 	}
 
@@ -30,21 +30,19 @@ public class AllBaseEntities extends MotechBaseRepository<BaseEntity> {
 		return entities.get(0);
 	}
 
-	@View(name = "all_entities", map = "function(doc) { if (doc.type === 'BaseEntity') { emit(doc.id); } }")
+	@View(name = "all_entities", map = "function(doc) { if (doc.baseEntityId && doc.identifiers) { emit(doc.id); } }")
 	public List<BaseEntity> findAllBaseEntities() {
-		return db.queryView(createQuery("all_entities").includeDocs(true),
-				BaseEntity.class);
+		return db.queryView(createQuery("all_entities").includeDocs(true), BaseEntity.class);
 	}
 
-	@View(name = "all_entities_by_IDs", map = "function(doc) { if (doc.type === 'BaseEntity' && doc.id) { emit(doc.id); } }")
-	public List<BaseEntity> findAll(List<String> Ids) {
-		return db.queryView(createQuery("all_entities_by_IDs").keys(Ids)
-				.includeDocs(true), BaseEntity.class);
+	@View(name = "all_entities_by_identifier", map = "function(doc) {if (doc.baseEntityId && doc.identifiers) {for(var key in doc.identifiers) {emit([doc.identifiers[key]]);}}}")
+	public List<BaseEntity> findAllByIdentifier(String identifier) {
+		return db.queryView(createQuery("all_entities_by_identifier").key(identifier).includeDocs(true), BaseEntity.class);
 	}
 
-	@View(name = "all_entities_by_IDs", map = "function(doc) { if (doc.type === 'BaseEntity' && doc.id) { emit(doc.id); } }")
-	public List<BaseEntity> findByBaseEntityIds(List<String> Ids) {
-		return db.queryView(createQuery("all_entities_by_IDs").keys(Ids)
-				.includeDocs(true), BaseEntity.class);
+	@View(name = "all_entities_by_identifier_of_type", map = "function(doc) {if (doc.baseEntityId && doc.identifiers) {for(var key in doc.identifiers) {emit([key, doc.identifiers[key]]);}}}")
+	public List<BaseEntity> findAllByIdentifier(String identifierType, String identifier) {
+		ComplexKey ckey = ComplexKey.of(identifierType, identifier);
+		return db.queryView(createQuery("all_entities_by_identifier_of_type").key(ckey).includeDocs(true), BaseEntity.class);
 	}
 }
