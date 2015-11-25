@@ -1,17 +1,24 @@
-Date of Release: 12-Nov-2015
+Date of Release: 25-Nov-2015
 
 New Features
 ============
-- FormSubmission and its Service extended to allow handling server side metadata info associated and search on other parameters
+- App pushing schedule to openmrs automatically instead of need to upload explicitly
+- Client and Event model in action now which was never used before
+- Ziggy dependency for custom form handling logic removed though ziggy can still be used to make app backward compatible with minor changes
+- Scheduling is automated and can be configured from external xls file. Ziggy dependency is completely removed. Now no need to write custom code and adding hardcoded config constants in alot of places
 
 Changes
 =======
-- Minor refactoring in Tree class and LocationTest in API
-- OpenSRP core constants moved in OpenSRPConstants from register DrishtiScheduleConstants
+- FormAttribueParser using core domain instead of api domain objects
+- Added ability to get address field by regex in domain Address too
+- Refactored all domain classes to be able to extend in future if any non-human object becomes client. 
+- deleted all old domain objects and repositories those are not needed and were useless
+- Added methods in repositories of BaseEntity, Client and Event to allow searching on different filters specifically identifiers
+- Custom reporting code moved out of core to make code clean and readible... If needed generic reporting ever this can be added after refactorings
 
 Fixes
 =====
-- 
+- Fixed NPE when there is no value for a field in FormAttributeParser
 
 Known Issues
 ============
