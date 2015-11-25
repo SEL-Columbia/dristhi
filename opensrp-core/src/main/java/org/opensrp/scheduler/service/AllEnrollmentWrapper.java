@@ -8,7 +8,6 @@ import org.ektorp.support.View;
 import org.joda.time.DateTime;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.repository.AllEnrollments;
-import org.motechproject.scheduletracking.api.repository.AllSchedules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 class AllEnrollmentWrapper extends AllEnrollments{
 	@Autowired
-    private AllSchedules allSchedules;
+    private AllScheduleWrapper allSchedules;
 	
 	@Autowired
 	public AllEnrollmentWrapper(@Qualifier("scheduleTrackingDbConnector") CouchDbConnector db) {
