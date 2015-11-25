@@ -1,9 +1,5 @@
 package org.opensrp.scheduler.service;
 
-import static org.opensrp.dto.BeneficiaryType.child;
-import static org.opensrp.dto.BeneficiaryType.ec;
-import static org.opensrp.dto.BeneficiaryType.mother;
-
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -32,10 +28,7 @@ public class ActionService {
 		return allActions.findByCaseIdScheduleAndTimeStamp(caseId, schedule, start, end);
 	}
 
-    public void alertForBeneficiary(BeneficiaryType beneficiaryType, String caseID, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
-    	if (!(mother.equals(beneficiaryType)||child.equals(beneficiaryType)||ec.equals(beneficiaryType))) {
-            throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
-        }
+    public void alertForBeneficiary(String beneficiaryType, String caseID, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
     	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
     }
 
