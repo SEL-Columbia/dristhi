@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.WindowName;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.opensrp.dto.AlertStatus;
@@ -28,42 +29,42 @@ public class HealthSchedulerService {
 		this.scheduleService = scheduleService;
 	}
 	
-	public void enrollIntoSchedule(String entityId, String schedule, LocalDate referenceDate) {
-		scheduleService.enroll(entityId, schedule, referenceDate.toString());
+	public void enrollIntoSchedule(String entityId, String schedule, LocalDate referenceDate, String formSubmissionId, String entityType) {
+		scheduleService.enroll(entityId, schedule, referenceDate.toString(), formSubmissionId, entityType);
 	}
 	
-	public void enrollIntoSchedule(String entityId, String schedule, String referenceDate) {
-		scheduleService.enroll(entityId, schedule, referenceDate);
+	public void enrollIntoSchedule(String entityId, String schedule, String referenceDate, String formSubmissionId, String entityType) {
+		scheduleService.enroll(entityId, schedule, referenceDate, formSubmissionId, entityType);
 	}
 	
-	public void enrollIntoSchedule(String entityId, String schedule, String milestone, String referenceDate) {
-		scheduleService.enroll(entityId, schedule, milestone, referenceDate);
+	public void enrollIntoSchedule(String entityId, String schedule, String milestone, String referenceDate, String formSubmissionId, String entityType) {
+		scheduleService.enroll(entityId, schedule, milestone, referenceDate, formSubmissionId, entityType);
 	}
 	
-	public void fullfillMilestoneAndCloseAlert(String entityId, String providerId, String scheduleName, String milestone, LocalDate completionDate) {
-		scheduleService.fulfillMilestone(entityId, scheduleName, completionDate);
+	public void fullfillMilestoneAndCloseAlert(String entityId, String providerId, String scheduleName, String milestone, LocalDate completionDate, String formSubmissionId, String entityType) {
+		scheduleService.fulfillMilestone(entityId, scheduleName, completionDate, formSubmissionId, entityType);
         actionService.markAlertAsClosed(entityId, providerId, milestone, completionDate.toString());
 	}
 	
-	public void fullfillMilestoneAndCloseAlert(String entityId, String providerId, String scheduleName, LocalDate completionDate) {
-		scheduleService.fulfillMilestone(entityId, scheduleName, completionDate);
+	public void fullfillMilestoneAndCloseAlert(String entityId, String providerId, String scheduleName, LocalDate completionDate, String formSubmissionId, String entityType) {
+		scheduleService.fulfillMilestone(entityId, scheduleName, completionDate, formSubmissionId, entityType);
         actionService.markAlertAsClosed(entityId, providerId, scheduleName, completionDate.toString());
 	}
 	
-	public void unEnrollFromSchedule(String entityId, String providerId, String scheduleName) {
-		scheduleService.unenroll(entityId, scheduleName);
+	public void unEnrollFromSchedule(String entityId, String providerId, String scheduleName, String formSubmissionId, String entityType) {
+		scheduleService.unenroll(entityId, scheduleName, formSubmissionId, entityType);
         actionService.markAlertAsInactive(providerId, entityId, scheduleName);
     }
 	
-	public void unEnrollAndCloseSchedule(String entityId, String providerId, String scheduleName, LocalDate completionDate) {
-		scheduleService.unenroll(entityId, scheduleName);
+	public void unEnrollAndCloseSchedule(String entityId, String providerId, String scheduleName, LocalDate completionDate, String formSubmissionId, String entityType) {
+		scheduleService.unenroll(entityId, scheduleName, formSubmissionId, entityType);
         actionService.markAlertAsClosed(providerId, entityId, scheduleName, completionDate.toString());
     }
 	
-	public void unEnrollFromAllSchedules(String entityId) {
+	public void unEnrollFromAllSchedules(String entityId, String formSubmissionId, String entityType) {
         List<String> activeSchedules = scheduleService.findOpenEnrollmentNames(entityId);
 
-		scheduleService.unenroll(entityId, activeSchedules);
+		scheduleService.unenroll(entityId, activeSchedules, formSubmissionId, entityType);
         actionService.markAllAlertsAsInactive(entityId);
     }
 	
@@ -83,11 +84,11 @@ public class HealthSchedulerService {
         return scheduleService.getEnrollment(entityId, scheduleName) == null;
     }
 	
-	public EnrollmentRecord getEnrollment(String entityId, String scheduleName) {
+	public Enrollment getEnrollment(String entityId, String scheduleName) {
         return scheduleService.getEnrollment(entityId, scheduleName);
     }
 	
-	public void alertFor(String windowName, BeneficiaryType beneficiaryType, String entityId, 
+	public void alertFor(String windowName, String beneficiaryType, String entityId, 
 			String providerId, String schedule, String milestone, 
 			DateTime startOfDueWindow, DateTime startOfLateWindow, DateTime startOfMaxWindow) {
 		if (WindowName.late.toString().equals(windowName)) {
@@ -99,7 +100,7 @@ public class HealthSchedulerService {
         }
 	}
 	
-	public void alertFor(BeneficiaryType beneficiaryType, String entityId, String providerId, String schedule, 
+	public void alertFor(String beneficiaryType, String entityId, String providerId, String schedule, 
 			String milestone, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
 		actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, alertStatus,
 				startDate, expiryDate);
