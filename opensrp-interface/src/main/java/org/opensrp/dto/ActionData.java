@@ -14,10 +14,10 @@ public class ActionData {
     private String type;
     private Map<String, String> details;
 
-    public static ActionData createAlert(BeneficiaryType beneficiaryType, String scheduleName, String visitCode,
+    public static ActionData createAlert(String beneficiaryType, String scheduleName, String visitCode,
                                          AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
         return new ActionData("alert", "createAlert")
-                .with("beneficiaryType", beneficiaryType.value())
+                .with("beneficiaryType", beneficiaryType)
                 .with("scheduleName", scheduleName)
                 .with("visitCode", visitCode)
                 .with("alertStatus", alertStatus.value())
