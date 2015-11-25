@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.motechproject.model.MotechBaseDataObject;
 
-
 public abstract class BaseDataObject extends MotechBaseDataObject {
 
 	@JsonProperty
