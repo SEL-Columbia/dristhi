@@ -69,7 +69,7 @@ import org.opensrp.register.repository.AllEligibleCouples;
 import org.opensrp.register.repository.AllMothers;
 import org.opensrp.register.service.reporting.MotherReportingService;
 import org.opensrp.register.service.scheduling.PNCSchedulesService;
-import org.opensrp.service.formSubmission.handler.ReportFieldsDefinition;
+import org.opensrp.util.ReportFieldsDefinition;
 import org.opensrp.util.SafeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

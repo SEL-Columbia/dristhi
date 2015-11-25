@@ -11,8 +11,10 @@ import org.mockito.Mock;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.register.service.reporting.MCTSReportService;
-import org.opensrp.service.formSubmission.handler.FormSubmissionHandler;
+import org.opensrp.service.formSubmission.handler.CustomFormSubmissionHandler;
+import org.opensrp.service.formSubmission.handler.HandlerMapper;
 import org.opensrp.service.reporting.FormSubmissionReportService;
+
 import static org.opensrp.common.AllConstants.Form.*;
 
 public class HandlerMapperTest {
@@ -83,13 +85,16 @@ public class HandlerMapperTest {
     MCTSReportService mctsReportService;
 
 	@Mock
-	private HandlerMapper handlerMapper;
+	private FormHandlerMapper handlerMapper;
+
+	private HandlerMapper hmap;
 	
 	@Before
 	public void setUp() throws Exception {
 		initMocks(this);
-		handlerMapper = new HandlerMapper( 
-				 formSubmissionsRepository,
+		hmap = new HandlerMapper();
+		handlerMapper = new FormHandlerMapper( 
+				 hmap, formSubmissionsRepository,
 				 formSubmissionReportService,
 				 ecRegistrationHandler,
 	             fpComplicationsHandler,
@@ -126,11 +131,11 @@ public class HandlerMapperTest {
 	 @Test
 	 public void shouldDelegateHandlerMapper() throws Exception {
 		 
-		 Map<String, FormSubmissionHandler> handler =   handlerMapper.handlerMapper();
-	       FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "anc_visit", "entity id 1", 0L, "1", null, 0L);
+		 Map<String, CustomFormSubmissionHandler> handler =   hmap.handlerMap();
+	     FormSubmission submission = new FormSubmission("anm id 1", "instance id 1", "anc_visit", "entity id 1", 0L, "1", null, 0L);
 
-	       FormSubmissionHandler ancVisitHandler = (FormSubmissionHandler) handler.get(ANC_VISIT);
-	       ancVisitHandler.handle(submission);
-	      // verify(ancVisitHandler).handle(submission);
+	     CustomFormSubmissionHandler ancVisitHandler = (CustomFormSubmissionHandler) handler.get(ANC_VISIT);
+	     ancVisitHandler.handle(submission);
+	     verify(ancVisitHandler).handle(submission);
 	 }
 }

@@ -1,9 +1,10 @@
 package org.opensrp.register.service;
 
 import org.opensrp.register.domain.EligibleCouple;
-import org.opensrp.domain.FPProductInformation;
+import org.opensrp.register.domain.FPProductInformation;
 import org.opensrp.register.*;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.util.ReportFieldsDefinition;
 import org.opensrp.util.SafeMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +21,7 @@ import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.common.util.EasyMap.mapOf;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
+
 import org.opensrp.register.CondomFPDetails;
 import org.opensrp.register.FemaleSterilizationFPDetails;
 import org.opensrp.register.IUDFPDetails;
@@ -27,7 +29,6 @@ import org.opensrp.register.MaleSterilizationFPDetails;
 import org.opensrp.register.OCPFPDetails;
 import org.opensrp.register.repository.AllEligibleCouples;
 import org.opensrp.register.service.ECService;
-import org.opensrp.service.formSubmission.handler.ReportFieldsDefinition;
 import org.opensrp.register.service.reporting.ECReportingService;
 import org.opensrp.register.service.scheduling.ECSchedulingService;
 import org.opensrp.register.util.FormSubmissionBuilder;

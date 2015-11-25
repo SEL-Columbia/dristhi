@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.opensrp.domain.FPProductInformation;
+import org.opensrp.register.domain.FPProductInformation;
 import org.opensrp.register.service.scheduling.fpMethodStrategy.DMPAInjectableStrategy;
 import org.opensrp.scheduler.HealthSchedulerService;
 

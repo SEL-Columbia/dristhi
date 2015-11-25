@@ -13,20 +13,20 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.opensrp.api.domain.Address;
-import org.opensrp.api.domain.BaseEntity;
-import org.opensrp.api.domain.Client;
-import org.opensrp.api.domain.Event;
-import org.opensrp.api.domain.Obs;
+import org.opensrp.FormEntityConstants;
+import org.opensrp.FormEntityConstants.Encounter;
+import org.opensrp.FormEntityConstants.FormEntity;
+import org.opensrp.FormEntityConstants.Person;
 import org.opensrp.common.util.DateUtil;
+import org.opensrp.domain.Address;
+import org.opensrp.domain.Client;
+import org.opensrp.domain.Event;
+import org.opensrp.domain.Obs;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormAttributeParser;
 import org.opensrp.form.service.FormFieldMap;
 import org.opensrp.form.service.FormSubmissionMap;
 import org.opensrp.form.service.SubformMap;
-import org.opensrp.service.formSubmission.FormEntityConstants.Encounter;
-import org.opensrp.service.formSubmission.FormEntityConstants.FormEntity;
-import org.opensrp.service.formSubmission.FormEntityConstants.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
@@ -319,7 +319,8 @@ public class FormEntityConverter {
 		String firstName = fs.getFieldValue(getFieldName(Person.first_name, fs));
 		String middleName = fs.getFieldValue(getFieldName(Person.middle_name, fs));
 		String lastName = fs.getFieldValue(getFieldName(Person.last_name, fs));
-		Date birthdate = FormEntityConstants.FORM_DATE.parse(fs.getFieldValue(getFieldName(Person.birthdate, fs)));
+		String bd = fs.getFieldValue(getFieldName(Person.birthdate, fs));
+		Date birthdate = bd==null?null:FormEntityConstants.FORM_DATE.parse(bd);
 		String dd = fs.getFieldValue(getFieldName(Person.deathdate, fs));
 		Date deathdate = dd==null?null:FormEntityConstants.FORM_DATE.parse(dd);
 		String aproxbd = fs.getFieldValue(getFieldName(Person.birthdate_estimated, fs));
@@ -348,10 +349,17 @@ public class FormEntityConverter {
 		
 		List<Address> addresses = new ArrayList<>(extractAddresses(fs).values());
 		
-		Client c = new Client()
-			.withBaseEntity(new BaseEntity(fs.entityId(), firstName, middleName, lastName, birthdate, deathdate, 
-					birthdateApprox, deathdateApprox, gender, addresses, extractAttributes(fs)))
-			.withIdentifiers(extractIdentifiers(fs));
+		Client c = new Client(fs.entityId())
+				.withFirstName(firstName)
+				.withMiddleName(middleName)
+				.withLastName(lastName)
+				.withBirthdate(birthdate, birthdateApprox)
+				.withDeathdate(deathdate, deathdateApprox)
+				.withGender(gender);
+		
+		c.withAddresses(addresses)
+				.withAttributes(extractAttributes(fs))
+				.withIdentifiers(extractIdentifiers(fs));
 		return c;
 	}
 	
@@ -395,10 +403,18 @@ public class FormEntityConverter {
 		
 		List<Address> addresses = new ArrayList<>(extractAddressesForSubform(subf).values());
 		
-		Client c = new Client()
-		.withBaseEntity(new BaseEntity(subf.getFieldValue("id"), firstName, middleName, lastName, birthdate, deathdate, 
-				birthdateApprox, deathdateApprox, gender, addresses, extractAttributes(subf)))
-		.withIdentifiers(idents);
+		Client c = new Client(subf.getFieldValue("id"))
+			.withFirstName(firstName)
+			.withMiddleName(middleName)
+			.withLastName(lastName)
+			.withBirthdate(birthdate, birthdateApprox)
+			.withDeathdate(deathdate, deathdateApprox)
+			.withGender(gender);
+		
+		c.withAddresses(addresses)
+			.withAttributes(extractAttributes(subf))
+			.withIdentifiers(idents);
+
 		return c;
 	}
 	/**

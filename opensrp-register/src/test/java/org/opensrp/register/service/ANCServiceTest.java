@@ -28,7 +28,7 @@ import org.opensrp.register.repository.AllEligibleCouples;
 import org.opensrp.register.repository.AllMothers;
 import org.opensrp.register.service.reporting.MotherReportingService;
 import org.opensrp.register.service.scheduling.ANCSchedulesService;
-import org.opensrp.service.formSubmission.handler.ReportFieldsDefinition;
+import org.opensrp.util.ReportFieldsDefinition;
 import org.opensrp.util.SafeMap;
 
 public class ANCServiceTest {

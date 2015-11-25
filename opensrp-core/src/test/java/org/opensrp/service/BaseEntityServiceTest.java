@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.opensrp.domain.Address;
+import org.opensrp.domain.BaseEntity;
 import org.opensrp.repository.AllBaseEntities;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -46,13 +47,7 @@ public class BaseEntityServiceTest {
 				
 		Map<String, Object> attributes = new HashMap<String, Object>();
 		
-		org.opensrp.domain.BaseEntity domainBaseEntity = new org.opensrp.domain.BaseEntity()
-			.withFirstName("Md")
-			.withMiddleName("Julkar")
-			.withLastName("Nain")
-			.withGender("Male")
-			.withBirthdate(new Date(), false)
-			.withDeathdate(new Date(), false)
+		BaseEntity domainBaseEntity = new BaseEntity("000000001")
 			.withAddresses(addresses)
 			.withAttributes(attributes);
 		

@@ -15,8 +15,8 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.api.domain.Client;
-import org.opensrp.api.domain.Event;
+import org.opensrp.domain.Client;
+import org.opensrp.domain.Event;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;

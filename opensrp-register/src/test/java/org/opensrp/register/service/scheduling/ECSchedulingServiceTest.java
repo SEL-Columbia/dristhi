@@ -8,7 +8,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.Test;
 import org.mockito.Mock;
-import org.opensrp.domain.FPProductInformation;
+import org.opensrp.register.domain.FPProductInformation;
 import org.opensrp.register.service.scheduling.ECSchedulingService;
 import org.opensrp.register.service.scheduling.fpMethodStrategy.FPMethodStrategy;
 import org.opensrp.register.service.scheduling.fpMethodStrategy.FPMethodStrategyFactory;

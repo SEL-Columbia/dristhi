@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.opensrp.domain.FPProductInformation;
+import org.opensrp.register.domain.FPProductInformation;
 import org.opensrp.register.service.scheduling.fpMethodStrategy.FemaleSterilizationStrategy;
 import org.opensrp.scheduler.HealthSchedulerService;
 

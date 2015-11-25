@@ -1,4 +1,4 @@
-package org.opensrp.integration;
+/*package org.opensrp.integration;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -98,7 +98,7 @@ public class RulesFactoryTest {
         assertTrue(rule instanceof IsJsyBeneficiaryRule);
     }
 
-  /*  @Test
+    @Test
     public void shouldLoadMinimumThreeANCVisitsHappenedOnTimeRuleClassByName() throws Exception {
         String ruleName = "MinimumThreeANCVisitsHappenedOnTimeRule";
 
@@ -106,7 +106,7 @@ public class RulesFactoryTest {
 
         assertTrue(rule instanceof MinimumThreeANCVisitsHappenedOnTimeRule);
     }
-*/
+
     @Test
     public void shouldLoadServiceProvidedAtSub_CenterRuleClassByName() throws Exception {
         String ruleName = "ServiceProvidedAtSub_CenterRule";
@@ -170,3 +170,4 @@ public class RulesFactoryTest {
         assertTrue(rule instanceof WomanIsDischargedWithin48HoursOfDeliveryRule);
     }
 }
+*/

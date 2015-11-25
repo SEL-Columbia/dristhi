@@ -7,7 +7,7 @@ import static org.opensrp.common.util.DateUtil.tryParse;
 import static org.opensrp.register.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_DMPA_INJECTABLE_REFILL;
 import static org.opensrp.register.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_DMPA_INJECTABLE_REFILL_MILESTONE;
 
-import org.opensrp.domain.FPProductInformation;
+import org.opensrp.register.domain.FPProductInformation;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.Schedule;
 import org.slf4j.Logger;

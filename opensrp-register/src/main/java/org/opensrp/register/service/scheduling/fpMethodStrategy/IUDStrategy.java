@@ -7,7 +7,7 @@ import static org.opensrp.register.DrishtiScheduleConstants.ECSchedulesConstants
 import static org.opensrp.register.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_IUD_FOLLOWUP_MILESTONE_1;
 import static org.opensrp.register.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_IUD_FOLLOWUP_MILESTONE_2;
 
-import org.opensrp.domain.FPProductInformation;
+import org.opensrp.register.domain.FPProductInformation;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.Schedule;
 import org.slf4j.Logger;

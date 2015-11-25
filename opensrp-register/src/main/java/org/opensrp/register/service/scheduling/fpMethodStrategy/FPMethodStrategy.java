@@ -1,6 +1,6 @@
 package org.opensrp.register.service.scheduling.fpMethodStrategy;
 
-import org.opensrp.domain.FPProductInformation;
+import org.opensrp.register.domain.FPProductInformation;
 
 public interface FPMethodStrategy {
     void registerEC(FPProductInformation fpInfo);

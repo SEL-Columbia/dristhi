@@ -2,12 +2,12 @@ package org.opensrp.register.service.handler;
 
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.service.ECService;
-import org.opensrp.service.formSubmission.handler.FormSubmissionHandler;
+import org.opensrp.service.formSubmission.handler.CustomFormSubmissionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ECCloseHandler implements FormSubmissionHandler {
+public class ECCloseHandler implements CustomFormSubmissionHandler {
     private ECService ecService;
 
     @Autowired

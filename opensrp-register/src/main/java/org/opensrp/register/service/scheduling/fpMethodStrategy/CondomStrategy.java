@@ -12,7 +12,7 @@ import static org.opensrp.register.DrishtiScheduleConstants.ECSchedulesConstants
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
-import org.opensrp.domain.FPProductInformation;
+import org.opensrp.register.domain.FPProductInformation;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.Schedule;
 import org.slf4j.Logger;

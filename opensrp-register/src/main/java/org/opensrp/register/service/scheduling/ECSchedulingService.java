@@ -9,7 +9,7 @@ import static org.opensrp.register.DrishtiScheduleConstants.ECSchedulesConstants
 import static org.opensrp.register.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_REFERRAL_FOLLOWUP;
 import static org.opensrp.register.DrishtiScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_REFERRAL_FOLLOWUP_MILESTONE;
 
-import org.opensrp.domain.FPProductInformation;
+import org.opensrp.register.domain.FPProductInformation;
 import org.opensrp.register.service.scheduling.fpMethodStrategy.FPMethodStrategyFactory;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.Schedule;

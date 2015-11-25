@@ -38,7 +38,7 @@ import org.opensrp.register.service.reporting.ChildReportingService;
 import org.opensrp.register.service.reporting.MotherReportingService;
 import org.opensrp.register.service.scheduling.ChildSchedulesService;
 import org.opensrp.register.service.scheduling.PNCSchedulesService;
-import org.opensrp.service.formSubmission.handler.ReportFieldsDefinition;
+import org.opensrp.util.ReportFieldsDefinition;
 import org.opensrp.util.SafeMap;
 
 public class PNCServiceTest extends BaseUnitTest {

@@ -171,10 +171,10 @@ public class AllActionsIntegrationTest {
     }
 
     private ActionData alert() {
-        return ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3));
+        return ActionData.createAlert(mother.value(), "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3));
     }
 
     private ActionData alert(String schedule, String milestone) {
-        return ActionData.createAlert(mother, schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
+        return ActionData.createAlert(mother.value(), schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
     }
 }

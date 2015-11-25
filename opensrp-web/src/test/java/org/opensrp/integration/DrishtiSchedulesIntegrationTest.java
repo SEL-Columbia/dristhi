@@ -1,5 +1,27 @@
 package org.opensrp.integration;
 
+import static org.motechproject.scheduletracking.api.domain.WindowName.due;
+import static org.motechproject.scheduletracking.api.domain.WindowName.earliest;
+import static org.motechproject.scheduletracking.api.domain.WindowName.late;
+import static org.motechproject.scheduletracking.api.domain.WindowName.max;
+import static org.motechproject.util.DateUtil.newDate;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.BCG_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.DPT_BOOSTER_2_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.MEASLES_BOOSTER_VALUE;
+import static org.opensrp.common.AllConstants.ChildImmunizationFields.MEASLES_VALUE;
+import static org.opensrp.common.util.DateUtil.fakeIt;
+import static org.opensrp.integration.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_BCG;
+import static org.opensrp.integration.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_DPT_BOOSTER2;
+import static org.opensrp.integration.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_MEASLES;
+import static org.opensrp.integration.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_MEASLES_BOOSTER;
+import static org.opensrp.integration.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_OPV_0_AND_1;
+import static org.opensrp.integration.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_PENTAVALENT_1;
+import static org.opensrp.integration.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_PENTAVALENT_2;
+import static org.opensrp.integration.DrishtiScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_PENTAVALENT_3;
+
+import java.io.File;
+import java.util.Date;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -20,15 +42,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.io.File;
-import java.util.Date;
-
-import static org.opensrp.common.AllConstants.ChildImmunizationFields.*;
-import static org.opensrp.common.util.DateUtil.fakeIt;
-import static org.opensrp.register.DrishtiScheduleConstants.ChildScheduleConstants.*;
-import static org.motechproject.scheduletracking.api.domain.WindowName.*;
-import static org.motechproject.util.DateUtil.newDate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/applicationContext-opensrp-web.xml")

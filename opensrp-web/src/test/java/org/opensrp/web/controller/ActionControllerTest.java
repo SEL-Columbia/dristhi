@@ -31,7 +31,7 @@ public class ActionControllerTest {
 
     @Test
     public void shouldGiveAlertActionForANMSinceTimeStamp() throws Exception {
-        org.opensrp.scheduler.Action alertAction = new org.opensrp.scheduler.Action("Case X", "ANM 1", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3)));
+        org.opensrp.scheduler.Action alertAction = new org.opensrp.scheduler.Action("Case X", "ANM 1", ActionData.createAlert(mother.value(), "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3)));
         when(actionService.getNewAlertsForANM("ANM 1", 0L)).thenReturn(asList(alertAction));
 
         Action expectedAlertActionItem = ActionConvertor.from(alertAction);
