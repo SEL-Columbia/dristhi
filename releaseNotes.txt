@@ -4,6 +4,7 @@ New Features
 ============
 - App pushing schedule to openmrs automatically instead of need to upload explicitly
 - Client and Event model in action now which was never used before
+- No register custom/site specific register module required if there is no complex logic
 - Ziggy dependency for custom form handling logic removed though ziggy can still be used to make app backward compatible with minor changes
 - Scheduling is automated and can be configured from external xls file. Ziggy dependency is completely removed. Now no need to write custom code and adding hardcoded config constants in alot of places
 
