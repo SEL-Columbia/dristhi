@@ -2,30 +2,34 @@ package org.opensrp.service.formSubmission;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.scheduler.HealthSchedulerService;
+import org.opensrp.scheduler.Schedule;
+import org.opensrp.scheduler.Schedule.ActionType;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.opensrp.service.formSubmission.handler.FormSubmissionRouter;
 import org.opensrp.service.formSubmission.ziggy.ZiggyService;
 import org.opensrp.util.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.mysql.jdbc.StringUtils;
 
 @Service
 public class FormSubmissionProcessor{
+    private static Logger logger = LoggerFactory.getLogger(FormSubmissionListener.class.toString());
 
     private ZiggyService ziggyService;
     private FormSubmissionRouter formSubmissionRouter;
@@ -33,14 +37,11 @@ public class FormSubmissionProcessor{
     private ClientService clientService;
     private EventService eventService;
     private HealthSchedulerService scheduleService;
-    private String scheduleConfigPath;
     
     @Autowired
-    public FormSubmissionProcessor(@Value("#{opensrp['schedule.config.path']}") String scheduleConfigPath,
-    		ZiggyService ziggyService, FormSubmissionRouter formSubmissionRouter,
+    public FormSubmissionProcessor(ZiggyService ziggyService, FormSubmissionRouter formSubmissionRouter,
     		FormEntityConverter formEntityConverter, HealthSchedulerService scheduleService, 
-    		ClientService clientService, EventService eventService) {
-    	this.scheduleConfigPath = scheduleConfigPath;
+    		ClientService clientService, EventService eventService) throws IOException {
 		this.ziggyService = ziggyService;
 		this.formSubmissionRouter = formSubmissionRouter;
 		this.formEntityConverter = formEntityConverter;
@@ -51,55 +52,80 @@ public class FormSubmissionProcessor{
 
     public void processFormSubmission(FormSubmission submission) throws Exception {
     	// parse and into client and event model
+    	logger.info("Creating model entities");
     	makeModelEntities(submission);
+    	logger.info("Handling xls configured schedules");
     	handleSchedules(submission);
     	if(ziggyService.isZiggyCompliant(submission.bindType())){
     		passToZiggy(submission);
     		//and skip form submission routing as ziggy does it automatically
     	}
     	else {//if not ziggy entity call custom route handler explicitly
+    		logger.info("Routing to custom handler");
     		formSubmissionRouter.route(submission);
     	}
 	}
     
-    private void handleSchedules(FormSubmission submission) throws JSONException, IOException {
-    	JSONArray schapp = Utils.getSchedules(submission, scheduleConfigPath);
-    	for (int i = 0; i < schapp.length(); i++) {
-			JSONObject sch = schapp.getJSONObject(i);
+    void handleSchedules(FormSubmission submission) throws JSONException, IOException {
+    	List<Schedule> schl = scheduleService.findAutomatedSchedules(submission.formName());
+    	for (Schedule sch : schl) {
 			Map<String, String> entsch = getEntitiesQualifyingForSchedule(submission, sch);
 			System.out.println("creating schedule for : "+entsch);
 			for (String enid : entsch.keySet()) {
-				if(sch.getString("action").startsWith("enroll")){
-					scheduleService.enrollIntoSchedule(enid, sch.getString("schedule"), 
-							sch.getString("milestone"), entsch.get(enid), submission.instanceId(), sch.getString("entityType"));
+				if(sch.action().equals(ActionType.enroll)){
+					scheduleService.enrollIntoSchedule(enid, sch.schedule(), 
+							sch.milestone(), entsch.get(enid), submission.instanceId());
 				}
-				else if(sch.getString("action").startsWith("fulfill") && entsch.get(enid) != null){
-					scheduleService.fullfillMilestoneAndCloseAlert(enid, submission.anmId(), sch.getString("schedule") 
-							, LocalDate.parse(entsch.get(enid)), submission.instanceId(), sch.getString("entityType"));
+				else if(sch.action().equals(ActionType.fulfill)){
+					scheduleService.fullfillMilestoneAndCloseAlert(enid, submission.anmId(), sch.schedule() 
+							, LocalDate.parse(entsch.get(enid)), submission.instanceId());
+				}
+				else if(sch.action().equals(ActionType.unenroll)){
+					scheduleService.unEnrollFromSchedule(enid, submission.anmId(), sch.schedule(), submission.instanceId());
+				}
+				else if(sch.action().equals(ActionType.unenroll) && sch.schedule().equalsIgnoreCase("*")){
+					scheduleService.unEnrollFromAllSchedules(enid, submission.instanceId());
 				}
 			}
 		}
     	
 	}
 
-	private Map<String, String> getEntitiesQualifyingForSchedule(FormSubmission submission, JSONObject schedule) throws JSONException {
-		String entity = schedule.getString("entityType");
+	Map<String, String> getEntitiesQualifyingForSchedule(FormSubmission submission, Schedule schedule) throws JSONException {
 		Map<String, String> entityIds = new HashMap<String, String>();
-		if(submission.bindType().equalsIgnoreCase(entity)){
-			entityIds.put(submission.entityId(), submission.getField(schedule.getString("triggerDateField")));
+		if(schedule.applicableForEntity(submission.bindType())){
+			String res = evaluateScheduleFor(schedule, submission.instance().form().getFieldsAsMap());
+			if(!StringUtils.isEmptyOrWhitespaceOnly(res)){
+				entityIds.put(submission.entityId(), res);
+			}
 		}
 		
 		if(submission.subForms() != null)
 		for (SubFormData sbf : submission.subForms()) {
-			if(sbf.bindType().equalsIgnoreCase(entity)){
+			if(schedule.applicableForEntity(sbf.bindType())){
 				for (Map<String, String> inst : sbf.instances()) {
-					entityIds.put(inst.get("id"), inst.get(schedule.getString("triggerDateField")));
+					String res = evaluateScheduleFor(schedule, inst);
+					if(!StringUtils.isEmptyOrWhitespaceOnly(res)){
+						entityIds.put(inst.get("id"), res);
+					}
 				}
 			}
 		}
 		return entityIds;
 	}
 
+	String evaluateScheduleFor(Schedule schedule, Map<String, String> flvl) {
+		//find first field in submission that qualifies triggerdate field and has a value
+		for (String tf : schedule.triggerDateFields()) {
+			String flv = flvl.get(tf);
+			// if field has value and schedule flag field is empty or has value 1 or true
+			if(!StringUtils.isEmptyOrWhitespaceOnly(flv) && schedule.passesValidations(flvl)){
+				return flv;
+			}
+		}
+		return null;
+	}
+	
 	private void makeModelEntities(FormSubmission submission) {
     	Client c = formEntityConverter.getClientFromFormSubmission(submission);
 		Event e = formEntityConverter.getEventFromFormSubmission(submission);

@@ -39,14 +39,14 @@ public class AllEvents extends MotechBaseRepository<Event>{
 		return events.get(0);
 	}
 	
+	@GenerateView
+	public List<Event> findByBaseEntityId(String baseEntityId) {
+		return queryView("by_baseEntityId", baseEntityId);
+	}
+	
 	@View(name = "all_events", map = "function(doc) { if (doc.type === 'Event') { emit(doc.eventId); } }")
 	public List<Event> findAllEvents() {
 		return db.queryView(createQuery("all_events").includeDocs(true), Event.class);
-	}
-	
-	@View(name = "all_events_by_baseEntityId", map = "function(doc) {if (doc.type==='Event'){emit([doc.baseEntityId]);}}")
-	public List<Event> findByBaseEntityId(String baseEntityId) {
-		return db.queryView(createQuery("all_events_by_baseEntityId").key(baseEntityId).includeDocs(true), Event.class);
 	}
 	
 	@View(name = "all_events_by_filter", map = "function(doc) {if (doc.type==='Event'){emit([doc.baseEntityId,doc.locationId,doc.eventType,doc.providerId,doc.entityType,doc.version]);}}")

@@ -59,6 +59,13 @@ public class FormData {
         }
     }
 
+    public Map<String, String> getFieldsAsMap() {
+    	if (mapOfFieldsByName == null) {
+            createFieldMapByName();
+        }
+        return mapOfFieldsByName;
+	}
+    
     public SubFormData getSubFormByName(String name) {
         for (SubFormData sub_form : sub_forms) {
             if (StringUtils.equalsIgnoreCase(name, sub_form.name()))

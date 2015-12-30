@@ -13,7 +13,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
+import com.mysql.jdbc.StringUtils;
 
 
 public class TestResourceLoader {
@@ -21,6 +21,8 @@ public class TestResourceLoader {
 	protected String openmrsUsername;
 	protected String openmrsPassword;
 	protected String formDirPath;
+	protected boolean pushToOpenmrsForTest;
+
 
 	public TestResourceLoader() throws IOException {
 		Resource resource = new ClassPathResource("/opensrp.properties");
@@ -29,12 +31,18 @@ public class TestResourceLoader {
 		openmrsUsername = props.getProperty("openmrs.username");
 		openmrsPassword = props.getProperty("openmrs.password");
 		formDirPath = props.getProperty("form.directory.name");
+		String rc = props.getProperty("openmrs.test.make-rest-call");
+		pushToOpenmrsForTest = StringUtils.isEmptyOrWhitespaceOnly(rc)?false:Boolean.parseBoolean(rc);
 	}
 	
-	protected FormSubmission getFormSubmissionFor(String formName) throws JsonSyntaxException, JsonIOException, IOException{
+	protected FormSubmission getFormSubmissionFor(String formName, Integer number) throws JsonIOException, IOException{
 		ResourceLoader loader=new DefaultResourceLoader();
-		formDirPath = loader.getResource(formDirPath).getURI().getPath();
-		File fsfile = new File(formDirPath+"/"+formName+"/formSubmission.json");
+		String path = loader.getResource(formDirPath).getURI().getPath();
+		File fsfile = new File(path+"/"+formName+"/form_submission"+(number==null?"":number)+".json");
 		return new Gson().fromJson(new FileReader(fsfile), FormSubmission.class);		
+	}
+	
+	protected FormSubmission getFormSubmissionFor(String formName) throws JsonIOException, IOException{
+		return getFormSubmissionFor(formName, null);		
 	}
 }

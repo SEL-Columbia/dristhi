@@ -11,11 +11,11 @@
     <url>http://github.com/OpenSRP/opensrp-server</url>
 
 	<modules>
-		<module>opensrp-core</module>
 		<module>opensrp-common</module>
-		<module>opensrp-interface</module>
-		<module>opensrp-form</module>
 		<module>opensrp-api</module>
+		<module>opensrp-form</module>
+		<module>opensrp-core</module>
+		<module>opensrp-interface</module>
 		<!-- <module>opensrp-register</module> -->
 		<module>opensrp-connector</module>
 		<module>opensrp-web</module>
@@ -200,16 +200,16 @@
 					<version>1.5</version>
 
 					<dependencies>
-						<dependency>
+						<!-- <dependency>
 							<groupId>postgresql</groupId>
 							<artifactId>postgresql</artifactId>
 							<version>9.1-901.jdbc4</version>
-						</dependency>
-						<!-- <dependency>
+						</dependency> -->
+						<dependency>
 							<groupId>mysql</groupId>
 							<artifactId>mysql-connector-java</artifactId>
 							<version>5.1.13</version>
-						</dependency> -->
+						</dependency>
 					</dependencies>
 
 					<configuration>
@@ -233,25 +233,11 @@
 								<autocommit>true</autocommit>
 								<sqlCommand> 
 								drop database if exists ${db.quartz};
-								drop database if exists ${db.reporting};
+								drop database if exists ${db.reporting.report};
+								drop database if exists ${db.reporting.anm};
 								create database ${db.quartz};
-								create database ${db.reporting};
-								</sqlCommand>
-								<onError>abort</onError>
-							</configuration>
-						</execution>
-						<execution>
-							<id>create-opensrp-schemas</id>
-							<phase>pre-integration-test</phase>
-							<goals>
-								<goal>execute</goal>
-							</goals>
-							<configuration>
-								<url>${jdbc.url-wo-db}/${db.reporting}</url>
-								<autocommit>true</autocommit>
-								<sqlCommand> 
-								CREATE SCHEMA ${db.reporting.report} ;
-								CREATE SCHEMA ${db.reporting.anm} ;
+								create database ${db.reporting.report};
+								create database ${db.reporting.anm};
 								</sqlCommand>
 								<onError>abort</onError>
 							</configuration>

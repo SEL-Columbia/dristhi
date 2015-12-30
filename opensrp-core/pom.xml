@@ -104,6 +104,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opensrp</groupId>
+			<artifactId>opensrp-common</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opensrp</groupId>
 			<artifactId>opensrp-form</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
@@ -130,7 +135,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -161,6 +166,10 @@
 			<artifactId>poi</artifactId>
 			<version>3.13</version>
 		</dependency>
-
+		<dependency>
+			<groupId>ch.maxant</groupId>
+			<artifactId>rules</artifactId>
+			<version>2.1.0</version>
+		</dependency>
 	</dependencies>
 </project>

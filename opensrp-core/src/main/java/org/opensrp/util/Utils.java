@@ -18,10 +18,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.eventusermodel.dummyrecord.MissingCellDummyRecord;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,24 +60,8 @@ public class Utils {
                 .map());
     }
     
-    public static void main(String[] args) throws JSONException, IOException {
-		System.out.println(getXlsToJson(new File("D:\\opensrpThriveMaster\\opensrp-server\\opensrp-core\\src\\main\\resources\\schedule-config.xls")));
-	}
-    
-    public static JSONArray getSchedules(FormSubmission submission, String scheduleConfigPath) throws JSONException, IOException {
-		JSONArray scharr = getXlsToJson(new File(scheduleConfigPath));
-		JSONArray schapp = new JSONArray();
-		for (int i = 0; i < scharr.length(); i++) {
-			JSONObject o = (JSONObject) scharr.get(i);
-			if(o.getString("form").equalsIgnoreCase(submission.formName())){
-				schapp.put(o);
-			}
-		}
-		return schapp;
-	}
-    
-    public static JSONArray getXlsToJson(File file) throws JSONException, IOException {
-    	FileInputStream inp = new FileInputStream( file );
+    public static JSONArray getXlsToJson(String path) throws JSONException, IOException {
+    	FileInputStream inp = new FileInputStream( new File(path) );
     	//Get the workbook instance for XLS file 
     	HSSFWorkbook workbook = new HSSFWorkbook(inp);
     	 
@@ -88,11 +75,13 @@ public class Utils {
 
 	    for (int i = hrn+1; i <= sheet.getLastRowNum(); i++) {
 			List<String> rc = getRowContent(sheet, i);
-			JSONObject row = new JSONObject();
-			for (int j = 0; j < hr.size(); j++) {
-				row.put(hr.get(j), rc.get(j));
+			if(!isRowEmpty(rc)){
+				JSONObject row = new JSONObject();
+				for (int j = 0; j < hr.size(); j++) {
+					row.put(hr.get(j), rc.get(j));
+				}
+				jarr.put(row);
 			}
-			jarr.put(row);
 		}
 
 	    workbook.close();
@@ -111,13 +100,29 @@ public class Utils {
 		}
 		return -1;
 	}
-	private static List<String> getRowContent(HSSFSheet sheet, int rowNum) {
-		List<String> hc = new ArrayList<>();
-		for (Cell c : sheet.getRow(rowNum)) {
-			if(!StringUtils.isNullOrEmpty(c.getStringCellValue())){
-				hc.add(c.getStringCellValue());
+	private static boolean isRowEmpty(List<String> rcontent){
+		for (String r : rcontent) {
+			if(!StringUtils.isEmptyOrWhitespaceOnly(r)){
+				return false;
 			}
 		}
+		return true;
+	}
+	private static List<String> getRowContent(HSSFSheet sheet, int rowNum) {
+		List<String> hc = new ArrayList<>();
+		HSSFRow r = sheet.getRow(rowNum);
+		if(r != null && r.getPhysicalNumberOfCells()>0){
+			for (int i = 0; i < r.getLastCellNum(); i++) {
+				Cell c = r.getCell(i);
+				hc.add(c==null?"":c.getStringCellValue());
+			}
+		}
+		
+		/*Iterator<Cell> it = sheet.getRow(rowNum).cellIterator();
+		while (it.hasNext()) {
+			Cell c = it.next();
+			hc.add(c.getStringCellValue());
+		}*/
 		return hc;
 	}
 }

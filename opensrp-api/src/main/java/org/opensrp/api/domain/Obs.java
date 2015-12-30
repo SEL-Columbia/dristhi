@@ -3,9 +3,6 @@ package org.opensrp.api.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensrp.api.domain.form.FormField;
-import org.opensrp.api.domain.form.FormSubmission;
-
 /**
  * The observations applicable or noted for any {@link Event} by data entry person. Each obs links back to 
  * variable in {@link FormSubmission} represent by name in {@link FormField}. Each {@link Obs} instead of 

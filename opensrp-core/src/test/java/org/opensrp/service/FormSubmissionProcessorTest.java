@@ -44,7 +44,7 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 	public void setup() throws IOException{
 		initMocks(this);
 		FormEntityConverter fec = new FormEntityConverter(new FormAttributeParser("/form"));
-		fsp = new FormSubmissionProcessor(getFullPath("/schedule-config.xls"), ziggyService, formSubmissionRouter, 
+		fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, 
 				fec, scheduleService, clientService, eventService);
 		
 	}

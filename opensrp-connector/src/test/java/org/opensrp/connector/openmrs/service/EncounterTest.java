@@ -9,7 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import org.hamcrest.Matchers;
+import org.joda.time.DateTime;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -65,8 +67,34 @@ public class EncounterTest extends TestResourceLoader{
 		
 		Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getEventType(), "patient_register");
-		assertEquals(e.getEventDate(), sd.parse("2015-02-01"));
+		assertEquals(e.getEventDate(), new DateTime(sd.parse("2015-02-01")));
 		assertEquals(e.getLocationId(), "unknown location");
+		if(pushToOpenmrsForTest){
+			JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
+			if(p == null){
+				p = ps.createPatient(c);
+			}
+			JSONObject en = s.createEncounter(e);
+			System.out.println(en);
+		}
+	}
+	
+	@Test
+	public void testGroupedEncounter() throws JSONException, ParseException, IOException {
+		FormSubmission fs = getFormSubmissionFor("repeatform");
+		
+		Client c = oc.getClientFromFormSubmission(fs);
+//TODO		
+		Event e = oc.getEventFromFormSubmission(fs);
+//TODO
+		/*if(true){
+			JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
+			if(p == null){
+				p = ps.createPatient(c);
+			}
+			JSONObject en = s.createEncounter(e);
+			System.out.println(en);
+		}*/
 	}
 	
 	@Ignore @Test
@@ -85,7 +113,7 @@ public class EncounterTest extends TestResourceLoader{
 		
 		Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
-		assertEquals(e.getEventDate(), sd.parse("2015-05-07"));
+		assertEquals(e.getEventDate(), new DateTime(sd.parse("2015-05-07")));
 		assertEquals(e.getLocationId(), "KUPTALA");
 		assertEquals(e.getFormSubmissionId(), "88c0e824-10b4-44c2-9429-754b8d823776");
 
@@ -122,7 +150,7 @@ public class EncounterTest extends TestResourceLoader{
 		
 		Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
-		assertEquals(e.getEventDate(), sd.parse("2015-05-07"));
+		assertEquals(e.getEventDate(), new DateTime(sd.parse("2015-05-07")));
 		assertEquals(e.getLocationId(), "KUPTALA");
 		assertEquals(e.getFormSubmissionId(), "88c0e824-10b4-44c2-9429-754b8d823776");
 
@@ -184,7 +212,7 @@ public class EncounterTest extends TestResourceLoader{
 		Event e = (Event) oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), c.getBaseEntityId());
 		assertEquals(e.getEventType(), "New Household Registration");
-		assertEquals(e.getEventDate(), new SimpleDateFormat("yyyy-M-dd").parse("2015-10-11"));
+		assertEquals(e.getEventDate(), new DateTime(new SimpleDateFormat("yyyy-M-dd").parse("2015-10-11")));
 		assertEquals(e.getLocationId(), "2fc43738-ace5-g961-8e8f-ab7dg0e5bc63");
 		
 		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
@@ -210,7 +238,7 @@ public class EncounterTest extends TestResourceLoader{
 			Event ev = (Event) dc.get(id).get("event");
 			assertEquals(ev.getBaseEntityId(), cl.getBaseEntityId());
 			assertEquals(ev.getEventType(), "New Woman Registration");
-			assertEquals(ev.getEventDate(), new SimpleDateFormat("yyyy-M-dd").parse("2015-10-11"));
+			assertEquals(ev.getEventDate(), new DateTime(new SimpleDateFormat("yyyy-M-dd").parse("2015-10-11")));
 			assertEquals(ev.getLocationId(), "2fc43738-ace5-g961-8e8f-ab7dg0e5bc63");
 			
 			assertThat(ev.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(

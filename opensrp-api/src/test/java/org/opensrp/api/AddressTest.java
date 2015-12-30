@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.util.Date;
 
 import org.junit.Test;
-import org.opensrp.api.constants.AddressField;
 import org.opensrp.api.domain.Address;
+import org.opensrp.common.AddressField;
 
 public class AddressTest {
 

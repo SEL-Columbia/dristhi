@@ -22,6 +22,12 @@ class AllEnrollmentWrapper extends AllEnrollments{
 		super(db);
 	}
 
+	@View(name = "find_by_external_id_and_schedule_name", map = "function(doc) {if(doc.type === 'Enrollment') emit([doc.externalId, doc.scheduleName]);}")
+    public Enrollment getEnrollment(String externalId, String scheduleName) {
+        List<Enrollment> enrollments = queryView("find_by_external_id_and_schedule_name", ComplexKey.of(externalId, scheduleName));
+        return enrollments.isEmpty() ? null : populateSchedule(enrollments.get(0));
+    }
+	
 	private static final String FUNCTION_DOC_EMIT_DOC_STATUS_AND_ENROLLED_ON = "function(doc) { if(doc.type === 'Enrollment') emit([doc.status,doc.enrolledOn], doc._id);}";
 
     @View(name = "by_status_date_enrolled", map = FUNCTION_DOC_EMIT_DOC_STATUS_AND_ENROLLED_ON)

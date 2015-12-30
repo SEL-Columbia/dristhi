@@ -8,9 +8,10 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 @TypeDiscriminator("doc.baseEntityId && doc.identifiers")
 public class BaseEntity extends BaseDataObject {
 	@JsonProperty
@@ -22,6 +23,12 @@ public class BaseEntity extends BaseDataObject {
 	@JsonProperty
 	private Map<String, Object> attributes;
 
+	protected BaseEntity() {}
+	
+	public String type() {
+		return type;
+	}
+	
 	public BaseEntity(String baseEntityId){
 		this.baseEntityId = baseEntityId;
 	}
@@ -81,7 +88,12 @@ public class BaseEntity extends BaseDataObject {
 		if(attributes == null){
 			return null;
 		}
-		return attributes.get(name);
+		for (String k : attributes.keySet()) {
+			if(k.equalsIgnoreCase(name)){
+				return attributes.get(k);
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -110,6 +122,17 @@ public class BaseEntity extends BaseDataObject {
 		return identifiers;
 	}
 
+	public String getIdentifier(String identifierType) {
+		if(identifiers == null){
+			return null;
+		}
+		for (String k : identifiers.keySet()) {
+			if(k.equalsIgnoreCase(identifierType)){
+				return identifiers.get(k);
+			}
+		}
+		return null;
+	}
 	public void setIdentifiers(Map<String, String> identifiers) {
 		this.identifiers = identifiers;
 	}

@@ -1,7 +1,6 @@
 package org.opensrp.domain;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
+import org.joda.time.DateTime;
 
 @TypeDiscriminator("doc.type == 'Event'")
 public class Event extends BaseDataObject{
@@ -22,7 +22,7 @@ public class Event extends BaseDataObject{
 	@JsonProperty
 	private String locationId;
 	@JsonProperty
-	private Date eventDate;
+	private DateTime eventDate;
 	@JsonProperty
 	private String eventType;
 	@JsonProperty
@@ -42,9 +42,10 @@ public class Event extends BaseDataObject{
 		this.version = System.currentTimeMillis();
 	}
 
-	public Event(String baseEntityId, String eventType, Date eventDate, String entityType, 
+	public Event(String baseEntityId, String eventId, String eventType, DateTime eventDate, String entityType, 
 			String providerId, String locationId, String formSubmissionId) {
 		this.baseEntityId = baseEntityId;
+		this.eventId = eventId;
 		this.eventType = eventType;
 		this.eventDate = eventDate;
 		this.entityType = entityType;
@@ -91,11 +92,11 @@ public class Event extends BaseDataObject{
 		this.locationId = locationId;
 	}
 
-	public Date getEventDate() {
+	public DateTime getEventDate() {
 		return eventDate;
 	}
 
-	public void setEventDate(Date eventDate) {
+	public void setEventDate(DateTime eventDate) {
 		this.eventDate = eventDate;
 	}
 
@@ -172,7 +173,7 @@ public class Event extends BaseDataObject{
 		return this;
 	}
 
-	public Event withEventDate(Date eventDate) {
+	public Event withEventDate(DateTime eventDate) {
 		this.eventDate = eventDate;
 		return this;
 	}

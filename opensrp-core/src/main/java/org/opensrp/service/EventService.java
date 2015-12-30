@@ -18,7 +18,7 @@ public class EventService {
 		this.allEvents = allEvents;
 	}
 	
-	public Event getEventEventId(String eventId)
+	public Event getByEventId(String eventId)
 	{
 		return allEvents.findByEventId(eventId);
 	}

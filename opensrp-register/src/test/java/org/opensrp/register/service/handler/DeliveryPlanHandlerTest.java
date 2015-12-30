@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import org.opensrp.register.service.ANCService;
 import org.opensrp.register.service.handler.DeliveryPlanHandler;
+import org.opensrp.register.ziggy.service.ANCService;
 
 public class DeliveryPlanHandlerTest {
     @Mock

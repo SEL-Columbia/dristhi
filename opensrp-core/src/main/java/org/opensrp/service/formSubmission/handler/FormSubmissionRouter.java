@@ -31,7 +31,8 @@ public class FormSubmissionRouter {
 	public void route(FormSubmission formSubmission) throws Exception {
 		CustomFormSubmissionHandler handler = handlerMapper.handlerMap().get(formSubmission.formName());// handlerMap.get(submission.formName());
 		if (handler == null) {
-			logger.warn("Could not find a handler due to unknown form submission: "+ formSubmission);
+			logger.warn(format("Could not find a handler due to unknown form submission ( {0} ) with instance Id: {1} for entity: {2}",
+				formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId()));
 			return;
 		}
 		logger.info(format("Handling {0} form submission with instance Id: {1} for entity: {2}",

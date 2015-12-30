@@ -35,7 +35,7 @@ public class AllClients extends MotechBaseRepository<Client> {
 		return db.queryView(createQuery("all_clients").includeDocs(true), Client.class);
 	}
 	
-	@View(name = "all_clients_by_identifier", map = "function(doc) {if (doc.type === 'Client') {for(var key in doc.identifiers) {emit([doc.identifiers[key]]);}}}")
+	@View(name = "all_clients_by_identifier", map = "function(doc) {if (doc.type === 'Client') {for(var key in doc.identifiers) {emit(doc.identifiers[key]);}}}")
 	public List<Client> findAllByIdentifier(String identifier) {
 		return db.queryView(createQuery("all_clients_by_identifier").key(identifier).includeDocs(true), Client.class);
 	}

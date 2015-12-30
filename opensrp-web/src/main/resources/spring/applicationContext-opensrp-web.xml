@@ -17,8 +17,6 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="org.opensrp.web"/>
-    <context:component-scan base-package="org.opensrp.register.service.reporting"/>
-    <context:component-scan base-package="org.opensrp.service.reporting"/>
-    
+
     <mvc:annotation-driven/>
 </beans>

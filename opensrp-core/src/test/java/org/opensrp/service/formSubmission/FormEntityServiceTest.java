@@ -1,25 +1,35 @@
 package org.opensrp.service.formSubmission;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormAttributeParser;
 import org.opensrp.scheduler.HealthSchedulerService;
+import org.opensrp.scheduler.ScheduleConfig;
+import org.opensrp.scheduler.service.ActionService;
+import org.opensrp.scheduler.service.ScheduleService;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.opensrp.service.formSubmission.handler.FormSubmissionRouter;
 import org.opensrp.service.formSubmission.ziggy.ZiggyService;
 import org.opensrp.util.TestResourceLoader;
 import org.opensrp.util.Utils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 
@@ -38,19 +48,29 @@ public class FormEntityServiceTest extends TestResourceLoader{
     @Mock
     private FormEntityConverter formEntityConverter;
     @Mock
-    private HealthSchedulerService scheduleService;
-    @Mock
     private ClientService clientService;
     @Mock
     private EventService eventService;
-
-    @Autowired
+    
+    @Spy
+    private ScheduleConfig scheduleConfig;
+    @Mock
+    private ScheduleService schService;
+    @Mock 
+    private ActionService actionService;
+    
+    @InjectMocks
+    private HealthSchedulerService scheduleService;
+    
+    @Mock
     private FormEntityConverter fec;
     
     @Before
     public void setUp() throws Exception {
+    	scheduleConfig = new ScheduleConfig("/schedules/schedule-config.xls");
+    	scheduleService = new HealthSchedulerService(actionService, schService, scheduleConfig);
         initMocks(this);
-        fsp = new FormSubmissionProcessor(getFullPath("schedule-config.xls"), ziggyService, formSubmissionRouter, formEntityConverter, scheduleService, clientService, eventService);
+        fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, formEntityConverter, scheduleService, clientService, eventService);
         fec = new FormEntityConverter(new FormAttributeParser("/form"));
     }
 
@@ -60,20 +80,20 @@ public class FormEntityServiceTest extends TestResourceLoader{
 
         fsp.processFormSubmission(fs);
 
-        InOrder inOrder = inOrder(formEntityConverter, clientService, eventService, scheduleService, ziggyService, formSubmissionRouter);
+        InOrder inOrder = inOrder(formEntityConverter, clientService, eventService, schService, ziggyService, formSubmissionRouter);
         inOrder.verify(formEntityConverter).getClientFromFormSubmission(fs);
         inOrder.verify(formEntityConverter).getEventFromFormSubmission(fs);
         inOrder.verify(formEntityConverter).getDependentClientsFromFormSubmission(fs);
         inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class));
         inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class));
-        inOrder.verify(scheduleService).enrollIntoSchedule(fs.entityId(), "FW CENSUS", "FW CENSUS", "2015-05-07", fs.instanceId(), fs.bindType());
+        inOrder.verify(schService).enroll(fs.entityId(), "FW CENSUS", "FW CENSUS", "2015-05-07", fs.instanceId());
         inOrder.verify(ziggyService).isZiggyCompliant(fs.bindType());
         inOrder.verify(formSubmissionRouter).route(fs);
 
         verifyNoMoreInteractions(formEntityConverter);
         verifyNoMoreInteractions(clientService);
         verifyNoMoreInteractions(eventService);
-        verifyNoMoreInteractions(scheduleService);
+        verifyNoMoreInteractions(schService);
         verifyNoMoreInteractions(ziggyService);
         verifyNoMoreInteractions(formSubmissionRouter);
     }
@@ -86,13 +106,13 @@ public class FormEntityServiceTest extends TestResourceLoader{
         
         fsp.processFormSubmission(fs);
 
-        InOrder inOrder = inOrder(formEntityConverter, clientService, eventService, scheduleService, ziggyService, formSubmissionRouter);
+        InOrder inOrder = inOrder(formEntityConverter, clientService, eventService, schService, ziggyService, formSubmissionRouter);
         inOrder.verify(formEntityConverter).getClientFromFormSubmission(fs);
         inOrder.verify(formEntityConverter).getEventFromFormSubmission(fs);
         inOrder.verify(formEntityConverter).getDependentClientsFromFormSubmission(fs);
         inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class));
         inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class));
-        inOrder.verify(scheduleService).enrollIntoSchedule(fs.entityId(), "FW CENSUS", "FW CENSUS", "2015-05-07", fs.instanceId(), fs.bindType());
+        inOrder.verify(schService).enroll(fs.entityId(), "FW CENSUS", "FW CENSUS", "2015-05-07", fs.instanceId());
         inOrder.verify(ziggyService).isZiggyCompliant(fs.bindType());
         inOrder.verify(ziggyService).saveForm(Utils.getZiggyParams(fs), new Gson().toJson(fs.instance()));
 
@@ -100,7 +120,7 @@ public class FormEntityServiceTest extends TestResourceLoader{
         verifyNoMoreInteractions(formEntityConverter);
         verifyNoMoreInteractions(clientService);
         verifyNoMoreInteractions(eventService);
-        verifyNoMoreInteractions(scheduleService);
+        verifyNoMoreInteractions(schService);
         verifyNoMoreInteractions(ziggyService);
     }
     

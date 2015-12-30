@@ -25,6 +25,9 @@ public class User extends BaseEntity {
 	@JsonProperty
 	private List<String> permissions;
 	
+	protected User(){
+		
+	}
 	
 	public User(String baseEntityId) {
 		super(baseEntityId);

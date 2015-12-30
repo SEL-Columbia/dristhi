@@ -1,5 +1,7 @@
 package org.opensrp.web.controller;
 
+import java.util.Map;
+
 import org.json.JSONException;
 import org.opensrp.connector.openmrs.service.OpenmrsReportingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,11 @@ public class ReportController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/report/report-definitions")
     public ResponseEntity<String> reportDefinitions() throws JSONException {
-		return new ResponseEntity<>(new Gson().toJson(reportService.getReportDefinitions()),HttpStatus.OK);
+		return new ResponseEntity<>(reportService.getReportDefinitions().toString(),HttpStatus.OK);
     }
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/report/report-data")
-    public ResponseEntity<String> reportDefinitions(@RequestParam("uuid") String uuid) throws JSONException {
-		return new ResponseEntity<>(new Gson().toJson(reportService.getReportData(uuid)),HttpStatus.OK);
+    public ResponseEntity<String> reportData(@RequestParam("uuid") String uuid, @RequestParam Map<String, String> params) throws JSONException {
+		return new ResponseEntity<>(reportService.getReportData(uuid, params).toString(),HttpStatus.OK);
     }
 }

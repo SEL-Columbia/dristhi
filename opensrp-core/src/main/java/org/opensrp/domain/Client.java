@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
-import org.opensrp.api.constants.Gender;
+import org.opensrp.common.Gender;
 
 @TypeDiscriminator("doc.type == 'Client'")
 public class Client extends BaseEntity {
@@ -29,7 +29,10 @@ public class Client extends BaseEntity {
 	private Boolean deathdateApprox;
 	@JsonProperty
 	private String gender;
-	
+
+	protected Client() {
+		
+	}
 
 	public Client(String baseEntityId) {
 		super(baseEntityId);
@@ -188,9 +191,6 @@ public class Client extends BaseEntity {
 		this.gender = gender.name();
 		return this;
 	}
-	
-	
-
 	
 	@Override
 	public boolean equals(Object o) {

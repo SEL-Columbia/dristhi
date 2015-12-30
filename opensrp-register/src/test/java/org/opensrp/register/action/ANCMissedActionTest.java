@@ -12,12 +12,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.scheduler.domain.MotechEvent;
-import org.opensrp.register.service.scheduling.ANCSchedulesService;
+import org.opensrp.register.ziggy.scheduling.ANCSchedulesService;
+import org.opensrp.scheduler.AlertRouter;
 import org.opensrp.scheduler.MilestoneEvent;
 
 public class ANCMissedActionTest {
     @Mock
-    ANCSchedulesService schedulesService;
+    private ANCSchedulesService schedulesService;
+    @Mock
+	private AlertRouter alertRouter;
 
     @Before
     public void setUp() throws Exception {
@@ -26,7 +29,7 @@ public class ANCMissedActionTest {
 
     @Test
     public void shouldMentionThatANCVisitHasBeenMissedForScheduleAndExternalIdSpecifiedByEvent() {
-        ForceFulfillAction action = new ForceFulfillAction(schedulesService);
+        ForceFulfillAction action = new ForceFulfillAction(schedulesService, alertRouter);
 
         action.invoke(event("Schedule X", "Case Y"), new HashMap<String, String>());
 

@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.opensrp.api.constants.AddressField;
+import org.opensrp.common.AddressField;
 
 public class Address{
 

@@ -1,66 +1,165 @@
 package org.opensrp.scheduler;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import ch.maxant.rules.CompileException;
+import ch.maxant.rules.DuplicateNameException;
+import ch.maxant.rules.Engine;
+import ch.maxant.rules.NoMatchingRuleFoundException;
+import ch.maxant.rules.ParseException;
+import ch.maxant.rules.Rule;
+
+import com.mysql.jdbc.StringUtils;
 
 public class Schedule {
-    private String name;
-    private final List<String> mileStones;
-    private Schedule dependsOn;
 
-    public Schedule(String name, List<String> mileStones) {
-        this.name = name;
-        this.mileStones = mileStones;
-        this.dependsOn = null;
-    }
+	public enum ActionType {
+		enroll,
+		unenroll,
+		fulfill
+	}
+	private ActionType action;
+	private List<String> forms;
+	private String schedule;
+	private String milestone;
+	private List<String> triggerDateFields;
+	private String entityType;
+	private String passLogic;
+	
+	Schedule() {
 
-    public Schedule withDependencyOn(Schedule dependsOn){
-        this.dependsOn = dependsOn;
-        return this;
-    }
+	}
+	
+	Schedule(String json) throws JSONException{
+		this(new JSONObject(json));
+	}
+	
+	Schedule(JSONObject json) throws JSONException{
+		this(ActionType.valueOf(json.getString("action").toLowerCase()), 
+		json.getString("form").split(","), json.getString("schedule"), json.getString("milestone"), 
+		json.getString("triggerDateField").split(","), json.getString("entityType"), 
+		json.has("passLogic")?json.getString("passLogic"):null);
+	}
+	
+	Schedule(ActionType action, String[] forms, String schedule, String milestone, 
+			String[] triggerDateFields, String entityType, String passLogic) {
+		this.action = action;
+		this.forms = new ArrayList<>();
+		for (String f : forms) {
+			this.forms.add(f.trim());
+		}
+		this.schedule = schedule.trim();
+		this.milestone = milestone.trim();
+		this.triggerDateFields = new ArrayList<>();
+		for (String tf : triggerDateFields) {
+			this.triggerDateFields.add(tf.trim());
+		}
+		this.entityType = entityType.trim();
+		this.passLogic = passLogic;
+	}
+	
+	public boolean hasForm(String form) {
+		for (String f : forms) {
+			if(f.trim().equalsIgnoreCase(form.trim())){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean applicableForEntity(String entity) {
+		return entityType.equalsIgnoreCase(entity.trim());
+	}
+	
+	public boolean haspassLogic() {
+		return !StringUtils.isEmptyOrWhitespaceOnly(passLogic);
+	}
+	
+	public boolean passesValidations(Map<String, String> flvl) {
+		if(!haspassLogic()){
+			return true;
+		}
+		
+		String xpr = passLogic;
+		for (Entry<String, String> kv : flvl.entrySet()) {
+			if(kv.getValue() == null){
+				flvl.put(kv.getKey(), "");
+			}
+			xpr = xpr.replace("${fs."+kv.getKey()+"}", "input."+kv.getKey());
+		}
+		
+		Rule r1 = new Rule("R1", xpr, "true", 4, "dynamic.rules");
+		Rule r2 = new Rule("R2", "!#R1", "false", 4, "dynamic.rules");
+		List<Rule> rules = Arrays.asList(r1, r2);
+		try {
+			Engine engine = new Engine(rules, true);
+			String result = engine.getBestOutcome(flvl);
+			return Boolean.valueOf(result);
+		} catch (DuplicateNameException | CompileException | ParseException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Error while parsing Schedule Logic: "+e.getMessage(), e);
+		} catch (NoMatchingRuleFoundException e) {//although it would never be thrown
+			e.printStackTrace();
+			throw new RuntimeException("Error while parsing Schedule Logic: "+e.getMessage(), e);
+		}
+	}
+	
+	
+	
+	public ActionType action() {
+		return action;
+	}
+	public List<String> forms() {
+		return forms;
+	}
+	public String schedule() {
+		return schedule;
+	}
+	public String milestone() {
+		return milestone;
+	}
+	public List<String> triggerDateFields() {
+		return triggerDateFields;
+	}
+	public String entityType() {
+		return entityType;
+	}
+	public String passLogic() {
+		return passLogic;
+	}
 
-    public String name() {
-        return name;
-    }
+	public ActionType getAction() {
+		return action;
+	}
 
-    public List<String> getMileStones() {
-        return mileStones;
-    }
+	public List<String> getForms() {
+		return forms;
+	}
 
-    public boolean hasDependency(){
-        return dependsOn != null;
-    }
+	public String getSchedule() {
+		return schedule;
+	}
 
-    public boolean dependsOn(Schedule schedule){
-        if(dependsOn == null)
-            return false;
-        return dependsOn.equals(schedule);
-    }
+	public String getMilestone() {
+		return milestone;
+	}
 
-    public Schedule getDependencySchedule(){
-        return dependsOn;
-    }
+	public List<String> getTriggerDateFields() {
+		return triggerDateFields;
+	}
 
-    public String getLastMilestone(){
-        return mileStones.get(mileStones.size()-1);
-    }
+	public String getEntityType() {
+		return entityType;
+	}
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(o, this, false, getClass());
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(17, 37, this, false, getClass());
-    }
-
+	public String getPassLogic() {
+		return passLogic;
+	}
 }

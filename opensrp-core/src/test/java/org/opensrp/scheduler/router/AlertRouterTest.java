@@ -122,7 +122,7 @@ public class AlertRouterTest {
 
     @Test(expected = NoRoutesMatchException.class)
     public void shouldFailIfNoRoutesMatch() {
-        router.handle(event("scheduleName", "milestoneName", "windowName"));
+        router.handleAlerts(event("scheduleName", "milestoneName", "windowName"));
     }
 
     private void assertRouteMatches(String schedule, String milestone, String window, HookedEvent action, HashMap<String, String> extraData) {
@@ -140,7 +140,7 @@ public class AlertRouterTest {
 
     private MotechEvent handleEvent(String schedule, String milestone, String window) {
         MotechEvent event = event(schedule, milestone, window);
-        router.handle(event);
+        router.handleAlerts(event);
         return event;
     }
 

@@ -1,67 +1,55 @@
 package org.opensrp.api.domain;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.opensrp.api.constants.Gender;
 
 /**
  * The person who actually entered or modified data into system. The {@link User} before getting access to any 
  * service in system have to be authenticated by system. 
  * A user may also be linked with a {@link Provider} by {@link BaseEntity}
  */
-public class User extends BaseDataObject{
+public class User extends BaseEntity {
+
 	private String username;
+
 	private String password;
+
 	private String salt;
+
 	private String status;
+
 	private List<String> roles;
+
 	private List<String> permissions;
-	private String baseEntityId;
-	private BaseEntity baseEntity;
 	
-	public User() {	}
+	protected User(){
+		
+	}
+	
+	public User(String baseEntityId) {
+		super(baseEntityId);
+	}
 
-	public User(String baseEntityId, String username, String password, String salt, 
-			String firstName, String middleName, String lastName, 
-			Date birthdate, Boolean birthdateApprox, String gender) {
-		this.baseEntity = new BaseEntity(baseEntityId, firstName, middleName, lastName, birthdate, null, birthdateApprox, null, gender, null, null);
-		this.baseEntityId = baseEntityId;
+	public User(String baseEntityId, String username, String password, String salt) {
+		super(baseEntityId);
 		this.username = username;
 		this.password = password;
 		this.salt = salt;
 	}
 	
-	public User(String baseEntityId, String username, String password, String salt, 
-			String firstName, String middleName, String lastName,
-			Date birthdate, Date deathdate, Boolean birthdateApprox,
-			Boolean deathdateApprox, Gender gender, List<Address> addresses,
-			Map<String, Object> attributes) {
-		this.baseEntity = new BaseEntity(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox,
-				deathdateApprox, gender, addresses, attributes);
-		this.baseEntityId = baseEntityId;
+	public User(String baseEntityId, String username, String password, String salt, String status,
+			List<String> roles, List<String> permissions) {
+		super(baseEntityId);
 		this.username = username;
 		this.password = password;
 		this.salt = salt;
-	}
-
-	public User(String baseEntityId, String username, String password, String salt, List<String> roles, 
-			List<String> permissions, String firstName, String middleName, String lastName,
-			Date birthdate, Date deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender, 
-			List<Address> addresses, Map<String, Object> attributes) {
-		this.baseEntity = new BaseEntity(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox,
-				deathdateApprox, gender, addresses, attributes);
-		this.baseEntityId = baseEntityId;
-		this.username = username;
-		this.password = password;
-		this.salt = salt;
+		this.status = status;
 		this.roles = roles;
 		this.permissions = permissions;
 	}
-
+	
 	public String getUsername() {
 		return username;
 	}
@@ -113,11 +101,12 @@ public class User extends BaseDataObject{
 		}
 		roles.add(role);
 	}
-	
+
 	public boolean removeRole(String role) {
 		return roles.remove(role);
 	}
 	
+
 	public boolean hasRole(String role) {
 		if(roles != null)
 		for (String r : roles) {
@@ -127,15 +116,15 @@ public class User extends BaseDataObject{
 		}
 		return false;
 	}
-	
+
 	public boolean isDefaultAdmin() {
-		if((baseEntity.getFirstName().equalsIgnoreCase("admin") || baseEntity.getFirstName().equalsIgnoreCase("administrator")) 
+		if((username.equalsIgnoreCase("admin") || username.equalsIgnoreCase("administrator")) 
 				&& (hasRole("admin") || hasRole("administrator"))){
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean hasAdminRights() {
 		if(isDefaultAdmin() || hasRole("admin") || hasRole("administrator")){
 			return true;
@@ -166,6 +155,7 @@ public class User extends BaseDataObject{
 	public boolean removePermission(String permission) {
 		return permissions.remove(permission);
 	}
+
 	public boolean hasPermission(String permission) {
 		if(permissions != null)
 		for (String p : permissions) {
@@ -174,34 +164,6 @@ public class User extends BaseDataObject{
 			}
 		}
 		return false;
-	}
-	
-	public String getBaseEntityId() {
-		return baseEntityId;
-	}
-	
-	public void setBaseEntityId(String baseEntityId) {
-		this.baseEntityId = baseEntityId;
-	}
-
-	public BaseEntity getBaseEntity() {
-		return baseEntity;
-	}
-
-	public void setBaseEntity(BaseEntity baseEntity) {
-		this.baseEntity = baseEntity;
-		this.baseEntityId = baseEntity.getId();
-	}
-
-	public User withBaseEntity(BaseEntity baseEntity) {
-		this.baseEntity = baseEntity;
-		this.baseEntityId = baseEntity.getId();
-		return this;
-	}
-	
-	public User withBaseEntityId(String baseEntityId) {
-		this.baseEntityId = baseEntityId;
-		return this;
 	}
 
 	public User withUsername(String username) {
@@ -261,9 +223,10 @@ public class User extends BaseDataObject{
 		permissions.add(permission);
 		return this;
 	}
-	
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
+
 }

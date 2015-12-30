@@ -1,5 +1,8 @@
 package org.opensrp.connector.openmrs.service;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,9 +37,15 @@ public class OpenmrsReportingService extends OpenmrsService{
 		return res;
 	}
 	
-	public JSONArray getReportData(String uuid) throws JSONException {
+	public JSONArray getReportData(String uuid, Map<String, String> params) throws JSONException {
+		String payload = "";
+		if(params != null)
+		for (Entry<String, String> e : params.entrySet()) {
+			payload += e.getKey()+"="+e.getValue()+"&";
+		}
 		JSONArray ds = new JSONObject(HttpUtil.get(getURL()
-    			+"/"+REPORT_DATA_URL+"/"+uuid, "", OPENMRS_USER, OPENMRS_PWD).body())
+    			+"/"+REPORT_DATA_URL+"/"+uuid, payload, 
+    			OPENMRS_USER, OPENMRS_PWD).body())
     			.getJSONArray("dataSets");
 		
 		for (int i = 0; i < ds.length(); i++) {

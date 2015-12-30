@@ -36,13 +36,13 @@ public class OpenmrsUserService extends OpenmrsService{
 		JSONObject obj = res.getJSONObject(0);
 		JSONObject p = obj.getJSONObject("person");
 		User u = new User(obj.getString("uuid"), obj.getString("username"), null, null,
-				p.getString("display"), "", "", null, null, p.getString("gender"));
+				p.getString("display"), null, null);
 		//Object ploc;
 		JSONArray a = p.getJSONArray("attributes");
 		
 		for (int i = 0; i < a.length(); i++) {
 			String ad = a.getJSONObject(i).getString("display");
-			u.getBaseEntity().addAttribute(ad.substring(0,ad.indexOf("=")-1), ad.substring(ad.indexOf("=")+2));
+			u.addAttribute(ad.substring(0,ad.indexOf("=")-1), ad.substring(ad.indexOf("=")+2));
 		}
 		
 		JSONArray per = obj.getJSONArray("privileges");
@@ -57,7 +57,7 @@ public class OpenmrsUserService extends OpenmrsService{
 			u.addRole(rol.getJSONObject(i).getString("name"));
 		}
 		
-		u.getBaseEntity().addAttribute("_PERSON_UUID", p.getString("uuid"));
+		u.addAttribute("_PERSON_UUID", p.getString("uuid"));
 		return u;
 	}
 	

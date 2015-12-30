@@ -35,7 +35,7 @@ public class AllBaseEntities extends MotechBaseRepository<BaseEntity> {
 		return db.queryView(createQuery("all_entities").includeDocs(true), BaseEntity.class);
 	}
 
-	@View(name = "all_entities_by_identifier", map = "function(doc) {if (doc.baseEntityId && doc.identifiers) {for(var key in doc.identifiers) {emit([doc.identifiers[key]]);}}}")
+	@View(name = "all_entities_by_identifier", map = "function(doc) {if (doc.baseEntityId && doc.identifiers) {for(var key in doc.identifiers) {emit(doc.identifiers[key]);}}}")
 	public List<BaseEntity> findAllByIdentifier(String identifier) {
 		return db.queryView(createQuery("all_entities_by_identifier").key(identifier).includeDocs(true), BaseEntity.class);
 	}
@@ -43,6 +43,6 @@ public class AllBaseEntities extends MotechBaseRepository<BaseEntity> {
 	@View(name = "all_entities_by_identifier_of_type", map = "function(doc) {if (doc.baseEntityId && doc.identifiers) {for(var key in doc.identifiers) {emit([key, doc.identifiers[key]]);}}}")
 	public List<BaseEntity> findAllByIdentifier(String identifierType, String identifier) {
 		ComplexKey ckey = ComplexKey.of(identifierType, identifier);
-		return db.queryView(createQuery("all_entities_by_identifier_of_type").key(ckey).includeDocs(true), BaseEntity.class);
+		return queryView("all_entities_by_identifier_of_type", ckey);
 	}
 }

@@ -13,9 +13,7 @@
      <util:properties id="opensrp" location="classpath:/opensrp.properties"/> 
 
     <context:annotation-config/>
-    <context:component-scan base-package="org.opensrp.repository"/>
-    <context:component-scan base-package="org.opensrp.register.repository"/>
-    <context:component-scan base-package="org.opensrp.register.service.reporting.rules"/>
+    <context:component-scan base-package="org.opensrp.register.ziggy.repository"/>
     
     <bean id="opensrpDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="${couchdb.db.opensrp}"/>

@@ -23,6 +23,8 @@ import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentRequest;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.opensrp.scheduler.HealthSchedulerService.MetadataField;
+import org.opensrp.scheduler.Schedule.ActionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -43,10 +45,10 @@ public class ScheduleService {
         this.allEnrollments = allEnrollments;
     }
 
-    public void enroll(String entityId, String scheduleName, String referenceDate, String formSubmissionId, String entityType) {
+    public void enroll(String entityId, String scheduleName, String referenceDate, String formSubmissionId) {
         String startingMilestoneName = getStartingMilestoneName(scheduleName, parse(referenceDate));
 		EnrollmentRequest request = new EnrollmentRequest(entityId, scheduleName, new Time(new LocalTime(preferredTime, 0)),
-                parse(referenceDate), null, null, null, startingMilestoneName, addOrUpdateEventTrackMetadata(null, formSubmissionId, entityType, "enrollment"));
+                parse(referenceDate), null, null, null, startingMilestoneName, addOrUpdateEventTrackMetadata(null, formSubmissionId, ActionType.enroll));
         scheduleTrackingService.enroll(request);
     }
 
@@ -59,25 +61,25 @@ public class ScheduleService {
         return null;
     }
 
-    public void enroll(String entityId, String scheduleName, String milestone, String referenceDate, String formSubmissionId, String entityType) {
+    public void enroll(String entityId, String scheduleName, String milestone, String referenceDate, String formSubmissionId) {
     	EnrollmentRequest request = new EnrollmentRequest(entityId, scheduleName,
-                new Time(new LocalTime(preferredTime, 0)), parse(referenceDate), null, null, null, milestone, addOrUpdateEventTrackMetadata(null, formSubmissionId, entityType, "enrollment"));
+                new Time(new LocalTime(preferredTime, 0)), parse(referenceDate), null, null, null, milestone, addOrUpdateEventTrackMetadata(null, formSubmissionId, ActionType.enroll));
         scheduleTrackingService.enroll(request);
     }
     
-    public void fulfillMilestone(String entityId, String scheduleName, LocalDate completionDate, String formSubmissionId, String entityType) {
-    	updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, entityType, "fulfillment");
+    public void fulfillMilestone(String entityId, String scheduleName, LocalDate completionDate, String formSubmissionId) {
+    	updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, ActionType.fulfill);
     	scheduleTrackingService.fulfillCurrentMilestone(entityId, scheduleName, completionDate, new Time(now()));
     }
     
-    public void unenroll(String entityId, String scheduleName, String formSubmissionId, String entityType) {
-    	updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, entityType, "unenrollemnt");
+    public void unenroll(String entityId, String scheduleName, String formSubmissionId) {
+    	updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, ActionType.unenroll);
     	scheduleTrackingService.unenroll(entityId, asList(scheduleName));
 	}
     
-    public void unenroll(String entityId, List<String> schedules, String formSubmissionId, String entityType) {
+    public void unenroll(String entityId, List<String> schedules, String formSubmissionId) {
     	for (String schedule : schedules) {
-    		updateExistingEnrollmentWithEventTrackMetadata(entityId, schedule, formSubmissionId, entityType, "unenrollment");
+    		updateExistingEnrollmentWithEventTrackMetadata(entityId, schedule, formSubmissionId, ActionType.unenroll);
 		}
     	scheduleTrackingService.unenroll(entityId, schedules);
 	}
@@ -109,34 +111,39 @@ public class ScheduleService {
 		return openSchedules;
 	}
     
-    public Enrollment getEnrollment(String entityId, String scheduleName) {
+    public Enrollment getActiveEnrollment(String entityId, String scheduleName) {
         return allEnrollments.getActiveEnrollment(entityId, scheduleName);
 	}
+
+    public Enrollment getEnrollment(String entityId, String scheduleName) {
+        return allEnrollments.getEnrollment(entityId, scheduleName);
+	}
+
+    public EnrollmentRecord getEnrollmentRecord(String entityId, String scheduleName) {
+        return scheduleTrackingService.getEnrollment(entityId, scheduleName);
+	}
     
-    private Map<String, String> addOrUpdateEventTrackMetadata(Map<String, String> map, String formSubmissionId, String entityType, String eventType) {
+    private Map<String, String> addOrUpdateEventTrackMetadata(Map<String, String> map, String formSubmissionId, ActionType actionType) {
 		if(map == null){
 			map = new HashMap<>();
 		}
 		
-		map.put("lastUpdate", new DateTime().toString());
+		map.put(MetadataField.lastUpdate.name(), new DateTime().toString());
 		
-		if(eventType.equalsIgnoreCase("enrollment")){
-			map.put("enrollmentEntityType", entityType);
-			map.put("enrollmentFormSubmissionId", formSubmissionId);
+		if(actionType.equals(ActionType.enroll)){
+			map.put(MetadataField.enrollmentFormSubmission.name(), formSubmissionId);
 		}
-		else if(eventType.equalsIgnoreCase("fulfillment")){
-			map.put("fulfillmentEntityType", entityType);
-			map.put("fulfillmentFormSubmissionId", formSubmissionId);
+		else if(actionType.equals(ActionType.fulfill)){
+			map.put(MetadataField.fulfillmentFormSubmission.name(), formSubmissionId);
 		}
-		else if(eventType.equalsIgnoreCase("unenrollment")){
-			map.put("unenrollmentEntityType", entityType);
-			map.put("unenrollmentFormSubmissionId", formSubmissionId);
+		else if(actionType.equals(ActionType.unenroll)){
+			map.put(MetadataField.unenrollmentFormSubmission.name(), formSubmissionId);
 		}
 		return map;
 	}
-    private void updateExistingEnrollmentWithEventTrackMetadata(String entityId, String scheduleName, String formSubmissionId, String entityType, String eventType){
+    private void updateExistingEnrollmentWithEventTrackMetadata(String entityId, String scheduleName, String formSubmissionId, ActionType actionType){
     	Enrollment enr = allEnrollments.getActiveEnrollment(entityId, scheduleName);
-    	enr.setMetadata(addOrUpdateEventTrackMetadata(enr.getMetadata(), formSubmissionId, entityType, eventType));
+    	enr.setMetadata(addOrUpdateEventTrackMetadata(enr.getMetadata(), formSubmissionId, actionType));
     	allEnrollments.update(enr);
     }
 }

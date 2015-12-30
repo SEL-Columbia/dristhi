@@ -40,7 +40,7 @@ public class OpenmrsSyncerListener {
 			AppStateToken at = this.config.getAppStateTokenByName(ScheduleTrackerConfig.openmrs_syncer_sync_by_last_update_enrollment);
 			if(at == null){
 				this.config.registerAppStateToken(ScheduleTrackerConfig.openmrs_syncer_sync_by_last_update_enrollment, 
-						null, "ScheduleTracker token to keep track of enrollment synced with OpenMRS");
+						0, "ScheduleTracker token to keep track of enrollment synced with OpenMRS");
 			}
 		}
 		catch(Exception e){

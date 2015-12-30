@@ -6,19 +6,20 @@ import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace
 
 import java.text.MessageFormat;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
-import org.opensrp.OpenSRPConstants;
-import org.opensrp.OpenSRPConstants.Config;
-import org.opensrp.OpenSRPConstants.OpenSRPEvent;
+import org.opensrp.common.AllConstants;
 import org.opensrp.domain.AppStateToken;
+import org.opensrp.domain.ErrorTrace;
 import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.service.ConfigService;
+import org.opensrp.service.ErrorTraceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,21 +34,36 @@ public class FormSubmissionListener {
     private static final ReentrantLock lock = new ReentrantLock();
     private FormSubmissionService formSubmissionService;
     private ConfigService configService;
+    private FormSubmissionProcessor fsp;
+    private ErrorTraceService errorTraceService;
 
     @Autowired
-    public FormSubmissionListener(FormSubmissionService formSubmissionService, ConfigService configService) {
+    public FormSubmissionListener(FormSubmissionService formSubmissionService, FormSubmissionProcessor fsp,
+    		ConfigService configService, ErrorTraceService errorTraceService) {
         this.formSubmissionService = formSubmissionService;
         this.configService = configService;
+        this.errorTraceService = errorTraceService;
+        this.fsp = fsp;
+        try{
+			AppStateToken at = this.configService.getAppStateTokenByName(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION);
+			if(at == null){
+				this.configService.registerAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION, 
+						0, "Token to keep track of forms processed for client n event parsing and schedule handling");
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
     }
 
-    @MotechListener(subjects = OpenSRPEvent.FORM_SUBMISSION)
+    @MotechListener(subjects = AllConstants.OpenSRPEvent.FORM_SUBMISSION)
     public void submitForms(MotechEvent event) {
         List<FormSubmissionDTO> formSubmissions = new Gson().fromJson((String) event.getParameters().get("data"), new TypeToken<List<FormSubmissionDTO>>() {
         }.getType());
         formSubmissionService.submit(formSubmissions);
     }
 
-    @MotechListener(subjects = OpenSRPConstants.FORM_SCHEDULE_SUBJECT)
+    @MotechListener(subjects = AllConstants.FORM_SCHEDULE_SUBJECT)
     public void parseForms(MotechEvent event) {
         if (!lock.tryLock()) {
             logger.warn("Not fetching forms from Message Queue. It is already in progress.");
@@ -68,11 +84,17 @@ public class FormSubmissionListener {
             sort(formSubmissions, serverVersionComparator());
 
             for (FormSubmission submission : formSubmissions) {
-            	logger.info(format("Invoking save for form with instance Id: {0} and for entity Id: {1}", submission.instanceId(), submission.entityId()));
-
-            	
-            	
-            	configService.updateAppStateToken(Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION, submission.serverVersion());
+            	try{
+	            	logger.info(format("Invoking save for form with instance Id: {0} and for entity Id: {1}", submission.instanceId(), submission.entityId()));
+	
+	            	fsp.processFormSubmission(submission);
+	            	
+	            	configService.updateAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION, submission.serverVersion());
+            	}
+            	catch(Exception e){
+            		e.printStackTrace();
+            		errorTraceService.addError(new ErrorTrace(new Date(), "FormSubmissionProcessor", this.getClass().getName(), e.getStackTrace().toString(), "unsolved", FormSubmission.class.getName()));
+            	}
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("{0} occurred while trying to fetch forms. Message: {1} with stack trace {2}",
@@ -83,7 +105,7 @@ public class FormSubmissionListener {
     }
 
     private long getVersion() {
-        AppStateToken token = configService.getAppStateTokenByName(Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION);
+        AppStateToken token = configService.getAppStateTokenByName(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION);
         return token==null?0L:token.longValue();
     }
     

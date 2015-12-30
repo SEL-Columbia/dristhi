@@ -28,7 +28,7 @@ public class AllActionsIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-        allActions.removeAll();
+       allActions.removeAll();
     }
 
     @Test

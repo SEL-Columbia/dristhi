@@ -13,10 +13,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.opensrp.FormEntityConstants;
-import org.opensrp.FormEntityConstants.Encounter;
-import org.opensrp.FormEntityConstants.FormEntity;
-import org.opensrp.FormEntityConstants.Person;
+import org.joda.time.DateTime;
+import org.opensrp.common.FormEntityConstants;
+import org.opensrp.common.FormEntityConstants.Encounter;
+import org.opensrp.common.FormEntityConstants.FormEntity;
+import org.opensrp.common.FormEntityConstants.Person;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
@@ -75,7 +76,7 @@ public class FormEntityConverter {
 		
 		Event e = new Event()
 			.withBaseEntityId(entityId)//should be different for main and subform
-			.withEventDate(FormEntityConstants.FORM_DATE.parse(fs.getFieldValue(encounterDateField)))
+			.withEventDate(new DateTime(FormEntityConstants.FORM_DATE.parse(fs.getFieldValue(encounterDateField))))
 			.withEventType(eventType)
 			.withLocationId(fs.getFieldValue(encounterLocation))
 			.withProviderId(fs.providerId())

@@ -10,6 +10,10 @@ public class Provider extends BaseEntity {
 
 	private String fullName;
 
+	protected Provider() {
+		
+	}
+	
 	public Provider(String baseEntityId) {
 		super(baseEntityId);
 	}

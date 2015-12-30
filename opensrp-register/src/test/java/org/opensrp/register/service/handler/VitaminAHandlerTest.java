@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import org.opensrp.register.service.ChildService;
 import org.opensrp.register.service.handler.VitaminAHandler;
+import org.opensrp.register.ziggy.service.ChildService;
 
 public class VitaminAHandlerTest {
     @Mock

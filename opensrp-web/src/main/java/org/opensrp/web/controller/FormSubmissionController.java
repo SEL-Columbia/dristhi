@@ -15,20 +15,20 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.domain.Client;
-import org.opensrp.domain.Event;
+import org.opensrp.common.AllConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.PatientService;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.ErrorTrace;
+import org.opensrp.domain.Event;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
-import org.opensrp.OpenSRPConstants.OpenSRPEvent;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.opensrp.service.ErrorTraceService;
@@ -118,7 +118,7 @@ public class FormSubmissionController {
                 return new ResponseEntity<>(BAD_REQUEST);
             }
 
-            scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
+            scheduler.notifyEvent(new SystemEvent<>(AllConstants.OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
             
             try{
           

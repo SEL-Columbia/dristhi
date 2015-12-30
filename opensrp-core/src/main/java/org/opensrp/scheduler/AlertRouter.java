@@ -31,13 +31,14 @@ public class AlertRouter {
     }
 
     public Route addRoute(Route route) {
+    	logger.info("ADDED ROUTE:"+route);
         routes.add(route);
         return route;
     }
     
-    @MotechListener(subjects = {EventSubjects.MILESTONE_ALERT})
-    public void handle(MotechEvent realEvent) {
-        logger.info("Handling motech event : " + realEvent);
+    @MotechListener(subjects = {EventSubjects.MILESTONE_ALERT, EventSubjects.DEFAULTMENT_CAPTURE})
+    public void handleAlerts(MotechEvent realEvent) {
+        logger.debug("Handling motech milestone alerts: " + realEvent);
         MilestoneEvent event = new MilestoneEvent(realEvent);
 
         for (Route route : routes) {

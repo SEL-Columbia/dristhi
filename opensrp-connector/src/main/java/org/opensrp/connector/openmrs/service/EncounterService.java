@@ -1,6 +1,5 @@
 package org.opensrp.connector.openmrs.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +7,10 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.domain.Event;
-import org.opensrp.domain.Obs;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.HttpUtil;
+import org.opensrp.domain.Event;
+import org.opensrp.domain.Obs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -91,7 +90,7 @@ public class EncounterService extends OpenmrsService{
 
 		List<Obs> ol = e.getObs();
 		Map<String, JSONArray> p = new HashMap<>();
-		Map<String, List<JSONArray>> pc = new HashMap<>();
+		Map<String, JSONArray> pc = new HashMap<>();
 		
 		if(ol != null)
 		for (Obs obs : ol) {
@@ -106,11 +105,14 @@ public class EncounterService extends OpenmrsService{
 					p.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
 				}
 				// find if any other exists with same parent if so add to the list otherwise create new list
-				List<JSONArray> obl = pc.get(obs.getParentCode());
+				JSONArray obl = pc.get(obs.getParentCode());
 				if(obl == null){
-					obl = new ArrayList<>();
+					obl = new JSONArray();
 				}
-				obl.add(convertObsToJson(obs));
+				JSONArray addobs = convertObsToJson(obs);
+				for (int i = 0; i < addobs.length(); i++) {
+					obl.put(addobs.getJSONObject(i));
+				}
 				pc.put(obs.getParentCode(), obl);
 			}
 		}
@@ -120,9 +122,9 @@ public class EncounterService extends OpenmrsService{
 			for (int i = 0; i < p.get(ok).length(); i++) {
 				JSONObject obo = p.get(ok).getJSONObject(i);
 				
-				List<JSONArray> cob = pc.get(ok);
-				if(cob != null && cob.size() > 0) {
-					obo.put("groupMembers", new JSONArray(cob));
+				JSONArray cob = pc.get(ok);
+				if(cob != null && cob.length() > 0) {
+					obo.put("groupMembers", cob);
 				}
 				
 				obar.put(obo);
@@ -136,7 +138,7 @@ public class EncounterService extends OpenmrsService{
 	
 	private JSONArray convertObsToJson(Obs o) throws JSONException{
 		JSONArray arr = new JSONArray();
-		if(o.getValues().size()==0){//must be parent of some obs
+		if(o.getValues() == null || o.getValues().size()==0){//must be parent of some obs
 			JSONObject obo = new JSONObject();
 			obo.put("concept", o.getFieldCode());
 

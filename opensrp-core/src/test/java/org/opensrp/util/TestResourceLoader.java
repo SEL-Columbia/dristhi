@@ -14,7 +14,6 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
-
 public class TestResourceLoader {
 	protected String openmrsOpenmrsUrl;
 	protected String openmrsUsername;

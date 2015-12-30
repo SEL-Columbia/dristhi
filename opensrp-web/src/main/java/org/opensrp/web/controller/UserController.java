@@ -66,7 +66,7 @@ public class UserController {
         User u = currentUser();
         String lid = "";
         try{
-        	JSONObject tm = openmrsUserService.getTeamMember(u.getBaseEntity().getAttribute("_PERSON_UUID").toString());
+        	JSONObject tm = openmrsUserService.getTeamMember(u.getAttribute("_PERSON_UUID").toString());
         	JSONArray locs = tm.getJSONArray("location");
         	for (int i = 0; i < locs.length(); i++) {
 				lid += locs.getJSONObject(i).getString("uuid")+";;";
@@ -76,9 +76,9 @@ public class UserController {
         	System.out.println("USER Location info not mapped in team management module. Now trying Person Attribute");;
         }
         if(StringUtils.isEmptyOrWhitespaceOnly(lid)){
-	        lid = (String) u.getBaseEntity().getAttribute("Location");
+	        lid = (String) u.getAttribute("Location");
 	        if(StringUtils.isEmptyOrWhitespaceOnly(lid)){
-	            String lids = (String) u.getBaseEntity().getAttribute("Locations");
+	            String lids = (String) u.getAttribute("Locations");
 	            
 	            if(lids == null){
 	            	throw new RuntimeException("User not mapped on any location. Make sure that user have a person attribute Location or Locations with uuid(s) of valid OpenMRS Location(s) separated by ;;");
