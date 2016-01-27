@@ -2,6 +2,7 @@ package org.opensrp.service;
 
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -51,9 +52,9 @@ public class MultimediaServiceTest {
 	@Ignore @Test
 	public void shouldSaveMultimediaFile() throws FileNotFoundException
 	{
-		  MultimediaDTO multimedia = new MultimediaDTO("1234567891", "opensrp","image/jpeg", "../assets/multimedia/opensrp/images/1234567891.jpg","nid");
-		
-		  FileInputStream fis = new FileInputStream("/home/julkar/nain/image.jpeg");
+		  MultimediaDTO multimedia = new MultimediaDTO("1234567891", "opensrp","image/jpeg","","nid");
+		  String baseDirPath = System.getProperty("user.home");
+		  FileInputStream fis = new FileInputStream(baseDirPath + File.separator +".OpenSRP/multimedia/image.jpeg");
 		  
           MultipartFile multipartFile = null;
           
@@ -72,7 +73,7 @@ public class MultimediaServiceTest {
 	@Ignore @Test
 	public void shouldGetMultimediaFiles() throws FileNotFoundException
 	{
-		 MultimediaDTO multimediaDTO = new MultimediaDTO("1234567890", "opensrp","image/jpeg", "../assets/multimedia/opensrp/images/1234567890.jpg","profile");
+		 MultimediaDTO multimediaDTO = new MultimediaDTO("1234567890", "opensrp","image/jpeg","","profile");
 		
 		Multimedia expectedMultimedia = new Multimedia()
 		.withCaseId(multimediaDTO.caseId())
@@ -81,9 +82,9 @@ public class MultimediaServiceTest {
 		.withFilePath(multimediaDTO.filePath())
 		.withFileCategory(multimediaDTO.fileCategory());
 		
-		FileInputStream fis = new FileInputStream("/home/julkar/nain/image.jpeg");
-		  
-          MultipartFile multipartFile = null;
+		 String baseDirPath = System.getProperty("user.home");
+		 FileInputStream fis = new FileInputStream(baseDirPath + File.separator +".OpenSRP/multimedia/image.jpeg");
+         MultipartFile multipartFile = null;
           
 		try {
 			multipartFile = new MockMultipartFile("file", fis);
