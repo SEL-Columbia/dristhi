@@ -1,6 +1,8 @@
 
 package org.opensrp.connector.openmrs.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,6 +14,8 @@ import org.opensrp.api.domain.Address;
 import org.opensrp.api.domain.BaseEntity;
 import org.opensrp.api.domain.Client;
 import org.opensrp.connector.HttpUtil;
+import org.opensrp.connector.MultipartUtility;
+import org.opensrp.domain.Multimedia;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -25,6 +29,7 @@ public class PatientService extends OpenmrsService{
 	//person methods should be separate
 	private static final String PERSON_URL = "ws/rest/v1/person";
 	private static final String PATIENT_URL = "ws/rest/v1/patient";
+	private static final String PATIENT_IMAGE_URL = "ws/rest/v1/patientimage/uploadimage";
 	private static final String PATIENT_IDENTIFIER_URL = "identifier";
 	private static final String PERSON_ATTRIBUTE_URL = "attribute";
 	private static final String PERSON_ATTRIBUTE_TYPE_URL = "ws/rest/v1/personattributetype";
@@ -203,5 +208,27 @@ public class PatientService extends OpenmrsService{
 		
 		p.put("identifiers", ids);
 		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
+	public void patientImageUpload(Multimedia multimedia) throws IOException
+	{
+	     //String requestURL =  "http://46.101.51.199:8080/openmrs/ws/rest/v1/patientimage/uploadimage";
+		
+		 try {
+			    File convFile = new File("/opt"+multimedia.getFilePath());
+	            MultipartUtility multipart = new MultipartUtility(getURL()+"/"+PATIENT_IMAGE_URL, OPENMRS_USER, OPENMRS_PWD);
+	            multipart.addFormField("patientidentifier", multimedia.getCaseId());
+	            multipart.addFormField("category", multimedia.getFileCategory());
+	            multipart.addFilePart("file", convFile);
+	 
+	            List<String> response = multipart.finish();
+	             
+	            System.out.println("SERVER REPLIED:");
+	             
+	            for (String line : response) {
+	                System.out.println(line);
+	            }
+	        } catch (IOException ex) {
+	            System.err.println(ex);
+	        }
 	}
 }
