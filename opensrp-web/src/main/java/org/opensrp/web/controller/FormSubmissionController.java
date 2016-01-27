@@ -7,12 +7,15 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.http.HttpStatus.OK;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.domain.Client;
@@ -29,6 +32,7 @@ import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.OpenSRPConstants.OpenSRPEvent;
+import org.opensrp.repository.MultimediaRepository;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.opensrp.service.ErrorTraceService;
@@ -61,14 +65,14 @@ public class FormSubmissionController {
     private PatientService patientService;
     private HouseholdService householdService;
     private ErrorTraceService errorTraceService;
-    
-    @Autowired //TODO: Julkar Confirm this
     private MultimediaService multimediaService;
+    private MultimediaRepository multimediaRepository;
     
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, FormEntityConverter formEntityConverter, PatientService patientService, 
-    		HouseholdService householdService, ErrorTraceService errorTraceService) {
+    		HouseholdService householdService,MultimediaService multimediaService, MultimediaRepository multimediaRepository,
+    		ErrorTraceService errorTraceService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         this.errorTraceService=errorTraceService;
@@ -76,6 +80,8 @@ public class FormSubmissionController {
         this.formEntityConverter = formEntityConverter;
         this.patientService = patientService;
         this.householdService = householdService;
+        this.multimediaService = multimediaService;
+        this.multimediaRepository = multimediaRepository;
     }
 
     @RequestMapping(method = GET, value = "/form-submissions")
@@ -193,6 +199,7 @@ public class FormSubmissionController {
     		}
     	//}
     }
+
     @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
     @ResponseBody
     public List<MultimediaDTO> getFiles(@RequestParam("anm-id") String providerId) {
@@ -207,12 +214,16 @@ public class FormSubmissionController {
 		});
     }
     @RequestMapping(headers = {"Accept=multipart/form-data"}, method = POST, value = "/multimedia-file")
-    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId,@RequestParam("content-type") String contentType, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId,@RequestParam("content-type") String contentType, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file) throws ClientProtocolException, IOException {
     	
     	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
-    	
     	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
-    	 
-    	 return new ResponseEntity<>(new Gson().toJson(status), HttpStatus.OK);
+    	
+    	if(status.equals("success"))
+    	{
+         Multimedia multimedia =   multimediaRepository.findByCaseId(entityId);
+    	 patientService.patientImageUpload(multimedia);
+    	}
+    	 return new ResponseEntity<>(new Gson().toJson(status), OK);
     }
 }
