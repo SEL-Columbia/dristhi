@@ -1,6 +1,5 @@
 package org.opensrp.domain;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
+import org.joda.time.DateTime;
 import org.opensrp.common.Gender;
 
 @TypeDiscriminator("doc.type == 'Client'")
@@ -20,9 +20,9 @@ public class Client extends BaseEntity {
 	@JsonProperty
 	private String lastName;
 	@JsonProperty
-	private Date birthdate;
+	private DateTime birthdate;
 	@JsonProperty
-	private Date deathdate;
+	private DateTime deathdate;
 	@JsonProperty
 	private Boolean birthdateApprox;
 	@JsonProperty
@@ -38,8 +38,8 @@ public class Client extends BaseEntity {
 		super(baseEntityId);
 	}
 	
-	public Client(String baseEntityId, String firstName, String middleName, String lastName, Date birthdate, 
-			Date deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender) {
+	public Client(String baseEntityId, String firstName, String middleName, String lastName, DateTime birthdate, 
+			DateTime deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender) {
 		super(baseEntityId);
 		this.firstName = firstName;
 		this.middleName = middleName;
@@ -51,8 +51,8 @@ public class Client extends BaseEntity {
 		this.gender = gender;
 	}
 	
-	public Client(String baseEntityId, String firstName, String middleName, String lastName, Date birthdate, 
-			Date deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender, 
+	public Client(String baseEntityId, String firstName, String middleName, String lastName, DateTime birthdate, 
+			DateTime deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender, 
 			String identifierType, String identifier) {
 		super(baseEntityId);
 		this.firstName = firstName;
@@ -66,7 +66,7 @@ public class Client extends BaseEntity {
 		addIdentifier(identifierType, identifier);
 	}
 	
-	public Client(String baseEntityId, String firstName, String middleName, String lastName, Date birthdate, Date deathdate, 
+	public Client(String baseEntityId, String firstName, String middleName, String lastName, DateTime birthdate, DateTime deathdate, 
 			Boolean birthdateApprox, Boolean deathdateApprox, String gender, List<Address> addresses,
 			Map<String, String> identifiers, Map<String, Object> attributes) {
 		super(baseEntityId);
@@ -107,19 +107,19 @@ public class Client extends BaseEntity {
 		this.lastName = lastName;
 	}
 
-	public Date getBirthdate() {
+	public DateTime getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(DateTime birthdate) {
 		this.birthdate = birthdate;
 	}
 
-	public Date getDeathdate() {
+	public DateTime getDeathdate() {
 		return deathdate;
 	}
 
-	public void setDeathdate(Date deathdate) {
+	public void setDeathdate(DateTime deathdate) {
 		this.deathdate = deathdate;
 	}
 
@@ -170,13 +170,13 @@ public class Client extends BaseEntity {
 		return this;
 	}
 
-	public Client withBirthdate(Date birthdate, Boolean isApproximate) {
+	public Client withBirthdate(DateTime birthdate, Boolean isApproximate) {
 		this.birthdate = birthdate;
 		this.birthdateApprox = isApproximate;
 		return this;
 	}
 
-	public Client withDeathdate(Date deathdate, Boolean isApproximate) {
+	public Client withDeathdate(DateTime deathdate, Boolean isApproximate) {
 		this.deathdate = deathdate;
 		this.deathdateApprox = isApproximate;
 		return this;

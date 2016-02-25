@@ -126,12 +126,16 @@ public class FormSubmissionProcessor{
 		return null;
 	}
 	
-	private void makeModelEntities(FormSubmission submission) {
+	private void makeModelEntities(FormSubmission submission) throws JSONException {
     	Client c = formEntityConverter.getClientFromFormSubmission(submission);
 		Event e = formEntityConverter.getEventFromFormSubmission(submission);
 		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
 
-		clientService.addClient(c);
+		if(clientService.findClient(c) != null){
+			clientService.updateClient(c);
+		}
+		else clientService.addClient(c);
+		
 		eventService.addEvent(e);
 		// TODO relationships b/w entities
 			

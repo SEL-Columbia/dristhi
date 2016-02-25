@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @TypeDiscriminator("doc.baseEntityId && doc.identifiers")
 public class BaseEntity extends BaseDataObject {
@@ -60,7 +61,19 @@ public class BaseEntity extends BaseDataObject {
 	}
 
 	public List<Address> getAddresses() {
+		if (addresses == null) {
+			addresses = new ArrayList<>();
+		}
 		return addresses;
+	}
+	
+	public Address getAddress(String addressType) {
+		for (Address address : addresses) {
+			if(address.getAddressType().equalsIgnoreCase(addressType)){
+				return address;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -81,6 +94,9 @@ public class BaseEntity extends BaseDataObject {
 	}
 
 	public Map<String, Object> getAttributes() {
+		if (attributes == null) {
+			attributes = new HashMap<>();
+		}
 		return attributes;
 	}
 
@@ -119,6 +135,9 @@ public class BaseEntity extends BaseDataObject {
 	}
 	
 	public Map<String, String> getIdentifiers() {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
+		}
 		return identifiers;
 	}
 

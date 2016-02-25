@@ -7,6 +7,7 @@ import static junit.framework.Assert.assertTrue;
 import static org.opensrp.dto.AlertStatus.normal;
 import static org.opensrp.dto.BeneficiaryType.mother;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -29,6 +30,32 @@ public class AllActionsIntegrationTest {
     @Before
     public void setUp() throws Exception {
        allActions.removeAll();
+    }
+    
+    @Test
+    public void testBulkData(){
+    	ArrayList<String> arr = new ArrayList<>();
+    	long maxdiff = 0;
+    	for (int i = 0; i < 100000; i++) {
+    		long before = System.currentTimeMillis();
+    		Action a = new Action("Case X", "ANM "+i, alert());
+    		allActions.add(a);
+    		long after = System.currentTimeMillis();
+    		long diff = after - before;
+    		if(diff > maxdiff){
+    			maxdiff = diff;
+    			arr.add(i+":"+diff);
+    			System.out.println("Added new diff : "+i+":"+diff);
+    		}
+		}
+    	
+    	System.out.println(arr);
+    	
+    	System.out.println(new DateTime()+" : First time");
+    	allActions.findByANMIDAndTimeStamp("ANM 500", 0L);
+    	System.out.println(new DateTime()+" : 2nd  time");
+    	allActions.findByANMIDAndTimeStamp("ANM 1000", 0L);
+    	System.out.println(new DateTime()+" : End  time");
     }
 
     @Test

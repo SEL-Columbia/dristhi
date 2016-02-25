@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,8 +38,8 @@ public class PatientTest extends TestResourceLoader{
 			.withFirstName("FN")
 			.withMiddleName("MN")
 			.withLastName("LN")
-			.withBirthdate(new Date(), true)
-			.withDeathdate(new Date(), false)
+			.withBirthdate(new DateTime(), true)
+			.withDeathdate(new DateTime(), false)
 			.withGender("MALE");
 		
 		c.withAddresses(addresses)

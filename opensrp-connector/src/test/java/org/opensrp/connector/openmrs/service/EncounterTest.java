@@ -23,6 +23,8 @@ import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormAttributeParser;
 import org.opensrp.service.formSubmission.FormEntityConverter;
 
+import com.google.gson.JsonIOException;
+
 
 public class EncounterTest extends TestResourceLoader{
 	public EncounterTest() throws IOException {
@@ -229,7 +231,7 @@ public class EncounterTest extends TestResourceLoader{
 			assertEquals(cl.getFirstName(), "jackfruit");
 			assertEquals(cl.getAddresses().get(0).getCountry(), "Bangladesh");
 			assertEquals(cl.getAddresses().get(0).getAddressType(), "usual_residence");
-			assertEquals(cl.getAddresses().get(0).getState(), "RANGPUR");
+			assertEquals(cl.getAddresses().get(0).getStateProvince(), "RANGPUR");
 			assertThat(cl.getIdentifiers(), Matchers.<String, String>hasEntry(equalTo("NID"), equalTo("7675788777775")));
 			assertThat(cl.getIdentifiers(), Matchers.<String, String>hasEntry(equalTo("Birth Registration ID"), equalTo("98899998888888888")));
 			assertThat(cl.getAttributes(), Matchers.<String, Object>hasEntry(equalTo("GoB_HHID"), equalTo((Object)"2322")));
@@ -293,5 +295,19 @@ public class EncounterTest extends TestResourceLoader{
 			
 			hhs.saveHH(hh, true);
 		}
-	}	
+	}
+	
+	@Test
+	public void parentChildObsTest() throws JsonIOException, IOException, JSONException {
+		FormSubmission fs = getFormSubmissionFor("psrf_form");
+		
+		//Client c = oc.getClientFromFormSubmission(fs);
+		Event e = (Event) oc.getEventFromFormSubmission(fs);
+		
+		pushToOpenmrsForTest = true;
+		if(pushToOpenmrsForTest){
+			s.createEncounter(e);
+		}
+
+	}
 }

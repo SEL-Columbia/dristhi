@@ -81,7 +81,7 @@ public class EncounterService extends OpenmrsService{
 		
 		JSONObject pr = userService.getPersonByUser(e.getProviderId());
 		
-		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate()));
+		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
 		enc.put("patient", pt.getString("uuid"));
 		enc.put("encounterType", e.getEventType());

@@ -44,16 +44,8 @@ public class FormSubmissionListener {
         this.configService = configService;
         this.errorTraceService = errorTraceService;
         this.fsp = fsp;
-        try{
-			AppStateToken at = this.configService.getAppStateTokenByName(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION);
-			if(at == null){
-				this.configService.registerAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION, 
-						0, "Token to keep track of forms processed for client n event parsing and schedule handling");
-			}
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+		this.configService.registerAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION, 
+			0, "Token to keep track of forms processed for client n event parsing and schedule handling", true);
     }
 
     @MotechListener(subjects = AllConstants.OpenSRPEvent.FORM_SUBMISSION)

@@ -54,11 +54,6 @@ public class AppStateToken extends MotechBaseDataObject {
 		return Long.parseLong(value.toString());
 	}
 	
-	public static void main(String[] args) {
-		AppStateToken ap = new AppStateToken("12", "0", 0);
-		System.out.println(ap.longValue());
-	}
-	
 	public int intValue() {
 		return Integer.parseInt(value.toString());
 	}

@@ -50,6 +50,7 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 	
 	@Before
 	public void setup() throws IOException{
+		pushToOpenmrsForTest = true;
 		ps = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		us = new OpenmrsUserService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		ss = new OpenmrsSchedulerService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
@@ -78,7 +79,7 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 		if(pushToOpenmrsForTest){
 			JSONObject p = ps.getPatientByIdentifier(id);
 			if(p == null){
-				ps.createPatient(new Client(id, "TEST", null, "Name", new DateTime().minusYears(20).toDate(), null, false, false, "MALE"));
+				ps.createPatient(new Client(id, "TEST", null, "Name", new DateTime().minusYears(20), null, false, false, "MALE"));
 			}
 			JSONObject t = ss.createTrack(e, alertActions);
 			e.setStatus(EnrollmentStatus.COMPLETED);
@@ -99,7 +100,7 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 		if(pushToOpenmrsForTest){
 			JSONObject p = ps.getPatientByIdentifier(id);
 			if(p == null){
-				ps.createPatient(new Client(id, "TEST", null, "Name", new DateTime().minusYears(20).toDate(), null, false, false, "MALE"));
+				ps.createPatient(new Client(id, "TEST", null, "Name", new DateTime().minusYears(20), null, false, false, "MALE"));
 			}
 			JSONObject t = ss.createTrack(e, alertActions);
 			e.setStatus(EnrollmentStatus.COMPLETED);
@@ -121,7 +122,7 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 		if(pushToOpenmrsForTest){
 			JSONObject p = ps.getPatientByIdentifier(id);
 			if(p == null){
-				ps.createPatient(new Client(id, "TEST", null, "Name", new DateTime().minusYears(20).toDate(), null, false, false, "MALE"));
+				ps.createPatient(new Client(id, "TEST", null, "Name", new DateTime().minusYears(20), null, false, false, "MALE"));
 			}
 			JSONObject t = ss.createTrack(e, alertActions);
 			e.setStatus(EnrollmentStatus.COMPLETED);

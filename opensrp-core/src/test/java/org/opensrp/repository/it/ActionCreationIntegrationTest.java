@@ -42,6 +42,9 @@ public class ActionCreationIntegrationTest extends TestResourceLoader{
         initMocks(this);
         
     }
-
+    
+    public static void main(String[] args) {
+		System.out.println(Boolean.valueOf("0"));
+	}
 
 }

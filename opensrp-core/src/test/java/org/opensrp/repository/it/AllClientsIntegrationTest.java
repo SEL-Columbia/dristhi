@@ -1,26 +1,35 @@
 package org.opensrp.repository.it;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.hamcrest.Matchers;
+import org.joda.time.DateTime;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.common.Gender;
 import org.opensrp.domain.Address;
-import org.opensrp.domain.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.repository.AllClients;
+import org.opensrp.service.ClientService;
+import org.opensrp.util.DateTimeTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
@@ -28,12 +37,63 @@ public class AllClientsIntegrationTest {
 //TODO detailed testign
 	
 	@Autowired
-	private AllClients allClients;
+	private ClientService clientService;
+	@Autowired
+	private AllClients ac;
 
 	@Before
 	public void setUp() throws Exception {
-		allClients.removeAll();
+		ac.removeAll();
 		initMocks(this);
+	}
+	
+	private void addClients() {
+		for (int i = 0; i < 10; i++) {
+			Client c = new Client("eid"+i)
+				.withName("fn"+i, "mn"+i, "ln"+i)
+				.withGender("MALE")
+				.withBirthdate(new DateTime(), false);
+			c.withAddress(new Address().withAddressType("usual_residence").withCityVillage("city"+i).withTown("town"+i));
+			c.withAttribute("at1", "atval"+i);
+			
+			clientService.addClient(c);
+		}
+	}
+	
+	@Test
+	public void shouldUpdateSuccessfullyIfClientFound() throws JSONException {
+		Client c = new Client("eid")
+			.withName("fn", "mn", "ln")
+			.withGender("MALE")
+			.withBirthdate(new DateTime(), false);
+		c.withAddress(new Address().withAddressType("usual_residence").withCityVillage("city").withTown("town"));
+		c.withAttribute("at1", "atval1");
+		
+		clientService.addClient(c);
+		
+		Client cu = new Client("eid0")
+		.withGender("FEMALE")
+		.withBirthdate(new DateTime(), false);
+		cu.withAddress(new Address().withAddressType("deathplace").withCityVillage("city").withTown("town"));
+		cu.withAttribute("at2", "atval2");
+
+		clientService.updateClient(cu);
+	}
+	
+	@Test
+	public void shouldGetByDynamicView() {
+		addClients();
+		List<Client> l2 = clientService.findByCriteria(null, "MALE", null, null, null, null, null, null, null, null, null, null, null, null);
+		assertTrue(l2.size() == 10);
+		
+		l2 = clientService.findByCriteria(null, "FEMALE", null, null, null, null, null, null, null, null, null, null, null, null);
+		assertTrue(l2.size() == 0);
+
+		l2 = clientService.findByCriteria("fn", "MALE", null, null, null, null, null, null, null, null, null, null, null, null);
+		assertTrue(l2.size() == 10);
+		
+		l2 = clientService.findByCriteria("fn1", "MALE"   , null, null, null, null, null, null, null, null, null, null, null, null);
+		assertTrue(l2.size() == 1);
 	}
 
 	@Test
@@ -41,7 +101,7 @@ public class AllClientsIntegrationTest {
 	{
 		String baseEntityId = "testclient2";
 		Client c = new Client(baseEntityId)
-			.withBirthdate(new Date(), false)
+			.withBirthdate(new DateTime(), false)
 			.withFirstName("C first n")
 			.withLastName("C last n")
 			.withMiddleName("C middle n")
@@ -50,20 +110,20 @@ public class AllClientsIntegrationTest {
 		c.withAttribute("ETHNICITY", "Mughal");
 		c.withIdentifier("Program ID", "01001222");
 		
-		allClients.add(c);
+		clientService.addClient(c);
 		
-		Client ce = allClients.findByBaseEntityId("testclient2");
+		Client ce = clientService.getByBaseEntityId("testclient2");
 		assertEquals("testclient2", ce.getBaseEntityId());
 		assertTrue(Client.class.getSimpleName().equals(ce.type()));
 		assertEquals("birthplace", ce.getAddresses().get(0).getAddressType());
 		assertEquals("Mughal", ce.getAttribute("ethnicity"));
 		assertEquals("01001222", ce.getIdentifier("program id"));
 		
-		List<Client> ce2 = allClients.findAllByIdentifier("01001222");
+		List<Client> ce2 = clientService.findAllByIdentifier("01001222");
 		assertTrue(ce2.size() == 1);
 		assertEquals("testclient2", ce2.get(0).getBaseEntityId());
 		
-		List<Client> ce3 = allClients.findAllByIdentifier("Program ID", "01001222");
+		List<Client> ce3 = clientService.findAllByIdentifier("Program ID", "01001222");
 		assertTrue(ce3.size() == 1);
 		assertEquals("testclient2", ce3.get(0).getBaseEntityId());
 	}
@@ -73,7 +133,7 @@ public class AllClientsIntegrationTest {
 	{
 		String baseEntityId = "testclient2";
 		Client c = new Client(baseEntityId)
-			.withBirthdate(new Date(), false)
+			.withBirthdate(new DateTime(), false)
 			.withFirstName("C first n")
 			.withLastName("C last n")
 			.withMiddleName("C middle n")
@@ -82,10 +142,10 @@ public class AllClientsIntegrationTest {
 		c.withAttribute("ETHNICITY", "Mughal");
 		c.withIdentifier("Program ID", "01001222");
 		
-		allClients.add(c);
+		clientService.addClient(c);
 		
 		c = new Client("testclient3")
-		.withBirthdate(new Date(), false)
+		.withBirthdate(new DateTime(), false)
 		.withFirstName("C first n")
 		.withLastName("C last n")
 		.withMiddleName("C middle n")
@@ -93,9 +153,9 @@ public class AllClientsIntegrationTest {
 		c.withAttribute("ETHNICITY", "Mughal");
 		c.addIdentifier("Program ID", "01001223");
 		
-		allClients.add(c);
+		clientService.addClient(c);
 		
-		List<Client> ce = allClients.findAllByAttribute("ETHNICITY", "Mughal");
+		List<Client> ce = clientService.findAllByAttribute("ETHNICITY", "Mughal");
 		assertTrue(ce.size() == 2);
 		assertThat(ce, Matchers.<Client>hasItem(Matchers.<Client>hasProperty("baseEntityId",equalTo("testclient2"))));
 		assertThat(ce, Matchers.<Client>hasItem(Matchers.<Client>hasProperty("baseEntityId",equalTo("testclient3"))));

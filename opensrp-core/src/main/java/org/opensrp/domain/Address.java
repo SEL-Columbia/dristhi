@@ -25,9 +25,21 @@ public class Address{
 	@JsonProperty
 	private String longitute;
 	@JsonProperty
+	private String geopoint;
+	@JsonProperty
 	private String postalCode;
 	@JsonProperty
-	private String state;
+	private String subTown;
+	@JsonProperty
+	private String town;
+	@JsonProperty
+	private String subDistrict;
+	@JsonProperty
+	private String countyDistrict;
+	@JsonProperty
+	private String cityVillage;
+	@JsonProperty
+	private String stateProvince;
 	@JsonProperty
 	private String country;
 	
@@ -35,7 +47,7 @@ public class Address{
 	public Address() {	}
 
 	public Address(String addressType, Date startDate, Date endDate, Map<String, String> addressFields, 
-			String latitude, String longitute, String postalCode, String state, String country) {
+			String latitude, String longitute, String postalCode, String stateProvince, String country) {
 		this.addressType = addressType;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -43,7 +55,7 @@ public class Address{
 		this.latitude = latitude;
 		this.longitute = longitute;
 		this.postalCode = postalCode;
-		this.state = state;
+		this.stateProvince = stateProvince;
 		this.country = country;
 	}
 
@@ -150,6 +162,14 @@ public class Address{
 		this.longitute = longitute;
 	}
 
+	public String getGeopoint() {
+		return geopoint;
+	}
+
+	public void setGeopoint(String geopoint) {
+		this.geopoint = geopoint;
+	}
+
 	public String getPostalCode() {
 		return postalCode;
 	}
@@ -158,12 +178,52 @@ public class Address{
 		this.postalCode = postalCode;
 	}
 
-	public String getState() {
-		return state;
+	public String getSubTown() {
+		return subTown;
 	}
 
-	public void setState(String state) {
-		this.state = state;
+	public void setSubTown(String subTown) {
+		this.subTown = subTown;
+	}
+
+	public String getTown() {
+		return town;
+	}
+
+	public void setTown(String town) {
+		this.town = town;
+	}
+
+	public String getSubDistrict() {
+		return subDistrict;
+	}
+
+	public void setSubDistrict(String subDistrict) {
+		this.subDistrict = subDistrict;
+	}
+
+	public String getCountyDistrict() {
+		return countyDistrict;
+	}
+
+	public void setCountyDistrict(String countyDistrict) {
+		this.countyDistrict = countyDistrict;
+	}
+
+	public String getCityVillage() {
+		return cityVillage;
+	}
+
+	public void setCityVillage(String cityVillage) {
+		this.cityVillage = cityVillage;
+	}
+
+	public String getStateProvince() {
+		return stateProvince;
+	}
+
+	public void setStateProvince(String stateProvince) {
+		this.stateProvince = stateProvince;
 	}
 
 	public String getCountry() {
@@ -294,14 +354,39 @@ public class Address{
 		this.longitute = longitute;
 		return this;
 	}
+	
+	public Address withGeopoint(String geopoint) {
+		this.geopoint = geopoint;
+		return this;
+	}
 
 	public Address withPostalCode(String postalCode) {
 		this.postalCode = postalCode;
 		return this;
 	}
 
-	public Address withState(String state) {
-		this.state = state;
+	public Address withTown(String town) {
+		this.town = town;
+		return this;
+	}
+	
+	public Address withSubDistrict(String subDistrict) {
+		this.subDistrict = subDistrict;
+		return this;
+	}
+	
+	public Address withCountyDistrict(String countyDistrict) {
+		this.countyDistrict = countyDistrict;
+		return this;
+	}
+	
+	public Address withCityVillage(String cityVillage) {
+		this.cityVillage = cityVillage;
+		return this;
+	}
+	
+	public Address withStateProvince(String stateProvince) {
+		this.stateProvince = stateProvince;
 		return this;
 	}
 

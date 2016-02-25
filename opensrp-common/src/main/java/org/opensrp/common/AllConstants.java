@@ -1,6 +1,7 @@
 package org.opensrp.common;
 
 
+
 public class AllConstants {
 	public static final String OPENSRP_FORM_DATABASE_CONNECTOR = "opensrpFormDatabaseConnector";
     public static final String OPENSRP_DATABASE_CONNECTOR = "opensrpDatabaseConnector";
@@ -13,6 +14,36 @@ public class AllConstants {
     public static final String EMPTY_STRING = "";
     public static final String OPENSRP_ERRORTRACE_DATABASE="opensrpErrorTraceDatabaseConnector";
 
+    public static class BaseEntity{
+    	public static final String BASE_ENTITY_ID = "baseEntityId";
+    	public static final String ADDRESS_TYPE = "addressType";
+    	public static final String START_DATE = "startDate";
+    	public static final String END_DATE = "endDate";
+    	public static final String LATITUDE = "latitude";
+    	public static final String LONGITUTE = "longitute";
+    	public static final String GEOPOINT = "geopoint";
+    	public static final String POSTAL_CODE = "postalCode";
+    	public static final String SUB_TOWN = "subTown";
+    	public static final String TOWN = "town";
+    	public static final String SUB_DISTRICT = "subDistrict";
+    	public static final String COUNTY_DISTRICT = "countyDistrict";
+    	public static final String CITY_VILLAGE = "cityVillage";
+    	public static final String STATE_PROVINCE = "stateProvince";
+    	public static final String COUNTRY = "country";
+    	
+    }
+    
+    public static class Client extends BaseEntity{
+    	public static final String FIRST_NAME = "firstName";
+    	public static final String MIDDLE_NAME = "middleName";
+    	public static final String LAST_NAME = "lastName";
+    	public static final String BIRTH_DATE = "birthdate";
+    	public static final String DEATH_DATE = "deathdate";
+    	public static final String BIRTH_DATE_APPROX = "birthdateApprox";
+    	public static final String DEATH_DATE_APPROX = "deathdateApprox";
+    	public static final String GENDER = "gender";
+    }
+    
     public static class Form {
         public static final String ENTITY_ID = "entityId";
         public static final String ANM_ID = "anmId";

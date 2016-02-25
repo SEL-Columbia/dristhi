@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +46,7 @@ public class AllBaseEntitiesIntegrationTest {
 	public void shouldFetchBaseEntityForClientData() throws Exception {
 		String baseEntityId = "testclient1";
 		Client c = new Client(baseEntityId)
-			.withBirthdate(new Date(), false)
+			.withBirthdate(new DateTime(), false)
 			.withFirstName("C first n")
 			.withLastName("C last n")
 			.withMiddleName("C middle n")
@@ -76,7 +77,7 @@ public class AllBaseEntitiesIntegrationTest {
 	public void shouldFetchBaseEntityByIdentifier() throws Exception {
 		String baseEntityId = "testclient2";
 		Client c = new Client(baseEntityId)
-			.withBirthdate(new Date(), false)
+			.withBirthdate(new DateTime(), false)
 			.withFirstName("C first n")
 			.withLastName("C last n")
 			.withMiddleName("C middle n")

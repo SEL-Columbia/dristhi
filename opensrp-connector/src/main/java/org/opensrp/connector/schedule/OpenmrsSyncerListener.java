@@ -36,16 +36,8 @@ public class OpenmrsSyncerListener {
 		this.actionService = actionService;
 		this.config = config;
 		this.errorTraceService = errorTraceService;
-		try{
-			AppStateToken at = this.config.getAppStateTokenByName(ScheduleTrackerConfig.openmrs_syncer_sync_by_last_update_enrollment);
-			if(at == null){
-				this.config.registerAppStateToken(ScheduleTrackerConfig.openmrs_syncer_sync_by_last_update_enrollment, 
-						0, "ScheduleTracker token to keep track of enrollment synced with OpenMRS");
-			}
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+		this.config.registerAppStateToken(ScheduleTrackerConfig.openmrs_syncer_sync_by_last_update_enrollment, 
+			0, "ScheduleTracker token to keep track of enrollment synced with OpenMRS", true);
 	}
 	
     @MotechListener(subjects = OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)

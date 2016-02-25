@@ -227,14 +227,31 @@ public class FormEntityConverter {
 					String[] g = geopoint.split(" ");
 					ad.setLatitude(g[0]);
 					ad.setLongitute(g[1]);
-					ad.addAddressField(addressField, fl.value());
+					ad.setGeopoint(geopoint);
 				}
 			}
-			else if(addressField.equalsIgnoreCase("postalCode")||addressField.equalsIgnoreCase("postal_code")){
+			else if(addressField.equalsIgnoreCase("postal_code")||addressField.equalsIgnoreCase("postalCode")){
 				ad.setPostalCode(fl.value());
 			}
+			else if(addressField.equalsIgnoreCase("sub_town") || addressField.equalsIgnoreCase("subTown")){
+				ad.setSubTown(fl.value());
+			}
+			else if(addressField.equalsIgnoreCase("town")){
+				ad.setTown(fl.value());
+			}
+			else if(addressField.equalsIgnoreCase("sub_district") || addressField.equalsIgnoreCase("subDistrict")){
+				ad.setSubDistrict(fl.value());
+			}
+			else if(addressField.equalsIgnoreCase("district") || addressField.equalsIgnoreCase("county")
+					|| addressField.equalsIgnoreCase("county_district") || addressField.equalsIgnoreCase("countyDistrict")){
+				ad.setCountyDistrict(fl.value());
+			}
+			else if(addressField.equalsIgnoreCase("city") || addressField.equalsIgnoreCase("village")
+					|| addressField.equalsIgnoreCase("cityVillage") || addressField.equalsIgnoreCase("city_village")){
+				ad.setCityVillage(fl.value());
+			}
 			else if(addressField.equalsIgnoreCase("state")||addressField.equalsIgnoreCase("state_province")||addressField.equalsIgnoreCase("stateProvince")){
-				ad.setState(fl.value());
+				ad.setStateProvince(fl.value());
 			}
 			else if(addressField.equalsIgnoreCase("country")){
 				ad.setCountry(fl.value());
@@ -354,8 +371,8 @@ public class FormEntityConverter {
 				.withFirstName(firstName)
 				.withMiddleName(middleName)
 				.withLastName(lastName)
-				.withBirthdate(birthdate, birthdateApprox)
-				.withDeathdate(deathdate, deathdateApprox)
+				.withBirthdate(new DateTime(birthdate), birthdateApprox)
+				.withDeathdate(new DateTime(deathdate), deathdateApprox)
 				.withGender(gender);
 		
 		c.withAddresses(addresses)
@@ -408,8 +425,8 @@ public class FormEntityConverter {
 			.withFirstName(firstName)
 			.withMiddleName(middleName)
 			.withLastName(lastName)
-			.withBirthdate(birthdate, birthdateApprox)
-			.withDeathdate(deathdate, deathdateApprox)
+			.withBirthdate(new DateTime(birthdate), birthdateApprox)
+			.withDeathdate(new DateTime(deathdate), deathdateApprox)
 			.withGender(gender);
 		
 		c.withAddresses(addresses)

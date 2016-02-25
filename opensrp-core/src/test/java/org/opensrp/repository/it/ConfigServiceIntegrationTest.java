@@ -51,7 +51,7 @@ public class ConfigServiceIntegrationTest {
 			allAppTokens = alltokens;
 
 			for (TestToken tk : TestToken.values()) {
-				configService.registerAppStateToken(tk, tk.value(), tk.name());
+				configService.registerAppStateToken(tk, tk.value(), tk.name(), false);
 			}
 			
 			for (TestToken tk : TestToken.values()) {
@@ -69,16 +69,20 @@ public class ConfigServiceIntegrationTest {
 		assertEquals(tk.value(), configService.getAppStateTokenByName(tk).intValue());
 	}
 	@Test(expected=IllegalArgumentException.class)
-	public void shouldThrowExceptionForRegisteringDuplicateEntry() {
-		configService.registerAppStateToken(TestToken.token1_int, "", "");
+	public void shouldThrowExceptionForRegisteringDuplicateEntryFlaggedAsDonotSuppressException() {
+		configService.registerAppStateToken(TestToken.token1_int, "", "token1_int", false);
+	}
+	@Test
+	public void shouldNotThrowExceptionForRegisteringDuplicateEntryFlaggedAsSuppressException() {
+		configService.registerAppStateToken(TestToken.token1_int, "", "token1_int", true);
 	}
 	@Test(expected=IllegalArgumentException.class)
 	public void shouldThrowExceptionForRegisteringWithMissingDescription() {
-		configService.registerAppStateToken(TestToken.token1_int, "", "");
+		configService.registerAppStateToken(TestToken.token1_int, "", "", false);
 	}
 	@Test(expected=IllegalArgumentException.class)
 	public void shouldThrowExceptionForRegisteringWithMissingName() {
-		configService.registerAppStateToken(null, "", "");
+		configService.registerAppStateToken(null, "", "", false);
 	}
 	@Test(expected=IllegalStateException.class)
 	public void shouldThrowExceptionForUpdatingWithNonExistentName() {

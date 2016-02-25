@@ -50,21 +50,28 @@ public class ConfigService {
 	}
 	
 	/** Registers a new token to manage the specified variable state (by token name) of App.
-	 * Throws IllegalArgumentException if tokenName or description is not provided or if name is not unique i.e. already exists in system.
+	 * Throws IllegalArgumentException if tokenName or description is not provided or if name is not unique 
+	 * i.e. already exists in system and flag suppressExceptionIfExists is false.
 	 * @param tokenName
 	 * @param defaultValue
 	 * @param description
+	 * @param suppressExceptionIfExists
 	 * @return The newly registered token. 
 	 * 
 	 */
-	public AppStateToken registerAppStateToken(Enum<?> tokenName, Object defaultValue, String description) {
+	public AppStateToken registerAppStateToken(Enum<?> tokenName, Object defaultValue, String description, boolean suppressExceptionIfExists) {
 		if(tokenName == null || StringUtils.isEmptyOrWhitespaceOnly(description)){
 			throw new IllegalArgumentException("Token name and description must be provided");
 		}
 		
-		if(allAppStateTokens.findByName(tokenName.name()).size() > 0){
-			throw new IllegalArgumentException("Token with given name ("+tokenName.name()+") already exists.");
+		List<AppStateToken> atl = allAppStateTokens.findByName(tokenName.name());
+		if(atl.size() > 0){
+			if(!suppressExceptionIfExists){
+				throw new IllegalArgumentException("Token with given name ("+tokenName.name()+") already exists.");
+			}
+			return atl.get(0);
 		}
+		
 		AppStateToken token = new AppStateToken(tokenName.name(), defaultValue, 0L, description);
 		allAppStateTokens.add(token);
 		return token;

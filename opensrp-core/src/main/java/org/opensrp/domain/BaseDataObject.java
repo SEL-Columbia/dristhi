@@ -17,7 +17,7 @@ public abstract class BaseDataObject extends MotechBaseDataObject {
 	@JsonProperty
 	private Date dateEdited;
 	@JsonProperty
-	private Boolean voided = Boolean.FALSE;
+	private Boolean voided;
 	@JsonProperty
 	private Date dateVoided;
 	@JsonProperty

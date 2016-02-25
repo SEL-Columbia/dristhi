@@ -127,9 +127,13 @@ public class PatientService extends OpenmrsService{
 				jao.put("address1", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS1|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO)"));
 				jao.put("address2", ad.getAddressField("(?i)(ADDRESS2|STREET|STREET_NUMBER|STREET_NO|LANE)"));
 				jao.put("address3", ad.getAddressField("(?i)(ADDRESS3|SECTOR|AREA)"));
-				jao.put("address4", ad.getAddressField("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)"));
-				jao.put("countyDistrict", ad.getAddressField("(?i)(county_district|countyDistrict|COUNTY|DISTRICT)"));
-				jao.put("cityVillage", ad.getAddressField("(?i)(cityVillage|city_village|CITY|VILLAGE)"));
+				String a4 = ad.getAddressField("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)");
+				a4 = StringUtils.isEmptyOrWhitespaceOnly(a4)?"":a4;
+				String subd = StringUtils.isEmptyOrWhitespaceOnly(ad.getSubDistrict())?"":ad.getSubDistrict();
+				String tow = StringUtils.isEmptyOrWhitespaceOnly(ad.getTown())?"":ad.getTown();
+				jao.put("address4", a4+subd+tow);
+				jao.put("countyDistrict", ad.getCountyDistrict());
+				jao.put("cityVillage", ad.getCityVillage());
 
 				String ad5V = "";
 				for (Entry<String, String> af : ad.getAddressFields().entrySet()) {
@@ -148,7 +152,7 @@ public class PatientService extends OpenmrsService{
 				
 			}
 			jao.put("address6", ad.getAddressType());
-			jao.put("stateProvince", ad.getState());
+			jao.put("stateProvince", ad.getStateProvince());
 			jao.put("country", ad.getCountry());
 			jao.put("postalCode", ad.getPostalCode());
 			jao.put("latitude", ad.getLatitude());
