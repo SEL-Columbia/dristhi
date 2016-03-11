@@ -218,7 +218,7 @@ public class FormEntityConverter {
 				ad.setLatitude(fl.value());
 			}
 			else if(addressField.equalsIgnoreCase("longitute")){
-				ad.setLongitute(fl.value());
+				ad.setLongitude(fl.value());
 			}
 			else if(addressField.equalsIgnoreCase("geopoint")){
 				// example geopoint 34.044494 -84.695704 4 76 = lat lon alt prec
@@ -226,7 +226,7 @@ public class FormEntityConverter {
 				if(!StringUtils.isEmptyOrWhitespaceOnly(geopoint)){
 					String[] g = geopoint.split(" ");
 					ad.setLatitude(g[0]);
-					ad.setLongitute(g[1]);
+					ad.setLongitude(g[1]);
 					ad.setGeopoint(geopoint);
 				}
 			}

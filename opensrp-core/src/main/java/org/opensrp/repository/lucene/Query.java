@@ -1,4 +1,4 @@
-package org.opensrp.repository;
+package org.opensrp.repository.lucene;
 
 import org.joda.time.DateTime;
 
@@ -22,15 +22,19 @@ public class Query{
 			}
 		}
 		public Query eq(String name, String value){
-			addToQuery(name+":"+value);
+			addToQuery(name+":"+value+" ");
 			return this;
 		}
 		public Query like(String name, String value) {
-			addToQuery(name+":["+value+" TO "+value+"\uFFFF]");
+			addToQuery(name+":["+value+" TO "+value+"\uFFFF] ");
 			return this;
 		}
 		public Query eq(String name, DateTime value){
-			addToQuery(name+"<date>:["+value.toString("yyyy-MM-dd")+" TO "+value.toString("yyyy-MM-dd")+"]");
+			addToQuery(name+"<date>:["+value.toString("yyyy-MM-dd")+" TO "+value.toString("yyyy-MM-dd")+"] ");
+			return this;
+		}
+		public Query between(String name, DateTime from, DateTime to){
+			addToQuery(name+"<date>:["+from.toString("yyyy-MM-dd")+" TO "+to.toString("yyyy-MM-dd")+"] ");
 			return this;
 		}
 		private void addToQuery(String q){

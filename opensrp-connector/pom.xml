@@ -184,6 +184,12 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.6.0</version>
         </dependency>
+        
+        <dependency>
+			<groupId>org.ict4h</groupId>
+			<artifactId>atomfeed-client</artifactId>
+			<version>1.9.1</version>
+		</dependency>
     </dependencies>
 
 </project>

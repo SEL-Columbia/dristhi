@@ -24,6 +24,10 @@ public class PatientTest extends TestResourceLoader{
 	
 	@Before
 	public void setup(){
+		openmrsOpenmrsUrl="http://localhost:8181/openmrs/";
+		openmrsUsername="admin";
+		openmrsPassword="Admin123";
+		pushToOpenmrsForTest = true;
 		s = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 	}
 	

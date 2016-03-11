@@ -1,10 +1,11 @@
-package org.opensrp.repository;
+package org.opensrp.repository.lucene;
 
 import java.io.IOException;
 import java.util.List;
 
 import org.joda.time.DateTime;
 import org.opensrp.domain.Client;
+import org.opensrp.util.DataQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,39 +21,7 @@ import static org.opensrp.common.AllConstants.Client.*;
 @FullText({
     @Index(
         name = "by_all_criteria",
-        index = "function(doc) {"
-        		+ "	if(doc.type !== 'Client') return null;"
-        		+ "	var docl = new Array();"
-        		+ "	var len = doc.addresses?doc.addresses.length:1;"
-        		+ "	for(var i = 0; i < len; i++) {	"
-        		+ "		var arr1 = ['firstName','middleName','lastName','gender'];"
-        		+ "		var arr2 = ['addressType','country','stateProvince','cityVillage','countyDistrict','subDistrict','town','subTown'];"
-        		+ "		var ret = new Document();"
-        		+ "		for (var i in arr1){"
-        		+ "			ret.add(doc[arr1[i]], {'field':arr1[i]});"
-        		+ "		}"
-        		+ "		for(var key in doc.attributes) {"
-        		+ "			ret.add(doc.attributes[key], {'field':key});"
-        		+ "		}"
-        		+ "		if(doc.addresses){"
-        		+ "			var ad = doc.addresses[i];"
-        		+ "			if(ad)"
-        		+ "			for (var i in arr2){"
-        		+ "				ret.add(ad[arr2[i]], {'field':arr2[i]});"
-        		+ "			}"
-        		+ "		}"
-        		+ "		if(doc.birthdate){"
-        		+ "			var bd=doc.birthdate.substring(0,19); "
-        		+ "			ret.add(bd, {'field':'birthdate','type':'date'});"
-        		+ "		}"
-        		+ "		if(doc.deathdate){"
-        		+ "			var dd=doc.deathdate.substring(0,19); "
-        		+ "			ret.add(dd, {'field':'deathdate','type':'date'});"
-        		+ "		}"
-        		+ "		docl.push(ret);"
-        		+ "	}"
-        		+ "    return docl;"
-        		+ "}")
+        index = "function (doc) {   if(doc.type !== 'Client') return null;   var docl = new Array();   var len = doc.addresses ? doc.addresses.length : 1;   log.info('LEN:'+doc.addresses.length);   for(var al = 0; al < len; al++) {    var arr1 = ['firstName', 'middleName', 'lastName', 'gender'];    var arr2 = ['addressType', 'country', 'stateProvince', 'cityVillage', 'countyDistrict', 'subDistrict', 'town', 'subTown'];    var ret = new Document();    for(var i in arr1) {     ret.add(doc[arr1[i]], {'field' : arr1[i]});    }    for(var key in doc.attributes) {     ret.add(doc.attributes[key], {'field' : key});    }    if(doc.addresses) {     var ad = doc.addresses[al];     log.info('ADD:'+ad);     if(ad){      for(var i in arr2) {       ret.add(ad[arr2[i]], {'field' : arr2[i]});      }     }             }    var bd = doc.birthdate.substring(0, 19);    ret.add(bd, {'field' : 'birthdate','type' : 'date'});    docl.push(ret);     }   return docl;  }")
 })
 @Component
 public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<Client>{

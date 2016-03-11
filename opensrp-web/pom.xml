@@ -48,6 +48,9 @@
             <resource>
                 <directory>../opensrp-core/src/main/resources</directory>
             </resource>
+            <resource>
+                <directory>../opensrp-connector/src/main/resources</directory>
+            </resource>
         </resources>
         <plugins>
             <plugin>

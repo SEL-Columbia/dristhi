@@ -71,6 +71,7 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(e.getEventType(), "patient_register");
 		assertEquals(e.getEventDate(), new DateTime(sd.parse("2015-02-01")));
 		assertEquals(e.getLocationId(), "unknown location");
+		
 		if(pushToOpenmrsForTest){
 			JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
 			if(p == null){

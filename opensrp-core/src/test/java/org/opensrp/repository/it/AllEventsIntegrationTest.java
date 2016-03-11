@@ -1,6 +1,7 @@
 package org.opensrp.repository.it;
 
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.junit.Assert.*;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.domain.Event;
 import org.opensrp.repository.AllEvents;
+import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -17,6 +19,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class AllEventsIntegrationTest {
 //TODO Detailed testing
 	@Autowired
+	private EventService eventService;
+	@Autowired
 	private AllEvents allEvents;
 
 	@Before
@@ -25,11 +29,17 @@ public class AllEventsIntegrationTest {
 		initMocks(this);
 	}
 
+	private void addEvents() {
+		for (int i = 0; i < 20; i++) {
+			Event e = new Event("entity"+i, "event"+i, "Test Event", new DateTime(), 
+					"testentity", "testprovider", "location"+i, "formSubmission"+i);
+			eventService.addEvent(e);
+		}
+	}
+	
 	@Test
 	public void test(){
-		/*Event e = new Event("testclient1", "eid", "type1", new DateTime(), "pkchild", "provider1", "loc1", "fs1");
-		allEvents.add(e);
-		
-		allEvents.*/
+		addEvents();
+		assertTrue(eventService.getByBaseEntityAndFormSubmissionId("entity0", "formSubmission0")!=null);
 	}
 }

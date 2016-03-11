@@ -44,6 +44,18 @@ public class AllConstants {
     	public static final String GENDER = "gender";
     }
     
+    public static class Event {
+    	public static final String BASE_ENTITY_ID = "baseEntityId";
+    	public static final String FORM_SUBMISSION_ID = "formSubmissionId";
+    	public static final String EVENT_TYPE = "eventType";
+    	public static final String EVENT_ID = "eventId";
+    	public static final String LOCATION_ID = "locationId";
+    	public static final String EVENT_DATE = "eventDate";
+    	public static final String PROVIDER_ID = "providerId";
+    	public static final String ENTITY_TYPE = "entityType";
+
+    }
+    
     public static class Form {
         public static final String ENTITY_ID = "entityId";
         public static final String ANM_ID = "anmId";

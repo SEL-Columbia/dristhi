@@ -1,7 +1,20 @@
 package org.opensrp.web.rest;
 
-import static org.opensrp.common.AllConstants.Client.*;
-import static org.opensrp.web.rest.RestUtils.*;
+import static org.opensrp.common.AllConstants.BaseEntity.ADDRESS_TYPE;
+import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
+import static org.opensrp.common.AllConstants.BaseEntity.CITY_VILLAGE;
+import static org.opensrp.common.AllConstants.BaseEntity.COUNTRY;
+import static org.opensrp.common.AllConstants.BaseEntity.COUNTY_DISTRICT;
+import static org.opensrp.common.AllConstants.BaseEntity.STATE_PROVINCE;
+import static org.opensrp.common.AllConstants.BaseEntity.SUB_DISTRICT;
+import static org.opensrp.common.AllConstants.BaseEntity.SUB_TOWN;
+import static org.opensrp.common.AllConstants.BaseEntity.TOWN;
+import static org.opensrp.common.AllConstants.Client.BIRTH_DATE;
+import static org.opensrp.common.AllConstants.Client.DEATH_DATE;
+import static org.opensrp.common.AllConstants.Client.FIRST_NAME;
+import static org.opensrp.common.AllConstants.Client.GENDER;
+import static org.opensrp.web.rest.RestUtils.getDateFilter;
+import static org.opensrp.web.rest.RestUtils.getStringFilter;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -15,8 +28,6 @@ import org.opensrp.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mysql.jdbc.StringUtils;
 
@@ -30,6 +41,7 @@ public class ClientResource extends RestResource<Client>{
 		this.clientService = clientService;
 	}
 
+	@Override
 	public Client getByUniqueId(String uniqueId) {
 		return clientService.find(uniqueId);
 	}
@@ -49,6 +61,11 @@ public class ClientResource extends RestResource<Client>{
 		return p;
 	}
 
+	@Override
+	public Client update(Client entity) {
+		return clientService.mergeClient(entity);
+	}
+	
 	@Override
 	public List<Client> search(HttpServletRequest request) throws ParseException {
 		String nameLike = getStringFilter("name", request);
@@ -71,4 +88,5 @@ public class ClientResource extends RestResource<Client>{
 		return clientService.findByCriteria(nameLike, gender, birthdate, deathdate, attributeType, attributeValue,
 				addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown);
 	}
+
 }

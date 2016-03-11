@@ -23,7 +23,7 @@ public class Address{
 	@JsonProperty
 	private String latitude;
 	@JsonProperty
-	private String longitute;
+	private String longitude;
 	@JsonProperty
 	private String geopoint;
 	@JsonProperty
@@ -47,13 +47,13 @@ public class Address{
 	public Address() {	}
 
 	public Address(String addressType, Date startDate, Date endDate, Map<String, String> addressFields, 
-			String latitude, String longitute, String postalCode, String stateProvince, String country) {
+			String latitude, String longitude, String postalCode, String stateProvince, String country) {
 		this.addressType = addressType;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.addressFields = addressFields;
 		this.latitude = latitude;
-		this.longitute = longitute;
+		this.longitude = longitude;
 		this.postalCode = postalCode;
 		this.stateProvince = stateProvince;
 		this.country = country;
@@ -154,12 +154,12 @@ public class Address{
 		this.latitude = latitude;
 	}
 
-	public String getLongitute() {
-		return longitute;
+	public String getLongitude() {
+		return longitude;
 	}
 
-	public void setLongitute(String longitute) {
-		this.longitute = longitute;
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 
 	public String getGeopoint() {
@@ -350,8 +350,8 @@ public class Address{
 		return this;
 	}
 
-	public Address withLongitute(String longitute) {
-		this.longitute = longitute;
+	public Address withLongitude(String longitude) {
+		this.longitude = longitude;
 		return this;
 	}
 	

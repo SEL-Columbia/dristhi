@@ -32,8 +32,6 @@ public class AddressTest {
 	@Test
 	public void testAddress2(){
 		Address address = new Address("Birthplace", new Date(), null, null, "2.222", "3.333", "75210", "Sindh", "Pakistan");
-		address.addAddressField(AddressField.CITY, "Karachi");
-		address.addAddressField(AddressField.DISTRICT, "Malir");
 		
 		assertEquals("Address type invalid", address.getAddressType(), "Birthplace");
 		assertEquals("Lat value invalid", address.getLatitude(), "2.222");
@@ -41,8 +39,6 @@ public class AddressTest {
 		assertEquals("Postcode value invalid", address.getPostalCode(), "75210");
 		assertEquals("State value invalid", address.getState(), "Sindh");
 		assertEquals("Country value invalid", address.getCountry(), "Pakistan");
-		assertEquals("AddressField value invalid", address.getAddressField(AddressField.CITY), "Karachi");
-		assertEquals("AddressField value invalid", address.getAddressField(AddressField.DISTRICT), "Malir");
 	}
 	
 	@Test
@@ -56,8 +52,6 @@ public class AddressTest {
 		address.withPostalCode("75290");
 		address.withStartDate(sd);
 		address.withEndDate(ed);
-		address.withAddressField(AddressField.CITY, "Lahore");
-		address.withAddressField(AddressField.TOWN, "Karim");
 		
 		assertEquals("Address type invalid", address.getAddressType(), "Deathplace");
 		assertEquals("Postcode value invalid", address.getPostalCode(), "75290");
@@ -65,7 +59,5 @@ public class AddressTest {
 		assertEquals("Country value invalid", address.getCountry(), "Pakistan");
 		assertEquals("StartDate invalid", address.getStartDate(), sd);
 		assertEquals("EndDate invalid", address.getStartDate(), ed);
-		assertEquals("AddressField value invalid", address.getAddressField(AddressField.CITY), "Lahore");
-		assertEquals("AddressField value invalid", address.getAddressField(AddressField.TOWN), "Karim");
 	}
 }

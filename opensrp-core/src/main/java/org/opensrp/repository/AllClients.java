@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
+import org.opensrp.repository.lucene.LuceneClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -30,6 +31,8 @@ public class AllClients extends MotechBaseRepository<Client> {
 
 	@GenerateView
 	public Client findByBaseEntityId(String baseEntityId) {
+		if(StringUtils.isEmptyOrWhitespaceOnly(baseEntityId))
+			return null;
 		List<Client> clients = queryView("by_baseEntityId", baseEntityId);
 		if (clients == null || clients.isEmpty()) {
 			return null;

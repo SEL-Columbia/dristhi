@@ -73,6 +73,9 @@ public class ClientService {
 	
 	public Client addClient(Client client)
 	{
+		if(client.getBaseEntityId() == null){
+			throw new RuntimeException("No baseEntityId");
+		}
 		Client c = findClient(client);
 		if(c != null){
 			throw new IllegalArgumentException("A client already exists with given list of identifiers. Consider updating data.["+c+"]");
@@ -90,19 +93,10 @@ public class ClientService {
 			return c;
 		}
 		
-		// if not found find if it is in any identifiers TODO refactor it later
-		List<Client> cl = allClients.findAllByIdentifier(client.getBaseEntityId());
-		if(cl.size() > 1){
-			throw new IllegalArgumentException("Multiple clients with identifier "+client.getBaseEntityId()+" exist.");
-		}
-		else if(cl.size() != 0){
-			return cl.get(0);
-		}
-		
 		//still not found!! search by generic identifiers
 		
 		for (String idt : client.getIdentifiers().keySet()) {
-			cl = allClients.findAllByIdentifier(idt, client.getIdentifier(idt));
+			List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
 			if(cl.size() > 1){
 				throw new IllegalArgumentException("Multiple clients with identifier type "+idt+" and ID "+client.getIdentifier(idt)+" exist.");
 			}
@@ -142,18 +136,20 @@ public class ClientService {
 	{
 		// If update is on original entity
 		if(updatedClient.isNew()){
-			throw new IllegalArgumentException("Client to be updated is not persisted domain object. Update database object instead of new pojo");
+			throw new IllegalArgumentException("Client to be updated is not an existing and persisting domain object. Update database object instead of new pojo");
 		}
 		
 		if(findClient(updatedClient) == null){
 			throw new IllegalArgumentException("No client found with given list of identifiers. Consider adding new!");
 		}
 		
+		updatedClient.setDateEdited(new Date());
 		allClients.update(updatedClient);
 	}
 	
-	public void mergeClient(Client updatedClient) throws JSONException
+	public Client mergeClient(Client updatedClient) 
 	{
+		try{
 		Client original = findClient(updatedClient);
 		if(original == null){
 			throw new IllegalArgumentException("No client found with given list of identifiers. Consider adding new!");
@@ -188,6 +184,12 @@ public class ClientService {
 			}
 		}
 
+		original.setDateEdited(new Date());
 		allClients.update(original);
+		return original;
+		}
+		catch(JSONException e){
+			throw new RuntimeException(e);
+		}
 	}
 }

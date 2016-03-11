@@ -35,6 +35,10 @@ public abstract class OpenmrsService {
 		return HttpUtil.removeEndingSlash(OPENMRS_BASE_URL);
 	}
 	
+	void setURL(String url) {
+		OPENMRS_BASE_URL = url;
+	}
+
 public static void main(String[] args) {
 	System.out.println(OPENMRS_DATE.format(new Date()));
 }

@@ -1,4 +1,4 @@
-package org.opensrp.repository;
+package org.opensrp.repository.lucene;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -67,7 +67,10 @@ public class HttpUtil {
     public static HttpResponse get(String url, String payload, String username, String password) {
         try {
             HttpURLConnection con = makeConnection(url, payload, HttpMethod.GET, true, username, password);
-            return new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, IOUtils.toString(con.getInputStream()));
+            System.out.println(url);
+            HttpResponse resp = new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, IOUtils.toString(con.getInputStream()));
+            System.out.println(resp);
+            return resp;
         } 
         catch(FileNotFoundException e){
         	return new HttpResponse(true, "");

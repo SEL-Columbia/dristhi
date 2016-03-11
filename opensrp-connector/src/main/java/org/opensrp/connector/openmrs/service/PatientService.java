@@ -1,10 +1,13 @@
 
 package org.opensrp.connector.openmrs.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +46,12 @@ public class PatientService extends OpenmrsService{
     			+"/"+PATIENT_URL, "v=full&identifier="+identifier, OPENMRS_USER, OPENMRS_PWD).body())
     			.getJSONArray("results");
     	return p.length()>0?p.getJSONObject(0):null;
+    }
+    
+    public JSONObject getPatientByUuid(String uuid, boolean noRepresentationTag) throws JSONException
+    {
+    	return new JSONObject(HttpUtil.get(getURL()
+    			+"/"+PATIENT_URL+"/"+uuid, noRepresentationTag?"":"v=full", OPENMRS_USER, OPENMRS_PWD).body());
     }
     
     public JSONObject getIdentifierType(String identifierType) throws JSONException
@@ -86,10 +95,10 @@ public class PatientService extends OpenmrsService{
 	public JSONObject convertBaseEntityToOpenmrsJson(Client be) throws JSONException {
 		JSONObject per = new JSONObject();
 		per.put("gender", be.getGender());
-		per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate()));
+		per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate().toDate()));
 		per.put("birthdateEstimated", be.getBirthdateApprox());
 		if(be.getDeathdate() != null){
-			per.put("deathDate", OPENMRS_DATE.format(be.getDeathdate()));
+			per.put("deathDate", OPENMRS_DATE.format(be.getDeathdate().toDate()));
 		}
 		
 		String fn = be.getFirstName();
@@ -156,7 +165,7 @@ public class PatientService extends OpenmrsService{
 			jao.put("country", ad.getCountry());
 			jao.put("postalCode", ad.getPostalCode());
 			jao.put("latitude", ad.getLatitude());
-			jao.put("longitude", ad.getLongitute());
+			jao.put("longitude", ad.getLongitude());
 			if(ad.getStartDate() != null){
 				jao.put("startDate", OPENMRS_DATE.format(ad.getStartDate()));
 			}
@@ -206,5 +215,80 @@ public class PatientService extends OpenmrsService{
 		
 		p.put("identifiers", ids);
 		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
+	
+	public JSONObject addThriveId(String baseEntityId, JSONObject patient) throws JSONException
+	{
+		JSONObject jio = new JSONObject();
+		JSONObject ido = getIdentifierType(OPENSRP_IDENTIFIER_TYPE);
+		if(ido == null){
+			ido = createIdentifierType(OPENSRP_IDENTIFIER_TYPE, OPENSRP_IDENTIFIER_TYPE+" - FOR THRIVE OPENSRP");
+		}
+		jio.put("identifierType", ido.getString("uuid"));
+		jio.put("identifier", baseEntityId);
+		jio.put("location", "Unknown Location");
+		jio.put("preferred", true);
+		
+		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_URL+"/"+patient.getString("uuid")+"/"+PATIENT_IDENTIFIER_URL, "", jio.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
+	
+	public Client convertToClient(JSONObject patient) throws JSONException {
+		Client c = new Client(null);
+		JSONArray ar = patient.getJSONArray("identifiers");
+		for (int i = 0; i < ar.length(); i++) {
+			JSONObject ji = ar.getJSONObject(i);
+			if(ji.getJSONObject("identifierType").getString("display").equalsIgnoreCase(OPENSRP_IDENTIFIER_TYPE)){
+				c.setBaseEntityId(ji.getString("identifier"));
+			}
+			else {
+				c.addIdentifier(ji.getJSONObject("identifierType").getString("display"), ji.getString("identifier"));
+			}
+		}
+		JSONObject pr = patient.getJSONObject("person");
+		
+		String mn = pr.getJSONObject("preferredName").has("middleName")?pr.getJSONObject("preferredName").getString("middleName"):null;
+		DateTime dd = pr.has("deathDate")&&!pr.getString("deathDate").equalsIgnoreCase("null")?new DateTime(pr.getString("deathDate")):null;
+		c.withFirstName(pr.getJSONObject("preferredName").getString("givenName"))
+		.withMiddleName(mn)
+		.withLastName(pr.getJSONObject("preferredName").getString("familyName"))
+		.withGender(pr.getString("gender"))
+		.withBirthdate(new DateTime(pr.getString("birthdate")), pr.getBoolean("birthdateEstimated"))
+		.withDeathdate(dd, false);
+		
+		if(pr.has("attributes")){
+			for (int i = 0; i < pr.getJSONArray("attributes").length(); i++) {
+				JSONObject at = pr.getJSONArray("attributes").getJSONObject(i);
+				if(at.optJSONObject("value") == null){
+					c.addAttribute(at.getJSONObject("attributeType").getString("display"), at.getString("value"));
+				}
+				else{
+					c.addAttribute(at.getJSONObject("attributeType").getString("display"), at.getJSONObject("value").getString("display"));
+				}
+			}
+		}
+		
+		if(pr.has("addresses")){
+			for (int i = 0; i < pr.getJSONArray("addresses").length(); i++) {
+				JSONObject ad = pr.getJSONArray("addresses").getJSONObject(i);
+				Date startDate = ad.has("startDate")&&!ad.getString("startDate").equalsIgnoreCase("null")?new DateTime(ad.getString("startDate")).toDate():null;
+				Date endDate = ad.has("startDate")&&!ad.getString("endDate").equalsIgnoreCase("null")?new DateTime(ad.getString("endDate")).toDate():null;;
+				Address a = new Address(ad.getString("address6"), startDate, endDate, null, 
+						ad.getString("latitude"), ad.getString("longitude"), ad.getString("postalCode"), 
+						ad.getString("stateProvince"), ad.getString("country"));
+				//a.setGeopoint(geopoint);
+				a.setSubTown(ad.getString("address2"));//TODO
+				a.setTown(ad.getString("address3"));
+				a.setSubDistrict(ad.getString("address4"));
+				a.setCountyDistrict(ad.getString("countyDistrict"));
+				a.setCityVillage(ad.getString("cityVillage"));
+				
+				c.addAddress(a);
+			}
+			
+		}
+		return c;
+//TODO		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
+	//TODO	per.put("addresses", convertAddressesToOpenmrsJson(be.getAddresses()));
+		
 	}
 }
