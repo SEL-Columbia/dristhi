@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.net.URI;
 import java.util.HashMap;
 
-@Repository
+//@Repository
 public class AllMarkersInMemoryImpl implements AllMarkers {
 
     private final HashMap<URI,Marker> map;

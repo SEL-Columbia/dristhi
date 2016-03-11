@@ -3,18 +3,23 @@ package org.opensrp.connector.atomfeed.domain;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.ektorp.support.CouchDbDocument;
+import org.ektorp.support.TypeDiscriminator;
+import org.motechproject.model.MotechBaseDataObject;
 
-public class Marker extends CouchDbDocument{
+@TypeDiscriminator("doc.type == 'Marker'")
+public class Marker extends MotechBaseDataObject{
 	private String feedUri;
     private String lastReadEntryId;
     private String feedURIForLastReadEntry;
 
+    private Marker() {
+		
+	}
+    
     public Marker(org.ict4h.atomfeed.client.domain.Marker marker) {
 		this.feedUri = marker.getFeedUri().toString();
 		this.lastReadEntryId = marker.getLastReadEntryId();
 		this.feedURIForLastReadEntry = marker.getFeedURIForLastReadEntry().toString();
-		this.setId(this.feedUri);
 	}
 
 	public String getFeedUri() {

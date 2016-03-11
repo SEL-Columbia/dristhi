@@ -24,7 +24,9 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="org.opensrp.connector"/>
-
+    
+    <bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl"/>
+    
     <bean id="atomfeedDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="${couchdb.db.atomfeed}"/>
         <constructor-arg ref="couchDbInstance"/>
