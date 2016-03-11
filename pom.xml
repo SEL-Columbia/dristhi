@@ -29,6 +29,7 @@
         <motech.contrib.version>0.1-SNAPSHOT</motech.contrib.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.1.0.RELEASE</spring.version>
+		<mysql.connector.version>5.1.36</mysql.connector.version>
         <jackson.version>1.9.7</jackson.version>
 		<opensrp.updatePolicy>always</opensrp.updatePolicy>
 	</properties>
@@ -208,7 +209,7 @@
 						<dependency>
 							<groupId>mysql</groupId>
 							<artifactId>mysql-connector-java</artifactId>
-							<version>5.1.13</version>
+							<version>${mysql.connector.version}</version>
 						</dependency>
 					</dependencies>
 
