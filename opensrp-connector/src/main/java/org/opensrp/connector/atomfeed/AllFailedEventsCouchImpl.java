@@ -22,8 +22,8 @@ public class AllFailedEventsCouchImpl  implements AllFailedEvents {
 	@Autowired
 	public AllFailedEventsCouchImpl(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(OpenmrsConstants.ATOMFEED_DATABASE_CONNECTOR) CouchDbConnector db) {
-		db.setRevisionLimit(revisionLimit);
 		this.repository = new AllFailedEventInnerRepository(db);
+		db.setRevisionLimit(revisionLimit);
 	}
     
     @Override
