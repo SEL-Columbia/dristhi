@@ -69,7 +69,7 @@ public class EncounterTest extends TestResourceLoader{
 		
 		Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getEventType(), "patient_register");
-		assertEquals(e.getEventDate(), new DateTime(sd.parse("2015-02-01")));
+		assertEquals(e.getEventDate(), new DateTime(new DateTime("2015-02-01")));
 		assertEquals(e.getLocationId(), "unknown location");
 		
 		if(pushToOpenmrsForTest){
@@ -100,7 +100,7 @@ public class EncounterTest extends TestResourceLoader{
 		}*/
 	}
 	
-	@Ignore @Test
+	@Test
 	public void shouldHandleSubform() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
 
@@ -108,7 +108,7 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(c.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
 		assertEquals(c.getFirstName(), "test");
 		assertEquals(c.getGender(), "male");
-		assertEquals(c.getBirthdate(), sd.parse("1900-01-01"));
+		assertEquals(c.getBirthdate(), new DateTime("1900-01-01"));
 		assertEquals(c.getAddresses().get(0).getAddressField("landmark"), "nothing");
 		assertEquals(c.getAddresses().get(0).getAddressType(), "usual_residence");
 		assertEquals(c.getIdentifiers().get("GOB HHID"), "1234");
@@ -116,7 +116,7 @@ public class EncounterTest extends TestResourceLoader{
 		
 		Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
-		assertEquals(e.getEventDate(), new DateTime(sd.parse("2015-05-07")));
+		assertEquals(e.getEventDate(), new DateTime(new DateTime("2015-05-07")));
 		assertEquals(e.getLocationId(), "KUPTALA");
 		assertEquals(e.getFormSubmissionId(), "88c0e824-10b4-44c2-9429-754b8d823776");
 
@@ -137,7 +137,7 @@ public class EncounterTest extends TestResourceLoader{
 		}
 	}	
 	
-	@Ignore @Test
+	@Test
 	public void shouldHandleEmptyRepeatGroup() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 5);
 
@@ -145,7 +145,7 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(c.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
 		assertEquals(c.getFirstName(), "test");
 		assertEquals(c.getGender(), "male");
-		assertEquals(c.getBirthdate(), sd.parse("1900-01-01"));
+		assertEquals(c.getBirthdate(), new DateTime("1900-01-01"));
 		assertEquals(c.getAddresses().get(0).getAddressField("landmark"), "nothing");
 		assertEquals(c.getAddresses().get(0).getAddressType(), "usual_residence");
 		assertEquals(c.getIdentifiers().get("GOB HHID"), "1234");
@@ -153,7 +153,7 @@ public class EncounterTest extends TestResourceLoader{
 		
 		Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
-		assertEquals(e.getEventDate(), new DateTime(sd.parse("2015-05-07")));
+		assertEquals(e.getEventDate(), new DateTime(new DateTime("2015-05-07")));
 		assertEquals(e.getLocationId(), "KUPTALA");
 		assertEquals(e.getFormSubmissionId(), "88c0e824-10b4-44c2-9429-754b8d823776");
 
@@ -174,13 +174,13 @@ public class EncounterTest extends TestResourceLoader{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 7);
 
 		Client c = oc.getClientFromFormSubmission(fs);
-		assertEquals(c.getBirthdate(), sd.parse("1900-01-01"));
+		assertEquals(c.getBirthdate(), new DateTime("1900-01-01"));
 		assertTrue(c.getBirthdateApprox());
 		
 		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
 		for (String id : dc.keySet()) {
 			Client cl = (Client) dc.get(id).get("client");
-			assertEquals(cl.getBirthdate(), sd.parse("2000-05-07"));
+			assertEquals(cl.getBirthdate(), new DateTime("2000-05-07"));
 			assertFalse(cl.getBirthdateApprox());
 		}
 	}	
@@ -190,13 +190,13 @@ public class EncounterTest extends TestResourceLoader{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 8);
 
 		Client c = oc.getClientFromFormSubmission(fs);
-		assertEquals(c.getBirthdate(), sd.parse("1900-01-01"));
+		assertEquals(c.getBirthdate(), new DateTime("1900-01-01"));
 		assertFalse(c.getBirthdateApprox());
 		
 		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
 		for (String id : dc.keySet()) {
 			Client cl = (Client) dc.get(id).get("client");
-			assertEquals(cl.getBirthdate(), sd.parse("2000-05-07"));
+			assertEquals(cl.getBirthdate(), new DateTime("2000-05-07"));
 			assertFalse(cl.getBirthdateApprox());
 		}
 	}	
@@ -207,12 +207,12 @@ public class EncounterTest extends TestResourceLoader{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration_with_grouped_subform_data", 1);
 
 		Client c = oc.getClientFromFormSubmission(fs);
-		assertEquals(c.getBirthdate(), sd.parse("1900-01-01"));
+		assertEquals(c.getBirthdate(), new DateTime("1900-01-01"));
 		assertFalse(c.getBirthdateApprox());
 		assertThat(c.getAttributes(), Matchers.<String, Object>hasEntry(equalTo("GoB_HHID"), equalTo((Object)"2322")));
 		assertThat(c.getAttributes(), Matchers.<String, Object>hasEntry(equalTo("JiVitA_HHID"), equalTo((Object)"9889")));
 		
-		Event e = (Event) oc.getEventFromFormSubmission(fs);
+		Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), c.getBaseEntityId());
 		assertEquals(e.getEventType(), "New Household Registration");
 		assertEquals(e.getEventDate(), new DateTime(new SimpleDateFormat("yyyy-M-dd").parse("2015-10-11")));
@@ -227,7 +227,7 @@ public class EncounterTest extends TestResourceLoader{
 		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
 		for (String id : dc.keySet()) {
 			Client cl = (Client) dc.get(id).get("client");
-			assertEquals(cl.getBirthdate(), sd.parse("1988-10-08"));
+			assertEquals(cl.getBirthdate(), new DateTime("1988-10-08"));
 			assertFalse(cl.getBirthdateApprox());
 			assertEquals(cl.getFirstName(), "jackfruit");
 			assertEquals(cl.getAddresses().get(0).getCountry(), "Bangladesh");
@@ -272,7 +272,7 @@ public class EncounterTest extends TestResourceLoader{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration_with_grouped_subform_data", 1);
 
 		Client c = oc.getClientFromFormSubmission(fs);
-		Event e = (Event) oc.getEventFromFormSubmission(fs);
+		Event e = oc.getEventFromFormSubmission(fs);
 		
 		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
 		for (String id : dc.keySet()) {
@@ -302,11 +302,15 @@ public class EncounterTest extends TestResourceLoader{
 	public void parentChildObsTest() throws JsonIOException, IOException, JSONException {
 		FormSubmission fs = getFormSubmissionFor("psrf_form");
 		
-		//Client c = oc.getClientFromFormSubmission(fs);
+		Client c = oc.getClientFromFormSubmission(fs);
 		Event e = (Event) oc.getEventFromFormSubmission(fs);
 		
-		pushToOpenmrsForTest = true;
 		if(pushToOpenmrsForTest){
+			
+			JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
+			if(p == null){
+				p = ps.createPatient(c);
+			}
 			s.createEncounter(e);
 		}
 

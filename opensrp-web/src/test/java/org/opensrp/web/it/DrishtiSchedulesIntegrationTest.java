@@ -1,4 +1,4 @@
-package org.opensrp.integration;
+package org.opensrp.web.it;
 
 import static org.motechproject.scheduletracking.api.domain.WindowName.due;
 import static org.motechproject.scheduletracking.api.domain.WindowName.earliest;
@@ -6,8 +6,8 @@ import static org.motechproject.scheduletracking.api.domain.WindowName.late;
 import static org.motechproject.scheduletracking.api.domain.WindowName.max;
 import static org.motechproject.util.DateUtil.newDate;
 import static org.opensrp.common.util.DateUtil.fakeIt;
-import static org.opensrp.integration.DrishtiScheduleConstants.ChildScheduleConstants.*;
 import static org.opensrp.integration.ChildImmunizationFields.*;
+import static org.opensrp.web.it.DrishtiScheduleConstants.ChildScheduleConstants.*;
 
 import java.io.File;
 import java.util.Date;

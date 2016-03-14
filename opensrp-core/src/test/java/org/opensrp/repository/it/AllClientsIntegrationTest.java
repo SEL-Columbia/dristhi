@@ -23,6 +23,7 @@ import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.common.Gender;
@@ -81,15 +82,15 @@ public class AllClientsIntegrationTest {
 	}
 	
 	@Test
-	public void shouldUpdateSuccessfullyIfClientFound() throws JSONException {
-		Client c = new Client("eid")
+	public void shouldMergeSuccessfullyIfClientFound() throws JSONException {//TODO
+		Client c = new Client("eid0")
 			.withName("fn", "mn", "ln")
 			.withGender("MALE")
 			.withBirthdate(new DateTime(), false);
 		c.withAddress(new Address().withAddressType("usual_residence").withCityVillage("city").withTown("town"));
 		c.withAttribute("at1", "atval1");
 		
-		clientService.addClient(c);
+		c = clientService.addClient(c);
 		
 		Client cu = new Client("eid0")
 			.withGender("FEMALE")
@@ -97,34 +98,16 @@ public class AllClientsIntegrationTest {
 		cu.withAddress(new Address().withAddressType("deathplace").withCityVillage("city").withTown("town"));
 		cu.withAttribute("at2", "atval2");
 
-		clientService.updateClient(cu);
+		clientService.mergeClient(cu);
 	}
 	
-	@Test
-	public void shouldAdd10KFullDataClientsDirectly() {
-		Logger.getLogger("FileLogger").info("Starting at "+new DateTime());
-		
-		final long start = System.currentTimeMillis();
-		long last1000 = System.currentTimeMillis();
-		
-		for (int i = 0; i < 10000; i++) {
-			addClient(i, true);
-			
-			if(i%1000 == 0){
-				Logger.getLogger("FileLogger").info("Next thousand entries at "+new DateTime()+" in "+((System.currentTimeMillis()-last1000)/1000)+" sec");
-				last1000 = System.currentTimeMillis();
-			}
-		}
-		Logger.getLogger("FileLogger").info("10K entries complete at "+new DateTime()+" in "+((System.currentTimeMillis()-start)/1000)+" sec");
-	}
-	
-	@Test
+	@Test @Ignore
 	public void shouldSearchFullDataClientsIn10Sec() {
 		Logger.getLogger("FileLogger").info("Starting at "+new DateTime());
 		
 		final long start = System.currentTimeMillis();
 		
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < 1000; i++) {
 			addClient(i, false);
 		}
 		Logger.getLogger("FileLogger").info("10K entries complete at "+new DateTime()+" in "+((System.currentTimeMillis()-start)/1000)+" sec");
@@ -145,24 +128,6 @@ public class AllClientsIntegrationTest {
 		Logger.getLogger("FileLogger").info("Going for 2nd search by Lucene");
 		l = clientService.findByCriteria("first", "MALE", null, null, "ethnicity", "eth3");
 		Logger.getLogger("FileLogger").info("Completed 2nd search of size "+l.size()+" by Lucene");
-	}
-	
-	@Test
-	public void shouldAdd10KFullDataClientsAfterValidation() {
-		Logger.getLogger("FileLogger").info("Starting at "+new DateTime());
-		
-		final long start = System.currentTimeMillis();
-		long last1000 = System.currentTimeMillis();
-		
-		for (int i = 0; i < 10000; i++) {
-			addClient(i, false);
-			
-			if(i%1000 == 0){
-				Logger.getLogger("FileLogger").info("Next thousand entries at "+new DateTime()+" in "+((System.currentTimeMillis()-last1000)/1000)+" sec");
-				last1000 = System.currentTimeMillis();
-			}
-		}
-		Logger.getLogger("FileLogger").info("10K entries complete at "+new DateTime()+" in "+((System.currentTimeMillis()-start)/1000)+" sec");
 	}
 	
 	void addClient(int i, boolean direct){

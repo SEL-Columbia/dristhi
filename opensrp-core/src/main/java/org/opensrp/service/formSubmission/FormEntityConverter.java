@@ -338,9 +338,9 @@ public class FormEntityConverter {
 		String middleName = fs.getFieldValue(getFieldName(Person.middle_name, fs));
 		String lastName = fs.getFieldValue(getFieldName(Person.last_name, fs));
 		String bd = fs.getFieldValue(getFieldName(Person.birthdate, fs));
-		Date birthdate = bd==null?null:FormEntityConstants.FORM_DATE.parse(bd);
+		DateTime birthdate = bd==null?null:new DateTime(bd).withTimeAtStartOfDay();
 		String dd = fs.getFieldValue(getFieldName(Person.deathdate, fs));
-		Date deathdate = dd==null?null:FormEntityConstants.FORM_DATE.parse(dd);
+		DateTime deathdate = dd==null?null:new DateTime(dd).withTimeAtStartOfDay();
 		String aproxbd = fs.getFieldValue(getFieldName(Person.birthdate_estimated, fs));
 		Boolean birthdateApprox = false;
 		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)){
@@ -371,8 +371,8 @@ public class FormEntityConverter {
 				.withFirstName(firstName)
 				.withMiddleName(middleName)
 				.withLastName(lastName)
-				.withBirthdate(new DateTime(birthdate), birthdateApprox)
-				.withDeathdate(new DateTime(deathdate), deathdateApprox)
+				.withBirthdate(birthdate, birthdateApprox)
+				.withDeathdate(deathdate, deathdateApprox)
 				.withGender(gender);
 		
 		c.withAddresses(addresses)
@@ -383,18 +383,22 @@ public class FormEntityConverter {
 	
 	public Client createSubformClient(SubformMap subf) throws ParseException {
 		String firstName = subf.getFieldValue(getFieldName(Person.first_name, subf));
+		String gender = subf.getFieldValue(getFieldName(Person.gender, subf));
+		String bb = subf.getFieldValue(getFieldName(Person.birthdate, subf));
+
 		Map<String, String> idents = extractIdentifiers(subf);
 		if(StringUtils.isEmptyOrWhitespaceOnly(firstName)
-				&& idents.size() < 1){//we need to ignore uuid of entity
+				&& StringUtils.isEmptyOrWhitespaceOnly(bb)
+				&& idents.size() < 1 && StringUtils.isEmptyOrWhitespaceOnly(gender)){//we need to ignore uuid of entity
 			// if empty repeat group leave this entry and move to next
 			return null;
 		}
 
 		String middleName = subf.getFieldValue(getFieldName(Person.middle_name, subf));
 		String lastName = subf.getFieldValue(getFieldName(Person.last_name, subf));
-		Date birthdate = FormEntityConstants.FORM_DATE.parse(subf.getFieldValue(getFieldName(Person.birthdate, subf)));
+		DateTime birthdate = new DateTime(bb).withTimeAtStartOfDay();
 		String dd = subf.getFieldValue(getFieldName(Person.deathdate, subf));
-		Date deathdate = dd==null?null:FormEntityConstants.FORM_DATE.parse(dd);
+		DateTime deathdate = dd==null?null:new DateTime(dd).withTimeAtStartOfDay();
 		String aproxbd = subf.getFieldValue(getFieldName(Person.birthdate_estimated, subf));
 		Boolean birthdateApprox = false;
 		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)){
@@ -417,8 +421,7 @@ public class FormEntityConverter {
 			}
 			deathdateApprox = dde > 0 ? true:false;
 		}
-		String gender = subf.getFieldValue(getFieldName(Person.gender, subf));
-		
+
 		List<Address> addresses = new ArrayList<>(extractAddressesForSubform(subf).values());
 		
 		Client c = new Client(subf.getFieldValue("id"))
@@ -455,13 +458,19 @@ public class FormEntityConverter {
 			Map<String, Map<String, Object>> map = new HashMap<>();
 			for (SubformMap sbf : fs.subforms()) {
 				Map<String, String> att = sbf.formAttributes();
-				if(att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person")){
+				if(att.containsKey("openmrs_entity") 
+						&& att.get("openmrs_entity").equalsIgnoreCase("person")
+						){
 					Map<String, Object> cne = new HashMap<>();
 
-					cne.put("client", createSubformClient(sbf));
-					cne.put("event", getEventForSubform(fs, att.get("openmrs_entity_id"), sbf));
+					Client subformClient = createSubformClient(sbf);
 					
-					map.put(sbf.entityId(), cne);
+					if(subformClient != null){
+						cne.put("client", subformClient);
+						cne.put("event", getEventForSubform(fs, att.get("openmrs_entity_id"), sbf));
+						
+						map.put(sbf.entityId(), cne);
+					}
 				}
 			}
 			return map;

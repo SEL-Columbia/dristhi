@@ -37,18 +37,18 @@ public class Schedule {
 
 	}
 	
-	Schedule(String json) throws JSONException{
+	public Schedule(String json) throws JSONException{
 		this(new JSONObject(json));
 	}
 	
-	Schedule(JSONObject json) throws JSONException{
+	public Schedule(JSONObject json) throws JSONException{
 		this(ActionType.valueOf(json.getString("action").toLowerCase()), 
 		json.getString("form").split(","), json.getString("schedule"), json.getString("milestone"), 
 		json.getString("triggerDateField").split(","), json.getString("entityType"), 
 		json.has("passLogic")?json.getString("passLogic"):null);
 	}
 	
-	Schedule(ActionType action, String[] forms, String schedule, String milestone, 
+	public Schedule(ActionType action, String[] forms, String schedule, String milestone, 
 			String[] triggerDateFields, String entityType, String passLogic) {
 		this.action = action;
 		this.forms = new ArrayList<>();

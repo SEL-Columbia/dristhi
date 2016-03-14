@@ -50,7 +50,6 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 	
 	@Before
 	public void setup() throws IOException{
-		pushToOpenmrsForTest = true;
 		ps = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		us = new OpenmrsUserService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		ss = new OpenmrsSchedulerService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);

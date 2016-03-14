@@ -1,4 +1,4 @@
-package org.opensrp.integration;
+package org.opensrp.web.it;
 
 public class DrishtiScheduleConstants {
     public static final String PROVIDER_REPORT_SCHEDULE_SUBJECT = "PROVIDER-REPORT-SCHEDULE";

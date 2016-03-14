@@ -1,4 +1,4 @@
-package org.opensrp.service.formSubmission.ziggy;
+package org.opensrp.repository.it;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -17,6 +17,10 @@ import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.service.formSubmission.handler.CustomFormSubmissionHandler;
 import org.opensrp.service.formSubmission.handler.FormSubmissionRouter;
 import org.opensrp.service.formSubmission.handler.HandlerMapper;
+import org.opensrp.service.formSubmission.ziggy.EntityDataMap;
+import org.opensrp.service.formSubmission.ziggy.ZiggyDataHandler;
+import org.opensrp.service.formSubmission.ziggy.ZiggyFileLoader;
+import org.opensrp.service.formSubmission.ziggy.ZiggyService;
 import org.opensrp.util.TestResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

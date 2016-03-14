@@ -13,6 +13,7 @@ import org.opensrp.connector.atomfeed.domain.Marker;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.mysql.jdbc.StringUtils;
@@ -22,11 +23,13 @@ public class AllMarkersCouchImpl extends MotechBaseRepository<Marker> implements
 
 	private CouchDbConnector db;
 	@Autowired
-	public AllMarkersCouchImpl(@Qualifier(OpenmrsConstants.ATOMFEED_DATABASE_CONNECTOR) CouchDbConnector db) {
+	public AllMarkersCouchImpl(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+			@Qualifier(OpenmrsConstants.ATOMFEED_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Marker.class, db);
 		this.db = db;
+		this.db.setRevisionLimit(revisionLimit);
 	}
-
+	
 	@GenerateView
 	public Marker findByfeedUri(String feedUri) {
 		if(StringUtils.isEmptyOrWhitespaceOnly(feedUri))

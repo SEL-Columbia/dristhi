@@ -1,3 +1,4 @@
+package org.opensrp.web.it;
 /*package org.opensrp.integration;
 
 import static org.junit.Assert.assertTrue;

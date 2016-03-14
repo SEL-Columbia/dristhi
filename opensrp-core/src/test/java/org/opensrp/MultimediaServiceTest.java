@@ -1,4 +1,4 @@
-package org.opensrp.service;
+package org.opensrp;
 
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.repository.MultimediaRepository;
+import org.opensrp.service.MultimediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;

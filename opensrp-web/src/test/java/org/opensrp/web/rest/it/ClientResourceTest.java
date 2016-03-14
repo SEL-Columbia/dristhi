@@ -1,4 +1,4 @@
-package org.opensrp.web.rest;
+package org.opensrp.web.rest.it;
 
 import static org.opensrp.common.AllConstants.BaseEntity.ADDRESS_TYPE;
 import static org.opensrp.common.AllConstants.BaseEntity.CITY_VILLAGE;
@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.opensrp.domain.Client;
 import org.opensrp.service.ClientService;
+import org.opensrp.web.rest.ClientResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;

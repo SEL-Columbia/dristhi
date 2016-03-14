@@ -33,32 +33,6 @@ public class AllActionsIntegrationTest {
     }
     
     @Test
-    public void testBulkData(){
-    	ArrayList<String> arr = new ArrayList<>();
-    	long maxdiff = 0;
-    	for (int i = 0; i < 100000; i++) {
-    		long before = System.currentTimeMillis();
-    		Action a = new Action("Case X", "ANM "+i, alert());
-    		allActions.add(a);
-    		long after = System.currentTimeMillis();
-    		long diff = after - before;
-    		if(diff > maxdiff){
-    			maxdiff = diff;
-    			arr.add(i+":"+diff);
-    			System.out.println("Added new diff : "+i+":"+diff);
-    		}
-		}
-    	
-    	System.out.println(arr);
-    	
-    	System.out.println(new DateTime()+" : First time");
-    	allActions.findByANMIDAndTimeStamp("ANM 500", 0L);
-    	System.out.println(new DateTime()+" : 2nd  time");
-    	allActions.findByANMIDAndTimeStamp("ANM 1000", 0L);
-    	System.out.println(new DateTime()+" : End  time");
-    }
-
-    @Test
     public void shouldSaveAReminder() throws Exception {
         Action alertAction = new Action("Case X", "ANM phone no", alert());
 
