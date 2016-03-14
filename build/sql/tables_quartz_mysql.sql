@@ -3,7 +3,7 @@
 -- In your Quartz properties file, you'll need to set 
 -- org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
 
-CREATE TABLE qrtz_job_details
+CREATE TABLE QRTZ_JOB_DETAILS
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     JOB_NAME  VARCHAR(200) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE qrtz_job_details
     PRIMARY KEY (SCHED_NAME,JOB_NAME,JOB_GROUP)
 ) ;
 
-CREATE TABLE qrtz_triggers
+CREATE TABLE QRTZ_TRIGGERS
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     TRIGGER_NAME VARCHAR(200) NOT NULL,
