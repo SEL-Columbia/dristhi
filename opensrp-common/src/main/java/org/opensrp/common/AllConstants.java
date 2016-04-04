@@ -30,6 +30,7 @@ public class AllConstants {
     	public static final String CITY_VILLAGE = "cityVillage";
     	public static final String STATE_PROVINCE = "stateProvince";
     	public static final String COUNTRY = "country";
+    	public static final String LAST_UPDATE = "lastEdited";
     	
     }
     
@@ -45,7 +46,6 @@ public class AllConstants {
     }
     
     public static class Event {
-    	public static final String BASE_ENTITY_ID = "baseEntityId";
     	public static final String FORM_SUBMISSION_ID = "formSubmissionId";
     	public static final String EVENT_TYPE = "eventType";
     	public static final String EVENT_ID = "eventId";

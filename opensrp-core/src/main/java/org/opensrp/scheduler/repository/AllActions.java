@@ -47,8 +47,8 @@ public class AllActions extends MotechBaseRepository<Action> {
 
     @View(name = "action_by_caseId_and_schedule_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.caseID, doc.data.scheduleName, doc.timeStamp], null); } }")
     public List<Action> findByCaseIdScheduleAndTimeStamp(String caseId, String schedule, DateTime start, DateTime end) {
-        ComplexKey startKey = ComplexKey.of(caseId, schedule, start.getMillis() + 1);
-        ComplexKey endKey = ComplexKey.of(caseId, schedule, end.getMillis());
+        ComplexKey startKey = ComplexKey.of(caseId, schedule, start.getMillis());
+        ComplexKey endKey = ComplexKey.of(caseId, schedule, end.getMillis() + 1);
         return db.queryView(createQuery("action_by_caseId_and_schedule_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
     }
     

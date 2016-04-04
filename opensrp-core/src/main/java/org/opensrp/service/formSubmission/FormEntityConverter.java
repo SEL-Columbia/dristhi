@@ -80,6 +80,7 @@ public class FormEntityConverter {
 			.withEventType(eventType)
 			.withLocationId(fs.getFieldValue(encounterLocation))
 			.withProviderId(fs.providerId())
+			.withEntityType(fs.bindType())
 			.withFormSubmissionId(fs.instanceId());
 		
 		for (FormFieldMap fl : fields) {

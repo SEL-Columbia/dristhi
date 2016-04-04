@@ -58,7 +58,7 @@ public class ClientResourceTest {
 		  mockRequest.setAttribute(HandlerMapping.class.getName() + ".introspectTypeLevelMapping", true);
 		mockRequest.addParameter("name", "firstName100");
 		mockRequest.addParameter(GENDER, "MALE");
-		mockRequest.addParameter(BIRTH_DATE, "2016-02-01");
+		mockRequest.addParameter(BIRTH_DATE, "2016-02-01:2016-03-21");
 		//mockRequest.addParameter(DEATH_DATE, request);
 		//mockRequest.addParameter(ADDRESS_TYPE, request);
 		//mockRequest.addParameter(COUNTRY, request);

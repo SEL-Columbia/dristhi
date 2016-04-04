@@ -1,0 +1,463 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] Using the builder org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder with a thread count of 1
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building opensrp-web 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp-core/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp-core/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp-api/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp-api/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp-common/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp-common/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp-form/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp-form/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp-interface/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp-interface/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp-connector/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp-connector/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/motechproject/motech-schedule-testing/0.12-DRISTHI-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/motechproject/motech-schedule-testing/0.12-DRISTHI-SNAPSHOT/maven-metadata.xml
+293/293 B               Downloaded: http://nexus.motechproject.org/content/repositories/snapshots/org/motechproject/motech-schedule-testing/0.12-DRISTHI-SNAPSHOT/maven-metadata.xml (293 B at 0.7 KB/sec)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/motechproject/motech-delivery-tools/0.12-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/motechproject/motech-delivery-tools/0.12-SNAPSHOT/maven-metadata.xml
+283/283 B                           Downloaded: http://nexus.motechproject.org/content/repositories/snapshots/org/motechproject/motech-delivery-tools/0.12-SNAPSHOT/maven-metadata.xml (283 B at 0.7 KB/sec)
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/motechproject/motech-delivery/0.12-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/motechproject/motech-delivery/0.12-SNAPSHOT/maven-metadata.xml
+277/277 B                           Downloaded: http://nexus.motechproject.org/content/repositories/snapshots/org/motechproject/motech-delivery/0.12-SNAPSHOT/maven-metadata.xml (277 B at 0.7 KB/sec)
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ opensrp-web ---
+[INFO] Deleting D:\opensrpThriveMaster\opensrp-server\opensrp-web\target
+[INFO] 
+[INFO] --- properties-maven-plugin:1.0-alpha-2:read-project-properties (default) @ opensrp-web ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ opensrp-web ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 8 resources
+[INFO] Copying 8 resources
+[INFO] Copying 39 resources to schedules
+[INFO] Copying 129 resources to form
+[INFO] Copying 1 resource
+[INFO] Copying 4 resources
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ opensrp-web ---
+[INFO] Compiling 25 source files to D:\opensrpThriveMaster\opensrp-server\opensrp-web\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:testResources (default-testResources) @ opensrp-web ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\opensrpThriveMaster\opensrp-server\opensrp-web\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ opensrp-web ---
+[INFO] Compiling 16 source files to D:\opensrpThriveMaster\opensrp-server\opensrp-web\target\test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.9:test (default-test) @ opensrp-web ---
+[INFO] Surefire report directory: D:\opensrpThriveMaster\opensrp-server\opensrp-web\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.opensrp.integration.ScheduleTrackingSchedulesJSONTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.051 sec
+Running org.opensrp.web.controller.ActionControllerTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.517 sec
+Running org.opensrp.web.controller.AuditMessageControllerTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.238 sec
+Running org.opensrp.web.controller.FormDownloadTest
+form/
+available version:::{"formVersions" : [{"formName": "ANC_Close_EngKan", "formDirName": "anc_close", "formDataDefinitionVersion": "2"},{"formName": "ANC_Investigations_EngKan", "formDirName": "anc_investigations", "formDataDefinitionVersion": "2"},{"formName": "ANC_Registration_EngKan", "formDirName": "anc_registration", "formDataDefinitionVersion": "3"},{"formName": "ANC_Registration_OA_EngKan", "formDirName": "anc_registration_oa", "formDataDefinitionVersion": "4"},{"formName": "ANC_Visit_EngKan", "formDirName": "anc_visit", "formDataDefinitionVersion": "3"},{"formName": "CensusNewWomanRegistrationFor", "formDirName": "census_enrollment_form", "formDataDefinitionVersion": "10"},{"formName": "Child_Close_EngKan", "formDirName": "child_close", "formDataDefinitionVersion": "4"},{"formName": "Child_Enrollment_Vaccination_Registe", "formDirName": "child_enrollment_form", "formDataDefinitionVersion": "1"},{"formName": "Child_Sick_Visit_EngKan", "formDirName": "child_illness", "formDataDefinitionVersion": "2"},{"formName": "Child_Immunizations_EngKan", "formDirName": "child_immunizations", "formDataDefinitionVersion": "1"},{"formName": "Child_Registration_EC_EngKan", "formDirName": "child_registration_ec", "formDataDefinitionVersion": "6"},{"formName": "Child_Registration_EngKan", "formDirName": "child_registration_oa", "formDataDefinitionVersion": "6"},{"formName": "crvs_birth_notification", "formDirName": "crvs_birth_notification", "formDataDefinitionVersion": "1"},{"formName": "crvs_death_notification", "formDirName": "crvs_death_notification", "formDataDefinitionVersion": "1"},{"formName": "model/instance/crvs_pregnancy_notification", "formDirName": "crvs_pregnancy_notification", "formDataDefinitionVersion": "1"},{"formName": "crvs_verbal_autopsy", "formDirName": "crvs_verbal_autopsy", "formDataDefinitionVersion": "1"},{"formName": "PNC_Registration_EngKan", "formDirName": "delivery_outcome", "formDataDefinitionVersion": "5"},{"formName": "Delivery_Plan_EngKan", "formDirName": "delivery_plan", "formDataDefinitionVersion": "2"},{"formName": "EC_Close_EngKan", "formDirName": "ec_close", "formDataDefinitionVersion": "1"},{"formName": "EC_Edit_EngKan", "formDirName": "ec_edit", "formDataDefinitionVersion": "1"},{"formName": "EC_Registration_EngKan", "formDirName": "ec_registration", "formDataDefinitionVersion": "4"},{"formName": "Family_Planning_Change_Method_EngKan", "formDirName": "fp_change", "formDataDefinitionVersion": "2"},{"formName": "Family_Planning_Complications_EngKan", "formDirName": "fp_complications", "formDataDefinitionVersion": "3"},{"formName": "Family_Planning_Followup_EngKan", "formDirName": "fp_followup", "formDataDefinitionVersion": "3"},{"formName": "Family_Planning_Referral_Followup_EngKan", "formDirName": "fp_referral_followup", "formDataDefinitionVersion": "3"},{"formName": "Hb_Test_EngKan", "formDirName": "hb_test", "formDataDefinitionVersion": "3"},{"formName": "IFA_EngKan", "formDirName": "ifa", "formDataDefinitionVersion": "1"},{"formName": "FWNewH", "formDirName": "new_household_registration", "formDataDefinitionVersion": "7"},{"formName": "pnc_first_registration_motherdetail", "formDirName": "pnc_1st_registration", "formDataDefinitionVersion": "1"},{"formName": "PNC_Close_EngKan", "formDirName": "pnc_close", "formDataDefinitionVersion": "2"},{"formName": "PNC_Child_Registration_EngKan", "formDirName": "pnc_registration_oa", "formDataDefinitionVersion": "2"},{"formName": "PNC_Visit_EngKan", "formDirName": "pnc_visit", "formDataDefinitionVersion": "1"},{"formName": "Postpartum_FamilyPlanning_EngKan", "formDirName": "postpartum_family_planning", "formDataDefinitionVersion": "2"},{"formName": "Family_Planning_ECPs_EngKan", "formDirName": "record_ecps", "formDataDefinitionVersion": "1"},{"formName": "Family_Planning_Refill_Method_EngKan", "formDirName": "renew_fp_product", "formDataDefinitionVersion": "1"},{"formName": "TT_EngKan", "formDirName": "tt", "formDataDefinitionVersion": "1"},{"formName": "TT1_EngKan", "formDirName": "tt_1", "formDataDefinitionVersion": "1"},{"formName": "TT2_EngKan", "formDirName": "tt_2", "formDataDefinitionVersion": "1"},{"formName": "TTBooster_EngKan", "formDirName": "tt_booster", "formDataDefinitionVersion": "1"},{"formName": "Child_Vitamin_A_EngKan", "formDirName": "vitamin_a", "formDataDefinitionVersion": "1"},{"formName": "Woman_TT_Enrollment_Form", "formDirName": "woman_enrollment", "formDataDefinitionVersion": "2"}]}
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.117 sec
+Running org.opensrp.web.controller.OpenmrsReportingTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 sec
+Running org.opensrp.web.controller.UserControllerTest
+USER Location info not mapped in team management module. Now trying Person Attribute
+java.lang.NullPointerException
+	at org.opensrp.web.controller.UserController.authenticate(UserController.java:97)
+	at org.opensrp.web.controller.UserControllerTest.test(UserControllerTest.java:63)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.runners.BlockJUnit4ClassRunner.runNotIgnored(BlockJUnit4ClassRunner.java:79)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:71)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:49)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:53)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:123)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:104)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:164)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:110)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:172)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:104)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:70)
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.254 sec
+Running org.opensrp.web.utils.RestUtilsTest
+[Lorg.joda.time.DateTime;@2e8e96cd
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 sec
+
+Results :
+
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] >>> jasmine-maven-plugin:1.0.2-beta-5:test (default) @ opensrp-web >>>
+[INFO] 
+[INFO] --- properties-maven-plugin:1.0-alpha-2:read-project-properties (default) @ opensrp-web ---
+[INFO] 
+[INFO] --- jasmine-maven-plugin:1.0.2-beta-5:generateManualRunner (default) @ opensrp-web ---
+[INFO] Generating runner 'ManualSpecRunner.html' in the Jasmine plugin's target directory to open in a browser to facilitate faster feedback.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ opensrp-web ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 8 resources
+[INFO] Copying 8 resources
+[INFO] Copying 39 resources to schedules
+[INFO] Copying 129 resources to form
+[INFO] Copying 1 resource
+[INFO] Copying 4 resources
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- jasmine-maven-plugin:1.0.2-beta-5:resources (default) @ opensrp-web ---
+[INFO] Processing JavaScript Sources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ opensrp-web ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:testResources (default-testResources) @ opensrp-web ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\opensrpThriveMaster\opensrp-server\opensrp-web\src\test\resources
+[INFO] 
+[INFO] --- jasmine-maven-plugin:1.0.2-beta-5:testResources (default) @ opensrp-web ---
+[INFO] Processing JavaScript Specs
+[INFO] 
+[INFO] <<< jasmine-maven-plugin:1.0.2-beta-5:test (default) @ opensrp-web <<<
+[INFO] 
+[INFO] --- jasmine-maven-plugin:1.0.2-beta-5:test (default) @ opensrp-web ---
+[INFO] Executing Jasmine Specs
+[INFO] 
+-------------------------------------------------------
+ J A S M I N E   S P E C S
+-------------------------------------------------------
+[INFO] 
+AuditMessage
+  should create audit message for an unsent SMS, from audit log item of SMS type
+  should create audit message for a sent SMS, from audit log item of SMS type
+  should create audit message for a form submission, from audit log item of FORM_SUBMISSION type
+
+Results: 3 specs, 0 failures
+
+[INFO] 
+[INFO] --- maven-war-plugin:2.2:war (default-war) @ opensrp-web ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [opensrp-web] in [D:\opensrpThriveMaster\opensrp-server\opensrp-web\target\opensrp-web]
+[INFO] Processing war project
+[INFO] Copying webapp resources [D:\opensrpThriveMaster\opensrp-server\opensrp-web\src\main\webapp]
+[INFO] Webapp assembled in [4764 msecs]
+[INFO] Building war: D:\opensrpThriveMaster\opensrp-server\opensrp-web\target\opensrp-web.war
+[INFO] WEB-INF\web.xml already added, skipping
+[INFO] 
+[INFO] >>> jetty-maven-plugin:8.1.16.v20140903:run (start-jetty) @ opensrp-web >>>
+[INFO] 
+[INFO] --- properties-maven-plugin:1.0-alpha-2:read-project-properties (default) @ opensrp-web ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ opensrp-web ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 8 resources
+[INFO] Copying 8 resources
+[INFO] Copying 39 resources to schedules
+[INFO] Copying 129 resources to form
+[INFO] Copying 1 resource
+[INFO] Copying 4 resources
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ opensrp-web ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:testResources (default-testResources) @ opensrp-web ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\opensrpThriveMaster\opensrp-server\opensrp-web\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ opensrp-web ---
+[INFO] Compiling 1 source file to D:\opensrpThriveMaster\opensrp-server\opensrp-web\target\test-classes
+[INFO] 
+[INFO] <<< jetty-maven-plugin:8.1.16.v20140903:run (start-jetty) @ opensrp-web <<<
+[INFO] 
+[INFO] --- jetty-maven-plugin:8.1.16.v20140903:run (start-jetty) @ opensrp-web ---
+[INFO] Configuring Jetty for project: opensrp-web
+[INFO] webAppSourceDirectory not set. Defaulting to D:\opensrpThriveMaster\opensrp-server\opensrp-web\src\main\webapp
+[INFO] Reload Mechanic: automatic
+[INFO] Classes = D:\opensrpThriveMaster\opensrp-server\opensrp-web\target\classes
+[INFO] Context path = /
+[INFO] Tmp directory = D:\opensrpThriveMaster\opensrp-server\opensrp-web\target\tmp
+[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
+[INFO] Web overrides =  none
+[INFO] web.xml file = file:/D:/opensrpThriveMaster/opensrp-server/opensrp-web/src/main/webapp/WEB-INF/web.xml
+[INFO] Webapp directory = D:\opensrpThriveMaster\opensrp-server\opensrp-web\src\main\webapp
+[REPORT] 29032016 16:16:15,948 INFO  [main] [ContextLoader] Root WebApplicationContext: initialization started
+[REPORT] 29032016 16:16:16,041 INFO  [main] [XmlWebApplicationContext] Refreshing Root WebApplicationContext: startup date [Tue Mar 29 16:16:16 PKT 2016]; root of context hierarchy
+[REPORT] 29032016 16:16:16,112 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from URL [file:/D:/opensrpThriveMaster/opensrp-server/opensrp-web/target/classes/spring/applicationContext-opensrp-web.xml]
+[REPORT] 29032016 16:16:16,340 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationContext-opensrp.xml]
+[REPORT] 29032016 16:16:16,430 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationScheduler.xml]
+[REPORT] 29032016 16:16:16,526 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [schedulerFiredEventChannelAdapter.xml]
+[REPORT] 29032016 16:16:16,784 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [schedulerInboundChannelAdapter.xml]
+[REPORT] 29032016 16:16:16,875 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationPlatformServerAPI.xml]
+[REPORT] 29032016 16:16:16,904 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [integrationCommonAPI.xml]
+[REPORT] 29032016 16:16:16,937 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'connectionFactory': replacing [Generic bean: class [org.springframework.jms.connection.CachingConnectionFactory]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationScheduler.xml]] with [Generic bean: class [org.springframework.jms.connection.CachingConnectionFactory]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [integrationCommonAPI.xml]]
+[REPORT] 29032016 16:16:16,937 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'schedulerQueue': replacing [Generic bean: class [org.apache.activemq.command.ActiveMQQueue]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationScheduler.xml]] with [Generic bean: class [org.apache.activemq.command.ActiveMQQueue]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [integrationCommonAPI.xml]]
+[REPORT] 29032016 16:16:16,938 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'eventQueue': replacing [Generic bean: class [org.apache.activemq.command.ActiveMQQueue]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationScheduler.xml]] with [Generic bean: class [org.apache.activemq.command.ActiveMQQueue]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [integrationCommonAPI.xml]]
+[REPORT] 29032016 16:16:16,938 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [outboundEventChannelAdapterAPI.xml]
+[REPORT] 29032016 16:16:17,007 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [inboundEventChannelAdapter.xml]
+[REPORT] 29032016 16:16:17,089 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'jmsin': replacing [Generic bean: class [org.springframework.integration.jms.JmsMessageDrivenEndpoint]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Generic bean: class [org.springframework.integration.jms.JmsMessageDrivenEndpoint]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+[REPORT] 29032016 16:16:17,091 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [outboundScheduleJobChannelAdapter.xml]
+[REPORT] 29032016 16:16:17,159 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationPlatformCommonAPI.xml]
+[REPORT] 29032016 16:16:17,208 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:17,209 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:17,251 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:17,251 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:17,263 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:17,263 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:17,268 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationSmsHttp.xml]
+[REPORT] 29032016 16:16:17,282 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:17,282 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:17,293 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationSmsAPI.xml]
+[REPORT] 29032016 16:16:17,324 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:17,324 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:17,331 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationSchedulerTrackingAPI.xml]
+[REPORT] 29032016 16:16:17,347 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'couchdbProperties': replacing [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+[REPORT] 29032016 16:16:17,347 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'quartzProperties': replacing [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+[REPORT] 29032016 16:16:17,348 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'httpClient': replacing [Generic bean: class [org.ektorp.spring.HttpClientFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.ektorp.spring.HttpClientFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationSchedulerTrackingAPI.xml]]
+[REPORT] 29032016 16:16:17,348 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'couchDbInstance': replacing [Generic bean: class [org.ektorp.impl.StdCouchDbInstance]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.ektorp.impl.StdCouchDbInstance]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationSchedulerTrackingAPI.xml]]
+[REPORT] 29032016 16:16:17,349 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'schedulerFactoryBean': replacing [Generic bean: class [org.springframework.scheduling.quartz.SchedulerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationScheduler.xml]] with [Generic bean: class [org.springframework.scheduling.quartz.SchedulerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationSchedulerTrackingAPI.xml]]
+[REPORT] 29032016 16:16:17,350 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:17,351 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:17,386 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:17,387 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:17,811 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'statsdAgent': replacing [Generic bean: class [org.motechproject.metrics.impl.StatsdAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.motechproject.metrics.impl.LoggingAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationContext-opensrp.xml]]
+[REPORT] 29032016 16:16:17,812 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationContext-opensrp-form.xml]
+[REPORT] 29032016 16:16:17,828 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationPlatformCommonAPI.xml]
+[REPORT] 29032016 16:16:17,847 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'couchdbProperties': replacing [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+[REPORT] 29032016 16:16:17,848 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:17,848 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:17,853 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'httpClient': replacing [Generic bean: class [org.ektorp.spring.HttpClientFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationSchedulerTrackingAPI.xml]] with [Generic bean: class [org.ektorp.spring.HttpClientFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[REPORT] 29032016 16:16:17,853 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'couchDbInstance': replacing [Generic bean: class [org.ektorp.impl.StdCouchDbInstance]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationSchedulerTrackingAPI.xml]] with [Generic bean: class [org.ektorp.impl.StdCouchDbInstance]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[REPORT] 29032016 16:16:17,854 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'ruleDatabase': replacing [Generic bean: class [org.ektorp.impl.StdCouchDbConnector]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.ektorp.impl.StdCouchDbConnector]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[REPORT] 29032016 16:16:17,854 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'metricsAgent': replacing [Generic bean: class [org.motechproject.metrics.impl.MultipleMetricsAgentImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.motechproject.metrics.impl.MultipleMetricsAgentImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[REPORT] 29032016 16:16:17,855 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'loggingAgent': replacing [Generic bean: class [org.motechproject.metrics.impl.LoggingAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.motechproject.metrics.impl.LoggingAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[REPORT] 29032016 16:16:17,855 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'statsdAgent': replacing [Generic bean: class [org.motechproject.metrics.impl.LoggingAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationContext-opensrp.xml]] with [Generic bean: class [org.motechproject.metrics.impl.StatsdAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[REPORT] 29032016 16:16:17,856 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'opensrp': replacing [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+[REPORT] 29032016 16:16:17,857 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:17,857 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:17,867 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationContext-connector.xml]
+[REPORT] 29032016 16:16:17,890 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'opensrp': replacing [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+[REPORT] 29032016 16:16:17,891 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:17,891 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:17,909 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'statsdAgent': replacing [Generic bean: class [org.motechproject.metrics.impl.StatsdAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.motechproject.metrics.impl.LoggingAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationContext-connector.xml]]
+[REPORT] 29032016 16:16:17,910 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from URL [file:/D:/opensrpThriveMaster/opensrp-server/opensrp-web/target/classes/spring/securityContext.xml]
+[REPORT] 29032016 16:16:17,946 INFO  [main] [SpringSecurityCoreVersion] You are running with Spring Security Core 3.1.0.RELEASE
+[REPORT] 29032016 16:16:17,946 INFO  [main] [SecurityNamespaceHandler] Spring Security 'config' module version is 3.1.0.RELEASE
+[REPORT] 29032016 16:16:18,005 INFO  [main] [AuthenticationConfigBuilder] No login page configured. The default internal one will be used. Use the 'login-page' attribute to set the URL of the login page.
+[REPORT] 29032016 16:16:18,011 INFO  [main] [HttpSecurityBeanDefinitionParser] Checking sorted filter chain: [Root bean: class [org.springframework.security.web.context.SecurityContextPersistenceFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 300, Root bean: class [org.springframework.security.web.authentication.logout.LogoutFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 400, <org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter#0>, order = 800, Root bean: class [org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1000, Root bean: class [org.springframework.security.web.authentication.www.BasicAuthenticationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1200, Root bean: class [org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1400, Root bean: class [org.springframework.security.web.authentication.AnonymousAuthenticationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1700, Root bean: class [org.springframework.security.web.access.ExceptionTranslationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1900, <org.springframework.security.web.access.intercept.FilterSecurityInterceptor#0>, order = 2000]
+[REPORT] 29032016 16:16:18,053 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:18,053 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:18,083 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning
+[REPORT] 29032016 16:16:18,083 INFO  [main] [ClassPathBeanDefinitionScanner] JSR-330 'javax.inject.Named' annotation found and supported for component scanning
+[REPORT] 29032016 16:16:18,450 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [file:/D:/opensrpThriveMaster/opensrp-server/opensrp-web/target/classes/maven.properties]
+[REPORT] 29032016 16:16:18,454 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-core/0.1-SNAPSHOT/opensrp-core-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,454 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-form/0.1-SNAPSHOT/opensrp-form-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,455 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-connector/0.1-SNAPSHOT/opensrp-connector-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,455 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [file:/D:/opensrpThriveMaster/opensrp-server/opensrp-web/target/classes/activemq.properties]
+[REPORT] 29032016 16:16:18,459 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-core/0.1-SNAPSHOT/opensrp-core-0.1-SNAPSHOT.jar!/activemq.properties]
+[REPORT] 29032016 16:16:18,459 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/motechproject/motech-platform-scheduler/0.11/motech-platform-scheduler-0.11.jar!/activemq.properties]
+[REPORT] 29032016 16:16:18,459 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-form/0.1-SNAPSHOT/opensrp-form-0.1-SNAPSHOT.jar!/activemq.properties]
+[REPORT] 29032016 16:16:18,459 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/motechproject/motech-scheduler/0.11/motech-scheduler-0.11.jar!/activemq.properties]
+[REPORT] 29032016 16:16:18,459 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-connector/0.1-SNAPSHOT/opensrp-connector-0.1-SNAPSHOT.jar!/activemq.properties]
+[REPORT] 29032016 16:16:18,465 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from class path resource [activemq.properties]
+[REPORT] 29032016 16:16:18,467 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from class path resource [activemq.properties]
+[REPORT] 29032016 16:16:18,470 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from class path resource [activemq.properties]
+[REPORT] 29032016 16:16:18,473 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from class path resource [activemq.properties]
+[REPORT] 29032016 16:16:18,476 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [file:/D:/opensrpThriveMaster/opensrp-server/opensrp-web/target/classes/maven.properties]
+[REPORT] 29032016 16:16:18,476 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-core/0.1-SNAPSHOT/opensrp-core-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,476 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-form/0.1-SNAPSHOT/opensrp-form-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,476 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-connector/0.1-SNAPSHOT/opensrp-connector-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,478 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [file:/D:/opensrpThriveMaster/opensrp-server/opensrp-web/target/classes/maven.properties]
+[REPORT] 29032016 16:16:18,478 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-core/0.1-SNAPSHOT/opensrp-core-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,478 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-form/0.1-SNAPSHOT/opensrp-form-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,479 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-connector/0.1-SNAPSHOT/opensrp-connector-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,480 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from class path resource [activemq.properties]
+[REPORT] 29032016 16:16:18,482 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [file:/D:/opensrpThriveMaster/opensrp-server/opensrp-web/target/classes/maven.properties]
+[REPORT] 29032016 16:16:18,482 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-core/0.1-SNAPSHOT/opensrp-core-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,483 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-form/0.1-SNAPSHOT/opensrp-form-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,483 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/opensrp/opensrp-connector/0.1-SNAPSHOT/opensrp-connector-0.1-SNAPSHOT.jar!/maven.properties]
+[REPORT] 29032016 16:16:18,485 INFO  [main] [DefaultConfiguringBeanFactoryPostProcessor] No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+[REPORT] 29032016 16:16:18,485 INFO  [main] [DefaultConfiguringBeanFactoryPostProcessor] No bean named 'taskScheduler' has been explicitly defined. Therefore, a default ThreadPoolTaskScheduler will be created.
+[REPORT] 29032016 16:16:18,502 INFO  [main] [AutowiredAnnotationBeanPostProcessor] JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[REPORT] 29032016 16:16:18,529 INFO  [main] [DefaultListableBeanFactory] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@42f54b8c: defining beans [org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#1,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#2,channelInitializer,$autoCreateChannelCandidates,org.springframework.integration.internalDefaultConfiguringBeanFactoryPostProcessor,schedulerFireEventGateway,schedulerGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#0,schedulerjmsout,org.springframework.jms.listener.DefaultMessageListenerContainer#0,org.springframework.integration.jms.ChannelPublishingJmsMessageListener#0,jmsin,jmsinToSchedulerChannel,org.springframework.integration.config.RouterFactoryBean#0,org.springframework.integration.config.ConsumerEndpointFactoryBean#0,scheduleChannel,scheduleRunOnceChannel,scheduleRepeatingChannel,unscheduleChannel,org.springframework.integration.handler.MethodInvokingMessageHandler#0,org.springframework.integration.config.ConsumerEndpointFactoryBean#1,org.springframework.integration.handler.MethodInvokingMessageHandler#1,org.springframework.integration.config.ConsumerEndpointFactoryBean#2,org.springframework.integration.handler.MethodInvokingMessageHandler#2,org.springframework.integration.config.ConsumerEndpointFactoryBean#3,org.springframework.integration.handler.MethodInvokingMessageHandler#3,org.springframework.integration.config.ConsumerEndpointFactoryBean#4,quartzProperties,connectionFactory,schedulerQueue,eventQueue,schedulerFactoryBean,schedulerService,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#3,outboundEventGateway,eventGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#1,eventjmsout,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#4,org.springframework.jms.listener.DefaultMessageListenerContainer#1,org.springframework.integration.jms.ChannelPublishingJmsMessageListener#1,eventChannel,org.springframework.integration.handler.MethodInvokingMessageHandler#4,outboundChannelAdapter,outboundScheduleJobGateway,scheduleJobGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#2,schedulejmsout,couchdbProperties,allRules,httpClient,couchDbInstance,ruleDatabase,metricsAgent,loggingAgent,statsdAgent,eventRelay,eventListenerRegistry,motechContext,eventContext,osgiConfig,osgiFramework,osgiFrameworkService,eventAnnotationBeanPostProcessor,smsHttpProperties,smsSendHandler,templateReader,smsHttpService,inboundSmsController,multiThreadedHttpConnectionManager,commonsHttpClient,smsAuditService,smsApiProperties,messageSplitter,smsServiceImpl,smsService,schedule_tracking,scheduleTrackingDbConnector,scheduleFactory,allEnrollments,allSchedules,trackedSchedulesJsonReaderImpl,endOfMilestoneListener,enrollmentAlertService,enrollmentDefaultmentService,enrollmentRecordMapper,enrollmentService,enrollmentsQueryService,scheduleTrackingService,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#5,opensrp,actionController,ANMLocationController,auditMessageController,errorTraceController,fakeActionController,fakeTimeController,formDownLoadController,formSubmissionController,locationController,reportController,userController,xlsFormDownloaderController,applicationStartupListener,clientResource,eventResource,providerResource,rapidClientResource,drishtiAuthenticationProvider,allAppStateTokens,allBaseEntities,allClients,allErrorTrace,allEvents,allLocations,allProviders,allUsers,luceneClientRepository,luceneDbConnector,luceneEventRepository,multimediaRepository,alertCreationAction,alertHandler,alertRouter,healthSchedulerService,allActions,allAlerts,scheduleConfig,actionService,allEnrollmentWrapper,allScheduleWrapper,scheduleService,taskSchedulerService,baseEntityService,clientService,configService,errorTraceService,eventService,formEntityConverter,formSubmissionListener,formSubmissionProcessor,formSubmissionRouter,handlerMapper,entityDataMap,ziggyDataHandler,ziggyFileLoader,ziggyService,locationService,multimediaService,providerService,userService,xlsFormDownloaderService,auditor,reportMonth,monitor,httpAgent,allFormSubmissions,formAttributeParser,formSubmissionService,allFailedEventsCouchImpl,allMarkersCouchImpl,httpUtil,encounterAtomfeed,patientAtomfeed,openmrsSyncerListener,encounterService,householdService,openmrsLocationService,openmrsReportingService,openmrsSchedulerService,openmrsUserService,patientService,opensrpDatabaseConnector,opensrpMCTSDatabaseConnector,opensrpErrorTraceDatabaseConnector,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#6,opensrpFormDatabaseConnector,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#7,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#8,atomfeedDatabaseConnector,org.springframework.security.filterChains,org.springframework.security.filterChainProxy,org.springframework.security.web.PortMapperImpl#0,org.springframework.security.config.authentication.AuthenticationManagerFactoryBean#0,org.springframework.security.authentication.ProviderManager#0,org.springframework.security.web.context.NullSecurityContextRepository#0,org.springframework.security.web.savedrequest.NullRequestCache#0,org.springframework.security.access.vote.AffirmativeBased#0,org.springframework.security.web.access.intercept.FilterSecurityInterceptor#0,org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator#0,org.springframework.security.authentication.AnonymousAuthenticationProvider#0,org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint#0,org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter#0,org.springframework.security.userDetailsServiceFactory,org.springframework.security.web.DefaultSecurityFilterChain#0,shaPasswordEncoder,opensrpAuthenticationProvider,org.springframework.security.authentication.DefaultAuthenticationEventPublisher#0,org.springframework.security.authenticationManager,org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler#0,org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#0,org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping,org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter,org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#0,org.springframework.format.support.FormattingConversionServiceFactoryBean#0,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#0,org.springframework.web.servlet.handler.MappedInterceptor#0,org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#0,org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver#0,org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver#0,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0,nullChannel,errorChannel,_org.springframework.integration.errorLogger,taskScheduler,org.springframework.integration.config.IdGeneratorConfigurer#0]; root of factory hierarchy
+[REPORT] 29032016 16:16:18,640 INFO  [main] [ThreadPoolTaskScheduler] Initializing ExecutorService  'taskScheduler'
+[REPORT] 29032016 16:16:18,660 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started schedulerFireEventGateway
+[REPORT] 29032016 16:16:18,660 INFO  [main] [GatewayProxyFactoryBean] started schedulerFireEventGateway
+[REPORT] 29032016 16:16:19,053 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started outboundEventGateway
+[REPORT] 29032016 16:16:19,054 INFO  [main] [GatewayProxyFactoryBean] started outboundEventGateway
+[REPORT] 29032016 16:16:19,060 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started outboundScheduleJobGateway
+[REPORT] 29032016 16:16:19,060 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started outboundScheduleJobGateway
+[REPORT] 29032016 16:16:19,060 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started outboundScheduleJobGateway
+[REPORT] 29032016 16:16:19,060 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started outboundScheduleJobGateway
+[REPORT] 29032016 16:16:19,060 INFO  [main] [GatewayProxyFactoryBean] started outboundScheduleJobGateway
+[REPORT] 29032016 16:16:19,099 INFO  [main] [SchedulerFactoryBean] Loading Quartz config from [class path resource [quartz.properties]]
+[REPORT] 29032016 16:16:19,172 INFO  [main] [MLog] MLog clients using log4j logging.
+[REPORT] 29032016 16:16:19,278 INFO  [main] [C3P0Registry] Initializing c3p0-0.9.1.1 [built 15-March-2007 01:32:31; debug? true; trace: 10]
+[REPORT] 29032016 16:16:19,383 INFO  [main] [PropertiesFactoryBean] Loading properties file from class path resource [quartz.properties]
+[REPORT] 29032016 16:16:19,480 INFO  [main] [PropertiesFactoryBean] Loading properties file from class path resource [couchdb.properties]
+[REPORT] 29032016 16:16:19,504 INFO  [main] [HttpClientFactoryBean] Starting couchDb connector on localhost:5984...
+[REPORT] 29032016 16:16:21,821 INFO  [main] [DefaultListableBeanFactory] Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@42f54b8c: defining beans [org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#1,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#2,channelInitializer,$autoCreateChannelCandidates,org.springframework.integration.internalDefaultConfiguringBeanFactoryPostProcessor,schedulerFireEventGateway,schedulerGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#0,schedulerjmsout,org.springframework.jms.listener.DefaultMessageListenerContainer#0,org.springframework.integration.jms.ChannelPublishingJmsMessageListener#0,jmsin,jmsinToSchedulerChannel,org.springframework.integration.config.RouterFactoryBean#0,org.springframework.integration.config.ConsumerEndpointFactoryBean#0,scheduleChannel,scheduleRunOnceChannel,scheduleRepeatingChannel,unscheduleChannel,org.springframework.integration.handler.MethodInvokingMessageHandler#0,org.springframework.integration.config.ConsumerEndpointFactoryBean#1,org.springframework.integration.handler.MethodInvokingMessageHandler#1,org.springframework.integration.config.ConsumerEndpointFactoryBean#2,org.springframework.integration.handler.MethodInvokingMessageHandler#2,org.springframework.integration.config.ConsumerEndpointFactoryBean#3,org.springframework.integration.handler.MethodInvokingMessageHandler#3,org.springframework.integration.config.ConsumerEndpointFactoryBean#4,quartzProperties,connectionFactory,schedulerQueue,eventQueue,schedulerFactoryBean,schedulerService,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#3,outboundEventGateway,eventGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#1,eventjmsout,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#4,org.springframework.jms.listener.DefaultMessageListenerContainer#1,org.springframework.integration.jms.ChannelPublishingJmsMessageListener#1,eventChannel,org.springframework.integration.handler.MethodInvokingMessageHandler#4,outboundChannelAdapter,outboundScheduleJobGateway,scheduleJobGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#2,schedulejmsout,couchdbProperties,allRules,httpClient,couchDbInstance,ruleDatabase,metricsAgent,loggingAgent,statsdAgent,eventRelay,eventListenerRegistry,motechContext,eventContext,osgiConfig,osgiFramework,osgiFrameworkService,eventAnnotationBeanPostProcessor,smsHttpProperties,smsSendHandler,templateReader,smsHttpService,inboundSmsController,multiThreadedHttpConnectionManager,commonsHttpClient,smsAuditService,smsApiProperties,messageSplitter,smsServiceImpl,smsService,schedule_tracking,scheduleTrackingDbConnector,scheduleFactory,allEnrollments,allSchedules,trackedSchedulesJsonReaderImpl,endOfMilestoneListener,enrollmentAlertService,enrollmentDefaultmentService,enrollmentRecordMapper,enrollmentService,enrollmentsQueryService,scheduleTrackingService,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#5,opensrp,actionController,ANMLocationController,auditMessageController,errorTraceController,fakeActionController,fakeTimeController,formDownLoadController,formSubmissionController,locationController,reportController,userController,xlsFormDownloaderController,applicationStartupListener,clientResource,eventResource,providerResource,rapidClientResource,drishtiAuthenticationProvider,allAppStateTokens,allBaseEntities,allClients,allErrorTrace,allEvents,allLocations,allProviders,allUsers,luceneClientRepository,luceneDbConnector,luceneEventRepository,multimediaRepository,alertCreationAction,alertHandler,alertRouter,healthSchedulerService,allActions,allAlerts,scheduleConfig,actionService,allEnrollmentWrapper,allScheduleWrapper,scheduleService,taskSchedulerService,baseEntityService,clientService,configService,errorTraceService,eventService,formEntityConverter,formSubmissionListener,formSubmissionProcessor,formSubmissionRouter,handlerMapper,entityDataMap,ziggyDataHandler,ziggyFileLoader,ziggyService,locationService,multimediaService,providerService,userService,xlsFormDownloaderService,auditor,reportMonth,monitor,httpAgent,allFormSubmissions,formAttributeParser,formSubmissionService,allFailedEventsCouchImpl,allMarkersCouchImpl,httpUtil,encounterAtomfeed,patientAtomfeed,openmrsSyncerListener,encounterService,householdService,openmrsLocationService,openmrsReportingService,openmrsSchedulerService,openmrsUserService,patientService,opensrpDatabaseConnector,opensrpMCTSDatabaseConnector,opensrpErrorTraceDatabaseConnector,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#6,opensrpFormDatabaseConnector,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#7,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#8,atomfeedDatabaseConnector,org.springframework.security.filterChains,org.springframework.security.filterChainProxy,org.springframework.security.web.PortMapperImpl#0,org.springframework.security.config.authentication.AuthenticationManagerFactoryBean#0,org.springframework.security.authentication.ProviderManager#0,org.springframework.security.web.context.NullSecurityContextRepository#0,org.springframework.security.web.savedrequest.NullRequestCache#0,org.springframework.security.access.vote.AffirmativeBased#0,org.springframework.security.web.access.intercept.FilterSecurityInterceptor#0,org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator#0,org.springframework.security.authentication.AnonymousAuthenticationProvider#0,org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint#0,org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter#0,org.springframework.security.userDetailsServiceFactory,org.springframework.security.web.DefaultSecurityFilterChain#0,shaPasswordEncoder,opensrpAuthenticationProvider,org.springframework.security.authentication.DefaultAuthenticationEventPublisher#0,org.springframework.security.authenticationManager,org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler#0,org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#0,org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping,org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter,org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#0,org.springframework.format.support.FormattingConversionServiceFactoryBean#0,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#0,org.springframework.web.servlet.handler.MappedInterceptor#0,org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#0,org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver#0,org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver#0,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0,nullChannel,errorChannel,_org.springframework.integration.errorLogger,taskScheduler,org.springframework.integration.config.IdGeneratorConfigurer#0]; root of factory hierarchy
+[REPORT] 29032016 16:16:21,823 INFO  [main] [HttpClientFactoryBean] Stopping couchDb connector...
+[REPORT] 29032016 16:16:21,828 INFO  [main] [SchedulerFactoryBean] Shutting down Quartz Scheduler
+[REPORT] 29032016 16:16:21,839 INFO  [main] [ThreadPoolTaskScheduler] Shutting down ExecutorService 'taskScheduler'
+[REPORT] 29032016 16:16:21,842 ERROR [main] [ContextLoader] Context initialization failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'allRules' defined in URL [jar:file:/C:/Users/Maimoona/.m2/repository/org/motechproject/motech-platform-common-api/0.11/motech-platform-common-api-0.11.jar!/org/motechproject/dao/AllRules.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Could not instantiate bean class [org.motechproject.dao.AllRules]: Constructor threw exception; nested exception is org.ektorp.DbAccessException: org.apache.http.conn.ConnectTimeoutException: Connect to localhost:5984 timed out
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:288)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1035)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:939)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:485)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:456)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:294)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:225)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:291)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:193)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:585)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:913)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:464)
+	at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:384)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:283)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:111)
+	at org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized(ContextHandler.java:782)
+	at org.eclipse.jetty.servlet.ServletContextHandler.callContextInitialized(ServletContextHandler.java:424)
+	at org.eclipse.jetty.server.handler.ContextHandler.startContext(ContextHandler.java:774)
+	at org.eclipse.jetty.servlet.ServletContextHandler.startContext(ServletContextHandler.java:249)
+	at org.eclipse.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1242)
+	at org.eclipse.jetty.server.handler.ContextHandler.doStart(ContextHandler.java:717)
+	at org.eclipse.jetty.webapp.WebAppContext.doStart(WebAppContext.java:494)
+	at org.mortbay.jetty.plugin.JettyWebAppContext.doStart(JettyWebAppContext.java:298)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.eclipse.jetty.server.handler.HandlerCollection.doStart(HandlerCollection.java:229)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.doStart(ContextHandlerCollection.java:172)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.eclipse.jetty.server.handler.HandlerCollection.doStart(HandlerCollection.java:229)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.doStart(HandlerWrapper.java:95)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:282)
+	at org.mortbay.jetty.plugin.JettyServer.doStart(JettyServer.java:65)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:64)
+	at org.mortbay.jetty.plugin.AbstractJettyMojo.startJetty(AbstractJettyMojo.java:520)
+	at org.mortbay.jetty.plugin.AbstractJettyMojo.execute(AbstractJettyMojo.java:365)
+	at org.mortbay.jetty.plugin.JettyRunMojo.execute(JettyRunMojo.java:523)
+	at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo(DefaultBuildPluginManager.java:133)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:208)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:153)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:145)
+	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:108)
+	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:76)
+	at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build(SingleThreadedBuilder.java:51)
+	at org.apache.maven.lifecycle.internal.LifecycleStarter.execute(LifecycleStarter.java:116)
+	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:361)
+	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:155)
+	at org.apache.maven.cli.MavenCli.execute(MavenCli.java:584)
+	at org.apache.maven.cli.MavenCli.doMain(MavenCli.java:213)
+	at org.apache.maven.cli.MavenCli.main(MavenCli.java:157)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced(Launcher.java:289)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.launch(Launcher.java:229)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode(Launcher.java:415)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.main(Launcher.java:356)
+Caused by: org.springframework.beans.BeanInstantiationException: Could not instantiate bean class [org.motechproject.dao.AllRules]: Constructor threw exception; nested exception is org.ektorp.DbAccessException: org.apache.http.conn.ConnectTimeoutException: Connect to localhost:5984 timed out
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:162)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:110)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:280)
+	... 56 more
+Caused by: org.ektorp.DbAccessException: org.apache.http.conn.ConnectTimeoutException: Connect to localhost:5984 timed out
+	at org.ektorp.util.Exceptions.propagate(Exceptions.java:19)
+	at org.ektorp.http.StdHttpClient.executeRequest(StdHttpClient.java:159)
+	at org.ektorp.http.StdHttpClient.executeRequest(StdHttpClient.java:164)
+	at org.ektorp.http.StdHttpClient.head(StdHttpClient.java:117)
+	at org.ektorp.http.RestTemplate.head(RestTemplate.java:93)
+	at org.ektorp.impl.StdCouchDbInstance.checkIfDbExists(StdCouchDbInstance.java:63)
+	at org.ektorp.impl.StdCouchDbConnector.createDatabaseIfNotExists(StdCouchDbConnector.java:398)
+	at org.ektorp.support.CouchDbRepositorySupport.<init>(CouchDbRepositorySupport.java:51)
+	at org.ektorp.support.CouchDbRepositorySupport.<init>(CouchDbRepositorySupport.java:42)
+	at org.motechproject.dao.MotechBaseRepository.<init>(MotechBaseRepository.java:18)
+	at org.motechproject.dao.AllRules.<init>(AllRules.java:13)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:525)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:147)
+	... 58 more
+Caused by: org.apache.http.conn.ConnectTimeoutException: Connect to localhost:5984 timed out
+	at org.apache.http.conn.scheme.PlainSocketFactory.connectSocket(PlainSocketFactory.java:125)
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:148)
+	at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:149)
+	at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:121)
+	at org.apache.http.impl.client.DefaultRequestDirector.tryConnect(DefaultRequestDirector.java:573)
+	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:425)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:820)
+	at org.apache.http.impl.client.cache.CachingHttpClient.callBackend(CachingHttpClient.java:668)
+	at org.apache.http.impl.client.cache.CachingHttpClient.execute(CachingHttpClient.java:390)
+	at org.apache.http.impl.client.cache.CachingHttpClient.execute(CachingHttpClient.java:323)
+	at org.ektorp.http.StdHttpClient.executeRequest(StdHttpClient.java:150)
+	... 72 more
+[INFO] Started Jetty Server
+[INFO] 
+[INFO] --- maven-failsafe-plugin:2.9:integration-test (default) @ opensrp-web ---
+[INFO] Failsafe report directory: D:\opensrpThriveMaster\opensrp-server\opensrp-web\target\failsafe-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+
+Results :
+
+Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] 
+[INFO] --- jetty-maven-plugin:8.1.16.v20140903:stop (stop-jetty) @ opensrp-web ---
+[INFO] 
+[INFO] --- maven-failsafe-plugin:2.9:verify (default) @ opensrp-web ---
+[INFO] Failsafe report directory: D:\opensrpThriveMaster\opensrp-server\opensrp-web\target\failsafe-reports
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ opensrp-web ---
+[INFO] Installing D:\opensrpThriveMaster\opensrp-server\opensrp-web\target\opensrp-web.war to C:\Users\Maimoona\.m2\repository\org\opensrp\opensrp-web\0.1-SNAPSHOT\opensrp-web-0.1-SNAPSHOT.war
+[INFO] Installing D:\opensrpThriveMaster\opensrp-server\opensrp-web\pom.xml to C:\Users\Maimoona\.m2\repository\org\opensrp\opensrp-web\0.1-SNAPSHOT\opensrp-web-0.1-SNAPSHOT.pom
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 01:52 min
+[INFO] Finished at: 2016-03-29T16:16:27+05:00
+[INFO] Final Memory: 52M/265M
+[INFO] ------------------------------------------------------------------------

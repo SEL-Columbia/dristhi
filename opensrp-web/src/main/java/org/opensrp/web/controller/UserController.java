@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.OK;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mysql.jdbc.StringUtils;
 
 @Controller
@@ -65,8 +67,9 @@ public class UserController {
 	public ResponseEntity<String> authenticate() throws JSONException {
         User u = currentUser();
         String lid = "";
+        JSONObject tm = null;
         try{
-        	JSONObject tm = openmrsUserService.getTeamMember(u.getAttribute("_PERSON_UUID").toString());
+        	tm = openmrsUserService.getTeamMember(u.getAttribute("_PERSON_UUID").toString());
         	JSONArray locs = tm.getJSONArray("location");
         	for (int i = 0; i < locs.length(); i++) {
 				lid += locs.getJSONObject(i).getString("uuid")+";;";
@@ -90,7 +93,22 @@ public class UserController {
 		LocationTree l = openmrsLocationService.getLocationTreeOf(lid.split(";;"));
 		Map<String, Object> map = new HashMap<>();
 		map.put("user", u);
+		try{
+			Map<String, Object> tmap = new Gson().fromJson(tm.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+			map.put("team", tmap);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 		map.put("locations", l);
+        return new ResponseEntity<>(new Gson().toJson(map), allowOrigin(opensrpSiteUrl), OK);
+	}
+	
+	@RequestMapping("/security/configuration")
+	@ResponseBody
+	public ResponseEntity<String> configuration() throws JSONException {
+		Map<String, Object> map = new HashMap<>();
+		map.put("serverDatetime", DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
         return new ResponseEntity<>(new Gson().toJson(map), allowOrigin(opensrpSiteUrl), OK);
 	}
 }

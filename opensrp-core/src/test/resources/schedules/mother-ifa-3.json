@@ -1,33 +1,33 @@
 {
-    "name": "Measles Booster",
+    "name": "IFA 3",
     "absolute": true,
     "milestones": [
         {
-            "name": "measlesbooster",
+            "name": "IFA 3",
             "scheduleWindows": {
-                "earliest": ["16 Months"],
-                "due": ["24 Months"],
-                "late": ["5 Years"],
-                "max": ["5 Years"]
+                "earliest": ["1 Months"],
+                "due": ["1 Month", "2 Weeks"],
+                "late": ["100 Weeks"],
+                "max": ["100 Weeks", "1 Day"]
             },
             "alerts": [
                 {
                     "window": "earliest",
-                    "offset": ["0 Days"],
+                    "offset": ["0 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "486"
+                    "count": "30"
                 },
                 {
                     "window": "due",
-                    "offset": ["16 Months"],
+                    "offset": ["1 Months"],
                     "interval": ["1 Day"],
-                    "count": "243"
+                    "count": "14"
                 },
                 {
                     "window": "late",
-                    "offset": ["24 Months"],
+                    "offset": ["1 Month", "2 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "1095"
+                    "count": "658"
                 }
             ]
         }

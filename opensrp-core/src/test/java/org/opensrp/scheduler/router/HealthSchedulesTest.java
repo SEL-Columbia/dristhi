@@ -48,10 +48,10 @@ public class HealthSchedulesTest extends TestResourceLoader{
 		List<Schedule> s = sch.findAutomatedSchedules(fs.formName());
 		assertThat(s, hasItem(Matchers.<Schedule>allOf(
 				Matchers.<Schedule>hasProperty("schedule",equalTo("PENTAVALENT 1")),
-				Matchers.<Schedule>hasProperty("milestone",equalTo("pentavalent_1")),
+				Matchers.<Schedule>hasProperty("milestone",equalTo("penta1")),
 				Matchers.<Schedule>hasProperty("action",equalTo(ActionType.enroll)),
 				Matchers.<Schedule>hasProperty("entityType",equalTo("pkchild")),
-				Matchers.<Schedule>hasProperty("triggerDateFields",hasItem("child_birth_date"))
+				Matchers.<Schedule>hasProperty("triggerDateFields",hasItem("dob"))
 				)));
 	}
 	

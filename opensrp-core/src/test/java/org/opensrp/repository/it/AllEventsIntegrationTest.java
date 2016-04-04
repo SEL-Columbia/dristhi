@@ -3,11 +3,15 @@ package org.opensrp.repository.it;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.domain.Event;
+import org.opensrp.domain.Obs;
 import org.opensrp.repository.AllEvents;
 import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +35,16 @@ public class AllEventsIntegrationTest {
 
 	private void addEvents() {
 		for (int i = 0; i < 20; i++) {
-			Event e = new Event("entity"+i, "event"+i, "Test Event", new DateTime(), 
-					"testentity", "testprovider", "location"+i, "formSubmission"+i);
+			Event e = new Event("entityid"+i, "event"+i+100, "Immunization", new DateTime(), 
+					"testentity", "demotest", "location"+i, "formSubmission"+i+100);
+			e.addObs(new Obs("concept", "txt", "1025AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "bcg"));
+			e.addObs(new Obs("concept", "txt", "1026AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "penta1"));
+			e.addObs(new Obs("concept", "txt", "1027AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "penta2"));
+			e.addObs(new Obs("concept", "txt", "1028AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "penta3"));
+			e.addObs(new Obs("concept", "txt", "1029AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "mealses1"));
+			e.addObs(new Obs("concept", "txt", "1030AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "measles2"));
+			e.addObs(new Obs("concept", "txt", "1029AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "tt1"));
+			e.addObs(new Obs("concept", "txt", "1030AAAAAAAAAAAAAAAA", null, "2016-02-01" , "comments test"+i, "tt2"));
 			eventService.addEvent(e);
 		}
 	}
@@ -40,6 +52,6 @@ public class AllEventsIntegrationTest {
 	@Test
 	public void test(){
 		addEvents();
-		assertTrue(eventService.getByBaseEntityAndFormSubmissionId("entity0", "formSubmission0")!=null);
+		assertTrue(eventService.getByBaseEntityAndFormSubmissionId("11338235", "formSubmission21")!=null);
 	}
 }

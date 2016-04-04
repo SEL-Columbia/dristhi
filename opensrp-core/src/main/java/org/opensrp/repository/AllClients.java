@@ -67,20 +67,24 @@ public class AllClients extends MotechBaseRepository<Client> {
 		return db.queryView(createQuery("all_clients_by_matching_name").startKey(nameMatches).endKey(nameMatches+"z").includeDocs(true), Client.class);
 	}
 	
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdate, DateTime deathdate, 
-			String attributeType, String attributeValue, 
+	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
+			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, 
 			String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown) {
-		return lcr.getByCriteria(nameLike, gender, birthdate, deathdate, attributeType, attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown);//db.queryView(q.includeDocs(true), Client.class);
+			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
+		return lcr.getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);//db.queryView(q.includeDocs(true), Client.class);
 	}
 	
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdate, DateTime deathdate, 
-			String attributeType, String attributeValue){
-		return lcr.getByCriteria(nameLike, gender, birthdate, deathdate, attributeType, attributeValue, null, null, null, null, null, null, null, null);
+	public List<Client> findByDynamicQuery(String query) {
+		return lcr.getByCriteria(query);//db.queryView(q.includeDocs(true), Client.class);
+	}
+	
+	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
+			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, DateTime lastEditFrom, DateTime lastEditTo){
+		return lcr.getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo);
 	}
 	
 	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown) {
-		return lcr.getByCriteria(null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown);
+			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
+		return lcr.getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);
 	}
 }

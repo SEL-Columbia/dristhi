@@ -1,0 +1,22 @@
+function(doc) {  
+      if(doc.type !== 'Event') return null;  
+      var arr1 = ['baseEntityId','eventType','entityType','providerId','locationId'];  
+      var ret = new Document();  
+      for (var i in arr1){  
+      	ret.add(doc[arr1[i]], {'field':arr1[i]});  
+      }  
+      if(doc.eventDate){  
+      	var bd=doc.eventDate.substring(0,19);   
+      	ret.add(bd, {'field':'eventDate','type':'date'});  
+      }  
+      
+      var crd = doc.dateCreated.substring(0, 19);
+		ret.add(crd, {'field' : 'lastEdited','type' : 'date'});
+		
+		if(doc.dateEdited){
+		var led = doc.dateEdited.substring(0, 19);
+		ret.add(led, {'field' : 'lastEdited','type' : 'date'});		
+		}
+		
+       return ret;  
+      }

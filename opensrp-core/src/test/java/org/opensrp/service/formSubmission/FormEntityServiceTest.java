@@ -11,6 +11,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import java.io.IOException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
@@ -87,6 +88,30 @@ public class FormEntityServiceTest extends TestResourceLoader{
         inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class));
         inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class));
         inOrder.verify(schService).enroll(fs.entityId(), "FW CENSUS", "FW CENSUS", "2015-05-07", fs.instanceId());
+        inOrder.verify(ziggyService).isZiggyCompliant(fs.bindType());
+        inOrder.verify(formSubmissionRouter).route(fs);
+
+        verifyNoMoreInteractions(formEntityConverter);
+        //verifyNoMoreInteractions(clientService);
+        //verifyNoMoreInteractions(eventService);
+        //verifyNoMoreInteractions(schService);
+        verifyNoMoreInteractions(ziggyService);
+        verifyNoMoreInteractions(formSubmissionRouter);
+    }
+	
+	@Ignore @Test //TODO
+    public void shouldProcessNonZiggyWomanTTEnrollmentSubmission() throws Exception {
+        FormSubmission fs = getFormSubmissionFor("woman_enrollment");
+
+        fsp.processFormSubmission(fs);
+
+        InOrder inOrder = inOrder(formEntityConverter, clientService, eventService, schService, ziggyService, formSubmissionRouter);
+        inOrder.verify(formEntityConverter).getClientFromFormSubmission(fs);
+        inOrder.verify(formEntityConverter).getEventFromFormSubmission(fs);
+        inOrder.verify(formEntityConverter).getDependentClientsFromFormSubmission(fs);
+        inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class));
+        inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class));
+        inOrder.verify(schService).enroll(fs.entityId(), "TT 4", "tt4", "2017-03-25", fs.instanceId());
         inOrder.verify(ziggyService).isZiggyCompliant(fs.bindType());
         inOrder.verify(formSubmissionRouter).route(fs);
 

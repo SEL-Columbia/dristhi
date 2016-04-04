@@ -1,33 +1,33 @@
 {
-    "name": "PENTAVALENT 2",
+    "name": "Delivery Plan",
     "absolute": true,
     "milestones": [
         {
-            "name": "pentavalent_2",
+            "name": "Delivery Plan",
             "scheduleWindows": {
-                "earliest": ["4 Weeks"],
-                "due": ["6 Weeks"],
-                "late": ["12 Months"],
-                "max": ["12 Months"]
+                "earliest": ["34 Weeks"],
+                "due": ["36 Weeks"],
+                "late": ["300 Days"],
+                "max": ["5 Years"]
             },
             "alerts": [
                 {
                     "window": "earliest",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "28"
+                    "count": "238"
                 },
                 {
                     "window": "due",
-                    "offset": ["4 Weeks"],
+                    "offset": ["34 Weeks"],
                     "interval": ["1 Day"],
                     "count": "14"
                 },
                 {
                     "window": "late",
-                    "offset": ["6 Weeks"],
+                    "offset": ["36 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "322"
+                    "count": "48"
                 }
             ]
         }

@@ -73,46 +73,46 @@ public class ScheduleConfigTest {
 		List<Schedule> sch = schconfig.searchSchedules("child_enrollment");
 		assertThat(sch, hasItem(Matchers.<Schedule>allOf(
 				Matchers.<Schedule>hasProperty("schedule",equalTo("PENTAVALENT 1")),
-				Matchers.<Schedule>hasProperty("milestone",equalTo("pentavalent_1")),
+				Matchers.<Schedule>hasProperty("milestone",equalTo("penta1")),
 				Matchers.<Schedule>hasProperty("action",equalTo(ActionType.enroll)),
 				Matchers.<Schedule>hasProperty("entityType",equalTo("pkchild")),
 				Matchers.<Schedule>hasProperty("passLogic", anything()),
-				Matchers.<Schedule>hasProperty("triggerDateFields",hasItem("child_birth_date"))
+				Matchers.<Schedule>hasProperty("triggerDateFields",hasItem("dob"))
 				)));
 		
 		assertThat(sch, hasItem(Matchers.<Schedule>allOf(
 				Matchers.<Schedule>hasProperty("schedule",equalTo("PENTAVALENT 2")),
-				Matchers.<Schedule>hasProperty("milestone",equalTo("pentavalent_2")),
+				Matchers.<Schedule>hasProperty("milestone",equalTo("penta2")),
 				Matchers.<Schedule>hasProperty("action",equalTo(ActionType.enroll)),
 				Matchers.<Schedule>hasProperty("entityType",equalTo("pkchild")),
 				Matchers.<Schedule>hasProperty("passLogic", anything()),
 				Matchers.<Schedule>hasProperty("triggerDateFields",hasItems("pentavalent_1","pentavalent_1_retro")),
-				Matchers.<Schedule>hasProperty("forms",hasItems("child_enrollment","child_followup"))
+				Matchers.<Schedule>hasProperty("forms",hasItems("child_enrollment"))
 				)));
 		
 		List<Schedule> schf = schconfig.searchSchedules("child_followup");
 		assertThat(schf, hasItem(Matchers.<Schedule>allOf(
 				Matchers.<Schedule>hasProperty("schedule",equalTo("PENTAVALENT 2")),
-				Matchers.<Schedule>hasProperty("milestone",equalTo("pentavalent_2")),
+				Matchers.<Schedule>hasProperty("milestone",equalTo("penta2")),
 				Matchers.<Schedule>hasProperty("action",equalTo(ActionType.enroll)),
 				Matchers.<Schedule>hasProperty("entityType",equalTo("pkchild")),
 				Matchers.<Schedule>hasProperty("passLogic", anything()),
 				Matchers.<Schedule>hasProperty("triggerDateFields",hasItems("pentavalent_1","pentavalent_1_retro")),
-				Matchers.<Schedule>hasProperty("forms",hasItems("child_enrollment","child_followup"))
+				Matchers.<Schedule>hasProperty("forms",hasItems("child_followup"))
 				)));
 		assertThat(schf, not(hasItem(Matchers.<Schedule>allOf(
 				Matchers.<Schedule>hasProperty("schedule",equalTo("PENTAVALENT 1")),
-				Matchers.<Schedule>hasProperty("milestone",equalTo("pentavalent_1")),
+				Matchers.<Schedule>hasProperty("milestone",equalTo("penta1")),
 				Matchers.<Schedule>hasProperty("action",equalTo(ActionType.enroll)),
 				Matchers.<Schedule>hasProperty("entityType",equalTo("pkchild")),
 				Matchers.<Schedule>hasProperty("passLogic", anything()),
-				Matchers.<Schedule>hasProperty("triggerDateFields",hasItem("child_birth_date"))
+				Matchers.<Schedule>hasProperty("triggerDateFields",hasItem("dob"))
 				))));
 	}
 	
 	@Test
 	public void shouldReturnCorrectResultForValidation() {
-		List<Schedule> sch = schconfig.searchSchedules("child_enrollment", "PENTAVALENT 2", "pentavalent_2", ActionType.enroll);
+		List<Schedule> sch = schconfig.searchSchedules("child_enrollment", "PENTAVALENT 2", "penta2", ActionType.enroll);
 		assertEquals(1, sch.size());
 		
 		Schedule s = sch.get(0);
@@ -162,7 +162,7 @@ public class ScheduleConfigTest {
 	
 	@Test
 	public void shouldReturnCorrectResultForApplicableEntity() {
-		List<Schedule> sch = schconfig.searchSchedules("child_enrollment", "PENTAVALENT 2", "pentavalent_2", ActionType.enroll);
+		List<Schedule> sch = schconfig.searchSchedules("child_enrollment", "PENTAVALENT 2", "penta2", ActionType.enroll);
 		assertEquals(1, sch.size());
 
 		Schedule s = sch.get(0);
@@ -174,18 +174,17 @@ public class ScheduleConfigTest {
 	
 	@Test
 	public void shouldReturnCorrectResultForApplicableForm() {
-		List<Schedule> sch = schconfig.searchSchedules("child_enrollment", "PENTAVALENT 2", "pentavalent_2", ActionType.enroll);
+		List<Schedule> sch = schconfig.searchSchedules("child_enrollment", "PENTAVALENT 2", "penta2", ActionType.enroll);
 		assertEquals(1, sch.size());
 
 		Schedule s = sch.get(0);
 		assertTrue(s.hasForm("child_enrollment"));
-		assertTrue(s.hasForm("child_followup"));
 		assertFalse(s.hasForm("other form"));
 	}
 	
 	@Test
 	public void shouldReturnCorrectResultForLogicPresent() {
-		List<Schedule> sch = schconfig.searchSchedules("child_enrollment", "PENTAVALENT 2", "pentavalent_2", ActionType.enroll);
+		List<Schedule> sch = schconfig.searchSchedules("child_enrollment", "PENTAVALENT 2", "penta2", ActionType.enroll);
 		assertEquals(1, sch.size());
 		
 		Schedule s = sch.get(0);

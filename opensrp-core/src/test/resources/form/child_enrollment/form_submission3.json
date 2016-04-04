@@ -23,7 +23,7 @@
                    "source": "pkchild.child_reg_date"
                },
                {
-                   "name": "child_birth_date",
+                   "name": "dob",
                    "value": "2014-12-13",
                    "source": "pkchild.child_birth_date"
                },

@@ -1,0 +1,35 @@
+{
+    "name": "TT 3",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "tt3",
+            "scheduleWindows": {
+                "earliest": ["6 Months"],
+                "due": ["8 Months"],
+                "late": ["9 Months"],
+                "max": ["1 Year"]                
+            },
+            "alerts": [
+                {
+                    "window": "earliest",
+                    "offset": ["0 Months"],
+                    "interval": ["1 Day"],
+                    "count": "100"
+                },
+                {
+                    "window": "due",
+                    "offset": ["6 Months"],
+                    "interval": ["1 Day"],
+                    "count": "360"
+                },
+                {
+                    "window": "late",
+                    "offset": ["8 Months"],
+                    "interval": ["1 Day"],
+                    "count": "360"
+                }
+            ]
+        }
+    ]
+}

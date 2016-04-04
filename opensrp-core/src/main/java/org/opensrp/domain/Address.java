@@ -13,6 +13,8 @@ import org.opensrp.common.AddressField;
 public class Address{
 
 	@JsonProperty
+	private Boolean preferred;
+	@JsonProperty
 	private String addressType;
 	@JsonProperty
 	private Date startDate;

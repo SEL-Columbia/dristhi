@@ -20,8 +20,13 @@ public class OpenmrsAtomfeedListener {
 
 	@MotechListener(subjects=OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
 	public void syncAtomfeeds(MotechEvent event) {
-		patientAtomfeed.processEvents();;
-		
-		encounterAtomfeed.processEvents();
+		try{
+			patientAtomfeed.processEvents();;
+			
+			encounterAtomfeed.processEvents();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }

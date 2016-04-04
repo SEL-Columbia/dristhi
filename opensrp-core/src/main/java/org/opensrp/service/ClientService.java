@@ -54,21 +54,25 @@ public class ClientService {
 		return allClients.findAllByMatchingName(nameMatches);
 	}
 	
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdate, DateTime deathdate, 
-			String attributeType, String attributeValue, 
+	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
+			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, 
 			String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown) {
-		return allClients.findByCriteria(nameLike, gender, birthdate, deathdate, attributeType, attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown);//db.queryView(q.includeDocs(true), Client.class);
+			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
+		return allClients.findByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);//db.queryView(q.includeDocs(true), Client.class);
 	}
 	
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdate, DateTime deathdate, 
-			String attributeType, String attributeValue){
-		return allClients.findByCriteria(nameLike, gender, birthdate, deathdate, attributeType, attributeValue, null, null, null, null, null, null, null, null);
+	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
+			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, DateTime lastEditFrom, DateTime lastEditTo){
+		return allClients.findByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo);
 	}
 	
 	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown) {
-		return allClients.findByCriteria(null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown);
+			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
+		return allClients.findByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);
+	}
+	
+	public List<Client> findByDynamicQuery(String query) {
+		return allClients.findByDynamicQuery(query);
 	}
 	
 	public Client addClient(Client client)
@@ -109,13 +113,7 @@ public class ClientService {
 	
 	public Client find(String uniqueId){
 		// find by document id
-		Client c = allClients.get(uniqueId);
-		if(c != null){
-			return c;
-		}
-		
-		// find by auto assigned entity id
-		c = allClients.findByBaseEntityId(uniqueId);
+		Client c = allClients.findByBaseEntityId(uniqueId);
 		if(c != null){
 			return c;
 		}

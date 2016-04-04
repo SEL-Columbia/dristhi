@@ -1,23 +1,15 @@
 package org.opensrp.service;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.opensrp.domain.Address;
-import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.repository.AllEvents;
-import org.opensrp.util.DateTimeTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.mysql.jdbc.StringUtils;
 
 @Service
 public class EventService {
@@ -55,19 +47,25 @@ public class EventService {
 		return allEvents.findByFormSubmissionId(formSubmissionId);
 	}
 	
-	public List<Event> findEventsBy(DateTime from, DateTime to, String eventType, String entityType, String providerId, String locationId) {
-		return allEvents.findEvents(from, to, eventType, entityType, providerId, locationId);
+	public List<Event> findEventsBy(String baseEntityId, DateTime from, DateTime to, String eventType, 
+			String entityType, String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
+		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom, lastEditTo);
+	}
+	
+	public List<Event> findEventsByDynamicQuery(String query) {
+		return allEvents.findEventsByDynamicQuery(query);
 	}
 	
 	public Event addEvent(Event event)
 	{
-		if(getByEventId(event.getEventId()) != null){
+		if(!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null){
 			throw new IllegalArgumentException("An event already exists with given eventId "+event.getEventId()+". Consider updating");
 		}
 		if(getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null){
 			throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
 		}
 
+		event.setDateCreated(new Date());
 		allEvents.add(event);
 		return event;
 	}

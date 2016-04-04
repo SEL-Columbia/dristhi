@@ -1,33 +1,33 @@
 {
-    "name": "TT 2",
+    "name": "FP Referral Followup",
     "absolute": true,
     "milestones": [
         {
-            "name": "TT 2",
+            "name": "FP Referral Followup",
             "scheduleWindows": {
-                "earliest": ["4 Weeks"],
-                "due": ["6 Weeks"],
-                "late": ["1 Year"],
-                "max": ["1 Year", "1 Day"]
+                "earliest": ["1 Day"],
+                "due": ["2 Days"],
+                "late": ["100 Weeks"],
+                "max": ["100 Weeks", "1 Day"]
             },
             "alerts": [
                 {
                     "window": "earliest",
-                    "offset": ["0 Weeks"],
+                    "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "28"
+                    "count": "1"
                 },
                 {
                     "window": "due",
-                    "offset": ["4 Weeks"],
+                    "offset": ["1 Day"],
                     "interval": ["1 Day"],
-                    "count": "14"
+                    "count": "1"
                 },
                 {
                     "window": "late",
-                    "offset": ["6 Weeks"],
+                    "offset": ["2 Days"],
                     "interval": ["1 Day"],
-                    "count": "322"
+                    "count": "698"
                 }
             ]
         }

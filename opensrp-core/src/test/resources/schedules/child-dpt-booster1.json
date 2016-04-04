@@ -1,33 +1,33 @@
 {
-    "name": "PENTAVALENT 3",
+    "name": "DPT Booster 1",
     "absolute": true,
     "milestones": [
         {
-            "name": "pentavalent_3",
+            "name": "dptbooster_1",
             "scheduleWindows": {
-                "earliest": ["4 Weeks"],
-                "due": ["6 Weeks"],
-                "late": ["12 Months"],
-                "max": ["12 Months"]
+                "earliest": ["16 Months"],
+                "due": ["24 Months"],
+                "late": ["5 Years"],
+                "max": [""]
             },
             "alerts": [
                 {
                     "window": "earliest",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "28"
+                    "count": "486"
                 },
                 {
                     "window": "due",
-                    "offset": ["4 Weeks"],
+                    "offset": ["16 Months"],
                     "interval": ["1 Day"],
-                    "count": "14"
+                    "count": "243"
                 },
                 {
                     "window": "late",
-                    "offset": ["6 Weeks"],
+                    "offset": ["24 Months"],
                     "interval": ["1 Day"],
-                    "count": "322"
+                    "count": "1095"
                 }
             ]
         }

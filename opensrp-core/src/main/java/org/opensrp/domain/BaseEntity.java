@@ -23,6 +23,10 @@ public class BaseEntity extends BaseDataObject {
 	private List<Address> addresses;
 	@JsonProperty
 	private Map<String, Object> attributes;
+	@JsonProperty
+	private List<ContactPoint> contactPoints;
+	@JsonProperty
+	private List<Photo> photos;
 
 	protected BaseEntity() {}
 	

@@ -1,0 +1,35 @@
+{
+    "name": "Measles 1",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "measles1",
+            "scheduleWindows": {
+                "earliest": ["8 Months"],
+                "due": ["9 Months"],
+                "late": ["12 Months"],
+                "max": ["5 Years"]
+            },
+            "alerts": [
+                {
+                    "window": "earliest",
+                    "offset": ["8 Months"],
+                    "interval": ["1 Day"],
+                    "count": "30"
+                },
+                {
+                    "window": "due",
+                    "offset": ["9 Months"],
+                    "interval": ["1 Day"],
+                    "count": "91"
+                },
+                {
+                    "window": "late",
+                    "offset": ["12 Months"],
+                    "interval": ["1 Day"],
+                    "count": "1460"
+                }
+            ]
+        }
+    ]
+}

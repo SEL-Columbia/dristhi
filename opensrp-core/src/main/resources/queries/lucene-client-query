@@ -23,6 +23,15 @@ function (doc) {
 		}
 		var bd = doc.birthdate.substring(0, 19);
 		ret.add(bd, {'field' : 'birthdate','type' : 'date'});
+		
+		var crd = doc.dateCreated.substring(0, 19);
+		ret.add(crd, {'field' : 'lastEdited','type' : 'date'});
+		
+		if(doc.dateEdited){
+		var led = doc.dateEdited.substring(0, 19);
+		ret.add(led, {'field' : 'lastEdited','type' : 'date'});		
+		}
+		
 		docl.push(ret);  
 	}
 	return docl;

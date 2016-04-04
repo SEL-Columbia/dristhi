@@ -82,7 +82,7 @@
                    "source": "vaccine_child.child_birth_date_known"
                },
                {
-                   "name": "child_birth_date",
+                   "name": "dob",
                    "value": "2015-11-10",
                    "source": "vaccine_child.child_birth_date"
                },

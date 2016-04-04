@@ -11,9 +11,9 @@ public class DrishtiScheduleConstants {
         public static final String CHILD_SCHEDULE_DPT_BOOSTER1 = "DPT Booster 1";
         public static final String CHILD_SCHEDULE_DPT_BOOSTER2 = "DPT Booster 2";
 
-        public static final String CHILD_SCHEDULE_MEASLES = "Measles Vaccination";
+        public static final String CHILD_SCHEDULE_MEASLES = "Measles 1";
 
-        public static final String CHILD_SCHEDULE_MEASLES_BOOSTER = "Measles Booster";
+        public static final String CHILD_SCHEDULE_MEASLES_BOOSTER = "Measles 2";
 
         public static final String CHILD_SCHEDULE_OPV_0_AND_1 = "OPV_0_AND_1";
         public static final String CHILD_SCHEDULE_OPV_2 = "OPV 2";

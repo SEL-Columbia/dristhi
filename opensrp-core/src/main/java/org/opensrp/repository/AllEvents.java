@@ -51,9 +51,13 @@ public class AllEvents extends MotechBaseRepository<Event>{
 		return db.queryView(createQuery("all_events_by_base_entity_and_form_submission").key(ComplexKey.of(baseEntityId, formSubmissionId)).includeDocs(true), Event.class);
 	}
 	
-	public List<Event> findEvents(DateTime from, DateTime to, String eventType, String entityType,
-			String providerId, String locationId) {
-		return ler.getByCriteria(from, to, eventType, entityType, providerId, locationId);
+	public List<Event> findEvents(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
+			String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
+		return ler.getByCriteria(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom, lastEditTo);
+	}
+	
+	public List<Event> findEventsByDynamicQuery(String query){
+		return ler.getByCriteria(query);
 	}
 	
 	

@@ -30,8 +30,12 @@ public class FileCreator {
 			throws FileNotFoundException, IOException {
 
 		String s = osDirectorySet(osDirectorySet(directory));
+		File f = new File(s+(filename.lastIndexOf(".")-1));
+		if(f.mkdirs()){
+			
+		}
 		//System.out.println(s);
-		FileOutputStream fos2 = new FileOutputStream(s + filename);
+		FileOutputStream fos2 = new FileOutputStream(f.getPath()+filename);
 		fos2.write(content);
 		fos2.close();
 

@@ -47,7 +47,7 @@ public class FormSubmissionProcessorScheduleTest extends TestResourceLoader{
 		
 		spy(fsp).handleSchedules(fs);
 		
-		verify(schService).enroll("8cc8cbca-7c39-4c57-b8c7-5ccd5cf88af7", "PENTAVALENT 1", "pentavalent_1", "2014-12-13", "1996b940-181e-46d5-bf8f-630bef2880a9");
+		verify(schService).enroll("8cc8cbca-7c39-4c57-b8c7-5ccd5cf88af7", "PENTAVALENT 1", "penta1", "2014-12-13", "1996b940-181e-46d5-bf8f-630bef2880a9");
 	}
 	
 	

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.joda.time.DateTime;
 
 public class Obs {
 
@@ -22,6 +23,8 @@ public class Obs {
 	private String comments;
 	@JsonProperty
 	private String formSubmissionField;
+	@JsonProperty
+	private DateTime effectiveDatetime;
 	
 	public Obs() { }
 
@@ -36,6 +39,17 @@ public class Obs {
 		this.formSubmissionField = formSubmissionField;
 	}
 
+	public Obs(String fieldType, String fieldDataType, String fieldCode, String parentCode,
+			Object value, String comments, String formSubmissionField) {
+		this.setFieldType(fieldType);
+		this.fieldDataType = fieldDataType;
+		this.fieldCode = fieldCode;
+		this.parentCode = parentCode;
+		addToValueList(value);
+		this.comments = comments;
+		this.formSubmissionField = formSubmissionField;
+	}
+	
 	public String getFieldType() {
 		return fieldType;
 	}
@@ -110,6 +124,14 @@ public class Obs {
 		this.formSubmissionField = formSubmissionField;
 	}
 
+	public DateTime getEffectiveDatetime() {
+		return effectiveDatetime;
+	}
+
+	public void setEffectiveDatetime(DateTime effectiveDatetime) {
+		this.effectiveDatetime = effectiveDatetime;
+	}
+
 	public Obs withFieldType(String fieldType) {
 		this.fieldType = fieldType;
 		return this;
@@ -155,5 +177,11 @@ public class Obs {
 	public Obs withFormSubmissionField(String formSubmissionField) {
 		this.formSubmissionField = formSubmissionField;
 		return this;
-	}	
+	}
+	
+	public Obs withEffectiveDatetime(DateTime effectiveDatetime) {
+		this.effectiveDatetime = effectiveDatetime;
+		return this;
+		
+	}
 }

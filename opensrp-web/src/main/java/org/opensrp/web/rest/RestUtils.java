@@ -52,6 +52,22 @@ public class RestUtils {
 	  return strval == null ? null : new DateTime(strval);
 	}
 	
+	public static DateTime[] getDateRangeFilter(String filter, HttpServletRequest req) throws ParseException
+	{
+	  String strval = getStringFilter(filter, req);
+	  if(strval == null){
+		  return null;
+	  }
+	  DateTime d1 = new DateTime(strval.substring(0, strval.indexOf(":")));
+	  DateTime d2 = new DateTime(strval.substring(strval.indexOf(":")+1));
+	  return new DateTime[]{d1,d2};
+	}
+	
+	
+	public static void main(String[] args) {
+		System.out.println(new DateTime("​1458932400000"));
+	}
+	
 	public static String setDateFilter(Date date) throws ParseException
 	{
 	  return date == null ? null : SDF.format(date);

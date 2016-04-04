@@ -1,33 +1,33 @@
 {
-    "name": "PENTAVALENT 1",
+    "name": "FP Followup",
     "absolute": true,
     "milestones": [
         {
-            "name": "pentavalent_1",
+            "name": "FP Followup",
             "scheduleWindows": {
-                "earliest": ["6 Weeks"],
-                "due": ["8 Weeks"],
-                "late": ["12 Months"],
-                "max": ["12 Months"]
+                "earliest": ["3 Days"],
+                "due": ["7 Days"],
+                "late": ["100 Weeks"],
+                "max": ["100 Weeks", "1 Day"]
             },
             "alerts": [
                 {
                     "window": "earliest",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "42"
+                    "count": "3"
                 },
                 {
                     "window": "due",
-                    "offset": ["6 Weeks"],
+                    "offset": ["3 Days"],
                     "interval": ["1 Day"],
-                    "count": "14"
+                    "count": "4"
                 },
                 {
                     "window": "late",
-                    "offset": ["8 Weeks"],
+                    "offset": ["7 Days"],
                     "interval": ["1 Day"],
-                    "count": "308"
+                    "count": "693"
                 }
             ]
         }

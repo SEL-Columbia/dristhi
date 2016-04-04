@@ -105,26 +105,28 @@ public class EncounterService extends OpenmrsService{
 		
 		if(ol != null)
 		for (Obs obs : ol) {
-			//if no parent simply make it root obs
-			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
-				p.put(obs.getFieldCode(), convertObsToJson(obs));
-			}
-			else {
-				//find parent obs if not found search and fill or create one
-				JSONArray parentObs = p.get(obs.getParentCode());
-				if(parentObs == null){
-					p.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
+			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode())){//skipping empty obs
+				//if no parent simply make it root obs
+				if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
+					p.put(obs.getFieldCode(), convertObsToJson(obs));
 				}
-				// find if any other exists with same parent if so add to the list otherwise create new list
-				JSONArray obl = pc.get(obs.getParentCode());
-				if(obl == null){
-					obl = new JSONArray();
+				else {
+					//find parent obs if not found search and fill or create one
+					JSONArray parentObs = p.get(obs.getParentCode());
+					if(parentObs == null){
+						p.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
+					}
+					// find if any other exists with same parent if so add to the list otherwise create new list
+					JSONArray obl = pc.get(obs.getParentCode());
+					if(obl == null){
+						obl = new JSONArray();
+					}
+					JSONArray addobs = convertObsToJson(obs);
+					for (int i = 0; i < addobs.length(); i++) {
+						obl.put(addobs.getJSONObject(i));
+					}
+					pc.put(obs.getParentCode(), obl);
 				}
-				JSONArray addobs = convertObsToJson(obs);
-				for (int i = 0; i < addobs.length(); i++) {
-					obl.put(addobs.getJSONObject(i));
-				}
-				pc.put(obs.getParentCode(), obl);
 			}
 		}
 		
@@ -169,26 +171,28 @@ public class EncounterService extends OpenmrsService{
 		
 		if(ol != null)
 		for (Obs obs : ol) {
-			//if no parent simply make it root obs
-			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
-				p.put(obs.getFieldCode(), convertObsToJson(obs));
-			}
-			else {
-				//find parent obs if not found search and fill or create one
-				JSONArray parentObs = p.get(obs.getParentCode());
-				if(parentObs == null){
-					p.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
+			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode())){//skipping empty obs
+				//if no parent simply make it root obs
+				if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
+					p.put(obs.getFieldCode(), convertObsToJson(obs));
 				}
-				// find if any other exists with same parent if so add to the list otherwise create new list
-				JSONArray obl = pc.get(obs.getParentCode());
-				if(obl == null){
-					obl = new JSONArray();
+				else {
+					//find parent obs if not found search and fill or create one
+					JSONArray parentObs = p.get(obs.getParentCode());
+					if(parentObs == null){
+						p.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
+					}
+					// find if any other exists with same parent if so add to the list otherwise create new list
+					JSONArray obl = pc.get(obs.getParentCode());
+					if(obl == null){
+						obl = new JSONArray();
+					}
+					JSONArray addobs = convertObsToJson(obs);
+					for (int i = 0; i < addobs.length(); i++) {
+						obl.put(addobs.getJSONObject(i));
+					}
+					pc.put(obs.getParentCode(), obl);
 				}
-				JSONArray addobs = convertObsToJson(obs);
-				for (int i = 0; i < addobs.length(); i++) {
-					obl.put(addobs.getJSONObject(i));
-				}
-				pc.put(obs.getParentCode(), obl);
 			}
 		}
 		

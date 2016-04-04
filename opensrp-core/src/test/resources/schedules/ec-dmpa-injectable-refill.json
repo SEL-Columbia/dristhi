@@ -1,33 +1,33 @@
 {
-    "name": "Measles Vaccination",
+    "name": "DMPA Injectable Refill",
     "absolute": true,
     "milestones": [
         {
-            "name": "measles",
+            "name": "DMPA Injectable Refill",
             "scheduleWindows": {
-                "earliest": ["9 Months"],
-                "due": ["12 Months"],
-                "late": ["5 Years"],
-                "max": ["5 Years"]
+                "earliest": ["12 Weeks"],
+                "due": ["13 Weeks"],
+                "late": ["1 Year"],
+                "max": ["1 Year", "1 Day"]
             },
             "alerts": [
                 {
                     "window": "earliest",
-                    "offset": ["0 Days"],
+                    "offset": ["0 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "273"
+                    "count": "84"
                 },
                 {
                     "window": "due",
-                    "offset": ["9 Months"],
+                    "offset": ["12 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "91"
+                    "count": "7"
                 },
                 {
                     "window": "late",
-                    "offset": ["12 Months"],
+                    "offset": ["13 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "1460"
+                    "count": "274"
                 }
             ]
         }

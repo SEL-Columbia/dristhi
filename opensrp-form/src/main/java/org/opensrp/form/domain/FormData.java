@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.text.MessageFormat;
@@ -21,6 +22,7 @@ public class FormData {
     @JsonProperty
     private List<SubFormData> sub_forms;
 
+    @JsonIgnore
     private Map<String, String> mapOfFieldsByName;
 
     public FormData() {

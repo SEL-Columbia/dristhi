@@ -90,7 +90,6 @@ public class FormSubmissionProcessor{
 				}
 			}
 		}
-    	
 	}
 
 	Map<String, String> getEntitiesQualifyingForSchedule(FormSubmission submission, Schedule schedule) throws JSONException {
@@ -134,7 +133,7 @@ public class FormSubmissionProcessor{
 		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
 
 		if(clientService.findClient(c) != null){
-			clientService.updateClient(c);
+			clientService.mergeClient(c);
 		}
 		else clientService.addClient(c);
 		
