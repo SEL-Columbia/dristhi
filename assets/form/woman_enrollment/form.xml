@@ -3,7 +3,7 @@
     <section class="form-logo"> </section>
     <h3 id="form-title">خواتین انرولمنٹ فارم برائے ٹی ٹی ٹیکاجات - Woman TT Enrollment Form</h3>
     <select id="form-languages" data-default-lang="en">
-        <option value="ur">Urdu</option> <option value="en">English</option>  <option value="Roman Urdu">Roman Urdu</option> </select>        <label class="note non-select ">
+        <option value="ur">Urdu</option> <option value="en">English</option> <option value="Roman Urdu">Roman Urdu</option> </select>        <label class="note non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/provider_location_note:label">شہر: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provider_city ">            </span> ; ٹائون: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provider_town ">            </span> ; یوسی: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provider_uc ">            </span> ; سینٹرکا نام: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provider_location_name ">            </span>
     </span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/provider_location_note:label">City: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provider_city ">            </span> ; Town: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provider_town ">            </span> ; UC: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provider_uc ">            </span> ; Center Name: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provider_location_name ">            </span>
@@ -18,7 +18,7 @@
 
     <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/client_reg_date:jr:constraintMsg">Program mai andraaj ki tareekh mustaqbil ki nahi hosakti</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/client_reg_date:label">پروگرام میں اندراج کی تاریخ</span>
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/client_reg_date:label">Client Registration date</span>
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/client_reg_date:label">Program Registration date</span>
 
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/client_reg_date:label">Program mai andraj ki tareekh</span>
     <span class="required">*</span>
@@ -28,11 +28,12 @@
     <span lang="Roman Urdu" class="or-hint " data-itext-id="/Woman_TT_Enrollment_Form/client_reg_date:hint">Khatoon ko vaccine lagnay ki tareekh</span>
     <input type="date" name="/Woman_TT_Enrollment_Form/client_reg_date" required="required" data-constraint=".&lt;= /Woman_TT_Enrollment_Form/today " data-type-xml="date"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/program_client_id:label">کلائنٹ کی پروگرام آئی ڈی {existing_program_client_id}$</span>
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/program_client_id:label">Program Client ID <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/existing_program_client_id ">            </span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/program_client_id:label">پروگرام آئی ڈی: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/existing_program_client_id ">            </span>
+    </span>
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/program_client_id:label">Program ID: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/existing_program_client_id ">            </span>
     </span>
 
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/program_client_id:label">Client ki program ID <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/existing_program_client_id ">            </span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/program_client_id:label">Program ID: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/existing_program_client_id ">            </span>
     </span>
     <input type="text" name="/Woman_TT_Enrollment_Form/program_client_id" required="required" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="question non-select ">
@@ -40,17 +41,17 @@
     <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Enrollment_Form/epi_card_number:jr:constraintMsg">Number should be 8 digits</span>
 
     <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/epi_card_number:jr:constraintMsg">Number 8 hindason par mushtamil hona chahiye</span>
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/epi_card_number:label">کارڈ نمبر</span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/epi_card_number:label">ای پی آئی کارڈ نمبر</span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/epi_card_number:label">EPI Card Number</span>
 
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/epi_card_number:label">EPI Card Number</span>
     <span class="required">*</span>
     <input type="number" name="/Woman_TT_Enrollment_Form/epi_card_number" required="required" data-constraint="string-length(.) = 8" data-type-xml="int"/>
 </label>    <label class="question non-select ">
-    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/first_name:jr:constraintMsg">نام تین سے پچیس حروف پر مشتمل ہونا چاہئے</span>
-    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Enrollment_Form/first_name:jr:constraintMsg">Name should be 3 to 25 characters long</span>
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/first_name:jr:constraintMsg">درج کردہ معلومات درست نہیں</span>
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Enrollment_Form/first_name:jr:constraintMsg">Invalid data entered</span>
 
-    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/first_name:jr:constraintMsg">Naam 3 say 25 huroof par mushtamil hona chahiye</span>
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/first_name:jr:constraintMsg">Darj karda maaloomaat durust nahi</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/first_name:label">نام</span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/first_name:label">First Name</span>
 
@@ -98,7 +99,7 @@
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/age:label">Umar (saalon me)</span>
     <input type="number" name="/Woman_TT_Enrollment_Form/age" data-relevant="selected( /Woman_TT_Enrollment_Form/member_birth_date_known , 'no')" data-type-xml="int"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/birth_date_note:label">کلائنٹ کی تاریخ پیدائش:<span class="or-output" data-value=" /Woman_TT_Enrollment_Form/calc_dob_confirm ">            </span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/birth_date_note:label">کلائنٹ کی تاریخ پیدائش: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/calc_dob_confirm ">            </span>
     </span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/birth_date_note:label">Date of Birth: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/calc_dob_confirm ">            </span>
     </span>
@@ -107,16 +108,16 @@
     </span>
     <input type="text" name="/Woman_TT_Enrollment_Form/birth_date_note" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/note_age:label">عمر :{calc_age_confirm}$ سال</span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/note_age:label">عمر: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/calc_age_confirm ">            </span> سال</span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/note_age:label">Age: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/calc_age_confirm ">            </span> years</span>
 
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/note_age:label">Umar: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/calc_age_confirm ">            </span> saal</span>
     <input type="text" name="/Woman_TT_Enrollment_Form/note_age" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="question non-select ">
-    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/father_name:jr:constraintMsg">نام تین سے پچیس حروف پر مشتمل ہونا چاہئے</span>
-    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Enrollment_Form/father_name:jr:constraintMsg">Name should be 3 to 25 characters long</span>
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/father_name:jr:constraintMsg">درج کردہ معلومات درست نہیں</span>
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Enrollment_Form/father_name:jr:constraintMsg">Invalid data entered</span>
 
-    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/father_name:jr:constraintMsg">Naam 3 say 25 huroof par mushtamil hona chahiye</span>
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/father_name:jr:constraintMsg">Darj karda maaloomaat durust nahi</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/father_name:label">والد کا نام</span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/father_name:label">Father's Name</span>
 
@@ -147,10 +148,10 @@
         </div>
     </fieldset>
 </fieldset>    <label class="question or-branch pre-init non-select ">
-    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/husband_name:jr:constraintMsg">نام تین سے پچیس حروف پر مشتمل ہونا چاہئے</span>
-    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Enrollment_Form/husband_name:jr:constraintMsg">Name should be 3 to 25 characters long</span>
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/husband_name:jr:constraintMsg">درج کردہ معلومات درست نہیں</span>
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Enrollment_Form/husband_name:jr:constraintMsg">Invalid data entered</span>
 
-    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/husband_name:jr:constraintMsg">Naam 3 say 25 huroof par mushtamil hona chahiye</span>
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/husband_name:jr:constraintMsg">Darj karda maaloomaat durust nahi</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/husband_name:label">شوہر کا نام</span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/husband_name:label">Husband's Name</span>
 
@@ -1107,33 +1108,25 @@
 
         <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-ucs-178">Qaabil-e-atlaaq nahi</span>            </span>
 </label>    <label class="question non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/house_number:label">گھر کا نمبر</span>
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/house_number:label">House Number</span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/address1:label">گھر کا پتہ</span>
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/address1:label">Home Address</span>
 
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/house_number:label">Ghar ka number</span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/address1:label">Ghar ka pata</span>
     <span class="required">*</span>
-    <input type="text" name="/Woman_TT_Enrollment_Form/house_number" required="required" data-type-xml="string"/>
-</label>    <label class="question non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/street:label">گلی/کالونی/محلہ</span>
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/street:label">Street</span>
-
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/street:label">Gali/Colony/Mohalla</span>
-    <span class="required">*</span>
-    <input type="text" name="/Woman_TT_Enrollment_Form/street" required="required" data-type-xml="string"/>
+    <input type="text" name="/Woman_TT_Enrollment_Form/address1" required="required" data-type-xml="string"/>
 </label>    <label class="question non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/landmark:label">گھر کے قریب کوئی مشہور جگہ</span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/landmark:label">Land Mark</span>
 
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/landmark:label">Ghar ke qareeb koi mashoor jagah</span>
-    <span class="required">*</span>
-    <input type="text" name="/Woman_TT_Enrollment_Form/landmark" required="required" data-type-xml="string"/>
+    <input type="text" name="/Woman_TT_Enrollment_Form/landmark" data-type-xml="string"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/address:label">پتہ: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/house_number ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/street ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provincename ">            </span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/address:label">پتہ: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/address1 ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provincename ">            </span>
     </span>
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/address:label">Address: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/house_number ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/street ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provincename ">            </span>
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/address:label">Address: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/address1 ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provincename ">            </span>
     </span>
 
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/address:label">Pata: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/house_number ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/street ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provincename ">            </span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/address:label">Pata: <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/address1 ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Enrollment_Form/provincename ">            </span>
     </span>
     <input type="text" name="/Woman_TT_Enrollment_Form/address" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="question non-select ">
@@ -1146,10 +1139,10 @@
 </label>    <fieldset class="question ">
     <fieldset>
         <legend>
-            <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/reminders_approval:label">کیا آپ اپنے بچے کی اگلی ویکسین کی تاریخ کے لیے SMS موصول کرنا چاہتے ہیں؟</span>
+            <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/reminders_approval:label">کیا آپ اپنے اگلے دورے کی یاددہانی کے لیے SMS موصول کرنا چاہتی ہیں؟</span>
             <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/reminders_approval:label">Are you willing to receive SMS reminders for your next visit?</span>
 
-            <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/reminders_approval:label">Kya aap apnay bachay ki agli vaccine ki tareekh ke liye SMS mausool karna chahtay hain?</span>
+            <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/reminders_approval:label">Kya aap apnay aglay doray ki yaad-dihani ke liye SMS mausool karna chahti hain?</span>
             <span class="required">*</span>                    </legend>
         <div class="option-wrapper">
             <label class="">
@@ -1181,10 +1174,10 @@
 </label>    <fieldset class="question ">
     <fieldset>
         <legend>
-            <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/pregnant:label">کیا خا تون حاملہ ہیں؟</span>
-            <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/pregnant:label">Is female pregnant?</span>
+            <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/pregnant:label">کیا آپ حاملہ ہیں؟</span>
+            <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/pregnant:label">Are you pregnant?</span>
 
-            <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/pregnant:label">Kia khatoon haamla hain?</span>                    </legend>
+            <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/pregnant:label">Kia aap haamla hain?</span>                    </legend>
         <div class="option-wrapper">
             <label class="">
                 <input type="radio" name="/Woman_TT_Enrollment_Form/pregnant" data-name="/Woman_TT_Enrollment_Form/pregnant" value="yes" data-type-xml="select1"/>
@@ -1341,29 +1334,45 @@
         </div>
     </fieldset>
 </fieldset>    <label class="question or-branch pre-init non-select ">
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/tt1_retro:jr:constraintMsg">درج کردہ معلومات درست نہیں</span>
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Enrollment_Form/tt1_retro:jr:constraintMsg">Invalid data entered</span>
+
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/tt1_retro:jr:constraintMsg">Darj karda maaloomaat durust nahi</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/tt1_retro:label">ٹی ٹی 1</span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/tt1_retro:label">TT1</span>
 
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/tt1_retro:label">TT1</span>
-    <input type="date" name="/Woman_TT_Enrollment_Form/tt1_retro" data-constraint="(.&lt;= /Woman_TT_Enrollment_Form/today  and .&lt;= /Woman_TT_Enrollment_Form/client_reg_date )" data-relevant="selected( /Woman_TT_Enrollment_Form/vaccines ,'TT1')" data-type-xml="date"/>
+    <input type="date" name="/Woman_TT_Enrollment_Form/tt1_retro" data-constraint="(.&lt;= /Woman_TT_Enrollment_Form/today  and .&lt;= /Woman_TT_Enrollment_Form/client_reg_date  and .&gt;= /Woman_TT_Enrollment_Form/calc_dob_confirm )" data-relevant="selected( /Woman_TT_Enrollment_Form/vaccines ,'TT1')" data-type-xml="date"/>
 </label>    <label class="question or-branch pre-init non-select ">
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/tt2_retro:jr:constraintMsg">درج کردہ معلومات درست نہیں</span>
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Enrollment_Form/tt2_retro:jr:constraintMsg">Invalid data entered</span>
+
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/tt2_retro:jr:constraintMsg">Darj karda maaloomaat durust nahi</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/tt2_retro:label">ٹی ٹی 2</span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/tt2_retro:label">TT2</span>
 
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/tt2_retro:label">TT2</span>
-    <input type="date" name="/Woman_TT_Enrollment_Form/tt2_retro" data-constraint="(.&lt;= /Woman_TT_Enrollment_Form/today  and .&gt;= /Woman_TT_Enrollment_Form/tt1_retro  and ((selected( /Woman_TT_Enrollment_Form/vaccines , 'TT1'))))" data-relevant="selected( /Woman_TT_Enrollment_Form/vaccines ,'TT2')" data-type-xml="date"/>
+    <input type="date" name="/Woman_TT_Enrollment_Form/tt2_retro" data-constraint="(.&lt;= /Woman_TT_Enrollment_Form/today  and .&gt;= /Woman_TT_Enrollment_Form/tt1_retro  and .&gt;= /Woman_TT_Enrollment_Form/calc_dob_confirm  and ((selected( /Woman_TT_Enrollment_Form/vaccines , 'TT1'))))" data-relevant="selected( /Woman_TT_Enrollment_Form/vaccines ,'TT2')" data-type-xml="date"/>
 </label>    <label class="question or-branch pre-init non-select ">
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/tt3_retro:jr:constraintMsg">درج کردہ معلومات درست نہیں</span>
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Enrollment_Form/tt3_retro:jr:constraintMsg">Invalid data entered</span>
+
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/tt3_retro:jr:constraintMsg">Darj karda maaloomaat durust nahi</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/tt3_retro:label">ٹی ٹی 3</span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/tt3_retro:label">TT3</span>
 
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/tt3_retro:label">TT3</span>
-    <input type="date" name="/Woman_TT_Enrollment_Form/tt3_retro" data-constraint="(.&lt;= /Woman_TT_Enrollment_Form/today  and .&gt;= /Woman_TT_Enrollment_Form/tt2_retro  and ((selected( /Woman_TT_Enrollment_Form/vaccines , 'TT2'))))" data-relevant="selected( /Woman_TT_Enrollment_Form/vaccines ,'TT3')" data-type-xml="date"/>
+    <input type="date" name="/Woman_TT_Enrollment_Form/tt3_retro" data-constraint="(.&lt;= /Woman_TT_Enrollment_Form/today  and .&gt;= /Woman_TT_Enrollment_Form/tt2_retro  and .&gt;= /Woman_TT_Enrollment_Form/calc_dob_confirm  and ((selected( /Woman_TT_Enrollment_Form/vaccines , 'TT2'))))" data-relevant="selected( /Woman_TT_Enrollment_Form/vaccines ,'TT3')" data-type-xml="date"/>
 </label>    <label class="question or-branch pre-init non-select ">
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/tt4_retro:jr:constraintMsg">درج کردہ معلومات درست نہیں</span>
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Enrollment_Form/tt4_retro:jr:constraintMsg">Invalid data entered</span>
+
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Enrollment_Form/tt4_retro:jr:constraintMsg">Darj karda maaloomaat durust nahi</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/tt4_retro:label">ٹی ٹی 4</span>
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Enrollment_Form/tt4_retro:label">TT4</span>
 
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Enrollment_Form/tt4_retro:label">TT4</span>
-    <input type="date" name="/Woman_TT_Enrollment_Form/tt4_retro" data-constraint="(.&lt;= /Woman_TT_Enrollment_Form/today  and .&gt;= /Woman_TT_Enrollment_Form/tt3_retro  and ((selected( /Woman_TT_Enrollment_Form/vaccines , 'TT3'))))" data-relevant="selected( /Woman_TT_Enrollment_Form/vaccines ,'TT4')" data-type-xml="date"/>
+    <input type="date" name="/Woman_TT_Enrollment_Form/tt4_retro" data-constraint="(.&lt;= /Woman_TT_Enrollment_Form/today  and .&gt;= /Woman_TT_Enrollment_Form/tt3_retro  and .&gt;= /Woman_TT_Enrollment_Form/calc_dob_confirm  and ((selected( /Woman_TT_Enrollment_Form/vaccines , 'TT3'))))" data-relevant="selected( /Woman_TT_Enrollment_Form/vaccines ,'TT4')" data-type-xml="date"/>
 </label>    <fieldset class="question ">
     <fieldset>
         <legend>
@@ -1379,23 +1388,23 @@
             <span class="itemset-labels" data-value-ref="name" data-label-type="itext" data-label-ref="itextId">
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-0">ٹی ٹی 1</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-0">TT1</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-0">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-0">TT1</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-1">ٹی ٹی 2</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-1">TT2</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-1">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-1">TT2</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-2">ٹی ٹی 3</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-2">TT3</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-2">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-2">TT3</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-3">ٹی ٹی 4</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-3">TT4</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-3">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-3">TT4</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-4">ٹی ٹی 5</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-4">TT5</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-4">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-4">TT5</span>            </span>
         </div>
     </fieldset>
@@ -1427,7 +1436,7 @@
             <input type="hidden" name="/Woman_TT_Enrollment_Form/calc_age" data-calculate="int(( /Woman_TT_Enrollment_Form/today  -  /Woman_TT_Enrollment_Form/member_birth_date ) div 365.25)" data-type-xml="string"/>
         </label>
         <label class="calculation non-select ">
-            <input type="hidden" name="/Woman_TT_Enrollment_Form/calc_dob" data-calculate="date( /Woman_TT_Enrollment_Form/today  - int( /Woman_TT_Enrollment_Form/age  * 365.25))" data-type-xml="string"/>
+            <input type="hidden" name="/Woman_TT_Enrollment_Form/calc_dob" data-calculate="format-date (date( /Woman_TT_Enrollment_Form/today  - int( /Woman_TT_Enrollment_Form/age  * 365.25)), '%Y-%m-%d')" data-type-xml="string"/>
         </label>
         <label class="calculation non-select ">
             <input type="hidden" name="/Woman_TT_Enrollment_Form/calc_dob_confirm" data-calculate="if( /Woman_TT_Enrollment_Form/member_birth_date_known ='yes',  /Woman_TT_Enrollment_Form/member_birth_date ,  /Woman_TT_Enrollment_Form/calc_dob )" data-type-xml="string"/>

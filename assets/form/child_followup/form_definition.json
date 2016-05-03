@@ -40,7 +40,7 @@
       "shouldLoadValue" : true
     }, {
       "name" : "existing_birth_date",
-      "bind" : "/model/instance/Child_Vaccination_Followup/existing_client_birth_date",
+      "bind" : "/model/instance/Child_Vaccination_Followup/existing_birth_date",
       "shouldLoadValue" : true
     }, {
       "name" : "existing_client_reg_date",
@@ -51,12 +51,8 @@
       "bind" : "/model/instance/Child_Vaccination_Followup/existing_landmark",
       "shouldLoadValue" : true
     }, {
-      "name" : "existing_house_number",
-      "bind" : "/model/instance/Child_Vaccination_Followup/existing_house_number",
-      "shouldLoadValue" : true
-    }, {
-      "name" : "existing_street",
-      "bind" : "/model/instance/Child_Vaccination_Followup/existing_street",
+      "name" : "existing_address1",
+      "bind" : "/model/instance/Child_Vaccination_Followup/existing_address1",
       "shouldLoadValue" : true
     }, {
       "name" : "existing_union_council",
@@ -255,11 +251,8 @@
       "name" : "union_council",
       "bind" : "/model/instance/Child_Vaccination_Followup/union_council"
     }, {
-      "name" : "house_number",
-      "bind" : "/model/instance/Child_Vaccination_Followup/house_number"
-    }, {
-      "name" : "street",
-      "bind" : "/model/instance/Child_Vaccination_Followup/street"
+      "name" : "address1",
+      "bind" : "/model/instance/Child_Vaccination_Followup/address1"
     }, {
       "name" : "landmark",
       "bind" : "/model/instance/Child_Vaccination_Followup/landmark"

@@ -44,8 +44,7 @@
             <city_village openmrs_entity="person_address" openmrs_entity_id="cityVillage" openmrs_entity_parent="usual_residence">${provider_city}</city_village>
             <town openmrs_entity="person_address" openmrs_entity_id="town" openmrs_entity_parent="usual_residence"/>
             <union_council openmrs_entity="person_address" openmrs_entity_id="subTown" openmrs_entity_parent="usual_residence"/>
-            <house_number openmrs_entity="person_address" openmrs_entity_id="house" openmrs_entity_parent="usual_residence"/>
-            <street openmrs_entity="person_address" openmrs_entity_id="street" openmrs_entity_parent="usual_residence"/>
+            <address1 openmrs_entity="person_address" openmrs_entity_id="address1" openmrs_entity_parent="usual_residence"/>
             <landmark openmrs_entity="person_address" openmrs_entity_id="landmark" openmrs_entity_parent="usual_residence"/>
             <provincename/>
             <city_villagename/>

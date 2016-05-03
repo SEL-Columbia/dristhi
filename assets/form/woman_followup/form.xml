@@ -12,27 +12,27 @@
     </span>
     <input type="text" name="/Woman_TT_Followup_Form/provider_location_note" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/client_reg_date_note:label">
-        <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_client_reg_date ">            </span>:پروگرام میں اندراج کی تاریخ</span>
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/client_reg_date_note:label">Program main andraaj ki tareekh: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_client_reg_date ">            </span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/client_reg_date_note:label">پروگرام میں اندراج کی تاریخ: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_client_reg_date ">            </span>
+    </span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/client_reg_date_note:label">Program mai andraj ki tareekh: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_client_reg_date ">            </span>
     </span>
 
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/client_reg_date_note:label">Client Registration date: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_client_reg_date ">            </span>
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/client_reg_date_note:label">Program Registration date: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_client_reg_date ">            </span>
     </span>
     <input type="text" name="/Woman_TT_Followup_Form/client_reg_date_note" required="required" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/program_client_id_note:label">
-        <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_program_client_id ">            </span>:کلائنٹ کی پروگرام ائی ڈی</span>
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/program_client_id_note:label">Client ki program ID: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_program_client_id ">            </span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/program_client_id_note:label">پروگرام آئی ڈی: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_program_client_id ">            </span>
+    </span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/program_client_id_note:label">Program ID: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_program_client_id ">            </span>
     </span>
 
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/program_client_id_note:label">Program Client ID: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_program_client_id ">            </span>
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/program_client_id_note:label">Program ID: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_program_client_id ">            </span>
     </span>
     <input type="text" name="/Woman_TT_Followup_Form/program_client_id_note" required="required" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/epi_card_number_note:label">
-        <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_epi_card_number ">            </span>: کارڈ نمبر</span>
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/epi_card_number_note:label">Card Number: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_epi_card_number ">            </span>
+        <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_epi_card_number ">            </span>:ای پی آئی کارڈ نمبر</span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/epi_card_number_note:label">EPI Card Number: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_epi_card_number ">            </span>
     </span>
 
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/epi_card_number_note:label">EPI Card Number: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_epi_card_number ">            </span>
@@ -40,7 +40,7 @@
     <input type="text" name="/Woman_TT_Followup_Form/epi_card_number_note" required="required" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/first_name_note:label">
-        <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_first_name ">            </span>: نام</span>
+        <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_first_name ">            </span>:نام</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/first_name_note:label">Naam: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_first_name ">            </span>
     </span>
 
@@ -57,14 +57,14 @@
     </span>
     <input type="text" name="/Woman_TT_Followup_Form/last_name_note" required="required" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/member_birth_date_note:label">کلائنٹ کی تاریخِ پیدائش: {existing_calc_dob_confirm}$ ({client_age}$) سال</span>
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/member_birth_date_note:label">Client ki tareekh-e-pedaaish: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_calc_dob_confirm ">            </span> (<span class="or-output" data-value=" /Woman_TT_Followup_Form/client_age ">            </span>) years</span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/member_birth_date_note:label">کلائنٹ کی تاریخِ پیدائش: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_birth_date ">            </span> (<span class="or-output" data-value=" /Woman_TT_Followup_Form/client_age ">            </span>) سال</span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/member_birth_date_note:label">Client ki tareekh-e-pedaaish: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_birth_date ">            </span> (<span class="or-output" data-value=" /Woman_TT_Followup_Form/client_age ">            </span>) years</span>
 
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/member_birth_date_note:label">Client birth date: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_calc_dob_confirm ">            </span> (<span class="or-output" data-value=" /Woman_TT_Followup_Form/client_age ">            </span>) years</span>
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/member_birth_date_note:label">Client birth date: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_birth_date ">            </span> (<span class="or-output" data-value=" /Woman_TT_Followup_Form/client_age ">            </span>) years</span>
     <input type="text" name="/Woman_TT_Followup_Form/member_birth_date_note" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/gender_note:label">
-        <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_gender ">            </span>: جنس</span>
+        <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_gender ">            </span>:جنس</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/gender_note:label">Jins:<span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_gender ">            </span>
     </span>
 
@@ -72,7 +72,8 @@
     </span>
     <input type="text" name="/Woman_TT_Followup_Form/gender_note" required="required" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/father_name_note:label">والد کا نام: {existing_father_name}$</span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/father_name_note:label">والد کا نام: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_father_name ">            </span>
+    </span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/father_name_note:label">Waalid ka naam: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_father_name ">            </span>
     </span>
 
@@ -80,7 +81,8 @@
     </span>
     <input type="text" name="/Woman_TT_Followup_Form/father_name_note" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/marriage_note:label">کیا آپ شادی شدہ ہیں: {existing_marriage}$</span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/marriage_note:label">کیا آپ شادی شدہ ہیں: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_marriage ">            </span>
+    </span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/marriage_note:label">Kya aap shaadi shuda hain: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_marriage ">            </span>
     </span>
 
@@ -88,7 +90,8 @@
     </span>
     <input type="text" name="/Woman_TT_Followup_Form/marriage_note" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/husband_name_note:label">شوہر کا نام: {existing_husband_name}$</span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/husband_name_note:label">شوہر کا نام: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_husband_name ">            </span>
+    </span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/husband_name_note:label">Shohar ka naam: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_husband_name ">            </span>
     </span>
 
@@ -96,7 +99,8 @@
     </span>
     <input type="text" name="/Woman_TT_Followup_Form/husband_name_note" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/ethnicity_note:label">قومیت: {existing_ethnicity}$</span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/ethnicity_note:label">قومیت: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_ethnicity ">            </span>
+    </span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/ethnicity_note:label">Qomiat: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_ethnicity ">            </span>
     </span>
 
@@ -104,12 +108,12 @@
     </span>
     <input type="text" name="/Woman_TT_Followup_Form/ethnicity_note" required="required" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/address:label">موجودہ پتہ: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_house_number ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_street ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_provincename ">            </span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/address:label">موجودہ پتہ: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_address1 ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_provincename ">            </span>
     </span>
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/address:label">Mojooda Address: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_house_number ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_street ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_provincename ">            </span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/address:label">Mojooda Address: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_address1 ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_provincename ">            </span>
     </span>
 
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/address:label">Current Address: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_house_number ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_street ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_provincename ">            </span>
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/address:label">Current Address: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_address1 ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_landmark ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_union_councilname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_townname ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_city_villagename ">            </span>, <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_provincename ">            </span>
     </span>
     <input type="text" name="/Woman_TT_Followup_Form/address" data-type-xml="string" readonly="readonly"/>
 </label>    <fieldset class="question ">
@@ -1036,26 +1040,18 @@
 
         <span lang="en" class="option-label active" data-itext-id="static_instance-ucs-178">Not Applicable</span>            </span>
 </label>    <label class="question or-branch pre-init non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/house_number:label">گھر کا نمبر</span>
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/house_number:label">Ghar ka number</span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/address1:label">گھر کا پتہ</span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/address1:label">Ghar ka pata</span>
 
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/house_number:label">House Number</span>
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/address1:label">Home Address</span>
     <span class="required">*</span>
-    <input type="text" name="/Woman_TT_Followup_Form/house_number" required="required" data-relevant="selected( /Woman_TT_Followup_Form/address_change , 'yes')" data-type-xml="string"/>
-</label>    <label class="question or-branch pre-init non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/street:label">گلی/کالونی/محلہ</span>
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/street:label">Gali/Colony/Mohalla</span>
-
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/street:label">Street</span>
-    <span class="required">*</span>
-    <input type="text" name="/Woman_TT_Followup_Form/street" required="required" data-relevant="selected( /Woman_TT_Followup_Form/address_change , 'yes')" data-type-xml="string"/>
+    <input type="text" name="/Woman_TT_Followup_Form/address1" required="required" data-relevant="selected( /Woman_TT_Followup_Form/address_change , 'yes')" data-type-xml="string"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/landmark:label">گھر کے قریب کوئی مشہور جگہ</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/landmark:label">Ghar ke qareeb koi mashoor jagah</span>
 
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/landmark:label">Land Mark</span>
-    <span class="required">*</span>
-    <input type="text" name="/Woman_TT_Followup_Form/landmark" required="required" data-relevant="selected( /Woman_TT_Followup_Form/address_change , 'yes')" data-type-xml="string"/>
+    <input type="text" name="/Woman_TT_Followup_Form/landmark" data-relevant="selected( /Woman_TT_Followup_Form/address_change , 'yes')" data-type-xml="string"/>
 </label>    <label class="question non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/center_gps:label">حاصل کردہ معلومات کی جگہ کے GPS کارڈینیٹس درج کریں</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/center_gps:label">Hasil karda malomaat ki jaga ke GPS coordinates darj karain</span>
@@ -1063,47 +1059,54 @@
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/center_gps:label">Collect GPS coordinates of data entry location:</span>
     <span lang="" class="or-hint active">GPS coordinates can only be collected when outside.</span>
     <input type="text" name="/Woman_TT_Followup_Form/center_gps" data-type-xml="geopoint"/>
-</label>    <label class="question or-appearance-minimal ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/reminders_approval:label">کیا آپ اپنے بچے کی اگلی ویکسین کی تاریخ کے لیے SMS موصول کرنا چاہتے ہیں؟ {existing_reminders_approval}$</span>
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/reminders_approval:label">Kya aap apnay bachay ki agli vaccine ki tareekh ke liye SMS mausool karna chahtay hain? <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_reminders_approval ">            </span>
-    </span>
+</label>    <fieldset class="question ">
+    <fieldset>
+        <legend>
+            <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/reminders_approval:label">کیا آپ اپنے اگلے دورے کی یاددہانی کے لیے SMS موصول کرنا چاہتی ہیں؟ <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_reminders_approval ">            </span>
+            </span>
+            <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/reminders_approval:label">Kya aap apnay aglay doray ki yaad-dihani ke liye SMS mausool karna chahti hain? <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_reminders_approval ">            </span>
+            </span>
 
-    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/reminders_approval:label">Are you willing to receive SMS reminders for your next visit? <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_reminders_approval ">            </span>
-    </span>
-    <span class="required">*</span>
-    <select name="/Woman_TT_Followup_Form/reminders_approval" data-name="/Woman_TT_Followup_Form/reminders_approval" required="required" data-type-xml="select1">
-        <option value="">...</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-    </select>
-    <span class="or-option-translations" style="display:none;">
-        <span data-option-value="yes" lang="ur">ہاں</span>
-        <span data-option-value="yes" lang="Roman Urdu">Yes</span>
+            <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/reminders_approval:label">Are you willing to receive SMS reminders for your next visit? <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_reminders_approval ">            </span>
+            </span>
+            <span class="required">*</span>                    </legend>
+        <div class="option-wrapper">
+            <label class="">
+                <input type="radio" name="/Woman_TT_Followup_Form/reminders_approval" data-name="/Woman_TT_Followup_Form/reminders_approval" value="yes" required="required" data-type-xml="select1"/>
+                <span lang="ur" class="option-label " data-itext-id="/Woman_TT_Followup_Form/reminders_approval/yes:label">ہاں</span>
+                <span lang="Roman Urdu" class="option-label " data-itext-id="/Woman_TT_Followup_Form/reminders_approval/yes:label">Yes</span>
 
-        <span data-option-value="yes" lang="en">Yes</span>
-        <span data-option-value="no" lang="ur">نہیں</span>
-        <span data-option-value="no" lang="Roman Urdu">No</span>
+                <span lang="en" class="option-label active" data-itext-id="/Woman_TT_Followup_Form/reminders_approval/yes:label">Yes</span>
+            </label>
+            <label class="">
+                <input type="radio" name="/Woman_TT_Followup_Form/reminders_approval" data-name="/Woman_TT_Followup_Form/reminders_approval" value="no" required="required" data-type-xml="select1"/>
+                <span lang="ur" class="option-label " data-itext-id="/Woman_TT_Followup_Form/reminders_approval/no:label">نہیں</span>
+                <span lang="Roman Urdu" class="option-label " data-itext-id="/Woman_TT_Followup_Form/reminders_approval/no:label">No</span>
 
-        <span data-option-value="no" lang="en">No</span>                </span>
-</label>    <label class="question or-branch pre-init non-select ">
+                <span lang="en" class="option-label active" data-itext-id="/Woman_TT_Followup_Form/reminders_approval/no:label">No</span>
+            </label>
+        </div>
+    </fieldset>
+</fieldset>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/contact_phone_number:jr:constraintMsg">فون نمبر گیارہ ہندسوں پر مشتمل اور مندرجہ ذیل شکل میں ہونا چاہئے: *********03</span>
     <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/contact_phone_number:jr:constraintMsg">Phone number 11 hindason par mushtamil aur mundarja zail shakal main hona chahiey: 03*********</span>
 
     <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Followup_Form/contact_phone_number:jr:constraintMsg">Phone number should be 11 digits in the following format: 03*********</span>
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/contact_phone_number:label">موبائل نمبر:{existing_contact_phone_number}$</span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/contact_phone_number:label">موبائل نمبر: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_contact_phone_number ">            </span>
+    </span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/contact_phone_number:label">Mobile Number: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_contact_phone_number ">            </span>
     </span>
 
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/contact_phone_number:label">Mobile Number: <span class="or-output" data-value=" /Woman_TT_Followup_Form/existing_contact_phone_number ">            </span>
     </span>
-    <input type="text" name="/Woman_TT_Followup_Form/contact_phone_number" data-constraint="regex(., '^03[0-9]{9}$')" data-relevant=" /Woman_TT_Followup_Form/existing_reminders_approval ='yes'" data-type-xml="string"/>
+    <input type="text" name="/Woman_TT_Followup_Form/contact_phone_number" data-constraint="regex(., '^03[0-9]{9}$')" data-relevant=" /Woman_TT_Followup_Form/reminders_approval ='yes'" data-type-xml="string"/>
 </label>    <fieldset class="question ">
     <fieldset>
         <legend>
-            <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/pregnant:label">کیا خا تون حاملہ ہیں؟</span>
-            <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/pregnant:label">Kia khatoon haamla hain?</span>
+            <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/pregnant:label">کیا آپ حاملہ ہیں؟</span>
+            <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/pregnant:label">Kia aap haamla hain?</span>
 
-            <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/pregnant:label">Is female pregnant?</span>                    </legend>
+            <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/pregnant:label">Are you pregnant?</span>                    </legend>
         <div class="option-wrapper">
             <label class="">
                 <input type="radio" name="/Woman_TT_Followup_Form/pregnant" data-name="/Woman_TT_Followup_Form/pregnant" value="yes" data-type-xml="select1"/>
@@ -1193,7 +1196,7 @@
     <input type="number" name="/Woman_TT_Followup_Form/ultrasound_weeks" data-relevant="selected ( /Woman_TT_Followup_Form/edd_lmp , 'ultrasound')" data-type-xml="int"/>
 </label>    <label class="note or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/final_edd_note:label">
-        <span class="or-output" data-value=" /Woman_TT_Followup_Form/final_edd ">            </span>: زچگی کی متوقع تاریخ</span>
+        <span class="or-output" data-value=" /Woman_TT_Followup_Form/final_edd ">            </span>:زچگی کی متوقع تاریخ</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/final_edd_note:label">Zachgi ki mutawaqqa tareekh: <span class="or-output" data-value=" /Woman_TT_Followup_Form/final_edd ">            </span>
     </span>
 
@@ -1201,7 +1204,8 @@
     </span>
     <input type="text" name="/Woman_TT_Followup_Form/final_edd_note" data-relevant="selected ( /Woman_TT_Followup_Form/pregnant , 'yes')" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note or-branch pre-init non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/final_lmp_note:label">پچھلی ماہواری کی تاریخ :{final_lmp}$</span>
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/final_lmp_note:label">پچھلی ماہواری کی تاریخ: <span class="or-output" data-value=" /Woman_TT_Followup_Form/final_edd ">            </span>
+    </span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/final_lmp_note:label">Pichli mahwaari ki tareekh: <span class="or-output" data-value=" /Woman_TT_Followup_Form/final_lmp ">            </span>
     </span>
 
@@ -1214,6 +1218,42 @@
 
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/final_ga_note:label">GA: <span class="or-output" data-value=" /Woman_TT_Followup_Form/final_ga ">            </span> weeks</span>
     <input type="text" name="/Woman_TT_Followup_Form/final_ga_note" data-relevant="selected ( /Woman_TT_Followup_Form/pregnant , 'yes')" data-type-xml="string" readonly="readonly"/>
+</label>    <label class="note or-branch pre-init non-select ">
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt1_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt1 ">            </span>
+    </span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt1_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt1 ">            </span>
+    </span>
+
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/tt1_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt1 ">            </span>
+    </span>
+    <input type="text" name="/Woman_TT_Followup_Form/tt1_note" data-relevant=" /Woman_TT_Followup_Form/e_tt1  != ''" data-type-xml="string" readonly="readonly"/>
+</label>    <label class="note or-branch pre-init non-select ">
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt2_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt2 ">            </span>
+    </span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt2_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt2 ">            </span>
+    </span>
+
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/tt2_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt2 ">            </span>
+    </span>
+    <input type="text" name="/Woman_TT_Followup_Form/tt2_note" data-relevant=" /Woman_TT_Followup_Form/e_tt2  != ''" data-type-xml="string" readonly="readonly"/>
+</label>    <label class="note or-branch pre-init non-select ">
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt3_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt3 ">            </span>
+    </span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt3_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt3 ">            </span>
+    </span>
+
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/tt3_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt3 ">            </span>
+    </span>
+    <input type="text" name="/Woman_TT_Followup_Form/tt3_note" data-relevant=" /Woman_TT_Followup_Form/e_tt3  != ''" data-type-xml="string" readonly="readonly"/>
+</label>    <label class="note or-branch pre-init non-select ">
+    <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt4_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt4 ">            </span>
+    </span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt4_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt4 ">            </span>
+    </span>
+
+    <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/tt4_note:label">            <span class="or-output" data-value=" /Woman_TT_Followup_Form/e_tt4 ">            </span>
+    </span>
+    <input type="text" name="/Woman_TT_Followup_Form/tt4_note" data-relevant=" /Woman_TT_Followup_Form/e_tt4  != ''" data-type-xml="string" readonly="readonly"/>
 </label>    <fieldset class="question ">
     <fieldset>
         <legend>
@@ -1228,50 +1268,66 @@
             <span class="itemset-labels" data-value-ref="name" data-label-type="itext" data-label-ref="itextId">
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-0">ٹی ٹی 1</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-0">TT1</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-0">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-0">TT1</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-1">ٹی ٹی 2</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-1">TT2</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-1">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-1">TT2</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-2">ٹی ٹی 3</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-2">TT3</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-2">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-2">TT3</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-3">ٹی ٹی 4</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-3">TT4</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-3">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-3">TT4</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-4">ٹی ٹی 5</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-4">TT5</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-4">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-4">TT5</span>            </span>
         </div>
     </fieldset>
 </fieldset>    <label class="question or-branch pre-init non-select ">
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/tt1_retro:jr:constraintMsg">درج کردہ معلومات درست نہیں</span>
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/tt1_retro:jr:constraintMsg">Darj karda maaloomaat durust nahi</span>
+
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Followup_Form/tt1_retro:jr:constraintMsg">Invalid data entered</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt1_retro:label">ٹی ٹی 1</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt1_retro:label">TT1</span>
 
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/tt1_retro:label">TT1</span>
-    <input type="date" name="/Woman_TT_Followup_Form/tt1_retro" data-constraint="(.&lt;= /Woman_TT_Followup_Form/today  and .&lt;= /Woman_TT_Followup_Form/existing_client_reg_date )" data-relevant="selected( /Woman_TT_Followup_Form/vaccines ,'TT1')" data-type-xml="date"/>
+    <input type="date" name="/Woman_TT_Followup_Form/tt1_retro" data-constraint="(.&lt;= /Woman_TT_Followup_Form/today  and .&gt;= /Woman_TT_Followup_Form/existing_birth_date )" data-relevant="selected( /Woman_TT_Followup_Form/vaccines ,'TT1')" data-type-xml="date"/>
 </label>    <label class="question or-branch pre-init non-select ">
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/tt2_retro:jr:constraintMsg">درج کردہ معلومات درست نہیں</span>
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/tt2_retro:jr:constraintMsg">Darj karda maaloomaat durust nahi</span>
+
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Followup_Form/tt2_retro:jr:constraintMsg">Invalid data entered</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt2_retro:label">ٹی ٹی 2</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt2_retro:label">TT2</span>
 
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/tt2_retro:label">TT2</span>
-    <input type="date" name="/Woman_TT_Followup_Form/tt2_retro" data-constraint="(.&lt;= /Woman_TT_Followup_Form/today  and .&gt;= /Woman_TT_Followup_Form/tt1_retro  and ((selected( /Woman_TT_Followup_Form/vaccines , 'TT1'))))" data-relevant="selected( /Woman_TT_Followup_Form/vaccines ,'TT2')" data-type-xml="date"/>
+    <input type="date" name="/Woman_TT_Followup_Form/tt2_retro" data-constraint="(.&lt;= /Woman_TT_Followup_Form/today  and .&gt;= /Woman_TT_Followup_Form/tt1_retro  and .&gt;= /Woman_TT_Followup_Form/existing_birth_date  and ((selected( /Woman_TT_Followup_Form/vaccines , 'TT1'))))" data-relevant="selected( /Woman_TT_Followup_Form/vaccines ,'TT2')" data-type-xml="date"/>
 </label>    <label class="question or-branch pre-init non-select ">
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/tt3_retro:jr:constraintMsg">درج کردہ معلومات درست نہیں</span>
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/tt3_retro:jr:constraintMsg">Darj karda maaloomaat durust nahi</span>
+
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Followup_Form/tt3_retro:jr:constraintMsg">Invalid data entered</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt3_retro:label">ٹی ٹی 3</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt3_retro:label">TT3</span>
 
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/tt3_retro:label">TT3</span>
-    <input type="date" name="/Woman_TT_Followup_Form/tt3_retro" data-constraint="(.&lt;= /Woman_TT_Followup_Form/today  and .&gt;= /Woman_TT_Followup_Form/tt2_retro  and ((selected( /Woman_TT_Followup_Form/vaccines , 'TT2'))))" data-relevant="selected( /Woman_TT_Followup_Form/vaccines ,'TT3')" data-type-xml="date"/>
+    <input type="date" name="/Woman_TT_Followup_Form/tt3_retro" data-constraint="(.&lt;= /Woman_TT_Followup_Form/today  and .&gt;= /Woman_TT_Followup_Form/tt2_retro  and .&gt;= /Woman_TT_Followup_Form/existing_birth_date  and ((selected( /Woman_TT_Followup_Form/vaccines , 'TT2'))))" data-relevant="selected( /Woman_TT_Followup_Form/vaccines ,'TT3')" data-type-xml="date"/>
 </label>    <label class="question or-branch pre-init non-select ">
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/tt4_retro:jr:constraintMsg">درج کردہ معلومات درست نہیں</span>
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/tt4_retro:jr:constraintMsg">Darj karda maaloomaat durust nahi</span>
+
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Followup_Form/tt4_retro:jr:constraintMsg">Invalid data entered</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt4_retro:label">ٹی ٹی 4</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/tt4_retro:label">TT4</span>
 
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/tt4_retro:label">TT4</span>
-    <input type="date" name="/Woman_TT_Followup_Form/tt4_retro" data-constraint="(.&lt;= /Woman_TT_Followup_Form/today  and .&gt;= /Woman_TT_Followup_Form/tt3_retro  and ((selected( /Woman_TT_Followup_Form/vaccines , 'TT3'))))" data-relevant="selected( /Woman_TT_Followup_Form/vaccines ,'TT4')" data-type-xml="date"/>
+    <input type="date" name="/Woman_TT_Followup_Form/tt4_retro" data-constraint="(.&lt;= /Woman_TT_Followup_Form/today  and .&gt;= /Woman_TT_Followup_Form/tt3_retro  and .&gt;= /Woman_TT_Followup_Form/existing_birth_date  and ((selected( /Woman_TT_Followup_Form/vaccines , 'TT3'))))" data-relevant="selected( /Woman_TT_Followup_Form/vaccines ,'TT4')" data-type-xml="date"/>
 </label>    <fieldset class="question ">
     <fieldset>
         <legend>
@@ -1287,33 +1343,37 @@
             <span class="itemset-labels" data-value-ref="name" data-label-type="itext" data-label-ref="itextId">
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-0">ٹی ٹی 1</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-0">TT1</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-0">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-0">TT1</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-1">ٹی ٹی 2</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-1">TT2</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-1">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-1">TT2</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-2">ٹی ٹی 3</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-2">TT3</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-2">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-2">TT3</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-3">ٹی ٹی 4</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-3">TT4</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-3">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-3">TT4</span>
                 <span lang="ur" class="option-label " data-itext-id="static_instance-vaccines-4">ٹی ٹی 5</span>
                 <span lang="Roman Urdu" class="option-label " data-itext-id="static_instance-vaccines-4">TT5</span>
-
+                <span lang="openmrs_code" class="option-label " data-itext-id="static_instance-vaccines-4">84880AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
                 <span lang="en" class="option-label active" data-itext-id="static_instance-vaccines-4">TT5</span>            </span>
         </div>
     </fieldset>
 </fieldset>    <label class="question non-select ">
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/vaccination_date:jr:constraintMsg">یہ تاریخ مستقبل کی نہیں ہوسکتی</span>
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Woman_TT_Followup_Form/vaccination_date:jr:constraintMsg">Ye tareekh mustaqbil ki nahi hosakti</span>
+
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Woman_TT_Followup_Form/vaccination_date:jr:constraintMsg">This date cannot be in the future</span>
     <span lang="ur" class="question-label " data-itext-id="/Woman_TT_Followup_Form/vaccination_date:label">تاریخ</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Woman_TT_Followup_Form/vaccination_date:label">Tareekh</span>
 
     <span lang="en" class="question-label active" data-itext-id="/Woman_TT_Followup_Form/vaccination_date:label">Vaccination date</span>
     <span class="required">*</span>
-    <input type="date" name="/Woman_TT_Followup_Form/vaccination_date" required="required" data-type-xml="date"/>
+    <input type="date" name="/Woman_TT_Followup_Form/vaccination_date" required="required" data-constraint=".&lt;= /Woman_TT_Followup_Form/today " data-type-xml="date"/>
 </label>  <fieldset id="or-preload-items" style="display:none;">
     <label class="calculation non-select ">
         <input type="hidden" name="/Woman_TT_Followup_Form/start" data-preload="timestamp" data-preload-params="start" data-type-xml="dateTime"/>
@@ -1339,7 +1399,7 @@
 </fieldset>
     <fieldset id="or-calculated-items" style="display:none;">
         <label class="calculation non-select ">
-            <input type="hidden" name="/Woman_TT_Followup_Form/client_age" data-calculate="date( today() - ( /Woman_TT_Followup_Form/existing_calc_dob_confirm  div 365))" data-type-xml="string"/>
+            <input type="hidden" name="/Woman_TT_Followup_Form/client_age" data-calculate="date( today() - ( /Woman_TT_Followup_Form/existing_birth_date  div 365.25))" data-type-xml="string"/>
         </label>
         <label class="calculation non-select ">
             <input type="hidden" name="/Woman_TT_Followup_Form/edd_calc_lmp" data-calculate="date( /Woman_TT_Followup_Form/lmp +280)" data-type-xml="string"/>

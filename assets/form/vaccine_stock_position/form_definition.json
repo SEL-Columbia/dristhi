@@ -6,6 +6,9 @@
     "fields" : [ {
       "name" : "id",
       "shouldLoadValue" : true
+    },{
+      "name" : "no_client_event",
+      "value" : true
     }, {
       "name" : "provider_uc",
       "bind" : "/model/instance/Vaccine_Stock_Position/provider_uc",

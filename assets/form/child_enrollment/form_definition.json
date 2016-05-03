@@ -126,11 +126,8 @@
       "name" : "union_council",
       "bind" : "/model/instance/Child_Vaccination_Enrollment/union_council"
     }, {
-      "name" : "house_number",
-      "bind" : "/model/instance/Child_Vaccination_Enrollment/house_number"
-    }, {
-      "name" : "street",
-      "bind" : "/model/instance/Child_Vaccination_Enrollment/street"
+      "name" : "address1",
+      "bind" : "/model/instance/Child_Vaccination_Enrollment/address1"
     }, {
       "name" : "landmark",
       "bind" : "/model/instance/Child_Vaccination_Enrollment/landmark"

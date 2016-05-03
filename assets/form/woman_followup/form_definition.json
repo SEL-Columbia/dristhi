@@ -27,12 +27,8 @@
       "bind" : "/model/instance/Woman_TT_Followup_Form/existing_landmark",
       "shouldLoadValue" : true
     }, {
-      "name" : "existing_house_number",
-      "bind" : "/model/instance/Woman_TT_Followup_Form/existing_house_number",
-      "shouldLoadValue" : true
-    }, {
-      "name" : "existing_street",
-      "bind" : "/model/instance/Woman_TT_Followup_Form/existing_street",
+      "name": "existing_address1",
+      "bind": "/model/instance/Woman_TT_Followup_Form/existing_address1",
       "shouldLoadValue" : true
     }, {
       "name" : "existing_union_council",
@@ -88,7 +84,7 @@
       "shouldLoadValue" : true
     }, {
       "name" : "existing_birthdate",
-      "bind" : "/model/instance/Woman_TT_Followup_Form/existing_calc_dob_confirm",
+      "bind" : "/model/instance/Woman_TT_Followup_Form/existing_birth_date",
       "shouldLoadValue" : true
     }, {
       "name" : "existing_gender",
@@ -227,11 +223,8 @@
       "name" : "union_council",
       "bind" : "/model/instance/Woman_TT_Followup_Form/union_council"
     }, {
-      "name" : "house_number",
-      "bind" : "/model/instance/Woman_TT_Followup_Form/house_number"
-    }, {
-      "name" : "street",
-      "bind" : "/model/instance/Woman_TT_Followup_Form/street"
+      "name" : "address1",
+      "bind" : "/model/instance/Woman_TT_Followup_Form/address1"
     }, {
       "name" : "landmark",
       "bind" : "/model/instance/Woman_TT_Followup_Form/landmark"

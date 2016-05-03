@@ -20,17 +20,21 @@
     </span>
     <input type="text" name="/Vaccine_Stock_Position/vaccinator_name" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="note non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/center_name:label">سینٹر کا نام: {provider_location_name}$</span>
+    <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/center_name:label">سینٹر کا نام: <span class="or-output" data-value=" /Vaccine_Stock_Position/provider_location_name ">            </span>
+    </span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/center_name:label">Center Name: <span class="or-output" data-value=" /Vaccine_Stock_Position/provider_location_name ">            </span>
     </span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/center_name:label">Center ka naam: <span class="or-output" data-value=" /Vaccine_Stock_Position/provider_location_name ">            </span>
     </span>
     <input type="text" name="/Vaccine_Stock_Position/center_name" data-type-xml="string" readonly="readonly"/>
 </label>    <label class="question non-select ">
+    <span lang="ur" class="or-constraint-msg " data-itext-id="/Vaccine_Stock_Position/date:jr:constraintMsg">یہ تاریخ مستقبل کی نہیں ہو سکتی۔</span>
+    <span lang="en" class="or-constraint-msg active" data-itext-id="/Vaccine_Stock_Position/date:jr:constraintMsg">This cannot be a date in the future.</span>
+    <span lang="Roman Urdu" class="or-constraint-msg " data-itext-id="/Vaccine_Stock_Position/date:jr:constraintMsg">Ye tareekh mustaqbil ki nahi ho sakti.</span>
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/date:label">تاریخ</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/date:label">Date</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/date:label">Tareekh</span>
-    <input type="date" name="/Vaccine_Stock_Position/date" data-type-xml="date"/>
+    <input type="date" name="/Vaccine_Stock_Position/date" data-constraint=".&lt;= /Vaccine_Stock_Position/today " data-type-xml="date"/>
 </label>    <fieldset class="question ">
     <fieldset>
         <legend>
@@ -70,216 +74,216 @@
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/bcg_balance_in_hand:label">BCG balance in hand</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/bcg_balance_in_hand:label">Maujooda BCG ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_balance_in_hand:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/bcg_balance_in_hand:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_balance_in_hand:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_balance_in_hand:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/bcg_balance_in_hand:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_balance_in_hand:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/bcg_balance_in_hand" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/bcg_received:label">موصول ہونے والی بی سی جی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/bcg_received:label">BCG received</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/bcg_received:label">Mausool honay wali BCG ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_received:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/bcg_received:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_received:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_received:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/bcg_received:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_received:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/bcg_received" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/bcg_wasted:label">ضائع ہونے والی بی سی جی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/bcg_wasted:label">BCG wasted</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/bcg_wasted:label">Zaya honay wali BCG ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_wasted:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/bcg_wasted:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_wasted:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_wasted:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/bcg_wasted:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/bcg_wasted:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/bcg_wasted" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'daily')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/opv_balance_in_hand:label">موجودہ او پی وی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/opv_balance_in_hand:label">OPV balance in hand</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/opv_balance_in_hand:label">Maujooda OPV ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_balance_in_hand:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/opv_balance_in_hand:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_balance_in_hand:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_balance_in_hand:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/opv_balance_in_hand:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_balance_in_hand:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/opv_balance_in_hand" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/opv_received:label">موصول ہونے والی او پی وی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/opv_received:label">OPV received</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/opv_received:label">Mausool honay wali OPV ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_received:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/opv_received:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_received:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_received:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/opv_received:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_received:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/opv_received" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/opv_wasted:label">ضائع ہونے والی او پی وی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/opv_wasted:label">OPV wasted</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/opv_wasted:label">Zaya honay wali OPV ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_wasted:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/opv_wasted:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_wasted:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_wasted:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/opv_wasted:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/opv_wasted:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/opv_wasted" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'daily')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/ipv_balance_in_hand:label">موجودہ آئی پی وی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/ipv_balance_in_hand:label">IPV balance in hand</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/ipv_balance_in_hand:label">Maujooda IPV ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_balance_in_hand:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/ipv_balance_in_hand:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_balance_in_hand:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_balance_in_hand:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/ipv_balance_in_hand:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_balance_in_hand:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/ipv_balance_in_hand" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/ipv_received:label">موصول ہونے والی آئی پی وی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/ipv_received:label">IPV received</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/ipv_received:label">Mausool honay wali IPV ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_received:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/ipv_received:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_received:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_received:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/ipv_received:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_received:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/ipv_received" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/ipv_wasted:label">ضائع ہونے والی آئی پی وی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/ipv_wasted:label">IPV wasted</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/ipv_wasted:label">Zaya honay wali IPV ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_wasted:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/ipv_wasted:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_wasted:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_wasted:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/ipv_wasted:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/ipv_wasted:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/ipv_wasted" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'daily')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/pcv_balance_in_hand:label">موجودہ پی سی وی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/pcv_balance_in_hand:label">PCV balance in hand</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/pcv_balance_in_hand:label">Maujooda PCV ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_balance_in_hand:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/pcv_balance_in_hand:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_balance_in_hand:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_balance_in_hand:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/pcv_balance_in_hand:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_balance_in_hand:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/pcv_balance_in_hand" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/pcv_received:label">موصول ہونے والی پی سی وی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/pcv_received:label">PCV received</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/pcv_received:label">Mausool honay wali PCV ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_received:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/pcv_received:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_received:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_received:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/pcv_received:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_received:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/pcv_received" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/pcv_wasted:label">ضائع ہونے والی پی سی وی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/pcv_wasted:label">PCV wasted</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/pcv_wasted:label">Zaya honay wali PCV ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_wasted:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/pcv_wasted:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_wasted:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_wasted:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/pcv_wasted:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/pcv_wasted:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/pcv_wasted" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'daily')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/penta_balance_in_hand:label">موجودہ پینٹاویلنٹ کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/penta_balance_in_hand:label">Penta balance in hand</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/penta_balance_in_hand:label">Maujooda Pentavalent ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_balance_in_hand:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/penta_balance_in_hand:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_balance_in_hand:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_balance_in_hand:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/penta_balance_in_hand:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_balance_in_hand:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/penta_balance_in_hand" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/penta_received:label">موصول ہونے والی پینٹاویلنٹ کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/penta_received:label">Penta received</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/penta_received:label">Mausool honay wali Pentavalent ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_received:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/penta_received:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_received:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_received:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/penta_received:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_received:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/penta_received" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/penta_wasted:label">ضائع ہونے والی پینٹاویلنٹ کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/penta_wasted:label">Penta wasted</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/penta_wasted:label">Zaya honay wali Pentavalent ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_wasted:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/penta_wasted:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_wasted:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_wasted:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/penta_wasted:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/penta_wasted:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/penta_wasted" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'daily')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/measles_balance_in_hand:label">موجودہ خسرے کے ٹیکوں کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/measles_balance_in_hand:label">Measles balance in hand</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/measles_balance_in_hand:label">Maujooda khasray ke teekon ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_balance_in_hand:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/measles_balance_in_hand:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_balance_in_hand:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_balance_in_hand:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/measles_balance_in_hand:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_balance_in_hand:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/measles_balance_in_hand" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/measles_received:label">موصول ہونے والے خسرے کے ٹیکوں کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/measles_received:label">Measles received</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/measles_received:label">Mausool honay walay khasray ke teekay ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_received:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/measles_received:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_received:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_received:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/measles_received:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_received:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/measles_received" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/measles_wasted:label">ضائع ہونے والے خسرے کے ٹیکوں کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/measles_wasted:label">Measles wasted</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/measles_wasted:label">Zaya honay walay khasray ke teekay ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_wasted:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/measles_wasted:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_wasted:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_wasted:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/measles_wasted:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/measles_wasted:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/measles_wasted" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'daily')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/tt_balance_in_hand:label">موجودہ ٹی ٹی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/tt_balance_in_hand:label">TT balance in hand</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/tt_balance_in_hand:label">Maujooda TT ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_balance_in_hand:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/tt_balance_in_hand:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_balance_in_hand:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_balance_in_hand:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/tt_balance_in_hand:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_balance_in_hand:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/tt_balance_in_hand" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/tt_received:label">موصول ہونے والی ٹی ٹی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/tt_received:label">TT received</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/tt_received:label">Mausool honay wali TT ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_received:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/tt_received:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_received:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_received:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/tt_received:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_received:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/tt_received" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/tt_wasted:label">ضائع ہونے والی ٹی ٹی کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/tt_wasted:label">TT wasted</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/tt_wasted:label">Zaya honay wali TT ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_wasted:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/tt_wasted:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_wasted:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_wasted:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/tt_wasted:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/tt_wasted:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/tt_wasted" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'daily')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/dilutants_balance_in_hand:label">انجیکشن کے لئے موجودہ جراثیم سے پاک پانی کی شیشیوں کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/dilutants_balance_in_hand:label">Dilutants balance in hand</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/dilutants_balance_in_hand:label">Injection ke liye maujooda jaraseem se paak paani ki sheeshion ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_balance_in_hand:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/dilutants_balance_in_hand:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_balance_in_hand:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_balance_in_hand:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/dilutants_balance_in_hand:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_balance_in_hand:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/dilutants_balance_in_hand" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/dilutants_received:label">انجیکشن کے لئے موصول ہونے والا جراثیم سے پاک پانی کی شیشیوں کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/dilutants_received:label">Dilutants received</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/dilutants_received:label">Injection ke liye mausool honay wala jaraseem se paak paani ki sheeshion ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_received:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/dilutants_received:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_received:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_received:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/dilutants_received:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_received:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/dilutants_received" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/dilutants_wasted:label">انجیکشن کے لئے ضائع ہونے والا جراثیم سے پاک پانی کی شیشیوں کی تعداد</span>
     <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/dilutants_wasted:label">Dilutants wasted</span>
     <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/dilutants_wasted:label">Injection ke liye zaya honay wala jaraseem se paak paani ki sheeshion ki taadaad</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_wasted:hint">شیشیوں کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/dilutants_wasted:hint">Number of vials</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_wasted:hint">Sheeshion ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_wasted:hint">خوراک کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/dilutants_wasted:hint">Number of doses</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/dilutants_wasted:hint">Khoraak ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/dilutants_wasted" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'daily')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
     <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/syringes_balance_in_hand:label">موجودہ سرنج کی تعداد</span>
@@ -309,31 +313,31 @@
     <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/syringes_wasted:hint">Syringe ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/syringes_wasted" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'daily')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:label">موجودہ کنٹینر کی تعداد [جو تیز اوزار کو ضائع کرنے کے لیے استعمال ہوتے ہیں]</span>
-    <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:label">Sharp disposal container balance in hand</span>
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:label">Maujooda container ki taadaad [jo taiz auzaar ko zaya karne ke liye istamaal hotay hain]</span>
+    <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:label">موجودہ سیفٹی باکس</span>
+    <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:label">Safety Box balance in hand</span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:label">Maujooda safety box</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:hint">کنٹینر کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:hint">Number of containers</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:hint">Container ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:hint">باکس کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:hint">Number of boxes</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_balance_in_hand:hint">Box ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/safety_boxes_balance_in_hand" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:label">موصول ہونے والے کنٹینر کی تعداد [جو تیز اوزار کو ضائع کرنے کے لیے استعمال ہوتے ہیں]</span>
-    <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:label">Sharp disposal container received</span>
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:label">Mausool honay walay container ki taadaad [jo taiz auzaar ko zaya karne ke liye istamaal hotay hain]</span>
+    <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:label">موصول ہونے والے سیفٹی باکس</span>
+    <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:label">Safety Box received</span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:label">Mausool honay walay safety box</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:hint">کنٹینر کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:hint">Number of containers</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:hint">Container ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:hint">باکس کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:hint">Number of boxes</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_received:hint">Box ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/safety_boxes_received" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'monthly')" data-type-xml="int"/>
 </label>    <label class="question or-branch pre-init non-select ">
-    <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:label">ضائع ہونے والے کنٹینر کی تعداد [جو تیز اوزار کو ضائع کرنے کے لیے استعمال ہوتے ہیں]</span>
-    <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:label">Sharp disposal container wasted</span>
-    <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:label">Zaya honay walay container ki taadaad [jo taiz auzaar ko zaya karne ke liye istamaal hotay hain]</span>
+    <span lang="ur" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:label">ضائع ہونے والے سیفٹی باکس</span>
+    <span lang="en" class="question-label active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:label">Safety Box wasted</span>
+    <span lang="Roman Urdu" class="question-label " data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:label">Zaya honay walay safety</span>
     <span class="required">*</span>
-    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:hint">کنٹینر کی تعداد</span>
-    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:hint">Number of containers</span>
-    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:hint">Container ki taadaad</span>
+    <span lang="ur" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:hint">باکس کی تعداد</span>
+    <span lang="en" class="or-hint active" data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:hint">Number of boxes</span>
+    <span lang="Roman Urdu" class="or-hint " data-itext-id="/Vaccine_Stock_Position/safety_boxes_wasted:hint">Box ki taadaad</span>
     <input type="number" name="/Vaccine_Stock_Position/safety_boxes_wasted" required="required" data-relevant="selected( /Vaccine_Stock_Position/report , 'daily')" data-type-xml="int"/>
 </label>  <fieldset id="or-preload-items" style="display:none;">
     <label class="calculation non-select ">

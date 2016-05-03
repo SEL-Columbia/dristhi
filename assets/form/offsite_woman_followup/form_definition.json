@@ -27,12 +27,8 @@
       "bind" : "/model/instance/Offsite_Woman_Followup_Form/existing_landmark",
       "shouldLoadValue" : true
     }, {
-      "name" : "existing_house_number",
-      "bind" : "/model/instance/Offsite_Woman_Followup_Form/existing_house_number",
-      "shouldLoadValue" : true
-    }, {
-      "name" : "existing_street",
-      "bind" : "/model/instance/Offsite_Woman_Followup_Form/existing_street",
+      "name" : "existing_address1",
+      "bind" : "/model/instance/Offsite_Woman_Followup_Form/existing_address1",
       "shouldLoadValue" : true
     }, {
       "name" : "existing_union_council",
@@ -87,8 +83,8 @@
       "bind" : "/model/instance/Offsite_Woman_Followup_Form/existing_marriage",
       "shouldLoadValue" : true
     }, {
-      "name" : "existing_birthdate",
-      "bind" : "/model/instance/Offsite_Woman_Followup_Form/existing_calc_dob_confirm",
+      "name" : "existing_birth_date",
+      "bind" : "/model/instance/Offsite_Woman_Followup_Form/existing_birth_date",
       "shouldLoadValue" : true
     }, {
       "name" : "existing_gender",
@@ -110,6 +106,12 @@
       "name" : "existing_epi_card_number",
       "bind" : "/model/instance/Offsite_Woman_Followup_Form/existing_epi_card_number",
       "shouldLoadValue" : true
+    }, {
+      "name" : "existing_reminders_approval",
+      "bind" : "/model/instance/Offsite_Woman_Followup_Form/existing_reminders_approval"
+    }, {
+      "name" : "existing_contact_phone_number",
+      "bind" : "/model/instance/Offsite_Woman_Followup_Form/existing_contact_phone_number"
     }, {
       "name" : "e_tt1",
       "bind" : "/model/instance/Offsite_Woman_Followup_Form/e_tt1",
@@ -186,7 +188,7 @@
       "bind" : "/model/instance/Offsite_Woman_Followup_Form/client_age"
     }, {
       "name" : "birth_date_note",
-      "bind" : "/model/instance/Offsite_Woman_Followup_Form/birth_date_note"
+      "bind" : "/model/instance/Offsite_Woman_Followup_Form/member_birth_date_note"
     }, {
       "name" : "gender_note",
       "bind" : "/model/instance/Offsite_Woman_Followup_Form/gender_note"
@@ -221,17 +223,20 @@
       "name" : "union_council",
       "bind" : "/model/instance/Offsite_Woman_Followup_Form/union_council"
     }, {
-      "name" : "house_number",
-      "bind" : "/model/instance/Offsite_Woman_Followup_Form/house_number"
-    }, {
-      "name" : "street",
-      "bind" : "/model/instance/Offsite_Woman_Followup_Form/street"
+      "name" : "address1",
+      "bind" : "/model/instance/Offsite_Woman_Followup_Form/address1"
     }, {
       "name" : "landmark",
       "bind" : "/model/instance/Offsite_Woman_Followup_Form/landmark"
     }, {
       "name" : "center_gps",
       "bind" : "/model/instance/Offsite_Woman_Followup_Form/center_gps"
+    }, {
+      "name" : "reminders_approval",
+      "bind" : "/model/instance/Offsite_Woman_Followup_Form/reminders_approval"
+    }, {
+      "name" : "contact_phone_number",
+      "bind" : "/model/instance/Offsite_Woman_Followup_Form/contact_phone_number"
     }, {
       "name" : "pregnant",
       "bind" : "/model/instance/Offsite_Woman_Followup_Form/pregnant"

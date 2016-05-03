@@ -142,11 +142,8 @@
       "name" : "union_council",
       "bind" : "/model/instance/Woman_TT_Enrollment_Form/union_council"
     }, {
-      "name" : "house_number",
-      "bind" : "/model/instance/Woman_TT_Enrollment_Form/house_number"
-    }, {
-      "name" : "street",
-      "bind" : "/model/instance/Woman_TT_Enrollment_Form/street"
+      "name" : "address1",
+      "bind" : "/model/instance/Woman_TT_Enrollment_Form/address1"
     }, {
       "name" : "landmark",
       "bind" : "/model/instance/Woman_TT_Enrollment_Form/landmark"
