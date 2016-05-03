@@ -72,12 +72,22 @@ public class BaseEntity extends BaseDataObject {
 	}
 	
 	public Address getAddress(String addressType) {
-		for (Address address : addresses) {
+		for (Address address : getAddresses()) {
 			if(address.getAddressType().equalsIgnoreCase(addressType)){
 				return address;
 			}
 		}
 		return null;
+	}
+	
+	public void removeAddress(String addressType) {
+		Address ar = null;
+		for (Address address : getAddresses()) {
+			if(address.getAddressType().equalsIgnoreCase(addressType)){
+				ar = address;
+			}
+		}
+		if(ar != null) getAddresses().remove(ar);
 	}
 
 	/**

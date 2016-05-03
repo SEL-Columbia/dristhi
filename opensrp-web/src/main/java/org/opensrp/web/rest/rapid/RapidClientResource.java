@@ -73,6 +73,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 		clientService.addClient(c);
 		
 		res.put("SUCESS", true);
+		res.put("SUCCESS", true);
 		res.put("data", c);
 		
 		return res;

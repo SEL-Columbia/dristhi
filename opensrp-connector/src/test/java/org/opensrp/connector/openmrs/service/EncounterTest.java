@@ -315,4 +315,137 @@ public class EncounterTest extends TestResourceLoader{
 		}
 
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void shouldHandleTTEnrollmentform() throws IOException, ParseException, JSONException{
+		FormSubmission fs = getFormSubmissionFor("woman_enrollment");
+
+		Client c = oc.getClientFromFormSubmission(fs);
+		assertEquals(c.getBaseEntityId(), "69995674-bb29-4985-967a-fec8d372a475");
+		assertEquals(c.getFirstName(), "barsaat");
+		assertEquals(c.getGender(), "female");
+		assertEquals(c.getBirthdate(), new DateTime("1979-04-05"));
+		assertEquals(c.getAddresses().get(0).getAddressField("landmark"), "nishaani");
+		assertEquals(c.getAddresses().get(0).getStateProvince(), "sindh");
+		assertEquals(c.getAddresses().get(0).getCityVillage(), "karachi");
+		assertEquals(c.getAddresses().get(0).getTown(), "liaquatabad");
+		assertEquals(c.getAddresses().get(0).getSubTown(), "sharifabad");
+		assertEquals(c.getAddresses().get(0).getAddressField("house"), "6h");
+		assertEquals(c.getIdentifiers().get("Program Client ID"), "14608844");
+		assertEquals(c.getAttributes().get("EPI Card Number"), "20160003");
+
+		Event e = oc.getEventFromFormSubmission(fs);
+		assertEquals(e.getBaseEntityId(), "69995674-bb29-4985-967a-fec8d372a475");
+		assertEquals(e.getEventDate(), new DateTime(new DateTime("2016-04-05")));
+		assertEquals(e.getLocationId(), "Homeopathic Center");
+		assertEquals(e.getFormSubmissionId(), "de408c93-2ec5-40bc-a957-eaf375583e27");
+		assertEquals(e.getEntityType(), "pkwoman");
+		assertEquals(e.getEventType(), "Woman TT enrollment");
+		assertEquals(e.getProviderId(), "demotest");
+
+		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
+				Matchers.<Obs>hasProperty("fieldCode",equalTo("154384AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+				Matchers.<Obs>hasProperty("values",hasItems(equalTo("37"))),
+				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("calc_age_confirm")),
+				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("calculate")),
+				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
+				)));
+		
+		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
+				Matchers.<Obs>hasProperty("fieldCode",equalTo("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+				Matchers.<Obs>hasProperty("values",hasItems(equalTo("2016-04-05 16:21:32"))),
+				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("start")),
+				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("start")),
+				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
+				)));
+		
+		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
+				Matchers.<Obs>hasProperty("fieldCode",equalTo("163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+				Matchers.<Obs>hasProperty("values",hasItems(equalTo("2016-04-05 16:23:59"))),
+				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("end")),
+				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("end")),
+				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
+				)));
+		
+		if(pushToOpenmrsForTest){
+			
+			JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
+			if(p == null){
+				p = ps.createPatient(c);
+			}
+			s.createEncounter(e);
+		}
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void shouldHandleChildVaccinationEnrollmentform() throws IOException, ParseException, JSONException{
+		FormSubmission fs = getFormSubmissionFor("child_enrollment");
+
+		Client c = oc.getClientFromFormSubmission(fs);
+		assertEquals(c.getBaseEntityId(), "ad653225-6bed-48d3-8e5d-741d3d50d61a");
+		assertEquals(c.getFirstName(), "aase");
+		assertEquals(c.getLastName(), "zeest");
+		assertEquals(c.getGender(), "male");
+		assertEquals(c.getBirthdate(), new DateTime("2016-01-03"));
+		assertEquals(c.getAddresses().get(0).getAddressField("landmark"), "nishaani");
+		assertEquals(c.getAddresses().get(0).getStateProvince(), "sindh");
+		assertEquals(c.getAddresses().get(0).getCityVillage(), "karachi");
+		assertEquals(c.getAddresses().get(0).getTown(), "liaquatabad");
+		assertEquals(c.getAddresses().get(0).getSubTown(), "mujahid_colony");
+		assertEquals(c.getAddresses().get(0).getAddressField("house"), "hi65");
+		assertEquals(c.getIdentifiers().get("Program Client ID"), "98120722");
+		assertEquals(c.getAttributes().get("EPI Card Number"), "20160009");
+
+		Event e = oc.getEventFromFormSubmission(fs);
+		assertEquals(e.getBaseEntityId(), "ad653225-6bed-48d3-8e5d-741d3d50d61a");
+		assertEquals(e.getEventDate(), new DateTime(new DateTime("2016-03-05")));
+		assertEquals(e.getLocationId(), "Homeopathic Center");
+		assertEquals(e.getFormSubmissionId(), "8524f6b8-441a-4769-aa74-03e1dde0901a");
+		assertEquals(e.getEntityType(), "pkchild");
+		assertEquals(e.getEventType(), "Child Vaccination Enrollment");
+		assertEquals(e.getProviderId(), "demotest");
+
+		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
+				Matchers.<Obs>hasProperty("fieldCode",equalTo("154384AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+				Matchers.<Obs>hasProperty("values",hasItems(equalTo("2"))),
+				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("calc_age_confirm")),
+				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("calculate")),
+				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
+				)));
+		
+		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
+				Matchers.<Obs>hasProperty("fieldCode",equalTo("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+				Matchers.<Obs>hasProperty("values",hasItems(equalTo("2016-03-05 23:01:13"))),
+				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("start")),
+				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("start")),
+				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
+				)));
+		
+		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
+				Matchers.<Obs>hasProperty("fieldCode",equalTo("163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+				Matchers.<Obs>hasProperty("values",hasItems(equalTo("2016-03-05 23:03:51"))),
+				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("end")),
+				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("end")),
+				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
+				)));
+		
+		if(pushToOpenmrsForTest){
+			
+			JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
+			if(p == null){
+				p = ps.createPatient(c);
+			}
+			s.createEncounter(e);
+		}
+
+	}
 }

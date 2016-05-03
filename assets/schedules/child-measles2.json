@@ -5,29 +5,35 @@
         {
             "name": "measles2",
             "scheduleWindows": {
-                "earliest": ["15 Months"],
-                "due": ["18 Months"],
-                "late": ["20 Months"],
-                "max": ["5 Years"]
+                "earliest": ["26 Weeks"],
+                "due": ["61 Weeks"],
+                "late": ["5 Year"],
+                "max": ["5 Years", "1 Day"]
             },
             "alerts": [
                 {
                     "window": "earliest",
-                    "offset": ["0 Months"],
+                    "offset": ["0 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "486"
+                    "count": "200"
                 },
                 {
                     "window": "due",
-                    "offset": ["15 Months"],
+                    "offset": ["26 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "243"
+                    "count": "300"
                 },
                 {
                     "window": "late",
-                    "offset": ["18 Months"],
+                    "offset": ["61 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "1095"
+                    "count": "1900"
+                },
+                {
+                    "window": "max",
+                    "offset": ["5 Years"],
+                    "interval": ["1 Day"],
+                    "count": "2"
                 }
             ]
         }

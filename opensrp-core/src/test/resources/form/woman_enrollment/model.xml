@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
     <instance>
-        <Woman_TT_Enrollment_Form encounter_type="Women TT enrollment form" id="women_tt_enrollement_form" version="201603161143">
+        <Woman_TT_Enrollment_Form encounter_type="Woman TT enrollment" id="woman_tt_enrollement_form" version="201604080500">
             <formhub>
                 <uuid/>
             </formhub>
@@ -34,24 +34,30 @@
             <calc_dob_confirm openmrs_entity="person" openmrs_entity_id="birthdate"/>
             <calc_dob_estimated openmrs_entity="person" openmrs_entity_id="birthdate_estimated"/>
             <calc_age_confirm openmrs_entity="concept" openmrs_entity_id="154384AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-            <member_birth_date_note/>
-            <note_age openmrs_entity="concept" openmrs_entity_id="160617AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+            <birth_date_note/>
+            <note_age/>
             <gender1>female</gender1>
             <father_name openmrs_entity="concept" openmrs_entity_id="1594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <marriage/>
-            <husband_name openmrs_entity="concept" openmrs_entity_id="5617AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+            <husband_name openmrs_entity="concept" openmrs_entity_id="161135AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <last_name openmrs_entity="person" openmrs_entity_id="last_name"/>
             <ethnicity openmrs_entity="concept" openmrs_entity_id="163153AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-            <ethnicity_other/>
+            <ethnicity_other openmrs_entity="concept" openmrs_entity_id="160632AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="163330AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <province openmrs_entity="person_address" openmrs_entity_id="stateProvince" openmrs_entity_parent="usual_residence">${provider_province}</province>
             <city_village openmrs_entity="person_address" openmrs_entity_id="cityVillage" openmrs_entity_parent="usual_residence">${provider_city}</city_village>
             <town openmrs_entity="person_address" openmrs_entity_id="town" openmrs_entity_parent="usual_residence"/>
-            <union_council openmrs_entity="person_address" openmrs_entity_id="sector" openmrs_entity_parent="usual_residence"/>
+            <union_council openmrs_entity="person_address" openmrs_entity_id="subTown" openmrs_entity_parent="usual_residence"/>
             <house_number openmrs_entity="person_address" openmrs_entity_id="house" openmrs_entity_parent="usual_residence"/>
             <street openmrs_entity="person_address" openmrs_entity_id="street" openmrs_entity_parent="usual_residence"/>
             <landmark openmrs_entity="person_address" openmrs_entity_id="landmark" openmrs_entity_parent="usual_residence"/>
+            <provincename/>
+            <city_villagename/>
+            <townname/>
+            <union_councilname/>
             <address/>
             <centre_gps openmrs_entity="concept" openmrs_entity_id="163277AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+            <reminders_approval openmrs_entity="concept" openmrs_entity_id="163089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+            <contact_phone_number openmrs_entity="concept" openmrs_entity_id="159635AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <pregnant openmrs_entity="concept" openmrs_entity_id="5272AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <edd_lmp openmrs_entity="concept" openmrs_entity_id="160697AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <edd/>
@@ -64,6 +70,8 @@
             <edd_calc_ultrasound_formatted/>
             <lmp_calc_edd/>
             <lmp_calc_ultrasound/>
+            <lmp_calc_edd_formatted/>
+            <lmp_calc_ultrasound_formatted/>
             <final_edd openmrs_entity="concept" openmrs_entity_id="5596AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <final_lmp openmrs_entity="concept" openmrs_entity_id="1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <ga_edd/>

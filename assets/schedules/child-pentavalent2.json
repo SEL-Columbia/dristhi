@@ -1,5 +1,5 @@
 {
-    "name": "PENTAVALENT 2",
+    "name": "Penta 2",
     "absolute": true,
     "milestones": [
         {
@@ -7,27 +7,33 @@
             "scheduleWindows": {
                 "earliest": ["4 Weeks"],
                 "due": ["6 Weeks"],
-                "late": ["12 Weeks"],
-                "max": ["12 Months"]
+                "late": ["52 Weeks"],
+                "max": ["1 Year", "1 Day"]
             },
             "alerts": [
                 {
                     "window": "earliest",
                     "offset": ["0 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "14"
+                    "count": "30"
                 },
                 {
                     "window": "due",
                     "offset": ["4 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "14"
+                    "count": "30"
                 },
                 {
                     "window": "late",
                     "offset": ["6 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "322"
+                    "count": "366"
+                },
+                {
+                    "window": "max",
+                    "offset": ["1 Year"],
+                    "interval": ["1 Day"],
+                    "count": "2"
                 }
             ]
         }

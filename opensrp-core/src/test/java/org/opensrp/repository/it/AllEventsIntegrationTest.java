@@ -52,6 +52,6 @@ public class AllEventsIntegrationTest {
 	@Test
 	public void test(){
 		addEvents();
-		assertTrue(eventService.getByBaseEntityAndFormSubmissionId("11338235", "formSubmission21")!=null);
+		assertTrue(eventService.getByBaseEntityAndFormSubmissionId("entityid0", "formSubmission0100")!=null);
 	}
 }

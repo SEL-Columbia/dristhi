@@ -172,7 +172,13 @@ public class ClientService {
 			original = gs.fromJson(mergedJson.toString(), Client.class);
 			
 			for (Address a : updatedClient.getAddresses()) {
-				if(original.getAddress(a.getAddressType()) == null) original.addAddress(a);
+				if(original.getAddress(a.getAddressType()) == null) {
+					original.addAddress(a);
+				}
+				else {
+					original.removeAddress(a.getAddressType());
+					original.addAddress(a);
+				}
 			}
 			for (String k : updatedClient.getIdentifiers().keySet()) {
 				original.addIdentifier(k, updatedClient.getIdentifier(k));

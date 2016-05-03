@@ -56,7 +56,7 @@ public class EventService {
 		return allEvents.findEventsByDynamicQuery(query);
 	}
 	
-	public Event addEvent(Event event)
+	public synchronized Event addEvent(Event event)
 	{
 		if(!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null){
 			throw new IllegalArgumentException("An event already exists with given eventId "+event.getEventId()+". Consider updating");
@@ -66,6 +66,9 @@ public class EventService {
 		}
 
 		event.setDateCreated(new Date());
+		if(StringUtils.isEmptyOrWhitespaceOnly(event.getEventId())){
+			event.setEventId(System.currentTimeMillis()+"");
+		}
 		allEvents.add(event);
 		return event;
 	}

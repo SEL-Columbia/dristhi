@@ -94,8 +94,10 @@ public class FormEntityConverter {
 					val = StringUtils.isEmptyOrWhitespaceOnly(val)?vl:val;
 					vall.add(val);
 				}
-				e.addObs(new Obs("concept", fl.type(), fat.get("openmrs_entity_id"), 
-						fat.get("openmrs_entity_parent"), vall, null, fl.name()));
+				Obs o = new Obs("concept", fl.type(), fat.get("openmrs_entity_id"), 
+						fat.get("openmrs_entity_parent"), vall, null, fl.name());
+				o.setEffectiveDatetime(e.getEventDate());
+				e.addObs(o);
 			}
 		}
 		return e;

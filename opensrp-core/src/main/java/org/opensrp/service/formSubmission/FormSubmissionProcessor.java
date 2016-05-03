@@ -53,6 +53,9 @@ public class FormSubmissionProcessor{
     }
 
     public void processFormSubmission(FormSubmission submission) throws Exception {
+    	// ugly hack TODO
+    	if(submission.bindType().equalsIgnoreCase("stock")) return;
+    	
     	// parse and into client and event model
     	logger.info("Creating model entities");
     	makeModelEntities(submission);

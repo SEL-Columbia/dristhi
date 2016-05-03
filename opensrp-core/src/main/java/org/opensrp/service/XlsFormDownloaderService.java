@@ -1,13 +1,16 @@
 package org.opensrp.service;
 
 
-//import httpdowload.JustForFun;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.codehaus.jackson.JsonProcessingException;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
+import org.joda.time.Years;
 import org.opensrp.util.FileCreator;
 import org.opensrp.util.JsonParser;
 import org.opensrp.util.NetClientGet;
@@ -30,12 +33,14 @@ public class XlsFormDownloaderService {
 	
 	jsonParser=new JsonParser();
 	}
-	
-	public static void main(String[] args) throws IOException {
-		System.out.println(Hours.hoursBetween(new DateTime("1970-01-01"), DateTime.now()).getHours());
-		System.out.println(new DateTime("2012-02-01"));
-//		new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
-	//			"maimoonak", "opensrp", JustForFun.Form, "offsite_child_vaccination_followup", "112722");
+
+	public static void main(String[] args) {
+//		try {
+//			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+//					"maimoonak", "opensrp", JustForFun.Form, "offsite_woman_followup_form", "115135");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	public boolean downloadFormFiles(String directory,String username ,String formPath, String password,String formId, String formPk) throws IOException{
@@ -48,9 +53,8 @@ public class XlsFormDownloaderService {
 		//modelData=fileCreator.prettyFormat(modelData);
 		//formData=fileCreator.prettyFormat(formData);
 		System.out.println(getFormDefinition());
+		fileCreator.createFile("form_definition.json", fileCreator.osDirectorySet(directory)+formId, getFormDefinition().getBytes());
 		return fileCreator.createFormFiles(fileCreator.osDirectorySet(directory)+formId, formId, formData.getBytes(), modelData.getBytes(), formJson);
-		
-	
 	}
 	
 	public String getFormDefinition() throws JsonProcessingException, IOException{
@@ -60,8 +64,5 @@ public class XlsFormDownloaderService {
 		}
 		return jsonParser.getFormDefinition(formJson);
 		
-	}
-	
-	
-	
+	}	
 }

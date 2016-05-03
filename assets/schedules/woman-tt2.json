@@ -7,27 +7,27 @@
             "scheduleWindows": {
                 "earliest": ["4 Weeks"],
                 "due": ["6 Weeks"],
-                "late": ["8 Year"],
-                "max": ["25 Year"]
+                "late": ["35 Year"],
+                "max": ["35 Year", "1 Day"]
             },
             "alerts": [
                 {
                     "window": "earliest",
                     "offset": ["0 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "28"
+                    "count": "30"
                 },
                 {
                     "window": "due",
                     "offset": ["4 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "50"
+                    "count": "30"
                 },
                 {
                     "window": "late",
                     "offset": ["6 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "100000"
+                    "count": "13000"
                 }
             ]
         }

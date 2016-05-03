@@ -26,7 +26,7 @@ public class FileCreator {
 	//
 	// }
 
-	private void createFile(String filename, String directory, byte[] content)
+	public void createFile(String filename, String directory, byte[] content)
 			throws FileNotFoundException, IOException {
 
 		String s = osDirectorySet(osDirectorySet(directory));

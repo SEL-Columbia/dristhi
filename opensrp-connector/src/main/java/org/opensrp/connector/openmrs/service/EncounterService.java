@@ -105,7 +105,7 @@ public class EncounterService extends OpenmrsService{
 		
 		if(ol != null)
 		for (Obs obs : ol) {
-			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode())){//skipping empty obs
+			if(!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode())){//skipping empty obs
 				//if no parent simply make it root obs
 				if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
 					p.put(obs.getFieldCode(), convertObsToJson(obs));

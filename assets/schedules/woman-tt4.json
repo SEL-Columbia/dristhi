@@ -5,29 +5,29 @@
         {
             "name": "tt4",
             "scheduleWindows": {
-                "earliest": ["12 Months"],
-                "due": ["14 Months"],
-                "late": ["60 Months"],
-                "max": ["25 Year"]                
+                "earliest": ["52 Weeks"],
+                "due": ["54 Weeks"],
+                "late": ["33 Years"],
+                "max": ["33 Years", "1 Day"]                
             },
             "alerts": [
                 {
                     "window": "earliest",
-                    "offset": ["0 Months"],
+                    "offset": ["0 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "40"
+                    "count": "366"
                 },
                 {
                     "window": "due",
-                    "offset": ["1 Year"],
+                    "offset": ["52 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "360"
+                    "count": "300"
                 },
                 {
                     "window": "late",
-                    "offset": ["14 Months"],
+                    "offset": ["54 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "360000"
+                    "count": "13000"
                 }
                 
             ]
