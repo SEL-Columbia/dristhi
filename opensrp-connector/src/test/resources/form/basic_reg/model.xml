@@ -6,12 +6,13 @@
             </formhub>
             <woman_name openmrs_entity="person" openmrs_entity_id="first_name"/>
             <last_name openmrs_entity="person" openmrs_entity_id="last_name"/>
+            <bahmni_id openmrs_entity="person_identifier" openmrs_entity_id="bahmni id"/>
             <gender openmrs_entity="person" openmrs_entity_id="gender">female</gender>
             <birthdate openmrs_entity="person" openmrs_entity_id="birthdate"/>
             <location openmrs_entity="encounter" openmrs_entity_id="location_id"/>
             <anc_visit_date openmrs_entity="encounter" openmrs_entity_id="encounter_date"/>
             <pulse_rate openmrs_entity="concept" openmrs_entity_id="5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-            <temperature openmrs_entity="concept" openmrs_entity_id="5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+            <temperature/>
             <birthplace_address>
                 <birthplace_lat openmrs_entity="person_address" openmrs_entity_id="latitude" openmrs_entity_parent="birthplace"/>
                 <birthplace_lon openmrs_entity="person_address" openmrs_entity_id="longitute" openmrs_entity_parent="birthplace"/>

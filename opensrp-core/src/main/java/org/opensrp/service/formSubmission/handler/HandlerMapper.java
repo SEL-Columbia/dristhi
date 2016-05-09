@@ -9,14 +9,24 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class HandlerMapper {
 
-	private static final Map<String, CustomFormSubmissionHandler> handlerMap = new HashMap<String, CustomFormSubmissionHandler>();
+	private static final Map<String, CustomFormSubmissionHandler> customFormSubmissionHandlerMap = new HashMap<String, CustomFormSubmissionHandler>();
+	private static final Map<String, FormSubmissionProcessedListener> onFormSubmissionProcessedListenerMap = new HashMap<>();
 	
-	public Map<String, CustomFormSubmissionHandler> handlerMap() {
-		return Collections.unmodifiableMap(handlerMap);
+	public Map<String, CustomFormSubmissionHandler> customFormSubmissionHandlerMap() {
+		return Collections.unmodifiableMap(customFormSubmissionHandlerMap);
 	}
 
-	public HandlerMapper addHandler(String formName, CustomFormSubmissionHandler handler) {
-		handlerMap.put(formName, handler);
+	public Map<String, FormSubmissionProcessedListener> formSubmissionProcessedListenerMap() {
+		return Collections.unmodifiableMap(onFormSubmissionProcessedListenerMap);
+	}
+	
+	public HandlerMapper addFormSubmissionProcessedListener(String formName, FormSubmissionProcessedListener listener) {
+		onFormSubmissionProcessedListenerMap.put(formName, listener);
+		return this;
+	}
+	
+	public HandlerMapper addCustomFormSubmissionHandler(String formName, CustomFormSubmissionHandler handler) {
+		customFormSubmissionHandlerMap.put(formName, handler);
 		return this;
 	}
 }

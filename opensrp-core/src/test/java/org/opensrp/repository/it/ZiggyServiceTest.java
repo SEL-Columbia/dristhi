@@ -72,7 +72,7 @@ public class ZiggyServiceTest extends TestResourceLoader{
         when(formSubmissionService.findByInstanceId("88c0e824-10b4-44c2-9429-754b8d823776")).thenReturn(fs);
         when(ziggyDataHandler.saveEntity(eq("household"), any(String.class))).thenReturn("a3f2abf4-2699-4761-819a-cea739224164");
         
-        handlerMapper = new HandlerMapper().addHandler("new_household_registration", 
+        handlerMapper = new HandlerMapper().addCustomFormSubmissionHandler("new_household_registration", 
         		new CustomFormSubmissionHandler() {
 					@Override
 					public void handle(FormSubmission submission) {

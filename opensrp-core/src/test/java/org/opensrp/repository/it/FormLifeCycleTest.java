@@ -192,7 +192,7 @@ public class FormLifeCycleTest extends TestResourceLoader{
 	
 	@Test
 	public void shouldCreateClientAndEventAndSchedulesWithRouter() throws Exception {
-		hmap.addHandler("pnc_1st_registration", new CustomFormSubmissionHandler() {
+		hmap.addCustomFormSubmissionHandler("pnc_1st_registration", new CustomFormSubmissionHandler() {
 			@Override
 			public void handle(FormSubmission submission) {
 				assertEquals("pnc_1st_registration", submission.formName());
@@ -209,7 +209,7 @@ public class FormLifeCycleTest extends TestResourceLoader{
 	
 	@Test
 	public void shouldCreateClientAndEventAndSchedulesWithZiggy() throws Exception {
-		hmap.addHandler("new_household_registration", new CustomFormSubmissionHandler() {
+		hmap.addCustomFormSubmissionHandler("new_household_registration", new CustomFormSubmissionHandler() {
 			@Override
 			public void handle(FormSubmission submission) {
 				assertEquals("new_household_registration", submission.formName());

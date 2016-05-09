@@ -2,6 +2,8 @@ package org.opensrp.service;
 
 
 
+import httpdowload.JustForFun;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
@@ -35,12 +37,12 @@ public class XlsFormDownloaderService {
 	}
 
 	public static void main(String[] args) {
-//		try {
-//			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
-//					"maimoonak", "opensrp", JustForFun.Form, "offsite_woman_followup_form", "115135");
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "offsite_woman_followup_form", "115135");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public boolean downloadFormFiles(String directory,String username ,String formPath, String password,String formId, String formPk) throws IOException{

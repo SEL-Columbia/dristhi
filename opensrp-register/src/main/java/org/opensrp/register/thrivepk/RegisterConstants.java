@@ -1,4 +1,4 @@
-package org.opensrp.register;
+package org.opensrp.register.thrivepk;
 
 
 public class RegisterConstants {
