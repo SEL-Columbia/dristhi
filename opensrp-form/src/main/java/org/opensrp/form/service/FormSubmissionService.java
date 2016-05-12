@@ -2,7 +2,7 @@ package org.opensrp.form.service;
 
 import ch.lambdaj.function.convert.Converter;
 
-
+import org.ektorp.CouchDbConnector;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.form.domain.FormSubmission;
@@ -48,6 +48,10 @@ public class FormSubmissionService {
 
     public List<FormSubmission> getAllSubmissions(Long version, Integer batchSize) {
         return allFormSubmissions.allFormSubmissions(version, batchSize);
+    }
+    
+    public List<FormSubmission> getAllSubmissions(CouchDbConnector sourceDb,Long version, Integer batchSize) {
+        return allFormSubmissions.allFormSubmissions(sourceDb,version, batchSize);
     }
 
     public List<FormSubmission> findByFormName(String formName, long version) {

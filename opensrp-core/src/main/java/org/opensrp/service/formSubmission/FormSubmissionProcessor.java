@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ektorp.CouchDbConnector;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -148,6 +149,32 @@ public class FormSubmissionProcessor{
 			Event evin = (Event)cm.get("event");
 			clientService.addClient(cin);
 			eventService.addEvent(evin);
+		}
+	}
+	/**
+	 * Break down form submission and save it to a target db
+	 * @param targetDb
+	 * @param submission
+	 * @throws JSONException
+	 */
+	public void makeModelEntities(CouchDbConnector targetDb,FormSubmission submission) throws JSONException {
+    	Client c = formEntityConverter.getClientFromFormSubmission(submission);
+		Event e = formEntityConverter.getEventFromFormSubmission(submission);
+		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
+
+		if(clientService.findClient(targetDb,c) != null){
+			clientService.mergeClient(c);
+		}
+		else clientService.addClient(targetDb,c);
+		
+		eventService.addEvent(e);
+		// TODO relationships b/w entities
+			
+		for (Map<String, Object> cm : dep.values()) {
+			Client cin = (Client)cm.get("client");
+			Event evin = (Event)cm.get("event");
+			clientService.addClient(targetDb,cin);
+			eventService.addEvent(targetDb,evin);
 		}
 	}
     

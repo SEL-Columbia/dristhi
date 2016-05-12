@@ -93,5 +93,25 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
                 .key(ckey)
                 .includeDocs(true), FormSubmission.class);
     }
+    /**
+     * Get form submissions from the specified database
+     * @param sourceDb
+     * @param serverVersion
+     * @param batchSize
+     * @return
+     */
+    public List<FormSubmission> allFormSubmissions(CouchDbConnector sourceDb,long serverVersion, Integer batchSize) {
+        ComplexKey startKey = ComplexKey.of(serverVersion + 1);
+        ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
+        ViewQuery query = createQuery("formSubmission_by_server_version")
+                .startKey(startKey)
+                .endKey(endKey)
+                .includeDocs(true);
+
+        if (batchSize != null) {
+            query.limit(batchSize);
+        }
+        return sourceDb.queryView(query, FormSubmission.class);
+    }
 
 }

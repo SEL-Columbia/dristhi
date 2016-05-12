@@ -13,6 +13,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
+import com.ibm.icu.impl.Assert;
 
 public class TestResourceLoader {
 	protected String openmrsOpenmrsUrl;
@@ -22,10 +23,15 @@ public class TestResourceLoader {
 	protected boolean pushToOpenmrsForTest;
 
 
-	public TestResourceLoader() throws IOException {
-		Resource resource = new ClassPathResource("/opensrp.properties");
-		Properties props = PropertiesLoaderUtils.loadProperties(resource);
-		formDirPath = props.getProperty("form.directory.name");
+	public TestResourceLoader()  {
+		try{
+			Resource resource = new ClassPathResource("/opensrp.properties");
+			Properties props = PropertiesLoaderUtils.loadProperties(resource);
+			formDirPath = props.getProperty("form.directory.name");
+		} catch(Exception e){
+			Assert.fail(e);
+		}
+		
 	}
 	
 	protected FormSubmission getFormSubmissionFor(String formName, Integer number) throws JsonIOException, IOException{

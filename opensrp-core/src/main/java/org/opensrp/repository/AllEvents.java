@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
+import org.ektorp.UpdateConflictException;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
+import org.ektorp.util.Assert;
+import org.ektorp.util.Documents;
 import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
@@ -50,6 +53,10 @@ public class AllEvents extends MotechBaseRepository<Event>{
 	public List<Event> findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
 		return db.queryView(createQuery("all_events_by_base_entity_and_form_submission").key(ComplexKey.of(baseEntityId, formSubmissionId)).includeDocs(true), Event.class);
 	}
+	@View(name = "all_events_by_base_entity_and_form_submission", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.formSubmissionId], doc); } }")
+	public List<Event> findByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb,String baseEntityId, String formSubmissionId) {
+		return targetDb.queryView(createQuery("all_events_by_base_entity_and_form_submission").key(ComplexKey.of(baseEntityId, formSubmissionId)).includeDocs(true), Event.class);
+	}
 	
 	public List<Event> findEvents(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
 			String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
@@ -58,6 +65,14 @@ public class AllEvents extends MotechBaseRepository<Event>{
 	
 	public List<Event> findEventsByDynamicQuery(String query){
 		return ler.getByCriteria(query);
+	}
+	/**
+	 * Save event to the specified db
+	 * @throws UpdateConflictException if there was an update conflict.
+	 */
+	public void add(CouchDbConnector targetDb,Event event) {
+		Assert.isTrue(Documents.isNew(event), "entity must be new");
+		targetDb.create(event);
 	}
 	
 	

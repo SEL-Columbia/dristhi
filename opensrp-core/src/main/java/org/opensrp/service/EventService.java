@@ -3,6 +3,7 @@ package org.opensrp.service;
 import java.util.Date;
 import java.util.List;
 
+import org.ektorp.CouchDbConnector;
 import org.joda.time.DateTime;
 import org.opensrp.domain.Event;
 import org.opensrp.repository.AllEvents;
@@ -30,6 +31,17 @@ public class EventService {
 	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId)
 	{
 		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
+		if(el.size() > 1){
+			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("+baseEntityId+","+formSubmissionId+")");
+		}
+		if(el.size() == 0){
+			return null;
+		}
+		return el.get(0);
+	}
+	public Event getByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb,String baseEntityId, String formSubmissionId)
+	{
+		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(targetDb,baseEntityId, formSubmissionId);
 		if(el.size() > 1){
 			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("+baseEntityId+","+formSubmissionId+")");
 		}
@@ -72,7 +84,22 @@ public class EventService {
 		allEvents.add(event);
 		return event;
 	}
-	
+	public synchronized Event addEvent(CouchDbConnector targetDb,Event event)
+	{
+		if(!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null){
+			throw new IllegalArgumentException("An event already exists with given eventId "+event.getEventId()+". Consider updating");
+		}
+		if(getByBaseEntityAndFormSubmissionId(targetDb,event.getBaseEntityId(), event.getFormSubmissionId()) != null){
+			throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
+		}
+
+		event.setDateCreated(new Date());
+		if(StringUtils.isEmptyOrWhitespaceOnly(event.getEventId())){
+			event.setEventId(System.currentTimeMillis()+"");
+		}
+		allEvents.add(targetDb,event);
+		return event;
+	}
 	public void updateEvent(Event updatedEvent)
 	{
 		// If update is on original entity

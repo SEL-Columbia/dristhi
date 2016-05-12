@@ -74,7 +74,8 @@ public class AllConstants {
 	}
 
 	public enum Config {
-		FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION
+		FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION,
+		FORM_ENTITY_PARSER_LAST_MIGRATED_FORM_SUBMISSION // Used when doing data migrations
 	}
 
 	public static final String FORM_SCHEDULE_SUBJECT = "FORM-SCHEDULE";

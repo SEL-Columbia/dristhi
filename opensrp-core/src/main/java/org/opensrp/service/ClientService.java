@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.ektorp.CouchDbConnector;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,6 +90,20 @@ public class ClientService {
 		allClients.add(client);
 		return client;
 	}
+	public Client addClient(CouchDbConnector targetDb,Client client)
+	{
+		if(client.getBaseEntityId() == null){
+			throw new RuntimeException("No baseEntityId");
+		}
+		Client c = findClient(targetDb,client);
+		if(c != null){
+			throw new IllegalArgumentException("A client already exists with given list of identifiers. Consider updating data.["+c+"]");
+		}
+		
+		client.setDateCreated(new Date());
+		allClients.add(targetDb,client);
+		return client;
+	}
 	
 	public Client findClient(Client client){
 		// find by auto assigned entity id
@@ -101,6 +116,34 @@ public class ClientService {
 		
 		for (String idt : client.getIdentifiers().keySet()) {
 			List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
+			if(cl.size() > 1){
+				throw new IllegalArgumentException("Multiple clients with identifier type "+idt+" and ID "+client.getIdentifier(idt)+" exist.");
+			}
+			else if(cl.size() != 0){
+				return cl.get(0); 
+			}
+		}
+		return c;
+	}
+	
+	
+	/**
+	 * Find a client from the specified db
+	 * @param targetDb
+	 * @param client
+	 * @return
+	 */
+	public Client findClient(CouchDbConnector targetDb,Client client){
+		// find by auto assigned entity id
+		Client c = allClients.findByBaseEntityId(client.getBaseEntityId());
+		if(c != null){
+			return c;
+		}
+		
+		//still not found!! search by generic identifiers
+		
+		for (String idt : client.getIdentifiers().keySet()) {
+			List<Client> cl = allClients.findAllByIdentifier(targetDb,client.getIdentifier(idt));
 			if(cl.size() > 1){
 				throw new IllegalArgumentException("Multiple clients with identifier type "+idt+" and ID "+client.getIdentifier(idt)+" exist.");
 			}

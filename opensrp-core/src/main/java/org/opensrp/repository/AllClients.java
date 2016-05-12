@@ -2,10 +2,13 @@ package org.opensrp.repository;
 
 import java.util.List;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
+import org.ektorp.util.Assert;
+import org.ektorp.util.Documents;
 import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
@@ -39,6 +42,17 @@ public class AllClients extends MotechBaseRepository<Client> {
 		}
 		return clients.get(0);
 	}
+	
+	@GenerateView
+	public Client findByBaseEntityId(CouchDbConnector targetDb,String baseEntityId) {
+		if(StringUtils.isEmptyOrWhitespaceOnly(baseEntityId))
+			return null;
+		List<Client> clients = queryView(targetDb,"by_baseEntityId", baseEntityId);
+		if (clients == null || clients.isEmpty()) {
+			return null;
+		}
+		return clients.get(0);
+	}
 
 	@View(name = "all_clients", map = "function(doc) { if (doc.type === 'Client') { emit(doc.baseEntityId); } }")
 	public List<Client> findAllClients() {
@@ -48,6 +62,11 @@ public class AllClients extends MotechBaseRepository<Client> {
 	@View(name = "all_clients_by_identifier", map = "function(doc) {if (doc.type === 'Client') {for(var key in doc.identifiers) {emit(doc.identifiers[key]);}}}")
 	public List<Client> findAllByIdentifier(String identifier) {
 		return db.queryView(createQuery("all_clients_by_identifier").key(identifier).includeDocs(true), Client.class);
+	}
+	
+	@View(name = "all_clients_by_identifier", map = "function(doc) {if (doc.type === 'Client') {for(var key in doc.identifiers) {emit(doc.identifiers[key]);}}}")
+	public List<Client> findAllByIdentifier(CouchDbConnector targetDb,String identifier) {
+		return targetDb.queryView(createQuery("all_clients_by_identifier").key(identifier).includeDocs(true), Client.class);
 	}
 
 	@View(name = "all_clients_by_identifier_of_type", map = "function(doc) {if (doc.type === 'Client') {for(var key in doc.identifiers) {emit([key, doc.identifiers[key]]);}}}")
@@ -86,5 +105,27 @@ public class AllClients extends MotechBaseRepository<Client> {
 	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
 			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
 		return lcr.getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);
+	}
+	/**
+	 * Query view from the specified db
+	 * @param targetDb
+	 * @param viewName
+	 * @param key
+	 * @return
+	 */
+	public List<Client> queryView(CouchDbConnector targetDb,String viewName, String key) {
+		return targetDb.queryView(createQuery(viewName)
+								.includeDocs(true)
+								.key(key),
+							Client.class);
+	}
+	/**
+	 * Save client to the specified db
+	 * @param targetDb
+	 * @param client
+	 */
+	public void add(CouchDbConnector targetDb,Client client) {
+		Assert.isTrue(Documents.isNew(client), "entity must be new");
+		targetDb.create(client);
 	}
 }
