@@ -1,10 +1,13 @@
 package org.opensrp.service;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ektorp.CouchDbConnector;
+import org.json.JSONException;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.form.domain.FormSubmission;
@@ -31,6 +34,13 @@ public class FormSubmissionDataMigrationService {
 	FormSubmissionProcessor processor;
 	@Autowired
 	private ConfigService configService;
+	private volatile int BATCH_SIZE = 100;
+
+	private static final int THREADS_COUNT = 5;
+
+	private enum MigrationType {
+		TO_LOCAL_DB, TO_REMOTE_DB
+	}
 
 	/**
 	 * Based on the last processed form submission version process any newly
@@ -40,23 +50,29 @@ public class FormSubmissionDataMigrationService {
 	 * @return
 	 */
 	public void migrateFormSubmissions() {
+		ExecutorService executor = Executors.newFixedThreadPool(THREADS_COUNT);
+
 		try {
-			long lastMigratedFsVersion = getVersion();
-			
-			//TODO Implement batch processing  
-			List<FormSubmission> formSubmissions = formSubmissionService.getAllSubmissions(lastMigratedFsVersion, null);
 
-			if (formSubmissions != null && !formSubmissions.isEmpty()) {
-				// break down the submissions to ec model
-				for (FormSubmission submission : formSubmissions) {
+			boolean processSubmissions = true;
 
-					processor.processFormSubmission(submission);
-					configService.updateAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_MIGRATED_FORM_SUBMISSION, submission.serverVersion());
+			while (processSubmissions) {
+				long lastMigratedFsVersion = getVersion();
+				List<FormSubmission> formSubmissions = formSubmissionService.getAllSubmissions(lastMigratedFsVersion, BATCH_SIZE);
+				processSubmissions = formSubmissions != null && !formSubmissions.isEmpty();
+
+				if (processSubmissions) {
+
+					Runnable migrateFormSubmissionsTask = new MigrateFormSubmissionsTask(MigrationType.TO_LOCAL_DB, formSubmissions);
+					executor.execute(migrateFormSubmissionsTask);
 				}
-
 			}
+			// This will make the executor accept no new threads
+			// and finish all existing threads in the queue
+			executor.shutdown();
 		} catch (Exception e) {
 			logger.error("", e);
+			executor.shutdown();
 		}
 	}
 
@@ -68,27 +84,32 @@ public class FormSubmissionDataMigrationService {
 	 * @param targetDbParams
 	 */
 	public void migrateFormSubmissions(DatabaseConnectionParams sourceDbParams, DatabaseConnectionParams targetDbParams) {
+		ExecutorService executor = Executors.newFixedThreadPool(THREADS_COUNT);
+
 		try {
-			long lastMigratedFsVersion = getVersion();
 			CouchDbConnector sourceDb = Utils.connectToDB(sourceDbParams);
 			CouchDbConnector targetDb = Utils.connectToDB(targetDbParams);
-			
-			//TODO Implement batch processing  
-			List<FormSubmission> formSubmissions = formSubmissionService.getAllSubmissions(sourceDb, lastMigratedFsVersion, null);
-			
-			if (formSubmissions != null && !formSubmissions.isEmpty()) {
-				// break down the submissions to ec model
-				for (FormSubmission submission : formSubmissions) {
 
-					processor.makeModelEntities(targetDb,submission);
-					//TODO update target db  
-					configService.updateAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_MIGRATED_FORM_SUBMISSION, submission.serverVersion());
+			boolean processSubmissions = true;
+
+			while (processSubmissions) {
+				long lastMigratedFsVersion = getVersion();
+				List<FormSubmission> formSubmissions = formSubmissionService.getAllSubmissions(sourceDb, lastMigratedFsVersion, BATCH_SIZE);
+				processSubmissions = formSubmissions != null && !formSubmissions.isEmpty();
+
+				if (processSubmissions) {
+
+					Runnable migrateFormSubmissionsTask = new MigrateFormSubmissionsTask(sourceDb, targetDb, MigrationType.TO_REMOTE_DB, formSubmissions);
+					executor.execute(migrateFormSubmissionsTask);
 				}
-
 			}
+			// This will make the executor accept no new threads
+			// and finish all existing threads in the queue
+			executor.shutdown();
 
 		} catch (Exception e) {
 			logger.error("", e);
+			executor.shutdown();
 		}
 
 	}
@@ -96,5 +117,71 @@ public class FormSubmissionDataMigrationService {
 	private long getVersion() {
 		AppStateToken token = configService.getAppStateTokenByName(AllConstants.Config.FORM_ENTITY_PARSER_LAST_MIGRATED_FORM_SUBMISSION);
 		return token == null ? 0L : token.longValue();
+	}
+
+	/**
+	 * Worker thread to break down formsubmissions to ec data.
+	 * 
+	 * @author onamacuser
+	 *
+	 */
+	class MigrateFormSubmissionsTask implements Runnable {
+
+		MigrationType type;
+		List<FormSubmission> formSubmissions;
+		CouchDbConnector sourceDb;
+		CouchDbConnector targetDb;
+
+		MigrateFormSubmissionsTask(MigrationType _type, List<FormSubmission> _formSubmissions) {
+			type = _type;
+			formSubmissions = _formSubmissions;
+		}
+
+		MigrateFormSubmissionsTask(CouchDbConnector _sourceDb, CouchDbConnector _targetDb, MigrationType _type, List<FormSubmission> _formSubmissions) {
+			type = _type;
+			formSubmissions = _formSubmissions;
+			sourceDb = _sourceDb;
+			targetDb = _targetDb;
+		}
+
+		@Override
+		public void run() {
+			switch (type) {
+			case TO_LOCAL_DB:
+
+				try {
+					// break down the submissions to ec model
+					for (FormSubmission submission : formSubmissions) {
+
+						processor.processFormSubmission(submission);
+						configService.updateAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_MIGRATED_FORM_SUBMISSION, submission.serverVersion());
+					}
+				} catch (Exception e) {
+					logger.error("", e);
+
+				}
+				break;
+
+			case TO_REMOTE_DB:
+
+				try {
+					// break down the submissions to ec model
+					for (FormSubmission submission : formSubmissions) {
+						processor.makeModelEntities(targetDb, submission);
+						// TODO update source db
+						configService.updateAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_MIGRATED_FORM_SUBMISSION, submission.serverVersion());
+					}
+				} catch (JSONException e) {
+					logger.error("", e);
+
+				}
+				break;
+			default:
+				logger.debug("Unknown migration type");
+				break;
+
+			}
+		}
+
 	}
 }
