@@ -1,122 +1,119 @@
-
 package org.opensrp.connector;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.Security;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.KeyStore;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.IOUtils;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.protocol.HTTP;
 import org.opensrp.common.util.HttpResponse;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mysql.jdbc.StringUtils;
 
-/**
- * The class is a gateway to connect to external system via http for reading and writing data. All get and post 
- * requests use Basic Authorization.
- */
 @Component
 public class HttpUtil {
 
-    public HttpUtil() {
+    private final static DefaultHttpClient httpClient = init();
+
+    @SuppressWarnings("deprecation")
+	public static DefaultHttpClient init()  {
+    	try {
+	    	//TODO add option to ignore cetificate validation in opensrp.prop
+	    	KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+			trustStore.load(null, null);
+			CustomCertificateSSLSocketFactory sf = new CustomCertificateSSLSocketFactory(trustStore);
+			sf.setHostnameVerifier(CustomCertificateSSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+			
+	        BasicHttpParams basicHttpParams = new BasicHttpParams();
+	        HttpConnectionParams.setConnectionTimeout(basicHttpParams, 30000);
+	        HttpConnectionParams.setSoTimeout(basicHttpParams, 60000);
+	
+	        SchemeRegistry registry = new SchemeRegistry();
+	        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+	        registry.register(new Scheme("https", sf, 443));
+	
+	        ClientConnectionManager connectionManager = new ThreadSafeClientConnManager(basicHttpParams, registry);
+	        return new DefaultHttpClient(connectionManager, basicHttpParams);
+    	} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
     }
 
-    /**
-     * Posts the data using Http POST.
-     * @param url The complete http url of remote server service
-     * @param payload The query param to send along with request (could be null if not applicable)
-     * @param data JSON Data to write to input stream
-     * @param username Username authorized for request (uses Basic Authorization)
-     * @param password Password authorized for request (uses Basic Authorization)
-     * @return
-     */
     public static HttpResponse post(String url, String payload, String data, String username,String password) {
+        return post(url, payload, data, username, password, "application/json");
+    }
+    
+    public static HttpResponse post(String url, String payload, String data, String username,String password, String contentType) {
         try {
-        	HttpsURLConnection con = makeConnection(url, payload, HttpMethod.POST, true, username, password);
-        	con.setDoOutput(true);
-        	con.setRequestProperty("Content-Type", "application/json");
-			String charset = "utf-8";
-			PrintWriter writer = new PrintWriter(new OutputStreamWriter(con.getOutputStream(), charset ), true); // true = autoFlush, important!
+        	HttpPost request = (HttpPost) makeConnection(url, payload, RequestMethod.POST, true, username, password);
+            request.setHeader(HTTP.CONTENT_TYPE, contentType);
+            StringEntity entity = new StringEntity(data);
+            System.out.println(data);
+            entity.setContentEncoding(contentType);
+            request.setEntity(entity);
+            org.apache.http.HttpResponse response = httpClient.execute(request);
+            return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
+        } catch (Exception e) {
+        	e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 
-			// Send normal param.
-		    System.out.println(data);
-		    writer.append(data);
-		    if (writer != null) writer.close();
-
-            return new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, IOUtils.toString(con.getInputStream()));
-			
+    public static HttpResponse get(String url, String payload, String username, String password) {
+        try {
+        	HttpGet request = (HttpGet) makeConnection(url, payload, RequestMethod.GET, true, username, password);
+            org.apache.http.HttpResponse response = httpClient.execute(request);
+            return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    
-    /**
-     * Gets the data using Http GET
-     * @param url The complete http url of remote server service
-     * @param payload The query param to send along with request (could be null if not applicable)
-     * @param username Username authorized for request (uses Basic Authorization)
-     * @param password Password authorized for request (uses Basic Authorization)
-     * @return
-     */
-    public static HttpResponse get(String url, String payload, String username, String password) {
-        try {
-            HttpsURLConnection con = makeConnection(url, payload, HttpMethod.GET, true, username, password);
-            System.out.println(url);
-            HttpResponse resp = new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, IOUtils.toString(con.getInputStream()));
-            System.out.println(resp);
-            return resp;
-        } 
-        catch(FileNotFoundException e){
-        	return new HttpResponse(true, "");
-        }
-        catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(e);
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    static HttpsURLConnection makeConnection(String url, String payload, HttpMethod requestMethod, boolean useBasicAuth, String username, String password) throws IOException {
+
+    static HttpRequestBase makeConnection(String url, String payload, RequestMethod method, boolean useBasicAuth, String username, String password) throws URISyntaxException {
     	String charset = "UTF-8";
 
         if(url.endsWith("/")){
         	url = url.substring(0, url.lastIndexOf("/"));
         }
         url = (url+(StringUtils.isEmptyOrWhitespaceOnly(payload)?"":("?"+payload))).replaceAll(" ", "%20");
-    	URL urlo = new URL(url);
-		HttpsURLConnection conn = (HttpsURLConnection) urlo.openConnection();
-		conn.setRequestProperty("Accept-Charset", charset);
+    	URI urlo = new URI(url);
+    	
+    	HttpRequestBase requestBase = null;
+    	if(method.equals(RequestMethod.GET)){
+    		requestBase = new HttpGet(urlo);
+    	}
+    	else if(method.equals(RequestMethod.POST)){
+    		requestBase = new HttpPost(urlo);
+    	}
+    	else if(method.equals(RequestMethod.PUT)){
+    		requestBase = new HttpPut(urlo);
+    	}
+    	requestBase.setURI(urlo);
+    	requestBase.addHeader("Accept-Charset", charset);
 		
 		if(useBasicAuth){
 			String encoded = new String(Base64.encodeBase64((username+":"+password).getBytes()));
-	        conn.setRequestProperty("Authorization", "Basic "+encoded);
+			requestBase.addHeader("Authorization", "Basic "+encoded);
 		}
-		
-		conn.setRequestMethod(requestMethod.name());
-		
-		return conn;
+		System.out.println(url);
+		return requestBase;
 	}
     
     public static String removeEndingSlash(String str){
@@ -125,51 +122,4 @@ public class HttpUtil {
     public static String removeTrailingSlash(String str){
 		return str.startsWith("/")?str.substring(1):str;
 	}
-    
-    static {
-        disableSslVerification();
-    }
-
-    private static void disableSslVerification() {
-    	System.setProperty("disable_bad_sslciphers", "yes");
-    	System.setProperty("jsse.enableSNIExtension", "false");
-        Security.addProvider(new BouncyCastleProvider());
-
-        try
-        {
-            // Create a trust manager that does not validate certificate chains
-            TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-				@Override
-				public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-				}
-				@Override
-				public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-				}
-            }
-            };
-
-            // Install the all-trusting trust manager
-            SSLContext sc = SSLContext.getInstance("TLS");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            SSLSocketFactory sf = sc.getSocketFactory();
-            HttpsURLConnection.setDefaultSSLSocketFactory(new SecureSocketFactory(sf));
-
-            // Create all-trusting host name verifier
-            HostnameVerifier allHostsValid = new HostnameVerifier() {
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }
-            };
-
-            // Install the all-trusting host verifier
-            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        }
-    }
 }

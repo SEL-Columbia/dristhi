@@ -17,6 +17,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class FileCreator {
 
 	// private static String directory=null;//= System.getProperty("user.home");
@@ -29,13 +31,12 @@ public class FileCreator {
 	public void createFile(String filename, String directory, byte[] content)
 			throws FileNotFoundException, IOException {
 
-		String s = osDirectorySet(osDirectorySet(directory));
-		File f = new File(s+(filename.lastIndexOf(".")-1));
+		File f = new File(directory);
 		if(f.mkdirs()){
 			
 		}
 		//System.out.println(s);
-		FileOutputStream fos2 = new FileOutputStream(f.getPath()+filename);
+		FileOutputStream fos2 = new FileOutputStream(f.getPath()+System.getProperty("file.separator")+filename);
 		fos2.write(content);
 		fos2.close();
 
@@ -60,7 +61,6 @@ public class FileCreator {
 	
 		try {
 		//	System.out.println("before creating files "+directory);
-			directory = createDirectory(directory);
 			createFile("form.xml", directory, form);
 			createFile("model.xml", directory, model);
 			createFile("form.json", directory, formjson);
@@ -136,20 +136,20 @@ public class FileCreator {
 		}
 		return name;
 	}
-
-	public  String prettyFormat(String input, int indent) {
+	
+	private  String prettyFormat(String input, int indent) {
 		try {
 			Source xmlInput = new StreamSource(new StringReader(input));
 			StringWriter stringWriter = new StringWriter();
 			StreamResult xmlOutput = new StreamResult(stringWriter);
-			TransformerFactory transformerFactory = TransformerFactory
-					.newInstance();
-			// This statement works with JDK 6
-			transformerFactory.setAttribute("indent-number", indent);
+		    Transformer transformer = TransformerFactory.newInstance().newTransformer();
 
-			Transformer transformer = transformerFactory.newTransformer();
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.transform(xmlInput, xmlOutput);
+		    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+		    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", indent+"");
+		    
+		    transformer.transform(xmlInput, xmlOutput);
 			return xmlOutput.getWriter().toString();
 		} catch (Throwable e) {
 			// You'll come here if you are using JDK 1.5
@@ -176,7 +176,7 @@ public class FileCreator {
 	}
 
 	public  String prettyFormat(String input) {
-		return prettyFormat(input, 3);
+		return prettyFormat(input, 4);
 	}
 
 }

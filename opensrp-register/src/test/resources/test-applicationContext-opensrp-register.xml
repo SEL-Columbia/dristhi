@@ -14,6 +14,8 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="org.opensrp.register.ziggy.repository"/>
+    <context:component-scan base-package="org.opensrp.form"/>
+    <context:component-scan base-package="org.opensrp.register"/>
     
     <bean id="opensrpDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="${couchdb.db.opensrp}"/>
@@ -26,6 +28,11 @@
     </bean>
         <bean id="opensrpErrorTraceDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="${couchdb.db.error}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+    
+    <bean id="opensrpFormDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="${couchdb.db.form}"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
 </beans>

@@ -1,0 +1,84 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] Using the builder org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder with a thread count of 1
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building opensrp-register 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp-core/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp-core/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp-api/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp-api/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp-common/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp-common/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp-form/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp-form/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/opensrp-server/org/opensrp/opensrp-interface/0.1-SNAPSHOT/maven-metadata.xml
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/opensrp/opensrp-interface/0.1-SNAPSHOT/maven-metadata.xml
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ opensrp-register ---
+[INFO] Deleting D:\opensrpThriveMaster\opensrp-server\opensrp-register\target
+[INFO] 
+[INFO] --- properties-maven-plugin:1.0-alpha-2:read-project-properties (default) @ opensrp-register ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ opensrp-register ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 3 resources to org/opensrp/register/thrivepk
+[INFO] Copying 1 resource to ziggy
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ opensrp-register ---
+[INFO] Compiling 3 source files to D:\opensrpThriveMaster\opensrp-server\opensrp-register\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:testResources (default-testResources) @ opensrp-register ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 48 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ opensrp-register ---
+[INFO] Compiling 5 source files to D:\opensrpThriveMaster\opensrp-server\opensrp-register\target\test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.9:test (default-test) @ opensrp-register ---
+[INFO] Surefire report directory: D:\opensrpThriveMaster\opensrp-server\opensrp-register\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+
+Results :
+
+Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ opensrp-register ---
+[INFO] Building jar: D:\opensrpThriveMaster\opensrp-server\opensrp-register\target\opensrp-register-0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-failsafe-plugin:2.9:integration-test (default) @ opensrp-register ---
+[INFO] Failsafe report directory: D:\opensrpThriveMaster\opensrp-server\opensrp-register\target\failsafe-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+
+Results :
+
+Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] 
+[INFO] --- maven-failsafe-plugin:2.9:verify (default) @ opensrp-register ---
+[INFO] Failsafe report directory: D:\opensrpThriveMaster\opensrp-server\opensrp-register\target\failsafe-reports
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ opensrp-register ---
+[INFO] Installing D:\opensrpThriveMaster\opensrp-server\opensrp-register\target\opensrp-register-0.1-SNAPSHOT.jar to C:\Users\Maimoona\.m2\repository\org\opensrp\opensrp-register\0.1-SNAPSHOT\opensrp-register-0.1-SNAPSHOT.jar
+[INFO] Installing D:\opensrpThriveMaster\opensrp-server\opensrp-register\pom.xml to C:\Users\Maimoona\.m2\repository\org\opensrp\opensrp-register\0.1-SNAPSHOT\opensrp-register-0.1-SNAPSHOT.pom
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 19.535 s
+[INFO] Finished at: 2016-05-26T13:54:22+05:00
+[INFO] Final Memory: 30M/226M
+[INFO] ------------------------------------------------------------------------

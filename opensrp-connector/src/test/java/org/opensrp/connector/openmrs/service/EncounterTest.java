@@ -41,10 +41,10 @@ public class EncounterTest extends TestResourceLoader{
 	
 	@Before
 	public void setup() throws IOException{
-		openmrsOpenmrsUrl = "https://endtbpk.irdresearch.org/openmrs";
-		openmrsUsername = "superman";
+		/*openmrsOpenmrsUrl = "http://localhost:8383/openmrs";
+		openmrsUsername = "admin";
 		openmrsPassword = "Admin123";
-		pushToOpenmrsForTest = true;
+		pushToOpenmrsForTest = true;*/
 		ps = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		us = new OpenmrsUserService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		s = new EncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);

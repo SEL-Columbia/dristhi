@@ -23,7 +23,7 @@ import com.mysql.jdbc.StringUtils;
 
 @Service
 public class EncounterService extends OpenmrsService{
-	private static final String ENCOUNTER_URL = "ws/rest/emrapi/encounter";//"ws/rest/v1/encounter";
+	private static final String ENCOUNTER_URL = "ws/rest/v1/encounter";//"ws/rest/emrapi/encounter";
 	private static final String ENCOUNTER__TYPE_URL = "ws/rest/v1/encountertype";
 	private PatientService patientService;
 	private OpenmrsUserService userService;
@@ -95,9 +95,9 @@ public class EncounterService extends OpenmrsService{
 		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
 		enc.put("patient", pt.getString("uuid"));
-		enc.put("patientUuid", pt.getString("uuid"));
+		//TODO enc.put("patientUuid", pt.getString("uuid"));
 		enc.put("encounterType", e.getEventType());
-		enc.put("encounterTypeUuid", e.getEventType());
+		//TODO enc.put("encounterTypeUuid", e.getEventType());
 		enc.put("location", e.getLocationId());
 		enc.put("provider", pr.getString("uuid"));
 
@@ -163,7 +163,7 @@ public class EncounterService extends OpenmrsService{
 		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
 		enc.put("patient", pt.getString("uuid"));
-		enc.put("patientUuid", pt.getString("uuid"));
+	//TODO	enc.put("patientUuid", pt.getString("uuid"));
 		enc.put("encounterType", e.getEventType());
 		enc.put("location", e.getLocationId());
 		enc.put("provider", pr.getString("uuid"));
