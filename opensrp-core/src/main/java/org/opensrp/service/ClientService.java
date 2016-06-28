@@ -135,23 +135,28 @@ public class ClientService {
 	 */
 	public Client findClient(CouchDbConnector targetDb,Client client){
 		// find by auto assigned entity id
-		Client c = allClients.findByBaseEntityId(client.getBaseEntityId());
-		if(c != null){
+		try {
+			Client c = allClients.findByBaseEntityId(client.getBaseEntityId());
+			if(c != null){
+				return c;
+			}
+			
+			//still not found!! search by generic identifiers
+			
+			for (String idt : client.getIdentifiers().keySet()) {
+				List<Client> cl = allClients.findAllByIdentifier(targetDb,client.getIdentifier(idt));
+				if(cl.size() > 1){
+					throw new IllegalArgumentException("Multiple clients with identifier type "+idt+" and ID "+client.getIdentifier(idt)+" exist.");
+				}
+				else if(cl.size() != 0){
+					return cl.get(0); 
+				}
+			}
 			return c;
+		} catch (Exception e) {
+			
+			return null;
 		}
-		
-		//still not found!! search by generic identifiers
-		
-		for (String idt : client.getIdentifiers().keySet()) {
-			List<Client> cl = allClients.findAllByIdentifier(targetDb,client.getIdentifier(idt));
-			if(cl.size() > 1){
-				throw new IllegalArgumentException("Multiple clients with identifier type "+idt+" and ID "+client.getIdentifier(idt)+" exist.");
-			}
-			else if(cl.size() != 0){
-				return cl.get(0); 
-			}
-		}
-		return c;
 	}
 	
 	public Client find(String uniqueId){

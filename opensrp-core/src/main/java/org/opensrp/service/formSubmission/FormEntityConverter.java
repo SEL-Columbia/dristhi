@@ -399,7 +399,7 @@ public class FormEntityConverter {
 
 		String middleName = subf.getFieldValue(getFieldName(Person.middle_name, subf));
 		String lastName = subf.getFieldValue(getFieldName(Person.last_name, subf));
-		DateTime birthdate = new DateTime(bb).withTimeAtStartOfDay();
+		DateTime birthdate =(bb!=null&& bb.isEmpty())?null:new DateTime(bb).withTimeAtStartOfDay();
 		String dd = subf.getFieldValue(getFieldName(Person.deathdate, subf));
 		DateTime deathdate = dd==null?null:new DateTime(dd).withTimeAtStartOfDay();
 		String aproxbd = subf.getFieldValue(getFieldName(Person.birthdate_estimated, subf));

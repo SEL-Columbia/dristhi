@@ -7,6 +7,8 @@ import org.ektorp.CouchDbConnector;
 import org.joda.time.DateTime;
 import org.opensrp.domain.Event;
 import org.opensrp.repository.AllEvents;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,14 +43,18 @@ public class EventService {
 	}
 	public Event getByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb,String baseEntityId, String formSubmissionId)
 	{
-		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(targetDb,baseEntityId, formSubmissionId);
-		if(el.size() > 1){
-			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("+baseEntityId+","+formSubmissionId+")");
-		}
-		if(el.size() == 0){
+		try {
+			List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(targetDb,baseEntityId, formSubmissionId);
+			if(el.size() > 1){
+				throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("+baseEntityId+","+formSubmissionId+")");
+			}
+			if(el.size() == 0){
+				return null;
+			}
+			return el.get(0);
+		} catch (Exception e) {
 			return null;
 		}
-		return el.get(0);
 	}
 	
 	public List<Event> findByBaseEntityId(String baseEntityId) {
@@ -67,13 +73,15 @@ public class EventService {
 	public List<Event> findEventsByDynamicQuery(String query) {
 		return allEvents.findEventsByDynamicQuery(query);
 	}
-	
+    private static Logger logger = LoggerFactory.getLogger(EventService.class.toString());
+
 	public synchronized Event addEvent(Event event)
 	{
 		if(!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null){
 			throw new IllegalArgumentException("An event already exists with given eventId "+event.getEventId()+". Consider updating");
 		}
 		if(getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null){
+			logger.debug("baseentityid: "+ event.getBaseEntityId()+" formsubmissionid "+event.getFormSubmissionId());
 			throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
 		}
 

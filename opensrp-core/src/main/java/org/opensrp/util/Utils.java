@@ -137,8 +137,15 @@ public class Utils {
 	 * @throws MalformedURLException
 	 */
 	public static CouchDbConnector connectToDB(DatabaseConnectionParams dbParams) throws MalformedURLException {
-		HttpClient authenticatedHttpClient = new StdHttpClient.Builder().url(dbParams.url.concat(":").concat(dbParams.portNumber)).username(dbParams.userName)
-				.password(dbParams.password).build();
+		HttpClient authenticatedHttpClient = null;
+		if (dbParams.userName != null && !dbParams.userName.isEmpty() && dbParams.password != null && !dbParams.password.isEmpty()) {
+
+			authenticatedHttpClient = new StdHttpClient.Builder().url(dbParams.url.concat(":").concat(dbParams.portNumber)).username(dbParams.userName)
+					.password(dbParams.password).build();
+		} else {
+			authenticatedHttpClient = new StdHttpClient.Builder().url(dbParams.url.concat(":").concat(dbParams.portNumber)).build();
+		}
+
 		CouchDbInstance dbInstance = new StdCouchDbInstance(authenticatedHttpClient);
 
 		CouchDbConnector db = new StdCouchDbConnector(dbParams.dbName, dbInstance);
@@ -146,11 +153,11 @@ public class Utils {
 
 	}
 
-	public class DatabaseConnectionParams {
-		String url;
-		String portNumber;
-		String userName;
-		String password;
-		String dbName;
+	public static class DatabaseConnectionParams {
+		public String url;
+		public String portNumber;
+		public String userName;
+		public String password;
+		public String dbName;
 	}
 }

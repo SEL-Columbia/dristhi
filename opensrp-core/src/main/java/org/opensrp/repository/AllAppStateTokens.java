@@ -3,7 +3,10 @@ package org.opensrp.repository;
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
+import org.ektorp.UpdateConflictException;
 import org.ektorp.support.GenerateView;
+import org.ektorp.util.Assert;
+import org.ektorp.util.Documents;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.AppStateToken;
@@ -22,4 +25,27 @@ public class AllAppStateTokens extends MotechBaseRepository<AppStateToken> {
 	public List<AppStateToken> findByName(String name) {
     	return queryView("by_name", name);
 	}
+    @GenerateView
+	public List<AppStateToken> findByName(CouchDbConnector db,String name) {
+    	return db.queryView(createQuery("by_name")
+				.includeDocs(true)
+				.key(name),
+				AppStateToken.class);
+	}
+    /**
+	 * @throws UpdateConflictException if there was an update conflict.
+	 */
+	public void update(CouchDbConnector db,AppStateToken entity) {
+		Assert.notNull(entity, "entity may not be null");
+		db.update(entity);
+	}
+	/**
+	 * @throws UpdateConflictException if there was an update conflict.
+	 */
+	public void add(CouchDbConnector db,AppStateToken entity) {
+		Assert.notNull(entity, "entity may not be null");
+		Assert.isTrue(Documents.isNew(entity), "entity must be new");
+		db.create(entity);
+	}
+
 }

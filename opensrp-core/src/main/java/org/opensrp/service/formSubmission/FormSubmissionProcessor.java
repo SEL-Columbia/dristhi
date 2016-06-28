@@ -131,7 +131,10 @@ public class FormSubmissionProcessor{
 		return null;
 	}
 	
-	private void makeModelEntities(FormSubmission submission) throws JSONException {
+	public void makeModelEntities(FormSubmission submission) throws JSONException {
+		if(submission.getInstanceId().equalsIgnoreCase("b7dfb183-97a9-4bd1-8f1c-d85f88189d6a")){
+			logger.debug(""+submission.getInstanceId());
+		}
     	Client c = formEntityConverter.getClientFromFormSubmission(submission);
 		Event e = formEntityConverter.getEventFromFormSubmission(submission);
 		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
@@ -167,7 +170,7 @@ public class FormSubmissionProcessor{
 		}
 		else clientService.addClient(targetDb,c);
 		
-		eventService.addEvent(e);
+		eventService.addEvent(targetDb,e);
 		// TODO relationships b/w entities
 			
 		for (Map<String, Object> cm : dep.values()) {
