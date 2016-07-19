@@ -7,17 +7,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 public class FileCreator {
 
@@ -139,19 +144,27 @@ public class FileCreator {
 	
 	private  String prettyFormat(String input, int indent) {
 		try {
-			Source xmlInput = new StreamSource(new StringReader(input));
-			StringWriter stringWriter = new StringWriter();
-			StreamResult xmlOutput = new StreamResult(stringWriter);
-		    Transformer transformer = TransformerFactory.newInstance().newTransformer();
-
-		    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-		    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-		    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", indent+"");
-		    
-		    transformer.transform(xmlInput, xmlOutput);
-			return xmlOutput.getWriter().toString();
+//			Source xmlInput = new StreamSource(new StringReader(input));
+//			StringWriter stringWriter = new StringWriter();
+//			StreamResult xmlOutput = new StreamResult(new OutputStreamWriter(System.out));
+//			
+			final InputSource src = new InputSource(new StringReader(input));
+            final Node document = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder().parse(src).getDocumentElement();
+            
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			//initialize StreamResult with File object to save to file
+			StreamResult result = new StreamResult(new StringWriter());
+			DOMSource source = new DOMSource(document);
+			transformer.transform(source, result);
+			String xmlString = result.getWriter().toString();
+			System.out.println(xmlString);
+			
+			return xmlString;
 		} catch (Throwable e) {
+			e.printStackTrace();
 			// You'll come here if you are using JDK 1.5
 			// you are getting an the following exeption
 			// java.lang.IllegalArgumentException: Not supported: indent-number
@@ -176,7 +189,7 @@ public class FileCreator {
 	}
 
 	public  String prettyFormat(String input) {
-		return prettyFormat(input, 4);
+		return prettyFormat(input, 2);
 	}
 
 }
