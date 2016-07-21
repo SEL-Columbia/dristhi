@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -166,6 +167,22 @@ public class BaseEntity extends BaseDataObject {
 		}
 		return null;
 	}
+	
+	/**
+	 * Returns field matching the regex. Note that incase of multiple fields matching criteria 
+	 * function would return first match. The must be well formed to find out a single value
+	 * @param regex
+	 * @return
+	 */
+	public String getIdentifierMatchingRegex(String regex) {
+		for (Entry<String, String> a : getIdentifiers().entrySet()) {
+			if(a.getKey().matches(regex)){
+				return a.getValue();
+			}
+		}
+		return null;
+	}
+	
 	public void setIdentifiers(Map<String, String> identifiers) {
 		this.identifiers = identifiers;
 	}
