@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EncounterAtomfeed extends OpenmrsService implements EventWorker, AtomfeedService{
-	private static final String CATEGORY_URL = "/encounter/recent.form";
+	private static final String CATEGORY_URL = "/OpenSRP_Encounter/recent.form";
 	private AtomFeedProperties atomFeedProperties;
 
 	private AFTransactionManager transactionManager;
