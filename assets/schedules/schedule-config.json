@@ -1,0 +1,62 @@
+{
+  "schedules_handling_rules": [
+    {
+      "schedules": [
+        {
+          "name": "BCG",
+          "handler": "BCG",
+          "comment": "This is a config for the bcg schedule",
+          "events": [
+            {
+              "type": "Immunization",
+              "fields": [
+                
+                {
+                  "field_name": "obs.fieldCode",
+                  "field_value": "162699AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "value": "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                },
+                {
+                  "field_name": "obs.fieldCode",
+                  "field_value": "162699AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "value": "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                }
+              ],
+              "milestone": "",
+              "action": "enroll"
+            },
+            {
+              "type": "Immunization",
+              "field": "obs.fieldCode",
+              "field_value": "162689AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "value": "1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "action": "fulfill"
+            }
+          ]
+        },
+        {
+          "name": "BCG",
+          "handler": "BCG",
+          "comment": "This is a config for the bcg schedule",
+          "events": [
+            {
+              "type": "Immunization",
+              "field": "obs.fieldCode",
+              "field_value": "162699AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "value": "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "milestone": "",
+              "action": "enroll"
+            },
+            {
+              "type": "Immunization",
+              "field": "obs.fieldCode",
+              "field_value": "162689AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "value": "1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "action": "fulfill"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
