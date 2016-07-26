@@ -1,0 +1,37 @@
+{
+					"name": "ELCO PSRF",
+					"handler": "WomanRegistrationHandler",
+					"events": [
+						{
+							"types": ["New Woman Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "163006AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //still menstruating
+								}
+							],
+							"milestone": "ELCO PSRF",
+							"reference_date_fields": [
+				                {
+				                  "field": "eventDate",
+								  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Census Visit"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "ELCO PSRF",
+							"action": "fulfill"
+						}
+					]
+	
+}//census visit also should enroll a household into this?
