@@ -1,62 +1,15 @@
 {
-  "schedules_handling_rules": [
-    {
-      "schedules": [
-        {
-          "name": "BCG",
-          "handler": "BCG",
-          "comment": "This is a config for the bcg schedule",
-          "events": [
-            {
-              "type": "Immunization",
-              "fields": [
-                
-                {
-                  "field_name": "obs.fieldCode",
-                  "field_value": "162699AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                  "value": "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                },
-                {
-                  "field_name": "obs.fieldCode",
-                  "field_value": "162699AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                  "value": "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                }
-              ],
-              "milestone": "",
-              "action": "enroll"
-            },
-            {
-              "type": "Immunization",
-              "field": "obs.fieldCode",
-              "field_value": "162689AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "value": "1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "action": "fulfill"
-            }
-          ]
-        },
-        {
-          "name": "BCG",
-          "handler": "BCG",
-          "comment": "This is a config for the bcg schedule",
-          "events": [
-            {
-              "type": "Immunization",
-              "field": "obs.fieldCode",
-              "field_value": "162699AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "value": "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "milestone": "",
-              "action": "enroll"
-            },
-            {
-              "type": "Immunization",
-              "field": "obs.fieldCode",
-              "field_value": "162689AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "value": "1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "action": "fulfill"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+	"schedules_handling_rules": [
+		{
+		
+		"default_field": "obs.fieldCode",
+		"comment": "This is a config for the schedules. Events are the typical EC model events that lead to either enrolling or fulfilling a milestone. There are two sets of events (see types key), the ones that involved
+					in enrolling into a milestone and those that are used in fulfilling a milestone. pass_logic can either be AND or OR. When it's AND all the conditions in the fields must be fulfilled and when OR either 
+					of the fields values will lead to executing the action. enrollment_fields define the conditions that must be met for someone to enroll into a milestone from the events specified in the types key",
+					
+			"schedules": [
+			//merged schedules go here
+			]
+		}
+	]
 }

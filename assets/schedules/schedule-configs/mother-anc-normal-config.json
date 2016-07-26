@@ -1,0 +1,163 @@
+{
+					"name": "Ante Natal Care - Normal",
+					"handler": "ANC",
+					"events": [
+						{
+							"types": ["Pregnancy Surveillance and Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "162942AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value":"1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"milestone": "ANC 1",
+							"reference_date_fields": [
+				                {
+				                  "concept": "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["ANC Reminder Visit 1"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "ANC 1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "Ante Natal Care - Normal",
+					"handler": "ANC",
+					"events": [
+						{
+							"types": ["ANC Reminder Visit 1"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value":"NOT_EMPTY",
+								}
+							],
+							"milestone": "ANC 2",
+							"reference_date_fields": [
+				                {
+				                  "event":"Pregnancy Surveillance and Registration",
+				                  "concept": "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["ANC Reminder Visit 2"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "ANC 2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "Ante Natal Care - Normal",
+					"handler": "ANC",
+					"events": [
+						{
+							"types": ["ANC Reminder Visit 2"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value":"NOT_EMPTY",
+								}
+							],
+							"milestone": "ANC 3",
+							"reference_date_fields": [
+				                {
+				                  "event":"Pregnancy Surveillance and Registration",
+				                  "concept": "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["ANC Reminder Visit 3"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "ANC 3",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "Ante Natal Care - Normal",
+					"handler": "ANC",
+					"events": [
+						{
+							"types": ["ANC Reminder Visit 3"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value":"NOT_EMPTY",
+								}
+							],
+							"milestone": "ANC 4",
+							"reference_date_fields": [
+				                {
+				                  "event":"Pregnancy Surveillance and Registration",
+				                  "concept": "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["ANC Reminder Visit 4"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "ANC 4",
+							"action": "fulfill"
+						},
+						{
+							"types": ["Birth Notification Followup form"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "ALL",
+							"action": "unenroll"
+						}
+					]
+	
+}
