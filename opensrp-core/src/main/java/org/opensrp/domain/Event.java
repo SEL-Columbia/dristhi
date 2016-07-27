@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -16,7 +18,7 @@ import org.joda.time.DateTime;
 public class Event extends BaseDataObject{
 
 	@JsonProperty
-	private String eventId;
+	private Map<String, String> identifiers;
 	@JsonProperty
 	private String baseEntityId;
 	@JsonProperty
@@ -60,10 +62,9 @@ public class Event extends BaseDataObject{
 		this.version = System.currentTimeMillis();
 	}
 
-	public Event(String baseEntityId, String eventId, String eventType, DateTime eventDate, String entityType, 
+	public Event(String baseEntityId, String eventType, DateTime eventDate, String entityType, 
 			String providerId, String locationId, String formSubmissionId) {
 		this.baseEntityId = baseEntityId;
-		this.eventId = eventId;
 		this.eventType = eventType;
 		this.eventDate = eventDate;
 		this.entityType = entityType;
@@ -74,7 +75,25 @@ public class Event extends BaseDataObject{
 	}
 	
 	public List<Obs> getObs() {
+		if(obs == null){
+			obs = new ArrayList<>();
+		}
 		return obs;
+	}
+	
+	public Obs getObs(String parent, String concept) {
+		if(obs == null){
+			obs = new ArrayList<>();
+		}
+		for (Obs o : obs) {
+			// parent is blank OR matches with obs parent
+			if((StringUtils.isBlank(parent) 
+					|| (StringUtils.isNotBlank(o.getParentCode()) && parent.equalsIgnoreCase(o.getParentCode()))) 
+				&& o.getFieldCode().equalsIgnoreCase(concept)){
+				return o; //TODO handle duplicates
+			}
+		} 
+		return null;
 	}
 
 	/**
@@ -102,6 +121,56 @@ public class Event extends BaseDataObject{
 		this.baseEntityId = baseEntityId;
 	}
 
+	public Map<String, String> getIdentifiers() {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
+		}
+		return identifiers;
+	}
+
+	public String getIdentifier(String identifierType) {
+		if(identifiers == null){
+			return null;
+		}
+		for (String k : identifiers.keySet()) {
+			if(k.equalsIgnoreCase(identifierType)){
+				return identifiers.get(k);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns field matching the regex. Note that incase of multiple fields matching criteria 
+	 * function would return first match. The must be well formed to find out a single value
+	 * @param regex
+	 * @return
+	 */
+	public String getIdentifierMatchingRegex(String regex) {
+		for (Entry<String, String> a : getIdentifiers().entrySet()) {
+			if(a.getKey().matches(regex)){
+				return a.getValue();
+			}
+		}
+		return null;
+	}
+	
+	public void setIdentifiers(Map<String, String> identifiers) {
+		this.identifiers = identifiers;
+	}
+
+	public void addIdentifier(String identifierType, String identifier) {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
+		}
+		
+		identifiers.put(identifierType, identifier);
+	}
+
+	public void removeIdentifier(String identifierType) {
+		identifiers.remove(identifierType);
+	}
+	
 	public String getLocationId() {
 		return locationId;
 	}
@@ -142,14 +211,6 @@ public class Event extends BaseDataObject{
 		this.providerId = providerId;
 	}
 
-	public String getEventId() {
-		return eventId;
-	}
-
-	public void setEventId(String eventId) {
-		this.eventId = eventId;
-	}
-
 	public String getEntityType() {
 		return entityType;
 	}
@@ -186,6 +247,24 @@ public class Event extends BaseDataObject{
 		return this;
 	}
 
+	/**
+	 * WARNING: Overrides all existing identifiers
+	 * @param identifiers
+	 * @return
+	 */
+	public Event withIdentifiers(Map<String, String> identifiers) {
+		this.identifiers = identifiers;
+		return this;
+	}
+	
+	public Event withIdentifier(String identifierType, String identifier) {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
+		}
+		identifiers.put(identifierType, identifier);
+		return this;
+	}	
+	
 	public Event withLocationId(String locationId) {
 		this.locationId = locationId;
 		return this;
@@ -248,6 +327,4 @@ public class Event extends BaseDataObject{
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-
-	
 }

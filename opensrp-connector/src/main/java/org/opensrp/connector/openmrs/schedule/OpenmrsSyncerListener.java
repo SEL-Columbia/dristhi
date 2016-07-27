@@ -97,7 +97,7 @@ public class OpenmrsSyncerListener {
 	}
     
     @SuppressWarnings("unchecked")
-	@MotechListener(subjects = "PUSH FORM SUBMISSION TO OPENMRS")
+	@MotechListener(subjects = "PUSH FORM SUBMISSION TO OPENMRS")//TODO constant
 	public void pushFormSubmissionToOpenMRS(MotechEvent event) {
     	try{
     		System.out.println("RUNNING PUSH FORM SUBMISSION TO OPENMRS");
@@ -106,7 +106,7 @@ public class OpenmrsSyncerListener {
     		Event e = (Event)d.get("event");
     		Map<String, Map<String, Object>> dep = (Map<String, Map<String, Object>>) d.get("dependents");
     		
-    		e.setEventId(addEventToOpenMRS(c, e));
+    		e.addDetails("OPENMRS_UUID", addEventToOpenMRS(c, e));
     		
     		eventService.updateEvent(e);
     		

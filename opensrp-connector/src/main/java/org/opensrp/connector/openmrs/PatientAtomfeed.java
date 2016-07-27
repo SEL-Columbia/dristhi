@@ -31,8 +31,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PatientAtomfeed extends OpenmrsService implements EventWorker, AtomfeedService
 {
-	private static final String CATEGORY_URL = "/OpenSRP_Patient/recent.form";
 	private Logger log = Logger.getLogger(getClass().getSimpleName());
+	private static final String CATEGORY_URL = "/OpenSRP_Patient/recent.form";
 	
 	private AtomFeedProperties atomFeedProperties;
 	private AFTransactionManager transactionManager;
@@ -106,7 +106,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 
 	@Override
 	public void processEvents() {
-		Logger.getLogger(getClass().getName()).info("Processing PatientAtomfeed");
+		Logger.getLogger(getClass().getName()).info("Processing PatientAtomfeeds");
 		client.processEvents();
 	}
 

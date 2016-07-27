@@ -185,7 +185,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 				return resp;
 			}
 			
-			Event e = new Event(c.getBaseEntityId(), new Random().nextLong()+"", "Immunization", new DateTime(), 
+			Event e = new Event(c.getBaseEntityId(), "Immunization", new DateTime(), 
 					"testentity", "demotest", location, System.currentTimeMillis()+"");
 			List<Object> values = new ArrayList<>();
 			values.add(date);

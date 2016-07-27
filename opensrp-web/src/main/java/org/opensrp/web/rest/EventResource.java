@@ -45,7 +45,7 @@ public class EventResource extends RestResource<Event>{
 
 	@Override
 	public Event getByUniqueId(String uniqueId) {
-		return eventService.getByEventId(uniqueId);
+		return eventService.find(uniqueId);
 	}
 	
 /*	@RequestMapping(method=RequestMethod.GET)

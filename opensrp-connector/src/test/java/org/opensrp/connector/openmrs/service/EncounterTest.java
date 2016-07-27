@@ -30,7 +30,7 @@ public class EncounterTest extends TestResourceLoader{
 	public EncounterTest() throws IOException {
 		super();
 	}
-
+	
 	EncounterService s;
 	FormEntityConverter oc;
 	PatientService ps;
@@ -41,10 +41,6 @@ public class EncounterTest extends TestResourceLoader{
 	
 	@Before
 	public void setup() throws IOException{
-		/*openmrsOpenmrsUrl = "http://localhost:8383/openmrs";
-		openmrsUsername = "admin";
-		openmrsPassword = "Admin123";
-		pushToOpenmrsForTest = true;*/
 		ps = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		us = new OpenmrsUserService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		s = new EncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
