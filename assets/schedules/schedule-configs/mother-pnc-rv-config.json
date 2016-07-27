@@ -1,0 +1,111 @@
+{
+					"name": "Post Natal Care Reminder Visit",
+					"handler": "WomanRegistrationHandler",
+					"events": [
+						{
+							"types": ["Birth Notification Followup form"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "151849AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //live birth
+								}
+							],
+							"milestone": "pncrv_1",
+							"reference_date_fields": [
+				                {
+				                  "concept": "5599AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",//date of outcome
+				                  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["PNC Reminder Visit 1"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "pncrv_1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "Post Natal Care Reminder Visit",
+					"handler": "WomanRegistrationHandler",
+					"events": [
+						{
+							"types": ["PNC Reminder Visit 1"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "163088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //Met and baby alive
+								}
+							],
+							"milestone": "pncrv_2",
+							"reference_date_fields": [
+				                {
+				                  "field": "eventDate",
+								  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["PNC Reminder Visit 2"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "pncrv_2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "Post Natal Care Reminder Visit",
+					"handler": "WomanRegistrationHandler",
+					"events": [
+						{
+							"types": ["PNC Reminder Visit 2"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "163088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //Met and baby alive
+								}
+							],
+							"milestone": "pncrv_3",
+							"reference_date_fields": [
+				                {
+				                  "field": "eventDate",
+								  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["PNC Reminder Visit 3"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "pncrv_3",
+							"action": "fulfill"
+						}
+					]
+	
+}

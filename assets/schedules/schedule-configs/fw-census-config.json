@@ -1,0 +1,37 @@
+{
+					"name": "FW CENSUS",
+					"handler": "HouseholdRegistrationHandler",
+					"events": [
+						{
+							"types": ["New Household Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY" //start
+								}
+							],
+							"milestone": "FW CENSUS",
+							"reference_date_fields": [
+				                {
+				                  "field": "eventDate",
+								  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Census Visit"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "FW CENSUS",
+							"action": "fulfill"
+						}
+					]
+	
+}
