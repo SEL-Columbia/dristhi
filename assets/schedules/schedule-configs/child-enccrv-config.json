@@ -8,7 +8,7 @@
 							"enrollment_fields": [
 								{
 									"concept": "161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "151849AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //live birth
+									"value": "151849AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" 
 								}
 							],
 							"milestone": "enccrv_1",
@@ -45,7 +45,7 @@
 							"enrollment_fields": [
 								{
 									"concept": "163088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //Met and baby alive
+									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" 
 								}
 							],
 							"milestone": "enccrv_2",
@@ -82,7 +82,7 @@
 							"enrollment_fields": [
 								{
 									"concept": "163088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //Met and baby alive
+									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" 
 								}
 							],
 							"milestone": "enccrv_3",
@@ -107,5 +107,4 @@
 							"action": "fulfill"
 						}
 					]
-	//not met, child given for adoption, refused , permanentyl moved- should we unenroll from the schedule?
 }

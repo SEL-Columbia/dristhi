@@ -8,7 +8,7 @@
 							"enrollment_fields": [
 								{
 									"concept": "163006AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //still menstruating
+									"value": "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 								}
 							],
 							"milestone": "ELCO PSRF",
@@ -34,4 +34,4 @@
 						}
 					]
 	
-}//census visit also should enroll a household into this?
+}

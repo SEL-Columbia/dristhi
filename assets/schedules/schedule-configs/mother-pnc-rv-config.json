@@ -8,13 +8,13 @@
 							"enrollment_fields": [
 								{
 									"concept": "161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "151849AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //live birth
+									"value": "151849AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" 
 								}
 							],
 							"milestone": "pncrv_1",
 							"reference_date_fields": [
 				                {
-				                  "concept": "5599AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",//date of outcome
+				                  "concept": "5599AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 				                  "value": "NOT_EMPTY"
 				                }
 				             ],
@@ -45,7 +45,7 @@
 							"enrollment_fields": [
 								{
 									"concept": "163088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //Met and baby alive
+									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" 
 								}
 							],
 							"milestone": "pncrv_2",
@@ -82,7 +82,7 @@
 							"enrollment_fields": [
 								{
 									"concept": "163088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //Met and baby alive
+									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" 
 								}
 							],
 							"milestone": "pncrv_3",

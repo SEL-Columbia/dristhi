@@ -14,8 +14,7 @@
 								{
 									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 									"parentCode":"783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "EMPTY",
-									"parentCode":"",
+									"value": "EMPTY"
 								}
 							],
 							"milestone": "opv0",

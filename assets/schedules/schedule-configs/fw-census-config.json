@@ -8,7 +8,7 @@
 							"enrollment_fields": [
 								{
 									"concept": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "NOT_EMPTY" //start
+									"value": "NOT_EMPTY" 
 								}
 							],
 							"milestone": "FW CENSUS",

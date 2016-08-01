@@ -8,7 +8,7 @@
 							"enrollment_fields": [
 								{
 									"concept": "161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "151849AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" //live birth
+									"value": "151849AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" 
 								}
 							],
 							"milestone": "BirthNotificationPregnancyStatusFollowUp",
