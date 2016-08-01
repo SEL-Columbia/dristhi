@@ -48,7 +48,7 @@ public class ActionService {
 
     public void alertForBeneficiary(String beneficiaryType, String caseID, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
     	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
-    	allAlerts.add(new Alert(anmIdentifier, caseID, beneficiaryType, AlertType.notification, TriggerType.schedule, scheduleName, visitCode, startDate, expiryDate, alertStatus, null));
+    	allAlerts.addOrUpdateScheduleNotificationAlert(beneficiaryType, caseID, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     }
 
     public void markAllAlertsAsInactive(String entityId) {

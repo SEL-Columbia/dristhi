@@ -1,8 +1,11 @@
 package org.opensrp.scheduler.repository;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
@@ -10,7 +13,11 @@ import org.ektorp.support.View;
 import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
+import org.opensrp.dto.AlertStatus;
+import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
+import org.opensrp.scheduler.Alert.AlertType;
+import org.opensrp.scheduler.Alert.TriggerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +80,7 @@ public class AllAlerts extends MotechBaseRepository<Alert> {
     @View(name = "alert_by_entityId_active",
             map = "function(doc) { " +
                     "if(doc.type === 'Alert' && doc.isActive) {" +
-                    "emit([doc.entityId], null)} " +
+                    "emit(doc.entityId, null)} " +
                     "}")
     public List<Alert> findActiveAlertByEntityId(String entityId) {
         return db.queryView(createQuery("alert_by_entityId_active").key(entityId).includeDocs(true), Alert.class);
@@ -136,6 +143,36 @@ public class AllAlerts extends MotechBaseRepository<Alert> {
             existingAlert.markAlertAsComplete(completionDate);
         }
         db.executeBulk(existingAlerts);
+    }
+    
+    public void addOrUpdateScheduleNotificationAlert(String beneficiaryType, String entityId, String providerId, 
+    		String triggerName, String triggerCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
+        List<Alert> existingAlerts =  findActiveAlertByProviderEntityIdTriggerName(providerId, entityId, triggerName);
+        if (existingAlerts.size() > 1) {
+            logger.warn(MessageFormat.format("Found more than one active alerts for the combination of "
+            		+ "providerId: {0}, entityId: {1} and triggerName: {2}", providerId, entityId, triggerName));
+        }
+        
+        if(existingAlerts.size() == 0){
+        	add(new Alert(providerId, entityId, beneficiaryType, AlertType.notification, TriggerType.schedule, triggerName, triggerCode, startDate, expiryDate, alertStatus, null));        	
+        }
+        else {
+        	Alert al = existingAlerts.get(0);
+        	// if visit code is same then update otherwise add another record
+        	if(StringUtils.isNotBlank(al.triggerCode()) && StringUtils.isNotBlank(triggerCode) 
+        			&& al.triggerCode().equalsIgnoreCase(triggerCode)){
+        		al.setAlertStatus(alertStatus.name());
+        		al.setStartDate(startDate.toString());
+        		al.setExpiryDate(expiryDate.toString());
+        		al.details().put(alertStatus.name()+":start", startDate.toString());
+        		al.details().put(alertStatus.name()+":end", expiryDate.toString());
+        		
+        		update(al);
+        	}
+        	else {
+            	add(new Alert(providerId, entityId, beneficiaryType, AlertType.notification, TriggerType.schedule, triggerName, triggerCode, startDate, expiryDate, alertStatus, null));        	
+        	}
+        }
     }
     
     public void markAlertAsCompleteFor(String entityId, String triggerName, String completionDate) {
