@@ -45,7 +45,7 @@
 							"enrollment_fields": [
 								{
 									"field": "eventDate",
-									"value":"NOT_EMPTY",
+									"value":"NOT_EMPTY"
 								}
 							],
 							"milestone": "ANC 2",
@@ -83,7 +83,7 @@
 							"enrollment_fields": [
 								{
 									"field": "eventDate",
-									"value":"NOT_EMPTY",
+									"value":"NOT_EMPTY"
 								}
 							],
 							"milestone": "ANC 3",
@@ -121,7 +121,7 @@
 							"enrollment_fields": [
 								{
 									"field": "eventDate",
-									"value":"NOT_EMPTY",
+									"value":"NOT_EMPTY"
 								}
 							],
 							"milestone": "ANC 4",

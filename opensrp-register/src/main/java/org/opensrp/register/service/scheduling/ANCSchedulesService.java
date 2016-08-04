@@ -28,15 +28,13 @@ public class ANCSchedulesService {
 	
 	private HealthSchedulerService scheduler;
 	
-	
 	public void processEvent(Event event) {
 		
 	}
 	
-	public void enrollMother(String caseId, LocalDate referenceDateForSchedule, String provider, String instanceId,
-	                         String startDate) {
+	public void enrollMother(String caseId, LocalDate referenceDateForSchedule, String provider, String startDate) {
 		
-		enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule, provider, instanceId, startDate);
+		enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule, provider, startDate);
 	}
 	
 	/**
@@ -49,7 +47,7 @@ public class ANCSchedulesService {
 	 * @param startDate LMP Date as String format
 	 */
 	private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule, String provider,
-	                                                 String instanceId, String startDate) {
+	                                                 String startDate) {
 		String milestone = null;
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
@@ -119,10 +117,10 @@ public class ANCSchedulesService {
 			else
 				alertStaus = AlertStatus.expired;
 			
-		} 		
+		}
 		logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
-		scheduler.enrollIntoSchedule(entityId, MotherScheduleConstants.SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
-		
+		scheduler.enrollIntoSchedule(entityId, MotherScheduleConstants.SCHEDULE_ANC, milestone,
+		    referenceDateForSchedule.toString());
 		
 	}
 	
@@ -138,17 +136,18 @@ public class ANCSchedulesService {
 	}
 	
 	public void unEnrollFromAllSchedules(String entityId, String eventId) {
-		scheduler.unEnrollFromAllSchedules(entityId,eventId);
+		scheduler.unEnrollFromAllSchedules(entityId, eventId);
 	}
 	
-	public void unEnrollFromSchedule(String entityId, String anmId, String scheduleName,String eventId) {
+	public void unEnrollFromSchedule(String entityId, String anmId, String scheduleName, String eventId) {
 		logger.info(format("Un-enrolling ANC with Entity id:{0} from schedule: {1}", entityId, scheduleName));
-		scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName,eventId);
+		scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName, eventId);
 	}
 	
-	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate,String eventId) {
+	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate,
+	                              String eventId) {
 		try {
-			scheduler.fullfillMilestoneAndCloseAlert(entityId, providerId, scheduleName, completionDate,eventId);
+			scheduler.fullfillMilestoneAndCloseAlert(entityId, providerId, scheduleName, completionDate, eventId);
 			logger.info("fullfillMilestone with id: :" + entityId);
 		}
 		catch (Exception e) {
