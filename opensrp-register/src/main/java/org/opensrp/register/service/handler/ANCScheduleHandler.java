@@ -21,22 +21,17 @@ public class ANCScheduleHandler extends BaseScheduleHandler {
 	private ANCSchedulesService ancScheduleService;
 	
 	@Override
-	public void handle(Event event, JSONArray scheduleConfigEvents) {
+	public void handle(Event event, JSONObject scheduleConfigEvent) {
 		try {
 			
-			for (int i = 0; i < scheduleConfigEvents.length(); i++) {
-				
-				JSONObject scheduleConfigEvent = scheduleConfigEvents.getJSONObject(i);
-				String action=getAction(scheduleConfigEvent);
-//				List<Map<String, String>> enrollmentFieldsList = getEnrollmentFields(scheduleConfigEvent);
-//				for (Map<String, String> enrollmentFields : enrollmentFieldsList) {
-//					
-//					
-//				}
-				
+			if (evaluateEvent(event, scheduleConfigEvent)) {
+				String milestone = getMilestone(scheduleConfigEvent);
+				String action = getAction(scheduleConfigEvent);
+				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
+					ancScheduleService.enrollMother(event.getBaseEntityId(), referenceDateForSchedule, event.getProviderId(),
+					    startDate);
+				}
 			}
-			//ancScheduleService.enrollMother(event.getBaseEntityId(), referenceDateForSchedule, event.getProviderId(),
-			//    startDate);
 			
 		}
 		catch (JSONException e) {

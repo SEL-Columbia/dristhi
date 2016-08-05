@@ -22,8 +22,9 @@ import org.springframework.stereotype.Component;
 public class EventsRouter {
 	
 	private static Logger logger = LoggerFactory.getLogger(EventsRouter.class.toString());
-	 @Autowired
-	 private EventsHandlerMapper handlerMapper;
+	
+	@Autowired
+	private EventsHandlerMapper handlerMapper;
 	
 	// @Value("#{opensrp['schedule.config.json.path']}")
 	// String scheduleConfigPath;
@@ -32,6 +33,8 @@ public class EventsRouter {
 	
 	// private static final String JSON_KEY_SCHEDULES = "schedules";
 	private static final String JSON_KEY_HANDLER = "handler";
+	
+	private static final String JSON_KEY_TYPES = "types";
 	
 	private static final String JSON_KEY_EVENTS = "events";
 	
@@ -60,18 +63,25 @@ public class EventsRouter {
 				System.out.println(schedulesStr);
 				
 				JSONArray schedulesJsonObject = new JSONArray("[" + schedulesStr + "]");
-				// schedules.put("schedules", schedulesJsonObject);
-				
+				//iterate through concatenated schedule-configs files to retrieve the events and compare with the current event from the db
 				for (int i = 0; i < schedulesJsonObject.length(); i++) {
 					JSONObject scheduleJsonObject = schedulesJsonObject.getJSONObject(i);
 					String handler = scheduleJsonObject.getString(JSON_KEY_HANDLER);
 					JSONArray eventsJsonArray = scheduleJsonObject.getJSONArray(JSON_KEY_EVENTS);
 					//iterate through the events to see if the current event (the one passed to this route method) has a schedule handler
-					List<String> eventsList = jsonArrayToList(eventsJsonArray);
-					if (eventsList.contains(event.getEntityType())) {
-						EventsHandler eventHandler = handlerMapper.handlerMap().get(handler);
-						eventHandler.handle(event,eventsJsonArray);
+					for(int j=0; j<eventsJsonArray.length();j++){
+						JSONObject eventJsonObject = eventsJsonArray.getJSONObject(i);
+						JSONArray eventTypesJsonArray = eventJsonObject.getJSONArray(JSON_KEY_TYPES);
+						List<String> eventsList = jsonArrayToList(eventTypesJsonArray);
+						if (eventsList.contains(event.getEntityType())) {
+							EventsHandler eventHandler = handlerMapper.handlerMap().get(handler);
+							eventHandler.handle(event,eventJsonObject);
+						}
+
 					}
+					
+					
+					
 					
 				}
 				
