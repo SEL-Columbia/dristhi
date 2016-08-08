@@ -62,7 +62,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 				if (fieldsArray != null && fieldsArray.length() > 0) {
 					for (int i = 0; i < fieldsArray.length(); i++) {
 						JSONObject jsonObject = fieldsArray.getJSONObject(i);
-						jsonObjectToMap(jsonObject);
+						fieldsMap=jsonObjectToMap(jsonObject);
 						fieldsList.add(fieldsMap);
 						
 					}
@@ -144,14 +144,15 @@ abstract class BaseScheduleHandler implements EventsHandler {
 		boolean result = false;
 		for (Map<String, String> scheduleFields : fieldsList) {
 			for (Map.Entry<String, String> entry : scheduleFields.entrySet()) {
-				String key = entry.getKey();
-				String value = entry.getValue();
+				String key = entry.getKey();//"concept"
+				String value = entry.getValue();//"concept value"
+				String scheduleValue=scheduleFields.get(JSON_KEY_VALUE);//"value- either not_empty or a concept mapping"
 				if (key.equalsIgnoreCase(JSON_KEY_CONCEPT)) {
 					//it's a concept search it in the event's obs
-					key="fieldCode";
-					if (obs.containsKey(key)) {
-						if (obs.get(key).equalsIgnoreCase(value)
-						        || (!obs.get(key).isEmpty() && value.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
+					//key="fieldCode";
+					if (obs.containsKey(value)) {//check if the concept mapping exists in the obs
+						if (obs.get(value).equalsIgnoreCase(scheduleValue)
+						        || (!obs.get(value).isEmpty() && scheduleValue.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
 							result = true;
 							//passlogic AND means that all the fields must have the specified values in the schedule configs else just return when the first value is true
 							if (!passLogic.equalsIgnoreCase("AND"))
@@ -159,10 +160,10 @@ abstract class BaseScheduleHandler implements EventsHandler {
 						}
 					}
 				} else if (key.equalsIgnoreCase(JSON_KEY_FIELD)) { //not a concept so get the value from the main doc e.g eventDate
-					String fieldName = eventJson.has(key) ? eventJson.getString(key) : "";
+					String fieldName = eventJson.has(value) ? eventJson.getString(value) : "";
 					String fieldValue = eventJson.has(fieldName) ? eventJson.getString(fieldName) : "";
-					if (fieldValue.equalsIgnoreCase(value)
-					        || (!fieldValue.isEmpty() && value.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
+					if (fieldValue.equalsIgnoreCase(scheduleValue)
+					        || (!fieldValue.isEmpty() && scheduleValue.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
 						result = true;
 						//passlogic AND means that all the fields must have the specified values in the schedule configs else just return when the first value is true
 						if (!passLogic.equalsIgnoreCase("AND"))

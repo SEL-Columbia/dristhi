@@ -22,9 +22,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ANCSchedulesService {
+public class AnteNatalCareSchedulesService {
 	
-	private static Logger logger = LoggerFactory.getLogger(ANCSchedulesService.class.toString());
+	private static Logger logger = LoggerFactory.getLogger(AnteNatalCareSchedulesService.class.toString());
 	
 	private HealthSchedulerService scheduler;
 	

@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
-import org.opensrp.register.service.scheduling.ANCSchedulesService;
+import org.opensrp.register.service.scheduling.AnteNatalCareSchedulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class ANCScheduleHandler extends BaseScheduleHandler {
 	
 	@Autowired
-	private ANCSchedulesService ancScheduleService;
+	private AnteNatalCareSchedulesService ancScheduleService;
 	
 	@Override
 	public void handle(Event event, JSONObject scheduleConfigEvent) {
@@ -28,8 +28,8 @@ public class ANCScheduleHandler extends BaseScheduleHandler {
 				String milestone = getMilestone(scheduleConfigEvent);
 				String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-					ancScheduleService.enrollMother(event.getBaseEntityId(), referenceDateForSchedule, event.getProviderId(),
-					    startDate);
+//					ancScheduleService.enrollMother(event.getBaseEntityId(), referenceDateForSchedule, event.getProviderId(),
+//					    startDate);
 				}
 			}
 			

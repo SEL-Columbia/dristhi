@@ -24,7 +24,9 @@ public class EventsRouter {
 	private static Logger logger = LoggerFactory.getLogger(EventsRouter.class.toString());
 	
 	@Autowired
-	private EventsHandlerMapper handlerMapper;
+	private IHandlerMapper handlerMapper;
+	
+	
 	
 	// @Value("#{opensrp['schedule.config.json.path']}")
 	// String scheduleConfigPath;
@@ -40,24 +42,15 @@ public class EventsRouter {
 	
 	ResourceLoader loader = new DefaultResourceLoader();
 	
+	
 	/**
 	 * @param event
 	 */
 	public void route(Event event) {
 		try {
 			
-			// scheduleConfigPath =
-			// loader.getResource(scheduleConfigPath).getURI().getPath();
-			// String scheduleConfigMappingStr = FileUtils.readFileToString(new
-			// File(scheduleConfigPath), "UTF-8");
 			
 			if (scheduleConfigFilesPath != null && !scheduleConfigFilesPath.isEmpty()) {
-				// JSONObject jsonObject = new
-				// JSONObject(scheduleConfigMappingStr);
-				// JSONArray schedulesRules =
-				// jsonObject.getJSONArray("schedules_handling_rules");
-				
-				// JSONObject schedules = schedulesRules.getJSONObject(0);
 				
 				String schedulesStr = getScheduleConfigs();
 				System.out.println(schedulesStr);
@@ -70,13 +63,17 @@ public class EventsRouter {
 					JSONArray eventsJsonArray = scheduleJsonObject.getJSONArray(JSON_KEY_EVENTS);
 					//iterate through the events to see if the current event (the one passed to this route method) has a schedule handler
 					for(int j=0; j<eventsJsonArray.length();j++){
-						JSONObject eventJsonObject = eventsJsonArray.getJSONObject(i);
-						JSONArray eventTypesJsonArray = eventJsonObject.getJSONArray(JSON_KEY_TYPES);
+						JSONObject scheduleConfigEvent = eventsJsonArray.getJSONObject(i);
+						JSONArray eventTypesJsonArray = scheduleConfigEvent.getJSONArray(JSON_KEY_TYPES);
 						List<String> eventsList = jsonArrayToList(eventTypesJsonArray);
-						if (eventsList.contains(event.getEntityType())) {
-							EventsHandler eventHandler = handlerMapper.handlerMap().get(handler);
-							eventHandler.handle(event,eventJsonObject);
-						}
+						
+						handlerMapper.handlerMap().get("ANC").handle(event, scheduleConfigEvent);
+						
+						//if (eventsList.contains(event.getEntityType())) {
+							//EventsHandler eventHandler = handlerMapper.handlerMap().get(handler);
+							//eventHandler.handle(event,eventJsonObject);
+						//}
+						
 
 					}
 					
@@ -91,12 +88,9 @@ public class EventsRouter {
 			logger.error("", e);
 		}
 		
-		// CustomFormSubmissionHandler handler =
-		// handlerMapper.handlerMap().get(event.getEventType());
 		
 	}
 	
-	// private void routeEvent()
 	/**
 	 * This method merges all the files in the schedule-configs folder to create one
 	 * jsonobject/array
