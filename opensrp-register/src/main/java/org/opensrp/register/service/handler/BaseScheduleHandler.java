@@ -26,6 +26,8 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	
 	private static final String JSON_KEY_FIELD = "field";
 	
+	private static final String JSON_KEY_EVENT = "event";
+	
 	private static final String JSON_KEY_VALUE = "value";
 	
 	private static final String JSON_KEY_MILESTONE = "milestone";
@@ -62,7 +64,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 				if (fieldsArray != null && fieldsArray.length() > 0) {
 					for (int i = 0; i < fieldsArray.length(); i++) {
 						JSONObject jsonObject = fieldsArray.getJSONObject(i);
-						fieldsMap=jsonObjectToMap(jsonObject);
+						fieldsMap = jsonObjectToMap(jsonObject);
 						fieldsList.add(fieldsMap);
 						
 					}
@@ -87,26 +89,62 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	}
 	
 	protected Map<String, String> getReferenceDateFields(JSONObject scheduleConfigEvent) throws JSONException {
-		JSONObject jsonObject = scheduleConfigEvent.has(JSON_KEY_REFDATEFIELDS)
-		        ? scheduleConfigEvent.getJSONObject(JSON_KEY_REFDATEFIELDS) : null;
+		JSONArray jsonArray = scheduleConfigEvent.has(JSON_KEY_REFDATEFIELDS)
+		        ? scheduleConfigEvent.getJSONArray(JSON_KEY_REFDATEFIELDS) : null;
 		
-		return jsonObjectToMap(jsonObject);
+		return jsonObjectToMap(jsonArray.getJSONObject(0));
 	}
-	protected String getReferenceDateForSchedule(JSONObject scheduleConfigEvent) throws JSONException {
-		Map<String, String> refDateFields=getReferenceDateFields(scheduleConfigEvent);
+	
+	/**
+	 * Get schedule reference date from the reference_date_fields key
+	 * 
+	 * @param event
+	 * @param scheduleConfigEvent
+	 * @param action
+	 * @return
+	 * @throws JSONException
+	 */
+	protected String getReferenceDateForSchedule(Event event, JSONObject scheduleConfigEvent, String action)
+	    throws JSONException {
+		Map<String, String> refDateFields = new HashMap<String, String>();
+		if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
+			refDateFields = getReferenceDateFields(scheduleConfigEvent);
+		} else if (action.equalsIgnoreCase(ActionType.fulfill.toString())) {
+			refDateFields = getFulfillmentDateFields(scheduleConfigEvent);
+		}
+		JSONObject eventJson = eventToJson(event);
+		Map<String, String> obs = getEventObs(eventJson);
+		String date = "";
+		
 		for (Map.Entry<String, String> entry : refDateFields.entrySet()) {
-			String key = entry.getKey();
-			String value = entry.getValue();
+			String key = entry.getKey();//"concept"
+			String value = entry.getValue();//"concept value or fieldname"
+			if (key.equalsIgnoreCase(JSON_KEY_CONCEPT) && !refDateFields.containsKey(JSON_KEY_EVENT)) {
+				//date is a concept and in the current event being processed search it in the event's obs
+				if (obs.containsKey(value) && !obs.get(value).isEmpty()) {
+					date = obs.get(value);
+				}
+			} else if (key.equalsIgnoreCase(JSON_KEY_CONCEPT) && refDateFields.containsKey(JSON_KEY_EVENT)) {
+				//date is a concept and not in the current event being processed search it in the other event's obs
+				//TODO fetch latest event of the type specified here from the db
+				if (obs.containsKey(value) && !obs.get(value).isEmpty()) {
+					date = obs.get(value);
+				}
+			} else if (key.equalsIgnoreCase(JSON_KEY_FIELD)) {
+				//date is a not a concept but indeed a field in the current event being processed search it in the event's doc
+				date = (eventJson.has(value) && !eventJson.getString(value).isEmpty()) ? eventJson.getString(value) : "";
+			}
 			
 		}
-		return null;
+		return date;
 	}
 	
 	protected Map<String, String> getFulfillmentDateFields(JSONObject scheduleConfigEvent) throws JSONException {
-		JSONObject jsonObject = scheduleConfigEvent.has(JSON_KEY_FULFILLMENTDATEFIELDS)
-		        ? scheduleConfigEvent.getJSONObject(JSON_KEY_FULFILLMENTDATEFIELDS) : null;
 		
-		return jsonObjectToMap(jsonObject);
+		JSONArray jsonArray = scheduleConfigEvent.has(JSON_KEY_FULFILLMENTDATEFIELDS)
+		        ? scheduleConfigEvent.getJSONArray(JSON_KEY_FULFILLMENTDATEFIELDS) : null;
+		
+		return jsonObjectToMap(jsonArray.getJSONObject(0));
 	}
 	
 	protected String getPassLogic(JSONObject scheduleConfigEvent) throws JSONException {
@@ -114,7 +152,6 @@ abstract class BaseScheduleHandler implements EventsHandler {
 		        : "";
 		return passLogic;
 	}
-	
 	
 	protected enum ActionType {
 		enroll, unenroll, fulfill
@@ -146,7 +183,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 			for (Map.Entry<String, String> entry : scheduleFields.entrySet()) {
 				String key = entry.getKey();//"concept"
 				String value = entry.getValue();//"concept value"
-				String scheduleValue=scheduleFields.get(JSON_KEY_VALUE);//"value- either not_empty or a concept mapping"
+				String scheduleValue = scheduleFields.get(JSON_KEY_VALUE);//"value- either not_empty or a concept mapping"
 				if (key.equalsIgnoreCase(JSON_KEY_CONCEPT)) {
 					//it's a concept search it in the event's obs
 					//key="fieldCode";
@@ -192,7 +229,8 @@ abstract class BaseScheduleHandler implements EventsHandler {
 					for (int i = 0; i < obsArray.length(); i++) {
 						JSONObject object = obsArray.getJSONObject(i);
 						String key = object.has(JSON_KEY_EVENT_CONCEPT) ? object.getString(JSON_KEY_EVENT_CONCEPT) : null;
-						String value = object.has(JSON_KEY_VALUE) ? object.getString(JSON_KEY_VALUE) : null;
+						String value = object.has(JSON_KEY_VALUE) ? object.getString(JSON_KEY_VALUE) : "";
+						// : object.has("values") ? object.get("values").toString() : null;
 						if (key != null && value != null) {
 							obs.put(key, value);
 						}

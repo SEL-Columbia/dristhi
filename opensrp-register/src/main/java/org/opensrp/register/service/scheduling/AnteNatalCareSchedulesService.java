@@ -19,6 +19,7 @@ import org.opensrp.register.RegisterConstants.MotherScheduleConstants;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,11 +27,10 @@ public class AnteNatalCareSchedulesService {
 	
 	private static Logger logger = LoggerFactory.getLogger(AnteNatalCareSchedulesService.class.toString());
 	
+	@Autowired
 	private HealthSchedulerService scheduler;
 	
-	public void processEvent(Event event) {
-		
-	}
+	
 	
 	public void enrollMother(String caseId, LocalDate referenceDateForSchedule, String provider, String startDate) {
 		
@@ -119,8 +119,8 @@ public class AnteNatalCareSchedulesService {
 			
 		}
 		logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
-		scheduler.enrollIntoSchedule(entityId, MotherScheduleConstants.SCHEDULE_ANC, milestone,
-		    referenceDateForSchedule.toString());
+		scheduler.enrollIntoSchedule(entityId, MotherScheduleConstants.SCHEDULE_ANC,referenceDateForSchedule.toString() ,milestone
+		    );
 		
 	}
 	

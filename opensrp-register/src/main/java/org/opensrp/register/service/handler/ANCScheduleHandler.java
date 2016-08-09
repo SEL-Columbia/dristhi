@@ -1,15 +1,9 @@
 package org.opensrp.register.service.handler;
 
-import java.util.List;
-import java.util.Map;
-
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
-import org.json.JSONArray;
+import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
-import org.opensrp.domain.Obs;
 import org.opensrp.register.service.scheduling.AnteNatalCareSchedulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,8 +22,8 @@ public class ANCScheduleHandler extends BaseScheduleHandler {
 				String milestone = getMilestone(scheduleConfigEvent);
 				String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-//					ancScheduleService.enrollMother(event.getBaseEntityId(), referenceDateForSchedule, event.getProviderId(),
-//					    startDate);
+					ancScheduleService.enrollMother(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getProviderId(),
+					   "2016-01-01");
 				}
 			}
 			
