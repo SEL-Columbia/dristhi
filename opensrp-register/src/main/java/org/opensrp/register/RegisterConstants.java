@@ -421,6 +421,11 @@ public class RegisterConstants {
         public static final String CHILD_SCHEDULE_PENTAVALENT_1 = "PENTAVALENT 1";
         public static final String CHILD_SCHEDULE_PENTAVALENT_2 = "PENTAVALENT 2";
         public static final String CHILD_SCHEDULE_PENTAVALENT_3 = "PENTAVALENT 3";
+        
+        public static final String SCHEDULE_ENCC = "Essential Newborn Care Checklist";
+        public static final String SCHEDULE_ENCC_1 = "enccrv_1";
+        public static final String SCHEDULE_ENCC_2 = "enccrv_2";
+        public static final String SCHEDULE_ENCC_3 = "enccrv_3";
     }
 
     public static class MotherScheduleConstants {
@@ -442,5 +447,15 @@ public class RegisterConstants {
         public static final String SCHEDULE_HB_TEST_2 = "Hb Test 2";
         public static final String SCHEDULE_HB_FOLLOWUP_TEST = "Hb Followup Test";
         public static final String SCHEDULE_DELIVERY_PLAN = "Delivery Plan";
+        public static final String SCHEDULE_BNF = "BirthNotificationPregnancyStatusFollowUp";  
+    	public static final String SCHEDULE_BNF_IME = "ImmediateBirthNotificationPregnancyStatusFollowUp";
+    	public static final String SCHEDULE_PNC = "Post Natal Care Reminder Visit";
+        public static final String SCHEDULE_PNC_1 = "pncrv_1";
+        public static final String SCHEDULE_PNC_2 = "pncrv_2";
+        public static final String SCHEDULE_PNC_3 = "pncrv_3";
+
+
     }
+   
+    
 }

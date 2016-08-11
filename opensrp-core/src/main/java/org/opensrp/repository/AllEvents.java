@@ -5,6 +5,7 @@ import java.util.List;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.UpdateConflictException;
+import org.ektorp.ViewQuery;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.ektorp.util.Assert;
@@ -13,6 +14,7 @@ import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.repository.lucene.LuceneEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -53,6 +55,10 @@ public class AllEvents extends MotechBaseRepository<Event>{
 	public List<Event> findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
 		return db.queryView(createQuery("all_events_by_base_entity_and_form_submission").key(ComplexKey.of(baseEntityId, formSubmissionId)).includeDocs(true), Event.class);
 	}
+	@View(name = "all_events_by_base_entity_and_form_submission", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.eventType], doc); } }")
+	public List<Event> findByBaseEntityAndType(String baseEntityId, String eventType) {
+		return db.queryView(createQuery("all_events_by_base_entity_and_type").key(ComplexKey.of(baseEntityId, eventType)).includeDocs(true), Event.class);
+	}
 	@View(name = "all_events_by_base_entity_and_form_submission", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.formSubmissionId], doc); } }")
 	public List<Event> findByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb,String baseEntityId, String formSubmissionId) {
 		return targetDb.queryView(createQuery("all_events_by_base_entity_and_form_submission").key(ComplexKey.of(baseEntityId, formSubmissionId)).includeDocs(true), Event.class);
@@ -74,6 +80,13 @@ public class AllEvents extends MotechBaseRepository<Event>{
 		Assert.isTrue(Documents.isNew(event), "entity must be new");
 		targetDb.create(event);
 	}
+	 @View(name = "events_by_server_version", map = "function(doc) { if (doc.type === 'Event') { emit([doc.serverVersion], null); } }")
+	    public List<Event> findByServerVersion(long serverVersion) {
+	        ComplexKey startKey = ComplexKey.of(serverVersion + 1);
+	        ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
+	        return db.queryView(createQuery("events_by_server_version").startKey(startKey).endKey(endKey).includeDocs(true), Event.class);
+	    }
+
 	
 	
 }

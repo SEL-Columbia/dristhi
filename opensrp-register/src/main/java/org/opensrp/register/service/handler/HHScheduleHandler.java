@@ -1,28 +1,27 @@
 package org.opensrp.register.service.handler;
 
-import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
-import org.opensrp.register.service.scheduling.AnteNatalCareSchedulesService;
+import org.opensrp.register.service.scheduling.HHSchedulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ANCScheduleHandler extends BaseScheduleHandler {
+public class HHScheduleHandler extends BaseScheduleHandler {
 	
 	@Autowired
-	private AnteNatalCareSchedulesService ancScheduleService;
+	private HHSchedulesService hhSchedulesService;
 	
 	@Override
 	public void handle(Event event, JSONObject scheduleConfigEvent) {
 		try {
 			
 			if (evaluateEvent(event, scheduleConfigEvent)) {
+				String milestone = getMilestone(scheduleConfigEvent);
 				String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-					ancScheduleService.enrollMother(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getProviderId(),
-					   "2016-01-01");
+					hhSchedulesService.enrollIntoMilestoneOfCensus(event.getBaseEntityId(), getReferenceDateForSchedule(event, scheduleConfigEvent, action), event.getProviderId(), milestone,  event.getEventId());
 				}
 			}
 			

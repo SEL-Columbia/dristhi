@@ -4,15 +4,15 @@ import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
-import org.opensrp.register.service.scheduling.AnteNatalCareSchedulesService;
+import org.opensrp.register.service.scheduling.BNFSchedulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ANCScheduleHandler extends BaseScheduleHandler {
+public class BNFScheduleHandler extends BaseScheduleHandler {
 	
 	@Autowired
-	private AnteNatalCareSchedulesService ancScheduleService;
+	private BNFSchedulesService bnfSchedulesService;
 	
 	@Override
 	public void handle(Event event, JSONObject scheduleConfigEvent) {
@@ -21,8 +21,7 @@ public class ANCScheduleHandler extends BaseScheduleHandler {
 			if (evaluateEvent(event, scheduleConfigEvent)) {
 				String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-					ancScheduleService.enrollMother(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getProviderId(),
-					   "2016-01-01");
+					bnfSchedulesService.enrollBNF(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getProviderId(), event.getEventId(), "2016-01-01");
 				}
 			}
 			

@@ -1,6 +1,6 @@
 {
 					"name": "ELCO PSRF",
-					"handler": "WomanRegistrationHandler",
+					"handler": "ElcoScheduleHandler",
 					"events": [
 						{
 							"types": ["New Woman Registration"],

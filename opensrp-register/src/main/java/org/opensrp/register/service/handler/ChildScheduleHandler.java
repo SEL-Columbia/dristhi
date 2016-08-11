@@ -4,15 +4,15 @@ import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
-import org.opensrp.register.service.scheduling.AnteNatalCareSchedulesService;
+import org.opensrp.register.service.scheduling.ENCCSchedulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ANCScheduleHandler extends BaseScheduleHandler {
+public class ChildScheduleHandler extends BaseScheduleHandler {
 	
 	@Autowired
-	private AnteNatalCareSchedulesService ancScheduleService;
+	private ENCCSchedulesService enccSchedulesService;
 	
 	@Override
 	public void handle(Event event, JSONObject scheduleConfigEvent) {
@@ -21,8 +21,8 @@ public class ANCScheduleHandler extends BaseScheduleHandler {
 			if (evaluateEvent(event, scheduleConfigEvent)) {
 				String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-					ancScheduleService.enrollMother(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getProviderId(),
-					   "2016-01-01");
+					enccSchedulesService.enrollENCCForChild(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)));
+					
 				}
 			}
 			

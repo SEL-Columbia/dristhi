@@ -1,6 +1,6 @@
 {
 					"name": "Ante Natal Care - Normal",
-					"handler": "ANC",
+					"handler": "ANCScheduleHandler",
 					"events": [
 						{
 							"types": ["Pregnancy Surveillance and Registration"],
@@ -37,7 +37,7 @@
 },
 {
 					"name": "Ante Natal Care - Normal",
-					"handler": "ANC",
+					"handler": "ANCScheduleHandler",
 					"events": [
 						{
 							"types": ["ANC Reminder Visit 1"],
@@ -75,7 +75,7 @@
 },
 {
 					"name": "Ante Natal Care - Normal",
-					"handler": "ANC",
+					"handler": "ANCScheduleHandler",
 					"events": [
 						{
 							"types": ["ANC Reminder Visit 2"],
@@ -113,7 +113,7 @@
 },
 {
 					"name": "Ante Natal Care - Normal",
-					"handler": "ANC",
+					"handler": "ANCScheduleHandler",
 					"events": [
 						{
 							"types": ["ANC Reminder Visit 3"],

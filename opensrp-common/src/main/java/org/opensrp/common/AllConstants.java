@@ -75,10 +75,12 @@ public class AllConstants {
 
 	public enum Config {
 		FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION,
-		FORM_ENTITY_PARSER_LAST_MIGRATED_FORM_SUBMISSION // Used when doing data migrations
+		FORM_ENTITY_PARSER_LAST_MIGRATED_FORM_SUBMISSION, // Used when executing data migrations
+		EVENTS_PARSER_LAST_PROCESSED_EVENT // Used to track last time events processed
 	}
 
 	public static final String FORM_SCHEDULE_SUBJECT = "FORM-SCHEDULE";
+	public static final String EVENTS_SCHEDULE_SUBJECT = "EVENTS-SCHEDULE";
 	
 	public static class Report {
         public static final int FIRST_REPORT_MONTH_OF_YEAR = 3;

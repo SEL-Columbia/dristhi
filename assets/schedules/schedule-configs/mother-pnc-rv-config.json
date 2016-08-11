@@ -1,6 +1,6 @@
 {
 					"name": "Post Natal Care Reminder Visit",
-					"handler": "WomanRegistrationHandler",
+					"handler": "PNCScheduleHandler",
 					"events": [
 						{
 							"types": ["Birth Notification Followup form"],
@@ -37,7 +37,7 @@
 },
 {
 					"name": "Post Natal Care Reminder Visit",
-					"handler": "WomanRegistrationHandler",
+					"handler": "PNCScheduleHandler",
 					"events": [
 						{
 							"types": ["PNC Reminder Visit 1"],
@@ -74,7 +74,7 @@
 },
 {
 					"name": "Post Natal Care Reminder Visit",
-					"handler": "WomanRegistrationHandler",
+					"handler": "PNCScheduleHandler",
 					"events": [
 						{
 							"types": ["PNC Reminder Visit 2"],

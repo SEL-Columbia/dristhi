@@ -1,6 +1,6 @@
 {
 					"name": "FW CENSUS",
-					"handler": "HouseholdRegistrationHandler",
+					"handler": "HHScheduleHandler",
 					"events": [
 						{
 							"types": ["New Household Registration"],
