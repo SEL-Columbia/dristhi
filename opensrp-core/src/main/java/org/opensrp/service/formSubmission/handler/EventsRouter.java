@@ -39,13 +39,17 @@ public class EventsRouter {
 	private static final String JSON_KEY_EVENTS = "events";
 	
 	ResourceLoader loader = new DefaultResourceLoader();
+	
+	File scheduleConfigsFolder = null;
+	
 	Event event;
+	
 	/**
 	 * @param event
 	 */
 	public void route(Event _event) {
 		try {
-			event=_event;
+			event = _event;
 			if (scheduleConfigFilesPath != null && !scheduleConfigFilesPath.isEmpty()) {
 				
 				String schedulesStr = getScheduleConfigs();
@@ -68,13 +72,16 @@ public class EventsRouter {
 		}
 		
 	}
+	
 	/**
-	 * This method iterates through 'events' defined in the schedule-configs to see if they match the current event, if so get the handler and process the event 
+	 * This method iterates through 'events' defined in the schedule-configs to see if they match
+	 * the current event, if so get the handler and process the event
+	 * 
 	 * @param eventsJsonArray
 	 * @param handler
 	 * @throws JSONException
 	 */
-	private void processScheduleConfigEvents(JSONArray eventsJsonArray, String handler) throws JSONException{
+	private void processScheduleConfigEvents(JSONArray eventsJsonArray, String handler) throws JSONException {
 		//iterate through the events in the scheduleconfigs to see if the current event (the one passed to this route method) has a schedule handler
 		for (int j = 0; j < eventsJsonArray.length(); j++) {
 			JSONObject scheduleConfigEvent = eventsJsonArray.getJSONObject(j);
@@ -90,6 +97,7 @@ public class EventsRouter {
 			
 		}
 	}
+	
 	/**
 	 * This method merges all the files in the schedule-configs folder to create one
 	 * jsonobject/array
@@ -98,8 +106,9 @@ public class EventsRouter {
 	 * @throws IOException
 	 */
 	private String getScheduleConfigs() throws IOException {
-		scheduleConfigFilesPath = loader.getResource(scheduleConfigFilesPath).getURI().getPath();
-		File scheduleConfigsFolder = new File(scheduleConfigFilesPath);
+		if (scheduleConfigsFolder == null && loader.getResource(scheduleConfigFilesPath).exists())
+			scheduleConfigFilesPath = loader.getResource(scheduleConfigFilesPath).getURI().getPath();
+		scheduleConfigsFolder = new File(scheduleConfigFilesPath);
 		String scheduleConfigMapping = "";
 		File[] scheduleFiles = scheduleConfigsFolder.listFiles();
 		for (int i = 0; i < scheduleFiles.length; i++) {

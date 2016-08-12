@@ -80,11 +80,11 @@ public class AllEvents extends MotechBaseRepository<Event>{
 		Assert.isTrue(Documents.isNew(event), "entity must be new");
 		targetDb.create(event);
 	}
-	 @View(name = "events_by_server_version", map = "function(doc) { if (doc.type === 'Event') { emit([doc.serverVersion], null); } }")
+	 @View(name = "events_by_version", map = "function(doc) { if (doc.type === 'Event') { emit([doc.version], null); } }")
 	    public List<Event> findByServerVersion(long serverVersion) {
 	        ComplexKey startKey = ComplexKey.of(serverVersion + 1);
 	        ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
-	        return db.queryView(createQuery("events_by_server_version").startKey(startKey).endKey(endKey).includeDocs(true), Event.class);
+	        return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).includeDocs(true), Event.class);
 	    }
 
 	
