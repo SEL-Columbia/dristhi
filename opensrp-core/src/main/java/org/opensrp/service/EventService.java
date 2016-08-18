@@ -29,6 +29,10 @@ public class EventService {
 	{
 		return allEvents.findByEventId(eventId);
 	}
+	public Event getById(String id)
+	{
+		return allEvents.findById(id);
+	}
 	
 	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId)
 	{

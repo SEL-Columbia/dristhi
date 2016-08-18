@@ -21,7 +21,7 @@ public class HHScheduleHandler extends BaseScheduleHandler {
 				String milestone = getMilestone(scheduleConfigEvent);
 				String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-					hhSchedulesService.enrollIntoMilestoneOfCensus(event.getBaseEntityId(), getReferenceDateForSchedule(event, scheduleConfigEvent, action), event.getProviderId(), milestone,  event.getEventId());
+					hhSchedulesService.enrollIntoMilestoneOfCensus(event.getBaseEntityId(), getReferenceDateForSchedule(event, scheduleConfigEvent, action), event.getProviderId(), milestone,  event.getId());
 				}
 			}
 			

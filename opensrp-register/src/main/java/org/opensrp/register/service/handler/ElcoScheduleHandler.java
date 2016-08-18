@@ -22,7 +22,7 @@ public class ElcoScheduleHandler extends BaseScheduleHandler {
 			//	String milestone = getMilestone(scheduleConfigEvent);
 				String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-					elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(event.getBaseEntityId(), getReferenceDateForSchedule(event, scheduleConfigEvent, action), event.getProviderId(), ELCO_SCHEDULE_PSRF, event.getEventId());
+					elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(event.getBaseEntityId(), getReferenceDateForSchedule(event, scheduleConfigEvent, action), event.getProviderId(), ELCO_SCHEDULE_PSRF, event.getId());
 				}
 			}
 			

@@ -9,6 +9,9 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
+import org.motechproject.server.event.annotations.MotechListener;
+import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +56,6 @@ public class EventsRouter {
 			if (scheduleConfigFilesPath != null && !scheduleConfigFilesPath.isEmpty()) {
 				
 				String schedulesStr = getScheduleConfigs();
-				System.out.println(schedulesStr);
 				
 				JSONArray schedulesJsonObject = new JSONArray("[" + schedulesStr + "]");
 				//iterate through concatenated schedule-configs files to retrieve the events and compare with the current event from the db
@@ -131,4 +133,6 @@ public class EventsRouter {
 		}
 		return values;
 	}
+
+
 }

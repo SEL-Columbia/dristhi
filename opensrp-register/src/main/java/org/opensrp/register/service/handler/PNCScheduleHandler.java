@@ -21,6 +21,7 @@ public class PNCScheduleHandler extends BaseScheduleHandler {
 			if (evaluateEvent(event, scheduleConfigEvent)) {
 				String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
+					//TODO fix the date and pass eventid
 					ancScheduleService.enrollMother(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getProviderId(),
 					   "2016-01-01");
 				}

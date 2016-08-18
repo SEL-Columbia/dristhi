@@ -16,7 +16,7 @@ public class AlertHandler {
     public AlertHandler(TaskSchedulerService scheduler,
                           // @Qualifier("ForceFulfillAction") HookedEvent forceFulfill,
                           /* @Qualifier("AutoClosePNCAction") HookedEvent autoClosePNCAction,*/
-                           @Qualifier("AlertCreationAction") HookedEvent alertCreation) {
+                           @Qualifier("ECAlertCreationAction") HookedEvent alertCreation) {
     	scheduler.addHookedEvent(any(), any(), anyOf(earliest.toString(), due.toString(), late.toString()),
                 alertCreation);
     	

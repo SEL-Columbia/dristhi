@@ -40,6 +40,12 @@ public class AllEvents extends MotechBaseRepository<Event>{
 		return events.get(0);
 	}
 	
+	public Event findById(String id) {
+		Event event = db.get(Event.class, id);
+		return event;
+	}
+	
+	
 	@GenerateView
 	public List<Event> findByFormSubmissionId(String formSubmissionId) {
 		List<Event> events = queryView("by_formSubmissionId", formSubmissionId);
