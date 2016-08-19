@@ -5,7 +5,7 @@ import org.opensrp.dto.ActionData;
 
 public class ActionConvertor {
     public static Action from(org.opensrp.scheduler.Action action){
-        return new Action(action.caseId(), action.target(), action.actionType(), action.data(), String.valueOf(action.timestamp()), action.getIsActionActive(), action.details());
+        return new Action(action.baseEntityId(), action.target(), action.actionType(), action.data(), String.valueOf(action.timestamp()), action.getIsActionActive(), action.details());
     }
 
     public static org.opensrp.scheduler.Action toAction(Action actionItem, String anmIdentifier) {

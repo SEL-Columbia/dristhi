@@ -12,17 +12,22 @@ public class ElcoScheduleHandler extends BaseScheduleHandler {
 	
 	@Autowired
 	private ELCOScheduleService elcoScheduleService;
+	
 	public static final String ELCO_SCHEDULE_PSRF = "ELCO PSRF";
+	
 	public static final String MIS_ELCO = "mis_elco";
+	
 	@Override
 	public void handle(Event event, JSONObject scheduleConfigEvent) {
 		try {
 			
 			if (evaluateEvent(event, scheduleConfigEvent)) {
-			//	String milestone = getMilestone(scheduleConfigEvent);
+				//	String milestone = getMilestone(scheduleConfigEvent);
 				String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-					elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(event.getBaseEntityId(), getReferenceDateForSchedule(event, scheduleConfigEvent, action), event.getProviderId(), ELCO_SCHEDULE_PSRF, event.getId());
+					elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(event.getBaseEntityId(),
+					    getReferenceDateForSchedule(event, scheduleConfigEvent, action), event.getProviderId(),
+					    ELCO_SCHEDULE_PSRF, event.getId());
 				}
 			}
 			

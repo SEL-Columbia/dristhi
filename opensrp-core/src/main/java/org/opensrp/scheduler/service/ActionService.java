@@ -27,7 +27,7 @@ public class ActionService {
     }
 
     public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
-        return allActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
+        return allActions.findByProviderIdAndTimeStamp(anmIdentifier, timeStamp);
     }
     
     public List<Alert> getAlertsForProvider(String providerId, long timeStamp) {
