@@ -23,7 +23,7 @@ public class ANCScheduleHandler extends BaseScheduleHandler {
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
 					//TODO fix this date as well as pass eventId
 					ancScheduleService.enrollMother(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getProviderId(),
-					   "2016-01-01");
+					   event.getId());
 				}
 			}
 			

@@ -51,8 +51,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	
 	protected static Logger logger = LoggerFactory.getLogger(BaseScheduleHandler.class.toString());
 	
-    private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+	private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
 	/**
 	 * Converts values in a json key into key-value pair
@@ -128,40 +127,47 @@ abstract class BaseScheduleHandler implements EventsHandler {
 			if (key.equalsIgnoreCase(JSON_KEY_CONCEPT) && !refDateFields.containsKey(JSON_KEY_EVENT)) {
 				//date is a concept and in the current event being processed search it in the event's obs
 				if (obs.containsKey(value) && !obs.get(value).toString().isEmpty()) {
-					dateStr=getDateValue(obs.get(value));
+					dateStr = getDateValue(obs.get(value));
 				}
 			} else if (key.equalsIgnoreCase(JSON_KEY_CONCEPT) && refDateFields.containsKey(JSON_KEY_EVENT)) {
 				//date is a concept and not in the current event being processed search it in the other event's obs
 				//TODO fetch latest event of the type specified here from the db
 				if (obs.containsKey(value) && !obs.get(value).toString().isEmpty()) {
-					dateStr=getDateValue(obs.get(value));
+					dateStr = getDateValue(obs.get(value));
 				}
 			} else if (key.equalsIgnoreCase(JSON_KEY_FIELD)) {
 				//date is a not a concept but indeed a field in the current event being processed search it in the event's doc
-				if(eventJson.has(value) && !eventJson.getString(value).isEmpty()){
-					dateStr=getDateValue(eventJson.get(value));
-				} 
+				if (eventJson.has(value) && !eventJson.getString(value).isEmpty()) {
+					dateStr = getDateValue(eventJson.get(value));
+				}
 			}
 			
 		}
 		return dateStr;
 	}
+	
 	/**
 	 * sometimes date is in long value convert to the right format
+	 * 
 	 * @param value
 	 * @return
 	 */
-	private String getDateValue(Object value){
+	private String getDateValue(Object value) {
 		String dateStr = "";
-		if(value instanceof Long){//sometimes date is in long for some reason
+		
+		if (value instanceof Long) {//sometimes date is in long for some reason
 			Date date = new Date(Long.valueOf(value.toString()));
-			dateStr=dateFormat.format(date);
-		}else{
+			dateStr = dateFormat.format(date);
+		} else if (value.toString().contains("T")) {//sometimes the ref date is the format 2016-08-20T17:45:00.000+03:00
+			int substrIndex=value.toString().indexOf("T");
+			dateStr=value.toString().substring(0,substrIndex);
+		} else {
 			dateStr = value.toString();
-
+			
 		}
 		return dateStr;
 	}
+	
 	protected Map<String, Object> getFulfillmentDateFields(JSONObject scheduleConfigEvent) throws JSONException {
 		
 		JSONArray jsonArray = scheduleConfigEvent.has(JSON_KEY_FULFILLMENTDATEFIELDS)
@@ -212,7 +218,8 @@ abstract class BaseScheduleHandler implements EventsHandler {
 					//key="fieldCode";
 					if (obs.containsKey(value)) {//check if the concept mapping exists in the obs
 						if (obs.get(value).toString().equalsIgnoreCase(scheduleValue)
-						        || (!obs.get(value).toString().isEmpty() && scheduleValue.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
+						        || (!obs.get(value).toString().isEmpty()
+						                && scheduleValue.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
 							result = true;
 							//passlogic AND means that all the fields must have the specified values in the schedule configs else just return when the first value is true
 							if (!passLogic.equalsIgnoreCase("AND"))
@@ -316,5 +323,5 @@ abstract class BaseScheduleHandler implements EventsHandler {
 		}
 		return fieldsMap;
 	}
-	 
+	
 }

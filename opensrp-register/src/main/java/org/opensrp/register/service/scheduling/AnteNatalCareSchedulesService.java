@@ -30,8 +30,6 @@ public class AnteNatalCareSchedulesService {
 	@Autowired
 	private HealthSchedulerService scheduler;
 	
-	
-	
 	public void enrollMother(String caseId, LocalDate referenceDateForSchedule, String provider, String startDate) {
 		
 		enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule, provider, startDate);
@@ -47,80 +45,80 @@ public class AnteNatalCareSchedulesService {
 	 * @param startDate LMP Date as String format
 	 */
 	private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule, String provider,
-	                                                 String startDate) {
-		String milestone = null;
-		DateTime ancStartDate = null;
-		DateTime ancExpireDate = null;
-		AlertStatus alertStaus = null;
-		Date date = null;
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			date = format.parse(startDate);
-			
-		}
-		catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		DateTime start = new DateTime(date);
-		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(6))) {
-			milestone = MotherScheduleConstants.SCHEDULE_ANC_1;
-			ancStartDate = new DateTime(start);
-			
-			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-			    Weeks.weeks(8).toPeriod().minusDays(6)))
-				alertStaus = AlertStatus.normal;
-			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-			    Weeks.weeks(8).toPeriod().minusDays(1)))
-				alertStaus = AlertStatus.upcoming;
-			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-			    Weeks.weeks(23).toPeriod().minusDays(1)))
-				alertStaus = AlertStatus.urgent;
-			else
-				alertStaus = AlertStatus.expired;
-			
-		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		    Weeks.weeks(32).toPeriod().minusDays(6))) {
-			milestone = MotherScheduleConstants.SCHEDULE_ANC_2;
-			
-			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-			    Weeks.weeks(24).toPeriod().minusDays(1)))
-				alertStaus = AlertStatus.upcoming;
-			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-			    Weeks.weeks(31).toPeriod().minusDays(1)))
-				alertStaus = AlertStatus.urgent;
-			else
-				alertStaus = AlertStatus.expired;
-			
-		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		    Weeks.weeks(36).toPeriod().minusDays(6))) {
-			milestone = MotherScheduleConstants.SCHEDULE_ANC_3;
-			
-			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-			    Weeks.weeks(32).toPeriod().minusDays(1)))
-				alertStaus = AlertStatus.upcoming;
-			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-			    Weeks.weeks(35).toPeriod().minusDays(1)))
-				alertStaus = AlertStatus.urgent;
-			else
-				alertStaus = AlertStatus.expired;
-			
-		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		    Weeks.weeks(94).toPeriod().minusDays(5))) {
-			milestone = MotherScheduleConstants.SCHEDULE_ANC_4;
-			
-			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-			    Weeks.weeks(36).toPeriod().minusDays(1)))
-				alertStaus = AlertStatus.upcoming;
-			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(93).toPeriod()))
-				alertStaus = AlertStatus.urgent;
-			else
-				alertStaus = AlertStatus.expired;
-			
-		}
-		logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
-		scheduler.enrollIntoSchedule(entityId, MotherScheduleConstants.SCHEDULE_ANC,referenceDateForSchedule.toString() ,milestone
-		    );
+	                                                 String eventId) {
+		//		String milestone = null;
+		//		DateTime ancStartDate = null;
+		//		DateTime ancExpireDate = null;
+		//		AlertStatus alertStaus = null;
+		//		Date date = null;
+		//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		//		try {
+		//			date = format.parse(startDate);
+		//			
+		//		}
+		//		catch (ParseException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		}
+		//		DateTime start = new DateTime(date);
+		//		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(6))) {
+		//			milestone = MotherScheduleConstants.SCHEDULE_ANC_1;
+		//			ancStartDate = new DateTime(start);
+		//			
+		//			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
+		//			    Weeks.weeks(8).toPeriod().minusDays(6)))
+		//				alertStaus = AlertStatus.normal;
+		//			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
+		//			    Weeks.weeks(8).toPeriod().minusDays(1)))
+		//				alertStaus = AlertStatus.upcoming;
+		//			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
+		//			    Weeks.weeks(23).toPeriod().minusDays(1)))
+		//				alertStaus = AlertStatus.urgent;
+		//			else
+		//				alertStaus = AlertStatus.expired;
+		//			
+		//		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
+		//		    Weeks.weeks(32).toPeriod().minusDays(6))) {
+		//			milestone = MotherScheduleConstants.SCHEDULE_ANC_2;
+		//			
+		//			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
+		//			    Weeks.weeks(24).toPeriod().minusDays(1)))
+		//				alertStaus = AlertStatus.upcoming;
+		//			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
+		//			    Weeks.weeks(31).toPeriod().minusDays(1)))
+		//				alertStaus = AlertStatus.urgent;
+		//			else
+		//				alertStaus = AlertStatus.expired;
+		//			
+		//		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
+		//		    Weeks.weeks(36).toPeriod().minusDays(6))) {
+		//			milestone = MotherScheduleConstants.SCHEDULE_ANC_3;
+		//			
+		//			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
+		//			    Weeks.weeks(32).toPeriod().minusDays(1)))
+		//				alertStaus = AlertStatus.upcoming;
+		//			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
+		//			    Weeks.weeks(35).toPeriod().minusDays(1)))
+		//				alertStaus = AlertStatus.urgent;
+		//			else
+		//				alertStaus = AlertStatus.expired;
+		//			
+		//		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
+		//		    Weeks.weeks(94).toPeriod().minusDays(5))) {
+		//			milestone = MotherScheduleConstants.SCHEDULE_ANC_4;
+		//			
+		//			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
+		//			    Weeks.weeks(36).toPeriod().minusDays(1)))
+		//				alertStaus = AlertStatus.upcoming;
+		//			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(93).toPeriod()))
+		//				alertStaus = AlertStatus.urgent;
+		//			else
+		//				alertStaus = AlertStatus.expired;
+		//			
+		//		}
+		//		logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
+		scheduler.enrollIntoSchedule(entityId, MotherScheduleConstants.SCHEDULE_ANC, referenceDateForSchedule.toString(),
+		    eventId);
 		
 	}
 	
