@@ -1,27 +1,27 @@
 {
 					"name": "BirthNotificationPregnancyStatusFollowUp",
-					"handler": "WomanRegistrationHandler",
+					"handler": "BNFScheduleHandler",
 					"events": [
 						{
-							"types": ["Birth Notification Followup form"],
+							"types": ["Pregnancy Surveillance and Registration"],
 							"pass_logic": "AND",
 							"enrollment_fields": [
 								{
-									"concept": "161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "151849AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" 
+									"concept": "162942AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value":"1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 								}
 							],
 							"milestone": "BirthNotificationPregnancyStatusFollowUp",
 							"reference_date_fields": [
 				                {
-				                  "concept": "5599AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 				                  "value": "NOT_EMPTY"
 				                }
 				             ],
 							"action": "enroll"
 						},
 						{
-							"types": ["Census Visit"],
+							"types": ["Birth Notification Followup form"],
 							"pass_logic": "AND",
 							"fulfillment_date_fields": [
 								{

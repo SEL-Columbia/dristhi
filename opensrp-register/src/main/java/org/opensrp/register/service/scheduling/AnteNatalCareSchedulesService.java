@@ -5,16 +5,7 @@ package org.opensrp.register.service.scheduling;
 
 import static java.text.MessageFormat.format;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.Weeks;
-import org.opensrp.common.util.DateUtil;
-import org.opensrp.domain.Event;
-import org.opensrp.dto.AlertStatus;
 import org.opensrp.register.RegisterConstants.MotherScheduleConstants;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.slf4j.Logger;
@@ -30,96 +21,10 @@ public class AnteNatalCareSchedulesService {
 	@Autowired
 	private HealthSchedulerService scheduler;
 	
-	public void enrollMother(String caseId, LocalDate referenceDateForSchedule, String provider, String startDate) {
+	public void enrollMother(String entityId, LocalDate referenceDateForSchedule, String eventId) {
 		
-		enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule, provider, startDate);
-	}
-	
-	/**
-	 * Create ANC Schedule depends on LMP Date
-	 * 
-	 * @param entityId form entity Id
-	 * @param referenceDateForSchedule LMP Date convert to Local Date
-	 * @param provider FW user name
-	 * @param instanceId form instance id
-	 * @param startDate LMP Date as String format
-	 */
-	private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule, String provider,
-	                                                 String eventId) {
-		//		String milestone = null;
-		//		DateTime ancStartDate = null;
-		//		DateTime ancExpireDate = null;
-		//		AlertStatus alertStaus = null;
-		//		Date date = null;
-		//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		//		try {
-		//			date = format.parse(startDate);
-		//			
-		//		}
-		//		catch (ParseException e) {
-		//			// TODO Auto-generated catch block
-		//			e.printStackTrace();
-		//		}
-		//		DateTime start = new DateTime(date);
-		//		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(6))) {
-		//			milestone = MotherScheduleConstants.SCHEDULE_ANC_1;
-		//			ancStartDate = new DateTime(start);
-		//			
-		//			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		//			    Weeks.weeks(8).toPeriod().minusDays(6)))
-		//				alertStaus = AlertStatus.normal;
-		//			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		//			    Weeks.weeks(8).toPeriod().minusDays(1)))
-		//				alertStaus = AlertStatus.upcoming;
-		//			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		//			    Weeks.weeks(23).toPeriod().minusDays(1)))
-		//				alertStaus = AlertStatus.urgent;
-		//			else
-		//				alertStaus = AlertStatus.expired;
-		//			
-		//		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		//		    Weeks.weeks(32).toPeriod().minusDays(6))) {
-		//			milestone = MotherScheduleConstants.SCHEDULE_ANC_2;
-		//			
-		//			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		//			    Weeks.weeks(24).toPeriod().minusDays(1)))
-		//				alertStaus = AlertStatus.upcoming;
-		//			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		//			    Weeks.weeks(31).toPeriod().minusDays(1)))
-		//				alertStaus = AlertStatus.urgent;
-		//			else
-		//				alertStaus = AlertStatus.expired;
-		//			
-		//		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		//		    Weeks.weeks(36).toPeriod().minusDays(6))) {
-		//			milestone = MotherScheduleConstants.SCHEDULE_ANC_3;
-		//			
-		//			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		//			    Weeks.weeks(32).toPeriod().minusDays(1)))
-		//				alertStaus = AlertStatus.upcoming;
-		//			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		//			    Weeks.weeks(35).toPeriod().minusDays(1)))
-		//				alertStaus = AlertStatus.urgent;
-		//			else
-		//				alertStaus = AlertStatus.expired;
-		//			
-		//		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		//		    Weeks.weeks(94).toPeriod().minusDays(5))) {
-		//			milestone = MotherScheduleConstants.SCHEDULE_ANC_4;
-		//			
-		//			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,
-		//			    Weeks.weeks(36).toPeriod().minusDays(1)))
-		//				alertStaus = AlertStatus.upcoming;
-		//			else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(93).toPeriod()))
-		//				alertStaus = AlertStatus.urgent;
-		//			else
-		//				alertStaus = AlertStatus.expired;
-		//			
-		//		}
-		//		logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
 		scheduler.enrollIntoSchedule(entityId, MotherScheduleConstants.SCHEDULE_ANC, referenceDateForSchedule.toString(),
 		    eventId);
-		
 	}
 	
 	public void fullfillSchedule(String caseID, String scheduleName, String instanceId, long timestamp) {
@@ -151,10 +56,6 @@ public class AnteNatalCareSchedulesService {
 		catch (Exception e) {
 			logger.info("Does not a fullfillMilestone :" + e.getMessage());
 		}
-	}
-	
-	public void enrollANCSchedule() {
-		
 	}
 	
 }

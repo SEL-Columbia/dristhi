@@ -20,9 +20,9 @@ public class ChildScheduleHandler extends BaseScheduleHandler {
 			
 			if (evaluateEvent(event, scheduleConfigEvent)) {
 				String action = getAction(scheduleConfigEvent);
+				String milestone=getMilestone(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-					enccSchedulesService.enrollENCCForChild(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)));
-					
+					enccSchedulesService.enrollIntoCorrectMilestoneOfENCCCare(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), milestone, event.getId());
 				}
 			}
 			

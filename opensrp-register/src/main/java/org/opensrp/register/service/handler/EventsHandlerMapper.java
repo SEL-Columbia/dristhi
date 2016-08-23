@@ -22,12 +22,13 @@ public class EventsHandlerMapper implements IHandlerMapper{
 	private static final Map<String, EventsHandler> handlerMap = new HashMap<String, EventsHandler>();
 	
 	@Autowired
-	public EventsHandlerMapper(ANCScheduleHandler ancScheduleHanlder, PNCScheduleHandler pncScheduleHandler,BNFScheduleHandler bnfScheduleHandler,ElcoScheduleHandler elcoScheduleHandler,HHScheduleHandler hhScheduleHandler) {
+	public EventsHandlerMapper(ANCScheduleHandler ancScheduleHanlder, PNCScheduleHandler pncScheduleHandler,BNFScheduleHandler bnfScheduleHandler,ElcoScheduleHandler elcoScheduleHandler,HHScheduleHandler hhScheduleHandler,ChildScheduleHandler childScheduleHandler) {
 		handlerMap.put("ANCScheduleHandler", ancScheduleHanlder);
 		handlerMap.put("PNCScheduleHandler", pncScheduleHandler);
 		handlerMap.put("BNFScheduleHandler", bnfScheduleHandler);
 		handlerMap.put("ElcoScheduleHandler", elcoScheduleHandler);
 		handlerMap.put("HHScheduleHandler", hhScheduleHandler);
+		handlerMap.put("ChildScheduleHandler", childScheduleHandler);
 	}
 	
 	public Map<String, EventsHandler> handlerMap() {

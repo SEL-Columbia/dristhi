@@ -4,13 +4,7 @@
 package org.opensrp.register.service.scheduling;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.register.RegisterConstants.MotherScheduleConstants.SCHEDULE_DELIVERY_PLAN;
-import static org.opensrp.register.RegisterConstants.MotherScheduleConstants.SCHEDULE_EDD;
-import static org.opensrp.register.RegisterConstants.MotherScheduleConstants.SCHEDULE_HB_TEST_1;
-import static org.opensrp.register.RegisterConstants.MotherScheduleConstants.SCHEDULE_IFA_1;
-import static org.opensrp.register.RegisterConstants.MotherScheduleConstants.SCHEDULE_LAB;
 import static org.opensrp.register.RegisterConstants.MotherScheduleConstants.SCHEDULE_PNC;
-import static org.opensrp.register.RegisterConstants.MotherScheduleConstants.SCHEDULE_TT_1;
 
 import org.joda.time.LocalDate;
 import org.opensrp.scheduler.HealthSchedulerService;
@@ -24,8 +18,6 @@ public class PNCSchedulesService {
 	
 	private static Logger logger = LoggerFactory.getLogger(PNCSchedulesService.class.toString());
 	
-	private static final String[] NON_ANC_SCHEDULES = { SCHEDULE_EDD, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1,
-	        SCHEDULE_HB_TEST_1, SCHEDULE_DELIVERY_PLAN };
 	
 	private HealthSchedulerService scheduler;
 	
@@ -34,30 +26,9 @@ public class PNCSchedulesService {
 		this.scheduler = scheduler;
 	}
 	
-	public void enrollPNCRVForMother(String caseId, LocalDate referenceDateForSchedule,String eventId) {
+	public void enrollPNCRVForMother(String entityId, LocalDate referenceDateForSchedule,String milestone,String eventId) {
 		
-		enrollIntoCorrectMilestoneOfPNCRVCare(caseId, referenceDateForSchedule, eventId);
-	}
-	
-	private void enrollIntoCorrectMilestoneOfPNCRVCare(String entityId, LocalDate referenceDateForSchedule,String eventId) {
-//		String milestone = null;
-//		
-//		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ONE.toPeriod())) {
-//			milestone = SCHEDULE_PNC_1;
-//		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.FIVE.toPeriod())) {
-//			milestone = SCHEDULE_PNC_2;
-//		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SIX.toPeriod().plusDays(2))) {
-//			milestone = SCHEDULE_PNC_3;
-//		} else {
-//			
-//		}
-		
-		scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, referenceDateForSchedule.toString(), eventId);
-	}
-	
-	public void enrollPNCForMother(String entityId, String sch_name, LocalDate referenceDateForSchedule) {
-		logger.info(format("Enrolling PNC with Entity id:{0} to PNC schedule, milestone: {1}.", entityId, sch_name));
-		scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, sch_name, referenceDateForSchedule.toString());
+		scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, milestone, referenceDateForSchedule.toString(), eventId);
 	}
 	
 	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate,

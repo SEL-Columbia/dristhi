@@ -1,6 +1,6 @@
 {
 					"name": "Essential Newborn Care Checklist",
-					"handler": "ChildRegistrationOAHandler",
+					"handler": "ChildScheduleHandler",
 					"events": [
 						{
 							"types": ["Birth Notification Followup form"],
@@ -37,7 +37,7 @@
 },
 {
 					"name": "Essential Newborn Care Checklist",
-					"handler": "ChildRegistrationOAHandler",
+					"handler": "ChildScheduleHandler",
 					"events": [
 						{
 							"types": ["Essential Newborn Care 1"],
@@ -74,7 +74,7 @@
 },
 {
 					"name": "Essential Newborn Care Checklist",
-					"handler": "ChildRegistrationOAHandler",
+					"handler": "ChildScheduleHandler",
 					"events": [
 						{
 							"types": ["Essential Newborn Care 2"],

@@ -20,8 +20,9 @@ public class PNCScheduleHandler extends BaseScheduleHandler {
 			
 			if (evaluateEvent(event, scheduleConfigEvent)) {
 				String action = getAction(scheduleConfigEvent);
+				String milestone=getMilestone(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-					pncSchedulesService.enrollPNCRVForMother(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getId());
+					pncSchedulesService.enrollPNCRVForMother(event.getBaseEntityId(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), milestone,event.getId());
 				}
 			}
 			
