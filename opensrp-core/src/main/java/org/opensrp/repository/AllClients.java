@@ -14,6 +14,7 @@ import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.repository.lucene.LuceneClientRepository;
+import org.opensrp.scheduler.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -85,6 +86,20 @@ public class AllClients extends MotechBaseRepository<Client> {
 	public List<Client> findAllByMatchingName(String nameMatches) {
 		return db.queryView(createQuery("all_clients_by_matching_name").startKey(nameMatches).endKey(nameMatches+"z").includeDocs(true), Client.class);
 	}
+	/**
+	 * Find a client based on the relationship id and between a range of date created dates e.g given mother's id get children born at a given time
+	 * @param relationalId
+	 * @param dateFrom
+	 * @param dateTo
+	 * @return
+	 */
+	@View(name = "client_by_relationship_id_and_date_created", map = "function(doc) { if (doc.type === 'Client' && doc.relationships) {for (var key in doc.relationships) { var entityid=doc.relationships[key][0]; emit([entityid, doc.dateCreated.substring(0,10)], null); }} }")
+    public List<Client> findByRelationshipIdAndDateCreated(String relationalId, String dateFrom,String dateTo) {
+        ComplexKey startKey = ComplexKey.of(relationalId, dateFrom);
+        ComplexKey endKey = ComplexKey.of(relationalId, dateTo);
+        List<Client> clients = db.queryView(createQuery("client_by_relationship_id_and_date_created").startKey(startKey).endKey(endKey).includeDocs(true), Client.class);
+        return clients;
+    }
 	
 	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
 			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, 

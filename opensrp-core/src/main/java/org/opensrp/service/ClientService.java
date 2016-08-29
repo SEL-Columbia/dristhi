@@ -46,7 +46,9 @@ public class ClientService {
 	public List<Client> findAllByIdentifier(String identifierType, String identifier) {
 		return allClients.findAllByIdentifier(identifierType, identifier);
 	}
-	
+	public List<Client> findByRelationshipIdAndDateCreated(String relationalId, String dateFrom,String dateTo){
+		return allClients.findByRelationshipIdAndDateCreated(relationalId, dateFrom, dateTo);
+	}
 	public List<Client> findAllByAttribute(String attributeType, String attribute) {
 		return allClients.findAllByAttribute(attributeType, attribute);
 	}

@@ -51,7 +51,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	
 	protected static Logger logger = LoggerFactory.getLogger(BaseScheduleHandler.class.toString());
 	
-	private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	protected static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
 	/**
 	 * Converts values in a json key into key-value pair
