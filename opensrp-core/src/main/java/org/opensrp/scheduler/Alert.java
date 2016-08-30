@@ -81,7 +81,7 @@ public class Alert extends MotechBaseDataObject {
 		this.details = details;
 	}
 
-    public void markAlertAsClosed(String reasonForClose) {
+    public Alert markAlertAsClosed(String reasonForClose) {
     	if(alertStatus.equalsIgnoreCase(AlertStatus.closed.name())
     			|| alertStatus.equalsIgnoreCase(AlertStatus.complete.name())){
     		throw new IllegalStateException("Alert was found "+alertStatus);
@@ -91,9 +91,11 @@ public class Alert extends MotechBaseDataObject {
     	this.alertStatus = AlertStatus.closed.name();
     	this.dateClosed = new DateTime().toLocalDate().toString();
     	this.isActive = false;
+    	
+    	return this;
     }
     
-    public void markAlertAsComplete(String completionDate) {
+    public Alert markAlertAsComplete(String completionDate) {
     	if(alertStatus.equalsIgnoreCase(AlertStatus.closed.name())
     			|| alertStatus.equalsIgnoreCase(AlertStatus.complete.name())){
     		throw new IllegalStateException("Alert was found "+alertStatus);
@@ -103,6 +105,8 @@ public class Alert extends MotechBaseDataObject {
     	this.alertStatus = AlertStatus.complete.name();
     	this.dateClosed = new DateTime().toLocalDate().toString();
     	this.isActive = false;
+    	
+    	return this;
 	}
 
 	public String providerId() {
@@ -167,6 +171,9 @@ public class Alert extends MotechBaseDataObject {
 	}
 
 	public Map<String, String> details() {
+		if(details == null){
+			details = new HashMap<>();
+		}
 		return details;
 	}
     
@@ -198,7 +205,123 @@ public class Alert extends MotechBaseDataObject {
 	String getAlertType() {
 		return alertType;
 	}
-    @Override
+    public String getTriggerName() {
+		return triggerName;
+	}
+
+	public void setTriggerName(String triggerName) {
+		this.triggerName = triggerName;
+	}
+
+	public String getTriggerCode() {
+		return triggerCode;
+	}
+
+	public void setTriggerCode(String triggerCode) {
+		this.triggerCode = triggerCode;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getExpiryDate() {
+		return expiryDate;
+	}
+
+	public void setExpiryDate(String expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+
+	public String getAlertStatus() {
+		return alertStatus;
+	}
+
+	public void setAlertStatus(String alertStatus) {
+		this.alertStatus = alertStatus;
+	}
+
+	public String getClosingPeriod() {
+		return closingPeriod;
+	}
+
+	public void setClosingPeriod(String closingPeriod) {
+		this.closingPeriod = closingPeriod;
+	}
+
+	public String getDateClosed() {
+		return dateClosed;
+	}
+
+	public void setDateClosed(String dateClosed) {
+		this.dateClosed = dateClosed;
+	}
+
+	public String getDateComplete() {
+		return dateComplete;
+	}
+
+	public void setDateComplete(String dateComplete) {
+		this.dateComplete = dateComplete;
+	}
+
+	public String getReasonClosed() {
+		return reasonClosed;
+	}
+
+	public void setReasonClosed(String reasonClosed) {
+		this.reasonClosed = reasonClosed;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public Map<String, String> getDetails() {
+		return details;
+	}
+
+	public void setDetails(Map<String, String> details) {
+		this.details = details;
+	}
+
+	public void setProviderId(String providerId) {
+		this.providerId = providerId;
+	}
+
+	public void setEntityId(String entityId) {
+		this.entityId = entityId;
+	}
+
+	public void setBeneficiaryType(String beneficiaryType) {
+		this.beneficiaryType = beneficiaryType;
+	}
+
+	public void setAlertType(String alertType) {
+		this.alertType = alertType;
+	}
+
+	public void setTriggerType(String triggerType) {
+		this.triggerType = triggerType;
+	}
+
+	@Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, "timeStamp", "revision");
     }

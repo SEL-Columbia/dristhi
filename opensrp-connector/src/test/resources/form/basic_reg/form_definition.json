@@ -9,6 +9,10 @@
                 "bind": "/model/instance/register_with_address/woman_name"
             },
             {
+                "name": "bahmni_id",
+                "bind": "/model/instance/register_with_address/bahmni_id"
+            },
+            {
                 "name": "last_name",
                 "bind": "/model/instance/register_with_address/last_name"
             },

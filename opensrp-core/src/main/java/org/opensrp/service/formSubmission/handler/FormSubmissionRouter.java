@@ -3,6 +3,8 @@ package org.opensrp.service.formSubmission.handler;
 import static java.text.MessageFormat.format;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
+import java.util.List;
+
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionService;
 import org.slf4j.Logger;
@@ -22,6 +24,15 @@ public class FormSubmissionRouter {
 		this.formSubmissionService = formSubmissionService;
 		this.handlerMapper = handlerMapper;
 	}
+	
+	public void formSubmissionProcessed(String client, List<String> dependents, FormSubmission formSubmission) {
+		FormSubmissionProcessedListener handler = handlerMapper.formSubmissionProcessedListenerMap().get(formSubmission.formName());
+		if(handler != null){
+			logger.info(format("Found a post processor handler for form submission ( {0} ) with instance Id: {1} for entity: {2}",
+					formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId()));
+			handler.onFormSubmissionProcessed(client, dependents, formSubmission);
+		}
+	}
 
 	public void route(String instanceId) throws Exception {
 		FormSubmission submission = formSubmissionService.findByInstanceId(instanceId);
@@ -29,7 +40,7 @@ public class FormSubmissionRouter {
 	}
 	
 	public void route(FormSubmission formSubmission) throws Exception {
-		CustomFormSubmissionHandler handler = handlerMapper.handlerMap().get(formSubmission.formName());// handlerMap.get(submission.formName());
+		CustomFormSubmissionHandler handler = handlerMapper.customFormSubmissionHandlerMap().get(formSubmission.formName());// handlerMap.get(submission.formName());
 		if (handler == null) {
 			logger.warn(format("Could not find a handler due to unknown form submission ( {0} ) with instance Id: {1} for entity: {2}",
 				formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId()));

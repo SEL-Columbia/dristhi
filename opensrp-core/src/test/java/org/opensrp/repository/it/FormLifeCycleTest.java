@@ -161,8 +161,8 @@ public class FormLifeCycleTest extends TestResourceLoader{
 		List<Action> acl = allActions.findByCaseIdScheduleAndTimeStamp(fs.entityId(), p1schedule.getScheduleName(), new DateTime(0), new DateTime(System.currentTimeMillis()));
 		assertTrue(acl.size() == 1);
 		Action ac = acl.get(0);
-		assertEquals(fs.anmId(), ac.anmIdentifier());
-		assertEquals(fs.entityId(), ac.caseId());
+		assertEquals(fs.anmId(), ac.providerId());
+		assertEquals(fs.entityId(), ac.baseEntityId());
 		assertEquals("createAlert", ac.actionType());
 		assertEquals("alert", ac.getActionTarget());
 		assertEquals(true, ac.getIsActionActive());
@@ -192,7 +192,7 @@ public class FormLifeCycleTest extends TestResourceLoader{
 	
 	@Test
 	public void shouldCreateClientAndEventAndSchedulesWithRouter() throws Exception {
-		hmap.addHandler("pnc_1st_registration", new CustomFormSubmissionHandler() {
+		hmap.addCustomFormSubmissionHandler("pnc_1st_registration", new CustomFormSubmissionHandler() {
 			@Override
 			public void handle(FormSubmission submission) {
 				assertEquals("pnc_1st_registration", submission.formName());
@@ -209,7 +209,7 @@ public class FormLifeCycleTest extends TestResourceLoader{
 	
 	@Test
 	public void shouldCreateClientAndEventAndSchedulesWithZiggy() throws Exception {
-		hmap.addHandler("new_household_registration", new CustomFormSubmissionHandler() {
+		hmap.addCustomFormSubmissionHandler("new_household_registration", new CustomFormSubmissionHandler() {
 			@Override
 			public void handle(FormSubmission submission) {
 				assertEquals("new_household_registration", submission.formName());

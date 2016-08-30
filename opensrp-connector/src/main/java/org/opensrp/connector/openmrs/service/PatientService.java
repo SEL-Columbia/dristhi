@@ -32,8 +32,11 @@ public class PatientService extends OpenmrsService{
 	private static final String PERSON_ATTRIBUTE_TYPE_URL = "ws/rest/v1/personattributetype";
 	private static final String PATIENT_IDENTIFIER_TYPE_URL = "ws/rest/v1/patientidentifiertype";
 	
-	private static final String OPENSRP_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
-	
+	// This ID should start with opensrp and end with uid. As matched by atomefeed module`s patient service
+	public static final String OPENSRP_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
+	public static final String OPENSRP_IDENTIFIER_TYPE_MATCHER = "(?i)opensrp.*uid";
+	public static final String OPENMRS_UUID_IDENTIFIER_TYPE = "OPENMRS_UUID";
+		
 	public PatientService() { }
 
     public PatientService(String openmrsUrl, String user, String password) {
@@ -244,6 +247,9 @@ public class PatientService extends OpenmrsService{
 				c.addIdentifier(ji.getJSONObject("identifierType").getString("display"), ji.getString("identifier"));
 			}
 		}
+		
+		c.addIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, patient.getString("uuid"));
+		
 		JSONObject pr = patient.getJSONObject("person");
 		
 		String mn = pr.getJSONObject("preferredName").has("middleName")?pr.getJSONObject("preferredName").getString("middleName"):null;
@@ -287,8 +293,5 @@ public class PatientService extends OpenmrsService{
 			
 		}
 		return c;
-//TODO		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
-	//TODO	per.put("addresses", convertAddressesToOpenmrsJson(be.getAddresses()));
-		
 	}
 }

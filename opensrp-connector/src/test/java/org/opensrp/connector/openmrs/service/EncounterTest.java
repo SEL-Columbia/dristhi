@@ -30,7 +30,7 @@ public class EncounterTest extends TestResourceLoader{
 	public EncounterTest() throws IOException {
 		super();
 	}
-
+	
 	EncounterService s;
 	FormEntityConverter oc;
 	PatientService ps;

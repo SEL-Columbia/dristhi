@@ -2,6 +2,7 @@ package org.opensrp.connector.openmrs;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Logger;
 
 import org.ict4h.atomfeed.client.AtomFeedProperties;
 import org.ict4h.atomfeed.client.domain.Event;
@@ -26,7 +27,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EncounterAtomfeed extends OpenmrsService implements EventWorker, AtomfeedService{
-	private static final String CATEGORY_URL = "/encounter/recent.form";
+	private Logger log = Logger.getLogger(getClass().getSimpleName());
+
+	private static final String CATEGORY_URL = "/OpenSRP_Encounter/recent.form";
 	private AtomFeedProperties atomFeedProperties;
 
 	private AFTransactionManager transactionManager;
@@ -62,11 +65,26 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 	
 	@Override
 	public void process(Event event) {
-		System.out.println(event.getContent());
+		log.info("Processing item : "+event.getContent());
 		try {
-			JSONObject p = encounterService.getEncounterByUuid(event.getContent().substring(event.getContent().lastIndexOf("/")+1), true);
-			System.out.println(p);
-			eventService.addEvent(encounterService.convertToEvent(p));
+			String uuid = event.getContent().substring(event.getContent().lastIndexOf("/")+1);
+			JSONObject e = encounterService.getEncounterByUuid(uuid, true);
+			if(e == null){
+				throw new RuntimeException("Encounter uuid ("+uuid+") specified in atomfeed content did not return any encounter.");
+			}
+			
+			log.info(e.toString());
+			
+			org.opensrp.domain.Event enc = encounterService.convertToEvent(e);
+			org.opensrp.domain.Event existing = eventService.find(uuid);
+			if(existing == null){
+				log.info("New Event");
+				eventService.addEvent(enc);
+			}
+			else {
+				log.info("Update existing Event");
+				enc = eventService.mergeEvent(enc);
+			}
 		} catch (JSONException e) {
 			throw new RuntimeException(e);
 		}
@@ -80,6 +98,7 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 
 	@Override
 	public void processEvents() {
+		log.info("Updating EncounterAtomfeeds");
 		client.processEvents();
 	}
 

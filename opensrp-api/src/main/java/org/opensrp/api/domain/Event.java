@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
 /**
@@ -16,27 +18,34 @@ import org.joda.time.DateTime;
  * {@link FormSubmission}
  */
 public class Event extends BaseDataObject{
-
-	private String eventId;
+	private Map<String, String> identifiers;
 	private String baseEntityId;
 	private String locationId;
 	private DateTime eventDate;
 	private String eventType;
 	private String formSubmissionId;
 	private String providerId;
+	private String status;
+	private Map<String, DateTime> statusHistory;
+	private String priority;
+	private List<String>  episodeOfCare;
+	private List<String> referrals;
+	private String category;
+	private int duration;
+	private String reason;
 	private List<Obs> obs;
 	private String entityType;
 	private Map<String, String> details;
 	private long version;
+	private List<Photo> photos;
 	
 	public Event() {
 		this.version = System.currentTimeMillis();
 	}
 
-	public Event(String baseEntityId, String eventId, String eventType, DateTime eventDate, String entityType, 
+	public Event(String baseEntityId, String eventType, DateTime eventDate, String entityType, 
 			String providerId, String locationId, String formSubmissionId) {
 		this.baseEntityId = baseEntityId;
-		this.eventId = eventId;
 		this.eventType = eventType;
 		this.eventDate = eventDate;
 		this.entityType = entityType;
@@ -75,6 +84,56 @@ public class Event extends BaseDataObject{
 		this.baseEntityId = baseEntityId;
 	}
 
+	public Map<String, String> getIdentifiers() {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
+		}
+		return identifiers;
+	}
+
+	public String getIdentifier(String identifierType) {
+		if(identifiers == null){
+			return null;
+		}
+		for (String k : identifiers.keySet()) {
+			if(k.equalsIgnoreCase(identifierType)){
+				return identifiers.get(k);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns field matching the regex. Note that incase of multiple fields matching criteria 
+	 * function would return first match. The must be well formed to find out a single value
+	 * @param regex
+	 * @return
+	 */
+	public String getIdentifierMatchingRegex(String regex) {
+		for (Entry<String, String> a : getIdentifiers().entrySet()) {
+			if(a.getKey().matches(regex)){
+				return a.getValue();
+			}
+		}
+		return null;
+	}
+	
+	public void setIdentifiers(Map<String, String> identifiers) {
+		this.identifiers = identifiers;
+	}
+
+	public void addIdentifier(String identifierType, String identifier) {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
+		}
+		
+		identifiers.put(identifierType, identifier);
+	}
+
+	public void removeIdentifier(String identifierType) {
+		identifiers.remove(identifierType);
+	}
+	
 	public String getLocationId() {
 		return locationId;
 	}
@@ -115,14 +174,6 @@ public class Event extends BaseDataObject{
 		this.providerId = providerId;
 	}
 
-	public String getEventId() {
-		return eventId;
-	}
-
-	public void setEventId(String eventId) {
-		this.eventId = eventId;
-	}
-
 	public String getEntityType() {
 		return entityType;
 	}
@@ -159,6 +210,24 @@ public class Event extends BaseDataObject{
 		return this;
 	}
 
+	/**
+	 * WARNING: Overrides all existing identifiers
+	 * @param identifiers
+	 * @return
+	 */
+	public Event withIdentifiers(Map<String, String> identifiers) {
+		this.identifiers = identifiers;
+		return this;
+	}
+	
+	public Event withIdentifier(String identifierType, String identifier) {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
+		}
+		identifiers.put(identifierType, identifier);
+		return this;
+	}	
+	
 	public Event withLocationId(String locationId) {
 		this.locationId = locationId;
 		return this;

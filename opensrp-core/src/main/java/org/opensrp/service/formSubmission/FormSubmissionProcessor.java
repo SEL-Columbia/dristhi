@@ -53,10 +53,7 @@ public class FormSubmissionProcessor{
 		this.eventService = eventService;
     }
 
-    public void processFormSubmission(FormSubmission submission) throws Exception {
-    	// ugly hack TODO
-    	if(submission.bindType().equalsIgnoreCase("stock")) return;
-    	
+    public void processFormSubmission(FormSubmission submission) throws Exception { 	
     	// parse and into client and event model
     	logger.info("Creating model entities");
     	makeModelEntities(submission);

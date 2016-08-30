@@ -13,6 +13,7 @@ import org.ektorp.util.Documents;
 import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.repository.lucene.LuceneEventRepository;
@@ -31,13 +32,15 @@ public class AllEvents extends MotechBaseRepository<Event>{
 		this.ler = ler;
 	}
 	
-	@GenerateView
-	public Event findByEventId(String eventId) {
-		List<Event> events = queryView("by_eventId", eventId);
-		if (events == null || events.isEmpty()) {
-			return null;
-		}
-		return events.get(0);
+	@View(name = "all_events_by_identifier", map = "function(doc) {if (doc.type === 'Event') {for(var key in doc.identifiers) {emit(doc.identifiers[key]);}}}")
+	public List<Event> findAllByIdentifier(String identifier) {
+		return db.queryView(createQuery("all_events_by_identifier").key(identifier).includeDocs(true), Event.class);
+	}
+
+	@View(name = "all_events_by_identifier_of_type", map = "function(doc) {if (doc.type === 'Event') {for(var key in doc.identifiers) {emit([key, doc.identifiers[key]]);}}}")
+	public List<Event> findAllByIdentifier(String identifierType, String identifier) {
+		ComplexKey ckey = ComplexKey.of(identifierType, identifier);
+		return db.queryView(createQuery("all_events_by_identifier_of_type").key(ckey).includeDocs(true), Event.class);
 	}
 	
 	public Event findById(String id) {

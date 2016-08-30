@@ -175,7 +175,7 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 		JSONObject tm = new JSONObject();
 		String milestone = ac.data().get("visitCode");
 		if(!isUpdate){
-			JSONObject pr = userService.getPersonByUser(ac.anmIdentifier());
+			JSONObject pr = userService.getPersonByUser(ac.providerId());
 			tm.put("track", trackUuid);
 			tm.put("milestone", milestone );
 			tm.put("alertRecipient", pr.getString("uuid"));

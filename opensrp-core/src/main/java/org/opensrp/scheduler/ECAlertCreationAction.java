@@ -37,7 +37,7 @@ public class ECAlertCreationAction implements HookedEvent {
         
         logger.debug(format("Generating alert for entity {0} of type {1} , formSubmission {2} "
         		+ "for schedule {3} in window {4} ", 
-        		motechEvent.externalId(), entityType, event.getEventId(), enr.getScheduleName(), motechEvent.windowName()));
+        		motechEvent.externalId(), entityType, event.getId(), enr.getScheduleName(), motechEvent.windowName()));
 		
         scheduler.alertFor(motechEvent.windowName(), entityType, motechEvent.externalId(), event.getProviderId(), motechEvent.scheduleName(), motechEvent.milestoneName(), motechEvent.startOfDueWindow(), motechEvent.startOfLateWindow(), motechEvent.startOfMaxWindow());
     }
