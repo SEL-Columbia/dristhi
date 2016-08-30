@@ -1,5 +1,6 @@
 package org.opensrp.register.service.handler;
 
+import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
@@ -28,6 +29,9 @@ public class ElcoScheduleHandler extends BaseScheduleHandler {
 					elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(event.getBaseEntityId(),
 					    getReferenceDateForSchedule(event, scheduleConfigEvent, action), event.getProviderId(),
 					    ELCO_SCHEDULE_PSRF, event.getId());
+				}
+				else if (action.equalsIgnoreCase(ActionType.fulfill.toString())) {
+					elcoScheduleService.fullfillMilestone(event.getBaseEntityId(), event.getProviderId(), ELCO_SCHEDULE_PSRF, LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getId());
 				}
 			}
 			

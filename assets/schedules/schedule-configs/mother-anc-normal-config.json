@@ -39,26 +39,7 @@
 					"name": "Ante Natal Care - Normal",
 					"handler": "ANCScheduleHandler",
 					"events": [
-						{
-							"types": ["ANC Reminder Visit 1"],
-							"pass_logic": "AND",
-							"enrollment_fields": [
-								{
-									"field": "eventDate",
-									"value":"NOT_EMPTY"
-								}
-							],
-							"milestone": "ANC 2",
-							"reference_date_fields": [
-				                {
-				                  "event":"Pregnancy Surveillance and Registration",
-				                  "concept": "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-				                  "value": "NOT_EMPTY"
-				                }
-				             ],
-							"action": "enroll"
-						},
-						{
+							{
 							"types": ["ANC Reminder Visit 2"],
 							"pass_logic": "AND",
 							"fulfillment_date_fields": [
@@ -78,25 +59,6 @@
 					"handler": "ANCScheduleHandler",
 					"events": [
 						{
-							"types": ["ANC Reminder Visit 2"],
-							"pass_logic": "AND",
-							"enrollment_fields": [
-								{
-									"field": "eventDate",
-									"value":"NOT_EMPTY"
-								}
-							],
-							"milestone": "ANC 3",
-							"reference_date_fields": [
-				                {
-				                  "event":"Pregnancy Surveillance and Registration",
-				                  "concept": "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-				                  "value": "NOT_EMPTY"
-				                }
-				             ],
-							"action": "enroll"
-						},
-						{
 							"types": ["ANC Reminder Visit 3"],
 							"pass_logic": "AND",
 							"fulfillment_date_fields": [
@@ -115,26 +77,7 @@
 					"name": "Ante Natal Care - Normal",
 					"handler": "ANCScheduleHandler",
 					"events": [
-						{
-							"types": ["ANC Reminder Visit 3"],
-							"pass_logic": "AND",
-							"enrollment_fields": [
-								{
-									"field": "eventDate",
-									"value":"NOT_EMPTY"
-								}
-							],
-							"milestone": "ANC 4",
-							"reference_date_fields": [
-				                {
-				                  "event":"Pregnancy Surveillance and Registration",
-				                  "concept": "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-				                  "value": "NOT_EMPTY"
-				                }
-				             ],
-							"action": "enroll"
-						},
-						{
+							{
 							"types": ["ANC Reminder Visit 4"],
 							"pass_logic": "AND",
 							"fulfillment_date_fields": [

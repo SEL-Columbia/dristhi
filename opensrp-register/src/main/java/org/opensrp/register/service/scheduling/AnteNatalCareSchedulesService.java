@@ -6,7 +6,6 @@ package org.opensrp.register.service.scheduling;
 import static java.text.MessageFormat.format;
 
 import org.joda.time.LocalDate;
-import org.opensrp.register.RegisterConstants.MotherScheduleConstants;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,22 +20,12 @@ public class AnteNatalCareSchedulesService {
 	@Autowired
 	private HealthSchedulerService scheduler;
 	
-	public void enrollMother(String entityId, LocalDate referenceDateForSchedule, String eventId) {
+	public void enrollMother(String entityId,String scheduleName, LocalDate referenceDateForSchedule, String eventId) {
 		
-		scheduler.enrollIntoSchedule(entityId, MotherScheduleConstants.SCHEDULE_ANC, referenceDateForSchedule.toString(),
+		scheduler.enrollIntoSchedule(entityId, scheduleName, referenceDateForSchedule.toString(),
 		    eventId);
 	}
 	
-	public void fullfillSchedule(String caseID, String scheduleName, String instanceId, long timestamp) {
-		try {
-			//TODO
-			//scheduler.fullfillSchedule(caseID, scheduleName, instanceId, timestamp);
-			logger.info("fullfillSchedule a Schedule with id : " + caseID);
-		}
-		catch (Exception e) {
-			logger.info("Does not fullfill a schedule:" + e.getMessage());
-		}
-	}
 	
 	public void unEnrollFromAllSchedules(String entityId, String eventId) {
 		scheduler.unEnrollFromAllSchedules(entityId, eventId);

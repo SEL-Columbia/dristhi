@@ -4,7 +4,6 @@
 package org.opensrp.register.service.scheduling;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.register.RegisterConstants.MotherScheduleConstants.SCHEDULE_PNC;
 
 import org.joda.time.LocalDate;
 import org.opensrp.scheduler.HealthSchedulerService;
@@ -26,9 +25,9 @@ public class PNCSchedulesService {
 		this.scheduler = scheduler;
 	}
 	
-	public void enrollPNCRVForMother(String entityId, LocalDate referenceDateForSchedule,String milestone,String eventId) {
+	public void enrollPNCRVForMother(String entityId,String scheduleName, LocalDate referenceDateForSchedule,String milestone,String eventId) {
 		
-		scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, milestone, referenceDateForSchedule.toString(), eventId);
+		scheduler.enrollIntoSchedule(entityId, scheduleName, milestone, referenceDateForSchedule.toString(), eventId);
 	}
 	
 	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate,

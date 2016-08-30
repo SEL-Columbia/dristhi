@@ -6,9 +6,7 @@ package org.opensrp.register.service.scheduling;
 import static java.text.MessageFormat.format;
 
 import org.joda.time.LocalDate;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.opensrp.scheduler.HealthSchedulerService;
-import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +17,13 @@ public class ELCOScheduleService {
 	
 	private static Logger logger = LoggerFactory.getLogger(ELCOScheduleService.class.toString());
 	
-	private final ScheduleTrackingService scheduleTrackingService;
 	
 	private HealthSchedulerService scheduler;
 	
-	private AllActions allActions;
 	
 	@Autowired
-	public ELCOScheduleService(HealthSchedulerService scheduler, ScheduleTrackingService scheduleTrackingService,
-	    AllActions allActions) {
+	public ELCOScheduleService(HealthSchedulerService scheduler) {
 		this.scheduler = scheduler;
-		this.scheduleTrackingService = scheduleTrackingService;
-		this.allActions = allActions;
 		
 	}
 	
@@ -75,5 +68,14 @@ public class ELCOScheduleService {
 		// scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.elco, ELCO_SCHEDULE_PSRF, duration,ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF);
 		
 	}
-	
+	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate,
+	                              String eventId) {
+		try {
+			scheduler.fullfillMilestoneAndCloseAlert(entityId, providerId, scheduleName, completionDate, eventId);
+			logger.info("fullfillMilestone with id: :" + entityId);
+		}
+		catch (Exception e) {
+			logger.info("Does not a fullfillMilestone :" + e.getMessage());
+		}
+	}
 }

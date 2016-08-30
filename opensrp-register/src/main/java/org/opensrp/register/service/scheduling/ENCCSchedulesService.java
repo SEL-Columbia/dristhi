@@ -1,7 +1,6 @@
 package org.opensrp.register.service.scheduling;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.register.RegisterConstants.ChildScheduleConstants.SCHEDULE_ENCC;
 
 import org.joda.time.LocalDate;
 import org.opensrp.scheduler.HealthSchedulerService;
@@ -22,11 +21,11 @@ public class ENCCSchedulesService {
 		this.scheduler = scheduler;
 	}
 	
-	public void enrollIntoCorrectMilestoneOfENCCCare(String entityId, LocalDate referenceDateForSchedule, String milestone,
+	public void enrollIntoCorrectMilestoneOfENCCCare(String entityId,String scheduleName, LocalDate referenceDateForSchedule,
 	                                                 String eventId) {
 		
-		logger.info(format("Enrolling with Entity id:{0} to ENCC schedule, milestone: {1}.", entityId, milestone));
-		scheduler.enrollIntoSchedule(entityId, SCHEDULE_ENCC, milestone, referenceDateForSchedule.toString(), eventId);
+		logger.info(format("Enrolling with Entity id:{0} to ENCC schedule, milestone: {1}.", entityId, scheduleName));
+		scheduler.enrollIntoSchedule(entityId, scheduleName,referenceDateForSchedule.toString(), eventId);
 	}
 	
 	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate,

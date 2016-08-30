@@ -227,8 +227,8 @@ abstract class BaseScheduleHandler implements EventsHandler {
 						}
 					}
 				} else if (key.equalsIgnoreCase(JSON_KEY_FIELD)) { //not a concept so get the value from the main doc e.g eventDate
-					String fieldName = eventJson.has(value) ? eventJson.getString(value) : "";
-					String fieldValue = eventJson.has(fieldName) ? eventJson.getString(fieldName) : "";
+					String fieldValue = eventJson.has(value) ? eventJson.getString(value) : "";
+				//	String fieldValue = eventJson.has(fieldName) ? eventJson.getString(fieldName) : "";
 					if (fieldValue.equalsIgnoreCase(scheduleValue)
 					        || (!fieldValue.isEmpty() && scheduleValue.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
 						result = true;

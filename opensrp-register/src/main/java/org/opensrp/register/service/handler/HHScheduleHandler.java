@@ -1,5 +1,6 @@
 package org.opensrp.register.service.handler;
 
+import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
@@ -12,7 +13,8 @@ public class HHScheduleHandler extends BaseScheduleHandler {
 	
 	@Autowired
 	private HHSchedulesService hhSchedulesService;
-	
+	private static final String scheduleName="FW CENSUS";
+
 	@Override
 	public void handle(Event event, JSONObject scheduleConfigEvent) {
 		try {
@@ -25,7 +27,7 @@ public class HHScheduleHandler extends BaseScheduleHandler {
 					    getReferenceDateForSchedule(event, scheduleConfigEvent, action), event.getProviderId(), milestone,
 					    event.getId());
 				} else if (action.equalsIgnoreCase(ActionType.fulfill.toString())) {
-					//hhSchedulesService.enrollIntoMilestoneOfCensus(event.getBaseEntityId(), getReferenceDateForSchedule(event, scheduleConfigEvent, action), event.getProviderId(), milestone,  event.getId());
+					hhSchedulesService.fullfillMilestone(event.getBaseEntityId(), event.getProviderId(), scheduleName, LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getId());
 				}
 			}
 			

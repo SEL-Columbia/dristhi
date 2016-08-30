@@ -2,6 +2,7 @@ package org.opensrp.register.service.scheduling;
 
 import static java.text.MessageFormat.format;
 
+import org.joda.time.LocalDate;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,9 @@ public class HHSchedulesService {
 		
 		scheduler.enrollIntoSchedule(entityId, scheduleName, referenceDate, eventId);
 		
-		//scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, HH_SCHEDULE_CENSUS, HH_SCHEDULE_CENSUS, BeneficiaryType.household, AlertStatus.normal, new DateTime(),  new DateTime().plusHours(duration));
 		
+	}
+	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate, String eventId){
+		scheduler.fullfillMilestoneAndCloseAlert(entityId, providerId, scheduleName, completionDate, eventId);
 	}
 }
