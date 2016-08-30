@@ -2,24 +2,16 @@ package org.opensrp.service;
 
 
 
-import httpdowload.JustForFun;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Arrays;
-import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.codehaus.jackson.JsonProcessingException;
-import org.joda.time.DateTime;
-import org.joda.time.Hours;
-import org.joda.time.Years;
 import org.opensrp.util.FileCreator;
 import org.opensrp.util.JsonParser;
 import org.opensrp.util.NetClientGet;
@@ -33,7 +25,6 @@ import org.xml.sax.SAXException;
 
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
-import com.sun.xml.internal.txw2.Document;
 
 /**
  * @author muhammad.ahmed@ihsinformatics.com
@@ -54,19 +45,19 @@ public class XlsFormDownloaderService {
 	}
 
 	public static void main(String[] args) {
-		try {
-			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
-					"maimoonak", "opensrp", JustForFun.Form, "child_vaccination_enrollment", "135187");
+//		try {
+//			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+//					"maimoonak", "opensrp", JustForFun.Form, "child_vaccination_enrollment", "135187");
 			//-------------------------			
-			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
-					"maimoonak", "opensrp", JustForFun.Form, "child_vaccination_followup", "135199");
+//			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+//					"maimoonak", "opensrp", JustForFun.Form, "child_vaccination_followup", "135199");
 			//---------------------------
-			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
-					"maimoonak", "opensrp", JustForFun.Form, "woman_tt_enrollement_form", "135200");
+//			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+//					"maimoonak", "opensrp", JustForFun.Form, "woman_tt_enrollement_form", "135200");
 			//----------------------------
-			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
-					"maimoonak", "opensrp", JustForFun.Form, "woman_tt_followup_form", "135203");
-			
+//			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+//					"maimoonak", "opensrp", JustForFun.Form, "woman_tt_followup_form", "135203");
+//			
 			/*new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
 					"maimoonak", "opensrp", JustForFun.Form, "vaccine_stock_position", "115142");
 			
@@ -77,9 +68,9 @@ public class XlsFormDownloaderService {
 			
 			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
 					"maimoonak", "opensrp", JustForFun.Form, "offsite_woman_followup_form", "115135");*/
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	public String formatXML(String input)
