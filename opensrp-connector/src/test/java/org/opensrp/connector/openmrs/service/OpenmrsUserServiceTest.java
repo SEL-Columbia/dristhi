@@ -12,7 +12,7 @@ import org.mockito.BDDMockito;
 import static org.mockito.Mockito.*;
 
 import org.opensrp.common.util.HttpResponse;
-import org.opensrp.connector.HttpUtil;
+import org.opensrp.common.util.HttpUtil;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;

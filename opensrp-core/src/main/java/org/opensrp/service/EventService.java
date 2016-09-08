@@ -101,7 +101,7 @@ public class EventService {
 			throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
 		}
 
-		event.setDateCreated(new Date());
+		event.setDateCreated(DateTime.now());
 		allEvents.add(event);
 		return event;
 	}
@@ -113,7 +113,7 @@ public class EventService {
 			throw new IllegalArgumentException("Event to be updated is not an existing and persisting domain object. Update database object instead of new pojo");
 		}
 		
-		updatedEvent.setDateEdited(new Date());
+		updatedEvent.setDateEdited(DateTime.now());
 				
 		allEvents.update(updatedEvent);					
 	}
@@ -161,7 +161,7 @@ public class EventService {
 				}
 			}
 	
-			original.setDateEdited(new Date());
+			original.setDateEdited(DateTime.now());
 			allEvents.update(original);
 			return original;
 		}

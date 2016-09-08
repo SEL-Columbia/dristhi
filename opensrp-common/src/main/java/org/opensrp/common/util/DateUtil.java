@@ -14,7 +14,6 @@ import static org.motechproject.util.DateUtil.inRange;
 
 public class DateUtil {
     private static DateUtility dateUtility = new RealDate();
-    static DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
     public static DateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
     public static DateFormat yyyyMMddHHmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static DateFormat yyyyMMddTHHmmssSSSZ = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
@@ -46,16 +45,20 @@ public class DateUtil {
      * @return
      * @throws ParseException 
      */
-    public static Date parseDate(String date) throws ParseException{
+    public static DateTime parseDate(String date) throws ParseException{
     	try{
-    		return yyyyMMdd.parse(date);
+    		return new DateTime(yyyyMMdd.parse(date).getTime());
     	}
     	catch(ParseException e){}
     	try {
-			return yyyyMMddHHmmss.parse(date);
+			return new DateTime(yyyyMMddHHmmss.parse(date).getTime());
 		} catch (ParseException e) {}
 		
-    	return yyyyMMddTHHmmssSSSZ.parse(date);
+    	try {
+			return new DateTime(yyyyMMddTHHmmssSSSZ.parse(date).getTime());
+		} catch (ParseException e) {}
+		
+    	return DateTime.parse(date);
     }
     
     public static LocalDate tryParse(String value, LocalDate defaultValue) {
@@ -71,7 +74,7 @@ public class DateUtil {
 	    try {
 	    	if(dateString!=null && !dateString.equals("null") && dateString.length()>0)
 	    	{
-	    		parsed = sdf.parse(dateString.trim());	    	
+	    		parsed = yyyyMMddTHHmmssSSSZ.parse(dateString.trim());	    	
 	    	}
 	    } catch (ParseException e) {
 	        e.printStackTrace();

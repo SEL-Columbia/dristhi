@@ -66,10 +66,10 @@ public class ClientService {
 		return allClients.findByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo);
 	}
 	
-	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
+/*	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
 			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
 		return allClients.findByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);
-	}
+	}*/
 	
 	public List<Client> findByDynamicQuery(String query) {
 		return allClients.findByDynamicQuery(query);
@@ -85,7 +85,7 @@ public class ClientService {
 			throw new IllegalArgumentException("A client already exists with given list of identifiers. Consider updating data.["+c+"]");
 		}
 		
-		client.setDateCreated(new Date());
+		client.setDateCreated(DateTime.now());
 		allClients.add(client);
 		return client;
 	}
@@ -141,7 +141,7 @@ public class ClientService {
 			throw new IllegalArgumentException("No client found with given list of identifiers. Consider adding new!");
 		}
 		
-		updatedClient.setDateEdited(new Date());
+		updatedClient.setDateEdited(DateTime.now());
 		allClients.update(updatedClient);
 	}
 	
@@ -188,7 +188,7 @@ public class ClientService {
 			}
 		}
 
-		original.setDateEdited(new Date());
+		original.setDateEdited(DateTime.now());
 		allClients.update(original);
 		return original;
 		}

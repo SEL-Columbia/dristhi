@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
+import org.joda.time.DateTime;
 import org.motechproject.model.MotechBaseDataObject;
 
 /**
@@ -16,7 +17,7 @@ public class ErrorTrace extends MotechBaseDataObject {
 	 * @JsonProperty private String id;
 	 */
 	@JsonProperty
-	private Date dateOccurred;
+	private DateTime dateOccurred;
 	@JsonProperty
 	private String errorType;
 	@JsonProperty
@@ -47,7 +48,7 @@ public class ErrorTrace extends MotechBaseDataObject {
 	 * 
 	 * 
 	 */
-	public ErrorTrace(Date dateOccurred, String errorType, String occuredAt,
+	public ErrorTrace(DateTime dateOccurred, String errorType, String occuredAt,
 			String stackTrace, String status, String documentType) {
 		this.dateOccurred = dateOccurred;
 		// this.id=id;
@@ -59,7 +60,7 @@ public class ErrorTrace extends MotechBaseDataObject {
 
 	}
 
-	public ErrorTrace(String recordId, Date date, String name,
+	public ErrorTrace(String recordId, DateTime date, String name,
 			String occuredAt, String stackTrace, String status) {
 		this.dateOccurred = date;
 		this.recordId = recordId;
@@ -70,11 +71,11 @@ public class ErrorTrace extends MotechBaseDataObject {
 
 	}
 
-	public Date getDateOccurred() {
+	public DateTime getDateOccurred() {
 		return dateOccurred;
 	}
 
-	public void setDateOccurred(Date dateOccurred) {
+	public void setDateOccurred(DateTime dateOccurred) {
 		this.dateOccurred = dateOccurred;
 	}
 
@@ -121,11 +122,11 @@ public class ErrorTrace extends MotechBaseDataObject {
 	}
 
 	
-	public Date getDate() {
+	public DateTime getDate() {
 		return dateOccurred;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(DateTime date) {
 		this.dateOccurred = date;
 	}
 

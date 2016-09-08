@@ -30,11 +30,11 @@ public class Query{
 			return this;
 		}
 		public Query eq(String name, DateTime value){
-			addToQuery(name+"<date>:["+value.toString("yyyy-MM-dd")+" TO "+value.toString("yyyy-MM-dd")+"] ");
+			addToQuery(name+"<date>:["+value.withTimeAtStartOfDay().toString("yyyy-MM-dd'T'HH:mm:ss")+" TO "+value.plusDays(1).withTimeAtStartOfDay().toString("yyyy-MM-dd'T'HH:mm:ss")+"] ");
 			return this;
 		}
 		public Query between(String name, DateTime from, DateTime to){
-			addToQuery(name+"<date>:["+from.toString("yyyy-MM-dd")+" TO "+to.toString("yyyy-MM-dd")+"] ");
+			addToQuery(name+"<date>:["+from.toString("yyyy-MM-dd'T'HH:mm:ss")+" TO "+to.toString("yyyy-MM-dd'T'HH:mm:ss")+"] ");
 			return this;
 		}
 		private void addToQuery(String q){

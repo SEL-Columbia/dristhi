@@ -3,7 +3,7 @@ package org.opensrp.connector.openmrs.service;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.connector.HttpUtil;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold.HouseholdMember;
 import org.springframework.beans.factory.annotation.Autowired;

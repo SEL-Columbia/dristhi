@@ -1,4 +1,4 @@
-package org.opensrp.connector;
+package org.opensrp.common.util;
 
 import java.io.IOException;
 import java.net.Socket;
