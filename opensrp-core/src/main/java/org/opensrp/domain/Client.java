@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -112,6 +113,20 @@ public class Client extends BaseEntity {
 		this.lastName = lastName;
 	}
 
+	public String fullName() {
+		String n = "";
+		if(StringUtils.isNotBlank(firstName)){
+			n += firstName;
+		}
+		if(StringUtils.isNotBlank(middleName)){
+			n += " "+ middleName;
+		}
+		if(StringUtils.isNotBlank(lastName)){
+			n += " " + lastName;
+		}
+		return n.trim();
+	}
+	
 	public DateTime getBirthdate() {
 		return birthdate;
 	}

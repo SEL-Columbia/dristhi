@@ -5,7 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.domain.User;
 import org.opensrp.common.util.HttpResponse;
-import org.opensrp.connector.HttpUtil;
+import org.opensrp.common.util.HttpUtil;
 import org.springframework.stereotype.Service;
 
 @Service

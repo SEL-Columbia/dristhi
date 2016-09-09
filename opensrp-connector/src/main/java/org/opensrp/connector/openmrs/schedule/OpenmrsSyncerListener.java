@@ -1,25 +1,22 @@
 package org.opensrp.connector.openmrs.schedule;
 
-import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
-import org.opensrp.connector.openmrs.constants.OpenmrsConstants.ScheduleTrackerConfig;
-import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
+import org.opensrp.connector.openmrs.constants.OpenmrsConstants.SchedulerConfig;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
-import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.scheduler.service.ScheduleService;
 import org.opensrp.service.ClientService;
@@ -58,15 +55,27 @@ public class OpenmrsSyncerListener {
 		this.eventService = eventService;
 		this.clientService = clientService;
 		
-		this.config.registerAppStateToken(ScheduleTrackerConfig.openmrs_syncer_sync_by_last_update_enrollment, 
-			0, "ScheduleTracker token to keep track of enrollment synced with OpenMRS", true);
+		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment, 
+				0, "ScheduleTracker token to keep track of enrollment synced with OpenMRS", true);
+		
+		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, 
+				0, "OpenMRS data pusher token to keep track of new / updated clients synced with OpenMRS", true);
+		
+		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_voided, 
+				0, "OpenMRS data pusher token to keep track of voided clients synced with OpenMRS", true);
+		
+		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, 
+				0, "OpenMRS data pusher token to keep track of new / updated events synced with OpenMRS", true);
+		
+		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_voided, 
+				0, "OpenMRS data pusher token to keep track of voided events synced with OpenMRS", true);
 	}
 	
     @MotechListener(subjects = OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
 	public void scheduletrackerSyncer(MotechEvent event) {
     	try{
-    		System.out.println("RUNNING SCHEDULER_TRACKER_SYNCER_SUBJECT");
-	    	AppStateToken lastsync = config.getAppStateTokenByName(ScheduleTrackerConfig.openmrs_syncer_sync_by_last_update_enrollment);
+    		System.out.println("RUNNING "+event.getSubject());
+	    	AppStateToken lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment);
 	    	DateTime start = lastsync==null||lastsync.getValue()==null?new DateTime().minusYears(33):new DateTime(lastsync.stringValue());
 			DateTime end = new DateTime();
 			List<Enrollment> el = opensrpScheduleService.findEnrollmentByLastUpDate(start, end);
@@ -89,46 +98,83 @@ public class OpenmrsSyncerListener {
 					errorTraceService.log("ScheduleTracker Syncer Inactive Schedule", Enrollment.class.getName(), e.getId(), e1.getStackTrace().toString(), "");
 				}
 	    	}
-	    	config.updateAppStateToken(ScheduleTrackerConfig.openmrs_syncer_sync_by_last_update_enrollment, end);
+	    	config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment, end);
     	}
     	catch(Exception e){
     		e.printStackTrace();
     	}
 	}
     
-    @SuppressWarnings("unchecked")
-	@MotechListener(subjects = "PUSH FORM SUBMISSION TO OPENMRS")//TODO constant
-	public void pushFormSubmissionToOpenMRS(MotechEvent event) {
+	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT)
+	public void pushToOpenMRS(MotechEvent event) {
     	try{
-    		System.out.println("RUNNING PUSH FORM SUBMISSION TO OPENMRS");
-    		Map<String, Object> d = (Map<String, Object>)event.getParameters().get("data");
-    		Client c = (Client)d.get("client");
-    		Event e = (Event)d.get("event");
-    		Map<String, Map<String, Object>> dep = (Map<String, Map<String, Object>>) d.get("dependents");
+    		System.out.println("RUNNING "+event.getSubject());
     		
-    		e.addDetails("OPENMRS_UUID", addEventToOpenMRS(c, e));
-    		
-    		eventService.updateEvent(e);
-    		
-    		for (String k : dep.keySet()) {
-				addEventToOpenMRS((Client)dep.get(k).get("client"), (Event)dep.get(k).get("event"));
+    		AppStateToken lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated);
+	    	DateTime start = lastsync==null||lastsync.getValue()==null?new DateTime().minusYears(33):new DateTime(lastsync.stringValue());
+			DateTime end = new DateTime();
+			
+    		System.out.println("START "+start+" , END "+end);
+
+			List<Client> cl = clientService.findByCriteria(null, null, null, null, null, null, null, null, start, end);
+			System.out.println("Clients list size "+cl.size());
+			for (Client c : cl) {
+				try{
+					String uuid = c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
+					
+	    			if(uuid == null){
+	    				JSONObject p = patientService.getPatientByIdentifier(c.getBaseEntityId());
+	    				for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
+	    					p = patientService.getPatientByIdentifier(id.getValue());
+	    					if(p != null){
+	    						break;
+	    					}
+						}
+	    				if(p != null){
+	    					uuid = p.getString("uuid");
+	    				}
+	    			}
+	    			if(uuid != null){
+	    				System.out.println("Updating patient "+uuid);
+	    				patientService.updatePatient(c, uuid);
+	    			}
+	    			else {
+	    				System.out.println(patientService.createPatient(c));
+	    			}
+				}
+				catch(Exception ex1){
+					ex1.printStackTrace();
+					errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(), ExceptionUtils.getStackTrace(ex1), "");
+				}				
 			}
+	    	config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, end);
+	    	
+	    	System.out.println("RUNNING FOR EVENTS");
+    		
+    		lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
+	    	start = lastsync==null||lastsync.getValue()==null?new DateTime().minusYears(33):new DateTime(lastsync.stringValue());
+			end = new DateTime();
+			
+			List<Event> el = eventService.findEventsBy(null, null, null, null, null, null, null, start, end);
+			for (Event e : el) {
+				try{
+					String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
+	    			if(uuid != null){
+	    				encounterService.updateEncounter(e);
+	    			}
+	    			else {
+	    				System.out.println(encounterService.createEncounter(e));
+	    			}
+				}
+				catch(Exception ex2){
+					ex2.printStackTrace();
+					errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(), ExceptionUtils.getStackTrace(ex2), "");
+				}				
+			}
+	    	config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, end);
     	}
-    	catch(Exception e){
-    		e.printStackTrace();
+    	catch(Exception ex){
+    		ex.printStackTrace();
     	}
 	}
-    
-    private String addEventToOpenMRS(Client c, Event e) throws ParseException, IllegalStateException, JSONException{
-//    	if(formEntityConverter.isOpenmrsForm(formSubmission)){
-    			JSONObject p = patientService.getPatientByIdentifier(c.getBaseEntityId());//TODO by all identifiers
-    			if(p == null){
-    				System.out.println(patientService.createPatient(c));
-    			}
-        	
-    			JSONObject ej = encounterService.createEncounter(e);
-    			return ej.getString("uuid");
-    	//}
-    }
-
 }

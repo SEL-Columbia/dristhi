@@ -1,4 +1,4 @@
-/*package org.opensrp.scheduler.router;
+/*package org.opensrp.scheduler;
 
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
@@ -23,6 +23,7 @@ import org.opensrp.dto.ActionData;
 import org.opensrp.dto.MonthSummaryDatum;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.service.BaseEntityService;
 
@@ -31,6 +32,10 @@ import com.google.gson.Gson;
 public class ActionServiceTest {
     @Mock
     private AllActions allActions;
+    
+    @Mock 
+    private AllAlerts allAlerts;
+    
     @Mock
     private BaseEntityService baseEntityService;
 
@@ -39,24 +44,25 @@ public class ActionServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        service = new ActionService(allActions, null);
+        allActions.removeAll();
+        allAlerts.removeAll();
+        service = new ActionService(allActions, allAlerts);
     }
 
     @Test
-    public void shouldSaveAlertActionForMother() throws Exception {
-        when(baseEntityService.findByBaseEntityId("Case X")).thenReturn(new BaseEntity("Case X"));
-
+    public void shouldSaveAlertActionForEntity() throws Exception {
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
         service.alertForBeneficiary("mother", "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
 
-        verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID M", ActionData.createAlert("mother", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate)));
+        Action action = new Action("Case X", "ANM ID M", ActionData.createAlert("mother", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate));
+        verify(allActions).addOrUpdateAlert(action);
+        verify(allActions).add(action);
+        verify(allAlerts).addOrUpdateScheduleNotificationAlert("mother", "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
     }
 
     @Test
     public void shouldDeleteExistingAlertBeforeCreatingNewOne() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thayi 1").withAnm("ANM ID M"));
-
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
         service.alertForBeneficiary(mother, "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);

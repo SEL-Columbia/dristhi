@@ -36,7 +36,6 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	
 	private AtomFeedProperties atomFeedProperties;
 	private AFTransactionManager transactionManager;
-	private WebClient webClient;
 	private AtomFeedClient client;
 
 	private PatientService patientService;
@@ -56,7 +55,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 				return action.execute();
 			}
 		};
-		this.webClient = new WebClient();
+		WebClient webClient = new WebClient();
 		
 		URI uri = new URI(OPENMRS_BASE_URL+OpenmrsConstants.ATOMFEED_URL+CATEGORY_URL);
 		this.client = new AtomFeedClient(new AllFeeds(webClient), allMarkers, allFailedEvents, atomFeedProperties, transactionManager, uri, this);
@@ -69,10 +68,10 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	public void process(Event event) {
 		log.info("Processing item : "+event.getContent());
 		try {
-			String uuid = event.getContent().substring(event.getContent().lastIndexOf("/")+1);
-			JSONObject p = patientService.getPatientByUuid(uuid, true);
+			String content = event.getContent().substring(event.getContent().lastIndexOf("/")+1);
+			JSONObject p = patientService.getPatientByUuid(content, true);
 			if(p == null){
-				throw new RuntimeException("Patient uuid ("+uuid+") specified in atomfeed content did not return any patient.");
+				throw new RuntimeException("Patient uuid specified in atomfeed content ("+content+") did not return any patient.");
 			}
 			Client c = patientService.convertToClient(p);
 			Client existing = clientService.findClient(c);
@@ -84,12 +83,12 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 				log.info("New Client -> Posted Thrive ID back to OpenMRS : "+newId);
 			}
 			else {
-				String srpIdInOpenmrs = c.getIdentifierMatchingRegex(PatientService.OPENSRP_IDENTIFIER_TYPE_MATCHER);
-				c = clientService.mergeClient(c);
+				String srpIdInOpenmrs = c.getBaseEntityId();
+				Client cmerged = clientService.mergeClient(c);
 				//TODO what if in any case thrive id is assigned to some other patient 
-				if(StringUtils.isBlank(srpIdInOpenmrs) || !srpIdInOpenmrs.equalsIgnoreCase(c.getBaseEntityId())){
+				if(StringUtils.isBlank(srpIdInOpenmrs) || !srpIdInOpenmrs.equalsIgnoreCase(cmerged.getBaseEntityId())){
 					// if openmrs doesnot have openSRP UID or have a different UID then update
-					JSONObject newId = patientService.addThriveId(c.getBaseEntityId(), p);
+					JSONObject newId = patientService.addThriveId(cmerged.getBaseEntityId(), p);
 					log.info("Existing Client missing Valid SRP UID -> Posted Thrive ID back to OpenMRS : "+newId);
 				}
 			}

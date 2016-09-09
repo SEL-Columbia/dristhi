@@ -11,7 +11,8 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.connector.HttpUtil;
+import org.opensrp.common.util.DateUtil;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.springframework.stereotype.Service;
@@ -170,10 +171,10 @@ public class PatientService extends OpenmrsService{
 			jao.put("latitude", ad.getLatitude());
 			jao.put("longitude", ad.getLongitude());
 			if(ad.getStartDate() != null){
-				jao.put("startDate", OPENMRS_DATE.format(ad.getStartDate()));
+				jao.put("startDate", OPENMRS_DATE.format(ad.getStartDate().toDate()));
 			}
 			if(ad.getEndDate() != null){
-				jao.put("endDate", OPENMRS_DATE.format(ad.getEndDate()));
+				jao.put("endDate", OPENMRS_DATE.format(ad.getEndDate().toDate()));
 			}
 			
 			jaar.put(jao);
@@ -218,6 +219,44 @@ public class PatientService extends OpenmrsService{
 		
 		p.put("identifiers", ids);
 		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
+	
+	public JSONObject updatePatient(Client c, String uuid) throws JSONException
+	{
+		JSONObject p = new JSONObject();
+		p.put("person", convertBaseEntityToOpenmrsJson(c));
+		JSONArray ids = new JSONArray();
+		if(c.getIdentifiers() != null){
+		for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
+			JSONObject jio = new JSONObject();
+			JSONObject idobj = getIdentifierType(id.getKey());
+			if(idobj == null){
+				idobj = createIdentifierType(id.getKey(), id.getKey()+" - FOR THRIVE OPENSRP");
+			}
+			jio.put("identifierType", idobj.getString("uuid"));
+			jio.put("identifier", id.getValue());
+			Object cloc = c.getAttribute("Location");
+			jio.put("location", cloc == null?"Unknown Location":cloc);
+			//jio.put("preferred", true);
+
+			ids.put(jio);
+		}}
+		
+		JSONObject jio = new JSONObject();
+		JSONObject ido = getIdentifierType(OPENSRP_IDENTIFIER_TYPE);
+		if(ido == null){
+			ido = createIdentifierType(OPENSRP_IDENTIFIER_TYPE, OPENSRP_IDENTIFIER_TYPE+" - FOR THRIVE OPENSRP");
+		}
+		jio.put("identifierType", ido.getString("uuid"));
+		jio.put("identifier", c.getBaseEntityId());
+		Object cloc = c.getAttribute("Location");
+		jio.put("location", cloc == null?"Unknown Location":cloc);
+		jio.put("preferred", true);
+		
+		ids.put(jio);
+		
+		p.put("identifiers", ids);
+		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_URL+"/"+uuid, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
 	
 	public JSONObject addThriveId(String baseEntityId, JSONObject patient) throws JSONException
@@ -276,8 +315,8 @@ public class PatientService extends OpenmrsService{
 		if(pr.has("addresses")){
 			for (int i = 0; i < pr.getJSONArray("addresses").length(); i++) {
 				JSONObject ad = pr.getJSONArray("addresses").getJSONObject(i);
-				Date startDate = ad.has("startDate")&&!ad.getString("startDate").equalsIgnoreCase("null")?new DateTime(ad.getString("startDate")).toDate():null;
-				Date endDate = ad.has("startDate")&&!ad.getString("endDate").equalsIgnoreCase("null")?new DateTime(ad.getString("endDate")).toDate():null;;
+				DateTime startDate = ad.has("startDate")&&!ad.getString("startDate").equalsIgnoreCase("null")?new DateTime(ad.getString("startDate")):null;
+				DateTime endDate = ad.has("startDate")&&!ad.getString("endDate").equalsIgnoreCase("null")?new DateTime(ad.getString("endDate")):null;;
 				Address a = new Address(ad.getString("address6"), startDate, endDate, null, 
 						ad.getString("latitude"), ad.getString("longitude"), ad.getString("postalCode"), 
 						ad.getString("stateProvince"), ad.getString("country"));

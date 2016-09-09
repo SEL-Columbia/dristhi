@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import org.opensrp.api.domain.Location;
 import org.opensrp.api.util.LocationTree;
 import org.opensrp.common.util.HttpResponse;
-import org.opensrp.connector.HttpUtil;
+import org.opensrp.common.util.HttpUtil;
 import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.StringUtils;

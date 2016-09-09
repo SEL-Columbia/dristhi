@@ -17,10 +17,8 @@
     <import resource="classpath:applicationSmsAPI.xml"/>
     <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
     
-    
-<!--     <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
- -->
     <context:annotation-config/>
+    
     <context:component-scan base-package="org.opensrp.repository"/>
     <context:component-scan base-package="org.opensrp.scheduler"/>
     <context:component-scan base-package="org.opensrp.service">

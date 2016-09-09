@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.MilestoneFulfillment;
 import org.motechproject.scheduletracking.api.domain.json.ScheduleRecord;
-import org.opensrp.connector.HttpUtil;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.service.AllScheduleWrapper;

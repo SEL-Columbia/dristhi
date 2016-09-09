@@ -1,4 +1,4 @@
-package org.opensrp.connector;
+package org.opensrp.common.util;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyStore;
@@ -6,6 +6,7 @@ import java.security.KeyStore;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -20,18 +21,17 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
-import org.opensrp.common.util.HttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.mysql.jdbc.StringUtils;
 
 @Component
 public class HttpUtil {
 
+	public enum AuthType{
+		BASIC, TOKEN, NONE
+	}
+	
     private final static DefaultHttpClient httpClient = init();
 
-    @SuppressWarnings("deprecation")
 	public static DefaultHttpClient init()  {
     	try {
 	    	//TODO add option to ignore cetificate validation in opensrp.prop
@@ -57,19 +57,28 @@ public class HttpUtil {
     }
 
     public static HttpResponse post(String url, String payload, String data, String username,String password) {
-        return post(url, payload, data, username, password, "application/json");
+        return post(url, payload, data, "application/json", AuthType.BASIC, username+":"+password);
     }
     
-    public static HttpResponse post(String url, String payload, String data, String username,String password, String contentType) {
+    public static HttpResponse post(String url, String payload, String data) {
+        return post(url, payload, data, "application/json", AuthType.NONE, "");
+    }
+    
+    public static HttpResponse postWithToken(String url, String payload, String data, String token) {
+        return post(url, payload, data, "application/json", AuthType.TOKEN, token);
+    }
+    
+    public static HttpResponse post(String url, String payload, String data, String contentType, AuthType authType, String authString) {
         try {
-        	HttpPost request = (HttpPost) makeConnection(url, payload, RequestMethod.POST, true, username, password);
+        	HttpPost request = (HttpPost) makeConnection(url, payload, RequestMethod.POST, authType, authString);
             request.setHeader(HTTP.CONTENT_TYPE, contentType);
-            StringEntity entity = new StringEntity(data);
+            StringEntity entity = new StringEntity(data==null?"":data);
             System.out.println(data);
             entity.setContentEncoding(contentType);
             request.setEntity(entity);
             org.apache.http.HttpResponse response = httpClient.execute(request);
-            return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
+            return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, response.getStatusLine()
+            		.getStatusCode(),IOUtils.toString(response.getEntity().getContent()));
         } catch (Exception e) {
         	e.printStackTrace();
             throw new RuntimeException(e);
@@ -77,22 +86,34 @@ public class HttpUtil {
     }
 
     public static HttpResponse get(String url, String payload, String username, String password) {
+    	return get(url, payload, AuthType.BASIC, username+":"+password);
+    }
+    
+    public static HttpResponse get(String url, String payload) {
+    	return get(url, payload, AuthType.NONE, "");
+    }
+    
+    public static HttpResponse getWithToken(String url, String payload, String token) {
+    	return get(url, payload, AuthType.BASIC, token);
+    }
+    
+    public static HttpResponse get(String url, String payload, AuthType authType, String authString) {
         try {
-        	HttpGet request = (HttpGet) makeConnection(url, payload, RequestMethod.GET, true, username, password);
+        	HttpGet request = (HttpGet) makeConnection(url, payload, RequestMethod.GET, authType, authString);
             org.apache.http.HttpResponse response = httpClient.execute(request);
-            return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, IOUtils.toString(response.getEntity().getContent()));
+            return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, response.getStatusLine().getStatusCode(), IOUtils.toString(response.getEntity().getContent()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    static HttpRequestBase makeConnection(String url, String payload, RequestMethod method, boolean useBasicAuth, String username, String password) throws URISyntaxException {
+    static HttpRequestBase makeConnection(String url, String payload, RequestMethod method, AuthType authType, String authString) throws URISyntaxException {
     	String charset = "UTF-8";
 
         if(url.endsWith("/")){
         	url = url.substring(0, url.lastIndexOf("/"));
         }
-        url = (url+(StringUtils.isEmptyOrWhitespaceOnly(payload)?"":("?"+payload))).replaceAll(" ", "%20");
+        url = (url+(StringUtils.isBlank(payload)?"":("?"+payload))).replaceAll(" ", "%20");
     	URI urlo = new URI(url);
     	
     	HttpRequestBase requestBase = null;
@@ -108,10 +129,14 @@ public class HttpUtil {
     	requestBase.setURI(urlo);
     	requestBase.addHeader("Accept-Charset", charset);
 		
-		if(useBasicAuth){
-			String encoded = new String(Base64.encodeBase64((username+":"+password).getBytes()));
+		if(authType.name().equalsIgnoreCase("basic")){
+			String encoded = authString.matches(".+:.+")?new String(Base64.encodeBase64(authString.getBytes())):authString;
 			requestBase.addHeader("Authorization", "Basic "+encoded);
 		}
+		else if(authType.name().equalsIgnoreCase("token")){
+			requestBase.addHeader("Authorization", "Token "+authString);
+		}
+		
 		System.out.println(url);
 		return requestBase;
 	}

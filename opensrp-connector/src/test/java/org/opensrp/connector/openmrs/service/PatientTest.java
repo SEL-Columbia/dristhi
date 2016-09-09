@@ -24,14 +24,18 @@ public class PatientTest extends TestResourceLoader{
 	
 	@Before
 	public void setup(){
+		pushToOpenmrsForTest = true;
+		openmrsUsername = "admin";
+		openmrsPassword = "0p3n5rpAdmin";
+		openmrsOpenmrsUrl = "http://46.101.51.199:8080/openmrs";
 		s = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 	}
 	
 	@Test
 	public void shouldCreatePerson() throws JSONException {
 		List<Address> addresses = new ArrayList<>();
-		addresses.add(new Address("BIRTH", new Date(), new Date(), null, "LAT", "LON", "PCODE", "SINDH", "PK"));
-		addresses.add(new Address("DEATH", new Date(), new Date(), null, "LATd", "LONd", "dPCODE", "KPK", "PK"));
+		addresses.add(new Address("BIRTH", DateTime.now(), DateTime.now(), null, "LAT", "LON", "PCODE", "SINDH", "PK"));
+		addresses.add(new Address("DEATH", DateTime.now(), DateTime.now(), null, "LATd", "LONd", "dPCODE", "KPK", "PK"));
 		Map<String, Object> attribs = new HashMap<>();
 		//attribs.put("Household ID", "HH112");
 		Client c = new Client(UUID.randomUUID().toString())

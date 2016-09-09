@@ -35,7 +35,7 @@ public class ActionControllerTest {
         when(actionService.getNewAlertsForANM("ANM 1", 0L)).thenReturn(asList(alertAction));
 
         Action expectedAlertActionItem = ActionConvertor.from(alertAction);
-        ActionController actionController = new ActionController(actionService);
+        ActionController actionController = new ActionController(actionService, null, null);
 
         assertThat(asList(expectedAlertActionItem), hasSameItemsAs(actionController.getNewActionForANM("ANM 1", 0L)));
     }

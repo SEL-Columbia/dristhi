@@ -11,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.util.HttpResponse;
-import org.opensrp.connector.HttpUtil;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
@@ -269,7 +269,7 @@ public class EncounterService extends OpenmrsService{
 		JSONObject creator = encounter.getJSONObject("auditInfo").getJSONObject("creator");
 		e.withBaseEntityId(c.getBaseEntityId())
 			.withCreator(new User(creator.getString("uuid"), creator.getString("display"), null, null))
-			.withDateCreated(new Date());
+			.withDateCreated(DateTime.now());
 		
 		e.withEventDate(new DateTime(encounter.getString("encounterDatetime")))
 			//.withEntityType(entityType) //TODO

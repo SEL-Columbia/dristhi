@@ -4,6 +4,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +32,7 @@ public class AllErrorTraceIntegrationTest {
 		//ErrorTrace error=new ErrorTrace(new Date(), "Error Testing" , "not availalbe","this is an Testing Error", "unsolved");
 		ErrorTrace error=new ErrorTrace();
 		error.setErrorType("error loggging test");
-		error.setDate(new Date());
+		error.setDate(DateTime.now());
 		error.setStackTrace("Complete Stack Trace :");
 		error.setStatus("unsolved");
 		error.setDocumentType("Test Document");

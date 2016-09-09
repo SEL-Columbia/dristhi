@@ -67,16 +67,16 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 	public void process(Event event) {
 		log.info("Processing item : "+event.getContent());
 		try {
-			String uuid = event.getContent().substring(event.getContent().lastIndexOf("/")+1);
-			JSONObject e = encounterService.getEncounterByUuid(uuid, true);
+			String content = event.getContent().substring(event.getContent().lastIndexOf("/")+1);
+			JSONObject e = encounterService.getEncounterByUuid(content, true);
 			if(e == null){
-				throw new RuntimeException("Encounter uuid ("+uuid+") specified in atomfeed content did not return any encounter.");
+				throw new RuntimeException("Encounter uuid specified in atomfeed content ("+content+") did not return any encounter.");
 			}
 			
 			log.info(e.toString());
 			
 			org.opensrp.domain.Event enc = encounterService.convertToEvent(e);
-			org.opensrp.domain.Event existing = eventService.find(uuid);
+			org.opensrp.domain.Event existing = eventService.find(e.getString("uuid"));
 			if(existing == null){
 				log.info("New Event");
 				eventService.addEvent(enc);
