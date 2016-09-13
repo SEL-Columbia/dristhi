@@ -102,7 +102,7 @@ public class ClientService {
 			throw new IllegalArgumentException("A client already exists with given list of identifiers. Consider updating data.["+c+"]");
 		}
 		
-		client.setDateCreated(new Date());
+		client.setDateCreated(new DateTime());
 		allClients.add(targetDb,client);
 		return client;
 	}

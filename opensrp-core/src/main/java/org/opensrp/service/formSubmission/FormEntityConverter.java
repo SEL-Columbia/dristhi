@@ -89,13 +89,18 @@ public class FormEntityConverter {
 					&& fat.containsKey("openmrs_entity") 
 					&& fat.get("openmrs_entity").equalsIgnoreCase("concept")){
 				List<Object> vall = new ArrayList<>();
+				List<Object> humanReadableValues = new ArrayList<>();
 				for (String vl : fl.values()) {
 					String val = fl.valueCodes(vl)==null?null:fl.valueCodes(vl).get("openmrs_code");
 					val = StringUtils.isEmptyOrWhitespaceOnly(val)?vl:val;
 					vall.add(val);
+					if (fl.valueCodes(vl) != null && fl.valueCodes(vl).get("openmrs_code") != null) {// this value is in concept id form
+                        String hval = fl.getValues() == null ? null : fl.getValues().get(0);
+                        humanReadableValues.add(hval);
+                    }
 				}
 				Obs o = new Obs("concept", fl.type(), fat.get("openmrs_entity_id"), 
-						fat.get("openmrs_entity_parent"), vall, null, fl.name());
+						fat.get("openmrs_entity_parent"), vall,humanReadableValues, null, fl.name());
 				o.setEffectiveDatetime(e.getEventDate());
 				e.addObs(o);
 			}

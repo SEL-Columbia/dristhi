@@ -1,0 +1,94 @@
+{
+    "name": "Essential Newborn Care Checklist",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "enccrv_1",
+            "scheduleWindows": {
+            	"earliest": ["0 Days"],
+                "due": ["1 Days"],
+                "late": ["2 Day"],
+                "max": ["2 Days"]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                },
+                {
+                    "window": "late",
+                    "offset": ["1 Day"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                },
+                {
+                    "window": "max",
+                    "offset": ["2 Days"],
+                    "interval": ["1 Day"],
+                    "count": "0"
+                }
+                
+            ]
+        },
+        {
+            "name": "enccrv_2",
+            "scheduleWindows": {
+            	"earliest": ["2 Days"],
+                "due": ["3 Days"],
+                "late": ["5 Days"],
+                "max": ["5 Days"]
+            },
+            "alerts": [           
+                {
+                    "window": "due",
+                    "offset": ["2 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                },
+                {
+                    "window": "late",
+                    "offset": ["3 Days"],
+                    "interval": ["1 Day"],
+                    "count": "2"
+                },
+                 {
+                    "window": "max",
+                    "offset": ["5 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }                            
+            ]
+        },
+        {
+            "name": "enccrv_3",
+            "scheduleWindows": {
+            	"earliest": ["6 Days"],
+                "due": ["8 Days"],
+                "late": ["9 Days"],
+                "max": ["9 Days"]
+            },
+            "alerts": [            	
+                {
+                    "window": "due",
+                    "offset": ["6 Days"],
+                    "interval": ["1 Day"],
+                    "count": "2"
+                },
+                {
+                    "window": "late",
+                    "offset": ["8 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                },
+                {
+                    "window": "max",
+                    "offset": ["9 Days"],
+                    "interval": ["1 Day"],
+                    "count": "0"
+                }                 
+            ]
+        }
+      ]
+}

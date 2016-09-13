@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants;
@@ -139,7 +140,7 @@ public class FormSubmissionController {
 	            	}
 	            	catch(Exception e){
 	            		e.printStackTrace();
-	            		ErrorTrace errorTrace=new ErrorTrace(new Date(), "Parse Exception", "", e.getStackTrace().toString(), "Unsolved", formSubmission.formName());
+	            		ErrorTrace errorTrace=new ErrorTrace(new DateTime(), "Parse Exception", "", e.getStackTrace().toString(), "Unsolved", formSubmission.formName());
 						errorTrace.setRecordId(formSubmission.instanceId());
 						errorTraceService.addError(errorTrace);
 	            	}

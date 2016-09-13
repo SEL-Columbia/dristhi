@@ -1,5 +1,5 @@
 {
-					"name": "Ante Natal Care - Normal",
+					"name": "Ante Natal Care Reminder Visit",
 					"handler": "ANCScheduleHandler",
 					"events": [
 						{
@@ -36,7 +36,7 @@
 	
 },
 {
-					"name": "Ante Natal Care - Normal",
+					"name": "Ante Natal Care Reminder Visit",
 					"handler": "ANCScheduleHandler",
 					"events": [
 							{
@@ -55,7 +55,7 @@
 	
 },
 {
-					"name": "Ante Natal Care - Normal",
+					"name": "Ante Natal Care Reminder Visit",
 					"handler": "ANCScheduleHandler",
 					"events": [
 						{
@@ -74,7 +74,7 @@
 	
 },
 {
-					"name": "Ante Natal Care - Normal",
+					"name": "Ante Natal Care Reminder Visit",
 					"handler": "ANCScheduleHandler",
 					"events": [
 							{

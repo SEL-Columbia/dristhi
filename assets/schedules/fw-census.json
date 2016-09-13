@@ -1,0 +1,42 @@
+{
+    "name": "FW CENSUS",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "FW CENSUS",
+            "scheduleWindows": {
+                "earliest": ["56 Days"],
+                "due": ["84 Days"],
+                "late": ["143 Weeks"],
+                "max": ["144 Weeks"]
+            },
+            "alerts": [
+                {
+                    "window": "earliest",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "56"
+                },
+                {
+                    "window": "due",
+                    "offset": ["56 Days"],
+                    "interval": ["1 Day"],
+                    "count": "28"
+                },
+                {
+                    "window": "late",
+                    "offset": ["84 Days"],
+                    "interval": ["1 Day"],
+                    "count": "917"
+                },
+                {
+                    "window": "max",
+                    "offset": ["143 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "7"
+                }
+                
+            ]
+        }
+    ]
+}

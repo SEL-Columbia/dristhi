@@ -93,7 +93,8 @@ public class PatientService extends OpenmrsService{
 	
 	public JSONObject createPerson(Client be) throws JSONException{
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
-		return new JSONObject(HttpUtil.post(getURL()+"/"+PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+		String response=HttpUtil.post(getURL()+"/"+PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body();
+		return new JSONObject(response);
 	}
 	
 	public JSONObject convertBaseEntityToOpenmrsJson(Client be) throws JSONException {
@@ -107,7 +108,8 @@ public class PatientService extends OpenmrsService{
 		
 		String fn = be.getFirstName();
 		String mn = be.getMiddleName()==null?"":be.getMiddleName();
-		String ln = be.getLastName()==null?".":be.getLastName();
+		String ln =( be.getLastName()==null || be.getLastName().equals("."))?"NA":be.getLastName();
+		
 		per.put("names", new JSONArray("[{\"givenName\":\""+fn+"\",\"middleName\":\""+mn+"\", \"familyName\":\""+ln+"\"}]"));
 		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
 		per.put("addresses", convertAddressesToOpenmrsJson(be.getAddresses()));
@@ -218,7 +220,8 @@ public class PatientService extends OpenmrsService{
 		ids.put(jio);
 		
 		p.put("identifiers", ids);
-		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+		String response=HttpUtil.post(getURL()+"/"+PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body();
+		return new JSONObject(response);
 	}
 	
 	public JSONObject updatePatient(Client c, String uuid) throws JSONException

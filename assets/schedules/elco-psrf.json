@@ -1,0 +1,42 @@
+{
+    "name": "ELCO PSRF",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "ELCO PSRF",
+            "scheduleWindows": {
+                "earliest": ["8 Weeks"],
+                "due": ["10 Weeks"],
+                "late": ["143 Weeks"],
+                "max": ["144 Weeks"]
+            },
+            "alerts": [
+            	{
+                    "window": "earliest",
+                    "offset": ["0 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "56"
+                },
+                {
+                    "window": "due",
+                    "offset": ["8 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "14"
+                },
+                {
+                    "window": "late",
+                    "offset": ["10 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "931"
+                },
+                {
+                    "window": "max",
+                    "offset": ["143 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "7"
+                }
+                
+            ]
+        }
+    ]
+}

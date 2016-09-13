@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,7 +67,8 @@ public class ChildScheduleHandler extends BaseScheduleHandler {
 	 * @return
 	 */
 	private List<Client> getChildrenIds(Event event) {
-		Date dateCreated = event.getDateCreated();
+		Date dateCreated = event.getDateCreated().toDate();
+		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(dateCreated);
 		cal.add(Calendar.DATE, 1);

@@ -32,6 +32,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	private static final String JSON_KEY_EVENT = "event";
 	
 	private static final String JSON_KEY_VALUE = "value";
+	private static final String JSON_KEY_VALUES = "values";
 	
 	private static final String JSON_KEY_MILESTONE = "milestone";
 	
@@ -259,7 +260,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 					for (int i = 0; i < obsArray.length(); i++) {
 						JSONObject object = obsArray.getJSONObject(i);
 						String key = object.has(JSON_KEY_EVENT_CONCEPT) ? object.getString(JSON_KEY_EVENT_CONCEPT) : null;
-						String value = object.has(JSON_KEY_VALUE) ? object.getString(JSON_KEY_VALUE) : "";
+						String value = getConceptValue(object);
 						// : object.has("values") ? object.get("values").toString() : null;
 						if (key != null && value != null) {
 							obs.put(key, value);
@@ -274,6 +275,17 @@ abstract class BaseScheduleHandler implements EventsHandler {
 		return obs;
 	}
 	
+	private String getConceptValue(JSONObject object) throws JSONException{
+		String value="";
+		if(object.has(JSON_KEY_VALUE)){
+			value=object.getString(JSON_KEY_VALUE);
+		}else if(object.has(JSON_KEY_VALUES)){
+			JSONArray array=object.getJSONArray(JSON_KEY_VALUES);
+			value= array.length()>0?array.getString(0):"";
+		}
+		
+		return value;
+	}
 	/**
 	 * Convert event pojo to a jsonobject
 	 * 

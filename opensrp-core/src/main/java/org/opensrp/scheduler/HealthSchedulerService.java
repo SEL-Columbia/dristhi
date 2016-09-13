@@ -23,9 +23,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class HealthSchedulerService {
 	public enum MetadataField {
-		enrollmentFormSubmission,
-		fulfillmentFormSubmission,
-		unenrollmentFormSubmission,
+		enrollmentEvent,
+		fulfillmentEvent,
+		unenrollmentEvent,
 		lastUpdate
 	}
 	

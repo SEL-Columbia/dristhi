@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.joda.time.DateTime;
 import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.scheduletracking.api.events.constants.EventSubjects;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.AppStateToken;
@@ -19,7 +19,6 @@ import org.opensrp.domain.ErrorTrace;
 import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.repository.AllEvents;
-import org.opensrp.scheduler.MilestoneEvent;
 import org.opensrp.service.ConfigService;
 import org.opensrp.service.ErrorTraceService;
 import org.opensrp.service.formSubmission.handler.EventsRouter;
@@ -76,7 +75,7 @@ public class EventsListener {
             	}
             	catch(Exception e){
             		e.printStackTrace();
-            		errorTraceService.addError(new ErrorTrace(new Date(), "FormSubmissionProcessor", this.getClass().getName(), e.getStackTrace().toString(), "unsolved", FormSubmission.class.getName()));
+            		errorTraceService.addError(new ErrorTrace(new DateTime(), "FormSubmissionProcessor", this.getClass().getName(), e.getStackTrace().toString(), "unsolved", FormSubmission.class.getName()));
             	}
             }
         } catch (Exception e) {

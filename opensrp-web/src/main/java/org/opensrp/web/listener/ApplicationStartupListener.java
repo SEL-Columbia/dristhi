@@ -50,7 +50,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
             scheduler.startJob(eventsSchedule);
             //scheduler.startJob(anmReportScheduler);
             //scheduler.startJob(mctsReportScheduler);
-            scheduler.startJob(openmrsScheduleSyncerScheduler);
+           // scheduler.startJob(openmrsScheduleSyncerScheduler);
             scheduler.startJob(atomfeedSchedule);
             scheduler.startJob(encounterSchedule);
             

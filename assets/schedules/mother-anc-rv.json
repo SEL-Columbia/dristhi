@@ -1,0 +1,124 @@
+{
+    "name": "Ante Natal Care Reminder Visit",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "ancrv_1",
+            "scheduleWindows": {
+                "earliest": ["51 Days"],
+                "due": ["56 Days"],
+                "late": ["161 Days"],
+                "max": ["162 Days"]
+            },
+            "alerts": [
+                 {
+                    "window": "due",
+                    "offset": ["51 Days"],
+                    "interval": ["1 Day"],
+                    "count": "5"
+                },
+                {
+                    "window": "late",
+                    "offset": ["56 Days"],
+                    "interval": ["1 Day"],
+                    "count": "105"
+                },
+                {
+                    "window": "max",
+                    "offset": ["161 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }
+                
+            ]
+        },
+        {
+            "name": "ancrv_2",
+            "scheduleWindows": {
+            	"earliest": ["163 Days"],
+                "due": ["168 Days"],
+                "late": ["217 Days"],
+                "max": ["218 Days"]
+            },
+            "alerts": [           
+                {
+                    "window": "due",
+                    "offset": ["163 Days"],
+                    "interval": ["1 Day"],
+                    "count": "5"
+                },
+                {
+                    "window": "late",
+                    "offset": ["168 Days"],
+                    "interval": ["1 Day"],
+                    "count": "49"
+                },
+                 {
+                    "window": "max",
+                    "offset": ["217 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }                            
+            ]
+        },
+        {
+            "name": "ancrv_3",
+            "scheduleWindows": {
+            	"earliest": ["219 Days"],
+                "due": ["224 Days"],
+                "late": ["245 Days"],
+                "max": ["246 Days"]
+            },
+            "alerts": [            	
+                {
+                    "window": "due",
+                    "offset": ["219 Days"],
+                    "interval": ["1 Day"],
+                    "count": "5"
+                },
+                {
+                    "window": "late",
+                    "offset": ["224 Days"],
+                    "interval": ["1 Day"],
+                    "count": "21"
+                },
+                {
+                    "window": "max",
+                    "offset": ["245 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }                 
+            ]
+        },
+        {
+            "name": "ancrv_4",
+            "scheduleWindows": {
+            	"earliest": ["247 Days"],
+                "due": ["252 Days"],
+                "late": ["652 Days"],
+                "max": ["653 Days"]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["247 Days"],
+                    "interval": ["1 Day"],
+                    "count": "5"
+                },
+                {
+                    "window": "late",
+                    "offset": ["252 Days"],
+                    "interval": ["1 Day"],
+                    "count": "400"
+                },
+                 {
+                    "window": "max",
+                    "offset": ["652 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }                  
+                         
+            ]
+        }
+    ]
+}

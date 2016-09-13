@@ -31,11 +31,11 @@ public class ECAlertCreationAction implements HookedEvent {
     @Override
     public void invoke(MilestoneEvent motechEvent, Map<String, String> extraData) {
         Enrollment enr = scheduler.getEnrollment(motechEvent.externalId(), motechEvent.scheduleName());
-        String eventId = enr.getMetadata().get(MetadataField.enrollmentFormSubmission.name());
+        String eventId = enr.getMetadata().get(MetadataField.enrollmentEvent.name());
         Event event = eventService.getById(eventId);
         String entityType = event.getEntityType();
         
-        logger.debug(format("Generating alert for entity {0} of type {1} , formSubmission {2} "
+        logger.debug(format("Generating alert for entity {0} of type {1} , event {2} "
         		+ "for schedule {3} in window {4} ", 
         		motechEvent.externalId(), entityType, event.getId(), enr.getScheduleName(), motechEvent.windowName()));
 		

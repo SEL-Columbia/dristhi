@@ -32,7 +32,7 @@ public class AlertCreationAction implements HookedEvent {
     @Override
     public void invoke(MilestoneEvent event, Map<String, String> extraData) {
         Enrollment enr = scheduler.getEnrollment(event.externalId(), event.scheduleName());
-        String formSubmissionId = enr.getMetadata().get(MetadataField.enrollmentFormSubmission.name());
+        String formSubmissionId = enr.getMetadata().get(MetadataField.enrollmentEvent.name());
         FormSubmission fs = formSubmissionService.findByInstanceId(formSubmissionId);
         String entityType = getEntityType(event.externalId(), fs);
         

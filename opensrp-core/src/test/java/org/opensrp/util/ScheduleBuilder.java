@@ -39,7 +39,7 @@ public class ScheduleBuilder{
 		Map<String, String> map = new HashMap<>();
 		
 		map.put(MetadataField.lastUpdate.name(), new DateTime().toString());
-		map.put(MetadataField.enrollmentFormSubmission.name(), formSubmissionId);
+		map.put(MetadataField.enrollmentEvent.name(), formSubmissionId);
 		return new Enrollment(entityId, schedule, currentMilestone, startOfSchedule, enrolledOn, null, enrollmentStatus, map);
 	}	
 	

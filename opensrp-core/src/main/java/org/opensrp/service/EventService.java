@@ -139,7 +139,7 @@ public class EventService {
 			throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
 		}
 
-		event.setDateCreated(new Date());
+		event.setDateCreated(new DateTime());
 		
 		allEvents.add(targetDb,event);
 		return event;
