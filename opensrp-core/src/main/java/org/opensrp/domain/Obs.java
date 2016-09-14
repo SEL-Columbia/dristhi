@@ -1,6 +1,7 @@
 package org.opensrp.domain;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -181,11 +182,17 @@ public class Obs {
 		return this;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Obs addToValueList(Object value) {
 		if (values == null) {
 			values = new ArrayList<>();
 		}
-		values.add(value);
+		//make the object a bit more linear. If value is a list, the values json object will be an array with arrays inside
+		if(value instanceof List){
+			values.addAll((Collection<String>) value);
+		}else{
+			values.add(value);
+		}
 		return this;
 	}
 	

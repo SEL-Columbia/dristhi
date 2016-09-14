@@ -275,7 +275,7 @@ public class EncounterService extends OpenmrsService{
 			//.withEntityType(entityType) //TODO
 			.withEventType(encounter.getJSONObject("encounterType").getString("name"))
 			//.withFormSubmissionId(formSubmissionId)//TODO
-			.withLocationId(encounter.getJSONObject("location").getString("name"))
+			.withLocationId((encounter.has("location")&&encounter.get("location") instanceof JSONObject)?encounter.getJSONObject("location").getString("name"):"")
 			//TODO manage providers and uuid in couch
 			.withProviderId(encounter.getJSONArray("encounterProviders").getJSONObject(0).getJSONObject("provider").getString("uuid"))
 			.withVoided(encounter.getBoolean("voided"));
