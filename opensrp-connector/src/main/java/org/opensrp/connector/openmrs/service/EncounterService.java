@@ -173,7 +173,7 @@ public class EncounterService extends OpenmrsService{
 	//TODO	enc.put("patientUuid", pt.getString("uuid"));
 		enc.put("encounterType", e.getEventType());
 		enc.put("location", e.getLocationId());
-		enc.put("provider", pr.getString("uuid"));
+		enc.put("provider", pr.has("uuid")?pr.getString("uuid"):"");
 
 		List<Obs> ol = e.getObs();
 		Map<String, JSONArray> p = new HashMap<>();
@@ -277,7 +277,7 @@ public class EncounterService extends OpenmrsService{
 			//.withFormSubmissionId(formSubmissionId)//TODO
 			.withLocationId((encounter.has("location")&&encounter.get("location") instanceof JSONObject)?encounter.getJSONObject("location").getString("name"):"")
 			//TODO manage providers and uuid in couch
-			.withProviderId(encounter.getJSONArray("encounterProviders").getJSONObject(0).getJSONObject("provider").getString("uuid"))
+			.withProviderId(creator.getString("display"))
 			.withVoided(encounter.getBoolean("voided"));
 		
 		e.addIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, encounter.getString("uuid"));

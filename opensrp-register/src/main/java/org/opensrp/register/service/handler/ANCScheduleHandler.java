@@ -21,7 +21,9 @@ public class ANCScheduleHandler extends BaseScheduleHandler {
 			if (evaluateEvent(event, scheduleConfigEvent)) {
 				String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-					ancScheduleService.enrollMother(event.getBaseEntityId(),scheduleName, LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)),
+					String refDate=getReferenceDateForSchedule(event, scheduleConfigEvent, action);
+					if(!refDate.isEmpty())
+					ancScheduleService.enrollMother(event.getBaseEntityId(),scheduleName, LocalDate.parse(refDate),
 					   event.getId());
 				} else if (action.equalsIgnoreCase(ActionType.fulfill.toString())) {
 					ancScheduleService.fullfillMilestone(event.getBaseEntityId(), event.getProviderId(), scheduleName, LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getId());
