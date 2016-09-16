@@ -2,7 +2,9 @@ package org.opensrp.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -24,6 +26,8 @@ public class Obs {
 	
 	@JsonProperty
 	private List<Object> values;
+	//hold unique values here
+	Set<String> set = new HashSet<String>();
 	
 	@JsonProperty
 	private String comments;
@@ -188,11 +192,15 @@ public class Obs {
 			values = new ArrayList<>();
 		}
 		//make the object a bit more linear. If value is a list, the values json object will be an array with arrays inside
+		
 		if(value instanceof List){
-			values.addAll((Collection<String>) value);
+			set.addAll((Collection<String>) value);
+			
 		}else{
-			values.add(value);
+			set.add(value.toString());
 		}
+		values.clear();
+		values.addAll(set);
 		return this;
 	}
 	
