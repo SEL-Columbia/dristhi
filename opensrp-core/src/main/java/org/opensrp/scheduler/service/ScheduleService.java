@@ -131,13 +131,13 @@ public class ScheduleService {
 		map.put(MetadataField.lastUpdate.name(), new DateTime().toString());
 		
 		if(actionType.equals(ActionType.enroll)){
-			map.put(MetadataField.enrollmentFormSubmission.name(), formSubmissionId);
+			map.put(MetadataField.enrollmentEvent.name(), formSubmissionId);
 		}
 		else if(actionType.equals(ActionType.fulfill)){
-			map.put(MetadataField.fulfillmentFormSubmission.name(), formSubmissionId);
+			map.put(MetadataField.fulfillmentEvent.name(), formSubmissionId);
 		}
 		else if(actionType.equals(ActionType.unenroll)){
-			map.put(MetadataField.unenrollmentFormSubmission.name(), formSubmissionId);
+			map.put(MetadataField.unenrollmentEvent.name(), formSubmissionId);
 		}
 		return map;
 	}
