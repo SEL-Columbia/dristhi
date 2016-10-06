@@ -104,8 +104,8 @@ public class AllClients extends MotechBaseRepository<Client> {
 	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
 			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, 
 			String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
-		return lcr.getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);//db.queryView(q.includeDocs(true), Client.class);
+			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo,Long serverVersion) {
+		return lcr.getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo,serverVersion);//db.queryView(q.includeDocs(true), Client.class);
 	}
 	
 	public List<Client> findByDynamicQuery(String query) {
@@ -113,13 +113,16 @@ public class AllClients extends MotechBaseRepository<Client> {
 	}
 	
 	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
-			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, DateTime lastEditFrom, DateTime lastEditTo){
-		return lcr.getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo);
+			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, DateTime lastEditFrom, DateTime lastEditTo,Long serverVersion){
+		return lcr.getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo, serverVersion);
 	}
 	
 	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
-		return lcr.getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);
+			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo,Long serverVersion) {
+		return lcr.getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo,serverVersion);
+	}
+	public List<Client> findByServerVersion(long serverVersion) {
+		return lcr.getByCriteria(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null, serverVersion);
 	}
 	/**
 	 * Query view from the specified db
@@ -142,5 +145,14 @@ public class AllClients extends MotechBaseRepository<Client> {
 	public void add(CouchDbConnector targetDb,Client client) {
 		Assert.isTrue(Documents.isNew(client), "entity must be new");
 		targetDb.create(client);
+	}
+	/**
+	 * Get all clients without a server version
+	 * 
+	 * @return
+	 */
+	@View(name = "clients_by_empty_server_version", map = "function(doc) { if ( doc.type == 'Client' && !doc.serverVersion) { emit(doc._id, doc); } }")
+	public List<Client> findByEmptyServerVersion() {
+		return db.queryView(createQuery("clients_by_empty_server_version").limit(200).includeDocs(true), Client.class);
 	}
 }

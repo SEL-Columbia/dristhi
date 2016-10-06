@@ -36,7 +36,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 	}
 	
 	public List<Event> getByCriteria(String baseEntityId, DateTime eventDatefrom, DateTime eventDateto, 
-			String eventType, String entityType, String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
+			String eventType, String entityType, String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo,Long serverVersion) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Event", "by_all_criteria");
 		
@@ -61,6 +61,9 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 		}
 		if(!StringUtils.isEmptyOrWhitespaceOnly(locationId)){
 			qf.eq(LOCATION_ID, locationId);
+		}
+		if(serverVersion != null){
+			qf.between(SERVER_VERSIOIN, serverVersion, System.currentTimeMillis());
 		}
 		
 		if(StringUtils.isEmptyOrWhitespaceOnly(qf.query())){

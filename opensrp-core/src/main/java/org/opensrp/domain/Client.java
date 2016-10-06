@@ -38,6 +38,7 @@ public class Client extends BaseEntity {
 
 	protected Client() {
 		
+		
 	}
 
 	public Client(String baseEntityId) {

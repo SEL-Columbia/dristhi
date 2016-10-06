@@ -111,12 +111,12 @@ public class OpenmrsSyncerListener {
     		System.out.println("RUNNING "+event.getSubject());
     		
     		AppStateToken lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated);
-	    	DateTime start = lastsync==null||lastsync.getValue()==null?new DateTime().minusYears(33):new DateTime(lastsync.stringValue());
-			DateTime end = new DateTime();
+	    	Long start = lastsync==null||lastsync.getValue()==null?0:lastsync.longValue();
+			Long end = System.currentTimeMillis();
 			
     		System.out.println("START "+start+" , END "+end);
 
-			List<Client> cl = clientService.findByCriteria(null, null, null, null, null, null, null, null, start, end);
+			List<Client> cl = clientService.findByServerVersion(start);
 			System.out.println("Clients list size "+cl.size());
 			for (Client c : cl) {
 				try{
@@ -152,10 +152,10 @@ public class OpenmrsSyncerListener {
 	    	System.out.println("RUNNING FOR EVENTS");
     		
     		lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
-	    	start = lastsync==null||lastsync.getValue()==null?new DateTime().minusYears(33):new DateTime(lastsync.stringValue());
-			end = new DateTime();
+	    	start = lastsync==null||lastsync.getValue()==null?0:lastsync.longValue();
+			end = System.currentTimeMillis();
 			
-			List<Event> el = eventService.findEventsBy(null, null, null, null, null, null, null, start, end);
+			List<Event> el = eventService.findEventsByServerVersion(start);
 			for (Event e : el) {
 				try{
 					String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);

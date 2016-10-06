@@ -25,8 +25,8 @@ public class Query{
 			addToQuery(name+":"+value+" ");
 			return this;
 		}
-		public Query like(String name, String value) {
-			addToQuery(name+":["+value+" TO "+value+"zz] ");
+		public Query like(String field, String value) {
+			addToQuery(field+":\""+value+"\"");
 			return this;
 		}
 		public Query eq(String name, DateTime value){
@@ -35,6 +35,10 @@ public class Query{
 		}
 		public Query between(String name, DateTime from, DateTime to){
 			addToQuery(name+"<date>:["+from.toString("yyyy-MM-dd'T'HH:mm:ss")+" TO "+to.toString("yyyy-MM-dd'T'HH:mm:ss")+"] ");
+			return this;
+		}
+		public Query between(String field,Object start, Object to){
+			addToQuery(field+":["+start +" TO "+ to+"]");
 			return this;
 		}
 		private void addToQuery(String q){

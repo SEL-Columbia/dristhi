@@ -23,50 +23,52 @@ import com.google.gson.GsonBuilder;
 
 @Service
 public class EventService {
-
+	
 	private final AllEvents allEvents;
 	
 	@Autowired
-	public EventService(AllEvents allEvents)
-	{
+	public EventService(AllEvents allEvents) {
 		this.allEvents = allEvents;
 	}
 	
 	public List<Event> findAllByIdentifier(String identifier) {
 		return allEvents.findAllByIdentifier(identifier);
 	}
-
+	
 	public List<Event> findAllByIdentifier(String identifierType, String identifier) {
 		return allEvents.findAllByIdentifier(identifierType, identifier);
 	}
-	public Event getById(String id)
-	{
+	
+	public Event getById(String id) {
 		return allEvents.findById(id);
 	}
 	
-	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId)
-	{
+	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
 		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
-		if(el.size() > 1){
-			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("+baseEntityId+","+formSubmissionId+")");
+		if (el.size() > 1) {
+			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
+			        + baseEntityId + "," + formSubmissionId + ")");
 		}
-		if(el.size() == 0){
+		if (el.size() == 0) {
 			return null;
 		}
 		return el.get(0);
 	}
-	public Event getByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb,String baseEntityId, String formSubmissionId)
-	{
+	
+	public Event getByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb, String baseEntityId,
+	                                                String formSubmissionId) {
 		try {
-			List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(targetDb,baseEntityId, formSubmissionId);
-			if(el.size() > 1){
-				throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("+baseEntityId+","+formSubmissionId+")");
+			List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(targetDb, baseEntityId, formSubmissionId);
+			if (el.size() > 1) {
+				throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
+				        + baseEntityId + "," + formSubmissionId + ")");
 			}
-			if(el.size() == 0){
+			if (el.size() == 0) {
 				return null;
 			}
 			return el.get(0);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			return null;
 		}
 	}
@@ -75,102 +77,110 @@ public class EventService {
 		return allEvents.findByBaseEntityId(baseEntityId);
 	}
 	
-	public List<Event> findByFormSubmissionId(String formSubmissionId){
+	public List<Event> findByFormSubmissionId(String formSubmissionId) {
 		return allEvents.findByFormSubmissionId(formSubmissionId);
 	}
 	
-	public List<Event> findEventsBy(String baseEntityId, DateTime from, DateTime to, String eventType, 
-			String entityType, String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
-		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom, lastEditTo);
+	public List<Event> findEventsBy(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
+	                                String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo,Long serverVersion) {
+		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom,
+		    lastEditTo,serverVersion);
+	}
+	
+	public List<Event> findEventsByServerVersion(long serverVersion) {
+		return allEvents.findEvents(null, null, null, null, null, null, null, null, null,serverVersion);
 	}
 	
 	public List<Event> findEventsByDynamicQuery(String query) {
 		return allEvents.findEventsByDynamicQuery(query);
 	}
-    private static Logger logger = LoggerFactory.getLogger(EventService.class.toString());
-
 	
-	public Event find(String uniqueId){
+	private static Logger logger = LoggerFactory.getLogger(EventService.class.toString());
+	
+	public Event find(String uniqueId) {
 		List<Event> el = allEvents.findAllByIdentifier(uniqueId);
-		if(el.size() > 1){
-			throw new IllegalArgumentException("Multiple events with identifier "+uniqueId+" exist.");
-		}
-		else if(el.size() != 0){
+		if (el.size() > 1) {
+			throw new IllegalArgumentException("Multiple events with identifier " + uniqueId + " exist.");
+		} else if (el.size() != 0) {
 			return el.get(0);
 		}
 		return null;
 	}
 	
-	public Event find(Event event){		
+	public Event find(Event event) {
 		for (String idt : event.getIdentifiers().keySet()) {
 			List<Event> el = allEvents.findAllByIdentifier(event.getIdentifier(idt));
-			if(el.size() > 1){
-				throw new IllegalArgumentException("Multiple events with identifier type "+idt+" and ID "+event.getIdentifier(idt)+" exist.");
-			}
-			else if(el.size() != 0){
-				return el.get(0); 
+			if (el.size() > 1) {
+				throw new IllegalArgumentException(
+				        "Multiple events with identifier type " + idt + " and ID " + event.getIdentifier(idt) + " exist.");
+			} else if (el.size() != 0) {
+				return el.get(0);
 			}
 		}
 		return null;
 	}
 	
-	public synchronized Event addEvent(Event event)
-	{
+	public synchronized Event addEvent(Event event) {
 		Event e = find(event);
-		if(e != null){
-			throw new IllegalArgumentException("An event already exists with given list of identifiers. Consider updating data.["+e+"]");
+		if (e != null) {
+			throw new IllegalArgumentException(
+			        "An event already exists with given list of identifiers. Consider updating data.[" + e + "]");
 		}
 		
-		if(event.getFormSubmissionId() != null && getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null){
-			throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
+		if (event.getFormSubmissionId() != null
+		        && getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null) {
+			throw new IllegalArgumentException(
+			        "An event already exists with given baseEntity and formSubmission combination. Consider updating");
 		}
-
+		
 		event.setDateCreated(DateTime.now());
 		allEvents.add(event);
 		return event;
 	}
-	public synchronized Event addEvent(CouchDbConnector targetDb,Event event)
-	{
-//		Event e = find(targetDb,event);
-//		if(e != null){
-//			throw new IllegalArgumentException("An event already exists with given list of identifiers. Consider updating data.["+e+"]");
-//		}
-		if(event.getFormSubmissionId() != null && getByBaseEntityAndFormSubmissionId(targetDb,event.getBaseEntityId(), event.getFormSubmissionId()) != null){
-			throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
+	
+	public synchronized Event addEvent(CouchDbConnector targetDb, Event event) {
+		//		Event e = find(targetDb,event);
+		//		if(e != null){
+		//			throw new IllegalArgumentException("An event already exists with given list of identifiers. Consider updating data.["+e+"]");
+		//		}
+		if (event.getFormSubmissionId() != null && getByBaseEntityAndFormSubmissionId(targetDb, event.getBaseEntityId(),
+		    event.getFormSubmissionId()) != null) {
+			throw new IllegalArgumentException(
+			        "An event already exists with given baseEntity and formSubmission combination. Consider updating");
 		}
-
+		
 		event.setDateCreated(new DateTime());
 		
-		allEvents.add(targetDb,event);
+		allEvents.add(targetDb, event);
 		return event;
 	}
-	public void updateEvent(Event updatedEvent)
-	{
+	
+	public void updateEvent(Event updatedEvent) {
 		// If update is on original entity
-		if(updatedEvent.isNew()){
-			throw new IllegalArgumentException("Event to be updated is not an existing and persisting domain object. Update database object instead of new pojo");
+		if (updatedEvent.isNew()) {
+			throw new IllegalArgumentException(
+			        "Event to be updated is not an existing and persisting domain object. Update database object instead of new pojo");
 		}
 		
 		updatedEvent.setDateEdited(DateTime.now());
-				
-		allEvents.update(updatedEvent);					
+		
+		allEvents.update(updatedEvent);
 	}
 	
 	//TODO Review and add test cases as well
-	public Event mergeEvent(Event updatedEvent) 
-	{
-		try{
+	public Event mergeEvent(Event updatedEvent) {
+		try {
 			Event original = find(updatedEvent);
-			if(original == null){
+			if (original == null) {
 				throw new IllegalArgumentException("No event found with given list of identifiers. Consider adding new!");
 			}
 			
 			Gson gs = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
 			JSONObject originalJo = new JSONObject(gs.toJson(original));
-	
+			
 			JSONObject updatedJo = new JSONObject(gs.toJson(updatedEvent));
 			List<Field> fn = Arrays.asList(Event.class.getDeclaredFields());
-	
+			
 			JSONObject mergedJson = new JSONObject();
 			if (originalJo.length() > 0) {
 				mergedJson = new JSONObject(originalJo, JSONObject.getNames(originalJo));
@@ -178,34 +188,35 @@ public class EventService {
 			if (updatedJo.length() > 0) {
 				for (Field key : fn) {
 					String jokey = key.getName();
-					if(updatedJo.has(jokey)) mergedJson.put(jokey, updatedJo.get(jokey));
+					if (updatedJo.has(jokey))
+						mergedJson.put(jokey, updatedJo.get(jokey));
 				}
-			
+				
 				original = gs.fromJson(mergedJson.toString(), Event.class);
 				
 				for (Obs o : updatedEvent.getObs()) {
 					// TODO handle parent
-					if(original.getObs(null, o.getFieldCode()) == null) {
+					if (original.getObs(null, o.getFieldCode()) == null) {
 						original.addObs(o);
-					}
-					else {
+					} else {
 						original.getObs(null, o.getFieldCode()).setComments(o.getComments());
 						original.getObs(null, o.getFieldCode()).setEffectiveDatetime(o.getEffectiveDatetime());
-						original.getObs(null, o.getFieldCode()).setValue(o.getValues().size() < 2 ? o.getValue(): o.getValues());
+						original.getObs(null, o.getFieldCode())
+						        .setValue(o.getValues().size() < 2 ? o.getValue() : o.getValues());
 					}
 				}
 				for (String k : updatedEvent.getIdentifiers().keySet()) {
 					original.addIdentifier(k, updatedEvent.getIdentifier(k));
 				}
 			}
-	
+			
 			original.setDateEdited(DateTime.now());
 			allEvents.update(original);
 			return original;
 		}
-		catch(JSONException e){
+		catch (JSONException e) {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 }
