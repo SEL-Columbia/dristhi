@@ -155,7 +155,7 @@ public class OpenmrsSyncerListener {
 	    	start = lastsync==null||lastsync.getValue()==null?0:lastsync.longValue();
 			end = System.currentTimeMillis();
 			
-			List<Event> el = eventService.findEventsByServerVersion(start);
+			List<Event> el = eventService.findByServerVersion(start);
 			for (Event e : el) {
 				try{
 					String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);

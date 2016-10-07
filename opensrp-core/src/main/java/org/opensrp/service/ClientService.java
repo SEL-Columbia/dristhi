@@ -61,10 +61,10 @@ public class ClientService {
 	                                   DateTime deathdateFrom, DateTime deathdateTo, String attributeType,
 	                                   String attributeValue, String addressType, String country, String stateProvince,
 	                                   String cityVillage, String countyDistrict, String subDistrict, String town,
-	                                   String subTown, DateTime lastEditFrom, DateTime lastEditTo, Long serverVersion) {
+	                                   String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
 		return allClients.findByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo,
 		    attributeType, attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict,
-		    town, subTown, lastEditFrom, lastEditTo, serverVersion);//db.queryView(q.includeDocs(true), Client.class);
+		    town, subTown, lastEditFrom, lastEditTo);//db.queryView(q.includeDocs(true), Client.class);
 	}
 	
 	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
@@ -72,13 +72,10 @@ public class ClientService {
 	                                   String attributeValue, DateTime lastEditFrom, DateTime lastEditTo,
 	                                   Long serverVersion) {
 		return allClients.findByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo,
-		    attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo,
-		    serverVersion);
+		    attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo);
 	}
 	
-	public List<Client> findByServerVersion(Long serverVersion) {
-		return allClients.findByServerVersion(serverVersion);
-	}
+	
 	
 	/*	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
 				String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
@@ -256,5 +253,8 @@ public class ClientService {
 		catch (JSONException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	public List<Client> findByServerVersion(long serverVersion) {
+		return allClients.findByServerVersion(serverVersion);
 	}
 }

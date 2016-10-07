@@ -79,9 +79,9 @@ public class AllEvents extends MotechBaseRepository<Event> {
 	}
 	
 	public List<Event> findEvents(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                              String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo,Long serverVersion) {
+	                              String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
 		return ler.getByCriteria(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom,
-		    lastEditTo,serverVersion);
+		    lastEditTo);
 	}
 	
 	public List<Event> findEventsByDynamicQuery(String query) {

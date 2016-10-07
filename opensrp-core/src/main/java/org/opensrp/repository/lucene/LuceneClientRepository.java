@@ -49,22 +49,20 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 	
 	public List<Client> getByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
 			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, 
-			DateTime lastEditFrom, DateTime lastEditTo,Long serverVersion){
-		return getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo,serverVersion);
+			DateTime lastEditFrom, DateTime lastEditTo){
+		return getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo);
 	}
 	
 	public List<Client> getByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo,Long serverVersion) {
-		return getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo,serverVersion);
+			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
+		return getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);
 	}
-	public List<Client> getByServerVersion(Long serverVersion) {
-		return getByCriteria(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null,serverVersion);
-	}
+	
 	
 	public List<Client> getByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
 			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, 
 			String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo,Long serverVersion) {
+			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Client", "by_all_criteria");
 		
@@ -114,9 +112,7 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		if(!StringUtils.isEmptyOrWhitespaceOnly(subTown)){
 			qf.eq(SUB_TOWN, subTown);
 		}
-		if(serverVersion != null){
-			qf.between(SERVER_VERSIOIN, serverVersion,System.currentTimeMillis());
-		}
+		
 		if(StringUtils.isEmptyOrWhitespaceOnly(qf.query())){
 			throw new RuntimeException("Atleast one search filter must be specified");
 		}

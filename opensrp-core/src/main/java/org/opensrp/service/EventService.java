@@ -2,13 +2,13 @@ package org.opensrp.service;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.AllEvents;
@@ -82,14 +82,11 @@ public class EventService {
 	}
 	
 	public List<Event> findEventsBy(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                                String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo,Long serverVersion) {
+	                                String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
 		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom,
-		    lastEditTo,serverVersion);
+		    lastEditTo);
 	}
 	
-	public List<Event> findEventsByServerVersion(long serverVersion) {
-		return allEvents.findEvents(null, null, null, null, null, null, null, null, null,serverVersion);
-	}
 	
 	public List<Event> findEventsByDynamicQuery(String query) {
 		return allEvents.findEventsByDynamicQuery(query);
@@ -218,5 +215,7 @@ public class EventService {
 			throw new RuntimeException(e);
 		}
 	}
-	
+	public List<Event> findByServerVersion(long serverVersion) {
+		return allEvents.findByServerVersion(serverVersion);
+	}
 }
