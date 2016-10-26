@@ -188,6 +188,9 @@ public class Obs {
 	
 	@SuppressWarnings("unchecked")
 	public Obs addToValueList(Object value) {
+		if(value==null){
+			return this;
+		}
 		if (values == null) {
 			values = new ArrayList<>();
 		}
