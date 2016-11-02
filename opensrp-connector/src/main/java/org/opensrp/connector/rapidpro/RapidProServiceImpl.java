@@ -50,7 +50,7 @@ public class RapidProServiceImpl implements RapidProService {
 	public String sendMessage(List<String> urns, List<String> contacts, List<String> groups, String text, String channel) {
 		try {
 			if (text == null || text.isEmpty() || text.length() > 480) {
-				logger.info("Message character limit of 480 exceeded");
+				logger.info("RapidPro: Message character limit of 480 exceeded");
 				return "";
 			}
 			String uri = rapidproUrl + "/api/v1/broadcasts.json";
@@ -70,6 +70,12 @@ public class RapidProServiceImpl implements RapidProService {
 			if (channel != null && !channel.isEmpty()) {
 				jsonParams.put("channel", channel);
 			}
+			
+			if(!jsonParams.has("urns") && !jsonParams.has("contacts") && !jsonParams.has("groups")){
+				logger.info("RapidPro: No one to send message to!");
+				return "";
+			}
+			
 			jsonParams.put("text", text);
 
 			StringEntity params = new StringEntity(jsonParams.toString());
