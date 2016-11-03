@@ -4,7 +4,7 @@ services:
   - couchdb
   - mysql
 before_script:
-      - mysql -u root -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('VA1913wm'); flush privileges;"
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('VA1913wm') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
 script:
   - javac -version
   - java -version
