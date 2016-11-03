@@ -218,6 +218,8 @@
 							</goals>
 							<configuration>
 								<url>${jdbc.url-wo-db}</url>
+								<username>${jdbc.username}</username>
+								<password>${jdbc.password}</password>
 								<autocommit>true</autocommit>
 								<sqlCommand> 
 								drop database if exists ${db.quartz};
