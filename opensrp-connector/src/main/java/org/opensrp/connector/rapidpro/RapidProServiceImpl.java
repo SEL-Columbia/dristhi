@@ -25,9 +25,10 @@ public class RapidProServiceImpl implements RapidProService {
 
 	@Value("#{opensrp['rapidpro.token']}")
 	private String rapidproToken;
+
 	private static Logger logger = LoggerFactory.getLogger(RapidProServiceImpl.class.toString());
+
 	HttpClient client = HttpClientBuilder.create().build();
-	HttpPost post = new HttpPost();
 
 	/**
 	 * urns - JSON array of URNs to send the message to (array of strings,
@@ -49,12 +50,13 @@ public class RapidProServiceImpl implements RapidProService {
 	@Override
 	public String sendMessage(List<String> urns, List<String> contacts, List<String> groups, String text, String channel) {
 		try {
+			HttpPost post = new HttpPost();
 			if (text == null || text.isEmpty() || text.length() > 480) {
 				logger.info("RapidPro: Message character limit of 480 exceeded");
 				return "";
 			}
 			String uri = rapidproUrl + "/api/v1/broadcasts.json";
-			setAuthHeader(uri);
+			setAuthHeader(post, uri);
 
 			JSONObject jsonParams = new JSONObject();
 
@@ -70,12 +72,12 @@ public class RapidProServiceImpl implements RapidProService {
 			if (channel != null && !channel.isEmpty()) {
 				jsonParams.put("channel", channel);
 			}
-			
-			if(!jsonParams.has("urns") && !jsonParams.has("contacts") && !jsonParams.has("groups")){
+
+			if (!jsonParams.has("urns") && !jsonParams.has("contacts") && !jsonParams.has("groups")) {
 				logger.info("RapidPro: No one to send message to!");
 				return "";
 			}
-			
+
 			jsonParams.put("text", text);
 
 			StringEntity params = new StringEntity(jsonParams.toString());
@@ -105,13 +107,13 @@ public class RapidProServiceImpl implements RapidProService {
 	@Override
 	public String createContact(Map<String, Object> fieldValues) {
 		try {
-
+			HttpPost post = new HttpPost();
 			if (fieldValues == null || fieldValues.isEmpty() || !fieldValues.containsKey("urns")) {
 				return "";
 			}
 
 			String uri = rapidproUrl + "/api/v1/contacts.json";
-			setAuthHeader(uri);
+			setAuthHeader(post, uri);
 
 			JSONObject jsonParams = new JSONObject();
 			for (Map.Entry<String, Object> entry : fieldValues.entrySet()) {
@@ -125,6 +127,7 @@ public class RapidProServiceImpl implements RapidProService {
 					for (Map.Entry<String, Object> fieldEntrySet : ((Map<String, Object>) value).entrySet()) {
 						String fieldName = fieldEntrySet.getKey();
 						addField(fieldName, null);
+						logger.info("Creating RapidPro field " + fieldName);
 					}
 				}
 				jsonParams.put(key, value);
@@ -132,7 +135,7 @@ public class RapidProServiceImpl implements RapidProService {
 			}
 			StringEntity params = new StringEntity(jsonParams.toString());
 			post.setEntity(params);
-
+			logger.info("Creating RapidPro contact for " + (fieldValues.containsKey("name")?fieldValues.get("name"):""));
 			HttpResponse response = client.execute(post);
 			HttpEntity entity = response.getEntity();
 			String responseString = EntityUtils.toString(entity, "UTF-8");
@@ -144,7 +147,7 @@ public class RapidProServiceImpl implements RapidProService {
 
 	}
 
-	private void setAuthHeader(String url) {
+	private void setAuthHeader(HttpPost post, String url) {
 		post.setURI(URI.create(url));
 		// add header Authorization: Token YOUR_API_TOKEN_GOES_HERE
 		post.setHeader("Authorization", " Token " + rapidproToken);
@@ -170,11 +173,12 @@ public class RapidProServiceImpl implements RapidProService {
 	@Override
 	public String addField(String label, String valueType) {
 		try {
+			HttpPost post = new HttpPost();
 			if (label == null || label.isEmpty()) {
 				return "";
 			}
 			String uri = rapidproUrl + "/api/v1/fields.json";
-			setAuthHeader(uri);
+			setAuthHeader(post, uri);
 			JSONObject jsonParams = new JSONObject();
 			jsonParams.put("label", label);
 			jsonParams.put("value_type", valueType == null || valueType.isEmpty() ? "T" : valueType);
