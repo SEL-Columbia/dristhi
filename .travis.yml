@@ -9,4 +9,4 @@ script:
   - javac -version
   - java -version
   - mvn --version
-  - mvn clean test
+  - mvn -e clean test
