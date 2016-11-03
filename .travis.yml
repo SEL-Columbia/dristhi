@@ -2,14 +2,17 @@
 language: java
 sudo: false
 addons:
-  postgresql: 9.3
+  apt:
+    packages:
+    - mysql-server-5.6
+    - mysql-client-core-5.6
+    - mysql-client-5.6
 services:
   - couchdb
-  - rabbitmq
 before_script:
-      - psql -c "ALTER USER postgres WITH PASSWORD 'VA1913wm'" -U postgres
+      - mysql -u root -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('VA1913wm'); flush privileges;"
 script:
   - javac -version
   - java -version
   - mvn --version
-  - mvn test
+  - mvn clean test
