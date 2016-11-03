@@ -1,14 +1,8 @@
-
 language: java
 sudo: false
-addons:
-  apt:
-    packages:
-    - mysql-server-5.6
-    - mysql-client-core-5.6
-    - mysql-client-5.6
 services:
   - couchdb
+  - mysql
 before_script:
       - mysql -u root -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('VA1913wm'); flush privileges;"
 script:
