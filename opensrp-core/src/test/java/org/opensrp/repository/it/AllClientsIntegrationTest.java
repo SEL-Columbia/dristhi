@@ -116,7 +116,7 @@ public class AllClientsIntegrationTest {
 		
 		DateTime end = DateTime.now();
 		
-		List<Client> cll = clientService.findByCriteria(null, null, null, null, null, null, null, null, start, end);
+		List<Client> cll = clientService.findByCriteria(null, null, null, null, null, null, null, null, start, end, null);
 		assertEquals(10, cll.size());
 	}
 	
@@ -151,11 +151,11 @@ public class AllClientsIntegrationTest {
 
 		
 		Logger.getLogger("FileLogger").info("Going for First search by Lucene");
-		List<Client> l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null);
+		List<Client> l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null, null);
 		Logger.getLogger("FileLogger").info("Completed First search of size "+l.size()+" by Lucene");
 		
 		Logger.getLogger("FileLogger").info("Going for 2nd search by Lucene");
-		l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null);
+		l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null, null);
 		Logger.getLogger("FileLogger").info("Completed 2nd search of size "+l.size()+" by Lucene");
 	}
 	
