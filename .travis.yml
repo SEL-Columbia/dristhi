@@ -10,4 +10,4 @@ script:
   - javac -version
   - java -version
   - mvn --version
-  - mvn -X clean test
+  - mvn clean test
