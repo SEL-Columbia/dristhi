@@ -1,5 +1,9 @@
 package org.opensrp.connector.services;
 
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,11 +12,10 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.*;
 import org.opensrp.connector.SpringApplicationContextProvider;
 import org.opensrp.connector.rapidpro.RapidProService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +30,10 @@ public class RapidProServiceTest extends SpringApplicationContextProvider {
 	@Mock
 	RapidProService mockRapidProService;
 	String addFieldResponse;
+	String sendMessageResponse;
+	String createContactResponse;
 
+	@SuppressWarnings("unchecked")
 	@Before
 	public void setup() {
 		urns = new ArrayList<String>();
@@ -52,8 +58,15 @@ public class RapidProServiceTest extends SpringApplicationContextProvider {
 		contact.put("fields", fields);
 		MockitoAnnotations.initMocks(this);
 		addFieldResponse = "{\"key\": \"anc3\",\"label\": \"anc3\",\"value_type\": \"T\"}";
+		sendMessageResponse = "{\"id\": 21170,\"urns\": [\"telegram:207355745\"],\"contacts\": [],\"groups\": [],\"text\": \"rapidpro test text2\",\"created_on\": \"2016-11-01T12:46:28.107Z\",\"status\": \"I\"}";
+		createContactResponse = "{\"uuid\": \"4686bf60-a241-4b42-8102-27d9221aad5b\",\"name\": \"Xcv\",\"language\": null,\"group_uuids\": [\"bc5ef0d0-ce9d-4b52-adee-649a99927c8b\"]\"urns\": [\"tel:+254727812024\"],"
+				+ "\"fields\": {\"anc1\": \"2016-10-27\",\"anc2\": \"2017-02-16\",\"anc3\": \"2017-04-13\",\"anc4\": \"2017-05-11\",},\"blocked\": false,\"failed\": false,\"modified_on\": \"2016-11-03T07:36:41.494Z\","
+				+ "\"phone\": \"+254727812024\",\"groups\": [\"Pregnant Women\"]}";
 
 		when(mockRapidProService.addField("anc3", "T")).thenReturn(addFieldResponse);
+		when(mockRapidProService.sendMessage(Matchers.anyListOf(String.class), Matchers.anyListOf(String.class), Matchers.anyListOf(String.class), anyString(),
+				anyString())).thenReturn(sendMessageResponse);
+		when(mockRapidProService.createContact(anyMap())).thenReturn(createContactResponse);
 
 	}
 
@@ -85,9 +98,10 @@ public class RapidProServiceTest extends SpringApplicationContextProvider {
 	}
 
 	@Test
-	@Ignore // FIXME
 	public void sendMessageShouldReturnJsonStringOnSuccess() throws Exception {
-		Assert.fail("Implement this");
+		String response = mockRapidProService.sendMessage(urns, contacts, groups, "Test rapidpro text", "");
+		Assert.assertEquals(sendMessageResponse, response);
+
 	}
 
 	@Test
@@ -124,9 +138,9 @@ public class RapidProServiceTest extends SpringApplicationContextProvider {
 	}
 
 	@Test
-	@Ignore // FIXME
 	public void createContactShouldReturnJsonStringOnSuccess() throws Exception {
-		Assert.fail("Implement this");
+		String response = mockRapidProService.createContact(contact);
+		Assert.assertEquals(createContactResponse, response);
 	}
 
 	@Test

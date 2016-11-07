@@ -102,6 +102,7 @@ public class RapidProServiceImpl implements RapidProService {
 	 * (string array, optional). fields - a hashmap of contact fields you want
 	 * to set or update on this contact (JSON, optional)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public String createContact(Map<String, Object> fieldValues) {
 		try {
