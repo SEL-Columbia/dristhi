@@ -27,7 +27,9 @@ public class RapidProServiceImpl implements RapidProService {
 
 	@Value("#{opensrp['rapidpro.token']}")
 	private String rapidproToken;
+
 	private static Logger logger = LoggerFactory.getLogger(RapidProServiceImpl.class.toString());
+
 	HttpClient client = HttpClientBuilder.create().build();
 
 	/**
@@ -50,11 +52,11 @@ public class RapidProServiceImpl implements RapidProService {
 	@Override
 	public String sendMessage(List<String> urns, List<String> contacts, List<String> groups, String text, String channel) {
 		try {
+			HttpPost post = new HttpPost();
 			if (text == null || text.isEmpty() || text.length() > 480) {
 				logger.info("RapidPro: Message character limit of 480 exceeded");
 				return "Empty text or text longer than 480 characters not allowed";
 			}
-			HttpPost post = new HttpPost();
 			String uri = rapidproUrl + "/api/v1/broadcasts.json";
 			post = setPostAuthHeader(uri, post);
 
@@ -108,11 +110,10 @@ public class RapidProServiceImpl implements RapidProService {
 	@Override
 	public String createContact(Map<String, Object> fieldValues) {
 		try {
-
+			HttpPost post = new HttpPost();
 			if (fieldValues == null || fieldValues.isEmpty() || !fieldValues.containsKey("urns")) {
 				return "Field values cannot be empty and must have urns";
 			}
-			HttpPost post = new HttpPost();
 			String uri = rapidproUrl + "/api/v1/contacts.json";
 			post = setPostAuthHeader(uri, post);
 
@@ -128,6 +129,7 @@ public class RapidProServiceImpl implements RapidProService {
 					for (Map.Entry<String, Object> fieldEntrySet : ((Map<String, Object>) value).entrySet()) {
 						String fieldName = fieldEntrySet.getKey();
 						addField(fieldName, null);
+						logger.info("Creating RapidPro field " + fieldName);
 					}
 				}
 				jsonParams.put(key, value);
@@ -135,7 +137,7 @@ public class RapidProServiceImpl implements RapidProService {
 			}
 			StringEntity params = new StringEntity(jsonParams.toString());
 			post.setEntity(params);
-
+			logger.info("Creating RapidPro contact for " + (fieldValues.containsKey("name")?fieldValues.get("name"):""));
 			HttpResponse response = client.execute(post);
 			HttpEntity entity = response.getEntity();
 			String responseString = EntityUtils.toString(entity, "UTF-8");
@@ -183,10 +185,10 @@ public class RapidProServiceImpl implements RapidProService {
 	@Override
 	public String addField(String label, String valueType) {
 		try {
+			HttpPost post = new HttpPost();
 			if (label == null || label.isEmpty()) {
 				return "Field label is required";
 			}
-			HttpPost post = new HttpPost();
 			String uri = rapidproUrl + "/api/v1/fields.json";
 			post = setPostAuthHeader(uri, post);
 			JSONObject jsonParams = new JSONObject();

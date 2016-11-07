@@ -152,9 +152,9 @@
 										<arg value="-S" />
 										<arg value="-X" />
 										<arg value="DELETE" />
-										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
-										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.form}" />
-										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.motech-scheduletracking}" />
+										<arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
+										<arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.form}" />
+										<arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.motech-scheduletracking}" />
 									</exec>
 									<echo message="Dropping Couch DBs: END" />
 								</target>
@@ -172,7 +172,7 @@
 									<exec executable="curl">
 										<arg value="-X" />
 										<arg value="PUT" />
-										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
+										<arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
 									</exec>
 									<echo message="CREATED OPENSRP END" />
 								</target>

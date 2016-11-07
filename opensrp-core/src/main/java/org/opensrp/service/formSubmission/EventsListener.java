@@ -70,6 +70,7 @@ public class EventsListener {
 			long version = getVersion();
 			
 			List<Event> events = allEvents.findByServerVersion(version);
+			
 			if (events.isEmpty()) {
 				logger.info("No new events found. Export token: " + version);
 				return;
@@ -84,7 +85,7 @@ public class EventsListener {
 					
 					eventsRouter.route(event);
 					configService.updateAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT,
-					    event.getVersion());
+					    event.getServerVersion());
 				}
 				catch (Exception e) {
 					e.printStackTrace();

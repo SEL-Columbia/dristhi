@@ -106,7 +106,26 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 	}
 	
-	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Client' && !doc.serverVersion) { emit(doc._id, doc); } }")
+	/**
+	 * Find an event based on a concept and between a range of date created dates
+	 * 
+	 * @param concept
+	 * @param conceptValue
+	 * @param dateFrom
+	 * @param dateTo
+	 * @return
+	 */
+	@View(name = "event_by_concept_and_date_created", map = "function(doc) {if (doc.type === 'Event' && doc.obs) {for (var obs in doc.obs) {var fieldCode = doc.obs[obs].fieldCode;var value = doc.obs[obs].values[0];emit([doc.baseEntityId,fieldCode,value,doc.dateCreated.substring(0, 10)],null);}}}")
+	public List<Event> findByClientAndConceptAndDate(String baseEntityId, String concept, String conceptValue,
+	                                                 String dateFrom, String dateTo) {
+		ComplexKey startKey = ComplexKey.of(baseEntityId, concept, conceptValue, dateFrom);
+		ComplexKey endKey = ComplexKey.of(baseEntityId, concept, conceptValue, dateTo);
+		List<Event> events = db.queryView(
+		    createQuery("event_by_concept_and_date_created").startKey(startKey).endKey(endKey).includeDocs(true),
+		    Event.class);
+		return events;
+	}
+	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Event' && !doc.serverVersion) { emit(doc._id, doc); } }")
 	public List<Event> findByEmptyServerVersion() {
 		return db.queryView(createQuery("events_by_empty_server_version").limit(200).includeDocs(true), Event.class);
 	}
