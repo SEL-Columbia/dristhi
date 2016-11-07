@@ -9,6 +9,8 @@ public interface RapidProService {
 
 	String createContact(Map<String,Object> fieldValues);
 	
+	int deleteContact(String uuid);
+	
 	String createGroup(String name);
 	
 	String addField(String label,String valueType);
