@@ -20,6 +20,13 @@
 	</properties>
 	<build>
 		<resources>
+			<resource>
+                <directory>../build</directory>
+                <filtering>true</filtering>
+                <includes>
+                	<include>maven.properties</include>
+                </includes>
+            </resource>
             <resource>
                 <directory>src/main/resources/lists</directory>
                 <targetPath>org/opensrp/register/thrivepk</targetPath>
