@@ -51,7 +51,7 @@ public class RapidProServiceImpl implements RapidProService {
 		try {
 			if (text == null || text.isEmpty() || text.length() > 480) {
 				logger.info("RapidPro: Message character limit of 480 exceeded");
-				return "";
+				return "Empty text or text longer than 480 characters not allowed";
 			}
 			String uri = rapidproUrl + "/api/v1/broadcasts.json";
 			setAuthHeader(uri);
@@ -73,7 +73,7 @@ public class RapidProServiceImpl implements RapidProService {
 			
 			if(!jsonParams.has("urns") && !jsonParams.has("contacts") && !jsonParams.has("groups")){
 				logger.info("RapidPro: No one to send message to!");
-				return "";
+				return "No recipients specified";
 			}
 			
 			jsonParams.put("text", text);
@@ -107,7 +107,7 @@ public class RapidProServiceImpl implements RapidProService {
 		try {
 
 			if (fieldValues == null || fieldValues.isEmpty() || !fieldValues.containsKey("urns")) {
-				return "";
+				return "Field values cannot be empty and must have urns";
 			}
 
 			String uri = rapidproUrl + "/api/v1/contacts.json";
@@ -171,7 +171,7 @@ public class RapidProServiceImpl implements RapidProService {
 	public String addField(String label, String valueType) {
 		try {
 			if (label == null || label.isEmpty()) {
-				return "";
+				return "Field label is required";
 			}
 			String uri = rapidproUrl + "/api/v1/fields.json";
 			setAuthHeader(uri);

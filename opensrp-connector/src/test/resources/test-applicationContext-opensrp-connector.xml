@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+               http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+               http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<context:property-placeholder
+		location="classpath*:maven.properties,classpath*:activemq.properties" />
+
+	<util:properties id="opensrp" location="classpath:/opensrp.properties" />
+	<import resource="classpath:applicationPlatformCommonAPI.xml" />
+	<import resource="classpath:applicationPlatformCommonAPI.xml" />
+	<import resource="classpath:applicationScheduler.xml" />
+	<import resource="classpath:applicationPlatformServerAPI.xml" />
+	<import resource="classpath:applicationSmsHttp.xml" />
+	<import resource="classpath:applicationSmsAPI.xml" />
+	<import resource="classpath:applicationSchedulerTrackingAPI.xml" />
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:activemq.properties" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+
+
+	<context:annotation-config />
+	<context:component-scan base-package="org.opensrp.form" />
+	<context:component-scan base-package="org.opensrp.scheduler" />
+	<context:component-scan base-package="org.opensrp.connector" />
+	<context:component-scan base-package="org.opensrp.service">
+		<!--These classes are excluded to enable the context load. This is because 
+			EventsListener has EventsRouter as a dependency, problem is that IHandlerMapper 
+			in EventsRouter is an interface that has its implementation in opensrp-register 
+			and the module(opensrp-register) isn't a dependency of this module. -->
+		<context:exclude-filter type="regex"
+			expression="org.opensrp.service.formSubmission.EventsListener" />
+		<context:exclude-filter type="regex"
+			expression="org.opensrp.service.formSubmission.handler.EventsRouter" />
+	</context:component-scan>
+	<context:component-scan base-package="org.opensrp.repository" />
+
+
+	<bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl" />
+
+	<bean id="httpClient" class="org.opensrp.util.OpenSRPHttpClientFactoryBean" />
+
+	<bean id="couchDbInstance" class="org.ektorp.impl.StdCouchDbInstance">
+		<constructor-arg ref="httpClient" />
+	</bean>
+
+	<bean id="atomfeedDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+		<constructor-arg value="${couchdb.db.atomfeed}" />
+		<constructor-arg ref="couchDbInstance" />
+	</bean>
+	<bean id="opensrpDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+		<constructor-arg value="${couchdb.db.opensrp}" />
+		<constructor-arg ref="couchDbInstance" />
+	</bean>
+	<bean id="opensrpFormDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+		<constructor-arg value="${couchdb.db.form}" />
+		<constructor-arg ref="couchDbInstance" />
+	</bean>
+	<bean id="opensrpErrorTraceDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+		<constructor-arg value="${couchdb.db.error}" />
+		<constructor-arg ref="couchDbInstance" />
+	</bean>
+
+</beans>

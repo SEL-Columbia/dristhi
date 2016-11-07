@@ -23,6 +23,10 @@
     <context:component-scan base-package="org.opensrp.repository"/>
     <context:component-scan base-package="org.opensrp.scheduler"/>
     <context:component-scan base-package="org.opensrp.service">
+    <!--These classes are excluded to enable the context load. This is because 
+			EventsListener has EventsRouter as a dependency, problem is that IHandlerMapper 
+			in EventsRouter is an interface that has its implementation in opensrp-register 
+			and the module(opensrp-register) isn't a dependency of this module. -->
      <context:exclude-filter type="regex" expression="org.opensrp.service.formSubmission.EventsListener"/>
      <context:exclude-filter type="regex" expression="org.opensrp.service.formSubmission.handler.EventsRouter"/>
     <context:exclude-filter type="regex" expression="org.opensrp.service.*DrishtiSMS.*" />
