@@ -1,116 +1,190 @@
-package org.opensrp.web.controller;
+package org.opensrp.service;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
-import org.opensrp.service.XlsFormDownloaderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.codehaus.jackson.JsonProcessingException;
+import org.joda.time.DateTime;
+import org.opensrp.util.FileCreator;
+import org.opensrp.util.JsonParser;
+import org.opensrp.util.NetClientGet;
+import org.springframework.stereotype.Service;
+import org.w3c.dom.Node;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
-@Controller
-@RequestMapping("/xlsform")
-public class XlsFormDownloaderController {
+/**
+ * @author muhammad.ahmed@ihsinformatics.com
+ *  Created on 17-September, 2015
+ */
+@Service
+public class XlsFormDownloaderService {
+	private NetClientGet netClientGet;
+	private FileCreator fileCreator;
+	private JsonParser jsonParser;
 	
+	private byte[] formJson=null; 
+	public XlsFormDownloaderService() {
+	netClientGet=new NetClientGet();
+	fileCreator=new FileCreator();
 	
-	private XlsFormDownloaderService xlsService;
-	@Autowired
-	public XlsFormDownloaderController(XlsFormDownloaderService xlsService) {
-		this.xlsService=xlsService;
+	jsonParser=new JsonParser();
 	}
-	
-	@RequestMapping(method = GET, value = "/index")
-	public ModelAndView showPage(HttpServletRequest request) throws UnsupportedEncodingException {
-	
-		//String path=request.getContextPath();
-		//System.out.println(" path to files"+getPath() );
-		Map<String, Object> model = new HashMap<String, Object>();
-		
-		
-		return new ModelAndView("xlsformdownloader", model);
 
-	}
-	@RequestMapping(method=POST , value="/addfiles")
-	public ModelAndView addFiles(HttpServletRequest request) throws UnsupportedEncodingException{
-		Map<String, Object> model = new HashMap<String, Object>();
-		String userName=request.getParameter("userName").trim();
-		String formId=request.getParameter("formId").trim();
-		String formName=request.getParameter("formName").trim();
-		String formPk=request.getParameter("formPk").trim();
-		String password=request.getParameter("password").trim();
-		
-//		System.out.println(userName+"   "+formId);
-		//String username=request.getParameter("username");
-		//String path=request.getContextPath();
-		//System.out.println(" path to files"+getPath() );
-	String formDefinition="" ;
-		boolean check=false;
+	public static void main(String[] args) {
 		try {
-		check=	xlsService.downloadFormFiles(getPath().trim()+"form", userName, formPk, password,formName, formId);
-		formDefinition=xlsService.getFormDefinition();
-		
-		//Gson gson = new Gson();
 
-		
+			/*System.out.println(DateTime.now().getWeekOfWeekyear());
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "crvs_verbal_autopsy", "156735");
+			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "crvs_death_notification", "156734");
+			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "crvs_birth_notification", "156733");
+			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "crvs_pregnancy_notification", "156721");
+			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "new_member_registration", "148264");
+			
+			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "family_registration_form", "148263");
+			*/
+			/*new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "vaccine_stock_position", "151804");
+*/			
 
-		//	BufferedReader br = new BufferedReader(
-		//		new FileReader(getPath().trim()+"form/"+formName+"form.json"));
-
-			//convert the json string back to object
-			//FormSubmission obj = gson.fromJson(br, FormSubmission.class);
-
-			//System.out.println(obj);
-
-		 
-
-	//	model.put("success", msg);
-		} catch (IOException e) {
-			check=false;
-			// TODO Auto-generated catch block
+			
+			/*new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "child_vaccination_enrollment", "135187");
+			//-------------------------			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "child_vaccination_followup", "135199");
+			//---------------------------
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "woman_tt_enrollement_form", "135200");
+			//----------------------------
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "woman_tt_followup_form", "135203");
+			
+			*/
+			
+			
+			/*new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "offsite_child_vaccination_followup", "115138");
+			
+			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "offsite_woman_followup_form", "115135");*/
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		String msg=check==true?"Files downloaded in directory":"files not downloaded  !";
-		model.put("msg", msg);
-		model.put("definition", formDefinition);
-		model.put("check", check);
-		
-		return new ModelAndView("xlsformdownloader", model);
 	}
 	
-	public String getPath() throws UnsupportedEncodingException {
+	public String formatXML(String input)
+    {
+        try
+        {
+            final InputSource src = new InputSource(new StringReader(input));
+            final Node document = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder().parse(src).getDocumentElement();
 
-		String path = this.getClass().getClassLoader().getResource("").getPath();
+            final DOMImplementationRegistry registry = DOMImplementationRegistry
+                    .newInstance();
+            final DOMImplementationLS impl = (DOMImplementationLS) registry
+                    .getDOMImplementation("LS");
+            final LSSerializer writer = impl.createLSSerializer();
 
-		String fullPath = URLDecoder.decode(path, "UTF-8");
+            writer.getDomConfig().setParameter("format-pretty-print",
+                    Boolean.TRUE);
+            writer.getDomConfig().setParameter("xml-declaration", false);
 
-		//String pathArr[] = fullPath.split("/WEB-INF/classes/");
+            return writer.writeToString(document);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return input;
+        }
+    }
+	
+	public String format(String unformattedXml) {
+        try {
+            final org.w3c.dom.Document document = parseXmlFile(unformattedXml);
 
-	//	System.out.println(fullPath);
+            OutputFormat format = new OutputFormat(document);
+            format.setLineWidth(380);
+            //format.setIndenting(true);
+            format.setIndent(2);
+            Writer out = new StringWriter();
+            XMLSerializer serializer = new XMLSerializer(out, format);
+            serializer.serialize(document);
 
-		//System.out.println(pathArr[0]);
+            return out.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	//	fullPath = pathArr[0];
-
+    private org.w3c.dom.Document parseXmlFile(String in) {
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            InputSource is = new InputSource(new StringReader(in));
+            return db.parse(is);
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+	
+	public boolean downloadFormFiles(String directory,String username ,String formPath, String password,String formId, String formPk) throws IOException{
 		
-
-	//	String reponsePath = "";
-
-// to read a file from webcontent
-
-	//	reponsePath = new File(fullPath).getPath() + File.separatorChar + "newfile.txt";
-
-		return fullPath;
-
+		String xmlData=netClientGet.convertToString("", formPath, formId);
+		String modelData=netClientGet.getModel(xmlData);
+		String formData=fileCreator.prettyFormat(netClientGet.getForm(xmlData));
+		
+		modelData=format(modelData);
+		
+		formData = formData.replaceAll("selected\\(", "contains(");
+		formData = formData.replaceAll("<span.*lang=\"openmrs_code\".*</span>", "");
+		formData = formData.replaceAll("<option value=\"openmrs_code\">openmrs_code</option>", "");
+		
+		formJson=netClientGet.downloadJson(username,password,  formPk);
+		
+		//formData=fileCreator.prettyFormat(formData);
+		System.out.println(getFormDefinition());
+		fileCreator.createFile("form_definition.json", fileCreator.osDirectorySet(directory)+formId, getFormDefinition().getBytes());
+		return fileCreator.createFormFiles(fileCreator.osDirectorySet(directory)+formId, formId, formData.getBytes(), modelData.getBytes(), formJson);
 	}
-
+	
+	public String getFormDefinition() throws JsonProcessingException, IOException{
+		if(formJson==null){
+			return "Data not found on server . Please retry again !";
+			
+		}
+		return jsonParser.getFormDefinition(formJson);
+		
+	}	
 }
