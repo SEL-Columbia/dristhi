@@ -56,7 +56,7 @@
 <%-- <p><c:out value="${servletContext.contextPath}" /></p>
 <p><c:out value="${request.contextPath}"/></p> --%>
 
-	<form class="form-horizontal" method="post" action="/xlsform/addfiles">
+	<form class="form-horizontal" method="post" action="${servletContext.contextPath}/xlsform/addfiles">
 		<fieldset>
 
 			<!-- Form Name -->
