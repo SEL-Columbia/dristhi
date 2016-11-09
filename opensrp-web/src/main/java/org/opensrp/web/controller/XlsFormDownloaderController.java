@@ -48,7 +48,6 @@ public class XlsFormDownloaderController {
 		String formName=request.getParameter("formName").trim();
 		String formPk=request.getParameter("formPk").trim();
 		String password=request.getParameter("password").trim();
-		System.out.println("Password : "+password);
 		
 //		System.out.println(userName+"   "+formId);
 		//String username=request.getParameter("username");
@@ -57,7 +56,7 @@ public class XlsFormDownloaderController {
 	String formDefinition="" ;
 		boolean check=false;
 		try {
-		check=	xlsService.downloadFormFiles(getPath().trim()+"form", userName, password,formId,formPk, formName);
+		check=	xlsService.downloadFormFiles(getPath().trim()+"form", userName, formPk, password,formName, formId);
 		formDefinition=xlsService.getFormDefinition();
 		
 		//Gson gson = new Gson();
