@@ -25,6 +25,10 @@
 			<resource>
                 <directory>src/main/resources</directory>
             </resource>
+             <resource>
+                <directory>../assets/schedules</directory>
+                <targetPath>schedules</targetPath>
+            </resource>
             <resource>
                 <directory>../assets/config</directory>
             </resource>
