@@ -1,4 +1,4 @@
-package org.opensrp.connector.services.it;
+package org.opensrp.services.it;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,8 +11,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opensrp.connector.SpringApplicationContextProvider;
-import org.opensrp.connector.rapidpro.RapidProService;
+import org.opensrp.SpringApplicationContextProvider;
+import org.opensrp.service.RapidProService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class RapidProServiceIntegrationTest extends SpringApplicationContextProvider {

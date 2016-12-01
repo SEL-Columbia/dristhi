@@ -1,4 +1,4 @@
-package org.opensrp.connector.rapidpro;
+package org.opensrp.service;
 
 import java.util.List;
 import java.util.Map;

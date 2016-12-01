@@ -1,4 +1,4 @@
-package org.opensrp.connector.services;
+package org.opensrp.services;
 
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
@@ -16,8 +16,8 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.opensrp.connector.SpringApplicationContextProvider;
-import org.opensrp.connector.rapidpro.RapidProService;
+import org.opensrp.SpringApplicationContextProvider;
+import org.opensrp.service.RapidProService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class RapidProServiceTest extends SpringApplicationContextProvider {

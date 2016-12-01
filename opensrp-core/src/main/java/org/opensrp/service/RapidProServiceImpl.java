@@ -1,4 +1,4 @@
-package org.opensrp.connector.rapidpro;
+package org.opensrp.service;
 
 import java.net.URI;
 import java.util.List;
