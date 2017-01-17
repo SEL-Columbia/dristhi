@@ -16,9 +16,11 @@ public class MultimediaService {
 
 	private final MultimediaRepository multimediaRepository;
 	private String multimediaDirPath;
+	@Value("#{opensrp['multimedia.directory.name']}")
+	String baseMultimediaDirPath;
 
 	@Autowired
-	public MultimediaService(MultimediaRepository multimediaRepository, @Value("#{opensrp['multimedia.directory.name']}") String baseMultimediaDirPath) {
+	public MultimediaService(MultimediaRepository multimediaRepository) {
 		this.multimediaRepository = multimediaRepository;
 	}
 
@@ -50,7 +52,6 @@ public class MultimediaService {
 
 	public boolean uploadFile(MultimediaDTO multimediaDTO,
 			MultipartFile multimediaFile) {
-		String baseMultimediaDirPath = "../assets/multimedia";
 		
 		// String baseMultimediaDirPath = System.getProperty("user.home");
 
