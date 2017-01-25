@@ -7,7 +7,7 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:property-placeholder location="classpath*:maven.properties,classpath*:activemq.properties"/>
+    <context:property-placeholder location="classpath*:maven.properties,classpath*:activemq.properties,classpath*:opensrp.properties"/>
     
     <import resource="classpath:applicationContext-opensrp.xml"/>
     <import resource="classpath:applicationContext-opensrp-form.xml"/>
@@ -21,4 +21,9 @@
     <context:component-scan base-package="org.opensrp.connector"/>
     
     <mvc:annotation-driven/>
+    <bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- max upload size in bytes -->
+        <property name="maxUploadSize" value="${file.maxUploadSize}" /> <!-- 20MB -->
+    </bean>
 </beans>

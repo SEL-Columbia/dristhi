@@ -63,5 +63,10 @@ public class MultimediaDTO {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
+	
+	public MultimediaDTO withFilePath(String filePath) {
+        this.filePath = filePath;
+        return this;
+    }
 
 }

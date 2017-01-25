@@ -8,6 +8,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -207,13 +208,5 @@ public class FormSubmissionController {
 			}
 		});
     }
-    @RequestMapping(headers = {"Accept=multipart/form-data"}, method = POST, value = "/multimedia-file")
-    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId,@RequestParam("content-type") String contentType, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file) {
-    	
-    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
-    	
-    	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
-    	 
-    	 return new ResponseEntity<>(new Gson().toJson(status), HttpStatus.OK);
-    }
+    
 }
