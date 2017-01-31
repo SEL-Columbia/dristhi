@@ -29,6 +29,10 @@ public class Query{
 			addToQuery(field+":\""+value+"\"");
 			return this;
 		}
+		public Query likeWithWildCard(String field, String value) {
+			addToQuery(field+":"+value+"* ");
+			return this;
+		}
 		public Query eq(String name, DateTime value){
 			addToQuery(name+"<date>:["+value.withTimeAtStartOfDay().toString("yyyy-MM-dd'T'HH:mm:ss")+" TO "+value.plusDays(1).withTimeAtStartOfDay().toString("yyyy-MM-dd'T'HH:mm:ss")+"] ");
 			return this;

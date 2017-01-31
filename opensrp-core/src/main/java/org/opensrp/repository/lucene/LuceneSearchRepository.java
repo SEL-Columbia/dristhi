@@ -47,9 +47,9 @@ public class LuceneSearchRepository extends CouchDbRepositorySupportWithLucene<S
 		
 		Query q = new Query(FilterType.OR);
 		if(!StringUtils.isEmptyOrWhitespaceOnly(nameLike)){
-			q.like(FIRST_NAME, nameLike);
-			q.like(MIDDLE_NAME, nameLike);
-			q.like(LAST_NAME, nameLike);
+			q.likeWithWildCard(FIRST_NAME, nameLike);
+			q.likeWithWildCard(MIDDLE_NAME, nameLike);
+			q.likeWithWildCard(LAST_NAME, nameLike);
 		}
 		Query qf = new Query(FilterType.AND, q);
 		if(!StringUtils.isEmptyOrWhitespaceOnly(gender)){
