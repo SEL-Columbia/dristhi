@@ -130,4 +130,12 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		return db.queryView(createQuery("events_by_empty_server_version").limit(200).includeDocs(true), Event.class);
 	}
 	
+	@GenerateView
+    public List<Event> getAll() {
+        return super.getAll();
+    }
+	
+	public List<Event> findEvents(String providerId, String locationId, Long serverVersion,String sortBy,String sortOrder, int limit) {
+		return ler.getByCriteria(providerId, locationId, serverVersion, sortBy, sortOrder,limit);
+	}
 }

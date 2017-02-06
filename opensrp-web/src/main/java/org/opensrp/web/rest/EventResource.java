@@ -12,11 +12,14 @@ import static org.opensrp.web.rest.RestUtils.getStringFilter;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
+import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.service.ClientService;
@@ -25,10 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.ldriscoll.ektorplucene.LuceneQuery;
 import com.mysql.jdbc.StringUtils;
 
 @Controller
@@ -48,6 +49,31 @@ public class EventResource extends RestResource<Event>{
 		return eventService.find(uniqueId);
 	}
 	
+	@RequestMapping(value="/getall", method=RequestMethod.GET)
+	@ResponseBody
+	protected List<Event> getAll(){
+		return eventService.getAll();
+	}
+	
+	@RequestMapping(value="/sync", method=RequestMethod.GET)
+	@ResponseBody
+	protected Map<String,Object> sync(HttpServletRequest request){
+		String providerId = getStringFilter(PROVIDER_ID, request);
+		String locationId = getStringFilter(LOCATION_ID, request);
+		Long lastSyncedServerVersion = Long.valueOf(getStringFilter(BaseEntity.SERVER_VERSIOIN, request));
+		//String team = getStringFilter("team", request);
+		List<Event> events = eventService.findEvents(providerId, locationId, lastSyncedServerVersion, BaseEntity.SERVER_VERSIOIN, "asc", 100);
+		List<String> clientIds= new ArrayList<String>();
+		if(!events.isEmpty()){
+		for(Event event:events){
+			clientIds.add(event.getBaseEntityId());
+		}}
+		List<Client> clients = clientService.findByFieldValue("baseEntityId", clientIds);
+		Map<String,Object> response= new HashMap<String,Object>();
+		response.put("events", events);
+		response.put("clients", clients);
+		return response;
+	}
 /*	@RequestMapping(method=RequestMethod.GET)
 	@ResponseBody
 	public Event getByBaseEntityAndFormSubmissionId(@RequestParam String baseEntityId, @RequestParam String formSubmissionId) {

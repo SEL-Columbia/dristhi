@@ -253,7 +253,13 @@ public class ClientService {
 			throw new RuntimeException(e);
 		}
 	}
+	
 	public List<Client> findByServerVersion(long serverVersion) {
 		return allClients.findByServerVersion(serverVersion);
 	}
+	
+	public List<Client> findByFieldValue(String field,List<String> ids) {
+		return allClients.findByFieldValue(field, ids);
+	}
+	
 }

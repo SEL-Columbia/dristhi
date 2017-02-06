@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.MultimediaDTO;
-import org.opensrp.repository.MultimediaRepository;
 import org.opensrp.service.MultimediaService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.slf4j.Logger;

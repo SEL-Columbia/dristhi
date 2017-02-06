@@ -1,5 +1,7 @@
 package org.opensrp.repository.lucene;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 
 import com.mysql.jdbc.StringUtils;
@@ -39,6 +41,12 @@ public class Query{
 		}
 		public Query between(String field,Object start, Object to){
 			addToQuery(field+":["+start +" TO "+ to+"]");
+			return this;
+		}
+		//field:(value1 OR value2 OR value3)
+		public Query inList(String field,List<String> ids){
+			String idString=org.apache.commons.lang.StringUtils.join(ids,"OR ");
+			addToQuery(field+":("+idString+")");
 			return this;
 		}
 		private void addToQuery(String q){

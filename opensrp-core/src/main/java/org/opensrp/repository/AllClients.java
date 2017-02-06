@@ -159,4 +159,8 @@ public class AllClients extends MotechBaseRepository<Client> {
 		return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).includeDocs(true),
 		    Client.class);
 	}
+	
+	public List<Client> findByFieldValue(String field, List<String> ids) {
+		return lcr.getByFieldValue(field, ids);
+	}
 }

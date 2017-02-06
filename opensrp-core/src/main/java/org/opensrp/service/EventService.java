@@ -218,4 +218,12 @@ public class EventService {
 	public List<Event> findByServerVersion(long serverVersion) {
 		return allEvents.findByServerVersion(serverVersion);
 	}
+	
+	public List<Event> getAll() {
+		return allEvents.getAll();
+	}
+	
+	public List<Event> findEvents(String providerId, String locationId, Long serverVersion,String sortBy,String sortOrder, int limit) {
+		return allEvents.findEvents(providerId, locationId, serverVersion, sortBy, sortOrder, limit);
+	}
 }
