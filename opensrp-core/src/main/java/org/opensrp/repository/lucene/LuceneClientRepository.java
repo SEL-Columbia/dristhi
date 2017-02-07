@@ -16,6 +16,7 @@ import static org.opensrp.common.AllConstants.Client.LAST_NAME;
 import static org.opensrp.common.AllConstants.Client.MIDDLE_NAME;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -152,6 +153,9 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 	}
 	public List<Client> getByFieldValue(String field,List<String> ids) {
 		// create a simple query against the view/search function that we've created
+		if(ids==null || ids.isEmpty()){
+			return new ArrayList<Client>();
+		}
 		LuceneQuery lq = new LuceneQuery("Client", "by_all_criteria_v2");
 		Query query = new Query(FilterType.AND);
 		query.inList(field, ids);
@@ -160,7 +164,6 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		// stale must not be ok, as we've only just loaded the docs
 		lq.setStaleOk(false);
 		lq.setIncludeDocs(true);
-		lq.setSort("/firstName");
 
 		try {
 			LuceneResult result = db.queryLucene(lq);

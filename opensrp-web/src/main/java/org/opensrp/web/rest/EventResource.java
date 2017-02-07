@@ -24,6 +24,8 @@ import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +36,12 @@ import com.mysql.jdbc.StringUtils;
 
 @Controller
 @RequestMapping(value = "/rest/event")
-public class EventResource extends RestResource<Event>{
+public class EventResource extends RestResource<Event> {
+	
+	private static Logger logger = LoggerFactory.getLogger(EventResource.class.toString());
+	
 	private EventService eventService;
+	
 	private ClientService clientService;
 	
 	@Autowired
@@ -43,48 +49,69 @@ public class EventResource extends RestResource<Event>{
 		this.clientService = clientService;
 		this.eventService = eventService;
 	}
-
+	
 	@Override
 	public Event getByUniqueId(String uniqueId) {
 		return eventService.find(uniqueId);
 	}
 	
-	@RequestMapping(value="/getall", method=RequestMethod.GET)
+	@RequestMapping(value = "/getall", method = RequestMethod.GET)
 	@ResponseBody
-	protected List<Event> getAll(){
+	protected List<Event> getAll() {
 		return eventService.getAll();
 	}
 	
-	@RequestMapping(value="/sync", method=RequestMethod.GET)
+	/**
+	 * Fetch events ordered by serverVersion ascending order and return the clients associated with
+	 * the events
+	 * 
+	 * @param request
+	 * @return a map response with events, clients and optionally msg when an error occurs
+	 */
+	@RequestMapping(value = "/sync", method = RequestMethod.GET)
 	@ResponseBody
-	protected Map<String,Object> sync(HttpServletRequest request){
-		String providerId = getStringFilter(PROVIDER_ID, request);
-		String locationId = getStringFilter(LOCATION_ID, request);
-		Long lastSyncedServerVersion = Long.valueOf(getStringFilter(BaseEntity.SERVER_VERSIOIN, request));
-		//String team = getStringFilter("team", request);
-		List<Event> events = eventService.findEvents(providerId, locationId, lastSyncedServerVersion, BaseEntity.SERVER_VERSIOIN, "asc", 100);
-		List<String> clientIds= new ArrayList<String>();
-		if(!events.isEmpty()){
-		for(Event event:events){
-			clientIds.add(event.getBaseEntityId());
-		}}
-		List<Client> clients = clientService.findByFieldValue("baseEntityId", clientIds);
-		Map<String,Object> response= new HashMap<String,Object>();
-		response.put("events", events);
-		response.put("clients", clients);
+	protected Map<String, Object> sync(HttpServletRequest request) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		try {
+			String providerId = getStringFilter(PROVIDER_ID, request);
+			String locationId = getStringFilter(LOCATION_ID, request);
+			Long lastSyncedServerVersion = Long.valueOf(getStringFilter(BaseEntity.SERVER_VERSIOIN, request)) + 1;
+			String team = getStringFilter("team", request);
+			List<Event> events = new ArrayList<Event>();
+			List<String> clientIds = new ArrayList<String>();
+			List<Client> clients = new ArrayList<Client>();
+			if (team != null || providerId != null || locationId != null) {
+				events = eventService.findEvents(team, providerId, locationId, lastSyncedServerVersion,
+				    BaseEntity.SERVER_VERSIOIN, "asc", 100);
+				if (!events.isEmpty()) {
+					for (Event event : events) {
+						clientIds.add(event.getBaseEntityId());
+					}
+					clients = clientService.findByFieldValue(BaseEntity.BASE_ENTITY_ID, clientIds);
+				}
+			}
+			response.put("events", events);
+			response.put("clients", clients);
+			response.put("no_of_events", events.size());
+		}
+		catch (Exception e) {
+			response.put("msg", "Error occurred");
+			logger.error("", e);
+		}
 		return response;
 	}
-/*	@RequestMapping(method=RequestMethod.GET)
-	@ResponseBody
-	public Event getByBaseEntityAndFormSubmissionId(@RequestParam String baseEntityId, @RequestParam String formSubmissionId) {
-		return eventService.getByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
-	}*/
+	/*	@RequestMapping(method=RequestMethod.GET)
+		@ResponseBody
+		public Event getByBaseEntityAndFormSubmissionId(@RequestParam String baseEntityId, @RequestParam String formSubmissionId) {
+			return eventService.getByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
+		}*/
 	
 	@Override
-    public Event create(Event o) {
+	public Event create(Event o) {
 		return eventService.addEvent(o);
 	}
-
+	
 	@Override
 	public List<String> requiredProperties() {
 		List<String> p = new ArrayList<>();
@@ -104,7 +131,7 @@ public class EventResource extends RestResource<Event>{
 	}
 	
 	public static void main(String[] args) {
-
+		
 	}
 	
 	@Override
@@ -116,24 +143,24 @@ public class EventResource extends RestResource<Event>{
 		String provider = getStringFilter(PROVIDER_ID, request);
 		String entityType = getStringFilter(ENTITY_TYPE, request);
 		DateTime[] lastEdit = getDateRangeFilter(LAST_UPDATE, request);
-
-		if(!StringUtils.isEmptyOrWhitespaceOnly(clientId)){
+		
+		if (!StringUtils.isEmptyOrWhitespaceOnly(clientId)) {
 			Client c = clientService.find(clientId);
-			if(c == null){
+			if (c == null) {
 				return new ArrayList<>();
 			}
 			
 			clientId = c.getBaseEntityId();
 		}
 		
-		return eventService.findEventsBy(clientId, eventDate==null?null:eventDate[0], eventDate==null?null:eventDate[1], 
-				eventType, entityType, provider, location,
-				lastEdit==null?null:lastEdit[0], lastEdit==null?null:lastEdit[1]);
+		return eventService.findEventsBy(clientId, eventDate == null ? null : eventDate[0],
+		    eventDate == null ? null : eventDate[1], eventType, entityType, provider, location,
+		    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1]);
 	}
 	
 	@Override
 	public List<Event> filter(String query) {
 		return eventService.findEventsByDynamicQuery(query);
 	}
-
+	
 }

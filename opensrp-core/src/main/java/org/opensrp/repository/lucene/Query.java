@@ -45,7 +45,7 @@ public class Query{
 		}
 		//field:(value1 OR value2 OR value3)
 		public Query inList(String field,List<String> ids){
-			String idString=org.apache.commons.lang.StringUtils.join(ids,"OR ");
+			String idString=org.apache.commons.lang.StringUtils.join(ids," OR ");
 			addToQuery(field+":("+idString+")");
 			return this;
 		}

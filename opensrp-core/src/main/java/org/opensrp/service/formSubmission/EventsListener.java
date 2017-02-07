@@ -109,8 +109,15 @@ public class EventsListener {
 			List<Client> clients = allClients.findByEmptyServerVersion();
 			while (clients != null && !clients.isEmpty()) {
 				for (Client client : clients) {
-					allClients.update(client);
-					logger.debug("Add server_version: found new client "+client.getBaseEntityId());
+					try {
+						Thread.sleep(1);
+						client.setServerVersion(System.currentTimeMillis());
+						allClients.update(client);
+						logger.debug("Add server_version: found new client " + client.getBaseEntityId());
+					}
+					catch (InterruptedException e) {
+						logger.error("", e);
+					}
 				}
 				clients = allClients.findByEmptyServerVersion();
 			}
@@ -118,9 +125,17 @@ public class EventsListener {
 			List<Event> events = allEvents.findByEmptyServerVersion();
 			while (events != null && !events.isEmpty()) {
 				for (Event event : events) {
-					allEvents.update(event);
-					logger.debug("Add server_version: found new event "+event.getBaseEntityId());
+					try {
+						Thread.sleep(1);
+						event.setServerVersion(System.currentTimeMillis());
+						allEvents.update(event);
+						logger.debug("Add server_version: found new event " + event.getBaseEntityId());
+					}
+					catch (InterruptedException e) {
+						logger.error("", e);
+					}
 				}
+				
 				events = allEvents.findByEmptyServerVersion();
 			}
 		}
