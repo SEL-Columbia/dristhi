@@ -9,6 +9,7 @@ import static org.opensrp.common.AllConstants.Event.LOCATION_ID;
 import static org.opensrp.common.AllConstants.Event.PROVIDER_ID;
 import static org.opensrp.web.rest.RestUtils.getDateRangeFilter;
 import static org.opensrp.web.rest.RestUtils.getStringFilter;
+import static org.opensrp.web.rest.RestUtils.getIntegerFilter;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -78,12 +79,17 @@ public class EventResource extends RestResource<Event> {
 			String locationId = getStringFilter(LOCATION_ID, request);
 			Long lastSyncedServerVersion = Long.valueOf(getStringFilter(BaseEntity.SERVER_VERSIOIN, request)) + 1;
 			String team = getStringFilter("team", request);
+			Integer limit = getIntegerFilter("limit", request);
+			if(limit == null || limit.intValue() == 0){
+				limit = 25;
+			}
+			
 			List<Event> events = new ArrayList<Event>();
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
 			if (team != null || providerId != null || locationId != null) {
 				events = eventService.findEvents(team, providerId, locationId, lastSyncedServerVersion,
-				    BaseEntity.SERVER_VERSIOIN, "asc", 100);
+				    BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				if (!events.isEmpty()) {
 					for (Event event : events) {
 						clientIds.add(event.getBaseEntityId());
