@@ -46,7 +46,7 @@ public class MultimediaServiceTest {
 	public void setUp() throws Exception
 	{
 		initMocks(this);
-		multimediaService = new MultimediaService(multimediaRepository, multimediaDirPath);
+		multimediaService = new MultimediaService(multimediaRepository);
 	}
 	
 	@Ignore @Test
