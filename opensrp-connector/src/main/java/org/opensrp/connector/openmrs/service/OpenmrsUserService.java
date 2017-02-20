@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import org.opensrp.api.domain.User;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,6 +28,7 @@ public class OpenmrsUserService extends OpenmrsService{
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+AUTHENTICATION_URL, "", username, password);
 		return new JSONObject(op.body()).getBoolean("authenticated");
 	}
+	private static Logger logger = LoggerFactory.getLogger(OpenmrsUserService.class.toString());
 
 	public User getUser(String username) throws JSONException {
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+USER_URL, "v=full&username="+username, OPENMRS_USER, OPENMRS_PWD);
@@ -35,7 +38,9 @@ public class OpenmrsUserService extends OpenmrsService{
 		}
 		JSONObject obj = res.getJSONObject(0);
 		JSONObject p = obj.getJSONObject("person");
-		User u = new User(obj.getString("uuid"), obj.getString("username"), null, null,
+		String preferredName=p.getJSONObject("preferredName").getString("display");
+		logger.info(res.toString());
+		User u = new User(obj.getString("uuid"), obj.getString("username"), null, preferredName,null,
 				p.getString("display"), null, null);
 		//Object ploc;
 		JSONArray a = p.getJSONArray("attributes");

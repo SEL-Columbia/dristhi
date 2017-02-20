@@ -6,9 +6,10 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * The person who actually entered or modified data into system. The {@link User} before getting access to any 
- * service in system have to be authenticated by system. 
- * A user may also be linked with a {@link Provider} by {@link BaseEntity}
+ * The person who actually entered or modified data into system. The
+ * {@link User} before getting access to any service in system have to be
+ * authenticated by system. A user may also be linked with a {@link Provider} by
+ * {@link BaseEntity}
  */
 public class User extends BaseEntity {
 
@@ -23,11 +24,13 @@ public class User extends BaseEntity {
 	private List<String> roles;
 
 	private List<String> permissions;
-	
-	protected User(){
-		
+
+	private String preferredName;
+
+	protected User() {
+
 	}
-	
+
 	public User(String baseEntityId) {
 		super(baseEntityId);
 	}
@@ -38,9 +41,8 @@ public class User extends BaseEntity {
 		this.password = password;
 		this.salt = salt;
 	}
-	
-	public User(String baseEntityId, String username, String password, String salt, String status,
-			List<String> roles, List<String> permissions) {
+
+	public User(String baseEntityId, String username, String password, String salt, String status, List<String> roles, List<String> permissions) {
 		super(baseEntityId);
 		this.username = username;
 		this.password = password;
@@ -49,7 +51,19 @@ public class User extends BaseEntity {
 		this.roles = roles;
 		this.permissions = permissions;
 	}
-	
+
+	public User(String baseEntityId, String username, String password, String preferredName, String salt, String status, List<String> roles,
+			List<String> permissions) {
+		super(baseEntityId);
+		this.username = username;
+		this.password = password;
+		this.salt = salt;
+		this.status = status;
+		this.roles = roles;
+		this.permissions = permissions;
+		this.preferredName = preferredName;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -88,6 +102,7 @@ public class User extends BaseEntity {
 
 	/**
 	 * WARNING: Overrides all existing roles
+	 * 
 	 * @param roles
 	 * @return
 	 */
@@ -96,7 +111,7 @@ public class User extends BaseEntity {
 	}
 
 	public void addRole(String role) {
-		if(roles == null){
+		if (roles == null) {
 			roles = new ArrayList<>();
 		}
 		roles.add(role);
@@ -105,64 +120,63 @@ public class User extends BaseEntity {
 	public boolean removeRole(String role) {
 		return roles.remove(role);
 	}
-	
 
 	public boolean hasRole(String role) {
-		if(roles != null)
-		for (String r : roles) {
-			if(role.equalsIgnoreCase(r)){
-				return true;
+		if (roles != null)
+			for (String r : roles) {
+				if (role.equalsIgnoreCase(r)) {
+					return true;
+				}
 			}
-		}
 		return false;
 	}
 
 	public boolean isDefaultAdmin() {
-		if((username.equalsIgnoreCase("admin") || username.equalsIgnoreCase("administrator")) 
-				&& (hasRole("admin") || hasRole("administrator"))){
+		if ((username.equalsIgnoreCase("admin") || username.equalsIgnoreCase("administrator")) && (hasRole("admin") || hasRole("administrator"))) {
 			return true;
 		}
 		return false;
 	}
 
 	public boolean hasAdminRights() {
-		if(isDefaultAdmin() || hasRole("admin") || hasRole("administrator")){
+		if (isDefaultAdmin() || hasRole("admin") || hasRole("administrator")) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public List<String> getPermissions() {
 		return permissions;
 	}
 
 	/**
 	 * WARNING: Overrides all existing permissions
+	 * 
 	 * @param permissions
 	 * @return
 	 */
 	public void setPermissions(List<String> permissions) {
 		this.permissions = permissions;
 	}
-	
+
 	public void addPermission(String permission) {
-		if(permissions == null){
+		if (permissions == null) {
 			permissions = new ArrayList<>();
 		}
 		permissions.add(permission);
 	}
-	
+
 	public boolean removePermission(String permission) {
 		return permissions.remove(permission);
 	}
 
 	public boolean hasPermission(String permission) {
-		if(permissions != null)
-		for (String p : permissions) {
-			if(permission.equalsIgnoreCase(p)){
-				return true;
+		if (permissions != null)
+			for (String p : permissions) {
+				if (permission.equalsIgnoreCase(p)) {
+					return true;
+				}
 			}
-		}
 		return false;
 	}
 
@@ -188,8 +202,9 @@ public class User extends BaseEntity {
 
 	/**
 	 * WARNING: Overrides all existing roles
+	 * 
 	 * @param roles
-	 * @return 
+	 * @return
 	 * @return
 	 */
 	public User withRoles(List<String> roles) {
@@ -198,26 +213,27 @@ public class User extends BaseEntity {
 	}
 
 	public User withRole(String role) {
-		if(roles == null){
+		if (roles == null) {
 			roles = new ArrayList<>();
 		}
 		roles.add(role);
 		return this;
 	}
-	
+
 	/**
 	 * WARNING: Overrides all existing permissions
+	 * 
 	 * @param permissions
-	 * @return 
+	 * @return
 	 * @return
 	 */
 	public User withPermissions(List<String> permissions) {
 		this.permissions = permissions;
 		return this;
 	}
-	
+
 	public User withPermission(String permission) {
-		if(permissions == null){
+		if (permissions == null) {
 			permissions = new ArrayList<>();
 		}
 		permissions.add(permission);
@@ -227,6 +243,14 @@ public class User extends BaseEntity {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+	public String getPreferredName() {
+		return preferredName;
+	}
+
+	public void setPreferredName(String preferredName) {
+		this.preferredName = preferredName;
 	}
 
 }
