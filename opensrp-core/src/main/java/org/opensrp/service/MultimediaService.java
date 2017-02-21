@@ -16,11 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class MultimediaService {
     private static Logger logger = LoggerFactory.getLogger(MultimediaService.class.toString());
-
+    public static final String IMAGES_DIR="images";
+    private static final String VIDEOS_DIR="videos";
 	private final MultimediaRepository multimediaRepository;
 	private String multimediaDirPath;
 	@Value("#{opensrp['multimedia.directory.name']}")
 	String baseMultimediaDirPath;
+	
 
 	@Autowired
 	public MultimediaService(MultimediaRepository multimediaRepository) {
@@ -66,22 +68,22 @@ public class MultimediaService {
 				switch (multimediaDTO.contentType()) {
 				
 				case "application/octet-stream":
-					multimediaDirPath += "videos";
+					multimediaDirPath += VIDEOS_DIR;
 					fileExt=".mp4";
 					break;
 
 				case "image/jpeg":
-					multimediaDirPath += "images";
+					multimediaDirPath += IMAGES_DIR;
 					fileExt=".jpg";
 					break;
 
 				case "image/gif":
-					multimediaDirPath += "images";
+					multimediaDirPath += IMAGES_DIR;
 					fileExt=".gif";
 					break;
 
 				case "image/png":
-					multimediaDirPath += "images"; 
+					multimediaDirPath += IMAGES_DIR; 
 					fileExt=".png";
 					break;
 

@@ -29,7 +29,12 @@ public class OpenmrsUserService extends OpenmrsService{
 		return new JSONObject(op.body()).getBoolean("authenticated");
 	}
 	private static Logger logger = LoggerFactory.getLogger(OpenmrsUserService.class.toString());
-
+	/**
+	 * Get openmrs user based using the openmrs credentials in opensrp.properties
+	 * @param username
+	 * @return
+	 * @throws JSONException
+	 */
 	public User getUser(String username) throws JSONException {
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+USER_URL, "v=full&username="+username, OPENMRS_USER, OPENMRS_PWD);
 		JSONArray res = new JSONObject(op.body()).getJSONArray("results");

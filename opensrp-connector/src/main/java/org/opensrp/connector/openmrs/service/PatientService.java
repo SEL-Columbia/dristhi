@@ -106,7 +106,7 @@ public class PatientService extends OpenmrsService{
 			per.put("deathDate", OPENMRS_DATE.format(be.getDeathdate().toDate()));
 		}
 		
-		String fn = be.getFirstName();
+		String fn = !be.getFirstName().isEmpty()?be.getFirstName():"NA";
 		String mn = be.getMiddleName()==null?"":be.getMiddleName();
 		String ln =( be.getLastName()==null || be.getLastName().equals("."))?"NA":be.getLastName();
 		
