@@ -51,14 +51,22 @@ public class UserController {
         return new ResponseEntity<>(null, allowOrigin(opensrpSiteUrl), OK);
     }
 
+    public Authentication getAuthenticationAdvisor() {
+        return SecurityContextHolder.getContext().getAuthentication();		
+	}
+    
+    public DrishtiAuthenticationProvider getAuthenticationProvider() {
+		return opensrpAuthenticationProvider;
+	}
+    
     public User currentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return opensrpAuthenticationProvider.getDrishtiUser(authentication);
+        Authentication authentication = getAuthenticationAdvisor();
+		return getAuthenticationProvider().getDrishtiUser(authentication , authentication.getName());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/user-details")
     public ResponseEntity<UserDetail> userDetail(@RequestParam("anm-id") String anmIdentifier) {
-        User user = opensrpAuthenticationProvider.getDrishtiUser(anmIdentifier);
+        User user = opensrpAuthenticationProvider.getDrishtiUser(SecurityContextHolder.getContext().getAuthentication(), anmIdentifier);
         return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(opensrpSiteUrl), OK);
     }
 
