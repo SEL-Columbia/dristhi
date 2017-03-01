@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.connector.openmrs.service.OpenmrsReportingService;
+import org.opensrp.web.utils.TestResourceLoader;
 
 
 public class OpenmrsReportingTest extends TestResourceLoader{
