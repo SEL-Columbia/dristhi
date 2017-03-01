@@ -61,12 +61,12 @@ public class UserController {
     
     public User currentUser() {
         Authentication authentication = getAuthenticationAdvisor();
-		return getAuthenticationProvider().getDrishtiUser(authentication , authentication.getName());
+		return getAuthenticationProvider().getDrishtiUser(authentication.getName());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/user-details")
     public ResponseEntity<UserDetail> userDetail(@RequestParam("anm-id") String anmIdentifier) {
-        User user = opensrpAuthenticationProvider.getDrishtiUser(SecurityContextHolder.getContext().getAuthentication(), anmIdentifier);
+        User user = opensrpAuthenticationProvider.getDrishtiUser(anmIdentifier);
         return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(opensrpSiteUrl), OK);
     }
 

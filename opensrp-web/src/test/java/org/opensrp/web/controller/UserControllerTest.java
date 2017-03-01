@@ -14,6 +14,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.opensrp.api.domain.User;
 import org.opensrp.api.util.LocationTree;
+import org.opensrp.common.util.HttpResponse;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
@@ -75,19 +77,8 @@ public class UserControllerTest extends TestResourceLoader{
 		when(userservice.authenticate("demook", "demook")).thenReturn(true);
 		when(controller.getAuthenticationAdvisor()).thenReturn(a);
 		
-		when(auth.getDrishtiUser(a, "demook")).thenReturn(u);
+		when(auth.getDrishtiUser("demook")).thenReturn(u);
 		
-		controller.authenticate();
-	}
-
-	@Test(expected = BadCredentialsException.class)
-	public void shoudFailOnMissingPassword() throws JSONException {
-		when(userservice.authenticate("demook", "demook")).thenReturn(false);
-		when(controller.getAuthenticationAdvisor()).thenReturn(a);
-		when(controller.getAuthenticationProvider()).thenReturn(auth);
-		when(controller.currentUser()).thenCallRealMethod();
-		when(controller.authenticate()).thenCallRealMethod();
-
 		controller.authenticate();
 	}
 }
