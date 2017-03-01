@@ -3,8 +3,11 @@ package org.opensrp.web.controller;
 import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
 import static org.springframework.http.HttpStatus.OK;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -19,8 +22,10 @@ import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,29 +56,40 @@ public class UserController {
         return new ResponseEntity<>(null, allowOrigin(opensrpSiteUrl), OK);
     }
 
-    public Authentication getAuthenticationAdvisor() {
-        return SecurityContextHolder.getContext().getAuthentication();		
+    public Authentication getAuthenticationAdvisor(HttpServletRequest request) {
+    	final String authorization = request.getHeader("Authorization");
+        if (authorization != null && authorization.startsWith("Basic")) {
+            // Authorization: Basic base64credentials
+            String base64Credentials = authorization.substring("Basic".length()).trim();
+            String credentials = new String(Base64.decode(base64Credentials.getBytes()), Charset.forName("UTF-8"));
+            // credentials = username:password
+            final String[] values = credentials.split(":",2);
+    		
+            return new UsernamePasswordAuthenticationToken(values[0], values[1]);
+        }
+		return null;	
 	}
     
     public DrishtiAuthenticationProvider getAuthenticationProvider() {
 		return opensrpAuthenticationProvider;
 	}
     
-    public User currentUser() {
-        Authentication authentication = getAuthenticationAdvisor();
-		return getAuthenticationProvider().getDrishtiUser(authentication.getName());
+    public User currentUser(HttpServletRequest request) {
+    	Authentication a = getAuthenticationAdvisor(request);
+    	return getAuthenticationProvider().getDrishtiUser(a, a.getName());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/user-details")
-    public ResponseEntity<UserDetail> userDetail(@RequestParam("anm-id") String anmIdentifier) {
-        User user = opensrpAuthenticationProvider.getDrishtiUser(anmIdentifier);
+    public ResponseEntity<UserDetail> userDetail(@RequestParam("anm-id") String anmIdentifier, HttpServletRequest request) {
+    	Authentication a = getAuthenticationAdvisor(request);
+        User user = opensrpAuthenticationProvider.getDrishtiUser(a, anmIdentifier);
         return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(opensrpSiteUrl), OK);
     }
 
 	@RequestMapping("/security/authenticate")
 	@ResponseBody
-	public ResponseEntity<String> authenticate() throws JSONException {
-        User u = currentUser();
+	public ResponseEntity<String> authenticate(HttpServletRequest request) throws JSONException {
+        User u = currentUser(request);
         String lid = "";
         JSONObject tm = null;
         try{

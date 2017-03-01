@@ -43,16 +43,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-    	User user = null;
-    	try {
-			if(openmrsUserService.authenticate(authentication.getName(), authentication.getCredentials().toString())){
-			    user = getDrishtiUser(authentication.getName());
-			}
-			else throw new BadCredentialsException(INTERNAL_ERROR);
-		} catch (JSONException e) {
-			e.printStackTrace();
-			throw new BadCredentialsException(INTERNAL_ERROR);
-		}
+    	User user = getDrishtiUser(authentication, authentication.getName());
     	// get user after authentication
         if (user == null) {
             throw new BadCredentialsException(USER_NOT_FOUND);
@@ -82,10 +73,12 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 
     
     
-    public User getDrishtiUser(String username) {
-        User user;
+    public User getDrishtiUser(Authentication authentication, String username) {
+        User user = null;
         try {
-        	user = openmrsUserService.getUser(username);
+        	if(openmrsUserService.authenticate(authentication.getName(), authentication.getCredentials().toString())){
+			    user = openmrsUserService.getUser(username);
+			}
         } catch (Exception e) {
             logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
         	e.printStackTrace();
