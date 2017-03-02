@@ -1,5 +1,5 @@
 package org.opensrp.common.util;
 
 public enum RequestMethod {
-	POST , GET, PUT
+	POST , GET, PUT, DELETE
 }
