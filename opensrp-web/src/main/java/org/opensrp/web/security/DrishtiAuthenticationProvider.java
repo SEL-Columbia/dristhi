@@ -43,25 +43,17 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        User user = getDrishtiUser(authentication);
+    	User user = getDrishtiUser(authentication, authentication.getName());
+    	// get user after authentication
         if (user == null) {
             throw new BadCredentialsException(USER_NOT_FOUND);
         }
 
-        String credentials = (String) authentication.getCredentials();
-        //String hashedCredentials = passwordEncoder.encodePassword(credentials, user.getSalt());
-        try {
-			if (!openmrsUserService.authenticate(user.getUsername(), credentials)) {
-			    throw new BadCredentialsException(USER_NOT_FOUND);
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-        /*if (!user.isActive()) {
+        if (user.getVoided() != null && user.getVoided()) {
             throw new BadCredentialsException(USER_NOT_ACTIVATED);
-        }*/
-        return new UsernamePasswordAuthenticationToken(authentication.getName(), credentials, getRolesAsAuthorities(user));
+        }
+        
+        return new UsernamePasswordAuthenticationToken(authentication.getName(), authentication.getCredentials(), getRolesAsAuthorities(user));
     }
 
     @Override
@@ -79,24 +71,22 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
         });
     }
 
-    public User getDrishtiUser(Authentication authentication) {
-        User user;
-        try {
-            user = openmrsUserService.getUser((String) authentication.getPrincipal());
-        } catch (Exception e) {
-            logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
-            throw new BadCredentialsException(INTERNAL_ERROR);
-        }
-        return user;
-    }
     
-
-    public User getDrishtiUser(String username) {
-        User user;
+    
+    public User getDrishtiUser(Authentication authentication, String username) {
+        User user = null;
         try {
-            user = openmrsUserService.getUser(username);
+        	if(openmrsUserService.authenticate(authentication.getName(), authentication.getCredentials().toString())){
+                boolean response = openmrsUserService.deleteSession(authentication.getName(),authentication.getCredentials().toString());
+			    user = openmrsUserService.getUser(username);
+			    if(!response){
+		            logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, "Unable to clear session"));
+
+			    }
+			}
         } catch (Exception e) {
             logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
+        	e.printStackTrace();
             throw new BadCredentialsException(INTERNAL_ERROR);
         }
         return user;
