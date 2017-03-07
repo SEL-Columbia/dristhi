@@ -58,7 +58,7 @@ public class DHIS2Controller {
 			
 			brtc++;
 		}
-    	System.out.println("Data:"+birthPlace);
+    	System.out.println("Datas:"+birthPlace);
     	JSONArray vaccineCountArray =	new JSONArray();		
 		
 		Date date = new Date();
