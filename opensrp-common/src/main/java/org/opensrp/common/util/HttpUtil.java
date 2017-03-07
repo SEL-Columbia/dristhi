@@ -1,4 +1,5 @@
 package org.opensrp.common.util;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyStore;
@@ -7,6 +8,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -89,6 +91,10 @@ public class HttpUtil {
     	return get(url, payload, AuthType.BASIC, username+":"+password);
     }
     
+    public static HttpResponse delete(String url, String payload, String username, String password) {
+    	return delete(url, payload, AuthType.BASIC, username+":"+password);
+    }
+    
     public static HttpResponse get(String url, String payload) {
     	return get(url, payload, AuthType.NONE, "");
     }
@@ -102,6 +108,15 @@ public class HttpUtil {
         	HttpGet request = (HttpGet) makeConnection(url, payload, RequestMethod.GET, authType, authString);
             org.apache.http.HttpResponse response = httpClient.execute(request);
             return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK, response.getStatusLine().getStatusCode(), IOUtils.toString(response.getEntity().getContent()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static HttpResponse delete(String url, String payload, AuthType authType, String authString) {
+        try {
+        	HttpDelete request = (HttpDelete) makeConnection(url, payload, RequestMethod.DELETE, authType, authString);
+            org.apache.http.HttpResponse response = httpClient.execute(request);
+            return new HttpResponse(response.getStatusLine().getStatusCode() == HttpStatus.SC_NO_CONTENT, response.getStatusLine().getStatusCode(), response.getEntity()!=null?IOUtils.toString(response.getEntity().getContent()):"");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -125,6 +140,9 @@ public class HttpUtil {
     	}
     	else if(method.equals(RequestMethod.PUT)){
     		requestBase = new HttpPut(urlo);
+    	}
+    	else if(method.equals(RequestMethod.DELETE)){
+    		requestBase = new HttpDelete(urlo);
     	}
     	requestBase.setURI(urlo);
     	requestBase.addHeader("Accept-Charset", charset);

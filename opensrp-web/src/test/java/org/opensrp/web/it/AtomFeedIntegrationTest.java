@@ -39,7 +39,7 @@ import org.opensrp.repository.AllClients;
 import org.opensrp.repository.AllEvents;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
-import org.opensrp.web.controller.TestResourceLoader;
+import org.opensrp.web.utils.TestResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;

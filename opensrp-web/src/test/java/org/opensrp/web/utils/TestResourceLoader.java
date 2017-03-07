@@ -1,4 +1,4 @@
-package org.opensrp.web.controller;
+package org.opensrp.web.utils;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
