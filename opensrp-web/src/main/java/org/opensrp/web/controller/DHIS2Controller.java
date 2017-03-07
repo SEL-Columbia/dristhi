@@ -54,6 +54,8 @@ public class DHIS2Controller {
 					
 				}
 			}
+			
+			
 			brtc++;
 		}
     	System.out.println("Data:"+birthPlace);
@@ -79,6 +81,7 @@ public class DHIS2Controller {
 		vaccineCountObj.put("period", 201703);
 		vaccineCountObj.put("orgUnit", "IDc0HEyjhvL");
 		vaccineCountObj.put("dataValues", vaccineCountArray);
+		System.out.println("vaccineCountObj:"+vaccineCountObj.toString());
 		dHIS2AggregateConnector.aggredateDataSendToDHIS2(vaccineCountObj);
     	return new ResponseEntity<>(new Gson().toJson(""), HttpStatus.OK);
         
