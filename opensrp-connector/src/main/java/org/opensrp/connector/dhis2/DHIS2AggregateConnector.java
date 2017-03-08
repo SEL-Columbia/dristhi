@@ -66,9 +66,20 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 		String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
 		
 		Calendar now = Calendar.getInstance();
+		now.add(Calendar.MONTH, -1);
 		int year = now.get(Calendar.YEAR);
-		int month = now.get(Calendar.MONTH);
-		String periodTime =  Integer.toString(year)+Integer.toString(month);
+		int month = now.get(Calendar.MONTH)+1;
+		
+		int length = (int)(Math.log10(month)+1);
+		String formatted ;
+		System.out.println(length);
+		if(length<2){			
+		 formatted = String.format("%02d", month);
+		}else{
+			formatted =Integer.toString(month);
+		}
+		
+		String periodTime =  Integer.toString(year)+formatted;
 		Integer health=0;
 		System.out.println("periodTime:"+periodTime);
 	   	Integer birthPlaceInHealthFacilityCount=0;
@@ -160,7 +171,7 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 	    JSONObject vaccineDataSet =	new JSONObject();
 	    vaccineDataSet.put("dataSet", "fDoHorjO5Sr");
 	    vaccineDataSet.put("completeData", modifiedDate);
-	    vaccineDataSet.put("period", 201702);
+	    vaccineDataSet.put("period", periodTime);
 	    vaccineDataSet.put("orgUnit", "IDc0HEyjhvL");
 	    vaccineDataSet.put("dataValues", vaccineDataValues);
 	 return vaccineDataSet;
