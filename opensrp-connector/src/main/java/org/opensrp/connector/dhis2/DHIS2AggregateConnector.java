@@ -131,7 +131,7 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 				brtc++;
 		 }
    	 	
-   	 	JSONArray vaccineDataValues =	new JSONArray();		
+   	 	JSONArray eventDataValues =	new JSONArray();		
 		
 		
 		/**
@@ -163,18 +163,18 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 		brtcObject.put("dataElement", "xMlVHstzOgC");
 		brtcObject.put("value", brtc);
 		
-		vaccineDataValues.put(brtcObject);
-		vaccineDataValues.put(birhtPlaceInHome);
-		vaccineDataValues.put(birhtPlaceInHealthFacility);
-		vaccineDataValues.put(birthUnderWeight);
+		eventDataValues.put(brtcObject);
+		eventDataValues.put(birhtPlaceInHome);
+		eventDataValues.put(birhtPlaceInHealthFacility);
+		eventDataValues.put(birthUnderWeight);
 		
-	    JSONObject vaccineDataSet =	new JSONObject();
-	    vaccineDataSet.put("dataSet", "fDoHorjO5Sr");
-	    vaccineDataSet.put("completeData", modifiedDate);
-	    vaccineDataSet.put("period", periodTime);
-	    vaccineDataSet.put("orgUnit", "IDc0HEyjhvL");
-	    vaccineDataSet.put("dataValues", vaccineDataValues);
-	 return vaccineDataSet;
+	    JSONObject eventDataSet =	new JSONObject();
+	    eventDataSet.put("dataSet", "fDoHorjO5Sr");
+	    eventDataSet.put("completeData", modifiedDate);
+	    eventDataSet.put("period", periodTime);
+	    eventDataSet.put("orgUnit", "IDc0HEyjhvL");
+	    eventDataSet.put("dataValues", eventDataValues);
+	 return eventDataSet;
 	
 	}
 	public JSONObject aggredateDataSendToDHIS2(JSONObject aggregateData) throws JSONException{		
