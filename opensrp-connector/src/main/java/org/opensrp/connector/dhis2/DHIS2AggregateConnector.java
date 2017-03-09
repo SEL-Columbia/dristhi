@@ -62,17 +62,13 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 	
 	}
 	
-	public JSONObject getAggregatedDataCount() throws JSONException{
-			
-		
+	public JSONObject getAggregatedDataCount() throws JSONException{		
 		Date date = new Date();
-		String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
-		
+		String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date);		
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.MONTH, -1);
 		int year = now.get(Calendar.YEAR);
-		int month = now.get(Calendar.MONTH)+1;
-		
+		int month = now.get(Calendar.MONTH)+1;		
 		int length = (int)(Math.log10(month)+1);
 		String formatted ;
 		System.out.println(length);
@@ -82,57 +78,59 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 			formatted =Integer.toString(month);
 		}
 		
-		String periodTime =  Integer.toString(year)+formatted;
-		Integer health=0;
-		System.out.println("periodTime:"+periodTime);
+		String periodTime =  Integer.toString(year)+formatted;		
 	   	Integer birthPlaceInHealthFacilityCount=0;
 	   	Integer birthPlaceInHome=0;
 	   	Integer birthUnderWeightCount = 0;
 	   	Integer brtc = 0;
-	   	
+	   	try{
 	   	List<Event> eventList = allEvents.findEventByEventTypeBetweenTwoDates("Birth Registration");
 	   	if(eventList.isEmpty()){
 	   		System.out.println("Empty:Data");
 	   	}else{
-	   		System.out.println("Not Empty:Data");
 		   	for (Event event : eventList) {
 				List<Obs> obs = event.getObs();
-					for (Obs obs2 : obs) {
-						if(obs2.getFormSubmissionField().equalsIgnoreCase("Place_Birth")){
+				if(!obs.isEmpty()){
+					for (Obs obs2 : obs) {						
+						if(obs2.getFormSubmissionField()!=null && obs2.getFormSubmissionField().equalsIgnoreCase("Place_Birth")){
 							List<Object> values = obs2.getHumanReadableValues();
-							for (Object object : values) {
-								if(object.toString().equalsIgnoreCase("Health facility")){
-									birthPlaceInHealthFacilityCount++;
-								}else if(object.toString().equalsIgnoreCase("Home")){
-									birthPlaceInHome++;
-								}else{
-									
+							if(!values.isEmpty()){
+								for (Object object : values) {
+									if(object.toString().equalsIgnoreCase("Health facility")){
+										birthPlaceInHealthFacilityCount++;
+									}else if(object.toString().equalsIgnoreCase("Home")){
+										birthPlaceInHome++;
+									}else{
+										
+									}
 								}
 							}
 							
 						}
 						
-						if(obs2.getFormSubmissionField().equalsIgnoreCase("Birth_Weight")){
+						if(obs2.getFormSubmissionField()!=null && obs2.getFormSubmissionField().equalsIgnoreCase("Birth_Weight")){
 							List<Object> values = obs2.getValues();
-							for (Object object : values) {
-								try{
-									Double value = Double.parseDouble((String) object);
-									double conditionValue =value;
-									System.out.println("conditionValue:"+conditionValue);
-									if(conditionValue <3.5){
-										birthUnderWeightCount++;
-									}else{
-										
+							if(!values.isEmpty()){
+								for (Object object : values) {
+									try{
+										Double value = Double.parseDouble((String) object);
+										double conditionValue =value;
+										System.out.println("conditionValue:"+conditionValue);
+										if(conditionValue <3.5){
+											birthUnderWeightCount++;
+										}else{
+											
+										}
+									}catch(Exception e){
+										System.out.println("Birth_Weight Message:"+e.getMessage());
 									}
-								}catch(Exception e){
-									System.out.println("Birth_Weight Message:"+e.getMessage());
 								}
 							}
 						}
 						
 						
 					}
-					
+				}
 					
 					
 					
@@ -140,7 +138,9 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 					brtc++;
 			 }
 	   	}
-	   	
+	   	}catch(Exception e){
+	   		e.printStackTrace();
+	   	}
 	   	
    	 	JSONArray eventDataValues =	new JSONArray();		
 		
@@ -148,6 +148,10 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 		/**
 		 * Count for Birth place of Health_Facility of current month
 		 * */
+   	 	
+   	 //System.out.println("Vaccination:"+allEvents.findEventByEventTypeBetweenTwoDates("Vaccination").toString());
+		//System.exit(0);
+		
 		JSONObject birhtPlaceInHealthFacility = new JSONObject();
 		birhtPlaceInHealthFacility.put("dataElement", "ii7lOGQqEq5");
 		birhtPlaceInHealthFacility.put("value", birthPlaceInHealthFacilityCount);
