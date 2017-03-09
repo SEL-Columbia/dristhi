@@ -1,16 +1,11 @@
 package org.opensrp.web.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.connector.dhis2.DHIS2AggregateConnector;
 import org.opensrp.domain.Event;
-import org.opensrp.domain.Obs;
 import org.opensrp.repository.AllEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,16 +32,21 @@ public class DHIS2Controller {
     @RequestMapping(method = RequestMethod.GET, value = "/this-month-client-to-dhis2")
     @ResponseBody
     public ResponseEntity<String> thisMonthDataSendTODHIS2() throws JSONException{
-    	 List<Event> list = allEvents.findEventByEventTypeBetweenTwoDates("Birth Registration");
+    	
     	 
 		JSONObject aggregatedDataSet=null;
-		try{
-			 aggregatedDataSet = dHIS2AggregateConnector.getAggregatedDataCount(list);
+		String message="";
+		try{			
+			aggregatedDataSet = dHIS2AggregateConnector.getAggregatedDataCount();
 			dHIS2AggregateConnector.aggredateDataSendToDHIS2(aggregatedDataSet);
+			message = aggregatedDataSet.toString();		
+				
 		}catch(Exception e){
-			System.out.println("Aggregated Data Message:"+e.getMessage());
+			System.out.println("Aggregate Data Count Error Message"+e.getMessage());
+			message = "No Data Found";
 		}
-    	return new ResponseEntity<>(new Gson().toJson(""+aggregatedDataSet.toString()), HttpStatus.OK);
+		
+    	return new ResponseEntity<>(new Gson().toJson(""+message), HttpStatus.OK);
         
     }
     

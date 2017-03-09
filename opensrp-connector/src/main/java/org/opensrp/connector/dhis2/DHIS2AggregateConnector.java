@@ -10,13 +10,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
+import org.opensrp.repository.AllEvents;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 /*import static org.opensrp.common.AllConstants.DHIS2.*;
 */
 @Service
 public class DHIS2AggregateConnector extends DHIS2Service {
 	
-	
+	@Autowired
+	private AllEvents allEvents;
 	public DHIS2AggregateConnector(){
 		
 	}
@@ -59,7 +62,7 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 	
 	}
 	
-	public JSONObject getAggregatedDataCount( List<Event> eventList) throws JSONException{
+	public JSONObject getAggregatedDataCount() throws JSONException{
 			
 		
 		Date date = new Date();
@@ -86,51 +89,59 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 	   	Integer birthPlaceInHome=0;
 	   	Integer birthUnderWeightCount = 0;
 	   	Integer brtc = 0;
-	   	for (Event event : eventList) {
-			List<Obs> obs = event.getObs();
-				for (Obs obs2 : obs) {
-					if(obs2.getFormSubmissionField().equalsIgnoreCase("Place_Birth")){
-						List<Object> values = obs2.getHumanReadableValues();
-						for (Object object : values) {
-							if(object.toString().equalsIgnoreCase("Health facility")){
-								birthPlaceInHealthFacilityCount++;
-							}else if(object.toString().equalsIgnoreCase("Home")){
-								birthPlaceInHome++;
-							}else{
-								
-							}
-						}
-						
-					}
-					
-					if(obs2.getFormSubmissionField().equalsIgnoreCase("Birth_Weight")){
-						List<Object> values = obs2.getValues();
-						for (Object object : values) {
-							try{
-								Double value = Double.parseDouble((String) object);
-								double conditionValue =value;
-								System.out.println("conditionValue:"+conditionValue);
-								if(conditionValue <3.5){
-									birthUnderWeightCount++;
+	   	
+	   	List<Event> eventList = allEvents.findEventByEventTypeBetweenTwoDates("Birth Registration");
+	   	if(eventList.isEmpty()){
+	   		System.out.println("Empty:Data");
+	   	}else{
+	   		System.out.println("Not Empty:Data");
+		   	for (Event event : eventList) {
+				List<Obs> obs = event.getObs();
+					for (Obs obs2 : obs) {
+						if(obs2.getFormSubmissionField().equalsIgnoreCase("Place_Birth")){
+							List<Object> values = obs2.getHumanReadableValues();
+							for (Object object : values) {
+								if(object.toString().equalsIgnoreCase("Health facility")){
+									birthPlaceInHealthFacilityCount++;
+								}else if(object.toString().equalsIgnoreCase("Home")){
+									birthPlaceInHome++;
 								}else{
 									
 								}
-							}catch(Exception e){
-								System.out.println("Birth_Weight Message:"+e.getMessage());
+							}
+							
+						}
+						
+						if(obs2.getFormSubmissionField().equalsIgnoreCase("Birth_Weight")){
+							List<Object> values = obs2.getValues();
+							for (Object object : values) {
+								try{
+									Double value = Double.parseDouble((String) object);
+									double conditionValue =value;
+									System.out.println("conditionValue:"+conditionValue);
+									if(conditionValue <3.5){
+										birthUnderWeightCount++;
+									}else{
+										
+									}
+								}catch(Exception e){
+									System.out.println("Birth_Weight Message:"+e.getMessage());
+								}
 							}
 						}
+						
+						
 					}
 					
 					
-				}
-				
-				
-				
-				
-				
-				brtc++;
-		 }
-   	 	
+					
+					
+					
+					brtc++;
+			 }
+	   	}
+	   	
+	   	
    	 	JSONArray eventDataValues =	new JSONArray();		
 		
 		
@@ -167,6 +178,10 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 		eventDataValues.put(birhtPlaceInHome);
 		eventDataValues.put(birhtPlaceInHealthFacility);
 		eventDataValues.put(birthUnderWeight);
+		/**
+		 * Vaccination data count start form here
+		 * **/
+		
 		
 	    JSONObject eventDataSet =	new JSONObject();
 	    eventDataSet.put("dataSet", "fDoHorjO5Sr");
