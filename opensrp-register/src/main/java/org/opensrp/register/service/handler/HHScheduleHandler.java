@@ -13,11 +13,14 @@ public class HHScheduleHandler extends BaseScheduleHandler {
 	
 	@Autowired
 	private HHSchedulesService hhSchedulesService;
-	private static final String scheduleName="FW CENSUS";
 
 	@Override
-	public void handle(Event event, JSONObject scheduleConfigEvent) {
+	public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
 		try {
+			
+			if(scheduleName==null){
+				scheduleName="FW CENSUS";
+			}
 			
 			if (evaluateEvent(event, scheduleConfigEvent)) {
 				String milestone = getMilestone(scheduleConfigEvent);

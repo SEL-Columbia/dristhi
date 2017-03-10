@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 abstract class BaseScheduleHandler implements EventsHandler {
 	
 	private static final String JSON_KEY_CONCEPT = "concept";
+	private static final String JSON_KEY_PARENT_CODE = "parent_code";
 	
 	private static final String JSON_KEY_OBS = "obs";
 	
@@ -41,10 +42,13 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	private static final String JSON_KEY_REFDATEFIELDS = "reference_date_fields";
 	
 	private static final String JSON_KEY_FULFILLMENTDATEFIELDS = "fulfillment_date_fields";
+	private static final String JSON_KEY_FULFILLMENT_FIELDS = "fulfillment_fields";
 	
 	private static final String JSON_KEY_ENROLLMENTFIELDS = "enrollment_fields";
 	
 	private static final String JSON_KEY_EVENT_CONCEPT = "fieldCode";
+	
+	private static final String JSON_KEY_EVENT_PARENT_CONCEPT = "parentCode";
 	
 	private static final String JSON_KEY_NOTEMPTY = "NOT_EMPTY";
 	
@@ -71,12 +75,17 @@ abstract class BaseScheduleHandler implements EventsHandler {
 					for (int i = 0; i < fieldsArray.length(); i++) {
 						JSONObject jsonObject = fieldsArray.getJSONObject(i);
 						fieldsMap = jsonObjectToMap(jsonObject);
+						//for concepts with parentcode, concatenate parentcode and concept to form a single key
+						if(fieldsMap.containsKey(JSON_KEY_PARENT_CODE)){
+							
+							fieldsMap.put(JSON_KEY_CONCEPT, fieldsMap.get(JSON_KEY_CONCEPT)+"-"+fieldsMap.get(JSON_KEY_PARENT_CODE));
+						}
 						fieldsList.add(fieldsMap);
 						
 					}
 				}
 			}
-		}
+		} 
 		catch (Exception e) {
 			logger.error("", e);
 		}
@@ -97,8 +106,13 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	protected Map<String, Object> getReferenceDateFields(JSONObject scheduleConfigEvent) throws JSONException {
 		JSONArray jsonArray = scheduleConfigEvent.has(JSON_KEY_REFDATEFIELDS)
 		        ? scheduleConfigEvent.getJSONArray(JSON_KEY_REFDATEFIELDS) : null;
-		
-		return jsonObjectToMap(jsonArray.getJSONObject(0));
+		Map<String, Object> refDateFields = jsonObjectToMap(jsonArray.getJSONObject(0));
+		//for concepts with parentcode, concatenate parentcode and concept to form a single key
+		if(refDateFields.containsKey(JSON_KEY_PARENT_CODE)){
+			
+			refDateFields.put(JSON_KEY_CONCEPT, refDateFields.get(JSON_KEY_CONCEPT)+"-"+refDateFields.get(JSON_KEY_PARENT_CODE));
+		}
+		return refDateFields;
 	}
 	
 	/**
@@ -203,7 +217,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 		if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
 			fieldsList = getFields(scheduleConfigEvent, JSON_KEY_ENROLLMENTFIELDS);
 		} else if (action.equalsIgnoreCase(ActionType.fulfill.toString())) {
-			fieldsList = getFields(scheduleConfigEvent, JSON_KEY_FULFILLMENTDATEFIELDS);
+			fieldsList = getFields(scheduleConfigEvent, JSON_KEY_FULFILLMENT_FIELDS);
 		}
 		
 		JSONObject eventJson = eventToJson(event);
@@ -212,12 +226,13 @@ abstract class BaseScheduleHandler implements EventsHandler {
 		for (Map<String, Object> scheduleFields : fieldsList) {
 			for (Map.Entry<String, Object> entry : scheduleFields.entrySet()) {
 				String key = entry.getKey();//"concept"
-				String value = entry.getValue().toString();//"concept value"
-				String scheduleValue = scheduleFields.get(JSON_KEY_VALUE).toString();//"value- either not_empty or a concept mapping"
+				String value = entry.getValue().toString();//"concept value from the json config file"
+				String scheduleValue = scheduleFields.get(JSON_KEY_VALUE).toString();//"value- either not_empty or a concept mapping from the json config file"
 				if (key.equalsIgnoreCase(JSON_KEY_CONCEPT)) {
 					//it's a concept search it in the event's obs
 					//key="fieldCode";
 					if (obs.containsKey(value)) {//check if the concept mapping exists in the obs
+						
 						if (obs.get(value).toString().equalsIgnoreCase(scheduleValue)
 						        || (!obs.get(value).toString().isEmpty()
 						                && scheduleValue.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
@@ -247,7 +262,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	
 	/**
 	 * Put all obs into a key(concept), value (concept value) pair for easier searching
-	 * 
+	 * To accomodate situations whereby we've concepts with parentcodes, concatenate the concept and parentcode to form the map key
 	 * @param event
 	 * @return
 	 */
@@ -260,6 +275,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 					for (int i = 0; i < obsArray.length(); i++) {
 						JSONObject object = obsArray.getJSONObject(i);
 						String key = object.has(JSON_KEY_EVENT_CONCEPT) ? object.getString(JSON_KEY_EVENT_CONCEPT) : null;
+						key = object.has(JSON_KEY_EVENT_PARENT_CONCEPT) ? key+"-"+object.getString(JSON_KEY_EVENT_PARENT_CONCEPT) : key;
 						String value = getConceptValue(object);
 						// : object.has("values") ? object.get("values").toString() : null;
 						if (key != null && value != null) {
