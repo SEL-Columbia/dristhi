@@ -23,12 +23,13 @@ public class ChildScheduleHandler extends BaseScheduleHandler {
 	@Autowired
 	ClientService clientService;
 	
-	private static final String scheduleName="Essential Newborn Care Checklist";
 	
 	@Override
-	public void handle(Event event, JSONObject scheduleConfigEvent) {
+	public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
 		try {
-			
+			if(scheduleName==null){
+				scheduleName="BirthNotificationPregnancyStatusFollowUp";
+			}
 			if (evaluateEvent(event, scheduleConfigEvent)) {
 				String action = getAction(scheduleConfigEvent);
 				//String milestone = getMilestone(scheduleConfigEvent);
