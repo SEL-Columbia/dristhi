@@ -22,10 +22,17 @@
 						{
 							"types": ["Vaccination"],
 							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								}
+							],
 							"fulfillment_date_fields": [
 								{
 									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "NOT_EMPTY"
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 								}
 							],
 							"milestone": "bcg",
@@ -46,7 +53,7 @@
 									"value": "NOT_EMPTY"
 								}
 							],
-							"milestone": "bcg",
+							"milestone": "opv0",
 							"reference_date_fields": [
 				                {
 				                  "type": "client",
@@ -61,10 +68,22 @@
 							"fulfillment_date_fields": [
 								{
 									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "NOT_EMPTY"
+									"parent_code":"783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 								}
 							],
-							"milestone": "bcg",
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "0"
+								}
+							],
+							"milestone": "opv0",
 							"action": "fulfill"
 						}
 					]
@@ -82,7 +101,7 @@
 									"value": "NOT_EMPTY"
 								}
 							],
-							"milestone": "bcg",
+							"milestone": "opv1",
 							"reference_date_fields": [
 				                {
 				                  "type": "client",
@@ -97,10 +116,22 @@
 							"fulfillment_date_fields": [
 								{
 									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "NOT_EMPTY"
+									"parent_code":"783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 								}
 							],
-							"milestone": "bcg",
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "opv1",
 							"action": "fulfill"
 						}
 					]
@@ -118,7 +149,7 @@
 									"value": "NOT_EMPTY"
 								}
 							],
-							"milestone": "bcg",
+							"milestone": "pcv1",
 							"reference_date_fields": [
 				                {
 				                  "type": "client",
@@ -133,10 +164,22 @@
 							"fulfillment_date_fields": [
 								{
 									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "NOT_EMPTY"
+									"parent_code":"162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 								}
 							],
-							"milestone": "bcg",
+							"fulfillment_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "pcv1",
 							"action": "fulfill"
 						}
 					]
@@ -154,7 +197,7 @@
 									"value": "NOT_EMPTY"
 								}
 							],
-							"milestone": "bcg",
+							"milestone": "penta1",
 							"reference_date_fields": [
 				                {
 				                  "type": "client",
@@ -169,10 +212,22 @@
 							"fulfillment_date_fields": [
 								{
 									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "NOT_EMPTY"
+									"parent_code":"1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 								}
 							],
-							"milestone": "bcg",
+							"fulfillment_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "penta1",
 							"action": "fulfill"
 						}
 					]
@@ -190,7 +245,7 @@
 									"value": "NOT_EMPTY"
 								}
 							],
-							"milestone": "bcg",
+							"milestone": "rota1",
 							"reference_date_fields": [
 				                {
 				                  "type": "client",
@@ -205,10 +260,22 @@
 							"fulfillment_date_fields": [
 								{
 									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "NOT_EMPTY"
+									"parent_code":"159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 								}
 							],
-							"milestone": "bcg",
+							"fulfillment_fields": [
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "rota1",
 							"action": "fulfill"
 						}
 					]
@@ -229,7 +296,7 @@
 								{
 									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "0"
+									"value": "1"
 								}
 							],
 							"milestone": "opv2",
@@ -447,7 +514,7 @@
 								{
 									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "1"
+									"value": "2"
 								}
 							],
 							"milestone": "opv3",
@@ -462,13 +529,13 @@
 						{
 							"types": ["Vaccination"],
 							"pass_logic": "AND",
-							"fulfillment_fields": [
+							"fulfillment_date_fields": [
 								{
 									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 								}
 							],
-							"fulfillment_date_fields": [
+							"fulfillment_fields": [
 								{
 									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",

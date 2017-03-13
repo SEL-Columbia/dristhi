@@ -68,7 +68,7 @@ public class ScheduleService {
     }
     
     public void fulfillMilestone(String entityId, String scheduleName, LocalDate completionDate, String formSubmissionId) {
-    	updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, ActionType.fulfill);
+    	if(updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, ActionType.fulfill))
     	scheduleTrackingService.fulfillCurrentMilestone(entityId, scheduleName, completionDate, new Time(now()));
     }
     
@@ -141,9 +141,13 @@ public class ScheduleService {
 		}
 		return map;
 	}
-    private void updateExistingEnrollmentWithEventTrackMetadata(String entityId, String scheduleName, String formSubmissionId, ActionType actionType){
+    private boolean updateExistingEnrollmentWithEventTrackMetadata(String entityId, String scheduleName, String formSubmissionId, ActionType actionType){
     	Enrollment enr = allEnrollments.getActiveEnrollment(entityId, scheduleName);
+    	if(enr==null){
+    		return false;
+    	}
     	enr.setMetadata(addOrUpdateEventTrackMetadata(enr.getMetadata(), formSubmissionId, actionType));
     	allEnrollments.update(enr);
+    	return true;
     }
 }

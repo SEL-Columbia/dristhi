@@ -60,7 +60,7 @@ public class EventsRouter {
 				//iterate through concatenated schedule-configs files to retrieve the events and compare with the current event from the db
 				for (int i = 0; i < schedulesJsonObject.length(); i++) {
 					JSONObject scheduleJsonObject = schedulesJsonObject.getJSONObject(i);
-					String handler = scheduleJsonObject.getString(JSON_KEY_HANDLER);
+					String handler = scheduleJsonObject.has(JSON_KEY_HANDLER)?scheduleJsonObject.getString(JSON_KEY_HANDLER):"VaccinesScheduleHandler";
 					JSONArray eventsJsonArray = scheduleJsonObject.getJSONArray(JSON_KEY_EVENTS);
 					String scheduleName = scheduleJsonObject.getString(JSON_KEY_SCHEDULE_NAME);
 					processScheduleConfigEvents(eventsJsonArray, handler,scheduleName);
