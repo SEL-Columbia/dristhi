@@ -40,15 +40,16 @@ public class OpenmrsUserService extends OpenmrsService{
 
 	public User getUser(String username) throws JSONException {
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+USER_URL, "v=full&username="+username, OPENMRS_USER, OPENMRS_PWD);
-		JSONArray res = new JSONObject(op.body()).getJSONArray("results");
+		JSONObject res = new JSONObject(op.body());
+		JSONArray jsonArray=res.has("results")?res.getJSONArray("results"):null;
         deleteAdminSession();
-		if(res.length() == 0){
+		if(jsonArray==null || jsonArray.length() == 0){
 			return null;
 		}
-		JSONObject obj = res.getJSONObject(0);
+		JSONObject obj = jsonArray.getJSONObject(0);
 		JSONObject p = obj.getJSONObject("person");
 		String preferredName=p.getJSONObject("preferredName").getString("display");
-		logger.info(res.toString());
+		logger.info(jsonArray.toString());
 		User u = new User(obj.getString("uuid"), obj.getString("username"), null, preferredName,null,
 				p.getString("display"), null, null);
 		//Object ploc;
