@@ -251,6 +251,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 		
 		JSONObject eventJson = objectToJson(event);
 		Map<String, Object> obs = getEventObs(eventJson);
+		
 		Map<String, Object> obsByFormSubmissionField =  getEventObsByFormSubmissionField(eventJson);
 		boolean result = false;
 		List<Boolean> results= new ArrayList<Boolean>();//sometimes there are more than one conditions to be satisfied
@@ -317,7 +318,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 					for (int i = 0; i < obsArray.length(); i++) {
 						JSONObject object = obsArray.getJSONObject(i);
 						String key = object.has(JSON_KEY_EVENT_CONCEPT) ? object.getString(JSON_KEY_EVENT_CONCEPT) : null;
-						key = object.has(JSON_KEY_EVENT_PARENT_CONCEPT) ? key+"-"+object.getString(JSON_KEY_EVENT_PARENT_CONCEPT) : key; 
+						key = (object.has(JSON_KEY_EVENT_PARENT_CONCEPT)&&!object.getString(JSON_KEY_EVENT_PARENT_CONCEPT).isEmpty()) ? key+"-"+object.getString(JSON_KEY_EVENT_PARENT_CONCEPT) : key; 
 						String value = getConceptValue(object);
 						// : object.has("values") ? object.get("values").toString() : null;
 						if (key != null && value != null) {

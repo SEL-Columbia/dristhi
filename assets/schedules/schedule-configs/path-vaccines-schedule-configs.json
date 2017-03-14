@@ -186,7 +186,7 @@
 	
 },
 {
-					"name": "Penta 1",
+					"name": "PENTA 1",
 					"events": [
 						{
 							"types": ["Birth Registration"],
@@ -234,7 +234,7 @@
 	
 },
 {
-					"name": "Rota 1",
+					"name": "ROTA 1",
 					"events": [
 						{
 							"types": ["Birth Registration"],
@@ -391,7 +391,7 @@
 	
 },
 {
-					"name": "Penta 2",
+					"name": "PENTA 2",
 					"events": [
 						{
 							"types": ["Vaccination"],
@@ -445,7 +445,7 @@
 	
 },
 {
-					"name": "Rota 2",
+					"name": "ROTA 2",
 					"events": [
 						{
 							"types": ["Vaccination"],
@@ -462,7 +462,7 @@
 									"value": "1"
 								}
 							],
-							"milestone": "Rota2",
+							"milestone": "rota2",
 							"reference_date_fields": [
 				                 {
 				                  "parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
@@ -493,7 +493,7 @@
 									"value": "2"
 								}
 							],
-							"milestone": "Rota2",
+							"milestone": "rota2",
 							"action": "fulfill"
 						}
 					]
@@ -608,7 +608,7 @@
 	
 },
 {
-					"name": "Penta 3",
+					"name": "PENTA 3",
 					"events": [
 						{
 							"types": ["Vaccination"],
@@ -665,26 +665,19 @@
 					"name": "OPV 4",
 					"events": [
 						{
-							"types": ["Vaccination"],
+							"types": ["Birth Registration"],
 							"pass_logic": "AND",
 							"enrollment_fields": [
 								{
-									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"field": "eventDate",
 									"value": "NOT_EMPTY"
-								},
-								{
-									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "3"
 								}
 							],
 							"milestone": "opv4",
 							"reference_date_fields": [
 				                {
-				                  "parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-				                  "concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-				                  "value": "NOT_EMPTY"
+				                  "type": "client",
+				                  "field": "birthdate"
 				                }
 				             ],
 							"action": "enroll"
@@ -717,7 +710,7 @@
 	
 },
 {
-					"name": "Measles 1",
+					"name": "MEASLES 1",
 					"events": [
 						{
 							"types": ["Birth Registration"],
@@ -765,7 +758,7 @@
 	
 },
 {
-					"name": "Measles 2",
+					"name": "MEASLES 2",
 					"events": [
 						{
 							"types": ["Vaccination"],
