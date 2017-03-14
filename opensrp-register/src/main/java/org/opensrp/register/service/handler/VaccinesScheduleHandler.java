@@ -18,9 +18,6 @@ public class VaccinesScheduleHandler extends BaseScheduleHandler {
 	public void handle(Event event, JSONObject scheduleConfigEvent, String scheduleName) {
 		try {
 			String action = getAction(scheduleConfigEvent);
-if(action.equalsIgnoreCase("fulfill") && event.getBaseEntityId().equalsIgnoreCase("bcf8c7b2-1b61-4198-8b52-911825e68e19")){
-	logger.debug(action);
-}
 			if (evaluateEvent(event, scheduleConfigEvent)) {
 				String milestone = getMilestone(scheduleConfigEvent);
 
@@ -32,17 +29,14 @@ if(action.equalsIgnoreCase("fulfill") && event.getBaseEntityId().equalsIgnoreCas
 						scheduler.enrollIntoSchedule(event.getBaseEntityId(), scheduleName, milestone,  getReferenceDateForSchedule(event, scheduleConfigEvent, action),  event.getId());
 
 					}
+					logger.info("Enrolled "+ event.getBaseEntityId() +"to schedule "+scheduleName);
 					
 					
 				} else if (action.equalsIgnoreCase(ActionType.fulfill.toString())) {
 						
-//					if(milestone==null  || milestone.isEmpty()){
 						scheduler.fullfillMilestoneAndCloseAlert(event.getBaseEntityId(), event.getProviderId(), scheduleName.toUpperCase(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)),  event.getId());
+						logger.info("Fulfilled schedule"+ scheduleName  +"for schedule "+event.getBaseEntityId());
 
-//					}else{
-//						scheduler.fullfillMilestoneAndCloseAlert(event.getBaseEntityId(), event.getProviderId(), milestone.toUpperCase(), LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getId());
-//
-//					}
 				}
 			}
 			
