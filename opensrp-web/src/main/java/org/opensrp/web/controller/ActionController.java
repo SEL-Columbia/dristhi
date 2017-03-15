@@ -1,29 +1,43 @@
 package org.opensrp.web.controller;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
+import static org.opensrp.common.AllConstants.Event.PROVIDER_ID;
+import static org.opensrp.web.rest.RestUtils.getIntegerFilter;
+import static org.opensrp.web.rest.RestUtils.getStringFilter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
+import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.dto.Action;
 import org.opensrp.repository.AllClients;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.scheduler.service.ActionService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+
 import ch.lambdaj.function.convert.Converter;
 
 @Controller
 public class ActionController {
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger(ActionController.class.toString());
+
     private ActionService actionService;
     private AllClients allClients;
     private AllAlerts allAlerts;
@@ -80,6 +94,42 @@ public class ActionController {
 			}
 		}
     }
-    
+    /**
+	 * Fetch actions ordered by serverVersion ascending order
+	 * 
+	 * @param request
+	 * @return a map response with actions, clients and optionally msg when an error occurs
+	 */
+	@RequestMapping(value = "/actions/sync", method = RequestMethod.GET)
+	@ResponseBody
+	protected ResponseEntity<String> sync(HttpServletRequest request) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		try {
+			String providerId = getStringFilter(PROVIDER_ID, request);
+			Long lastSyncedServerVersion = Long.valueOf(getStringFilter(BaseEntity.SERVER_VERSIOIN, request)) + 1;
+			String team = getStringFilter("team", request);
+			Integer limit = getIntegerFilter("limit", request);
+			if(limit == null || limit.intValue() == 0){
+				limit = 25;
+			}
+			
+			List<org.opensrp.scheduler.Action> actions = new ArrayList<org.opensrp.scheduler.Action>();
+			if (team != null || providerId != null ) {
+				actions = actionService.findByCriteria(team, providerId, lastSyncedServerVersion, org.opensrp.common.AllConstants.Action.TIMESTAMP, "asc", limit);
+				
+			}
+			response.put("actions", actions);
+			response.put("no_of_actions", actions.size());
+			
+			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.OK);
+
+		}
+		catch (Exception e) {
+			response.put("msg", "Error occurred");
+			logger.error("", e);
+			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
 

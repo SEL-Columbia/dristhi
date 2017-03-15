@@ -87,4 +87,7 @@ public class ActionService {
     public void deleteReportActions() {
         allActions.deleteAllByTarget("report");
     }
+    public List<Action> findByCriteria(String team,String providerId, long timeStamp, String sortBy, String sortOrder, int limit) {
+		return allActions.findByCriteria(team, providerId, timeStamp, sortBy, sortOrder, limit);
+	}
 }

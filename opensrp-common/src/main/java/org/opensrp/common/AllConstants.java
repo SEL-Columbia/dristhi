@@ -57,6 +57,10 @@ public class AllConstants {
     	public static final String ENTITY_TYPE = "entityType";
 
     }
+    public static class Action {
+    	public static final String TIMESTAMP = "timeStamp";
+
+    }
     
     public static class Form {
         public static final String ENTITY_ID = "entityId";
