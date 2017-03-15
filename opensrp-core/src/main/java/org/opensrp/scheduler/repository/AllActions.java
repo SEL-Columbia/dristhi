@@ -52,6 +52,13 @@ public class AllActions extends MotechBaseRepository<Action> {
         return db.queryView(createQuery("action_by_baseEntityId_and_schedule_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
     }
     
+    @View(name = "action_by_baseEntityId_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.baseEntityId,doc.timeStamp], null); } }")
+    public List<Action> findByCaseIdAndTimeStamp(String baseEntityId, long timeStamp) {
+        ComplexKey startKey = ComplexKey.of(baseEntityId,  timeStamp);
+        ComplexKey endKey = ComplexKey.of(baseEntityId, Long.MAX_VALUE);
+        return db.queryView(createQuery("action_by_baseEntityId_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
+    }
+   
     public void deleteAllByTarget(String target) {
         deleteAll(findByActionTarget(target));
     }

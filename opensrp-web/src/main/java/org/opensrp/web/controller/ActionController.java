@@ -2,24 +2,11 @@ package org.opensrp.web.controller;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.opensrp.domain.Client;
 import org.opensrp.dto.Action;
 import org.opensrp.repository.AllClients;
@@ -60,6 +47,18 @@ public class ActionController {
         });
     }
     
+    @RequestMapping(method = RequestMethod.GET, value = "/useractions")
+    @ResponseBody
+    public List<Action> getNewActionForClient(@RequestParam("baseEntityId") String baseEntityId, @RequestParam("timeStamp") Long timeStamp){
+        List<org.opensrp.scheduler.Action> actions = actionService.findByCaseIdAndTimeStamp(baseEntityId, timeStamp);
+        return with(actions).convert(new Converter<org.opensrp.scheduler.Action, Action>() {
+            @Override
+            public Action convert(org.opensrp.scheduler.Action action) {
+                return ActionConvertor.from(action);
+            }
+        });
+    }
+    
     @RequestMapping(method = RequestMethod.GET, value = "/alert_delete")
     @ResponseBody
     public void deleteDuplicateAlerts(@RequestParam("key") String key){
@@ -81,59 +80,6 @@ public class ActionController {
 			}
 		}
     }
-    
-    public static void main(String[] args) throws JSONException, IOException, SQLException {
-    	// create a mysql database connection
-        //String myDriver = "org.gjt.mm.mysql.Driver";
-        String myUrl = "jdbc:mysql://localhost:3306/couchcleanup";
-        Connection conn = DriverManager.getConnection(myUrl, "root", "VA1913wm");
-        
-    	FileOutputStream fdup = new FileOutputStream("d:\\filterduplicate.txt");
-    	FileOutputStream fpers = new FileOutputStream("d:\\filterpersist.txt");
-		Scanner s = new Scanner(new File("d:\\all_alerts_with_inactive.txt"));
-		Map<String, JSONObject> m = new HashMap<>();
-		int i = 0;
-		while (s.hasNextLine()) {
-			String l = s.nextLine();
-			if(StringUtils.isNotBlank(l) && l.startsWith("{\"id\":")){
-				JSONObject jo = new JSONObject(l.replace("},", "}"));
-				System.out.println((++i)+":"+jo);
-				if(m.containsKey(makeKey(jo.getJSONArray("key")))){
-					fdup.write((jo.getString("id")+";,"+jo.getString("key")+"\n\r").getBytes());
-					Statement st = conn.createStatement();
-
-			        // note that i'm leaving "date_created" out of this insert statement
-			        st.executeUpdate("INSERT INTO duplicate (`id`,`entityId`,`vaccine`,`key`,`value`)"
-			        		+ " VALUES ('"+jo.getString("id")+"', "
-	        				+ "'"+jo.getJSONArray("key").getString(0)+"', "
-	        				+ "'"+jo.getJSONArray("key").getString(1)+"', "
-	        				+ "'"+jo.getString("key")+"', "
-	        				+ "'"+jo.getString("value")+"'); ");
-				}
-				else {
-					m.put(makeKey(jo.getJSONArray("key")), jo);
-					fpers.write((jo.getString("id")+";,"+jo.getString("key")+"\n\r").getBytes());
-					Statement st = conn.createStatement();
-
-			        // note that i'm leaving "date_created" out of this insert statement
-			        st.executeUpdate("INSERT INTO persist (`id`,`entityId`,`vaccine`,`key`,`value`)"
-			        		+ " VALUES ('"+jo.getString("id")+"', "
-	        				+ "'"+jo.getJSONArray("key").getString(0)+"', "
-	        				+ "'"+jo.getJSONArray("key").getString(1)+"', "
-	        				+ "'"+jo.getString("key")+"', "
-	        				+ "'"+jo.getString("value")+"'); ");
-				}
-			}
-		}
-        conn.close();
-        fdup.close();
-        fpers.close();
-        s.close();
-    }
-    
-    private static String makeKey(JSONArray keyArr) throws JSONException {
-		return keyArr.getString(0)+":"+keyArr.getString(1);
-	}
     
 }
 
