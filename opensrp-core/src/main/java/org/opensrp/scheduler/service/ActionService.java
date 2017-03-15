@@ -41,6 +41,9 @@ public class ActionService {
     public List<Action> findByCaseIdScheduleAndTimeStamp(String caseId, String schedule, DateTime start, DateTime end) {
 		return allActions.findByCaseIdScheduleAndTimeStamp(caseId, schedule, start, end);
 	}
+    public List<Action> findByCaseIdAndTimeStamp(String caseId, long timeStamp) {
+    	return allActions.findByCaseIdAndTimeStamp(caseId, timeStamp);
+    }
     
     public List<Alert> findAlertByEntityIdScheduleAndTimeStamp(String entityId, String schedule, DateTime start, DateTime end) {
 		return allAlerts.findByEntityIdTriggerAndTimeStamp(entityId, schedule, start, end);
