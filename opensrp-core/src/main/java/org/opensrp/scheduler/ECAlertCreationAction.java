@@ -35,8 +35,8 @@ public class ECAlertCreationAction implements HookedEvent {
 		try {
 			Enrollment enr = scheduler.getEnrollment(motechEvent.externalId(), motechEvent.scheduleName());
 			
+			if(enr!=null){
 			String eventId = enr.getMetadata().get(MetadataField.enrollmentEvent.name());
-			if(eventId!=null){
 			Event event = eventService.getById(eventId);
 			String entityType = event.getEntityType();
 			
