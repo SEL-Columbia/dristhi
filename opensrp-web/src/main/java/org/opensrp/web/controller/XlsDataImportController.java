@@ -46,70 +46,28 @@ public class XlsDataImportController {
 	public ResponseEntity<String> importXlsData(@RequestParam("file") MultipartFile file) {
 		Map<String,String> stats = new HashMap<>();
 		Integer clientCount = 0;
+		CSVParser parser;
 		try {
 			Reader reader = new InputStreamReader(file.getInputStream());
-			CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
+			parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
 			for (CSVRecord record : parser) {
-				// Mother data
-			    String motherFirstName = record.get("Childs_Particulars/Mother_Guardian_First_Name");
-			    String motherLastName = record.get("Childs_Particulars/Mother_Guardian_Last_Name");
-			    String motherNRC = record.get("Childs_Particulars/Mother_Guardian_NRC");
-			    
-			    
-				// Child data
-			    String childCardNumber = record.get("Childs_Particulars/Child_Register_Card_Number");
-			    String firstName = record.get("Childs_Particulars/First_Name");
-			    String lastName = record.get("Childs_Particulars/Last_Name");
-			    String gender = record.get("Childs_Particulars/Sex");
-			    String birthDate = record.get("Childs_Particulars/Date_Birth");
-			    String dateFirstSeen = record.get("Childs_Particulars/First_Health_Facility_Contact");
-			    
-			    // Address data
-			    String startDate = record.get("today");
-			    String endDate = record.get("today");
-			    String homeFacility = record.get("Childs_Particulars/Home_Facility");
-			    String placeOfBirth = record.get("Childs_Particulars/Place_Birth");
-			    String birthFacilityName = record.get("Childs_Particulars/Birth_Facility_Name");
-			    String residentialArea = record.get("Childs_Particulars/Residential_Area");
-			    String residentialAreaOther = record.get("Childs_Particulars/Residential_Area_Other");
-			    String residentialAddress = record.get("Childs_Particulars/Residential_Address");
-			    String physicalLandmark = record.get("Childs_Particulars/Physical_Landmark");
-			    String birthWeight = record.get("Childs_Particulars/Birth_Weight");
-			    String chwName = record.get("Childs_Particulars/CHW_Name");
-			    String chwPhoneNumber = record.get("Childs_Particulars/CHW_Phone_Number");
-			    
-			    String motherId = UUID.randomUUID().toString();
-			    String childId = UUID.randomUUID().toString();
-			    
-			    DateTimeFormatter parseDate = DateTimeFormat.forPattern("yyyy-MM-dd");
-			    DateTime dateOfBirth = parseDate.parseDateTime(birthDate);
-			    
-			    // Build address object
-			    DateTime addressStartDate = parseDate.parseDateTime(startDate);
-			    DateTime addressEndDate = parseDate.parseDateTime(endDate);
-			    
-			    Map<String, String> addressFields = new HashMap<>();
-			    addressFields.put("Birth_Facility_Name", birthFacilityName);
-			    addressFields.put("Residential_Area", residentialArea);
-			    addressFields.put("Residential_Area_Other", residentialAreaOther);
-			    addressFields.put("Residential_Address", residentialAddress);
-			    addressFields.put("Physical_Landmark", physicalLandmark);
-			    
-			    Address address = new Address(placeOfBirth, addressStartDate, addressEndDate, addressFields, null, null, null, homeFacility, null);
+			    Address address = this.buildAddress(record);
 			    ArrayList<Address> addressList = new ArrayList<Address>();
 			    addressList.add(address);
 			    
-			    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, null, null, false, false, "Female", addressList, null, null);
+			    // Create mother record
+			    Client motherClient = this.buildMotherClient(record, addressList);
 			    // Create child record
-			    Client childClient = new Client(childId, firstName, "", lastName, dateOfBirth, null, false, false, gender, addressList, null, null);
+			    Client childClient = this.buildChildClient(record, addressList);
 			    
-			    childClient.addRelationship("mother", motherId);
+			    childClient.addRelationship("mother", motherClient.getBaseEntityId());
 			    
 			    clientService.addClient(motherClient);
 			    clientService.addClient(childClient);
 			    
 			    clientCount+=2;
 			}
+			parser.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -122,5 +80,65 @@ public class XlsDataImportController {
 		stats.put("Clients Added", "" + clientCount);
 		
 		return new ResponseEntity<>(new Gson().toJson(stats), HttpStatus.OK);
+	}
+	
+	private Address buildAddress(CSVRecord record) {
+		// Address data
+	    String startDate = record.get("today");
+	    String endDate = record.get("today");
+	    String homeFacility = record.get("Childs_Particulars/Home_Facility");
+	    String placeOfBirth = record.get("Childs_Particulars/Place_Birth");
+	    String birthFacilityName = record.get("Childs_Particulars/Birth_Facility_Name");
+	    String residentialArea = record.get("Childs_Particulars/Residential_Area");
+	    String residentialAreaOther = record.get("Childs_Particulars/Residential_Area_Other");
+	    String residentialAddress = record.get("Childs_Particulars/Residential_Address");
+	    String physicalLandmark = record.get("Childs_Particulars/Physical_Landmark");
+	    
+	    DateTimeFormatter parseDate = DateTimeFormat.forPattern("yyyy-MM-dd");
+	    
+	    // Build address object
+	    DateTime addressStartDate = parseDate.parseDateTime(startDate);
+	    DateTime addressEndDate = parseDate.parseDateTime(endDate);
+	    
+	    Map<String, String> addressFields = new HashMap<>();
+	    addressFields.put("Birth_Facility_Name", birthFacilityName);
+	    addressFields.put("Residential_Area", residentialArea);
+	    addressFields.put("Residential_Area_Other", residentialAreaOther);
+	    addressFields.put("Residential_Address", residentialAddress);
+	    addressFields.put("Physical_Landmark", physicalLandmark);
+	    
+	    Address address = new Address(placeOfBirth, addressStartDate, addressEndDate, addressFields, null, null, null, homeFacility, null);
+	    
+	    return address;
+	}
+	
+	private Client buildMotherClient(CSVRecord record, ArrayList<Address> addressList) {
+		// Mother data
+	    String motherFirstName = record.get("Childs_Particulars/Mother_Guardian_First_Name");
+	    String motherLastName = record.get("Childs_Particulars/Mother_Guardian_Last_Name");
+	    String motherNRC = record.get("Childs_Particulars/Mother_Guardian_NRC");
+	    String motherId = UUID.randomUUID().toString();
+	    
+	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, null, null, false, false, "Female", addressList, null, null);
+	    
+	    return motherClient;
+	}
+	
+	private Client buildChildClient(CSVRecord record, ArrayList<Address> addressList) {
+		// Child data
+	    String childCardNumber = record.get("Childs_Particulars/Child_Register_Card_Number");
+	    String firstName = record.get("Childs_Particulars/First_Name");
+	    String lastName = record.get("Childs_Particulars/Last_Name");
+	    String gender = record.get("Childs_Particulars/Sex");
+	    String birthDate = record.get("Childs_Particulars/Date_Birth");
+	    String dateFirstSeen = record.get("Childs_Particulars/First_Health_Facility_Contact");
+	    String childId = UUID.randomUUID().toString();
+	    
+	    DateTimeFormatter parseDate = DateTimeFormat.forPattern("yyyy-MM-dd");
+	    DateTime dateOfBirth = parseDate.parseDateTime(birthDate);
+	    
+	    Client childClient = new Client(childId, firstName, "", lastName, dateOfBirth, null, false, false, gender, addressList, null, null);
+	    
+	    return childClient;
 	}
 }
