@@ -41,9 +41,6 @@ public class OpenmrsIDService {
 	@Value("#{opensrp['jdbc.url']}")
 	private String mysqlDatabaseUrl;
 	
-	@Value("#{opensrp['jdbc.import-db']}")
-	private String mysqlDatabaseName;
-	
 	@Value("#{opensrp['jdbc.username']}")
 	private String mysqlUserName;
 	
@@ -56,7 +53,7 @@ public class OpenmrsIDService {
 	// Client identifiers constant
 	public static final String ZEIR_IDENTIFIER = "ZEIR_ID";
 	
-	// OPENMRS constants
+	public static final String DATABASE_NAME = "opensrp";
 	public static final String DATABASE_TABLE_NAME = "unique_ids";
 	public static final String TEST_DATABASE_TABLE_NAME = "unique_ids_test";
 	public static final String OPENMRS_IDGEN_URL = "/module/idgen/exportIdentifiers.form";
@@ -77,6 +74,10 @@ public class OpenmrsIDService {
 	
 	public OpenmrsIDService() {
 		this.client = HttpClientBuilder.create().build();
+	}
+	
+	public String getOpenmrsUserName() {
+		return this.openmrsUserName;
 	}
 	
 	public List<String> downloadOpenmrsIds(int numberToGenerate) {
@@ -159,7 +160,8 @@ public class OpenmrsIDService {
 		createTableSql += UPDATED_AT_COLUMN + " DATE";
 		createTableSql += ")";
 		
-		String showTablesQuery = "SELECT count(TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'opensrp' AND TABLE_NAME = '" + databaseNameToUse + "'";
+		String showTablesQuery = "SELECT count(TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '"
+		  + DATABASE_NAME + "' AND TABLE_NAME = '" + databaseNameToUse + "'";
 		DataSource dataSource = this.createDataSource();
 		this.jdbcTemplate = this.initializeJdbcTemplate(dataSource);
 		// check if table exists before creating it

@@ -1,15 +1,12 @@
 package org.opensrp.services;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Test;
 import org.opensrp.SpringApplicationContextProvider;
 import org.opensrp.domain.Client;
-import org.opensrp.dto.report.ServiceProvidedReportDTO;
 import org.opensrp.service.OpenmrsIDService;
 import org.springframework.beans.factory.annotation.Autowired;
 
