@@ -52,6 +52,7 @@ public class OpenmrsIDService {
 	
 	// Client identifiers constant
 	public static final String ZEIR_IDENTIFIER = "ZEIR_ID";
+	public static final String CHILD_REGISTER_CARD_NUMBER = "Child_Register_Card_Number";
 	
 	public static final String DATABASE_NAME = "opensrp";
 	public static final String DATABASE_TABLE_NAME = "unique_ids";
@@ -62,6 +63,7 @@ public class OpenmrsIDService {
     public static final String OPENMRS_ID_COLUMN = "openmrs_id";
     public static final String STATUS_COLUMN = "status";
     private static final String USED_BY_COLUMN = "used_by";
+    private static final String LOCATION_COLUMN = "location";
     public static final String CREATED_AT_COLUMN = "created_at";
     public static final String UPDATED_AT_COLUMN = "updated_at";
     public static String STATUS_USED = "used";
@@ -116,21 +118,40 @@ public class OpenmrsIDService {
 		this.jdbcTemplate.execute(deleteRecordsSql);
 	}
 	
-	public Client assignOpenmrsIdToClient(String zeirID, Client client, boolean testMode) throws SQLException {
+	public boolean checkIfClientExists(Client client, boolean testMode) {
+		String databaseNameToUse = testMode ? TEST_DATABASE_TABLE_NAME : DATABASE_TABLE_NAME;
+		String location = client.getAddress("usual_residence").getAddressField("address2");
+		String checkIfExistQuery = "SELECT count(*) from " + databaseNameToUse + " WHERE " + USED_BY_COLUMN + " = ? AND location = ?";
+		String[] args = new String[2];
+		args[0] = client.getIdentifier(CHILD_REGISTER_CARD_NUMBER);
+		args[1] = location;
+
+		int rowCount = this.jdbcTemplate.queryForObject(checkIfExistQuery, args, Integer.class);
+		
+		logger.info("[checkIfClientExists] - Names:" + args[0] + " - [Exists] " + (rowCount == 0 ? "false" : "true"));
+		
+		return rowCount >= 1 ? true : false;
+	}
+	
+	public void assignOpenmrsIdToClient(String zeirID, Client client, boolean testMode) throws SQLException {
 		// create jdbc template to persist the ids
-		String insertSql = "INSERT INTO " + DATABASE_TABLE_NAME;
-		insertSql += "(" + OPENMRS_ID_COLUMN + ", " + STATUS_COLUMN + ", " + USED_BY_COLUMN +",";
-		insertSql += CREATED_AT_COLUMN + ", " + UPDATED_AT_COLUMN + " ) values (?, ?, ?, ?, ?)";
+		String databaseNameToUse = testMode ? TEST_DATABASE_TABLE_NAME : DATABASE_TABLE_NAME;
+		String insertSql = "INSERT INTO " + databaseNameToUse;
+		insertSql += "(" + OPENMRS_ID_COLUMN + ", " + STATUS_COLUMN + ", " + USED_BY_COLUMN + "," + LOCATION_COLUMN + ",";
+		insertSql += CREATED_AT_COLUMN + ", " + UPDATED_AT_COLUMN + " ) values (?, ?, ?, ?, ?, ?)";
 
 		initializeImportTable(testMode);
 		
 		DateTime now = new DateTime();
 		
-		client.addIdentifier(ZEIR_IDENTIFIER, zeirID);
-		this.jdbcTemplate.update(insertSql, zeirID, STATUS_USED, client.fullName(), now.toDate(), now.toDate());
-		logger.info("Assigned " + ZEIR_IDENTIFIER + " to " + client.fullName());
+		String location = client.getAddress("usual_residence").getAddressField("address2");
 		
-		return client; 
+		if(!this.checkIfClientExists(client, testMode)) {
+			String childRegisterCardNumber = client.getIdentifier(CHILD_REGISTER_CARD_NUMBER);
+			client.addIdentifier(ZEIR_IDENTIFIER, zeirID);
+			this.jdbcTemplate.update(insertSql, zeirID, STATUS_USED, childRegisterCardNumber, location, now.toDate(), now.toDate());
+			logger.info("Assigned " + ZEIR_IDENTIFIER + " to " + client.fullName());
+		}
 	}
 	
 	private DataSource createDataSource() {
@@ -156,6 +177,7 @@ public class OpenmrsIDService {
 		createTableSql += OPENMRS_ID_COLUMN + " VARCHAR(255), ";
 		createTableSql += STATUS_COLUMN + " VARCHAR(20), ";
 		createTableSql += USED_BY_COLUMN + " VARCHAR(255), ";
+		createTableSql += LOCATION_COLUMN + " VARCHAR(255), ";
 		createTableSql += CREATED_AT_COLUMN + " DATE, ";
 		createTableSql += UPDATED_AT_COLUMN + " DATE";
 		createTableSql += ")";
