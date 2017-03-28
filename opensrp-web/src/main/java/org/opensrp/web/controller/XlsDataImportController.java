@@ -73,7 +73,10 @@ public class XlsDataImportController {
 	@RequestMapping(headers = { "Accept=multipart/form-data" }, method = POST, value = "/file")
 	public ResponseEntity<String> importXlsData(@RequestParam("file") MultipartFile file) throws SQLException {
 		Map<String,String> stats = new HashMap<>();
+		List<Event> vaccinationEvents = new ArrayList<Event>();
+		List<Event> gmEvents = new ArrayList<Event>();
 		int clientCount = 0;
+		int eventCount = 0;
 		CSVParser parser;
 		try {
 			Reader reader = new InputStreamReader(file.getInputStream());
@@ -88,29 +91,36 @@ public class XlsDataImportController {
 			    Address address = this.buildAddress(record);
 			    ArrayList<Address> addressList = new ArrayList<Address>();
 			    addressList.add(address);
-			    
-			    // Assign zeir and m_zeir ids
-			    String zeirId = openmrsIds.get(counter);
-			    String motherZeirId = zeirId + "_mother";
-
-			    // Create mother record
-			    Client motherClient = this.createMotherClient(record, addressList);
-			    motherClient.addIdentifier(M_ZEIR_ID, motherZeirId);
 
 			    // Create child record
 			    Client childClient = this.createChildClient(record, addressList);
-			    childClient = openmrsIDService.assignOpenmrsIdToClient(zeirId, childClient, false);
 			    
-			    // Create mother relationship
-			    childClient.addRelationship("mother", motherClient.getBaseEntityId());
-			    
-			    // Create vaccination events
-			    
-			    
-			    clientService.addClient(motherClient);
-			    clientService.addClient(childClient);
-			    
-			    clientCount+=2;
+			    if(!openmrsIDService.checkIfClientExists(childClient, false)) {
+			    	// Assign zeir and m_zeir ids
+				    String zeirId = openmrsIds.get(counter);
+				    String motherZeirId = zeirId + "_mother";
+
+				    // Create mother record
+				    Client motherClient = this.createMotherClient(record, addressList);
+				    motherClient.addIdentifier(M_ZEIR_ID, motherZeirId);
+
+				    openmrsIDService.assignOpenmrsIdToClient(zeirId, childClient, false);
+
+				    // Create mother relationship
+				    childClient.addRelationship("mother", motherClient.getBaseEntityId());
+
+				    // Create vaccination events
+				    vaccinationEvents = this.buildVaccinationEvents(record, childClient);
+				    gmEvents = this.buildGrowthMonitoringEvents(record, childClient);
+
+				    clientService.addClient(motherClient);
+				    clientService.addClient(childClient);
+				    this.addEventsToService(vaccinationEvents);
+				    this.addEventsToService(gmEvents);
+
+				    clientCount+=2;
+				    eventCount += (vaccinationEvents.size() + gmEvents.size());
+			    }
 			}
 			parser.close();
 		} catch (IOException e) {
@@ -123,10 +133,17 @@ public class XlsDataImportController {
 		// respond with success response and summary statistics of data imported
 		
 		stats.put("Clients Added", "" + clientCount);
+		stats.put("Events created", "" + eventCount);
 		
 		return new ResponseEntity<>(new Gson().toJson(stats), HttpStatus.OK);
 	}
 	
+	private void addEventsToService(List<Event> events) {
+		for(Event event: events) {
+			eventService.addEvent(event);
+		}
+	}
+
 	private Address buildAddress(CSVRecord record) {
 		// Address data
 	    String startDate = record.get("today");
@@ -197,6 +214,8 @@ public class XlsDataImportController {
 	}
 	
 	private List<Event> buildVaccinationEvents(CSVRecord record, Client client) {
+		String eventType = "Vaccination";
+        String entityType = "vaccination";
 		List<Event> vaccinationEvents = new ArrayList<Event>();
 		String bcg1Value = record.get("Immunisation_Record/bcg");
 		String bcg2Value = record.get("Immunisation_Record/bcg2");
@@ -221,135 +240,194 @@ public class XlsDataImportController {
 		String mr1Value = record.get("Immunisation_Record/mr1");
 		String mr2Value = record.get("Immunisation_Record/mr2");
 		
-		if(bcg1Value != "n/a") {
+		if(!bcg1Value.equals("n/a")) {
 			List<Obs> bcg1Obs = this.buildVaccineObservation(BCG_VACCINE, "1", bcg1Value);
-			Event bcg1Event = this.createVaccinationEvent(client, bcg1Obs);
+			DateTime date = parseDate.parseDateTime(bcg1Value);
+			Event bcg1Event = this.createEvent(client, bcg1Obs, eventType, entityType, date);
 			vaccinationEvents.add(bcg1Event);
 		}
 		
-		if(bcg2Value != "n/a") {
+		if(!bcg2Value.equals("n/a")) {
 			List<Obs> bcg1Obs = this.buildVaccineObservation(BCG_VACCINE, "2", bcg2Value);
-			Event bcg2Event = this.createVaccinationEvent(client, bcg1Obs);
+			DateTime date = parseDate.parseDateTime(bcg2Value);
+			Event bcg2Event = this.createEvent(client, bcg1Obs, eventType, entityType, date);
 			vaccinationEvents.add(bcg2Event);
 		}
 		
-		if(opv0Value != "n/a") {
+		if(!opv0Value.equals("n/a")) {
 			List<Obs> opv0Obs = this.buildVaccineObservation(OPV_VACCINE, "0", opv0Value);
-			Event opv0Event = this.createVaccinationEvent(client, opv0Obs);
+			DateTime date = parseDate.parseDateTime(opv0Value);
+			Event opv0Event = this.createEvent(client, opv0Obs, eventType, entityType, date);
 			vaccinationEvents.add(opv0Event);
 		}
 		
-		if(opv1Value != "n/a") {
+		if(!opv1Value.equals("n/a")) {
 			List<Obs> opv1Obs = this.buildVaccineObservation(OPV_VACCINE, "1", opv1Value);
-			Event opv1Event = this.createVaccinationEvent(client, opv1Obs);
+			DateTime date = parseDate.parseDateTime(opv1Value);
+			Event opv1Event = this.createEvent(client, opv1Obs, eventType, entityType, date);
 			vaccinationEvents.add(opv1Event);
 		}
 		
-		if(opv2Value != "n/a") {
+		if(!opv2Value.equals("n/a")) {
 			List<Obs> opv2Obs = this.buildVaccineObservation(OPV_VACCINE, "2", opv2Value);
-			Event opv2Event = this.createVaccinationEvent(client, opv2Obs);
+			DateTime date = parseDate.parseDateTime(opv2Value);
+			Event opv2Event = this.createEvent(client, opv2Obs, eventType, entityType, date);
 			vaccinationEvents.add(opv2Event);
 		}
 		
-		if(opv3Value != "n/a") {
+		if(!opv3Value.equals("n/a")) {
 			List<Obs> opv3Obs = this.buildVaccineObservation(OPV_VACCINE, "3", opv3Value);
-			Event opv3Event = this.createVaccinationEvent(client, opv3Obs);
+			DateTime date = parseDate.parseDateTime(opv3Value);
+			Event opv3Event = this.createEvent(client, opv3Obs, eventType, entityType, date);
 			vaccinationEvents.add(opv3Event);
 		}
 		
-		if(penta1Value != "n/a") {
+		if(!penta1Value.equals("n/a")) {
 			List<Obs> penta1Obs = this.buildVaccineObservation(PENTA_VACCINE, "1", penta1Value);
-			Event penta1Event = this.createVaccinationEvent(client, penta1Obs);
+			DateTime date = parseDate.parseDateTime(penta1Value);
+			Event penta1Event = this.createEvent(client, penta1Obs, eventType, entityType, date);
 			vaccinationEvents.add(penta1Event);
 		}
 		
-		if(penta2Value != "n/a") {
+		if(!penta2Value.equals("n/a")) {
 			List<Obs> penta2Obs = this.buildVaccineObservation(PENTA_VACCINE, "2", penta2Value);
-			Event penta2Event = this.createVaccinationEvent(client, penta2Obs);
+			DateTime date = parseDate.parseDateTime(penta2Value);
+			Event penta2Event = this.createEvent(client, penta2Obs, eventType, entityType, date);
 			vaccinationEvents.add(penta2Event);
 		}
 		
-		if(penta3Value != "n/a") {
+		if(!penta3Value.equals("n/a")) {
 			List<Obs> penta3Obs = this.buildVaccineObservation(PENTA_VACCINE, "3", penta3Value);
-			Event penta3Event = this.createVaccinationEvent(client, penta3Obs);
+			DateTime date = parseDate.parseDateTime(penta3Value);
+			Event penta3Event = this.createEvent(client, penta3Obs, eventType, 
+					entityType, date);
 			vaccinationEvents.add(penta3Event);
 		}
 		
-		if(pcv1Value != "n/a") {
+		if(!pcv1Value.equals("n/a")) {
 			List<Obs> pcv1Obs = this.buildVaccineObservation(PCV_VACCINE, "1", pcv1Value);
-			Event pcv1Event = this.createVaccinationEvent(client, pcv1Obs);
+			DateTime date = parseDate.parseDateTime(pcv1Value);
+			Event pcv1Event = this.createEvent(client, pcv1Obs, eventType, entityType, date);
 			vaccinationEvents.add(pcv1Event);
 		}
 		
-		if(pcv2Value != "n/a") {
+		if(!pcv2Value.equals("n/a")) {
 			List<Obs> pcv2Obs = this.buildVaccineObservation(PCV_VACCINE, "2", pcv2Value);
-			Event pcv2Event = this.createVaccinationEvent(client, pcv2Obs);
+			DateTime date = parseDate.parseDateTime(penta2Value);
+			Event pcv2Event = this.createEvent(client, pcv2Obs, eventType, entityType, date);
 			vaccinationEvents.add(pcv2Event);
 		}
 		
-		if(pcv3Value != "n/a") {
+		if(!pcv3Value.equals("n/a")) {
 			List<Obs> pcv3Obs = this.buildVaccineObservation(PCV_VACCINE, "3", pcv3Value);
-			Event pcv3Event = this.createVaccinationEvent(client, pcv3Obs);
+			DateTime date = parseDate.parseDateTime(penta3Value);
+			Event pcv3Event = this.createEvent(client, pcv3Obs, eventType, entityType, date);
 			vaccinationEvents.add(pcv3Event);
 		}
 		
-		if(rota1Value != "n/a") {
+		if(!rota1Value.equals("n/a")) {
 			List<Obs> rota1Obs = this.buildVaccineObservation(ROTA_VACCINE, "1", rota1Value);
-			Event rota1Event = this.createVaccinationEvent(client, rota1Obs);
+			DateTime date = parseDate.parseDateTime(rota1Value);
+			Event rota1Event = this.createEvent(client, rota1Obs, eventType, entityType, date);
 			vaccinationEvents.add(rota1Event);
 		}
 
-		if(rota2Value != "n/a") {
+		if(!rota2Value.equals("n/a")) {
 			List<Obs> rota2Obs = this.buildVaccineObservation(ROTA_VACCINE, "2", rota2Value);
-			Event rota2Event = this.createVaccinationEvent(client, rota2Obs);
+			DateTime date = parseDate.parseDateTime(rota2Value);
+			Event rota2Event = this.createEvent(client, rota2Obs, eventType, entityType, date);
 			vaccinationEvents.add(rota2Event);
 		}		
 		
-		if(opv4Value != "n/a") {
+		if(!opv4Value.equals("n/a")) {
 			List<Obs> opv4Obs = this.buildVaccineObservation(OPV_VACCINE, "4", opv4Value);
-			Event opv4Event = this.createVaccinationEvent(client, opv4Obs);
+			DateTime date = parseDate.parseDateTime(opv4Value);
+			Event opv4Event = this.createEvent(client, opv4Obs, eventType, entityType, date);
 			vaccinationEvents.add(opv4Event);
 		}
 		
-		if(measles1Value != "n/a") {
+		if(!measles1Value.equals("n/a")) {
 			List<Obs> measles1Obs = this.buildVaccineObservation(MEASLES_VACCINE, "1", measles1Value);
-			Event measles1Event = this.createVaccinationEvent(client, measles1Obs);
+			DateTime date = parseDate.parseDateTime(measles1Value);
+			Event measles1Event = this.createEvent(client, measles1Obs, eventType, entityType, date);
 			vaccinationEvents.add(measles1Event);
 		}
 		
-		if(measles2Value != "n/a") {
+		if(!measles2Value.equals("n/a")) {
 			List<Obs> measles2Obs = this.buildVaccineObservation(MEASLES_VACCINE, "2", measles2Value);
-			Event measles2Event = this.createVaccinationEvent(client, measles2Obs);
+			DateTime date = parseDate.parseDateTime(measles2Value);
+			Event measles2Event = this.createEvent(client, measles2Obs, eventType, entityType, date);
 			vaccinationEvents.add(measles2Event);
 		}
 		
-		if(mr1Value != "n/a") {
+		if(!mr1Value.equals("n/a")) {
 			List<Obs> mr1Obs = this.buildVaccineObservation(MR_VACCINE, "1", mr1Value);
-			Event mr1Event = this.createVaccinationEvent(client, mr1Obs);
+			DateTime date = parseDate.parseDateTime(mr1Value);
+			Event mr1Event = this.createEvent(client, mr1Obs, eventType, entityType, date);
 			vaccinationEvents.add(mr1Event);
 		}
 		
-		if(mr2Value != "n/a") {
-			List<Obs> mr2Obs = this.buildVaccineObservation(MR_VACCINE, "2", mr1Value);
-			Event mr2Event = this.createVaccinationEvent(client, mr2Obs);
+		if(!mr2Value.equals("n/a")) {
+			List<Obs> mr2Obs = this.buildVaccineObservation(MR_VACCINE, "2", mr2Value);
+			DateTime date = parseDate.parseDateTime(mr2Value);
+			Event mr2Event = this.createEvent(client, mr2Obs, eventType, entityType, date);
 			vaccinationEvents.add(mr2Event);
-		}	
+		}
 		
 		return vaccinationEvents;
 	}
 	
-	private Event createVaccinationEvent(Client client, List<Obs> obs) {
-		String eventType = "Vaccination";
-        String entityType = "vaccination";
-        DateTime eventDate = new DateTime();
+	private List<Event> buildGrowthMonitoringEvents(CSVRecord record, Client client) {
+		List<Event> growthMonitoringEvents = new ArrayList<Event>();
+		String eventType = "Growth Monitoring";
+        String entityType = "weight";
+		String weight1 = record.get("Growth_Chart/weight1");
+		String weight1Date = record.get("Growth_Chart/weight1_date");
+		String weight2 = record.get("Growth_Chart/weight2");
+		String weight2Date = record.get("Growth_Chart/weight2_date");
+		String weight3 = record.get("Growth_Chart/weight3");
+		String weight3Date = record.get("Growth_Chart/weight3_date");
+
+		if(!weight1.equals("n/a") && !weight1Date.equals("n/a")) {
+			List<Obs> obsList = new ArrayList<Obs>();
+			Obs weight1Obs = this.buildGrowthMonitoringObservation(weight1);
+			DateTime eventDate = this.parseDate.parseDateTime(weight1Date);
+			obsList.add(weight1Obs);
+			Event gmEvent = this.createEvent(client, obsList, eventType, entityType, eventDate);
+			growthMonitoringEvents.add(gmEvent);
+		}
+
+		if(!weight2.equals("n/a") && !weight2Date.equals("n/a")) {
+			List<Obs> obsList = new ArrayList<Obs>();
+			Obs weight2Obs = this.buildGrowthMonitoringObservation(weight2);
+			DateTime eventDate = this.parseDate.parseDateTime(weight2Date);
+			obsList.add(weight2Obs);
+			Event gm2Event = this.createEvent(client, obsList, eventType, entityType, eventDate);
+			growthMonitoringEvents.add(gm2Event);
+		}
+
+		if(!weight3.equals("n/a") && !weight3Date.equals("n/a")) {
+			List<Obs> obsList = new ArrayList<Obs>();
+			Obs weight3Obs = this.buildGrowthMonitoringObservation(weight3);
+			DateTime eventDate = this.parseDate.parseDateTime(weight3Date);
+			obsList.add(weight3Obs);
+			Event gm3Event = this.createEvent(client, obsList, eventType, entityType, eventDate);
+			growthMonitoringEvents.add(gm3Event);
+		}
+
+		return growthMonitoringEvents;
+	}
+
+	private Event createEvent(Client client, List<Obs> obs, String eventType, String entityType, DateTime eventDate) {
+        eventDate = eventDate == null ? new DateTime() : eventDate;
         String formSubmissionId = UUID.randomUUID().toString();
         String providerId = openmrsIDService.getOpenmrsUserName();
         String locationId = "FIXME";
         
-        Event vaccinationEvent = new Event(client.getBaseEntityId(), eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
-        vaccinationEvent = this.addMultipleObs(vaccinationEvent, obs);
+        Event event = new Event(client.getBaseEntityId(), eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+        event = this.addMultipleObs(event, obs);
         
-        return vaccinationEvent;
+        return event;
 	}
 	
 	private Event addMultipleObs(Event event, List<Obs> multipleObs) {
@@ -405,4 +483,18 @@ public class XlsDataImportController {
 		return bcgObs;
 	}
 	
+	private Obs buildGrowthMonitoringObservation(String weight) {
+		String fieldType = "concept";
+		String fieldDataType = "decimal";
+		String fieldCode = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		List<Object> values = new ArrayList<Object>();
+		values.add(weight);
+
+		String formSubmissionField = "Weight_Kgs";
+
+		Obs growthMonitoringObs = new Obs(fieldType, fieldDataType, fieldCode, "", weight, "", formSubmissionField);
+		growthMonitoringObs.setValues(values);
+
+		return growthMonitoringObs;
+	}
 }
