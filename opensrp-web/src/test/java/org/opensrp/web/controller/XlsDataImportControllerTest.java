@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.Event;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.opensrp.service.OpenmrsIDService;
@@ -54,18 +55,13 @@ public class XlsDataImportControllerTest {
 		List<String> openmrsIds = new ArrayList<String>();
 		openmrsIds.add("12345-1");
 		openmrsIds.add("12345-2");
-		
-		DateTime date = new DateTime();
-		
-		Client client1 = new Client("1234", "Peter", "", "Lesa", date, null, false, false, "Male", null, null, null);
-		Client client2 = new Client("5678", "Mark", "", "Donald", date, null, false, false, "Male", null, null, null);
-		
+
 		when(this.openmrsIDService.downloadOpenmrsIds(anyInt())).thenReturn(openmrsIds);
-		when(openmrsIDService.assignOpenmrsIdToClient(anyString(), any(Client.class), anyBoolean())).thenReturn(client1, client2);
 		
 		XlsDataImportController controller = new XlsDataImportController(clientService, eventService, openmrsIDService);
 		ResponseEntity<String> response = controller.importXlsData(file);
 		assertTrue(response.getBody().contains("4"));
 		verify(clientService, times(4)).addClient(any(Client.class));
+		verify(eventService, times(21)).addEvent(any(Event.class));
 	}
 }
