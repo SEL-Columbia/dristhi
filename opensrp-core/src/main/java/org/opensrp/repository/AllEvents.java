@@ -1,5 +1,6 @@
 package org.opensrp.repository;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.ektorp.ComplexKey;
@@ -10,6 +11,7 @@ import org.ektorp.support.View;
 import org.ektorp.util.Assert;
 import org.ektorp.util.Documents;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
@@ -130,4 +132,29 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		return db.queryView(createQuery("events_by_empty_server_version").limit(200).includeDocs(true), Event.class);
 	}
 	
+	@GenerateView
+    public List<Event> getAll() {
+        return super.getAll();
+    }
+	
+	public List<Event> findEvents(String team,String providerId, String locationId, Long serverVersion,String sortBy,String sortOrder, int limit) {
+		return ler.getByCriteria(team,providerId, locationId, serverVersion, sortBy, sortOrder,limit);
+	}
+	
+	
+	@View(name = "all_events_by_event_type_and_version", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.eventType, doc.version], null); } }")
+	public List<Event> findEventByEventTypeBetweenTwoDates(String eventType) {
+		Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DATE, 1);
+        System.err.println("calendar.getTime():"+calendar.getTime().getTime());
+		ComplexKey start = ComplexKey.of(eventType,calendar.getTime().getTime());
+        ComplexKey end = ComplexKey.of(eventType,System.currentTimeMillis());
+        List<Event> events = db.queryView(
+				createQuery("all_events_by_event_type_and_version")
+						.startKey(start)
+						.endKey(end)						
+						.includeDocs(true), Event.class);
+        
+		return events;
+	}
 }

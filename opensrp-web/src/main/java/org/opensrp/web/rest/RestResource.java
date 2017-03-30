@@ -24,7 +24,6 @@ public abstract class RestResource <T>{
 	@RequestMapping(value="/{uniqueId}", method=RequestMethod.POST, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody
 	private T updateExisting(@PathVariable("uniqueId") String uniqueId, @RequestBody T entity) {
-//TODO		RestUtils.verifyUpdatableProperties(requiredProperties(), entity);
 		RestUtils.verifyRequiredProperties(requiredProperties(), entity);
 		return update(entity);//TODO
 	}
@@ -34,6 +33,7 @@ public abstract class RestResource <T>{
 	private T getById(@PathVariable("uniqueId") String uniqueId){
 		return getByUniqueId(uniqueId);
 	}
+	
 	
 	@RequestMapping(method=RequestMethod.GET, value="/search")
 	@ResponseBody
