@@ -26,7 +26,7 @@ public abstract class BaseDataObject extends MotechBaseDataObject {
 	@JsonProperty
 	private String voidReason;
 	@JsonProperty
-	private long serverVersion=System.currentTimeMillis();
+	private Long serverVersion=System.currentTimeMillis();
 	
 
 	public BaseDataObject() {}
@@ -95,11 +95,11 @@ public abstract class BaseDataObject extends MotechBaseDataObject {
 		this.voidReason = voidReason;
 	}
 	
-	public long getServerVersion() {
+	public Long getServerVersion() {
 		return serverVersion;
 	}
 
-	public void setServerVersion(long version) {
+	public void setServerVersion(Long version) {
 		this.serverVersion = version;
 	}
 	

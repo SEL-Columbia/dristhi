@@ -6,7 +6,7 @@
             "name": "opv0",
             "scheduleWindows": {
                 "earliest": ["0 Days"],
-                "due": ["14 Days"],
+                "due": ["10 Days"],
                 "late": ["5 Years"],
                 "max": ["5 Years", "1 Day"]
             },

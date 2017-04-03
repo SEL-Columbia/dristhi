@@ -13,7 +13,6 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.Milestone;
@@ -34,20 +33,18 @@ public class ScheduleService {
     private final ScheduleTrackingService scheduleTrackingService;
     private final AllSchedules allSchedules;
     private final AllEnrollmentWrapper allEnrollments;
-    private int preferredTime;
 
     @Autowired
     public ScheduleService(ScheduleTrackingService scheduleTrackingService, AllSchedules allSchedules, 
     		@Value("#{opensrp['preferred.time']}") int preferredTime, AllEnrollmentWrapper allEnrollments) {
         this.scheduleTrackingService = scheduleTrackingService;
         this.allSchedules = allSchedules;
-        this.preferredTime = preferredTime;
         this.allEnrollments = allEnrollments;
     }
 
     public void enroll(String entityId, String scheduleName, String referenceDate, String formSubmissionId) {
         String startingMilestoneName = getStartingMilestoneName(scheduleName, parse(referenceDate));
-		EnrollmentRequest request = new EnrollmentRequest(entityId, scheduleName, new Time(new LocalTime(preferredTime, 0)),
+		EnrollmentRequest request = new EnrollmentRequest(entityId, scheduleName, null,
                 parse(referenceDate), null, null, null, startingMilestoneName, addOrUpdateEventTrackMetadata(null, formSubmissionId, ActionType.enroll));
         scheduleTrackingService.enroll(request);
     }
@@ -63,12 +60,12 @@ public class ScheduleService {
 
     public void enroll(String entityId, String scheduleName, String milestone, String referenceDate, String formSubmissionId) {
     	EnrollmentRequest request = new EnrollmentRequest(entityId, scheduleName,
-                new Time(new LocalTime(preferredTime, 0)), parse(referenceDate), null, null, null, milestone, addOrUpdateEventTrackMetadata(null, formSubmissionId, ActionType.enroll));
+                null, parse(referenceDate), null, null, null, milestone, addOrUpdateEventTrackMetadata(null, formSubmissionId, ActionType.enroll));
         scheduleTrackingService.enroll(request);
     }
     
     public void fulfillMilestone(String entityId, String scheduleName, LocalDate completionDate, String formSubmissionId) {
-    	updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, ActionType.fulfill);
+    	if(updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, ActionType.fulfill))
     	scheduleTrackingService.fulfillCurrentMilestone(entityId, scheduleName, completionDate, new Time(now()));
     }
     
@@ -141,9 +138,13 @@ public class ScheduleService {
 		}
 		return map;
 	}
-    private void updateExistingEnrollmentWithEventTrackMetadata(String entityId, String scheduleName, String formSubmissionId, ActionType actionType){
+    private boolean updateExistingEnrollmentWithEventTrackMetadata(String entityId, String scheduleName, String formSubmissionId, ActionType actionType){
     	Enrollment enr = allEnrollments.getActiveEnrollment(entityId, scheduleName);
+    	if(enr==null){
+    		return false;
+    	}
     	enr.setMetadata(addOrUpdateEventTrackMetadata(enr.getMetadata(), formSubmissionId, actionType));
     	allEnrollments.update(enr);
+    	return true;
     }
 }

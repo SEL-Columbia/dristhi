@@ -1,10 +1,10 @@
 {
-    "name": "MEASLES 2",
+    "name": "OPV 4",
     "absolute": true,
     "milestones": [
         {
-            "name": "measles2",
-           "scheduleWindows": {
+            "name": "opv4",
+              "scheduleWindows": {
                 "earliest": ["39 Weeks"],
                 "due": ["52 Weeks"],
                 "late": ["5 Years"],

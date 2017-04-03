@@ -74,8 +74,6 @@ public class ClientService {
 		    attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo);
 	}
 	
-	
-	
 	/*	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
 				String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
 			return allClients.findByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);
@@ -258,8 +256,27 @@ public class ClientService {
 		return allClients.findByServerVersion(serverVersion);
 	}
 	
-	public List<Client> findByFieldValue(String field,List<String> ids) {
+	public List<Client> findByFieldValue(String field, List<String> ids) {
 		return allClients.findByFieldValue(field, ids);
 	}
 	
+	public Client addorUpdate(Client client) {
+		if (client.getBaseEntityId() == null) {
+			throw new RuntimeException("No baseEntityId");
+		}
+		Client c = findClient(client);
+		if (c != null) {
+			client.setRevision(c.getRevision());
+			client.setId(c.getId());
+			c.setDateEdited(DateTime.now());
+			c.setServerVersion(null);
+			allClients.update(client);
+			
+		} else {
+			
+			client.setDateCreated(DateTime.now());
+			allClients.add(client);
+		}
+		return client;
+	}
 }

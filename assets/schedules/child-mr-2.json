@@ -1,10 +1,10 @@
 {
-    "name": "MEASLES 2",
+    "name": "MR 2",
     "absolute": true,
     "milestones": [
         {
-            "name": "measles2",
-           "scheduleWindows": {
+            "name": "mr2",
+            "scheduleWindows": {
                 "earliest": ["39 Weeks"],
                 "due": ["52 Weeks"],
                 "late": ["5 Years"],
@@ -38,4 +38,4 @@
             ]
         }
     ]
-}
+}          

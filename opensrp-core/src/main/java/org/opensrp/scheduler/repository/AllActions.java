@@ -12,6 +12,7 @@ import org.ektorp.support.View;
 import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
+import org.opensrp.repository.lucene.LuceneActionRepository;
 import org.opensrp.scheduler.Action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +23,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class AllActions extends MotechBaseRepository<Action> {
     private static Logger logger = LoggerFactory.getLogger(AllActions.class.toString());
-
+    LuceneActionRepository luceneActionRepo;
     @Autowired
-    protected AllActions(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+    protected AllActions(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db, LuceneActionRepository _luceneActionRepo) {
         super(Action.class, db);
+        luceneActionRepo=_luceneActionRepo;
     }
 
     @View(name = "action_by_provider_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.providerId, doc.timeStamp], null); } }")
@@ -52,6 +54,13 @@ public class AllActions extends MotechBaseRepository<Action> {
         return db.queryView(createQuery("action_by_baseEntityId_and_schedule_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
     }
     
+    @View(name = "action_by_baseEntityId_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.baseEntityId,doc.timeStamp], null); } }")
+    public List<Action> findByCaseIdAndTimeStamp(String baseEntityId, long timeStamp) {
+        ComplexKey startKey = ComplexKey.of(baseEntityId,  timeStamp);
+        ComplexKey endKey = ComplexKey.of(baseEntityId, Long.MAX_VALUE);
+        return db.queryView(createQuery("action_by_baseEntityId_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
+    }
+   
     public void deleteAllByTarget(String target) {
         deleteAll(findByActionTarget(target));
     }
@@ -105,4 +114,8 @@ public class AllActions extends MotechBaseRepository<Action> {
         }
         db.executeBulk(existingAlerts);
     }
+    
+    public List<Action> findByCriteria(String team,String providerId,long timeStamp,String sortBy,String sortOrder,int limit) {
+                           		return luceneActionRepo.getByCriteria(team,providerId, timeStamp, sortBy, sortOrder, limit);
+                           	}
 }
