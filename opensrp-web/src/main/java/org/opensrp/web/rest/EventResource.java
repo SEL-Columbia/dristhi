@@ -157,6 +157,7 @@ public class EventResource extends RestResource<Event> {
 				ArrayList<Event> events = (ArrayList<Event>) gson.fromJson(syncData.getString("events"),
 				    new TypeToken<ArrayList<Event>>() {}.getType());
 				for (Event event : events) {
+					event=eventService.processOutOfArea(event);
 					eventService.addEvent(event);
 				}
 			}
@@ -168,6 +169,7 @@ public class EventResource extends RestResource<Event> {
 		}
 		return new ResponseEntity<>(CREATED);
 	}
+	
 	/*	@RequestMapping(method=RequestMethod.GET)
 		@ResponseBody
 		public Event getByBaseEntityAndFormSubmissionId(@RequestParam String baseEntityId, @RequestParam String formSubmissionId) {

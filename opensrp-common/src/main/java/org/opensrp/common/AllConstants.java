@@ -45,6 +45,7 @@ public class AllConstants {
     	public static final String BIRTH_DATE_APPROX = "birthdateApprox";
     	public static final String DEATH_DATE_APPROX = "deathdateApprox";
     	public static final String GENDER = "gender";
+    	public static final String ZEIR_ID = "zeir_id";
     }
     
     public static class Event {
