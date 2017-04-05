@@ -19,7 +19,7 @@
                 },
                 {
                     "window": "late",
-                    "offset": ["28 Days"],
+                    "offset": ["10 Days"],
                     "interval": ["1 Day"],
                     "count": "366"
                 },

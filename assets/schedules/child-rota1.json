@@ -5,13 +5,13 @@
         {
             "name": "rota1",
             "scheduleWindows": {
-                "earliest": ["6 Weeks"],
-                "due": ["8 Weeks"],
-                "late": ["52 Weeks"],
-                "max": ["1 Year", "1 Day"]
+            "earliest": ["6 Weeks"],
+            "due": ["6 Weeks","10 Days"],
+            "late": ["7 Months"],
+            "max": [""]
             },
             "alerts": [
-                {
+            	{
                     "window": "earliest",
                     "offset": ["0 Weeks"],
                     "interval": ["1 Day"],
@@ -25,15 +25,9 @@
                 },
                 {
                     "window": "late",
-                    "offset": ["8 Weeks"],
+                    "offset": ["6 Weeks","10 Days"],
                     "interval": ["1 Day"],
-                    "count": "366"
-                },
-                {
-                    "window": "max",
-                    "offset": ["1 Year"],
-                    "interval": ["1 Day"],
-                    "count": "2"
+                    "count": "1900"
                 }
             ]
         }

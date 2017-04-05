@@ -5,17 +5,17 @@
         {
            "name": "penta3",
            "scheduleWindows": {
-                "earliest": ["4 Weeks"],
-                "due": ["6 Weeks"],
-                "late": ["52 Weeks"],
-                "max": ["1 Year", "1 Day"]
+            "earliest": ["4 Weeks"],
+            "due": ["4 Weeks","10 Days"],
+            "late": ["5 Years"],
+            "max": [""]
             },
             "alerts": [
-                {
+            	{
                     "window": "earliest",
                     "offset": ["0 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "30"
+                    "count": "50"
                 },
                 {
                     "window": "due",
@@ -25,15 +25,9 @@
                 },
                 {
                     "window": "late",
-                    "offset": ["6 Weeks"],
+                    "offset": ["4 Weeks","10 Days"],
                     "interval": ["1 Day"],
-                    "count": "366"
-                },
-                {
-                    "window": "max",
-                    "offset": ["1 Year"],
-                    "interval": ["1 Day"],
-                    "count": "2"
+                    "count": "1900"
                 }
             ]
         }

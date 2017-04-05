@@ -7,25 +7,25 @@
             "scheduleWindows": {
                 "earliest": ["0 Days"],
                 "due": ["10 Days"],
-                "late": ["5 Years"],
-                "max": ["5 Years", "1 Day"]
+                "late": ["13 Days"],
+                "max": ["14 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "15"
+                    "count": "10"
                 },
                 {
                     "window": "late",
-                    "offset": ["14 Days"],
+                    "offset": ["13 Days"],
                     "interval": ["1 Day"],
-                    "count": "1900"
+                    "count": "2"
                 },
                 {
                     "window": "max",
-                    "offset": ["5 Years"],
+                    "offset": ["14 Days"],
                     "interval": ["1 Day"],
                     "count": "2"
                 }				

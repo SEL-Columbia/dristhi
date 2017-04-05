@@ -4,36 +4,30 @@
     "milestones": [
         {
             "name": "opv4",
-              "scheduleWindows": {
-                "earliest": ["39 Weeks"],
-                "due": ["52 Weeks"],
-                "late": ["5 Years"],
-                "max": ["5 Years", "1 Day"]
+            "scheduleWindows": {
+            "earliest": ["9 Months"],
+            "due": ["9 Months","10 Days"],
+            "late": ["5 Years"],
+            "max": [""]
             },
             "alerts": [
-                {
+            	{
                     "window": "earliest",
-                    "offset": ["0 Months"],
+                    "offset": ["8 Months"],
                     "interval": ["1 Day"],
-                    "count": "300"
+                    "count": "30"
                 },
                 {
                     "window": "due",
-                    "offset": ["39 Weeks"],
+                    "offset": ["9 Months"],
                     "interval": ["1 Day"],
-                    "count": "100"
+                    "count": "30"
                 },
                 {
                     "window": "late",
-                    "offset": ["52 Weeks"],
+                    "offset": ["9 Months","10 Days"],
                     "interval": ["1 Day"],
                     "count": "1900"
-                },
-                {
-                    "window": "max",
-                    "offset": ["5 Years"],
-                    "interval": ["1 Day"],
-                    "count": "2"
                 }
             ]
         }
