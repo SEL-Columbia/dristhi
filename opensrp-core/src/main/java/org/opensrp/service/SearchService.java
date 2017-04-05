@@ -19,11 +19,11 @@ public class SearchService {
 		this.search = search;
 	}
 	
-	public List<Client> searchClient(String firstName, String middleName, String lastName, String gender,
+	public List<Client> searchClient(String nameLike, String firstName, String middleName, String lastName, String gender,
 	                                 Map<String, String> identifiers, Map<String, String> attributes,
 	                                 DateTime birthdateFrom, DateTime birthdateTo, DateTime lastEditFrom, DateTime lastEditTo) {
-		return search.findByCriteria(firstName, middleName, lastName, gender, identifiers, attributes, birthdateFrom,
-		    birthdateTo, lastEditFrom, lastEditTo);
+		return search.findByCriteria(nameLike, firstName, middleName, lastName, gender, identifiers, attributes,
+		    birthdateFrom, birthdateTo, lastEditFrom, lastEditTo);
 	}
 	
 }

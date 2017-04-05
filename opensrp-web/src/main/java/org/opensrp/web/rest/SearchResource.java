@@ -20,19 +20,18 @@ import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.Event;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.EventService;
 import org.opensrp.service.SearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
 import com.mysql.jdbc.StringUtils;
 
 @Controller
@@ -45,10 +44,13 @@ public class SearchResource extends RestResource<Client> {
 	
 	private ClientService clientService;
 	
+	private EventService eventService;
+	
 	@Autowired
-	public SearchResource(SearchService searchService, ClientService clientService) {
+	public SearchResource(SearchService searchService, ClientService clientService, EventService eventService) {
 		this.searchService = searchService;
 		this.clientService = clientService;
+		this.eventService = eventService;
 	}
 	
 	@Override
@@ -56,6 +58,9 @@ public class SearchResource extends RestResource<Client> {
 		String firstName = getStringFilter(FIRST_NAME, request);
 		String middleName = getStringFilter(MIDDLE_NAME, request);
 		String lastName = getStringFilter(LAST_NAME, request);
+		
+		String nameLike = getStringFilter("name", request);
+		
 		String gender = getStringFilter(GENDER, request);
 		DateTime[] birthdate = getDateRangeFilter(BIRTH_DATE, request);//TODO add ranges like fhir do http://hl7.org/fhir/search.html
 		DateTime[] lastEdit = getDateRangeFilter(LAST_UPDATE, request);//TODO client by provider id
@@ -71,16 +76,16 @@ public class SearchResource extends RestResource<Client> {
 			attributeMap.put(attributeType, attributeValue);
 		}
 		
-		return searchService.searchClient(firstName, middleName, lastName, gender, null, attributeMap,
+		return searchService.searchClient(nameLike, firstName, middleName, lastName, gender, null, attributeMap,
 		    birthdate == null ? null : birthdate[0], birthdate == null ? null : birthdate[1], lastEdit == null ? null
 		            : lastEdit[0], lastEdit == null ? null : lastEdit[1]);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/path")
 	@ResponseBody
-	private ResponseEntity<String> searchPathBy(HttpServletRequest request) throws ParseException {
+	private List<ChildMother> searchPathBy(HttpServletRequest request) throws ParseException {
+		List<ChildMother> childMotherList = new ArrayList<ChildMother>();
 		
-		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			String ZEIR_ID = "zeir_id";
 			
@@ -105,18 +110,19 @@ public class SearchResource extends RestResource<Client> {
 			//TODO lookinto Swagger https://slack-files.com/files-pri-safe/T0EPSEJE9-F0TBD0N77/integratingswagger.pdf?c=1458211183-179d2bfd2e974585c5038fba15a86bf83097810a
 			
 			String ZEIR_ID_KEY = "ZEIR_ID";
-			Map<String, String> identifiers = null;
+			Map<String, String> identifiers = new HashMap<String, String>();
 			if (!StringUtils.isEmptyOrWhitespaceOnly(zeirId)) {
-				identifiers = new HashMap<String, String>();
+				zeirId = formatChildUniqueId(zeirId);
 				identifiers.put(ZEIR_ID_KEY, zeirId);
 			}
 			
 			String INACTIVE_KEY = "Inactive";
 			String LOST_TO_FOLLOW_UP_KEY = "Lost_to_Follow_Up";
-			Map<String, String> attributes = null;
+			Map<String, String> attributes = new HashMap<String, String>();
+			;
 			if (!StringUtils.isEmptyOrWhitespaceOnly(inActive) || !StringUtils.isEmptyOrWhitespaceOnly(lostToFollowUp)) {
-				attributes = new HashMap<String, String>();
-				if (!StringUtils.isEmptyOrWhitespaceOnly(inActive)) {
+				
+				if (!StringUtils.isEmptyOrWhitespaceOnly(inActive) && inActive.equalsIgnoreCase("true")) {
 					attributes.put(INACTIVE_KEY, inActive);
 				}
 				
@@ -129,10 +135,10 @@ public class SearchResource extends RestResource<Client> {
 			
 			if (!StringUtils.isEmptyOrWhitespaceOnly(firstName) || !StringUtils.isEmptyOrWhitespaceOnly(middleName)
 			        || !StringUtils.isEmptyOrWhitespaceOnly(lastName) || !StringUtils.isEmptyOrWhitespaceOnly(gender)
-			        || identifiers != null || attributes != null || birthdate != null || lastEdit != null) {
+			        || !identifiers.isEmpty() || !attributes.isEmpty() || birthdate != null || lastEdit != null) {
 				
-				children = searchService.searchClient(firstName, middleName, lastName, gender, identifiers, attributes,
-				    birthdate == null ? null : birthdate[0], birthdate == null ? null : birthdate[1],
+				children = searchService.searchClient(null, firstName, middleName, lastName, gender, identifiers,
+				    attributes, birthdate == null ? null : birthdate[0], birthdate == null ? null : birthdate[1],
 				    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1]);
 				
 			}
@@ -141,28 +147,62 @@ public class SearchResource extends RestResource<Client> {
 			String MOTHER_GUARDIAN_FIRST_NAME = "mother_first_name";
 			String MOTHER_GUARDIAN_LAST_NAME = "mother_last_name";
 			String MOTHER_GUARDIAN_NRC_NUMBER = "mother_nrc_number";
-			//String MOTHER_GUARDIAN_PHONE_NUMBER = "mother_contact_phone_number";
+			String MOTHER_GUARDIAN_PHONE_NUMBER = "mother_contact_phone_number";
 			
 			String motherFirstName = getStringFilter(MOTHER_GUARDIAN_FIRST_NAME, request);
 			String motherLastName = getStringFilter(MOTHER_GUARDIAN_LAST_NAME, request);
 			String motherGuardianNrc = getStringFilter(MOTHER_GUARDIAN_NRC_NUMBER, request);
+			String motherGuardianPhoneNumber = getStringFilter(MOTHER_GUARDIAN_PHONE_NUMBER, request);
 			
 			String NRC_NUMBER_KEY = "NRC_Number";
-			Map<String, String> motherAttributes = null;
+			Map<String, String> motherAttributes = new HashMap<String, String>();
 			if (!StringUtils.isEmptyOrWhitespaceOnly(motherGuardianNrc)) {
-				motherAttributes = new HashMap<String, String>();
 				motherAttributes.put(NRC_NUMBER_KEY, motherGuardianNrc);
 			}
 			
 			List<Client> mothers = new ArrayList<Client>();
 			if (!StringUtils.isEmptyOrWhitespaceOnly(motherFirstName)
-			        || !StringUtils.isEmptyOrWhitespaceOnly(motherLastName)
-			        || !StringUtils.isEmptyOrWhitespaceOnly(motherGuardianNrc)) {
+			        || !StringUtils.isEmptyOrWhitespaceOnly(motherLastName) || !motherAttributes.isEmpty()) {
 				
-				mothers = searchService.searchClient(motherFirstName, null, motherLastName, null, null, motherAttributes,
-				    null, null, lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1]);
+				String nameLike = null;
+				if ((!StringUtils.isEmptyOrWhitespaceOnly(motherFirstName) && !StringUtils
+				        .isEmptyOrWhitespaceOnly(motherLastName)) && motherFirstName.equals(motherLastName)) {
+					if (org.apache.commons.lang3.StringUtils.containsWhitespace(motherFirstName.trim())) {
+						String[] arr = motherFirstName.split("\\s+");
+						motherFirstName = arr[0];
+						motherLastName = arr[1];
+					} else {
+						nameLike = motherFirstName;
+						motherFirstName = null;
+						motherLastName = null;
+					}
+				}
+				mothers = searchService.searchClient(nameLike, motherFirstName, null, motherLastName, null, null,
+				    motherAttributes, null, null, lastEdit == null ? null : lastEdit[0], lastEdit == null ? null
+				            : lastEdit[1]);
 				
 			}
+			
+			List<Client> eventChildren = new ArrayList<Client>();
+			if (!StringUtils.isEmptyOrWhitespaceOnly(motherGuardianPhoneNumber)) {
+				List<Event> events = eventService.findEventsByConceptAndValue("159635AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				    motherGuardianPhoneNumber);
+				if (events != null && !events.isEmpty()) {
+					List<String> clientIds = new ArrayList<String>();
+					for (Event event : events) {
+						String entityId = event.getBaseEntityId();
+						if (entityId != null && !clientIds.contains(entityId)) {
+							clientIds.add(entityId);
+						}
+					}
+					
+					eventChildren = clientService.findByFieldValue(BaseEntity.BASE_ENTITY_ID, clientIds);
+					
+				}
+			}
+			
+			// Search conjunction is "AND" find intersection
+			children = intersection(children, eventChildren);
 			
 			List<Client> linkedMothers = new ArrayList<Client>();
 			
@@ -170,9 +210,9 @@ public class SearchResource extends RestResource<Client> {
 			if (!children.isEmpty()) {
 				List<String> clientIds = new ArrayList<String>();
 				for (Client c : children) {
-					List<String> rList = c.getRelationships(RELATIONSHIP_KEY);
-					if (!rList.isEmpty()) {
-						clientIds.add(rList.get(0));
+					String relationshipId = getRelationalId(c, RELATIONSHIP_KEY);
+					if (relationshipId != null && !clientIds.contains(relationshipId)) {
+						clientIds.add(relationshipId);
 					}
 				}
 				
@@ -186,12 +226,9 @@ public class SearchResource extends RestResource<Client> {
 			if (!mothers.isEmpty()) {
 				List<String> cIndentifers = new ArrayList<String>();
 				for (Client m : mothers) {
-					String identifier = m.getIdentifier(M_ZEIR_ID);
-					if (!StringUtils.isEmptyOrWhitespaceOnly(identifier)) {
-						String[] arr = identifier.split("_");
-						if (arr != null && arr.length == 2 && arr[1].contains(RELATIONSHIP_KEY)) {
-							cIndentifers.add(arr[0]);
-						}
+					String childIdentifier = getChildIndentifier(m, M_ZEIR_ID, RELATIONSHIP_KEY);
+					if (childIdentifier != null && !cIndentifers.contains(childIdentifier)) {
+						cIndentifers.add(childIdentifier);
 					}
 				}
 				
@@ -199,28 +236,31 @@ public class SearchResource extends RestResource<Client> {
 				
 			}
 			
-			for (Client linkedChild : linkedChildren) {
-				if (!children.contains(linkedChild)) {
-					children.add(linkedChild);
-				}
-			}
+			// Search conjunction is "AND" find intersection
+			children = intersection(children, linkedChildren);
 			
 			for (Client linkedMother : linkedMothers) {
-				if (!mothers.contains(linkedMother)) {
+				if (!contains(mothers, linkedMother)) {
 					mothers.add(linkedMother);
 				}
 			}
 			
-			response.put("children", children);
-			response.put("mothers", mothers);
+			for (Client child : children) {
+				for (Client mother : mothers) {
+					String relationalId = getRelationalId(child, RELATIONSHIP_KEY);
+					String motherEntityId = mother.getBaseEntityId();
+					if (relationalId != null && motherEntityId != null && relationalId.equalsIgnoreCase(motherEntityId)) {
+						childMotherList.add(new ChildMother(child, mother));
+					}
+				}
+			}
 			
-			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.OK);
 		}
 		catch (Exception e) {
-			response.put("msg", "Error occurred");
 			logger.error("", e);
-			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+		return childMotherList;
 	}
 	
 	@Override
@@ -253,4 +293,111 @@ public class SearchResource extends RestResource<Client> {
 		return null;
 	}
 	
+	private String getRelationalId(Client c, String relationshipKey) {
+		Map<String, List<String>> relationships = c.getRelationships();
+		if (relationships != null) {
+			for (Map.Entry<String, List<String>> entry : relationships.entrySet()) {
+				String key = entry.getKey();
+				if (key.equalsIgnoreCase(relationshipKey)) {
+					List<String> rList = entry.getValue();
+					if (!rList.isEmpty()) {
+						return rList.get(0);
+					}
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	private String getChildIndentifier(Client m, String motherIdentifier, String relationshipKey) {
+		String identifier = m.getIdentifier(motherIdentifier);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(identifier)) {
+			String[] arr = identifier.split("_");
+			if (arr != null && arr.length == 2 && arr[1].contains(relationshipKey)) {
+				return arr[0];
+			}
+		}
+		return null;
+	}
+	
+	private class ChildMother {
+		
+		private Client child;
+		
+		private Client mother;
+		
+		public ChildMother(Client child, Client mother) {
+			this.child = child;
+			this.mother = mother;
+		}
+		
+		@SuppressWarnings("unused")
+		public Client getMother() {
+			return mother;
+		}
+		
+		@SuppressWarnings("unused")
+		public Client getChild() {
+			return child;
+		}
+	}
+	
+	private static String formatChildUniqueId(String unformattedId) {
+		if (!StringUtils.isEmptyOrWhitespaceOnly(unformattedId)) {
+			if (unformattedId.contains("-")) {
+				unformattedId = unformattedId.split("-")[0];
+			} else if (unformattedId.length() > 6) {
+				unformattedId = unformattedId.substring(0, 6);
+			}
+		}
+		
+		return unformattedId;
+	}
+	
+	private boolean contains(List<Client> clients, Client c) {
+		if (clients == null || clients.isEmpty() || c == null) {
+			return false;
+		}
+		for (Client client : clients) {
+			if (client != null && client.getBaseEntityId() != null && c.getBaseEntityId() != null) {
+				if (client.getBaseEntityId().equals(c.getBaseEntityId())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public List<Client> intersection(List<Client> list1, List<Client> list2) {
+		if (list1 == null) {
+			list1 = new ArrayList<Client>();
+		}
+		
+		if (list2 == null) {
+			list2 = new ArrayList<Client>();
+		}
+		
+		if (list1.isEmpty() && list2.isEmpty()) {
+			return new ArrayList<Client>();
+		}
+		
+		if (list1.isEmpty() && !list2.isEmpty()) {
+			return list2;
+		}
+		
+		if (list2.isEmpty() && !list1.isEmpty()) {
+			return list1;
+		}
+		
+		List<Client> list = new ArrayList<Client>();
+		
+		for (Client t : list1) {
+			if (contains(list2, t)) {
+				list.add(t);
+			}
+		}
+		
+		return list;
+	}
 }

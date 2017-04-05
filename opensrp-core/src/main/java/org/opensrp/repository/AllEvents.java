@@ -11,7 +11,6 @@ import org.ektorp.support.View;
 import org.ektorp.util.Assert;
 import org.ektorp.util.Documents;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
@@ -127,6 +126,15 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 		return events;
 	}
+	
+	@View(name = "event_by_concept_and_value", map = "function(doc) {if (doc.type === 'Event' && doc.obs) {for (var obs in doc.obs) {var fieldCode = doc.obs[obs].fieldCode;var value = doc.obs[obs].values[0];emit([fieldCode,value],null);}}}")
+	public List<Event> findByConceptAndValue(String concept, String conceptValue) {
+		List<Event> events = db.queryView(
+		    createQuery("event_by_concept_and_value").key(ComplexKey.of(concept, conceptValue)).includeDocs(true),
+		    Event.class);
+		return events;
+	}
+	
 	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Event' && !doc.serverVersion) { emit(doc._id, doc); } }")
 	public List<Event> findByEmptyServerVersion() {
 		return db.queryView(createQuery("events_by_empty_server_version").limit(200).includeDocs(true), Event.class);

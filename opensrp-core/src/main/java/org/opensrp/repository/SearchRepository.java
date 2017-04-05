@@ -26,11 +26,11 @@ public class SearchRepository extends MotechBaseRepository<Search> {
 		this.sr = sr;
 	}
 	
-	public List<Client> findByCriteria(String firstName, String middleName, String lastName, String gender,
+	public List<Client> findByCriteria(String nameLike, String firstName, String middleName, String lastName, String gender,
 	                                   Map<String, String> identifiers, Map<String, String> attributes,
 	                                   DateTime birthdateFrom, DateTime birthdateTo, DateTime lastEditFrom,
 	                                   DateTime lastEditTo) {
-		return sr.getByCriteria(firstName, middleName, lastName, gender, identifiers, attributes, birthdateFrom,
+		return sr.getByCriteria(nameLike, firstName, middleName, lastName, gender, identifiers, attributes, birthdateFrom,
 		    birthdateTo, lastEditFrom, lastEditTo);
 	}
 	

@@ -225,4 +225,8 @@ public class EventService {
 	public List<Event> findEvents(String team,String providerId, String locationId, Long serverVersion,String sortBy,String sortOrder, int limit) {
 		return allEvents.findEvents(team,providerId, locationId, serverVersion, sortBy, sortOrder, limit);
 	}
+	
+	public List<Event> findEventsByConceptAndValue(String concept, String conceptValue){
+		return allEvents.findByConceptAndValue(concept, conceptValue);
+	}
 }

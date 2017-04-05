@@ -37,7 +37,7 @@ public class LuceneSearchRepository extends CouchDbRepositorySupportWithLucene<S
 		initStandardDesignDocument();
 	}
 	
-	public List<Client> getByCriteria(String firstName, String middleName, String lastName, String gender,
+	public List<Client> getByCriteria(String nameLike, String firstName, String middleName, String lastName, String gender,
 	                                  Map<String, String> identifiers, Map<String, String> attributes,
 	                                  DateTime birthdateFrom, DateTime birthdateTo, DateTime lastEditFrom,
 	                                  DateTime lastEditTo) {
@@ -45,7 +45,14 @@ public class LuceneSearchRepository extends CouchDbRepositorySupportWithLucene<S
 		// created
 		LuceneQuery query = new LuceneQuery("Search", "by_all_criteria");
 		
-		Query qf = new Query(FilterType.AND);
+		Query q = new Query(FilterType.OR);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(nameLike)) {
+			q.likeWithWildCard(FIRST_NAME, nameLike);
+			q.likeWithWildCard(MIDDLE_NAME, nameLike);
+			q.likeWithWildCard(LAST_NAME, nameLike);
+		}
+		
+		Query qf = new Query(FilterType.AND, q);
 		if (!StringUtils.isEmptyOrWhitespaceOnly(firstName)) {
 			qf.likeWithWildCard(FIRST_NAME, firstName);
 		}
@@ -68,7 +75,7 @@ public class LuceneSearchRepository extends CouchDbRepositorySupportWithLucene<S
 				String identifierValue = entry.getValue();
 				if (!StringUtils.isEmptyOrWhitespaceOnly(identifierType)
 				        && !StringUtils.isEmptyOrWhitespaceOnly(identifierValue)) {
-					qf.eq(identifierType, identifierValue);
+					qf.likeWithWildCard(identifierType, identifierValue);
 				}
 			}
 		}
@@ -79,7 +86,7 @@ public class LuceneSearchRepository extends CouchDbRepositorySupportWithLucene<S
 				String attributeValue = entry.getValue();
 				if (!StringUtils.isEmptyOrWhitespaceOnly(attributeType)
 				        && !StringUtils.isEmptyOrWhitespaceOnly(attributeValue)) {
-					qf.eq(attributeType, attributeValue);
+					qf.likeWithWildCard(attributeType, attributeValue);
 				}
 			}
 		}
