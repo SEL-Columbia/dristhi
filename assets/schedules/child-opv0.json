@@ -8,7 +8,7 @@
                 "earliest": ["0 Days"],
                 "due": ["10 Days"],
                 "late": ["13 Days"],
-                "max": ["14 Days"]
+                "max": [""]
             },
             "alerts": [
                 {
@@ -20,12 +20,6 @@
                 {
                     "window": "late",
                     "offset": ["13 Days"],
-                    "interval": ["1 Day"],
-                    "count": "2"
-                },
-                {
-                    "window": "max",
-                    "offset": ["14 Days"],
                     "interval": ["1 Day"],
                     "count": "2"
                 }				

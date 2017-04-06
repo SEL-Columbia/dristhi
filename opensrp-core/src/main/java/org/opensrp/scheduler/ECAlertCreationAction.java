@@ -32,13 +32,15 @@ public class ECAlertCreationAction implements HookedEvent {
 	
 	@Override
 	public void invoke(MilestoneEvent motechEvent, Map<String, String> extraData) {
+		Enrollment enr = scheduler.getEnrollment(motechEvent.externalId(), motechEvent.scheduleName());
+
 		try {
-			Enrollment enr = scheduler.getEnrollment(motechEvent.externalId(), motechEvent.scheduleName());
 			
 			if(enr!=null){
 			String eventId = enr.getMetadata().get(MetadataField.enrollmentEvent.name());
 			Event event = eventService.getById(eventId);
 			String entityType = event.getEntityType();
+			
 			
 			logger.debug(
 			    format("Generating alert for entity {0} of type {1} , event {2} " + "for schedule {3} in window {4} ",
@@ -47,8 +49,8 @@ public class ECAlertCreationAction implements HookedEvent {
 			scheduler.alertFor(motechEvent.windowName(), entityType, motechEvent.externalId(), event.getProviderId(),
 			    motechEvent.scheduleName(), motechEvent.milestoneName(), motechEvent.startOfDueWindow(),
 			    motechEvent.startOfLateWindow(), motechEvent.startOfMaxWindow());
-			}else{
-				logger.info("Null alert");
+			}else{			
+				logger.info("No motech enrollment found for alert for client "+motechEvent.externalId() +" and schedule "+ motechEvent.scheduleName());
 			}
 		}
 		catch (Exception e) {

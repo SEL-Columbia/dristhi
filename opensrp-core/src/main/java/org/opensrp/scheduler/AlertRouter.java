@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.scheduletracking.api.events.constants.EventSubjects;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
-import org.motechproject.server.event.annotations.MotechListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -36,7 +34,7 @@ public class AlertRouter {
         return route;
     }
     
-    @MotechListener(subjects = {EventSubjects.MILESTONE_ALERT, EventSubjects.DEFAULTMENT_CAPTURE})
+   // @MotechListener(subjects = {EventSubjects.MILESTONE_ALERT, EventSubjects.DEFAULTMENT_CAPTURE})
     public void handleAlerts(MotechEvent realEvent) {
         logger.debug("Handling motech milestone alerts: " + realEvent);
         MilestoneEvent event = new MilestoneEvent(realEvent);

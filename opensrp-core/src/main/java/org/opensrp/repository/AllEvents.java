@@ -126,6 +126,15 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 		return events;
 	}
+	@View(name = "event_by_concept_parent_code_and_base_entity_id", map = "function(doc) {if (doc.type === 'Event' && doc.obs) {for (var obs in doc.obs) {var fieldCode = doc.obs[obs].fieldCode;var parentCode = doc.obs[obs].parentCode;emit([doc.baseEntityId, fieldCode, parentCode], null);}}}")
+	public List<Event> findByBaseEntityIdAndConceptParentCode(String baseEntityId, String concept, String parentCode) {
+		ComplexKey startKey = ComplexKey.of(baseEntityId, concept, parentCode);
+		ComplexKey endKey = ComplexKey.of(baseEntityId, concept, parentCode);
+		List<Event> events = db.queryView(
+		    createQuery("event_by_concept_parent_code_and_base_entity_id").startKey(startKey).endKey(endKey).includeDocs(true),
+		    Event.class);
+		return events;
+	}
 	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Event' && !doc.serverVersion) { emit(doc._id, doc); } }")
 	public List<Event> findByEmptyServerVersion() {
 		return db.queryView(createQuery("events_by_empty_server_version").limit(200).includeDocs(true), Event.class);

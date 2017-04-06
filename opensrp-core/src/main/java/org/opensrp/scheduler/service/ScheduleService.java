@@ -119,6 +119,9 @@ public class ScheduleService {
     public EnrollmentRecord getEnrollmentRecord(String entityId, String scheduleName) {
         return scheduleTrackingService.getEnrollment(entityId, scheduleName);
 	}
+    public Enrollment getEnrollment(String enrollmentId) {
+    	return allEnrollments.get(enrollmentId);
+    }
     
     private Map<String, String> addOrUpdateEventTrackMetadata(Map<String, String> map, String formSubmissionId, ActionType actionType) {
 		if(map == null){

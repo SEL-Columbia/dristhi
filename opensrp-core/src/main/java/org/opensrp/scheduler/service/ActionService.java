@@ -53,6 +53,9 @@ public class ActionService {
     	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
     	allAlerts.addOrUpdateScheduleNotificationAlert(beneficiaryType, caseID, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     }
+    public void alertForBeneficiary(Action action) {
+    	allActions.addOrUpdateAlert(action);
+    }
 
     public void markAllAlertsAsInactive(String entityId) {
         allActions.markAllAsInActiveFor(entityId);

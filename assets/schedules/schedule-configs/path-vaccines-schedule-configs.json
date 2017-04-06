@@ -1,3 +1,4 @@
+
 {
 					"name": "BCG",
 					"events": [
@@ -27,6 +28,11 @@
 									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
 								}
 							],
 							"fulfillment_date_fields": [
@@ -36,6 +42,60 @@
 								}
 							],
 							"milestone": "bcg",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "BCG 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "bcg2",
+							"reference_date_fields": [
+				                {
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+								}
+							],
+							"milestone": "bcg2",
 							"action": "fulfill"
 						}
 					]
