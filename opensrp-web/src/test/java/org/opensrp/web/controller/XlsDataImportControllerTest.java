@@ -77,9 +77,10 @@ public class XlsDataImportControllerTest {
 		
 		
 		assertEquals(summaryClientCount, 4);
-		assertEquals(summaryEventCount, 21);
+		assertEquals(summaryEventCount, 39);
 		assertEquals(vaccineEvent.getString("providerId"), openmrsUserName);
 		assertEquals(gmEvent.getString("providerId"), openmrsUserName);
+		assertEquals(gmEvent.getString("locationId"), "");
 		verify(clientService, times(4)).addClient(any(Client.class));
 		verify(eventService, times(21)).addEvent(any(Event.class));
 	}

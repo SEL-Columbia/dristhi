@@ -242,138 +242,138 @@ public class XlsDataImportController {
 		String measles2Value = record.get("Immunisation_Record/measles2");
 		String mr1Value = record.get("Immunisation_Record/mr1");
 		String mr2Value = record.get("Immunisation_Record/mr2");
+		String locationName = record.get("Childs_Particulars/Home_Facility");
 		
 		if(!bcg1Value.equals("n/a")) {
 			List<Obs> bcg1Obs = this.buildVaccineObservation(BCG_VACCINE, "1", bcg1Value);
 			DateTime date = parseDate.parseDateTime(bcg1Value);
-			Event bcg1Event = this.createEvent(client, bcg1Obs, eventType, entityType, date);
+			Event bcg1Event = this.createEvent(client, bcg1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(bcg1Event);
 		}
 		
 		if(!bcg2Value.equals("n/a")) {
 			List<Obs> bcg1Obs = this.buildVaccineObservation(BCG_VACCINE, "2", bcg2Value);
 			DateTime date = parseDate.parseDateTime(bcg2Value);
-			Event bcg2Event = this.createEvent(client, bcg1Obs, eventType, entityType, date);
+			Event bcg2Event = this.createEvent(client, bcg1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(bcg2Event);
 		}
 		
 		if(!opv0Value.equals("n/a")) {
 			List<Obs> opv0Obs = this.buildVaccineObservation(OPV_VACCINE, "0", opv0Value);
 			DateTime date = parseDate.parseDateTime(opv0Value);
-			Event opv0Event = this.createEvent(client, opv0Obs, eventType, entityType, date);
+			Event opv0Event = this.createEvent(client, opv0Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(opv0Event);
 		}
 		
 		if(!opv1Value.equals("n/a")) {
 			List<Obs> opv1Obs = this.buildVaccineObservation(OPV_VACCINE, "1", opv1Value);
 			DateTime date = parseDate.parseDateTime(opv1Value);
-			Event opv1Event = this.createEvent(client, opv1Obs, eventType, entityType, date);
+			Event opv1Event = this.createEvent(client, opv1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(opv1Event);
 		}
 		
 		if(!opv2Value.equals("n/a")) {
 			List<Obs> opv2Obs = this.buildVaccineObservation(OPV_VACCINE, "2", opv2Value);
 			DateTime date = parseDate.parseDateTime(opv2Value);
-			Event opv2Event = this.createEvent(client, opv2Obs, eventType, entityType, date);
+			Event opv2Event = this.createEvent(client, opv2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(opv2Event);
 		}
 		
 		if(!opv3Value.equals("n/a")) {
 			List<Obs> opv3Obs = this.buildVaccineObservation(OPV_VACCINE, "3", opv3Value);
 			DateTime date = parseDate.parseDateTime(opv3Value);
-			Event opv3Event = this.createEvent(client, opv3Obs, eventType, entityType, date);
+			Event opv3Event = this.createEvent(client, opv3Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(opv3Event);
 		}
 		
 		if(!penta1Value.equals("n/a")) {
 			List<Obs> penta1Obs = this.buildVaccineObservation(PENTA_VACCINE, "1", penta1Value);
 			DateTime date = parseDate.parseDateTime(penta1Value);
-			Event penta1Event = this.createEvent(client, penta1Obs, eventType, entityType, date);
+			Event penta1Event = this.createEvent(client, penta1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(penta1Event);
 		}
 		
 		if(!penta2Value.equals("n/a")) {
 			List<Obs> penta2Obs = this.buildVaccineObservation(PENTA_VACCINE, "2", penta2Value);
 			DateTime date = parseDate.parseDateTime(penta2Value);
-			Event penta2Event = this.createEvent(client, penta2Obs, eventType, entityType, date);
+			Event penta2Event = this.createEvent(client, penta2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(penta2Event);
 		}
 		
 		if(!penta3Value.equals("n/a")) {
 			List<Obs> penta3Obs = this.buildVaccineObservation(PENTA_VACCINE, "3", penta3Value);
 			DateTime date = parseDate.parseDateTime(penta3Value);
-			Event penta3Event = this.createEvent(client, penta3Obs, eventType, 
-					entityType, date);
+			Event penta3Event = this.createEvent(client, penta3Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(penta3Event);
 		}
 		
 		if(!pcv1Value.equals("n/a")) {
 			List<Obs> pcv1Obs = this.buildVaccineObservation(PCV_VACCINE, "1", pcv1Value);
 			DateTime date = parseDate.parseDateTime(pcv1Value);
-			Event pcv1Event = this.createEvent(client, pcv1Obs, eventType, entityType, date);
+			Event pcv1Event = this.createEvent(client, pcv1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(pcv1Event);
 		}
 		
 		if(!pcv2Value.equals("n/a")) {
 			List<Obs> pcv2Obs = this.buildVaccineObservation(PCV_VACCINE, "2", pcv2Value);
 			DateTime date = parseDate.parseDateTime(penta2Value);
-			Event pcv2Event = this.createEvent(client, pcv2Obs, eventType, entityType, date);
+			Event pcv2Event = this.createEvent(client, pcv2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(pcv2Event);
 		}
 		
 		if(!pcv3Value.equals("n/a")) {
 			List<Obs> pcv3Obs = this.buildVaccineObservation(PCV_VACCINE, "3", pcv3Value);
 			DateTime date = parseDate.parseDateTime(penta3Value);
-			Event pcv3Event = this.createEvent(client, pcv3Obs, eventType, entityType, date);
+			Event pcv3Event = this.createEvent(client, pcv3Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(pcv3Event);
 		}
 		
 		if(!rota1Value.equals("n/a")) {
 			List<Obs> rota1Obs = this.buildVaccineObservation(ROTA_VACCINE, "1", rota1Value);
 			DateTime date = parseDate.parseDateTime(rota1Value);
-			Event rota1Event = this.createEvent(client, rota1Obs, eventType, entityType, date);
+			Event rota1Event = this.createEvent(client, rota1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(rota1Event);
 		}
 
 		if(!rota2Value.equals("n/a")) {
 			List<Obs> rota2Obs = this.buildVaccineObservation(ROTA_VACCINE, "2", rota2Value);
 			DateTime date = parseDate.parseDateTime(rota2Value);
-			Event rota2Event = this.createEvent(client, rota2Obs, eventType, entityType, date);
+			Event rota2Event = this.createEvent(client, rota2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(rota2Event);
 		}		
 		
 		if(!opv4Value.equals("n/a")) {
 			List<Obs> opv4Obs = this.buildVaccineObservation(OPV_VACCINE, "4", opv4Value);
 			DateTime date = parseDate.parseDateTime(opv4Value);
-			Event opv4Event = this.createEvent(client, opv4Obs, eventType, entityType, date);
+			Event opv4Event = this.createEvent(client, opv4Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(opv4Event);
 		}
 		
 		if(!measles1Value.equals("n/a")) {
 			List<Obs> measles1Obs = this.buildVaccineObservation(MEASLES_VACCINE, "1", measles1Value);
 			DateTime date = parseDate.parseDateTime(measles1Value);
-			Event measles1Event = this.createEvent(client, measles1Obs, eventType, entityType, date);
+			Event measles1Event = this.createEvent(client, measles1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(measles1Event);
 		}
 		
 		if(!measles2Value.equals("n/a")) {
 			List<Obs> measles2Obs = this.buildVaccineObservation(MEASLES_VACCINE, "2", measles2Value);
 			DateTime date = parseDate.parseDateTime(measles2Value);
-			Event measles2Event = this.createEvent(client, measles2Obs, eventType, entityType, date);
+			Event measles2Event = this.createEvent(client, measles2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(measles2Event);
 		}
 		
 		if(!mr1Value.equals("n/a")) {
 			List<Obs> mr1Obs = this.buildVaccineObservation(MR_VACCINE, "1", mr1Value);
 			DateTime date = parseDate.parseDateTime(mr1Value);
-			Event mr1Event = this.createEvent(client, mr1Obs, eventType, entityType, date);
+			Event mr1Event = this.createEvent(client, mr1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(mr1Event);
 		}
 		
 		if(!mr2Value.equals("n/a")) {
 			List<Obs> mr2Obs = this.buildVaccineObservation(MR_VACCINE, "2", mr2Value);
 			DateTime date = parseDate.parseDateTime(mr2Value);
-			Event mr2Event = this.createEvent(client, mr2Obs, eventType, entityType, date);
+			Event mr2Event = this.createEvent(client, mr2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(mr2Event);
 		}
 		
@@ -390,13 +390,14 @@ public class XlsDataImportController {
 		String weight2Date = record.get("Growth_Chart/weight2_date");
 		String weight3 = record.get("Growth_Chart/weight3");
 		String weight3Date = record.get("Growth_Chart/weight3_date");
+		String locationName = record.get("Childs_Particulars/Home_Facility");
 
 		if(!weight1.equals("n/a") && !weight1Date.equals("n/a")) {
 			List<Obs> obsList = new ArrayList<Obs>();
 			Obs weight1Obs = this.buildGrowthMonitoringObservation(weight1);
 			DateTime eventDate = this.parseDate.parseDateTime(weight1Date);
 			obsList.add(weight1Obs);
-			Event gmEvent = this.createEvent(client, obsList, eventType, entityType, eventDate);
+			Event gmEvent = this.createEvent(client, obsList, eventType, entityType, eventDate, locationName);
 			growthMonitoringEvents.add(gmEvent);
 		}
 
@@ -405,7 +406,7 @@ public class XlsDataImportController {
 			Obs weight2Obs = this.buildGrowthMonitoringObservation(weight2);
 			DateTime eventDate = this.parseDate.parseDateTime(weight2Date);
 			obsList.add(weight2Obs);
-			Event gm2Event = this.createEvent(client, obsList, eventType, entityType, eventDate);
+			Event gm2Event = this.createEvent(client, obsList, eventType, entityType, eventDate, locationName);
 			growthMonitoringEvents.add(gm2Event);
 		}
 
@@ -414,18 +415,18 @@ public class XlsDataImportController {
 			Obs weight3Obs = this.buildGrowthMonitoringObservation(weight3);
 			DateTime eventDate = this.parseDate.parseDateTime(weight3Date);
 			obsList.add(weight3Obs);
-			Event gm3Event = this.createEvent(client, obsList, eventType, entityType, eventDate);
+			Event gm3Event = this.createEvent(client, obsList, eventType, entityType, eventDate, locationName);
 			growthMonitoringEvents.add(gm3Event);
 		}
 
 		return growthMonitoringEvents;
 	}
 
-	private Event createEvent(Client client, List<Obs> obs, String eventType, String entityType, DateTime eventDate) {
+	private Event createEvent(Client client, List<Obs> obs, String eventType, String entityType, DateTime eventDate, String locationName) {
         eventDate = eventDate == null ? new DateTime() : eventDate;
         String formSubmissionId = UUID.randomUUID().toString();
         String providerId = openmrsIDService.getOpenmrsUserName();
-        String locationId = "FIXME";
+        String locationId = getLocationId(locationName);
         
         Event event = new Event(client.getBaseEntityId(), eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
         event = this.addMultipleObs(event, obs);
@@ -439,6 +440,21 @@ public class XlsDataImportController {
 		}
 		
 		return event;
+	}
+	
+	private String getLocationId(String location) {
+		switch(location) {
+			case "Mahatma_Gandhi":
+	            return "448";
+	        case "Libuyu":
+	            return "443";
+	        case "Linda":
+	            return "532";
+	        case "Dambwa_North_Clinic":
+	            return "456";
+	        default:
+	        	return "";
+		}
 	}
 	
 	private String getVaccineParentCode(String vaccine) {
