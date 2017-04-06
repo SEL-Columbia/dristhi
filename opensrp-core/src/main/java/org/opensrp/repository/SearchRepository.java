@@ -29,9 +29,9 @@ public class SearchRepository extends MotechBaseRepository<Search> {
 	public List<Client> findByCriteria(String nameLike, String firstName, String middleName, String lastName, String gender,
 	                                   Map<String, String> identifiers, Map<String, String> attributes,
 	                                   DateTime birthdateFrom, DateTime birthdateTo, DateTime lastEditFrom,
-	                                   DateTime lastEditTo) {
+	                                   DateTime lastEditTo, Integer limit) {
 		return sr.getByCriteria(nameLike, firstName, middleName, lastName, gender, identifiers, attributes, birthdateFrom,
-		    birthdateTo, lastEditFrom, lastEditTo);
+		    birthdateTo, lastEditFrom, lastEditTo, limit);
 	}
 	
 }

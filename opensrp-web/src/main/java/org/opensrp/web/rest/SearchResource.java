@@ -7,6 +7,7 @@ import static org.opensrp.common.AllConstants.Client.GENDER;
 import static org.opensrp.common.AllConstants.Client.LAST_NAME;
 import static org.opensrp.common.AllConstants.Client.MIDDLE_NAME;
 import static org.opensrp.web.rest.RestUtils.getDateRangeFilter;
+import static org.opensrp.web.rest.RestUtils.getIntegerFilter;
 import static org.opensrp.web.rest.RestUtils.getStringFilter;
 
 import java.text.ParseException;
@@ -78,7 +79,7 @@ public class SearchResource extends RestResource<Client> {
 		
 		return searchService.searchClient(nameLike, firstName, middleName, lastName, gender, null, attributeMap,
 		    birthdate == null ? null : birthdate[0], birthdate == null ? null : birthdate[1], lastEdit == null ? null
-		            : lastEdit[0], lastEdit == null ? null : lastEdit[1]);
+		            : lastEdit[0], lastEdit == null ? null : lastEdit[1], null);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/path")
@@ -96,6 +97,11 @@ public class SearchResource extends RestResource<Client> {
 			
 			String INACTIVE = "inactive";
 			String LOST_TO_FOLLOW_UP = "lost_to_follow_up";
+			
+			Integer limit = getIntegerFilter("limit", request);
+			if(limit == null || limit.intValue() == 0){
+				limit = 100;
+			}
 			
 			String zeirId = getStringFilter(ZEIR_ID, request);
 			String firstName = getStringFilter(FIRST_NAME, request);
@@ -116,18 +122,15 @@ public class SearchResource extends RestResource<Client> {
 				identifiers.put(ZEIR_ID_KEY, zeirId);
 			}
 			
-			String INACTIVE_KEY = "Inactive";
-			String LOST_TO_FOLLOW_UP_KEY = "Lost_to_Follow_Up";
 			Map<String, String> attributes = new HashMap<String, String>();
-			;
 			if (!StringUtils.isEmptyOrWhitespaceOnly(inActive) || !StringUtils.isEmptyOrWhitespaceOnly(lostToFollowUp)) {
 				
-				if (!StringUtils.isEmptyOrWhitespaceOnly(inActive) && inActive.equalsIgnoreCase("true")) {
-					attributes.put(INACTIVE_KEY, inActive);
+				if (!StringUtils.isEmptyOrWhitespaceOnly(inActive)) {
+					attributes.put(INACTIVE, inActive);
 				}
 				
 				if (!StringUtils.isEmptyOrWhitespaceOnly(lostToFollowUp)) {
-					attributes.put(LOST_TO_FOLLOW_UP_KEY, lostToFollowUp);
+					attributes.put(LOST_TO_FOLLOW_UP, lostToFollowUp);
 				}
 			}
 			
@@ -139,7 +142,7 @@ public class SearchResource extends RestResource<Client> {
 				
 				children = searchService.searchClient(null, firstName, middleName, lastName, gender, identifiers,
 				    attributes, birthdate == null ? null : birthdate[0], birthdate == null ? null : birthdate[1],
-				    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1]);
+				    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1], limit);
 				
 			}
 			
@@ -179,7 +182,7 @@ public class SearchResource extends RestResource<Client> {
 				}
 				mothers = searchService.searchClient(nameLike, motherFirstName, null, motherLastName, null, null,
 				    motherAttributes, null, null, lastEdit == null ? null : lastEdit[0], lastEdit == null ? null
-				            : lastEdit[1]);
+				            : lastEdit[1], limit);
 				
 			}
 			

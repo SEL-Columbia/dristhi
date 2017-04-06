@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.omg.PortableInterceptor.INACTIVE;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Search;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class LuceneSearchRepository extends CouchDbRepositorySupportWithLucene<S
 	public List<Client> getByCriteria(String nameLike, String firstName, String middleName, String lastName, String gender,
 	                                  Map<String, String> identifiers, Map<String, String> attributes,
 	                                  DateTime birthdateFrom, DateTime birthdateTo, DateTime lastEditFrom,
-	                                  DateTime lastEditTo) {
+	                                  DateTime lastEditTo, Integer limit) {
 		// create a simple query against the view/search function that we've
 		// created
 		LuceneQuery query = new LuceneQuery("Search", "by_all_criteria");
@@ -80,16 +81,29 @@ public class LuceneSearchRepository extends CouchDbRepositorySupportWithLucene<S
 			}
 		}
 		
+		String INACTIVE = "inactive";
+		String LOST_TO_FOLLOW_UP = "lost_to_follow_up";
+		Query sq = new Query(FilterType.OR);
 		if (attributes != null && !attributes.isEmpty()) {
 			for (Map.Entry<String, String> entry : attributes.entrySet()) {
 				String attributeType = entry.getKey();
 				String attributeValue = entry.getValue();
 				if (!StringUtils.isEmptyOrWhitespaceOnly(attributeType)
 				        && !StringUtils.isEmptyOrWhitespaceOnly(attributeValue)) {
-					qf.likeWithWildCard(attributeType, attributeValue);
+					if (attributeType.equals(INACTIVE) || attributeType.equals(LOST_TO_FOLLOW_UP)) {
+						if (attributeValue.equals(Boolean.TRUE.toString())) {
+							sq.eq(attributeType, attributeValue);
+						} else {
+							sq.notEq(attributeType, Boolean.TRUE.toString());
+						}
+					} else {
+						qf.likeWithWildCard(attributeType, attributeValue);
+					}
 				}
 			}
 		}
+		
+		qf.addToQuery(sq);
 		
 		if (birthdateFrom != null && birthdateTo != null) {
 			qf.between(BIRTH_DATE, birthdateFrom, birthdateTo);
@@ -106,7 +120,9 @@ public class LuceneSearchRepository extends CouchDbRepositorySupportWithLucene<S
 		// stale must not be ok, as we've only just loaded the docs
 		query.setStaleOk(false);
 		query.setIncludeDocs(true);
-		
+		if(limit != null && limit.intValue() > 0){
+			query.setLimit(limit);
+		}
 		try {
 			LuceneResult result = db.queryLucene(query);
 			return ldb.asList(result, Client.class);

@@ -21,9 +21,9 @@ public class SearchService {
 	
 	public List<Client> searchClient(String nameLike, String firstName, String middleName, String lastName, String gender,
 	                                 Map<String, String> identifiers, Map<String, String> attributes,
-	                                 DateTime birthdateFrom, DateTime birthdateTo, DateTime lastEditFrom, DateTime lastEditTo) {
+	                                 DateTime birthdateFrom, DateTime birthdateTo, DateTime lastEditFrom, DateTime lastEditTo, Integer limit) {
 		return search.findByCriteria(nameLike, firstName, middleName, lastName, gender, identifiers, attributes,
-		    birthdateFrom, birthdateTo, lastEditFrom, lastEditTo);
+		    birthdateFrom, birthdateTo, lastEditFrom, lastEditTo, limit);
 	}
 	
 }
