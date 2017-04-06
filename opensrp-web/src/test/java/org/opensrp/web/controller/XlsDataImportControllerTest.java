@@ -2,8 +2,6 @@ package org.opensrp.web.controller;
 
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -17,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.joda.time.DateTime;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -31,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class XlsDataImportControllerTest {
 	@Mock
@@ -48,19 +49,37 @@ public class XlsDataImportControllerTest {
 	}
 
 	@Test
-	public void shouldCreateClientsFromCSVFile() throws IOException, SQLException {
+	public void shouldCreateClientsFromCSVFile() throws IOException, SQLException, JSONException {
 		File csvFile = new File("src/test/java/org/opensrp/fixtures/csv_to_import.csv");
 		FileInputStream fileInputStream = new FileInputStream(csvFile);
 		MockMultipartFile file = new MockMultipartFile("file", IOUtils.toByteArray(fileInputStream));
 		List<String> openmrsIds = new ArrayList<String>();
 		openmrsIds.add("12345-1");
 		openmrsIds.add("12345-2");
+		
+		String openmrsUserName = "openmrsUserName";
 
 		when(this.openmrsIDService.downloadOpenmrsIds(anyInt())).thenReturn(openmrsIds);
+		when(this.openmrsIDService.getOpenmrsUserName()).thenReturn(openmrsUserName);
 		
 		XlsDataImportController controller = new XlsDataImportController(clientService, eventService, openmrsIDService);
 		ResponseEntity<String> response = controller.importXlsData(file);
-		assertTrue(response.getBody().contains("4"));
+		String responseBody = response.getBody();
+		JSONObject responseJson = new JSONObject(responseBody);
+		
+		int summaryClientCount = responseJson.getInt("summary_client_count");
+		int summaryEventCount = responseJson.getInt("summary_event_count");
+
+		JSONArray vaccinationEventsArray= responseJson.getJSONArray("vaccination_events");
+		JSONObject vaccineEvent = vaccinationEventsArray.getJSONObject(0);
+		JSONArray gmEventsArray= responseJson.getJSONArray("growth_events");
+		JSONObject gmEvent = gmEventsArray.getJSONObject(0);
+		
+		
+		assertEquals(summaryClientCount, 4);
+		assertEquals(summaryEventCount, 21);
+		assertEquals(vaccineEvent.getString("providerId"), openmrsUserName);
+		assertEquals(gmEvent.getString("providerId"), openmrsUserName);
 		verify(clientService, times(4)).addClient(any(Client.class));
 		verify(eventService, times(21)).addEvent(any(Event.class));
 	}

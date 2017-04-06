@@ -72,10 +72,10 @@ public class XlsDataImportController {
 	
 	@RequestMapping(headers = { "Accept=multipart/form-data" }, method = POST, value = "/file")
 	public ResponseEntity<String> importXlsData(@RequestParam("file") MultipartFile file) throws SQLException {
-		Map<String,String> stats = new HashMap<>();
+		Map<String, Object> stats = new HashMap<>();
 		List<Event> vaccinationEvents = new ArrayList<Event>();
 		List<Event> gmEvents = new ArrayList<Event>();
-		int clientCount = 0;
+		List<Client> clients = new ArrayList<Client>();
 		int eventCount = 0;
 		CSVParser parser;
 		try {
@@ -110,15 +110,20 @@ public class XlsDataImportController {
 				    childClient.addRelationship("mother", motherClient.getBaseEntityId());
 
 				    // Create vaccination events
-				    vaccinationEvents = this.buildVaccinationEvents(record, childClient);
-				    gmEvents = this.buildGrowthMonitoringEvents(record, childClient);
+				    for(Event e: this.buildVaccinationEvents(record, childClient)) {
+				    	vaccinationEvents.add(e);
+				    	eventService.addEvent(e);
+				    }
+				    
+				    for(Event e: this.buildGrowthMonitoringEvents(record, childClient)) {
+				    	gmEvents.add(e);
+				    	eventService.addEvent(e);
+				    }
 
 				    clientService.addClient(motherClient);
 				    clientService.addClient(childClient);
-				    this.addEventsToService(vaccinationEvents);
-				    this.addEventsToService(gmEvents);
-
-				    clientCount+=2;
+				    clients.add(childClient);
+				    clients.add(motherClient);
 				    eventCount += (vaccinationEvents.size() + gmEvents.size());
 			    }
 			}
@@ -132,16 +137,14 @@ public class XlsDataImportController {
 		// loop through all the records creating a client and entity information for each patient
 		// respond with success response and summary statistics of data imported
 		
-		stats.put("Clients Added", "" + clientCount);
-		stats.put("Events created", "" + eventCount);
+		stats.put("summary_client_count", clients.size());
+		stats.put("summary_event_count", eventCount);
+		stats.put("clients", clients);
+		stats.put("vaccination_events", vaccinationEvents);
+		stats.put("growth_events", gmEvents);
+		
 		
 		return new ResponseEntity<>(new Gson().toJson(stats), HttpStatus.OK);
-	}
-	
-	private void addEventsToService(List<Event> events) {
-		for(Event event: events) {
-			eventService.addEvent(event);
-		}
 	}
 
 	private Address buildAddress(CSVRecord record) {
