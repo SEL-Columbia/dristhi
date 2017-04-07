@@ -118,13 +118,15 @@ public class OpenmrsIDService {
 		this.jdbcTemplate.execute(deleteRecordsSql);
 	}
 	
-	public boolean checkIfClientExists(Client client, boolean testMode) {
+	public boolean checkIfClientExists(Client client, boolean testMode) throws SQLException {
 		String databaseNameToUse = testMode ? TEST_DATABASE_TABLE_NAME : DATABASE_TABLE_NAME;
 		String location = client.getAddress("usual_residence").getAddressField("address2");
 		String checkIfExistQuery = "SELECT count(*) from " + databaseNameToUse + " WHERE " + USED_BY_COLUMN + " = ? AND location = ?";
 		String[] args = new String[2];
 		args[0] = client.getIdentifier(CHILD_REGISTER_CARD_NUMBER);
 		args[1] = location;
+
+		this.initializeImportTable(testMode);
 
 		int rowCount = this.jdbcTemplate.queryForObject(checkIfExistQuery, args, Integer.class);
 		
