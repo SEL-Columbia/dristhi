@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.SpringApplicationContextProvider;
 import org.opensrp.domain.Address;
@@ -22,6 +23,16 @@ public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
 	@Autowired
 	OpenmrsIDService openmrsIDService;
 	
+	@Before
+	public void setUp() {
+		try {
+			this.openmrsIDService.initializeImportTable(true);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@After
 	public void tearDown() {
 		openmrsIDService.clearRecords(true);

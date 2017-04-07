@@ -76,6 +76,8 @@ public class OpenmrsIDService {
 	
 	public OpenmrsIDService() {
 		this.client = HttpClientBuilder.create().build();
+		DataSource dataSource = this.createDataSource();
+		this.jdbcTemplate = this.initializeJdbcTemplate(dataSource);
 	}
 	
 	public String getOpenmrsUserName() {
@@ -126,8 +128,6 @@ public class OpenmrsIDService {
 		args[0] = client.getIdentifier(CHILD_REGISTER_CARD_NUMBER);
 		args[1] = location;
 
-		this.initializeImportTable(testMode);
-
 		int rowCount = this.jdbcTemplate.queryForObject(checkIfExistQuery, args, Integer.class);
 		
 		logger.info("[checkIfClientExists] - Names:" + args[0] + " - [Exists] " + (rowCount == 0 ? "false" : "true"));
@@ -141,8 +141,6 @@ public class OpenmrsIDService {
 		String insertSql = "INSERT INTO " + databaseNameToUse;
 		insertSql += "(" + OPENMRS_ID_COLUMN + ", " + STATUS_COLUMN + ", " + USED_BY_COLUMN + "," + LOCATION_COLUMN + ",";
 		insertSql += CREATED_AT_COLUMN + ", " + UPDATED_AT_COLUMN + " ) values (?, ?, ?, ?, ?, ?)";
-
-		initializeImportTable(testMode);
 		
 		DateTime now = new DateTime();
 		
@@ -172,7 +170,7 @@ public class OpenmrsIDService {
 		return jdbcTemplate;
 	}
 	
-	private void initializeImportTable(boolean testMode) throws SQLException {
+	public void initializeImportTable(boolean testMode) throws SQLException {
 		String databaseNameToUse = testMode ? TEST_DATABASE_TABLE_NAME : DATABASE_TABLE_NAME;
 		String createTableSql = "CREATE TABLE " + databaseNameToUse + "(";
 		createTableSql += ID_COLUMN + " INT PRIMARY KEY AUTO_INCREMENT, ";
