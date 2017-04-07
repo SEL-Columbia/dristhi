@@ -76,6 +76,9 @@ public class XlsDataImportController {
 		List<Event> vaccinationEvents = new ArrayList<Event>();
 		List<Event> gmEvents = new ArrayList<Event>();
 		List<Client> clients = new ArrayList<Client>();
+
+		this.openmrsIDService.initializeImportTable(false);
+
 		int eventCount = 0;
 		CSVParser parser;
 		try {
@@ -125,6 +128,7 @@ public class XlsDataImportController {
 				    clients.add(childClient);
 				    clients.add(motherClient);
 				    eventCount += (vaccinationEvents.size() + gmEvents.size());
+				    counter++;
 			    }
 			}
 			parser.close();
