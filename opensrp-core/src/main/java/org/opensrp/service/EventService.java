@@ -152,7 +152,7 @@ public class EventService {
 		if (event.getBaseEntityId() == null || event.getBaseEntityId().isEmpty()) {
 			//get events identifiers;
 			String identifier = event.getIdentifier(Client.ZEIR_ID);
-			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID, identifier);
+			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(), identifier);
 			if (clients != null && !clients.isEmpty()) {
 				org.opensrp.domain.Client client = clients.get(0);
 				event.setBaseEntityId(client.getBaseEntityId());
@@ -261,8 +261,17 @@ public class EventService {
 		return allEvents.getAll();
 	}
 	
+
 	public List<Event> findEvents(String team, String providerId, String locationId, Long serverVersion, String sortBy,
 	                              String sortOrder, int limit) {
-		return allEvents.findEvents(team, providerId, locationId, serverVersion, sortBy, sortOrder, limit);
+		return allEvents.findEvents(team, providerId, locationId,null, serverVersion, sortBy, sortOrder, limit);
+	}
+	public List<Event> findEvents(String team,String providerId, String locationId, String baseEntityId, Long serverVersion,String sortBy,String sortOrder, int limit) {
+		return allEvents.findEvents(team,providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
+	}
+	
+	public List<Event> findEventsByConceptAndValue(String concept, String conceptValue){
+		return allEvents.findByConceptAndValue(concept, conceptValue);
+
 	}
 }

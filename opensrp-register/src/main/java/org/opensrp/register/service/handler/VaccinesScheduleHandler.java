@@ -48,13 +48,21 @@ public class VaccinesScheduleHandler extends BaseScheduleHandler {
 					logger.info("Enrolled " + event.getBaseEntityId() + "to schedule " + scheduleName);
 					
 				} else if (action.equalsIgnoreCase(ActionType.fulfill.toString())) {
-				   if (scheduleName.equalsIgnoreCase("MEASLES 1") || scheduleName.equalsIgnoreCase("MR 1")) {
-						evaluateMeasles(event.getBaseEntityId(), scheduleName);
+					 //MR or Measles can be given, but not both
+					 //If fulfilling (means vaccine given) measles1 unenroll from mr1 schedule and vice versa
+				   if (scheduleName.equalsIgnoreCase("MEASLES 1") ) {
+					   scheduler.unEnrollFromSchedule(event.getBaseEntityId(), event.getProviderId(), "MR 1", event.getId());
+					   scheduler.unEnrollFromSchedule(event.getBaseEntityId(), event.getProviderId(), "MR 2", event.getId());
+					}else if(scheduleName.equalsIgnoreCase("MR 1")){
+						   scheduler.unEnrollFromSchedule(event.getBaseEntityId(), event.getProviderId(), "MEASLES 1", event.getId());
+						   scheduler.unEnrollFromSchedule(event.getBaseEntityId(), event.getProviderId(), "MEASLES 2", event.getId());
+
 					}
 					scheduler.fullfillMilestoneAndCloseAlert(event.getBaseEntityId(), event.getProviderId(),
 					    scheduleName.toUpperCase(),
 					    LocalDate.parse(getReferenceDateForSchedule(event, scheduleConfigEvent, action)), event.getId());
 					logger.info("Fulfilled schedule" + scheduleName + "for schedule " + event.getBaseEntityId());
+					
 					
 				}
 			}
@@ -87,13 +95,13 @@ public class VaccinesScheduleHandler extends BaseScheduleHandler {
 					//OPV 0 was given
 					opv0Given = true;
 				} else if (obs.getValues().contains("3")) {
+					//confirm opv3 was given at least 4 weeks ago
 					obs = event.getObs(opv_parent_code, opv_date_field_code);
 					String strDate = obs.getValues().get(0).toString();
 					
 					try {
-						DateTime vaccineDate;
 						
-						vaccineDate = new DateTime(dateFormat.parse(strDate));
+						DateTime vaccineDate = new DateTime(dateFormat.parse(strDate));
 						DateTime now = new DateTime(new Date());
 						
 						int weeks = Weeks.weeksBetween(vaccineDate, now).getWeeks();
@@ -108,22 +116,11 @@ public class VaccinesScheduleHandler extends BaseScheduleHandler {
 				}
 			}
 			
-			//confirm opv3 was given at least 4 weeks ago
+			
 			
 		}
 		return opv0Given && opv3Given;
 	}
 	
-	/**
-	 * MR or Measles can be given, but not both
-	 * 
-	 * @param baseEntityId
-	 * @return
-	 */
-	private boolean evaluateMeasles(String baseEntityId, String schedule) {
-		//if measles one received, unenroll from mr1 and vice versa
-		
-		return false;
-	}
 	
 }
