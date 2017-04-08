@@ -57,8 +57,8 @@ public class OpenmrsIDService {
 	public static final String DATABASE_NAME = "opensrp";
 	public static final String DATABASE_TABLE_NAME = "unique_ids";
 	public static final String TEST_DATABASE_TABLE_NAME = "unique_ids_test";
-	public static final String OPENMRS_IDGEN_URL = "/module/idgen/exportIdentifiers.form";
-	public static final int OPENMRS_UNIQUE_ID_SOURCE = 2;
+	public static final String OPENMRS_IDGEN_URL = "module/idgen/exportIdentifiers.form";
+	public static final int OPENMRS_UNIQUE_ID_SOURCE = 1;
 	public static final String ID_COLUMN = "_id";
     public static final String OPENMRS_ID_COLUMN = "openmrs_id";
     public static final String STATUS_COLUMN = "status";
@@ -95,6 +95,7 @@ public class OpenmrsIDService {
 		try {
 			HttpResponse response = client.execute(get);
 			String jsonResponse = EntityUtils.toString(response.getEntity());
+
 			JSONObject responseJson= new JSONObject(jsonResponse);
 			JSONArray jsonArray= responseJson.getJSONArray("identifiers");
 			
@@ -125,7 +126,7 @@ public class OpenmrsIDService {
 		String location = client.getAddress("usual_residence").getAddressField("address2");
 		String checkIfExistQuery = "SELECT count(*) from " + databaseNameToUse + " WHERE " + USED_BY_COLUMN + " = ? AND location = ?";
 		String[] args = new String[2];
-		args[0] = client.getIdentifier(CHILD_REGISTER_CARD_NUMBER);
+		args[0] = (String) client.getAttribute(CHILD_REGISTER_CARD_NUMBER);
 		args[1] = location;
 
 		int rowCount = this.jdbcTemplate.queryForObject(checkIfExistQuery, args, Integer.class);
