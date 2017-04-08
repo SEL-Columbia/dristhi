@@ -131,7 +131,7 @@ public class OpenmrsIDService {
 
 		int rowCount = this.jdbcTemplate.queryForObject(checkIfExistQuery, args, Integer.class);
 		
-		logger.info("[checkIfClientExists] - Names:" + args[0] + " - [Exists] " + (rowCount == 0 ? "false" : "true"));
+		logger.info("[checkIfClientExists] - Card Number:" + args[0] + " - [Exists] " + (rowCount == 0 ? "false" : "true"));
 		
 		return rowCount >= 1 ? true : false;
 	}
@@ -148,7 +148,7 @@ public class OpenmrsIDService {
 		String location = client.getAddress("usual_residence").getAddressField("address2");
 		
 		if(!this.checkIfClientExists(client, testMode)) {
-			String childRegisterCardNumber = client.getIdentifier(CHILD_REGISTER_CARD_NUMBER);
+			String childRegisterCardNumber = (String) client.getAttribute(CHILD_REGISTER_CARD_NUMBER);;
 			client.addIdentifier(ZEIR_IDENTIFIER, zeirID);
 			this.jdbcTemplate.update(insertSql, zeirID, STATUS_USED, childRegisterCardNumber, location, now.toDate(), now.toDate());
 			logger.info("Assigned " + ZEIR_IDENTIFIER + " to " + client.fullName());
