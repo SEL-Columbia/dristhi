@@ -1,31 +1,31 @@
 {
-    "name": "PCV 1",
+    "name": "OPV 4",
     "absolute": true,
     "milestones": [
         {
-            "name": "pcv1",
+            "name": "opv4",
             "scheduleWindows": {
-            "earliest": ["6 Weeks"],
-            "due": ["6 Weeks","10 Days"],
-            "late": ["4 Years","10 Months"],
+            "earliest": ["9 Months"],
+            "due": ["9 Months","10 Days"],
+            "late": ["5 Years"],
             "max": [""]
             },
             "alerts": [
             	{
                     "window": "earliest",
-                    "offset": ["0 Weeks"],
+                    "offset": ["8 Months"],
                     "interval": ["1 Day"],
-                    "count": "50"
+                    "count": "30"
                 },
                 {
                     "window": "due",
-                    "offset": ["6 Weeks"],
+                    "offset": ["9 Months"],
                     "interval": ["1 Day"],
                     "count": "30"
                 },
                 {
                     "window": "late",
-                    "offset": ["6 Weeks","10 Days"],
+                    "offset": ["9 Months","10 Days"],
                     "interval": ["1 Day"],
                     "count": "1900"
                 }

@@ -90,6 +90,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 	/**
 	 * @param providerId- health worker id
 	 * @param locationId
+	 * @param baseEntityId
 	 * @param serverVersion
 	 * @param sortBy Prefix with / for ascending order and \ for descending order (ascending is the
 	 *            default if not specified).
@@ -98,7 +99,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 	 * @param team this is a comma separated string of team members id
 	 * @return
 	 */
-	public List<Event> getByCriteria(String team, String providerId, String locationId, Long serverVersion, String sortBy,
+	public List<Event> getByCriteria(String team, String providerId, String locationId, String baseEntityId, Long serverVersion, String sortBy,
 	                                 String sortOrder, int limit) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Event", "by_all_criteria_v2");
@@ -124,6 +125,10 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 		
 		if (!StringUtils.isEmptyOrWhitespaceOnly(locationId)) {
 			qf.eq(LOCATION_ID, locationId);
+		}
+		
+		if (!StringUtils.isEmptyOrWhitespaceOnly(baseEntityId)) {
+			qf.eq(BASE_ENTITY_ID, baseEntityId);
 		}
 		
 		if (StringUtils.isEmptyOrWhitespaceOnly(qf.query())) {

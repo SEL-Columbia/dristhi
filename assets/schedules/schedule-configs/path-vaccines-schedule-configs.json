@@ -1,0 +1,976 @@
+
+{
+					"name": "BCG",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "bcg",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"milestone": "bcg",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "BCG 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "bcg2",
+							"reference_date_fields": [
+				                {
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+								}
+							],
+							"milestone": "bcg2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "OPV 0",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "opv0",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code":"783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "0"
+								}
+							],
+							"milestone": "opv0",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "OPV 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "opv1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code":"783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "opv1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PCV 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "pcv1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code":"162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "pcv1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PENTA 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "penta1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code":"1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "penta1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "ROTA 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "rota1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code":"159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "rota1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "OPV 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "opv2",
+							"reference_date_fields": [
+				                {
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+								
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "opv2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PCV 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "pcv2",
+							"reference_date_fields": [
+				                {
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "pcv2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PENTA 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "penta2",
+							"reference_date_fields": [
+				                {
+				                  "parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "penta2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "ROTA 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "rota2",
+							"reference_date_fields": [
+				                 {
+				                  "parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+								
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "rota2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "OPV 3",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "opv3",
+							"reference_date_fields": [
+				                {
+				                  "parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"milestone": "opv3",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PCV 3",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "pcv3",
+							"reference_date_fields": [
+				                {
+				                  "parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"milestone": "pcv3",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PENTA 3",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "penta3",
+							"reference_date_fields": [
+				                {
+				                  "parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"milestone": "penta3",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "OPV 4",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "opv4",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "4"
+								}
+							],
+							"milestone": "opv4",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "MEASLES 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "measles1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "measles1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "MEASLES 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "measles2",
+							"reference_date_fields": [
+				               {
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								},
+								
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								 {
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								 }
+							],
+							"fulfillment_fields": [
+								 {
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "measles2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "MR 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "mr1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "mr1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "MR 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "mr2",
+							"reference_date_fields": [
+				                {
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "mr2",
+							"action": "fulfill"
+						}
+					]
+	
+}

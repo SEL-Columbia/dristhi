@@ -22,6 +22,7 @@ import org.opensrp.repository.AllClients;
 import org.opensrp.repository.AllEvents;
 import org.opensrp.service.ConfigService;
 import org.opensrp.service.ErrorTraceService;
+import org.opensrp.service.EventService;
 import org.opensrp.service.formSubmission.handler.EventsRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +42,8 @@ public class EventsListener {
 	
 	@Autowired
 	private AllClients allClients;
+	@Autowired
+	EventService eventService;
 	
 	private EventsRouter eventsRouter;
 	
@@ -82,7 +85,7 @@ public class EventsListener {
 			
 			for (Event event : events) {
 				try {
-					
+					event=eventService.processOutOfArea(event);
 					eventsRouter.route(event);
 					configService.updateAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT,
 					    event.getServerVersion());
@@ -127,8 +130,10 @@ public class EventsListener {
 				for (Event event : events) {
 					try {
 						Thread.sleep(1);
+						event=eventService.processOutOfArea(event);
 						event.setServerVersion(System.currentTimeMillis());
 						allEvents.update(event);
+						
 						logger.debug("Add server_version: found new event " + event.getBaseEntityId());
 					}
 					catch (InterruptedException e) {

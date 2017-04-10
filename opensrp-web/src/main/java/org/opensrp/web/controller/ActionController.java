@@ -1,42 +1,43 @@
 package org.opensrp.web.controller;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
+import static org.opensrp.common.AllConstants.Event.PROVIDER_ID;
+import static org.opensrp.web.rest.RestUtils.getIntegerFilter;
+import static org.opensrp.web.rest.RestUtils.getStringFilter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.dto.Action;
 import org.opensrp.repository.AllClients;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.scheduler.service.ActionService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+
 import ch.lambdaj.function.convert.Converter;
 
 @Controller
 public class ActionController {
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger(ActionController.class.toString());
+
     private ActionService actionService;
     private AllClients allClients;
     private AllAlerts allAlerts;
@@ -52,6 +53,18 @@ public class ActionController {
     @ResponseBody
     public List<Action> getNewActionForANM(@RequestParam("anmIdentifier") String anmIdentifier, @RequestParam("timeStamp") Long timeStamp){
         List<org.opensrp.scheduler.Action> actions = actionService.getNewAlertsForANM(anmIdentifier, timeStamp);
+        return with(actions).convert(new Converter<org.opensrp.scheduler.Action, Action>() {
+            @Override
+            public Action convert(org.opensrp.scheduler.Action action) {
+                return ActionConvertor.from(action);
+            }
+        });
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/useractions")
+    @ResponseBody
+    public List<Action> getNewActionForClient(@RequestParam("baseEntityId") String baseEntityId, @RequestParam("timeStamp") Long timeStamp){
+        List<org.opensrp.scheduler.Action> actions = actionService.findByCaseIdAndTimeStamp(baseEntityId, timeStamp);
         return with(actions).convert(new Converter<org.opensrp.scheduler.Action, Action>() {
             @Override
             public Action convert(org.opensrp.scheduler.Action action) {
@@ -81,59 +94,42 @@ public class ActionController {
 			}
 		}
     }
-    
-    public static void main(String[] args) throws JSONException, IOException, SQLException {
-    	// create a mysql database connection
-        //String myDriver = "org.gjt.mm.mysql.Driver";
-        String myUrl = "jdbc:mysql://localhost:3306/couchcleanup";
-        Connection conn = DriverManager.getConnection(myUrl, "root", "VA1913wm");
-        
-    	FileOutputStream fdup = new FileOutputStream("d:\\filterduplicate.txt");
-    	FileOutputStream fpers = new FileOutputStream("d:\\filterpersist.txt");
-		Scanner s = new Scanner(new File("d:\\all_alerts_with_inactive.txt"));
-		Map<String, JSONObject> m = new HashMap<>();
-		int i = 0;
-		while (s.hasNextLine()) {
-			String l = s.nextLine();
-			if(StringUtils.isNotBlank(l) && l.startsWith("{\"id\":")){
-				JSONObject jo = new JSONObject(l.replace("},", "}"));
-				System.out.println((++i)+":"+jo);
-				if(m.containsKey(makeKey(jo.getJSONArray("key")))){
-					fdup.write((jo.getString("id")+";,"+jo.getString("key")+"\n\r").getBytes());
-					Statement st = conn.createStatement();
-
-			        // note that i'm leaving "date_created" out of this insert statement
-			        st.executeUpdate("INSERT INTO duplicate (`id`,`entityId`,`vaccine`,`key`,`value`)"
-			        		+ " VALUES ('"+jo.getString("id")+"', "
-	        				+ "'"+jo.getJSONArray("key").getString(0)+"', "
-	        				+ "'"+jo.getJSONArray("key").getString(1)+"', "
-	        				+ "'"+jo.getString("key")+"', "
-	        				+ "'"+jo.getString("value")+"'); ");
-				}
-				else {
-					m.put(makeKey(jo.getJSONArray("key")), jo);
-					fpers.write((jo.getString("id")+";,"+jo.getString("key")+"\n\r").getBytes());
-					Statement st = conn.createStatement();
-
-			        // note that i'm leaving "date_created" out of this insert statement
-			        st.executeUpdate("INSERT INTO persist (`id`,`entityId`,`vaccine`,`key`,`value`)"
-			        		+ " VALUES ('"+jo.getString("id")+"', "
-	        				+ "'"+jo.getJSONArray("key").getString(0)+"', "
-	        				+ "'"+jo.getJSONArray("key").getString(1)+"', "
-	        				+ "'"+jo.getString("key")+"', "
-	        				+ "'"+jo.getString("value")+"'); ");
-				}
+    /**
+	 * Fetch actions ordered by serverVersion ascending order
+	 * 
+	 * @param request
+	 * @return a map response with actions, clients and optionally msg when an error occurs
+	 */
+	@RequestMapping(value = "/actions/sync", method = RequestMethod.GET)
+	@ResponseBody
+	protected ResponseEntity<String> sync(HttpServletRequest request) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		try {
+			String providerId = getStringFilter(PROVIDER_ID, request);
+			Long lastSyncedServerVersion = Long.valueOf(getStringFilter(BaseEntity.SERVER_VERSIOIN, request)) + 1;
+			String team = getStringFilter("team", request);
+			Integer limit = getIntegerFilter("limit", request);
+			if(limit == null || limit.intValue() == 0){
+				limit = 25;
 			}
+			
+			List<org.opensrp.scheduler.Action> actions = new ArrayList<org.opensrp.scheduler.Action>();
+			if (team != null || providerId != null ) {
+				actions = actionService.findByCriteria(team, providerId, lastSyncedServerVersion, org.opensrp.common.AllConstants.Action.TIMESTAMP, "asc", limit);
+				
+			}
+			response.put("actions", actions);
+			response.put("no_of_actions", actions.size());
+			
+			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.OK);
+
 		}
-        conn.close();
-        fdup.close();
-        fpers.close();
-        s.close();
-    }
-    
-    private static String makeKey(JSONArray keyArr) throws JSONException {
-		return keyArr.getString(0)+":"+keyArr.getString(1);
+		catch (Exception e) {
+			response.put("msg", "Error occurred");
+			logger.error("", e);
+			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
-    
 }
 

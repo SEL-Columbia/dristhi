@@ -6,7 +6,7 @@
             "name": "bcg",
             "scheduleWindows": {
                 "earliest": ["0 Days"],
-                "due": ["28 Days"],
+                "due": ["10 Days"],
                 "late": ["1 Year"],
                 "max": ["1 Year", "1 Day"]
             },
@@ -19,7 +19,7 @@
                 },
                 {
                     "window": "late",
-                    "offset": ["28 Days"],
+                    "offset": ["10 Days"],
                     "interval": ["1 Day"],
                     "count": "366"
                 },
