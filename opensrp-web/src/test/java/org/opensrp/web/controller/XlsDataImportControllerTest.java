@@ -57,10 +57,8 @@ public class XlsDataImportControllerTest {
 		openmrsIds.add("12345-1");
 		openmrsIds.add("12345-2");
 		
-		String openmrsUserName = "openmrsUserName";
 
 		when(this.openmrsIDService.downloadOpenmrsIds(anyInt())).thenReturn(openmrsIds);
-		when(this.openmrsIDService.getOpenmrsUserName()).thenReturn(openmrsUserName);
 		
 		XlsDataImportController controller = new XlsDataImportController(clientService, eventService, openmrsIDService);
 		ResponseEntity<String> response = controller.importXlsData(file);
@@ -78,8 +76,6 @@ public class XlsDataImportControllerTest {
 		
 		assertEquals(summaryClientCount, 4);
 		assertEquals(summaryEventCount, 39);
-		assertEquals(vaccineEvent.getString("providerId"), openmrsUserName);
-		assertEquals(gmEvent.getString("providerId"), openmrsUserName);
 		assertEquals(gmEvent.getString("locationId"), "");
 		verify(clientService, times(4)).addClient(any(Client.class));
 		verify(eventService, times(21)).addEvent(any(Event.class));
