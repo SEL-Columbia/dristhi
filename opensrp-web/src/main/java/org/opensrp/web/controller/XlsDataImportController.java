@@ -429,7 +429,7 @@ public class XlsDataImportController {
 	private Event createEvent(Client client, List<Obs> obs, String eventType, String entityType, DateTime eventDate, String locationName) {
         eventDate = eventDate == null ? new DateTime() : eventDate;
         String formSubmissionId = UUID.randomUUID().toString();
-        String providerId = openmrsIDService.getOpenmrsUserName();
+        String providerId = getProviderId(locationName);
         String locationId = getLocationId(locationName);
         
         Event event = new Event(client.getBaseEntityId(), eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
@@ -456,6 +456,29 @@ public class XlsDataImportController {
 	            return "532";
 	        case "Dambwa_North_Clinic":
 	            return "456";
+	        case "Victoria_Falls_Clinic":
+	        	return "1449";
+	        case "Airport_Clininc":
+	        	return "426";
+	        default:
+	        	return "";
+		}
+	}
+
+	private String getProviderId(String location) {
+		switch(location) {
+			case "Mahatma_Gandhi":
+	            return "DLucia";
+	        case "Libuyu":
+	            return "pmufwinda";
+	        case "Linda":
+	            return "Lmusonda";
+	        case "Dambwa_North_Clinic":
+	            return "vmutila";
+	        case "Victoria_Falls_Clinic":
+	        	return "vshowa";
+	        case "Airport_Clininc":
+	        	return "cmalindi";
 	        default:
 	        	return "";
 		}
