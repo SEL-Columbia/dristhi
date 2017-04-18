@@ -80,10 +80,6 @@ public class OpenmrsIDService {
 		this.jdbcTemplate = this.initializeJdbcTemplate(dataSource);
 	}
 	
-	public String getOpenmrsUserName() {
-		return this.openmrsUserName;
-	}
-	
 	public List<String> downloadOpenmrsIds(int numberToGenerate) {
 		List<String> ids = new ArrayList<String>();
 		String openmrsQueryUrl = this.openmrsUrl + OPENMRS_IDGEN_URL;
