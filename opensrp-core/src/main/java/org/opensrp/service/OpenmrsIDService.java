@@ -47,6 +47,8 @@ public class OpenmrsIDService {
 	@Value("#{opensrp['jdbc.password']}")
 	private String mysqlPassword;
 	
+	@Value("#{opensrp['openmrs.source']}")
+	private int openmrsSourceId;
 	
 	private JdbcTemplate jdbcTemplate;
 	
@@ -58,7 +60,6 @@ public class OpenmrsIDService {
 	public static final String DATABASE_TABLE_NAME = "unique_ids";
 	public static final String TEST_DATABASE_TABLE_NAME = "unique_ids_test";
 	public static final String OPENMRS_IDGEN_URL = "module/idgen/exportIdentifiers.form";
-	public static final int OPENMRS_UNIQUE_ID_SOURCE = 1;
 	public static final String ID_COLUMN = "_id";
     public static final String OPENMRS_ID_COLUMN = "openmrs_id";
     public static final String STATUS_COLUMN = "status";
@@ -84,7 +85,7 @@ public class OpenmrsIDService {
 		List<String> ids = new ArrayList<String>();
 		String openmrsQueryUrl = this.openmrsUrl + OPENMRS_IDGEN_URL;
 		// Add query parameters
-		openmrsQueryUrl += "?source=" + OPENMRS_UNIQUE_ID_SOURCE + "&numberToGenerate=" + numberToGenerate;
+		openmrsQueryUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + numberToGenerate;
 		openmrsQueryUrl += "&username=" + this.openmrsUserName + "&password=" + this.openmrsPassword;
 
 		HttpGet get = new HttpGet(openmrsQueryUrl);
