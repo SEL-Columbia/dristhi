@@ -186,7 +186,8 @@ public class XlsDataImportController {
 	    String motherNRC = record.get("Childs_Particulars/Mother_Guardian_NRC");
 	    String motherId = UUID.randomUUID().toString();
 	    
-	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, null, null, false, false, "Female", addressList, null, null);
+	    DateTime dateOfBirth = new DateTime(1960, 01, 01, 0, 0);
+	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, dateOfBirth, null, false, false, "Female", addressList, null, null);
 	    motherClient.addAttribute(MOTHER_NRC_NUMBER, motherNRC);
 	    
 	    return motherClient;
