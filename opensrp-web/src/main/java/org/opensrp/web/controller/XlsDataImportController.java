@@ -40,6 +40,7 @@ import com.google.gson.Gson;
 @RequestMapping("/import")
 public class XlsDataImportController {
 	
+	public static final String LOCATION = "Location";
 	public static final String M_ZEIR_ID = "M_ZEIR_ID";
 	public static final String MOTHER_NRC_NUMBER = "NRC_Number";
 	public static final String CHW_NAME = "CHW_Name";
@@ -73,13 +74,11 @@ public class XlsDataImportController {
 	@RequestMapping(headers = { "Accept=multipart/form-data" }, method = POST, value = "/file")
 	public ResponseEntity<String> importXlsData(@RequestParam("file") MultipartFile file) throws SQLException {
 		Map<String, Object> stats = new HashMap<>();
-		List<Event> vaccinationEvents = new ArrayList<Event>();
-		List<Event> gmEvents = new ArrayList<Event>();
-		List<Client> clients = new ArrayList<Client>();
 
 		this.openmrsIDService.initializeImportTable(false);
 
 		int eventCount = 0;
+		int clientCount = 0;
 		CSVParser parser;
 		try {
 			Reader reader = new InputStreamReader(file.getInputStream());
@@ -91,6 +90,7 @@ public class XlsDataImportController {
 			int counter = 0;
 
 			for (CSVRecord record : records) {
+				int eventCounter = 0;
 			    Address address = this.buildAddress(record);
 			    ArrayList<Address> addressList = new ArrayList<Address>();
 			    addressList.add(address);
@@ -111,23 +111,28 @@ public class XlsDataImportController {
 
 				    // Create mother relationship
 				    childClient.addRelationship("mother", motherClient.getBaseEntityId());
-
+				    
+				    // Create Birth Registration Events
+				    
+				    Event birthRegistrationEvent = this.buildBirthRegistrationEvent(record, childClient);
+				    eventService.addEvent(birthRegistrationEvent);
+				    eventCounter++;
+				    
 				    // Create vaccination events
 				    for(Event e: this.buildVaccinationEvents(record, childClient)) {
-				    	vaccinationEvents.add(e);
+				    	eventCounter++;
 				    	eventService.addEvent(e);
 				    }
 				    
 				    for(Event e: this.buildGrowthMonitoringEvents(record, childClient)) {
-				    	gmEvents.add(e);
+				    	eventCounter++;
 				    	eventService.addEvent(e);
 				    }
 
 				    clientService.addClient(motherClient);
 				    clientService.addClient(childClient);
-				    clients.add(childClient);
-				    clients.add(motherClient);
-				    eventCount += (vaccinationEvents.size() + gmEvents.size());
+				    eventCount += eventCounter;
+				    clientCount +=2;
 				    counter++;
 			    }
 			}
@@ -141,13 +146,9 @@ public class XlsDataImportController {
 		// loop through all the records creating a client and entity information for each patient
 		// respond with success response and summary statistics of data imported
 		
-		stats.put("summary_client_count", clients.size());
+		stats.put("summary_client_count", clientCount);
 		stats.put("summary_event_count", eventCount);
-		stats.put("clients", clients);
-		stats.put("vaccination_events", vaccinationEvents);
-		stats.put("growth_events", gmEvents);
-		
-		
+
 		return new ResponseEntity<>(new Gson().toJson(stats), HttpStatus.OK);
 	}
 
@@ -184,11 +185,14 @@ public class XlsDataImportController {
 	    String motherFirstName = record.get("Childs_Particulars/Mother_Guardian_First_Name");
 	    String motherLastName = record.get("Childs_Particulars/Mother_Guardian_Last_Name");
 	    String motherNRC = record.get("Childs_Particulars/Mother_Guardian_NRC");
+	    String locationName = record.get("Childs_Particulars/Home_Facility");
+	    String locationId = this.getLocationId(locationName);
 	    String motherId = UUID.randomUUID().toString();
 	    
 	    DateTime dateOfBirth = new DateTime(1960, 01, 01, 0, 0);
 	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, dateOfBirth, null, false, false, "Female", addressList, null, null);
 	    motherClient.addAttribute(MOTHER_NRC_NUMBER, motherNRC);
+	    motherClient.addAttribute(LOCATION, locationId);
 	    
 	    return motherClient;
 	}
@@ -205,7 +209,9 @@ public class XlsDataImportController {
 	    String chwPhoneNumber = record.get("Childs_Particulars/CHW_Phone_Number");
 	    String fatherNRCNumber = record.get("Childs_Particulars/Father_Guardian_NRC");
 	    String chwName = record.get("Childs_Particulars/CHW_Name");
-	    String pmtctStatus = record.get("PMTCT/PMTCT_Status");
+	    String locationName = record.get("Childs_Particulars/Home_Facility");
+	    String locationId = this.getLocationId(locationName);
+	    
 	    
 	    String childId = UUID.randomUUID().toString();
 
@@ -216,9 +222,24 @@ public class XlsDataImportController {
 	    childClient.addAttribute(CHW_PHONE_NUMBER, chwPhoneNumber);
 	    childClient.addAttribute(FATHER_NRC_NUMBER, fatherNRCNumber);
 	    childClient.addAttribute(CHW_NAME, chwName);
-	    childClient.addAttribute(PMTCT_STATUS, pmtctStatus);
+	    childClient.addAttribute(LOCATION, locationId);
 	    
 	    return childClient;
+	}
+	
+	private Event buildBirthRegistrationEvent(CSVRecord record, Client client) {
+		String eventType = "Birth Registration";
+        String entityType = "child";
+		String locationName = record.get("Childs_Particulars/Home_Facility");
+		String dateOfFacilityVisit = record.get("Childs_Particulars/First_Health_Facility_Contact");
+		
+		List<Obs> birthRegistrationObs = this.buildBirthRegistrationObs(record);
+		
+		
+		DateTime date = parseDate.parseDateTime(dateOfFacilityVisit);
+		Event birthRegistrationEvent = this.createEvent(client, birthRegistrationObs, eventType, entityType, date, locationName);
+		
+		return birthRegistrationEvent;
 	}
 	
 	private List<Event> buildVaccinationEvents(CSVRecord record, Client client) {
@@ -528,6 +549,63 @@ public class XlsDataImportController {
 		bcgObs.add(bcgCalculateObs);
 		
 		return bcgObs;
+	}
+	
+	private List<Obs> buildBirthRegistrationObs(CSVRecord record) {
+		String value = "";
+		List<Obs> birthRegistrationObs = new ArrayList<Obs>();
+		// First_Health_Facility_Contact
+		String firstHealthFacilityContact = record.get("Childs_Particulars/First_Health_Facility_Contact");
+		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "text", "163260AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", firstHealthFacilityContact, "First_Health_Facility_Contact"));
+		
+		// Birth_Weight
+		String birthWeight = record.get("Childs_Particulars/Birth_Weight");
+		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "text", "5916AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", birthWeight, "Birth_Weight"));
+
+		// Father_Guardian_Name
+		String fatherGuardianName = record.get("Childs_Particulars/Father_Guardian_Name");
+		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "text", "1594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", fatherGuardianName, "Father_Guardian_Name"));
+		
+		// Place_Birth
+		String placeBirth = record.get("Childs_Particulars/Place_Birth");
+		value = placeBirth == "Health_Facility" ? "1537AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" : "1536AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "select one", "1572AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Place_Birth"));
+		
+		// Birth_Facility_Name
+		String birthFacilityName = record.get("Childs_Particulars/Birth_Facility_Name");
+		String birthFacilityNameOther = record.get("Childs_Particulars/Birth_Facility_Name_Other");
+		
+		if(birthFacilityName != "n/a") {
+			value = this.getLocationId(birthFacilityName) != "" ? this.getLocationId(birthFacilityName) : birthFacilityNameOther;
+			birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "text", "163531AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Birth_Facility_Name"));
+		}
+		// PMTCT_Status
+		
+		String pmtctStatus = record.get("PMTCT/PMTCT_Status");
+		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "text", "1396AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", pmtctStatus, "PMTCT_Status"));
+		
+		// start
+		String start = record.get("start");
+		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "start", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", start, "start"));
+		
+		// end
+		String end = record.get("end");
+		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "end", "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", end, "end"));
+		
+		// deviceid
+		String deviceid = record.get("deviceid");
+		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "deviceid", "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", deviceid, "deviceid"));
+		
+		return birthRegistrationObs;
+	}
+	
+	private Obs buildBirthRegistrationObservation(String fieldType, String fieldDataType, String fieldCode, String value, String formSubmissionField) {
+		List<Object> values = new ArrayList<Object>();
+		values.add(value);
+		
+		Obs birthRegistrationObs = new Obs(fieldType, fieldDataType, fieldCode, "", value, "", formSubmissionField);
+		
+		return birthRegistrationObs;
 	}
 	
 	private Obs buildGrowthMonitoringObservation(String weight) {
