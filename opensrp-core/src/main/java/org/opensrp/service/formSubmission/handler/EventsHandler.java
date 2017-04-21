@@ -4,5 +4,5 @@ import org.json.JSONObject;
 import org.opensrp.domain.Event;
 
 public interface EventsHandler {
-    public void handle(Event event, JSONObject scheduleConfigEvent);
+    public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName);
 }

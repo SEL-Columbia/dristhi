@@ -13,11 +13,12 @@ public class ANCScheduleHandler extends BaseScheduleHandler {
 	
 	@Autowired
 	private AnteNatalCareSchedulesService ancScheduleService;
-	private static final String scheduleName="Ante Natal Care Reminder Visit";
 	@Override
-	public void handle(Event event, JSONObject scheduleConfigEvent) {
+	public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
 		try {
-			
+			if(scheduleName==null){
+				scheduleName="Ante Natal Care Reminder Visit";
+			}
 			if (evaluateEvent(event, scheduleConfigEvent)) {
 				String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {

@@ -3,6 +3,7 @@ package org.opensrp.scheduler;
 import static org.motechproject.scheduletracking.api.domain.WindowName.due;
 import static org.motechproject.scheduletracking.api.domain.WindowName.earliest;
 import static org.motechproject.scheduletracking.api.domain.WindowName.late;
+import static org.motechproject.scheduletracking.api.domain.WindowName.max;
 import static org.opensrp.scheduler.Matcher.any;
 import static org.opensrp.scheduler.Matcher.anyOf;
 
@@ -17,7 +18,7 @@ public class AlertHandler {
                           // @Qualifier("ForceFulfillAction") HookedEvent forceFulfill,
                           /* @Qualifier("AutoClosePNCAction") HookedEvent autoClosePNCAction,*/
                            @Qualifier("ECAlertCreationAction") HookedEvent alertCreation) {
-    	scheduler.addHookedEvent(any(), any(), anyOf(earliest.toString(), due.toString(), late.toString()),
+    	scheduler.addHookedEvent(any(), any(), anyOf(earliest.toString(), due.toString(), late.toString(), max.toString()),
                 alertCreation);
     	
 //   TODO 	scheduler.addHookedEvent(eq(SCHEDULE_ANC), any(), eq(max.toString()), forceFulfill);

@@ -11,7 +11,6 @@ import org.ektorp.support.View;
 import org.ektorp.util.Assert;
 import org.ektorp.util.Documents;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
@@ -127,6 +126,27 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 		return events;
 	}
+
+	@View(name = "event_by_concept_parent_code_and_base_entity_id", map = "function(doc) {if (doc.type === 'Event' && doc.obs) {for (var obs in doc.obs) {var fieldCode = doc.obs[obs].fieldCode;var parentCode = doc.obs[obs].parentCode;emit([doc.baseEntityId, fieldCode, parentCode], null);}}}")
+	public List<Event> findByBaseEntityIdAndConceptParentCode(String baseEntityId, String concept, String parentCode) {
+		ComplexKey startKey = ComplexKey.of(baseEntityId, concept, parentCode);
+		ComplexKey endKey = ComplexKey.of(baseEntityId, concept, parentCode);
+		List<Event> events = db.queryView(
+		    createQuery("event_by_concept_parent_code_and_base_entity_id").startKey(startKey).endKey(endKey).includeDocs(true),
+		    Event.class);
+		return events;
+	}
+
+	
+	@View(name = "event_by_concept_and_value", map = "function(doc) {if (doc.type === 'Event' && doc.obs) {for (var obs in doc.obs) {var fieldCode = doc.obs[obs].fieldCode;var value = doc.obs[obs].values[0];emit([fieldCode,value],null);}}}")
+	public List<Event> findByConceptAndValue(String concept, String conceptValue) {
+		List<Event> events = db.queryView(
+		    createQuery("event_by_concept_and_value").key(ComplexKey.of(concept, conceptValue)).includeDocs(true),
+		    Event.class);
+		return events;
+	}
+	
+
 	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Event' && !doc.serverVersion) { emit(doc._id, doc); } }")
 	public List<Event> findByEmptyServerVersion() {
 		return db.queryView(createQuery("events_by_empty_server_version").limit(200).includeDocs(true), Event.class);
@@ -137,8 +157,8 @@ public class AllEvents extends MotechBaseRepository<Event> {
         return super.getAll();
     }
 	
-	public List<Event> findEvents(String team,String providerId, String locationId, Long serverVersion,String sortBy,String sortOrder, int limit) {
-		return ler.getByCriteria(team,providerId, locationId, serverVersion, sortBy, sortOrder,limit);
+	public List<Event> findEvents(String team,String providerId, String locationId, String baseEntityId, Long serverVersion,String sortBy,String sortOrder, int limit) {
+		return ler.getByCriteria(team,providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder,limit);
 	}
 	
 	

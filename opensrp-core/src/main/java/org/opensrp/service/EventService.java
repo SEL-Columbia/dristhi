@@ -2,12 +2,15 @@ package org.opensrp.service;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.ektorp.CouchDbConnector;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.common.AllConstants.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.AllEvents;
@@ -25,9 +28,12 @@ public class EventService {
 	
 	private final AllEvents allEvents;
 	
+	private ClientService clientService;
+	
 	@Autowired
-	public EventService(AllEvents allEvents) {
+	public EventService(AllEvents allEvents, ClientService clientService) {
 		this.allEvents = allEvents;
+		this.clientService = clientService;
 	}
 	
 	public List<Event> findAllByIdentifier(String identifier) {
@@ -86,7 +92,6 @@ public class EventService {
 		    lastEditTo);
 	}
 	
-	
 	public List<Event> findEventsByDynamicQuery(String query) {
 		return allEvents.findEventsByDynamicQuery(query);
 	}
@@ -131,6 +136,39 @@ public class EventService {
 		
 		event.setDateCreated(DateTime.now());
 		allEvents.add(event);
+		return event;
+	}
+	
+	/**
+	 * An out of area event is used to record services offered outside a client's catchment area.
+	 * The event usually will have a client unique identifier(ZEIR_ID) as the only way to identify
+	 * the client.This method finds the client based on the identifier and assigns a basentityid to
+	 * the event
+	 * 
+	 * @param event
+	 * @return
+	 */
+	public synchronized Event processOutOfArea(Event event) {
+		if (event.getBaseEntityId() == null || event.getBaseEntityId().isEmpty()) {
+			//get events identifiers;
+			String identifier = event.getIdentifier(Client.ZEIR_ID);
+			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(), identifier);
+			if (clients != null && !clients.isEmpty()) {
+				org.opensrp.domain.Client client = clients.get(0);
+				event.setBaseEntityId(client.getBaseEntityId());
+				//Map<String, String> identifiers = event.getIdentifiers();
+				//event identifiers are unique so removing zeir_id since baseentityid has been found
+				event.removeIdentifier(Client.ZEIR_ID);
+				Map<String, String> details= new HashMap<String,String>();
+				details.put("out_of_catchment_provider_id", event.getProviderId());
+				event.setDetails(details);
+				//set providerid to the last providerid who served this client in their catchment (assumption)
+				Event existingEvent=find(client.getBaseEntityId());
+				event.setProviderId(existingEvent.getProviderId());
+				//event.setIdentifiers(identifiers);
+				//change event location
+			}
+		}
 		return event;
 	}
 	
@@ -214,6 +252,7 @@ public class EventService {
 			throw new RuntimeException(e);
 		}
 	}
+	
 	public List<Event> findByServerVersion(long serverVersion) {
 		return allEvents.findByServerVersion(serverVersion);
 	}
@@ -222,7 +261,17 @@ public class EventService {
 		return allEvents.getAll();
 	}
 	
-	public List<Event> findEvents(String team,String providerId, String locationId, Long serverVersion,String sortBy,String sortOrder, int limit) {
-		return allEvents.findEvents(team,providerId, locationId, serverVersion, sortBy, sortOrder, limit);
+
+	public List<Event> findEvents(String team, String providerId, String locationId, Long serverVersion, String sortBy,
+	                              String sortOrder, int limit) {
+		return allEvents.findEvents(team, providerId, locationId,null, serverVersion, sortBy, sortOrder, limit);
+	}
+	public List<Event> findEvents(String team,String providerId, String locationId, String baseEntityId, Long serverVersion,String sortBy,String sortOrder, int limit) {
+		return allEvents.findEvents(team,providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
+	}
+	
+	public List<Event> findEventsByConceptAndValue(String concept, String conceptValue){
+		return allEvents.findByConceptAndValue(concept, conceptValue);
+
 	}
 }

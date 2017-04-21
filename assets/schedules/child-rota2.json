@@ -1,13 +1,13 @@
 {
-    "name": "PCV 1",
+    "name": "ROTA 2",
     "absolute": true,
     "milestones": [
         {
-            "name": "pcv1",
+            "name": "rota2",
             "scheduleWindows": {
-            "earliest": ["6 Weeks"],
-            "due": ["6 Weeks","10 Days"],
-            "late": ["4 Years","10 Months"],
+            "earliest": ["4 Weeks"],
+            "due": ["4 Weeks","10 Days"],
+            "late": ["8 Months"],
             "max": [""]
             },
             "alerts": [
@@ -19,13 +19,13 @@
                 },
                 {
                     "window": "due",
-                    "offset": ["6 Weeks"],
+                    "offset": ["4 Weeks"],
                     "interval": ["1 Day"],
                     "count": "30"
                 },
                 {
                     "window": "late",
-                    "offset": ["6 Weeks","10 Days"],
+                    "offset": ["4 Weeks","10 Days"],
                     "interval": ["1 Day"],
                     "count": "1900"
                 }
