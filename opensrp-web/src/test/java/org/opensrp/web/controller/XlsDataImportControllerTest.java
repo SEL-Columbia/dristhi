@@ -57,10 +57,8 @@ public class XlsDataImportControllerTest {
 		openmrsIds.add("12345-1");
 		openmrsIds.add("12345-2");
 		
-		String openmrsUserName = "openmrsUserName";
 
 		when(this.openmrsIDService.downloadOpenmrsIds(anyInt())).thenReturn(openmrsIds);
-		when(this.openmrsIDService.getOpenmrsUserName()).thenReturn(openmrsUserName);
 		
 		XlsDataImportController controller = new XlsDataImportController(clientService, eventService, openmrsIDService);
 		ResponseEntity<String> response = controller.importXlsData(file);
@@ -69,19 +67,10 @@ public class XlsDataImportControllerTest {
 		
 		int summaryClientCount = responseJson.getInt("summary_client_count");
 		int summaryEventCount = responseJson.getInt("summary_event_count");
-
-		JSONArray vaccinationEventsArray= responseJson.getJSONArray("vaccination_events");
-		JSONObject vaccineEvent = vaccinationEventsArray.getJSONObject(0);
-		JSONArray gmEventsArray= responseJson.getJSONArray("growth_events");
-		JSONObject gmEvent = gmEventsArray.getJSONObject(0);
-		
 		
 		assertEquals(summaryClientCount, 4);
-		assertEquals(summaryEventCount, 39);
-		assertEquals(vaccineEvent.getString("providerId"), openmrsUserName);
-		assertEquals(gmEvent.getString("providerId"), openmrsUserName);
-		assertEquals(gmEvent.getString("locationId"), "");
+		assertEquals(summaryEventCount, 26);
 		verify(clientService, times(4)).addClient(any(Client.class));
-		verify(eventService, times(21)).addEvent(any(Event.class));
+		verify(eventService, times(26)).addEvent(any(Event.class));
 	}
 }
