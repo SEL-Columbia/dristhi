@@ -279,4 +279,25 @@ public class ClientService {
 		}
 		return client;
 	}
+	public Client addorUpdate(Client client, boolean resetServerVersion) {
+		if (client.getBaseEntityId() == null) {
+			throw new RuntimeException("No baseEntityId");
+		}
+		Client c = findClient(client);
+		if (c != null) {
+			client.setRevision(c.getRevision());
+			client.setId(c.getId());
+			c.setDateEdited(DateTime.now());
+			if(resetServerVersion){
+			c.setServerVersion(null);
+			}
+			allClients.update(client);
+			
+		} else {
+			
+			client.setDateCreated(DateTime.now());
+			allClients.add(client);
+		}
+		return client;
+	}
 }
