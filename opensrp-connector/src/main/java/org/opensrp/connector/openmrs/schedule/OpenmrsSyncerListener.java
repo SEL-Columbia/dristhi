@@ -130,6 +130,13 @@ public class OpenmrsSyncerListener {
 					System.out.println("DHIS2 Message:"+e.getMessage());
 				}
 				try{
+					//FIXME This is to deal with existing records and should be removed later
+					if(c.getIdentifiers().containsKey("M_ZEIR_ID")){
+						if(c.getBirthdate()==null){
+							c.setBirthdate(new DateTime("01-01-1960"));
+						}
+						c.setGender("Female");
+					}
 					String uuid = c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
 					
 	    			if(uuid == null){
@@ -147,9 +154,18 @@ public class OpenmrsSyncerListener {
 	    			if(uuid != null){
 	    				System.out.println("Updating patient "+uuid);
 	    				patientService.updatePatient(c, uuid);
+	    		    	config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
+
 	    			}
 	    			else {
-	    				System.out.println(patientService.createPatient(c));
+	    				JSONObject patientJson = patientService.createPatient(c);
+	    				if(patientJson!=null &&patientJson.has("uuid")){
+	    				c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
+	    				clientService.addorUpdate(c,false);
+	    		    	config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
+	    				}
+
+
 	    			}
 				}
 				catch(Exception ex1){
@@ -157,7 +173,6 @@ public class OpenmrsSyncerListener {
 					errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(), ExceptionUtils.getStackTrace(ex1), "");
 				}				
 			}
-	    	config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, end);
 	    	
 	    	System.out.println("RUNNING FOR EVENTS");
     		
