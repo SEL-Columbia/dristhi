@@ -67,17 +67,10 @@ public class XlsDataImportControllerTest {
 		
 		int summaryClientCount = responseJson.getInt("summary_client_count");
 		int summaryEventCount = responseJson.getInt("summary_event_count");
-
-		JSONArray vaccinationEventsArray= responseJson.getJSONArray("vaccination_events");
-		JSONObject vaccineEvent = vaccinationEventsArray.getJSONObject(0);
-		JSONArray gmEventsArray= responseJson.getJSONArray("growth_events");
-		JSONObject gmEvent = gmEventsArray.getJSONObject(0);
-		
 		
 		assertEquals(summaryClientCount, 4);
-		assertEquals(summaryEventCount, 39);
-		assertEquals(gmEvent.getString("locationId"), "");
+		assertEquals(summaryEventCount, 26);
 		verify(clientService, times(4)).addClient(any(Client.class));
-		verify(eventService, times(21)).addEvent(any(Event.class));
+		verify(eventService, times(26)).addEvent(any(Event.class));
 	}
 }
