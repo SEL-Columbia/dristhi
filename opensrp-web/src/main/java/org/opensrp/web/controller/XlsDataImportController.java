@@ -185,14 +185,11 @@ public class XlsDataImportController {
 	    String motherFirstName = record.get("Childs_Particulars/Mother_Guardian_First_Name");
 	    String motherLastName = record.get("Childs_Particulars/Mother_Guardian_Last_Name");
 	    String motherNRC = record.get("Childs_Particulars/Mother_Guardian_NRC");
-	    String locationName = record.get("Childs_Particulars/Home_Facility");
-	    String locationId = this.getLocationId(locationName);
 	    String motherId = UUID.randomUUID().toString();
 	    
 	    DateTime dateOfBirth = new DateTime(1960, 01, 01, 0, 0);
 	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, dateOfBirth, null, false, false, "Female", addressList, null, null);
 	    motherClient.addAttribute(MOTHER_NRC_NUMBER, motherNRC);
-	    motherClient.addAttribute(LOCATION, locationId);
 	    
 	    return motherClient;
 	}
@@ -208,10 +205,7 @@ public class XlsDataImportController {
 	    String childCardNumber = record.get("Childs_Particulars/Child_Register_Card_Number");
 	    String chwPhoneNumber = record.get("Childs_Particulars/CHW_Phone_Number");
 	    String fatherNRCNumber = record.get("Childs_Particulars/Father_Guardian_NRC");
-	    String chwName = record.get("Childs_Particulars/CHW_Name");
-	    String locationName = record.get("Childs_Particulars/Home_Facility");
-	    String locationId = this.getLocationId(locationName);
-	    
+	    String chwName = record.get("Childs_Particulars/CHW_Name");	    
 	    
 	    String childId = UUID.randomUUID().toString();
 
@@ -222,7 +216,6 @@ public class XlsDataImportController {
 	    childClient.addAttribute(CHW_PHONE_NUMBER, chwPhoneNumber);
 	    childClient.addAttribute(FATHER_NRC_NUMBER, fatherNRCNumber);
 	    childClient.addAttribute(CHW_NAME, chwName);
-	    childClient.addAttribute(LOCATION, locationId);
 	    
 	    return childClient;
 	}
