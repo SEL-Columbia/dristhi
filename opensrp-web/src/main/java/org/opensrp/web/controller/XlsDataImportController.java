@@ -111,22 +111,56 @@ public class XlsDataImportController {
 
 				    // Create mother relationship
 				    childClient.addRelationship("mother", motherClient.getBaseEntityId());
+
+				    // Create common observations to all events
+					// start
+					String start = record.get("start");
+					Obs startObs = buildObservation("concept", "start", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", start, "start");
+
+					// end
+					String end = record.get("end");
+					Obs endObs = buildObservation("concept", "end", "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", end, "end");
+
+					// deviceid
+					String deviceid = record.get("deviceid");
+					Obs deviceIdObs = buildObservation("concept", "deviceid", "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", deviceid, "deviceid");
 				    
-				    // Create Birth Registration Events
-				    
+				    // Create Birth Registration Event
 				    Event birthRegistrationEvent = this.buildBirthRegistrationEvent(record, childClient);
+				    birthRegistrationEvent.addObs(startObs);
+				    birthRegistrationEvent.addObs(endObs);
+				    birthRegistrationEvent.addObs(deviceIdObs);
+
 				    eventService.addEvent(birthRegistrationEvent);
 				    eventCounter++;
-				    
+
+				    // Create New Woman Registration Event
+				    Event womanRegistrationEvent = this.buildNewWomanRegistrationEvent(record, motherClient);
+				    womanRegistrationEvent.addObs(startObs);
+				    womanRegistrationEvent.addObs(endObs);
+				    womanRegistrationEvent.addObs(deviceIdObs);
+
+				    eventService.addEvent(womanRegistrationEvent);
+				    eventCounter++;
+
 				    // Create vaccination events
 				    for(Event e: this.buildVaccinationEvents(record, childClient)) {
-				    	eventCounter++;
+						e.addObs(startObs);
+						e.addObs(endObs);
+						e.addObs(deviceIdObs);
+
 				    	eventService.addEvent(e);
+				    	eventCounter++;
 				    }
 				    
+				    //Create growth monitoring events
 				    for(Event e: this.buildGrowthMonitoringEvents(record, childClient)) {
-				    	eventCounter++;
+						e.addObs(startObs);
+						e.addObs(endObs);
+						e.addObs(deviceIdObs);
+
 				    	eventService.addEvent(e);
+				    	eventCounter++;
 				    }
 
 				    clientService.addClient(motherClient);
@@ -235,6 +269,15 @@ public class XlsDataImportController {
 		return birthRegistrationEvent;
 	}
 	
+	private Event buildNewWomanRegistrationEvent(CSVRecord record, Client client) {
+		String locationName = record.get("Childs_Particulars/Home_Facility");
+		String firstHealthFacilityContact = record.get("Childs_Particulars/First_Health_Facility_Contact");
+		DateTime eventDate = parseDate.parseDateTime(firstHealthFacilityContact);
+		Event newWomanRegistration = this.createEvent(client, null, "New Woman Registration", "mother", eventDate, locationName);
+
+		return newWomanRegistration;
+	}
+
 	private List<Event> buildVaccinationEvents(CSVRecord record, Client client) {
 		String eventType = "Vaccination";
         String entityType = "vaccination";
@@ -271,9 +314,9 @@ public class XlsDataImportController {
 		}
 		
 		if(!bcg2Value.equals("n/a")) {
-			List<Obs> bcg1Obs = this.buildVaccineObservation(BCG_VACCINE, "2", bcg2Value);
+			List<Obs> bcg2Obs = this.buildVaccineObservation(BCG_VACCINE, "2", bcg2Value);
 			DateTime date = parseDate.parseDateTime(bcg2Value);
-			Event bcg2Event = this.createEvent(client, bcg1Obs, eventType, entityType, date, locationName);
+			Event bcg2Event = this.createEvent(client, bcg2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(bcg2Event);
 		}
 		
@@ -549,20 +592,20 @@ public class XlsDataImportController {
 		List<Obs> birthRegistrationObs = new ArrayList<Obs>();
 		// First_Health_Facility_Contact
 		String firstHealthFacilityContact = record.get("Childs_Particulars/First_Health_Facility_Contact");
-		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "text", "163260AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", firstHealthFacilityContact, "First_Health_Facility_Contact"));
+		birthRegistrationObs.add(buildObservation("concept", "text", "163260AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", firstHealthFacilityContact, "First_Health_Facility_Contact"));
 		
 		// Birth_Weight
 		String birthWeight = record.get("Childs_Particulars/Birth_Weight");
-		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "text", "5916AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", birthWeight, "Birth_Weight"));
+		birthRegistrationObs.add(buildObservation("concept", "text", "5916AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", birthWeight, "Birth_Weight"));
 
 		// Father_Guardian_Name
 		String fatherGuardianName = record.get("Childs_Particulars/Father_Guardian_Name");
-		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "text", "1594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", fatherGuardianName, "Father_Guardian_Name"));
+		birthRegistrationObs.add(buildObservation("concept", "text", "1594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", fatherGuardianName, "Father_Guardian_Name"));
 		
 		// Place_Birth
 		String placeBirth = record.get("Childs_Particulars/Place_Birth");
 		value = placeBirth == "Health_Facility" ? "1537AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" : "1536AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "select one", "1572AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Place_Birth"));
+		birthRegistrationObs.add(buildObservation("concept", "select one", "1572AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Place_Birth"));
 		
 		// Birth_Facility_Name
 		String birthFacilityName = record.get("Childs_Particulars/Birth_Facility_Name");
@@ -570,35 +613,23 @@ public class XlsDataImportController {
 		
 		if(birthFacilityName != "n/a") {
 			value = this.getLocationId(birthFacilityName) != "" ? this.getLocationId(birthFacilityName) : birthFacilityNameOther;
-			birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "text", "163531AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Birth_Facility_Name"));
+			birthRegistrationObs.add(buildObservation("concept", "text", "163531AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Birth_Facility_Name"));
 		}
 		// PMTCT_Status
 		
 		String pmtctStatus = record.get("PMTCT/PMTCT_Status");
-		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "text", "1396AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", pmtctStatus, "PMTCT_Status"));
-		
-		// start
-		String start = record.get("start");
-		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "start", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", start, "start"));
-		
-		// end
-		String end = record.get("end");
-		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "end", "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", end, "end"));
-		
-		// deviceid
-		String deviceid = record.get("deviceid");
-		birthRegistrationObs.add(buildBirthRegistrationObservation("concept", "deviceid", "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", deviceid, "deviceid"));
+		birthRegistrationObs.add(buildObservation("concept", "text", "1396AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", pmtctStatus, "PMTCT_Status"));
 		
 		return birthRegistrationObs;
 	}
 	
-	private Obs buildBirthRegistrationObservation(String fieldType, String fieldDataType, String fieldCode, String value, String formSubmissionField) {
+	private Obs buildObservation(String fieldType, String fieldDataType, String fieldCode, String value, String formSubmissionField) {
 		List<Object> values = new ArrayList<Object>();
 		values.add(value);
 		
-		Obs birthRegistrationObs = new Obs(fieldType, fieldDataType, fieldCode, "", value, "", formSubmissionField);
+		Obs obs = new Obs(fieldType, fieldDataType, fieldCode, "", value, "", formSubmissionField);
 		
-		return birthRegistrationObs;
+		return obs;
 	}
 	
 	private Obs buildGrowthMonitoringObservation(String weight) {
