@@ -497,10 +497,12 @@ public class XlsDataImportController {
 	}
 	
 	private Event addMultipleObs(Event event, List<Obs> multipleObs) {
-		for(Obs obs: multipleObs) {
-			event.addObs(obs);
+		if(multipleObs != null) {
+			for(Obs obs: multipleObs) {
+				event.addObs(obs);
+			}
 		}
-		
+
 		return event;
 	}
 	
