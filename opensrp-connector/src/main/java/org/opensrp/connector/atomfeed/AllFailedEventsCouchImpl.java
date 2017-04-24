@@ -47,7 +47,8 @@ public class AllFailedEventsCouchImpl  implements AllFailedEvents {
         	repository.update(existing);
         }
         else {
-        	repository.add(existing);
+        	org.opensrp.connector.atomfeed.domain.FailedEvent fEvent= new org.opensrp.connector.atomfeed.domain.FailedEvent(failedEvent.getFeedUri(), failedEvent, failedEvent.getErrorMessage(), failedEvent.getRetries());
+			repository.add(fEvent);
         }
     }
 
