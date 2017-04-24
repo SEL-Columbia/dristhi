@@ -159,7 +159,7 @@ public class EventResource extends RestResource<Event> {
 				    new TypeToken<ArrayList<Event>>() {}.getType());
 				for (Event event : events) {
 					event=eventService.processOutOfArea(event);
-					eventService.addEvent(event);
+					eventService.addorUpdateEvent(event);
 				}
 			}
 			

@@ -107,6 +107,7 @@ public class PatientService extends OpenmrsService{
 		}
 		
 		String fn = be.getFirstName()==null || be.getFirstName().isEmpty()?"-":be.getFirstName();
+
 		String mn = be.getMiddleName()==null?"":be.getMiddleName();
 		String ln =( be.getLastName()==null || be.getLastName().equals("."))?"-":be.getLastName();
 		

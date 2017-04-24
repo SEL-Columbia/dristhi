@@ -121,6 +121,16 @@ public class EventService {
 		return null;
 	}
 	
+	public Event findById(String eventId) {
+		try {
+			return allEvents.findById(eventId);
+		}
+		catch (Exception e) {
+			logger.error("", e);
+		}
+		return null;
+	}
+	
 	public synchronized Event addEvent(Event event) {
 		Event e = find(event);
 		if (e != null) {
@@ -152,18 +162,19 @@ public class EventService {
 		if (event.getBaseEntityId() == null || event.getBaseEntityId().isEmpty()) {
 			//get events identifiers;
 			String identifier = event.getIdentifier(Client.ZEIR_ID);
-			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(), identifier);
+			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(),
+			    identifier);
 			if (clients != null && !clients.isEmpty()) {
 				org.opensrp.domain.Client client = clients.get(0);
 				event.setBaseEntityId(client.getBaseEntityId());
 				//Map<String, String> identifiers = event.getIdentifiers();
 				//event identifiers are unique so removing zeir_id since baseentityid has been found
 				event.removeIdentifier(Client.ZEIR_ID);
-				Map<String, String> details= new HashMap<String,String>();
+				Map<String, String> details = new HashMap<String, String>();
 				details.put("out_of_catchment_provider_id", event.getProviderId());
 				event.setDetails(details);
 				//set providerid to the last providerid who served this client in their catchment (assumption)
-				Event existingEvent=find(client.getBaseEntityId());
+				Event existingEvent = find(client.getBaseEntityId());
 				event.setProviderId(existingEvent.getProviderId());
 				//event.setIdentifiers(identifiers);
 				//change event location
@@ -186,6 +197,22 @@ public class EventService {
 		event.setDateCreated(new DateTime());
 		
 		allEvents.add(targetDb, event);
+		return event;
+	}
+	
+	public synchronized Event addorUpdateEvent(Event event) {
+		Event existingEvent = findById(event.getId());
+		if (existingEvent != null) {
+			event.setDateEdited(DateTime.now());
+			event.setServerVersion(null);
+			event.setRevision(existingEvent.getRevision());
+			allEvents.update(event);
+
+		}else{
+			allEvents.add(event);
+
+		}
+		
 		return event;
 	}
 	
@@ -261,17 +288,18 @@ public class EventService {
 		return allEvents.getAll();
 	}
 	
-
 	public List<Event> findEvents(String team, String providerId, String locationId, Long serverVersion, String sortBy,
 	                              String sortOrder, int limit) {
-		return allEvents.findEvents(team, providerId, locationId,null, serverVersion, sortBy, sortOrder, limit);
-	}
-	public List<Event> findEvents(String team,String providerId, String locationId, String baseEntityId, Long serverVersion,String sortBy,String sortOrder, int limit) {
-		return allEvents.findEvents(team,providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
+		return allEvents.findEvents(team, providerId, locationId, null, serverVersion, sortBy, sortOrder, limit);
 	}
 	
-	public List<Event> findEventsByConceptAndValue(String concept, String conceptValue){
+	public List<Event> findEvents(String team, String providerId, String locationId, String baseEntityId, Long serverVersion,
+	                              String sortBy, String sortOrder, int limit) {
+		return allEvents.findEvents(team, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
+	}
+	
+	public List<Event> findEventsByConceptAndValue(String concept, String conceptValue) {
 		return allEvents.findByConceptAndValue(concept, conceptValue);
-
+		
 	}
 }
