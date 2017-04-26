@@ -116,7 +116,7 @@ public class XlsDataImportController {
 
 				    // Create common observations to all events
 				    // 2017-03-20T12:40:02.000+02:00
-				    DateTimeFormatter parseDate = DateTimeFormat.forPattern("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+				    DateTimeFormatter parseDate = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 				    
 					// start
 					String start = record.get("start");
