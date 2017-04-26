@@ -57,12 +57,14 @@ public class XlsDataImportController {
 	public static final String ROTA_VACCINE = "rota";
 	public static final String MR_VACCINE = "mr";
 	public static final String MEASLES_VACCINE = "measles";
+	private static final String DATE_FORMAT = "yyyy-MM-dd";
+	private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	
 	private ClientService clientService;
 	private EventService eventService;
 	private OpenmrsIDService openmrsIDService;
-	
-	private DateTimeFormatter parseDate = DateTimeFormat.forPattern("yyyy-MM-dd");
+	 
+	private DateTimeFormatter parseDate = DateTimeFormat.forPattern(DATE_FORMAT);
 	
 	@Autowired
 	public XlsDataImportController(ClientService clientService, EventService eventService, OpenmrsIDService openmrsIDService) {
@@ -113,13 +115,19 @@ public class XlsDataImportController {
 				    childClient.addRelationship("mother", motherClient.getBaseEntityId());
 
 				    // Create common observations to all events
+				    // 2017-03-20T12:40:02.000+02:00
+				    DateTimeFormatter parseDate = DateTimeFormat.forPattern("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+				    
 					// start
 					String start = record.get("start");
-					Obs startObs = buildObservation("concept", "start", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", start, "start");
+					DateTime startDate = parseDate.parseDateTime(start);
+					
+					Obs startObs = buildObservation("concept", "start", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", startDate.toString(DATE_TIME_FORMAT), "start");
 
 					// end
 					String end = record.get("end");
-					Obs endObs = buildObservation("concept", "end", "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", end, "end");
+					DateTime endDate = parseDate.parseDateTime(end);
+					Obs endObs = buildObservation("concept", "end", "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", endDate.toString(DATE_TIME_FORMAT), "end");
 
 					// deviceid
 					String deviceid = record.get("deviceid");
@@ -163,8 +171,8 @@ public class XlsDataImportController {
 				    	eventCounter++;
 				    }
 
-				    clientService.addClient(motherClient);
-				    clientService.addClient(childClient);
+				    clientService.addorUpdate(motherClient);
+				    clientService.addorUpdate(childClient);
 				    eventCount += eventCounter;
 				    clientCount +=2;
 				    counter++;
@@ -197,15 +205,14 @@ public class XlsDataImportController {
 	    String residentialAddress = record.get("Childs_Particulars/Residential_Address");
 	    String physicalLandmark = record.get("Childs_Particulars/Physical_Landmark");
 	    
-	    String resolvedResidentialAddress = residentialAreaOther != "n/a" ? residentialArea : residentialAreaOther; 
-	    
 	    // Build address object
 	    DateTime addressStartDate = this.parseDate.parseDateTime(startDate);
 	    DateTime addressEndDate = this.parseDate.parseDateTime(endDate);
 	    
 	    Map<String, String> addressFields = new HashMap<>();
+	    addressFields.put("address5", residentialAreaOther);
 	    addressFields.put("address4", birthFacilityName);
-	    addressFields.put("address3", resolvedResidentialAddress);
+	    addressFields.put("address3", residentialArea);
 	    addressFields.put("address2", residentialAddress);
 	    addressFields.put("address1", physicalLandmark);
 	    
@@ -221,7 +228,7 @@ public class XlsDataImportController {
 	    String motherNRC = record.get("Childs_Particulars/Mother_Guardian_NRC");
 	    String motherId = UUID.randomUUID().toString();
 	    
-	    DateTime dateOfBirth = new DateTime(1960, 01, 01, 0, 0);
+	    DateTime dateOfBirth = new DateTime(1960, 01, 01, 1, 0);
 	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, dateOfBirth, null, false, false, "Female", addressList, null, null);
 	    motherClient.addAttribute(MOTHER_NRC_NUMBER, motherNRC);
 	    
@@ -509,17 +516,17 @@ public class XlsDataImportController {
 	private String getLocationId(String location) {
 		switch(location) {
 			case "Mahatma_Gandhi":
-	            return "448";
+	            return "5bf3b4ca-9482-4e85-ab7a-0c44e4edb329";
 	        case "Libuyu":
-	            return "443";
+	            return "e0d37af3-50b7-424d-a6b0-94b1035271b3";
 	        case "Linda":
-	            return "532";
+	            return "9e4fc064-d8e7-4fcb-942e-cbcf6524fb24";
 	        case "Dambwa_North_Clinic":
-	            return "456";
+	            return "29414e77-c0dc-4834-b92a-10cd6c2a8d93";
 	        case "Victoria_Falls_Clinic":
-	        	return "1449";
+	        	return "7567285c-0929-4723-9cf8-faee530adb70";
 	        case "Airport_Clininc":
-	        	return "426";
+	        	return "39d0a527-d4dc-4946-ad8f-7cb045cc0bb8";
 	        default:
 	        	return "";
 		}
@@ -577,7 +584,7 @@ public class XlsDataImportController {
 		List<Object> values1 = new ArrayList<Object>();
 		values1.add(value);
 		List<Object> values2 = new ArrayList<Object>();
-		values1.add(dose);
+		values2.add(dose);
 		
 		Obs bcgDateObs = new Obs(fieldType, dateFieldDataType, dateFieldCode, parentCode, values1, null, formSubmissionField1);
 		Obs bcgCalculateObs = new Obs(fieldType, calculateFieldDataType, calculateFieldCode, parentCode, values2, null, formSubmissionField2);
