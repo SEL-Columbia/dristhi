@@ -252,6 +252,9 @@ public class XlsDataImportController {
 
 	    DateTime dateOfBirth = this.parseDate.parseDateTime(birthDate);
 	    
+	    // validate names
+	    firstName = firstName == "n/a" ? "" : firstName;
+
 	    Client childClient = new Client(childId, firstName, "", lastName, dateOfBirth, null, false, false, gender, addressList, null, null);
 	    childClient.addAttribute(CHILD_REGISTER_CARD_NUMBER, childCardNumber);
 	    childClient.addAttribute(CHW_PHONE_NUMBER, chwPhoneNumber);
