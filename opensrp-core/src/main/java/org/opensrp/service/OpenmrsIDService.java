@@ -123,7 +123,7 @@ public class OpenmrsIDService {
 		String location = client.getAddress("usual_residence").getAddressField("address2");
 		String checkIfExistQuery = "SELECT count(*) from " + databaseNameToUse + " WHERE " + USED_BY_COLUMN + " = ? AND location = ?";
 		String[] args = new String[2];
-		args[0] = (String) client.getAttribute(CHILD_REGISTER_CARD_NUMBER);
+		args[0] = (String) client.getAttribute(CHILD_REGISTER_CARD_NUMBER) + "-" + client.fullName() + "-" + client.getBirthdate();
 		args[1] = location;
 
 		int rowCount = this.jdbcTemplate.queryForObject(checkIfExistQuery, args, Integer.class);
@@ -145,9 +145,9 @@ public class OpenmrsIDService {
 		String location = client.getAddress("usual_residence").getAddressField("address2");
 		
 		if(!this.checkIfClientExists(client, testMode)) {
-			String childRegisterCardNumber = (String) client.getAttribute(CHILD_REGISTER_CARD_NUMBER);;
+			String usedBy = (String) client.getAttribute(CHILD_REGISTER_CARD_NUMBER) + "-" + client.fullName() + "-" + client.getBirthdate();
 			client.addIdentifier(ZEIR_IDENTIFIER, zeirID);
-			this.jdbcTemplate.update(insertSql, zeirID, STATUS_USED, childRegisterCardNumber, location, now.toDate(), now.toDate());
+			this.jdbcTemplate.update(insertSql, zeirID, STATUS_USED, usedBy, location, now.toDate(), now.toDate());
 			logger.info("Assigned " + ZEIR_IDENTIFIER + " to " + client.fullName());
 		}
 	}
