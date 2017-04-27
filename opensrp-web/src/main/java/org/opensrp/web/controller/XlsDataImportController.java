@@ -314,7 +314,7 @@ public class XlsDataImportController {
 		String locationName = record.get("Childs_Particulars/Home_Facility");
 		
 		if(!bcg1Value.equals("n/a")) {
-			List<Obs> bcg1Obs = this.buildVaccineObservation(BCG_VACCINE, "1", bcg1Value);
+			List<Obs> bcg1Obs = this.buildBCGVaccineObservation(bcg1Value);
 			DateTime date = parseDate.parseDateTime(bcg1Value);
 			Event bcg1Event = this.createEvent(client, bcg1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(bcg1Event);
@@ -572,6 +572,23 @@ public class XlsDataImportController {
 		}
 	}
 	
+	private List<Obs> buildBCGVaccineObservation(String date) {
+		String fieldType = "concept";
+		String dateFieldDataType = "date";
+		String dateFieldCode = "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		String parentCode = this.getVaccineParentCode(BCG_VACCINE);
+		String formSubmissionField = "bcg";
+		List<Object> values1 = new ArrayList<Object>();
+		values1.add(date);
+
+		Obs bcgDateObs = new Obs(fieldType, dateFieldDataType, dateFieldCode, parentCode, values1, null, formSubmissionField);
+
+		List<Obs> bcgObs = new ArrayList<Obs>();
+		bcgObs.add(bcgDateObs);
+
+		return bcgObs;
+	}
+
 	private List<Obs> buildVaccineObservation(String vaccine, String dose, String value) {
 		String fieldType = "concept";
 		String dateFieldDataType = "date";
