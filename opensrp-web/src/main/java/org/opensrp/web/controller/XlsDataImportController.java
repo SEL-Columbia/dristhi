@@ -43,6 +43,7 @@ public class XlsDataImportController {
 	public static final String LOCATION = "Location";
 	public static final String M_ZEIR_ID = "M_ZEIR_ID";
 	public static final String MOTHER_NRC_NUMBER = "NRC_Number";
+	public static final String HOME_FACILITY = "Home_Facility";
 	public static final String CHW_NAME = "CHW_Name";
 	public static final String PMTCT_STATUS = "PMTCT_Status";
 	public static final String CHILD_REGISTER_CARD_NUMBER = "Child_Register_Card_Number";
@@ -199,7 +200,6 @@ public class XlsDataImportController {
 	    String startDate = record.get("today");
 	    String endDate = record.get("today");
 	    String homeFacility = record.get("Childs_Particulars/Home_Facility");
-	    String birthFacilityName = record.get("Childs_Particulars/Birth_Facility_Name");
 	    String residentialArea = record.get("Childs_Particulars/Residential_Area");
 	    String residentialAreaOther = record.get("Childs_Particulars/Residential_Area_Other");
 	    String residentialAddress = record.get("Childs_Particulars/Residential_Address");
@@ -209,14 +209,16 @@ public class XlsDataImportController {
 	    DateTime addressStartDate = this.parseDate.parseDateTime(startDate);
 	    DateTime addressEndDate = this.parseDate.parseDateTime(endDate);
 	    
+	    String homeFacilityUUID = this.getLocationId(homeFacility);
+
 	    Map<String, String> addressFields = new HashMap<>();
 	    addressFields.put("address5", residentialAreaOther);
-	    addressFields.put("address4", birthFacilityName);
+	    addressFields.put("address4", homeFacilityUUID);
 	    addressFields.put("address3", residentialArea);
 	    addressFields.put("address2", residentialAddress);
 	    addressFields.put("address1", physicalLandmark);
 	    
-	    Address address = new Address(ADDRESS_TYPE, addressStartDate, addressEndDate, addressFields, null, null, null, homeFacility, null);
+	    Address address = new Address(ADDRESS_TYPE, addressStartDate, addressEndDate, addressFields, null, null, null, null, null);
 	    
 	    return address;
 	}
@@ -226,11 +228,14 @@ public class XlsDataImportController {
 	    String motherFirstName = record.get("Childs_Particulars/Mother_Guardian_First_Name");
 	    String motherLastName = record.get("Childs_Particulars/Mother_Guardian_Last_Name");
 	    String motherNRC = record.get("Childs_Particulars/Mother_Guardian_NRC");
+	    String homeFacility = record.get("Childs_Particulars/Home_Facility");
+	    String homeFacilityUUID = this.getLocationId(homeFacility);
 	    String motherId = UUID.randomUUID().toString();
 	    
 	    DateTime dateOfBirth = new DateTime(1960, 01, 01, 1, 0);
 	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, dateOfBirth, null, false, false, "Female", addressList, null, null);
 	    motherClient.addAttribute(MOTHER_NRC_NUMBER, motherNRC);
+	    motherClient.addAttribute(HOME_FACILITY, homeFacilityUUID);
 	    
 	    return motherClient;
 	}
@@ -246,7 +251,9 @@ public class XlsDataImportController {
 	    String childCardNumber = record.get("Childs_Particulars/Child_Register_Card_Number");
 	    String chwPhoneNumber = record.get("Childs_Particulars/CHW_Phone_Number");
 	    String fatherNRCNumber = record.get("Childs_Particulars/Father_Guardian_NRC");
-	    String chwName = record.get("Childs_Particulars/CHW_Name");	    
+	    String chwName = record.get("Childs_Particulars/CHW_Name");
+	    String homeFacility = record.get("Childs_Particulars/Home_Facility");
+	    String homeFacilityUUID = this.getLocationId(homeFacility);
 	    
 	    String childId = UUID.randomUUID().toString();
 
@@ -260,6 +267,7 @@ public class XlsDataImportController {
 	    childClient.addAttribute(CHW_PHONE_NUMBER, chwPhoneNumber);
 	    childClient.addAttribute(FATHER_NRC_NUMBER, fatherNRCNumber);
 	    childClient.addAttribute(CHW_NAME, chwName);
+	    childClient.addAttribute(HOME_FACILITY, homeFacilityUUID);
 	    
 	    return childClient;
 	}
@@ -634,7 +642,9 @@ public class XlsDataImportController {
 		// Place_Birth
 		String placeBirth = record.get("Childs_Particulars/Place_Birth");
 		value = placeBirth == "Health_Facility" ? "1537AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" : "1536AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-		birthRegistrationObs.add(buildObservation("concept", "select one", "1572AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Place_Birth"));
+
+		String humanReadableValue = placeBirth == "Health_Facility" ? "Health facility" : placeBirth;
+		birthRegistrationObs.add(buildObservationWithHumanReadableValues("concept", "select one", "1572AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Place_Birth", humanReadableValue));
 		
 		// Birth_Facility_Name
 		String birthFacilityName = record.get("Childs_Particulars/Birth_Facility_Name");
@@ -661,6 +671,19 @@ public class XlsDataImportController {
 		return obs;
 	}
 	
+	private Obs buildObservationWithHumanReadableValues(String fieldType, String fieldDataType, String fieldCode, String value, String formSubmissionField, String humanReadableValue) {
+		List<Object> values = new ArrayList<Object>();
+		values.add(value);
+
+		List<Object> humanReadableValues = new ArrayList<Object>();
+		humanReadableValues.add(humanReadableValue);
+
+		Obs obs = new Obs(fieldType, fieldDataType, fieldCode, "", value, "", formSubmissionField);
+		obs.setHumanReadableValues(humanReadableValues);
+
+		return obs;
+	}
+
 	private Obs buildGrowthMonitoringObservation(String weight) {
 		String fieldType = "concept";
 		String fieldDataType = "decimal";
