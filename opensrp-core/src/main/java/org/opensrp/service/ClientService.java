@@ -89,8 +89,13 @@ public class ClientService {
 		}
 		Client c = findClient(client);
 		if (c != null) {
-			throw new IllegalArgumentException(
+			try {
+				updateClient(client);
+			}
+			catch (JSONException e) {
+				throw new IllegalArgumentException(
 			        "A client already exists with given list of identifiers. Consider updating data.[" + c + "]");
+			}
 		}
 		
 		client.setDateCreated(DateTime.now());
@@ -270,6 +275,27 @@ public class ClientService {
 			client.setId(c.getId());
 			c.setDateEdited(DateTime.now());
 			c.setServerVersion(null);
+			allClients.update(client);
+			
+		} else {
+			
+			client.setDateCreated(DateTime.now());
+			allClients.add(client);
+		}
+		return client;
+	}
+	public Client addorUpdate(Client client, boolean resetServerVersion) {
+		if (client.getBaseEntityId() == null) {
+			throw new RuntimeException("No baseEntityId");
+		}
+		Client c = findClient(client);
+		if (c != null) {
+			client.setRevision(c.getRevision());
+			client.setId(c.getId());
+			c.setDateEdited(DateTime.now());
+			if(resetServerVersion){
+			c.setServerVersion(null);
+			}
 			allClients.update(client);
 			
 		} else {

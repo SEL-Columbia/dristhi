@@ -112,7 +112,7 @@ public class EncounterService extends OpenmrsService{
 		
 		if(ol != null)
 		for (Obs obs : ol) {
-			if(!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode())){//skipping empty obs
+			if(!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode()) && (obs.getFieldType()==null||  obs.getFieldType().equalsIgnoreCase("concept"))){//skipping empty obs and fields that don't have concepts
 				//if no parent simply make it root obs
 				if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
 					p.put(obs.getFieldCode(), convertObsToJson(obs));
@@ -181,7 +181,7 @@ public class EncounterService extends OpenmrsService{
 		
 		if(ol != null)
 		for (Obs obs : ol) {
-			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode())){//skipping empty obs
+			if(!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode()) &&(obs.getFieldType()==null|| obs.getFieldType().equalsIgnoreCase("concept"))){//skipping empty obs
 				//if no parent simply make it root obs
 				if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
 					p.put(obs.getFieldCode(), convertObsToJson(obs));
@@ -263,7 +263,14 @@ public class EncounterService extends OpenmrsService{
 		String patientUuid = encounter.getJSONObject("patient").getString("uuid");
 		Client c = clientService.find(patientUuid);
 		if(c == null || c.getBaseEntityId() == null){
+			//try to get the client from openmrs based on the uuid
+			JSONObject openmrsPatient = patientService.getPatientByUuid(patientUuid, false);
+			c=patientService.convertToClient(openmrsPatient);
+			if(c==null || c.getBaseEntityId() == null){
 			throw new IllegalStateException("Client was not found registered while converting Encounter to an Event in OpenSRP");
+			}else{
+				clientService.addClient(c);
+			}
 		}
 		
 		JSONObject creator = encounter.getJSONObject("auditInfo").getJSONObject("creator");

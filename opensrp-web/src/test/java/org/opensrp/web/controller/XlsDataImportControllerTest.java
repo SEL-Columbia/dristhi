@@ -69,8 +69,8 @@ public class XlsDataImportControllerTest {
 		int summaryEventCount = responseJson.getInt("summary_event_count");
 		
 		assertEquals(summaryClientCount, 4);
-		assertEquals(summaryEventCount, 26);
+		assertEquals(summaryEventCount, 28);
 		verify(clientService, times(4)).addClient(any(Client.class));
-		verify(eventService, times(26)).addEvent(any(Event.class));
+		verify(eventService, times(28)).addEvent(any(Event.class));
 	}
 }
