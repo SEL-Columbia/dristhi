@@ -210,7 +210,7 @@ public class XlsDataImportController {
 	    DateTime addressStartDate = this.parseDate.parseDateTime(startDate);
 	    DateTime addressEndDate = this.parseDate.parseDateTime(endDate);
 	    
-	    String homeFacilityUUID = this.getLocationId(homeFacility);
+	    String homeFacilityUUID = this.getLocationUUID(homeFacility);
 
 	    Map<String, String> addressFields = new HashMap<>();
 	    addressFields.put("address5", residentialAreaOther);
@@ -230,13 +230,13 @@ public class XlsDataImportController {
 	    String motherLastName = record.get("Childs_Particulars/Mother_Guardian_Last_Name");
 	    String motherNRC = record.get("Childs_Particulars/Mother_Guardian_NRC");
 	    String homeFacility = record.get("Childs_Particulars/Home_Facility");
-	    String homeFacilityUUID = this.getLocationId(homeFacility);
+	    String homeFacilityId = this.getLocationId(homeFacility);
 	    String motherId = UUID.randomUUID().toString();
 	    
 	    DateTime dateOfBirth = new DateTime(1960, 01, 01, 12, 0,  DateTimeZone.forOffsetHours(2));
 	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, dateOfBirth, null, false, false, "Female", addressList, null, null);
 	    motherClient.addAttribute(MOTHER_NRC_NUMBER, motherNRC);
-	    motherClient.addAttribute(HOME_FACILITY, homeFacilityUUID);
+	    motherClient.addAttribute(HOME_FACILITY, homeFacilityId);
 	    
 	    return motherClient;
 	}
@@ -254,7 +254,7 @@ public class XlsDataImportController {
 	    String fatherNRCNumber = record.get("Childs_Particulars/Father_Guardian_NRC");
 	    String chwName = record.get("Childs_Particulars/CHW_Name");
 	    String homeFacility = record.get("Childs_Particulars/Home_Facility");
-	    String homeFacilityUUID = this.getLocationId(homeFacility);
+	    String homeFacilityId = this.getLocationId(homeFacility);
 	    
 	    String childId = UUID.randomUUID().toString();
 
@@ -268,7 +268,7 @@ public class XlsDataImportController {
 	    childClient.addAttribute(CHW_PHONE_NUMBER, chwPhoneNumber);
 	    childClient.addAttribute(FATHER_NRC_NUMBER, fatherNRCNumber);
 	    childClient.addAttribute(CHW_NAME, chwName);
-	    childClient.addAttribute(HOME_FACILITY, homeFacilityUUID);
+	    childClient.addAttribute(HOME_FACILITY, homeFacilityId);
 	    
 	    return childClient;
 	}
@@ -507,7 +507,7 @@ public class XlsDataImportController {
         eventDate = eventDate == null ? new DateTime() : eventDate;
         String formSubmissionId = UUID.randomUUID().toString();
         String providerId = getProviderId(locationName);
-        String locationId = getLocationId(locationName);
+        String locationId = getLocationUUID(locationName);
         
         Event event = new Event(client.getBaseEntityId(), eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
         event = this.addMultipleObs(event, obs);
@@ -525,7 +525,7 @@ public class XlsDataImportController {
 		return event;
 	}
 	
-	private String getLocationId(String location) {
+	private String getLocationUUID(String location) {
 		switch(location) {
 			case "Mahatma_Gandhi":
 	            return "5bf3b4ca-9482-4e85-ab7a-0c44e4edb329";
@@ -539,6 +539,25 @@ public class XlsDataImportController {
 	        	return "7567285c-0929-4723-9cf8-faee530adb70";
 	        case "Airport_Clininc":
 	        	return "39d0a527-d4dc-4946-ad8f-7cb045cc0bb8";
+	        default:
+	        	return "";
+		}
+	}
+	
+	private String getLocationId(String location) {
+		switch(location) {
+			case "Mahatma_Gandhi":
+	            return "448";
+	        case "Libuyu":
+	            return "443";
+	        case "Linda":
+	            return "532";
+	        case "Dambwa_North_Clinic":
+	            return "456";
+	        case "Victoria_Falls_Clinic":
+	        	return "1009";
+	        case "Airport_Clininc":
+	        	return "426";
 	        default:
 	        	return "";
 		}
@@ -652,7 +671,7 @@ public class XlsDataImportController {
 		String birthFacilityNameOther = record.get("Childs_Particulars/Birth_Facility_Name_Other");
 		
 		if(birthFacilityName != "n/a") {
-			value = this.getLocationId(birthFacilityName) != "" ? this.getLocationId(birthFacilityName) : birthFacilityNameOther;
+			value = this.getLocationUUID(birthFacilityName) != "" ? this.getLocationUUID(birthFacilityName) : birthFacilityNameOther;
 			birthRegistrationObs.add(buildObservation("concept", "text", "163531AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Birth_Facility_Name"));
 		}
 		// PMTCT_Status
