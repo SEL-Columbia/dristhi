@@ -17,6 +17,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.domain.Address;
@@ -232,7 +233,7 @@ public class XlsDataImportController {
 	    String homeFacilityUUID = this.getLocationId(homeFacility);
 	    String motherId = UUID.randomUUID().toString();
 	    
-	    DateTime dateOfBirth = new DateTime(1960, 01, 01, 1, 0);
+	    DateTime dateOfBirth = new DateTime(1960, 01, 01, 12, 0,  DateTimeZone.forOffsetHours(2));
 	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, dateOfBirth, null, false, false, "Female", addressList, null, null);
 	    motherClient.addAttribute(MOTHER_NRC_NUMBER, motherNRC);
 	    motherClient.addAttribute(HOME_FACILITY, homeFacilityUUID);
