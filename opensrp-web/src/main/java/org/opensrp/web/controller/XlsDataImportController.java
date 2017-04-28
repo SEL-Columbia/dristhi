@@ -211,11 +211,12 @@ public class XlsDataImportController {
 	    DateTime addressEndDate = this.parseDate.parseDateTime(endDate);
 	    
 	    String homeFacilityUUID = this.getLocationUUID(homeFacility);
+	    String residentialAreaUUID = this.getResidentialAreaUUID(residentialArea);
 
 	    Map<String, String> addressFields = new HashMap<>();
 	    addressFields.put("address5", residentialAreaOther);
 	    addressFields.put("address4", homeFacilityUUID);
-	    addressFields.put("address3", residentialArea);
+	    addressFields.put("address3", residentialAreaUUID);
 	    addressFields.put("address2", residentialAddress);
 	    addressFields.put("address1", physicalLandmark);
 	    
@@ -563,6 +564,85 @@ public class XlsDataImportController {
 		}
 	}
 	
+	private String getResidentialAreaUUID(String residentialArea) {
+		switch(residentialArea) {
+			case "Airport":
+				return "658728c1-1c02-4813-a8b5-1727c6936702";
+			case "Cold_Storage":
+				return "16e0d178-4aab-48f7-8b71-3197d8eb11c2";
+			case "Dambwa_Site_Service_Extension":
+				return "e5939466-2017-4bb6-9c15-985238906d60";
+			case "Dambwa_Central":
+				return "b99f0e6f-1d82-459d-8f34-45687d56a272";
+			case "Dambwa_North_A":
+				return "a82916f8-c907-4252-9af7-a32291ea1147";
+			case "Dambwa_North_B":
+				return "33fbc3a5-cea7-4acb-a674-f3dde2fbba43";
+			case "Dambwa_North_C":
+				return "4a3f39e0-7fda-46b5-ba59-3aba0cd5d35f";
+			case "Dambwa_North_A_Zone2":
+				return "f4c6496c-4423-4e01-8595-5aa40ac3e493";
+			case "Dambwa_North_Ex":
+				return "1f7adf3d-9a2c-45ca-811b-d4f37c2de684";
+			case "Dambwa_North_Ex_Zone2":
+				return "32e90dcf-ddc3-4e48-802d-398292089082";
+			case "Dambwa_North_N":
+				return "9e60f6e8-dfcc-4a47-8023-c57d01dc9424";
+			case "Dambwa_North_V":
+				return "9ea4663c-ad83-4a28-9d79-56e6ae49604c";
+			case "Dambwa_Site_Village":
+				return "70c60496-814a-42b5-a62e-173289ba360f";
+			case "Dambwa_Site":
+				return "d8120774-20c8-437b-9167-b82797cffe45";
+			case "Libuyu_A":
+				return "f8619a84-0da9-4eac-8e49-a7e3687fcd5c";
+			case "Libuyu_B":
+				return "27a27354-99fd-4f9f-bc7c-e3c866f6d9a6";
+			case "Libuyu_C":
+				return "9d978b8b-4efd-4f76-973b-a53d3d9edc26";
+			case "Libuyu_D":
+				return "90ae79e0-47fd-47c4-afdb-876bfa8efb40";
+			case "Libuyu_EA":
+				return "ebe19d2a-dca5-4014-bfa8-bd0b013d8a7c";
+			case "Linda_A":
+				return "6f88ef86-89fe-49f3-b533-76aabb593e2b";
+			case "Linda_B":
+				return "2572ada2-9694-480d-9e68-f9b832f074f9";
+			case "Linda_C":
+				return "3c21c93a-094f-42a2-8c8b-efe3ca9b0238";
+			case "Linda_D":
+				return "a67526bd-b879-491d-aaef-f5fbcc3bd6ca";
+			case "Linda_E":
+				return "f1a70659-368d-4395-8d20-1d68453925f9";
+			case "Linda_F":
+				return "19e01239-d56d-4152-a960-de4c0733ed57";
+			case "Linda_G":
+				return "052830fe-07c9-4964-9140-883ad207a300";
+			case "Linda_H":
+				return "0bc72122-00b2-47cd-9c71-fb7cc716c4c3";
+			case "Linda_N":
+				return "b06960c8-7911-4f9b-bf3f-ec3abc86ab4d";
+			case "Maunga":
+				return "123105c1-b9aa-499b-a0d3-7ac2d311f4e1";
+			case "Mulala_Village":
+				return "e510de83-e077-401b-bf26-53d2f311fea0";
+			case "Mwandi":
+				return "edd22709-b77c-445f-aa33-ef478ae625d1";
+			case "Nearby_Farms":
+				return "c9a180f2-5488-4955-8521-fdb904e6e8b4";
+			case "Sakubita":
+				return "b9dc7838-079b-4601-baac-7df6519ba84b";
+			case "Sawmills":
+				return "7809d8ac-7bec-473c-8a20-a3edffff225c";
+			case "Zesco":
+				return "f28994f4-91ec-4ef2-a9e5-6d17346be649";
+			case "Zawa":
+				return "389e4d39-8587-4bf4-b2f1-247d9aabcffe";
+			default:
+				return "";
+		}
+	}
+
 	private String getVaccineParentCode(String vaccine) {
 		switch(vaccine) {
 			case BCG_VACCINE:
