@@ -110,7 +110,7 @@ public class EventResource extends RestResource<Event> {
 				    BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				if (!events.isEmpty()) {
 					for (Event event : events) {
-						if(event.getBaseEntityId()!=null && !event.getBaseEntityId().isEmpty()){
+						if(event.getBaseEntityId()!=null && !event.getBaseEntityId().isEmpty() && !clientIds.contains(event.getBaseEntityId())){
 						  clientIds.add(event.getBaseEntityId());
 						}
 					}

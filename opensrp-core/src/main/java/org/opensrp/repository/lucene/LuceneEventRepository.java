@@ -55,7 +55,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 			qf.between(LAST_UPDATE, lastEditFrom, lastEditTo);
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(baseEntityId)) {
-			qf.eq(BASE_ENTITY_ID, baseEntityId);
+			qf.like(BASE_ENTITY_ID, baseEntityId);
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(eventType)) {
 			qf.eq(EVENT_TYPE, eventType);
@@ -67,7 +67,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 			qf.eq(PROVIDER_ID, providerId);
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(locationId)) {
-			qf.eq(LOCATION_ID, locationId);
+			qf.like(LOCATION_ID, locationId);
 		}
 		
 		if (StringUtils.isEmptyOrWhitespaceOnly(qf.query())) {
@@ -124,11 +124,20 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 		}
 		
 		if (!StringUtils.isEmptyOrWhitespaceOnly(locationId)) {
-			qf.eq(LOCATION_ID, locationId);
+			qf.like(LOCATION_ID, locationId);
 		}
 		
 		if (!StringUtils.isEmptyOrWhitespaceOnly(baseEntityId)) {
-			qf.eq(BASE_ENTITY_ID, baseEntityId);
+			if(baseEntityId.contains(",")){
+				Query q = new Query(FilterType.OR);
+				String[] idsArray = org.apache.commons.lang.StringUtils.split(baseEntityId, ",");
+				List<String> ids = new ArrayList<String>(Arrays.asList(idsArray));
+				q.likeList(BASE_ENTITY_ID, ids);
+				
+				qf.addToQuery(q);
+			}else{
+				qf.like(BASE_ENTITY_ID, baseEntityId);
+			}
 		}
 		
 		if (StringUtils.isEmptyOrWhitespaceOnly(qf.query())) {

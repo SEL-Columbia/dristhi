@@ -158,7 +158,11 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		}
 		LuceneQuery lq = new LuceneQuery("Client", "by_all_criteria_v2");
 		Query query = new Query(FilterType.AND);
-		query.inList(field, ids);
+		if(field.equals(BASE_ENTITY_ID)) {
+			query.likeList(field, ids);
+		} else {
+			query.inList(field, ids);		
+		}
 		lq.setQuery(query.query());
 		lq.setLimit(ids.size());
 		// stale must not be ok, as we've only just loaded the docs

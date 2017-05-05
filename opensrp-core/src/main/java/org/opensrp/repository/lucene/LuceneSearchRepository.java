@@ -93,8 +93,12 @@ public class LuceneSearchRepository extends CouchDbRepositorySupportWithLucene<S
 					if (attributeType.equals(INACTIVE) || attributeType.equals(LOST_TO_FOLLOW_UP)) {
 						if (attributeValue.equals(Boolean.TRUE.toString())) {
 							sq.eq(attributeType, attributeValue);
-						} else {
-							sq.notEq(attributeType, Boolean.TRUE.toString());
+						} else if (attributeType.equals(INACTIVE) && attributeValue.equals(Boolean.FALSE.toString())){
+							//ACTIVE
+							Query aq = new Query(FilterType.AND);
+							aq.notEq(INACTIVE, Boolean.TRUE.toString());
+							aq.notEq(LOST_TO_FOLLOW_UP, Boolean.TRUE.toString());
+							sq.addToQuery(aq);
 						}
 					} else {
 						qf.likeWithWildCard(attributeType, attributeValue);
