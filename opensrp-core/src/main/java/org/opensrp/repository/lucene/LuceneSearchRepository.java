@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Search;
 import org.springframework.beans.factory.annotation.Autowired;

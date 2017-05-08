@@ -73,11 +73,11 @@ public class Query {
 	}
 	
 	//field:("value1" OR "value2" OR "value3")
-		public Query likeList(String field, List<String> ids) {
-			String idString = quotedJoin(ids, " OR ");
-			addToQuery(field + ":(" + idString + ")");
-			return this;
-		}
+	public Query likeList(String field, List<String> ids) {
+		String idString = quotedJoin(ids, " OR ");
+		addToQuery(field + ":(" + idString + ")");
+		return this;
+	}
 	
 	private void addToQuery(String q) {
 		if (!StringUtils.isEmptyOrWhitespaceOnly(query)) {
