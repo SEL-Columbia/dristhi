@@ -1,34 +1,21 @@
 
 package org.opensrp.connector.openmrs.service;
 
-<<<<<<< HEAD
-import java.util.Date;
-=======
 import java.io.File;
 import java.io.IOException;
->>>>>>> master
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-<<<<<<< HEAD
-import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.HttpUtil;
+import org.opensrp.connector.MultipartUtility;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
-=======
-import org.opensrp.api.domain.Address;
-import org.opensrp.api.domain.BaseEntity;
-import org.opensrp.api.domain.Client;
-import org.opensrp.connector.HttpUtil;
-import org.opensrp.connector.MultipartUtility;
 import org.opensrp.domain.Multimedia;
->>>>>>> master
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
