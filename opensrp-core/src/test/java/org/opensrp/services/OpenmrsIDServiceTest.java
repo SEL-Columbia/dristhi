@@ -1,5 +1,9 @@
 package org.opensrp.services;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +11,6 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.SpringApplicationContextProvider;
 import org.opensrp.domain.Address;
@@ -15,27 +18,14 @@ import org.opensrp.domain.Client;
 import org.opensrp.service.OpenmrsIDService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
 	@Autowired
 	OpenmrsIDService openmrsIDService;
 	
-	@Before
-	public void setUp() {
-		try {
-			this.openmrsIDService.initializeImportTable(true);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	@After
 	public void tearDown() {
-		openmrsIDService.clearRecords(true);
+		openmrsIDService.clearRecords();
 	}
 	
 	public Client createClient(String baseEntityId, String firstName, String lastName, String gender, String childRegisterCardNumber) {
@@ -65,7 +55,7 @@ public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
 	}
 	
 	@Test
-	public void testExistingClientsDoNotReceiveNewOpenmrsId() throws SQLException {
+	public void testExistingClientsDoNotReceiveNewOpenmrsId() throws Exception {
 		Client client = this.createClient("45678", "Jane", "Doe", "Female", "102/17");
 		Client duplicateClient = this.createClient("45677", "Jane", "Doe", "Female", "102/17");
 
@@ -73,7 +63,7 @@ public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
 		assertNotNull(client.getIdentifier(OpenmrsIDService.ZEIR_IDENTIFIER));
 		
 		openmrsIDService.assignOpenmrsIdToClient("12345-1", duplicateClient, true);
-		assertTrue(openmrsIDService.checkIfClientExists(duplicateClient, true));
+		assertTrue(openmrsIDService.checkIfClientExists(duplicateClient));
 		assertNull(duplicateClient.getIdentifier(OpenmrsIDService.ZEIR_IDENTIFIER));
 	}
 }

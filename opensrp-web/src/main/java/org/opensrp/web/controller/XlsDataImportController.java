@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +76,6 @@ public class XlsDataImportController {
 	public ResponseEntity<String> importXlsData(@RequestParam("file") MultipartFile file) throws SQLException {
 		Map<String, Object> stats = new HashMap<>();
 
-		this.openmrsIDService.initializeImportTable(false);
 
 		int eventCount = 0;
 		int clientCount = 0;
@@ -100,7 +98,7 @@ public class XlsDataImportController {
 			    // Create child record
 			    Client childClient = this.createChildClient(record, addressList);
 			    
-			    if(!openmrsIDService.checkIfClientExists(childClient, false)) {
+			    if(!openmrsIDService.checkIfClientExists(childClient)) {
 			    	// Assign zeir and m_zeir ids
 				    String zeirId = openmrsIds.get(counter);
 				    String motherZeirId = zeirId + "_mother";
