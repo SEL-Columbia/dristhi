@@ -7,8 +7,10 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.http.HttpStatus.OK;
 
 import java.net.URLConnection;
+
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -63,14 +65,14 @@ public class FormSubmissionController {
     private PatientService patientService;
     private HouseholdService householdService;
     private ErrorTraceService errorTraceService;
-    
-    @Autowired //TODO: Julkar Confirm this
     private MultimediaService multimediaService;
+    private MultimediaRepository multimediaRepository;
     
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, FormEntityConverter formEntityConverter, PatientService patientService, 
-    		HouseholdService householdService, ErrorTraceService errorTraceService) {
+    		HouseholdService householdService,MultimediaService multimediaService, MultimediaRepository multimediaRepository,
+    		ErrorTraceService errorTraceService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         this.errorTraceService=errorTraceService;
@@ -78,6 +80,8 @@ public class FormSubmissionController {
         this.formEntityConverter = formEntityConverter;
         this.patientService = patientService;
         this.householdService = householdService;
+        this.multimediaService = multimediaService;
+        this.multimediaRepository = multimediaRepository;
     }
 
     @RequestMapping(method = GET, value = "/form-submissions")
@@ -195,6 +199,7 @@ public class FormSubmissionController {
     		}
     	//}
     }
+
     @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
     @ResponseBody
     public List<MultimediaDTO> getFiles(@RequestParam("anm-id") String providerId) {
@@ -208,5 +213,4 @@ public class FormSubmissionController {
 			}
 		});
     }
-    
 }
