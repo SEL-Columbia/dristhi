@@ -134,41 +134,36 @@ public class XlsDataImportController {
 					// deviceid
 					String deviceid = record.get("deviceid");
 					Obs deviceIdObs = buildObservation("concept", "deviceid", "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", deviceid, "deviceid");
+
+					List<Obs> defaultObs = new ArrayList<Obs>();
+					defaultObs.add(startObs);
+					defaultObs.add(endObs);
+					defaultObs.add(deviceIdObs);
 				    
 				    // Create Birth Registration Event
 				    Event birthRegistrationEvent = this.buildBirthRegistrationEvent(record, childClient);
-				    birthRegistrationEvent.addObs(startObs);
-				    birthRegistrationEvent.addObs(endObs);
-				    birthRegistrationEvent.addObs(deviceIdObs);
+				    this.addMultipleObs(birthRegistrationEvent, defaultObs);
 
 				    eventService.addEvent(birthRegistrationEvent);
 				    eventCounter++;
 
 				    // Create New Woman Registration Event
 				    Event womanRegistrationEvent = this.buildNewWomanRegistrationEvent(record, motherClient);
-				    womanRegistrationEvent.addObs(startObs);
-				    womanRegistrationEvent.addObs(endObs);
-				    womanRegistrationEvent.addObs(deviceIdObs);
+				    this.addMultipleObs(womanRegistrationEvent, defaultObs);
 
 				    eventService.addEvent(womanRegistrationEvent);
 				    eventCounter++;
 
 				    // Create vaccination events
 				    for(Event e: this.buildVaccinationEvents(record, childClient)) {
-						e.addObs(startObs);
-						e.addObs(endObs);
-						e.addObs(deviceIdObs);
-
+						this.addMultipleObs(e, defaultObs);
 				    	eventService.addEvent(e);
 				    	eventCounter++;
 				    }
 				    
 				    //Create growth monitoring events
 				    for(Event e: this.buildGrowthMonitoringEvents(record, childClient)) {
-						e.addObs(startObs);
-						e.addObs(endObs);
-						e.addObs(deviceIdObs);
-
+				    	this.addMultipleObs(e, defaultObs);
 				    	eventService.addEvent(e);
 				    	eventCounter++;
 				    }
@@ -238,6 +233,7 @@ public class XlsDataImportController {
 	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, dateOfBirth, null, false, false, "Female", addressList, null, null);
 	    motherClient.addAttribute(MOTHER_NRC_NUMBER, motherNRC);
 	    motherClient.addAttribute(HOME_FACILITY, homeFacilityUUID);
+	    motherClient.addAttribute(LOCATION, homeFacilityUUID);
 	    
 	    return motherClient;
 	}
@@ -270,6 +266,7 @@ public class XlsDataImportController {
 	    childClient.addAttribute(FATHER_NRC_NUMBER, fatherNRCNumber);
 	    childClient.addAttribute(CHW_NAME, chwName);
 	    childClient.addAttribute(HOME_FACILITY, homeFacilityUUID);
+	    childClient.addAttribute(LOCATION, homeFacilityUUID);
 	    
 	    return childClient;
 	}
