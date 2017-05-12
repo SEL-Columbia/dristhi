@@ -255,14 +255,14 @@
 		<dependency>
 		    <groupId>com.itextpdf</groupId>
 		    <artifactId>itextpdf</artifactId>
-		    <version>5.5.11</version>
+		    <version>5.4.0</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
 		<dependency>
 		    <groupId>com.google.zxing</groupId>
 		    <artifactId>core</artifactId>
-		    <version>3.3.0</version>
+		    <version>2.1</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/cglib/cglib 

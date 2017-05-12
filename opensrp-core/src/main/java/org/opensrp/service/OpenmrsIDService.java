@@ -35,7 +35,7 @@ public class OpenmrsIDService {
 	@Value("#{opensrp['openmrs.password']}")
 	private String openmrsPassword;
 	
-	@Value("#{opensrp['openmrs.source']}")
+	@Value("#{opensrp['openmrs.idgen.idsource']}")
 	private int openmrsSourceId;
 	
 	// Client identifiers constant
@@ -56,11 +56,11 @@ public class OpenmrsIDService {
 		this.client = HttpClientBuilder.create().build();
 	}
 	
-	public List<String> downloadOpenmrsIds(int numberToGenerate) {
+	public List<String> downloadOpenmrsIds(int size) {
 		List<String> ids = new ArrayList<String>();
 		String openmrsQueryUrl = this.openmrsUrl + OPENMRS_IDGEN_URL;
 		// Add query parameters
-		openmrsQueryUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + numberToGenerate;
+		openmrsQueryUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + size;
 		openmrsQueryUrl += "&username=" + this.openmrsUserName + "&password=" + this.openmrsPassword;
 		
 		HttpGet get = new HttpGet(openmrsQueryUrl);
@@ -84,17 +84,24 @@ public class OpenmrsIDService {
 		// import IDs and client data to database together with assignments 
 		return ids;
 	}
-	
-	public void downloadAndSaveIds(int numberToGenerate) {
+	/**
+	 * download ids only if the total unused is less than the size specified
+	 * @param size
+	 */
+	public void downloadAndSaveIds(int size,String userName) {
 		try {
-			List<String> ids = downloadOpenmrsIds(numberToGenerate);
-			for (String id : ids) {
-				UniqueId uniqueId = new UniqueId();
-				uniqueId.setCreatedAt(new Date());
-				uniqueId.setOpenmrsId(id);
-				uniqueId.setUsedBy(openmrsUserName);
-				uniqueId.setStatus("Downloaded for printing");
-				uniqueIdRepository.save(uniqueId);
+			Integer totalUnUsed = uniqueIdRepository.totalUnUsedIds();
+			if (totalUnUsed < size) {
+				int numberToGenerate=size-totalUnUsed;
+				List<String> ids = downloadOpenmrsIds(numberToGenerate);
+				for (String id : ids) {
+					UniqueId uniqueId = new UniqueId();
+					uniqueId.setCreatedAt(new Date());
+					uniqueId.setOpenmrsId(id);
+					uniqueId.setUsedBy(userName);
+					uniqueId.setStatus(UniqueId.STATUS_NOT_USED);
+					uniqueIdRepository.save(uniqueId);
+				}
 			}
 		}
 		catch (Exception e) {
@@ -134,7 +141,7 @@ public class OpenmrsIDService {
 		}
 	}
 	
-	public void assignOpenmrsIdToClient(String zeirID, Client client, boolean testMode) throws SQLException {
+	public void assignOpenmrsIdToClient(String zeirID, Client client) throws SQLException {
 		// create jdbc template to persist the ids
 		try {
 			String location = client.getAddress("usual_residence").getAddressField("address2");
@@ -155,6 +162,16 @@ public class OpenmrsIDService {
 		catch (Exception e) {
 			logger.error("", e);
 		}
+	}
+	public List<UniqueId> getNotUsedIds(int limit){
+		return uniqueIdRepository.getNotUsedIds(limit);
+	}
+	
+	public List<String> getNotUsedIdsAsString(int limit){
+		return uniqueIdRepository.getNotUsedIdsAsString(limit);
+	}
+	public int[] markIdsAsUsed(List<String> ids){
+		return uniqueIdRepository.markAsUsed(ids);
 	}
 	
 }
