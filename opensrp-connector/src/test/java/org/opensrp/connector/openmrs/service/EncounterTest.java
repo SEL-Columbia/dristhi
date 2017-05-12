@@ -2,18 +2,24 @@
 package org.opensrp.connector.openmrs.service;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
@@ -447,5 +453,90 @@ public class EncounterTest extends TestResourceLoader{
 			s.createEncounter(e);
 		}
 
+	}
+	
+	@Test
+	public void testUpdateEncounter() throws JSONException {
+		// mock call to get obs uuids for encounter
+		us = mock(OpenmrsUserService.class);
+		ps = mock(PatientService.class);
+		
+		encounterService.setUserService(us);
+		encounterService.setPatientService(ps);
+		
+		String username = "DLucia";
+		JSONObject providerDLucia = new JSONObject();
+		providerDLucia.put("uuid", "13daa865-9df7-4062-8b32-9b0b42b27d41");
+		JSONObject clientPatient = new JSONObject();
+		clientPatient.put("uuid", "fbb1ea28-2ea2-4bcb-bbc5-948f5699f688");
+		
+		when(us.getPersonByUser(username)).thenReturn(providerDLucia);
+		when(ps.getPatientByIdentifier(anyString())).thenReturn(clientPatient);
+		
+		// create a client
+		Client client = new Client("fbb1ea28-2ea2-4bcb-bbc5-948f5699f688");
+
+		// create test event encounter with encounter uuid
+		Obs startObs = new Obs("concept", "start", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "", "2017-03-20 16:29:16", "", "start");
+		Obs endObs = new Obs("concept", "end", "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "", "2017-03-20 16:38:17", "", "end");
+		Obs deviceObs = new Obs("concept", "deviceid", "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "", "enketo.ona.io:Z1Sr2fifsKBExXgX", "", "deviceid");
+		
+		String vaccine = "opv";
+		String date = "2017-03-21";
+		String fieldType = "concept";
+		String dateFieldDataType = "date";
+		String calculateFieldDataType = "calculate";
+		String dateFieldCode = "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		String calculateFieldCode = "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		String parentCode = "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		String sequence = "2";
+		String formSubmissionField1 = vaccine + "_" + sequence;
+		String formSubmissionField2 = vaccine + "_" + sequence + "_dose";
+		List<Object> values1 = new ArrayList<Object>();
+		values1.add(date);
+		List<Object> values2 = new ArrayList<Object>();
+		values2.add(sequence);
+		
+		Obs bcgDateObs = new Obs(fieldType, dateFieldDataType, dateFieldCode, parentCode, values1, null, formSubmissionField1);
+		Obs bcgCalculateObs = new Obs(fieldType, calculateFieldDataType, calculateFieldCode, parentCode, values2, null, formSubmissionField2);
+		
+		DateTime eventDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseDateTime(date);
+		
+		Event event = new Event(client.getBaseEntityId(),
+								"Vaccination",
+								eventDate,
+								"vaccination",
+								"DLucia",
+								"5bf3b4ca-9482-4e85-ab7a-0c44e4edb329",
+								"acb135c3-b501-4c12-9beb-d13b8b11deeb");
+		event.addObs(startObs);
+		event.addObs(endObs);
+		event.addObs(deviceObs);
+		event.addObs(bcgDateObs);
+		event.addObs(bcgCalculateObs);
+		event.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, "ff00a625-5309-4c12-a2cb-38e4985d9a94");
+		
+		JSONObject updatedEncounter = encounterService.buildUpdateEncounter(event);
+		
+		// check that all obs have the expected uuid
+		System.out.println("[updatedEncounter]" + updatedEncounter);
+		JSONArray obsArray = updatedEncounter.getJSONArray("obs");
+		
+		assertEquals(obsArray.length(), 4);
+		
+		for(int i = 0; i < obsArray.length(); i++) {
+			JSONObject obs = obsArray.getJSONObject(i);
+			assertNotEquals(obs.get("uuid"), "");
+			
+			if(obs.has("groupMembers")) {
+				JSONArray groupMembers = obs.getJSONArray("groupMembers");
+				for(int k = 0; k < groupMembers.length(); k++) {
+					assertNotEquals(obs.get("uuid"), "");
+				}
+			}
+		}
+		
+		encounterService.updateEncounter(event);
+		
 	}
 }
