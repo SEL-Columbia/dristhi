@@ -107,7 +107,7 @@ public class XlsDataImportController {
 				    Client motherClient = this.createMotherClient(record, addressList);
 				    motherClient.addIdentifier(M_ZEIR_ID, motherZeirId);
 
-				    openmrsIDService.assignOpenmrsIdToClient(zeirId, childClient, false);
+				    openmrsIDService.assignOpenmrsIdToClient(zeirId, childClient);
 
 				    // Create mother relationship
 				    childClient.addRelationship("mother", motherClient.getBaseEntityId());

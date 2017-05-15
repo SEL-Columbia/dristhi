@@ -14,9 +14,6 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -119,7 +116,6 @@ public class PdfUtil {
 			}
 			document.add(table);
 			document.close();
-			
 			
 			return byteArrayOutputStream;
 		}

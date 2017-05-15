@@ -50,7 +50,7 @@ public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
 	public void testDownloadOpenmrsIds() throws SQLException {
 		Client client = this.createClient("12345", "First", "Last", "Male", "454/16");
 		
-		openmrsIDService.assignOpenmrsIdToClient("12345-1", client, true);
+		openmrsIDService.assignOpenmrsIdToClient("12345-1", client);
 		assertNotNull(client.getIdentifier(OpenmrsIDService.ZEIR_IDENTIFIER));
 	}
 	
@@ -59,10 +59,10 @@ public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
 		Client client = this.createClient("45678", "Jane", "Doe", "Female", "102/17");
 		Client duplicateClient = this.createClient("45677", "Jane", "Doe", "Female", "102/17");
 
-		openmrsIDService.assignOpenmrsIdToClient("12345-1", client, true);
+		openmrsIDService.assignOpenmrsIdToClient("12345-1", client);
 		assertNotNull(client.getIdentifier(OpenmrsIDService.ZEIR_IDENTIFIER));
 		
-		openmrsIDService.assignOpenmrsIdToClient("12345-1", duplicateClient, true);
+		openmrsIDService.assignOpenmrsIdToClient("12345-1", duplicateClient);
 		assertTrue(openmrsIDService.checkIfClientExists(duplicateClient));
 		assertNull(duplicateClient.getIdentifier(OpenmrsIDService.ZEIR_IDENTIFIER));
 	}
