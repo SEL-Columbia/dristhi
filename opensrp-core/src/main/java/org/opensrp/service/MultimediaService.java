@@ -32,9 +32,14 @@ public class MultimediaService {
 	public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
 		
 		boolean uploadStatus = uploadFile(multimediaDTO, file);
-
+         
+		String[] multimediaDirPathSplit =  multimediaDirPath.split("/", 3);
+		String multimediaDirPathDB = File.separator + multimediaDirPathSplit[2];
+		
 		if (uploadStatus) {
 			try {
+				logger.info("Image path : " + multimediaDirPath);
+				
 				Multimedia multimediaFile = new Multimedia()
 						.withCaseId(multimediaDTO.caseId())
 						.withProviderId(multimediaDTO.providerId())
@@ -113,7 +118,13 @@ public class MultimediaService {
 			return false;
 		}
 	}
-
+    private void makeMultimediaDir(String dirPath)
+    {
+    	File file = new File(dirPath);
+		 if(!file.exists())
+			 file.mkdirs();
+			 
+    }
 	public List<Multimedia> getMultimediaFiles(String providerId) {
 		return multimediaRepository.all(providerId);
 	}

@@ -16,6 +16,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.domain.Address;
@@ -42,6 +43,7 @@ public class XlsDataImportController {
 	public static final String LOCATION = "Location";
 	public static final String M_ZEIR_ID = "M_ZEIR_ID";
 	public static final String MOTHER_NRC_NUMBER = "NRC_Number";
+	public static final String HOME_FACILITY = "Home_Facility";
 	public static final String CHW_NAME = "CHW_Name";
 	public static final String PMTCT_STATUS = "PMTCT_Status";
 	public static final String CHILD_REGISTER_CARD_NUMBER = "Child_Register_Card_Number";
@@ -197,73 +199,88 @@ public class XlsDataImportController {
 	    String startDate = record.get("today");
 	    String endDate = record.get("today");
 	    String homeFacility = record.get("Childs_Particulars/Home_Facility");
-	    String birthFacilityName = record.get("Childs_Particulars/Birth_Facility_Name");
-	    String residentialArea = record.get("Childs_Particulars/Residential_Area");
-	    String residentialAreaOther = record.get("Childs_Particulars/Residential_Area_Other");
-	    String residentialAddress = record.get("Childs_Particulars/Residential_Address");
-	    String physicalLandmark = record.get("Childs_Particulars/Physical_Landmark");
+	    String residentialArea = this.validateValue(record.get("Childs_Particulars/Residential_Area"));
+	    String residentialAreaOther = this.validateValue(record.get("Childs_Particulars/Residential_Area_Other"));
+	    String residentialAddress = this.validateValue(record.get("Childs_Particulars/Residential_Address"));
+	    String physicalLandmark = this.validateValue(record.get("Childs_Particulars/Physical_Landmark"));
 	    
 	    // Build address object
 	    DateTime addressStartDate = this.parseDate.parseDateTime(startDate);
 	    DateTime addressEndDate = this.parseDate.parseDateTime(endDate);
 	    
+	    String homeFacilityUUID = this.getLocationUUID(homeFacility);
+	    String residentialAreaUUID = this.getResidentialAreaUUID(residentialArea);
+
 	    Map<String, String> addressFields = new HashMap<>();
 	    addressFields.put("address5", residentialAreaOther);
-	    addressFields.put("address4", birthFacilityName);
-	    addressFields.put("address3", residentialArea);
+	    addressFields.put("address4", homeFacilityUUID);
+	    addressFields.put("address3", residentialAreaUUID);
 	    addressFields.put("address2", residentialAddress);
 	    addressFields.put("address1", physicalLandmark);
 	    
-	    Address address = new Address(ADDRESS_TYPE, addressStartDate, addressEndDate, addressFields, null, null, null, homeFacility, null);
+	    Address address = new Address(ADDRESS_TYPE, addressStartDate, addressEndDate, addressFields, null, null, null, null, null);
 	    
 	    return address;
 	}
 	
 	private Client createMotherClient(CSVRecord record, ArrayList<Address> addressList) {
 		// Mother data
-	    String motherFirstName = record.get("Childs_Particulars/Mother_Guardian_First_Name");
-	    String motherLastName = record.get("Childs_Particulars/Mother_Guardian_Last_Name");
-	    String motherNRC = record.get("Childs_Particulars/Mother_Guardian_NRC");
+	    String motherFirstName = this.validateValue(record.get("Childs_Particulars/Mother_Guardian_First_Name"));
+	    String motherLastName = this.validateValue(record.get("Childs_Particulars/Mother_Guardian_Last_Name"));
+	    String motherNRC = this.validateValue(record.get("Childs_Particulars/Mother_Guardian_NRC"));
+	    String homeFacility = this.validateValue(record.get("Childs_Particulars/Home_Facility"));
+	    String homeFacilityUUID = this.getLocationUUID(homeFacility);
 	    String motherId = UUID.randomUUID().toString();
 	    
-	    DateTime dateOfBirth = new DateTime(1960, 01, 01, 1, 0);
+	    DateTime dateOfBirth = new DateTime(1960, 01, 01, 12, 0,  DateTimeZone.forOffsetHours(2));
 	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, dateOfBirth, null, false, false, "Female", addressList, null, null);
 	    motherClient.addAttribute(MOTHER_NRC_NUMBER, motherNRC);
+	    motherClient.addAttribute(HOME_FACILITY, homeFacilityUUID);
 	    
 	    return motherClient;
 	}
 	
 	private Client createChildClient(CSVRecord record, ArrayList<Address> addressList) {
 		// Child data
-	    String firstName = record.get("Childs_Particulars/First_Name");
-	    String lastName = record.get("Childs_Particulars/Last_Name");
-	    String gender = record.get("Childs_Particulars/Sex");
-	    String birthDate = record.get("Childs_Particulars/Date_Birth");
+	    String firstName = this.validateValue(record.get("Childs_Particulars/First_Name"));
+	    String lastName = this.validateValue(record.get("Childs_Particulars/Last_Name"));
+	    String gender = this.validateValue(record.get("Childs_Particulars/Sex"));
+	    String birthDate = this.validateValue(record.get("Childs_Particulars/Date_Birth"));
 	    
 	    // Child attributes
-	    String childCardNumber = record.get("Childs_Particulars/Child_Register_Card_Number");
-	    String chwPhoneNumber = record.get("Childs_Particulars/CHW_Phone_Number");
-	    String fatherNRCNumber = record.get("Childs_Particulars/Father_Guardian_NRC");
-	    String chwName = record.get("Childs_Particulars/CHW_Name");	    
+	    String childCardNumber = this.validateValue(record.get("Childs_Particulars/Child_Register_Card_Number"));
+	    String chwPhoneNumber = this.validateValue(record.get("Childs_Particulars/CHW_Phone_Number"));
+	    String fatherNRCNumber = this.validateValue(record.get("Childs_Particulars/Father_Guardian_NRC"));
+	    String chwName = this.validateValue(record.get("Childs_Particulars/CHW_Name"));
+	    String homeFacility = this.validateValue(record.get("Childs_Particulars/Home_Facility"));
+	    String homeFacilityUUID = this.getLocationUUID(homeFacility);
 	    
 	    String childId = UUID.randomUUID().toString();
 
 	    DateTime dateOfBirth = this.parseDate.parseDateTime(birthDate);
 	    
+	    // validate names
+	    firstName = this.validateValue(firstName);
+
 	    Client childClient = new Client(childId, firstName, "", lastName, dateOfBirth, null, false, false, gender, addressList, null, null);
 	    childClient.addAttribute(CHILD_REGISTER_CARD_NUMBER, childCardNumber);
 	    childClient.addAttribute(CHW_PHONE_NUMBER, chwPhoneNumber);
 	    childClient.addAttribute(FATHER_NRC_NUMBER, fatherNRCNumber);
 	    childClient.addAttribute(CHW_NAME, chwName);
+	    childClient.addAttribute(HOME_FACILITY, homeFacilityUUID);
 	    
 	    return childClient;
+	}
+	
+	private String validateValue(String value) {
+		return value.equalsIgnoreCase("n/a") ? "" : value;
 	}
 	
 	private Event buildBirthRegistrationEvent(CSVRecord record, Client client) {
 		String eventType = "Birth Registration";
         String entityType = "child";
 		String locationName = record.get("Childs_Particulars/Home_Facility");
-		String dateOfFacilityVisit = record.get("Childs_Particulars/First_Health_Facility_Contact");
+		String dateOfFacilityVisit = this.validateValue(record.get("Childs_Particulars/First_Health_Facility_Contact"));
 		
 		List<Obs> birthRegistrationObs = this.buildBirthRegistrationObs(record);
 		
@@ -311,133 +328,133 @@ public class XlsDataImportController {
 		String mr2Value = record.get("Immunisation_Record/mr2");
 		String locationName = record.get("Childs_Particulars/Home_Facility");
 		
-		if(!bcg1Value.equals("n/a")) {
-			List<Obs> bcg1Obs = this.buildVaccineObservation(BCG_VACCINE, "1", bcg1Value);
+		if(!bcg1Value.equalsIgnoreCase("n/a")) {
+			List<Obs> bcg1Obs = this.buildBCGVaccineObservation(bcg1Value);
 			DateTime date = parseDate.parseDateTime(bcg1Value);
 			Event bcg1Event = this.createEvent(client, bcg1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(bcg1Event);
 		}
 		
-		if(!bcg2Value.equals("n/a")) {
+		if(!bcg2Value.equalsIgnoreCase("n/a")) {
 			List<Obs> bcg2Obs = this.buildVaccineObservation(BCG_VACCINE, "2", bcg2Value);
 			DateTime date = parseDate.parseDateTime(bcg2Value);
 			Event bcg2Event = this.createEvent(client, bcg2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(bcg2Event);
 		}
 		
-		if(!opv0Value.equals("n/a")) {
+		if(!opv0Value.equalsIgnoreCase("n/a")) {
 			List<Obs> opv0Obs = this.buildVaccineObservation(OPV_VACCINE, "0", opv0Value);
 			DateTime date = parseDate.parseDateTime(opv0Value);
 			Event opv0Event = this.createEvent(client, opv0Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(opv0Event);
 		}
 		
-		if(!opv1Value.equals("n/a")) {
+		if(!opv1Value.equalsIgnoreCase("n/a")) {
 			List<Obs> opv1Obs = this.buildVaccineObservation(OPV_VACCINE, "1", opv1Value);
 			DateTime date = parseDate.parseDateTime(opv1Value);
 			Event opv1Event = this.createEvent(client, opv1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(opv1Event);
 		}
 		
-		if(!opv2Value.equals("n/a")) {
+		if(!opv2Value.equalsIgnoreCase("n/a")) {
 			List<Obs> opv2Obs = this.buildVaccineObservation(OPV_VACCINE, "2", opv2Value);
 			DateTime date = parseDate.parseDateTime(opv2Value);
 			Event opv2Event = this.createEvent(client, opv2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(opv2Event);
 		}
 		
-		if(!opv3Value.equals("n/a")) {
+		if(!opv3Value.equalsIgnoreCase("n/a")) {
 			List<Obs> opv3Obs = this.buildVaccineObservation(OPV_VACCINE, "3", opv3Value);
 			DateTime date = parseDate.parseDateTime(opv3Value);
 			Event opv3Event = this.createEvent(client, opv3Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(opv3Event);
 		}
 		
-		if(!penta1Value.equals("n/a")) {
+		if(!penta1Value.equalsIgnoreCase("n/a")) {
 			List<Obs> penta1Obs = this.buildVaccineObservation(PENTA_VACCINE, "1", penta1Value);
 			DateTime date = parseDate.parseDateTime(penta1Value);
 			Event penta1Event = this.createEvent(client, penta1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(penta1Event);
 		}
 		
-		if(!penta2Value.equals("n/a")) {
+		if(!penta2Value.equalsIgnoreCase("n/a")) {
 			List<Obs> penta2Obs = this.buildVaccineObservation(PENTA_VACCINE, "2", penta2Value);
 			DateTime date = parseDate.parseDateTime(penta2Value);
 			Event penta2Event = this.createEvent(client, penta2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(penta2Event);
 		}
 		
-		if(!penta3Value.equals("n/a")) {
+		if(!penta3Value.equalsIgnoreCase("n/a")) {
 			List<Obs> penta3Obs = this.buildVaccineObservation(PENTA_VACCINE, "3", penta3Value);
 			DateTime date = parseDate.parseDateTime(penta3Value);
 			Event penta3Event = this.createEvent(client, penta3Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(penta3Event);
 		}
 		
-		if(!pcv1Value.equals("n/a")) {
+		if(!pcv1Value.equalsIgnoreCase("n/a")) {
 			List<Obs> pcv1Obs = this.buildVaccineObservation(PCV_VACCINE, "1", pcv1Value);
 			DateTime date = parseDate.parseDateTime(pcv1Value);
 			Event pcv1Event = this.createEvent(client, pcv1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(pcv1Event);
 		}
 		
-		if(!pcv2Value.equals("n/a")) {
+		if(!pcv2Value.equalsIgnoreCase("n/a")) {
 			List<Obs> pcv2Obs = this.buildVaccineObservation(PCV_VACCINE, "2", pcv2Value);
 			DateTime date = parseDate.parseDateTime(penta2Value);
 			Event pcv2Event = this.createEvent(client, pcv2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(pcv2Event);
 		}
 		
-		if(!pcv3Value.equals("n/a")) {
+		if(!pcv3Value.equalsIgnoreCase("n/a")) {
 			List<Obs> pcv3Obs = this.buildVaccineObservation(PCV_VACCINE, "3", pcv3Value);
 			DateTime date = parseDate.parseDateTime(penta3Value);
 			Event pcv3Event = this.createEvent(client, pcv3Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(pcv3Event);
 		}
 		
-		if(!rota1Value.equals("n/a")) {
+		if(!rota1Value.equalsIgnoreCase("n/a")) {
 			List<Obs> rota1Obs = this.buildVaccineObservation(ROTA_VACCINE, "1", rota1Value);
 			DateTime date = parseDate.parseDateTime(rota1Value);
 			Event rota1Event = this.createEvent(client, rota1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(rota1Event);
 		}
 
-		if(!rota2Value.equals("n/a")) {
+		if(!rota2Value.equalsIgnoreCase("n/a")) {
 			List<Obs> rota2Obs = this.buildVaccineObservation(ROTA_VACCINE, "2", rota2Value);
 			DateTime date = parseDate.parseDateTime(rota2Value);
 			Event rota2Event = this.createEvent(client, rota2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(rota2Event);
 		}		
 		
-		if(!opv4Value.equals("n/a")) {
+		if(!opv4Value.equalsIgnoreCase("n/a")) {
 			List<Obs> opv4Obs = this.buildVaccineObservation(OPV_VACCINE, "4", opv4Value);
 			DateTime date = parseDate.parseDateTime(opv4Value);
 			Event opv4Event = this.createEvent(client, opv4Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(opv4Event);
 		}
 		
-		if(!measles1Value.equals("n/a")) {
+		if(!measles1Value.equalsIgnoreCase("n/a")) {
 			List<Obs> measles1Obs = this.buildVaccineObservation(MEASLES_VACCINE, "1", measles1Value);
 			DateTime date = parseDate.parseDateTime(measles1Value);
 			Event measles1Event = this.createEvent(client, measles1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(measles1Event);
 		}
 		
-		if(!measles2Value.equals("n/a")) {
+		if(!measles2Value.equalsIgnoreCase("n/a")) {
 			List<Obs> measles2Obs = this.buildVaccineObservation(MEASLES_VACCINE, "2", measles2Value);
 			DateTime date = parseDate.parseDateTime(measles2Value);
 			Event measles2Event = this.createEvent(client, measles2Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(measles2Event);
 		}
 		
-		if(!mr1Value.equals("n/a")) {
+		if(!mr1Value.equalsIgnoreCase("n/a")) {
 			List<Obs> mr1Obs = this.buildVaccineObservation(MR_VACCINE, "1", mr1Value);
 			DateTime date = parseDate.parseDateTime(mr1Value);
 			Event mr1Event = this.createEvent(client, mr1Obs, eventType, entityType, date, locationName);
 			vaccinationEvents.add(mr1Event);
 		}
 		
-		if(!mr2Value.equals("n/a")) {
+		if(!mr2Value.equalsIgnoreCase("n/a")) {
 			List<Obs> mr2Obs = this.buildVaccineObservation(MR_VACCINE, "2", mr2Value);
 			DateTime date = parseDate.parseDateTime(mr2Value);
 			Event mr2Event = this.createEvent(client, mr2Obs, eventType, entityType, date, locationName);
@@ -459,7 +476,7 @@ public class XlsDataImportController {
 		String weight3Date = record.get("Growth_Chart/weight3_date");
 		String locationName = record.get("Childs_Particulars/Home_Facility");
 
-		if(!weight1.equals("n/a") && !weight1Date.equals("n/a")) {
+		if(!weight1.equalsIgnoreCase("n/a") && !weight1Date.equalsIgnoreCase("n/a")) {
 			List<Obs> obsList = new ArrayList<Obs>();
 			Obs weight1Obs = this.buildGrowthMonitoringObservation(weight1);
 			DateTime eventDate = this.parseDate.parseDateTime(weight1Date);
@@ -468,7 +485,7 @@ public class XlsDataImportController {
 			growthMonitoringEvents.add(gmEvent);
 		}
 
-		if(!weight2.equals("n/a") && !weight2Date.equals("n/a")) {
+		if(!weight2.equalsIgnoreCase("n/a") && !weight2Date.equalsIgnoreCase("n/a")) {
 			List<Obs> obsList = new ArrayList<Obs>();
 			Obs weight2Obs = this.buildGrowthMonitoringObservation(weight2);
 			DateTime eventDate = this.parseDate.parseDateTime(weight2Date);
@@ -477,7 +494,7 @@ public class XlsDataImportController {
 			growthMonitoringEvents.add(gm2Event);
 		}
 
-		if(!weight3.equals("n/a") && !weight3Date.equals("n/a")) {
+		if(!weight3.equalsIgnoreCase("n/a") && !weight3Date.equalsIgnoreCase("n/a")) {
 			List<Obs> obsList = new ArrayList<Obs>();
 			Obs weight3Obs = this.buildGrowthMonitoringObservation(weight3);
 			DateTime eventDate = this.parseDate.parseDateTime(weight3Date);
@@ -493,7 +510,7 @@ public class XlsDataImportController {
         eventDate = eventDate == null ? new DateTime() : eventDate;
         String formSubmissionId = UUID.randomUUID().toString();
         String providerId = getProviderId(locationName);
-        String locationId = getLocationId(locationName);
+        String locationId = getLocationUUID(locationName);
         
         Event event = new Event(client.getBaseEntityId(), eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
         event = this.addMultipleObs(event, obs);
@@ -511,7 +528,7 @@ public class XlsDataImportController {
 		return event;
 	}
 	
-	private String getLocationId(String location) {
+	private String getLocationUUID(String location) {
 		switch(location) {
 			case "Mahatma_Gandhi":
 	            return "5bf3b4ca-9482-4e85-ab7a-0c44e4edb329";
@@ -549,6 +566,85 @@ public class XlsDataImportController {
 		}
 	}
 	
+	private String getResidentialAreaUUID(String residentialArea) {
+		switch(residentialArea) {
+			case "Airport":
+				return "658728c1-1c02-4813-a8b5-1727c6936702";
+			case "Cold_Storage":
+				return "16e0d178-4aab-48f7-8b71-3197d8eb11c2";
+			case "Dambwa_Site_Service_Extension":
+				return "e5939466-2017-4bb6-9c15-985238906d60";
+			case "Dambwa_Central":
+				return "b99f0e6f-1d82-459d-8f34-45687d56a272";
+			case "Dambwa_North_A":
+				return "a82916f8-c907-4252-9af7-a32291ea1147";
+			case "Dambwa_North_B":
+				return "33fbc3a5-cea7-4acb-a674-f3dde2fbba43";
+			case "Dambwa_North_C":
+				return "4a3f39e0-7fda-46b5-ba59-3aba0cd5d35f";
+			case "Dambwa_North_A_Zone2":
+				return "f4c6496c-4423-4e01-8595-5aa40ac3e493";
+			case "Dambwa_North_Ex":
+				return "1f7adf3d-9a2c-45ca-811b-d4f37c2de684";
+			case "Dambwa_North_Ex_Zone2":
+				return "32e90dcf-ddc3-4e48-802d-398292089082";
+			case "Dambwa_North_N":
+				return "9e60f6e8-dfcc-4a47-8023-c57d01dc9424";
+			case "Dambwa_North_V":
+				return "9ea4663c-ad83-4a28-9d79-56e6ae49604c";
+			case "Dambwa_Site_Village":
+				return "70c60496-814a-42b5-a62e-173289ba360f";
+			case "Dambwa_Site":
+				return "d8120774-20c8-437b-9167-b82797cffe45";
+			case "Libuyu_A":
+				return "f8619a84-0da9-4eac-8e49-a7e3687fcd5c";
+			case "Libuyu_B":
+				return "27a27354-99fd-4f9f-bc7c-e3c866f6d9a6";
+			case "Libuyu_C":
+				return "9d978b8b-4efd-4f76-973b-a53d3d9edc26";
+			case "Libuyu_D":
+				return "90ae79e0-47fd-47c4-afdb-876bfa8efb40";
+			case "Libuyu_EA":
+				return "ebe19d2a-dca5-4014-bfa8-bd0b013d8a7c";
+			case "Linda_A":
+				return "6f88ef86-89fe-49f3-b533-76aabb593e2b";
+			case "Linda_B":
+				return "2572ada2-9694-480d-9e68-f9b832f074f9";
+			case "Linda_C":
+				return "3c21c93a-094f-42a2-8c8b-efe3ca9b0238";
+			case "Linda_D":
+				return "a67526bd-b879-491d-aaef-f5fbcc3bd6ca";
+			case "Linda_E":
+				return "f1a70659-368d-4395-8d20-1d68453925f9";
+			case "Linda_F":
+				return "19e01239-d56d-4152-a960-de4c0733ed57";
+			case "Linda_G":
+				return "052830fe-07c9-4964-9140-883ad207a300";
+			case "Linda_H":
+				return "0bc72122-00b2-47cd-9c71-fb7cc716c4c3";
+			case "Linda_N":
+				return "b06960c8-7911-4f9b-bf3f-ec3abc86ab4d";
+			case "Maunga":
+				return "123105c1-b9aa-499b-a0d3-7ac2d311f4e1";
+			case "Mulala_Village":
+				return "e510de83-e077-401b-bf26-53d2f311fea0";
+			case "Mwandi":
+				return "edd22709-b77c-445f-aa33-ef478ae625d1";
+			case "Nearby_Farms":
+				return "c9a180f2-5488-4955-8521-fdb904e6e8b4";
+			case "Sakubita":
+				return "b9dc7838-079b-4601-baac-7df6519ba84b";
+			case "Sawmills":
+				return "7809d8ac-7bec-473c-8a20-a3edffff225c";
+			case "Zesco":
+				return "f28994f4-91ec-4ef2-a9e5-6d17346be649";
+			case "Zawa":
+				return "389e4d39-8587-4bf4-b2f1-247d9aabcffe";
+			default:
+				return "";
+		}
+	}
+
 	private String getVaccineParentCode(String vaccine) {
 		switch(vaccine) {
 			case BCG_VACCINE:
@@ -570,6 +666,23 @@ public class XlsDataImportController {
 		}
 	}
 	
+	private List<Obs> buildBCGVaccineObservation(String date) {
+		String fieldType = "concept";
+		String dateFieldDataType = "date";
+		String dateFieldCode = "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		String parentCode = this.getVaccineParentCode(BCG_VACCINE);
+		String formSubmissionField = "bcg";
+		List<Object> values1 = new ArrayList<Object>();
+		values1.add(date);
+
+		Obs bcgDateObs = new Obs(fieldType, dateFieldDataType, dateFieldCode, parentCode, values1, null, formSubmissionField);
+
+		List<Obs> bcgObs = new ArrayList<Obs>();
+		bcgObs.add(bcgDateObs);
+
+		return bcgObs;
+	}
+
 	private List<Obs> buildVaccineObservation(String vaccine, String dose, String value) {
 		String fieldType = "concept";
 		String dateFieldDataType = "date";
@@ -598,33 +711,35 @@ public class XlsDataImportController {
 		String value = "";
 		List<Obs> birthRegistrationObs = new ArrayList<Obs>();
 		// First_Health_Facility_Contact
-		String firstHealthFacilityContact = record.get("Childs_Particulars/First_Health_Facility_Contact");
+		String firstHealthFacilityContact = this.validateValue(record.get("Childs_Particulars/First_Health_Facility_Contact"));
 		birthRegistrationObs.add(buildObservation("concept", "text", "163260AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", firstHealthFacilityContact, "First_Health_Facility_Contact"));
 		
 		// Birth_Weight
-		String birthWeight = record.get("Childs_Particulars/Birth_Weight");
+		String birthWeight = this.validateValue(record.get("Childs_Particulars/Birth_Weight"));
 		birthRegistrationObs.add(buildObservation("concept", "text", "5916AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", birthWeight, "Birth_Weight"));
 
 		// Father_Guardian_Name
-		String fatherGuardianName = record.get("Childs_Particulars/Father_Guardian_Name");
+		String fatherGuardianName = this.validateValue(record.get("Childs_Particulars/Father_Guardian_Name"));
 		birthRegistrationObs.add(buildObservation("concept", "text", "1594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", fatherGuardianName, "Father_Guardian_Name"));
 		
 		// Place_Birth
-		String placeBirth = record.get("Childs_Particulars/Place_Birth");
+		String placeBirth = this.validateValue(record.get("Childs_Particulars/Place_Birth"));
 		value = placeBirth == "Health_Facility" ? "1537AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" : "1536AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-		birthRegistrationObs.add(buildObservation("concept", "select one", "1572AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Place_Birth"));
+
+		String humanReadableValue = placeBirth == "Health_Facility" ? "Health facility" : placeBirth;
+		birthRegistrationObs.add(buildObservationWithHumanReadableValues("concept", "select one", "1572AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Place_Birth", humanReadableValue));
 		
 		// Birth_Facility_Name
 		String birthFacilityName = record.get("Childs_Particulars/Birth_Facility_Name");
 		String birthFacilityNameOther = record.get("Childs_Particulars/Birth_Facility_Name_Other");
 		
 		if(birthFacilityName != "n/a") {
-			value = this.getLocationId(birthFacilityName) != "" ? this.getLocationId(birthFacilityName) : birthFacilityNameOther;
+			value = this.getLocationUUID(birthFacilityName) != "" ? this.getLocationUUID(birthFacilityName) : birthFacilityNameOther;
 			birthRegistrationObs.add(buildObservation("concept", "text", "163531AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Birth_Facility_Name"));
 		}
 		// PMTCT_Status
 		
-		String pmtctStatus = record.get("PMTCT/PMTCT_Status");
+		String pmtctStatus = this.validateValue(record.get("PMTCT/PMTCT_Status"));
 		birthRegistrationObs.add(buildObservation("concept", "text", "1396AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", pmtctStatus, "PMTCT_Status"));
 		
 		return birthRegistrationObs;
@@ -639,6 +754,19 @@ public class XlsDataImportController {
 		return obs;
 	}
 	
+	private Obs buildObservationWithHumanReadableValues(String fieldType, String fieldDataType, String fieldCode, String value, String formSubmissionField, String humanReadableValue) {
+		List<Object> values = new ArrayList<Object>();
+		values.add(value);
+
+		List<Object> humanReadableValues = new ArrayList<Object>();
+		humanReadableValues.add(humanReadableValue);
+
+		Obs obs = new Obs(fieldType, fieldDataType, fieldCode, "", value, "", formSubmissionField);
+		obs.setHumanReadableValues(humanReadableValues);
+
+		return obs;
+	}
+
 	private Obs buildGrowthMonitoringObservation(String weight) {
 		String fieldType = "concept";
 		String fieldDataType = "decimal";
