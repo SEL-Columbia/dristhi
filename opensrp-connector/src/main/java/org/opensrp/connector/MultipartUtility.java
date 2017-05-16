@@ -48,7 +48,7 @@ public class MultipartUtility {
          
         URL url = new URL(requestURL);
        // httpConn = (HttpURLConnection) url.openConnection();
-        httpConn = HttpUtil.makeConnection(url.toString(), "", HttpMethod.POST, true, username, password);
+        httpConn = MultipartHttpUtil.makeConnection(url.toString(), "", HttpMethod.POST, true, username, password);
         httpConn.setUseCaches(false);
         httpConn.setDoOutput(true); // indicates POST method
         httpConn.setDoInput(true);

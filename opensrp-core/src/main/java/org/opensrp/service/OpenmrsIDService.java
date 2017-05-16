@@ -3,199 +3,175 @@ package org.opensrp.service;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.UniqueId;
+import org.opensrp.repository.UniqueIdRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 @Service
 public class OpenmrsIDService {
+	
 	@Value("#{opensrp['openmrs.url']}")
 	private String openmrsUrl;
-
+	
 	@Value("#{opensrp['openmrs.username']}")
 	private String openmrsUserName;
 	
 	@Value("#{opensrp['openmrs.password']}")
 	private String openmrsPassword;
 	
-	@Value("#{opensrp['jdbc.driverClassName']}")
-	private String mysqlDriverClassName;
-	
-	@Value("#{opensrp['jdbc.url']}")
-	private String mysqlDatabaseUrl;
-	
-	@Value("#{opensrp['jdbc.username']}")
-	private String mysqlUserName;
-	
-	@Value("#{opensrp['jdbc.password']}")
-	private String mysqlPassword;
-	
-	@Value("#{opensrp['openmrs.source']}")
+	@Value("#{opensrp['openmrs.idgen.idsource']}")
 	private int openmrsSourceId;
-	
-	private JdbcTemplate jdbcTemplate;
 	
 	// Client identifiers constant
 	public static final String ZEIR_IDENTIFIER = "ZEIR_ID";
+	
 	public static final String CHILD_REGISTER_CARD_NUMBER = "Child_Register_Card_Number";
 	
-	public static final String DATABASE_NAME = "opensrp";
-	public static final String DATABASE_TABLE_NAME = "unique_ids";
-	public static final String TEST_DATABASE_TABLE_NAME = "unique_ids_test";
 	public static final String OPENMRS_IDGEN_URL = "module/idgen/exportIdentifiers.form";
-	public static final String ID_COLUMN = "_id";
-    public static final String OPENMRS_ID_COLUMN = "openmrs_id";
-    public static final String STATUS_COLUMN = "status";
-    private static final String USED_BY_COLUMN = "used_by";
-    private static final String LOCATION_COLUMN = "location";
-    public static final String CREATED_AT_COLUMN = "created_at";
-    public static final String UPDATED_AT_COLUMN = "updated_at";
-    public static String STATUS_USED = "used";
-    public static String STATUS_NOT_USED = "not_used";
-    
-    private static Logger logger = LoggerFactory.getLogger(OpenmrsIDService.class.toString());
 	
-
+	private static Logger logger = LoggerFactory.getLogger(OpenmrsIDService.class.toString());
+	
 	private HttpClient client;
+	
+	@Autowired
+	private UniqueIdRepository uniqueIdRepository;
 	
 	public OpenmrsIDService() {
 		this.client = HttpClientBuilder.create().build();
-		DataSource dataSource = this.createDataSource();
-		this.jdbcTemplate = this.initializeJdbcTemplate(dataSource);
 	}
 	
-	public List<String> downloadOpenmrsIds(int numberToGenerate) {
+	public List<String> downloadOpenmrsIds(int size) {
 		List<String> ids = new ArrayList<String>();
 		String openmrsQueryUrl = this.openmrsUrl + OPENMRS_IDGEN_URL;
 		// Add query parameters
-		openmrsQueryUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + numberToGenerate;
+		openmrsQueryUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + size;
 		openmrsQueryUrl += "&username=" + this.openmrsUserName + "&password=" + this.openmrsPassword;
-
+		
 		HttpGet get = new HttpGet(openmrsQueryUrl);
 		try {
 			HttpResponse response = client.execute(get);
 			String jsonResponse = EntityUtils.toString(response.getEntity());
-
-			JSONObject responseJson= new JSONObject(jsonResponse);
-			JSONArray jsonArray= responseJson.getJSONArray("identifiers");
 			
-			if(jsonArray != null && jsonArray.length() > 0){
-	            for(int i=0; i < jsonArray.length(); i++){
-	                ids.add(jsonArray.getString(i));
-	            }
-	        }
-		} catch (IOException | JSONException e) {
+			JSONObject responseJson = new JSONObject(jsonResponse);
+			JSONArray jsonArray = responseJson.getJSONArray("identifiers");
+			
+			if (jsonArray != null && jsonArray.length() > 0) {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					ids.add(jsonArray.getString(i));
+				}
+			}
+		}
+		catch (IOException | JSONException e) {
 			logger.error("", e);
 			return null;
 		}
 		// import IDs and client data to database together with assignments 
 		return ids;
 	}
-	
-	public void clearRecords(boolean testMode) {
-		String databaseNameToUse = testMode ? TEST_DATABASE_TABLE_NAME : DATABASE_TABLE_NAME;
-		String deleteRecordsSql = "DELETE FROM " + databaseNameToUse;
-		DataSource dataSource = this.createDataSource();
-		this.jdbcTemplate = this.initializeJdbcTemplate(dataSource);
+	/**
+	 * download ids only if the total unused is less than the size specified
+	 * @param size
+	 */
+	public void downloadAndSaveIds(int size,String userName) {
+		try {
+			Integer totalUnUsed = uniqueIdRepository.totalUnUsedIds();
+			if (totalUnUsed < size) {
+				int numberToGenerate=size-totalUnUsed;
+				List<String> ids = downloadOpenmrsIds(numberToGenerate);
+				for (String id : ids) {
+					UniqueId uniqueId = new UniqueId();
+					uniqueId.setCreatedAt(new Date());
+					uniqueId.setOpenmrsId(id);
+					uniqueId.setUsedBy(userName);
+					uniqueId.setStatus(UniqueId.STATUS_NOT_USED);
+					uniqueIdRepository.save(uniqueId);
+				}
+			}
+		}
+		catch (Exception e) {
+			logger.error("", e);
+		}
 		
-		this.jdbcTemplate.execute(deleteRecordsSql);
 	}
 	
-	public boolean checkIfClientExists(Client client, boolean testMode) throws SQLException {
-		String databaseNameToUse = testMode ? TEST_DATABASE_TABLE_NAME : DATABASE_TABLE_NAME;
-		String location = client.getAddress("usual_residence").getAddressField("address2");
-		String checkIfExistQuery = "SELECT count(*) from " + databaseNameToUse + " WHERE " + USED_BY_COLUMN + " = ? AND location = ?";
-		String[] args = new String[2];
-		args[0] = (String) client.getAttribute(CHILD_REGISTER_CARD_NUMBER) + "-" + client.fullName() + "-" + client.getBirthdate();
-		args[1] = location;
-
-		int rowCount = this.jdbcTemplate.queryForObject(checkIfExistQuery, args, Integer.class);
-		
-		logger.info("[checkIfClientExists] - Card Number:" + args[0] + " - [Exists] " + (rowCount == 0 ? "false" : "true"));
-		
-		return rowCount >= 1 ? true : false;
+	public void clearRecords() {
+		try {
+			uniqueIdRepository.clearTable();
+		}
+		catch (Exception e) {
+			logger.error("", e);
+		}
 	}
 	
-	public void assignOpenmrsIdToClient(String zeirID, Client client, boolean testMode) throws SQLException {
+	public Boolean checkIfClientExists(Client client) throws SQLException {
+		try {
+			String location = client.getAddress("usual_residence").getAddressField("address2");
+			String checkIfExistQuery = "SELECT count(*) from " + UniqueId.tbName + " WHERE " + UniqueId.COL_USEDBY
+			        + " = ? AND " + UniqueId.COL_LOCATION + " = ?";
+			String[] args = new String[2];
+			args[0] = (String) client.getAttribute(CHILD_REGISTER_CARD_NUMBER);
+			args[1] = location;
+			
+			int rowCount = uniqueIdRepository.checkIfExists(checkIfExistQuery, args);
+			
+			logger.info(
+			    "[checkIfClientExists] - Card Number:" + args[0] + " - [Exists] " + (rowCount == 0 ? "false" : "true"));
+			
+			return rowCount >= 1 ? true : false;
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return null;
+		}
+	}
+	
+	public void assignOpenmrsIdToClient(String zeirID, Client client) throws SQLException {
 		// create jdbc template to persist the ids
-		String databaseNameToUse = testMode ? TEST_DATABASE_TABLE_NAME : DATABASE_TABLE_NAME;
-		String insertSql = "INSERT INTO " + databaseNameToUse;
-		insertSql += "(" + OPENMRS_ID_COLUMN + ", " + STATUS_COLUMN + ", " + USED_BY_COLUMN + "," + LOCATION_COLUMN + ",";
-		insertSql += CREATED_AT_COLUMN + ", " + UPDATED_AT_COLUMN + " ) values (?, ?, ?, ?, ?, ?)";
-		
-		DateTime now = new DateTime();
-		
-		String location = client.getAddress("usual_residence").getAddressField("address2");
-		
-		if(!this.checkIfClientExists(client, testMode)) {
-			String usedBy = (String) client.getAttribute(CHILD_REGISTER_CARD_NUMBER) + "-" + client.fullName() + "-" + client.getBirthdate();
-			client.addIdentifier(ZEIR_IDENTIFIER, zeirID);
-			this.jdbcTemplate.update(insertSql, zeirID, STATUS_USED, usedBy, location, now.toDate(), now.toDate());
-			logger.info("Assigned " + ZEIR_IDENTIFIER + " to " + client.fullName());
+		try {
+			String location = client.getAddress("usual_residence").getAddressField("address2");
+			
+			if (!this.checkIfClientExists(client)) {
+				String childRegisterCardNumber = (String) client.getAttribute(CHILD_REGISTER_CARD_NUMBER);
+				client.addIdentifier(ZEIR_IDENTIFIER, zeirID);
+				UniqueId uniqueId = new UniqueId();
+				uniqueId.setOpenmrsId(zeirID);
+				uniqueId.setStatus(UniqueId.STATUS_USED);
+				uniqueId.setUsedBy(childRegisterCardNumber);
+				uniqueId.setLocation(location);
+				uniqueId.setCreatedAt(new Date());
+				uniqueIdRepository.save(uniqueId);
+				logger.info("Assigned " + ZEIR_IDENTIFIER + " to " + client.fullName());
+			}
+		}
+		catch (Exception e) {
+			logger.error("", e);
 		}
 	}
-	
-	private DataSource createDataSource() {
-		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setUrl(this.mysqlDatabaseUrl);
-		dataSource.setDriverClassName(this.mysqlDriverClassName);
-		dataSource.setUsername(this.mysqlUserName);
-		dataSource.setPassword(this.mysqlPassword);
-		
-		return dataSource;
+	public List<UniqueId> getNotUsedIds(int limit){
+		return uniqueIdRepository.getNotUsedIds(limit);
 	}
 	
-	private JdbcTemplate initializeJdbcTemplate(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-		
-		return jdbcTemplate;
+	public List<String> getNotUsedIdsAsString(int limit){
+		return uniqueIdRepository.getNotUsedIdsAsString(limit);
 	}
-	
-	public void initializeImportTable(boolean testMode) throws SQLException {
-		String databaseNameToUse = testMode ? TEST_DATABASE_TABLE_NAME : DATABASE_TABLE_NAME;
-		String createTableSql = "CREATE TABLE " + databaseNameToUse + "(";
-		createTableSql += ID_COLUMN + " INT PRIMARY KEY AUTO_INCREMENT, ";
-		createTableSql += OPENMRS_ID_COLUMN + " VARCHAR(255), ";
-		createTableSql += STATUS_COLUMN + " VARCHAR(20), ";
-		createTableSql += USED_BY_COLUMN + " VARCHAR(255), ";
-		createTableSql += LOCATION_COLUMN + " VARCHAR(255), ";
-		createTableSql += CREATED_AT_COLUMN + " DATE, ";
-		createTableSql += UPDATED_AT_COLUMN + " DATE";
-		createTableSql += ")";
-		
-		String showTablesQuery = "SELECT count(TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '"
-		  + DATABASE_NAME + "' AND TABLE_NAME = '" + databaseNameToUse + "'";
-		DataSource dataSource = this.createDataSource();
-		this.jdbcTemplate = this.initializeJdbcTemplate(dataSource);
-		// check if table exists before creating it
-		int rowCount = this.jdbcTemplate.queryForObject(showTablesQuery, Integer.class);
-		logger.info("Check if import table is created.");
-		
-		if(rowCount == 0) {
-			logger.info("No Import table present. Creating one.");
-			// create unique_ids table
-			jdbcTemplate.execute(createTableSql);
-			logger.info("Import Table Created.");
-		}
-		
-		logger.info("Import table present.");
+	public int[] markIdsAsUsed(List<String> ids){
+		return uniqueIdRepository.markAsUsed(ids);
 	}
 	
 }
