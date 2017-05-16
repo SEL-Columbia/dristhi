@@ -22,9 +22,9 @@ import com.mysql.jdbc.StringUtils;
  * requests use Basic Authorization.
  */
 @Component
-public class HttpUtil {
+public class MultipartHttpUtil {
 
-    public HttpUtil() {
+    public MultipartHttpUtil() {
     }
 
     /**
