@@ -8,9 +8,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.net.URLConnection;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +29,7 @@ import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
+import org.opensrp.repository.MultimediaRepository;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.opensrp.service.ErrorTraceService;
@@ -46,12 +45,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
-import ch.lambdaj.function.convert.Converter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import ch.lambdaj.function.convert.Converter;
 
 @Controller
 public class FormSubmissionController {
@@ -63,14 +61,14 @@ public class FormSubmissionController {
     private PatientService patientService;
     private HouseholdService householdService;
     private ErrorTraceService errorTraceService;
-    
-    @Autowired //TODO: Julkar Confirm this
     private MultimediaService multimediaService;
+    private MultimediaRepository multimediaRepository;
     
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, FormEntityConverter formEntityConverter, PatientService patientService, 
-    		HouseholdService householdService, ErrorTraceService errorTraceService) {
+    		HouseholdService householdService,MultimediaService multimediaService, MultimediaRepository multimediaRepository,
+    		ErrorTraceService errorTraceService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         this.errorTraceService=errorTraceService;
@@ -78,6 +76,8 @@ public class FormSubmissionController {
         this.formEntityConverter = formEntityConverter;
         this.patientService = patientService;
         this.householdService = householdService;
+        this.multimediaService = multimediaService;
+        this.multimediaRepository = multimediaRepository;
     }
 
     @RequestMapping(method = GET, value = "/form-submissions")
@@ -195,6 +195,7 @@ public class FormSubmissionController {
     		}
     	//}
     }
+
     @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
     @ResponseBody
     public List<MultimediaDTO> getFiles(@RequestParam("anm-id") String providerId) {
@@ -208,5 +209,4 @@ public class FormSubmissionController {
 			}
 		});
     }
-    
 }
