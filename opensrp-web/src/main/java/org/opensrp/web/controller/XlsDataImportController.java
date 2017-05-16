@@ -663,6 +663,19 @@ public class XlsDataImportController {
 		}
 	}
 	
+	private String getPMTCTConcept(String pmtctStatus) {
+		switch(pmtctStatus) {
+			case "CE":
+				return "703AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+			case "MSU":
+				return "1067AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+			case "CNE":
+				return "664AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+			default:
+				return "";
+		}
+	}
+
 	private List<Obs> buildBCGVaccineObservation(String date) {
 		String fieldType = "concept";
 		String dateFieldDataType = "date";
@@ -721,9 +734,9 @@ public class XlsDataImportController {
 		
 		// Place_Birth
 		String placeBirth = this.validateValue(record.get("Childs_Particulars/Place_Birth"));
-		value = placeBirth == "Health_Facility" ? "1537AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" : "1536AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		value = placeBirth.equals("Health_Facility") ? "1588AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" : "1536AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
-		String humanReadableValue = placeBirth == "Health_Facility" ? "Health facility" : placeBirth;
+		String humanReadableValue = placeBirth.equals("Health_Facility") ? "Health facility" : placeBirth;
 		birthRegistrationObs.add(buildObservationWithHumanReadableValues("concept", "select one", "1572AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Place_Birth", humanReadableValue));
 		
 		// Birth_Facility_Name
@@ -737,7 +750,7 @@ public class XlsDataImportController {
 		// PMTCT_Status
 		
 		String pmtctStatus = this.validateValue(record.get("PMTCT/PMTCT_Status"));
-		birthRegistrationObs.add(buildObservation("concept", "text", "1396AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", pmtctStatus, "PMTCT_Status"));
+		birthRegistrationObs.add(buildObservation("concept", "text", "1396AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", this.getPMTCTConcept(pmtctStatus), "PMTCT_Status"));
 		
 		return birthRegistrationObs;
 	}
