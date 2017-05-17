@@ -95,7 +95,11 @@ public class EventResource extends RestResource<Event> {
 			String providerId = getStringFilter(PROVIDER_ID, request);
 			String locationId = getStringFilter(LOCATION_ID, request);
 			String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
-			Long lastSyncedServerVersion = Long.valueOf(getStringFilter(BaseEntity.SERVER_VERSIOIN, request)) + 1;
+			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
+			Long lastSyncedServerVersion = null;
+			if(serverVersion != null){
+				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
+			}
 			String team = getStringFilter("team", request);
 			Integer limit = getIntegerFilter("limit", request);
 			if (limit == null || limit.intValue() == 0) {
@@ -110,7 +114,7 @@ public class EventResource extends RestResource<Event> {
 				    BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				if (!events.isEmpty()) {
 					for (Event event : events) {
-						if(event.getBaseEntityId()!=null && !event.getBaseEntityId().isEmpty()){
+						if(event.getBaseEntityId()!=null && !event.getBaseEntityId().isEmpty() && !clientIds.contains(event.getBaseEntityId())){
 						  clientIds.add(event.getBaseEntityId());
 						}
 					}
