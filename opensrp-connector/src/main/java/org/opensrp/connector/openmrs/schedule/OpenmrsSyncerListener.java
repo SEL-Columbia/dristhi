@@ -132,11 +132,11 @@ public class OpenmrsSyncerListener {
 			List<Client> cl = clientService.findByServerVersion(start);
 			logger.info("Clients list size " + cl.size());
 			for (Client c : cl) {
-				try {
-					sentTrackCaptureDataToDHIS2(c);
-				} catch (Exception e) {
-					logger.error("DHIS2 Message:" + e.getMessage());
-				}
+//				try {
+//					//sentTrackCaptureDataToDHIS2(c);
+//				} catch (Exception e) {
+//					logger.error("DHIS2 Message:" + e.getMessage());
+//				}
 				try {
 					// FIXME This is to deal with existing records and should be
 					// removed later
@@ -203,14 +203,14 @@ public class OpenmrsSyncerListener {
 						}
 					}
 				} catch (Exception ex2) {
-					ex2.printStackTrace();
+					logger.error("",ex2);
 					errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(), ExceptionUtils.getStackTrace(ex2), "");
 				}
 			}
 
 			logger.info("PUSH TO OPENMRS FINISHED AT " + DateTime.now());
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error("",ex);
 		} finally {
 		    lock.unlock();
 		}
