@@ -132,41 +132,36 @@ public class XlsDataImportController {
 					// deviceid
 					String deviceid = record.get("deviceid");
 					Obs deviceIdObs = buildObservation("concept", "deviceid", "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", deviceid, "deviceid");
+
+					List<Obs> defaultObs = new ArrayList<Obs>();
+					defaultObs.add(startObs);
+					defaultObs.add(endObs);
+					defaultObs.add(deviceIdObs);
 				    
 				    // Create Birth Registration Event
 				    Event birthRegistrationEvent = this.buildBirthRegistrationEvent(record, childClient);
-				    birthRegistrationEvent.addObs(startObs);
-				    birthRegistrationEvent.addObs(endObs);
-				    birthRegistrationEvent.addObs(deviceIdObs);
+				    this.addMultipleObs(birthRegistrationEvent, defaultObs);
 
 				    eventService.addEvent(birthRegistrationEvent);
 				    eventCounter++;
 
 				    // Create New Woman Registration Event
 				    Event womanRegistrationEvent = this.buildNewWomanRegistrationEvent(record, motherClient);
-				    womanRegistrationEvent.addObs(startObs);
-				    womanRegistrationEvent.addObs(endObs);
-				    womanRegistrationEvent.addObs(deviceIdObs);
+				    this.addMultipleObs(womanRegistrationEvent, defaultObs);
 
 				    eventService.addEvent(womanRegistrationEvent);
 				    eventCounter++;
 
 				    // Create vaccination events
 				    for(Event e: this.buildVaccinationEvents(record, childClient)) {
-						e.addObs(startObs);
-						e.addObs(endObs);
-						e.addObs(deviceIdObs);
-
+						this.addMultipleObs(e, defaultObs);
 				    	eventService.addEvent(e);
 				    	eventCounter++;
 				    }
 				    
 				    //Create growth monitoring events
 				    for(Event e: this.buildGrowthMonitoringEvents(record, childClient)) {
-						e.addObs(startObs);
-						e.addObs(endObs);
-						e.addObs(deviceIdObs);
-
+				    	this.addMultipleObs(e, defaultObs);
 				    	eventService.addEvent(e);
 				    	eventCounter++;
 				    }
@@ -236,6 +231,7 @@ public class XlsDataImportController {
 	    Client motherClient = new Client(motherId, motherFirstName, "", motherLastName, dateOfBirth, null, false, false, "Female", addressList, null, null);
 	    motherClient.addAttribute(MOTHER_NRC_NUMBER, motherNRC);
 	    motherClient.addAttribute(HOME_FACILITY, homeFacilityUUID);
+	    motherClient.addAttribute(LOCATION, homeFacilityUUID);
 	    
 	    return motherClient;
 	}
@@ -268,6 +264,7 @@ public class XlsDataImportController {
 	    childClient.addAttribute(FATHER_NRC_NUMBER, fatherNRCNumber);
 	    childClient.addAttribute(CHW_NAME, chwName);
 	    childClient.addAttribute(HOME_FACILITY, homeFacilityUUID);
+	    childClient.addAttribute(LOCATION, homeFacilityUUID);
 	    
 	    return childClient;
 	}
@@ -666,6 +663,19 @@ public class XlsDataImportController {
 		}
 	}
 	
+	private String getPMTCTConcept(String pmtctStatus) {
+		switch(pmtctStatus) {
+			case "CE":
+				return "703AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+			case "MSU":
+				return "1067AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+			case "CNE":
+				return "664AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+			default:
+				return "";
+		}
+	}
+
 	private List<Obs> buildBCGVaccineObservation(String date) {
 		String fieldType = "concept";
 		String dateFieldDataType = "date";
@@ -724,9 +734,9 @@ public class XlsDataImportController {
 		
 		// Place_Birth
 		String placeBirth = this.validateValue(record.get("Childs_Particulars/Place_Birth"));
-		value = placeBirth == "Health_Facility" ? "1537AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" : "1536AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		value = placeBirth.equals("Health_Facility") ? "1588AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" : "1536AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
-		String humanReadableValue = placeBirth == "Health_Facility" ? "Health facility" : placeBirth;
+		String humanReadableValue = placeBirth.equals("Health_Facility") ? "Health facility" : placeBirth;
 		birthRegistrationObs.add(buildObservationWithHumanReadableValues("concept", "select one", "1572AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", value, "Place_Birth", humanReadableValue));
 		
 		// Birth_Facility_Name
@@ -740,7 +750,7 @@ public class XlsDataImportController {
 		// PMTCT_Status
 		
 		String pmtctStatus = this.validateValue(record.get("PMTCT/PMTCT_Status"));
-		birthRegistrationObs.add(buildObservation("concept", "text", "1396AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", pmtctStatus, "PMTCT_Status"));
+		birthRegistrationObs.add(buildObservation("concept", "text", "1396AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", this.getPMTCTConcept(pmtctStatus), "PMTCT_Status"));
 		
 		return birthRegistrationObs;
 	}

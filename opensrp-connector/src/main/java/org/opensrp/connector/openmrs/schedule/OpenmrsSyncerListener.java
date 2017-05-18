@@ -2,6 +2,7 @@ package org.opensrp.connector.openmrs.schedule;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
@@ -27,11 +28,17 @@ import org.opensrp.service.ClientService;
 import org.opensrp.service.ConfigService;
 import org.opensrp.service.ErrorTraceService;
 import org.opensrp.service.EventService;
+import org.opensrp.service.formSubmission.FormSubmissionListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OpenmrsSyncerListener {
+
+	private static final ReentrantLock lock = new ReentrantLock();
+	private static Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
 
 	private OpenmrsSchedulerService openmrsSchedulerService;
 	private ScheduleService opensrpScheduleService;
@@ -42,6 +49,7 @@ public class OpenmrsSyncerListener {
 	private EncounterService encounterService;
 	private EventService eventService;
 	private ClientService clientService;
+
 	@Autowired
 	private Dhis2TrackCaptureConnector dhis2TrackCaptureConnector;
 
@@ -78,7 +86,7 @@ public class OpenmrsSyncerListener {
 	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
 	public void scheduletrackerSyncer(MotechEvent event) {
 		try {
-			System.out.println("RUNNING " + event.getSubject());
+			logger.info("RUNNING " + event.getSubject());
 			AppStateToken lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment);
 			DateTime start = lastsync == null || lastsync.getValue() == null ? new DateTime().minusYears(33) : new DateTime(lastsync.stringValue());
 			DateTime end = new DateTime();
@@ -111,20 +119,24 @@ public class OpenmrsSyncerListener {
 
 	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT)
 	public void pushToOpenMRS(MotechEvent event) {
+		if (!lock.tryLock()) {
+		    logger.warn("Not fetching forms from Message Queue. It is already in progress.");
+		    return;
+		}
 		try {
-			System.out.println("RUNNING " + event.getSubject());
+			logger.info("RUNNING " + event.getSubject() + " at " + DateTime.now());
 
 			AppStateToken lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated);
 			Long start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
 
 			List<Client> cl = clientService.findByServerVersion(start);
-			System.out.println("Clients list size " + cl.size());
+			logger.info("Clients list size " + cl.size());
 			for (Client c : cl) {
-				try {
-					sentTrackCaptureDataToDHIS2(c);
-				} catch (Exception e) {
-					System.out.println("DHIS2 Message:" + e.getMessage());
-				}
+//				try {
+//					//sentTrackCaptureDataToDHIS2(c);
+//				} catch (Exception e) {
+//					logger.error("DHIS2 Message:" + e.getMessage());
+//				}
 				try {
 					// FIXME This is to deal with existing records and should be
 					// removed later
@@ -149,7 +161,7 @@ public class OpenmrsSyncerListener {
 						}
 					}
 					if (uuid != null) {
-						System.out.println("Updating patient " + uuid);
+						logger.info("Updating patient " + uuid);
 						patientService.updatePatient(c, uuid);
 						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
 
@@ -168,35 +180,39 @@ public class OpenmrsSyncerListener {
 				}
 			}
 
-			System.out.println("RUNNING FOR EVENTS");
+			logger.info("RUNNING FOR EVENTS");
 
 			lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
 			start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
 
 			List<Event> el = eventService.findByServerVersion(start);
+			logger.info("Event list size " + el.size() + " [start]" + start);
+
 			for (Event e : el) {
 				try {
 					String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
 					if (uuid != null) {
 						encounterService.updateEncounter(e);
 						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
-
 					} else {
 						JSONObject eventJson = encounterService.createEncounter(e);
 						if (eventJson != null && eventJson.has("uuid")) {
 							e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
-							eventService.addorUpdateEvent(e);
+							eventService.updateEvent(e);
 							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
 						}
-
 					}
 				} catch (Exception ex2) {
-					ex2.printStackTrace();
+					logger.error("",ex2);
 					errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(), ExceptionUtils.getStackTrace(ex2), "");
 				}
 			}
+
+			logger.info("PUSH TO OPENMRS FINISHED AT " + DateTime.now());
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error("",ex);
+		} finally {
+		    lock.unlock();
 		}
 	}
 
