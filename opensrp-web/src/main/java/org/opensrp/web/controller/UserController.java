@@ -4,8 +4,10 @@ import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
 import static org.springframework.http.HttpStatus.OK;
 
 import java.nio.charset.Charset;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +15,7 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.api.domain.Time;
 import org.opensrp.api.domain.User;
 import org.opensrp.api.util.LocationTree;
 import org.opensrp.common.domain.UserDetail;
@@ -79,6 +82,10 @@ public class UserController {
     	return getAuthenticationProvider().getDrishtiUser(a, a.getName());
     }
 
+    public Time getServerTime() {
+    	return new Time(Calendar.getInstance().getTime(), TimeZone.getDefault());
+	}
+
     @RequestMapping(method = RequestMethod.GET, value = "/user-details")
     public ResponseEntity<UserDetail> userDetail(@RequestParam("anm-id") String anmIdentifier, HttpServletRequest request) {
     	Authentication a = getAuthenticationAdvisor(request);
@@ -125,6 +132,8 @@ public class UserController {
 			e.printStackTrace();
 		}
 		map.put("locations", l);
+		Time t = getServerTime();
+		map.put("time", t);
         return new ResponseEntity<>(new Gson().toJson(map), allowOrigin(opensrpSiteUrl), OK);
 	}
 	
