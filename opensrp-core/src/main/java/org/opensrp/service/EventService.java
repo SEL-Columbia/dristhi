@@ -123,6 +123,9 @@ public class EventService {
 	
 	public Event findById(String eventId) {
 		try {
+			if (eventId == null || eventId.isEmpty()) {
+				return null;
+			}
 			return allEvents.findById(eventId);
 		}
 		catch (Exception e) {
@@ -160,24 +163,39 @@ public class EventService {
 	 */
 	public synchronized Event processOutOfArea(Event event) {
 		if (event.getBaseEntityId() == null || event.getBaseEntityId().isEmpty()) {
+
 			//get events identifiers;
 			String identifier = event.getIdentifier(Client.ZEIR_ID);
 			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(),
 			    identifier);
 			if (clients != null && !clients.isEmpty()) {
 				org.opensrp.domain.Client client = clients.get(0);
-				event.setBaseEntityId(client.getBaseEntityId());
-				//Map<String, String> identifiers = event.getIdentifiers();
-				//event identifiers are unique so removing zeir_id since baseentityid has been found
-				event.removeIdentifier(Client.ZEIR_ID);
-				Map<String, String> details = new HashMap<String, String>();
-				details.put("out_of_catchment_provider_id", event.getProviderId());
-				event.setDetails(details);
+				
+				
 				//set providerid to the last providerid who served this client in their catchment (assumption)
-				Event existingEvent = find(client.getBaseEntityId());
-				event.setProviderId(existingEvent.getProviderId());
-				//event.setIdentifiers(identifiers);
-				//change event location
+				List<Event> existingEvents = findByBaseEntityAndType(client.getBaseEntityId(), "Birth Registration");
+				if (existingEvents != null && !existingEvents.isEmpty()) {
+					
+					Event outOfCatchment= new Event(client.getBaseEntityId(), "Out of Catchment Service", event.getEventDate(), event.getEntityType(), event.getProviderId(), event.getLocationId(), event.getFormSubmissionId());
+					outOfCatchment.setObs(event.getObs());
+					outOfCatchment.setDateCreated(new DateTime());
+					
+					//keep log of out of catchment event since this is needed when populating out of catchment indicators
+					addorUpdateEvent(outOfCatchment);
+					
+					event.getIdentifiers().remove(Client.ZEIR_ID.toUpperCase());
+
+					event.setProviderId(existingEvents.get(0).getProviderId());
+					event.setBaseEntityId(client.getBaseEntityId());
+					//Map<String, String> identifiers = event.getIdentifiers();
+					//event identifiers are unique so removing zeir_id since baseentityid has been found
+					Map<String, String> details = new HashMap<String, String>();
+					details.put("out_of_catchment_provider_id", event.getProviderId());
+					event.setDetails(details);
+					
+
+				}
+				
 			}
 		}
 		return event;
@@ -207,10 +225,10 @@ public class EventService {
 			event.setServerVersion(null);
 			event.setRevision(existingEvent.getRevision());
 			allEvents.update(event);
-
-		}else{
+			
+		} else {
 			allEvents.add(event);
-
+			
 		}
 		
 		return event;
@@ -300,6 +318,11 @@ public class EventService {
 	
 	public List<Event> findEventsByConceptAndValue(String concept, String conceptValue) {
 		return allEvents.findByConceptAndValue(concept, conceptValue);
+		
+	}
+	
+	public List<Event> findByBaseEntityAndType(String baseEntityId, String eventType) {
+		return allEvents.findByBaseEntityAndType(baseEntityId, eventType);
 		
 	}
 }

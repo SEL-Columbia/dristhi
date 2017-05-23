@@ -97,7 +97,7 @@ public class EventResource extends RestResource<Event> {
 			String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
 			Long lastSyncedServerVersion = null;
-			if(serverVersion != null){
+			if (serverVersion != null) {
 				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
 			}
 			String team = getStringFilter("team", request);
@@ -114,8 +114,9 @@ public class EventResource extends RestResource<Event> {
 				    BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				if (!events.isEmpty()) {
 					for (Event event : events) {
-						if(event.getBaseEntityId()!=null && !event.getBaseEntityId().isEmpty() && !clientIds.contains(event.getBaseEntityId())){
-						  clientIds.add(event.getBaseEntityId());
+						if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty()
+						        && !clientIds.contains(event.getBaseEntityId())) {
+							clientIds.add(event.getBaseEntityId());
 						}
 					}
 					clients = clientService.findByFieldValue(BaseEntity.BASE_ENTITY_ID, clientIds);
@@ -154,7 +155,12 @@ public class EventResource extends RestResource<Event> {
 				ArrayList<Client> clients = (ArrayList<Client>) gson.fromJson(syncData.getString("clients"),
 				    new TypeToken<ArrayList<Client>>() {}.getType());
 				for (Client client : clients) {
-					clientService.addorUpdate(client);
+					try {
+					    clientService.addorUpdate(client);
+					}
+					catch (Exception e) {
+						logger.error("Client" + client.getBaseEntityId()==null?"":client.getBaseEntityId()+" failed to sync", e);
+					}
 				}
 				
 			}
@@ -162,8 +168,13 @@ public class EventResource extends RestResource<Event> {
 				ArrayList<Event> events = (ArrayList<Event>) gson.fromJson(syncData.getString("events"),
 				    new TypeToken<ArrayList<Event>>() {}.getType());
 				for (Event event : events) {
-					event=eventService.processOutOfArea(event);
-					eventService.addorUpdateEvent(event);
+					try {
+						event = eventService.processOutOfArea(event);
+						eventService.addorUpdateEvent(event);
+					}
+					catch (Exception e) {
+						logger.error("Event of type "+event.getEventType()+" for client " + event.getBaseEntityId()==null?"":event.getBaseEntityId()+" failed to sync", e);
+					}
 				}
 			}
 			

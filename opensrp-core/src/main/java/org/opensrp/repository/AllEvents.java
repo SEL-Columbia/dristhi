@@ -64,7 +64,7 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 	}
 	
-	@View(name = "all_events_by_base_entity_and_form_submission", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.eventType], doc); } }")
+	@View(name = "all_events_by_base_entity_and_type", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.eventType], doc); } }")
 	public List<Event> findByBaseEntityAndType(String baseEntityId, String eventType) {
 		return db.queryView(
 		    createQuery("all_events_by_base_entity_and_type").key(ComplexKey.of(baseEntityId, eventType)).includeDocs(true),

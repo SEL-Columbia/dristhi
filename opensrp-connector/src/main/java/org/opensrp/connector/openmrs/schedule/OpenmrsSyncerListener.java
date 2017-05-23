@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.connector.dhis2.Dhis2TrackCaptureConnector;
@@ -28,7 +27,6 @@ import org.opensrp.service.ClientService;
 import org.opensrp.service.ConfigService;
 import org.opensrp.service.ErrorTraceService;
 import org.opensrp.service.EventService;
-import org.opensrp.service.formSubmission.FormSubmissionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,39 +81,39 @@ public class OpenmrsSyncerListener {
 				"OpenMRS data pusher token to keep track of voided events synced with OpenMRS", true);
 	}
 
-	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
-	public void scheduletrackerSyncer(MotechEvent event) {
-		try {
-			logger.info("RUNNING " + event.getSubject());
-			AppStateToken lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment);
-			DateTime start = lastsync == null || lastsync.getValue() == null ? new DateTime().minusYears(33) : new DateTime(lastsync.stringValue());
-			DateTime end = new DateTime();
-			List<Enrollment> el = opensrpScheduleService.findEnrollmentByLastUpDate(start, end);
-			for (Enrollment e : el) {
-				DateTime alertstart = e.getStartOfSchedule();
-				DateTime alertend = e.getLastFulfilledDate();
-				if (alertend == null) {
-					alertend = e.getCurrentMilestoneStartDate();
-				}
-				try {
-					if (e.getMetadata().get(OpenmrsConstants.ENROLLMENT_TRACK_UUID) != null) {
-						openmrsSchedulerService.updateTrack(e,
-								actionService.findByCaseIdScheduleAndTimeStamp(e.getExternalId(), e.getScheduleName(), alertstart, alertend));
-					} else {
-						JSONObject tr = openmrsSchedulerService.createTrack(e,
-								actionService.findByCaseIdScheduleAndTimeStamp(e.getExternalId(), e.getScheduleName(), alertstart, alertend));
-						opensrpScheduleService.updateEnrollmentWithMetadata(e.getId(), OpenmrsConstants.ENROLLMENT_TRACK_UUID, tr.getString("uuid"));
-					}
-				} catch (Exception e1) {
-					e1.printStackTrace();
-					errorTraceService.log("ScheduleTracker Syncer Inactive Schedule", Enrollment.class.getName(), e.getId(), e1.getStackTrace().toString(), "");
-				}
-			}
-			config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment, end);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
+//	public void scheduletrackerSyncer(MotechEvent event) {
+//		try {
+//			logger.info("RUNNING " + event.getSubject());
+//			AppStateToken lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment);
+//			DateTime start = lastsync == null || lastsync.getValue() == null ? new DateTime().minusYears(33) : new DateTime(lastsync.stringValue());
+//			DateTime end = new DateTime();
+//			List<Enrollment> el = opensrpScheduleService.findEnrollmentByLastUpDate(start, end);
+//			for (Enrollment e : el) {
+//				DateTime alertstart = e.getStartOfSchedule();
+//				DateTime alertend = e.getLastFulfilledDate();
+//				if (alertend == null) {
+//					alertend = e.getCurrentMilestoneStartDate();
+//				}
+//				try {
+//					if (e.getMetadata().get(OpenmrsConstants.ENROLLMENT_TRACK_UUID) != null) {
+//						openmrsSchedulerService.updateTrack(e,
+//								actionService.findByCaseIdScheduleAndTimeStamp(e.getExternalId(), e.getScheduleName(), alertstart, alertend));
+//					} else {
+//						JSONObject tr = openmrsSchedulerService.createTrack(e,
+//								actionService.findByCaseIdScheduleAndTimeStamp(e.getExternalId(), e.getScheduleName(), alertstart, alertend));
+//						opensrpScheduleService.updateEnrollmentWithMetadata(e.getId(), OpenmrsConstants.ENROLLMENT_TRACK_UUID, tr.getString("uuid"));
+//					}
+//				} catch (Exception e1) {
+//					e1.printStackTrace();
+//					errorTraceService.log("ScheduleTracker Syncer Inactive Schedule", Enrollment.class.getName(), e.getId(), e1.getStackTrace().toString(), "");
+//				}
+//			}
+//			config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment, end);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT)
 	public void pushToOpenMRS(MotechEvent event) {
