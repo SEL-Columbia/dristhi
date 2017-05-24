@@ -176,22 +176,18 @@ public class EventService {
 				List<Event> existingEvents = findByBaseEntityAndType(client.getBaseEntityId(), "Birth Registration");
 				if (existingEvents != null && !existingEvents.isEmpty()) {
 					
-					Event outOfCatchment= new Event(client.getBaseEntityId(), "Out of Catchment Service", event.getEventDate(), event.getEntityType(), event.getProviderId(), event.getLocationId(), event.getFormSubmissionId());
-					outOfCatchment.setObs(event.getObs());
-					outOfCatchment.setDateCreated(new DateTime());
-					
-					//keep log of out of catchment event since this is needed when populating out of catchment indicators
-					addorUpdateEvent(outOfCatchment);
 					
 					event.getIdentifiers().remove(Client.ZEIR_ID.toUpperCase());
-
-					event.setProviderId(existingEvents.get(0).getProviderId());
 					event.setBaseEntityId(client.getBaseEntityId());
 					//Map<String, String> identifiers = event.getIdentifiers();
 					//event identifiers are unique so removing zeir_id since baseentityid has been found
+					//also out of area service events stick with the providerid so that they can sync back to them for reports generation
+					if(!event.getEventType().startsWith("Out of Area Service")){
+					event.setProviderId(existingEvents.get(0).getProviderId());
 					Map<String, String> details = new HashMap<String, String>();
 					details.put("out_of_catchment_provider_id", event.getProviderId());
 					event.setDetails(details);
+					}
 					
 
 				}
