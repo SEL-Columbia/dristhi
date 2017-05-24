@@ -8,7 +8,7 @@
             "earliest": ["4 Weeks"],
             "due": ["4 Weeks","10 Days"],
             "late": ["5 Years"],
-            "max": [""]
+            "max": ["5 Years", "1 Day"]
             },
             "alerts": [
             	{
@@ -28,6 +28,12 @@
                     "offset": ["4 Weeks","10 Days"],
                     "interval": ["1 Day"],
                     "count": "1900"
+                },
+                {
+                    "window": "max",
+                    "offset": ["5 Years"],
+                    "interval": ["1 Day"],
+                    "count": "2"
                 }
             ]
         }

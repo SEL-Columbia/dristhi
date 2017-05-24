@@ -8,7 +8,7 @@
             "earliest": ["4 Weeks"],
             "due": ["4 Weeks","10 Days"],
             "late": ["8 Months"],
-            "max": [""]
+            "max": ["8 Months", "1 Day"]
             },
             "alerts": [
             	{
@@ -28,6 +28,12 @@
                     "offset": ["4 Weeks","10 Days"],
                     "interval": ["1 Day"],
                     "count": "1900"
+                },
+                {
+                    "window": "max",
+                    "offset": ["8 Months"],
+                    "interval": ["1 Day"],
+                    "count": "2"
                 }
             ]
         }
