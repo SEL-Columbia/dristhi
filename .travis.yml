@@ -7,7 +7,8 @@ install:
   - echo "skip" # or anything that returns 0 status
   - sudo service couchdb restart
   - curl -X GET google.com
-  - netstat -tuplen
+  - sudo netstat -tuplen
+  - netstat -an | grep 5984
   - curl -X PUT http://localhost:5984
 before_script:
   - curl -X PUT http://localhost:5984/_config/admins/opensrp -d '"opensrp"'
