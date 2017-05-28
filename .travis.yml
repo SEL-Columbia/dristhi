@@ -3,6 +3,7 @@ sudo: false
 services:
   - couchdb
   - mysql
+install: echo "skip" # or anything that returns 0 status
 before_script:
   - curl -X PUT http://localhost:5984/_config/admins/opensrp -d '"opensrp"'
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
