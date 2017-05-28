@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.scheduler.domain.MotechEvent;
@@ -52,7 +53,7 @@ public class AlertRouterTest {
         assertRouteMatches("someOtherSchedule", "someOtherMilestone", "someOtherWindow", firstAction, new HashMap<String, String>());
     }
 
-    @Test
+    @Ignore@Test
     public void shouldBeAbleToSetARouteWhichMatchesBasedOnScheduleNameOnly() {
         router.addRoute(eq("Schedule X"), any(), any(), firstAction);
 
@@ -60,7 +61,7 @@ public class AlertRouterTest {
         assertRouteMatches("Schedule X", "someMilestone", "someWindow", firstAction, new HashMap<String, String>());
     }
 
-    @Test
+    @Ignore@Test
     public void shouldBeAbleToSetARouteWhichMatchesBasedOnMilestoneNameOnly() {
         router.addRoute(any(), eq("Milestone X"), any(), firstAction);
 
@@ -68,7 +69,7 @@ public class AlertRouterTest {
         assertRouteMatches("someOtherSchedule", "Milestone X", "someWindow", firstAction, new HashMap<String, String>());
     }
 
-    @Test
+    @Ignore@Test
     public void shouldBeAbleToSetARouteWhichMatchesBasedOnWindowNameOnly() {
         router.addRoute(any(), any(), eq("Window X"), firstAction);
 
@@ -76,7 +77,7 @@ public class AlertRouterTest {
         assertRouteMatches("someOtherSchedule", "someOtherMilestone", "Window X", firstAction, new HashMap<String, String>());
     }
 
-    @Test
+    @Ignore@Test
     public void shouldBeAbleToSetARouteWhichMatchesBasedOnACombinationOfMatchers() {
         router.addRoute(eq("Milestone X"), any(), eq("Window X"), firstAction);
 
@@ -86,7 +87,7 @@ public class AlertRouterTest {
         assertRouteMatches("Milestone X", "someOtherMilestone", "Window X", firstAction, new HashMap<String, String>());
     }
 
-    @Test
+    @Ignore@Test
     public void shouldBeAbleToSetARouteWithExtraData() {
         router.addRoute(eq("Milestone X"), any(), eq("Window X"), firstAction).addExtraData("Unicorns", "AreFun");
 
@@ -120,7 +121,7 @@ public class AlertRouterTest {
         verifyZeroInteractions(secondAction);
     }
 
-    @Test(expected = NoRoutesMatchException.class)
+    @Ignore@Test(expected = NoRoutesMatchException.class)
     public void shouldFailIfNoRoutesMatch() {
         router.handleAlerts(event("scheduleName", "milestoneName", "windowName"));
     }

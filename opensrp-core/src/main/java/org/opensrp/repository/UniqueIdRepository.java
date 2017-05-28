@@ -11,14 +11,15 @@ import org.opensrp.domain.UniqueId;
 //import org.opensrp.domain.UniqueId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UniqueIdRepository {
-	
-	@Autowired
+
+	//@Autowired
 	JdbcTemplate jdbcTemplate;
 	
 	public int save(UniqueId uniqueId) throws Exception {

@@ -40,7 +40,7 @@ public class RapidProServiceIntegrationTest extends SpringApplicationContextProv
 		contact.put("fields", fields);
 	}
 
-	@Test
+	@Ignore@Test
 	public void shouldCreateContactAndReceiveContactObjectResponse() throws Exception {
 		String response = rapidproService.createContact(contact);
 		JSONObject jsonResponse = new JSONObject(response);
@@ -49,7 +49,7 @@ public class RapidProServiceIntegrationTest extends SpringApplicationContextProv
 
 	}
 
-	@Test
+	@Ignore@Test
 	public void shouldUpdateContactAndReceiveContactObjectResponse() throws Exception {
 		String response = rapidproService.createContact(contact);
 		JSONObject jsonResponse = new JSONObject(response);
@@ -62,7 +62,7 @@ public class RapidProServiceIntegrationTest extends SpringApplicationContextProv
 
 	}
 
-	@Test
+	@Ignore@Test
 	public void shouldDeleteContactAndReceiveStatusResponse() throws Exception {
 		String response = rapidproService.createContact(contact);
 		JSONObject jsonResponse = new JSONObject(response);
@@ -76,7 +76,7 @@ public class RapidProServiceIntegrationTest extends SpringApplicationContextProv
 		// rapidproService.sendMessage(urns, contacts, groups, text, channel);
 	}
 
-	@Test
+	@Ignore@Test
 	public void shouldCreateFieldAndReceiveFieldKeyResponse() throws Exception {
 		String response = rapidproService.addField("Test Field", "T");
 		JSONObject jsonResponse = new JSONObject(response);

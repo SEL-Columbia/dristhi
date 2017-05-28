@@ -8,6 +8,7 @@
 
     <context:property-placeholder location="classpath*:maven.properties,classpath*:activemq.properties"/>
     <util:properties id="couchdbProperties" location="classpath:couchdb.properties"/>
+    <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
     
     <import resource="classpath:applicationPlatformCommonAPI.xml"/>
     <import resource="classpath:applicationContext-opensrp-form.xml"/>
