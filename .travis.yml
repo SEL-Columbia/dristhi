@@ -6,6 +6,7 @@ services:
 install:
   - echo "skip" # or anything that returns 0 status
   - sudo service couchdb restart
+  - sudo pic "$(locate couchdb/local.ini)"
   - curl -X GET google.com
   - sudo netstat -tuplen
   - netstat -an | grep 5984
