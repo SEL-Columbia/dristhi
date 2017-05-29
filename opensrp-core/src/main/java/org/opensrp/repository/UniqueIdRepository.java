@@ -19,8 +19,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UniqueIdRepository {
 
-	//@Autowired
+
 	JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	public UniqueIdRepository(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 	
 	public int save(UniqueId uniqueId) throws Exception {
 		String insertQuery = "insert into " + UniqueId.tbName + " (" + UniqueId.COL_LOCATION + "," + UniqueId.COL_OPENMRSID

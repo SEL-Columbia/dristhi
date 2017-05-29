@@ -17,9 +17,10 @@
     <import resource="classpath:applicationSmsHttp.xml"/>
     <import resource="classpath:applicationSmsAPI.xml"/>
     <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
-    
+    <context:annotation-config />
+
     <context:property-placeholder location="classpath*:maven.properties"/>
-    
+
     <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
 
     <context:annotation-config/>
