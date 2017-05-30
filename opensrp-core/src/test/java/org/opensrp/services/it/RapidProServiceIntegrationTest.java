@@ -15,9 +15,9 @@ import org.opensrp.SpringApplicationContextProvider;
 import org.opensrp.service.RapidProService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class RapidProServiceIntegrationTest extends SpringApplicationContextProvider {
+public class RapidProServiceIntegrationTest  {
 
-	@Autowired
+	/*@Autowired
 	RapidProService rapidproService;
 	Map<String, Object> contact = new HashMap<String, Object>();
 	List<String> urns = new ArrayList<String>();
@@ -99,5 +99,5 @@ public class RapidProServiceIntegrationTest extends SpringApplicationContextProv
 		Assert.assertEquals("2016-10-30", jsonResponse.getJSONObject("fields").getString("anc3"));
 		Assert.assertEquals("2016-11-10", jsonResponse.getJSONObject("fields").getString("anc4"));
 		Assert.assertEquals("Pregnant Women", jsonResponse.getJSONArray("groups").getString(0));
-	}
+	}*/
 }
