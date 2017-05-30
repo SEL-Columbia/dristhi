@@ -15,9 +15,9 @@ import org.opensrp.SpringApplicationContextProvider;
 import org.opensrp.service.RapidProService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class RapidProServiceIntegrationTest  {
+public class RapidProServiceIntegrationTest  extends SpringApplicationContextProvider{
 
-	/*@Autowired
+	@Autowired
 	RapidProService rapidproService;
 	Map<String, Object> contact = new HashMap<String, Object>();
 	List<String> urns = new ArrayList<String>();
@@ -40,7 +40,7 @@ public class RapidProServiceIntegrationTest  {
 		contact.put("fields", fields);
 	}
 
-	@Ignore@Test
+	@Test
 	public void shouldCreateContactAndReceiveContactObjectResponse() throws Exception {
 		String response = rapidproService.createContact(contact);
 		JSONObject jsonResponse = new JSONObject(response);
@@ -49,7 +49,7 @@ public class RapidProServiceIntegrationTest  {
 
 	}
 
-	@Ignore@Test
+	@Test
 	public void shouldUpdateContactAndReceiveContactObjectResponse() throws Exception {
 		String response = rapidproService.createContact(contact);
 		JSONObject jsonResponse = new JSONObject(response);
@@ -62,7 +62,7 @@ public class RapidProServiceIntegrationTest  {
 
 	}
 
-	@Ignore@Test
+	@Test
 	public void shouldDeleteContactAndReceiveStatusResponse() throws Exception {
 		String response = rapidproService.createContact(contact);
 		JSONObject jsonResponse = new JSONObject(response);
@@ -76,7 +76,7 @@ public class RapidProServiceIntegrationTest  {
 		// rapidproService.sendMessage(urns, contacts, groups, text, channel);
 	}
 
-	@Ignore@Test
+	@Test
 	public void shouldCreateFieldAndReceiveFieldKeyResponse() throws Exception {
 		String response = rapidproService.addField("Test Field", "T");
 		JSONObject jsonResponse = new JSONObject(response);
@@ -99,5 +99,5 @@ public class RapidProServiceIntegrationTest  {
 		Assert.assertEquals("2016-10-30", jsonResponse.getJSONObject("fields").getString("anc3"));
 		Assert.assertEquals("2016-11-10", jsonResponse.getJSONObject("fields").getString("anc4"));
 		Assert.assertEquals("Pregnant Women", jsonResponse.getJSONArray("groups").getString(0));
-	}*/
+	}
 }

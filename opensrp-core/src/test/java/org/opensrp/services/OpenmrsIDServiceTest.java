@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.SpringApplicationContextProvider;
 import org.opensrp.domain.Address;
@@ -18,8 +19,8 @@ import org.opensrp.domain.Client;
 import org.opensrp.service.OpenmrsIDService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class OpenmrsIDServiceTest  {
-    /*@Autowired
+public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
+    @Autowired
     OpenmrsIDService openmrsIDService;
 
 
@@ -54,7 +55,7 @@ public class OpenmrsIDServiceTest  {
         assertNotNull(client.getIdentifier(OpenmrsIDService.ZEIR_IDENTIFIER));
     }
 
-    @Test
+    @Ignore@Test
     public void testExistingClientsDoNotReceiveNewOpenmrsId() throws Exception {
         Client client = this.createClient("45678", "Jane", "Doe", "Female", "102/17");
         Client duplicateClient = this.createClient("45677", "Jane", "Doe", "Female", "102/17");
@@ -65,5 +66,5 @@ public class OpenmrsIDServiceTest  {
         openmrsIDService.assignOpenmrsIdToClient("12345-1", duplicateClient);
         assertTrue(openmrsIDService.checkIfClientExists(duplicateClient));
         assertNull(duplicateClient.getIdentifier(OpenmrsIDService.ZEIR_IDENTIFIER));
-    }*/
+    }
 }
