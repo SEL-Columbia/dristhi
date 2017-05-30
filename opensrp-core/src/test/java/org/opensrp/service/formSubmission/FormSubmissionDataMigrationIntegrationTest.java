@@ -17,7 +17,8 @@ import org.opensrp.util.Utils;
 import org.opensrp.util.Utils.DatabaseConnectionParams;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class FormSubmissionDataMigrationIntegrationTest  {
+public class FormSubmissionDataMigrationIntegrationTest {
+/*
 	@Autowired
 	FormSubmissionDataMigrationService dataMigrationService;
 	@Autowired
@@ -71,6 +72,7 @@ public class FormSubmissionDataMigrationIntegrationTest  {
 		Assert.assertTrue("AppStateToken shouldn't be empty after a successful migration", !ol.isEmpty());
 		Assert.assertTrue("AppStateToken should be greater than 0 all the times after a successful migration", ol.get(0).longValue() > 0);
 	}
+*/
 
 
 }

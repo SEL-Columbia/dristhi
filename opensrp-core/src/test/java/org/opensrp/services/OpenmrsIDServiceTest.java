@@ -18,7 +18,7 @@ import org.opensrp.domain.Client;
 import org.opensrp.service.OpenmrsIDService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
+public class OpenmrsIDServiceTest  {
     /*@Autowired
     OpenmrsIDService openmrsIDService;
 

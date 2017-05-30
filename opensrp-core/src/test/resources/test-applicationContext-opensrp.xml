@@ -4,46 +4,27 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-               http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+               http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+               http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-    <context:property-placeholder location="classpath*:maven.properties,classpath*:activemq.properties"/>
-    <util:properties id="couchdbProperties" location="classpath:couchdb.properties"/>
-    <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
-    
-    <import resource="classpath:applicationPlatformCommonAPI.xml"/>
-    <import resource="classpath:applicationContext-opensrp-form.xml"/>
-    
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:activemq.properties"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
     <import resource="classpath:applicationScheduler.xml"/>
     <import resource="classpath:applicationPlatformServerAPI.xml"/>
     <import resource="classpath:applicationSmsHttp.xml"/>
     <import resource="classpath:applicationSmsAPI.xml"/>
     <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
-    
-    <context:annotation-config/>
-    
-    <context:component-scan base-package="org.opensrp.repository"/>
-    <context:component-scan base-package="org.opensrp.scheduler"/>
-    <context:component-scan base-package="org.opensrp.service">
-    <!--These classes are excluded to enable the context load. This is because 
-			EventsListener has EventsRouter as a dependency, problem is that IHandlerMapper 
-			in EventsRouter is an interface that has its implementation in opensrp-register 
-			and the module(opensrp-register) isn't a dependency of this module. -->
-     <context:exclude-filter type="regex" expression="org.opensrp.service.formSubmission.EventsListener"/>
-     <context:exclude-filter type="regex" expression="org.opensrp.service.formSubmission.handler.EventsRouter"/>
-    <context:exclude-filter type="regex" expression="org.opensrp.service.*DrishtiSMS.*" />
-    <context:exclude-filter type="regex" expression="org.opensrp.service.*reporting.*" />
-    </context:component-scan>
-   
-    
-    
-    <context:component-scan base-package="org.opensrp.service.formSubmission.ziggy"/>
-    
-    <bean id="httpClient" class="org.opensrp.util.OpenSRPHttpClientFactoryBean"/>
 
-    <bean id="couchDbInstance" class="org.ektorp.impl.StdCouchDbInstance">
-        <constructor-arg ref="httpClient"/>
-    </bean>
-    
+    <context:property-placeholder location="classpath*:maven.properties"/>
+
+    <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
+
+    <context:annotation-config/>
+    <context:component-scan base-package="org.opensrp"/>
+
     <bean id="opensrpDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="${couchdb.db.opensrp}"/>
         <constructor-arg ref="couchDbInstance"/>
@@ -53,9 +34,10 @@
         <constructor-arg value="${couchdb.db.mcts}"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
-     
-         <bean id="opensrpErrorTraceDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+    <bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl"/>
+    <bean id="opensrpErrorTraceDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="${couchdb.db.error}"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
+
 </beans>
