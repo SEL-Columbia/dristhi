@@ -47,7 +47,7 @@ public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
         return client;
     }
 
-    @Ignore@Test
+    @Test
     public void testDownloadOpenmrsIds() throws SQLException {
         Client client = this.createClient("12345", "First", "Last", "Male", "454/16");
 

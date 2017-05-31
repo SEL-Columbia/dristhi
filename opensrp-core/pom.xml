@@ -47,7 +47,7 @@
             </resource>
         </resources>
 
-		<!--<plugins>
+		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>sql-maven-plugin</artifactId>
@@ -67,7 +67,7 @@
 					<username>root</username>
 					<password>root</password>
 				</configuration>
-
+				<executions>
 					<execution>
 						<id>create-table</id>
 						<phase>process-test-resources</phase>
@@ -77,14 +77,15 @@
 						<configuration>
 							<autocommit>true</autocommit>
 							<srcFiles>
-								<srcFile>build/sql/tables_opensrp.sql</srcFile>
+								<srcFile>../build/sql/tables_opensrp.sql</srcFile>
 							</srcFiles>
 						</configuration>
 					</execution>
 
 				</executions>
 			</plugin>
-		</plugins>-->
+		</plugins>
+
     </build>
 
 
