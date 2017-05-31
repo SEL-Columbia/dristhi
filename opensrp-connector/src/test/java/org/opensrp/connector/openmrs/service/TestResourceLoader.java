@@ -34,6 +34,7 @@ public class TestResourceLoader {
 	protected PatientService patientService;
 	protected EncounterService encounterService;
 	protected DHIS2DatasetPush dhis2DatasetPush;
+	protected OpenmrsLocationService openmrsLocationService;
 	
 	public TestResourceLoader() throws IOException {
 		Resource resource = new ClassPathResource("/opensrp.properties");
@@ -52,6 +53,7 @@ public class TestResourceLoader {
 		
 		this.patientService = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		this.encounterService = new EncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
+		this.openmrsLocationService = new OpenmrsLocationService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		this.dhis2DatasetPush = new DHIS2DatasetPush(dhis2Url, dhis2Username, dhis2Password);
 		this.encounterService.setPatientService(patientService);
 	}

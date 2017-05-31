@@ -1,15 +1,27 @@
 package org.opensrp.connector.dhis2;
 
+import java.text.SimpleDateFormat;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.api.domain.Location;
+import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.repository.AllEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DHIS2DatasetPush extends DHIS2Service {
+	private static final String DATASET_ENDPOINT = "dataValueSets?dataElementIdScheme=code";
+
 	@Autowired
 	private AllEvents reportEvents;
 	
+	@Autowired
+	protected OpenmrsLocationService openmrsLocationService;
+
 	protected Dhis2HttpUtils dhis2HttpUtils;
 	
 	public DHIS2DatasetPush() {
@@ -21,11 +33,52 @@ public class DHIS2DatasetPush extends DHIS2Service {
 		dhis2HttpUtils = new Dhis2HttpUtils(dhis2Url, user, password);
 	}
 	
-	public JSONObject createDHIS2Dataset(JSONObject reportEvents) throws JSONException {
-		JSONObject dhis2Dataset = new JSONObject();
-		
+	public JSONObject createDHIS2Dataset(JSONObject reportEvent) throws JSONException {
+		final String DATASET_KEY = "dataSet";
+		final String COMPLETE_DATA_KEY = "completeData";
+		final String PERIOD_KEY = "period";
+		final String ORG_UNIT_KEY = "orgUnit";
+		final String DATA_VALUES_KEY = "dataValues";
+
+		// prepare report data
+		String reportId = this.getDHIS2ReportId(reportEvent.getString("reportType"));
+		String openmrsLocationUuid = reportEvent.getString("locationId");
+
+		DateTimeFormatter parseDate = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		DateTime completeDataDate = parseDate.parseDateTime(reportEvent.getString("dateCreated"));
+		String formatedCompleteDataDate= new SimpleDateFormat("yyyy-MM-dd").format(completeDataDate.toDate());
+		String periodDate = new SimpleDateFormat("yyyyMM").format(completeDataDate.toDate());
+
+		// get openmrs location and retrieve dhis2 org unit Id
+		Location openmrsLocation = openmrsLocationService.getLocation(openmrsLocationUuid);
+		System.out.println("[OpenmrsLocation]: " + openmrsLocation);
+		String dhis2OrgUnitId = (String) openmrsLocation.getAttribute("dhis_ou_id");
+
+		// get indicator data
+		JSONArray indicators = reportEvent.getJSONArray("indicators");
+
 		// generate the dhis2Dataset here
-		
+		JSONObject dhis2Dataset = new JSONObject();
+		dhis2Dataset.put(DATASET_KEY, reportId);
+		dhis2Dataset.put(COMPLETE_DATA_KEY, formatedCompleteDataDate);
+		dhis2Dataset.put(PERIOD_KEY, periodDate);
+		// completed date and period
+		dhis2Dataset.put(ORG_UNIT_KEY, dhis2OrgUnitId);
+
+		JSONArray dataValues = new JSONArray();
+
+		for(int i = 0; i < indicators.length(); i++) {
+			JSONObject dataValue = new JSONObject();
+			JSONObject indicator = indicators.getJSONObject(i);
+
+			dataValue.put("dataElement", indicator.get("dhis2_id"));
+			dataValue.put("value", indicator.get("value"));
+
+			dataValues.put(dataValue);
+		}
+
+		dhis2Dataset.put(DATA_VALUES_KEY, dataValues);
+
 		return dhis2Dataset;
 	}
 	
