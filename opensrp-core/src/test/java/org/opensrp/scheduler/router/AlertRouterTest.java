@@ -1,21 +1,5 @@
 package org.opensrp.scheduler.router;
 
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.MILESTONE_NAME;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.SCHEDULE_NAME;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.WINDOW_NAME;
-import static org.opensrp.scheduler.Matcher.any;
-import static org.opensrp.scheduler.Matcher.eq;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -26,6 +10,16 @@ import org.opensrp.scheduler.AlertRouter;
 import org.opensrp.scheduler.HookedEvent;
 import org.opensrp.scheduler.MilestoneEvent;
 import org.opensrp.scheduler.NoRoutesMatchException;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.*;
+import static org.opensrp.scheduler.Matcher.any;
+import static org.opensrp.scheduler.Matcher.eq;
 
 public class AlertRouterTest {
     @Mock
@@ -53,7 +47,8 @@ public class AlertRouterTest {
         assertRouteMatches("someOtherSchedule", "someOtherMilestone", "someOtherWindow", firstAction, new HashMap<String, String>());
     }
 
-    @Ignore@Test
+
+    @Test
     public void shouldBeAbleToSetARouteWhichMatchesBasedOnScheduleNameOnly() {
         router.addRoute(eq("Schedule X"), any(), any(), firstAction);
 
@@ -61,7 +56,7 @@ public class AlertRouterTest {
         assertRouteMatches("Schedule X", "someMilestone", "someWindow", firstAction, new HashMap<String, String>());
     }
 
-    @Ignore@Test
+    @Test
     public void shouldBeAbleToSetARouteWhichMatchesBasedOnMilestoneNameOnly() {
         router.addRoute(any(), eq("Milestone X"), any(), firstAction);
 
@@ -69,7 +64,7 @@ public class AlertRouterTest {
         assertRouteMatches("someOtherSchedule", "Milestone X", "someWindow", firstAction, new HashMap<String, String>());
     }
 
-    @Ignore@Test
+    @Test
     public void shouldBeAbleToSetARouteWhichMatchesBasedOnWindowNameOnly() {
         router.addRoute(any(), any(), eq("Window X"), firstAction);
 
@@ -77,7 +72,7 @@ public class AlertRouterTest {
         assertRouteMatches("someOtherSchedule", "someOtherMilestone", "Window X", firstAction, new HashMap<String, String>());
     }
 
-    @Ignore@Test
+    @Test
     public void shouldBeAbleToSetARouteWhichMatchesBasedOnACombinationOfMatchers() {
         router.addRoute(eq("Milestone X"), any(), eq("Window X"), firstAction);
 
@@ -87,7 +82,7 @@ public class AlertRouterTest {
         assertRouteMatches("Milestone X", "someOtherMilestone", "Window X", firstAction, new HashMap<String, String>());
     }
 
-    @Ignore@Test
+    @Test
     public void shouldBeAbleToSetARouteWithExtraData() {
         router.addRoute(eq("Milestone X"), any(), eq("Window X"), firstAction).addExtraData("Unicorns", "AreFun");
 
@@ -121,7 +116,7 @@ public class AlertRouterTest {
         verifyZeroInteractions(secondAction);
     }
 
-    @Ignore@Test(expected = NoRoutesMatchException.class)
+    @Test(expected = NoRoutesMatchException.class)
     public void shouldFailIfNoRoutesMatch() {
         router.handleAlerts(event("scheduleName", "milestoneName", "windowName"));
     }
