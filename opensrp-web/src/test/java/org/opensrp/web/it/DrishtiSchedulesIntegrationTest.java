@@ -459,7 +459,7 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
         visualization.outputTo("mother-tt-2.html", 1);
     }
 
-    @Ignore@Test
+    @Test
     public void shouldProvideAlertsForIFA1() throws Exception {
         schedule.enrollFor("IFA 1", newDate(2012, 1, 1), new Time(14, 0));
 
