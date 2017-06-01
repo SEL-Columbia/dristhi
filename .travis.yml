@@ -1,17 +1,12 @@
 language: java
-sudo: required
+sudo: false
 services:
   - couchdb
   - mysql
 install:
   - echo "skip" # or anything that returns 0 status
-  - sudo service couchdb restart
-  - sudo updatedb
-  - sudo pic "$(locate couchdb/local.ini)"
-  - curl -X GET google.com
-  - sudo netstat -tuplen
-  - netstat -an | grep 5984
-  - curl -X PUT http://localhost:5984
+  - sudo updatedb #Giving couchdb time to start.
+  - netstat -an | grep 5984 #checking for couchdb port
 before_script:
   - curl -X PUT http://localhost:5984/_config/admins/opensrp -d '"opensrp"'
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
