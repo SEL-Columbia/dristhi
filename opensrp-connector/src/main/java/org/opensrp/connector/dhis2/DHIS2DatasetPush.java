@@ -8,17 +8,30 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.api.domain.Location;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.repository.AllEvents;
+import org.opensrp.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+
+enum DhisSchedulerConfig {
+	dhis2_syncer_sync_report_by_date_updated,
+	dhis2_syncer_sync_report_by_date_voided
+}
 
 public class DHIS2DatasetPush extends DHIS2Service {
 	private static final String DATASET_ENDPOINT = "dataValueSets?dataElementIdScheme=code";
+	private static final String SCHEDULER_DHIS2_DATA_PUSH_SUBJECT = "DHIS2 Report Pusher";
 
 	@Autowired
 	private AllEvents reportEvents;
 	
+	@Autowired
+	private ConfigService config;
+
 	@Autowired
 	protected OpenmrsLocationService openmrsLocationService;
 
@@ -31,6 +44,35 @@ public class DHIS2DatasetPush extends DHIS2Service {
 	public DHIS2DatasetPush(String dhis2Url, String user, String password) {
 		super(dhis2Url, user, password);
 		dhis2HttpUtils = new Dhis2HttpUtils(dhis2Url, user, password);
+
+		this.config.registerAppStateToken(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated, 0,
+			"ScheduleTracker token to keep track of reports synced with DHIS2", true);
+
+		this.config.registerAppStateToken(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_voided, 0,
+			"DHIS2 report pusher token to keep track of new / updated reports synced with DHIS2", true);
+	}
+
+	public String getDHIS2ReportId(String reportName) throws JSONException {
+		String reportId = "";
+		JSONObject response = dhis2HttpUtils.get("dataSets.json", "");
+
+		if(!response.has("dataSets")) {
+			throw new JSONException("Required dataSets key is absent");
+		}
+
+		JSONArray dataSets = response.getJSONArray("dataSets");
+
+		for(int i = 0; i < dataSets.length(); i++) {
+			JSONObject dataSet = dataSets.getJSONObject(i);
+			String datasetId = dataSet.getString("id");
+			String datasetName = dataSet.getString("displayName");
+
+			if(datasetName.equals(reportName)) {
+				reportId = datasetId;
+				break;
+			}
+		}
+		return reportId;
 	}
 	
 	public JSONObject createDHIS2Dataset(JSONObject reportEvent) throws JSONException {
@@ -71,10 +113,12 @@ public class DHIS2DatasetPush extends DHIS2Service {
 			JSONObject dataValue = new JSONObject();
 			JSONObject indicator = indicators.getJSONObject(i);
 
-			dataValue.put("dataElement", indicator.get("dhis2_id"));
-			dataValue.put("value", indicator.get("value"));
+			if(!indicator.get("dhis2_id").equals("unknown")) {
+				dataValue.put("dataElement", indicator.get("dhis2_id"));
+				dataValue.put("value", indicator.get("value"));
 
-			dataValues.put(dataValue);
+				dataValues.put(dataValue);
+			}
 		}
 
 		dhis2Dataset.put(DATA_VALUES_KEY, dataValues);
@@ -82,27 +126,10 @@ public class DHIS2DatasetPush extends DHIS2Service {
 		return dhis2Dataset;
 	}
 	
-	public String getDHIS2ReportId(String reportName) throws JSONException {
-		String reportId = "";
-		JSONObject response = dhis2HttpUtils.get("dataSets.json", "");
+	@MotechListener(subjects = SCHEDULER_DHIS2_DATA_PUSH_SUBJECT)
+	public void pushToDHIS2(MotechEvent event) {
+		// retrieve all the report events
 		
-		if(!response.has("dataSets")) {
-			throw new JSONException("Required dataSets key is absent");
-		}
-		
-		JSONArray dataSets = response.getJSONArray("dataSets");
-		
-		for(int i = 0; i < dataSets.length(); i++) {
-			JSONObject dataSet = dataSets.getJSONObject(i);
-			String datasetId = dataSet.getString("id");
-			String datasetName = dataSet.getString("displayName");
-			
-			if(datasetName.equals(reportName)) {
-				reportId = datasetId;
-				break;
-			}
-		}
-		return reportId;
 	}
 	
 }
