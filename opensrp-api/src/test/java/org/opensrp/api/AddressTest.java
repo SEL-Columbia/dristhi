@@ -1,38 +1,75 @@
 package org.opensrp.api;
 
-import static org.junit.Assert.*;
+import org.joda.time.DateTime;
+import org.junit.Test;
+import org.opensrp.api.domain.Address;
+import org.opensrp.common.AddressField;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
-import org.opensrp.api.domain.Address;
-import org.opensrp.common.AddressField;
+import static org.junit.Assert.*;
 
 public class AddressTest {
 
+    public static final String NO_MATCH_ADDRESS_FIELD_MESSAGE = "No match. Should return NULL value.";
+
 	@Test
-	public void testAddress(){
-		Address address = new Address("", null, null, null, null, null, null, null, null);
-		address.addAddressField(AddressField.AREA, "areaVal");
+    public void testAddressActivity() {
+        Address address = new Address();
 
-		assertNotNull("Address field inserted was returned null", address.getAddressField(AddressField.AREA.name()));
-		assertSame("Expected value of Address field not returned", address.getAddressField(AddressField.AREA.name()), "areaVal");
+        assertTrue("Address should be ACTIVE when no endDate provided", address.isActive());
 
-		assertTrue("Address should be ACTIVE when no endDate provided", address.isActive());
-		
-		address.setEndDate(new Date());
-		assertFalse("Address should be IN-ACTIVE when endDate exists", address.isActive());
+        DateTime currentDate = new DateTime();
+        DateTime currentDatePlusOneDay = currentDate.plusDays(1);
+        address.setEndDate(currentDatePlusOneDay.toDate());
 
-		assertTrue("Duration of Address should be -1 for no startDate", address.durationInDays()==-1);
-		assertTrue("Duration of Address should be -1 for no startDate", address.durationInWeeks()==-1);
-		assertTrue("Duration of Address should be -1 for no startDate", address.durationInMonths()==-1);
-		assertTrue("Duration of Address should be -1 for no startDate", address.durationInYears()==-1);
-	}
+		assertTrue("Address should be ACTIVE when endDate is greater than currentDate", address.isActive());
+
+
+        address.setEndDate(new Date());
+        assertFalse("Address should be IN-ACTIVE when endDate less than current date", address.isActive());
+
+    }
+
+    @Test
+    public void testInvalidDurationForNoStartDateTime() {
+        Address address = new Address();
+        assertTrue("Duration of Address should be -1 for no startDate", address.durationInDays()==-1);
+        assertTrue("Duration of Address should be -1 for no startDate", address.durationInWeeks()==-1);
+        assertTrue("Duration of Address should be -1 for no startDate", address.durationInMonths()==-1);
+        assertTrue("Duration of Address should be -1 for no startDate", address.durationInYears()==-1);
+
+    }
+
+    @Test
+    public void testDurationIfNoEndDatePresent() {
+        Address address = new Address();
+        address.setStartDate(new Date());
+        int days = address.durationInDays();
+        System.out.println(days);
+        boolean isLessThanADay = 0 == days;
+        assertTrue("Duration will be less than a day, if start date is set to current date time.", isLessThanADay);
+    }
+
+    @Test
+    public void testDurationWithBothStartDateAndEndDate() {
+        DateTime currentDate = new DateTime();
+        DateTime currentDatePlusOneYear = currentDate.plusYears(1);
+
+        Address address = new Address();
+        address.setStartDate(currentDate.toDate());
+        address.setEndDate(currentDatePlusOneYear.toDate());
+
+        assertEquals(1, address.durationInYears());
+        assertEquals(12, address.durationInMonths());
+        assertEquals(52, address.durationInWeeks());
+        assertEquals(365, address.durationInDays());
+    }
 	
 	@Test
-	public void testAddress2(){
+	public void testAddressCreationWithConstructor(){
 		Address address = new Address("Birthplace", new Date(), null, null, "2.222", "3.333", "75210", "Sindh", "Pakistan");
 		
 		assertEquals("Address type invalid", address.getAddressType(), "Birthplace");
@@ -41,10 +78,11 @@ public class AddressTest {
 		assertEquals("Postcode value invalid", address.getPostalCode(), "75210");
 		assertEquals("State value invalid", address.getState(), "Sindh");
 		assertEquals("Country value invalid", address.getCountry(), "Pakistan");
+
 	}
 	
 	@Test
-	public void testAddress3(){
+	public void testAddressCreationgWithSetter(){
 		Date sd = new Date();
 		Date ed = new Date();
 		Address address = new Address();
@@ -52,6 +90,8 @@ public class AddressTest {
 		address.withCountry("Pakistan");
 		address.withState("Punjab");
 		address.withPostalCode("75290");
+		address.withLatitude("2.222");
+		address.withLongitute("3.333");
 		address.withStartDate(sd);
 		address.withEndDate(ed);
 		
@@ -59,6 +99,8 @@ public class AddressTest {
 		assertEquals("Postcode value invalid", address.getPostalCode(), "75290");
 		assertEquals("State value invalid", address.getState(), "Punjab");
 		assertEquals("Country value invalid", address.getCountry(), "Pakistan");
+        assertEquals("Lat value invalid", address.getLatitude(), "2.222");
+        assertEquals("Long value invalid", address.getLongitute(), "3.333");
 		assertEquals("StartDate invalid", address.getStartDate(), sd);
 		assertEquals("EndDate invalid", address.getStartDate(), ed);
 	}
@@ -80,7 +122,7 @@ public class AddressTest {
 
 
 		String invalidAddressValue = address.getAddressFieldMatchingRegex(noRegexMatch);
-		assertNull(invalidAddressValue);
+		assertNull(NO_MATCH_ADDRESS_FIELD_MESSAGE, invalidAddressValue);
 
 		String validAddressValue1 = address.getAddressFieldMatchingRegex(allRegexMatch);
 		assertEquals(integerVal, validAddressValue1);
@@ -105,10 +147,10 @@ public class AddressTest {
 		address.setAddressFields(addressFields);
 
 		String nullAddressValue = address.getAddressField(noFieldMatch);
-		assertNull(nullAddressValue);
+		assertNull(NO_MATCH_ADDRESS_FIELD_MESSAGE, nullAddressValue);
 
 		String invalidAddressValue = address.getAddressField(AddressField.HOUSE_NUMBER);
-		assertNull(invalidAddressValue);
+		assertNull(NO_MATCH_ADDRESS_FIELD_MESSAGE, invalidAddressValue);
 
 		String validValueWithEnum = address.getAddressField(AddressField.AREA);
 		assertEquals(stringVal, validValueWithEnum);
