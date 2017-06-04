@@ -3,6 +3,8 @@ package org.opensrp.api;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 import org.opensrp.api.domain.Address;
@@ -59,5 +61,93 @@ public class AddressTest {
 		assertEquals("Country value invalid", address.getCountry(), "Pakistan");
 		assertEquals("StartDate invalid", address.getStartDate(), sd);
 		assertEquals("EndDate invalid", address.getStartDate(), ed);
+	}
+
+
+	@Test
+	public void testGettingAddressFiledByRegex() {
+		String stringVal = "areaVal";
+		String integerVal = "1";
+		String noRegexMatch = "";
+		String allRegexMatch = "\\D*";
+		Map<String, String> addressFields = new HashMap<>();
+		addressFields.put(AddressField.AREA.name(), stringVal);
+
+
+		Address address = new Address();
+		address.setAddressFields(addressFields);
+		address.addAddressField(AddressField.HOUSE_NUMBER.name(), integerVal);
+
+
+		String invalidAddressValue = address.getAddressFieldMatchingRegex(noRegexMatch);
+		assertNull(invalidAddressValue);
+
+		String validAddressValue1 = address.getAddressFieldMatchingRegex(allRegexMatch);
+		assertEquals(integerVal, validAddressValue1);
+
+		String numberAddressVAlue = address.getAddressFieldMatchingRegex(AddressField.AREA.name());
+		assertEquals(stringVal, numberAddressVAlue);
+
+	}
+
+	@Test
+	public void testGettingSpecificAddressField() {
+		String stringVal = "areaVal";
+		String noFieldMatch = "";
+		String lowerCaseFieldName = "area";
+		String upperCaseFieldName = "AREA";
+
+		Map<String, String> addressFields = new HashMap<>();
+		addressFields.put(AddressField.AREA.name(), stringVal);
+
+
+		Address address = new Address();
+		address.setAddressFields(addressFields);
+
+		String nullAddressValue = address.getAddressField(noFieldMatch);
+		assertNull(nullAddressValue);
+
+		String invalidAddressValue = address.getAddressField(AddressField.HOUSE_NUMBER);
+		assertNull(invalidAddressValue);
+
+		String validValueWithEnum = address.getAddressField(AddressField.AREA);
+		assertEquals(stringVal, validValueWithEnum);
+
+		String validValueWithLowerCase = address.getAddressField(lowerCaseFieldName);
+		assertEquals(stringVal, validValueWithLowerCase);
+
+		String validValueWithUpperCase = address.getAddressField(upperCaseFieldName);
+		assertEquals(stringVal, validValueWithUpperCase);
+
+	}
+
+	@Test
+	public void testRemovingAddressField() {
+		String stringVal = "areaVal";
+		String integerVal = "1";
+		String lowerCaseFieldName = "area";
+		String upperCaseFieldName = "AREA";
+
+
+		Map<String, String> addressFields = new HashMap<>();
+		addressFields.put(AddressField.AREA.name(), stringVal);
+		Address address = new Address();
+		address.setAddressFields(addressFields);
+
+		address.removeAddressField(AddressField.AREA);
+		assertEquals(0, address.getAddressFields().size());
+		assertNull(address.getAddressField(AddressField.AREA));
+
+		address.addAddressField(AddressField.AREA, stringVal);
+		address.removeAddressField(lowerCaseFieldName);
+		assertEquals(0, address.getAddressFields().size());
+		assertNull(address.getAddressField(AddressField.AREA));
+
+
+		address.addAddressField(AddressField.AREA, stringVal);
+		address.removeAddressField(upperCaseFieldName);
+		assertEquals(0, address.getAddressFields().size());
+		assertNull(address.getAddressField(AddressField.AREA));
+
 	}
 }
