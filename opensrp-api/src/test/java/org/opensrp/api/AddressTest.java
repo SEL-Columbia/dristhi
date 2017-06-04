@@ -124,7 +124,6 @@ public class AddressTest {
 	@Test
 	public void testRemovingAddressField() {
 		String stringVal = "areaVal";
-		String integerVal = "1";
 		String lowerCaseFieldName = "area";
 		String upperCaseFieldName = "AREA";
 
@@ -134,14 +133,27 @@ public class AddressTest {
 		Address address = new Address();
 		address.setAddressFields(addressFields);
 
+        address.removeAddressField(AddressField.HOUSE_NUMBER);
+        assertEquals(1, address.getAddressFields().size());
+        assertNotNull(address.getAddressField(AddressField.AREA));
+
 		address.removeAddressField(AddressField.AREA);
 		assertEquals(0, address.getAddressFields().size());
 		assertNull(address.getAddressField(AddressField.AREA));
 
+
+
 		address.addAddressField(AddressField.AREA, stringVal);
-		address.removeAddressField(lowerCaseFieldName);
+
+		address.removeAddressField("");
+        assertEquals(1, address.getAddressFields().size());
+        assertNotNull(address.getAddressField(AddressField.AREA));
+
+        address.removeAddressField(lowerCaseFieldName);
 		assertEquals(0, address.getAddressFields().size());
 		assertNull(address.getAddressField(AddressField.AREA));
+
+
 
 
 		address.addAddressField(AddressField.AREA, stringVal);
