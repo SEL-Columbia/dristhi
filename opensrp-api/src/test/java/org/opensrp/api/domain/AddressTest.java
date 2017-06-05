@@ -1,4 +1,4 @@
-package org.opensrp.api;
+package org.opensrp.api.domain;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
