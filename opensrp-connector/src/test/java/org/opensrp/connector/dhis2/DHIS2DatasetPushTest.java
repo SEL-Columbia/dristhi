@@ -6,7 +6,10 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +20,8 @@ import org.mockito.Mock;
 import org.opensrp.api.domain.Location;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
+import org.opensrp.domain.DataElement;
+import org.opensrp.domain.Report;
 
 public class DHIS2DatasetPushTest extends TestResourceLoader {
 
@@ -66,18 +71,16 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 		when(mockOpenmrsLocationService.getLocation(anyString())).thenReturn(location);
 	}
 
-	public JSONObject createHIA2ReportData(JSONArray indicators) throws JSONException {
-		JSONObject reportData = new JSONObject();
+	public Report createHIA2ReportData(List<DataElement> dataElements) throws JSONException {
+		Report hia2Report = new Report("test",
+									   "9e4fc064-d8e7-4fcb-942e-cbcf6524fb24",
+									   new DateTime(2017, 05, 22, 0, 0),
+									   "HIA2",
+									   "5f52c82f-ea29-469e-96d6-f95a6cc8fbe9",
+									   "biddemo",
+									   "", 1, 0, dataElements);
 
-		reportData.put("dateCreated", "2017-05-22T15:12:28.894+03:00");
-		reportData.put("locationId", "9e4fc064-d8e7-4fcb-942e-cbcf6524fb24");
-		reportData.put("reportType", "HIA2");
-		reportData.put("formSubmissionId", "5f52c82f-ea29-469e-96d6-f95a6cc8fbe9");
-		reportData.put("providerId", "biddemo");
-		reportData.put("duration", 0);
-		reportData.put("indicators", indicators);
-
-		return reportData;
+		return hia2Report;
 	}
 
 	@Test
@@ -92,27 +95,20 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 
 	@Test
 	public void testCreateDHIS2Dataset() throws JSONException {
-		JSONArray indicators = new JSONArray();
+		DataElement chn1005 = new DataElement("CHN1-005", "n0uHub5ubqH", "100");
+		DataElement chn1010 = new DataElement("CHN1-010", "IWwblgpMxiS", "150");
 		
-		JSONObject chn1005 = new JSONObject();
-		chn1005.put("name", "CHN1-005");
-		chn1005.put("value", 100);
-		chn1005.put("dhis2_id", "n0uHub5ubqH");
+		List<DataElement> dataElements = new ArrayList<DataElement>();
 		
-		JSONObject chn1010 = new JSONObject();
-		chn1010.put("name", "CHN1-010");
-		chn1010.put("value", 150);
-		chn1010.put("dhis2_id", "IWwblgpMxiS");
+		dataElements.add(chn1005);
+		dataElements.add(chn1010);
 		
-		indicators.put(chn1005);
-		indicators.put(chn1010);
-		
-		JSONObject reportData = this.createHIA2ReportData(indicators);
+		Report report = this.createHIA2ReportData(dataElements);
 		
 		dhis2DatasetPush.dhis2HttpUtils = dhis2HttpUtils;
 		dhis2DatasetPush.openmrsLocationService = this.mockOpenmrsLocationService;
 
-		JSONObject dhis2DatasetToPush = dhis2DatasetPush.createDHIS2Dataset(reportData);
+		JSONObject dhis2DatasetToPush = dhis2DatasetPush.createDHIS2Dataset(report);
 
 		// Dataset ID
 		assertEquals(hia2ReportId, dhis2DatasetToPush.get("dataSet"));
@@ -128,34 +124,38 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 
 		for(int i = 0; i < dataValues.length(); i++) {
 			JSONObject dataValue = dataValues.getJSONObject(i);
-			JSONObject indicator = indicators.getJSONObject(i);
+			DataElement dataElement = dataElements.get(i);
 
-			assertEquals(dataValue.get("value"), indicator.get("value"));
+			assertEquals(dataValue.get("value"), dataElement.getValue());
 		}
 	}
 	
 	@Test
 	public void testUnknownDataElementsAreIgnored() throws JSONException {
-		JSONArray indicators = new JSONArray();
+		DataElement chn1015 = new DataElement("CHN1-015", "unknown", "250");
+		
+		List<DataElement> dataElements = new ArrayList<DataElement>();
+		
+		dataElements.add(chn1015);
 
-		JSONObject chn1011 = new JSONObject();
-		chn1011.put("name", "CHN1-011");
-		chn1011.put("value", 100);
-		chn1011.put("dhis2_id", "unknown");
-
-		indicators.put(chn1011);
-
-		JSONObject reportData = this.createHIA2ReportData(indicators);
+		Report report = this.createHIA2ReportData(dataElements);
 
 		dhis2DatasetPush.dhis2HttpUtils = dhis2HttpUtils;
 		dhis2DatasetPush.openmrsLocationService = this.mockOpenmrsLocationService;
 
-		JSONObject dhis2DatasetToPush = dhis2DatasetPush.createDHIS2Dataset(reportData);
+		JSONObject dhis2DatasetToPush = dhis2DatasetPush.createDHIS2Dataset(report);
 
 		// Dataset ID
 		assertEquals(hia2ReportId, dhis2DatasetToPush.get("dataSet"));
 		JSONArray dataValues = dhis2DatasetToPush.getJSONArray("dataValues");
 		assertEquals(0, dataValues.length());
+	}
+	
+	
+	public void testPushToDHIS2() throws JSONException {
+		// given list of reports
+		// should be able to process them into DHIS2 Dataset payload
+		// Payload should be synced with DHIS2 and success reponse be returned
 	}
 
 }

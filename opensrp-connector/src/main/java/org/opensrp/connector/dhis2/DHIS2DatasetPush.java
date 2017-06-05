@@ -1,6 +1,7 @@
 package org.opensrp.connector.dhis2;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -12,7 +13,9 @@ import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.api.domain.Location;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
-import org.opensrp.repository.AllEvents;
+import org.opensrp.domain.Report;
+import org.opensrp.domain.DataElement;
+import org.opensrp.repository.AllReports;
 import org.opensrp.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,7 +30,7 @@ public class DHIS2DatasetPush extends DHIS2Service {
 	private static final String SCHEDULER_DHIS2_DATA_PUSH_SUBJECT = "DHIS2 Report Pusher";
 
 	@Autowired
-	private AllEvents reportEvents;
+	private AllReports reports;
 	
 	@Autowired
 	private ConfigService config;
@@ -75,7 +78,7 @@ public class DHIS2DatasetPush extends DHIS2Service {
 		return reportId;
 	}
 	
-	public JSONObject createDHIS2Dataset(JSONObject reportEvent) throws JSONException {
+	public JSONObject createDHIS2Dataset(Report report) throws JSONException {
 		final String DATASET_KEY = "dataSet";
 		final String COMPLETE_DATA_KEY = "completeData";
 		final String PERIOD_KEY = "period";
@@ -83,11 +86,10 @@ public class DHIS2DatasetPush extends DHIS2Service {
 		final String DATA_VALUES_KEY = "dataValues";
 
 		// prepare report data
-		String reportId = this.getDHIS2ReportId(reportEvent.getString("reportType"));
-		String openmrsLocationUuid = reportEvent.getString("locationId");
+		String reportId = this.getDHIS2ReportId(report.getReportType());
+		String openmrsLocationUuid = report.getLocationId();
 
-		DateTimeFormatter parseDate = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-		DateTime completeDataDate = parseDate.parseDateTime(reportEvent.getString("dateCreated"));
+		DateTime completeDataDate = report.getReportDate();
 		String formatedCompleteDataDate= new SimpleDateFormat("yyyy-MM-dd").format(completeDataDate.toDate());
 		String periodDate = new SimpleDateFormat("yyyyMM").format(completeDataDate.toDate());
 
@@ -97,7 +99,7 @@ public class DHIS2DatasetPush extends DHIS2Service {
 		String dhis2OrgUnitId = (String) openmrsLocation.getAttribute("dhis_ou_id");
 
 		// get indicator data
-		JSONArray indicators = reportEvent.getJSONArray("indicators");
+		List<DataElement> indicators = report.getDataElements();
 
 		// generate the dhis2Dataset here
 		JSONObject dhis2Dataset = new JSONObject();
@@ -108,14 +110,13 @@ public class DHIS2DatasetPush extends DHIS2Service {
 		dhis2Dataset.put(ORG_UNIT_KEY, dhis2OrgUnitId);
 
 		JSONArray dataValues = new JSONArray();
-
-		for(int i = 0; i < indicators.length(); i++) {
+		
+		for(DataElement indicator: indicators) {
 			JSONObject dataValue = new JSONObject();
-			JSONObject indicator = indicators.getJSONObject(i);
-
-			if(!indicator.get("dhis2_id").equals("unknown")) {
-				dataValue.put("dataElement", indicator.get("dhis2_id"));
-				dataValue.put("value", indicator.get("value"));
+			
+			if(!indicator.getDhis2Id().equals("unknown")) {
+				dataValue.put("dataElement", indicator.getDhis2Id());
+				dataValue.put("value", indicator.getValue());
 
 				dataValues.put(dataValue);
 			}
@@ -128,8 +129,8 @@ public class DHIS2DatasetPush extends DHIS2Service {
 	
 	@MotechListener(subjects = SCHEDULER_DHIS2_DATA_PUSH_SUBJECT)
 	public void pushToDHIS2(MotechEvent event) {
-		// retrieve all the report events
-		
+		// retrieve all the reports
+		// process all reports and sync them to DHIS2
 	}
 	
 }
