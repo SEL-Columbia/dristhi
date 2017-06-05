@@ -91,15 +91,21 @@ public class AllConstants {
 
 	
 	public static class Report {
-        public static final int FIRST_REPORT_MONTH_OF_YEAR = 3;
-        public static final int REPORTING_MONTH_START_DAY = 26;
-        public static final int REPORTING_MONTH_END_DAY = 25;
-        public static final double LOW_BIRTH_WEIGHT_THRESHOLD = 2.5;
-        public static final int INFANT_MORTALITY_THRESHOLD_IN_YEARS = 1;
-        public static final int CHILD_MORTALITY_THRESHOLD_IN_YEARS = 5;
-        public static final int CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 7;
-        public static final int CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 28;
-        public static final int CHILD_DIARRHEA_THRESHOLD_IN_YEARS = 5;
+		public static final String FORM_SUBMISSION_ID = "formSubmissionId";
+		public static final String REPORT_TYPE = "reportType";
+		public static final String REPORT_ID = "reportId";
+		public static final String LOCATION_ID = "locationId";
+		public static final String REPORT_DATE = "reportDate";
+		public static final String PROVIDER_ID = "providerId";
+		public static final int FIRST_REPORT_MONTH_OF_YEAR = 3;
+		public static final int REPORTING_MONTH_START_DAY = 26;
+		public static final int REPORTING_MONTH_END_DAY = 25;
+		public static final double LOW_BIRTH_WEIGHT_THRESHOLD = 2.5;
+		public static final int INFANT_MORTALITY_THRESHOLD_IN_YEARS = 1;
+		public static final int CHILD_MORTALITY_THRESHOLD_IN_YEARS = 5;
+		public static final int CHILD_EARLY_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 7;
+		public static final int CHILD_NEONATAL_MORTALITY_THRESHOLD_IN_DAYS = 28;
+		public static final int CHILD_DIARRHEA_THRESHOLD_IN_YEARS = 5;
     }
 
     public static class ReportDataParameters {
