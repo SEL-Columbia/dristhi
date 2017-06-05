@@ -54,7 +54,7 @@ public class TestResourceLoader {
 		this.patientService = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		this.encounterService = new EncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		this.openmrsLocationService = new OpenmrsLocationService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
-		this.dhis2DatasetPush = new DHIS2DatasetPush(dhis2Url, dhis2Username, dhis2Password);
+		this.dhis2DatasetPush = new DHIS2DatasetPush();
 		this.encounterService.setPatientService(patientService);
 	}
 	
