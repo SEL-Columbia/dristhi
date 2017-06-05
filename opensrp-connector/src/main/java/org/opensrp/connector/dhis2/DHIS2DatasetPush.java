@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,9 +12,12 @@ import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.api.domain.Location;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.domain.Report;
+import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.DataElement;
-import org.opensrp.repository.AllReports;
 import org.opensrp.service.ConfigService;
+import org.opensrp.service.ReportService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -26,19 +27,21 @@ enum DhisSchedulerConfig {
 }
 
 public class DHIS2DatasetPush extends DHIS2Service {
-	private static final String DATASET_ENDPOINT = "dataValueSets?dataElementIdScheme=code";
-	private static final String SCHEDULER_DHIS2_DATA_PUSH_SUBJECT = "DHIS2 Report Pusher";
+	private static Logger logger = LoggerFactory.getLogger(DHIS2DatasetPush.class.toString());
 
 	@Autowired
-	private AllReports reports;
+	protected ReportService reportService;
 	
 	@Autowired
-	private ConfigService config;
+	protected ConfigService config;
 
 	@Autowired
 	protected OpenmrsLocationService openmrsLocationService;
 
 	protected Dhis2HttpUtils dhis2HttpUtils;
+	
+	public static final String SCHEDULER_DHIS2_DATA_PUSH_SUBJECT = "DHIS2 Report Pusher";
+	public static final String DATASET_ENDPOINT = "dataValueSets?dataElementIdScheme=code";
 	
 	public DHIS2DatasetPush() {
 		dhis2HttpUtils = new Dhis2HttpUtils();
@@ -130,7 +133,29 @@ public class DHIS2DatasetPush extends DHIS2Service {
 	@MotechListener(subjects = SCHEDULER_DHIS2_DATA_PUSH_SUBJECT)
 	public void pushToDHIS2(MotechEvent event) {
 		// retrieve all the reports
+		logger.info("RUNNING " + event.getSubject() + " at " + DateTime.now());
+
+		AppStateToken lastsync = config.getAppStateTokenByName(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated);
+		Long start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
+		
+		List<Report> reports = reportService.findByServerVersion(start);
+		logger.info("Report list size " + reports.size() + " [start]" + start);
+		
 		// process all reports and sync them to DHIS2
+		for(Report report: reports) {
+			try {
+				JSONObject dhis2DatasetToPush = this.createDHIS2Dataset(report);
+				JSONObject response = dhis2HttpUtils.post(DATASET_ENDPOINT, "", dhis2DatasetToPush.toString());
+				report.setStatus(response.getString("status"));
+				reportService.updateReport(report);
+				config.updateAppStateToken(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated, report.getServerVersion());
+			}
+			catch (JSONException e) {
+				logger.error("", e);
+			}
+			
+		}
+		logger.info("PUSH TO DHIS2 FINISHED AT " + DateTime.now());
 	}
 	
 }

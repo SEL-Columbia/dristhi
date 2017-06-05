@@ -1,7 +1,12 @@
 package org.opensrp.connector.dhis2;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -17,11 +22,14 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.motechproject.scheduler.domain.MotechEvent;
 import org.opensrp.api.domain.Location;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
 import org.opensrp.domain.DataElement;
 import org.opensrp.domain.Report;
+import org.opensrp.service.ConfigService;
+import org.opensrp.service.ReportService;
 
 public class DHIS2DatasetPushTest extends TestResourceLoader {
 
@@ -33,6 +41,12 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 	
 	@Mock
 	OpenmrsLocationService mockOpenmrsLocationService;
+	
+	@Mock
+	ConfigService mockConfig;
+	
+	@Mock
+	ReportService mockReportService;
 
 	String orgUnitId = "gGl6WgM3qzS";
 	String hia2ReportId = "XQDrq0oQEyN";
@@ -65,6 +79,7 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 		apiResponse.put("dataSets", dataSets);
 		
 		when(dhis2HttpUtils.get(anyString(), anyString())).thenReturn(apiResponse);
+		when(mockConfig.getAppStateTokenByName(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated)).thenReturn(null);
 		
 		Location location = new Location();
 		location.addAttribute("dhis_ou_id", orgUnitId);
@@ -151,11 +166,40 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 		assertEquals(0, dataValues.length());
 	}
 	
-	
+	@Test
 	public void testPushToDHIS2() throws JSONException {
-		// given list of reports
-		// should be able to process them into DHIS2 Dataset payload
-		// Payload should be synced with DHIS2 and success reponse be returned
+		// Test Data setup
+		MotechEvent event = new MotechEvent(DHIS2DatasetPush.SCHEDULER_DHIS2_DATA_PUSH_SUBJECT);
+		JSONObject apiResponse = new JSONObject();
+		apiResponse.put("status", "SUCCESS");
+		
+		DataElement chn1005 = new DataElement("CHN1-005", "n0uHub5ubqH", "100");
+		DataElement chn1010 = new DataElement("CHN1-010", "IWwblgpMxiS", "150");
+		
+		List<DataElement> dataElements = new ArrayList<DataElement>();
+		
+		dataElements.add(chn1005);
+		dataElements.add(chn1010);
+		
+		Report report = this.createHIA2ReportData(dataElements);
+		
+		List<Report> reports = new ArrayList<Report>();
+		reports.add(report);
+		
+		// Customized mock api responses setup
+		when(dhis2HttpUtils.post(anyString(), anyString(), anyString())).thenReturn(apiResponse);
+		when(mockReportService.findByServerVersion(anyInt())).thenReturn(reports);
+		
+		dhis2DatasetPush.dhis2HttpUtils = dhis2HttpUtils;
+		dhis2DatasetPush.openmrsLocationService = this.mockOpenmrsLocationService;
+		dhis2DatasetPush.config = mockConfig;
+		dhis2DatasetPush.reportService = mockReportService;
+		
+		// Test payload is synced with DHIS2
+		dhis2DatasetPush.pushToDHIS2(event);
+		
+		verify(dhis2HttpUtils, times(1)).post(anyString(), anyString(), anyString());
+		verify(mockReportService, times(1)).updateReport(report);
 	}
 
 }
