@@ -46,46 +46,6 @@
                 <targetPath>queries</targetPath>
             </resource>
         </resources>
-
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>sql-maven-plugin</artifactId>
-				<version>1.5</version>
-
-				<dependencies>
-					<dependency>
-						<groupId>mysql</groupId>
-						<artifactId>mysql-connector-java</artifactId>
-						<version>5.1.9</version>
-					</dependency>
-				</dependencies>
-
-				<configuration>
-					<driver>com.mysql.jdbc.Driver</driver>
-					<url>jdbc:mysql://localhost:3306/opensrp?createDatabaseIfNotExist=true</url>
-					<username>root</username>
-					<password>root</password>
-				</configuration>
-				<executions>
-					<execution>
-						<id>create-table</id>
-						<phase>process-test-resources</phase>
-						<goals>
-							<goal>execute</goal>
-						</goals>
-						<configuration>
-							<autocommit>true</autocommit>
-							<srcFiles>
-								<srcFile>../build/sql/tables_opensrp.sql</srcFile>
-							</srcFiles>
-						</configuration>
-					</execution>
-
-				</executions>
-			</plugin>
-		</plugins>
-
     </build>
 
 

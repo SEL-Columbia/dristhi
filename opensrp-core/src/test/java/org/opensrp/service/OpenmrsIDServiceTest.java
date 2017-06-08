@@ -1,14 +1,14 @@
-package org.opensrp.services;
+package org.opensrp.service;
 
 import org.joda.time.DateTime;
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.opensrp.SpringApplicationContextProvider;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.service.OpenmrsIDService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,11 +21,32 @@ import static org.opensrp.service.OpenmrsIDService.CHILD_REGISTER_CARD_NUMBER;
 public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
     @Autowired
     OpenmrsIDService openmrsIDService;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
+    @Before
+    public void setUp() {
+        String dropDbSql = "DROP TABLE IF EXISTS `unique_ids`;";
+        jdbcTemplate.execute(dropDbSql);
+        String  tableCreationString =
+                "CREATE TABLE `unique_ids` (\n" +
+                "  `_id` bigint(20) NOT NULL AUTO_INCREMENT,\n" +
+                "  `created_at` datetime DEFAULT NULL,\n" +
+                "  `location` varchar(255) DEFAULT NULL,\n" +
+                "  `openmrs_id` varchar(255) DEFAULT NULL,\n" +
+                "  `status` varchar(255) DEFAULT NULL,\n" +
+                "  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                "  `used_by` varchar(255) DEFAULT NULL,\n" +
+                "  PRIMARY KEY (`_id`)\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        jdbcTemplate.execute(tableCreationString);
+    }
 
     @After
     public void tearDown() {
-        openmrsIDService.clearRecords();
+        String dropDbSql = "DROP TABLE IF EXISTS `unique_ids`;";
+        jdbcTemplate.execute(dropDbSql);
+
     }
 
     public Client createClient(String baseEntityId, String firstName, String lastName, String gender, String childRegisterCardNumber) {
@@ -55,7 +76,7 @@ public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
     }
 
     //TODO: CHILD_REGISTER_CARD_NUMBER is identifier of attributes.
-    @Ignore
+
     @Test
     public void testExistingClientsDoNotReceiveNewOpenmrsId() throws Exception {
         Client client = this.createClient("45678", "Jane", "Doe", "Female", "102/17");
