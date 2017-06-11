@@ -1,15 +1,15 @@
 package org.opensrp.common.util;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.joda.time.Period;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.Period;
 
 import static org.motechproject.util.DateUtil.inRange;
 
@@ -18,6 +18,7 @@ public class DateUtil {
     public static DateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
     public static DateFormat yyyyMMddHHmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static DateFormat yyyyMMddTHHmmssSSSZ = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
     public static void fakeIt(LocalDate fakeDayAsToday) {
         dateUtility = new MockDate(fakeDayAsToday);
     }
@@ -39,34 +40,38 @@ public class DateUtil {
     }
 
     /**
-     * Parses dates of following formats 
+     * Parses dates of following formats
      * - yyyy-MM-dd
      * - yyyy-MM-dd HH:mm:ss
      * - yyyy-MM-dd'T'HH:mm:ss.SSSZ
+     *
      * @return
-     * @throws ParseException 
+     * @throws ParseException
      */
-    public static DateTime parseDate(String date) throws ParseException{
-    	try{
-    		return new DateTime(yyyyMMdd.parse(date).getTime());
-    	}
-    	catch(ParseException e){}
-    	try {
-			return new DateTime(yyyyMMddHHmmss.parse(date).getTime());
-		} catch (ParseException e) {}
-		
-    	try {
-			return new DateTime(yyyyMMddTHHmmssSSSZ.parse(date).getTime());
-		} catch (ParseException e) {}
-		
-    	return DateTime.parse(date);
+    public static DateTime parseDate(String date) throws ParseException {
+
+        try {
+            return new DateTime(yyyyMMddTHHmmssSSSZ.parse(date).getTime());
+        } catch (ParseException e) {
+        }
+        try {
+            return new DateTime(yyyyMMddHHmmss.parse(date).getTime());
+        } catch (ParseException e) {
+        }
+        try {
+            return new DateTime(yyyyMMdd.parse(date).getTime());
+        } catch (ParseException e) {
+        }
+
+
+        return DateTime.parse(date);
     }
-    
-    public static String getTodayAsString(){
-    	Calendar now = Calendar.getInstance();	    
-	   return  yyyyMMdd.format(now.getTime());
+
+    public static String getTodayAsString() {
+        Calendar now = Calendar.getInstance();
+        return yyyyMMdd.format(now.getTime());
     }
-    
+
     public static LocalDate tryParse(String value, LocalDate defaultValue) {
         try {
             return LocalDate.parse(value);
@@ -74,18 +79,17 @@ public class DateUtil {
             return defaultValue;
         }
     }
-    public static Date getDateFromString(String dateString)
-    {
-    	Date parsed = null;
-	    try {
-	    	if(dateString!=null && !dateString.equals("null") && dateString.length()>0)
-	    	{
-	    		parsed = yyyyMMddTHHmmssSSSZ.parse(dateString.trim());	    	
-	    	}
-	    } catch (ParseException e) {
-	        e.printStackTrace();
-	    }
-	    return parsed;
+
+    public static Date getDateFromString(String dateString) {
+        Date parsed = null;
+        try {
+            if (dateString != null && !dateString.equals("null") && dateString.length() > 0) {
+                parsed = yyyyMMddTHHmmssSSSZ.parse(dateString.trim());
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return parsed;
     }
 }
 
