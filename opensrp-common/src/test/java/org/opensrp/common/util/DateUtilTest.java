@@ -1,17 +1,20 @@
 package org.opensrp.common.util;
 
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 
 
 public class DateUtilTest {
@@ -45,7 +48,6 @@ public class DateUtilTest {
         assertEquals(false, DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, period));
     }
 
-    @Ignore
     @Test
     public void testParseDate() throws Exception {
         String yyyyMMdd = "2017-05-30";
@@ -55,7 +57,10 @@ public class DateUtilTest {
 
         assertEquals(yyyyMMdd, DateUtil.yyyyMMdd.format(DateUtil.parseDate(yyyyMMdd).toDate()));
         assertEquals(yyyyMMddHHmmss, DateUtil.yyyyMMddHHmmss.format(DateUtil.parseDate(yyyyMMddHHmmss).toDate()));
-        assertEquals(yyyyMMddTHHmmssSSSZ, DateUtil.yyyyMMddTHHmmssSSSZ.format(DateUtil.parseDate(yyyyMMddTHHmmssSSSZ).toDate()));
+
+        DateTime dateInSystemTimeZone = DateUtil.parseDate(yyyyMMddTHHmmssSSSZ);
+        DateUtil.yyyyMMddTHHmmssSSSZ.setTimeZone(TimeZone.getTimeZone("GMT"));
+        assertEquals(yyyyMMddTHHmmssSSSZ, DateUtil.yyyyMMddTHHmmssSSSZ.format(dateInSystemTimeZone.toDate()));
 
     }
 
