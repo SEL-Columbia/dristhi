@@ -58,13 +58,8 @@ public class DateUtil {
             return new DateTime(yyyyMMddHHmmss.parse(date).getTime());
         } catch (ParseException e) {
         }
-        try {
-            return new DateTime(yyyyMMdd.parse(date).getTime());
-        } catch (ParseException e) {
-        }
 
-
-        return DateTime.parse(date);
+        return new DateTime(yyyyMMdd.parse(date).getTime());
     }
 
     public static String getTodayAsString() {

@@ -8,6 +8,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -62,6 +63,12 @@ public class DateUtilTest {
         DateUtil.yyyyMMddTHHmmssSSSZ.setTimeZone(TimeZone.getTimeZone("GMT"));
         assertEquals(yyyyMMddTHHmmssSSSZ, DateUtil.yyyyMMddTHHmmssSSSZ.format(dateInSystemTimeZone.toDate()));
 
+    }
+
+    @Test(expected = ParseException.class)
+    public void testParseInvalidDate() throws Exception{
+        String invalidDate = "dfasfasdfas";
+        DateUtil.parseDate(invalidDate);
     }
 
     @Test
