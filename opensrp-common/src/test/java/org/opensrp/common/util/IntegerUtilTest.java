@@ -28,14 +28,12 @@ public class IntegerUtilTest {
     @Test
     public void forValidIntergers() throws Exception {
         String x = integerUtil.parseValidIntegersAndDefaultInvalidOnesToEmptyString("hi");
-        //System.out.println("i am null string" + x);
         assertEquals("", x);
     }
 
     @Test
     public void forInvalidIntegers() throws Exception {
         String y = integerUtil.parseValidIntegersAndDefaultInvalidOnesToEmptyString("9");
-        //System.out.println(y);
         assertEquals("9", y);
 
     }
