@@ -3,12 +3,8 @@ package org.opensrp.common.util;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
-/**
- * Created by real on 5/30/17.
- */
+
 public class HttpResponseTest {
 
     @Test

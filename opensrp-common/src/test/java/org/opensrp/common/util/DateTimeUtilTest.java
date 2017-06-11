@@ -5,9 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by real on 5/30/17.
- */
+
 public class DateTimeUtilTest {
     @Test
     public void nowTestOfRealDateTime() throws Exception {
