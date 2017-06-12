@@ -31,6 +31,10 @@ public class DateUtil {
         return dateUtility.millis();
     }
 
+    private DateUtil() {
+
+    }
+
     public static boolean isDateWithinGivenPeriodBeforeToday(LocalDate referenceDateForSchedule, Period period) {
         return inRange(toTime(referenceDateForSchedule), toTime(today().minus(period)), toTime(today()));
     }
