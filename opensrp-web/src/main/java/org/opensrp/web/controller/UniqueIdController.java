@@ -12,7 +12,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
+import org.opensrp.api.domain.User;
+import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.service.OpenmrsIDService;
 import org.opensrp.web.utils.PdfUtil;
 import org.slf4j.Logger;
@@ -43,6 +46,9 @@ public class UniqueIdController {
 	@Autowired
 	OpenmrsIDService openmrsIdService;
 	
+	@Autowired
+	OpenmrsUserService openmrsUserService;
+	
 	/**
 	 * Download extra ids from openmrs if less than the specified batch size, convert the ids to qr
 	 * and print to a pdf
@@ -58,11 +64,16 @@ public class UniqueIdController {
 	    throws JSONException {
 		
 		String message = "";
+		User user = null;
 		try {
 			Integer numberToGenerate = Integer.valueOf(getStringFilter("batchSize", request));
 			
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			String currentPrincipalName = authentication.getName();
+			user = openmrsUserService.getUser(currentPrincipalName);
+			if (!checkRoleIfRoleExitst(user.getRoles(), "opensrp-generate-qr-code")) {
+				return new ResponseEntity<>("Sorry, insufficient privileges to generate ID QR codes", HttpStatus.OK);
+			}
 			
 			openmrsIdService.downloadAndSaveIds(numberToGenerate, currentPrincipalName);
 			List<String> idsToPrint = openmrsIdService.getNotUsedIdsAsString(numberToGenerate);
@@ -89,16 +100,22 @@ public class UniqueIdController {
 				os.flush();
 				os.close();
 			}
-			
+			message = "Successfully generated the ID QR codes";
 			
 		}
 		catch (Exception e) {
 			logger.error("", e);
-			message="Sorry, an error occured when generating the qr code pdf";
+			message = "Sorry, an error occured when generating the qr code pdf";
 		}
 		
 		return new ResponseEntity<>(new Gson().toJson("" + message), HttpStatus.OK);
-		
+	}
+	
+	boolean checkRoleIfRoleExitst(List<String> roleList, String role) {
+		for (String roleName : roleList)
+			if (StringUtils.containsIgnoreCase(roleName, role))
+				return true;
+		return false;
 	}
 	
 }
