@@ -3,6 +3,11 @@ package org.opensrp.common.util;
 import org.joda.time.LocalDateTime;
 
 public class DateTimeUtil {
+
+    private DateTimeUtil() {
+
+    }
+
     private static DateTimeUtility dateUtility = new RealDateTime();
 
     public static void fakeIt(LocalDateTime fakeDateTime) {

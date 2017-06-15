@@ -20,7 +20,7 @@ import org.opensrp.SpringApplicationContextProvider;
 import org.opensrp.service.RapidProService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class RapidProServiceTest extends SpringApplicationContextProvider {
+public class RapidProServiceTest  extends SpringApplicationContextProvider{
 	@Autowired
 	RapidProService rapidproService;
 	List<String> urns;
