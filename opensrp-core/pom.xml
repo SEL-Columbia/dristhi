@@ -237,10 +237,5 @@
 		    <artifactId>spring-orm</artifactId>
 		    <version>${spring.version}</version>
 		</dependency>
-        <dependency>
-            <groupId>ananya-delivery</groupId>
-            <artifactId>ananya-kilkari-report-deploy</artifactId>
-            <version>0.1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 </project>
