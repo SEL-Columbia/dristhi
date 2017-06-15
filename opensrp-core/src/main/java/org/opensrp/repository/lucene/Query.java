@@ -1,5 +1,6 @@
 package org.opensrp.repository.lucene;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -71,6 +72,13 @@ public class Query {
 		return this;
 	}
 	
+	//field:("value1" OR "value2" OR "value3")
+	public Query likeList(String field, List<String> ids) {
+		String idString = quotedJoin(ids, " OR ");
+		addToQuery(field + ":(" + idString + ")");
+		return this;
+	}
+	
 	private void addToQuery(String q) {
 		if (!StringUtils.isEmptyOrWhitespaceOnly(query)) {
 			query += filterType.name() + " " + q;
@@ -82,5 +90,36 @@ public class Query {
 		if (from != null && !StringUtils.isEmptyOrWhitespaceOnly(from.query)) {
 			addToQuery("(" + from.query + ")");
 		}
+	}
+	
+	private String quotedJoin(List<String> ids, String separator) {
+		Iterator<String> iterator = ids.iterator();
+		
+		if (iterator == null) {
+			return null;
+		}
+		if (!iterator.hasNext()) {
+			return "";
+		}
+		String first = iterator.next();
+		if (!iterator.hasNext()) {
+			return "\""+first+"\"";
+		}
+		
+		// two or more elements
+		StringBuffer buf = new StringBuffer(256); // Java default is 16, probably too small
+		if (first != null) {
+			buf.append("\""+first+"\"");
+		}
+		
+		while (iterator.hasNext()) {
+			buf.append(separator);
+			String s = iterator.next();
+			if (s != null) {
+				buf.append("\""+s+"\"");
+			}
+		}
+		
+		return buf.toString();
 	}
 }

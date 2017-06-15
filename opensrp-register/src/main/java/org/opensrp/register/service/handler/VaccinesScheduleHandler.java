@@ -9,6 +9,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Weeks;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.AllEvents;
@@ -37,6 +38,14 @@ public class VaccinesScheduleHandler extends BaseScheduleHandler {
 				
 				//String action = getAction(scheduleConfigEvent);
 				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
+					// Vit A 1 has multiple enrollments, i.e. child dob or vit a ifc 2.
+					String vitaScheduleName = "VIT A 1";
+					if(scheduleName.equalsIgnoreCase(vitaScheduleName)){
+						Enrollment enrollment = scheduler.getActiveEnrollment(event.getBaseEntityId(), vitaScheduleName);
+						if(enrollment != null){
+							scheduler.unEnrollFromSchedule(event.getBaseEntityId(), event.getProviderId(), vitaScheduleName, event.getId());
+						}
+					}
 					if (milestone == null || milestone.isEmpty()) {
 						scheduler.enrollIntoSchedule(event.getBaseEntityId(), scheduleName,
 						    getReferenceDateForSchedule(event, scheduleConfigEvent, action), event.getId());

@@ -25,6 +25,7 @@ import com.mysql.jdbc.StringUtils;
 @Service
 public class EncounterService extends OpenmrsService{
 	private static final String ENCOUNTER_URL = "ws/rest/v1/encounter";//"ws/rest/emrapi/encounter";
+	private static final String OBS_URL = "ws/rest/v1/obs";
 	private static final String ENCOUNTER__TYPE_URL = "ws/rest/v1/encountertype";
 	public static final String OPENMRS_UUID_IDENTIFIER_TYPE = "OPENMRS_UUID";
 
@@ -59,14 +60,24 @@ public class EncounterService extends OpenmrsService{
 		this.userService = userService;
 	}
 
-    public JSONObject getEncounterByUuid(String uuid, boolean noRepresentationTag) throws JSONException
-    {
+    public JSONObject getEncounterByUuid(String uuid, boolean noRepresentationTag) throws JSONException {
     	return new JSONObject(HttpUtil.get(getURL()
     			+"/"+ENCOUNTER_URL+"/"+uuid, noRepresentationTag?"":"v=full", OPENMRS_USER, OPENMRS_PWD).body());
     }
     
-	public JSONObject getEncounterType(String encounterType) throws JSONException
-    {
+    public JSONObject getObsByEncounterUuid(String encounterUuid) throws JSONException {
+    	// The data format returned contains the obs uuid and concept uuids
+    	return new JSONObject(HttpUtil.get(getURL()
+    			+"/"+ENCOUNTER_URL+"/" + encounterUuid, "v=custom:(uuid,obs:(uuid,concept:(uuid)))", OPENMRS_USER, OPENMRS_PWD).body());
+    }
+    
+    public JSONObject getObsUuidByParentObsUuid(String obsUuid) throws JSONException {
+    	//The data format returned contains the children obs uuid and concept uuids
+    	return new JSONObject(HttpUtil.get(getURL()
+			+"/"+OBS_URL+"/" + obsUuid, "v=custom:(groupMembers:(uuid,concept:(uuid)))", OPENMRS_USER, OPENMRS_PWD).body());
+    }
+    
+	public JSONObject getEncounterType(String encounterType) throws JSONException {
     	// we have to use this ugly approach because identifier not found throws exception and 
     	// its hard to find whether it was network error or object not found or server error
     	JSONArray res = new JSONObject(HttpUtil.get(getURL()+"/"+ENCOUNTER__TYPE_URL, "v=full", 
@@ -156,12 +167,14 @@ public class EncounterService extends OpenmrsService{
 		return new JSONObject(op.body());
 	}
 	
-	public JSONObject updateEncounter(Event e) throws JSONException{
-		if(StringUtils.isEmptyOrWhitespaceOnly(e.getIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE))){
-			throw new IllegalArgumentException("Encounter was never pushed to OpenMRS as "+OPENMRS_UUID_IDENTIFIER_TYPE+" is empty. Consider creating a new one");
-		}
-		
+	public JSONObject buildUpdateEncounter(Event e) throws JSONException {
 		String openmrsuuid = e.getIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE);
+		JSONObject encounterObsUuids = getObsByEncounterUuid(openmrsuuid);
+		JSONArray obsUuids = encounterObsUuids.getJSONArray("obs");
+		
+		System.out.print("[OBS-UUIDS]" + obsUuids);
+		
+
 		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());//TODO find by any identifier
 		JSONObject enc = new JSONObject();
 		
@@ -189,12 +202,12 @@ public class EncounterService extends OpenmrsService{
 				else {
 					//find parent obs if not found search and fill or create one
 					JSONArray parentObs = p.get(obs.getParentCode());
-					if(parentObs == null){
+					if(parentObs == null) {
 						p.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
 					}
 					// find if any other exists with same parent if so add to the list otherwise create new list
 					JSONArray obl = pc.get(obs.getParentCode());
-					if(obl == null){
+					if(obl == null) {
 						obl = new JSONArray();
 					}
 					JSONArray addobs = convertObsToJson(obs);
@@ -210,9 +223,19 @@ public class EncounterService extends OpenmrsService{
 		for (String ok : p.keySet()) {
 			for (int i = 0; i < p.get(ok).length(); i++) {
 				JSONObject obo = p.get(ok).getJSONObject(i);
+				obo.put("uuid", getObsUuid(obo, obsUuids));
 				
 				JSONArray cob = pc.get(ok);
 				if(cob != null && cob.length() > 0) {
+					// Fetch children obs uuids
+					JSONObject obsGroupUuids = getObsUuidByParentObsUuid(obo.getString("uuid"));
+					JSONArray groupUuids = obsGroupUuids.getJSONArray("groupMembers");
+					// Add uuids to group members
+					for(int j = 0; j < cob.length(); j++) {
+						JSONObject cobObj = cob.getJSONObject(j);
+						cobObj.put("uuid", getObsUuid(cobObj, groupUuids));
+					}
+
 					obo.put("groupMembers", cob);
 				}
 				
@@ -221,13 +244,42 @@ public class EncounterService extends OpenmrsService{
 		}
 		enc.put("obs", obar);
 		
+		return enc;
+	}
+	
+	public JSONObject updateEncounter(Event e) throws JSONException {
+		if(StringUtils.isEmptyOrWhitespaceOnly(e.getIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE))){
+			throw new IllegalArgumentException("Encounter was never pushed to OpenMRS as "+OPENMRS_UUID_IDENTIFIER_TYPE+" is empty. Consider creating a new one");
+		}
+		
+		String openmrsuuid = e.getIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE);
+
+		JSONObject enc = buildUpdateEncounter(e);
+		
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL+"/"+openmrsuuid, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 		return new JSONObject(op.body());
 	}
 	
+	private String getObsUuid(JSONObject obs, JSONArray obsUuids) throws JSONException {
+		String uuid = "";
+		// obs = {"concept":"163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}
+		// obsUuids = [{"concept":{"uuid":"163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"},"uuid":"b267b2f5-94be-43e8-85c4-4e36f2eb8471"}, {}]
+
+		for(int i = 0; i < obsUuids.length(); i++) {
+			JSONObject obsUuid = obsUuids.getJSONObject(i);
+			JSONObject conceptObj = obsUuid.getJSONObject("concept");
+			
+			if(conceptObj.get("uuid").equals(obs.get("concept"))) {
+				return obsUuid.getString("uuid");
+			}
+		}
+		
+		return uuid;
+	}
+	
 	private JSONArray convertObsToJson(Obs o) throws JSONException{
 		JSONArray arr = new JSONArray();
-		if(o.getValues() == null || o.getValues().size()==0){//must be parent of some obs
+		if(o.getValues() == null || o.getValues().size() == 0) {//must be parent of some obs
 			JSONObject obo = new JSONObject();
 			obo.put("concept", o.getFieldCode());
 

@@ -19,7 +19,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 import com.mysql.jdbc.StringUtils;
 
 @FullText({
-        @Index(name = "by_all_criteria", index = "function(doc) {"+
+        @Index(name = "by_all_criteria", analyzer = "perfield:{baseEntityId:\"keyword\"}", index = "function(doc) {"+
     "if (doc.type !== 'Action') return null;"+
     "var arr1 = ['baseEntityId','providerId','actionTarget','actionType', 'isActionActive','timeStamp','version'];"+
     "var ret = new Document();"+
