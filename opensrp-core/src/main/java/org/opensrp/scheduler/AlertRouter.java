@@ -69,11 +69,16 @@ public class AlertRouter {
 						return;
 					}
 				}
-		}
-		catch (NoRoutesMatchException e) {
-			logger.error("", e.getMessage());
-		}
-		catch (Exception e) {
+
+            throw new NoRoutesMatchException(milestoneEvent);
+		} catch (Exception e) {
+
+            logger.error("", e.getMessage());
+
+		    if(e.getClass() == NoRoutesMatchException.class) {
+                throw new NoRoutesMatchException(milestoneEvent);
+            }
+
 			String externalId = milestoneEvent.externalId();
 			DefaultmentCaptureEvent defaultmentEvent = new DefaultmentCaptureEvent(realEvent);
 			String enrollmentId = defaultmentEvent.getEnrollmentId();//9be0cca1be4969d7d104e14706ef81de
@@ -88,7 +93,7 @@ public class AlertRouter {
 			Action action = new Action(externalId, event.getProviderId(), actionData);
 			actionService.alertForBeneficiary(action);
 			
-			logger.error("", e.getMessage());
+
 		}
     }
 }

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -197,7 +198,6 @@ public class RapidProServiceImpl implements RapidProService {
 
 			StringEntity params = new StringEntity(jsonParams.toString());
 			post.setEntity(params);
-
 			HttpResponse response = client.execute(post);
 			HttpEntity entity = response.getEntity();
 			String responseString = EntityUtils.toString(entity, "UTF-8");

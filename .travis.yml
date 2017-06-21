@@ -1,12 +1,15 @@
 language: java
-sudo: false
+sudo: required
 services:
   - couchdb
   - mysql
-install: echo "skip" # or anything that returns 0 status
+install:
+  - echo "skip" # or anything that returns 0 status.
+  - sudo updatedb #Giving couchdb time to start.
+  - sudo netstat -tuplen # listing all the port for debug purpose.
 before_script:
+  - curl -X PUT http://localhost:5984/_config/admins/rootuser -d '"adminpass"'
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('VA1913wm') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
-  - curl -X PUT localhost:5984/_config/admins/rootuser -d '"adminpass"'
 script:
   - javac -version
   - java -version

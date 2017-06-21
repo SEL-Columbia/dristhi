@@ -3,6 +3,11 @@ package org.opensrp.common.util;
 import static java.lang.Integer.parseInt;
 
 public class IntegerUtil {
+
+    private IntegerUtil() {
+
+    }
+
     public static int tryParse(String value, int defaultValue) {
         try {
             return parseInt(value);

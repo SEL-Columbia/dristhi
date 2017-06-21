@@ -2,7 +2,6 @@ package org.opensrp.common.util;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.opensrp.common.util.DoubleUtil;
 
 public class DoubleUtilTest {
     @Test
