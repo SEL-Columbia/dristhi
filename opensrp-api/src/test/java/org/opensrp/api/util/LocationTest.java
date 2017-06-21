@@ -1,4 +1,4 @@
-package org.opensrp.api;
+package org.opensrp.api.util;
 
 import static org.junit.Assert.*;
 

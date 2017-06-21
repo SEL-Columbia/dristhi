@@ -1,4 +1,4 @@
-package org.opensrp.common;
+package org.opensrp.common.audit;
 
 import org.hamcrest.Matcher;
 import org.joda.time.DateTime;

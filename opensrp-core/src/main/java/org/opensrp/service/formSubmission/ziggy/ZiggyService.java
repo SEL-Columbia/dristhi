@@ -43,7 +43,8 @@ public class ZiggyService {
     public boolean isZiggyCompliant(String entityType) {
 		return ziggyDataHandler.isZiggyCompliant(entityType);
 	}
-    public void saveForm(String params, String formInstance) {
+
+	public void saveForm(String params, String formInstance) {
         try {
             invocable.invokeMethod(ziggyFormController, SAVE_METHOD_NAME, params, formInstance);
             logger.info(format("Saving form successful, with params: {0}.", params));

@@ -1,22 +1,7 @@
 package org.opensrp.scheduler.router;
 
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.MILESTONE_NAME;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.SCHEDULE_NAME;
-import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.WINDOW_NAME;
-import static org.opensrp.scheduler.Matcher.any;
-import static org.opensrp.scheduler.Matcher.eq;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.scheduler.domain.MotechEvent;
@@ -25,6 +10,16 @@ import org.opensrp.scheduler.AlertRouter;
 import org.opensrp.scheduler.HookedEvent;
 import org.opensrp.scheduler.MilestoneEvent;
 import org.opensrp.scheduler.NoRoutesMatchException;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.*;
+import static org.opensrp.scheduler.Matcher.any;
+import static org.opensrp.scheduler.Matcher.eq;
 
 public class AlertRouterTest {
     @Mock
@@ -51,6 +46,7 @@ public class AlertRouterTest {
         assertRouteMatches("someSchedule", "someMilestone", "someWindow", firstAction, new HashMap<String, String>());
         assertRouteMatches("someOtherSchedule", "someOtherMilestone", "someOtherWindow", firstAction, new HashMap<String, String>());
     }
+
 
     @Test
     public void shouldBeAbleToSetARouteWhichMatchesBasedOnScheduleNameOnly() {

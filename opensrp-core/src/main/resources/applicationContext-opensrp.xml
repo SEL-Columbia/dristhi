@@ -17,9 +17,9 @@
     <import resource="classpath:applicationSmsHttp.xml"/>
     <import resource="classpath:applicationSmsAPI.xml"/>
     <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
-    
+
     <context:property-placeholder location="classpath*:maven.properties"/>
-    
+
     <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
 
     <context:annotation-config/>
@@ -35,7 +35,7 @@
         <constructor-arg ref="couchDbInstance"/>
     </bean>
     <bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl"/>
-  <bean id="opensrpErrorTraceDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+    <bean id="opensrpErrorTraceDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="${couchdb.db.error}"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
