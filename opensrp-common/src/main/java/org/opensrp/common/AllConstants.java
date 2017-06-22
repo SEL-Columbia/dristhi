@@ -58,6 +58,22 @@ public class AllConstants {
     	public static final String ENTITY_TYPE = "entityType";
 
     }
+    
+    public static class Stock {
+		public static final String IDENTIFIER = "identifier";
+    	public static final String VACCINE_TYPE_ID = "vaccine_type_id";
+    	public static final String TRANSACTION_TYPE = "transaction_type";
+    	public static final String PROVIDERID = "providerid";
+    	public static final String VALUE = "value";
+    	public static final String DATE_CREATED = "date_created";
+    	public static final String TO_FROM = "to_from";
+    	public static final String SYNC_STATUS = "sync_status";
+    	public static final String DATE_UPDATED = "date_updated";
+    	public static final String VERSION = "version";
+    	public static final String TYPE = "type";
+
+    }
+    
     public static class Action {
     	public static final String TIMESTAMP = "timeStamp";
 
