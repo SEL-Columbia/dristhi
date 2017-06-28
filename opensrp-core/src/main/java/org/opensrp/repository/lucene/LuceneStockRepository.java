@@ -9,6 +9,7 @@ import static org.opensrp.common.AllConstants.Stock.TO_FROM;
 import static org.opensrp.common.AllConstants.Stock.TRANSACTION_TYPE;
 import static org.opensrp.common.AllConstants.Stock.VACCINE_TYPE_ID;
 import static org.opensrp.common.AllConstants.Stock.VALUE;
+import static org.opensrp.common.AllConstants.Stock.TIMESTAMP;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,7 +26,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 import com.mysql.jdbc.StringUtils;
 
 @FullText({
-        @Index(name = "by_all_criteria", analyzer = "perfield:{identifier:\"keyword\",providerid:\"keyword\"}", index = "function(doc) { if (doc.type !== 'Stock') return null; var arr1 = ['identifier', 'vaccine_type_id', 'transaction_type', 'providerid', 'value', 'to_from', 'sync_status', 'serverVersion']; var ret = new Document(); var serverVersion = doc.serverVersion; ret.add(serverVersion, { 'field': 'serverVersion' }); for (var i in arr1) { ret.add(doc[arr1[i]], { 'field': arr1[i] }); } if (doc.date_created) { var dc = doc.date_updated; ret.add(dc, { 'field': 'dateCreated' }); } if (doc.date_updated) { var da = doc.date_updated; ret.add(da, { 'field': 'dateUpdated' }); } return ret; }"),
+        @Index(name = "by_all_criteria", analyzer = "perfield:{identifier:\"keyword\",providerid:\"keyword\"}", index = "function(doc) { if (doc.type !== 'Stock') return null; var arr1 = ['identifier', 'vaccine_type_id', 'transaction_type', 'providerid', 'value', 'to_from', 'sync_status', 'timeStamp']; var ret = new Document(); var serverVersion = doc.serverVersion; ret.add(serverVersion, { 'field': 'serverVersion' }); for (var i in arr1) { ret.add(doc[arr1[i]], { 'field': arr1[i] }); } if (doc.date_created) { var dc = doc.date_updated; ret.add(dc, { 'field': 'dateCreated' }); } if (doc.date_updated) { var da = doc.date_updated; ret.add(da, { 'field': 'dateUpdated' }); } return ret; }"),
         @Index(name = "by _all_criteria_v2", analyzer = "perfield:{baseEntityId:\"keyword\",locationId:\"keyword\"}", index = "function(doc) { if (doc.type !== 'Stock') return null; var arr1 = ['identifier', 'vaccine_type_id', 'transaction_type', 'providerid', 'value', 'to_from', 'sync_status', 'serverVersion']; var ret = new Document(); var serverVersion = doc.serverVersion; ret.add(serverVersion, { 'field': 'serverVersion' }); for (var i in arr1) { ret.add(doc[arr1[i]], { 'field': arr1[i] }); } if (doc.date_created) { var dc = doc.date_updated; ret.add(dc, { 'field': 'dateCreated' }); } if (doc.date_updated) { var da = doc.date_updated; ret.add(da, { 'field': 'dateUpdated' }); } return ret; }") })
 @Component
 public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<Stock> {
@@ -39,7 +40,7 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 	}
 	
 	public List<Stock> getByCriteria(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String sync_status, String date_updated,String serverVersion, String sortBy,
+			String date_created, String to_from, String sync_status, String date_updated,String timeStamp, String sortBy,
             String sortOrder, int limit) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Stock", "by_all_criteria");
@@ -71,6 +72,9 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(date_updated)) {
 			qf.eq(DATE_UPDATED, date_updated);
+		}
+		if (!StringUtils.isEmptyOrWhitespaceOnly(timeStamp)) {
+			qf.eq(TIMESTAMP, timeStamp);
 		}
 		
 		if (StringUtils.isEmptyOrWhitespaceOnly(qf.query())) {

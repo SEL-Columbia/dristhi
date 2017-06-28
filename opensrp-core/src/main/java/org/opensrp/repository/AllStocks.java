@@ -44,10 +44,10 @@ public class AllStocks extends MotechBaseRepository<Stock> {
 		return stock;
 	}
 	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String sync_status, String date_updated,String serverVersion, String sortBy,
+			String date_created, String to_from, String sync_status, String date_updated,String timeStamp, String sortBy,
             String sortOrder, int limit) {
 		return lsr.getByCriteria(identifier, vaccine_type_id, transaction_type, providerid, value,
-				date_created, to_from, sync_status, date_updated, serverVersion, sortBy,
+				date_created, to_from, sync_status, date_updated, timeStamp, sortBy,
 	            sortOrder, limit);
 	}
 	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,

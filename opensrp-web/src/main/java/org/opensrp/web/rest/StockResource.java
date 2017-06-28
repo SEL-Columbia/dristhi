@@ -1,7 +1,6 @@
 package org.opensrp.web.rest;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.common.AllConstants.Event.PROVIDER_ID;
 import static org.opensrp.common.AllConstants.Stock.DATE_CREATED;
 import static org.opensrp.common.AllConstants.Stock.DATE_UPDATED;
 import static org.opensrp.common.AllConstants.Stock.IDENTIFIER;
@@ -11,7 +10,7 @@ import static org.opensrp.common.AllConstants.Stock.TO_FROM;
 import static org.opensrp.common.AllConstants.Stock.TRANSACTION_TYPE;
 import static org.opensrp.common.AllConstants.Stock.VACCINE_TYPE_ID;
 import static org.opensrp.common.AllConstants.Stock.VALUE;
-import static org.opensrp.common.AllConstants.Stock.VERSION;
+import static org.opensrp.common.AllConstants.Stock.TIMESTAMP;
 import static org.opensrp.web.rest.RestUtils.getIntegerFilter;
 import static org.opensrp.web.rest.RestUtils.getStringFilter;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -112,13 +111,14 @@ public class StockResource extends RestResource<Stock> {
 			String identifier = getStringFilter(IDENTIFIER, request);
 			String vaccine_type_id = getStringFilter(VACCINE_TYPE_ID, request);
 			String transaction_type = getStringFilter(TRANSACTION_TYPE, request);
-			String providerId = getStringFilter(PROVIDER_ID, request);
+			String providerId = getStringFilter(PROVIDERID, request);
 			String value = getStringFilter(VALUE, request);
 			String date_created = getStringFilter(DATE_CREATED, request);
 			String to_from = getStringFilter(TO_FROM, request);
 			String sync_status = getStringFilter(SYNC_STATUS, request);
 			String date_updated = getStringFilter(DATE_UPDATED, request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
+			String timeStamp = getStringFilter(TIMESTAMP, request);
 			String lastSyncedServerVersion = null;
 			if (serverVersion != null) {
 				lastSyncedServerVersion = String.valueOf((serverVersion) + 1);
@@ -178,11 +178,8 @@ public class StockResource extends RestResource<Stock> {
 	@Override
 	public List<String> requiredProperties() {
 		List<String> p = new ArrayList<>();
-		p.add(IDENTIFIER);   
-		p.add(VACCINE_TYPE_ID);
-		p.add(TRANSACTION_TYPE);
-		p.add(PROVIDER_ID);
-		p.add(VALUE);
+		p.add(PROVIDERID);
+		p.add(TIMESTAMP);
 		return p;
 	}
 	
@@ -202,7 +199,7 @@ public class StockResource extends RestResource<Stock> {
 		String to_from = getStringFilter(TO_FROM, request);
 		String sync_status = getStringFilter(SYNC_STATUS, request);
 		String date_updated = getStringFilter(DATE_UPDATED, request);
-		String serverVersion = getStringFilter(VERSION, request);
+		String serverVersion = getStringFilter(TIMESTAMP, request);
 		
 		if (!StringUtils.isEmptyOrWhitespaceOnly(stockId)) {
 			Stock stock = stockService.find(stockId);
