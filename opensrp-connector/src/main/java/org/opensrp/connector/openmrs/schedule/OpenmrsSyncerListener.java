@@ -47,6 +47,7 @@ public class OpenmrsSyncerListener {
 	private EncounterService encounterService;
 	private EventService eventService;
 	private ClientService clientService;
+//	private RelationShipService relationShipService;
 
 	@Autowired
 	private Dhis2TrackCaptureConnector dhis2TrackCaptureConnector;
@@ -168,6 +169,19 @@ public class OpenmrsSyncerListener {
 						if (patientJson != null && patientJson.has("uuid")) {
 							c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
 							clientService.addorUpdate(c, false);
+							
+//							adding relationship
+//							relationShipService.createRelationShip(c, personB, relationshipType)
+							
+							logger.info("RelationshipsCreated " + c.getRelationships().toString());
+							logger.info("RelationshipsCreated " + patientJson.getString("uuid"));
+							logger.info("RelationshipsCreated " + patientJson.toString());
+							logger.info("RelationshipsCreated person mum" + patientService.getPatientByIdentifier("f9898861-6eb8-4c90-95c2-4cc4d64a62c4").names().toString());
+							
+							if(patientJson.has("person")){
+								logger.info("RelationshipsCreated person" + patientJson.get("person"));
+							}
+							
 							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
 						}
 
