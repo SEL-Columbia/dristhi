@@ -15,6 +15,7 @@ import static org.opensrp.web.rest.RestUtils.getDateFilter;
 import static org.opensrp.web.rest.RestUtils.getStringFilter;
 
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -32,6 +33,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/applicationContext-opensrp-web.xml")
