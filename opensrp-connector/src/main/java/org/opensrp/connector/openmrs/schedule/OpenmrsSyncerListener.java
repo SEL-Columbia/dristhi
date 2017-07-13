@@ -220,37 +220,27 @@ public class OpenmrsSyncerListener {
 				JSONObject person = motherJson.getJSONObject("person");
 				
 				if(person.getString("uuid")!=null){
-					patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), person.getString("uuid"), "8d91a210-c2cc-11de-8d13-0010c6dffd0f");
+					patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), person.getString("uuid"), "8d91a210-c2cc-11de-8d13-0010c6dffd0f",DateUtil.getTodayAsString());
 					logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
 				}
 				
-				logger.info("RelationshipsCreated sibling1 ");
 				List<Client> siblings = clientService.findByRelationship(c.getRelationships().get("mother").get(0).toString());
 				if(!siblings.isEmpty() || siblings!=null){
+					JSONObject siblingJson;
+					JSONObject sibling;
 					for(Client client : siblings){
-//						patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), client.get, "8d91a210-c2cc-11de-8d13-0010c6dffd0f");
+						if(!c.getBaseEntityId().equals(client.getBaseEntityId())){
+						siblingJson = patientService
+								.getPatientByIdentifier(client.getBaseEntityId());
+						sibling = siblingJson.getJSONObject("person");
+						patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), sibling.getString("uuid"), "8d91a01c-c2cc-11de-8d13-0010c6dffd0f",DateUtil.getTodayAsString());
+						}
 
 					}
 					
 				}
-				
-				logger.info("RelationshipsCreated sibling1 " +  siblings.get(0).fullName());
-				logger.info("RelationshipsCreated sibling1 " +  siblings.size());
-				
-				
-//				List<String> ids = new ArrayList<String>();
-//				ids.add(c.getRelationships().get("mother").get(0).toString());
-//				
-//				if(clientService.findByFieldValue("relationships.mother", ids)!=null){
-//					logger.info("RelationshipsCreated sibling1 " +  clientService.findByFieldValue("relationships.mother", ids));
-//					List<Client> siblings =	clientService.findByFieldValue("relationships.mother", ids);
-//					  for (Client sibling :siblings) {
-//						  logger.info("RelationshipsCreated sibling " +  sibling.getLastName());
-////						  logger.info("RelationshipsCreated sibling " +  sibling.getIdentifier("OPENMRS_UUID"));
-//					  }
-//				}
-//////				
-				
+				logger.info("RelationshipsCreated sibling1 ");
+			
 			}
 			
 

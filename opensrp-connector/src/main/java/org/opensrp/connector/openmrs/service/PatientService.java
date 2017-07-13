@@ -81,8 +81,8 @@ public class PatientService extends OpenmrsService{
 	}
     
     
-    public JSONObject createPatientRelationShip(String personB, String personA, String relationshipType) throws JSONException{
-		JSONObject o = convertRaleationsShipToOpenmrsJson(personB, personA, relationshipType);
+    public JSONObject createPatientRelationShip(String personB, String personA, String relationshipType, String startDate) throws JSONException{
+		JSONObject o = convertRaleationsShipToOpenmrsJson(personB, personA, relationshipType, startDate);
 		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_CREATE_RELATIONSHIP_URL, "", o.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
 	public JSONObject convertIdentifierToOpenmrsJson(String name, String description) throws JSONException {
@@ -91,11 +91,12 @@ public class PatientService extends OpenmrsService{
 		a.put("description", description);
 		return a;
 	}
-	public JSONObject convertRaleationsShipToOpenmrsJson(String personB, String personA, String relationshipType) throws JSONException {
+	public JSONObject convertRaleationsShipToOpenmrsJson(String personB, String personA, String relationshipType, String startDate) throws JSONException {
 		JSONObject relation = new JSONObject();
 		relation.put("personB", personB);
 		relation.put("personA", personA);
 		relation.put("relationshipType", relationshipType);
+		relation.put("startDate", relationshipType);
 		return relation;
 	}
     public JSONObject getPersonAttributeType(String attributeName) throws JSONException
