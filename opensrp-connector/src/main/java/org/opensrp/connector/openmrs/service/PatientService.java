@@ -34,6 +34,7 @@ public class PatientService extends OpenmrsService{
 	private static final String PERSON_ATTRIBUTE_URL = "attribute";
 	private static final String PERSON_ATTRIBUTE_TYPE_URL = "ws/rest/v1/personattributetype";
 	private static final String PATIENT_IDENTIFIER_TYPE_URL = "ws/rest/v1/patientidentifiertype";
+	private static final String PATIENT_CREATE_RELATIONSHIP_URL = "ws/rest/v1/relationship";
 	
 	// This ID should start with opensrp and end with uid. As matched by atomefeed module`s patient service
 	public static final String OPENSRP_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
@@ -79,13 +80,24 @@ public class PatientService extends OpenmrsService{
 		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_IDENTIFIER_TYPE_URL, "", o.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
     
+    
+    public JSONObject createPatientRelationShip(String personB, String personA, String relationshipType) throws JSONException{
+		JSONObject o = convertRaleationsShipToOpenmrsJson(personB, personA, relationshipType);
+		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_CREATE_RELATIONSHIP_URL, "", o.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
 	public JSONObject convertIdentifierToOpenmrsJson(String name, String description) throws JSONException {
 		JSONObject a = new JSONObject();
 		a.put("name", name);
 		a.put("description", description);
 		return a;
 	}
-	
+	public JSONObject convertRaleationsShipToOpenmrsJson(String personB, String personA, String relationshipType) throws JSONException {
+		JSONObject relation = new JSONObject();
+		relation.put("personB", personB);
+		relation.put("personA", personA);
+		relation.put("relationshipType", relationshipType);
+		return relation;
+	}
     public JSONObject getPersonAttributeType(String attributeName) throws JSONException
     {
     	JSONArray p = new JSONObject(HttpUtil.get(getURL()+"/"+PERSON_ATTRIBUTE_TYPE_URL, 
