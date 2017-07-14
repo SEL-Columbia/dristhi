@@ -26,7 +26,7 @@ import org.motechproject.scheduler.domain.MotechEvent;
 import org.opensrp.api.domain.Location;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
-import org.opensrp.domain.DataElement;
+import org.opensrp.domain.Hia2Indicator;
 import org.opensrp.domain.Report;
 import org.opensrp.service.ConfigService;
 import org.opensrp.service.ReportService;
@@ -88,7 +88,7 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 		when(mockOpenmrsLocationService.getLocation(anyString())).thenReturn(location);
 	}
 	
-	public Report createHIA2ReportData(List<DataElement> dataElements) throws JSONException {
+	public Report createHIA2ReportData(List<Hia2Indicator> dataElements) throws JSONException {
 		Report hia2Report = new Report("test", "9e4fc064-d8e7-4fcb-942e-cbcf6524fb24", new DateTime(2017, 05, 22, 0, 0),
 		        "HIA2", "5f52c82f-ea29-469e-96d6-f95a6cc8fbe9", "biddemo", "", 1, 0, dataElements);
 		
@@ -107,10 +107,10 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 	
 	@Test
 	public void testCreateDHIS2Dataset() throws JSONException {
-		DataElement chn1005 = new DataElement("CHN1-005", "n0uHub5ubqH", "100");
-		DataElement chn1010 = new DataElement("CHN1-010", "IWwblgpMxiS", "150");
+		Hia2Indicator chn1005 = new Hia2Indicator("CHN1-005", "n0uHub5ubqH", "100");
+		Hia2Indicator chn1010 = new Hia2Indicator("CHN1-010", "IWwblgpMxiS", "150");
 		
-		List<DataElement> dataElements = new ArrayList<DataElement>();
+		List<Hia2Indicator> dataElements = new ArrayList<Hia2Indicator>();
 		
 		dataElements.add(chn1005);
 		dataElements.add(chn1010);
@@ -136,7 +136,7 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 		
 		for (int i = 0; i < dataValues.length(); i++) {
 			JSONObject dataValue = dataValues.getJSONObject(i);
-			DataElement dataElement = dataElements.get(i);
+			Hia2Indicator dataElement = dataElements.get(i);
 			
 			assertEquals(dataValue.get("value"), dataElement.getValue());
 		}
@@ -144,9 +144,9 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 	
 	@Test
 	public void testUnknownDataElementsAreIgnored() throws JSONException {
-		DataElement chn1015 = new DataElement("CHN1-015", "unknown", "250");
+		Hia2Indicator chn1015 = new Hia2Indicator("CHN1-015", "unknown", "250");
 		
-		List<DataElement> dataElements = new ArrayList<DataElement>();
+		List<Hia2Indicator> dataElements = new ArrayList<Hia2Indicator>();
 		
 		dataElements.add(chn1015);
 		
@@ -170,10 +170,10 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 		JSONObject apiResponse = new JSONObject();
 		apiResponse.put("status", "SUCCESS");
 		
-		DataElement chn1005 = new DataElement("CHN1-005", "n0uHub5ubqH", "100");
-		DataElement chn1010 = new DataElement("CHN1-010", "IWwblgpMxiS", "150");
+		Hia2Indicator chn1005 = new Hia2Indicator("CHN1-005", "n0uHub5ubqH", "100");
+		Hia2Indicator chn1010 = new Hia2Indicator("CHN1-010", "IWwblgpMxiS", "150");
 		
-		List<DataElement> dataElements = new ArrayList<DataElement>();
+		List<Hia2Indicator> dataElements = new ArrayList<Hia2Indicator>();
 		
 		dataElements.add(chn1005);
 		dataElements.add(chn1010);

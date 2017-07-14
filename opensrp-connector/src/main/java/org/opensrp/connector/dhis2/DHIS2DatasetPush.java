@@ -13,7 +13,7 @@ import org.opensrp.api.domain.Location;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.domain.Report;
 import org.opensrp.domain.AppStateToken;
-import org.opensrp.domain.DataElement;
+import org.opensrp.domain.Hia2Indicator;
 import org.opensrp.service.ConfigService;
 import org.opensrp.service.ReportService;
 import org.slf4j.Logger;
@@ -102,7 +102,7 @@ public class DHIS2DatasetPush extends DHIS2Service {
 		String dhis2OrgUnitId = (String) openmrsLocation.getAttribute("dhis_ou_id");
 		
 		// get indicator data
-		List<DataElement> indicators = report.getDataElements();
+		List<Hia2Indicator> indicators = report.getHia2Indicators();
 		
 		// generate the dhis2Dataset here
 		JSONObject dhis2Dataset = new JSONObject();
@@ -114,11 +114,11 @@ public class DHIS2DatasetPush extends DHIS2Service {
 		
 		JSONArray dataValues = new JSONArray();
 		
-		for (DataElement indicator : indicators) {
+		for (Hia2Indicator indicator : indicators) {
 			JSONObject dataValue = new JSONObject();
 			
-			if (!indicator.getDhis2Id().equals("unknown")) {
-				dataValue.put("dataElement", indicator.getDhis2Id());
+			if (!indicator.getDhisId().equals("unknown")) {
+				dataValue.put("dataElement", indicator.getDhisId());
 				dataValue.put("value", indicator.getValue());
 				
 				dataValues.put(dataValue);
