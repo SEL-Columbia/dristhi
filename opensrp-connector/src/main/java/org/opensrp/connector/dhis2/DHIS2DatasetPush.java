@@ -19,11 +19,13 @@ import org.opensrp.service.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 enum DhisSchedulerConfig {
 	dhis2_syncer_sync_report_by_date_updated, dhis2_syncer_sync_report_by_date_voided
 }
 
+@Component
 public class DHIS2DatasetPush extends DHIS2Service {
 	
 	private static Logger logger = LoggerFactory.getLogger(DHIS2DatasetPush.class.toString());
