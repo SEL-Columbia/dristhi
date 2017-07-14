@@ -32,6 +32,7 @@ public class AllConstants {
     	public static final String COUNTRY = "country";
     	public static final String LAST_UPDATE = "lastEdited";
     	public static final String SERVER_VERSIOIN = "serverVersion";
+    	public static final String MOTHERS_INDENTIFIER = "mother";
 
     	
     }

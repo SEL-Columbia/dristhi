@@ -1,5 +1,6 @@
 package org.opensrp.connector.openmrs.schedule;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
@@ -47,13 +48,15 @@ public class OpenmrsSyncerListener {
 	private EncounterService encounterService;
 	private EventService eventService;
 	private ClientService clientService;
+	// private RelationShipService relationShipService;
 
 	@Autowired
 	private Dhis2TrackCaptureConnector dhis2TrackCaptureConnector;
 
 	@Autowired
-	public OpenmrsSyncerListener(OpenmrsSchedulerService openmrsSchedulerService, ScheduleService opensrpScheduleService, ActionService actionService,
-			ConfigService config, ErrorTraceService errorTraceService, PatientService patientService, EncounterService encounterService,
+	public OpenmrsSyncerListener(OpenmrsSchedulerService openmrsSchedulerService,
+			ScheduleService opensrpScheduleService, ActionService actionService, ConfigService config,
+			ErrorTraceService errorTraceService, PatientService patientService, EncounterService encounterService,
 			ClientService clientService, EventService eventService) {
 		this.openmrsSchedulerService = openmrsSchedulerService;
 		this.opensrpScheduleService = opensrpScheduleService;
@@ -65,7 +68,8 @@ public class OpenmrsSyncerListener {
 		this.eventService = eventService;
 		this.clientService = clientService;
 
-		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment, 0,
+		this.config.registerAppStateToken(
+				SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment, 0,
 				"ScheduleTracker token to keep track of enrollment synced with OpenMRS", true);
 
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, 0,
@@ -81,60 +85,79 @@ public class OpenmrsSyncerListener {
 				"OpenMRS data pusher token to keep track of voided events synced with OpenMRS", true);
 	}
 
-//	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
-//	public void scheduletrackerSyncer(MotechEvent event) {
-//		try {
-//			logger.info("RUNNING " + event.getSubject());
-//			AppStateToken lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment);
-//			DateTime start = lastsync == null || lastsync.getValue() == null ? new DateTime().minusYears(33) : new DateTime(lastsync.stringValue());
-//			DateTime end = new DateTime();
-//			List<Enrollment> el = opensrpScheduleService.findEnrollmentByLastUpDate(start, end);
-//			for (Enrollment e : el) {
-//				DateTime alertstart = e.getStartOfSchedule();
-//				DateTime alertend = e.getLastFulfilledDate();
-//				if (alertend == null) {
-//					alertend = e.getCurrentMilestoneStartDate();
-//				}
-//				try {
-//					if (e.getMetadata().get(OpenmrsConstants.ENROLLMENT_TRACK_UUID) != null) {
-//						openmrsSchedulerService.updateTrack(e,
-//								actionService.findByCaseIdScheduleAndTimeStamp(e.getExternalId(), e.getScheduleName(), alertstart, alertend));
-//					} else {
-//						JSONObject tr = openmrsSchedulerService.createTrack(e,
-//								actionService.findByCaseIdScheduleAndTimeStamp(e.getExternalId(), e.getScheduleName(), alertstart, alertend));
-//						opensrpScheduleService.updateEnrollmentWithMetadata(e.getId(), OpenmrsConstants.ENROLLMENT_TRACK_UUID, tr.getString("uuid"));
-//					}
-//				} catch (Exception e1) {
-//					e1.printStackTrace();
-//					errorTraceService.log("ScheduleTracker Syncer Inactive Schedule", Enrollment.class.getName(), e.getId(), e1.getStackTrace().toString(), "");
-//				}
-//			}
-//			config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment, end);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	// @MotechListener(subjects =
+	// OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
+	// public void scheduletrackerSyncer(MotechEvent event) {
+	// try {
+	// logger.info("RUNNING " + event.getSubject());
+	// AppStateToken lastsync =
+	// config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment);
+	// DateTime start = lastsync == null || lastsync.getValue() == null ? new
+	// DateTime().minusYears(33) : new DateTime(lastsync.stringValue());
+	// DateTime end = new DateTime();
+	// List<Enrollment> el =
+	// opensrpScheduleService.findEnrollmentByLastUpDate(start, end);
+	// for (Enrollment e : el) {
+	// DateTime alertstart = e.getStartOfSchedule();
+	// DateTime alertend = e.getLastFulfilledDate();
+	// if (alertend == null) {
+	// alertend = e.getCurrentMilestoneStartDate();
+	// }
+	// try {
+	// if (e.getMetadata().get(OpenmrsConstants.ENROLLMENT_TRACK_UUID) != null)
+	// {
+	// openmrsSchedulerService.updateTrack(e,
+	// actionService.findByCaseIdScheduleAndTimeStamp(e.getExternalId(),
+	// e.getScheduleName(), alertstart, alertend));
+	// } else {
+	// JSONObject tr = openmrsSchedulerService.createTrack(e,
+	// actionService.findByCaseIdScheduleAndTimeStamp(e.getExternalId(),
+	// e.getScheduleName(), alertstart, alertend));
+	// opensrpScheduleService.updateEnrollmentWithMetadata(e.getId(),
+	// OpenmrsConstants.ENROLLMENT_TRACK_UUID, tr.getString("uuid"));
+	// }
+	// } catch (Exception e1) {
+	// e1.printStackTrace();
+	// errorTraceService.log("ScheduleTracker Syncer Inactive Schedule",
+	// Enrollment.class.getName(), e.getId(), e1.getStackTrace().toString(),
+	// "");
+	// }
+	// }
+	// config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment,
+	// end);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT)
 	public void pushToOpenMRS(MotechEvent event) {
+
+		
+		
+		
+		
 		if (!lock.tryLock()) {
-		    logger.warn("Not fetching forms from Message Queue. It is already in progress.");
-		    return;
+			logger.warn("Not fetching forms from Message Queue. It is already in progress.");
+			return;
 		}
 		try {
 			logger.info("RUNNING " + event.getSubject() + " at " + DateTime.now());
+			
+			
 
-			AppStateToken lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated);
+			AppStateToken lastsync = config
+					.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated);
 			Long start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
 
 			List<Client> cl = clientService.findByServerVersion(start);
 			logger.info("Clients list size " + cl.size());
 			for (Client c : cl) {
-//				try {
-//					//sentTrackCaptureDataToDHIS2(c);
-//				} catch (Exception e) {
-//					logger.error("DHIS2 Message:" + e.getMessage());
-//				}
+				// try {
+				// //sentTrackCaptureDataToDHIS2(c);
+				// } catch (Exception e) {
+				// logger.error("DHIS2 Message:" + e.getMessage());
+				// }
 				try {
 					// FIXME This is to deal with existing records and should be
 					// removed later
@@ -161,22 +184,65 @@ public class OpenmrsSyncerListener {
 					if (uuid != null) {
 						logger.info("Updating patient " + uuid);
 						patientService.updatePatient(c, uuid);
-						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
+					
+						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+								c.getServerVersion());
 
 					} else {
 						JSONObject patientJson = patientService.createPatient(c);
 						if (patientJson != null && patientJson.has("uuid")) {
 							c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
 							clientService.addorUpdate(c, false);
-							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
+
+							// adding relationship
+							// relationShipService.createRelationShip(c,
+							// personB, relationshipType)
+
+							
+
+							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+									c.getServerVersion());
+							
+							
 						}
 
 					}
 				} catch (Exception ex1) {
 					ex1.printStackTrace();
-					errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(), ExceptionUtils.getStackTrace(ex1), "");
+					errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
+							ExceptionUtils.getStackTrace(ex1), "");
 				}
 			}
+			for (Client c : cl) {
+				
+				JSONObject motherJson = patientService
+						.getPatientByIdentifier(c.getRelationships().get("mother").get(0).toString());
+				JSONObject person = motherJson.getJSONObject("person");
+				
+				if(person.getString("uuid")!=null){
+					patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), person.getString("uuid"), "8d91a210-c2cc-11de-8d13-0010c6dffd0f");
+					logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
+				}
+				
+				List<Client> siblings = clientService.findByRelationship(c.getRelationships().get("mother").get(0).toString());
+				if(!siblings.isEmpty() || siblings!=null){
+					JSONObject siblingJson;
+					JSONObject sibling;
+					for(Client client : siblings){
+						if(!c.getBaseEntityId().equals(client.getBaseEntityId())){
+						siblingJson = patientService
+								.getPatientByIdentifier(client.getBaseEntityId());
+						sibling = siblingJson.getJSONObject("person");
+						patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), sibling.getString("uuid"), "8d91a01c-c2cc-11de-8d13-0010c6dffd0f");
+						}
+
+					}
+					
+				}
+				logger.info("RelationshipsCreated sibling1 ");
+			
+			}
+			
 
 			logger.info("RUNNING FOR EVENTS");
 
@@ -191,26 +257,29 @@ public class OpenmrsSyncerListener {
 					String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
 					if (uuid != null) {
 						encounterService.updateEncounter(e);
-						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
+						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
+								e.getServerVersion());
 					} else {
 						JSONObject eventJson = encounterService.createEncounter(e);
 						if (eventJson != null && eventJson.has("uuid")) {
 							e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 							eventService.updateEvent(e);
-							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
+							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
+									e.getServerVersion());
 						}
 					}
 				} catch (Exception ex2) {
-					logger.error("",ex2);
-					errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(), ExceptionUtils.getStackTrace(ex2), "");
+					logger.error("", ex2);
+					errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(),
+							ExceptionUtils.getStackTrace(ex2), "");
 				}
 			}
 
 			logger.info("PUSH TO OPENMRS FINISHED AT " + DateTime.now());
 		} catch (Exception ex) {
-			logger.error("",ex);
+			logger.error("", ex);
 		} finally {
-		    lock.unlock();
+			lock.unlock();
 		}
 	}
 
