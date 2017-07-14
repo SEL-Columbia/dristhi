@@ -220,7 +220,7 @@ public class OpenmrsSyncerListener {
 				JSONObject person = motherJson.getJSONObject("person");
 				
 				if(person.getString("uuid")!=null){
-					patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), person.getString("uuid"), "8d91a210-c2cc-11de-8d13-0010c6dffd0f",DateUtil.getTodayAsString());
+					patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), person.getString("uuid"), "8d91a210-c2cc-11de-8d13-0010c6dffd0f");
 					logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
 				}
 				
@@ -233,7 +233,7 @@ public class OpenmrsSyncerListener {
 						siblingJson = patientService
 								.getPatientByIdentifier(client.getBaseEntityId());
 						sibling = siblingJson.getJSONObject("person");
-						patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), sibling.getString("uuid"), "8d91a01c-c2cc-11de-8d13-0010c6dffd0f",DateUtil.getTodayAsString());
+						patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), sibling.getString("uuid"), "8d91a01c-c2cc-11de-8d13-0010c6dffd0f");
 						}
 
 					}
