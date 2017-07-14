@@ -32,12 +32,12 @@ public class StockService {
 		return allStocks.getAll();
 	}
 	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String sync_status, String date_updated, String timeStamp, String sortBy, String sortOrder, int limit) {
-		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from, sync_status, date_updated, timeStamp, sortBy, sortOrder, limit);
+			String date_created, String to_from,String date_updated, String timeStamp, String sortBy, String sortOrder, int limit) {
+		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from, date_updated, timeStamp, sortBy, sortOrder, limit);
 	}
 	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String sync_status, String date_updated, String serverVersion) {
-		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from, sync_status, date_updated, serverVersion);
+			String date_created, String to_from, String date_updated, String serverVersion) {
+		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from, date_updated, serverVersion);
 	}
 	public List<Stock> findAllStocks() {
 		return allStocks.findAllStocks();
@@ -118,7 +118,7 @@ public class StockService {
 	public List<Stock> findStocksBy(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
 			String date_created, String to_from, String sync_status, String date_updated,String serverVersion) {
 		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value,
-				date_created, to_from, sync_status, date_updated, serverVersion);
+				date_created, to_from, date_updated, serverVersion);
 	}
 	
 }

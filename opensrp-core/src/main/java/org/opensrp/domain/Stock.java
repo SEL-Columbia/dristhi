@@ -30,9 +30,6 @@ public class Stock extends BaseDataObject {
 	private String to_from;
 	
 	@JsonProperty
-	private String sync_status;
-	
-	@JsonProperty
 	private Long date_updated;
 	
 	@JsonProperty
@@ -43,7 +40,7 @@ public class Stock extends BaseDataObject {
 	}
 	
 	public Stock(Long identifier, String vaccine_type_id, String transaction_type, String providerid, int value,
-	    Long date_created, String to_from, String sync_status, Long date_updated, long version) {
+	    Long date_created, String to_from, Long date_updated, long version) {
 		this.identifier = identifier;
 		this.vaccine_type_id = vaccine_type_id;
 		this.transaction_type = transaction_type;
@@ -51,7 +48,6 @@ public class Stock extends BaseDataObject {
 		this.value = value;
 		this.date_created = date_created;
 		this.to_from = to_from;
-		this.sync_status = sync_status;
 		this.date_updated = date_updated;
 		this.version = version;
 	}
@@ -110,14 +106,6 @@ public class Stock extends BaseDataObject {
 	
 	public void setTo_from(String to_from) {
 		this.to_from = to_from;
-	}
-	
-	public String getSync_status() {
-		return sync_status;
-	}
-	
-	public void setSync_status(String sync_status) {
-		this.sync_status = sync_status;
 	}
 	
 	public Long getDate_updated() {

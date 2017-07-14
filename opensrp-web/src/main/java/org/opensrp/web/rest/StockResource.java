@@ -5,7 +5,6 @@ import static org.opensrp.common.AllConstants.Stock.DATE_CREATED;
 import static org.opensrp.common.AllConstants.Stock.DATE_UPDATED;
 import static org.opensrp.common.AllConstants.Stock.IDENTIFIER;
 import static org.opensrp.common.AllConstants.Stock.PROVIDERID;
-import static org.opensrp.common.AllConstants.Stock.SYNC_STATUS;
 import static org.opensrp.common.AllConstants.Stock.TO_FROM;
 import static org.opensrp.common.AllConstants.Stock.TRANSACTION_TYPE;
 import static org.opensrp.common.AllConstants.Stock.VACCINE_TYPE_ID;
@@ -115,7 +114,6 @@ public class StockResource extends RestResource<Stock> {
 			String value = getStringFilter(VALUE, request);
 			String date_created = getStringFilter(DATE_CREATED, request);
 			String to_from = getStringFilter(TO_FROM, request);
-			String sync_status = getStringFilter(SYNC_STATUS, request);
 			String date_updated = getStringFilter(DATE_UPDATED, request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
 			String timeStamp = getStringFilter(TIMESTAMP, request);
@@ -129,7 +127,7 @@ public class StockResource extends RestResource<Stock> {
 			}
 			
 			List<Stock> stocks = new ArrayList<Stock>();
-			stocks = stockService.findStocks(identifier, vaccine_type_id, transaction_type, providerId, value, date_created, to_from, sync_status, date_updated, lastSyncedServerVersion, "serverVersion", "asc", limit);
+			stocks = stockService.findStocks(identifier, vaccine_type_id, transaction_type, providerId, value, date_created, to_from, date_updated, lastSyncedServerVersion, "serverVersion", "asc", limit);
 			JsonArray stocksArray = (JsonArray) gson.toJsonTree(stocks, new TypeToken<List<Stock>>() {}.getType());
 			
 			response.put("stocks", stocksArray);
@@ -197,7 +195,6 @@ public class StockResource extends RestResource<Stock> {
 		String value = getStringFilter(VALUE, request);
 		String date_created = getStringFilter(DATE_CREATED, request);
 		String to_from = getStringFilter(TO_FROM, request);
-		String sync_status = getStringFilter(SYNC_STATUS, request);
 		String date_updated = getStringFilter(DATE_UPDATED, request);
 		String serverVersion = getStringFilter(TIMESTAMP, request);
 		
@@ -207,7 +204,7 @@ public class StockResource extends RestResource<Stock> {
 				return new ArrayList<>();
 			}
 		}
-		return stockService.findStocks(stockId, vaccine_type_id, transaction_type, providerId, value, date_created, to_from, sync_status, date_updated,serverVersion);
+		return stockService.findStocks(stockId, vaccine_type_id, transaction_type, providerId, value, date_created, to_from, date_updated,serverVersion);
 	}
 	
 	@Override

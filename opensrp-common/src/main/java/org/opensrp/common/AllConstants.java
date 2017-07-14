@@ -117,8 +117,6 @@ public class AllConstants {
 		
 		public static final String TO_FROM = "to_from";
 		
-		public static final String SYNC_STATUS = "sync_status";
-		
 		public static final String DATE_UPDATED = "date_updated";
 		
 		public static final String TIMESTAMP = "timeStamp";

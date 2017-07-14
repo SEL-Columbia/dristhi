@@ -4,7 +4,6 @@ import static org.opensrp.common.AllConstants.Event.PROVIDER_ID;
 import static org.opensrp.common.AllConstants.Stock.DATE_CREATED;
 import static org.opensrp.common.AllConstants.Stock.DATE_UPDATED;
 import static org.opensrp.common.AllConstants.Stock.IDENTIFIER;
-import static org.opensrp.common.AllConstants.Stock.SYNC_STATUS;
 import static org.opensrp.common.AllConstants.Stock.TO_FROM;
 import static org.opensrp.common.AllConstants.Stock.TRANSACTION_TYPE;
 import static org.opensrp.common.AllConstants.Stock.VACCINE_TYPE_ID;
@@ -40,7 +39,7 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 	}
 	
 	public List<Stock> getByCriteria(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String sync_status, String date_updated,String timeStamp, String sortBy,
+			String date_created, String to_from, String date_updated,String timeStamp, String sortBy,
             String sortOrder, int limit) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Stock", "by_all_criteria");
@@ -66,9 +65,6 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(to_from)) {
 			qf.eq(TO_FROM, to_from);
-		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(sync_status)) {
-			qf.eq(SYNC_STATUS, sync_status);
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(date_updated)) {
 			qf.eq(DATE_UPDATED, date_updated);
@@ -97,7 +93,7 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 	
 
 	public List<Stock> getByCriteria(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String sync_status, String date_updated,String serverVersion) {
+			String date_created, String to_from, String date_updated,String serverVersion) {
 		LuceneQuery query = new LuceneQuery("Stock", "by_all_criteria");
 		
 		Query qf = new Query(FilterType.AND);
@@ -121,9 +117,6 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(to_from)) {
 			qf.eq(TO_FROM, to_from);
-		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(sync_status)) {
-			qf.eq(SYNC_STATUS, sync_status);
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(date_updated)) {
 			qf.eq(DATE_UPDATED, date_updated);
