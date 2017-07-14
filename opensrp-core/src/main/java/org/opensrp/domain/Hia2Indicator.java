@@ -45,6 +45,12 @@ public class Hia2Indicator {
 		
 	}
 	
+	public Hia2Indicator(String indicatorCode, String dhisId, String value) {
+		this.indicatorCode = indicatorCode;
+		this.dhisId = dhisId;
+		this.value = value;		
+	}
+	
 	public String getIndicatorCode() {
 		return indicatorCode;
 	}
