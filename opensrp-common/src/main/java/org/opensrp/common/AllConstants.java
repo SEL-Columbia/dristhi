@@ -3,96 +3,6 @@ package org.opensrp.common;
 public class AllConstants {
 	
 	public static final String OPENSRP_FORM_DATABASE_CONNECTOR = "opensrpFormDatabaseConnector";
-    public static final String OPENSRP_DATABASE_CONNECTOR = "opensrpDatabaseConnector";
-    public static final String OPENSRP_MCTS_DATABASE_CONNECTOR = "opensrpMCTSDatabaseConnector";
-    public static final String SPACE = " ";
-    public static final String BOOLEAN_TRUE_VALUE = "true";
-    public static final String BOOLEAN_FALSE_VALUE = "false";
-    public static final String AUTO_CLOSE_PNC_CLOSE_REASON = "Auto Close PNC";
-    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
-    public static final String EMPTY_STRING = "";
-    public static final String OPENSRP_ERRORTRACE_DATABASE="opensrpErrorTraceDatabaseConnector";
-
-    public static class BaseEntity{
-    	public static final String BASE_ENTITY_ID = "baseEntityId";
-    	public static final String ADDRESS_TYPE = "addressType";
-    	public static final String START_DATE = "startDate";
-    	public static final String END_DATE = "endDate";
-    	public static final String LATITUDE = "latitude";
-    	public static final String LONGITUTE = "longitute";
-    	public static final String GEOPOINT = "geopoint";
-    	public static final String POSTAL_CODE = "postalCode";
-    	public static final String SUB_TOWN = "subTown";
-    	public static final String TOWN = "town";
-    	public static final String SUB_DISTRICT = "subDistrict";
-    	public static final String COUNTY_DISTRICT = "countyDistrict";
-    	public static final String CITY_VILLAGE = "cityVillage";
-    	public static final String STATE_PROVINCE = "stateProvince";
-    	public static final String COUNTRY = "country";
-    	public static final String LAST_UPDATE = "lastEdited";
-    	public static final String SERVER_VERSIOIN = "serverVersion";
-    	public static final String MOTHERS_INDENTIFIER = "mother";
-
-    	
-    }
-    
-    public static class Client extends BaseEntity{
-    	public static final String FIRST_NAME = "firstName";
-    	public static final String MIDDLE_NAME = "middleName";
-    	public static final String LAST_NAME = "lastName";
-    	public static final String BIRTH_DATE = "birthdate";
-    	public static final String DEATH_DATE = "deathdate";
-    	public static final String BIRTH_DATE_APPROX = "birthdateApprox";
-    	public static final String DEATH_DATE_APPROX = "deathdateApprox";
-    	public static final String GENDER = "gender";
-    	public static final String ZEIR_ID = "zeir_id";
-    }
-    
-    public static class Event {
-    	public static final String FORM_SUBMISSION_ID = "formSubmissionId";
-    	public static final String EVENT_TYPE = "eventType";
-    	public static final String EVENT_ID = "eventId";
-    	public static final String LOCATION_ID = "locationId";
-    	public static final String EVENT_DATE = "eventDate";
-    	public static final String PROVIDER_ID = "providerId";
-    	public static final String ENTITY_TYPE = "entityType";
-
-    }
-    
-    public static class Stock {
-		public static final String IDENTIFIER = "identifier";
-    	public static final String VACCINE_TYPE_ID = "vaccine_type_id";
-    	public static final String TRANSACTION_TYPE = "transaction_type";
-    	public static final String PROVIDERID = "providerid";
-    	public static final String VALUE = "value";
-    	public static final String DATE_CREATED = "date_created";
-    	public static final String TO_FROM = "to_from";
-    	public static final String SYNC_STATUS = "sync_status";
-    	public static final String DATE_UPDATED = "date_updated";
-    	public static final String TIMESTAMP = "timeStamp";
-    	public static final String TYPE = "type";
-
-    }
-    
-    public static class Action {
-    	public static final String TIMESTAMP = "timeStamp";
-
-    }
-    
-    public static class Form {
-        public static final String ENTITY_ID = "entityId";
-        public static final String ANM_ID = "anmId";
-        public static final String FORM_NAME = "formName";
-        public static final String INSTANCE_ID = "instanceId";
-        public static final String CLIENT_VERSION = "clientVersion";
-        public static final String SERVER_VERSION = "serverVersion";
-    }
-    public static class HTTP {
-        public static final String ACCESS_CONTROL_ALLOW_ORIGIN_HEADER = "Access-Control-Allow-Origin";
-        public static final String WWW_AUTHENTICATE_HEADER = "www-authenticate";
-    }
-
-	public static class OpenSRPEvent{
 	
 	public static final String OPENSRP_DATABASE_CONNECTOR = "opensrpDatabaseConnector";
 	
@@ -148,6 +58,8 @@ public class AllConstants {
 		
 		public static final String SERVER_VERSIOIN = "serverVersion";
 		
+		public static final String MOTHERS_INDENTIFIER = "mother";
+		
 	}
 	
 	public static class Client extends BaseEntity {
@@ -189,6 +101,32 @@ public class AllConstants {
 		
 	}
 	
+	public static class Stock {
+		
+		public static final String IDENTIFIER = "identifier";
+		
+		public static final String VACCINE_TYPE_ID = "vaccine_type_id";
+		
+		public static final String TRANSACTION_TYPE = "transaction_type";
+		
+		public static final String PROVIDERID = "providerid";
+		
+		public static final String VALUE = "value";
+		
+		public static final String DATE_CREATED = "date_created";
+		
+		public static final String TO_FROM = "to_from";
+		
+		public static final String SYNC_STATUS = "sync_status";
+		
+		public static final String DATE_UPDATED = "date_updated";
+		
+		public static final String TIMESTAMP = "timeStamp";
+		
+		public static final String TYPE = "type";
+		
+	}
+	
 	public static class Action {
 		
 		public static final String TIMESTAMP = "timeStamp";
@@ -219,7 +157,131 @@ public class AllConstants {
 	
 	public static class OpenSRPEvent {
 		
+		public static final String OPENSRP_DATABASE_CONNECTOR = "opensrpDatabaseConnector";
+		
+		public static final String OPENSRP_MCTS_DATABASE_CONNECTOR = "opensrpMCTSDatabaseConnector";
+		
+		public static final String SPACE = " ";
+		
+		public static final String BOOLEAN_TRUE_VALUE = "true";
+		
+		public static final String BOOLEAN_FALSE_VALUE = "false";
+		
+		public static final String AUTO_CLOSE_PNC_CLOSE_REASON = "Auto Close PNC";
+		
+		public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+		
+		public static final String EMPTY_STRING = "";
+		
+		public static final String OPENSRP_ERRORTRACE_DATABASE = "opensrpErrorTraceDatabaseConnector";
+		
 		public static final String FORM_SUBMISSION = "FORM_SUBMISSION";
+		
+		public static class BaseEntity {
+			
+			public static final String BASE_ENTITY_ID = "baseEntityId";
+			
+			public static final String ADDRESS_TYPE = "addressType";
+			
+			public static final String START_DATE = "startDate";
+			
+			public static final String END_DATE = "endDate";
+			
+			public static final String LATITUDE = "latitude";
+			
+			public static final String LONGITUTE = "longitute";
+			
+			public static final String GEOPOINT = "geopoint";
+			
+			public static final String POSTAL_CODE = "postalCode";
+			
+			public static final String SUB_TOWN = "subTown";
+			
+			public static final String TOWN = "town";
+			
+			public static final String SUB_DISTRICT = "subDistrict";
+			
+			public static final String COUNTY_DISTRICT = "countyDistrict";
+			
+			public static final String CITY_VILLAGE = "cityVillage";
+			
+			public static final String STATE_PROVINCE = "stateProvince";
+			
+			public static final String COUNTRY = "country";
+			
+			public static final String LAST_UPDATE = "lastEdited";
+			
+			public static final String SERVER_VERSIOIN = "serverVersion";
+			
+		}
+		
+		public static class Client extends BaseEntity {
+			
+			public static final String FIRST_NAME = "firstName";
+			
+			public static final String MIDDLE_NAME = "middleName";
+			
+			public static final String LAST_NAME = "lastName";
+			
+			public static final String BIRTH_DATE = "birthdate";
+			
+			public static final String DEATH_DATE = "deathdate";
+			
+			public static final String BIRTH_DATE_APPROX = "birthdateApprox";
+			
+			public static final String DEATH_DATE_APPROX = "deathdateApprox";
+			
+			public static final String GENDER = "gender";
+			
+			public static final String ZEIR_ID = "zeir_id";
+		}
+		
+		public static class Event {
+			
+			public static final String FORM_SUBMISSION_ID = "formSubmissionId";
+			
+			public static final String EVENT_TYPE = "eventType";
+			
+			public static final String EVENT_ID = "eventId";
+			
+			public static final String LOCATION_ID = "locationId";
+			
+			public static final String EVENT_DATE = "eventDate";
+			
+			public static final String PROVIDER_ID = "providerId";
+			
+			public static final String ENTITY_TYPE = "entityType";
+			
+		}
+		
+		public static class Action {
+			
+			public static final String TIMESTAMP = "timeStamp";
+			
+		}
+		
+		public static class Form {
+			
+			public static final String ENTITY_ID = "entityId";
+			
+			public static final String ANM_ID = "anmId";
+			
+			public static final String FORM_NAME = "formName";
+			
+			public static final String INSTANCE_ID = "instanceId";
+			
+			public static final String CLIENT_VERSION = "clientVersion";
+			
+			public static final String SERVER_VERSION = "serverVersion";
+		}
+		
+		public static class HTTP {
+			
+			public static final String ACCESS_CONTROL_ALLOW_ORIGIN_HEADER = "Access-Control-Allow-Origin";
+			
+			public static final String WWW_AUTHENTICATE_HEADER = "www-authenticate";
+		}
+		
 	}
 	
 	public enum Config {
