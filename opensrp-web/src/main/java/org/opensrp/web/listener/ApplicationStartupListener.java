@@ -43,20 +43,20 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
         // TODO openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 2, TimeUnit.MINUTES, openmrsSchSyncerMin, TimeUnit.MINUTES);
         atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
         encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
-        dhis2Schedule = new RepeatingSchedule(DHIS2DatasetPush.SCHEDULER_DHIS2_DATA_PUSH_SUBJECT, 1, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
+        dhis2Schedule = new RepeatingSchedule(DHIS2DatasetPush.SCHEDULER_DHIS2_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
     	System.out.println(contextRefreshedEvent.getApplicationContext().getId());
         if (contextRefreshedEvent.getApplicationContext().getId().endsWith(APPLICATION_ID)) {
-            //scheduler.startJob(formSchedule);
-            //scheduler.startJob(eventsSchedule);
+            scheduler.startJob(formSchedule);
+            scheduler.startJob(eventsSchedule);
             //scheduler.startJob(anmReportScheduler);
             //scheduler.startJob(mctsReportScheduler);
            // scheduler.startJob(openmrsScheduleSyncerScheduler);
-            //scheduler.startJob(atomfeedSchedule);
-            //scheduler.startJob(encounterSchedule);
+            scheduler.startJob(atomfeedSchedule);
+            scheduler.startJob(encounterSchedule);
             scheduler.startJob(dhis2Schedule);
             
         	System.out.println("STARTED ALL SCHEDULES");
