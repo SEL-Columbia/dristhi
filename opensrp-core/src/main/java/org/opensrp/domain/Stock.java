@@ -5,7 +5,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@TypeDiscriminator("doc.type == 'Event'")
+@TypeDiscriminator("doc.type == 'Stock'")
 public class Stock extends BaseDataObject {
 	
 	@JsonProperty
