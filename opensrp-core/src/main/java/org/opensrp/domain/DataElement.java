@@ -3,6 +3,7 @@ package org.opensrp.domain;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class DataElement {
+	
 	@JsonProperty
 	private String name;
 	
