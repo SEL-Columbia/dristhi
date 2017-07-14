@@ -28,9 +28,10 @@ import com.google.gson.reflect.TypeToken;
 
 @Controller
 @RequestMapping(value = "/rest/report/")
-public class ReportResource  {
+public class ReportResource {
 	
 	private static Logger logger = LoggerFactory.getLogger(ReportResource.class.toString());
+	
 	private ReportService reportService;
 	
 	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
@@ -56,15 +57,15 @@ public class ReportResource  {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
 			ArrayList<Report> reports = (ArrayList<Report>) gson.fromJson(syncData.getString("reports"),
-				    new TypeToken<ArrayList<Report>>() {}.getType());
-				for (Report report : reports) {
-					try {
-					    reportService.addorUpdateReport(report);
-					}
-					catch (Exception e) {
-						logger.error("Report" + report.getId()+" failed to sync", e);
-					}
+			    new TypeToken<ArrayList<Report>>() {}.getType());
+			for (Report report : reports) {
+				try {
+					reportService.addorUpdateReport(report);
 				}
+				catch (Exception e) {
+					logger.error("Report" + report.getId() + " failed to sync", e);
+				}
+			}
 		}
 		catch (Exception e) {
 			logger.error(format("Sync data processing failed with exception {0}.- ", e));

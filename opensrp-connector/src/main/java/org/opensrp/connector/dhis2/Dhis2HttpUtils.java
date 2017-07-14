@@ -86,11 +86,11 @@ public class Dhis2HttpUtils extends DHIS2Service {
 	}
 	
 	public JSONObject post(String url, String payload, String data) throws JSONException {
-		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(this.DHIS2_BASE_URL) + "/" + url, payload, data, this.DHIS2_USER,
-		    this.DHIS2_PWD);
+		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(this.DHIS2_BASE_URL) + "/" + url, payload, data,
+		    this.DHIS2_USER, this.DHIS2_PWD);
 		JSONObject response = new JSONObject(op.body());
-
+		
 		return response;
 	}
-
+	
 }

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReportService {
+	
 	private final AllReports allReports;
+	
 	private static Logger logger = LoggerFactory.getLogger(ReportService.class.toString());
 	
 	@Autowired
@@ -32,7 +34,7 @@ public class ReportService {
 	}
 	
 	public List<Report> getAll() {
-	    return allReports.getAll();
+		return allReports.getAll();
 	}
 	
 	public Report find(String uniqueId) {
@@ -44,7 +46,7 @@ public class ReportService {
 		}
 		return null;
 	}
-
+	
 	public Report find(Report report) {
 		for (String idt : report.getIdentifiers().keySet()) {
 			List<Report> reportList = allReports.findAllByIdentifier(report.getIdentifier(idt));
@@ -57,7 +59,7 @@ public class ReportService {
 		}
 		return null;
 	}
-
+	
 	public Report findById(String reportId) {
 		try {
 			if (reportId == null || reportId.isEmpty()) {
@@ -70,20 +72,21 @@ public class ReportService {
 		}
 		return null;
 	}
-
+	
 	public synchronized Report addReport(Report report) {
 		Report existingReport = find(report);
 		if (existingReport != null) {
 			throw new IllegalArgumentException(
-			        "An report already exists with given list of identifiers. Consider updating data.[" + existingReport + "]");
+			        "An report already exists with given list of identifiers. Consider updating data.[" + existingReport
+			                + "]");
 		}
-
+		
 		if (report.getFormSubmissionId() != null
 		        && getByBaseEntityAndFormSubmissionId(report.getBaseEntityId(), report.getFormSubmissionId()) != null) {
 			throw new IllegalArgumentException(
 			        "An report already exists with given baseEntity and formSubmission combination. Consider updating");
 		}
-
+		
 		report.setDateCreated(DateTime.now());
 		allReports.add(report);
 		return report;
@@ -92,13 +95,13 @@ public class ReportService {
 	public void updateReport(Report updatedReport) {
 		// If update is on original entity
 		if (updatedReport.isNew()) {
-		    throw new IllegalArgumentException(
-		    		"Report to be updated is not an existing and persisting domain object. Update database object instead of new pojo");
+			throw new IllegalArgumentException(
+			        "Report to be updated is not an existing and persisting domain object. Update database object instead of new pojo");
 		}
-		  
-	  updatedReport.setDateEdited(DateTime.now());
-	  
-	  allReports.update(updatedReport);
+		
+		updatedReport.setDateEdited(DateTime.now());
+		
+		allReports.update(updatedReport);
 	}
 	
 	public synchronized Report addorUpdateReport(Report report) {
@@ -138,9 +141,9 @@ public class ReportService {
 		return allReports.findReports(team, providerId, locationId, null, serverVersion, sortBy, sortOrder, limit);
 	}
 	
-	public List<Report> findReports(String team, String providerId, String locationId, String baseEntityId, Long serverVersion,
-	                                String sortBy, String sortOrder, int limit) {
+	public List<Report> findReports(String team, String providerId, String locationId, String baseEntityId,
+	                                Long serverVersion, String sortBy, String sortOrder, int limit) {
 		return allReports.findReports(team, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
 	}
-
+	
 }

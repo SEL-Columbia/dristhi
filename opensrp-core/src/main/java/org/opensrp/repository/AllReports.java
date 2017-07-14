@@ -17,10 +17,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class AllReports extends MotechBaseRepository<Report> {
+	
 	private LuceneReportRepository lrr;
 	
 	@Autowired
-	protected AllReports(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db, LuceneReportRepository lrr) {
+	protected AllReports(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db,
+	    LuceneReportRepository lrr) {
 		super(Report.class, db);
 		this.lrr = lrr;
 	}
@@ -31,9 +33,9 @@ public class AllReports extends MotechBaseRepository<Report> {
 	}
 	
 	@GenerateView
-    public List<Report> getAll() {
-        return super.getAll();
-    }
+	public List<Report> getAll() {
+		return super.getAll();
+	}
 	
 	@GenerateView
 	public List<Report> findByBaseEntityId(String baseEntityId) {
@@ -44,11 +46,11 @@ public class AllReports extends MotechBaseRepository<Report> {
 	public List<Report> findAllByIdentifier(String identifier) {
 		return db.queryView(createQuery("all_reports_by_identifier").key(identifier).includeDocs(true), Report.class);
 	}
-
+	
 	@View(name = "all_reports_by_base_entity_and_type", map = "function(doc) { if (doc.type === 'Report'){  emit([doc.baseEntityId, doc.reportType], doc); } }")
 	public List<Report> findByBaseEntityAndType(String baseEntityId, String reportType) {
-		return db.queryView(
-		    createQuery("all_reports_by_base_entity_and_type").key(ComplexKey.of(baseEntityId, reportType)).includeDocs(true),
+		return db.queryView(createQuery("all_reports_by_base_entity_and_type").key(ComplexKey.of(baseEntityId, reportType))
+		        .includeDocs(true),
 		    Report.class);
 	}
 	
@@ -72,13 +74,13 @@ public class AllReports extends MotechBaseRepository<Report> {
 		    Report.class);
 	}
 	
-	public List<Report> findReports(String team,String providerId, String locationId, String baseEntityId,
-	                                Long serverVersion, String sortBy,String sortOrder, int limit) {
-		return lrr.getByCriteria(team, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder,limit);
+	public List<Report> findReports(String team, String providerId, String locationId, String baseEntityId,
+	                                Long serverVersion, String sortBy, String sortOrder, int limit) {
+		return lrr.getByCriteria(team, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
 	}
 	
-	public List<Report> findReports(String baseEntityId, DateTime from, DateTime to, String reportType,
-	                                String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
+	public List<Report> findReports(String baseEntityId, DateTime from, DateTime to, String reportType, String providerId,
+	                                String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
 		return lrr.getByCriteria(baseEntityId, from, to, reportType, providerId, locationId, lastEditFrom, lastEditTo);
 	}
 	

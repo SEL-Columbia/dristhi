@@ -26,18 +26,12 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 import com.mysql.jdbc.StringUtils;
 
 @FullText({
-	@Index(
-		name = "by_all_criteria",
-		analyzer = "perfield:{baseEntityId:\"keyword\",locationId:\"keyword\"}",
-		index = "function(doc) {   if(doc.type !== 'Report') return null;   var arr1 = ['baseEntityId','reportType','providerId','locationId'];   var ret = new Document(); var serverVersion = doc.serverVersion;ret.add(serverVersion, {'field': 'serverVersion'});  for (var i in arr1){     ret.add(doc[arr1[i]], {'field':arr1[i]});   }   if(doc.reportDate){     var bd=doc.reportDate.substring(0,19);      ret.add(bd, {'field':'reportDate','type':'date'});   }          var crd = doc.dateCreated.substring(0, 19);     ret.add(crd, {'field' : 'lastEdited','type' : 'date'});          if(doc.dateEdited){     var led = doc.dateEdited.substring(0, 19);     ret.add(led, {'field' : 'lastEdited','type' : 'date'});         }        return ret;   }"),
-	@Index(
-		name = "by_all_criteria_v2",	
-		analyzer = "perfield:{baseEntityId:\"keyword\",locationId:\"keyword\"}",
-		index = "function(doc) {   if(doc.type !== 'Report') return null;   var arr1 = ['baseEntityId','reportType','providerId','locationId'];   var ret = new Document(); var serverVersion = doc.serverVersion;ret.add(serverVersion, {'field': 'serverVersion'});  for (var i in arr1){     ret.add(doc[arr1[i]], {'field':arr1[i]});   }   if(doc.reportDate){     var bd=doc.reportDate.substring(0,19);      ret.add(bd, {'field':'reportDate','type':'date'});   }          var crd = doc.dateCreated.substring(0, 19);     ret.add(crd, {'field' : 'lastEdited','type' : 'date'});          if(doc.dateEdited){     var led = doc.dateEdited.substring(0, 19);     ret.add(led, {'field' : 'lastEdited','type' : 'date'});         }        return ret;   }")
-})
+        @Index(name = "by_all_criteria", analyzer = "perfield:{baseEntityId:\"keyword\",locationId:\"keyword\"}", index = "function(doc) {   if(doc.type !== 'Report') return null;   var arr1 = ['baseEntityId','reportType','providerId','locationId'];   var ret = new Document(); var serverVersion = doc.serverVersion;ret.add(serverVersion, {'field': 'serverVersion'});  for (var i in arr1){     ret.add(doc[arr1[i]], {'field':arr1[i]});   }   if(doc.reportDate){     var bd=doc.reportDate.substring(0,19);      ret.add(bd, {'field':'reportDate','type':'date'});   }          var crd = doc.dateCreated.substring(0, 19);     ret.add(crd, {'field' : 'lastEdited','type' : 'date'});          if(doc.dateEdited){     var led = doc.dateEdited.substring(0, 19);     ret.add(led, {'field' : 'lastEdited','type' : 'date'});         }        return ret;   }"),
+        @Index(name = "by_all_criteria_v2", analyzer = "perfield:{baseEntityId:\"keyword\",locationId:\"keyword\"}", index = "function(doc) {   if(doc.type !== 'Report') return null;   var arr1 = ['baseEntityId','reportType','providerId','locationId'];   var ret = new Document(); var serverVersion = doc.serverVersion;ret.add(serverVersion, {'field': 'serverVersion'});  for (var i in arr1){     ret.add(doc[arr1[i]], {'field':arr1[i]});   }   if(doc.reportDate){     var bd=doc.reportDate.substring(0,19);      ret.add(bd, {'field':'reportDate','type':'date'});   }          var crd = doc.dateCreated.substring(0, 19);     ret.add(crd, {'field' : 'lastEdited','type' : 'date'});          if(doc.dateEdited){     var led = doc.dateEdited.substring(0, 19);     ret.add(led, {'field' : 'lastEdited','type' : 'date'});         }        return ret;   }") })
 
 @Component
 public class LuceneReportRepository extends CouchDbRepositorySupportWithLucene<Report> {
+	
 	private LuceneDbConnector ldb;
 	
 	@Autowired
@@ -47,9 +41,8 @@ public class LuceneReportRepository extends CouchDbRepositorySupportWithLucene<R
 		initStandardDesignDocument();
 	}
 	
-	public List<Report> getByCriteria(String baseEntityId, DateTime reportDatefrom, DateTime reportDateto, String reportType, 
-	                                  String providerId, String locationId, DateTime lastEditFrom, 
-	                                  DateTime lastEditTo) {
+	public List<Report> getByCriteria(String baseEntityId, DateTime reportDatefrom, DateTime reportDateto, String reportType,
+	                                  String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Report", "by_all_criteria");
 		
@@ -102,8 +95,8 @@ public class LuceneReportRepository extends CouchDbRepositorySupportWithLucene<R
 	 * @param team this is a comma separated string of team members id
 	 * @return
 	 */
-	public List<Report> getByCriteria(String team, String providerId, String locationId, String baseEntityId, Long serverVersion, String sortBy,
-	                                 String sortOrder, int limit) {
+	public List<Report> getByCriteria(String team, String providerId, String locationId, String baseEntityId,
+	                                  Long serverVersion, String sortBy, String sortOrder, int limit) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Report", "by_all_criteria_v2");
 		
@@ -131,14 +124,14 @@ public class LuceneReportRepository extends CouchDbRepositorySupportWithLucene<R
 		}
 		
 		if (!StringUtils.isEmptyOrWhitespaceOnly(baseEntityId)) {
-			if(baseEntityId.contains(",")){
+			if (baseEntityId.contains(",")) {
 				Query q = new Query(FilterType.OR);
 				String[] idsArray = org.apache.commons.lang.StringUtils.split(baseEntityId, ",");
 				List<String> ids = new ArrayList<String>(Arrays.asList(idsArray));
 				q.inList(BASE_ENTITY_ID, ids);
 				
 				qf.addToQuery(q);
-			}else{
+			} else {
 				qf.eq(BASE_ENTITY_ID, baseEntityId);
 			}
 		}
