@@ -49,10 +49,11 @@ import com.google.gson.reflect.TypeToken;
 import com.mysql.jdbc.StringUtils;
 
 @Controller
-@RequestMapping(value = "/rest/stock/")
+@RequestMapping(value = "/rest/stockresource/")
 public class StockResource extends RestResource<Stock> {
 	
 	private static Logger logger = LoggerFactory.getLogger(StockResource.class.toString());
+	
 	private StockService stockService;
 	
 	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
@@ -69,8 +70,7 @@ public class StockResource extends RestResource<Stock> {
 	}
 	
 	/**
-	 * Fetch all
-	 * the stocks
+	 * Fetch all the stocks
 	 * 
 	 * @param none
 	 * @return a map response with stocks, and optionally msg when an error occurs
@@ -78,7 +78,7 @@ public class StockResource extends RestResource<Stock> {
 	
 	@RequestMapping(value = "/getall", method = RequestMethod.GET)
 	@ResponseBody
-	protected ResponseEntity<String> getAll()  {
+	protected ResponseEntity<String> getAll() {
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			List<Stock> stocks = new ArrayList<Stock>();
@@ -96,7 +96,6 @@ public class StockResource extends RestResource<Stock> {
 	
 	/**
 	 * Fetch stocks ordered by serverVersion ascending order
-	 * 
 	 * 
 	 * @param request
 	 * @return a map response with events, clients and optionally msg when an error occurs
@@ -127,7 +126,8 @@ public class StockResource extends RestResource<Stock> {
 			}
 			
 			List<Stock> stocks = new ArrayList<Stock>();
-			stocks = stockService.findStocks(identifier, vaccine_type_id, transaction_type, providerId, value, date_created, to_from, date_updated, lastSyncedServerVersion, "serverVersion", "asc", limit);
+			stocks = stockService.findStocks(identifier, vaccine_type_id, transaction_type, providerId, value, date_created,
+			    to_from, date_updated, lastSyncedServerVersion, "serverVersion", "asc", limit);
 			JsonArray stocksArray = (JsonArray) gson.toJsonTree(stocks, new TypeToken<List<Stock>>() {}.getType());
 			
 			response.put("stocks", stocksArray);
@@ -151,15 +151,15 @@ public class StockResource extends RestResource<Stock> {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
 			ArrayList<Stock> stocks = (ArrayList<Stock>) gson.fromJson(syncData.getString("stocks"),
-				    new TypeToken<ArrayList<Stock>>() {}.getType());
-				for (Stock stock : stocks) {
-					try {
-					    stockService.addorUpdateStock(stock);
-					}
-					catch (Exception e) {
-						logger.error("Stock" + stock.getId()+" failed to sync", e);
-					}
+			    new TypeToken<ArrayList<Stock>>() {}.getType());
+			for (Stock stock : stocks) {
+				try {
+					stockService.addorUpdateStock(stock);
 				}
+				catch (Exception e) {
+					logger.error("Stock" + stock.getId() + " failed to sync", e);
+				}
+			}
 		}
 		catch (Exception e) {
 			logger.error(format("Sync data processing failed with exception {0}.- ", e));
@@ -204,7 +204,8 @@ public class StockResource extends RestResource<Stock> {
 				return new ArrayList<>();
 			}
 		}
-		return stockService.findStocks(stockId, vaccine_type_id, transaction_type, providerId, value, date_created, to_from, date_updated,serverVersion);
+		return stockService.findStocks(stockId, vaccine_type_id, transaction_type, providerId, value, date_created, to_from,
+		    date_updated, serverVersion);
 	}
 	
 	@Override

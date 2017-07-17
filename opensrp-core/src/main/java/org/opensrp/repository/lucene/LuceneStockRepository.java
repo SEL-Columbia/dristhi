@@ -1,6 +1,6 @@
 package org.opensrp.repository.lucene;
 
-import static org.opensrp.common.AllConstants.Event.PROVIDER_ID;
+import static org.opensrp.common.AllConstants.Stock.PROVIDERID;
 import static org.opensrp.common.AllConstants.Stock.DATE_CREATED;
 import static org.opensrp.common.AllConstants.Stock.DATE_UPDATED;
 import static org.opensrp.common.AllConstants.Stock.IDENTIFIER;
@@ -55,7 +55,7 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 			qf.eq(TRANSACTION_TYPE, transaction_type);
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(providerid)) {
-			qf.eq(PROVIDER_ID, providerid);
+			qf.eq(PROVIDERID, providerid);
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(value)) {
 			qf.eq(VALUE, value);
@@ -107,7 +107,7 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 			qf.eq(TRANSACTION_TYPE, transaction_type);
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(providerid)) {
-			qf.eq(PROVIDER_ID, providerid); 
+			qf.eq(PROVIDERID, providerid); 
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(value)) {
 			qf.eq(VALUE, value);
