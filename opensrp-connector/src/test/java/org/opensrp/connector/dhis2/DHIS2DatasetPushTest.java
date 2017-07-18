@@ -121,8 +121,8 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 		
 		// Dataset ID
 		assertEquals(hia2ReportId, dhis2DatasetToPush.get("dataSet"));
-		//completeData
-		assertEquals("2017-05-22", dhis2DatasetToPush.get("completeData"));
+		//completeDate
+		assertEquals("2017-05-22", dhis2DatasetToPush.get("completeDate"));
 		// period
 		assertEquals("201705", dhis2DatasetToPush.get("period"));
 		// orgUnit
