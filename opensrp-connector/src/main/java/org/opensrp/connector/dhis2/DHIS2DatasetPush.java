@@ -82,7 +82,7 @@ public class DHIS2DatasetPush extends DHIS2Service {
 	
 	public JSONObject createDHIS2Dataset(Report report) throws JSONException {
 		final String DATASET_KEY = "dataSet";
-		final String COMPLETE_DATA_KEY = "completeData";
+		final String COMPLETE_DATA_KEY = "completeDate";
 		final String PERIOD_KEY = "period";
 		final String ORG_UNIT_KEY = "orgUnit";
 		final String DATA_VALUES_KEY = "dataValues";
