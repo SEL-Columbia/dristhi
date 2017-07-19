@@ -1,6 +1,5 @@
 package org.opensrp.repository;
 
-
 import java.util.List;
 
 import org.ektorp.ComplexKey;
@@ -43,17 +42,19 @@ public class AllStocks extends MotechBaseRepository<Stock> {
 		Stock stock = db.get(Stock.class, id);
 		return stock;
 	}
-	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String date_updated,String timeStamp, String sortBy,
-            String sortOrder, int limit) {
-		return lsr.getByCriteria(identifier, vaccine_type_id, transaction_type, providerid, value,
-				date_created, to_from, date_updated, timeStamp, sortBy,
-	            sortOrder, limit);
+	
+	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid,
+	                              String value, String date_created, String to_from, String date_updated,
+	                              Long serverVersion, String sortBy, String sortOrder, int limit) {
+		return lsr.getByCriteria(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from,
+		    date_updated, serverVersion, sortBy, sortOrder, limit);
 	}
-	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String date_updated,String serverVersion) {
-		return lsr.getByCriteria(identifier, vaccine_type_id, transaction_type, providerid, value,
-				date_created, to_from, date_updated, serverVersion);
+	
+	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid,
+	                              String value, String date_created, String to_from, String date_updated,
+	                              String serverVersion) {
+		return lsr.getByCriteria(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from,
+		    date_updated, serverVersion);
 	}
 	
 	@View(name = "all_stocks", map = "function(doc) { if (doc.type === 'Stock') { emit(doc.dateCreated); } }")

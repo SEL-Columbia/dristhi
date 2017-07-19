@@ -1,18 +1,18 @@
 package org.opensrp.repository.lucene;
 
-import static org.opensrp.common.AllConstants.Stock.PROVIDERID;
 import static org.opensrp.common.AllConstants.Stock.DATE_CREATED;
 import static org.opensrp.common.AllConstants.Stock.DATE_UPDATED;
 import static org.opensrp.common.AllConstants.Stock.IDENTIFIER;
+import static org.opensrp.common.AllConstants.Stock.PROVIDERID;
 import static org.opensrp.common.AllConstants.Stock.TO_FROM;
 import static org.opensrp.common.AllConstants.Stock.TRANSACTION_TYPE;
 import static org.opensrp.common.AllConstants.Stock.VACCINE_TYPE_ID;
 import static org.opensrp.common.AllConstants.Stock.VALUE;
-import static org.opensrp.common.AllConstants.Stock.TIMESTAMP;
 
 import java.io.IOException;
 import java.util.List;
 
+import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,6 +29,7 @@ import com.mysql.jdbc.StringUtils;
         @Index(name = "by _all_criteria_v2", analyzer = "perfield:{baseEntityId:\"keyword\",locationId:\"keyword\"}", index = "function(doc) { if (doc.type !== 'Stock') return null; var arr1 = ['identifier', 'vaccine_type_id', 'transaction_type', 'providerid', 'value', 'to_from', 'sync_status', 'serverVersion']; var ret = new Document(); var serverVersion = doc.serverVersion; ret.add(serverVersion, { 'field': 'serverVersion' }); for (var i in arr1) { ret.add(doc[arr1[i]], { 'field': arr1[i] }); } if (doc.date_created) { var dc = doc.date_updated; ret.add(dc, { 'field': 'dateCreated' }); } if (doc.date_updated) { var da = doc.date_updated; ret.add(da, { 'field': 'dateUpdated' }); } return ret; }") })
 @Component
 public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<Stock> {
+	
 	private LuceneDbConnector ldb;
 	
 	@Autowired
@@ -38,9 +39,9 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 		initStandardDesignDocument();
 	}
 	
-	public List<Stock> getByCriteria(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String date_updated,String timeStamp, String sortBy,
-            String sortOrder, int limit) {
+	public List<Stock> getByCriteria(String identifier, String vaccine_type_id, String transaction_type, String providerid,
+	                                 String value, String date_created, String to_from, String date_updated,
+	                                 Long serverVersion, String sortBy, String sortOrder, int limit) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Stock", "by_all_criteria");
 		
@@ -69,8 +70,9 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 		if (!StringUtils.isEmptyOrWhitespaceOnly(date_updated)) {
 			qf.eq(DATE_UPDATED, date_updated);
 		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(timeStamp)) {
-			qf.eq(TIMESTAMP, timeStamp);
+		
+		if (serverVersion != null) {
+			qf.between(BaseEntity.SERVER_VERSIOIN, serverVersion, Long.MAX_VALUE);
 		}
 		
 		if (StringUtils.isEmptyOrWhitespaceOnly(qf.query())) {
@@ -81,6 +83,7 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 		query.setStaleOk(false);
 		query.setLimit(limit);
 		query.setIncludeDocs(true);
+		query.setSort((sortOrder.toLowerCase().contains("desc") ? "\\" : "/") + sortBy);
 		
 		try {
 			LuceneResult result = db.queryLucene(query);
@@ -91,9 +94,9 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 		}
 	}
 	
-
-	public List<Stock> getByCriteria(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String date_updated,String serverVersion) {
+	public List<Stock> getByCriteria(String identifier, String vaccine_type_id, String transaction_type, String providerid,
+	                                 String value, String date_created, String to_from, String date_updated,
+	                                 String serverVersion) {
 		LuceneQuery query = new LuceneQuery("Stock", "by_all_criteria");
 		
 		Query qf = new Query(FilterType.AND);
@@ -107,7 +110,7 @@ public class LuceneStockRepository extends CouchDbRepositorySupportWithLucene<St
 			qf.eq(TRANSACTION_TYPE, transaction_type);
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(providerid)) {
-			qf.eq(PROVIDERID, providerid); 
+			qf.eq(PROVIDERID, providerid);
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(value)) {
 			qf.eq(VALUE, value);

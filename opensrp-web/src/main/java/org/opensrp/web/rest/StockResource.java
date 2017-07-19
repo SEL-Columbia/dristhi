@@ -115,10 +115,9 @@ public class StockResource extends RestResource<Stock> {
 			String to_from = getStringFilter(TO_FROM, request);
 			String date_updated = getStringFilter(DATE_UPDATED, request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
-			String timeStamp = getStringFilter(TIMESTAMP, request);
-			String lastSyncedServerVersion = null;
+			Long lastSyncedServerVersion = null;
 			if (serverVersion != null) {
-				lastSyncedServerVersion = String.valueOf((serverVersion) + 1);
+				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
 			}
 			Integer limit = getIntegerFilter("limit", request);
 			if (limit == null || limit.intValue() == 0) {
@@ -127,7 +126,7 @@ public class StockResource extends RestResource<Stock> {
 			
 			List<Stock> stocks = new ArrayList<Stock>();
 			stocks = stockService.findStocks(identifier, vaccine_type_id, transaction_type, providerId, value, date_created,
-			    to_from, date_updated, lastSyncedServerVersion, "serverVersion", "asc", limit);
+			    to_from, date_updated, lastSyncedServerVersion, BaseEntity.SERVER_VERSIOIN, "asc", limit);
 			JsonArray stocksArray = (JsonArray) gson.toJsonTree(stocks, new TypeToken<List<Stock>>() {}.getType());
 			
 			response.put("stocks", stocksArray);

@@ -18,11 +18,10 @@ public class StockService {
 	public StockService(AllStocks allStocks) {
 		this.allStocks = allStocks;
 	}
-
+	
 	public List<Stock> findAllByProviderid(String providerid) {
 		return allStocks.findAllByProviderid(providerid);
 	}
-	
 	
 	public Stock getById(String id) {
 		return allStocks.findById(id);
@@ -31,17 +30,25 @@ public class StockService {
 	public List<Stock> getAll() {
 		return allStocks.getAll();
 	}
-	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from,String date_updated, String timeStamp, String sortBy, String sortOrder, int limit) {
-		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from, date_updated, timeStamp, sortBy, sortOrder, limit);
+	
+	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid,
+	                              String value, String date_created, String to_from, String date_updated,
+	                              Long serverVersion, String sortBy, String sortOrder, int limit) {
+		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from,
+		    date_updated, serverVersion, sortBy, sortOrder, limit);
 	}
-	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String date_updated, String serverVersion) {
-		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from, date_updated, serverVersion);
+	
+	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid,
+	                              String value, String date_created, String to_from, String date_updated,
+	                              String serverVersion) {
+		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from,
+		    date_updated, serverVersion);
 	}
+	
 	public List<Stock> findAllStocks() {
 		return allStocks.findAllStocks();
 	}
+	
 	public synchronized Stock addStock(CouchDbConnector targetDb, Stock stock) {
 		
 		stock.setDateCreated(new DateTime());
@@ -51,10 +58,9 @@ public class StockService {
 	
 	public Stock find(Stock stock) {
 		Stock st = allStocks.findById(stock.getId());
-		if(st != null){
-			throw new IllegalArgumentException(
-			        "Stock with same id exist " + st.getId() +" exist.");
-		}else{
+		if (st != null) {
+			throw new IllegalArgumentException("Stock with same id exist " + st.getId() + " exist.");
+		} else {
 			return stock;
 		}
 	}
@@ -62,20 +68,20 @@ public class StockService {
 	public synchronized Stock addStock(Stock stock) {
 		Stock st = find(stock);
 		if (st != null) {
-			throw new IllegalArgumentException(
-			        "A stock already exists with given id. Consider updating data.[" + st.getId() + "]");
+			throw new IllegalArgumentException("A stock already exists with given id. Consider updating data.[" + st.getId()
+			        + "]");
 		}
 		
 		return stock;
 	}
 	
 	public synchronized Stock addorUpdateStock(Stock stock) {
-		if(stock.getId() != null && getById(stock.getId()) != null){
-				stock.setDateEdited(DateTime.now());
-				stock.setServerVersion(null);
-				stock.setRevision(getById(stock.getId()).getRevision());
-				allStocks.update(stock);
-		}else{
+		if (stock.getId() != null && getById(stock.getId()) != null) {
+			stock.setDateEdited(DateTime.now());
+			stock.setServerVersion(null);
+			stock.setRevision(getById(stock.getId()).getRevision());
+			allStocks.update(stock);
+		} else {
 			stock.setDateCreated(DateTime.now());
 			allStocks.add(stock);
 		}
@@ -104,7 +110,6 @@ public class StockService {
 		return null;
 	}
 	
-	
 	public Stock mergeStock(Stock updatedStock) {
 		Stock original = find(updatedStock);
 		if (original == null) {
@@ -115,10 +120,11 @@ public class StockService {
 		return original;
 	}
 	
-	public List<Stock> findStocksBy(String identifier, String vaccine_type_id, String transaction_type, String providerid, String value,
-			String date_created, String to_from, String sync_status, String date_updated,String serverVersion) {
-		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value,
-				date_created, to_from, date_updated, serverVersion);
+	public List<Stock> findStocksBy(String identifier, String vaccine_type_id, String transaction_type, String providerid,
+	                                String value, String date_created, String to_from, String sync_status,
+	                                String date_updated, String serverVersion) {
+		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from,
+		    date_updated, serverVersion);
 	}
 	
 }
