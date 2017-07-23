@@ -3,6 +3,7 @@ package org.opensrp.common.domain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.http.annotation.Immutable;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.opensrp.common.AllConstants;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
 import static org.opensrp.common.AllConstants.ReportDataParameters.ANM_REPORT_DATA_TYPE;
 import static org.opensrp.common.AllConstants.ReportDataParameters.SERVICE_PROVIDED_DATA_TYPE;
 
+@Immutable
 public class ReportDataDeleteRequest implements Serializable {
 
     @JsonProperty
@@ -64,12 +66,12 @@ public class ReportDataDeleteRequest implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 }

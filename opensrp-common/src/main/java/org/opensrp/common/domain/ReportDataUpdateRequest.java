@@ -3,11 +3,13 @@ package org.opensrp.common.domain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.http.annotation.Immutable;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Immutable
 public class ReportDataUpdateRequest implements Serializable {
 
     @JsonProperty
@@ -29,7 +31,8 @@ public class ReportDataUpdateRequest implements Serializable {
         this.type = type;
     }
 
-    public static ReportDataUpdateRequest buildReportDataRequest(String type, Indicator indicator, String reportingMonthStartDate, String reportingMonthEndDate, List<ReportingData> serviceProvidedData) {
+    public static ReportDataUpdateRequest buildReportDataRequest(String type, Indicator indicator, String reportingMonthStartDate,
+                                                                 String reportingMonthEndDate, List<ReportingData> serviceProvidedData) {
         return new ReportDataUpdateRequest()
                 .withType(type)
                 .withReportingData(serviceProvidedData)
@@ -54,7 +57,7 @@ public class ReportDataUpdateRequest implements Serializable {
         return this.type;
     }
 
-    public List<ReportingData> reportingData(){
+    public List<ReportingData> reportingData() {
         return this.reportingData;
     }
 
@@ -89,12 +92,12 @@ public class ReportDataUpdateRequest implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 }

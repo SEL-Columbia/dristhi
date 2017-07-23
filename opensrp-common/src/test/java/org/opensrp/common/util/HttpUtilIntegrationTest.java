@@ -3,9 +3,13 @@ package org.opensrp.common.util;
 
 import org.apache.http.Header;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.junit.Assert;
 import org.junit.Test;
 import sun.misc.BASE64Encoder;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.net.URISyntaxException;
 
 import static junit.framework.Assert.assertEquals;
@@ -14,6 +18,13 @@ import static junit.framework.Assert.assertTrue;
 import static org.opensrp.common.util.HttpUtil.*;
 
 public class HttpUtilIntegrationTest {
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<HttpUtil> constructor = HttpUtil.class.getDeclaredConstructor();
+        Assert.assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
+    }
 
     @Test
     public void testRemovingTrailingSlashes() {
@@ -38,7 +49,7 @@ public class HttpUtilIntegrationTest {
     @Test(expected = URISyntaxException.class)
     public void testMakeConnectionThorowsUriSyntaxException() throws URISyntaxException {
         String invalidUrl = "http://invalidURL^$&%$&^";
-        makeConnection(invalidUrl,"", RequestMethod.DELETE, HttpUtil.AuthType.BASIC, "");
+        makeConnection(invalidUrl, "", RequestMethod.DELETE, HttpUtil.AuthType.BASIC, "");
     }
 
     @Test
@@ -207,7 +218,14 @@ public class HttpUtilIntegrationTest {
         HttpUtil.AuthType authType = HttpUtil.AuthType.NONE;
 
         HttpResponse response = get(url, "", authType, "");
+        assertEquals(200, response.statusCode().intValue());
+        assertTrue(response.isSuccess());
 
+        HttpResponse response2 = get(url, "");
+        assertEquals(200, response.statusCode().intValue());
+        assertTrue(response.isSuccess());
+
+        HttpResponse response3 = getWithToken(url, "", "");
         assertEquals(200, response.statusCode().intValue());
         assertTrue(response.isSuccess());
     }
@@ -246,8 +264,22 @@ public class HttpUtilIntegrationTest {
         String url = "http://httpbin.org/post";
         HttpUtil.AuthType authType = HttpUtil.AuthType.NONE;
 
-        HttpResponse response = post(url,"", "", "text", authType, "");
+        HttpResponse response = post(url, "", "", "text", authType, "");
 
+        assertEquals(200, response.statusCode().intValue());
+        assertTrue(response.isSuccess());
+
+        HttpResponse response2 = post(url, "", "");
+        assertEquals(200, response.statusCode().intValue());
+        assertTrue(response.isSuccess());
+    }
+
+    @Test
+    public void testPostWithToken() {
+        String url = "http://httpbin.org/post";
+        HttpUtil.AuthType authType = HttpUtil.AuthType.NONE;
+
+        HttpResponse response = postWithToken(url, "", "", "");
         assertEquals(200, response.statusCode().intValue());
         assertTrue(response.isSuccess());
     }
@@ -257,7 +289,7 @@ public class HttpUtilIntegrationTest {
         String url = "http://httpstat.us/204";
         HttpUtil.AuthType authType = HttpUtil.AuthType.NONE;
 
-        HttpResponse response = post(url, "","","", authType, "");
+        HttpResponse response = post(url, "", "", "", authType, "");
 
         assertEquals(204, response.statusCode().intValue());
         assertTrue(response.isSuccess());
@@ -269,7 +301,7 @@ public class HttpUtilIntegrationTest {
         String payLoad = "payload";
         HttpUtil.AuthType authType = HttpUtil.AuthType.NONE;
 
-        HttpResponse response = post(url, "","","", authType, "");
+        HttpResponse response = post(url, "", "", "", authType, "");
 
         assertEquals(405, response.statusCode().intValue());
         assertFalse(response.isSuccess());
@@ -277,7 +309,7 @@ public class HttpUtilIntegrationTest {
 
     @Test(expected = RuntimeException.class)
     public void testPostMethodForException() {
-        post(null, null,null, "", null);
+        post(null, null, null, "", null);
     }
 
     @Test

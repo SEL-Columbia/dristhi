@@ -18,7 +18,8 @@ public final class MonthSummary {
     @JsonProperty
     private final List<String> externalIDs;
 
-    public MonthSummary(String month, String year, String currentProgress, String aggregatedProgress, List<String> externalIDs) {
+    public MonthSummary(String month, String year, String currentProgress, String aggregatedProgress,
+                        List<String> externalIDs) {
         this.month = month;
         this.year = year;
         this.currentProgress = currentProgress;
