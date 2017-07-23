@@ -5,9 +5,20 @@ import org.junit.Test;
 import org.opensrp.api.domain.Address;
 import org.opensrp.common.AddressField;
 
+import com.openpojo.reflection.PojoClass;
+import com.openpojo.reflection.impl.PojoClassFactory;
+import com.openpojo.validation.Validator;
+import com.openpojo.validation.ValidatorBuilder;
+import com.openpojo.validation.rule.impl.GetterMustExistRule;
+import com.openpojo.validation.rule.impl.SetterMustExistRule;
+import com.openpojo.validation.test.impl.GetterTester;
+import com.openpojo.validation.test.impl.SetterTester;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import junit.framework.Assert;
 
 import static org.junit.Assert.*;
 
@@ -204,4 +215,31 @@ public class AddressTest {
 		assertNull(address.getAddressField(AddressField.AREA));
 
 	}
+	
+    @Test
+    public void testAddressField(){
+        Address address = new Address();
+        address.setAddressType("usual_residence");
+        Assert.assertEquals("usual_residence", address.getAddressType());
+        Assert.assertNotSame("usual_residence_1", address.getAddressType());
+        address.withAddressField("address3", "Dambwa_Central");
+        Map<String, String> addressFields = new HashMap<>();
+        addressFields.put("address2", "morelight c566");
+        address.withAddressFields(addressFields);    	
+        address.withAddressField(AddressField.AREA, "Ares");
+        Assert.assertEquals("morelight c566", address.getAddressField("address2"));
+        Assert.assertNotSame("morelight c5666", address.getAddressField("address2"));
+    }
+    @Test
+    public void shouldTestSetterAndGetter() {
+        PojoClass pojoClass = PojoClassFactory.getPojoClass(Address.class);
+        Validator pojoValidator = ValidatorBuilder.create()
+            .with(new SetterMustExistRule())
+            .with(new GetterMustExistRule())
+            .with(new GetterTester())
+            .with(new SetterTester())
+            .build();
+
+        pojoValidator.validate(pojoClass);
+    }
 }
