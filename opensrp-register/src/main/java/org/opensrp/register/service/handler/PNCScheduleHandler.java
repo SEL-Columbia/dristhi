@@ -11,8 +11,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class PNCScheduleHandler extends BaseScheduleHandler {
 	
-	@Autowired
+	
 	private PNCSchedulesService pncSchedulesService;
+	@Autowired
+	public PNCScheduleHandler(PNCSchedulesService pncSchedulesService) {
+		this.pncSchedulesService = pncSchedulesService;
+	}
 	@Override
 	public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
 		try {

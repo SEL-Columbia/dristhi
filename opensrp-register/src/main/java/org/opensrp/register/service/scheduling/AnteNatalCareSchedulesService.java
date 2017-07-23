@@ -15,11 +15,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AnteNatalCareSchedulesService {
 	
-	private static Logger logger = LoggerFactory.getLogger(AnteNatalCareSchedulesService.class.toString());
-	
-	@Autowired
-	private HealthSchedulerService scheduler;
-	
+    private static Logger logger = LoggerFactory.getLogger(AnteNatalCareSchedulesService.class.toString());
+    private HealthSchedulerService scheduler;
+    
+    @Autowired
+    public AnteNatalCareSchedulesService(HealthSchedulerService scheduler){
+        this.scheduler = scheduler;     	
+    }
 	public void enrollMother(String entityId,String scheduleName, LocalDate referenceDateForSchedule, String eventId) {
 		
 		scheduler.enrollIntoSchedule(entityId, scheduleName, referenceDateForSchedule.toString(),
