@@ -56,7 +56,7 @@ public class Alert extends MotechBaseDataObject {
     @JsonProperty
     private Boolean isActive;
     @JsonProperty
-    private long timestamp;
+    private long timeStamp;
     @JsonProperty
     private Map<String, String> details;
 
@@ -66,19 +66,19 @@ public class Alert extends MotechBaseDataObject {
     public Alert(String providerId, String entityId, String beneficiaryType, AlertType alertType, 
     		TriggerType triggerType, String triggerName, String triggerCode, DateTime startDate, DateTime expiryDate,
 			AlertStatus alertStatus, Map<String, String> details) {
-		this.providerId = providerId;
-		this.entityId = entityId;
-		this.beneficiaryType = beneficiaryType;
-		this.alertType = alertType.name();
-		this.triggerType = triggerType.name();
-		this.triggerName = triggerName;
-		this.triggerCode = triggerCode;
-		this.startDate = startDate.toLocalDate().toString();
-		this.expiryDate = expiryDate.toLocalDate().toString();
-		this.alertStatus = alertStatus.name();
-		this.isActive = true;
-		this.timestamp = DateUtil.now().getMillis();
-		this.details = details;
+		setProviderId(providerId);
+		setEntityId(entityId);
+		setBeneficiaryType(beneficiaryType);
+		setAlertType(alertType.name());
+		setTriggerType(triggerType.name());
+		setTriggerName(triggerName);
+		setTriggerCode(triggerCode);
+		setStartDate(startDate.toLocalDate().toString());
+		setExpiryDate(expiryDate.toLocalDate().toString());
+		setAlertStatus(alertStatus.name());
+		setIsActive(true);
+		setTimeStamp(DateUtil.now().getMillis());
+		setDetails(details);
 	}
 
     public Alert markAlertAsClosed(String reasonForClose) {
@@ -89,7 +89,7 @@ public class Alert extends MotechBaseDataObject {
     	this.closingPeriod = this.alertStatus;
     	this.reasonClosed = reasonForClose;
     	this.alertStatus = AlertStatus.closed.name();
-    	this.dateClosed = new DateTime().toLocalDate().toString();
+    	this.dateClosed = getCurrentDateTime().toLocalDate().toString();
     	this.isActive = false;
     	
     	return this;
@@ -103,11 +103,16 @@ public class Alert extends MotechBaseDataObject {
     	this.dateComplete = completionDate;
     	this.closingPeriod = this.alertStatus;
     	this.alertStatus = AlertStatus.complete.name();
-    	this.dateClosed = new DateTime().toLocalDate().toString();
+    	this.dateClosed = getCurrentDateTime().toLocalDate().toString();
     	this.isActive = false;
     	
     	return this;
 	}
+
+	@JsonIgnore
+	public DateTime getCurrentDateTime() {
+	    return new DateTime();
+    }
 
 	public String providerId() {
 		return providerId;
@@ -167,7 +172,7 @@ public class Alert extends MotechBaseDataObject {
 	}
 
 	public long timestamp() {
-		return timestamp;
+		return timeStamp;
 	}
 
 	public Map<String, String> details() {
@@ -285,12 +290,12 @@ public class Alert extends MotechBaseDataObject {
 		this.isActive = isActive;
 	}
 
-	public long getTimestamp() {
-		return timestamp;
+	public long getTimeStamp() {
+		return timeStamp;
 	}
 
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
+	public void setTimeStamp(long timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 
 	public Map<String, String> getDetails() {
@@ -321,13 +326,13 @@ public class Alert extends MotechBaseDataObject {
 		this.triggerType = triggerType;
 	}
 
-	@Override
-    public boolean equals(Object o) {
+    @Override
+    public final boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, "timeStamp", "revision");
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this, "timeStamp", "revision");
     }
 

@@ -89,7 +89,8 @@ public class ConfigService {
 	 * @return The newly registered token. 
 	 * 
 	 */
-	public AppStateToken registerAppStateToken(Enum<?> tokenName, Object defaultValue, String description, boolean suppressExceptionIfExists) {
+	public AppStateToken registerAppStateToken(Enum<?> tokenName, Object defaultValue, String description,
+											   boolean suppressExceptionIfExists) {
 		if(tokenName == null || StringUtils.isEmptyOrWhitespaceOnly(description)){
 			throw new IllegalArgumentException("Token name and description must be provided");
 		}

@@ -35,17 +35,17 @@ public class TaskSchedulerService {
     }
 	
 	public void startJob(RepeatingSchedule job) {
-		Date startTime = DateTime.now().plusMillis((int) job.getStartDelayMilis()).toDate();
+		Date startTime = getCurrentTime().plusMillis((int) job.getStartDelayMilis()).toDate();
 		Map<String, Object> data = job.getData();
 		if(data == null){
 			data = new HashMap<>();
 		}
         MotechEvent event = new MotechEvent(job.SUBJECT, data);
-        startJob(new RepeatingSchedulableJob(event, startTime, job.getEndTime(), job.getRepeatIntervalMilis()));
+        startJob(createRepeatingSchedulableJob(event, startTime, job.getEndTime(), job.getRepeatIntervalMilis()));
     }
 	
 	public void startJob(RepeatingCronSchedule job) {
-		Date startTime = DateTime.now().plusMillis((int) job.getStartDelayMilis()).toDate();
+		Date startTime = getCurrentTime().plusMillis((int) job.getStartDelayMilis()).toDate();
 		Map<String, Object> data = job.getData();
 		if(data == null){
 			data = new HashMap<>();
@@ -55,7 +55,7 @@ public class TaskSchedulerService {
     }
 	
 	public void notifyEvent(SystemEvent<?> event){
-		gateway.sendEventMessage(event.toMotechEvent());
+		notifyEvent(event.toMotechEvent());
 	}
 	
 	public void notifyEvent(MotechEvent event){
@@ -71,4 +71,13 @@ public class TaskSchedulerService {
         Route route = new Route(scheduleMatcher, milestoneMatcher, windowMatcher, action, extraData);
         return router.addRoute(route);
 	}
+
+    public RepeatingSchedulableJob createRepeatingSchedulableJob(MotechEvent event, Date startTime, Date endTime, long repeatInterval) {
+        return new RepeatingSchedulableJob(event, startTime, endTime, repeatInterval);
+    }
+
+
+    public DateTime getCurrentTime() {
+	    return DateTime.now();
+    }
 }

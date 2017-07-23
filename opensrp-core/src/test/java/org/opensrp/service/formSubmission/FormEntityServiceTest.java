@@ -68,8 +68,7 @@ public class FormEntityServiceTest extends TestResourceLoader{
     
     @Before
     public void setUp() throws Exception {
-    	scheduleConfig = new ScheduleConfig("/schedules/schedule-config.xls");
-    	scheduleService = new HealthSchedulerService(actionService, schService, scheduleConfig);
+    	scheduleConfig = new ScheduleConfig("/schedules/schedule-config.xls"); 
         initMocks(this);
         fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, formEntityConverter, scheduleService, clientService, eventService);
         fec = new FormEntityConverter(new FormAttributeParser("/form"));
@@ -99,7 +98,7 @@ public class FormEntityServiceTest extends TestResourceLoader{
         verifyNoMoreInteractions(formSubmissionRouter);
     }
 	
-	@Ignore @Test //TODO
+    @Test 
     public void shouldProcessNonZiggyWomanTTEnrollmentSubmission() throws Exception {
         FormSubmission fs = getFormSubmissionFor("woman_enrollment");
 
@@ -111,7 +110,7 @@ public class FormEntityServiceTest extends TestResourceLoader{
         inOrder.verify(formEntityConverter).getDependentClientsFromFormSubmission(fs);
         inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class));
         inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class));
-        inOrder.verify(schService).enroll(fs.entityId(), "TT 4", "tt4", "2017-03-25", fs.instanceId());
+        inOrder.verify(schService).enroll(fs.entityId(), "TT 4", "tt4", "2016-03-25", fs.instanceId());
         inOrder.verify(ziggyService).isZiggyCompliant(fs.bindType());
         inOrder.verify(formSubmissionRouter).route(fs);
 
@@ -149,7 +148,7 @@ public class FormEntityServiceTest extends TestResourceLoader{
         verifyNoMoreInteractions(ziggyService);
     }
     
-    /*TODO 
+    /*TODO
     @Test
     public void shouldSortAllSubmissionsAndSaveEachOne() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();

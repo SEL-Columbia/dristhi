@@ -9,7 +9,8 @@ import com.google.gson.Gson;
 
 public class SystemEvent <T>{
 
-	public final String SUBJECT;
+    public static final String DATA = "data";
+    public final String SUBJECT;
 
     protected T data;
 
@@ -31,7 +32,7 @@ public class SystemEvent <T>{
     	if(parameters == null){
     		parameters = new HashMap<>();
     	}
-        parameters.put("data", new Gson().toJson(data));
+        parameters.put(DATA, new Gson().toJson(data));
         return new MotechEvent(SUBJECT, parameters);
     }
 }

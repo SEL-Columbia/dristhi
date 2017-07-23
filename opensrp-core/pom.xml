@@ -18,36 +18,31 @@
 	</properties>
 
 	<build>
-        <resources>
-            <resource>
-                <directory>../assets/config</directory>
-            </resource>
-            <resource>
-                <directory>../assets/schedules</directory>
-                <targetPath>schedules</targetPath>
-            </resource>
-            <!-- <resource>
-                <directory>../assets/form</directory>
-                <targetPath>form</targetPath>
-            </resource> -->
-            <resource>
-                <directory>../build</directory>
-                <filtering>true</filtering>
-                <includes>
-                	<include>maven.properties</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>../opensrp-core/src/main/resources/ziggy</directory>
-                <targetPath>ziggy</targetPath>
-            </resource>
-            <resource>
-                <directory>../opensrp-core/src/main/resources/queries</directory>
-                <targetPath>queries</targetPath>
-            </resource>
-        </resources>
-    </build>
-
+		<resources>
+			<resource>
+				<directory>../assets/config</directory>
+			</resource>
+			<resource>
+				<directory>../assets/schedules</directory>
+				<targetPath>schedules</targetPath>
+			</resource> 
+			<resource>
+				<directory>../build</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>maven.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>../opensrp-core/src/main/resources/ziggy</directory>
+				<targetPath>ziggy</targetPath>
+			</resource>
+			<resource>
+				<directory>../opensrp-core/src/main/resources/queries</directory>
+				<targetPath>queries</targetPath>
+			</resource>
+		</resources>
+	</build>
 
 
 	<dependencies>
@@ -61,23 +56,13 @@
 			<artifactId>ektorplucene</artifactId>
 			<version>0.2.0</version>
 		</dependency>
-		<!-- <dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-core</artifactId>
-		    <version>2.2.2</version>
-		</dependency> -->
-		
+
 		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>2.2.2</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.2.2</version>
 		</dependency>
-		
-		<!-- <dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-annotations</artifactId>
-		    <version>2.2.2</version>
-		</dependency> -->
+
 		<dependency>
 			<artifactId>motech-sms-api</artifactId>
 			<groupId>org.motechproject</groupId>
@@ -127,10 +112,10 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-	        <groupId>org.springframework</groupId>
-	        <artifactId>spring-jdbc</artifactId>
-	        <version>${spring.version}</version>
-	    </dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.opensrp</groupId>
 			<artifactId>opensrp-api</artifactId>
@@ -169,24 +154,24 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.8.5</version>
+			<version>1.10.19</version>
 		</dependency>
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-module-junit4</artifactId>
-			<version>1.4.9</version>
+			<version>1.7.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-api-mockito</artifactId>
-			<version>1.4.9</version>
+			<version>1.7.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -217,25 +202,44 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
 		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
-<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
-<dependency>
-    <groupId>org.springframework.data</groupId>
-    <artifactId>spring-data-jpa</artifactId>
-    <version>1.1.0.RELEASE</version>
-</dependency>
-
-
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>1.1.0.RELEASE</version>
+		</dependency> 
+        <dependency>
+            <groupId>nl.jqno.equalsverifier</groupId>
+            <artifactId>equalsverifier</artifactId>
+            <version>2.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.openpojo</groupId>
+            <artifactId>openpojo</artifactId>
+            <version>0.8.6</version>
+        </dependency> 
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->
 		<dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.2.8.Final</version>
-        </dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.2.8.Final</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-orm -->
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-orm</artifactId>
-		    <version>${spring.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
-    </dependencies>
+
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>org.jacoco.agent</artifactId>
+			<version>0.7.9</version>
+			<scope>test</scope>
+			<classifier>runtime</classifier>
+		</dependency>
+		
+		
+	</dependencies>
 </project>

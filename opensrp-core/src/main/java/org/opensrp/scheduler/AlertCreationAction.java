@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Qualifier("AlertCreationAction")
 public class AlertCreationAction implements HookedEvent {
+    public static final String UNKNOWN_ENTITY_TYPE = "unknown";
     private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
 
     private HealthSchedulerService scheduler;
@@ -47,14 +48,17 @@ public class AlertCreationAction implements HookedEvent {
 		if(formSubmission.entityId().equalsIgnoreCase(externalId)){
 			return formSubmission.bindType();
 		}
-		
-		for (SubFormData sf : formSubmission.subForms()) {
-			for (Map<String, String> fld : sf.instances()) {
-				if(fld.get("id").equalsIgnoreCase(externalId)){
-					return sf.bindType();
-				}
-			}
-		}
-		return "unknown";
+
+        if(formSubmission.subForms() != null) {
+            for (SubFormData sf : formSubmission.subForms()) {
+                for (Map<String, String> fld : sf.instances()) {
+                    if(fld.get("id").equalsIgnoreCase(externalId)){
+                        return sf.bindType();
+                    }
+                }
+            }
+        }
+
+		return UNKNOWN_ENTITY_TYPE;
 	}
 }

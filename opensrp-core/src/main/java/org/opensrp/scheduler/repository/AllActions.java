@@ -1,9 +1,5 @@
 package org.opensrp.scheduler.repository;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.ektorp.BulkDeleteDocument;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
@@ -19,6 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class AllActions extends MotechBaseRepository<Action> {

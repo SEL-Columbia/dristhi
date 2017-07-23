@@ -30,7 +30,7 @@ public class UniqueIdRepository {
 		        + ") values (?, ?, ?,?,?) ";
 		Object[] params = new Object[] { uniqueId.getLocation(), uniqueId.getOpenmrsId(), uniqueId.getStatus(),
 		        uniqueId.getUsedBy(), uniqueId.getCreatedAt() };
-		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DATE };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP };
 		
 		return jdbcTemplate.update(insertQuery, params, types);
 		
@@ -74,10 +74,11 @@ public class UniqueIdRepository {
 		
 		public UniqueId mapRow(ResultSet rs, int rowNum) throws SQLException {
 			UniqueId uniqueId = new UniqueId();
-			uniqueId.setCreatedAt(new Date());
+			uniqueId.setCreatedAt(new Date(rs.getTimestamp(rs.findColumn(UniqueId.COL_CREATED_AT)).getTime()));
 			uniqueId.setOpenmrsId(rs.getString(rs.findColumn(UniqueId.COL_OPENMRSID)));
 			uniqueId.setLocation(rs.getString(rs.findColumn(UniqueId.COL_LOCATION)));
 			uniqueId.setStatus(rs.getString(rs.findColumn(UniqueId.COL_STATUS)));
+			uniqueId.setUsedBy(rs.getString(rs.findColumn(UniqueId.COL_USEDBY)));
 			return uniqueId;
 		}
 		

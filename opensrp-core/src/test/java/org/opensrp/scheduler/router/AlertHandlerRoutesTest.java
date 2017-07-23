@@ -1,26 +1,31 @@
-/*package org.opensrp.scheduler.router;
+package org.opensrp.scheduler.router;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.motechproject.scheduletracking.api.domain.WindowName.due;
-import static org.motechproject.scheduletracking.api.domain.WindowName.earliest;
-import static org.motechproject.scheduletracking.api.domain.WindowName.late;
-import static org.motechproject.scheduletracking.api.domain.WindowName.max;
+import org.junit.Test;
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.motechproject.scheduletracking.api.domain.MilestoneAlert;
+import org.motechproject.scheduletracking.api.domain.WindowName;
+import org.opensrp.scheduler.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.scheduletracking.api.domain.WindowName;
-import org.opensrp.scheduler.AlertRouter;
-import org.opensrp.scheduler.TaskSchedulerService;
-import org.opensrp.scheduler.HookedEvent;
-import org.opensrp.scheduler.MilestoneEvent;
+import static org.mockito.Mockito.*;
+import static org.motechproject.scheduletracking.api.domain.WindowName.max;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.*;
 
 public class AlertHandlerRoutesTest {
+
+    public static final String SCHEDULE_LAB = "EC EVENT";
+
+
     @Test
+    public void shouldRouteToProperEcHandeler() {
+        Event.of(SCHEDULE_LAB, "Milestone", max).shouldRouteToECAlertCreation();
+    }
+
+
+  /*
+      @Test
     public void shouldSendMaxEventsOfANCNormalScheduleToForceFulfillAction() {
         Event.of(SCHEDULE_ANC, "ANC 1", max).shouldRouteToForceFulfillAction();
         Event.of(SCHEDULE_ANC, "ANC 3", max).shouldRouteToForceFulfillAction();
@@ -30,7 +35,6 @@ public class AlertHandlerRoutesTest {
     public void shouldSendMaxEventsOfLabRemindersScheduleToForceFulfillAction() {
         Event.of(SCHEDULE_LAB, "EDD", max).shouldRouteToForceFulfillAction();
     }
-
     @Test
     public void shouldSendDueRemindersOfAllMotherSchedulesToCaptureRemindersAction() throws Exception {
         Event.of(SCHEDULE_ANC, "ANC 1", due).shouldRouteToAlertCreationActionForMother();
@@ -77,8 +81,8 @@ public class AlertHandlerRoutesTest {
         Event.of(SCHEDULE_DELIVERY_PLAN, "Delivery Plan", due).shouldRouteToAlertCreationActionForMother();
         Event.of(SCHEDULE_DELIVERY_PLAN, "Delivery Plan", late).shouldRouteToAlertCreationActionForMother();
     }
-
-    @Test
+*/
+   /* @Test
     public void shouldSendReminderForAllChildSchedulesToCaptureRemindersAction() throws Exception {
         Event.of(CHILD_SCHEDULE_BCG, "BCG", earliest).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_BCG, "BCG", due).shouldRouteToAlertCreationActionForChild();
@@ -169,12 +173,13 @@ public class AlertHandlerRoutesTest {
     @Test
     public void shouldSendDueRemindersOfPNCCloseToAutoClosePNCAction() throws Exception {
         Event.of(SCHEDULE_AUTO_CLOSE_PNC, "PNC Close", due).shouldRouteToAutoClosePNCAction();
-    }
+    }*/
 
-    private static class Event {
+    public static class Event {
         private final String schedule;
         private final String milestone;
         private final WindowName window;
+        private String externalId;
 
         private Event(String schedule, String milestone, WindowName window) {
             this.schedule = schedule;
@@ -186,6 +191,25 @@ public class AlertHandlerRoutesTest {
             return new Event(schedule, milestone, window);
         }
 
+        public static Event of(String externalId, String schedule, String milestone, WindowName window) {
+            Event event = new Event(schedule, milestone, window);
+            event.externalId  = externalId;
+            return event;
+        }
+
+        public void shouldRouteToECAlertCreation() {
+            expectCallsToECAlertCreation(Expectation.of(1));
+        }
+
+        public void expectCallsToECAlertCreation(Expectation fulfillActionCallsExpected) {
+            ECAlertCreationAction ecAlertCreationAction = mock(ECAlertCreationAction.class);
+
+            MotechEvent event = routeEvent(ecAlertCreationAction, null, null);
+
+            verify(ecAlertCreationAction, times(fulfillActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), fulfillActionCallsExpected.extraDataExpected);
+        }
+
+        /*
         public void shouldRouteToForceFulfillAction() {
             expectCalls(Expectation.of(1), Expectation.of(0), Expectation.of(0));
         }
@@ -213,7 +237,7 @@ public class AlertHandlerRoutesTest {
         }
 
         private void expectCalls(Expectation fulfillActionCallsExpected, Expectation captureReminderActionCallsExpected, Expectation autoClosePNCActionCallsExpected) {
-            HookedEvent forceFulfillAction = mock(HookedEvent.class);
+            HookedEvent forceFulfillAction = mock(ECAlertCreationAction.class);
             HookedEvent captureANCReminderAction = mock(HookedEvent.class);
             HookedEvent autoClosePNCAction = mock(HookedEvent.class);
 
@@ -222,25 +246,36 @@ public class AlertHandlerRoutesTest {
             verify(forceFulfillAction, times(fulfillActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), fulfillActionCallsExpected.extraDataExpected);
             verify(captureANCReminderAction, times(captureReminderActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), captureReminderActionCallsExpected.extraDataExpected);
             verify(autoClosePNCAction, times(autoClosePNCActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), autoClosePNCActionCallsExpected.extraDataExpected);
-        }
+        }*/
 
-        private MotechEvent routeEvent(HookedEvent ancMissedAction, HookedEvent captureANCReminderAction, HookedEvent autoClosePNCAction) {
+        public MotechEvent routeEvent(HookedEvent ancMissedAction, HookedEvent captureANCReminderAction, HookedEvent autoClosePNCAction) {
             AlertRouter router = new AlertRouter();
             TaskSchedulerService sf = new TaskSchedulerService(null, null, router);
-            new AlertHandler(sf, ancMissedAction, captureANCReminderAction, autoClosePNCAction);
-            MotechEvent event = org.opensrp.register.util.Event
-                    .create()
-                    .withMilestone(milestone)
-                    .withSchedule(schedule)
-                    .withWindow(window)
-                    .build();
+            new AlertHandler(sf, ancMissedAction);
+            MotechEvent event = createMotechEvent();
 
-            router.handle(event);
+            router.handleAlerts(event);
 
             return event;
         }
 
-        private static class Expectation {
+        public MotechEvent createMotechEvent() {
+            MilestoneAlert alert = mock(MilestoneAlert.class);
+            when(alert.getMilestoneName()).thenReturn(milestone);
+
+
+            Map<String, Object> parameters = new HashMap<>();
+
+            parameters.put(EXTERNAL_ID, externalId);
+            parameters.put(SCHEDULE_NAME, schedule);
+            parameters.put(MILESTONE_NAME, alert);
+            parameters.put(WINDOW_NAME, window.toString());
+
+
+            return new MotechEvent("Subject", parameters);
+        }
+
+        public static class Expectation {
             private final int numberOfCallsExpected;
             private final Map<String, String> extraDataExpected;
 
@@ -259,4 +294,3 @@ public class AlertHandlerRoutesTest {
         }
     }
 }
-*/

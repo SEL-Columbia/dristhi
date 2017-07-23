@@ -46,7 +46,7 @@ public class ScheduleConfig {
 		logger.info("Found "+jarr.length()+" automated schedules");
 		for (int i = 0; i < jarr.length(); i++) {
 			JSONObject jo = jarr.getJSONObject(i);
-			logger.debug(jo.toString());
+			//logger.debug(jo.toString());
 			schedules.add(new Schedule(jo));
 		}
 	}

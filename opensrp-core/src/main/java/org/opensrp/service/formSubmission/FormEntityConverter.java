@@ -178,17 +178,26 @@ public class FormEntityConverter {
 	String getFieldName(String entity, String entityId, String entityParentId, SubformMap subf) {
 		return getFieldName(entity, entityId, entityParentId, subf.fields());
 	}
+
 	String getFieldName(String entity, String entityId, String entityParentId, List<FormFieldMap> fields) {
 		for (FormFieldMap f : fields) {
 			if(f.fieldAttributes().containsKey("openmrs_entity") && 
 					f.fieldAttributes().get("openmrs_entity").equalsIgnoreCase(entity)
 					&& f.fieldAttributes().get("openmrs_entity_id").equalsIgnoreCase(entityId)
-					&& f.fieldAttributes().get("openmrs_entity_parent").equalsIgnoreCase(entityParentId)){
+					&& matchSting(f.fieldAttributes().get("openmrs_entity_parent"), entityParentId)){
 				return f.name();
 			}
 		}
 		return null;
 	}
+
+	private boolean matchSting(String expected, String actual) {
+	    if(expected == null) {
+	        return actual == null;
+        }else {
+	        return expected.equalsIgnoreCase(actual);
+        }
+    }
 	
 	Map<String, Address> extractAddresses(FormSubmissionMap fs) throws ParseException {
 		Map<String, Address> paddr = new HashMap<>();

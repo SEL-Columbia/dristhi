@@ -59,6 +59,7 @@ public class FormSubmissionDataMigrationService {
 
 			while (processSubmissions) {
 				long lastMigratedFsVersion = getVersion();
+
 				List<FormSubmission> formSubmissions = formSubmissionService.getAllSubmissions(lastMigratedFsVersion, BATCH_SIZE);
 				processSubmissions = formSubmissions != null && !formSubmissions.isEmpty();
 

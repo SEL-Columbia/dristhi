@@ -41,6 +41,10 @@ import com.mysql.jdbc.StringUtils;
 
 public class Utils {
 
+	private Utils() {
+
+    }
+
 	public static Map<String, String> getStringMapFromJSON(String fields) {
 		return new Gson().fromJson(fields, new TypeToken<Map<String, String>>() {
 		}.getType());
@@ -50,7 +54,9 @@ public class Utils {
 		List<String> fieldList = new ArrayList<>();
 		Field[] fieldSet = cls.getDeclaredFields();
 		for (Field field : fieldSet) {
-			fieldList.add(field.getName());
+			if(!field.isSynthetic()) {
+				fieldList.add(field.getName());
+			}
 		}
 		return fieldList;
 	}
@@ -138,7 +144,8 @@ public class Utils {
 	 */
 	public static CouchDbConnector connectToDB(DatabaseConnectionParams dbParams) throws MalformedURLException {
 		HttpClient authenticatedHttpClient = null;
-		if (dbParams.userName != null && !dbParams.userName.isEmpty() && dbParams.password != null && !dbParams.password.isEmpty()) {
+
+        if (dbParams.userName != null && !dbParams.userName.isEmpty() && dbParams.password != null && !dbParams.password.isEmpty()) {
 
 			authenticatedHttpClient = new StdHttpClient.Builder().url(dbParams.url.concat(":").concat(dbParams.portNumber)).username(dbParams.userName)
 					.password(dbParams.password).build();
@@ -151,6 +158,21 @@ public class Utils {
 		CouchDbConnector db = new StdCouchDbConnector(dbParams.dbName, dbInstance);
 		return db;
 
+	}
+
+	public static CouchDbInstance getDbInstance(DatabaseConnectionParams dbParams) throws MalformedURLException {
+		HttpClient authenticatedHttpClient = null;
+
+		if (dbParams.userName != null && !dbParams.userName.isEmpty() && dbParams.password != null && !dbParams.password.isEmpty()) {
+
+			authenticatedHttpClient = new StdHttpClient.Builder().url(dbParams.url.concat(":").concat(dbParams.portNumber)).username(dbParams.userName)
+					.password(dbParams.password).build();
+		} else {
+			authenticatedHttpClient = new StdHttpClient.Builder().url(dbParams.url.concat(":").concat(dbParams.portNumber)).build();
+		}
+
+		CouchDbInstance dbInstance = new StdCouchDbInstance(authenticatedHttpClient);
+		return dbInstance;
 	}
 
 	public static class DatabaseConnectionParams {

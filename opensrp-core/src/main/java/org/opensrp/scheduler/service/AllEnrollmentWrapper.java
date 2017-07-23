@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-class AllEnrollmentWrapper extends AllEnrollments{
+public class AllEnrollmentWrapper extends AllEnrollments{
 	@Autowired
     private AllScheduleWrapper allSchedules;
 	

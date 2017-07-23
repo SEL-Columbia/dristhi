@@ -1,10 +1,5 @@
 package org.opensrp.scheduler.repository;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
@@ -14,7 +9,6 @@ import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.dto.AlertStatus;
-import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.Alert.AlertType;
 import org.opensrp.scheduler.Alert.TriggerType;
@@ -23,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+
+import java.text.MessageFormat;
+import java.util.List;
 
 @Repository
 public class AllAlerts extends MotechBaseRepository<Alert> {
@@ -33,14 +30,14 @@ public class AllAlerts extends MotechBaseRepository<Alert> {
         super(Alert.class, db);
     }
 
-    @View(name = "alert_by_provider_and_time", map = "function(doc) { if (doc.type === 'Alert') { emit([doc.providerId, doc.timestamp], null); } }")
+    @View(name = "alert_by_provider_and_time", map = "function(doc) { if (doc.type === 'Alert') { emit([doc.providerId, doc.timeStamp], null); } }")
     public List<Alert> findByProviderAndTimestamp(String provider, long timeStamp) {
         ComplexKey startKey = ComplexKey.of(provider, timeStamp + 1);
         ComplexKey endKey = ComplexKey.of(provider, Long.MAX_VALUE);
         return db.queryView(createQuery("alert_by_provider_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Alert.class);
     }
 
-    @View(name = "alert_by_provider_and_time_active", map = "function(doc) { if (doc.type === 'Alert' && doc.isActive) { emit([doc.providerId, doc.timestamp], null); } }")
+    @View(name = "alert_by_provider_and_time_active", map = "function(doc) { if (doc.type === 'Alert' && doc.isActive) { emit([doc.providerId, doc.timeStamp], null); } }")
     public List<Alert> findActiveByProviderAndTimestamp(String provider, long timeStamp) {
         ComplexKey startKey = ComplexKey.of(provider, timeStamp + 1);
         ComplexKey endKey = ComplexKey.of(provider, Long.MAX_VALUE);
@@ -86,7 +83,7 @@ public class AllAlerts extends MotechBaseRepository<Alert> {
         return db.queryView(createQuery("alert_by_entityId_active").key(entityId).includeDocs(true), Alert.class);
     }
 
-    @View(name = "alert_by_entityId_and_trigger_and_time", map = "function(doc) { if (doc.type === 'Alert') { emit([doc.entityId, doc.triggerName, doc.timestamp], null); } }")
+    @View(name = "alert_by_entityId_and_trigger_and_time", map = "function(doc) { if (doc.type === 'Alert') { emit([doc.entityId, doc.triggerName, doc.timeStamp], null); } }")
     public List<Alert> findByEntityIdTriggerAndTimeStamp(String entityId, String trigger, DateTime start, DateTime end) {
         ComplexKey startKey = ComplexKey.of(entityId, trigger, start.getMillis() + 1);
         ComplexKey endKey = ComplexKey.of(entityId, trigger, end.getMillis());

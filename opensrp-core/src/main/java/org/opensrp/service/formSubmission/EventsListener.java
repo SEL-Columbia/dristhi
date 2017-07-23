@@ -59,6 +59,19 @@ public class EventsListener {
 		this.configService.registerAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT, 0,
 		    "Token to keep track of events processed for client n event parsing and schedule handling", true);
 	}
+
+
+	public EventsListener(EventsRouter eventsRouter, ConfigService configService, AllEvents allEvents, EventService eventService,
+						  ErrorTraceService errorTraceService, AllClients allClients) {
+		this.configService = configService;
+		this.errorTraceService = errorTraceService;
+		this.eventsRouter = eventsRouter;
+		this.allEvents = allEvents;
+		this.eventService = eventService;
+		this.allClients = allClients;
+		this.configService.registerAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT, 0,
+				"Token to keep track of events processed for client n event parsing and schedule handling", true);
+	}
 	
 	@MotechListener(subjects = AllConstants.EVENTS_SCHEDULE_SUBJECT)
 	public void processEvent(MotechEvent motechEvent) {
@@ -114,7 +127,7 @@ public class EventsListener {
 				for (Client client : clients) {
 					try {
 						Thread.sleep(1);
-						client.setServerVersion(System.currentTimeMillis());
+						client.setServerVersion(getCurrentMilliseconds());
 						allClients.update(client);
 						logger.debug("Add server_version: found new client " + client.getBaseEntityId());
 					}
@@ -131,7 +144,7 @@ public class EventsListener {
 					try {
 						Thread.sleep(1);
 						event=eventService.processOutOfArea(event);
-						event.setServerVersion(System.currentTimeMillis());
+						event.setServerVersion(getCurrentMilliseconds());
 						allEvents.update(event);
 						
 						logger.debug("Add server_version: found new event " + event.getBaseEntityId());
@@ -149,7 +162,11 @@ public class EventsListener {
 		}
 		
 	}
-	
+
+	public long getCurrentMilliseconds() {
+		return System.currentTimeMillis();
+	}
+
 	private long getVersion() {
 		AppStateToken token = configService.getAppStateTokenByName(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT);
 		return token == null ? 0L : token.longValue();

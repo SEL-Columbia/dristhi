@@ -196,6 +196,24 @@ public class ScheduleConfigTest {
 		s = sch.get(0);
 		assertFalse(s.haspassLogic());
 	}
+
+	@Test
+    public void shouldAddSchedule() {
+        List<Schedule> sch = schconfig.searchSchedules("child_enrollment", "PENTAVALENT 2", "penta2", ActionType.enroll);
+        Schedule s = sch.get(0);
+
+        List<Schedule> actual = schconfig.getSchedules();
+        Schedule lastSchedule = actual.get(actual.size()-1);
+        assertNotEquals(s, lastSchedule);
+
+        schconfig.addSchedule(s);
+
+        actual = schconfig.getSchedules();
+        lastSchedule = actual.get(actual.size()-1);
+
+        assertEquals(s, lastSchedule);
+    }
+
 	
 	
 }

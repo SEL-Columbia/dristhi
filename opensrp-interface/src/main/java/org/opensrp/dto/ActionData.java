@@ -21,7 +21,6 @@ public class ActionData {
     public static final String ANNUAL_TARGET = "annualTarget";
     public static final String MONTHLY_SUMMARIES = "monthlySummaries";
     public static final String REASON_FOR_CLOSE = "reasonForClose";
-
     private Map<String, String> data;
     private String target;
     private String type;
@@ -74,6 +73,8 @@ public class ActionData {
         return this;
     }
 
+
+
     public Map<String, String> getData() {
         return this.data;
     }
@@ -102,6 +103,9 @@ public class ActionData {
 
     @Override
     public String toString() {
+
         return ToStringBuilder.reflectionToString(this);
+
     }
+
 }

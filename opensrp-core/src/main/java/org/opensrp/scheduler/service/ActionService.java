@@ -1,7 +1,5 @@
 package org.opensrp.scheduler.service;
 
-import java.util.List;
-
 import org.joda.time.DateTime;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
@@ -15,8 +13,11 @@ import org.opensrp.scheduler.repository.AllAlerts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ActionService {
+    public static final String ALL_PROVIDERS = "all_providers";
     private AllActions allActions;
     private AllAlerts allAlerts;
 
@@ -50,9 +51,10 @@ public class ActionService {
 	}
 
     public void alertForBeneficiary(String beneficiaryType, String caseID, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
-    	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+        allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
     	allAlerts.addOrUpdateScheduleNotificationAlert(beneficiaryType, caseID, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     }
+
     public void alertForBeneficiary(Action action) {
     	allActions.addOrUpdateAlert(action);
     }
@@ -73,14 +75,14 @@ public class ActionService {
     }
 
     public void markAlertAsClosed(String caseId, String visitCode, String completionDate) {
-    	allActions.add(new Action(caseId, "all_providers", ActionData.markAlertAsClosed(visitCode, completionDate)));
+    	allActions.add(new Action(caseId, ALL_PROVIDERS, ActionData.markAlertAsClosed(visitCode, completionDate)));
         allAlerts.markAlertAsCompleteFor(caseId, visitCode, completionDate);
     }
     
     public void closeBeneficiary(BeneficiaryType beneficiary, String caseId, String anmIdentifier, String reasonForClose) {
         allActions.add(new Action(caseId, anmIdentifier, ActionData.closeBeneficiary(beneficiary.name(), reasonForClose)));
         //TODO
-        allAlerts.add(new Alert(anmIdentifier, caseId, beneficiary.name(), AlertType.notification, TriggerType.caseClosed, null, null, new DateTime(), new DateTime(), AlertStatus.urgent, null));
+        allAlerts.add(new Alert(anmIdentifier, caseId, beneficiary.name(), AlertType.notification, TriggerType.caseClosed, null, null, getCurrentDateTime(), getCurrentDateTime(), AlertStatus.urgent, null));
     }
 
     public void reportForIndicator(String anmIdentifier, ActionData actionData) {
@@ -90,7 +92,12 @@ public class ActionService {
     public void deleteReportActions() {
         allActions.deleteAllByTarget("report");
     }
+
     public List<Action> findByCriteria(String team,String providerId, long timeStamp, String sortBy, String sortOrder, int limit) {
 		return allActions.findByCriteria(team, providerId, timeStamp, sortBy, sortOrder, limit);
 	}
+
+	public DateTime getCurrentDateTime() {
+        return new DateTime();
+    }
 }
