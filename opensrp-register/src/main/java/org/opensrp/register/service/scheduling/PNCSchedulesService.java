@@ -1,11 +1,11 @@
+/**
+ * @author james 
+ */
 package org.opensrp.register.service.scheduling;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.register.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
 
 import org.joda.time.LocalDate;
-import org.opensrp.common.AllConstants;
-import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,46 +14,39 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PNCSchedulesService {
-    private static Logger logger = LoggerFactory.getLogger(PNCSchedulesService.class.toString());
-
-    private HealthSchedulerService scheduler;
-
-    @Autowired
-    public PNCSchedulesService(HealthSchedulerService scheduler) {
-        this.scheduler = scheduler;
-    }
-
-    public void deliveryOutcome(String entityId, String date) {
-        logger.info(format("Enrolling mother into Auto Close PNC schedule. Id: ", entityId));
-
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_AUTO_CLOSE_PNC, date);
-    }
-
-    private boolean fulfillMilestoneIfPossible(String entityId, String anmId, String scheduleName, String milestone, LocalDate fulfillmentDate) {
-        if (isNotEnrolled(entityId, scheduleName)) {
-            logger.warn(format("Tried to fulfill milestone {0} of {1} for entity id: {2}", milestone, scheduleName, entityId));
-            return false;
-        }
-
-        logger.warn(format("Fulfilling milestone {0} of {1} for entity id: {2}", milestone, scheduleName, entityId));
-        scheduler.fullfillMilestoneAndCloseAlert(entityId, anmId, scheduleName, milestone, fulfillmentDate);
-        return true;
-    }
-
-    private boolean isNotEnrolled(String caseId, String scheduleName) {
-        return scheduler.isNotEnrolled(caseId, scheduleName);
-    }
-
-    public void unEnrollFromSchedules(String entityId) {
-    	scheduler.unEnrollFromAllSchedules(entityId);
-    }
-
-    public void fulfillPNCAutoCloseMilestone(String entityId, String anmIdentifier) {
-        fulfillMilestoneIfPossible(entityId, anmIdentifier,
-                SCHEDULE_AUTO_CLOSE_PNC, SCHEDULE_AUTO_CLOSE_PNC, new LocalDate());
-    }
-    
-    public void generateMotherClosedAlert(String entityId, String anmIdentifier) {
-        scheduler.closeBeneficiary(BeneficiaryType.mother, entityId, anmIdentifier, AllConstants.AUTO_CLOSE_PNC_CLOSE_REASON);
-    }
+	
+	private static Logger logger = LoggerFactory.getLogger(PNCSchedulesService.class.toString());
+	
+	
+	private HealthSchedulerService scheduler;
+	
+	@Autowired
+	public PNCSchedulesService(HealthSchedulerService scheduler) {
+		this.scheduler = scheduler;
+	}
+	
+	public void enrollPNCRVForMother(String entityId,String scheduleName, LocalDate referenceDateForSchedule,String milestone,String eventId) {
+		
+		scheduler.enrollIntoSchedule(entityId, scheduleName, milestone, referenceDateForSchedule.toString(), eventId);
+	}
+	
+	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate,
+	                              String eventId) {
+		try {
+			scheduler.fullfillMilestoneAndCloseAlert(entityId, providerId, scheduleName, completionDate, eventId);
+			logger.info("Fullfill Milestone with id: :" + entityId);
+		}
+		catch (Exception e) {
+			logger.info("Not a fullfillMilestone :" + e.getMessage());
+		}
+	}
+	
+	public void unEnrollFromSchedule(String entityId, String providerId, String scheduleName, String eventId) {
+		logger.info(format("Un-enrolling PNC with Entity id:{0} from schedule: {1}", entityId, scheduleName));
+		scheduler.unEnrollFromSchedule(entityId, providerId, scheduleName, eventId);
+	}
+	
+	public void unEnrollFromAllSchedules(String entityId, String eventId) {
+		scheduler.unEnrollFromAllSchedules(entityId, eventId);
+	}
 }

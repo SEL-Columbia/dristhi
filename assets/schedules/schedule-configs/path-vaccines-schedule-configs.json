@@ -1,0 +1,2185 @@
+
+{
+					"name": "BCG",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "bcg",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+								}
+							],
+							"milestone": "bcg",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "BCG 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "bcg2",
+							"reference_date_fields": [
+				                {
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code": "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+								}
+							],
+							"milestone": "bcg2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "OPV 0",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "opv0",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code":"783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "0"
+								}
+							],
+							"milestone": "opv0",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "OPV 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "opv1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code":"783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "opv1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PCV 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "pcv1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code":"162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "pcv1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PENTA 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "penta1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code":"1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "penta1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "ROTA 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "rota1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"parent_code":"159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "rota1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "OPV 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "opv2",
+							"reference_date_fields": [
+				                {
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+								
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "opv2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PCV 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "pcv2",
+							"reference_date_fields": [
+				                {
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "pcv2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PENTA 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "penta2",
+							"reference_date_fields": [
+				                {
+				                  "parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "penta2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "ROTA 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "rota2",
+							"reference_date_fields": [
+				                 {
+				                  "parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+								
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "159698AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "rota2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "OPV 3",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "opv3",
+							"reference_date_fields": [
+				                {
+				                  "parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"milestone": "opv3",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PCV 3",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "pcv3",
+							"reference_date_fields": [
+				                {
+				                  "parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"milestone": "pcv3",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "PENTA 3",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "penta3",
+							"reference_date_fields": [
+				                {
+				                  "parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "1685AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"milestone": "penta3",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "OPV 4",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "opv4",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "4"
+								}
+							],
+							"milestone": "opv4",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "MEASLES 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "measles1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "measles1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "MEASLES 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "measles2",
+							"reference_date_fields": [
+				               {
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								},
+								
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								 {
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								 }
+							],
+							"fulfillment_fields": [
+								 {
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "36AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "measles2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "MR 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "mr1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "mr1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "MR 2",
+					"events": [
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "mr2",
+							"reference_date_fields": [
+				                {
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Vaccination"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+								}
+							],
+							"fulfillment_fields": [
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"parent_code": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"concept": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "mr2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "VIT A IFC 2",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "vitaifc2",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "0"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "vitaifc2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "VIT A 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "vita1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "0"
+								}
+							],
+							"milestone": "vita1",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "vita1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "VIT A 2",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "vita2",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "vita2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "VIT A 3",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "vita3",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "vita3",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "VIT A 4",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"milestone": "vita4",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "4"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "vita4",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "VIT A 5",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "4"
+								}
+							],
+							"milestone": "vita5",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "5"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "vita5",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "VIT A 6",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "5"
+								}
+							],
+							"milestone": "vita6",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "6"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "vita6",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "VIT A 7",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "6"
+								}
+							],
+							"milestone": "vita7",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "7"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "vita7",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "VIT A 8",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "7"
+								}
+							],
+							"milestone": "vita8",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "8"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "vita8",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "VIT A 9",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "8"
+								}
+							],
+							"milestone": "vita9",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "9"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "vita9",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "VIT A 10",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "9"
+								}
+							],
+							"milestone": "vita10",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "10"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "vita10",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "DEWORMING 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "deworming1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "deworming1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "DEWORMING 2",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "deworming2",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "deworming2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "DEWORMING 3",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "deworming3",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "deworming3",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "DEWORMING 4",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"milestone": "deworming4",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "4"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "deworming4",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "DEWORMING 5",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "4"
+								}
+							],
+							"milestone": "deworming5",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "5"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "deworming5",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "DEWORMING 6",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "5"
+								}
+							],
+							"milestone": "deworming6",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "6"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "deworming6",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "DEWORMING 7",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "6"
+								}
+							],
+							"milestone": "deworming7",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "7"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "deworming7",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "DEWORMING 8",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "7"
+								}
+							],
+							"milestone": "deworming8",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "8"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "deworming8",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "DEWORMING 9",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "8"
+								}
+							],
+							"milestone": "deworming9",
+							"reference_date_fields": [
+				                {
+									"field": "eventDate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159922AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "9"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate"
+								}
+							],
+							"milestone": "deworming9",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "ITN 1",
+					"events": [
+						{
+							"types": ["Birth Registration"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "itn1",
+							"reference_date_fields": [
+				                {
+				                  "type": "client",
+				                  "field": "birthdate"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159855AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"concept": "159432AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+								}
+							],
+							"milestone": "itn1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "ITN 2",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159855AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1"
+								}
+							],
+							"milestone": "itn2",
+							"reference_date_fields": [
+				                {
+									"concept": "159432AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159855AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"concept": "159432AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+								}
+							],
+							"milestone": "itn2",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "ITN 3",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159855AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "2"
+								}
+							],
+							"milestone": "itn3",
+							"reference_date_fields": [
+				                {
+									"concept": "159432AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159855AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"concept": "159432AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+								}
+							],
+							"milestone": "itn3",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "ITN 4",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159855AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "3"
+								}
+							],
+							"milestone": "itn4",
+							"reference_date_fields": [
+				                {
+									"concept": "159432AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159855AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "4"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"concept": "159432AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+								}
+							],
+							"milestone": "itn4",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "ITN 5",
+					"events": [
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"enrollment_fields": [
+								{
+									"concept": "159855AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "4"
+								}
+							],
+							"milestone": "itn5",
+							"reference_date_fields": [
+				                {
+									"concept": "159432AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+				                }
+				             ],
+							"action": "enroll"
+						},
+						{
+							"types": ["Recurring Service"],
+							"pass_logic": "AND",
+							"fulfillment_fields": [
+								{
+									"concept": "159855AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "NOT_EMPTY"
+								},
+								{
+									"concept": "1639AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "5"
+								}
+							],
+							"fulfillment_date_fields": [
+								{
+									"concept": "159432AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+								}
+							],
+							"milestone": "itn5",
+							"action": "fulfill"
+						}
+					]
+	
+}

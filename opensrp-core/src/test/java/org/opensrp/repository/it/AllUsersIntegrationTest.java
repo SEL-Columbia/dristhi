@@ -8,6 +8,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opensrp.domain.BaseEntity;
+import org.opensrp.domain.User;
 import org.opensrp.repository.AllBaseEntities;
 import org.opensrp.repository.AllUsers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,25 +42,15 @@ public class AllUsersIntegrationTest {
 		List<String> roles = new ArrayList<>();
 		roles.add("tlp");
 
-		org.opensrp.domain.BaseEntity baseEntity = allBaseEntities.findByBaseEntityId("0001");
+		BaseEntity baseEntity = allBaseEntities.findByBaseEntityId("0001");
 		
-	/*	org.opensrp.domain.User domainUser = new org.opensrp.domain.User(
-				"0001", "FWA1", "77ba08ff5832b6c4143c51160b7e9bab7b72d98a",
-				"1efa26b9-9cc9-40df-aecb-14836069a8f8",
-				baseEntity.getFirstName(),baseEntity.getMiddleName(),baseEntity.getLastName(),
-				baseEntity.getBirthdate(),baseEntity.getBirthdateApprox(),baseEntity.getGender())
-				.withStatus("active")
-				.withPermissions(permissions)
-				.withRoles(roles);*/
-		
-		org.opensrp.domain.User domainUser = new org.opensrp.domain.User()
-											.withBaseEntityId("0001")
-											.withUsername("FWA2")
-											.withPassword("77ba08ff5832b6c4143c51160b7e9bab7b72d98a")
-											.withSalt("1efa26b9-9cc9-40df-aecb-14836069a8f8")
-											.withStatus("active")
-											.withPermissions(permissions)
-											.withRoles(roles);
+		User domainUser = new User("0001")
+					.withUsername("FWA2")
+					.withPassword("77ba08ff5832b6c4143c51160b7e9bab7b72d98a")
+					.withSalt("1efa26b9-9cc9-40df-aecb-14836069a8f8")
+					.withStatus("active")
+					.withPermissions(permissions)
+					.withRoles(roles);
 		
 		//domainUser.isDefaultAdmin();
 		

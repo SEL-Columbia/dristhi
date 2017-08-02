@@ -34,12 +34,12 @@ public class ANMIndicatorSummary {
     }
 
     @Override
-    public boolean equals(Object o) {
+    final public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
-    public int hashCode() {
+    final public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 

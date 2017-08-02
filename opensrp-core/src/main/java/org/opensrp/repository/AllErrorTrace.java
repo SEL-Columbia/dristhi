@@ -5,12 +5,10 @@ import java.util.List;
 
 import org.ektorp.CouchDbConnector;
 import org.ektorp.DocumentNotFoundException;
-import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.ErrorTrace;
-import org.opensrp.domain.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;

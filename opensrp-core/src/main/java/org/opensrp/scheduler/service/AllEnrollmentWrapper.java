@@ -8,21 +8,29 @@ import org.ektorp.support.View;
 import org.joda.time.DateTime;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.repository.AllEnrollments;
-import org.motechproject.scheduletracking.api.repository.AllSchedules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-class AllEnrollmentWrapper extends AllEnrollments{
+public class AllEnrollmentWrapper extends AllEnrollments{
 	@Autowired
-    private AllSchedules allSchedules;
+    private AllScheduleWrapper allSchedules;
 	
 	@Autowired
 	public AllEnrollmentWrapper(@Qualifier("scheduleTrackingDbConnector") CouchDbConnector db) {
 		super(db);
 	}
 
+	@View(name = "find_by_external_id_and_schedule_name", map = "function(doc) {if(doc.type === 'Enrollment') emit([doc.externalId, doc.scheduleName.toUpperCase()]);}")
+    public Enrollment getEnrollment(String externalId, String scheduleName) {
+		if(scheduleName.equalsIgnoreCase("Measles 1")){
+			log.info("measles 1");
+		}
+        List<Enrollment> enrollments = queryView("find_by_external_id_and_schedule_name", ComplexKey.of(externalId, scheduleName.toUpperCase()));
+        return enrollments.isEmpty() ? null : populateSchedule(enrollments.get(0));
+    }
+	
 	private static final String FUNCTION_DOC_EMIT_DOC_STATUS_AND_ENROLLED_ON = "function(doc) { if(doc.type === 'Enrollment') emit([doc.status,doc.enrolledOn], doc._id);}";
 
     @View(name = "by_status_date_enrolled", map = FUNCTION_DOC_EMIT_DOC_STATUS_AND_ENROLLED_ON)

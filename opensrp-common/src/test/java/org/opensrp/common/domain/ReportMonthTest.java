@@ -1,9 +1,14 @@
 package org.opensrp.common.domain;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.opensrp.common.domain.ReportMonth;
 import org.opensrp.common.util.DateUtil;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -86,6 +91,32 @@ public class ReportMonthTest {
 
         assertFalse(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2013-01-25"), LocalDate.parse("2013-01-26")));
         assertFalse(reportMonth.areDatesBelongToSameReportingMonth(LocalDate.parse("2013-01-26"), LocalDate.parse("2013-02-26")));
+    }
+
+    @Test
+    public void testStartDateOfReportingYear() {
+        ReportMonth reportMonth2 = new ReportMonth();
+        Date date = reportMonth2.startDateOfReportingYear();
+        LocalDate localDate = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(date));
+        System.out.println(localDate);
+        //assertEquals("2017-03-26", localDate.toString());
+        assertNotSame("2017-07-26", localDate.toString());
+    }
+
+    @Test
+    public void testReportingMonth() {
+        int currentMonth = reportMonth.reportingMonth(new LocalDate());
+        int expectedMonth = new LocalDate().getMonthOfYear();
+        assertEquals(expectedMonth, currentMonth);
+        assertNotSame(9, currentMonth);
+    }
+
+    @Test
+    public void testReportingYear() {
+        int currentYear = reportMonth.reportingYear(new LocalDate());
+        int expectedYear = new LocalDate().getYear();
+        assertEquals(expectedYear, currentYear);
+        assertNotSame(2016, currentYear);
     }
 }
 

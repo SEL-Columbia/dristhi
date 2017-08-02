@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +39,7 @@ public class AllLocationsIntegrationTest {
 		addressFields.put("Union","Gaya Bari");
 		addressFields.put("Ward","Middle Gaya Bari");
 		
-		Address address = new Address("Permanent", new Date(), new Date(),
+		Address address = new Address("Permanent", DateTime.now(), DateTime.now(),
 				addressFields, "70.5", "40.5", "6300", "", "Bangladesh");
 		
 		Map<String, String> identifiers = new HashMap<String, String>();

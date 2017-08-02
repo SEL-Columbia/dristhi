@@ -22,8 +22,8 @@ import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Ignore;
-import org.opensrp.api.domain.Client;
-import org.opensrp.api.domain.Event;
+import org.opensrp.domain.Client;
+import org.opensrp.domain.Event;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormAttributeParser;
@@ -135,30 +135,29 @@ public class HouseHoldTest extends TestResourceLoader{
 	private void testClient(Client client, String baseEntityId, String firstName) {
 		assertNotNull(client);
 		assertNotNull(client.getBaseEntityId());
-		assertNotNull(client.getBaseEntity());
-		assertNotNull(client.getBaseEntity().getId());
-		assertThat(client.getBaseEntity(), hasProperty("firstName", notNullValue()));
-		assertThat(client.getBaseEntity(), hasProperty("gender", notNullValue()));
-		assertThat(client.getBaseEntity(), hasProperty("birthdate", notNullValue()));
+		assertNotNull(client.getId());
+		assertThat(client, hasProperty("firstName", notNullValue()));
+		assertThat(client, hasProperty("gender", notNullValue()));
+		assertThat(client, hasProperty("birthdate", notNullValue()));
 		assertNotNull(client.getIdentifiers());
 		assertFalse(client.getIdentifiers().isEmpty());
 		
 	
 		if(baseEntityId != null){
-			assertNotNull(client.getBaseEntity().getAddresses());
-			assertFalse(client.getBaseEntity().getAddresses().isEmpty());
-			assertTrue(client.getBaseEntity().getAddresses().get(0).getAddressType().equalsIgnoreCase("usual_residence"));
-			assertThat(client.getBaseEntity().getAddresses().get(0).getAddressFields(), Matchers.<String,String>hasKey("landmark"));
-			assertThat(client.getBaseEntity().getAddresses().get(0).getAddressFields(), Matchers.<String,String>hasEntry(equalTo("geopoint"), notNullValue(String.class)));
+			assertNotNull(client.getAddresses());
+			assertFalse(client.getAddresses().isEmpty());
+			assertTrue(client.getAddresses().get(0).getAddressType().equalsIgnoreCase("usual_residence"));
+			assertThat(client.getAddresses().get(0).getAddressFields(), Matchers.<String,String>hasKey("landmark"));
+			assertThat(client.getAddresses().get(0).getAddressFields(), Matchers.<String,String>hasEntry(equalTo("geopoint"), notNullValue(String.class)));
 			
-			assertThat(client.getBaseEntity().getAddresses().get(0), hasProperty("latitude", notNullValue()));
-			assertThat(client.getBaseEntity().getAddresses().get(0), hasProperty("longitute", notNullValue()));
+			assertThat(client.getAddresses().get(0), hasProperty("latitude", notNullValue()));
+			assertThat(client.getAddresses().get(0), hasProperty("longitute", notNullValue()));
 
 			assertTrue(client.getIdentifiers().containsKey("GOB HHID"));
 			assertTrue(client.getIdentifiers().containsKey("JiVitA HHID"));
 			assertEquals(client.getBaseEntityId(), baseEntityId);
-			assertEquals(client.getBaseEntity().getId(), baseEntityId);
-			assertThat(client.getBaseEntity(), hasProperty("firstName", equalToIgnoringCase(firstName)));
+			assertEquals(client.getId(), baseEntityId);
+			assertThat(client, hasProperty("firstName", equalToIgnoringCase(firstName)));
 		}
 	}
 }

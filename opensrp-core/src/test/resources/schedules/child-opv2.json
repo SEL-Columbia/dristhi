@@ -1,0 +1,35 @@
+{
+    "name": "OPV 2",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "opv2",
+            "scheduleWindows": {
+                "earliest": ["4 Weeks"],
+                "due": ["6 Weeks"],
+                "late": ["20 Weeks"],
+                "max": ["5 Years"]
+            },
+            "alerts": [
+                {
+                    "window": "earliest",
+                    "offset": ["2 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "15"
+                },
+                {
+                    "window": "due",
+                    "offset": ["4 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "15"
+                },
+                {
+                    "window": "late",
+                    "offset": ["6 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "1778"
+                }
+            ]
+        }
+    ]
+}

@@ -12,9 +12,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.MilestoneFulfillment;
-import org.opensrp.connector.HttpUtil;
+import org.motechproject.scheduletracking.api.domain.json.ScheduleRecord;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.service.AllScheduleWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,13 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 	private static final String TRACK_URL = "ws/rest/v1/scheduletracker/track";
 	private static final String TRACK_MILESTONE_URL = "ws/rest/v1/scheduletracker/trackmilestone";
 	private static final String SCHEDULE_URL = "ws/rest/v1/scheduletracker/schedule";
+	private static final String SCHEDULE_SAVE_URL = "module/scheduletracker/jsonschedule/saveJsonSchedule.form";
 	private static final String MILESTONE_URL = "ws/rest/v1/scheduletracker/milestone";
 	
 	private OpenmrsUserService userService;
 	private PatientService patientService;
+	private AllScheduleWrapper allSchedules;
+
 
 	public OpenmrsUserService getUserService() {
 		return userService;
@@ -46,17 +51,31 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 	}
 
 	@Autowired
-	public OpenmrsSchedulerService(OpenmrsUserService userService, PatientService patientService) {
+	public OpenmrsSchedulerService(AllScheduleWrapper allSchedules,
+			OpenmrsUserService userService, PatientService patientService) throws JSONException {
 		this.userService = userService;
 		this.patientService = patientService;
+		this.allSchedules = allSchedules;
 	}
 
     public OpenmrsSchedulerService(String openmrsUrl, String user, String password) {
     	super(openmrsUrl, user, password);
     }
 	
+    public JSONObject getSchedule(String schedule) throws JSONException {
+		JSONObject to = new JSONObject(HttpUtil.get(getURL()+"/"+SCHEDULE_URL+"/"+schedule, "", OPENMRS_USER, OPENMRS_PWD).body());
+		return to;
+	}
+    
+    public JSONObject createOrUpdateSchedule(ScheduleRecord schedule) throws JSONException {
+		return new JSONObject(HttpUtil.post(getURL()+"/"+SCHEDULE_URL, "", schedule.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
+    
 	public JSONObject createTrack(Enrollment e, List<Action> alertActions) throws JSONException, ParseException
 	{
+		if(getSchedule(e.getScheduleName()) == null){
+			createOrUpdateSchedule(allSchedules.getRecordByName(e.getScheduleName()));
+		}
 		JSONObject po = patientService.getPatientByIdentifier(e.getExternalId());
 		JSONObject t = new JSONObject();
 		t.put("beneficiary", po.getJSONObject("person").getString("uuid"));
@@ -86,7 +105,7 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 		
 		JSONArray tmarr = new JSONArray();
 		for (Action ac : alertActions) {
-			if(ac.actionType().equalsIgnoreCase("createAlert")){
+			if(ac.getActionType().equalsIgnoreCase("createAlert")){
 				JSONObject tm = fromActionToTrackMilestone(false, ac, trackuuid, e, alertActions);
 				
 				JSONObject tmo = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());
@@ -124,7 +143,7 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 		
 		JSONArray tmarr = new JSONArray();
 		for (Action ac : alertActions) {
-			if(ac.actionType().equalsIgnoreCase("createAlert")){
+			if(ac.getActionType().equalsIgnoreCase("createAlert")){
 				String milestone = ac.data().get("visitCode");
 				JSONArray j = new JSONObject(HttpUtil.get(getURL()+"/"+TRACK_MILESTONE_URL, "v=full&track="+trackuuid+"&milestone="+milestone, OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
 				JSONObject tm = fromActionToTrackMilestone(j.length()>0, ac, trackuuid, e, alertActions);
@@ -156,7 +175,7 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 		JSONObject tm = new JSONObject();
 		String milestone = ac.data().get("visitCode");
 		if(!isUpdate){
-			JSONObject pr = userService.getPersonByUser(ac.anmIdentifier());
+			JSONObject pr = userService.getPersonByUser(ac.providerId());
 			tm.put("track", trackUuid);
 			tm.put("milestone", milestone );
 			tm.put("alertRecipient", pr.getString("uuid"));
@@ -206,7 +225,7 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 	private Action getClosedAction(String milestone, List<Action> actions){
 		for (Action a : actions) {
 			if(a.data().get("visitCode") != null && a.data().get("visitCode").equalsIgnoreCase(milestone)
-					&& a.actionType().equalsIgnoreCase("closeAlert")){
+					&& a.getActionType().equalsIgnoreCase("closeAlert")){
 				return a;
 			}
 		}
@@ -216,7 +235,7 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 	private Action getCreatedAction(String milestone, List<Action> actions){
 		for (Action a : actions) {
 			if(a.data().get("visitCode") != null && a.data().get("visitCode").equalsIgnoreCase(milestone)
-					&& a.actionType().equalsIgnoreCase("createAlert")){
+					&& a.getActionType().equalsIgnoreCase("createAlert")){
 				return a;
 			}
 		}

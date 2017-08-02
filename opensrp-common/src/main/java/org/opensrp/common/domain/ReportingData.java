@@ -3,6 +3,7 @@ package org.opensrp.common.domain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.http.annotation.Immutable;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.Map;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.opensrp.common.AllConstants.ReportDataParameters.*;
 
+@Immutable
 public class ReportingData implements Serializable {
     private static final long serialVersionUID = 454645765753L;
 
@@ -21,7 +23,8 @@ public class ReportingData implements Serializable {
     @JsonProperty
     private Map<String, String> data;
 
-    public static ReportingData serviceProvidedData(String anmIdentifier, String externalId, Indicator indicator, String date, Location location, String dristhiEntityId) {
+    public static ReportingData serviceProvidedData(String anmIdentifier, String externalId, Indicator indicator,
+                                                    String date, Location location, String dristhiEntityId) {
         return new ReportingData(SERVICE_PROVIDED_DATA_TYPE)
                 .with(ANM_IDENTIFIER, anmIdentifier)
                 .with(INDICATOR, indicator.value())
@@ -108,12 +111,12 @@ public class ReportingData implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 }

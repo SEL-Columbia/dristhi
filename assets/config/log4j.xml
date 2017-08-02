@@ -60,6 +60,10 @@
     <logger name="org.ei">
         <level value="INFO"/>
     </logger>
+    
+    <logger name="org.opensrp">
+        <level value="DEBUG"/>
+    </logger>
 
     <logger name="DRISHTI_REPORT_MONITOR">
         <!--<appender-ref ref="ReportingMonitorLog"/>-->

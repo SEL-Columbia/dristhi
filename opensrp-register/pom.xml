@@ -20,9 +20,17 @@
 	</properties>
 	<build>
 		<resources>
-            <!-- <resource>
-                <directory>src/main/resources</directory>
-            </resource> -->
+			<resource>
+                <directory>../build</directory>
+                <filtering>true</filtering>
+                <includes>
+                	<include>maven.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources/lists</directory>
+                <targetPath>org/opensrp/register/thrivepk</targetPath>
+            </resource>
             <resource>
                 <directory>../opensrp-core/src/main/resources/ziggy</directory>
                 <targetPath>ziggy</targetPath>

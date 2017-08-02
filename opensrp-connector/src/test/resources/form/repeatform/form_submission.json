@@ -132,12 +132,14 @@
                 {
                     "name": "causeOfStillBirth",
                     "bind": "/model/instance/PNC_Registration_EngKan/still_birth_group/cause_of_still_birth",
-                    "source": "mother.causeOfStillBirth"
+                    "source": "mother.causeOfStillBirth",
+                    "value": "death of mother"
                 },
                 {
                     "name": "didWomanSurvive",
                     "bind": "/model/instance/PNC_Registration_EngKan/still_birth_group/woman_survived",
-                    "source": "mother.didWomanSurvive"
+                    "source": "mother.didWomanSurvive",
+                    "value": "no"
                 },
                 {
                     "name": "didMotherSurvive",

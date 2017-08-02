@@ -1,16 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	 pageEncoding="ISO-8859-1"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html lang="en">
 
 <head>
-<c:set var="context" value='${pageContext.servletContext.contextPath}'  />
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<%-- <c:set var="context" value='${pageContext.request.contextPath}'  />
+ --%><meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <title>XLS Form Downloader</title>
 
@@ -39,8 +37,8 @@
 <script type="text/javascript" language="javascript" class="init"></script>
 </head>
 <body>
-<c:out value="${context}" />
-<c:set var="c"  value="${check}"/>
+<%-- <c:out value="${context}" />
+ --%><c:set var="c"  value="${check}"/>
 <c:if test="${c==true}">
 <div class="alert alert-success">
   <strong>Success!</strong> <c:out value="${msg}"></c:out>
@@ -55,10 +53,10 @@
 
 <div class="row">
 <div class="col-md-6">
-<p><c:out value="${servletContext.contextPath}" /></p>
-<p><c:out value="${request.contextPath}"/></p>
+<%-- <p><c:out value="${servletContext.contextPath}" /></p>
+<p><c:out value="${request.contextPath}"/></p> --%>
 
-	<form class="form-horizontal" method="post" action="/xlsform/addfiles">
+	<form class="form-horizontal" method="post" action="${servletContext.contextPath}/xlsform/addfiles">
 		<fieldset>
 
 			<!-- Form Name -->

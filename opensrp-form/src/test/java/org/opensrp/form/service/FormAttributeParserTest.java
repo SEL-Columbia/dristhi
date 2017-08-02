@@ -1,6 +1,6 @@
 package org.opensrp.form.service;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -413,7 +413,7 @@ public class FormAttributeParserTest extends TestResourceLoader{
 	}
 
 	@Test
-	public void shouldBringSubformData() throws IOException, JsonSyntaxException, XPathExpressionException, ParserConfigurationException, SAXException{
+	public void shouldFetchSubformData() throws IOException, JsonSyntaxException, XPathExpressionException, ParserConfigurationException, SAXException{
 		String subform = "child_registration";
 
 		FormSubmission fs = getFormSubmissionFor("repeatform");
@@ -437,4 +437,52 @@ public class FormAttributeParserTest extends TestResourceLoader{
 		assertNotNull(fn);
 		assertEquals(fn, "gender");
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void shouldGetCorrectAttributesFromFormSubmissionMap() throws JsonIOException, IOException, JsonSyntaxException, XPathExpressionException, ParserConfigurationException, SAXException{
+		FormSubmission fs = getFormSubmissionFor("repeatform");
+		
+		FormSubmissionMap fsm = fam.createFormSubmissionMap(fs);
+		assertEquals("/model/instance/PNC_Registration_EngKan/", fsm.bindPath());
+		assertEquals("mother", fsm.bindType());
+		assertEquals(1426830449320L, fsm.clientTimestamp());
+		assertEquals("b716d938-1aea-40ae-a081-9ddddddcccc9", fsm.entityId());
+		assertThat(fsm.formAttributes(), allOf(
+				hasEntry("id", "Delivery_Outcome_EngKan"),
+				hasEntry("encounter_type", "PNC Registration"),
+				hasEntry("version", "201503200602")));
+		assertEquals("repeatform", fsm.formName());
+		assertEquals("5", fsm.formVersion());
+		assertEquals("f7974258-1aea-40ae-6676-9ddddddcccc9", fsm.instanceId());
+		assertEquals("admin", fsm.providerId());
+		assertEquals(1426877779320L, fsm.serverTimestamp());
+		
+		assertTrue(fsm.subforms().size() == 3);
+		
+		for (SubformMap sf : fsm.subforms()) {
+			assertEquals("child", sf.bindType());
+			assertEquals("/model/instance/PNC_Registration_EngKan/live_birth_group/child", sf.defaultBindPath());
+			assertEquals("child_registration", sf.name());
+			assertThat(sf.formAttributes(), allOf(
+					hasEntry("openmrs_entity", "person"),
+					hasEntry("openmrs_entity_id", "new registration")));
+			
+			assertThat(sf.entityId(), anyOf(
+					equalTo("e9a91c61-0d33-42d3-bf9b-560b4d08c74f"),
+					equalTo("c7305d21-0b90-4c15-a88f-b08338d3aed9"),
+					equalTo("6c2d772b-7d6a-4a05-a83d-5168c183ef42")
+					));
+		}
+	}
+
+	@Test
+	public void shouldMapCorrectAttributesForFieldsInFormSubmissionMap() throws JsonIOException, IOException, JsonSyntaxException, XPathExpressionException, ParserConfigurationException, SAXException{
+		FormSubmission fs = getFormSubmissionFor("new_household_registration_with_grouped_subform_data", 1);
+		
+		FormSubmissionMap fsm = fam.createFormSubmissionMap(fs);
+		FormFieldMap fl = fsm.getField("existing_location");
+		//TODO
+	}
+
 }

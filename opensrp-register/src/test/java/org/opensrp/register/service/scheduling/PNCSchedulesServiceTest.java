@@ -1,60 +1,72 @@
 package org.opensrp.register.service.scheduling;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.times;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.opensrp.register.DrishtiScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
-import static org.powermock.api.mockito.PowerMockito.when;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggingEvent;
+import org.joda.time.LocalDate;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.testing.utils.BaseUnitTest;
-import org.opensrp.register.service.scheduling.PNCSchedulesService;
+import org.mockito.Mockito;
+import org.opensrp.common.util.TestLoggerAppender;
+import org.opensrp.register.service.handler.TestResourceLoader;
 import org.opensrp.scheduler.HealthSchedulerService;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-public class PNCSchedulesServiceTest extends BaseUnitTest {
+
+@RunWith(PowerMockRunner.class)
+@PowerMockIgnore({ "org.apache.log4j.*", "org.apache.commons.logging.*" })
+public class PNCSchedulesServiceTest extends TestResourceLoader {
+	
+    private PNCSchedulesService pncSchedulesService;
     @Mock
     private HealthSchedulerService scheduler;
-
-    private PNCSchedulesService schedulesService;
-
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        schedulesService = new PNCSchedulesService(scheduler);
+        pncSchedulesService = new PNCSchedulesService(scheduler);
     }
-
+    
     @Test
-    public void shouldEnrollMotherIntoSchedulesWhileDeliveryOutcome() {
-        schedulesService.deliveryOutcome("mother id 1", "2012-01-01");
+    public void shouldTestELCOScheduleServiceMethods() {    	
+        final TestLoggerAppender appender = new TestLoggerAppender();       
+        final Logger logger = Logger.getLogger(PNCSchedulesService.class.toString());
+        logger.setLevel(Level.ALL);
+        logger.addAppender(appender);
+        
+        pncSchedulesService.enrollPNCRVForMother(entityId,scheduleName, LocalDate.now(),milestone,eventId);   	
+        Mockito.verify(scheduler,times(1)).enrollIntoSchedule(entityId, scheduleName, milestone, LocalDate.now().toString(), eventId);
+       
+        pncSchedulesService.fullfillMilestone(entityId,provider,scheduleName, LocalDate.now(),
+            eventId);
+        Mockito.verify(scheduler,times(1)).fullfillMilestoneAndCloseAlert(entityId, provider, scheduleName, LocalDate.now(), eventId);
+        
+        pncSchedulesService.unEnrollFromSchedule(entityId, provider, scheduleName, eventId);
+        Mockito.verify(scheduler,times(1)).unEnrollFromSchedule(entityId, provider, scheduleName, eventId);
+        
+        pncSchedulesService.unEnrollFromAllSchedules(entityId, eventId);
+        Mockito.verify(scheduler,times(1)).unEnrollFromAllSchedules(entityId, eventId);
 
-        verify(scheduler).enrollIntoSchedule("mother id 1", SCHEDULE_AUTO_CLOSE_PNC, "2012-01-01");
-        verifyNoMoreInteractions(scheduler);
+        final List<LoggingEvent> log = appender.getLog();
+        final LoggingEvent firstLogEntry = log.get(0);
+        Assert.assertEquals(firstLogEntry.getRenderedMessage(), "Fullfill Milestone with id: :entityId1");
+        final LoggingEvent secondLogEntry = log.get(1);
+        Assert.assertEquals(secondLogEntry.getRenderedMessage(), "Un-enrolling PNC with Entity id:entityId1 from schedule: opv 1");        
+        logger.removeAllAppenders();
     }
-
+    
     @Test
-    public void shouldUnenrollAMotherFromAllOpenSchedulesAndRaiseDeleteAllAlertActionDuringClose() {
-        EnrollmentRecord record1 = new EnrollmentRecord("Case X", "Schedule 1", null, null, null, null, null, null, null, null);
-        EnrollmentRecord record2 = new EnrollmentRecord("Case X", "Schedule 2", null, null, null, null, null, null, null, null);
-        List<EnrollmentRecord> records = Arrays.asList(record1, record2);
-
-        when(scheduler.findActiveEnrollments("Case X")).thenReturn(records);
-
-        schedulesService.unEnrollFromSchedules("Case X");
+    public void shouldGetException() {
+        Mockito.doThrow(new RuntimeException()).when(scheduler).fullfillMilestoneAndCloseAlert(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.any(LocalDate.class), Mockito.anyString());
+        pncSchedulesService.fullfillMilestone("", "", "", null,"");
     }
-
-    /*private EnrollmentsQuery queryFor(final String externalId) {
-        return argThat(new ArgumentMatcher<EnrollmentsQuery>() {
-            @Override
-            public boolean matches(Object o) {
-                EnrollmentsQuery expectedQuery = new EnrollmentsQuery().havingExternalId(externalId).havingState(ACTIVE);
-                return EqualsBuilder.reflectionEquals(expectedQuery.getCriteria(), ((EnrollmentsQuery) o).getCriteria());
-            }
-        });
-    }*/
+    
 }

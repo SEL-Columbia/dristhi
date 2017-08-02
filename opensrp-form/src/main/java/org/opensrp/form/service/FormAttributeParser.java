@@ -76,6 +76,7 @@ public class FormAttributeParser {
 			Map<String, String> fieldAttributes = bindPath==null?new HashMap<String, String>():getAttributesForBindPath(bindPath, modelXml);
 			
 			boolean ismultiselect = bindPath==null?false:isMultiselect(bindPath, jsonForm);
+			if(!StringUtils.isEmptyOrWhitespaceOnly(fsf.value())){
 			if(ismultiselect){
 				String[] vals = fsf.value().split(" ");
 				Map<String, Map<String, String>> valCods = new HashMap<>();
@@ -87,6 +88,7 @@ public class FormAttributeParser {
 			else {
 				Map<String, String> valueCodes = bindPath==null?null:getInstanceAttributesForFormFieldAndValue(bindPath, fsf.value(), jsonForm);
 				fields.add(new FormFieldMap(fsf.name(), fsf.value(), fsf.source(), bindPath, type, fieldAttributes, valueCodes));
+			}
 			}
 		}
 		

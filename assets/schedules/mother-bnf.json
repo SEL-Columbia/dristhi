@@ -1,0 +1,41 @@
+{
+    "name": "BirthNotificationPregnancyStatusFollowUp",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "BirthNotificationPregnancyStatusFollowUp",
+            "scheduleWindows": {
+            	"earliest": ["7 Days"],
+                "due": ["9 Days"],
+                "late": ["661 Days"],
+                "max": ["662 Days"]
+            },
+            "alerts": [
+            	{
+                    "window": "earliest",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "7"
+                },
+                {
+                    "window": "due",
+                    "offset": ["7 Days"],
+                    "interval": ["1 Day"],
+                    "count": "2"
+                },
+                {
+                    "window": "late",
+                    "offset": ["9 Days"],
+                    "interval": ["1 Day"],
+                    "count": "652"
+                },
+                 {
+                    "window": "max",
+                    "offset": ["661 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }                            
+            ]
+        }  
+    ]
+}

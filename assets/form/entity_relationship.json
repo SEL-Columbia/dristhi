@@ -1,19 +1,20 @@
 [
   {
-    "parent": "household",
-    "child": "elco",
-    "field": "wife",
-    "kind": "one_to_many",
-    "from": "household.id",
-    "to": "elco.relationalid"
-  },
-  {
-    "parent": "elco",
-    "child": "child",
+    "parent": "pkwoman",
+    "child": "pkchild",
     "field": "child",
     "kind": "one_to_many",
-    "from": "elco.id",
-    "to": "child.motherCaseId"
+    "from": "pkwoman.id",
+    "to": "pkchild.relationalid"
+  },
+
+  {
+    "parent": "stock",
+    "child": "reports",
+    "field": "stock",
+    "kind": "one_to_one",
+    "from": "stock.id",
+    "to": "reports.relationalid"
   },
   {
     "parent": "eligible_couple",
@@ -24,11 +25,11 @@
     "to": "mother.ecCaseId"
   },
   {
-    "parent": "mother",
+    "parent": "wife",
     "child": "child",
     "field": "children",
     "kind": "one_to_many",
-    "from": "mother.id",
+    "from": "wife.id",
     "to": "child.motherCaseId"
   }
 ]

@@ -15,16 +15,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class MultimediaService {
-	private static Logger logger = LoggerFactory.getLogger(MultimediaService.class
-			.toString());
-
+    private static Logger logger = LoggerFactory.getLogger(MultimediaService.class.toString());
+    public static final String IMAGES_DIR="images";
+    private static final String VIDEOS_DIR="videos";
 	private final MultimediaRepository multimediaRepository;
 	private String multimediaDirPath;
+	@Value("#{opensrp['multimedia.directory.name']}")
+	String baseMultimediaDirPath;
+	
 
 	@Autowired
-	public MultimediaService(MultimediaRepository multimediaRepository, @Value("#{opensrp['multimedia.directory.name']}") String multimediaDirName) {
+	public MultimediaService(MultimediaRepository multimediaRepository) {
 		this.multimediaRepository = multimediaRepository;
-		this.multimediaDirPath = multimediaDirName;
 	}
 
 	public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
@@ -39,11 +41,11 @@ public class MultimediaService {
 				logger.info("Image path : " + multimediaDirPath);
 				
 				Multimedia multimediaFile = new Multimedia()
-						.withCaseId(multimediaDTO.caseId())
-						.withProviderId(multimediaDTO.providerId())
-						.withContentType(multimediaDTO.contentType())
-						.withFilePath(multimediaDirPathDB)
-						.withFileCategory(multimediaDTO.fileCategory());
+						.withCaseId(multimediaDTO.getCaseId())
+						.withProviderId(multimediaDTO.getProviderId())
+						.withContentType(multimediaDTO.getContentType())
+						.withFilePath(multimediaDTO.getFilePath())
+						.withFileCategory(multimediaDTO.getFileCategory());
 
 				multimediaRepository.add(multimediaFile);
 
@@ -60,54 +62,43 @@ public class MultimediaService {
 
 	public boolean uploadFile(MultimediaDTO multimediaDTO,
 			MultipartFile multimediaFile) {
-		 
+		
+		// String baseMultimediaDirPath = System.getProperty("user.home");
+
 		if (!multimediaFile.isEmpty()) {
 			try {
 
-				 multimediaDirPath += File.separator + multimediaDTO.providerId()+ File.separator;
-
-				switch (multimediaDTO.contentType()) {
+				 multimediaDirPath = baseMultimediaDirPath + File.separator;
+				String fileExt=".jpg";
+				switch (multimediaDTO.getContentType()) {
 				
 				case "application/octet-stream":
-					String videoDirPath = multimediaDirPath += "videos";
-					makeMultimediaDir(videoDirPath);
-					multimediaDirPath += File.separator
-							+ multimediaDTO.caseId() + ".mp4";
+					multimediaDirPath += VIDEOS_DIR;
+					fileExt=".mp4";
 					break;
 
 				case "image/jpeg":
-					String jpgImgDirPath = multimediaDirPath += "images";
-					makeMultimediaDir(jpgImgDirPath);
-					multimediaDirPath += File.separator
-							+ multimediaDTO.caseId() + ".jpg";
+					multimediaDirPath += IMAGES_DIR;
+					fileExt=".jpg";
 					break;
 
 				case "image/gif":
-					String gifImgDirPath = multimediaDirPath += "images";
-					makeMultimediaDir(gifImgDirPath);
-					multimediaDirPath += File.separator
-							+ multimediaDTO.caseId() + ".gif";
+					multimediaDirPath += IMAGES_DIR;
+					fileExt=".gif";
 					break;
 
 				case "image/png":
-					String pngImgDirPath = multimediaDirPath += "images";
-					makeMultimediaDir(pngImgDirPath);
-					multimediaDirPath += File.separator
-							+ multimediaDTO.caseId() + ".png";
-					break;
-
-				default:
-					String defaultDirPath = multimediaDirPath += "images";
-					makeMultimediaDir(defaultDirPath);
-					multimediaDirPath += File.separator
-							+ multimediaDTO.caseId() + ".jpg";
+					multimediaDirPath += IMAGES_DIR; 
+					fileExt=".png";
 					break;
 
 				}
+				new File(multimediaDirPath).mkdir();
+				String fileName=multimediaDirPath+File.separator+multimediaDTO.getCaseId() + fileExt;
+				multimediaDTO.withFilePath(fileName);
+				File multimediaDir = new File(fileName);
 
-				File multimediaDir = new File(multimediaDirPath);
-
-				 multimediaFile.transferTo(multimediaDir);
+				multimediaFile.transferTo(multimediaDir);
 
 			/*
 			 byte[] bytes = multimediaFile.getBytes();
@@ -120,6 +111,7 @@ public class MultimediaService {
 				return true;
 				
 			} catch (Exception e) {
+				logger.error("",e);
 				return false;
 			}
 		} else {
@@ -135,5 +127,8 @@ public class MultimediaService {
     }
 	public List<Multimedia> getMultimediaFiles(String providerId) {
 		return multimediaRepository.all(providerId);
+	}
+	public Multimedia findByCaseId(String entityId){
+		return multimediaRepository.findByCaseId(entityId);
 	}
 }

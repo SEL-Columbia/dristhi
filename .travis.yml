@@ -1,17 +1,22 @@
-
 language: java
-sudo: false
-addons:
-  postgresql: 9.3
+sudo: required
 services:
   - couchdb
-  - rabbitmq
+  - mysql
+install:
+  - echo "skip" # or anything that returns 0 status.
+  - sudo updatedb #Giving couchdb time to start.
+  - sudo netstat -tuplen # listing all the port for debug purpose.
 before_script:
-      - psql -c "ALTER USER postgres WITH PASSWORD 'VA1913wm'" -U postgres
+  - curl -X PUT http://localhost:5984/_config/admins/rootuser -d '"adminpass"'
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('VA1913wm') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root 
 script:
   - javac -version
   - java -version
   - mvn --version
-  - mvn test
+  - mvn clean test
+notifications:
+  slack:
+    secure: Ueku2w/RdSfh1zEDErTbHi+hRx154fH10ykGcfrXPXhTVtWopG73BGDRKfVgU1MCokEo+2jtkRAuJB29R1PV8E3845wWJFs9ZPGcl0rjfx3qP2G/bCuARRHmBJ33YStROvaVF3ppNjJau7VinIF3giem+4WgtQ8KPmqqviDg8Tw=
 after_success:
   - mvn clean test jacoco:report coveralls:report 

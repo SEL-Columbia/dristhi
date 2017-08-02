@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.opensrp.api.constants.AddressField;
+import org.opensrp.common.AddressField;
 
 public class Address{
 

@@ -1,94 +1,62 @@
 package org.opensrp.domain;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
-import org.opensrp.api.constants.Gender;
 
-@TypeDiscriminator("doc.type == 'BaseEntity'")
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@TypeDiscriminator("doc.baseEntityId && doc.identifiers")
 public class BaseEntity extends BaseDataObject {
-
 	@JsonProperty
 	private String baseEntityId;
 	@JsonProperty
-	private String firstName;
-	@JsonProperty
-	private String middleName;
-	@JsonProperty
-	private String lastName;
-	@JsonProperty
-	private Date birthdate;
-	@JsonProperty
-	private Date deathdate;
-	@JsonProperty
-	private Boolean birthdateApprox;
-	@JsonProperty
-	private Boolean deathdateApprox;
-	@JsonProperty
-	private String gender;
+	private Map<String, String> identifiers;
 	@JsonProperty
 	private List<Address> addresses;
 	@JsonProperty
 	private Map<String, Object> attributes;
+	@JsonProperty
+	private List<ContactPoint> contactPoints;
+	@JsonProperty
+	private List<Photo> photos;
 
-	public BaseEntity() {
+	protected BaseEntity() {}
+	
+	public String type() {
+		return type;
 	}
-
-	public BaseEntity(String baseEntityId, String firstName, String middleName,
-			String lastName, Date birthdate, Date deathdate,
-			Boolean birthdateApprox, Boolean deathdateApprox, String gender,
-			List<Address> addresses, Map<String, Object> attributes) {
-		this.setId(baseEntityId);
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
-		this.birthdate = birthdate;
-		this.deathdate = deathdate;
-		this.birthdateApprox = birthdateApprox;
-		this.deathdateApprox = deathdateApprox;
-		this.gender = gender;
-		this.addresses = addresses;
-		this.attributes = attributes;
-	}
-
-	/**
-	 * Allows to instantiate from a list of predefined genders in {@link Gender}
-	 * 
-	 * @param firstName
-	 * @param lastName
-	 * @param birthdate
-	 * @param deathdate
-	 * @param birthdateApprox
-	 * @param deathdateApprox
-	 * @param gender
-	 * @param addresses
-	 * @param attributes
-	 */
-	public BaseEntity(String baseEntityId, String firstName, String middleName,
-			String lastName, Date birthdate, Date deathdate,
-			Boolean birthdateApprox, Boolean deathdateApprox, Gender gender,
-			List<Address> addresses, Map<String, Object> attributes) {
+	
+	public BaseEntity(String baseEntityId){
 		this.baseEntityId = baseEntityId;
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
-		this.birthdate = birthdate;
-		this.deathdate = deathdate;
-		this.birthdateApprox = birthdateApprox;
-		this.deathdateApprox = deathdateApprox;
-		this.gender = gender.name();
-		this.addresses = addresses;
+	}
+
+	public BaseEntity(String baseEntityId, Map<String, String> identifiers) {
+		this.baseEntityId = baseEntityId;
+		this.identifiers = identifiers;
+	}
+
+	public BaseEntity(String baseEntityId, Map<String, String> identifiers, Map<String, Object> attributes) {
+		this.baseEntityId = baseEntityId;
+		this.identifiers = identifiers;
 		this.attributes = attributes;
 	}
 
+	public BaseEntity(String baseEntityId, Map<String, String> identifiers, Map<String, Object> attributes, List<Address> addresses) {
+		this.baseEntityId = baseEntityId;
+		this.identifiers = identifiers;
+		this.attributes = attributes;
+		this.addresses = addresses;
+	}
+	
 	public String getBaseEntityId() {
 		return baseEntityId;
 	}
@@ -97,72 +65,30 @@ public class BaseEntity extends BaseDataObject {
 		this.baseEntityId = baseEntityId;
 	}
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public Date getBirthdate() {
-		return birthdate;
-	}
-
-	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
-	}
-
-	public Date getDeathdate() {
-		return deathdate;
-	}
-
-	public void setDeathdate(Date deathdate) {
-		this.deathdate = deathdate;
-	}
-
-	public Boolean getBirthdateApprox() {
-		return birthdateApprox;
-	}
-
-	public void setBirthdateApprox(Boolean birthdateApprox) {
-		this.birthdateApprox = birthdateApprox;
-	}
-
-	public Boolean getDeathdateApprox() {
-		return deathdateApprox;
-	}
-
-	public void setDeathdateApprox(Boolean deathdateApprox) {
-		this.deathdateApprox = deathdateApprox;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
 	public List<Address> getAddresses() {
+		if (addresses == null) {
+			addresses = new ArrayList<>();
+		}
 		return addresses;
+	}
+	
+	public Address getAddress(String addressType) {
+		for (Address address : getAddresses()) {
+			if(address.getAddressType().equalsIgnoreCase(addressType)){
+				return address;
+			}
+		}
+		return null;
+	}
+	
+	public void removeAddress(String addressType) {
+		Address ar = null;
+		for (Address address : getAddresses()) {
+			if(address.getAddressType().equalsIgnoreCase(addressType)){
+				ar = address;
+			}
+		}
+		if(ar != null) getAddresses().remove(ar);
 	}
 
 	/**
@@ -183,11 +109,22 @@ public class BaseEntity extends BaseDataObject {
 	}
 
 	public Map<String, Object> getAttributes() {
+		if (attributes == null) {
+			attributes = new HashMap<>();
+		}
 		return attributes;
 	}
 
 	public Object getAttribute(String name) {
-		return attributes.get(name);
+		if(attributes == null){
+			return null;
+		}
+		for (String k : attributes.keySet()) {
+			if(k.equalsIgnoreCase(name)){
+				return attributes.get(k);
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -212,55 +149,78 @@ public class BaseEntity extends BaseDataObject {
 		attributes.remove(name);
 	}
 	
+	public Map<String, String>  getIdentifiers() {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
+		}
+		return identifiers;
+	}
+
+	public String getIdentifier(String identifierType) {
+		if(identifiers == null){
+			return null;
+		}
+		for (String k : identifiers.keySet()) {
+			if(k.equalsIgnoreCase(identifierType)){
+				return identifiers.get(k);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns field matching the regex. Note that incase of multiple fields matching criteria 
+	 * function would return first match. The must be well formed to find out a single value
+	 * @param regex
+	 * @return
+	 */
+	public String getIdentifierMatchingRegex(String regex) {
+		for (Entry<String, String> a : getIdentifiers().entrySet()) {
+			if(a.getKey().matches(regex)){
+				return a.getValue();
+			}
+		}
+		return null;
+	}
+	
+	public void setIdentifiers(Map<String, String> identifiers) {
+		this.identifiers = identifiers;
+	}
+
+	public void addIdentifier(String identifierType, String identifier) {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
+		}
+		
+		identifiers.put(identifierType, identifier);
+	}
+
+	public void removeIdentifier(String identifierType) {
+		identifiers.remove(identifierType);
+	}
+	
 	public BaseEntity withBaseEntityId(String baseEntityId) {
 		this.baseEntityId = baseEntityId;
 		return this;
 	}
 
-	public BaseEntity withFirstName(String firstName) {
-		this.firstName = firstName;
+	/**
+	 * WARNING: Overrides all existing identifiers
+	 * @param identifiers
+	 * @return
+	 */
+	public BaseEntity withIdentifiers(Map<String, String> identifiers) {
+		this.identifiers = identifiers;
 		return this;
 	}
-
-	public BaseEntity withMiddleName(String middleName) {
-		this.middleName = middleName;
+	
+	public BaseEntity withIdentifier(String identifierType, String identifier) {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
+		}
+		identifiers.put(identifierType, identifier);
 		return this;
-	}
-
-	public BaseEntity withLastName(String lastName) {
-		this.lastName = lastName;
-		return this;
-	}
-
-	public BaseEntity withName(String firstName, String middleName,
-			String lastName) {
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
-		return this;
-	}
-
-	public BaseEntity withBirthdate(Date birthdate, Boolean isApproximate) {
-		this.birthdate = birthdate;
-		this.birthdateApprox = isApproximate;
-		return this;
-	}
-
-	public BaseEntity withDeathdate(Date deathdate, Boolean isApproximate) {
-		this.deathdate = deathdate;
-		this.deathdateApprox = isApproximate;
-		return this;
-	}
-
-	public BaseEntity withGender(String gender) {
-		this.gender = gender;
-		return this;
-	}
-
-	public BaseEntity withGender(Gender gender) {
-		this.gender = gender.name();
-		return this;
-	}
+	}	
 
 	/**
 	 * WARNING: Overrides all existing addresses
@@ -302,12 +262,12 @@ public class BaseEntity extends BaseDataObject {
 
 	@Override
 	public boolean equals(Object o) {
-		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
+		return EqualsBuilder.reflectionEquals(this, o);
 	}
 
 	@Override
 	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this, "id", "revision");
+		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
 	@Override

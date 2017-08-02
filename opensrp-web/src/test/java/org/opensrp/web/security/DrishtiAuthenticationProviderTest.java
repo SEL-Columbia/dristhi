@@ -1,8 +1,8 @@
 package org.opensrp.web.security;
 
 import com.google.gson.Gson;
-import org.opensrp.domain.DrishtiUser;
-import org.opensrp.repository.AllOpenSRPUsers;
+
+import org.opensrp.repository.AllUsers;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -23,11 +23,12 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 
 public class DrishtiAuthenticationProviderTest {
     @Mock
-    private AllOpenSRPUsers allOpenSRPUsers;
+    private AllUsers allOpenSRPUsers;
     @Mock
     private ShaPasswordEncoder passwordEncoder;
     @Rule
@@ -86,7 +87,7 @@ public class DrishtiAuthenticationProviderTest {
         verify(allOpenSRPUsers).findByUsername("user 1");
     }*/
 
-    @Test
+    /*@Test
     @Ignore
     public void toGenerateUserPasswordsAndSalt() throws Exception {
         String username = "username";
@@ -94,5 +95,5 @@ public class DrishtiAuthenticationProviderTest {
         UUID salt = randomUUID();
         String hashedPassword = new ShaPasswordEncoder().encodePassword(password, salt);
         System.out.println(new Gson().toJson(new DrishtiUser(username, hashedPassword, salt.toString(), asList("ROLE_USER"), true)));
-    }
+    }*/
 }

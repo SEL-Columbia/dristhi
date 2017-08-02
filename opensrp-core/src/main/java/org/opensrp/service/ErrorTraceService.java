@@ -1,12 +1,12 @@
 
 package org.opensrp.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.ektorp.DocumentNotFoundException;
+import org.joda.time.DateTime;
 import org.opensrp.domain.ErrorTrace;
 import org.opensrp.repository.AllErrorTrace;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class ErrorTraceService {
 		error.setRecordId(recordId);
 		error.setStackTrace(stackTrace);
 		error.setRetryUrl(retryURL);
-		error.setDateOccurred(new Date());
+		error.setDateOccurred(DateTime.now());
 		addError(error);
 		
 	}

@@ -1,5 +1,5 @@
 {
-    "anmId": "admin",
+    "anmId": "superman",
     "instanceId": "88ceee24-10b4-44c2-9429-754b8d823776",
     "clientVersion": "1426830449320",
     "entityId": "b716d938-1aea-40ae-a081-9ddddddcccc9",
@@ -18,6 +18,10 @@
                 {
                     "name": "last_name",
                     "value": "test last_name"
+                },
+                {
+                    "name": "bahmni_id",
+                    "value": "pak-100-00001"
                 },
                 {
                     "name": "gender",

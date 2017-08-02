@@ -1,0 +1,35 @@
+{
+    "name": "VIT A 8",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "vita8",
+            "scheduleWindows": {
+                "earliest": ["6 Months"],
+                "due": ["6 Months", "10 Days"],
+                "late": ["5 Years"],
+                "max": ["5 Years", "1 Day"]
+            },
+            "alerts": [
+				{
+                    "window": "due",
+                    "offset": ["6 Months"],
+                    "interval": ["1 Day"],
+                    "count": "10"
+                },
+                {
+                    "window": "late",
+                    "offset": ["6 Months", "10 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1900"
+                },
+                {
+                    "window": "max",
+                    "offset": ["5 Years"],
+                    "interval": ["1 Day"],
+                    "count": "2"
+                }
+            ]
+        }
+    ]
+}

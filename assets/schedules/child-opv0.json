@@ -1,0 +1,35 @@
+{
+    "name": "OPV 0",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "opv0",
+            "scheduleWindows": {
+                "earliest": ["0 Days"],
+                "due": ["10 Days"],
+                "late": ["13 Days"],
+                "max": ["14 Days"]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "10"
+                },
+                {
+                    "window": "late",
+                    "offset": ["10 Days"],
+                    "interval": ["1 Day"],
+                    "count": "3"
+                },
+                {
+                    "window": "max",
+                    "offset": ["13 Days"],
+                    "interval": ["1 Day"],
+                    "count": "2"
+                }			
+            ]
+        }
+    ]
+}

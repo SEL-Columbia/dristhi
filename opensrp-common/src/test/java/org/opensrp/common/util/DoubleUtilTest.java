@@ -2,9 +2,22 @@ package org.opensrp.common.util;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.opensrp.common.util.DoubleUtil;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+
+import static org.junit.Assert.assertTrue;
 
 public class DoubleUtilTest {
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<DoubleUtil> constructor = DoubleUtil.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
+    }
+
     @Test
     public void shouldParseIntSafely() throws Exception {
         Assert.assertEquals(0.1D, DoubleUtil.tryParse("", 0.1D), 0D);

@@ -2,11 +2,14 @@ package org.opensrp.form.domain;
 
 import java.util.List;
 
+import net.jcip.annotations.Immutable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+@Immutable
 public class FormInstance {
     @JsonProperty
     private String form_data_definition_version;
@@ -21,6 +24,11 @@ public class FormInstance {
         this.form = form;
     }
 
+    public FormInstance(FormData form, String form_data_definition_version) {
+        this.form = form;
+        this.form_data_definition_version = form_data_definition_version;
+    }
+    
     public FormData form() {
         return form;
     }

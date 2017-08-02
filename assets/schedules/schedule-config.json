@@ -1,0 +1,8 @@
+{
+	"schedules_handling_rules": [
+		{
+		"default_field": "obs.fieldCode",
+		"schedules":"merged schedules go here"
+		}
+	]
+}

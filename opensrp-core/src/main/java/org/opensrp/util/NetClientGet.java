@@ -79,7 +79,7 @@ public class NetClientGet {
 			String authStringEnc = new String(authEncBytes);
 			System.out.println("Base64 encoded auth string: " + authStringEnc);
 		  //The file that you want to download
-		 String url2="https://ona.io/api/v1/forms/"+formPk+"/form.json";            
+		 String url2="https://api.ona.io/api/v1/forms/"+formPk+"/form.json";            
            URL link = new URL(url2);
            URLConnection urlConnection = link.openConnection();
 			urlConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);

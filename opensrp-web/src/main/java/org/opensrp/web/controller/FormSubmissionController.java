@@ -7,31 +7,28 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.http.HttpStatus.OK;
 
-import java.io.IOException;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.client.ClientProtocolException;
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.api.domain.Client;
-import org.opensrp.api.domain.Event;
+import org.opensrp.common.AllConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.PatientService;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.ErrorTrace;
+import org.opensrp.domain.Event;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
-import org.opensrp.OpenSRPConstants.OpenSRPEvent;
 import org.opensrp.repository.MultimediaRepository;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
@@ -48,12 +45,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
-import ch.lambdaj.function.convert.Converter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import ch.lambdaj.function.convert.Converter;
 
 @Controller
 public class FormSubmissionController {
@@ -124,7 +120,7 @@ public class FormSubmissionController {
                 return new ResponseEntity<>(BAD_REQUEST);
             }
 
-            scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
+            scheduler.notifyEvent(new SystemEvent<>(AllConstants.OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
             
             try{
           
@@ -145,7 +141,7 @@ public class FormSubmissionController {
 	            	}
 	            	catch(Exception e){
 	            		e.printStackTrace();
-	            		ErrorTrace errorTrace=new ErrorTrace(new Date(), "Parse Exception", "", e.getStackTrace().toString(), "Unsolved", formSubmission.formName());
+	            		ErrorTrace errorTrace=new ErrorTrace(new DateTime(), "Parse Exception", "", e.getStackTrace().toString(), "Unsolved", formSubmission.formName());
 						errorTrace.setRecordId(formSubmission.instanceId());
 						errorTraceService.addError(errorTrace);
 	            	}
@@ -212,18 +208,5 @@ public class FormSubmissionController {
 				return new MultimediaDTO(md.getCaseId(), md.getProviderId(), md.getContentType(), md.getFilePath(), md.getFileCategory());
 			}
 		});
-    }
-    @RequestMapping(headers = {"Accept=multipart/form-data"}, method = POST, value = "/multimedia-file")
-    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId,@RequestParam("content-type") String contentType, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file) throws ClientProtocolException, IOException {
-    	
-    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
-    	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
-    	
-    	if(status.equals("success"))
-    	{
-         Multimedia multimedia =   multimediaRepository.findByCaseId(entityId);
-    	 patientService.patientImageUpload(multimedia);
-    	}
-    	 return new ResponseEntity<>(new Gson().toJson(status), OK);
     }
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
@@ -15,11 +16,11 @@ import org.opensrp.dto.ActionData;
  * The entity which helps in identifying the type of action applicable for the entity or provider
  */
 @TypeDiscriminator("doc.type === 'Action'")
-public class Action extends MotechBaseDataObject {
+public class  Action extends MotechBaseDataObject {
     @JsonProperty
-    private String anmIdentifier;
+    private String providerId;
     @JsonProperty
-    private String caseID;
+    private String baseEntityId;
     @JsonProperty
     private Map<String, String> data;
     @JsonProperty
@@ -30,44 +31,54 @@ public class Action extends MotechBaseDataObject {
     private Boolean isActionActive;
     @JsonProperty
     private long timeStamp;
+    
+	public long getTimeStamp() {
+		return timeStamp;
+	}
+
+	@JsonProperty
+    private long version;
     @JsonProperty
     private Map<String, String> details;
 
     private Action() {
     }
 
-    public Action(String caseId, String anmIdentifier, ActionData actionData) {
-        this.anmIdentifier = anmIdentifier;
-        this.caseID = caseId;
-        this.data = actionData.data();
-        this.actionTarget = actionData.target();
-        this.actionType = actionData.type();
+    public Action(String baseEntityId, String providerId, ActionData actionData) {
+        this.providerId = providerId;
+        this.baseEntityId = baseEntityId;
+        this.data = actionData.getData();
+        this.actionTarget = actionData.getTarget();
+        this.actionType = actionData.getType();
         this.timeStamp = DateUtil.now().getMillis();
-        this.details = actionData.details();
+        this.details = actionData.getDetails();
         this.isActionActive = true;
     }
 
-    public String anmIdentifier() {
-        return anmIdentifier;
+    public String providerId() {
+        return providerId;
     }
 
-    public String caseId() {
-        return caseID;
+    public String baseEntityId() {
+        return baseEntityId;
     }
 
     public Map<String, String> data() {
         return data;
     }
 
-    public String actionType() {
+    public String getActionType() {
         return actionType;
     }
 
-    public long timestamp() {
+    @JsonIgnore
+    public long getTimestamp() {
         return timeStamp;
     }
+   
 
-    public String target() {
+    @JsonIgnore
+    public String getTarget() {
         return actionTarget;
     }
 
@@ -80,12 +91,12 @@ public class Action extends MotechBaseDataObject {
         return isActionActive;
     }
 
-    public Map<String, String> details() {
+    public Map<String, String> getDetails() {
         return details;
     }
 
-    private String getCaseID() {
-        return caseID;
+    private String getBaseEntityId() {
+        return baseEntityId;
     }
 
     public String getActionTarget() {
@@ -93,12 +104,12 @@ public class Action extends MotechBaseDataObject {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, "timeStamp", "revision");
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this, "timeStamp", "revision");
     }
 

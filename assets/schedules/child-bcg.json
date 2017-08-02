@@ -6,22 +6,28 @@
             "name": "bcg",
             "scheduleWindows": {
                 "earliest": ["0 Days"],
-                "due": ["2 Weeks"],
+                "due": ["10 Days"],
                 "late": ["1 Year"],
-                "max": ["1 Year"]
+                "max": ["1 Year", "1 Day"]
             },
             "alerts": [
-                {
+				{
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "14"
+                    "count": "30"
                 },
                 {
                     "window": "late",
-                    "offset": ["2 Weeks"],
+                    "offset": ["10 Days"],
                     "interval": ["1 Day"],
-                    "count": "350"
+                    "count": "366"
+                },
+                {
+                    "window": "max",
+                    "offset": ["1 Year"],
+                    "interval": ["1 Day"],
+                    "count": "2"
                 }
             ]
         }

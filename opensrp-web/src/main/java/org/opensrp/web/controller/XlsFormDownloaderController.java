@@ -1,10 +1,8 @@
 package org.opensrp.web.controller;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -13,15 +11,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.opensrp.api.domain.form.FormSubmission;
-import org.opensrp.domain.ErrorTraceForm;
 import org.opensrp.service.XlsFormDownloaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.google.gson.Gson;
 
 
 @Controller
@@ -54,7 +48,6 @@ public class XlsFormDownloaderController {
 		String formName=request.getParameter("formName").trim();
 		String formPk=request.getParameter("formPk").trim();
 		String password=request.getParameter("password").trim();
-		System.out.println("Password : "+password);
 		
 //		System.out.println(userName+"   "+formId);
 		//String username=request.getParameter("username");
@@ -63,7 +56,7 @@ public class XlsFormDownloaderController {
 	String formDefinition="" ;
 		boolean check=false;
 		try {
-		check=	xlsService.downloadFormFiles(getPath().trim()+"form", userName, password,formId,formPk, formName);
+		check=	xlsService.downloadFormFiles(getPath().trim()+"form", userName, formPk, password,formName, formId);
 		formDefinition=xlsService.getFormDefinition();
 		
 		//Gson gson = new Gson();

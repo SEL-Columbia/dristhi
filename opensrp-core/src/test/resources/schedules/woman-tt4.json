@@ -1,0 +1,36 @@
+{
+    "name": "TT 4",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "tt4",
+            "scheduleWindows": {
+                "earliest": ["12 Months"],
+                "due": ["14 Months"],
+                "late": ["20 Months"],
+                "max": ["30 Months"]                
+            },
+            "alerts": [
+                {
+                    "window": "earliest",
+                    "offset": ["0 Months"],
+                    "interval": ["1 Day"],
+                    "count": "40"
+                },
+                {
+                    "window": "due",
+                    "offset": ["1 Year"],
+                    "interval": ["1 Day"],
+                    "count": "360"
+                },
+                {
+                    "window": "late",
+                    "offset": ["14 Months"],
+                    "interval": ["1 Day"],
+                    "count": "360"
+                }
+                
+            ]
+        }
+    ]
+}

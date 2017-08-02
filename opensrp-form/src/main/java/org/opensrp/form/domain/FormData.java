@@ -1,9 +1,12 @@
 package org.opensrp.form.domain;
 
+import net.jcip.annotations.Immutable;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.text.MessageFormat;
@@ -11,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Immutable
 public class FormData {
     @JsonProperty
     private String bind_type;
@@ -21,6 +25,7 @@ public class FormData {
     @JsonProperty
     private List<SubFormData> sub_forms;
 
+    @JsonIgnore
     private Map<String, String> mapOfFieldsByName;
 
     public FormData() {
@@ -59,6 +64,13 @@ public class FormData {
         }
     }
 
+    public Map<String, String> getFieldsAsMap() {
+    	if (mapOfFieldsByName == null) {
+            createFieldMapByName();
+        }
+        return mapOfFieldsByName;
+	}
+    
     public SubFormData getSubFormByName(String name) {
         for (SubFormData sub_form : sub_forms) {
             if (StringUtils.equalsIgnoreCase(name, sub_form.name()))
@@ -70,6 +82,7 @@ public class FormData {
     public List<SubFormData> subForms() {
         return sub_forms;
     }
+    
     
     @Override
     public boolean equals(Object o) {

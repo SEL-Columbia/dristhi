@@ -1,0 +1,28 @@
+{
+    "name": "VIT A IFC 2",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "vitaifc2",
+            "scheduleWindows": {
+                "earliest": ["0 Days"],
+                "due": ["6 Months"],
+                "max": ["6 Months", "1 Day"]
+            },
+            "alerts": [
+				{
+                    "window": "due",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "180"
+                },
+                {
+                    "window": "max",
+                    "offset": ["6 Months"],
+                    "interval": ["1 Day"],
+                    "count": "2"
+                }
+            ]
+        }
+    ]
+}

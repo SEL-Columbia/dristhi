@@ -1,5 +1,6 @@
 package org.opensrp.common.domain;
 
+import net.jcip.annotations.Immutable;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -7,11 +8,15 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
 
+@Immutable
 public class ANMReport {
     @JsonProperty
     private List<ANMIndicatorSummary> summaries;
     @JsonProperty
     private String anmIdentifier;
+
+    public ANMReport() {
+    }
 
     public ANMReport(String anmIdentifier, List<ANMIndicatorSummary> summaries) {
         this.anmIdentifier = anmIdentifier;
@@ -27,12 +32,12 @@ public class ANMReport {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
