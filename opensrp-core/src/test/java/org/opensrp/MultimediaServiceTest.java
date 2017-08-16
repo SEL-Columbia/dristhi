@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.repository.MultimediaRepository;
+import org.opensrp.service.ClientService;
 import org.opensrp.service.MultimediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,9 @@ public class MultimediaServiceTest {
 	private MultimediaRepository multimediaRepository;
 	
 	@Autowired
+	private ClientService clientService;
+	
+	@Autowired
 	@Value("#{opensrp['multimedia.directory.name']}") 
 	private String multimediaDirPath;
 	
@@ -43,7 +47,7 @@ public class MultimediaServiceTest {
 	public void setUp() throws Exception
 	{
 		initMocks(this);
-		multimediaService = new MultimediaService(multimediaRepository);
+		multimediaService = new MultimediaService(multimediaRepository, clientService);
 	}
 	
 	@Ignore @Test
