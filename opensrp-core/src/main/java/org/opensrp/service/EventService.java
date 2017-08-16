@@ -163,7 +163,7 @@ public class EventService {
 	 */
 	public synchronized Event processOutOfArea(Event event) {
 		if (event.getBaseEntityId() == null || event.getBaseEntityId().isEmpty()) {
-
+			
 			//get events identifiers;
 			String identifier = event.getIdentifier(Client.ZEIR_ID);
 			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(),
@@ -171,25 +171,22 @@ public class EventService {
 			if (clients != null && !clients.isEmpty()) {
 				org.opensrp.domain.Client client = clients.get(0);
 				
-				
 				//set providerid to the last providerid who served this client in their catchment (assumption)
 				List<Event> existingEvents = findByBaseEntityAndType(client.getBaseEntityId(), "Birth Registration");
 				if (existingEvents != null && !existingEvents.isEmpty()) {
-					
 					
 					event.getIdentifiers().remove(Client.ZEIR_ID.toUpperCase());
 					event.setBaseEntityId(client.getBaseEntityId());
 					//Map<String, String> identifiers = event.getIdentifiers();
 					//event identifiers are unique so removing zeir_id since baseentityid has been found
 					//also out of area service events stick with the providerid so that they can sync back to them for reports generation
-					if(!event.getEventType().startsWith("Out of Area Service")){
-					event.setProviderId(existingEvents.get(0).getProviderId());
-					Map<String, String> details = new HashMap<String, String>();
-					details.put("out_of_catchment_provider_id", event.getProviderId());
-					event.setDetails(details);
+					if (!event.getEventType().startsWith("Out of Area Service")) {
+						event.setProviderId(existingEvents.get(0).getProviderId());
+						Map<String, String> details = new HashMap<String, String>();
+						details.put("out_of_catchment_provider_id", event.getProviderId());
+						event.setDetails(details);
 					}
 					
-
 				}
 				
 			}

@@ -19,6 +19,9 @@ public abstract class OpenmrsService {
 	protected String OPENMRS_PWD;
 	
 	public static final SimpleDateFormat OPENMRS_DATE = new SimpleDateFormat("yyyy-MM-dd");
+	public static final String PROBABLE_CAUSE_OF_DEATH_CONCEPT= "5002AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+	public static final String PROBABLE_CAUSE_OF_DEATH_TEXT= "160218AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+	public static final String PROBABLE_CAUSE_PARENT_CONCEPT= "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 	public OpenmrsService() {	}
 	
 	public OpenmrsService(String openmrsUrl, String user, String password) {

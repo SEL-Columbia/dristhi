@@ -3,6 +3,7 @@ package org.opensrp.service;
 import java.io.File;
 import java.util.List;
 
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.repository.MultimediaRepository;
@@ -16,17 +17,21 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class MultimediaService {
     private static Logger logger = LoggerFactory.getLogger(MultimediaService.class.toString());
-    public static final String IMAGES_DIR="images";
+    public static final String IMAGES_DIR="patient_images";
     private static final String VIDEOS_DIR="videos";
 	private final MultimediaRepository multimediaRepository;
+	private final ClientService clientService;
 	private String multimediaDirPath;
 	@Value("#{opensrp['multimedia.directory.name']}")
 	String baseMultimediaDirPath;
 	
+	
+	
 
 	@Autowired
-	public MultimediaService(MultimediaRepository multimediaRepository) {
+	public MultimediaService(MultimediaRepository multimediaRepository, ClientService clientService) {
 		this.multimediaRepository = multimediaRepository;
+		this.clientService = clientService;
 	}
 
 	public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
@@ -48,6 +53,10 @@ public class MultimediaService {
 						.withFileCategory(multimediaDTO.getFileCategory());
 
 				multimediaRepository.add(multimediaFile);
+				
+			  	Client client = clientService.getByBaseEntityId(multimediaDTO.getCaseId());
+				client.getAttributes().put("Patient Image", multimediaDTO.getCaseId()+".jpg");
+				clientService.imageUpdate(client);
 
 				return "success";
 

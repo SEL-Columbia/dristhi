@@ -47,6 +47,7 @@ public class ClientService {
 	public List<Client> findByRelationshipIdAndDateCreated(String relationalId, String dateFrom, String dateTo) {
 		return allClients.findByRelationshipIdAndDateCreated(relationalId, dateFrom, dateTo);
 	}
+	
 	public List<Client> findByRelationship(String relationalId) {
 		return allClients.findByRelationShip(relationalId);
 	}
@@ -97,7 +98,7 @@ public class ClientService {
 			}
 			catch (JSONException e) {
 				throw new IllegalArgumentException(
-			        "A client already exists with given list of identifiers. Consider updating data.[" + c + "]");
+				        "A client already exists with given list of identifiers. Consider updating data.[" + c + "]");
 			}
 		}
 		
@@ -267,6 +268,7 @@ public class ClientService {
 	public List<Client> findByFieldValue(String field, List<String> ids) {
 		return allClients.findByFieldValue(field, ids);
 	}
+	
 	public List<Client> findByFieldValue(String id) {
 		return allClients.findByRelationShip(id);
 	}
@@ -290,6 +292,17 @@ public class ClientService {
 		}
 		return client;
 	}
+	
+	public Client imageUpdate(Client client) {
+		if (client.getBaseEntityId() == null) {
+			throw new RuntimeException("No baseEntityId");
+		}
+		client.setDateEdited(DateTime.now());
+		client.setServerVersion(null);
+		allClients.update(client);
+		return client;
+	}
+	
 	public Client addorUpdate(Client client, boolean resetServerVersion) {
 		if (client.getBaseEntityId() == null) {
 			throw new RuntimeException("No baseEntityId");
@@ -299,8 +312,8 @@ public class ClientService {
 			client.setRevision(c.getRevision());
 			client.setId(c.getId());
 			c.setDateEdited(DateTime.now());
-			if(resetServerVersion){
-			c.setServerVersion(null);
+			if (resetServerVersion) {
+				c.setServerVersion(null);
 			}
 			allClients.update(client);
 			

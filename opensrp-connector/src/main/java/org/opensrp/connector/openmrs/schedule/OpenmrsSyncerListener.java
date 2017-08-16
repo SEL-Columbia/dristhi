@@ -209,37 +209,7 @@ public class OpenmrsSyncerListener {
 					    ExceptionUtils.getStackTrace(ex1), "");
 				}
 			}
-			for (Client c : cl) {
-				
-				JSONObject motherJson = patientService
-				        .getPatientByIdentifier(c.getRelationships().get("mother").get(0).toString());
-				JSONObject person = motherJson.getJSONObject("person");
-				
-				if (person.getString("uuid") != null) {
-					patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), person.getString("uuid"),
-					    "8d91a210-c2cc-11de-8d13-0010c6dffd0f");
-					logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
-				}
-				
-				List<Client> siblings = clientService
-				        .findByRelationship(c.getRelationships().get("mother").get(0).toString());
-				if (!siblings.isEmpty() || siblings != null) {
-					JSONObject siblingJson;
-					JSONObject sibling;
-					for (Client client : siblings) {
-						if (!c.getBaseEntityId().equals(client.getBaseEntityId())) {
-							siblingJson = patientService.getPatientByIdentifier(client.getBaseEntityId());
-							sibling = siblingJson.getJSONObject("person");
-							patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
-							    sibling.getString("uuid"), "8d91a01c-c2cc-11de-8d13-0010c6dffd0f");
-						}
-						
-					}
-					
-				}
-				logger.info("RelationshipsCreated sibling1 ");
-				
-			}
+			patientService.createRealationShip(cl);
 			
 			logger.info("RUNNING FOR EVENTS");
 			
@@ -258,6 +228,7 @@ public class OpenmrsSyncerListener {
 						    e.getServerVersion());
 					} else {
 						JSONObject eventJson = encounterService.createEncounter(e);
+						encounterService.processDeathEvent(e);
 						if (eventJson != null && eventJson.has("uuid")) {
 							e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 							eventService.updateEvent(e);
@@ -272,6 +243,9 @@ public class OpenmrsSyncerListener {
 					    ExceptionUtils.getStackTrace(ex2), "");
 				}
 			}
+			
+			logger.info("RUNNING FOR RELATIONSHIPS");
+			patientService.createRealationShip(cl);
 			
 			logger.info("PUSH TO OPENMRS FINISHED AT " + DateTime.now());
 		}
