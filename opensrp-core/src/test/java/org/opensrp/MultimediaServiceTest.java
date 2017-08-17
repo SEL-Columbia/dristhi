@@ -10,8 +10,8 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.opensrp.domain.Multimedia;
@@ -32,7 +32,7 @@ public class MultimediaServiceTest {
 	
 	@Mock
 	private MultimediaService multimediaService;
-
+	
 	@Autowired
 	private MultimediaRepository multimediaRepository;
 	
@@ -40,70 +40,68 @@ public class MultimediaServiceTest {
 	private ClientService clientService;
 	
 	@Autowired
-	@Value("#{opensrp['multimedia.directory.name']}") 
+	@Value("#{opensrp['multimedia.directory.name']}")
 	private String multimediaDirPath;
 	
 	@Before
-	public void setUp() throws Exception
-	{
+	public void setUp() throws Exception {
 		initMocks(this);
 		multimediaService = new MultimediaService(multimediaRepository, clientService);
 	}
 	
-	@Ignore @Test
-	public void shouldSaveMultimediaFile() throws FileNotFoundException
-	{
-		  MultimediaDTO multimedia = new MultimediaDTO("1234567891", "opensrp","image/jpeg","","nid");
-		  String baseDirPath = System.getProperty("user.home");
-		  FileInputStream fis = new FileInputStream(baseDirPath + File.separator +".OpenSRP/multimedia/image.jpeg");
-		  
-          MultipartFile multipartFile = null;
-          
+	@Ignore
+	@Test
+	public void shouldSaveMultimediaFile() throws FileNotFoundException {
+		MultimediaDTO multimedia = new MultimediaDTO("1234567891", "opensrp", "image/jpeg", "", "nid");
+		String baseDirPath = System.getProperty("user.home");
+		FileInputStream fis = new FileInputStream(baseDirPath + File.separator + ".OpenSRP/multimedia/image.jpeg");
+		
+		MultipartFile multipartFile = null;
+		
 		try {
 			multipartFile = new MockMultipartFile("file", fis);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		String status = multimediaService.saveMultimediaFile(multimedia,multipartFile);
+		String status = multimediaService.saveMultimediaFile(multimedia, multipartFile);
 		
 		Assert.assertEquals("success", status);
 		
 	}
-	@Ignore @Test
-	public void shouldGetMultimediaFiles() throws FileNotFoundException
-	{
-		 MultimediaDTO multimediaDTO = new MultimediaDTO("1234567890", "opensrp","image/jpeg","","profile");
+	
+	@Ignore
+	@Test
+	public void shouldGetMultimediaFiles() throws FileNotFoundException {
+		MultimediaDTO multimediaDTO = new MultimediaDTO("1234567890", "opensrp", "image/jpeg", "", "profile");
 		
-		Multimedia expectedMultimedia = new Multimedia()
-		.withCaseId(multimediaDTO.getCaseId())
-		.withProviderId(multimediaDTO.getProviderId())
-		.withContentType(multimediaDTO.getContentType())
-		.withFilePath(multimediaDTO.getFilePath())
-		.withFileCategory(multimediaDTO.getFileCategory());
+		Multimedia expectedMultimedia = new Multimedia().withCaseId(multimediaDTO.getCaseId())
+		        .withProviderId(multimediaDTO.getProviderId()).withContentType(multimediaDTO.getContentType())
+		        .withFilePath(multimediaDTO.getFilePath()).withFileCategory(multimediaDTO.getFileCategory());
 		
-		 String baseDirPath = System.getProperty("user.home");
-		 FileInputStream fis = new FileInputStream(baseDirPath + File.separator +".OpenSRP/multimedia/image.jpeg");
-         MultipartFile multipartFile = null;
-          
+		String baseDirPath = System.getProperty("user.home");
+		FileInputStream fis = new FileInputStream(baseDirPath + File.separator + ".OpenSRP/multimedia/image.jpeg");
+		MultipartFile multipartFile = null;
+		
 		try {
 			multipartFile = new MockMultipartFile("file", fis);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 		boolean status = multimediaService.uploadFile(multimediaDTO, multipartFile);
 		
-		if(status)
+		if (status)
 			multimediaRepository.add(expectedMultimedia);
 		
 		List<Multimedia> multimediaFiles = multimediaService.getMultimediaFiles("opensrp");
 		
-		for(Multimedia actualMultimedia : multimediaFiles)
-		{
-			if(actualMultimedia.getCaseId().equals(multimediaDTO.getCaseId()))
-					Assert.assertEquals(expectedMultimedia.getFilePath(),actualMultimedia.getFilePath());
+		for (Multimedia actualMultimedia : multimediaFiles) {
+			if (actualMultimedia.getCaseId().equals(multimediaDTO.getCaseId()))
+				Assert.assertEquals(expectedMultimedia.getFilePath(), actualMultimedia.getFilePath());
 		}
 	}
 }

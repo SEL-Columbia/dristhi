@@ -1,6 +1,5 @@
 package org.opensrp.connector.openmrs.schedule;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
@@ -209,7 +208,6 @@ public class OpenmrsSyncerListener {
 					    ExceptionUtils.getStackTrace(ex1), "");
 				}
 			}
-			patientService.createRealationShip(cl);
 			
 			logger.info("RUNNING FOR EVENTS");
 			

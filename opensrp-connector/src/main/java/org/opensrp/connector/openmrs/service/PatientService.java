@@ -140,27 +140,28 @@ public class PatientService extends OpenmrsService {
 	
 	public void createRealationShip(List<Client> cl) throws JSONException {
 		for (Client c : cl) {
-			
-			JSONObject motherJson = getPatientByIdentifier(c.getRelationships().get("mother").get(0).toString());
-			JSONObject person = motherJson.getJSONObject("person");
-			
-			if (person.getString("uuid") != null) {
-				createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), person.getString("uuid"),
-				    "8d91a210-c2cc-11de-8d13-0010c6dffd0f");
-			}
-			
-			List<Client> siblings = clientService.findByRelationship(c.getRelationships().get("mother").get(0).toString());
-			if (!siblings.isEmpty() || siblings != null) {
-				JSONObject siblingJson;
-				JSONObject sibling;
-				for (Client client : siblings) {
-					if (!c.getBaseEntityId().equals(client.getBaseEntityId())) {
-						siblingJson = getPatientByIdentifier(client.getBaseEntityId());
-						sibling = siblingJson.getJSONObject("person");
-						createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), sibling.getString("uuid"),
-						    "8d91a01c-c2cc-11de-8d13-0010c6dffd0f");
+			if (!c.getRelationships().isEmpty() && c.getRelationships().containsKey("mother")) {
+				String motherBaseId = c.getRelationships().get("mother").get(0).toString();
+				JSONObject motherJson = getPatientByIdentifier(motherBaseId);
+				JSONObject person = motherJson.getJSONObject("person");
+				if (person.getString("uuid") != null) {
+					createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), person.getString("uuid"),
+					    "8d91a210-c2cc-11de-8d13-0010c6dffd0f");
+					logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
+				}
+				List<Client> siblings = clientService.findByRelationship(motherBaseId);
+				if (!siblings.isEmpty() || siblings != null) {
+					JSONObject siblingJson;
+					JSONObject sibling;
+					for (Client client : siblings) {
+						if (!c.getBaseEntityId().equals(client.getBaseEntityId())) {
+							siblingJson = getPatientByIdentifier(client.getBaseEntityId());
+							sibling = siblingJson.getJSONObject("person");
+							createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), sibling.getString("uuid"),
+							    "8d91a01c-c2cc-11de-8d13-0010c6dffd0f");
+						}
+						
 					}
-					
 				}
 			}
 		}
@@ -175,6 +176,7 @@ public class PatientService extends OpenmrsService {
 	
 	public JSONObject createPerson(Client be) throws JSONException {
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
+		logger.info("PERSON TO CREATE " + per.toString());
 		String response = HttpUtil.post(getURL() + "/" + PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body();
 		return new JSONObject(response);
 	}
@@ -282,6 +284,7 @@ public class PatientService extends OpenmrsService {
 	
 	public JSONObject createPatient(Client c) throws JSONException {
 		JSONObject p = new JSONObject();
+		
 		p.put("person", createPerson(c).getString("uuid"));
 		JSONArray ids = new JSONArray();
 		if (c.getIdentifiers() != null) {
