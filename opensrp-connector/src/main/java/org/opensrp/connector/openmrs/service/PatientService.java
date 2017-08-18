@@ -20,6 +20,7 @@ import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Multimedia;
+import org.opensrp.domain.Obs;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.slf4j.Logger;
@@ -250,14 +251,25 @@ public class PatientService extends OpenmrsService {
 				List<Event> registrationEvents = eventService.findByBaseEntityId(client.getBaseEntityId());
 				for (Event event : registrationEvents) {
 					if (event.getEventType().equals("Birth Registration")) {
-						jao.put("address4", openmrsLocationService.getLocation(event.getLocationId()).getName());
 						
-						ArrayList<String> locationsHierarchy = openmrsLocationService.getLocationsHierarchy(
-						    new Gson().toJson(openmrsLocationService.getLocationTreeOf(event.getLocationId())));
-						
-						jao.put("countyDistrict", locationsHierarchy.get(0));
-						jao.put("stateProvince", locationsHierarchy.get(1));
-						jao.put("country", locationsHierarchy.get(2));
+						List<Obs> obs = event.getObs();
+						for (Obs obs2 : obs) {
+							
+							if (obs2 != null && obs2.getFieldType().equals("formsubmissionField")
+							        && obs2.getFormSubmissionField().equals("Home_Facility") && obs2.getValue() != null) {
+								
+								ArrayList<String> locationsHierarchy = openmrsLocationService.getLocationsHierarchy(
+								    new Gson().toJson(openmrsLocationService.getLocationTreeOf(obs2.getValue().toString())));
+								
+								jao.put("address4",
+								    openmrsLocationService.getLocation(obs2.getValue().toString()).getName());
+								jao.put("countyDistrict", locationsHierarchy.get(0));
+								jao.put("stateProvince", locationsHierarchy.get(1));
+								jao.put("country", locationsHierarchy.get(2));
+								
+								break;
+							}
+						}
 						
 					}
 				}
