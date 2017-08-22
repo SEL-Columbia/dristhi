@@ -86,7 +86,7 @@ public class AtomFeedIntegrationTest extends TestResourceLoader {
 
 	@Test
     public void shouldReadEventsCreatedEvents() throws URISyntaxException {
-		PatientAtomfeed paf = new PatientAtomfeed(allMarkers, allFailedEvents, openmrsOpenmrsUrl, patientService, clientService);
+		PatientAtomfeed paf = new PatientAtomfeed(allMarkers, allFailedEvents, openmrsOpenmrsUrl, patientService, clientService, eventService);
 
 		EncounterAtomfeed eaf = new EncounterAtomfeed(allMarkers, allFailedEvents, openmrsOpenmrsUrl, encounterService, eventService);
 		if(pushToOpenmrsForTest){
