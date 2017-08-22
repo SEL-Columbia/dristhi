@@ -6,9 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -114,7 +112,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 				}
 				
 				// Trigger an update to the client
-				createUpdateClientEvent(existing);
+				createEmptyUpdateClientEvent(existing);
 			}
 		}
 		catch (JSONException e) {
@@ -164,17 +162,26 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	 * 
 	 * @param client
 	 */
-	private void createUpdateClientEvent(Client client) {
+	private void createEmptyUpdateClientEvent(Client client) {
 		try {
+			Date start = new Date();
+			final String START_END_CONCEPT = "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+			final String CONCEPT = "concept";
+			final String START = "start";
+			final String END = "end";
+			
 			List<org.opensrp.domain.Event> events = eventService.findByBaseEntityId(client.getBaseEntityId());
 			org.opensrp.domain.Event birthRegEvent = null;
-			if (events != null && !events.isEmpty()) {
-				for (org.opensrp.domain.Event event : events) {
-					if (event.getEventType().equals("Birth Registration")) {
-						birthRegEvent = event;
-						break;
-					}
-					
+			org.opensrp.domain.Event emptyUpdateBirthRegEvent = null;
+			
+			if (events == null || events.isEmpty()) {
+				return;
+			}
+			
+			for (org.opensrp.domain.Event event : events) {
+				if (event.getEventType().equals("Birth Registration")) {
+					birthRegEvent = event;
+					break;
 				}
 			}
 			
@@ -182,49 +189,69 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 				return;
 			}
 			
-			Date start = new Date();
+			for (org.opensrp.domain.Event event : events) {
+				if (event.getEventType().equals("Update Birth Registration") && event.getObs().size() == 2) {
+					boolean startEvent = false;
+					boolean endEvent = false;
+					for (Obs obs : event.getObs()) {
+						if (obs.getFieldCode().equals(START_END_CONCEPT) && obs.getFieldType().equals(CONCEPT)) {
+							if (obs.getFieldDataType().equals(START) && obs.getFormSubmissionField().equals(START)) {
+								startEvent = true;
+							} else if (obs.getFieldDataType().equals(END) && obs.getFormSubmissionField().equals(END)) {
+								endEvent = true;
+								
+							}
+						}
+					}
+					if (startEvent && endEvent) {
+						emptyUpdateBirthRegEvent = event;
+						break;
+					}
+					
+				}
+				
+			}
 			
-			org.opensrp.domain.Event event = (org.opensrp.domain.Event) new org.opensrp.domain.Event()
-			        .withBaseEntityId(client.getBaseEntityId()).withEventDate(client.getDateEdited())
-			        .withEventType("Update Birth Registration").withLocationId(birthRegEvent.getLocationId())
-			        .withProviderId(birthRegEvent.getProviderId()).withEntityType(birthRegEvent.getEntityType())
-			        .withFormSubmissionId(UUID.randomUUID().toString()).withDateCreated(new DateTime());
-			
-			SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			
-			Map<String, String> metaFields = new HashMap<>();
-			metaFields.put("deviceid", "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			metaFields.put("end", "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			metaFields.put("start", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			Calendar calendar = Calendar.getInstance();
-			
-			String end = DATE_TIME_FORMAT.format(calendar.getTime());
-			
-			List<Obs> obses = new ArrayList<>();
-			Obs obs = new Obs();
-			obs.setFieldCode("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			obs.setValue(DATE_TIME_FORMAT.format(start));
-			obs.setFieldType("concept");
-			obs.setFieldDataType("start");
-			obs.setFormSubmissionField("start");
-			obses.add(obs);
-			
-			obs = new Obs();
-			obs.setFieldCode("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			obs.setValue(end);
-			obs.setFieldType("concept");
-			obs.setFieldDataType("end");
-			obs.setFormSubmissionField("end");
-			obses.add(obs);
-			
-			event.setObs(obses);
-			
-			eventService.addEvent(event);
+			if (emptyUpdateBirthRegEvent != null) {
+				emptyUpdateBirthRegEvent.setServerVersion(null);
+				eventService.updateEvent(emptyUpdateBirthRegEvent);
+			} else {
+				
+				org.opensrp.domain.Event event = (org.opensrp.domain.Event) new org.opensrp.domain.Event()
+				        .withBaseEntityId(client.getBaseEntityId()).withEventDate(client.getDateEdited())
+				        .withEventType("Update Birth Registration").withLocationId(birthRegEvent.getLocationId())
+				        .withProviderId(birthRegEvent.getProviderId()).withEntityType(birthRegEvent.getEntityType())
+				        .withFormSubmissionId(UUID.randomUUID().toString()).withDateCreated(new DateTime());
+				
+				SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Calendar calendar = Calendar.getInstance();
+				String end = DATE_TIME_FORMAT.format(calendar.getTime());
+				
+				List<Obs> obses = new ArrayList<>();
+				Obs obs = new Obs();
+				obs.setFieldCode(START_END_CONCEPT);
+				obs.setValue(DATE_TIME_FORMAT.format(start));
+				obs.setFieldType(CONCEPT);
+				obs.setFieldDataType(START);
+				obs.setFormSubmissionField(START);
+				obses.add(obs);
+				
+				obs = new Obs();
+				obs.setFieldCode(START_END_CONCEPT);
+				obs.setValue(end);
+				obs.setFieldType(CONCEPT);
+				obs.setFieldDataType(END);
+				obs.setFormSubmissionField(END);
+				obses.add(obs);
+				
+				event.setObs(obses);
+				
+				eventService.addEvent(event);
+			}
 			
 		}
 		catch (Exception e) {
 			log.log(Level.SEVERE, e.getMessage(), e);
 		}
 	}
-	
 }
