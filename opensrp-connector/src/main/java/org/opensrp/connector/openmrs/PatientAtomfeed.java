@@ -77,6 +77,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 		this.patientService = patientService;
 		this.clientService = clientService;
 		this.eventService = eventService;
+
 	}
 
 	@Override
@@ -113,6 +114,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 		}
 		catch (JSONException e) {
 			throw new RuntimeException(e);
+
 		}
 	}
 

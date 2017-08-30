@@ -106,7 +106,7 @@ public class ReportMonthTest {
     @Test
     public void testReportingMonth() {
         int currentMonth = reportMonth.reportingMonth(new LocalDate());
-        int expectedMonth = new LocalDate().getMonthOfYear()+1;
+        int expectedMonth = new LocalDate().getMonthOfYear() + 1;
         assertEquals(expectedMonth, currentMonth);
 //        assertNotSame(9, currentMonth);
     }
