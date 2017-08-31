@@ -1,14 +1,16 @@
 package org.opensrp.connector.openmrs.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.domain.Location;
 import org.opensrp.api.util.LocationTree;
+import org.opensrp.api.util.TreeNode;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
 import org.springframework.stereotype.Service;
@@ -20,14 +22,6 @@ public class OpenmrsLocationService extends OpenmrsService {
 	
 	private static final String LOCATION_URL = "ws/rest/v1/location";
 	
-	private static final ArrayList<String> ALLOWED_LEVELS;
-	static {
-		ALLOWED_LEVELS = new ArrayList<>();
-		ALLOWED_LEVELS.add("Country");
-		ALLOWED_LEVELS.add("Province");
-		ALLOWED_LEVELS.add("District");
-	}
-	
 	public OpenmrsLocationService() {
 	}
 	
@@ -37,8 +31,7 @@ public class OpenmrsLocationService extends OpenmrsService {
 	
 	public Location getLocation(String locationIdOrName) throws JSONException {
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + LOCATION_URL + "/"
-		        + (locationIdOrName.replaceAll(" ", "%20")),
-		    "v=full", OPENMRS_USER, OPENMRS_PWD);
+		        + (locationIdOrName.replaceAll(" ", "%20")), "v=full", OPENMRS_USER, OPENMRS_PWD);
 		
 		if (!StringUtils.isEmptyOrWhitespaceOnly(op.body())) {
 			return makeLocation(op.body());
@@ -47,8 +40,8 @@ public class OpenmrsLocationService extends OpenmrsService {
 	}
 	
 	public Location getParent(JSONObject locobj) throws JSONException {
-		JSONObject parentL = (locobj.has("parentLocation") && !locobj.isNull("parentLocation"))
-		        ? locobj.getJSONObject("parentLocation") : null;
+		JSONObject parentL = (locobj.has("parentLocation") && !locobj.isNull("parentLocation")) ? locobj
+		        .getJSONObject("parentLocation") : null;
 		
 		if (parentL != null) {
 			return new Location(parentL.getString("uuid"), parentL.getString("display"), null, getParent(parentL));
@@ -105,6 +98,12 @@ public class OpenmrsLocationService extends OpenmrsService {
 		return ltr;
 	}
 	
+	public LocationTree getLocationTreeWithUpperHierachyOf(String locationIdOrName) throws JSONException {
+		LocationTree ltr = new LocationTree();
+		fillTreeWithUpperHierarchy(ltr, locationIdOrName);
+		return ltr;
+	}
+	
 	public LocationTree getLocationTreeOf(String[] locationIdsOrNames) throws JSONException {
 		LocationTree ltr = new LocationTree();
 		
@@ -121,8 +120,7 @@ public class OpenmrsLocationService extends OpenmrsService {
 	
 	private String fillTreeWithHierarchy(LocationTree ltr, String locationIdOrName) throws JSONException {
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + LOCATION_URL + "/"
-		        + (locationIdOrName.replaceAll(" ", "%20")),
-		    "v=full", OPENMRS_USER, OPENMRS_PWD);
+		        + (locationIdOrName.replaceAll(" ", "%20")), "v=full", OPENMRS_USER, OPENMRS_PWD);
 		
 		JSONObject lo = new JSONObject(op.body());
 		Location l = makeLocation(op.body());
@@ -153,36 +151,63 @@ public class OpenmrsLocationService extends OpenmrsService {
 		}
 	}
 	
-	public ArrayList<String> getLocationsHierarchy(String data) throws JSONException {
-		ArrayList<String> locations = new ArrayList<>();
-		
-		JSONObject locationData = new JSONObject(data);
-		if (locationData.has("locationsHierarchy") && locationData.getJSONObject("locationsHierarchy").has("map")) {
-			JSONObject map = locationData.getJSONObject("locationsHierarchy").getJSONObject("map");
-			Iterator<String> keys = map.keys();
-			while (keys.hasNext()) {
-				String curKey = keys.next();
-				extractLocations(locations, map.getJSONObject(curKey));
-			}
+	public Map<String, String> getLocationsHierarchy(LocationTree locationTree) throws JSONException {
+		Map<String, String> map = new HashMap<>();
+		if (locationTree == null) {
+			return map;
 		}
 		
-		Collections.sort(locations);
-		
-		return locations;
+		Map<String, TreeNode<String, Location>> locationsHierarchy = locationTree.getLocationsHierarchy();
+		if (locationsHierarchy != null && !locationsHierarchy.isEmpty()) {
+			for (TreeNode<String, Location> value : locationsHierarchy.values()) {
+				extractLocations(map, value);
+			}
+		}
+		return map;
 	}
 	
-	private void extractLocations(ArrayList<String> locationList, JSONObject rawLocationData) throws JSONException {
-		String name = rawLocationData.getJSONObject("node").getString("name");
-		String level = rawLocationData.getJSONObject("node").getJSONArray("tags").getString(0);
-		if (ALLOWED_LEVELS.contains(level)) {
-			locationList.add(name);
+	private void extractLocations(Map<String, String> map, TreeNode<String, Location> value) throws JSONException {
+		if (value == null || value.getNode() == null) {
+			return;
 		}
-		if (rawLocationData.has("children")) {
-			Iterator<String> childIterator = rawLocationData.getJSONObject("children").keys();
-			while (childIterator.hasNext()) {
-				String curChildKey = childIterator.next();
-				extractLocations(locationList, rawLocationData.getJSONObject("children").getJSONObject(curChildKey));
+		
+		final String[] allowedLevels = { AllowedLevels.COUNTRY.toString(), AllowedLevels.PROVINCE.toString(),
+		        AllowedLevels.DISTRICT.toString() };
+		
+		Location node = value.getNode();
+		String name = node.getName();
+		Set<String> tags = node.getTags();
+		{
+			if (tags != null && !tags.isEmpty()) {
+				for (String level : tags) {
+					if (ArrayUtils.contains(allowedLevels, level)) {
+						map.put(level, name);
+					}
+				}
+			}
+			
+		}
+		Map<String, TreeNode<String, Location>> children = value.getChildren();
+		if (children != null && !children.isEmpty()) {
+			for (TreeNode<String, Location> childValue : children.values()) {
+				extractLocations(map, childValue);
 			}
 		}
 	}
+	
+	public enum AllowedLevels {
+		COUNTRY("Country"), PROVINCE("Province"), DISTRICT("District");
+		
+		private final String display;
+		
+		private AllowedLevels(final String display) {
+			this.display = display;
+		}
+		
+		@Override
+		public String toString() {
+			return display;
+		}
+		
+	};
 }
