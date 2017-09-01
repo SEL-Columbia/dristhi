@@ -90,12 +90,15 @@ public class EncounterService extends OpenmrsService {
 	public JSONObject getEncounterType(String encounterType) throws JSONException {
 		// we have to use this ugly approach because identifier not found throws exception and 
 		// its hard to find whether it was network error or object not found or server error
-		JSONArray res = new JSONObject(
-				HttpUtil.get(getURL() + "/" + ENCOUNTER__TYPE_URL, "v=full", OPENMRS_USER, OPENMRS_PWD).body())
-				.getJSONArray("results");
-		for (int i = 0; i < res.length(); i++) {
-			if (res.getJSONObject(i).getString("display").equalsIgnoreCase(encounterType)) {
-				return res.getJSONObject(i);
+		JSONObject resEncounterType = new JSONObject(
+				HttpUtil.get(getURL() + "/" + ENCOUNTER__TYPE_URL, "v=full", OPENMRS_USER, OPENMRS_PWD).body());
+
+		if (resEncounterType.has("results") && resEncounterType.get("results") instanceof JSONArray) {
+			JSONArray res = resEncounterType.getJSONArray("results");
+			for (int i = 0; i < res.length(); i++) {
+				if (res.getJSONObject(i).getString("display").equalsIgnoreCase(encounterType)) {
+					return res.getJSONObject(i);
+				}
 			}
 		}
 		return null;
@@ -137,11 +140,17 @@ public class EncounterService extends OpenmrsService {
 			for (Obs obs : ol) {
 				if (!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode()) && (obs.getFieldType() == null || obs
 						.getFieldType()
-						.equalsIgnoreCase("concept"))) {//skipping empty obs and fields that don't have concepts
-					//if no parent simply make it root obs
+						.equalsIgnoreCase("concept"))) {
+//					skipping empty obs and fields that don't have concepts if no parent simply make it root obs
+
+					if (obs.getFieldType().equals("concept") && obs.getFormSubmissionField().equals("Birth_Facility_Name")
+							&& obs.getValue() != null
+							&& openmrsLocationService.getLocation(obs.getValue().toString()).getName() != null) {
+						obs.setValue(openmrsLocationService.getLocation(obs.getValue().toString()).getName());
+					}
 					if (StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())) {
 						p.put(obs.getFieldCode(), convertObsToJson(obs));
-					} else {
+					}else {
 						//find parent obs if not found search and fill or create one
 						JSONArray parentObs = p.get(obs.getParentCode());
 						if (parentObs == null) {
@@ -209,8 +218,13 @@ public class EncounterService extends OpenmrsService {
 		if (ol != null)
 			for (Obs obs : ol) {
 				if (!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode()) && (obs.getFieldType() == null || obs
-						.getFieldType().equalsIgnoreCase("concept"))) {//skipping empty obs
-					//if no parent simply make it root obs
+						.getFieldType().equalsIgnoreCase("concept"))) {
+					//skipping empty obs if no parent simply make it root obs
+					if (obs.getFieldType().equals("concept") && obs.getFormSubmissionField().equals("Birth_Facility_Name")
+							&& obs.getValue() != null
+							&& openmrsLocationService.getLocation(obs.getValue().toString()).getName() != null) {
+						obs.setValue(openmrsLocationService.getLocation(obs.getValue().toString()).getName());
+					}
 					if (StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())) {
 						p.put(obs.getFieldCode(), convertObsToJson(obs));
 					} else {
