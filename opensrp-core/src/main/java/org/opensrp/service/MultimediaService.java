@@ -39,13 +39,8 @@ public class MultimediaService {
 	}
 	
 	public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
-		
-		boolean uploadStatus = uploadFile(multimediaDTO, file);
-		
-		String[] multimediaDirPathSplit = multimediaDirPath.split("/", 3);
-		String multimediaDirPathDB = File.separator + multimediaDirPathSplit[2];
-		
-		if (uploadStatus) {
+
+		if (uploadFile(multimediaDTO, file)) {
 			try {
 				logger.info("Image path : " + multimediaDirPath);
 				
@@ -54,13 +49,16 @@ public class MultimediaService {
 				        .withFilePath(multimediaDTO.getFilePath()).withFileCategory(multimediaDTO.getFileCategory());
 				
 				multimediaRepository.add(multimediaFile);
-				
 				Client client = clientService.getByBaseEntityId(multimediaDTO.getCaseId());
-				client.getAttributes().put("Patient Image", multimediaDTO.getCaseId() + ".jpg");
-				clientService.imageUpdate(client);
-				
+				if (client !=null) {
+					if(client.getAttribute("Patient Image") != null) {
+						client.removeAttribute("Patient Image");
+					}
+					client.addAttribute("Patient Image", multimediaDTO.getCaseId() + ".jpg");
+					client.setServerVersion(null);
+					clientService.updateClient(client);
+				}
 				return "success";
-				
 			}
 			catch (Exception e) {
 				e.getMessage();
@@ -68,7 +66,6 @@ public class MultimediaService {
 		}
 		
 		return "fail";
-		
 	}
 	
 	public boolean uploadFile(MultimediaDTO multimediaDTO, MultipartFile multimediaFile) {

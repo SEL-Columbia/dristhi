@@ -60,12 +60,12 @@ public class OpenmrsLocationService extends OpenmrsService {
 		}
 		
 		JSONArray a = obj.getJSONArray("attributes");
-		
+
 		for (int i = 0; i < a.length(); i++) {
 			String ad = a.getJSONObject(i).getString("display");
 			l.addAttribute(ad.substring(0, ad.indexOf(":")), ad.substring(ad.indexOf(":") + 2));
 		}
-		
+
 		return l;
 	}
 	

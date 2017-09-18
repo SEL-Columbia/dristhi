@@ -241,6 +241,16 @@ public class PatientService extends OpenmrsService {
 		JSONObject per = convertBaseEntityToOpenmrsJson(be, false);
 		logger.info("PERSON TO CREATE " + per.toString());
 		String response = HttpUtil.post(getURL() + "/" + PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body();
+		logger.info("PERSON TO CREATE RESPONSE ----" + response);
+		JSONObject jsonResponse = new JSONObject(response);
+
+		if(jsonResponse.has("error")){
+			JSONObject responseError = new JSONObject(jsonResponse.getString("error"));
+			if(responseError.has("message")&& responseError.getString("message").equals("User is not logged in")){
+				be.setServerVersion(null);
+				clientService.updateClient(be);
+			}
+		}
 		return new JSONObject(response);
 	}
 
@@ -271,6 +281,22 @@ public class PatientService extends OpenmrsService {
 			ln = ln.replaceAll("[^A-Za-z0-9\\s]+", "");
 		}
 
+		List<Event> registrationEvents = eventService.findByBaseEntityId(be.getBaseEntityId());
+		for (Event event : registrationEvents) {
+			if (event.getEventType().equals("Birth Registration")) {
+				List<Obs> obs = event.getObs();
+				for (Obs obs2 : obs) {
+					if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField().equals("Home_Facility") && obs2.getValue() != null) {
+						String clientAddress4 = openmrsLocationService.getLocation(obs2.getValue().toString()).getName();
+						if (be.getAttribute("Home_Facility") != null) {
+							be.removeAttribute("Home_Facility");
+						}
+						be.addAttribute("Home_Facility", clientAddress4);
+					}
+				}
+			}
+			break;
+		}
 		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
 
 		if (!update) {
@@ -344,12 +370,6 @@ public class PatientService extends OpenmrsService {
 								jao.put("country", locationsHierarchyMap.containsKey(AllowedLevels.COUNTRY.toString()) ?
 										locationsHierarchyMap.get(AllowedLevels.COUNTRY.toString()) :
 										"");
-								if (client.getAttribute("Home_Facility") != null) {
-									client.removeAttribute("Home_Facility");
-								}
-								client.addAttribute("Home_Facility", clientAddress4);
-								client.setServerVersion(null);
-								clientService.updateClient(client);
 								break;
 							}
 						}
@@ -656,13 +676,6 @@ public class PatientService extends OpenmrsService {
 					requestBody.put("country", locationsHierarchyMap.containsKey(AllowedLevels.COUNTRY.toString()) ?
 							locationsHierarchyMap.get(AllowedLevels.COUNTRY.toString()) :
 							"");
-
-					if (client.getAttribute("Home_Facility") != null) {
-						client.removeAttribute("Home_Facility");
-					}
-					client.addAttribute("Home_Facility", clientAddress4);
-					client.setServerVersion(null);
-					clientService.updateClient(client);
 				}
 
 				break;
