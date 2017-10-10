@@ -32,8 +32,8 @@ public class OpenmrsLocationService extends OpenmrsService {
 	public Location getLocation(String locationIdOrName) throws JSONException {
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + LOCATION_URL + "/"
 		        + (locationIdOrName.replaceAll(" ", "%20")), "v=full", OPENMRS_USER, OPENMRS_PWD);
-		
-		if (!StringUtils.isEmptyOrWhitespaceOnly(op.body())) {
+
+		if (!StringUtils.isEmptyOrWhitespaceOnly(op.body()) && (new JSONObject(op.body())).has("uuid")) {
 			return makeLocation(op.body());
 		}
 		return null;

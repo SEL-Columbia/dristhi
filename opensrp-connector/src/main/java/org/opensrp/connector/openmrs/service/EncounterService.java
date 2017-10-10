@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.api.domain.Location;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
 import org.opensrp.domain.Client;
@@ -139,18 +140,19 @@ public class EncounterService extends OpenmrsService {
 		if (ol != null)
 			for (Obs obs : ol) {
 				if (!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode()) && (obs.getFieldType() == null || obs
-						.getFieldType()
-						.equalsIgnoreCase("concept"))) {
-//					skipping empty obs and fields that don't have concepts if no parent simply make it root obs
+						.getFieldType().equalsIgnoreCase("concept"))) {
+					//					skipping empty obs and fields that don't have concepts if no parent simply make it root obs
 
 					if (obs.getFieldType().equals("concept") && obs.getFormSubmissionField().equals("Birth_Facility_Name")
-							&& obs.getValue() != null
-							&& openmrsLocationService.getLocation(obs.getValue().toString()).getName() != null) {
-						obs.setValue(openmrsLocationService.getLocation(obs.getValue().toString()).getName());
+							&& obs.getValue() != null) {
+						Location location = openmrsLocationService.getLocation(obs.getValue().toString());
+						if (location != null && location.getName() != null) {
+							obs.setValue(location.getName());
+						}
 					}
 					if (StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())) {
 						p.put(obs.getFieldCode(), convertObsToJson(obs));
-					}else {
+					} else {
 						//find parent obs if not found search and fill or create one
 						JSONArray parentObs = p.get(obs.getParentCode());
 						if (parentObs == null) {
