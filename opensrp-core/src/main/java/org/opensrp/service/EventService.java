@@ -1,10 +1,7 @@
 package org.opensrp.service;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.ektorp.CouchDbConnector;
 import org.joda.time.DateTime;
@@ -220,6 +217,7 @@ public class EventService {
 			allEvents.update(event);
 			
 		} else {
+			event.setDateCreated(DateTime.now());
 			allEvents.add(event);
 			
 		}
@@ -293,6 +291,10 @@ public class EventService {
 	
 	public List<Event> findByServerVersion(long serverVersion) {
 		return allEvents.findByServerVersion(serverVersion);
+	}
+
+	public List<Event> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
+		return allEvents.notInOpenMRSByServerVersion(serverVersion, calendar);
 	}
 	
 	public List<Event> getAll() {

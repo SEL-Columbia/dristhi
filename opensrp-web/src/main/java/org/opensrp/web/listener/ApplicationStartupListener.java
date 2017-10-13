@@ -28,7 +28,8 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     private RepeatingSchedule atomfeedSchedule;
     private RepeatingSchedule encounterSchedule;
     private RepeatingSchedule dhis2Schedule;
-    
+    private RepeatingSchedule validateSyncedToOMRS;
+
     @Autowired
     public ApplicationStartupListener(TaskSchedulerService scheduler, 
     		@Value("#{opensrp['form.poll.time.interval']}") int formPollInterval,
@@ -44,6 +45,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
         atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
         encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
         dhis2Schedule = new RepeatingSchedule(DHIS2DatasetPush.SCHEDULER_DHIS2_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
+        validateSyncedToOMRS = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_SYNC_VALIDATOR_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
     }
 
     @Override
@@ -58,7 +60,8 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
             scheduler.startJob(atomfeedSchedule);
             scheduler.startJob(encounterSchedule);
             scheduler.startJob(dhis2Schedule);
-            
+            scheduler.startJob(validateSyncedToOMRS);
+
         	System.out.println("STARTED ALL SCHEDULES");
         }
     }

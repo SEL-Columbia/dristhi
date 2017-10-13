@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -266,6 +267,9 @@ public class ClientService {
 	public List<Client> findByServerVersion(long serverVersion) {
 		return allClients.findByServerVersion(serverVersion);
 	}
+	public List<Client> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
+		return allClients.notInOpenMRSByServerVersion(serverVersion, calendar);
+	}
 
 	public List<Client> findByFieldValue(String field, List<String> ids) {
 		return allClients.findByFieldValue(field, ids);
@@ -314,14 +318,13 @@ public class ClientService {
 		if (c != null) {
 			client.setRevision(c.getRevision());
 			client.setId(c.getId());
-			c.setDateEdited(DateTime.now());
+			client.setDateEdited(DateTime.now());
 			if (resetServerVersion) {
-				c.setServerVersion(null);
+				client.setServerVersion(null);
 			}
 			allClients.update(client);
 
 		} else {
-
 			client.setDateCreated(DateTime.now());
 			allClients.add(client);
 		}

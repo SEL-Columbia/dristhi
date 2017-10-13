@@ -1,5 +1,6 @@
 package org.opensrp.repository;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -105,6 +106,19 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
 		return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).includeDocs(true),
 		    Event.class);
+	}
+
+
+	@View(name = "events_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Event' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID') {noId = false;}}if(noId){emit([doc.serverVersion],  null); }} }")
+	public List<Event> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
+		long serverStartKey = serverVersion + 1;
+		long serverEndKey = Long.MAX_VALUE - calendar.getTimeInMillis();
+		if(serverStartKey < serverEndKey) {
+			ComplexKey startKey = ComplexKey.of(serverStartKey);
+			ComplexKey endKey = ComplexKey.of(serverEndKey);
+			return db.queryView(createQuery("events_not_in_OpenMRS").startKey(startKey).endKey(endKey).includeDocs(true), Event.class);
+		}
+		return new ArrayList<>();
 	}
 	
 	/**
