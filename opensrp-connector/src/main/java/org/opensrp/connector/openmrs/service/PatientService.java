@@ -1,6 +1,7 @@
 package org.opensrp.connector.openmrs.service;
 
 import com.mysql.jdbc.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,10 +10,13 @@ import org.opensrp.api.util.LocationTree;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.MultipartUtility;
+import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.schedule.OpenmrsSyncerListener;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService.AllowedLevels;
 import org.opensrp.domain.*;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.ConfigService;
+import org.opensrp.service.ErrorTraceService;
 import org.opensrp.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,13 +53,12 @@ public class PatientService extends OpenmrsService {
 
 	private static final String PATIENT_IDENTIFIER_URL = "identifier";
 
-	private static final String PERSON_ATTRIBUTE_URL = "attribute";
-
 	private static final String PERSON_ATTRIBUTE_TYPE_URL = "ws/rest/v1/personattributetype";
 
 	private static final String PATIENT_IDENTIFIER_TYPE_URL = "ws/rest/v1/patientidentifiertype";
 
 	private static final String PATIENT_RELATIONSHIP_URL = "ws/rest/v1/relationship";
+
 
 	private static Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
 
@@ -65,15 +68,21 @@ public class PatientService extends OpenmrsService {
 
 	private OpenmrsLocationService openmrsLocationService;
 
+	private ConfigService config;
+
+	private ErrorTraceService errorTraceService;
+
 	public PatientService() {
 	}
 
 	@Autowired
 	public PatientService(ClientService clientService, OpenmrsLocationService openmrsLocationService,
-	                      EventService eventService) {
+	                      EventService eventService,ConfigService config, ErrorTraceService errorTraceService) {
 		this.clientService = clientService;
 		this.openmrsLocationService = openmrsLocationService;
 		this.eventService = eventService;
+		this.config = config;
+		this.errorTraceService = errorTraceService;
 	}
 
 	public PatientService(String openmrsUrl, String user, String password) {
@@ -222,6 +231,62 @@ public class PatientService extends OpenmrsService {
 				}
 			}
 		}
+	}
+
+
+	public void processClients(List<Client> cl, JSONArray patientsJsonArray, OpenmrsConstants.SchedulerConfig schedulerConfig, String errorType){
+		JSONObject patient = new JSONObject();// only for test code purpose
+		for (Client c : cl) {
+			try {
+				// FIXME This is to deal with existing records and should be
+				// removed later
+				if (c.getIdentifiers().containsKey("M_ZEIR_ID")) {
+					if (c.getBirthdate() == null) {
+						c.setBirthdate(new DateTime("1970-01-01"));
+					}
+					c.setGender("Female");
+				}
+				String uuid = c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
+
+				if (uuid == null) {
+					JSONObject p = getPatientByIdentifier(c.getBaseEntityId());
+					for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
+						p = getPatientByIdentifier(id.getValue());
+						if (p != null) {
+							break;
+						}
+					}
+					if (p != null) {
+						uuid = p.getString("uuid");
+					}
+				}
+				if (uuid != null) {
+					logger.info("Updating patient " + uuid);
+					patient = updatePatient(c, uuid);
+					config.updateAppStateToken(schedulerConfig,
+							c.getServerVersion());
+
+				} else {
+					JSONObject patientJson = createPatient(c);
+					patient = patientJson;//only for test code purpose
+					if (patientJson != null && patientJson.has("uuid")) {
+						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
+						clientService.addorUpdate(c, false);
+
+						config.updateAppStateToken(schedulerConfig,
+								c.getServerVersion());
+					}
+
+				}
+			}
+			catch (Exception ex1) {
+				ex1.printStackTrace();
+				errorTraceService.log(errorType, Client.class.getName(), c.getBaseEntityId(),
+						ExceptionUtils.getStackTrace(ex1), "");
+			}
+			patientsJsonArray.put(patient);
+		}
+
 	}
 
 	public JSONObject getPersonAttributeType(String attributeName) throws JSONException {

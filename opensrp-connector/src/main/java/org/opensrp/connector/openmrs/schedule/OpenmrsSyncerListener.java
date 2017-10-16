@@ -155,7 +155,15 @@ public class OpenmrsSyncerListener {
 
 			lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
 			start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
-			pushEvent(start);
+
+
+			List<Event> el = eventService.findByServerVersion(start);
+			Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
+			logger.info("Event list size " + el.size() + " [start]" + start);
+			JSONObject encounter = null;
+
+			encounterService.pushEvent(el, OpenmrsConstants.SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,"OPENMRS FAILED EVENT PUSH");
+
 			logger("PUSH TO OPENMRS FINISHED AT ", "");
 
 		}
@@ -173,64 +181,16 @@ public class OpenmrsSyncerListener {
 
 	}
 
+
+
 	public JSONObject pushClient(long start) throws JSONException {
 		List<Client> cl = clientService.findByServerVersion(start);
 		logger.info("Clients list size " + cl.size());
-		JSONObject patient = new JSONObject();// only for test code purpose
 		JSONArray patientsJsonArray = new JSONArray();// only for test code purpose
 		JSONArray relationshipsArray = new JSONArray();// only for test code purpose
 		JSONObject returnJsonObject = new JSONObject();// only for test code purpose
-		for (Client c : cl) {
-			try {
-				// FIXME This is to deal with existing records and should be
-				// removed later
-				if (c.getIdentifiers().containsKey("M_ZEIR_ID")) {
-					if (c.getBirthdate() == null) {
-						c.setBirthdate(new DateTime("1970-01-01"));
-					}
-					c.setGender("Female");
-				}
-				String uuid = c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
 
-				if (uuid == null) {
-					JSONObject p = patientService.getPatientByIdentifier(c.getBaseEntityId());
-					for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
-						p = patientService.getPatientByIdentifier(id.getValue());
-						if (p != null) {
-							break;
-						}
-					}
-					if (p != null) {
-						uuid = p.getString("uuid");
-					}
-				}
-				if (uuid != null) {
-					logger.info("Updating patient " + uuid);
-					patient = patientService.updatePatient(c, uuid);
-					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-							c.getServerVersion());
-
-				} else {
-					JSONObject patientJson = patientService.createPatient(c);
-					patient = patientJson;//only for test code purpose
-					if (patientJson != null && patientJson.has("uuid")) {
-						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
-						clientService.addorUpdate(c, false);
-
-						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-								c.getServerVersion());
-
-					}
-
-				}
-			}
-			catch (Exception ex1) {
-				ex1.printStackTrace();
-				errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
-						ExceptionUtils.getStackTrace(ex1), "");
-			}
-			patientsJsonArray.put(patient);
-		}
+		patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, "OPENMRS FAILED CLIENT PUSH");
 
 		logger.info("RUNNING FOR RELATIONSHIPS");
 		patientService.createRelationShip(cl);
@@ -240,36 +200,8 @@ public class OpenmrsSyncerListener {
 
 	}
 
-	public JSONObject pushEvent(long start) {
-		List<Event> el = eventService.findByServerVersion(start);
-		logger.info("Event list size " + el.size() + " [start]" + start);
-		JSONObject encounter = null;
-		for (Event e : el) {
-			try {
-				String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
-				if (uuid != null) {
-					encounter = encounterService.updateEncounter(e);
-					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
-							e.getServerVersion());
-				} else {
-					JSONObject eventJson = encounterService.createEncounter(e);
-					encounterService.processUpdateEvents(e);
-					if (eventJson != null && eventJson.has("uuid")) {
-						e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
-						eventService.updateEvent(e);
-						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
-								e.getServerVersion());
-					}
-				}
-			}
-			catch (Exception ex2) {
-				logger.error("", ex2);
-				errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(),
-						ExceptionUtils.getStackTrace(ex2), "");
-			}
-		}
-		return encounter;
 
-	}
+
+
 
 }

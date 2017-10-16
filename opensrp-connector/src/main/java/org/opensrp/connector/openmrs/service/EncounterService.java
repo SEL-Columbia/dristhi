@@ -1,6 +1,7 @@
 package org.opensrp.connector.openmrs.service;
 
 import com.mysql.jdbc.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,11 +9,18 @@ import org.json.JSONObject;
 import org.opensrp.api.domain.Location;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
+import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
+import org.opensrp.connector.openmrs.schedule.OpenmrsSyncerListener;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.domain.User;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.ConfigService;
+import org.opensrp.service.ErrorTraceService;
+import org.opensrp.service.EventService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +48,23 @@ public class EncounterService extends OpenmrsService {
 
 	private OpenmrsLocationService openmrsLocationService;
 
+	private EventService eventService;
+
+	private ErrorTraceService errorTraceService;
+
+	private ConfigService config;
+
 	@Autowired
 	public EncounterService(PatientService patientService, OpenmrsUserService userService, ClientService clientService,
-	                        OpenmrsLocationService openmrsLocationService) {
+	                        OpenmrsLocationService openmrsLocationService, ErrorTraceService errorTraceService) {
 		this.patientService = patientService;
 		this.userService = userService;
 		this.clientService = clientService;
 		this.openmrsLocationService = openmrsLocationService;
+		this.eventService = eventService;
+		this.config = config;
+		this.errorTraceService = errorTraceService;
+
 	}
 
 	public EncounterService(String openmrsUrl, String user, String password) {
@@ -403,5 +421,35 @@ public class EncounterService extends OpenmrsService {
 		}
 
 		return event;
+	}
+	public JSONObject pushEvent(List<Event> el, OpenmrsConstants.SchedulerConfig schedulerConfig, String errorType ) {
+		Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
+		JSONObject encounter = null;
+		for (Event e : el) {
+			try {
+				String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
+				if (uuid != null) {
+					encounter = updateEncounter(e);
+					config.updateAppStateToken(schedulerConfig,
+							e.getServerVersion());
+				} else {
+					JSONObject eventJson = createEncounter(e);
+					processUpdateEvents(e);
+					if (eventJson != null && eventJson.has("uuid")) {
+						e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
+						eventService.updateEvent(e);
+						config.updateAppStateToken(schedulerConfig,
+								e.getServerVersion());
+					}
+				}
+			}
+			catch (Exception ex2) {
+				logger.error("", ex2);
+				errorTraceService.log(errorType, Event.class.getName(), e.getId(),
+						ExceptionUtils.getStackTrace(ex2), "");
+			}
+		}
+		return encounter;
+
 	}
 }
