@@ -1,10 +1,5 @@
 package org.opensrp.connector.openmrs.schedule;
 
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.concurrent.locks.ReentrantLock;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Component
 public class OpenmrsSyncerListener {
@@ -62,8 +60,8 @@ public class OpenmrsSyncerListener {
 
 	@Autowired
 	public OpenmrsSyncerListener(ScheduleService opensrpScheduleService, ActionService actionService, ConfigService config,
-	                             ErrorTraceService errorTraceService, PatientService patientService, EncounterService encounterService,
-	                             ClientService clientService, EventService eventService) {
+	                             ErrorTraceService errorTraceService, PatientService patientService,
+	                             EncounterService encounterService, ClientService clientService, EventService eventService) {
 		//this.openmrsSchedulerService = openmrsSchedulerService;
 		this.opensrpScheduleService = opensrpScheduleService;
 		this.actionService = actionService;
@@ -156,13 +154,13 @@ public class OpenmrsSyncerListener {
 			lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
 			start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
 
-
 			List<Event> el = eventService.findByServerVersion(start);
 			Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
 			logger.info("Event list size " + el.size() + " [start]" + start);
 			JSONObject encounter = null;
 
-			encounterService.pushEvent(el, OpenmrsConstants.SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,"OPENMRS FAILED EVENT PUSH");
+			encounterService.pushEvent(el, OpenmrsConstants.SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
+					"OPENMRS FAILED EVENT PUSH");
 
 			logger("PUSH TO OPENMRS FINISHED AT ", "");
 
@@ -181,8 +179,6 @@ public class OpenmrsSyncerListener {
 
 	}
 
-
-
 	public JSONObject pushClient(long start) throws JSONException {
 		List<Client> cl = clientService.findByServerVersion(start);
 		logger.info("Clients list size " + cl.size());
@@ -190,7 +186,8 @@ public class OpenmrsSyncerListener {
 		JSONArray relationshipsArray = new JSONArray();// only for test code purpose
 		JSONObject returnJsonObject = new JSONObject();// only for test code purpose
 
-		patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, "OPENMRS FAILED CLIENT PUSH");
+		patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+				"OPENMRS FAILED CLIENT PUSH");
 
 		logger.info("RUNNING FOR RELATIONSHIPS");
 		patientService.createRelationShip(cl);
@@ -199,9 +196,5 @@ public class OpenmrsSyncerListener {
 		return returnJsonObject;
 
 	}
-
-
-
-
 
 }

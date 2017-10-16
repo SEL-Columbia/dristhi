@@ -43,9 +43,8 @@ public class OpenmrsValidateDataSync {
 	private static int WAIT_TIME_IN_HOURS = 12;
 
 	@Autowired
-	public OpenmrsValidateDataSync(ConfigService config, PatientService patientService,
-	                               ClientService clientService, EventService eventService,
-	                               EncounterService encounterService) {
+	public OpenmrsValidateDataSync(ConfigService config, PatientService patientService, ClientService clientService,
+	                               EventService eventService, EncounterService encounterService) {
 
 		this.config = config;
 		this.patientService = patientService;
@@ -79,14 +78,16 @@ public class OpenmrsValidateDataSync {
 			logger.info("Clients list size " + cl.size());
 			JSONArray patientsJsonArray = new JSONArray();
 
-			patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_client_sync_validator_timestamp, "OPENMRS FAILED CLIENT VALIDATION");
+			patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_client_sync_validator_timestamp,
+					"OPENMRS FAILED CLIENT VALIDATION");
 
 			logger.info("Events list size " + cl.size());
 			lastValidated = config.getAppStateTokenByName(SchedulerConfig.openmrs_event_sync_validator_timestamp);
 			start = lastValidated == null || lastValidated.getValue() == null ? 0 : lastValidated.longValue();
 			List<Event> el = eventService.notInOpenMRSByServerVersion(start, calendar);
 
-			encounterService.pushEvent(el,OpenmrsConstants.SchedulerConfig.openmrs_event_sync_validator_timestamp,"OPENMRS FAILED EVENT VALIDATION");
+			encounterService.pushEvent(el, OpenmrsConstants.SchedulerConfig.openmrs_event_sync_validator_timestamp,
+					"OPENMRS FAILED EVENT VALIDATION");
 
 			logger.info("RUNNING FOR RELATIONSHIPS");
 			patientService.createRelationShip(cl);

@@ -138,7 +138,7 @@ public class EncounterService extends OpenmrsService {
 
 	public JSONObject createEncounter(Event e) throws JSONException {
 		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
-		if(pt == null) {
+		if (pt == null) {
 			return null;
 		}
 		JSONObject enc = new JSONObject();
@@ -422,7 +422,8 @@ public class EncounterService extends OpenmrsService {
 
 		return event;
 	}
-	public JSONObject pushEvent(List<Event> el, OpenmrsConstants.SchedulerConfig schedulerConfig, String errorType ) {
+
+	public JSONObject pushEvent(List<Event> el, OpenmrsConstants.SchedulerConfig schedulerConfig, String errorType) {
 		Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
 		JSONObject encounter = null;
 		for (Event e : el) {
@@ -430,23 +431,20 @@ public class EncounterService extends OpenmrsService {
 				String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
 				if (uuid != null) {
 					encounter = updateEncounter(e);
-					config.updateAppStateToken(schedulerConfig,
-							e.getServerVersion());
+					config.updateAppStateToken(schedulerConfig, e.getServerVersion());
 				} else {
 					JSONObject eventJson = createEncounter(e);
 					processUpdateEvents(e);
 					if (eventJson != null && eventJson.has("uuid")) {
 						e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 						eventService.updateEvent(e);
-						config.updateAppStateToken(schedulerConfig,
-								e.getServerVersion());
+						config.updateAppStateToken(schedulerConfig, e.getServerVersion());
 					}
 				}
 			}
 			catch (Exception ex2) {
 				logger.error("", ex2);
-				errorTraceService.log(errorType, Event.class.getName(), e.getId(),
-						ExceptionUtils.getStackTrace(ex2), "");
+				errorTraceService.log(errorType, Event.class.getName(), e.getId(), ExceptionUtils.getStackTrace(ex2), "");
 			}
 		}
 		return encounter;

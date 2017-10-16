@@ -59,7 +59,6 @@ public class PatientService extends OpenmrsService {
 
 	private static final String PATIENT_RELATIONSHIP_URL = "ws/rest/v1/relationship";
 
-
 	private static Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
 
 	private ClientService clientService;
@@ -77,7 +76,7 @@ public class PatientService extends OpenmrsService {
 
 	@Autowired
 	public PatientService(ClientService clientService, OpenmrsLocationService openmrsLocationService,
-	                      EventService eventService,ConfigService config, ErrorTraceService errorTraceService) {
+	                      EventService eventService, ConfigService config, ErrorTraceService errorTraceService) {
 		this.clientService = clientService;
 		this.openmrsLocationService = openmrsLocationService;
 		this.eventService = eventService;
@@ -208,9 +207,10 @@ public class PatientService extends OpenmrsService {
 				String motherBaseId = c.getRelationships().get("mother").get(0).toString();
 
 				JSONObject person = getPatientByIdentifier(motherBaseId).has("person") ?
-						getPatientByIdentifier(motherBaseId).getJSONObject("person") : null;
+						getPatientByIdentifier(motherBaseId).getJSONObject("person") :
+						null;
 
-				if (person!=null && person.has("uuid")) {
+				if (person != null && person.has("uuid")) {
 					createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), person.getString("uuid"),
 							"8d91a210-c2cc-11de-8d13-0010c6dffd0f");
 				}
@@ -233,8 +233,8 @@ public class PatientService extends OpenmrsService {
 		}
 	}
 
-
-	public void processClients(List<Client> cl, JSONArray patientsJsonArray, OpenmrsConstants.SchedulerConfig schedulerConfig, String errorType){
+	public void processClients(List<Client> cl, JSONArray patientsJsonArray,
+	                           OpenmrsConstants.SchedulerConfig schedulerConfig, String errorType) {
 		JSONObject patient = new JSONObject();// only for test code purpose
 		for (Client c : cl) {
 			try {
@@ -263,8 +263,7 @@ public class PatientService extends OpenmrsService {
 				if (uuid != null) {
 					logger.info("Updating patient " + uuid);
 					patient = updatePatient(c, uuid);
-					config.updateAppStateToken(schedulerConfig,
-							c.getServerVersion());
+					config.updateAppStateToken(schedulerConfig, c.getServerVersion());
 
 				} else {
 					JSONObject patientJson = createPatient(c);
@@ -273,16 +272,15 @@ public class PatientService extends OpenmrsService {
 						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
 						clientService.addorUpdate(c, false);
 
-						config.updateAppStateToken(schedulerConfig,
-								c.getServerVersion());
+						config.updateAppStateToken(schedulerConfig, c.getServerVersion());
 					}
 
 				}
 			}
 			catch (Exception ex1) {
 				ex1.printStackTrace();
-				errorTraceService.log(errorType, Client.class.getName(), c.getBaseEntityId(),
-						ExceptionUtils.getStackTrace(ex1), "");
+				errorTraceService
+						.log(errorType, Client.class.getName(), c.getBaseEntityId(), ExceptionUtils.getStackTrace(ex1), "");
 			}
 			patientsJsonArray.put(patient);
 		}
@@ -309,9 +307,9 @@ public class PatientService extends OpenmrsService {
 		logger.info("PERSON TO CREATE RESPONSE ----" + response);
 		JSONObject jsonResponse = new JSONObject(response);
 
-		if(jsonResponse.has("error")){
+		if (jsonResponse.has("error")) {
 			JSONObject responseError = new JSONObject(jsonResponse.getString("error"));
-			if(responseError.has("message")&& responseError.getString("message").equals("User is not logged in")){
+			if (responseError.has("message") && responseError.getString("message").equals("User is not logged in")) {
 				be.setServerVersion(null);
 				clientService.updateClient(be);
 			}
@@ -351,7 +349,8 @@ public class PatientService extends OpenmrsService {
 			if (event.getEventType().equals("Birth Registration")) {
 				List<Obs> obs = event.getObs();
 				for (Obs obs2 : obs) {
-					if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField().equals("Home_Facility") && obs2.getValue() != null) {
+					if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField()
+							.equals("Home_Facility") && obs2.getValue() != null) {
 						String clientAddress4 = openmrsLocationService.getLocation(obs2.getValue().toString()).getName();
 						if (be.getAttribute("Home_Facility") != null) {
 							be.removeAttribute("Home_Facility");
