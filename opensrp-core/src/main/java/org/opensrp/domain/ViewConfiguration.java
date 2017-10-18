@@ -15,29 +15,25 @@ import org.ektorp.support.TypeDiscriminator;
 public class ViewConfiguration extends BaseDataObject {
 
 	private static final long serialVersionUID = 1890883609898207737L;
-	@JsonProperty
-	private String organization;
+	
 	@JsonProperty
 	private String type;
+	
 	@JsonProperty
 	private String identifier;
+	
 	@JsonProperty
 	private String configurationType;
+	
 	@JsonProperty
 	private Map<String, String> metadata;
 	
 	@JsonProperty
 	private List<View> views;
+	
 	@JsonProperty
 	private Map<String, String> labels;
 
-	public String getOrganization() {
-		return organization;
-	}
-
-	public void setOrganization(String organization) {
-		this.organization = organization;
-	}
 
 	public String getType() {
 		return type;

@@ -17,8 +17,8 @@ public class ViewConfigurationService {
 		this.viewConfigurationRepository = viewConfigurationRepository;
 	}
 
-	public List<ViewConfiguration> findAllByOrganizationAndIdentifier(String organization) {
-		return viewConfigurationRepository.findAllByOrganizationAndIdentifier(organization);
+	public List<ViewConfiguration> findAllViewConfigurations() {
+		return viewConfigurationRepository.findAllViewConfigurations();
 	}
 
 }

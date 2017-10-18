@@ -1,7 +1,5 @@
 package org.opensrp.web.rest;
 
-import static org.opensrp.web.rest.RestUtils.getStringFilter;
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,11 +22,10 @@ public class ViewConfigurationResource {
 	public void setViewConfigurationService(ViewConfigurationService viewConfigurationService) {
 		this.viewConfigurationService = viewConfigurationService;
 	}
-	
-	@RequestMapping(method=RequestMethod.GET, value="/search")
+
+	@RequestMapping(method = RequestMethod.GET, value = "/list")
 	@ResponseBody
 	public List<ViewConfiguration> findAllByOrganizationAndIdentifier(HttpServletRequest request) {
-		String organization = getStringFilter("organization", request);
-		return viewConfigurationService.findAllByOrganizationAndIdentifier(organization);
+		return viewConfigurationService.findAllViewConfigurations();
 	}
 }
