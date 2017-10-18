@@ -1,10 +1,11 @@
-package org.opensrp.domain;
+package org.opensrp.domain.viewconfiguration;
 
 import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
+import org.opensrp.domain.BaseDataObject;
 
 /**
  * 
@@ -15,25 +16,21 @@ import org.ektorp.support.TypeDiscriminator;
 public class ViewConfiguration extends BaseDataObject {
 
 	private static final long serialVersionUID = 1890883609898207737L;
-	
+
 	@JsonProperty
 	private String type;
-	
+
 	@JsonProperty
 	private String identifier;
-	
+
 	@JsonProperty
-	private String configurationType;
-	
-	@JsonProperty
-	private Map<String, String> metadata;
-	
+	private BaseConfiguration metadata;
+
 	@JsonProperty
 	private List<View> views;
-	
+
 	@JsonProperty
 	private Map<String, String> labels;
-
 
 	public String getType() {
 		return type;
@@ -51,19 +48,11 @@ public class ViewConfiguration extends BaseDataObject {
 		this.identifier = identifier;
 	}
 
-	public String getConfigurationType() {
-		return configurationType;
-	}
-
-	public void setConfigurationType(String configurationType) {
-		this.configurationType = configurationType;
-	}
-
-	public Map<String, String> getMetadata() {
+	public BaseConfiguration getMetadata() {
 		return metadata;
 	}
 
-	public void setMetadata(Map<String, String> metadata) {
+	public void setMetadata(BaseConfiguration metadata) {
 		this.metadata = metadata;
 	}
 
@@ -84,4 +73,3 @@ public class ViewConfiguration extends BaseDataObject {
 	}
 
 }
-

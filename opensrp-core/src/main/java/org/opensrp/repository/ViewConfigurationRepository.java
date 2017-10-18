@@ -6,7 +6,7 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.support.CouchDbRepositorySupport;
 import org.ektorp.support.View;
 import org.opensrp.common.AllConstants;
-import org.opensrp.domain.ViewConfiguration;
+import org.opensrp.domain.viewconfiguration.ViewConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
