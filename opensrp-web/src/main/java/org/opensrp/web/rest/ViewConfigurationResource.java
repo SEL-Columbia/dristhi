@@ -1,9 +1,12 @@
 package org.opensrp.web.rest;
 
+import static org.opensrp.web.rest.RestUtils.getStringFilter;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.viewconfiguration.ViewConfiguration;
 import org.opensrp.service.ViewConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +26,14 @@ public class ViewConfigurationResource {
 		this.viewConfigurationService = viewConfigurationService;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/list")
+	@RequestMapping(method = RequestMethod.GET, value = "/sync")
 	@ResponseBody
-	public List<ViewConfiguration> findAllByOrganizationAndIdentifier(HttpServletRequest request) {
-		return viewConfigurationService.findAllViewConfigurations();
+	public List<ViewConfiguration> findViewConfigurationsByVersion(HttpServletRequest request) {
+		String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
+		Long lastSyncedServerVersion = null;
+		if (serverVersion != null) {
+			lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
+		}
+		return viewConfigurationService.findViewConfigurationsByVersion(lastSyncedServerVersion);
 	}
 }

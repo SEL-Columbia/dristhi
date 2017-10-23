@@ -17,8 +17,8 @@ public class ViewConfigurationService {
 		this.viewConfigurationRepository = viewConfigurationRepository;
 	}
 
-	public List<ViewConfiguration> findAllViewConfigurations() {
-		return viewConfigurationRepository.findAllViewConfigurations();
+	public List<ViewConfiguration> findViewConfigurationsByVersion(Long lastSyncedServerVersion) {
+		return viewConfigurationRepository.findViewConfigurationsByVersion(lastSyncedServerVersion);
 	}
 
 }
