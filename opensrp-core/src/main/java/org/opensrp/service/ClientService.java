@@ -267,6 +267,7 @@ public class ClientService {
 	public List<Client> findByServerVersion(long serverVersion) {
 		return allClients.findByServerVersion(serverVersion);
 	}
+
 	public List<Client> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
 		return allClients.notInOpenMRSByServerVersion(serverVersion, calendar);
 	}

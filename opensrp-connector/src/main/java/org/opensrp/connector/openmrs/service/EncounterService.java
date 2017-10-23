@@ -15,6 +15,7 @@ import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.domain.User;
+import org.opensrp.scheduler.service.ScheduleService;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.ConfigService;
 import org.opensrp.service.ErrorTraceService;
@@ -53,10 +54,11 @@ public class EncounterService extends OpenmrsService {
 	private ErrorTraceService errorTraceService;
 
 	private ConfigService config;
+	private ScheduleService opensrpScheduleService;
 
 	@Autowired
-	public EncounterService(PatientService patientService, OpenmrsUserService userService, ClientService clientService,
-	                        OpenmrsLocationService openmrsLocationService, ErrorTraceService errorTraceService) {
+	public EncounterService(ScheduleService opensrpScheduleService,PatientService patientService, OpenmrsUserService userService, ClientService clientService,
+	                        OpenmrsLocationService openmrsLocationService, ErrorTraceService errorTraceService,ConfigService config) {
 		this.patientService = patientService;
 		this.userService = userService;
 		this.clientService = clientService;
@@ -64,6 +66,8 @@ public class EncounterService extends OpenmrsService {
 		this.eventService = eventService;
 		this.config = config;
 		this.errorTraceService = errorTraceService;
+
+		this.opensrpScheduleService = opensrpScheduleService;
 
 	}
 
@@ -426,6 +430,7 @@ public class EncounterService extends OpenmrsService {
 	public JSONObject pushEvent(List<Event> el, OpenmrsConstants.SchedulerConfig schedulerConfig, String errorType) {
 		Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
 		JSONObject encounter = null;
+		logger.info("Reprocessing_events " + el.size());
 		for (Event e : el) {
 			try {
 				String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);

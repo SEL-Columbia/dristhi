@@ -1,5 +1,6 @@
 package org.opensrp.connector.openmrs.schedule;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -154,10 +155,10 @@ public class OpenmrsSyncerListener {
 			lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
 			start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
 
+
 			List<Event> el = eventService.findByServerVersion(start);
 			Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
 			logger.info("Event list size " + el.size() + " [start]" + start);
-			JSONObject encounter = null;
 
 			encounterService.pushEvent(el, OpenmrsConstants.SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
 					"OPENMRS FAILED EVENT PUSH");
@@ -185,16 +186,19 @@ public class OpenmrsSyncerListener {
 		JSONArray patientsJsonArray = new JSONArray();// only for test code purpose
 		JSONArray relationshipsArray = new JSONArray();// only for test code purpose
 		JSONObject returnJsonObject = new JSONObject();// only for test code purpose
+		if(cl.size() > 0) {
+			patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+					"OPENMRS FAILED CLIENT PUSH");
 
-		patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-				"OPENMRS FAILED CLIENT PUSH");
-
-		logger.info("RUNNING FOR RELATIONSHIPS");
-		patientService.createRelationShip(cl);
+			logger.info("RUNNING FOR RELATIONSHIPS");
+			patientService.createRelationShip(cl);
+		}
 		returnJsonObject.put("patient", patientsJsonArray); // only for test code purpose
 		returnJsonObject.put("relation", relationshipsArray);// only for test code purpose
 		return returnJsonObject;
 
 	}
+
+
 
 }

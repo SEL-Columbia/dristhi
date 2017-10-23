@@ -53,7 +53,10 @@ public class OpenmrsValidateDataSync {
 		this.eventService = eventService;
 
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_client_sync_validator_timestamp, 0,
-				"OpenMRS data Sync validation to keep track of records were not successfully pushed to OpenMRS", true);
+				"OpenMRS data Sync validation to keep track of client records were not successfully pushed to OpenMRS", true);
+
+		this.config.registerAppStateToken(SchedulerConfig.openmrs_event_sync_validator_timestamp, 0,
+				"OpenMRS data Sync validation to keep track of event records were not successfully pushed to OpenMRS", true);
 
 	}
 
@@ -75,7 +78,7 @@ public class OpenmrsValidateDataSync {
 			Long start = lastValidated == null || lastValidated.getValue() == null ? 0 : lastValidated.longValue();
 			List<Client> cl = clientService.notInOpenMRSByServerVersion(start, calendar);
 
-			logger.info("Clients list size " + cl.size());
+			logger.info("Clients_list_size " + cl.size());
 			JSONArray patientsJsonArray = new JSONArray();
 
 			patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_client_sync_validator_timestamp,

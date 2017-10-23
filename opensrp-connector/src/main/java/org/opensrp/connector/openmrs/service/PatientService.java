@@ -14,6 +14,7 @@ import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.schedule.OpenmrsSyncerListener;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService.AllowedLevels;
 import org.opensrp.domain.*;
+import org.opensrp.scheduler.service.ScheduleService;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.ConfigService;
 import org.opensrp.service.ErrorTraceService;
@@ -70,18 +71,21 @@ public class PatientService extends OpenmrsService {
 	private ConfigService config;
 
 	private ErrorTraceService errorTraceService;
+	private ScheduleService opensrpScheduleService;
+
 
 	public PatientService() {
 	}
 
 	@Autowired
-	public PatientService(ClientService clientService, OpenmrsLocationService openmrsLocationService,
+	public PatientService(ScheduleService opensrpScheduleService,ClientService clientService, OpenmrsLocationService openmrsLocationService,
 	                      EventService eventService, ConfigService config, ErrorTraceService errorTraceService) {
 		this.clientService = clientService;
 		this.openmrsLocationService = openmrsLocationService;
 		this.eventService = eventService;
 		this.config = config;
 		this.errorTraceService = errorTraceService;
+		this.opensrpScheduleService = opensrpScheduleService;
 	}
 
 	public PatientService(String openmrsUrl, String user, String password) {
@@ -236,6 +240,8 @@ public class PatientService extends OpenmrsService {
 	public void processClients(List<Client> cl, JSONArray patientsJsonArray,
 	                           OpenmrsConstants.SchedulerConfig schedulerConfig, String errorType) {
 		JSONObject patient = new JSONObject();// only for test code purpose
+
+		logger.info("Reprocessing_clients " + cl.size());
 		for (Client c : cl) {
 			try {
 				// FIXME This is to deal with existing records and should be
@@ -263,6 +269,11 @@ public class PatientService extends OpenmrsService {
 				if (uuid != null) {
 					logger.info("Updating patient " + uuid);
 					patient = updatePatient(c, uuid);
+					if(c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE) !=null ){
+						c.removeIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
+					}
+					c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, uuid);
+					clientService.addorUpdate(c, false);
 					config.updateAppStateToken(schedulerConfig, c.getServerVersion());
 
 				} else {
@@ -271,7 +282,6 @@ public class PatientService extends OpenmrsService {
 					if (patientJson != null && patientJson.has("uuid")) {
 						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
 						clientService.addorUpdate(c, false);
-
 						config.updateAppStateToken(schedulerConfig, c.getServerVersion());
 					}
 
