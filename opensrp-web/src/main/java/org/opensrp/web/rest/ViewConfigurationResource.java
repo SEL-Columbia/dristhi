@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/rest/viewconfiguration")
 public class ViewConfigurationResource {
-
+	
 	private ViewConfigurationService viewConfigurationService;
-
+	
 	@Autowired
 	public void setViewConfigurationService(ViewConfigurationService viewConfigurationService) {
 		this.viewConfigurationService = viewConfigurationService;
 	}
-
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/sync")
 	@ResponseBody
 	public List<ViewConfiguration> findViewConfigurationsByVersion(HttpServletRequest request) {
