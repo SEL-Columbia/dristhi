@@ -307,11 +307,6 @@ public class HttpUtilIntegrationTest {
         assertFalse(response.isSuccess());
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testPostMethodForException() {
-        post(null, null, null, "", null);
-    }
-
     @Test
     public void testCheckHttpCallSuccessBasedOnReturnCode() {
         assertTrue(checkSuccessBasedOnHttpCode(200));

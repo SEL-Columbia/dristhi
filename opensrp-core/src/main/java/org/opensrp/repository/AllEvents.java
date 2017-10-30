@@ -112,7 +112,7 @@ public class AllEvents extends MotechBaseRepository<Event> {
 	@View(name = "events_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Event' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID') {noId = false;}}if(noId){emit([doc.serverVersion],  null); }} }")
 	public List<Event> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
 		long serverStartKey = serverVersion + 1;
-		long serverEndKey = Long.MAX_VALUE - calendar.getTimeInMillis();
+		long serverEndKey = calendar.getTimeInMillis();
 		if(serverStartKey < serverEndKey) {
 			ComplexKey startKey = ComplexKey.of(serverStartKey);
 			ComplexKey endKey = ComplexKey.of(serverEndKey);
