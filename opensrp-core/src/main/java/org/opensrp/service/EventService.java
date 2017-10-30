@@ -3,6 +3,7 @@ package org.opensrp.service;
 import java.lang.reflect.Field;
 import java.util.*;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ektorp.CouchDbConnector;
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -159,34 +160,70 @@ public class EventService {
 	 * @return
 	 */
 	public synchronized Event processOutOfArea(Event event) {
-		if (event.getBaseEntityId() == null || event.getBaseEntityId().isEmpty()) {
+		try {
+			final String BIRTH_REGISTRATION_EVENT = "Birth Registration";
+			final String GROWTH_MONITORING_EVENT = "Growth Monitoring";
+			final String VACCINATION_EVENT = "Vaccination";
+			final String OUT_OF_AREA_SERVICE = "Out of Area Service";
+			
+			if (StringUtils.isNotBlank(event.getBaseEntityId())) {
+				return event;
+			}
 			
 			//get events identifiers;
 			String identifier = event.getIdentifier(Client.ZEIR_ID);
+			if (StringUtils.isBlank(identifier)) {
+				return event;
+			}
+			
 			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(),
 			    identifier);
-			if (clients != null && !clients.isEmpty()) {
-				org.opensrp.domain.Client client = clients.get(0);
-				
-				//set providerid to the last providerid who served this client in their catchment (assumption)
-				List<Event> existingEvents = findByBaseEntityAndType(client.getBaseEntityId(), "Birth Registration");
-				if (existingEvents != null && !existingEvents.isEmpty()) {
-					
-					event.getIdentifiers().remove(Client.ZEIR_ID.toUpperCase());
-					event.setBaseEntityId(client.getBaseEntityId());
-					//Map<String, String> identifiers = event.getIdentifiers();
-					//event identifiers are unique so removing zeir_id since baseentityid has been found
-					//also out of area service events stick with the providerid so that they can sync back to them for reports generation
-					if (!event.getEventType().startsWith("Out of Area Service")) {
-						event.setProviderId(existingEvents.get(0).getProviderId());
-						Map<String, String> details = new HashMap<String, String>();
-						details.put("out_of_catchment_provider_id", event.getProviderId());
-						event.setDetails(details);
-					}
-					
-				}
-				
+			
+			if (clients == null || clients.isEmpty()) {
+				return event;
 			}
+			
+			org.opensrp.domain.Client client = clients.get(0);
+			
+			//set providerid to the last providerid who served this client in their catchment (assumption)
+			List<Event> existingEvents = findByBaseEntityAndType(client.getBaseEntityId(), BIRTH_REGISTRATION_EVENT);
+			
+			if (existingEvents == null || existingEvents.isEmpty()) {
+				return event;
+			}
+			
+			Event birthRegEvent = existingEvents.get(0);
+			event.getIdentifiers().remove(Client.ZEIR_ID.toUpperCase());
+			event.setBaseEntityId(client.getBaseEntityId());
+			//Map<String, String> identifiers = event.getIdentifiers();
+			//event identifiers are unique so removing zeir_id since baseentityid has been found
+			//also out of area service events stick with the providerid so that they can sync back to them for reports generation
+			if (!event.getEventType().startsWith(OUT_OF_AREA_SERVICE)) {
+				event.setProviderId(birthRegEvent.getProviderId());
+				event.setLocationId(birthRegEvent.getLocationId());
+				Map<String, String> details = new HashMap<String, String>();
+				details.put("out_of_catchment_provider_id", event.getProviderId());
+				event.setDetails(details);
+			} else if (event.getEventType().contains(GROWTH_MONITORING_EVENT)
+			        || event.getEventType().contains(VACCINATION_EVENT)) {
+				
+				String eventType = event.getEventType().contains(GROWTH_MONITORING_EVENT) ? GROWTH_MONITORING_EVENT
+				        : event.getEventType().contains(VACCINATION_EVENT) ? VACCINATION_EVENT : null;
+				if (eventType != null) {
+					Event newEvent = new Event();
+					newEvent.withBaseEntityId(event.getBaseEntityId()).withEventType(eventType)
+					        .withEventDate(event.getEventDate()).withEntityType(event.getEntityType())
+					        .withProviderId(birthRegEvent.getProviderId()).withLocationId(birthRegEvent.getLocationId())
+					        .withFormSubmissionId(UUID.randomUUID().toString()).withDateCreated(event.getDateCreated());
+					
+					newEvent.setObs(event.getObs());
+					addEvent(newEvent);
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			logger.error("", e);
 		}
 		return event;
 	}
@@ -292,7 +329,7 @@ public class EventService {
 	public List<Event> findByServerVersion(long serverVersion) {
 		return allEvents.findByServerVersion(serverVersion);
 	}
-
+	
 	public List<Event> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
 		return allEvents.notInOpenMRSByServerVersion(serverVersion, calendar);
 	}
