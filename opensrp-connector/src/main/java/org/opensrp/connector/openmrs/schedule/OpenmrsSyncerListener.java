@@ -1,6 +1,5 @@
 package org.opensrp.connector.openmrs.schedule;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,8 +35,6 @@ public class OpenmrsSyncerListener {
 
 	private static Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
 
-	//private final OpenmrsSchedulerService openmrsSchedulerService;
-
 	private final ScheduleService opensrpScheduleService;
 
 	private final ActionService actionService;
@@ -53,8 +50,6 @@ public class OpenmrsSyncerListener {
 	private final EventService eventService;
 
 	private final ClientService clientService;
-
-	// private RelationShipService relationShipService;
 
 	@Autowired
 	private Dhis2TrackCaptureConnector dhis2TrackCaptureConnector;
@@ -155,7 +150,6 @@ public class OpenmrsSyncerListener {
 			lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
 			start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
 
-
 			List<Event> el = eventService.findByServerVersion(start);
 			Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
 			logger.info("Event list size " + el.size() + " [start]" + start);
@@ -186,7 +180,7 @@ public class OpenmrsSyncerListener {
 		JSONArray patientsJsonArray = new JSONArray();// only for test code purpose
 		JSONArray relationshipsArray = new JSONArray();// only for test code purpose
 		JSONObject returnJsonObject = new JSONObject();// only for test code purpose
-		if(cl.size() > 0) {
+		if (cl.size() > 0) {
 			patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 					"OPENMRS FAILED CLIENT PUSH");
 
@@ -198,7 +192,5 @@ public class OpenmrsSyncerListener {
 		return returnJsonObject;
 
 	}
-
-
 
 }
