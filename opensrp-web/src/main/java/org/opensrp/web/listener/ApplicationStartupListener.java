@@ -5,7 +5,8 @@ import java.util.concurrent.TimeUnit;
 import org.opensrp.common.AllConstants;
 import org.opensrp.connector.dhis2.DHIS2DatasetPush;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
-import org.opensrp.scheduler.RepeatingSchedule;
+import org.opensrp.scheduler.RepeatingCronSchedule;
+import org.opensrp.scheduler.RepeatingCronSchedule;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,11 +21,12 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 
     private TaskSchedulerService scheduler;
     
-    private RepeatingSchedule eventsSchedule;
-    private RepeatingSchedule atomfeedSchedule;
-    private RepeatingSchedule encounterSchedule;
-    private RepeatingSchedule dhis2Schedule;
-    private RepeatingSchedule validateSyncedToOMRS;
+    private RepeatingCronSchedule eventsSchedule;
+    private RepeatingCronSchedule atomfeedSchedule;
+    private RepeatingCronSchedule encounterSchedule;
+    private RepeatingCronSchedule dhis2Schedule;
+    private RepeatingCronSchedule validateSyncedToOMRS;
+    
 
     @Autowired
     public ApplicationStartupListener(TaskSchedulerService scheduler, 
@@ -32,12 +34,12 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     		@Value("#{opensrp['mcts.poll.time.interval.in.minutes']}") int mctsPollIntervalInHours,
     		@Value("#{opensrp['openmrs.scheduletracker.syncer.interval-min']}") int openmrsSchSyncerMin) {
         this.scheduler = scheduler;
-        eventsSchedule = new RepeatingSchedule(AllConstants.EVENTS_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
+        eventsSchedule = new RepeatingCronSchedule(AllConstants.EVENTS_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, "0 0/2 * * * ?");
 
-        encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES, 5, TimeUnit.MINUTES);
-        atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 8, TimeUnit.MINUTES, 5, TimeUnit.MINUTES);
-        dhis2Schedule = new RepeatingSchedule(DHIS2DatasetPush.SCHEDULER_DHIS2_DATA_PUSH_SUBJECT, 11, TimeUnit.MINUTES, 5, TimeUnit.MINUTES);
-        validateSyncedToOMRS = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_SYNC_VALIDATOR_SUBJECT, 15, TimeUnit.MINUTES, 10, TimeUnit.MINUTES);
+        encounterSchedule = new RepeatingCronSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES, "0 0/5 * * * ?");
+        atomfeedSchedule = new RepeatingCronSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 8, TimeUnit.MINUTES, "0 0/5 * * * ?");
+        dhis2Schedule = new RepeatingCronSchedule(DHIS2DatasetPush.SCHEDULER_DHIS2_DATA_PUSH_SUBJECT, 11, TimeUnit.MINUTES, "0 0/5 * * * ?");
+        validateSyncedToOMRS = new RepeatingCronSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_SYNC_VALIDATOR_SUBJECT, 15, TimeUnit.MINUTES, "0 0/10 * * * ?");
     }
 
     @Override
