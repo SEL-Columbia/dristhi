@@ -20,11 +20,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 
     private TaskSchedulerService scheduler;
     
-    private RepeatingSchedule formSchedule;
     private RepeatingSchedule eventsSchedule;
-    //private RepeatingSchedule anmReportScheduler;
-    //private RepeatingSchedule mctsReportScheduler;
-    private RepeatingSchedule openmrsScheduleSyncerScheduler;
     private RepeatingSchedule atomfeedSchedule;
     private RepeatingSchedule encounterSchedule;
     private RepeatingSchedule dhis2Schedule;
@@ -36,27 +32,19 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     		@Value("#{opensrp['mcts.poll.time.interval.in.minutes']}") int mctsPollIntervalInHours,
     		@Value("#{opensrp['openmrs.scheduletracker.syncer.interval-min']}") int openmrsSchSyncerMin) {
         this.scheduler = scheduler;
-        formSchedule = new RepeatingSchedule(AllConstants.FORM_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
-        //anmReportScheduler = new RepeatingSchedule(DrishtiScheduleConstants.ANM_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, 6, TimeUnit.HOURS);
-        //mctsReportScheduler = new RepeatingSchedule(DrishtiScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, mctsPollIntervalInHours, TimeUnit.HOURS);
         eventsSchedule = new RepeatingSchedule(AllConstants.EVENTS_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
 
-        // TODO openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 2, TimeUnit.MINUTES, openmrsSchSyncerMin, TimeUnit.MINUTES);
-        atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
-        encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
-        dhis2Schedule = new RepeatingSchedule(DHIS2DatasetPush.SCHEDULER_DHIS2_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
-        validateSyncedToOMRS = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_SYNC_VALIDATOR_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
+        encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES, 5, TimeUnit.MINUTES);
+        atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 8, TimeUnit.MINUTES, 5, TimeUnit.MINUTES);
+        dhis2Schedule = new RepeatingSchedule(DHIS2DatasetPush.SCHEDULER_DHIS2_DATA_PUSH_SUBJECT, 11, TimeUnit.MINUTES, 5, TimeUnit.MINUTES);
+        validateSyncedToOMRS = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_SYNC_VALIDATOR_SUBJECT, 15, TimeUnit.MINUTES, 10, TimeUnit.MINUTES);
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
     	System.out.println(contextRefreshedEvent.getApplicationContext().getId());
         if (contextRefreshedEvent.getApplicationContext().getId().endsWith(APPLICATION_ID)) {
-            scheduler.startJob(formSchedule);
             scheduler.startJob(eventsSchedule);
-            //scheduler.startJob(anmReportScheduler);
-            //scheduler.startJob(mctsReportScheduler);
-           // scheduler.startJob(openmrsScheduleSyncerScheduler);
             scheduler.startJob(atomfeedSchedule);
             scheduler.startJob(encounterSchedule);
             scheduler.startJob(dhis2Schedule);
