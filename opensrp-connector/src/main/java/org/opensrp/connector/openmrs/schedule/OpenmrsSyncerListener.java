@@ -28,6 +28,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 @Component
 public class OpenmrsSyncerListener {
 
@@ -149,14 +151,7 @@ public class OpenmrsSyncerListener {
 
 			lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
 			start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
-
-			List<Event> el = eventService.findByServerVersion(start);
-			Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
-			logger.info("Event list size " + el.size() + " [start]" + start);
-
-			encounterService.pushEvent(el, OpenmrsConstants.SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
-					"OPENMRS FAILED EVENT PUSH");
-
+			pushEvent(start);
 			logger("PUSH TO OPENMRS FINISHED AT ", "");
 
 		}
@@ -190,6 +185,39 @@ public class OpenmrsSyncerListener {
 		returnJsonObject.put("patient", patientsJsonArray); // only for test code purpose
 		returnJsonObject.put("relation", relationshipsArray);// only for test code purpose
 		return returnJsonObject;
+
+	}
+
+
+	public JSONObject pushEvent(long start) {
+		List<Event> el = eventService.findByServerVersion(start);
+		logger.info("Event list size " + el.size() + " [start]" + start);
+		JSONObject encounter = null;
+		for (Event e : el) {
+			try {
+				String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
+				if (uuid != null) {
+					encounter = encounterService.updateEncounter(e);
+					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
+							e.getServerVersion());
+				} else {
+					JSONObject eventJson = encounterService.createEncounter(e);
+					encounter = eventJson;// only for test code purpose
+					if (eventJson != null && eventJson.has("uuid")) {
+						e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
+						eventService.updateEvent(e);
+						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
+								e.getServerVersion());
+					}
+				}
+			}
+			catch (Exception ex2) {
+				logger.error("", ex2);
+				errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(),
+						ExceptionUtils.getStackTrace(ex2), "");
+			}
+		}
+		return encounter;
 
 	}
 

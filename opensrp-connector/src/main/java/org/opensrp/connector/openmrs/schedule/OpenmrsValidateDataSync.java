@@ -1,7 +1,9 @@
 package org.opensrp.connector.openmrs.schedule;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
@@ -13,6 +15,7 @@ import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.ConfigService;
+import org.opensrp.service.ErrorTraceService;
 import org.opensrp.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,11 +43,13 @@ public class OpenmrsValidateDataSync {
 
 	private EncounterService encounterService;
 
+	private ErrorTraceService errorTraceService;
+
 	private static int WAIT_TIME_IN_HOURS = 12;
 
 	@Autowired
 	public OpenmrsValidateDataSync(ConfigService config, PatientService patientService, ClientService clientService,
-	                               EventService eventService, EncounterService encounterService) {
+	                               EventService eventService, EncounterService encounterService,ErrorTraceService errorTraceService) {
 
 		this.config = config;
 		this.patientService = patientService;
@@ -89,8 +94,7 @@ public class OpenmrsValidateDataSync {
 			start = lastValidated == null || lastValidated.getValue() == null ? 0 : lastValidated.longValue();
 			List<Event> el = eventService.notInOpenMRSByServerVersion(start, calendar);
 
-			encounterService.pushEvent(el, OpenmrsConstants.SchedulerConfig.openmrs_event_sync_validator_timestamp,
-					"OPENMRS FAILED EVENT VALIDATION");
+			pushValidateEvent(el);
 
 			logger.info("RUNNING FOR RELATIONSHIPS");
 			patientService.createRelationShip(cl);
@@ -102,6 +106,28 @@ public class OpenmrsValidateDataSync {
 		finally {
 			lock.unlock();
 		}
+	}
+
+
+
+
+	public JSONObject pushValidateEvent(List<Event> el) {
+
+		JSONObject encounter = null;
+		for (Event e : el) {
+			try {
+				encounter = encounterService.updateEncounter(e);
+				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
+						e.getServerVersion());
+			}
+			catch (Exception ex2) {
+				logger.error("", ex2);
+				errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(),
+						ExceptionUtils.getStackTrace(ex2), "");
+			}
+		}
+		return encounter;
+
 	}
 
 }
