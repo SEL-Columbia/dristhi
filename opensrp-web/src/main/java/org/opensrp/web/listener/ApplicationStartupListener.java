@@ -6,7 +6,6 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.connector.dhis2.DHIS2DatasetPush;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.scheduler.RepeatingCronSchedule;
-import org.opensrp.scheduler.RepeatingCronSchedule;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

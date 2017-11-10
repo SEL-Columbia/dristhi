@@ -42,6 +42,7 @@ public class EventsListener {
 	
 	@Autowired
 	private AllClients allClients;
+	
 	@Autowired
 	EventService eventService;
 	
@@ -59,10 +60,9 @@ public class EventsListener {
 		this.configService.registerAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT, 0,
 		    "Token to keep track of events processed for client n event parsing and schedule handling", true);
 	}
-
-
-	public EventsListener(EventsRouter eventsRouter, ConfigService configService, AllEvents allEvents, EventService eventService,
-						  ErrorTraceService errorTraceService, AllClients allClients) {
+	
+	public EventsListener(EventsRouter eventsRouter, ConfigService configService, AllEvents allEvents,
+	    EventService eventService, ErrorTraceService errorTraceService, AllClients allClients) {
 		this.configService = configService;
 		this.errorTraceService = errorTraceService;
 		this.eventsRouter = eventsRouter;
@@ -70,11 +70,10 @@ public class EventsListener {
 		this.eventService = eventService;
 		this.allClients = allClients;
 		this.configService.registerAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT, 0,
-				"Token to keep track of events processed for client n event parsing and schedule handling", true);
+		    "Token to keep track of events processed for client n event parsing and schedule handling", true);
 	}
 	
-	@MotechListener(subjects = AllConstants.EVENTS_SCHEDULE_SUBJECT)
-	public void processEvent(MotechEvent motechEvent) {
+	public void processEvent() {
 		if (!lock.tryLock()) {
 			logger.warn("Not fetching events from Message Queue. It is already in progress.");
 			return;
@@ -98,7 +97,7 @@ public class EventsListener {
 			
 			for (Event event : events) {
 				try {
-					event=eventService.processOutOfArea(event);
+					event = eventService.processOutOfArea(event);
 					eventsRouter.route(event);
 					configService.updateAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT,
 					    event.getServerVersion());
@@ -112,7 +111,7 @@ public class EventsListener {
 			}
 		}
 		catch (Exception e) {
-			logger.error(MessageFormat.format("{0} occurred while trying to fetch forms. Message: {1} with stack trace {2}",
+			logger.error(MessageFormat.format("{0} occurred while trying to fetch events. Message: {1} with stack trace {2}",
 			    e.toString(), e.getMessage(), getFullStackTrace(e)));
 		}
 		finally {
@@ -143,7 +142,7 @@ public class EventsListener {
 				for (Event event : events) {
 					try {
 						Thread.sleep(1);
-						event=eventService.processOutOfArea(event);
+						event = eventService.processOutOfArea(event);
 						event.setServerVersion(getCurrentMilliseconds());
 						allEvents.update(event);
 						
@@ -162,11 +161,11 @@ public class EventsListener {
 		}
 		
 	}
-
+	
 	public long getCurrentMilliseconds() {
 		return System.currentTimeMillis();
 	}
-
+	
 	private long getVersion() {
 		AppStateToken token = configService.getAppStateTokenByName(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT);
 		return token == null ? 0L : token.longValue();

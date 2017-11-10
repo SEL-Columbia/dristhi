@@ -1,16 +1,18 @@
 package org.opensrp.connector.dhis2;
 
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.api.domain.Location;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.domain.AppStateToken;
@@ -32,6 +34,8 @@ enum DhisSchedulerConfig {
 public class DHIS2DatasetPush extends DHIS2Service {
 	
 	private static Logger logger = LoggerFactory.getLogger(DHIS2DatasetPush.class.toString());
+	
+	private static final ReentrantLock lock = new ReentrantLock();
 	
 	@Autowired
 	protected ReportService reportService;
@@ -108,12 +112,12 @@ public class DHIS2DatasetPush extends DHIS2Service {
 		// get openmrs location and retrieve dhis2 org unit Id
 		Location openmrsLocation = openmrsLocationService.getLocation(openmrsLocationUuid);
 		System.out.println("[OpenmrsLocation]: " + openmrsLocation);
-		String dhis2OrgUnitId = openmrsLocation.getAttributes() != null ? (String) openmrsLocation
-		        .getAttribute("dhis_ou_id") : null;
+		String dhis2OrgUnitId = openmrsLocation.getAttributes() != null ? (String) openmrsLocation.getAttribute("dhis_ou_id")
+		        : null;
 		
 		if (StringUtils.isBlank(dhis2OrgUnitId)) {
-			logger.error("Dhis2 Organization unit for " + openmrsLocationUuid
-			        + " Not found. Check if the data attribute exists.");
+			logger.error(
+			    "Dhis2 Organization unit for " + openmrsLocationUuid + " Not found. Check if the data attribute exists.");
 			return null; //org unit not found
 		}
 		
@@ -152,42 +156,57 @@ public class DHIS2DatasetPush extends DHIS2Service {
 		return dhis2Dataset;
 	}
 	
-	@MotechListener(subjects = SCHEDULER_DHIS2_DATA_PUSH_SUBJECT)
-	public void pushToDHIS2(MotechEvent event) {
-		// retrieve all the reports
-		logger.info("RUNNING " + event.getSubject() + " at " + DateTime.now());
-		
-		AppStateToken lastsync = config.getAppStateTokenByName(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated);
-		if (lastsync == null) {
-			config.registerAppStateToken(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated, 0,
-			    "ScheduleTracker token to keep track of reports synced with DHIS2", true);
+	public void pushToDHIS2() {
+		if (!lock.tryLock()) {
+			logger.warn("Not pushing records to dhis2. It is already in progress.");
+			return;
 		}
 		
-		Long start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
-		
-		List<Report> reports = reportService.findByServerVersion(start);
-		logger.info("Report list size " + reports.size() + " [start]" + start);
-		
-		// process all reports and sync them to DHIS2
-		for (Report report : reports) {
-			try {
-				JSONObject dhis2DatasetToPush = this.createDHIS2Dataset(report);
-				if (dhis2DatasetToPush == null) {
-					return;
-				}
-				
-				JSONObject response = dhis2HttpUtils.post(DATAVALUESET_ENDPOINT, "", dhis2DatasetToPush.toString());
-				report.setStatus(response.getString("status"));
-				reportService.updateReport(report);
-				config.updateAppStateToken(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated,
-				    report.getServerVersion());
-			}
-			catch (JSONException e) {
-				logger.error("", e);
+		try {
+			// retrieve all the reports
+			logger.info("RUNNING Push to DHIS2 at " + DateTime.now());
+			
+			AppStateToken lastsync = config
+			        .getAppStateTokenByName(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated);
+			if (lastsync == null) {
+				config.registerAppStateToken(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated, 0,
+				    "ScheduleTracker token to keep track of reports synced with DHIS2", true);
 			}
 			
+			Long start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
+			
+			List<Report> reports = reportService.findByServerVersion(start);
+			logger.info("Report list size " + reports.size() + " [start]" + start);
+			
+			// process all reports and sync them to DHIS2
+			for (Report report : reports) {
+				try {
+					JSONObject dhis2DatasetToPush = this.createDHIS2Dataset(report);
+					if (dhis2DatasetToPush == null) {
+						return;
+					}
+					
+					JSONObject response = dhis2HttpUtils.post(DATAVALUESET_ENDPOINT, "", dhis2DatasetToPush.toString());
+					report.setStatus(response.getString("status"));
+					reportService.updateReport(report);
+					config.updateAppStateToken(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated,
+					    report.getServerVersion());
+				}
+				catch (JSONException e) {
+					logger.error("", e);
+				}
+				
+			}
+			logger.info("PUSH TO DHIS2 FINISHED AT " + DateTime.now());
 		}
-		logger.info("PUSH TO DHIS2 FINISHED AT " + DateTime.now());
+		catch (Exception e) {
+			logger.error(
+			    MessageFormat.format("{0} occurred while trying to push records to dhis2. Message: {1} with stack trace {2}",
+			        e.toString(), e.getMessage(), getFullStackTrace(e)));
+		}
+		finally {
+			lock.unlock();
+		}
 	}
 	
 	private List<String> availableIndicators(String reportId) {
