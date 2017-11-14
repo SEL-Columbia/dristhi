@@ -84,17 +84,16 @@ public class OpenmrsValidateDataSync {
 			
 			patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_client_sync_validator_timestamp,
 			    "OPENMRS FAILED CLIENT VALIDATION");
-			
-			logger.info("Events list size " + cl.size());
+
+			logger.info("RUNNING FOR RELATIONSHIPS");
+			patientService.createRelationShip(cl);
+
 			lastValidated = config.getAppStateTokenByName(SchedulerConfig.openmrs_event_sync_validator_timestamp);
 			start = lastValidated == null || lastValidated.getValue() == null ? 0 : lastValidated.longValue();
 			List<Event> el = eventService.notInOpenMRSByServerVersion(start, calendar);
-			
+			logger.info("Events list size " + el.size());
 			pushValidateEvent(el);
-			
-			logger.info("RUNNING FOR RELATIONSHIPS");
-			patientService.createRelationShip(cl);
-			
+
 		}
 		catch (Exception ex) {
 			logger.error("", ex);
@@ -105,12 +104,17 @@ public class OpenmrsValidateDataSync {
 	}
 	
 	public JSONObject pushValidateEvent(List<Event> el) {
-		
-		JSONObject encounter = null;
+
+		JSONObject eventJson = null;
 		for (Event e : el) {
 			try {
-				encounter = encounterService.updateEncounter(e);
-				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
+				eventJson = encounterService.createEncounter(e);
+				if (eventJson != null && eventJson.has("uuid")) {
+					e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
+					eventService.updateEvent(e);
+					config.updateAppStateToken(SchedulerConfig.openmrs_event_sync_validator_timestamp,
+							e.getServerVersion());
+				}
 			}
 			catch (Exception ex2) {
 				logger.error("", ex2);
@@ -118,8 +122,8 @@ public class OpenmrsValidateDataSync {
 				    ExceptionUtils.getStackTrace(ex2), "");
 			}
 		}
-		return encounter;
-		
+		return eventJson;
+
 	}
 	
 }
