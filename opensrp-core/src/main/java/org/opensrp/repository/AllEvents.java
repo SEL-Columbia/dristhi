@@ -104,7 +104,7 @@ public class AllEvents extends MotechBaseRepository<Event> {
 	public List<Event> findByServerVersion(long serverVersion) {
 		ComplexKey startKey = ComplexKey.of(serverVersion + 1);
 		ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
-		return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).includeDocs(true),
+		return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
 		    Event.class);
 	}
 
@@ -116,7 +116,7 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		if(serverStartKey < serverEndKey) {
 			ComplexKey startKey = ComplexKey.of(serverStartKey);
 			ComplexKey endKey = ComplexKey.of(serverEndKey);
-			return db.queryView(createQuery("events_not_in_OpenMRS").startKey(startKey).endKey(endKey).includeDocs(true), Event.class);
+			return db.queryView(createQuery("events_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true), Event.class);
 		}
 		return new ArrayList<>();
 	}
