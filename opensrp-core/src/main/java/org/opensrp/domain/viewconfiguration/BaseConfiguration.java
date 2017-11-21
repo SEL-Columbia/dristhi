@@ -7,7 +7,8 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.codehaus.jackson.annotate.JsonTypeInfo.Id;
 
 @JsonTypeInfo(use = Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({ @Type(value = LoginConfiguration.class, name = "Login") })
+@JsonSubTypes({ @Type(value = LoginConfiguration.class, name = "Login"),
+        @Type(value = RegisterConfiguration.class, name = "Register") })
 public abstract class BaseConfiguration {
 	
 	@JsonProperty
