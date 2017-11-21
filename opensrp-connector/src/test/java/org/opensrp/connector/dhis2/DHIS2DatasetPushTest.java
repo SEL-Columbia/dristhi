@@ -190,7 +190,7 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 		dhis2DatasetPush.reportService = mockReportService;
 		
 		// Test payload is synced with DHIS2
-		dhis2DatasetPush.pushToDHIS2(event);
+//		dhis2DatasetPush.pushToDHIS2(event);
 		
 		verify(dhis2HttpUtils, times(1)).post(anyString(), anyString(), anyString());
 		verify(mockReportService, times(1)).updateReport(report);
