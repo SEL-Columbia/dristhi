@@ -187,7 +187,7 @@ public class AllClients extends MotechBaseRepository<Client> {
 	public List<Client> findByServerVersion(long serverVersion) {
 		ComplexKey startKey = ComplexKey.of(serverVersion + 1);
 		ComplexKey endKey = ComplexKey.of(System.currentTimeMillis());
-		return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).includeDocs(true),
+		return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
 				Client.class);
 	}
 
@@ -202,7 +202,7 @@ public class AllClients extends MotechBaseRepository<Client> {
 		if (serverStartKey < serverEndKey) {
 			ComplexKey startKey = ComplexKey.of(serverStartKey);
 			ComplexKey endKey = ComplexKey.of(serverEndKey);
-			return db.queryView(createQuery("clients_not_in_OpenMRS").startKey(startKey).endKey(endKey).includeDocs(true),
+			return db.queryView(createQuery("clients_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
 					Client.class);
 		}
 		return new ArrayList<>();

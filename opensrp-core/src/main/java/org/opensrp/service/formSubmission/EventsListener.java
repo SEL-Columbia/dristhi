@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.joda.time.DateTime;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.Client;
