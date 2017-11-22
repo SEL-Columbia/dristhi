@@ -125,7 +125,7 @@ public class OpenmrsSyncerListener {
 				    SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, "OPENMRS FAILED CLIENT PUSH");
 				
 				logger.info("RUNNING FOR RELATIONSHIPS");
-				patientService.createRelationShip(cl);
+				patientService.createRelationShip(cl, "OPENMRS FAILED CLIENT RELATIONSHIP PUSH");
 			}
 			returnJsonObject.put("patient", patientsJsonArray); // only for test code purpose
 			returnJsonObject.put("relation", relationshipsArray);// only for test code purpose

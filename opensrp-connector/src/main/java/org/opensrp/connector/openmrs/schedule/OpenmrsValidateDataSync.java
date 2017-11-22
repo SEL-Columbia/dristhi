@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants.SchedulerConfig;
 import org.opensrp.connector.openmrs.service.EncounterService;
@@ -53,6 +54,7 @@ public class OpenmrsValidateDataSync {
 		this.clientService = clientService;
 		this.encounterService = encounterService;
 		this.eventService = eventService;
+		this.errorTraceService = errorTraceService;
 		
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_client_sync_validator_timestamp, 0,
 		    "OpenMRS data Sync validation to keep track of client records were not successfully pushed to OpenMRS", true);
@@ -77,23 +79,20 @@ public class OpenmrsValidateDataSync {
 			AppStateToken lastValidated = config
 			        .getAppStateTokenByName(SchedulerConfig.openmrs_client_sync_validator_timestamp);
 			Long start = lastValidated == null || lastValidated.getValue() == null ? 0 : lastValidated.longValue();
+			
 			List<Client> cl = clientService.notInOpenMRSByServerVersion(start, calendar);
-			
 			logger.info("Clients_list_size " + cl.size());
-			JSONArray patientsJsonArray = new JSONArray();
 			
-			patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_client_sync_validator_timestamp,
-			    "OPENMRS FAILED CLIENT VALIDATION");
-
-			logger.info("RUNNING FOR RELATIONSHIPS");
-			patientService.createRelationShip(cl);
-
+			pushValidateClient(cl);
+			
 			lastValidated = config.getAppStateTokenByName(SchedulerConfig.openmrs_event_sync_validator_timestamp);
 			start = lastValidated == null || lastValidated.getValue() == null ? 0 : lastValidated.longValue();
+			
 			List<Event> el = eventService.notInOpenMRSByServerVersion(start, calendar);
 			logger.info("Events list size " + el.size());
+			
 			pushValidateEvent(el);
-
+			
 		}
 		catch (Exception ex) {
 			logger.error("", ex);
@@ -103,8 +102,27 @@ public class OpenmrsValidateDataSync {
 		}
 	}
 	
+	public void pushValidateClient(List<Client> cl) throws JSONException {
+		try {
+			
+			JSONArray patientsJsonArray = new JSONArray();
+			
+			if (cl != null && !cl.isEmpty()) {
+				patientService.processClients(cl, patientsJsonArray, SchedulerConfig.openmrs_client_sync_validator_timestamp,
+				    "OPENMRS FAILED CLIENT VALIDATION");
+				
+				logger.info("RUNNING FOR RELATIONSHIPS");
+				patientService.createRelationShip(cl, "OPENMRS FAILED CLIENT RELATIONSHIP VALIDATION");
+			}
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			errorTraceService.log("OPENMRS FAILED CLIENT VALIDATION", Client.class.getName(), "",
+			    ExceptionUtils.getStackTrace(e), "");
+		}
+	}
+	
 	public JSONObject pushValidateEvent(List<Event> el) {
-
 		JSONObject eventJson = null;
 		for (Event e : el) {
 			try {
@@ -112,8 +130,7 @@ public class OpenmrsValidateDataSync {
 				if (eventJson != null && eventJson.has("uuid")) {
 					e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 					eventService.updateEvent(e);
-					config.updateAppStateToken(SchedulerConfig.openmrs_event_sync_validator_timestamp,
-							e.getServerVersion());
+					config.updateAppStateToken(SchedulerConfig.openmrs_event_sync_validator_timestamp, e.getServerVersion());
 				}
 			}
 			catch (Exception ex2) {
@@ -123,7 +140,6 @@ public class OpenmrsValidateDataSync {
 			}
 		}
 		return eventJson;
-
 	}
 	
 }
