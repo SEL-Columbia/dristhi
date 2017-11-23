@@ -30,6 +30,9 @@ public class ViewConfiguration extends BaseDataObject {
 	@JsonProperty
 	private Map<String, String> labels;
 	
+	@JsonProperty
+	private String jsonView;
+	
 	public String getType() {
 		return type;
 	}
@@ -68,6 +71,14 @@ public class ViewConfiguration extends BaseDataObject {
 	
 	public void setLabels(Map<String, String> labels) {
 		this.labels = labels;
+	}
+	
+	public String getJsonView() {
+		return jsonView;
+	}
+
+	public void setJsonView(String jsonView) {
+		this.jsonView = jsonView;
 	}
 	
 }
