@@ -225,7 +225,7 @@ public class OpenmrsValidateDataSync {
 			    ExceptionUtils.getStackTrace(e), "");
 		}
 		
-		return false;	
+		return false;
 	}
 	
 	private JSONObject pushValidateEvent(List<Event> el, SchedulerConfig schedulerConfig) {
@@ -236,7 +236,6 @@ public class OpenmrsValidateDataSync {
 				if (eventJson != null && eventJson.has("uuid")) {
 					e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 					eventService.updateEvent(e);
-					config.updateAppStateToken(schedulerConfig, e.getServerVersion());
 				}
 			}
 			catch (Exception ex2) {
@@ -244,6 +243,9 @@ public class OpenmrsValidateDataSync {
 				errorTraceService.log("OPENMRS FAILED EVENT VALIDATION", Event.class.getName(), e.getId(),
 				    ExceptionUtils.getStackTrace(ex2), "");
 			}
+			
+			config.updateAppStateToken(schedulerConfig, e.getServerVersion());
+			
 		}
 		return eventJson;
 	}
