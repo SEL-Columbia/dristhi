@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -45,6 +46,12 @@ public class OpenmrsValidateDataSync {
 	
 	private static int WAIT_TIME_IN_HOURS = 12;
 	
+	final String BIRTH_REGISTRATION_EVENT = "Birth Registration";
+	
+	final String GROWTH_MONITORING_EVENT = "Growth Monitoring";
+	
+	final String VACCINATION_EVENT = "Vaccination";
+	
 	@Autowired
 	public OpenmrsValidateDataSync(ConfigService config, PatientService patientService, ClientService clientService,
 	    EventService eventService, EncounterService encounterService, ErrorTraceService errorTraceService) {
@@ -62,14 +69,44 @@ public class OpenmrsValidateDataSync {
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_event_sync_validator_timestamp, 0,
 		    "OpenMRS data Sync validation to keep track of event records were not successfully pushed to OpenMRS", true);
 		
+		this.config.registerAppStateToken(SchedulerConfig.openmrs_birth_reg_event_sync_validator_timestamp, 0,
+		    "OpenMRS data Sync validation to keep track of Birth Registration event records were not successfully pushed to OpenMRS",
+		    true);
+		
+		this.config.registerAppStateToken(SchedulerConfig.openmrs_growth_mon_event_sync_validator_timestamp, 0,
+		    "OpenMRS data Sync validation to keep track of Growth Monitoring event records were not successfully pushed to OpenMRS",
+		    true);
+		
+		this.config.registerAppStateToken(SchedulerConfig.openmrs_vaccine_event_sync_validator_timestamp, 0,
+		    "OpenMRS data Sync validation to keep track of Vaccination event records were not successfully pushed to OpenMRS",
+		    true);
+		
 	}
 	
 	public void syncToOpenMRS() {
-		
 		if (!lock.tryLock()) {
 			logger.warn("Not fetching forms from Message Queue. It is already in progress.");
 			return;
 		}
+		
+		try {
+			logger.info("VALIDATING CLIENTS - EVENTS " + DateTime.now());
+			
+			validateClient();
+			
+			validateEvent();
+		}
+		catch (Exception ex) {
+			logger.error("", ex);
+		}
+		finally {
+			lock.unlock();
+		}
+	}
+	
+	// Validate Client
+	
+	private void validateClient() {
 		try {
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.HOUR, -WAIT_TIME_IN_HOURS);
@@ -84,25 +121,15 @@ public class OpenmrsValidateDataSync {
 			logger.info("Clients_list_size " + cl.size());
 			
 			pushValidateClient(cl);
-			
-			lastValidated = config.getAppStateTokenByName(SchedulerConfig.openmrs_event_sync_validator_timestamp);
-			start = lastValidated == null || lastValidated.getValue() == null ? 0 : lastValidated.longValue();
-			
-			List<Event> el = eventService.notInOpenMRSByServerVersion(start, calendar);
-			logger.info("Events list size " + el.size());
-			
-			pushValidateEvent(el);
-			
 		}
-		catch (Exception ex) {
-			logger.error("", ex);
-		}
-		finally {
-			lock.unlock();
+		catch (Exception e) {
+			logger.error("", e);
+			errorTraceService.log("OPENMRS FAILED CLIENT VALIDATION", Client.class.getName(), "",
+			    ExceptionUtils.getStackTrace(e), "");
 		}
 	}
 	
-	public void pushValidateClient(List<Client> cl) throws JSONException {
+	private void pushValidateClient(List<Client> cl) throws JSONException {
 		try {
 			
 			JSONArray patientsJsonArray = new JSONArray();
@@ -122,7 +149,86 @@ public class OpenmrsValidateDataSync {
 		}
 	}
 	
-	public JSONObject pushValidateEvent(List<Event> el) {
+	// Validate Event
+	
+	private void validateEvent() {
+		try {
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.HOUR, -WAIT_TIME_IN_HOURS);
+			
+			boolean processed = processEvents(BIRTH_REGISTRATION_EVENT, calendar);
+			if (processed) {
+				return;
+			}
+			
+			processed = processEvents(GROWTH_MONITORING_EVENT, calendar);
+			if (processed) {
+				return;
+			}
+			
+			processed = processEvents(VACCINATION_EVENT, calendar);
+			if (processed) {
+				return;
+			}
+			
+			AppStateToken lastValidated = config
+			        .getAppStateTokenByName(SchedulerConfig.openmrs_event_sync_validator_timestamp);
+			long start = lastValidated == null || lastValidated.getValue() == null ? 0 : lastValidated.longValue();
+			
+			List<Event> el = eventService.notInOpenMRSByServerVersion(start, calendar);
+			logger.info("Events list size " + el.size());
+			
+			if (el != null && !el.isEmpty()) {
+				pushValidateEvent(el, SchedulerConfig.openmrs_event_sync_validator_timestamp);
+			}
+			
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			errorTraceService.log("OPENMRS FAILED EVENT VALIDATION", Event.class.getName(), "",
+			    ExceptionUtils.getStackTrace(e), "");
+		}
+	}
+	
+	private boolean processEvents(String type, Calendar calendar) {
+		try {
+			if (StringUtils.isBlank(type)) {
+				return false;
+			}
+			
+			SchedulerConfig schedulerConfig = null;
+			if (type.equals(BIRTH_REGISTRATION_EVENT)) {
+				schedulerConfig = SchedulerConfig.openmrs_birth_reg_event_sync_validator_timestamp;
+			} else if (type.equals(GROWTH_MONITORING_EVENT)) {
+				schedulerConfig = SchedulerConfig.openmrs_growth_mon_event_sync_validator_timestamp;
+			} else if (type.equals(VACCINATION_EVENT)) {
+				schedulerConfig = SchedulerConfig.openmrs_vaccine_event_sync_validator_timestamp;
+			} else {
+				return false;
+			}
+			
+			AppStateToken lastValidated = config.getAppStateTokenByName(schedulerConfig);
+			long start = lastValidated == null || lastValidated.getValue() == null ? 0 : lastValidated.longValue();
+			
+			List<Event> el = eventService.notInOpenMRSByServerVersionAndType(type, start, calendar);
+			logger.info(type + " Events list size " + el.size());
+			
+			if (el != null && !el.isEmpty()) {
+				pushValidateEvent(el, schedulerConfig);
+				return true;
+			}
+			
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			errorTraceService.log("OPENMRS FAILED EVENT VALIDATION", Event.class.getName(), "",
+			    ExceptionUtils.getStackTrace(e), "");
+		}
+		
+		return false;
+	}
+	
+	private JSONObject pushValidateEvent(List<Event> el, SchedulerConfig schedulerConfig) {
 		JSONObject eventJson = null;
 		for (Event e : el) {
 			try {
@@ -130,7 +236,6 @@ public class OpenmrsValidateDataSync {
 				if (eventJson != null && eventJson.has("uuid")) {
 					e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 					eventService.updateEvent(e);
-					config.updateAppStateToken(SchedulerConfig.openmrs_event_sync_validator_timestamp, e.getServerVersion());
 				}
 			}
 			catch (Exception ex2) {
@@ -138,6 +243,9 @@ public class OpenmrsValidateDataSync {
 				errorTraceService.log("OPENMRS FAILED EVENT VALIDATION", Event.class.getName(), e.getId(),
 				    ExceptionUtils.getStackTrace(ex2), "");
 			}
+			
+			config.updateAppStateToken(schedulerConfig, e.getServerVersion());
+			
 		}
 		return eventJson;
 	}

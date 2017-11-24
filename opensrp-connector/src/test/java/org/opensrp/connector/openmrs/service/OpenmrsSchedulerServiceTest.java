@@ -33,23 +33,28 @@ import org.opensrp.service.formSubmission.FormEntityConverter;
 
 import com.google.gson.JsonIOException;
 
-public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
+public class OpenmrsSchedulerServiceTest extends TestResourceLoader {
+	
 	public OpenmrsSchedulerServiceTest() throws IOException {
 		super();
 	}
-
+	
 	OpenmrsSchedulerService ss;
+	
 	OpenmrsUserService us;
 	
 	EncounterService es;
+	
 	FormEntityConverter oc;
+	
 	PatientService ps;
+	
 	HouseholdService hhs;
-
+	
 	SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Before
-	public void setup() throws IOException{
+	public void setup() throws IOException {
 		ps = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		us = new OpenmrsUserService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		ss = new OpenmrsSchedulerService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
@@ -70,42 +75,44 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 	public void testTrack() throws JSONException, ParseException {
 		String id = UUID.randomUUID().toString();
 		
-		Enrollment e = new Enrollment(id, new Schedule("Boosters"), "REMINDER", 
-				new DateTime(2012, 1, 1, 0, 0), new DateTime(2012, 1, 1, 0, 0), new Time(23,8), EnrollmentStatus.ACTIVE, null);
+		Enrollment e = new Enrollment(id, new Schedule("Boosters"), "REMINDER", new DateTime(2012, 1, 1, 0, 0),
+		        new DateTime(2012, 1, 1, 0, 0), new Time(23, 8), EnrollmentStatus.ACTIVE, null);
 		List<Action> alertActions = new ArrayList<Action>();
 		alertActions.add(new Action(id, "admin", alert("Boosters", "REMINDER")));
 		alertActions.add(new Action(id, "admin", ActionData.markAlertAsClosed("REMINDER", "12-12-2015")));
-		if(pushToOpenmrsForTest){
-			JSONObject p = ps.getPatientByIdentifier(id);
-			if(p == null){
-				ps.createPatient(new Client(id, "TEST", null, "Name", new DateTime().minusYears(20), null, false, false, "MALE"));
+		if (pushToOpenmrsForTest) {
+			String puuid = ps.getPatientByIdentifierUUID(id);
+			if (puuid == null) {
+				ps.createPatient(
+				    new Client(id, "TEST", null, "Name", new DateTime().minusYears(20), null, false, false, "MALE"));
 			}
 			JSONObject t = ss.createTrack(e, alertActions);
 			e.setStatus(EnrollmentStatus.COMPLETED);
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
-			e.setMetadata(metadata );
+			e.setMetadata(metadata);
 			ss.updateTrack(e, alertActions);
 		}
 	}
-
+	
 	@Test
 	public void testTrackWithoutAnyMilestoneOrAction() throws JSONException, ParseException {
 		String id = UUID.randomUUID().toString();
 		
-		Enrollment e = new Enrollment(id, new Schedule("Boosters"), "REMINDER", 
-				new DateTime(2012, 1, 1, 0, 0), new DateTime(2012, 1, 1, 0, 0), new Time(23,8), EnrollmentStatus.ACTIVE, null);
+		Enrollment e = new Enrollment(id, new Schedule("Boosters"), "REMINDER", new DateTime(2012, 1, 1, 0, 0),
+		        new DateTime(2012, 1, 1, 0, 0), new Time(23, 8), EnrollmentStatus.ACTIVE, null);
 		List<Action> alertActions = new ArrayList<Action>();
-		if(pushToOpenmrsForTest){
-			JSONObject p = ps.getPatientByIdentifier(id);
-			if(p == null){
-				ps.createPatient(new Client(id, "TEST", null, "Name", new DateTime().minusYears(20), null, false, false, "MALE"));
+		if (pushToOpenmrsForTest) {
+			String puuid = ps.getPatientByIdentifierUUID(id);
+			if (puuid == null) {
+				ps.createPatient(
+				    new Client(id, "TEST", null, "Name", new DateTime().minusYears(20), null, false, false, "MALE"));
 			}
 			JSONObject t = ss.createTrack(e, alertActions);
 			e.setStatus(EnrollmentStatus.COMPLETED);
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
-			e.setMetadata(metadata );
+			e.setMetadata(metadata);
 			ss.updateTrack(e, alertActions);
 		}
 	}
@@ -114,20 +121,21 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 	public void testTrackWithMilestoneAndWithoutAction() throws JSONException, ParseException {
 		String id = UUID.randomUUID().toString();
 		
-		Enrollment e = new Enrollment(id, new Schedule("Boosters"), "REMINDER", 
-				new DateTime(2012, 1, 1, 0, 0), new DateTime(2012, 1, 1, 0, 0), new Time(23,8), EnrollmentStatus.ACTIVE, null);
+		Enrollment e = new Enrollment(id, new Schedule("Boosters"), "REMINDER", new DateTime(2012, 1, 1, 0, 0),
+		        new DateTime(2012, 1, 1, 0, 0), new Time(23, 8), EnrollmentStatus.ACTIVE, null);
 		e.fulfillCurrentMilestone(new DateTime());
 		List<Action> alertActions = new ArrayList<Action>();
-		if(pushToOpenmrsForTest){
-			JSONObject p = ps.getPatientByIdentifier(id);
-			if(p == null){
-				ps.createPatient(new Client(id, "TEST", null, "Name", new DateTime().minusYears(20), null, false, false, "MALE"));
+		if (pushToOpenmrsForTest) {
+			String puuid = ps.getPatientByIdentifierUUID(id);
+			if (puuid == null) {
+				ps.createPatient(
+				    new Client(id, "TEST", null, "Name", new DateTime().minusYears(20), null, false, false, "MALE"));
 			}
 			JSONObject t = ss.createTrack(e, alertActions);
 			e.setStatus(EnrollmentStatus.COMPLETED);
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
-			e.setMetadata(metadata );
+			e.setMetadata(metadata);
 			ss.updateTrack(e, alertActions);
 		}
 	}
@@ -142,46 +150,49 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 		
 		OpenmrsHouseHold household = new OpenmrsHouseHold(hhhead, ev);
 		for (String hhmid : dep.keySet()) {
-			household.addHHMember((Client)dep.get(hhmid).get("client"), (Event)dep.get(hhmid).get("event"));
+			household.addHHMember((Client) dep.get(hhmid).get("client"), (Event) dep.get(hhmid).get("event"));
 		}
-		if(pushToOpenmrsForTest){
+		if (pushToOpenmrsForTest) {
 			JSONObject pr = us.getProvider(fs.anmId());
-			if(pr == null){
+			if (pr == null) {
 				us.createProvider(fs.anmId(), fs.anmId());
 			}
 			
 			JSONObject enct = es.getEncounterType(ev.getEventType());
-			if(enct == null){
+			if (enct == null) {
 				es.createEncounterType(ev.getEventType(), "Encounter type created to fullfill scheduling test pre-reqs");
 			}
 			
 			for (String hhmid : dep.keySet()) {
-				Event ein = (Event)dep.get(hhmid).get("event");
+				Event ein = (Event) dep.get(hhmid).get("event");
 				JSONObject hmenct = es.getEncounterType(ein.getEventType());
-				if(hmenct == null){
-					es.createEncounterType(ein.getEventType(), "Encounter type created to fullfill scheduling test pre-reqs");
+				if (hmenct == null) {
+					es.createEncounterType(ein.getEventType(),
+					    "Encounter type created to fullfill scheduling test pre-reqs");
 				}
 			}
 			
 			hhs.saveHH(household, true);
 		}
 		
-		Enrollment e = new Enrollment(hhhead.getBaseEntityId(), new Schedule("FW CENSUS"), "FW CENSUS", 
-				new DateTime(), new DateTime(), new Time(23,8), EnrollmentStatus.ACTIVE, null);
+		Enrollment e = new Enrollment(hhhead.getBaseEntityId(), new Schedule("FW CENSUS"), "FW CENSUS", new DateTime(),
+		        new DateTime(), new Time(23, 8), EnrollmentStatus.ACTIVE, null);
 		List<Action> alertActions = new ArrayList<Action>();
 		alertActions.add(new Action(hhhead.getBaseEntityId(), ev.getProviderId(), alert("FW CENSUS", "FW CENSUS")));
-		if(pushToOpenmrsForTest){
+		if (pushToOpenmrsForTest) {
 			JSONObject t = ss.createTrack(e, alertActions);
-			alertActions.add(new Action(hhhead.getBaseEntityId(), ev.getProviderId(), ActionData.markAlertAsClosed("FW CENSUS", "12-12-2015")));
+			alertActions.add(new Action(hhhead.getBaseEntityId(), ev.getProviderId(),
+			        ActionData.markAlertAsClosed("FW CENSUS", "12-12-2015")));
 			e.setStatus(EnrollmentStatus.COMPLETED);
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
-			e.setMetadata(metadata );
+			e.setMetadata(metadata);
 			ss.updateTrack(e, alertActions);
 		}
 	}
 	
-    private ActionData alert(String schedule, String milestone) {
-        return ActionData.createAlert(mother.value(), schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
-    }
+	private ActionData alert(String schedule, String milestone) {
+		return ActionData.createAlert(mother.value(), schedule, milestone, normal, DateTime.now(),
+		    DateTime.now().plusDays(3));
+	}
 }

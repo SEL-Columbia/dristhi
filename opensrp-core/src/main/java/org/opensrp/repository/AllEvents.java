@@ -107,16 +107,31 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
 		    Event.class);
 	}
-
-
+	
 	@View(name = "events_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Event' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID') {noId = false;}}if(noId){emit([doc.serverVersion],  null); }} }")
 	public List<Event> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
 		long serverStartKey = serverVersion + 1;
 		long serverEndKey = calendar.getTimeInMillis();
-		if(serverStartKey < serverEndKey) {
+		if (serverStartKey < serverEndKey) {
 			ComplexKey startKey = ComplexKey.of(serverStartKey);
 			ComplexKey endKey = ComplexKey.of(serverEndKey);
-			return db.queryView(createQuery("events_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true), Event.class);
+			return db.queryView(
+			    createQuery("events_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
+			    Event.class);
+		}
+		return new ArrayList<>();
+	}
+	
+	@View(name = "events_by_type_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Event' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID') {noId = false;}}if(noId){emit([doc.eventType, doc.serverVersion], null); }} }")
+	public List<Event> notInOpenMRSByServerVersionAndType(String type, long serverVersion, Calendar calendar) {
+		long serverStartKey = serverVersion + 1;
+		long serverEndKey = calendar.getTimeInMillis();
+		if (serverStartKey < serverEndKey) {
+			ComplexKey startKey = ComplexKey.of(type, serverStartKey);
+			ComplexKey endKey = ComplexKey.of(type, serverEndKey);
+			return db.queryView(
+			    createQuery("events_by_type_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
+			    Event.class);
 		}
 		return new ArrayList<>();
 	}
@@ -140,17 +155,16 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 		return events;
 	}
-
+	
 	@View(name = "event_by_concept_parent_code_and_base_entity_id", map = "function(doc) {if (doc.type === 'Event' && doc.obs) {for (var obs in doc.obs) {var fieldCode = doc.obs[obs].fieldCode;var parentCode = doc.obs[obs].parentCode;emit([doc.baseEntityId, fieldCode, parentCode], null);}}}")
 	public List<Event> findByBaseEntityIdAndConceptParentCode(String baseEntityId, String concept, String parentCode) {
 		ComplexKey startKey = ComplexKey.of(baseEntityId, concept, parentCode);
 		ComplexKey endKey = ComplexKey.of(baseEntityId, concept, parentCode);
-		List<Event> events = db.queryView(
-		    createQuery("event_by_concept_parent_code_and_base_entity_id").startKey(startKey).endKey(endKey).includeDocs(true),
+		List<Event> events = db.queryView(createQuery("event_by_concept_parent_code_and_base_entity_id").startKey(startKey)
+		        .endKey(endKey).includeDocs(true),
 		    Event.class);
 		return events;
 	}
-
 	
 	@View(name = "event_by_concept_and_value", map = "function(doc) {if (doc.type === 'Event' && doc.obs) {for (var obs in doc.obs) {var fieldCode = doc.obs[obs].fieldCode;var value = doc.obs[obs].values[0];emit([fieldCode,value],null);}}}")
 	public List<Event> findByConceptAndValue(String concept, String conceptValue) {
@@ -160,35 +174,31 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		return events;
 	}
 	
-
 	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Event' && !doc.serverVersion) { emit(doc._id, doc); } }")
 	public List<Event> findByEmptyServerVersion() {
 		return db.queryView(createQuery("events_by_empty_server_version").limit(200).includeDocs(true), Event.class);
 	}
 	
 	@GenerateView
-    public List<Event> getAll() {
-        return super.getAll();
-    }
-	
-	public List<Event> findEvents(String team,String providerId, String locationId, String baseEntityId, Long serverVersion,String sortBy,String sortOrder, int limit) {
-		return ler.getByCriteria(team,providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder,limit);
+	public List<Event> getAll() {
+		return super.getAll();
 	}
 	
+	public List<Event> findEvents(String team, String providerId, String locationId, String baseEntityId, Long serverVersion,
+	                              String sortBy, String sortOrder, int limit) {
+		return ler.getByCriteria(team, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
+	}
 	
 	@View(name = "all_events_by_event_type_and_version", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.eventType, doc.version], null); } }")
 	public List<Event> findEventByEventTypeBetweenTwoDates(String eventType) {
 		Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DATE, 1);
-        System.err.println("calendar.getTime():"+calendar.getTime().getTime());
-		ComplexKey start = ComplexKey.of(eventType,calendar.getTime().getTime());
-        ComplexKey end = ComplexKey.of(eventType,System.currentTimeMillis());
-        List<Event> events = db.queryView(
-				createQuery("all_events_by_event_type_and_version")
-						.startKey(start)
-						.endKey(end)						
-						.includeDocs(true), Event.class);
-        
+		calendar.set(Calendar.DATE, 1);
+		System.err.println("calendar.getTime():" + calendar.getTime().getTime());
+		ComplexKey start = ComplexKey.of(eventType, calendar.getTime().getTime());
+		ComplexKey end = ComplexKey.of(eventType, System.currentTimeMillis());
+		List<Event> events = db.queryView(
+		    createQuery("all_events_by_event_type_and_version").startKey(start).endKey(end).includeDocs(true), Event.class);
+		
 		return events;
 	}
 }

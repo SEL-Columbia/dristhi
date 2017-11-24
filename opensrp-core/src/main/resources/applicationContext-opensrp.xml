@@ -41,7 +41,7 @@
 		<constructor-arg ref="couchDbInstance" />
 	</bean>
 
-	<task:scheduler id="applicationScheduler" pool-size="50" />
+	<task:scheduler id="applicationScheduler" pool-size="10" />
 
 	<task:scheduled-tasks scheduler="applicationScheduler">
 		<task:scheduled ref="eventsListener" method="processEvent"
