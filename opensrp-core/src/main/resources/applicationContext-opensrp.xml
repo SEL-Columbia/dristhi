@@ -1,43 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-               http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+               http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:activemq.properties"/>
-        <property name="ignoreUnresolvablePlaceholders" value="true"/>
-    </bean>
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:activemq.properties" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
 
-    <import resource="classpath:applicationScheduler.xml"/>
-    <import resource="classpath:applicationPlatformServerAPI.xml"/>
-    <import resource="classpath:applicationSmsHttp.xml"/>
-    <import resource="classpath:applicationSmsAPI.xml"/>
-    <import resource="classpath:applicationSchedulerTrackingAPI.xml"/>
+	<import resource="classpath:applicationScheduler.xml" />
+	<import resource="classpath:applicationPlatformServerAPI.xml" />
+	<import resource="classpath:applicationSmsHttp.xml" />
+	<import resource="classpath:applicationSmsAPI.xml" />
+	<import resource="classpath:applicationSchedulerTrackingAPI.xml" />
 
-    <context:property-placeholder location="classpath*:maven.properties"/>
+	<context:property-placeholder location="classpath*:maven.properties" />
 
-    <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
+	<util:properties id="opensrp" location="classpath:/opensrp.properties" />
 
-    <context:annotation-config/>
-    <context:component-scan base-package="org.opensrp"/>
+	<context:annotation-config />
+	<context:component-scan base-package="org.opensrp" />
 
-    <bean id="opensrpDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
-        <constructor-arg value="${couchdb.db.opensrp}"/>
-        <constructor-arg ref="couchDbInstance"/>
-    </bean>
+	<bean id="opensrpDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+		<constructor-arg value="${couchdb.db.opensrp}" />
+		<constructor-arg ref="couchDbInstance" />
+	</bean>
 
-    <bean id="opensrpMCTSDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
-        <constructor-arg value="${couchdb.db.mcts}"/>
-        <constructor-arg ref="couchDbInstance"/>
-    </bean>
-    <bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl"/>
-    <bean id="opensrpErrorTraceDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
-        <constructor-arg value="${couchdb.db.error}"/>
-        <constructor-arg ref="couchDbInstance"/>
-    </bean>
+	<bean id="opensrpMCTSDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+		<constructor-arg value="${couchdb.db.mcts}" />
+		<constructor-arg ref="couchDbInstance" />
+	</bean>
+	<bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl" />
+	<bean id="opensrpErrorTraceDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+		<constructor-arg value="${couchdb.db.error}" />
+		<constructor-arg ref="couchDbInstance" />
+	</bean>
+
+	<task:scheduler id="applicationScheduler" pool-size="10" />
+
+	<task:scheduled-tasks scheduler="applicationScheduler">
+		<task:scheduled ref="eventsListener" method="processEvent"
+			fixed-delay="180000" />
+		<task:scheduled ref="openmrsSyncerListener" method="pushToOpenMRS"
+			fixed-delay="300000" />
+		<task:scheduled ref="openmrsValidateDataSync" method="syncToOpenMRS"
+			fixed-delay="420000" />
+		<task:scheduled ref="DHIS2DatasetPush" method="pushToDHIS2"
+			fixed-delay="600000" />
+		<task:scheduled ref="openmrsAtomfeedListener" method="syncAtomfeeds"
+			fixed-delay="900000" />
+	</task:scheduled-tasks>
+
 
 </beans>

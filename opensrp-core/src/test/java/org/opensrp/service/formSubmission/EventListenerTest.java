@@ -96,7 +96,7 @@ public class EventListenerTest {
         EventsListener spyEventListener = spy(eventsListener);
         when(spyEventListener.getCurrentMilliseconds()).thenReturn(0l);
 
-        spyEventListener.processEvent(new MotechEvent("motechEvent"));
+        spyEventListener.processEvent();
 
 
         InOrder inOrder = inOrder(allClients, allEvents, eventHandler);

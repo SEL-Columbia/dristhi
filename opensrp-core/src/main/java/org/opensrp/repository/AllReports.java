@@ -63,7 +63,7 @@ public class AllReports extends MotechBaseRepository<Report> {
 	public List<Report> findByServerVersion(long serverVersion) {
 		ComplexKey startKey = ComplexKey.of(serverVersion + 1);
 		ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
-		return db.queryView(createQuery("reports_by_version").startKey(startKey).endKey(endKey).includeDocs(true),
+		return db.queryView(createQuery("reports_by_version").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
 		    Report.class);
 	}
 	
