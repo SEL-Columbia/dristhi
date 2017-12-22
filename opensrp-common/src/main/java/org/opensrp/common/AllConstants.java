@@ -99,6 +99,10 @@ public class AllConstants {
 		
 		public static final String ENTITY_TYPE = "entityType";
 		
+		public static final String TEAM = "team";
+		
+		public static final String TEAM_ID = "teamId";
+		
 	}
 	
 	public static class Stock {

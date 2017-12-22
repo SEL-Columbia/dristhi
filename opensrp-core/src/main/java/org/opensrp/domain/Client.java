@@ -34,6 +34,8 @@ public class Client extends BaseEntity {
     @JsonProperty
     private String gender;
     @JsonProperty
+    private String clientType;
+    @JsonProperty
     private Map<String, List<String>> relationships;
 
     protected Client() {
@@ -89,6 +91,28 @@ public class Client extends BaseEntity {
         setAddresses(addresses);
         setAttributes(attributes);
     }
+    
+	public Client(String baseEntityId, String firstName, String middleName, String lastName, DateTime birthdate,
+	    DateTime deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender, String clientType) {
+		this(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox, deathdateApprox, gender);
+		setClientType(clientType);
+	}
+	
+	public Client(String baseEntityId, String firstName, String middleName, String lastName, DateTime birthdate,
+	    DateTime deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender, String identifierType,
+	    String identifier, String clientType) {
+		this(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox, deathdateApprox, gender,
+		        identifierType, identifier);
+		setClientType(clientType);
+	}
+	
+	public Client(String baseEntityId, String firstName, String middleName, String lastName, DateTime birthdate,
+	    DateTime deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender, List<Address> addresses,
+	    Map<String, String> identifiers, Map<String, Object> attributes, String clientType) {
+		this(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox, deathdateApprox, gender,
+		        addresses, identifiers, attributes);
+		setClientType(clientType);
+	}
 
     public String getFirstName() {
         return firstName;
@@ -167,8 +191,12 @@ public class Client extends BaseEntity {
     public void setGender(String gender) {
         this.gender = gender;
     }
+    
+	public void setClientType(String clientType) {
+		this.clientType = clientType;
+	}
 
-    public Map<String, List<String>> getRelationships() {
+	public Map<String, List<String>> getRelationships() {
         return relationships;
     }
 

@@ -85,9 +85,10 @@ public class EventService {
 	}
 	
 	public List<Event> findEventsBy(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                                String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
+	                                String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo,
+	                                String team, String teamId) {
 		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom,
-		    lastEditTo);
+		    lastEditTo, team, teamId);
 	}
 	
 	public List<Event> findEventsByDynamicQuery(String query) {
@@ -342,14 +343,15 @@ public class EventService {
 		return allEvents.getAll();
 	}
 	
-	public List<Event> findEvents(String team, String providerId, String locationId, Long serverVersion, String sortBy,
-	                              String sortOrder, int limit) {
-		return allEvents.findEvents(team, providerId, locationId, null, serverVersion, sortBy, sortOrder, limit);
+	public List<Event> findEvents(String team, String teamId, String providerId, String locationId, Long serverVersion,
+	                              String sortBy, String sortOrder, int limit) {
+		return allEvents.findEvents(team, teamId, providerId, locationId, null, serverVersion, sortBy, sortOrder, limit);
 	}
 	
-	public List<Event> findEvents(String team, String providerId, String locationId, String baseEntityId, Long serverVersion,
-	                              String sortBy, String sortOrder, int limit) {
-		return allEvents.findEvents(team, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
+	public List<Event> findEvents(String team, String teamId, String providerId, String locationId, String baseEntityId,
+	                              Long serverVersion, String sortBy, String sortOrder, int limit) {
+		return allEvents.findEvents(team, teamId, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder,
+		    limit);
 	}
 	
 	public List<Event> findEventsByConceptAndValue(String concept, String conceptValue) {
