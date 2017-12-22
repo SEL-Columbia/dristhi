@@ -108,6 +108,10 @@ public class AllConstants {
 		public static final String OPENMRS_UUID_IDENTIFIER_TYPE = "OPENMRS_UUID";
 
 		
+		public static final String TEAM = "team";
+		
+		public static final String TEAM_ID = "teamId";
+		
 	}
 	
 	public static class Stock {

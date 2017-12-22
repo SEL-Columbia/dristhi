@@ -113,6 +113,7 @@ public class EventResource extends RestResource<Event> {
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
 			if (team != null || providerId != null || locationId != null || baseEntityId != null || teamId != null) {
+				long startTime = System.currentTimeMillis();
 				events = eventService.findEvents(team, teamId, providerId, locationId, baseEntityId, lastSyncedServerVersion,
 				    BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				if (!events.isEmpty()) {
@@ -159,10 +160,12 @@ public class EventResource extends RestResource<Event> {
 				    new TypeToken<ArrayList<Client>>() {}.getType());
 				for (Client client : clients) {
 					try {
-					    clientService.addorUpdate(client);
+						clientService.addorUpdate(client);
 					}
 					catch (Exception e) {
-						logger.error("Client" + client.getBaseEntityId()==null?"":client.getBaseEntityId()+" failed to sync", e);
+						logger.error(
+						    "Client" + client.getBaseEntityId() == null ? "" : client.getBaseEntityId() + " failed to sync",
+						    e);
 					}
 				}
 				
@@ -176,7 +179,10 @@ public class EventResource extends RestResource<Event> {
 						eventService.addorUpdateEvent(event);
 					}
 					catch (Exception e) {
-						logger.error("Event of type "+event.getEventType()+" for client " + event.getBaseEntityId()==null?"":event.getBaseEntityId()+" failed to sync", e);
+						logger.error(
+						    "Event of type " + event.getEventType() + " for client " + event.getBaseEntityId() == null ? ""
+						            : event.getBaseEntityId() + " failed to sync",
+						    e);
 					}
 				}
 			}
