@@ -80,7 +80,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 			query.between(parameter, from, to);
 		}
 	}
-	
+
 	/**
 	 * @param providerId- health worker id or comma separated health worker ids
 	 * @param locationId
