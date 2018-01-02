@@ -43,34 +43,16 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 		LuceneQuery query = new LuceneQuery("Event", "by_all_criteria");
 
 		Query qf = new Query(FilterType.AND);
-		if (eventDatefrom != null && eventDateto != null) {
-			qf.between(EVENT_DATE, eventDatefrom, eventDateto);
-		}
-		if (lastEditFrom != null && lastEditTo != null) {
-			qf.between(LAST_UPDATE, lastEditFrom, lastEditTo);
-		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(baseEntityId)) {
-			qf.eq(BASE_ENTITY_ID, baseEntityId);
-		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(eventType)) {
-			qf.eq(EVENT_TYPE, eventType);
-		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(entityType)) {
-			qf.eq(ENTITY_TYPE, entityType);
-		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(providerId)) {
-			qf.eq(PROVIDER_ID, providerId);
-		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(locationId)) {
-			qf.eq(LOCATION_ID, locationId);
-		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(team)) {
-			qf.eq(TEAM, team);
-		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(teamId)) {
-			qf.eq(TEAM_ID, teamId);
-		}
-
+		addQueryParameter(qf, EVENT_DATE, eventDatefrom, eventDateto);
+		addQueryParameter(qf, LAST_UPDATE, lastEditFrom, lastEditTo);
+		addQueryParameter(qf, BASE_ENTITY_ID, baseEntityId);
+		addQueryParameter(qf, EVENT_TYPE, eventType);
+		addQueryParameter(qf, ENTITY_TYPE, entityType);
+		addQueryParameter(qf, PROVIDER_ID, providerId);
+		addQueryParameter(qf, LOCATION_ID, locationId);
+		addQueryParameter(qf, TEAM, team);
+		addQueryParameter(qf, TEAM_ID, teamId);
+		
 		if (StringUtils.isEmptyOrWhitespaceOnly(qf.query())) {
 			throw new RuntimeException("Atleast one search filter must be specified");
 		}
@@ -85,6 +67,17 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);
+		}
+	}
+	
+	private void addQueryParameter(Query query, String parameter, String value) {
+		if (!StringUtils.isEmptyOrWhitespaceOnly(value))
+			query.eq(parameter, value);
+	}
+	
+	private void addQueryParameter(Query query, String parameter, DateTime from, DateTime to) {
+		if (from != null && to != null) {
+			query.between(parameter, from, to);
 		}
 	}
 
