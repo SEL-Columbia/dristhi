@@ -276,10 +276,18 @@ public class Event extends BaseDataObject {
 	
 	public void setVersion(long version) {
 		this.version = version;
+	}	
+	
+	public String getTeamId() {
+		return teamId;
 	}
-		
+	
 	public void setTeamId(String teamId) {
 		this.teamId = teamId;
+	}
+	
+	public String getTeam() {
+		return team;
 	}
 	
 	public void setTeam(String team) {

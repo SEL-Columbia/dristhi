@@ -191,7 +191,11 @@ public class Client extends BaseEntity {
     public void setGender(String gender) {
         this.gender = gender;
     }
-    
+	
+	public String getClientType() {
+		return clientType;
+	}
+
 	public void setClientType(String clientType) {
 		this.clientType = clientType;
 	}
