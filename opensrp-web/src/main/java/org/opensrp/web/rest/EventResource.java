@@ -8,6 +8,8 @@ import static org.opensrp.common.AllConstants.Event.EVENT_DATE;
 import static org.opensrp.common.AllConstants.Event.EVENT_TYPE;
 import static org.opensrp.common.AllConstants.Event.LOCATION_ID;
 import static org.opensrp.common.AllConstants.Event.PROVIDER_ID;
+import static org.opensrp.common.AllConstants.Event.TEAM;
+import static org.opensrp.common.AllConstants.Event.TEAM_ID;
 import static org.opensrp.web.rest.RestUtils.getDateRangeFilter;
 import static org.opensrp.web.rest.RestUtils.getIntegerFilter;
 import static org.opensrp.web.rest.RestUtils.getStringFilter;
@@ -96,11 +98,12 @@ public class EventResource extends RestResource<Event> {
 			String locationId = getStringFilter(LOCATION_ID, request);
 			String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
+			String team = getStringFilter(TEAM, request);
+			String teamId = getStringFilter(TEAM_ID, request);
 			Long lastSyncedServerVersion = null;
 			if (serverVersion != null) {
 				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
 			}
-			String team = getStringFilter("team", request);
 			Integer limit = getIntegerFilter("limit", request);
 			if (limit == null || limit.intValue() == 0) {
 				limit = 25;
@@ -110,7 +113,7 @@ public class EventResource extends RestResource<Event> {
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
 			if (team != null || providerId != null || locationId != null || baseEntityId != null) {
-				events = eventService.findEvents(team, providerId, locationId, baseEntityId, lastSyncedServerVersion,
+				events = eventService.findEvents(team, teamId, providerId, locationId, baseEntityId, lastSyncedServerVersion,
 				    BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				if (!events.isEmpty()) {
 					for (Event event : events) {
@@ -228,6 +231,8 @@ public class EventResource extends RestResource<Event> {
 		String provider = getStringFilter(PROVIDER_ID, request);
 		String entityType = getStringFilter(ENTITY_TYPE, request);
 		DateTime[] lastEdit = getDateRangeFilter(LAST_UPDATE, request);
+		String team = getStringFilter(TEAM, request);
+		String teamId = getStringFilter(TEAM_ID, request);
 		
 		if (!StringUtils.isEmptyOrWhitespaceOnly(clientId)) {
 			Client c = clientService.find(clientId);
@@ -240,7 +245,7 @@ public class EventResource extends RestResource<Event> {
 		
 		return eventService.findEventsBy(clientId, eventDate == null ? null : eventDate[0],
 		    eventDate == null ? null : eventDate[1], eventType, entityType, provider, location,
-		    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1]);
+		    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1], team, teamId);
 	}
 	
 	@Override

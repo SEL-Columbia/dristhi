@@ -81,9 +81,10 @@ public class AllEvents extends MotechBaseRepository<Event> {
 	}
 	
 	public List<Event> findEvents(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                              String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
+	                              String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo,
+	                              String team, String teamId) {
 		return ler.getByCriteria(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom,
-		    lastEditTo);
+		    lastEditTo, team, teamId);
 	}
 	
 	public List<Event> findEventsByDynamicQuery(String query) {
@@ -184,9 +185,10 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		return super.getAll();
 	}
 	
-	public List<Event> findEvents(String team, String providerId, String locationId, String baseEntityId, Long serverVersion,
-	                              String sortBy, String sortOrder, int limit) {
-		return ler.getByCriteria(team, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
+	public List<Event> findEvents(String team, String teamId, String providerId, String locationId, String baseEntityId,
+	                              Long serverVersion, String sortBy, String sortOrder, int limit) {
+		return ler.getByCriteria(team, teamId, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder,
+		    limit);
 	}
 	
 	@View(name = "all_events_by_event_type_and_version", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.eventType, doc.version], null); } }")
