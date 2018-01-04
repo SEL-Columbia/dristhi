@@ -54,6 +54,8 @@
 			fixed-delay="600000" />
 		<task:scheduled ref="openmrsAtomfeedListener" method="syncAtomfeeds"
 			fixed-delay="900000" />
+		<task:scheduled ref="viewConfigurationService" method="addServerVersion"
+			fixed-delay="120000" />
 	</task:scheduled-tasks>
 
 

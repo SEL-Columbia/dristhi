@@ -35,4 +35,15 @@ public class ViewConfigurationRepository extends CouchDbRepositorySupport<ViewCo
 		    ViewConfiguration.class);
 	}
 	
+
+	/**
+	 * Get all ViewConfigurations without a server version
+	 *
+	 * @return view configuration
+	 */
+	@View(name = "view_configurations_by_empty_server_version", map = "function(doc) { if ( doc.type == 'ViewConfiguration' && !doc.serverVersion) { emit(doc._id, doc); } }")
+	public List<ViewConfiguration> findByEmptyServerVersion() {
+		return db.queryView(createQuery("view_configurations_by_empty_server_version").limit(200).includeDocs(true), ViewConfiguration.class);
+	}
+	
 }
