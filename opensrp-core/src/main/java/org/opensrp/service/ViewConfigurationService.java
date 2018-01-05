@@ -29,11 +29,13 @@ public class ViewConfigurationService {
 		try {
 			List<ViewConfiguration> viewConfigurations = viewConfigurationRepository.findByEmptyServerVersion();
 			logger.info("RUNNING addServerVersion viewConfigurations size: " + viewConfigurations.size());
+			long currentTimeMillis = System.currentTimeMillis();
 			for (ViewConfiguration viewConfiguration : viewConfigurations) {
 				try {
 					Thread.sleep(1);
-					viewConfiguration.setServerVersion(System.currentTimeMillis());
+					viewConfiguration.setServerVersion(currentTimeMillis);
 					viewConfigurationRepository.update(viewConfiguration);
+					currentTimeMillis += 1;
 				}
 				catch (InterruptedException e) {
 					logger.error(e.getMessage());
