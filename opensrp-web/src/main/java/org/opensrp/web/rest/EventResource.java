@@ -112,7 +112,7 @@ public class EventResource extends RestResource<Event> {
 			List<Event> events = new ArrayList<Event>();
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
-			if (team != null || providerId != null || locationId != null || baseEntityId != null) {
+			if (team != null || providerId != null || locationId != null || baseEntityId != null || teamId != null) {
 				events = eventService.findEvents(team, teamId, providerId, locationId, baseEntityId, lastSyncedServerVersion,
 				    BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				if (!events.isEmpty()) {
