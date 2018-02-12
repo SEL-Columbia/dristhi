@@ -50,7 +50,7 @@ public class StockResourceTest {
 		  MockHttpServletRequest mockRequest = new MockHttpServletRequest();
 		  //  mockRequest.setContentType(MediaType.APPLICATION_JSON.toString());
 		  mockRequest.setMethod("GET");
-		  mockRequest.setRequestURI("/rest/stock/sync/");
+		  mockRequest.setRequestURI("/rest/stockresource/sync/");
 		  mockRequest.setAttribute(HandlerMapping.class.getName() + ".introspectTypeLevelMapping", true);
 		mockRequest.addParameter(IDENTIFIER, "003");
 		mockRequest.addParameter(VACCINE_TYPE_ID, "VTID");
