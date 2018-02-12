@@ -123,6 +123,21 @@ public class EventResource extends RestResource<Event> {
 				}
 			}
 			
+			List<String> foundClientIds = new ArrayList<>();
+			for (Client client : clients) {
+				foundClientIds.add(client.getBaseEntityId());
+			}
+			
+			boolean removed = clientIds.removeAll(foundClientIds);
+			if (removed) {
+				for (String clientId : clientIds) {
+					Client client = clientService.getByBaseEntityId(clientId);
+					if (client != null) {
+						clients.add(client);
+					}
+				}
+			}
+			
 			JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
 			
 			JsonArray clientsArray = (JsonArray) gson.toJsonTree(clients, new TypeToken<List<Client>>() {}.getType());
@@ -156,10 +171,12 @@ public class EventResource extends RestResource<Event> {
 				    new TypeToken<ArrayList<Client>>() {}.getType());
 				for (Client client : clients) {
 					try {
-					    clientService.addorUpdate(client);
+						clientService.addorUpdate(client);
 					}
 					catch (Exception e) {
-						logger.error("Client" + client.getBaseEntityId()==null?"":client.getBaseEntityId()+" failed to sync", e);
+						logger.error(
+						    "Client" + client.getBaseEntityId() == null ? "" : client.getBaseEntityId() + " failed to sync",
+						    e);
 					}
 				}
 				
@@ -173,7 +190,10 @@ public class EventResource extends RestResource<Event> {
 						eventService.addorUpdateEvent(event);
 					}
 					catch (Exception e) {
-						logger.error("Event of type "+event.getEventType()+" for client " + event.getBaseEntityId()==null?"":event.getBaseEntityId()+" failed to sync", e);
+						logger.error(
+						    "Event of type " + event.getEventType() + " for client " + event.getBaseEntityId() == null ? ""
+						            : event.getBaseEntityId() + " failed to sync",
+						    e);
 					}
 				}
 			}
