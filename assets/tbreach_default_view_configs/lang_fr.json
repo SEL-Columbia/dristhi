@@ -1,0 +1,23 @@
+{
+   "_id": "92141b17040021a7ce326194ff000f21",
+   "_rev": "29-49294ac5c30471b12e44786ab0fd53f3",
+   "serverVersion": 2608771256,
+   "type": "ViewConfiguration",
+   "identifier": "lang_fr",
+   "labels": {
+       "presumptive_patients": "Patients Potentiels",
+       "positive_patients": "Patients positifs",
+       "in_treatment_patients": "Patients de traitement",
+       "service_history": "Histoire du Service",
+       "date": "La Date",
+       "form": "Formulaire",
+       "positive_results": "Résultats positifs",
+       "record_results": "Résultats d'enregistrement",
+       "contacts": "Coordonnées",
+       "first_encounter": "Première Rencontre",
+       "remove_patient": "Supprimer le Patient",
+       "no_results_recorded": "Aucun Résultat Enregistré",
+       "followup": "Suivre",
+       "add_contact": "Ajouter Le Contact"
+   }
+}

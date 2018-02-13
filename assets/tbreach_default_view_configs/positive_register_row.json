@@ -1,0 +1,388 @@
+{
+   "_id": "3a065d7c3354eb2bc23c8a3bc3040361",
+   "_rev": "11-db8d6f271fa716e7932ad20c33a85ee3",
+   "type": "ViewConfiguration",
+   "serverVersion": 1517900085838,
+   "identifier": "positive_register_row",
+   "jsonView": {
+       "views": [
+           {
+               "views": [
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "result_details",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "#757575",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "16sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           },
+                           {
+                               "value": "gone",
+                               "type": "string",
+                               "name": "visibility"
+                           }
+                       ],
+                       "widget": "TextView"
+                   },
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "result_lnk",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "3dp",
+                               "type": "dimen",
+                               "name": "layout_marginBottom"
+                           },
+                           {
+                               "value": "@string/result",
+                               "type": "ref",
+                               "name": "text"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "textAlignment"
+                           },
+                           {
+                               "value": "true",
+                               "type": "BOOLEAN",
+                               "name": "textAllCaps"
+                           },
+                           {
+                               "value": "#3269D4",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "18sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "TextView"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "results_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "3.4",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   }
+               ],
+               "widget": "LinearLayout"
+           },
+           {
+               "views": [
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "treat_lnk",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "5dp",
+                               "type": "dimen",
+                               "name": "layout_marginBottom"
+                           },
+                           {
+                               "value": "@string/start_treatment",
+                               "type": "ref",
+                               "name": "text"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "textAlignment"
+                           },
+                           {
+                               "value": "true",
+                               "type": "BOOLEAN",
+                               "name": "textAllCaps"
+                           },
+                           {
+                               "value": "#3269D4",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "18sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "TextView"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "treat_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "2.6",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   }
+               ],
+               "widget": "LinearLayout"
+           },
+           {
+               "views": [
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "diagnosis",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "5dp",
+                               "type": "dimen",
+                               "name": "layout_marginBottom"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "textAlignment"
+                           },
+                           {
+                               "value": "#757575",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "16sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "TextView"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "diagnosis_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "2.6",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   },
+                   {
+                       "value": "gone",
+                       "type": "string",
+                       "name": "visibility"
+                   }
+               ],
+               "widget": "LinearLayout"
+           }
+       ],
+       "properties": [
+           {
+               "value": "register_columns",
+               "type": "ref",
+               "name": "id"
+           },
+           {
+               "value": "fill_parent",
+               "type": "dimen",
+               "name": "layout_width"
+           },
+           {
+               "value": "72dp",
+               "type": "dimen",
+               "name": "layout_height"
+           },
+           {
+               "value": "#eeeeee",
+               "type": "color",
+               "name": "background"
+           },
+           {
+               "value": "horizontal",
+               "type": "string",
+               "name": "orientation"
+           }
+       ],
+       "widget": "LinearLayout"
+   }
+}

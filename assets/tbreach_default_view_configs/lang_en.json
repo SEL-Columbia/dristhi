@@ -1,0 +1,12 @@
+{
+   "_id": "d243bc5737fb389e52601cb85022098d",
+   "_rev": "30-d090112c6c0c642d53c0cb0e3d4b648b",
+   "serverVersion": 1513941712045,
+   "type": "ViewConfiguration",
+   "identifier": "lang_en",
+   "labels": {
+       "presumptive_patients": "Presumptive Patients",
+       "positive_patients": "Positive Patients",
+       "in_treatment_patients": "In-treatment Patients"
+   }
+}

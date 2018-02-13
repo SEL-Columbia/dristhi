@@ -1,0 +1,13 @@
+{
+   "_id": "19a2e8aa6739d77a2b780199c6122867",
+   "_rev": "71-8e0047e6366b6d2d69c6ad01c76000c6",
+   "type": "ViewConfiguration",
+   "serverVersion": 1517998250373,
+   "identifier": "main",
+   "metadata": {
+       "type": "Main",
+       "language": "en",
+       "applicationName": "TB REACH",
+       "enableJsonViews": true
+   }
+}

@@ -1,0 +1,17 @@
+{
+   "_id": "92141b17040021a7ce326194ff0029f7",
+   "_rev": "46-ae8e912099f17f76e05a986c8f5b84e7",
+   "type": "ViewConfiguration",
+   "serverVersion": 1518180899400,
+   "identifier": "login",
+   "metadata": {
+       "type": "Login",
+       "showPasswordCheckbox": true,
+       "logoUrl": "https://pbs.twimg.com/profile_images/601380135502258177/phKlqFWx.jpg",
+       "background": {
+           "orientation": "BOTTOM_TOP",
+           "startColor": "#40C4FF",
+           "endColor": "#00B0FF"
+       }
+   }
+}

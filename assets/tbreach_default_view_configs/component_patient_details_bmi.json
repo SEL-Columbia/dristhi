@@ -1,0 +1,581 @@
+{
+   "_id": "f9a6a9f8e584302f2dd202a5814a2686",
+   "_rev": "4-2c774aa14804dd81a004aca335d39f0d",
+   "type": "ViewConfiguration",
+   "serverVersion": 1517565746097,
+   "identifier": "component_patient_details_bmi",
+   "jsonView": {
+       "views": [
+           {
+               "views": [
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "bmi",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "CustomFontTextViewStyle.ClientList",
+                               "type": "ref",
+                               "name": "style"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "true",
+                               "type": "BOOLEAN",
+                               "name": "layout_alignParentLeft"
+                           },
+                           {
+                               "value": "true",
+                               "type": "BOOLEAN",
+                               "name": "layout_centerInParent"
+                           },
+                           {
+                               "value": "center_vertical",
+                               "type": "string",
+                               "name": "layout_gravity"
+                           },
+                           {
+                               "value": "0dp",
+                               "type": "string",
+                               "name": "paddingLeft"
+                           },
+                           {
+                               "value": "@string/bmi",
+                               "type": "ref",
+                               "name": "text"
+                           },
+                           {
+                               "value": "#000000",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "22sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                   },
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "bmiHeightLineChartView",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "140dp",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           }
+                       ],
+                       "widget": "lecho.lib.hellocharts.view.LineChartView"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "wrap_content",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "layout_gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   }
+               ],
+               "widget": "LinearLayout"
+           },
+           {
+               "views": [
+               ],
+               "properties": [
+                   {
+                       "value": "bmiChartHorizontalDividerView",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "2dp",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "10dp",
+                       "type": "dimen",
+                       "name": "layout_marginBottom"
+                   },
+                   {
+                       "value": "10dp",
+                       "type": "dimen",
+                       "name": "layout_marginTop"
+                   },
+                   {
+                       "value": "#b9b9b9",
+                       "type": "color",
+                       "name": "background"
+                   }
+               ],
+               "widget": "android.view.View"
+           },
+           {
+               "views": [
+                   {
+                       "views": [
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "bmiStartTextView",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "CustomFontTextViewStyle.ClientList",
+                                       "type": "ref",
+                                       "name": "style"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_alignParentLeft"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_centerInParent"
+                                   },
+                                   {
+                                       "value": "center_vertical",
+                                       "type": "string",
+                                       "name": "layout_gravity"
+                                   },
+                                   {
+                                       "value": "0dp",
+                                       "type": "string",
+                                       "name": "paddingLeft"
+                                   },
+                                   {
+                                       "value": "BMI: 17.7",
+                                       "type": "string",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "#000000",
+                                       "type": "color",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "22sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   }
+                               ],
+                               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                           },
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "bmiLastTextView",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "CustomFontTextViewStyle.ClientList",
+                                       "type": "ref",
+                                       "name": "style"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_alignParentEnd"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_alignParentRight"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_centerInParent"
+                                   },
+                                   {
+                                       "value": "0dp",
+                                       "type": "string",
+                                       "name": "paddingLeft"
+                                   },
+                                   {
+                                       "value": "BMI: 18.6",
+                                       "type": "string",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "string",
+                                       "name": "textAllCaps"
+                                   },
+                                   {
+                                       "value": "#000000",
+                                       "type": "color",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "22sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   }
+                               ],
+                               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                           }
+                       ],
+                       "properties": [
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center_vertical",
+                               "type": "string",
+                               "name": "layout_gravity"
+                           },
+                           {
+                               "value": "10dp",
+                               "type": "dimen",
+                               "name": "layout_marginBottom"
+                           },
+                           {
+                               "value": "horizontal",
+                               "type": "string",
+                               "name": "orientation"
+                           }
+                       ],
+                       "widget": "RelativeLayout"
+                   },
+                   {
+                       "views": [
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "treatmentStartDateTextView",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "CustomFontTextViewStyle.ClientList",
+                                       "type": "ref",
+                                       "name": "style"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_alignParentLeft"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_centerInParent"
+                                   },
+                                   {
+                                       "value": "center_vertical",
+                                       "type": "string",
+                                       "name": "layout_gravity"
+                                   },
+                                   {
+                                       "value": "1",
+                                       "type": "float",
+                                       "name": "layout_weight"
+                                   },
+                                   {
+                                       "value": "end",
+                                       "type": "string",
+                                       "name": "ellipsize"
+                                   },
+                                   {
+                                       "value": "1",
+                                       "type": "integer",
+                                       "name": "maxLines"
+                                   },
+                                   {
+                                       "value": "0dp",
+                                       "type": "string",
+                                       "name": "paddingLeft"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "string",
+                                       "name": "scrollHorizontally"
+                                   },
+                                   {
+                                       "value": "Dec 2016 (Treatment Start)",
+                                       "type": "string",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "client_list_grey",
+                                       "type": "ref",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "22sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   }
+                               ],
+                               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                           },
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "treatmentEndDateTextView",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "CustomFontTextViewStyle.ClientList",
+                                       "type": "ref",
+                                       "name": "style"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_alignParentEnd"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_alignParentRight"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_centerInParent"
+                                   },
+                                   {
+                                       "value": "1",
+                                       "type": "float",
+                                       "name": "layout_weight"
+                                   },
+                                   {
+                                       "value": "end",
+                                       "type": "string",
+                                       "name": "ellipsize"
+                                   },
+                                   {
+                                       "value": "right",
+                                       "type": "string",
+                                       "name": "gravity"
+                                   },
+                                   {
+                                       "value": "1",
+                                       "type": "integer",
+                                       "name": "maxLines"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "string",
+                                       "name": "scrollHorizontally"
+                                   },
+                                   {
+                                       "value": "24 Nov 2017",
+                                       "type": "string",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "client_list_grey",
+                                       "type": "ref",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "22sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   }
+                               ],
+                               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                           }
+                       ],
+                       "properties": [
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center_vertical",
+                               "type": "string",
+                               "name": "layout_gravity"
+                           },
+                           {
+                               "value": "10dp",
+                               "type": "dimen",
+                               "name": "layout_marginBottom"
+                           },
+                           {
+                               "value": "horizontal",
+                               "type": "string",
+                               "name": "orientation"
+                           }
+                       ],
+                       "widget": "LinearLayout"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "wrap_content",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "wrap_content",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "layout_gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   }
+               ],
+               "widget": "LinearLayout"
+           }
+       ],
+       "properties": [
+           {
+               "value": "clientBMIHeightChartCardView",
+               "type": "ref",
+               "name": "id"
+           },
+           {
+               "value": "match_parent",
+               "type": "dimen",
+               "name": "layout_width"
+           },
+           {
+               "value": "wrap_content",
+               "type": "dimen",
+               "name": "layout_height"
+           },
+           {
+               "value": "5dp",
+               "type": "dimen",
+               "name": "layout_marginBottom"
+           },
+           {
+               "value": "border",
+               "type": "ref",
+               "name": "background"
+           },
+           {
+               "value": "vertical",
+               "type": "string",
+               "name": "orientation"
+           },
+           {
+               "value": "10dp",
+               "type": "dimen",
+               "name": "padding"
+           }
+       ],
+       "widget": "LinearLayout"
+   }
+}

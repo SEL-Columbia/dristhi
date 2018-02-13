@@ -1,0 +1,863 @@
+{
+   "_id": "e039be5e507d6a74abe4ed6eb003c5e1",
+   "_rev": "4-ac6e32ca27dc984864a56fb62434cb4b",
+   "type": "ViewConfiguration",
+   "serverVersion": 1517586987827,
+   "identifier": "intreatment_register_row",
+   "jsonView": {
+       "views": [
+           {
+               "views": [
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "intreatment_details",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "3dp",
+                               "type": "dimen",
+                               "name": "layout_marginTop"
+                           },
+                           {
+                               "value": "center_horizontal",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "#757575",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "16sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           },
+                           {
+                               "value": "gone",
+                               "type": "string",
+                               "name": "visibility"
+                           }
+                       ],
+                       "widget": "TextView"
+                   },
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "intreatment_lnk",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "3dp",
+                               "type": "dimen",
+                               "name": "layout_marginBottom"
+                           },
+                           {
+                               "value": "@string/result",
+                               "type": "ref",
+                               "name": "text"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "textAlignment"
+                           },
+                           {
+                               "value": "true",
+                               "type": "BOOLEAN",
+                               "name": "textAllCaps"
+                           },
+                           {
+                               "value": "#3269D4",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "18sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "TextView"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "intreatment_results_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "3.4",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   }
+               ],
+               "widget": "LinearLayout"
+           },
+           {
+               "views": [
+                   {
+                       "views": [
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "followup_text",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "match_parent",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "match_parent",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "center",
+                                       "type": "string",
+                                       "name": "gravity"
+                                   },
+                                   {
+                                       "value": "@string/followup",
+                                       "type": "ref",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "false",
+                                       "type": "BOOLEAN",
+                                       "name": "textAllCaps"
+                                   },
+                                   {
+                                       "value": "?android:attr/textAppearanceSmall",
+                                       "type": "string",
+                                       "name": "textAppearance"
+                                   },
+                                   {
+                                       "value": "@color/status_bar_text_almost_white",
+                                       "type": "ref",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "16sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   }
+                               ],
+                               "widget": "TextView"
+                           }
+                       ],
+                       "properties": [
+                           {
+                               "value": "followup",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "5dp",
+                               "type": "dimen",
+                               "name": "layout_margin"
+                           },
+                           {
+                               "value": "@drawable/due_vaccine_red_bg",
+                               "type": "ref",
+                               "name": "background"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "horizontal",
+                               "type": "string",
+                               "name": "orientation"
+                           }
+                       ],
+                       "widget": "LinearLayout"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "followup_schedule_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "2.6",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   }
+               ],
+               "widget": "LinearLayout"
+           },
+           {
+               "views": [
+                   {
+                       "views": [
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "smr_schedule_text",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "match_parent",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "match_parent",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "center",
+                                       "type": "string",
+                                       "name": "gravity"
+                                   },
+                                   {
+                                       "value": "@string/followup",
+                                       "type": "ref",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "false",
+                                       "type": "BOOLEAN",
+                                       "name": "textAllCaps"
+                                   },
+                                   {
+                                       "value": "?android:attr/textAppearanceSmall",
+                                       "type": "string",
+                                       "name": "textAppearance"
+                                   },
+                                   {
+                                       "value": "@color/status_bar_text_almost_white",
+                                       "type": "ref",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "16sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   }
+                               ],
+                               "widget": "TextView"
+                           }
+                       ],
+                       "properties": [
+                           {
+                               "value": "smr_schedule",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "5dp",
+                               "type": "dimen",
+                               "name": "layout_margin"
+                           },
+                           {
+                               "value": "@drawable/due_vaccine_red_bg",
+                               "type": "ref",
+                               "name": "background"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "horizontal",
+                               "type": "string",
+                               "name": "orientation"
+                           }
+                       ],
+                       "widget": "LinearLayout"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "smr_schedule_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "2.6",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   },
+                   {
+                       "value": "gone",
+                       "type": "string",
+                       "name": "visibility"
+                   }
+               ],
+               "widget": "LinearLayout"
+           },
+           {
+               "views": [
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "treatment_started",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "@style/CustomFontTextViewStyle.ClientList",
+                               "type": "ref",
+                               "name": "style"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center_horizontal",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "@color/client_list_grey",
+                               "type": "ref",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "16sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                   },
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "treatment_phase",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "@style/CustomFontTextViewStyle.ClientList",
+                               "type": "ref",
+                               "name": "style"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center_horizontal",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "@color/client_list_grey",
+                               "type": "ref",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "16sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                   },
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "regimen",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "@style/CustomFontTextViewStyle.ClientList",
+                               "type": "ref",
+                               "name": "style"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center_horizontal",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "@color/client_list_grey",
+                               "type": "ref",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "16sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "treatment_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "2.6",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   },
+                   {
+                       "value": "gone",
+                       "type": "string",
+                       "name": "visibility"
+                   }
+               ],
+               "widget": "LinearLayout"
+           },
+           {
+               "views": [
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "followup_lnk",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "3dp",
+                               "type": "dimen",
+                               "name": "layout_marginBottom"
+                           },
+                           {
+                               "value": "@string/followup",
+                               "type": "ref",
+                               "name": "text"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "textAlignment"
+                           },
+                           {
+                               "value": "true",
+                               "type": "BOOLEAN",
+                               "name": "textAllCaps"
+                           },
+                           {
+                               "value": "#3269D4",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "18sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "TextView"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "followup_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "3.4",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   },
+                   {
+                       "value": "gone",
+                       "type": "string",
+                       "name": "visibility"
+                   }
+               ],
+               "widget": "LinearLayout"
+           },
+           {
+               "views": [
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "baseline_details",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "3dp",
+                               "type": "dimen",
+                               "name": "layout_marginTop"
+                           },
+                           {
+                               "value": "center_horizontal",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "#757575",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "16sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           },
+                           {
+                               "value": "gone",
+                               "type": "string",
+                               "name": "visibility"
+                           }
+                       ],
+                       "widget": "TextView"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "baseline_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "3.4",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   },
+                   {
+                       "value": "gone",
+                       "type": "string",
+                       "name": "visibility"
+                   }
+               ],
+               "widget": "LinearLayout"
+           }
+       ],
+       "properties": [
+           {
+               "value": "register_columns",
+               "type": "ref",
+               "name": "id"
+           },
+           {
+               "value": "fill_parent",
+               "type": "dimen",
+               "name": "layout_width"
+           },
+           {
+               "value": "72dp",
+               "type": "dimen",
+               "name": "layout_height"
+           },
+           {
+               "value": "#eeeeee",
+               "type": "color",
+               "name": "background"
+           },
+           {
+               "value": "horizontal",
+               "type": "string",
+               "name": "orientation"
+           }
+       ],
+       "widget": "LinearLayout"
+   }
+}

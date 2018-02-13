@@ -1,0 +1,49 @@
+{
+   "_id": "a80b874fb4022105231dff6fe4267c87",
+   "_rev": "12-4ec7f3aaeb766b75063c4ac8b6de51b9",
+   "type": "ViewConfiguration",
+   "serverVersion": 1517835281685,
+   "identifier": "patient_details_positive",
+   "views": [
+       {
+           "identifier": "component_patient_details_demographics",
+           "visible": true,
+           "residence": {
+               "position": 0
+           }
+       },
+       {
+           "identifier": "component_patient_details_results",
+           "visible": true,
+           "residence": {
+               "position": 1
+           }
+       },
+       {
+           "identifier": "component_patient_details_contact_screening",
+           "visible": true,
+           "residence": {
+               "position": 2
+           }
+       },
+       {
+           "identifier": "component_patient_details_service_history",
+           "visible": true,
+           "residence": {
+               "position": 3
+           }
+       }
+   ],
+   "labels": {
+       "service_history": "service_history",
+       "date": "date",
+       "form": "form",
+       "positive_results": "positive_results",
+       "record_results": "record_results",
+       "contacts": "contacts",
+       "first_encounter": "first_encounter",
+       "remove_patient": "remove_patient",
+       "no_results_recorded": "no_results_recorded",
+       "add_contact": "add_contact"
+   }
+}

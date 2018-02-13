@@ -1,0 +1,97 @@
+{
+   "_id": "719d5e5852173b7b68e938730d0b6b4d",
+   "_rev": "21-7ec7bc4d2159eba9af9d70bbfd6bbe2e",
+   "type": "ViewConfiguration",
+   "serverVersion": 1518177659188,
+   "identifier": "intreatment_register",
+   "metadata": {
+       "type": "Register",
+       "enableAdvancedSearch": true,
+       "enableSortList": true,
+       "enableFilterList": true,
+       "searchBarText": "Search name or ID"
+   },
+   "views": [
+       {
+           "identifier": "patient",
+           "label": "column_patient",
+           "visible": true,
+           "residence": {
+               "position": 0,
+               "layout_weight": "2.5"
+           }
+       },
+       {
+           "identifier": "intreatment_results",
+           "label": "column_intreatment_results",
+           "visible": true,
+           "residence": {
+               "position": 1,
+               "layout_weight": "2"
+           }
+       },
+       {
+           "identifier": "smr_schedule",
+           "label": "smr_schedule",
+           "visible": true,
+           "residence": {
+               "position": 4,
+               "layout_weight": "2"
+           }
+       },
+       {
+           "identifier": "xpert_results",
+           "label": "column_xpert_results",
+           "visible": false,
+           "residence": {
+               "position": 3,
+               "layout_weight": "1.5"
+           }
+       },
+       {
+           "identifier": "smr_results",
+           "label": "column_smr_results",
+           "visible": false,
+           "residence": {
+               "position": 1,
+               "layout_weight": "1.5"
+           }
+       },
+       {
+           "identifier": "followup_schedule",
+           "label": "column_followup",
+           "visible": true,
+           "residence": {
+               "position": 2,
+               "layout_weight": "1.8"
+           }
+       },
+       {
+           "identifier": "followup",
+           "label": "column_followup",
+           "visible": false,
+           "residence": {
+               "position": 1,
+               "layout_weight": "1.5"
+           }
+       },
+       {
+           "identifier": "treatment",
+           "label": "column_treatment",
+           "visible": false,
+           "residence": {
+               "position": 2,
+               "layout_weight": "2"
+           }
+       },
+       {
+           "identifier": "baseline",
+           "label": "column_baseline",
+           "visible": true,
+           "residence": {
+               "position": 3,
+               "layout_weight": "1.8"
+           }
+       }
+   ]
+}

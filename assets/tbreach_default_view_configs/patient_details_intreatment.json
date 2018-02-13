@@ -1,0 +1,53 @@
+{
+   "_id": "f9a6a9f8e584302f2dd202a5814a3a8b",
+   "_rev": "11-57c8d94407120343643255ec49fa7d29",
+   "type": "ViewConfiguration",
+   "serverVersion": 1517567546304,
+   "identifier": "patient_details_intreatment",
+   "views": [
+       {
+           "identifier": "component_patient_details_demographics",
+           "visible": true,
+           "residence": {
+               "position": 0
+           }
+       },
+       {
+           "identifier": "component_patient_details_results",
+           "visible": true,
+           "residence": {
+               "position": 1
+           }
+       },
+       {
+           "identifier": "component_patient_details_followup",
+           "visible": true,
+           "residence": {
+               "position": 2
+           }
+       },
+       {
+           "identifier": "component_patient_details_bmi",
+           "visible": true,
+           "residence": {
+               "position": 4
+           }
+       },
+       {
+           "identifier": "component_patient_details_contact_screening",
+           "visible": true,
+           "residence": {
+               "position": 3
+           }
+       }
+   ],
+   "labels": {
+       "add_contact": "add_contact",
+       "followup": "followup",
+       "record_results": "record_results",
+       "contacts": "contacts",
+       "results": "results",
+       "remove_patient": "remove_patient",
+       "no_results_recorded": "no_results_recorded"
+   }
+}

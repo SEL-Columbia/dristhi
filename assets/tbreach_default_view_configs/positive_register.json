@@ -1,0 +1,70 @@
+{
+   "_id": "3a065d7c3354eb2bc23c8a3bc303ba20",
+   "_rev": "17-c72bf8e62cd7ffb30f6506d8c76cc623",
+   "type": "ViewConfiguration",
+   "serverVersion": 1518181499526,
+   "identifier": "positive_register",
+   "metadata": {
+       "type": "Register",
+       "enableAdvancedSearch": true,
+       "enableSortList": true,
+       "enableFilterList": true,
+       "searchBarText": "Search name or ID"
+   },
+   "views": [
+       {
+           "identifier": "patient",
+           "label": "column_patient",
+           "visible": true,
+           "residence": {
+               "position": 0,
+               "layout_weight": "2.2"
+           }
+       },
+       {
+           "identifier": "results",
+           "label": "column_results",
+           "visible": true,
+           "residence": {
+               "position": 1,
+               "layout_weight": "2.2"
+           }
+       },
+       {
+           "identifier": "diagnosis",
+           "label": "column_diagnosis",
+           "visible": true,
+           "residence": {
+               "position": 2,
+               "layout_weight": "1.5"
+           }
+       },
+       {
+           "identifier": "treat",
+           "label": "column_treat",
+           "visible": false,
+           "residence": {
+               "position": 2,
+               "layout_weight": "1.5"
+           }
+       },
+       {
+           "identifier": "smr_results",
+           "label": "column_smr_results",
+           "visible": true,
+           "residence": {
+               "position": 2,
+               "layout_weight": "1.5"
+           }
+       },
+       {
+           "identifier": "xpert_results",
+           "label": "column_xpert_results",
+           "visible": true,
+           "residence": {
+               "position": 2,
+               "layout_weight": "1.5"
+           }
+       }
+   ]
+}

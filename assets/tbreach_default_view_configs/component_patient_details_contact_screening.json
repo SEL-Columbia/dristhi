@@ -1,0 +1,479 @@
+{
+   "_id": "a80b874fb4022105231dff6fe4267819",
+   "_rev": "28-8559e717075cad0299df3c4383f4fc56",
+   "type": "ViewConfiguration",
+   "serverVersion": 1517562025517,
+   "identifier": "component_patient_details_contact_screening",
+   "jsonView": {
+       "views": [
+           {
+               "views": [
+                   {
+                       "views": [
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "contact_screening",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "CustomFontTextViewStyle.ClientList",
+                                       "type": "ref",
+                                       "name": "style"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_alignParentLeft"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_centerInParent"
+                                   },
+                                   {
+                                       "value": "center_vertical",
+                                       "type": "string",
+                                       "name": "layout_gravity"
+                                   },
+                                   {
+                                       "value": "@string/contacts",
+                                       "type": "ref",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "#000000",
+                                       "type": "color",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "22sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   },
+                                   {
+                                       "value": "0dp",
+                                       "type": "string",
+                                       "name": "paddingLeft"
+                                   }
+                               ],
+                               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                           },
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "add_contact",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "CustomFontTextViewStyle.ClientList",
+                                       "type": "ref",
+                                       "name": "style"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_alignParentEnd"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_alignParentRight"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_centerInParent"
+                                   },
+                                   {
+                                       "value": "@string/add_contact",
+                                       "type": "ref",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "string",
+                                       "name": "textAllCaps"
+                                   },
+                                   {
+                                       "value": "#3269D4",
+                                       "type": "color",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "20sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   }
+                               ],
+                               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                           }
+                       ],
+                       "properties": [
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center_vertical",
+                               "type": "string",
+                               "name": "layout_gravity"
+                           },
+                           {
+                               "value": "10dp",
+                               "type": "dimen",
+                               "name": "layout_marginBottom"
+                           },
+                           {
+                               "value": "horizontal",
+                               "type": "string",
+                               "name": "orientation"
+                           }
+                       ],
+                       "widget": "RelativeLayout"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "wrap_content",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "wrap_content",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "layout_gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   }
+               ],
+               "widget": "LinearLayout"
+           },
+           {
+               "views": [
+                   {
+                       "views": [
+                           {
+                               "views": [
+                                   {
+                                       "views": [
+                                       ],
+                                       "properties": [
+                                           {
+                                               "value": "clientContactTextView",
+                                               "type": "ref",
+                                               "name": "id"
+                                           },
+                                           {
+                                               "value": "match_parent",
+                                               "type": "dimen",
+                                               "name": "layout_width"
+                                           },
+                                           {
+                                               "value": "match_parent",
+                                               "type": "dimen",
+                                               "name": "layout_height"
+                                           },
+                                           {
+                                               "value": "center_vertical|center_horizontal",
+                                               "type": "string",
+                                               "name": "layout_gravity"
+                                           },
+                                           {
+                                               "value": "male_light_blue",
+                                               "type": "ref",
+                                               "name": "background"
+                                           },
+                                           {
+                                               "value": "center_vertical|center_horizontal",
+                                               "type": "string",
+                                               "name": "gravity"
+                                           },
+                                           {
+                                               "value": "MH",
+                                               "type": "string",
+                                               "name": "text"
+                                           },
+                                           {
+                                               "value": "male_blue",
+                                               "type": "ref",
+                                               "name": "textColor"
+                                           },
+                                           {
+                                               "value": "24sp",
+                                               "type": "dimen",
+                                               "name": "textSize"
+                                           }
+                                       ],
+                                       "widget": "TextView"
+                                   },
+                                   {
+                                       "views": [
+                                       ],
+                                       "properties": [
+                                           {
+                                               "value": "clientContactIndicatorImageView",
+                                               "type": "ref",
+                                               "name": "id"
+                                           },
+                                           {
+                                               "value": "wrap_content",
+                                               "type": "dimen",
+                                               "name": "layout_width"
+                                           },
+                                           {
+                                               "value": "wrap_content",
+                                               "type": "dimen",
+                                               "name": "layout_height"
+                                           },
+                                           {
+                                               "value": "true",
+                                               "type": "BOOLEAN",
+                                               "name": "layout_alignParentRight"
+                                           },
+                                           {
+                                               "value": "true",
+                                               "type": "BOOLEAN",
+                                               "name": "layout_alignParentTop"
+                                           },
+                                           {
+                                               "value": "top|right",
+                                               "type": "string",
+                                               "name": "layout_gravity"
+                                           },
+                                           {
+                                               "value": "center_Inside",
+                                               "type": "string",
+                                               "name": "scaleType"
+                                           },
+                                           {
+                                               "value": "ic_indicator_intreatment",
+                                               "type": "ref",
+                                               "name": "src"
+                                           },
+                                           {
+                                               "value": "visible",
+                                               "type": "string",
+                                               "name": "visibility"
+                                           }
+                                       ],
+                                       "widget": "ImageView"
+                                   },
+                                   {
+                                       "views": [
+                                       ],
+                                       "properties": [
+                                           {
+                                               "value": "clientIndexContactTextView",
+                                               "type": "ref",
+                                               "name": "id"
+                                           },
+                                           {
+                                               "value": "match_parent",
+                                               "type": "dimen",
+                                               "name": "layout_width"
+                                           },
+                                           {
+                                               "value": "20dp",
+                                               "type": "dimen",
+                                               "name": "layout_height"
+                                           },
+                                           {
+                                               "value": "bottom|center",
+                                               "type": "string",
+                                               "name": "layout_gravity"
+                                           },
+                                           {
+                                               "value": "bottom|center",
+                                               "type": "string",
+                                               "name": "gravity"
+                                           },
+                                           {
+                                               "value": "@string/index",
+                                               "type": "ref",
+                                               "name": "text"
+                                           },
+                                           {
+                                               "value": "disabled_gray",
+                                               "type": "ref",
+                                               "name": "textColor"
+                                           },
+                                           {
+                                               "value": "20sp",
+                                               "type": "dimen",
+                                               "name": "textSize"
+                                           }
+                                       ],
+                                       "widget": "TextView"
+                                   }
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "clientContactFrameLayout",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "80dp",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "80dp",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "20dp",
+                                       "type": "dimen",
+                                       "name": "layout_marginRight"
+                                   }
+                               ],
+                               "widget": "FrameLayout"
+                           }
+                       ],
+                       "properties": [
+                           {
+                               "value": "contactScreeningViewContactsHolder",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center_vertical|left",
+                               "type": "string",
+                               "name": "layout_gravity"
+                           },
+                           {
+                               "value": "horizontal",
+                               "type": "string",
+                               "name": "orientation"
+                           }
+                       ],
+                       "widget": "LinearLayout"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "wrap_content",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "false",
+                       "type": "BOOLEAN",
+                       "name": "layout_alignParentEnd"
+                   },
+                   {
+                       "value": "true",
+                       "type": "BOOLEAN",
+                       "name": "layout_alignParentRight"
+                   },
+                   {
+                       "value": "true",
+                       "type": "string",
+                       "name": "fillViewport"
+                   },
+                   {
+                       "value": "right",
+                       "type": "string",
+                       "name": "foregroundGravity"
+                   }
+               ],
+               "widget": "HorizontalScrollView"
+           }
+       ],
+       "properties": [
+           {
+               "value": "clientContactScreeningCardView",
+               "type": "ref",
+               "name": "id"
+           },
+           {
+               "value": "match_parent",
+               "type": "dimen",
+               "name": "layout_width"
+           },
+           {
+               "value": "wrap_content",
+               "type": "dimen",
+               "name": "layout_height"
+           },
+           {
+               "value": "5dp",
+               "type": "dimen",
+               "name": "layout_marginBottom"
+           },
+           {
+               "value": "border",
+               "type": "ref",
+               "name": "background"
+           },
+           {
+               "value": "vertical",
+               "type": "string",
+               "name": "orientation"
+           },
+           {
+               "value": "10dp",
+               "type": "dimen",
+               "name": "padding"
+           }
+       ],
+       "widget": "LinearLayout"
+   }
+}

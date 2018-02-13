@@ -1,0 +1,237 @@
+{
+   "_id": "f9a6a9f8e584302f2dd202a5814a2c98",
+   "_rev": "9-e622459e0e10cc53331249e72ab4df56",
+   "type": "ViewConfiguration",
+   "serverVersion": 1518073133603,
+   "identifier": "component_patient_details_followup",
+   "jsonView": {
+       "views": [
+           {
+               "views": [
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "followup",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "CustomFontTextViewStyle.ClientList",
+                               "type": "ref",
+                               "name": "style"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center_vertical",
+                               "type": "string",
+                               "name": "layout_gravity"
+                           },
+                           {
+                               "value": "0dp",
+                               "type": "string",
+                               "name": "paddingLeft"
+                           },
+                           {
+                               "value": "@string/followup",
+                               "type": "ref",
+                               "name": "text"
+                           },
+                           {
+                               "value": "#000000",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "22sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                   },
+                   {
+                       "views": [
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "follow_up_button",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "250dp",
+                                       "type": "dimen",
+                                       "name": "minWidth"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_centerVertical"
+                                   },
+                                   {
+                                       "value": "20dp",
+                                       "type": "dimen",
+                                       "name": "layout_marginTop"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "string",
+                                       "name": "adjustViewBounds"
+                                   },
+                                   {
+                                       "value": "due_vaccine_blue_bg",
+                                       "type": "ref",
+                                       "name": "background"
+                                   },
+                                   {
+                                       "value": "center_vertical",
+                                       "type": "string",
+                                       "name": "gravity"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "string",
+                                       "name": "hapticFeedbackEnabled"
+                                   },
+                                   {
+                                       "value": "15dp",
+                                       "type": "dimen",
+                                       "name": "padding"
+                                   },
+                                   {
+                                       "value": "@string/followup",
+                                       "type": "ref",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "status_bar_text_almost_white",
+                                       "type": "ref",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "15sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   }
+                               ],
+                               "widget": "Button"
+                           }
+                       ],
+                       "properties": [
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center_horizontal",
+                               "type": "string",
+                               "name": "layout_gravity"
+                           },
+                           {
+                               "value": "center_horizontal",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "horizontal",
+                               "type": "string",
+                               "name": "orientation"
+                           }
+                       ],
+                       "widget": "LinearLayout"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "wrap_content",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "layout_gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   }
+               ],
+               "widget": "LinearLayout"
+           }
+       ],
+       "properties": [
+           {
+               "value": "clientFollowupCardView",
+               "type": "ref",
+               "name": "id"
+           },
+           {
+               "value": "match_parent",
+               "type": "dimen",
+               "name": "layout_width"
+           },
+           {
+               "value": "wrap_content",
+               "type": "dimen",
+               "name": "layout_height"
+           },
+           {
+               "value": "5dp",
+               "type": "dimen",
+               "name": "layout_marginBottom"
+           },
+           {
+               "value": "border",
+               "type": "ref",
+               "name": "background"
+           },
+           {
+               "value": "vertical",
+               "type": "string",
+               "name": "orientation"
+           },
+           {
+               "value": "10dp",
+               "type": "dimen",
+               "name": "padding"
+           }
+       ],
+       "widget": "LinearLayout"
+   }
+}

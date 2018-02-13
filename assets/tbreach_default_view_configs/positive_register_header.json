@@ -1,0 +1,240 @@
+{
+   "_id": "3a065d7c3354eb2bc23c8a3bc303ef62",
+   "_rev": "4-2d812bcd6a8f63051a95cfb14b3e7fdd",
+   "type": "ViewConfiguration",
+   "serverVersion": 1517585907554,
+   "identifier": "positive_register_header",
+   "jsonView": {
+       "views": [
+           {
+               "views": [
+               ],
+               "properties": [
+                   {
+                       "value": "results_header",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "@style/CustomFontTextViewStyle.ClientList.Medium",
+                       "type": "ref",
+                       "name": "style"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "wrap_content",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "true",
+                       "type": "BOOLEAN",
+                       "name": "layout_alignParentRight"
+                   },
+                   {
+                       "value": "7dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "3.4",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "@string/results",
+                       "type": "ref",
+                       "name": "text"
+                   },
+                   {
+                       "value": "true",
+                       "type": "BOOLEAN",
+                       "name": "textAllCaps"
+                   },
+                   {
+                       "value": "@color/client_list_grey",
+                       "type": "ref",
+                       "name": "textColor"
+                   },
+                   {
+                       "value": "16sp",
+                       "type": "dimen",
+                       "name": "textSize"
+                   },
+                   {
+                       "value": "center_horizontal",
+                       "type": "string",
+                       "name": "gravity"
+                   }
+               ],
+               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+           },
+           {
+               "views": [
+               ],
+               "properties": [
+                   {
+                       "value": "treat_header",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "@style/CustomFontTextViewStyle.ClientList.Medium",
+                       "type": "ref",
+                       "name": "style"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "wrap_content",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "true",
+                       "type": "BOOLEAN",
+                       "name": "layout_centerHorizontal"
+                   },
+                   {
+                       "value": "2.6",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "@string/treat",
+                       "type": "ref",
+                       "name": "text"
+                   },
+                   {
+                       "value": "true",
+                       "type": "BOOLEAN",
+                       "name": "textAllCaps"
+                   },
+                   {
+                       "value": "@color/client_list_grey",
+                       "type": "ref",
+                       "name": "textColor"
+                   },
+                   {
+                       "value": "16sp",
+                       "type": "dimen",
+                       "name": "textSize"
+                   },
+                   {
+                       "value": "center_horizontal",
+                       "type": "string",
+                       "name": "gravity"
+                   }
+               ],
+               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+           },
+           {
+               "views": [
+               ],
+               "properties": [
+                   {
+                       "value": "diagnosis_header",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "@style/CustomFontTextViewStyle.ClientList.Medium",
+                       "type": "ref",
+                       "name": "style"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "wrap_content",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "true",
+                       "type": "BOOLEAN",
+                       "name": "layout_centerHorizontal"
+                   },
+                   {
+                       "value": "2.6",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "@string/diagnosis",
+                       "type": "ref",
+                       "name": "text"
+                   },
+                   {
+                       "value": "true",
+                       "type": "BOOLEAN",
+                       "name": "textAllCaps"
+                   },
+                   {
+                       "value": "@color/client_list_grey",
+                       "type": "ref",
+                       "name": "textColor"
+                   },
+                   {
+                       "value": "16sp",
+                       "type": "dimen",
+                       "name": "textSize"
+                   },
+                   {
+                       "value": "gone",
+                       "type": "string",
+                       "name": "visibility"
+                   },
+                   {
+                       "value": "center_horizontal",
+                       "type": "string",
+                       "name": "gravity"
+                   }
+               ],
+               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+           }
+       ],
+       "properties": [
+           {
+               "value": "register_headers",
+               "type": "ref",
+               "name": "id"
+           },
+           {
+               "value": "fill_parent",
+               "type": "dimen",
+               "name": "layout_width"
+           },
+           {
+               "value": "wrap_content",
+               "type": "dimen",
+               "name": "layout_height"
+           },
+           {
+               "value": "@color/client_list_header_dark_grey",
+               "type": "ref",
+               "name": "background"
+           },
+           {
+               "value": "false",
+               "type": "string",
+               "name": "baselineAligned"
+           },
+           {
+               "value": "horizontal",
+               "type": "string",
+               "name": "orientation"
+           }
+       ],
+       "widget": "LinearLayout"
+   }
+}
