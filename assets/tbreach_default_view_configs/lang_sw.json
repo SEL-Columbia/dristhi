@@ -1,0 +1,23 @@
+{
+   "_id": "e6da6467fee3622f943564285103a037",
+   "_rev": "47-677054220621ba0ce70fcdac50b950a0",
+   "serverVersion": 35113421018,
+   "type": "ViewConfiguration",
+   "identifier": "lang_sw",
+   "labels": {
+       "presumptive_patients": "Wagonjwa Watakaopimwa",
+       "positive_patients": "Wangonjwa Wa Kudhibitishwa",
+       "in_treatment_patients": "Wagonjwa Wanaotibiwa",
+       "service_history": "Historia ya Huduma",
+       "date": "Tarehe",
+       "form": "Fomu",
+       "positive_results": "Matokeo ya Kudhibitishwa",
+       "record_results": "Rekodi Matokeo",
+       "contacts": "Wenzi",
+       "first_encounter": "Makutano ya Kwanza",
+       "remove_patient": "Toa Mgonjwa",
+       "no_results_recorded": "Hakuna Matokeo",
+       "followup": "Fuatilia",
+       "add_contact": "Ongeza Mwenzi"
+   }
+}

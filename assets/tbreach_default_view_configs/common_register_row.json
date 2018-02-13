@@ -1,0 +1,695 @@
+{
+   "_id": "294b209b96229fe64b94b7430e039f83",
+   "_rev": "14-303522273f4652379de782ed14d4059c",
+   "type": "ViewConfiguration",
+   "serverVersion": 1517900085834,
+   "identifier": "common_register_row",
+   "jsonView": {
+       "views": [
+           {
+               "views": [
+                   {
+                       "views": [
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "patient_name",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "@style/CustomFontTextViewStyle.ClientList.Medium",
+                                       "type": "ref",
+                                       "name": "style"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_alignParentLeft"
+                                   },
+                                   {
+                                       "value": "true",
+                                       "type": "BOOLEAN",
+                                       "name": "layout_alignParentTop"
+                                   },
+                                   {
+                                       "value": "Patient Name",
+                                       "type": "string",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "@color/client_list_grey",
+                                       "type": "ref",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "18sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   },
+                                   {
+                                       "value": "10dp",
+                                       "type": "dimen",
+                                       "name": "padding_left"
+                                   }
+                               ],
+                               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                           },
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "participant_id",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "@style/CustomFontTextViewStyle.ClientList",
+                                       "type": "ref",
+                                       "name": "style"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "patient_name",
+                                       "type": "ref",
+                                       "name": "layout_below"
+                                   },
+                                   {
+                                       "value": "Participant ID",
+                                       "type": "string",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "@color/client_list_grey",
+                                       "type": "ref",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "16sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   },
+                                   {
+                                       "value": "10dp",
+                                       "type": "dimen",
+                                       "name": "padding_left"
+                                   }
+                               ],
+                               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                           },
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "age",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "@style/CustomFontTextViewStyle.ClientList",
+                                       "type": "ref",
+                                       "name": "style"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "participant_id",
+                                       "type": "ref",
+                                       "name": "layout_below"
+                                   },
+                                   {
+                                       "value": "Age",
+                                       "type": "string",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "@color/client_list_grey",
+                                       "type": "ref",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "16sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   },
+                                   {
+                                       "value": "10dp",
+                                       "type": "dimen",
+                                       "name": "padding_left"
+                                   }
+                               ],
+                               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                           },
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "comma_separator",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "@style/CustomFontTextViewStyle.ClientList",
+                                       "type": "ref",
+                                       "name": "style"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "participant_id",
+                                       "type": "ref",
+                                       "name": "layout_below"
+                                   },
+                                   {
+                                       "value": "age",
+                                       "type": "ref",
+                                       "name": "layout_toRightOf"
+                                   },
+                                   {
+                                       "value": ", ",
+                                       "type": "string",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "16sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   },
+                                   {
+                                       "value": "0dp",
+                                       "type": "dimen",
+                                       "name": "padding_left"
+                                   },
+                                   {
+                                       "value": "@color/client_list_grey",
+                                       "type": "ref",
+                                       "name": "textColor"
+                                   }
+                               ],
+                               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                           },
+                           {
+                               "views": [
+                               ],
+                               "properties": [
+                                   {
+                                       "value": "gender",
+                                       "type": "ref",
+                                       "name": "id"
+                                   },
+                                   {
+                                       "value": "@style/CustomFontTextViewStyle.ClientList",
+                                       "type": "ref",
+                                       "name": "style"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_width"
+                                   },
+                                   {
+                                       "value": "wrap_content",
+                                       "type": "dimen",
+                                       "name": "layout_height"
+                                   },
+                                   {
+                                       "value": "participant_id",
+                                       "type": "ref",
+                                       "name": "layout_below"
+                                   },
+                                   {
+                                       "value": "comma_separator",
+                                       "type": "ref",
+                                       "name": "layout_toRightOf"
+                                   },
+                                   {
+                                       "value": "Gender",
+                                       "type": "string",
+                                       "name": "text"
+                                   },
+                                   {
+                                       "value": "@color/client_list_grey",
+                                       "type": "ref",
+                                       "name": "textColor"
+                                   },
+                                   {
+                                       "value": "16sp",
+                                       "type": "dimen",
+                                       "name": "textSize"
+                                   },
+                                   {
+                                       "value": "0dp",
+                                       "type": "dimen",
+                                       "name": "padding_left"
+                                   }
+                               ],
+                               "widget": "org.smartregister.view.customcontrols.CustomFontTextView"
+                           }
+                       ],
+                       "properties": [
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "6dp",
+                               "type": "dimen",
+                               "name": "padding_top"
+                           },
+                           {
+                               "value": "8dp",
+                               "type": "dimen",
+                               "name": "padding_bottom"
+                           }
+                       ],
+                       "widget": "RelativeLayout"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "patient_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "4",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "horizontal",
+                       "type": "string",
+                       "name": "orientation"
+                   }
+               ],
+               "widget": "LinearLayout"
+           },
+           {
+               "views": [
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "xpert_result_details",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "3dp",
+                               "type": "dimen",
+                               "name": "layout_marginTop"
+                           },
+                           {
+                               "value": "center_horizontal",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "#757575",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "16sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           },
+                           {
+                               "value": "gone",
+                               "type": "string",
+                               "name": "visibility"
+                           }
+                       ],
+                       "widget": "TextView"
+                   },
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "xpert_result_lnk",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "3dp",
+                               "type": "dimen",
+                               "name": "layout_marginBottom"
+                           },
+                           {
+                               "value": "@string/result",
+                               "type": "ref",
+                               "name": "text"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "textAlignment"
+                           },
+                           {
+                               "value": "true",
+                               "type": "BOOLEAN",
+                               "name": "textAllCaps"
+                           },
+                           {
+                               "value": "#3269D4",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "18sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "TextView"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "xpert_results_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "2.6",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   },
+                   {
+                       "value": "gone",
+                       "type": "string",
+                       "name": "visibility"
+                   }
+               ],
+               "widget": "LinearLayout"
+           },
+           {
+               "views": [
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "smr_result_details",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "wrap_content",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "3dp",
+                               "type": "dimen",
+                               "name": "layout_marginTop"
+                           },
+                           {
+                               "value": "center_horizontal",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "#757575",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "16sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           },
+                           {
+                               "value": "gone",
+                               "type": "string",
+                               "name": "visibility"
+                           }
+                       ],
+                       "widget": "TextView"
+                   },
+                   {
+                       "views": [
+                       ],
+                       "properties": [
+                           {
+                               "value": "smr_result_lnk",
+                               "type": "ref",
+                               "name": "id"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_width"
+                           },
+                           {
+                               "value": "match_parent",
+                               "type": "dimen",
+                               "name": "layout_height"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "gravity"
+                           },
+                           {
+                               "value": "3dp",
+                               "type": "dimen",
+                               "name": "layout_marginBottom"
+                           },
+                           {
+                               "value": "@string/result",
+                               "type": "ref",
+                               "name": "text"
+                           },
+                           {
+                               "value": "center",
+                               "type": "string",
+                               "name": "textAlignment"
+                           },
+                           {
+                               "value": "true",
+                               "type": "BOOLEAN",
+                               "name": "textAllCaps"
+                           },
+                           {
+                               "value": "#3269D4",
+                               "type": "color",
+                               "name": "textColor"
+                           },
+                           {
+                               "value": "18sp",
+                               "type": "dimen",
+                               "name": "textSize"
+                           }
+                       ],
+                       "widget": "TextView"
+                   }
+               ],
+               "properties": [
+                   {
+                       "value": "smr_results_column",
+                       "type": "ref",
+                       "name": "id"
+                   },
+                   {
+                       "value": "0dp",
+                       "type": "dimen",
+                       "name": "layout_width"
+                   },
+                   {
+                       "value": "match_parent",
+                       "type": "dimen",
+                       "name": "layout_height"
+                   },
+                   {
+                       "value": "1dp",
+                       "type": "dimen",
+                       "name": "layout_marginRight"
+                   },
+                   {
+                       "value": "2.6",
+                       "type": "float",
+                       "name": "layout_weight"
+                   },
+                   {
+                       "value": "#ffffff",
+                       "type": "color",
+                       "name": "background"
+                   },
+                   {
+                       "value": "center_vertical",
+                       "type": "string",
+                       "name": "gravity"
+                   },
+                   {
+                       "value": "vertical",
+                       "type": "string",
+                       "name": "orientation"
+                   },
+                   {
+                       "value": "gone",
+                       "type": "string",
+                       "name": "visibility"
+                   }
+               ],
+               "widget": "LinearLayout"
+           }
+       ],
+       "properties": [
+           {
+               "value": "register_columns",
+               "type": "ref",
+               "name": "id"
+           },
+           {
+               "value": "match_parent",
+               "type": "dimen",
+               "name": "layout_width"
+           },
+           {
+               "value": "match_parent",
+               "type": "dimen",
+               "name": "layout_height"
+           },
+           {
+               "value": "#eeeeee",
+               "type": "color",
+               "name": "background"
+           },
+           {
+               "value": "horizontal",
+               "type": "string",
+               "name": "orientation"
+           }
+       ],
+       "widget": "LinearLayout"
+   }
+}
