@@ -21,7 +21,7 @@ if [ "$1" == "--help" ]
      echo -e "Specify (Optional) a protocol e.g. http or https like \033[33m ./setup_view_configs.sh -proto <protocol>\033[0m"
      echo -e "Specify (Optional) any multiple arguments like \033[33m ./setup_view_configs.sh -u <username> -pwd <password> -d <database name>\033[0m"
      echo -e "For Authentication you can choose to pass the username and password as part of the host e.g. \033[33m ./setup_view_configs.sh -h http://<username>:<password>@<hostname>\033[0m"
-    
+     echo -e "Running \033[33m./setup_view_configs.sh -help \033[0m brings this help menu"
 
 elif [ "$(($count % 2))" != 0 ]
   then
