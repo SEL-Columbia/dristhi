@@ -31,9 +31,9 @@ public class GZipCompressionFilter implements Filter {
 		}
 	}
 	
-	public void init(FilterConfig filterConfig) {
+	public void init(FilterConfig filterConfig) {//do nothing
 	}
 	
-	public void destroy() {
+	public void destroy() {//do nothing
 	}
 }

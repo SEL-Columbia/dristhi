@@ -125,7 +125,7 @@ public class EventResource extends RestResource<Event> {
 					for (int i = 0; i < clientIds.size(); i = i + CLIENTS_FETCH_BATCH_SIZE) {
 						int end = i + CLIENTS_FETCH_BATCH_SIZE < clientIds.size() ? i + CLIENTS_FETCH_BATCH_SIZE
 						        : clientIds.size();
-						clients.addAll(clientService.findByFieldValue(BaseEntity.BASE_ENTITY_ID, clientIds.subList(i, end)));
+						clients.addAll(clientService.findByFieldValue(BASE_ENTITY_ID, clientIds.subList(i, end)));
 					}
 					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime)/1000);
 				}
