@@ -22,6 +22,8 @@ public class AllConstants {
 	
 	public static final String OPENSRP_ERRORTRACE_DATABASE = "opensrpErrorTraceDatabaseConnector";
 	
+	public static final int CLIENTS_FETCH_BATCH_SIZE=100;
+	
 	public static class BaseEntity {
 		
 		public static final String BASE_ENTITY_ID = "baseEntityId";
