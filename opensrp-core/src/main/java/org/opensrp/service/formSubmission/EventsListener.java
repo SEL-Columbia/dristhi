@@ -117,20 +117,22 @@ public class EventsListener {
 		}
 	}
 	
-	private void addServerVersion() {
+	private synchronized void addServerVersion() {
 		try {
 			List<Client> clients = allClients.findByEmptyServerVersion();
+			long currentTimeMillis = getCurrentMilliseconds();
 			while (clients != null && !clients.isEmpty()) {
 				for (Client client : clients) {
 					try {
 						Thread.sleep(1);
-						client.setServerVersion(getCurrentMilliseconds());
+						client.setServerVersion(currentTimeMillis);
 						allClients.update(client);
 						logger.debug("Add server_version: found new client " + client.getBaseEntityId());
 					}
 					catch (InterruptedException e) {
 						logger.error("", e);
 					}
+					currentTimeMillis += 1;
 				}
 				clients = allClients.findByEmptyServerVersion();
 			}
@@ -141,7 +143,7 @@ public class EventsListener {
 					try {
 						Thread.sleep(1);
 						event = eventService.processOutOfArea(event);
-						event.setServerVersion(getCurrentMilliseconds());
+						event.setServerVersion(currentTimeMillis);
 						allEvents.update(event);
 						
 						logger.debug("Add server_version: found new event " + event.getBaseEntityId());
@@ -149,6 +151,7 @@ public class EventsListener {
 					catch (InterruptedException e) {
 						logger.error("", e);
 					}
+					currentTimeMillis += 1;
 				}
 				
 				events = allEvents.findByEmptyServerVersion();
